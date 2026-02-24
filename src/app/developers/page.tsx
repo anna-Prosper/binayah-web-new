@@ -3,7 +3,7 @@ import Developer from "@/models/Developer";
 import Project from "@/models/Project";
 import DevelopersPageClient from "./DevelopersPageClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function DevelopersPage() {
   await connectDB();

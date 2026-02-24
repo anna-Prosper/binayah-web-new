@@ -3,7 +3,7 @@ import Project from "@/models/Project";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "./ProjectDetailClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 /**
  * Clean WordPress HTML content:

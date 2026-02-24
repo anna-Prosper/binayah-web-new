@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import OffPlanPageClient from "./OffPlanPageClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const CARD_FIELDS = "name slug status developerName community startingPrice completionDate shortOverview featuredImage imageGallery";
 

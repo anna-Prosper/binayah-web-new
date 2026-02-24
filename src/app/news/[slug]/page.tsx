@@ -3,7 +3,7 @@ import Article from "@/models/Article";
 import { notFound } from "next/navigation";
 import NewsDetailClient from "./NewsDetailClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 function cleanWpHtml(html: string): string {
   if (!html) return "";

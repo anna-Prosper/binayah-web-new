@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import Community from "@/models/Community";
 import CommunitiesPageClient from "./CommunitiesPageClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function CommunitiesPage() {
   await connectDB();

@@ -3,7 +3,7 @@ import Listing from "@/models/Listing";
 import { notFound } from "next/navigation";
 import PropertyDetailClient from "./PropertyDetailClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 function stripHtml(html: string): string {
   if (!html) return "";

@@ -4,7 +4,7 @@ import Listing from "@/models/Listing";
 import Article from "@/models/Article";
 import HomePageClient from "@/components/HomePageClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const PROJECT_CARD = "name slug status developerName community city startingPrice completionDate shortOverview featuredImage imageGallery propertyType";
 const LISTING_CARD = "title slug propertyId listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage imageGallery";

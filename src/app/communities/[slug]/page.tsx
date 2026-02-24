@@ -4,7 +4,7 @@ import Community from "@/models/Community";
 import CommunityDetailClient from "./CommunityDetailClient";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 const CARD_FIELDS = "name slug status developerName community startingPrice completionDate shortOverview featuredImage imageGallery";
 

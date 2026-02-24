@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import Article from "@/models/Article";
 import NewsPageClient from "./NewsPageClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function NewsPage() {
   await connectDB();
