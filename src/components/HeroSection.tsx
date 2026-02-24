@@ -1,15 +1,20 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Search, ChevronDown, Zap, X, Sparkles } from "lucide-react";
+import { Search, ChevronDown, Zap, X, Sparkles, MessageCircle } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useRouter } from "next/navigation";
 const heroImage = "/assets/dubai-hero.jpg";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
 
-const statusTabs = ["All Status", "For Rent", "For Sale"];
+const statusTabs = ["All", "Off-Plan", "Ready", "For Rent"];
 const propertyTypes = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"];
-const locations = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills", "Creek Harbour"];
+const locations = [
+  "Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay",
+  "DIFC", "JVC / JVT", "Dubai Hills", "Creek Harbour", "MBR City",
+  "Dubai South", "Jumeirah", "Al Barari",
+];
 const bedrooms = ["Studio", "1 Bedroom", "2 Bedrooms", "3 Bedrooms", "4+ Bedrooms"];
 const budgets = ["Up to 500K", "500K - 1M", "1M - 2M", "2M - 5M", "5M - 10M", "10M+"];
 
@@ -18,7 +23,9 @@ const areaKeywords: Record<string, string> = {
   downtown: "Downtown Dubai", marina: "Dubai Marina", palm: "Palm Jumeirah",
   "business bay": "Business Bay", jvc: "JVC / JVT", jvt: "JVC / JVT",
   "dubai hills": "Dubai Hills", hills: "Dubai Hills", creek: "Creek Harbour",
-  jbr: "JBR", difc: "DIFC", jumeirah: "Palm Jumeirah",
+  jbr: "JBR", difc: "DIFC", jumeirah: "Jumeirah", "mbr city": "MBR City",
+  "mbr": "MBR City", "al barari": "Al Barari", barari: "Al Barari",
+  "dubai south": "Dubai South",
 };
 const typeKeywords: Record<string, string> = {
   apartment: "Apartment", apt: "Apartment", flat: "Apartment",
@@ -32,10 +39,36 @@ const bedroomKeywords: Record<string, string> = {
   "5 bed": "4+ Bedrooms", "5br": "4+ Bedrooms",
 };
 
+// Detect if input is a general question vs property search
+const questionPatterns = [
+  /^(what|how|why|when|where|who|can you|tell me|explain|is it|should i|do you)/i,
+  /\?$/,
+  /^(hi|hello|hey|good morning|good evening)/i,
+  /\b(advice|recommend|help me|suggest|compare|difference|best time|market|invest|roi|visa|mortgage|tax|legal)\b/i,
+];
+
+function isGeneralQuestion(input: string): boolean {
+  const trimmed = input.trim();
+  if (trimmed.length < 5) return false;
+  return questionPatterns.some((p) => p.test(trimmed));
+}
+
 function parseSmartSearch(input: string) {
   const lower = input.toLowerCase().trim();
   const tags: { label: string; value: string }[] = [];
-  let location = "", type = "", bedroom = "", budget = "";
+  let location = "", type = "", bedroom = "", budget = "", status = "";
+
+  // Detect off-plan / ready
+  if (/off[\s-]?plan|new[\s-]?launch|under[\s-]?construction/i.test(lower)) {
+    status = "Off-Plan";
+    tags.push({ label: "Status", value: "Off-Plan" });
+  } else if (/ready|secondary|completed|handover/i.test(lower)) {
+    status = "Ready";
+    tags.push({ label: "Status", value: "Ready / Secondary" });
+  } else if (/\brent\b|rental/i.test(lower)) {
+    status = "For Rent";
+    tags.push({ label: "Status", value: "For Rent" });
+  }
 
   // Area
   for (const [kw, val] of Object.entries(areaKeywords)) {
@@ -67,21 +100,23 @@ function parseSmartSearch(input: string) {
     tags.push({ label: "Budget", value: budget });
   }
 
-  return { location, type, bedroom, budget, tags };
+  return { location, type, bedroom, budget, status, tags };
 }
 
 const searchPlaceholders = [
-  '"3 bed villa in Palm under 5M"',
-  '"Studio in JVC for investment"',
-  '"2BR Marina apartment with sea view"',
-  '"Family townhouse in Dubai Hills"',
-  '"Off-plan in Creek Harbour"',
+  '"2BR apartment in Marina under 2M"',
+  '"Off-plan villa in Dubai Hills"',
+  '"Ready studio in JVC for rent"',
+  '"What\'s the best area to invest?"',
+  '"3 bed townhouse in MBR City"',
 ];
 
 const HeroSection = () => {
-  const [activeTab, setActiveTab] = useState("All Status");
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("All");
   const [smartSearch, setSmartSearch] = useState("");
   const [parsedTags, setParsedTags] = useState<{ label: string; value: string }[]>([]);
+  const [isQuestion, setIsQuestion] = useState(false);
   const [selLocation, setSelLocation] = useState("");
   const [selType, setSelType] = useState("");
   const [selBedroom, setSelBedroom] = useState("");
@@ -103,21 +138,24 @@ const HeroSection = () => {
 
   const handleSmartInput = useCallback((val: string) => {
     setSmartSearch(val);
-    if (val.trim().length > 1) {
-      const { location, type, bedroom, budget, tags } = parseSmartSearch(val);
+    setIsQuestion(isGeneralQuestion(val));
+    if (val.trim().length > 1 && !isGeneralQuestion(val)) {
+      const { location, type, bedroom, budget, status, tags } = parseSmartSearch(val);
       setParsedTags(tags);
       if (location) setSelLocation(location);
       if (type) setSelType(type);
       if (bedroom) setSelBedroom(bedroom);
       if (budget) setSelBudget(budget);
+      if (status && status !== activeTab) setActiveTab(status);
     } else {
       setParsedTags([]);
     }
-  }, []);
+  }, [activeTab]);
 
   const clearSmartSearch = () => {
     setSmartSearch("");
     setParsedTags([]);
+    setIsQuestion(false);
     setSelLocation("");
     setSelType("");
     setSelBedroom("");
@@ -125,9 +163,29 @@ const HeroSection = () => {
   };
 
   const handleSearch = () => {
-    // Scroll to PropertyMatcher section with pre-filled data
-    const matcher = document.getElementById("property-matcher");
-    if (matcher) matcher.scrollIntoView({ behavior: "smooth" });
+    // If it's a general question, open AI chat
+    if (isQuestion && smartSearch.trim()) {
+      // Trigger the chat widget
+      const chatBtn = document.querySelector("[data-chat-trigger]") as HTMLButtonElement;
+      if (chatBtn) chatBtn.click();
+      return;
+    }
+
+    // Build search URL params
+    const params = new URLSearchParams();
+    if (activeTab && activeTab !== "All") params.set("status", activeTab);
+    if (selType) params.set("type", selType);
+    if (selLocation) params.set("location", selLocation);
+    if (selBedroom) params.set("bedrooms", selBedroom);
+    if (selBudget) params.set("budget", selBudget);
+    if (smartSearch.trim() && !isQuestion) params.set("q", smartSearch.trim());
+
+    const query = params.toString();
+    router.push(`/search${query ? `?${query}` : ""}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") handleSearch();
   };
 
   return (
@@ -175,6 +233,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="w-full max-w-5xl mx-auto"
         >
+          {/* Tabs */}
           <div className="flex justify-center gap-0.5 mb-0">
             {statusTabs.map((tab) => (
               <button
@@ -199,6 +258,7 @@ const HeroSection = () => {
                 <input
                   value={smartSearch}
                   onChange={(e) => handleSmartInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder={`Try: ${searchPlaceholders[placeholderIndex]} — AI fills the filters`}
                   className="w-full pl-10 pr-10 py-3 bg-secondary/50 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
                 />
@@ -208,7 +268,16 @@ const HeroSection = () => {
                   </button>
                 )}
               </div>
-              {parsedTags.length > 0 && (
+
+              {/* Parsed tags or question indicator */}
+              {isQuestion && smartSearch.trim() ? (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-[11px] font-medium">
+                    <MessageCircle className="h-3 w-3" />
+                    This looks like a question — Search will open AI Chat
+                  </span>
+                </div>
+              ) : parsedTags.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {parsedTags.map((tag, i) => (
                     <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary rounded-lg text-[11px] font-medium">
@@ -217,7 +286,7 @@ const HeroSection = () => {
                     </span>
                   ))}
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* Filter dropdowns */}
@@ -232,8 +301,17 @@ const HeroSection = () => {
                     onClick={handleSearch}
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-[13px] rounded-xl font-semibold flex items-center justify-center gap-2.5 transition-all hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 text-sm"
                   >
-                    <Search className="h-4 w-4" />
-                    Search
+                    {isQuestion && smartSearch.trim() ? (
+                      <>
+                        <MessageCircle className="h-4 w-4" />
+                        Ask AI
+                      </>
+                    ) : (
+                      <>
+                        <Search className="h-4 w-4" />
+                        Search
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
