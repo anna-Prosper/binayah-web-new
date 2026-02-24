@@ -75,7 +75,7 @@ export default async function PropertyPage({
     ],
   })
     .select(
-      "title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage imageGallery"
+      "title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage images"
     )
     .sort({ createdAt: -1 })
     .limit(3)

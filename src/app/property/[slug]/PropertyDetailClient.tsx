@@ -43,14 +43,14 @@ interface Listing {
   price?: number;
   currency?: string;
   community?: string;
-  subCommunity?: string;
+  areas?: string[];
   city?: string;
   address?: string;
   latitude?: number;
   longitude?: number;
   featuredImage?: string;
-  imageGallery?: string[];
-  amenities?: string[];
+  images?: string[];
+  features?: string[];
   agent?: string;
 }
 
@@ -69,7 +69,7 @@ interface SimilarListing {
   community?: string;
   city?: string;
   featuredImage?: string;
-  imageGallery?: string[];
+  images?: string[];
 }
 
 function formatPrice(price?: number, currency = "AED") {
@@ -98,7 +98,7 @@ export default function PropertyDetailClient({
 
   const allImages = [
     listing.featuredImage,
-    ...(listing.imageGallery || []),
+    ...(listing.images || []),
   ].filter(Boolean) as string[];
 
   if (allImages.length === 0) {
@@ -303,7 +303,7 @@ export default function PropertyDetailClient({
                   <p className="flex items-center gap-1.5 text-muted-foreground mb-6">
                     <MapPin className="h-4 w-4 text-primary" />
                     {listing.address ||
-                      `${listing.community}${listing.subCommunity ? `, ${listing.subCommunity}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
+                      `${listing.community}${listing.areas?.[0] ? `, ${listing.areas?.[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                   </p>
                 )}
 
@@ -431,13 +431,13 @@ export default function PropertyDetailClient({
                       </span>
                     </>
                   )}
-                  {listing.subCommunity && (
+                  {listing.areas?.[0] && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        Sub-Community
+                        Area
                       </span>
                       <span className="text-sm font-medium text-foreground">
-                        {listing.subCommunity}
+                        {listing.areas?.[0]}
                       </span>
                     </>
                   )}
@@ -455,7 +455,7 @@ export default function PropertyDetailClient({
               </motion.div>
 
               {/* Amenities */}
-              {listing.amenities && listing.amenities.length > 0 && (
+              {listing.features && listing.features.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -463,10 +463,10 @@ export default function PropertyDetailClient({
                   className="mb-10"
                 >
                   <h2 className="text-xl font-bold text-foreground mb-4">
-                    Amenities & Features
+                    Features
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {listing.amenities.map((a, i) => (
+                    {listing.features.map((a, i) => (
                       <div
                         key={i}
                         className="flex items-center gap-2.5 bg-card rounded-xl px-4 py-3 border border-border/50"
@@ -637,7 +637,7 @@ export default function PropertyDetailClient({
                       <img
                         src={
                           l.featuredImage ||
-                          l.imageGallery?.[0] ||
+                          l.images?.[0] ||
                           "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"
                         }
                         alt={l.title}

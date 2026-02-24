@@ -22,7 +22,7 @@ interface Project {
   startingPrice?: number;
   completionDate?: string;
   featuredImage?: string;
-  imageGallery?: string[];
+  images?: string[];
   propertyType?: string;
 }
 
@@ -41,7 +41,7 @@ interface Listing {
   community?: string;
   city?: string;
   featuredImage?: string;
-  imageGallery?: string[];
+  images?: string[];
 }
 
 const statusTabs = ["All", "Off-Plan", "Ready", "For Rent"];
@@ -257,7 +257,7 @@ function SearchContent() {
                         >
                           <div className="relative overflow-hidden aspect-[4/3]">
                             <img
-                              src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
+                              src={p.featuredImage || p.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
                               alt={p.name}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               loading="lazy"
@@ -309,7 +309,7 @@ function SearchContent() {
                   {(status === "All" || status === "") && projects.length > 0 && (
                     <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2">
                       <Building className="h-5 w-5 text-primary" />
-                      {status === "For Rent" ? "Rentals" : "Ready / Secondary"}
+                      {(status as string) === "For Rent" ? "Rentals" : "Ready / Secondary"}
                       <span className="text-sm font-normal text-muted-foreground">({listingCount})</span>
                     </h2>
                   )}
@@ -327,7 +327,7 @@ function SearchContent() {
                         >
                           <div className="relative overflow-hidden aspect-[4/3]">
                             <img
-                              src={l.featuredImage || l.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
+                              src={l.featuredImage || l.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
                               alt={l.title}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                               loading="lazy"

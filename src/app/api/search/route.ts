@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
 
     [listings, listingCount] = await Promise.all([
       Listing.find(lFilter)
-        .select("title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage imageGallery")
+        .select("title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage images")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
