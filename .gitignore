@@ -17,7 +17,7 @@ build/
 .DS_Store
 *.pem
 
-# debug
+# debuggit add .gitignore
 npm-debug.log*
 
 # local env files
@@ -45,6 +45,13 @@ patch-geocodes.js
 playground-1.mongodb.js
 project-push.py
 restore_original.py
+
+*.py
+*.csv
+*.zip
+patch-geocodes.js
+data-fix-scripts/
+migration/
 
 # Data files
 *.csv
