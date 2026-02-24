@@ -33,3 +33,27 @@ next-env.d.ts
 .env.local
 .next
 node_modules
+
+# Scripts & utilities
+add-developers.py
+ai-enrich.py
+developers-normalization.py
+enrich-projects.js
+enrich.py
+import-api.py
+patch-geocodes.js
+playground-1.mongodb.js
+project-push.py
+restore_original.py
+
+# Data files
+*.csv
+components.json
+
+# Data fix scripts folder
+data-fix-scripts/
+
+# Python
+venv/
+__pycache__/
+*.pyc
