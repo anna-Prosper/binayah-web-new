@@ -1,0 +1,110 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "lucide-react";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+
+
+const FeaturedProperties = () => {
+  const { data: projects } = useQuery({
+    queryKey: ["featured-projects"],
+    queryFn: async () => {
+      const res = await fetch("/api/projects?limit=3");
+      return res.json();
+    },
+  });
+
+  return (
+    <section id="sale" className="py-14 sm:py-24 bg-background scroll-mt-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4"
+        >
+          <div>
+            <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Featured Listings</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
+              Handpicked <span className="italic font-light">Properties</span>
+            </h2>
+          </div>
+          <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
+            View All Properties <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
+          {(projects || []).map((p, i) => {
+            const price = p.startingPrice
+              ? p.startingPrice >= 1_000_000
+                ? `${p.currency} ${(p.startingPrice / 1_000_000).toFixed(1)}M`
+                : `${p.currency} ${(p.startingPrice / 1_000).toFixed(0)}K`
+              : "Price on request";
+
+            const sizeRange = p.unitSizeMin && p.unitSizeMax
+              ? `${p.unitSizeMin}–${p.unitSizeMax} sqft`
+              : null;
+
+            return (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.5 }}
+              >
+                <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <img
+                      src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide ${
+                      p.status === "Off-Plan" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"
+                    }`}>
+                      {p.status}
+                    </span>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider">
+                      <MapPin className="h-3 w-3" />
+                      {p.community || p.city}
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">
+                      {p.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-4 flex items-center gap-1.5">
+                      <Building className="h-3 w-3" /> {p.developerName}
+                    </p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 flex-wrap">
+                      {p.unitTypes?.length > 0 && (
+                        <span className="flex items-center gap-1.5"><Bed className="h-4 w-4" />{p.unitTypes.join(", ")}</span>
+                      )}
+                      {sizeRange && (
+                        <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4" />{sizeRange}</span>
+                      )}
+                    </div>
+                    <div className="border-t border-border pt-4 flex items-center justify-between">
+                      <p className="text-xl font-bold text-primary">{price}</p>
+                      <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">
+                        Details <ArrowUpRight className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProperties;
