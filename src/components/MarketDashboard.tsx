@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid } from "recharts";
-import { TrendingUp, BarChart3, PieChart as PieIcon, Building2, Loader2 } from "lucide-react";
+import { BarChart3, PieChart as PieIcon, Building2, Loader2 } from "lucide-react";
 
 type Tab = "prices" | "yields" | "volume";
 
@@ -51,7 +51,7 @@ const MarketDashboard = () => {
             Dubai Market <span className="italic font-light">Dashboard</span>
           </h2>
           <p className="mt-4 text-muted-foreground max-w-md mx-auto">
-            Live insights computed from our property database across Dubai&apos;s top areas.
+            Live insights on prices, rental yields, and property trends across Dubai&apos;s top areas.
           </p>
         </motion.div>
 
@@ -64,23 +64,10 @@ const MarketDashboard = () => {
           <>
             {/* Key stats row */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-              <StatCard
-                label="Avg Price/sqft"
-                value={`AED ${formatNum(data.summary.avgPricePerSqft)}`}
-              />
-              <StatCard
-                label="Total Properties"
-                value={formatNum(data.summary.totalListings)}
-                sub={`${data.summary.offPlanCount} off-plan · ${data.summary.secondaryCount} secondary`}
-              />
-              <StatCard
-                label="Avg Rental Yield"
-                value={`${data.summary.avgYield}%`}
-              />
-              <StatCard
-                label="Off-Plan Share"
-                value={`${data.summary.offPlanShare}%`}
-              />
+              <StatCard label="Avg Price/sqft" value={`AED ${formatNum(data.summary.avgPricePerSqft)}`} />
+              <StatCard label="Active Listings" value={formatNum(data.summary.totalListings)} />
+              <StatCard label="Avg Rental Yield" value={`${data.summary.avgYield}%`} />
+              <StatCard label="Off-Plan Share" value={`${data.summary.offPlanShare}%`} />
             </motion.div>
 
             <div className="grid lg:grid-cols-3 gap-6">
@@ -90,7 +77,7 @@ const MarketDashboard = () => {
                   {([
                     { id: "prices" as Tab, label: "Price / sqft", icon: BarChart3 },
                     { id: "yields" as Tab, label: "Rental Yields", icon: PieIcon },
-                    { id: "volume" as Tab, label: "Listings Volume", icon: Building2 },
+                    { id: "volume" as Tab, label: "By Area", icon: Building2 },
                   ]).map((t) => (
                     <button
                       key={t.id}
@@ -112,10 +99,6 @@ const MarketDashboard = () => {
                         <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                         <Tooltip
                           formatter={(v: number) => [`AED ${v.toLocaleString()}`, "Avg Price/sqft"]}
-                          labelFormatter={(label) => {
-                            const item = data.priceByArea.find((d) => d.area === label);
-                            return `${label} (${item?.count || 0} listings)`;
-                          }}
                           contentStyle={{ borderRadius: 12, border: "1px solid hsl(40,15%,88%)", fontSize: 12 }}
                         />
                         <Bar dataKey="price" fill="hsl(168, 100%, 15%)" radius={[6, 6, 0, 0]} />
@@ -133,10 +116,6 @@ const MarketDashboard = () => {
                         <YAxis dataKey="area" type="category" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} width={90} />
                         <Tooltip
                           formatter={(v: number) => [`${v}%`, "Rental Yield"]}
-                          labelFormatter={(label) => {
-                            const item = data.yieldByArea.find((d) => d.area === label);
-                            return item ? `${label} (Avg Rent: AED ${item.avgRent.toLocaleString()} / Avg Sale: AED ${item.avgSale.toLocaleString()})` : label;
-                          }}
                           contentStyle={{ borderRadius: 12, border: "1px solid hsl(40,15%,88%)", fontSize: 12 }}
                         />
                         <Bar dataKey="yield" fill="hsl(43, 60%, 55%)" radius={[0, 6, 6, 0]} />
@@ -153,7 +132,7 @@ const MarketDashboard = () => {
                         <XAxis dataKey="area" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                         <YAxis tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                         <Tooltip
-                          formatter={(v: number) => [v.toLocaleString(), "Listings"]}
+                          formatter={(v: number) => [v.toLocaleString(), "Properties"]}
                           contentStyle={{ borderRadius: 12, border: "1px solid hsl(40,15%,88%)", fontSize: 12 }}
                         />
                         <Bar dataKey="volume" fill="hsl(168, 80%, 25%)" radius={[6, 6, 0, 0]} />
@@ -175,7 +154,7 @@ const MarketDashboard = () => {
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(v: number, _name: any, props: any) => [`${v}% (${props.payload.count})`, "Share"]}
+                        formatter={(v: number) => [`${v}%`, "Share"]}
                         contentStyle={{ borderRadius: 12, fontSize: 12 }}
                       />
                     </PieChart>
@@ -196,7 +175,7 @@ const MarketDashboard = () => {
             </div>
 
             <p className="text-[11px] text-muted-foreground text-center mt-6">
-              *Data computed from {data.summary.totalListings.toLocaleString()} properties in our database. Updated in real-time.
+              *Based on current market data across Dubai&apos;s key communities.
             </p>
           </>
         )}
@@ -205,17 +184,14 @@ const MarketDashboard = () => {
   );
 };
 
-const StatCard = ({ label, value, sub }: { label: string; value: string; sub?: string }) => (
+const StatCard = ({ label, value }: { label: string; value: string }) => (
   <div className="bg-background rounded-xl p-5 border border-border/50">
     <p className="text-xs text-muted-foreground font-medium mb-1">{label}</p>
     <p className="text-2xl font-bold text-foreground">{value}</p>
-    {sub ? (
-      <p className="text-[10px] text-muted-foreground mt-1">{sub}</p>
-    ) : (
-      <p className="text-xs font-semibold text-primary flex items-center gap-1 mt-1">
-        <TrendingUp className="h-3 w-3" /> Live data
-      </p>
-    )}
+    <p className="text-xs font-semibold text-primary flex items-center gap-1 mt-1">
+      <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12c2-3 5-8 10-3s8 0 10-3" /></svg>
+      Live data
+    </p>
   </div>
 );
 
