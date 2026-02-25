@@ -42,8 +42,8 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {listings.map((l, i) => (
-            <motion.div key={l._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="h-full">
-              <Link href={`/property/${l.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+            <motion.div key={l._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+              <Link href={`/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <img src={l.featuredImage || l.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={l.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -56,7 +56,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                     </span>
                   )}
                 </div>
-                <div className="p-5 flex flex-col flex-1">
+                <div className="p-5">
                   {l.community && (
                     <p className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
                       <MapPin className="h-3 w-3" /> {l.community}{l.city && l.city !== l.community ? `, ${l.city}` : ""}
@@ -68,7 +68,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                     {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} Bath</span>}
                     {l.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                   </div>
-                  <div className="mt-auto border-t border-border pt-3">
+                  <div className="border-t border-border pt-3">
                     <p className="text-sm font-bold text-primary">{formatPrice(l.price, l.currency)}</p>
                   </div>
                 </div>
@@ -76,6 +76,13 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
             </motion.div>
           ))}
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-10">
+          <Link href="/search?status=Secondary" className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:-translate-y-0.5">
+            View All Properties
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
