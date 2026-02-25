@@ -54,8 +54,9 @@ const OffPlanSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="h-full"
               >
-                <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
@@ -68,14 +69,14 @@ const OffPlanSection = () => {
                       {p.status}
                     </span>
                   </div>
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col flex-1">
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2">
                       <Building className="h-3 w-3" /> {p.developerName}
                     </p>
                     <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">
                       {p.name}
                     </h3>
-                    <div className="flex items-center justify-between border-t border-border pt-3">
+                    <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
                       <p className="text-sm font-bold text-primary">From {price}</p>
                       {p.completionDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">

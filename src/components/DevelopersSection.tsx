@@ -61,10 +61,11 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
+                className="h-full"
               >
                 <Link
                   href={`/developers/${dev.slug}`}
-                  className="group flex flex-col items-center bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-xl transition-all duration-500 p-5 sm:p-6 text-center"
+                  className="group flex flex-col h-full items-center bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-xl transition-all duration-500 p-5 sm:p-6 text-center"
                 >
                   <div className="w-14 h-14 sm:w-16 sm:h-16 mb-4 rounded-xl bg-primary/[0.06] flex items-center justify-center overflow-hidden border border-primary/10 group-hover:border-primary/25 group-hover:bg-primary/[0.10] transition-all">
                     {logoUrl ? (

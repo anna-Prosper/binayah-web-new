@@ -4,7 +4,6 @@ import { connectDB } from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Listing from "@/models/Listing";
 
-// Budget string → max price number
 function parseBudget(budget: string): number | null {
   const map: Record<string, number> = {
     "Up to 500K": 500_000,
@@ -29,8 +28,7 @@ function parseBudgetMin(budget: string): number | null {
   return map[budget] || null;
 }
 
-// Build a flexible regex for community matching
-// "JVC / JVT" -> matches "JVC" or "JVT" or "Jumeirah Village Circle" etc.
+// Fuzzy community matching
 function communityRegex(location: string): RegExp {
   const aliases: Record<string, string> = {
     "JVC / JVT": "JVC|JVT|Jumeirah Village Circle|Jumeirah Village Triangle",
@@ -43,6 +41,9 @@ function communityRegex(location: string): RegExp {
     "MBR City": "MBR City|Mohammed Bin Rashid City|Meydan",
     "Dubai South": "Dubai South|Dubai World Central",
     "Al Barari": "Al Barari|Barari",
+    "JBR": "JBR|Jumeirah Beach Residence",
+    "DIFC": "DIFC|Dubai International Financial Centre",
+    "Jumeirah": "Jumeirah(?! Village| Beach)",
   };
   const pattern = aliases[location] || location;
   return new RegExp(pattern, "i");
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(req.url);
 
-  const status = searchParams.get("status") || "";
+  const status = searchParams.get("status") || "";     // "Off-Plan" | "Secondary" | "" (All)
   const type = searchParams.get("type") || "";
   const location = searchParams.get("location") || "";
   const bedroomsStr = searchParams.get("bedrooms") || "";
@@ -76,11 +77,12 @@ export async function GET(req: NextRequest) {
   let projectCount = 0;
   let listingCount = 0;
 
-  const searchOffPlan = status === "" || status === "All" || status === "Off-Plan";
-  const searchReady = status === "" || status === "All" || status === "Ready";
-  const searchRent = status === "" || status === "All" || status === "For Rent";
+  // Off-Plan = Projects collection
+  const searchOffPlan = !status || status === "All" || status === "Off-Plan";
+  // Secondary = Listings collection (both Sale AND Rent)
+  const searchSecondary = !status || status === "All" || status === "Secondary";
 
-  // --- Off-Plan Projects ---
+  // --- OFF-PLAN (Projects) ---
   if (searchOffPlan) {
     const pFilter: Record<string, any> = { publishStatus: "Published" };
 
@@ -122,21 +124,21 @@ export async function GET(req: NextRequest) {
     ]);
   }
 
-  // --- Ready / Secondary (Sale) ---
-  if (searchReady) {
-    const lFilter: Record<string, any> = {
-      publishStatus: "Published",
-      listingType: "Sale",
-    };
+  // --- SECONDARY (Listings — both Sale and Rent) ---
+  if (searchSecondary) {
+    const lFilter: Record<string, any> = { publishStatus: "Published" };
 
     if (type) lFilter.propertyType = { $regex: type, $options: "i" };
     if (location) lFilter.community = { $regex: communityRegex(location) };
+
     if (maxPrice && minPrice !== null) {
       lFilter.price = { $gte: minPrice, $lte: maxPrice };
     } else if (maxPrice) {
       lFilter.price = { $lte: maxPrice };
     }
+
     if (bedNum !== null) lFilter.bedrooms = bedNum;
+
     if (q) {
       lFilter.$or = [
         { title: { $regex: q, $options: "i" } },
@@ -145,7 +147,7 @@ export async function GET(req: NextRequest) {
       ];
     }
 
-    const [readyListings, readyCount] = await Promise.all([
+    [listings, listingCount] = await Promise.all([
       Listing.find(lFilter)
         .select("title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage images")
         .sort({ createdAt: -1 })
@@ -154,46 +156,6 @@ export async function GET(req: NextRequest) {
         .lean(),
       Listing.countDocuments(lFilter),
     ]);
-
-    listings.push(...readyListings);
-    listingCount += readyCount;
-  }
-
-  // --- For Rent ---
-  if (searchRent) {
-    const rFilter: Record<string, any> = {
-      publishStatus: "Published",
-      listingType: "Rent",
-    };
-
-    if (type) rFilter.propertyType = { $regex: type, $options: "i" };
-    if (location) rFilter.community = { $regex: communityRegex(location) };
-    if (maxPrice && minPrice !== null) {
-      rFilter.price = { $gte: minPrice, $lte: maxPrice };
-    } else if (maxPrice) {
-      rFilter.price = { $lte: maxPrice };
-    }
-    if (bedNum !== null) rFilter.bedrooms = bedNum;
-    if (q) {
-      rFilter.$or = [
-        { title: { $regex: q, $options: "i" } },
-        { community: { $regex: q, $options: "i" } },
-        { address: { $regex: q, $options: "i" } },
-      ];
-    }
-
-    const [rentListings, rentCount] = await Promise.all([
-      Listing.find(rFilter)
-        .select("title slug listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage images")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Listing.countDocuments(rFilter),
-    ]);
-
-    listings.push(...rentListings);
-    listingCount += rentCount;
   }
 
   return NextResponse.json(

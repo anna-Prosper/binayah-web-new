@@ -97,8 +97,9 @@ export default function OffPlanPageClient({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: Math.min(i * 0.06, 0.3) }}
+                className="h-full"
               >
-                <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
@@ -111,14 +112,14 @@ export default function OffPlanPageClient({
                       {p.status || "Off-Plan"}
                     </span>
                   </div>
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
                       {p.developerName && <span className="flex items-center gap-1"><Building className="h-3 w-3" /> {p.developerName}</span>}
                       {p.community && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {p.community}</span>}
                     </div>
                     <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">{p.name}</h3>
                     {p.shortOverview && <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{p.shortOverview}</p>}
-                    <div className="flex items-center justify-between border-t border-border pt-3">
+                    <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
                       <p className="text-sm font-bold text-primary">
                         {p.startingPrice ? `From AED ${(p.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}
                       </p>

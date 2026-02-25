@@ -37,8 +37,8 @@ export default function CommunitiesPageClient({ communities }: { communities: Co
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {communities.map((c, i) => (
-              <motion.div key={c._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}>
-                <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
+              <motion.div key={c._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className="h-full">
+                <Link href={`/communities/${c.slug}`} className="group block relative h-full rounded-2xl overflow-hidden aspect-[3/4]">
                   <img src={c.imageGallery?.[0] || c.featuredImage || FALLBACK_IMAGE} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">

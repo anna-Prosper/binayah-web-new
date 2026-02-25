@@ -8,7 +8,7 @@ const heroImage = "/assets/dubai-hero.jpg";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
 
-const statusTabs = ["All", "Off-Plan", "Ready", "For Rent"];
+const statusTabs = ["All", "Off-Plan", "Secondary"];
 const propertyTypes = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"];
 const locations = [
   "Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay",
@@ -62,12 +62,9 @@ function parseSmartSearch(input: string) {
   if (/off[\s-]?plan|new[\s-]?launch|under[\s-]?construction/i.test(lower)) {
     status = "Off-Plan";
     tags.push({ label: "Status", value: "Off-Plan" });
-  } else if (/ready|secondary|completed|handover/i.test(lower)) {
-    status = "Ready";
-    tags.push({ label: "Status", value: "Ready / Secondary" });
-  } else if (/\brent\b|rental/i.test(lower)) {
-    status = "For Rent";
-    tags.push({ label: "Status", value: "For Rent" });
+  } else if (/ready|secondary|completed|handover|resale|\brent\b|rental/i.test(lower)) {
+    status = "Secondary";
+    tags.push({ label: "Status", value: "Secondary" });
   }
 
   // Area
@@ -106,7 +103,7 @@ function parseSmartSearch(input: string) {
 const searchPlaceholders = [
   '"2BR apartment in Marina under 2M"',
   '"Off-plan villa in Dubai Hills"',
-  '"Ready studio in JVC for rent"',
+  '"Secondary apartment in Downtown"',
   '"What\'s the best area to invest?"',
   '"3 bed townhouse in MBR City"',
 ];

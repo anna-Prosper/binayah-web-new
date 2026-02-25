@@ -44,7 +44,7 @@ interface Listing {
   images?: string[];
 }
 
-const statusTabs = ["All", "Off-Plan", "Ready", "For Rent"];
+const statusTabs = ["All", "Off-Plan", "Secondary"];
 const propertyTypes = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"];
 const locations = [
   "Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay",
@@ -179,7 +179,7 @@ function SearchContent() {
                 {tab === "Off-Plan" && projectCount > 0 && (
                   <span className="ml-1.5 text-xs opacity-70">({projectCount})</span>
                 )}
-                {tab === "Ready" && listingCount > 0 && status !== "For Rent" && (
+                {tab === "Secondary" && listingCount > 0 && (
                   <span className="ml-1.5 text-xs opacity-70">({listingCount})</span>
                 )}
               </button>
@@ -303,13 +303,13 @@ function SearchContent() {
                 </div>
               )}
 
-              {/* Listings (Ready / Secondary) */}
+              {/* Secondary Listings */}
               {listings.length > 0 && (
                 <div>
                   {(status === "All" || status === "") && projects.length > 0 && (
                     <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2">
                       <Building className="h-5 w-5 text-primary" />
-                      {(status as string) === "For Rent" ? "Rentals" : "Ready / Secondary"}
+                      {"Secondary Properties"}
                       <span className="text-sm font-normal text-muted-foreground">({listingCount})</span>
                     </h2>
                   )}

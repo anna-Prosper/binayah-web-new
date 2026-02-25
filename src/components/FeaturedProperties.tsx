@@ -55,8 +55,9 @@ const FeaturedProperties = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.5 }}
+                className="h-full"
               >
-                <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
@@ -71,7 +72,7 @@ const FeaturedProperties = () => {
                       {p.status}
                     </span>
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider">
                       <MapPin className="h-3 w-3" />
                       {p.community || p.city}
@@ -90,7 +91,7 @@ const FeaturedProperties = () => {
                         <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4" />{sizeRange}</span>
                       )}
                     </div>
-                    <div className="border-t border-border pt-4 flex items-center justify-between">
+                    <div className="mt-auto border-t border-border pt-4 flex items-center justify-between">
                       <p className="text-xl font-bold text-primary">{price}</p>
                       <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">
                         Details <ArrowUpRight className="h-3 w-3" />
