@@ -75,11 +75,13 @@ function extractSearchTerms(message: string): { communities: string[]; types: st
   let intent = "general";
   if (/off[\s-]?plan|new launch|under construction/i.test(lower)) intent = "offplan";
   else if (/\brent\b|rental|lease/i.test(lower)) intent = "rent";
-  else if (/\bbuy\b|purchase|sale|invest/i.test(lower)) intent = "buy";
-  else if (/yield|roi|return|investment/i.test(lower)) intent = "investment";
+  else if (/\bbuy\b|purchase|sale|invest|investment/i.test(lower)) intent = "buy";
+  else if (/yield|roi|return/i.test(lower)) intent = "investment";
   else if (/golden visa|visa/i.test(lower)) intent = "visa";
-  else if (/price|cost|how much|affordable|cheap|expensive/i.test(lower)) intent = "pricing";
-  else if (communities.length > 0 || types.length > 0) intent = "search";
+  else if (/price|cost|how much|affordable|cheap|expensive|budget/i.test(lower)) intent = "pricing";
+  else if (communities.length > 0 || types.length > 0 || bedrooms !== null) intent = "search";
+  // If any community or type is mentioned, always search even if another intent is set
+  if (communities.length > 0 && intent === "general") intent = "search";
 
   return { communities, types, bedrooms, priceMax, intent };
 }
@@ -89,7 +91,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
   let context = "";
 
   // Fetch relevant projects
-  if (intent === "offplan" || intent === "search" || intent === "investment" || intent === "pricing" || intent === "visa") {
+  if (intent !== "rent") {
     const pFilter: Record<string, any> = { publishStatus: "Published" };
     if (communities.length > 0) pFilter.community = { $regex: communities.join("|"), $options: "i" };
     if (types.length > 0) pFilter.propertyType = { $regex: types.join("|"), $options: "i" };
@@ -97,7 +99,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
     if (intent === "visa") pFilter.startingPrice = { $gte: 2_000_000 };
 
     const projects = await Project.find(pFilter)
-      .select("name community developerName startingPrice completionDate propertyType bedrooms shortOverview paymentPlan")
+      .select("name slug community developerName startingPrice completionDate propertyType bedrooms shortOverview paymentPlan")
       .sort({ startingPrice: 1 })
       .limit(8)
       .lean();
@@ -105,13 +107,13 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
     if (projects.length > 0) {
       context += "\n\n--- OFF-PLAN PROJECTS IN OUR PORTFOLIO ---\n";
       for (const p of projects as any[]) {
-        context += `• ${p.name} | ${p.community} | By ${p.developerName} | From AED ${(p.startingPrice || 0).toLocaleString()} | ${p.propertyType} | ${p.bedrooms || "Various"} | Handover: ${p.completionDate || "TBA"} | Payment: ${p.paymentPlan || "N/A"}\n`;
+        context += `• ${p.name} | ${p.community} | By ${p.developerName} | From AED ${(p.startingPrice || 0).toLocaleString()} | ${p.propertyType} | ${p.bedrooms || "Various"} | Handover: ${p.completionDate || "TBA"} | Payment: ${p.paymentPlan || "N/A"} | Link: https://binayah.com/project/${p.slug}\n`;
       }
     }
   }
 
   // Fetch relevant listings
-  if (intent === "rent" || intent === "buy" || intent === "search" || intent === "pricing" || intent === "visa") {
+  if (intent !== "offplan") {
     const lFilter: Record<string, any> = { publishStatus: "Published" };
     if (communities.length > 0) lFilter.community = { $regex: communities.join("|"), $options: "i" };
     if (types.length > 0) lFilter.propertyType = { $regex: types.join("|"), $options: "i" };
@@ -122,7 +124,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
     if (intent === "visa") lFilter.price = { $gte: 2_000_000 };
 
     const listings = await Listing.find(lFilter)
-      .select("title community propertyType bedrooms bathrooms size sizeUnit price currency listingType")
+      .select("title slug community propertyType bedrooms bathrooms size sizeUnit price currency listingType")
       .sort({ price: 1 })
       .limit(8)
       .lean();
@@ -130,7 +132,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
     if (listings.length > 0) {
       context += `\n\n--- ${intent === "rent" ? "RENTAL" : "SECONDARY"} LISTINGS ---\n`;
       for (const l of listings as any[]) {
-        context += `• ${l.title} | ${l.community} | ${l.propertyType} | ${l.bedrooms || 0} bed / ${l.bathrooms || 0} bath | ${l.size || "?"} ${l.sizeUnit || "sqft"} | AED ${(l.price || 0).toLocaleString()} ${l.listingType === "Rent" ? "/year" : ""}\n`;
+        context += `• ${l.title} | ${l.community} | ${l.propertyType} | ${l.bedrooms || 0} bed / ${l.bathrooms || 0} bath | ${l.size || "?"} ${l.sizeUnit || "sqft"} | AED ${(l.price || 0).toLocaleString()} ${l.listingType === "Rent" ? "/year" : ""} | Link: https://binayah.com/property/${l.slug}\n`;
       }
     }
   }
@@ -168,8 +170,12 @@ export async function POST(req: NextRequest) {
     }
 
     const systemWithContext = SYSTEM_PROMPT + (dbContext
-      ? `\n\nHere is relevant property data from Binayah's current portfolio to help answer this query:${dbContext}\n\nUse this data to give specific, helpful answers. Reference actual properties when relevant.`
-      : "");
+      ? `\n\nHere is REAL property data from Binayah's current portfolio:${dbContext}\n\nCRITICAL RULES:
+- ONLY reference properties listed above. NEVER invent or hallucinate project names.
+- Include the actual link for each property you mention.
+- If the data above doesn't fully answer the question, say what you found and suggest contacting Binayah for more options.
+- Format property links as markdown: [Property Name](link)`
+      : "\n\nNo matching properties were found in the database for this query. Give helpful general advice about Dubai real estate but do NOT make up specific project names or prices. Suggest contacting Binayah at +971 54 998 8811 for current availability.");
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
