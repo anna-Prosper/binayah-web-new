@@ -160,11 +160,11 @@ const HeroSection = () => {
   };
 
   const handleSearch = () => {
-    // If it's a general question, open AI chat
+    // If it's a general question, open AI chat with the question
     if (isQuestion && smartSearch.trim()) {
-      // Trigger the chat widget
-      const chatBtn = document.querySelector("[data-chat-trigger]") as HTMLButtonElement;
-      if (chatBtn) chatBtn.click();
+      window.dispatchEvent(
+        new CustomEvent("open-ai-chat", { detail: { question: smartSearch.trim() } })
+      );
       return;
     }
 

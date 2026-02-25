@@ -78,10 +78,28 @@ const AIChatWidget = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
+
+  // Listen for external trigger (e.g., hero search "Ask AI")
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      setOpen(true);
+      if (e.detail?.question) {
+        setInput(e.detail.question);
+        // Auto-send after opening
+        setTimeout(() => {
+          const btn = document.getElementById("chat-send-btn");
+          if (btn) btn.click();
+        }, 300);
+      }
+    };
+    window.addEventListener("open-ai-chat" as any, handler);
+    return () => window.removeEventListener("open-ai-chat" as any, handler);
+  }, []);
 
   const send = async () => {
     const text = input.trim();
@@ -124,6 +142,7 @@ const AIChatWidget = () => {
     <>
       {/* Toggle button */}
       <motion.button
+        data-chat-trigger
         onClick={() => setOpen(!open)}
         className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-primary hover:bg-primary/90 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all"
         initial={{ scale: 0 }}
@@ -227,6 +246,7 @@ const AIChatWidget = () => {
                   className="flex-1 bg-secondary/50 border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <button
+                  id="chat-send-btn"
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className="w-10 h-10 bg-primary hover:bg-primary/90 disabled:opacity-50 rounded-xl flex items-center justify-center transition-colors"
