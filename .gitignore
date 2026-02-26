@@ -64,3 +64,5 @@ data-fix-scripts/
 venv/
 __pycache__/
 *.pyc
+src 3/
+.env.example
