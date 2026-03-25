@@ -2,11 +2,14 @@
 
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import AIPulseBanner from "@/components/AIPulseBanner";
+import ValuationBanner from "@/components/ValuationBanner";   // ← NEW (strip after AIPulseBanner)
 import StatsSection from "@/components/StatsSection";
 import FeaturedPropertiesClient from "@/components/FeaturedPropertiesServer";
 import OffPlanSectionClient from "@/components/OffPlanSectionServer";
 import CommunitiesSection from "@/components/CommunitiesSection";
 import PropertyMatcher from "@/components/PropertyMatcher";
+import ValuationEntry from "@/components/ValuationEntry";      // ← NEW (tool section)
 import MarketDashboard from "@/components/MarketDashboard";
 import ROICalculator from "@/components/ROICalculator";
 import DevelopersSection from "@/components/DevelopersSection";
@@ -19,7 +22,6 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
 import ScrollToTop from "@/components/ScrollToTop";
-import AIPulseBanner from "@/components/AIPulseBanner";
 
 interface Props {
   featuredListings: any[];
@@ -34,11 +36,13 @@ export default function HomePageClient({ featuredListings, offPlanProjects, late
       <Navbar />
       <HeroSection />
       <AIPulseBanner />
+      <ValuationBanner />           {/* High-visibility owner prompt, right below the AI bar */}
       <StatsSection />
       <FeaturedPropertiesClient listings={featuredListings} />
       <OffPlanSectionClient projects={offPlanProjects} />
       <CommunitiesSection />
       <PropertyMatcher />
+      <ValuationEntry />             {/* Full tool explainer + mock result + CTA, in the tools zone */}
       <MarketDashboard />
       <ROICalculator />
       <DevelopersSection logos={developerLogos} />
