@@ -333,23 +333,65 @@ interface ParsedValuation {
   size?: string;
 }
 
+// Areas that are predominantly villas/townhouses — used for type inference
+const VILLA_AREAS = new Set([
+  "Palm Jumeirah","Arabian Ranches","Arabian Ranches 2","Arabian Ranches 3",
+  "Villanova (Dubailand)","Mudon","Serena (Dubailand)","The Valley",
+  "Damac Hills","Damac Hills 2 (Akoya Oxygen)","Tilal Al Ghaf",
+  "Jumeirah Golf Estates","Emaar South","Al Furjan","Al Barsha",
+  "Nad Al Sheba","Dubailand","Reem (Arabian Ranches)","Jumeirah Village Triangle (JVT)",
+  "Saadiyat Island","Yas Island",
+]);
+
+// Building name patterns that imply a type
+const BUILDING_TYPE_HINTS: [RegExp, string][] = [
+  [/villa(s)?/i,           "Villa"],
+  [/townhouse(s)?/i,       "Townhouse"],
+  [/penthouse(s)?/i,       "Penthouse"],
+  [/studio/i,              "Studio"],
+  [/tower|residence(s)?|apartment(s)?|flat(s)?|height(s)?|gate|park|view(s)?/i, "Apartment"],
+];
+
+function inferTypeFromContext(buildingName: string, areaName: string): string | undefined {
+  // Check explicit type words in building name first
+  for (const [pattern, type] of BUILDING_TYPE_HINTS) {
+    if (pattern.test(buildingName)) return type;
+  }
+  // Fall back to area-level inference
+  if (VILLA_AREAS.has(areaName)) return "Villa";
+  return undefined;
+}
+
+function resolveCity(area: string): string | undefined {
+  // Search all cities for which one contains this area
+  for (const [city, areas] of Object.entries(LOCATION_DATA)) {
+    if (areas.some((a) => a.area === area)) return city;
+  }
+  return undefined;
+}
+
 function parseValuationSearch(input: string): ParsedValuation {
   const lower = input.toLowerCase().trim();
   const result: ParsedValuation = {};
 
-  // City — check longest matches first
+  // City — explicit keyword match first (longest first)
   const cityEntries = Object.entries(CITY_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
   for (const [kw, val] of cityEntries) {
     if (lower.includes(kw)) { result.city = val; break; }
   }
 
-  // Area — check longest matches first
+  // Area — longest match first
   const areaEntries = Object.entries(AREA_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
   for (const [kw, val] of areaEntries) {
     if (lower.includes(kw)) { result.area = val; break; }
   }
 
-  // Property type
+  // If area found but no city yet, resolve city from area
+  if (result.area && !result.city) {
+    result.city = resolveCity(result.area) ?? "Dubai";
+  }
+
+  // Property type — explicit keyword first
   for (const [kw, val] of Object.entries(VTYPE_KEYWORDS)) {
     if (lower.includes(kw)) { result.type = val; break; }
   }
@@ -364,49 +406,55 @@ function parseValuationSearch(input: string): ParsedValuation {
   const sizeMatch = lower.match(/(\d[\d,]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm)/);
   if (sizeMatch) result.size = sizeMatch[1].replace(/,/g, "") + " sq ft";
 
-  // Building — search known buildings, first in detected area, then across whole city
+  // Building — search known buildings across all cities if no city detected yet
   const cityKey = result.city || "Dubai";
-  const buildingPool = result.area
-    ? getBuildings(cityKey, result.area)
-    : getAreas(cityKey).flatMap((a) => a.buildings);
+  const searchCities = result.city ? [result.city] : Object.keys(LOCATION_DATA);
 
-  // Try exact substring match against known buildings
-  const foundBuilding = buildingPool
-    .sort((a, b) => b.length - a.length) // longest match first
-    .find((b) => lower.includes(b.toLowerCase()));
-  if (foundBuilding) {
-    result.unit = foundBuilding;
-    // If area not yet set, derive it from the matched building
-    if (!result.area) {
-      const matchedArea = getAreas(cityKey).find((a) =>
-        a.buildings.includes(foundBuilding)
-      );
-      if (matchedArea) result.area = matchedArea.area;
-    }
+  const buildAllAreas = (cities: string[]) =>
+    cities.flatMap((c) => getAreas(c).flatMap((a) => a.buildings.map((b) => ({ b, a: a.area, c }))));
+
+  const buildingPool = result.area
+    ? getBuildings(cityKey, result.area).map((b) => ({ b, a: result.area!, c: cityKey }))
+    : buildAllAreas(searchCities);
+
+  // Exact substring match (longest first)
+  const found = buildingPool
+    .sort((x, y) => y.b.length - x.b.length)
+    .find(({ b }) => lower.includes(b.toLowerCase()));
+
+  if (found) {
+    result.unit = found.b;
+    if (!result.area)  result.area = found.a;
+    if (!result.city)  result.city = found.c;
+    // Infer type from building + area if not already set
+    if (!result.type) result.type = inferTypeFromContext(found.b, found.a) ?? undefined;
     return result;
   }
 
-  // No building match — try word-level partial match (e.g. "shoreline" → "Shoreline Apartments")
+  // Word-level partial match
   const words = lower.split(/[\s,\/]+/).filter((w) => w.length > 3);
   for (const word of words) {
     const isKw = [...Object.values(AREA_KEYWORDS), ...Object.values(CITY_KEYWORDS),
                   ...Object.values(VTYPE_KEYWORDS)].some((v) => v.toLowerCase().includes(word));
     if (isKw) continue;
     const partial = buildingPool
-      .sort((a, b) => b.length - a.length)
-      .find((b) => b.toLowerCase().includes(word));
+      .sort((x, y) => y.b.length - x.b.length)
+      .find(({ b }) => b.toLowerCase().includes(word));
     if (partial) {
-      result.unit = partial;
-      if (!result.area) {
-        const matchedArea = getAreas(cityKey).find((a) => a.buildings.includes(partial));
-        if (matchedArea) result.area = matchedArea.area;
-      }
+      result.unit = partial.b;
+      if (!result.area)  result.area = partial.a;
+      if (!result.city)  result.city = partial.c;
+      if (!result.type) result.type = inferTypeFromContext(partial.b, partial.a) ?? undefined;
       return result;
     }
   }
 
-  // Last fallback: use the raw input (stripped of known keywords) as the unit
-  // so OpenAI can resolve it via web search
+  // Type inference from area alone (even if no building matched)
+  if (!result.type && result.area) {
+    result.type = inferTypeFromContext("", result.area) ?? undefined;
+  }
+
+  // Last fallback: pass raw stripped input as unit for OpenAI to resolve
   const knownValues = new Set([
     ...Object.values(AREA_KEYWORDS).map(v => v.toLowerCase()),
     ...Object.values(CITY_KEYWORDS).map(v => v.toLowerCase()),
@@ -1470,7 +1518,7 @@ const ValuationPage = () => {
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
-                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} blurred={false} />
                 <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#0B3D2E" currency={result.currency} blurred={!unlocked} />
                 <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#1A7A5A" currency={result.currency} blurred={!unlocked} />
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
@@ -1496,7 +1544,7 @@ const ValuationPage = () => {
                     </div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Quick Sale Range</p>
                   </div>
-                  <p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                  <p className="text-xl font-bold">
                     {fmt(result.quickSaleLow, result.currency)} – {fmt(result.quickSaleHigh, result.currency)}
                   </p>
                 </div>
@@ -1535,7 +1583,9 @@ const ValuationPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {result.comparables.map((c, i) => (
+                    {result.comparables.map((c, i) => {
+                      const isFirst = i === 0;
+                      return (
                       <tr key={i} className="border-b border-border/50 last:border-0">
                         <td className="py-3 pr-4">
                           <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
@@ -1544,14 +1594,15 @@ const ValuationPage = () => {
                         </td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.date}</td>
-                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${!unlocked && !isFirst ? "blur-md" : ""}`}>
                           {fmt(c.price, result.currency)}
                         </td>
-                        <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
+                        <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${!unlocked && !isFirst ? "blur-sm" : ""}`}>
                           {c.reason}
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
