@@ -182,7 +182,7 @@ const ValuationPage = () => {
       notes: form.notes,
     };
 
-    const endpoint = process.env.NEXT_PUBLIC_VALUATION_API_URL ?? "/api/valuation/stream";
+    const endpoint = "/api/valuation/stream";
 
     try {
       const res = await fetch(endpoint, {
