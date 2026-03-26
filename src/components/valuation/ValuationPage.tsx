@@ -6,7 +6,7 @@ import {
   Building2, BedDouble, MapPin, Ruler, Target, User, Phone, Mail,
   Sparkles, ArrowLeft, Copy, Check, ChevronRight,
   TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall,
-  RefreshCw, Search,
+  RefreshCw, Search, Lock, Unlock,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -16,129 +16,266 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
-// ─── Building suggestions ─────────────────────────────────────────────────────
-// Popular Dubai buildings and communities for autocomplete
+// ─── Location data  (City → Area → Buildings) ───────────────────────────────
 
-const BUILDING_SUGGESTIONS = [
-  // Downtown Dubai
-  "Burj Khalifa, Downtown Dubai",
-  "The Address Downtown, Downtown Dubai",
-  "Fountain Views 1, Downtown Dubai",
-  "Fountain Views 2, Downtown Dubai",
-  "Fountain Views 3, Downtown Dubai",
-  "Opera Grand, Downtown Dubai",
-  "Bellevue Tower 1, Downtown Dubai",
-  "Bellevue Tower 2, Downtown Dubai",
-  "Il Primo, Downtown Dubai",
-  "Vida Residences, Downtown Dubai",
-  "Act One | Act Two, Downtown Dubai",
-  "29 Boulevard, Downtown Dubai",
-  "Standpoint Tower A, Downtown Dubai",
-  "Standpoint Tower B, Downtown Dubai",
-  // Dubai Marina
-  "Marina Gate 1, Dubai Marina",
-  "Marina Gate 2, Dubai Marina",
-  "Marina Gate 3, Dubai Marina",
-  "Cayan Tower, Dubai Marina",
-  "Infinity Tower, Dubai Marina",
-  "Princess Tower, Dubai Marina",
-  "Elite Residence, Dubai Marina",
-  "Marina Crown, Dubai Marina",
-  "Silverene Tower A, Dubai Marina",
-  "Silverene Tower B, Dubai Marina",
-  "The Torch, Dubai Marina",
-  "Sulafa Tower, Dubai Marina",
-  "Marina Heights, Dubai Marina",
-  "Botanica Tower, Dubai Marina",
-  "Jumeirah Living Marina Gate, Dubai Marina",
-  // JBR
-  "Murjan 1, JBR",
-  "Sadaf 1, JBR",
-  "Rimal 1, JBR",
-  "Bahar 1, JBR",
-  "1 JBR, Jumeirah Beach Residence",
-  // Palm Jumeirah
-  "Shoreline Apartments, Palm Jumeirah",
-  "The 8, Palm Jumeirah",
-  "Tiara Residences, Palm Jumeirah",
-  "Oceana Atlantic, Palm Jumeirah",
-  "Signature Villas, Palm Jumeirah",
-  "Garden Homes, Palm Jumeirah",
-  "One Palm, Palm Jumeirah",
-  "Palme Couture Residences, Palm Jumeirah",
-  // Business Bay
-  "Executive Towers, Business Bay",
-  "Damac Paramount, Business Bay",
-  "Churchill Residency, Business Bay",
-  "Bay's Edge, Business Bay",
-  "Merano Tower, Business Bay",
-  "Nobles Tower, Business Bay",
-  // DIFC
-  "Index Tower, DIFC",
-  "Central Park Tower, DIFC",
-  "Park Towers, DIFC",
-  "Liberty House, DIFC",
-  // JVC
-  "Belgravia 1, JVC",
-  "Belgravia 2, JVC",
-  "Seasons Community, JVC",
-  "Park Lane, JVC",
-  "Bloom Heights, JVC",
-  // Dubai Hills
-  "Park Heights 1, Dubai Hills Estate",
-  "Park Heights 2, Dubai Hills Estate",
-  "Mulberry 1, Dubai Hills Estate",
-  "Mulberry 2, Dubai Hills Estate",
-  "Acacia, Dubai Hills Estate",
-  "Maple 1, Dubai Hills Estate",
-  // MBR City / Creek Harbour
-  "Creekside 18, Dubai Creek Harbour",
-  "Harbour Views 1, Dubai Creek Harbour",
-  "Harbour Views 2, Dubai Creek Harbour",
-  "Island Park 1, Dubai Creek Harbour",
-  "Address Harbour Point, Dubai Creek Harbour",
-  // Arabian Ranches
-  "Palmera 1, Arabian Ranches",
-  "Mirador, Arabian Ranches",
-  "Saheel, Arabian Ranches",
-  // City Walk
-  "Central Park at City Walk, Al Wasl",
-  "Eaton Place, JLT",
-  // JLT
-  "Goldcrest Views 1, JLT",
-  "Goldcrest Views 2, JLT",
-  "Platinum Tower, JLT",
-  "HDS Tower, JLT",
-  "Saba Tower 1, JLT",
-  // Sports City
-  "Elite Sports Residence 1, Dubai Sports City",
-  "Golf Tower 1, Dubai Sports City",
-  // Motor City
-  "Green Lakes Tower 1, JLT",
-  // Abu Dhabi
-  "The Gate Tower, Al Reem Island",
-  "Sun Tower, Al Reem Island",
-  "Sky Tower, Al Reem Island",
-  "Corniche Residence, Corniche Road Abu Dhabi",
-  "Saadiyat Beach Residences, Saadiyat Island",
-];
+type AreaData = { area: string; buildings: string[] };
+type CityData = Record<string, AreaData[]>;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+const LOCATION_DATA: CityData = {
+  Dubai: [
+    { area: "Downtown Dubai", buildings: [
+        "Burj Khalifa","The Address Downtown","Fountain Views 1","Fountain Views 2","Fountain Views 3",
+        "Opera Grand","Bellevue Tower 1","Bellevue Tower 2","Il Primo","Vida Residences Downtown",
+        "Act One | Act Two","29 Boulevard","Standpoint Tower A","Standpoint Tower B",
+        "The Lofts West","The Lofts East","8 Boulevard Walk","Boulevard Point","Claren Tower 1",
+        "Claren Tower 2","South Ridge 1","South Ridge 2","The Address Residence Fountain Views",
+        "Grande","St Regis Residences",
+    ]},
+    { area: "Dubai Marina", buildings: [
+        "Marina Gate 1","Marina Gate 2","Marina Gate 3","Cayan Tower","Infinity Tower",
+        "Princess Tower","Elite Residence","Marina Crown","Silverene Tower A","Silverene Tower B",
+        "The Torch","Sulafa Tower","Marina Heights","Botanica Tower","Jumeirah Living Marina Gate",
+        "Sparkle Tower 1","Sparkle Tower 2","Damac Heights","LIV Residence","1/JBR",
+        "Marina Pinnacle","Horizon Tower","Paloma Tower","Al Mesk Tower","Ocean Heights",
+        "Marina View Tower A","Marina View Tower B","Trident Grand Residence",
+    ]},
+    { area: "Jumeirah Beach Residence (JBR)", buildings: [
+        "Murjan 1","Murjan 2","Murjan 3","Murjan 4","Murjan 5","Murjan 6",
+        "Sadaf 1","Sadaf 2","Sadaf 3","Sadaf 4","Sadaf 5","Sadaf 6","Sadaf 7","Sadaf 8",
+        "Rimal 1","Rimal 2","Rimal 3","Rimal 4","Rimal 5","Rimal 6",
+        "Bahar 1","Bahar 2","Bahar 3","Bahar 4","Bahar 5","Bahar 6",
+        "Shams 1","Shams 2","Shams 3","Shams 4","1 JBR",
+    ]},
+    { area: "Palm Jumeirah", buildings: [
+        "Shoreline Apartments Block 1","Shoreline Apartments Block 2","Shoreline Apartments Block 3",
+        "Shoreline Apartments Block 4","Shoreline Apartments Block 5","Shoreline Apartments Block 6",
+        "Shoreline Apartments Block 7","Shoreline Apartments Block 8","Shoreline Apartments Block 9",
+        "Shoreline Apartments Block 10","The 8","Tiara Residences","Oceana Atlantic",
+        "Oceana Aegean","Oceana Baltic","Oceana Pacific","Signature Villas","Garden Homes",
+        "One Palm","Palme Couture Residences","The Palm Tower","Five Palm Jumeirah",
+        "Serenia Residences","Fairmont Residences North","Fairmont Residences South",
+        "Balqis Residence","Kingdom of Sheba","Al Das","Al Msool",
+    ]},
+    { area: "Business Bay", buildings: [
+        "Executive Towers Tower A","Executive Towers Tower B","Executive Towers Tower C",
+        "Executive Towers Tower D","Executive Towers Tower E","Executive Towers Tower F",
+        "Executive Towers Tower G","Damac Paramount Tower Hotel & Residences",
+        "Churchill Residency","Bay's Edge","Merano Tower","Nobles Tower",
+        "Capital Bay Tower A","Capital Bay Tower B","VVIP Residences","Majestine",
+        "SLS Dubai","Aykon City Tower A","Aykon City Tower B","Peninsula One",
+        "Peninsula Two","Peninsula Three","Peninsula Four","The Opus","Noura Tower",
+        "Reva Residences","Sigma Tower 1","Sigma Tower 2",
+    ]},
+    { area: "DIFC", buildings: [
+        "Index Tower","Central Park Tower","Park Towers A","Park Towers B",
+        "Liberty House","Currency House","Burj Daman","Limestone House","Gate Village 1",
+        "Gate Village 2","Gate Village 3","Gate Village 4","Gate Village 5",
+        "Gate Village 6","Gate Village 7","Gate Village 8","Gate Village 10","Gate Village 11",
+    ]},
+    { area: "Jumeirah Village Circle (JVC)", buildings: [
+        "Belgravia 1","Belgravia 2","Belgravia Heights 1","Belgravia Heights 2",
+        "Seasons Community","Park Lane","Bloom Heights 1","Bloom Heights 2",
+        "Ghalia by GGICO","Quality Star","Al Jawhara","Binghatti Terraces",
+        "Oxford Terraces","Green Diamond","Plazzo Residence","The One At Jumeirah Village Circle",
+        "Elite Sports Residence","Golf Views","Noor Townhouses",
+    ]},
+    { area: "Jumeirah Lake Towers (JLT)", buildings: [
+        "Goldcrest Views 1","Goldcrest Views 2","Platinum Tower","HDS Tower",
+        "Saba Tower 1","Saba Tower 2","Saba Tower 3","Lake City Tower","Madina Tower",
+        "V3 Tower","Cluster A – Lake Almas East","Jumeirah Bay Tower X2","Jumeirah Bay Tower X3",
+        "O2 Residence","MBL Residence","Indigo Tower","Bonnington Tower",
+        "Fortune Executive Tower","Swiss Tower","Al Shera Tower",
+    ]},
+    { area: "Dubai Hills Estate", buildings: [
+        "Park Heights 1","Park Heights 2","Mulberry 1","Mulberry 2",
+        "Acacia A","Acacia B","Acacia C","Maple 1","Maple 2","Maple 3",
+        "Golfville","Golf Suites","Executive Residences 1","Executive Residences 2",
+        "Collective","Collective 2.0","Golf Grand","Vida Residences Dubai Hills",
+        "Address Dubai Hills","Parkside 1","Parkside 2","Parkside 3",
+    ]},
+    { area: "Dubai Creek Harbour", buildings: [
+        "Creekside 18 Tower A","Creekside 18 Tower B","Harbour Views 1","Harbour Views 2",
+        "Island Park 1","Island Park 2","Address Harbour Point Tower 1","Address Harbour Point Tower 2",
+        "Creek Horizon Tower 1","Creek Horizon Tower 2","Creek Gate Tower 1","Creek Gate Tower 2",
+        "Cove Residences","Surf Residences","Lotus Residences","Orchid",
+        "Vida Creek Harbour","Palace Residences",
+    ]},
+    { area: "Arabian Ranches", buildings: [
+        "Palmera 1","Palmera 2","Palmera 3","Palmera 4",
+        "Mirador","Mirador La Coleccion","Saheel 1","Saheel 2","Saheel 3",
+        "Al Reem 1","Al Reem 2","Al Reem 3","Alvorada 1","Alvorada 2",
+        "Alvorada 3","Alvorada 4","Alvorada 5","Rosa","Terra Nova","Hattan",
+    ]},
+    { area: "Arabian Ranches 2", buildings: [
+        "Casa","Palma","La Nova","Yasmin","Rasha","Lila","Rosa","Azalea","Camelia",
+    ]},
+    { area: "Arabian Ranches 3", buildings: [
+        "Sun","Joy","Spring","Caya","Ruba","Bliss","Elie Saab Villas",
+    ]},
+    { area: "Dubai Sports City", buildings: [
+        "Elite Sports Residence 1","Elite Sports Residence 2","Elite Sports Residence 3",
+        "Elite Sports Residence 4","Elite Sports Residence 5","Elite Sports Residence 6",
+        "Elite Sports Residence 7","Elite Sports Residence 8","Elite Sports Residence 9",
+        "Elite Sports Residence 10","Golf Tower 1","Golf Tower 2","Golf Tower 3",
+        "Champions Tower 1","Champions Tower 2","Champions Tower 3","Panorama at The Views",
+    ]},
+    { area: "Al Barsha", buildings: [
+        "Al Barsha 1 Villas","Al Barsha 2 Villas","Al Barsha 3 Villas",
+        "Al Barsha South Villas","Topaz Residences","Al Barsha Heights (Tecom)",
+    ]},
+    { area: "Jumeirah Village Triangle (JVT)", buildings: [
+        "District 1","District 2","District 3","District 4","District 5",
+        "District 6","District 7","District 8","District 9","District 10",
+    ]},
+    { area: "Meydan / MBR City", buildings: [
+        "The Polo Residence","The Polo Townhouses","Sobha Hartland","Residences at District One",
+        "District One Villas","Mohammed Bin Rashid City Villas","Azizi Riviera","Waves",
+        "Azizi Grand","Millennium Binghatti Residences",
+    ]},
+    { area: "Motor City", buildings: [
+        "Unity Tower","Green Lakes Tower 1","Green Lakes Tower 2","Green Lakes Tower 3",
+        "Green Community Villas","Arabian Homes",
+    ]},
+    { area: "International City", buildings: [
+        "England Cluster","France Cluster","Greece Cluster","Italy Cluster","Morocco Cluster",
+        "Persia Cluster","Spain Cluster","China Cluster","Russia Cluster","UAE Cluster",
+    ]},
+    { area: "Al Furjan", buildings: [
+        "Azizi Pearl","Azizi Feirouz","Azizi Yasmin","Masakin Al Furjan","Sumansa Townhouses",
+        "Nakheel Townhouses","Richmond Villas","Quortaj",
+    ]},
+    { area: "Dubai South / Expo City", buildings: [
+        "The Pulse Residences","The Pulse Boulevard","Emaar South Golf Views",
+        "Greenview","Parkside","Pulz by Damac","Urbana","Golf Links",
+    ]},
+    { area: "Al Quoz", buildings: [
+        "Al Quoz 1 Villas","Al Quoz 2 Villas","Al Quoz 3 Villas","Al Quoz Industrial",
+    ]},
+    { area: "The Greens & The Views", buildings: [
+        "The Greens Apartments","The Views – Golf Towers","The Links","Golf Towers",
+        "The Fairways","The Lakes Villas","Al Ghaf","Al Alka","Al Jaz","Al Arta",
+        "Al Samar","Al Dhafra","Al Nakheel","Al Seef",
+    ]},
+    { area: "City Walk", buildings: [
+        "Central Park at City Walk Tower 1","Central Park at City Walk Tower 2",
+        "Central Park at City Walk Tower 3","Central Park at City Walk Tower 4",
+        "Eaton Place","Canopy by Hilton Dubai Al Seef Residences",
+    ]},
+    { area: "Bluewaters Island", buildings: [
+        "Bluewaters Residences 1","Bluewaters Residences 2","Bluewaters Residences 3",
+        "Bluewaters Residences 4","Bluewaters Residences 5","Bluewaters Residences 6",
+        "Bluewaters Residences 7","Bluewaters Residences 8","Bluewaters Residences 9",
+        "Bluewaters Residences 10","Ain Dubai Residences",
+    ]},
+    { area: "Damac Hills", buildings: [
+        "Akoya by Damac Villas","Loreto A","Loreto B","Loreto C","Loreto D",
+        "Golf Horizon A","Golf Horizon B","Golf Promenade","Astoria",
+        "Trump Estates","Golf Vita","Millnaire",
+    ]},
+    { area: "Tilal Al Ghaf", buildings: [
+        "Elan","Serenity Mansions","Plagette 32","Harmony Villas","Aura Gardens",
+        "Lanai Islands","Lagoon Views","Iris","Elysian Mansions",
+    ]},
+  ],
+
+  "Abu Dhabi": [
+    { area: "Al Reem Island", buildings: [
+        "The Gate Tower 1","The Gate Tower 2","The Gate Tower 3","Sun Tower","Sky Tower",
+        "Shams Abu Dhabi","Marina Square","Arc Tower","Mangrove Place","Meera Tower",
+        "SOHO Square","Reem Five","Sigma Tower","Le Grand Chateau","Leaf Tower",
+        "Hydra Avenue","Al Maha Tower","Najmat Abu Dhabi","Pacific Ocean","Tamouh Tower",
+    ]},
+    { area: "Saadiyat Island", buildings: [
+        "Saadiyat Beach Residences","Mamsha Al Saadiyat","Hidd Al Saadiyat",
+        "Louvre Abu Dhabi Residences","Park View","The Collection","Soho Square Residences",
+        "Villa Saadiyat","Saadiyat Beach Villas","Sea Shore Apartments",
+    ]},
+    { area: "Yas Island", buildings: [
+        "Yas Acres","Ansam","Waters Edge","Lea","Noya","Mayan","West Yas","Reflection",
+        "Yas Golf Collection","The Nook","Perla","Noya Luma","Yas Park Views",
+    ]},
+    { area: "Al Raha Beach", buildings: [
+        "Al Raha Lofts","Al Muneera","Al Nada","Al Zeina","Al Bateen Residences",
+        "Al Rahba","Lamar Residences","Al Raha Beach Hotel",
+    ]},
+    { area: "Corniche Road", buildings: [
+        "Corniche Residence","Marina Square","Etihad Towers","The Corniche Towers",
+        "Nation Towers","Al Nahyan Villas","Al Markaziyah",
+    ]},
+    { area: "Al Khalidiyah", buildings: [
+        "Al Khalidiyah Villas","Khalidiyah Palace Rayhaan","Elite Tower",
+    ]},
+    { area: "Al Reef", buildings: [
+        "Al Reef Downtown","Al Reef Villas","Desert Cluster","Arabian Cluster",
+        "Contemporary Cluster","Mediterranean Cluster",
+    ]},
+  ],
+
+  Sharjah: [
+    { area: "Al Majaz", buildings: [
+        "Al Majaz 1","Al Majaz 2","Al Majaz 3","Corniche Tower","Al Ghuwair",
+    ]},
+    { area: "Al Nahda", buildings: [
+        "Sahara Complex","Al Nahda Residences","Pearl Tower Sharjah",
+    ]},
+    { area: "Al Khan", buildings: [
+        "Al Khan Beach Residences","Naseej Tower",
+    ]},
+    { area: "Aljada", buildings: [
+        "Madar","Naseej","Hayyan","Noor","Tiraz","Dhow","Sarab",
+    ]},
+    { area: "Muwaileh", buildings: [
+        "Muwaileh Villas","Nasma Residences","Al Zahia",
+    ]},
+  ],
+
+  Ajman: [
+    { area: "Al Nuaimia", buildings: [
+        "Al Nuaimia Towers","City Towers Ajman","Horizon Towers Ajman",
+    ]},
+    { area: "Emirates City", buildings: [
+        "Lavender Tower","Jasmine Tower","Lilies Tower","Magnolia Tower",
+    ]},
+    { area: "Ajman Corniche", buildings: [
+        "Ajman Pearl Towers","Conqueror Tower",
+    ]},
+  ],
+
+  RAK: [
+    { area: "Al Hamra Village", buildings: [
+        "Al Hamra Village Villas","Royal Breeze Residences","Bayti Homes","Falcon Island",
+    ]},
+    { area: "Mina Al Arab", buildings: [
+        "Gateway Residences","Lagoon Views","Mina Al Arab Townhouses",
+    ]},
+    { area: "Al Marjan Island", buildings: [
+        "Pacific Polynesia","Bab Al Bahr","Rixos Residences","Wynn Al Marjan Island Residences",
+    ]},
+  ],
+};
+
+// Derived helpers
+function getAreas(city: string): AreaData[] {
+  return LOCATION_DATA[city] ?? [];
+}
+
+function getBuildings(city: string, area: string): string[] {
+  return LOCATION_DATA[city]?.find((a) => a.area === area)?.buildings ?? [];
+}
+
+// ─── Types ─// ─── Types ────────────────────────────────────────────────────────────────────
 
 type Step = "form" | "processing" | "results";
 
 interface FormData {
   unit: string;
-  location: string;
+  area: string;
   beds: string;
   baths: string;
   city: string;
   type: string;
   size: string;
   intent: string;
-  name: string;
-  phone: string;
-  email: string;
   notes: string;
 }
 
@@ -146,6 +283,17 @@ interface FieldErrors {
   unit?: string;
   name?: string;
   contact?: string; // covers phone + email together
+}
+
+interface GateData {
+  name: string;
+  phone: string;
+  email: string;
+}
+
+interface GateErrors {
+  name?: string;
+  contact?: string;
 }
 
 interface ValuationResult {
@@ -231,14 +379,6 @@ function validateForm(form: FormData): FieldErrors {
   const errors: FieldErrors = {};
   if (!form.unit.trim() || form.unit.trim().length < 5) {
     errors.unit = "Please enter the building or unit name (at least 5 characters).";
-  }
-  if (!form.name.trim() || form.name.trim().length < 2) {
-    errors.name = "Your name is required.";
-  }
-  const hasPhone = form.phone.trim().length > 5;
-  const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
-  if (!hasPhone && !hasEmail) {
-    errors.contact = "Please provide a phone number or email so we can follow up.";
   }
   return errors;
 }
@@ -358,24 +498,6 @@ async function fetchValuation(payload: object): Promise<ApiResponse> {
   }
 }
 
-// ─── Autocomplete hook ────────────────────────────────────────────────────────
-
-function useBuildingSuggestions(query: string) {
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-
-  useEffect(() => {
-    const q = query.trim().toLowerCase();
-    if (q.length < 2) { setSuggestions([]); return; }
-
-    const matches = BUILDING_SUGGESTIONS.filter((b) =>
-      b.toLowerCase().includes(q)
-    ).slice(0, 6);
-    setSuggestions(matches);
-  }, [query]);
-
-  return suggestions;
-}
-
 // ─── Field error component ────────────────────────────────────────────────────
 
 const FieldError = ({ message }: { message?: string }) =>
@@ -391,8 +513,8 @@ const FieldError = ({ message }: { message?: string }) =>
 const ValuationPage = () => {
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormData>({
-    unit: "", location: "", beds: "", baths: "", city: "Dubai",
-    type: "", size: "", intent: "", name: "", phone: "", email: "", notes: "",
+    unit: "", area: "", beds: "", baths: "", city: "Dubai",
+    type: "", size: "", intent: "", notes: "",
   });
   const [result, setResult] = useState<ValuationResult | null>(null);
   const [activeProcessStep, setActiveProcessStep] = useState(0);
@@ -401,12 +523,17 @@ const ValuationPage = () => {
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
+  const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
+  const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
+  const [gateErrors, setGateErrors] = useState<GateErrors>({});
+  const [gateSubmitting, setGateSubmitting] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
   const unitInputRef = useRef<HTMLInputElement>(null);
-  const suggestionsRef = useRef<HTMLDivElement>(null);
+  const areaSuggestionsRef = useRef<HTMLDivElement>(null);
+  const buildingSuggestionsRef = useRef<HTMLDivElement>(null);
 
-  const suggestions = useBuildingSuggestions(form.unit);
 
   const updateField = useCallback((key: keyof FormData, val: string) => {
     setForm((f) => ({ ...f, [key]: val }));
@@ -419,31 +546,21 @@ const ValuationPage = () => {
           if (val.trim().length >= 5) delete next.unit;
           else next.unit = "Please enter the building or unit name (at least 5 characters).";
         }
-        if (key === "name") {
-          if (val.trim().length >= 2) delete next.name;
-          else next.name = "Your name is required.";
-        }
-        if (key === "phone" || key === "email") {
-          const phone = key === "phone" ? val : form.phone;
-          const email = key === "email" ? val : form.email;
-          const hasPhone = phone.trim().length > 5;
-          const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-          if (hasPhone || hasEmail) delete next.contact;
-          else next.contact = "Please provide a phone number or email so we can follow up.";
-        }
         return next;
       });
     }
-  }, [submitAttempted, form.phone, form.email]);
+  }, [submitAttempted]);
 
   // Close suggestions when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (
-        suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node) &&
-        unitInputRef.current && !unitInputRef.current.contains(e.target as Node)
-      ) {
-        setShowSuggestions(false);
+      const target = e.target as Node;
+      if (areaSuggestionsRef.current && !areaSuggestionsRef.current.contains(target)) {
+        setShowAreaSuggestions(false);
+      }
+      if (buildingSuggestionsRef.current && !buildingSuggestionsRef.current.contains(target) &&
+          unitInputRef.current && !unitInputRef.current.contains(target)) {
+        setShowBuildingSuggestions(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -513,15 +630,15 @@ const ValuationPage = () => {
     // We hook into the stream for phase events separately
     const apiPayload = {
       propertyName: form.unit,
-      location: form.location,
+      location: form.area,
       city: form.city,
       propertyType: form.type,
       bedrooms: form.beds,
       bathrooms: form.baths,
       size: form.size,
-      ownerName: form.name,
-      email: form.email,
-      phone: form.phone,
+      ownerName: gate.name,
+      email: gate.email,
+      phone: gate.phone,
       intent: form.intent,
       notes: form.notes,
     };
@@ -730,76 +847,131 @@ const ValuationPage = () => {
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
-                  {/* Row 1 — Unit (with autocomplete) / Location / City */}
-                  <div className="grid sm:grid-cols-4 gap-4">
-                    <div className="sm:col-span-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
-                        Unit / Building
-                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
-                      </label>
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
-                        <input
-                          ref={unitInputRef}
-                          value={form.unit}
-                          onChange={(e) => { updateField("unit", e.target.value); setShowSuggestions(true); }}
-                          onFocus={() => setShowSuggestions(true)}
-                          onKeyDown={(e) => { if (e.key === "Escape") setShowSuggestions(false); }}
-                          placeholder="Dubai Marina, Marina Gate 2, Unit 2704"
-                          autoComplete="off"
-                          className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
-                            fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
-                          }`}
-                        />
-                        {/* Suggestions dropdown */}
-                        {showSuggestions && suggestions.length > 0 && (
-                          <div ref={suggestionsRef}
-                            className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden">
-                            {suggestions.map((s) => (
-                              <button key={s} type="button"
-                                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  updateField("unit", s);
-                                  // Auto-fill location from suggestion
-                                  const parts = s.split(", ");
-                                  if (parts.length > 1) updateField("location", parts.slice(1).join(", "));
-                                  setShowSuggestions(false);
-                                  unitInputRef.current?.blur();
-                                }}>
-                                <Building2 className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
-                                <span className="text-foreground">{s}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <FieldError message={fieldErrors.unit} />
-                    </div>
 
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Community / Area</label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.location} onChange={(e) => updateField("location", e.target.value)}
-                          placeholder="Dubai Marina" className="pl-10 h-12 bg-background" />
-                      </div>
-                    </div>
+                  {/* Row 1 — City → Area → Building (cascading, Property Finder style) */}
+                  <div className="grid sm:grid-cols-3 gap-4">
 
+                    {/* City */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">City</label>
-                      <Select value={form.city} onValueChange={(v) => updateField("city", v)}>
-                        <SelectTrigger className="h-12 bg-background"><SelectValue /></SelectTrigger>
+                      <Select value={form.city} onValueChange={(v) => {
+                        setForm((f) => ({ ...f, city: v, area: "", unit: "" }));
+                        if (submitAttempted) setFieldErrors((prev) => ({ ...prev, unit: undefined }));
+                      }}>
+                        <SelectTrigger className="h-12 bg-background">
+                          <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            <SelectValue />
+                          </div>
+                        </SelectTrigger>
                         <SelectContent>
-                          {["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "RAK"].map((c) => (
+                          {Object.keys(LOCATION_DATA).map((c) => (
                             <SelectItem key={c} value={c}>{c}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {/* Area / Community — searchable */}
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Area / Community</label>
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
+                        <input
+                          value={form.area}
+                          onChange={(e) => {
+                            setForm((f) => ({ ...f, area: e.target.value, unit: "" }));
+                            setShowAreaSuggestions(true);
+                          }}
+                          onFocus={() => setShowAreaSuggestions(true)}
+                          onKeyDown={(e) => { if (e.key === "Escape") setShowAreaSuggestions(false); }}
+                          placeholder={form.city ? `Search in ${form.city}…` : "Select city first"}
+                          autoComplete="off"
+                          disabled={!form.city}
+                          className="w-full pl-10 h-12 bg-background rounded-xl border border-border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                        {showAreaSuggestions && form.city && (() => {
+                          const q = form.area.trim().toLowerCase();
+                          const matches = getAreas(form.city)
+                            .filter((a) => !q || a.area.toLowerCase().includes(q))
+                            .slice(0, 8);
+                          return matches.length > 0 ? (
+                            <div ref={areaSuggestionsRef}
+                              className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden max-h-56 overflow-y-auto">
+                              {matches.map((a) => (
+                                <button key={a.area} type="button"
+                                  className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    setForm((f) => ({ ...f, area: a.area, unit: "" }));
+                                    setShowAreaSuggestions(false);
+                                  }}>
+                                  <MapPin className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                  <span>{a.area}</span>
+                                  <span className="ml-auto text-[10px] text-muted-foreground/60">{a.buildings.length} buildings</span>
+                                </button>
+                              ))}
+                            </div>
+                          ) : null;
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* Building + Unit — filtered by area */}
+                    <div>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+                        Building / Unit
+                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                      </label>
+                      <div className="relative">
+                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
+                        <input
+                          ref={unitInputRef}
+                          value={form.unit}
+                          onChange={(e) => { updateField("unit", e.target.value); setShowBuildingSuggestions(true); }}
+                          onFocus={() => setShowBuildingSuggestions(true)}
+                          onKeyDown={(e) => { if (e.key === "Escape") setShowBuildingSuggestions(false); }}
+                          placeholder={form.area ? `Building in ${form.area}…` : "e.g. Marina Gate 2, Unit 2704"}
+                          autoComplete="off"
+                          className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
+                            fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+                          }`}
+                        />
+                        {showBuildingSuggestions && (() => {
+                          const q = form.unit.trim().toLowerCase();
+                          const pool = form.city && form.area
+                            ? getBuildings(form.city, form.area)
+                            : form.city
+                            ? getAreas(form.city).flatMap((a) => a.buildings)
+                            : [];
+                          const matches = q.length >= 1
+                            ? pool.filter((b) => b.toLowerCase().includes(q)).slice(0, 7)
+                            : pool.slice(0, 7);
+                          return matches.length > 0 ? (
+                            <div ref={buildingSuggestionsRef}
+                              className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+                              {matches.map((b) => (
+                                <button key={b} type="button"
+                                  className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    updateField("unit", b);
+                                    setShowBuildingSuggestions(false);
+                                    unitInputRef.current?.blur();
+                                  }}>
+                                  <Building2 className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                  <span>{b}</span>
+                                </button>
+                              ))}
+                            </div>
+                          ) : null;
+                        })()}
+                      </div>
+                      <FieldError message={fieldErrors.unit} />
+                    </div>
                   </div>
 
-                  {/* Row 2 — Type / Beds / Baths / Size / Intent */}
+                                    {/* Row 2 — Type / Beds / Baths / Size / Intent */}
                   <div className="grid sm:grid-cols-5 gap-4">
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Type</label>
@@ -849,49 +1021,7 @@ const ValuationPage = () => {
                     </div>
                   </div>
 
-                  {/* Row 3 — Name / Phone / Email (all required / at least one contact) */}
-                  <div>
-                    <div className="grid sm:grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
-                          Name
-                          <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
-                        </label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input value={form.name} onChange={(e) => updateField("name", e.target.value)}
-                            placeholder="Your name"
-                            className={`pl-10 h-12 bg-background ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
-                        </div>
-                        <FieldError message={fieldErrors.name} />
-                      </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
-                          Phone
-                          <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or email</span>
-                        </label>
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input value={form.phone} onChange={(e) => updateField("phone", e.target.value)}
-                            placeholder="+971 50 000 0000"
-                            className={`pl-10 h-12 bg-background ${fieldErrors.contact ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
-                          Email
-                          <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or phone</span>
-                        </label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input value={form.email} onChange={(e) => updateField("email", e.target.value)}
-                            placeholder="owner@example.com" type="email"
-                            className={`pl-10 h-12 bg-background ${fieldErrors.contact ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
-                        </div>
-                      </div>
-                    </div>
-                    <FieldError message={fieldErrors.contact} />
-                  </div>
+
 
                   {/* Notes */}
                   <div>
@@ -979,7 +1109,7 @@ const ValuationPage = () => {
             className="max-w-4xl mx-auto px-4 sm:px-6 py-12"
           >
             {/* Back */}
-            <button onClick={() => { setStep("form"); setResult(null); }}
+            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); }}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#0B3D2E]/20 text-sm font-semibold text-[#0B3D2E] hover:bg-[#0B3D2E] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
               <ArrowLeft className="h-4 w-4" /> New Search
             </button>
@@ -1080,6 +1210,55 @@ const ValuationPage = () => {
               </div>
             </div>
 
+            {/* ── Gate card OR gated content ── */}
+            {!unlocked ? (
+              <GateCard
+                gate={gate}
+                gateErrors={gateErrors}
+                gateSubmitting={gateSubmitting}
+                onChange={(field, val) => {
+                  setGate((g) => ({ ...g, [field]: val }));
+                  setGateErrors((prev) => {
+                    const next = { ...prev };
+                    if (field === "name") { if (val.trim().length >= 2) delete next.name; }
+                    if (field === "phone" || field === "email") {
+                      const phone = field === "phone" ? val : gate.phone;
+                      const email = field === "email" ? val : gate.email;
+                      if (phone.trim().length > 5 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) delete next.contact;
+                    }
+                    return next;
+                  });
+                }}
+                onUnlock={async () => {
+                  const errs: GateErrors = {};
+                  if (!gate.name.trim() || gate.name.trim().length < 2) errs.name = "Your name is required.";
+                  const hasPhone = gate.phone.trim().length > 5;
+                  const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
+                  if (!hasPhone && !hasEmail) errs.contact = "Please add a phone or email so we can follow up.";
+                  if (Object.keys(errs).length) { setGateErrors(errs); return; }
+                  setGateSubmitting(true);
+                  // Fire-and-forget: send lead with contact info
+                  fetch("/api/leads", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      name: gate.name, phone: gate.phone, email: gate.email,
+                      source_page: "valuation", community: form.unit,
+                      emirate: form.city, interest_type: form.intent || "valuation",
+                      calculator_inputs: { ...form, ...gate },
+                    }),
+                  }).catch(() => {});
+                  await new Promise((r) => setTimeout(r, 400));
+                  setGateSubmitting(false);
+                  setUnlocked(true);
+                }}
+              />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
             {/* Comparables */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
@@ -1166,6 +1345,8 @@ const ValuationPage = () => {
                 ))}
               </ul>
             </div>
+              </motion.div>
+            )}
 
             {/* CTA */}
             <div className="rounded-3xl p-10 sm:p-14 text-center mb-12 relative overflow-hidden border border-border/30"
@@ -1208,6 +1389,145 @@ const ValuationPage = () => {
     </div>
   );
 };
+
+
+// ─── GateCard ─────────────────────────────────────────────────────────────────
+
+const GateCard = ({
+  gate, gateErrors, gateSubmitting, onChange, onUnlock,
+}: {
+  gate: GateData;
+  gateErrors: GateErrors;
+  gateSubmitting: boolean;
+  onChange: (field: keyof GateData, val: string) => void;
+  onUnlock: () => void;
+}) => (
+  <div className="mb-8">
+    {/* Blurred preview of locked sections */}
+    <div className="relative rounded-2xl overflow-hidden mb-0">
+      <div className="pointer-events-none select-none blur-sm opacity-60 space-y-4">
+        {/* Fake comparable rows */}
+        <div className="rounded-2xl border border-border/50 bg-card p-8 shadow-sm">
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center">
+              <Building2 className="h-4 w-4 text-white" />
+            </div>
+            <h3 className="text-xl font-bold">Comparable evidence</h3>
+          </div>
+          <div className="space-y-3">
+            {[1,2,3].map((n) => (
+              <div key={n} className="h-10 bg-muted/60 rounded-xl" />
+            ))}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border/50 bg-card p-8 shadow-sm">
+          <div className="h-5 w-32 bg-muted/60 rounded mb-3" />
+          <div className="space-y-2">
+            <div className="h-3 bg-muted/40 rounded w-full" />
+            <div className="h-3 bg-muted/40 rounded w-5/6" />
+            <div className="h-3 bg-muted/40 rounded w-4/6" />
+          </div>
+        </div>
+      </div>
+      {/* Gradient overlay */}
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to top, hsl(var(--background)) 60%, transparent)" }} />
+    </div>
+
+    {/* Unlock card */}
+    <div className="rounded-2xl border-2 border-[#0B3D2E]/20 bg-card p-8 shadow-lg relative overflow-hidden -mt-2">
+      {/* Gold top line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px]"
+        style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
+
+      <div className="flex items-center gap-3 mb-2">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
+          <Lock className="h-4.5 w-4.5 text-white" />
+        </div>
+        <div>
+          <h3 className="font-bold text-foreground text-lg leading-tight">Unlock the full report</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">Comparables, market read, and strategy — free</p>
+        </div>
+      </div>
+
+      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+        Enter your name and a contact so our team can follow up with tailored advice.
+        No spam — just one call or message if you want it.
+      </p>
+
+      <div className="grid sm:grid-cols-3 gap-4 mb-4">
+        {/* Name */}
+        <div>
+          <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+            Name
+            <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+          </label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input value={gate.name} onChange={(e) => onChange("name", e.target.value)}
+              placeholder="Your name" autoComplete="name"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
+                gateErrors.name ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              }`} />
+          </div>
+          {gateErrors.name && (
+            <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+              <AlertTriangle className="h-3 w-3 flex-shrink-0" />{gateErrors.name}
+            </p>
+          )}
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+            Phone
+            <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or email</span>
+          </label>
+          <div className="relative">
+            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input value={gate.phone} onChange={(e) => onChange("phone", e.target.value)}
+              placeholder="+971 50 000 0000" autoComplete="tel"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
+                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              }`} />
+          </div>
+        </div>
+
+        {/* Email */}
+        <div>
+          <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+            Email
+            <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or phone</span>
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input value={gate.email} onChange={(e) => onChange("email", e.target.value)}
+              placeholder="owner@example.com" type="email" autoComplete="email"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
+                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              }`} />
+          </div>
+        </div>
+      </div>
+
+      {gateErrors.contact && (
+        <p className="text-xs text-destructive mb-4 flex items-center gap-1">
+          <AlertTriangle className="h-3 w-3 flex-shrink-0" />{gateErrors.contact}
+        </p>
+      )}
+
+      <button onClick={onUnlock} disabled={gateSubmitting}
+        className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:opacity-70 disabled:cursor-wait"
+        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
+        {gateSubmitting ? (
+          <><RefreshCw className="h-4 w-4 animate-spin" /> Unlocking…</>
+        ) : (
+          <><Unlock className="h-4 w-4" /> See full report</>
+        )}
+      </button>
+    </div>
+  </div>
+);
 
 // ─── PriceBar ─────────────────────────────────────────────────────────────────
 
