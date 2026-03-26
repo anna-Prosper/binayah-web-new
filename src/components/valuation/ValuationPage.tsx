@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2, BedDouble, MapPin, Ruler, Target, User, Phone, Mail,
   Sparkles, ArrowLeft, Copy, Check, ChevronRight,
   TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall,
+  RefreshCw, Search,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -14,6 +15,113 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+
+// ─── Building suggestions ─────────────────────────────────────────────────────
+// Popular Dubai buildings and communities for autocomplete
+
+const BUILDING_SUGGESTIONS = [
+  // Downtown Dubai
+  "Burj Khalifa, Downtown Dubai",
+  "The Address Downtown, Downtown Dubai",
+  "Fountain Views 1, Downtown Dubai",
+  "Fountain Views 2, Downtown Dubai",
+  "Fountain Views 3, Downtown Dubai",
+  "Opera Grand, Downtown Dubai",
+  "Bellevue Tower 1, Downtown Dubai",
+  "Bellevue Tower 2, Downtown Dubai",
+  "Il Primo, Downtown Dubai",
+  "Vida Residences, Downtown Dubai",
+  "Act One | Act Two, Downtown Dubai",
+  "29 Boulevard, Downtown Dubai",
+  "Standpoint Tower A, Downtown Dubai",
+  "Standpoint Tower B, Downtown Dubai",
+  // Dubai Marina
+  "Marina Gate 1, Dubai Marina",
+  "Marina Gate 2, Dubai Marina",
+  "Marina Gate 3, Dubai Marina",
+  "Cayan Tower, Dubai Marina",
+  "Infinity Tower, Dubai Marina",
+  "Princess Tower, Dubai Marina",
+  "Elite Residence, Dubai Marina",
+  "Marina Crown, Dubai Marina",
+  "Silverene Tower A, Dubai Marina",
+  "Silverene Tower B, Dubai Marina",
+  "The Torch, Dubai Marina",
+  "Sulafa Tower, Dubai Marina",
+  "Marina Heights, Dubai Marina",
+  "Botanica Tower, Dubai Marina",
+  "Jumeirah Living Marina Gate, Dubai Marina",
+  // JBR
+  "Murjan 1, JBR",
+  "Sadaf 1, JBR",
+  "Rimal 1, JBR",
+  "Bahar 1, JBR",
+  "1 JBR, Jumeirah Beach Residence",
+  // Palm Jumeirah
+  "Shoreline Apartments, Palm Jumeirah",
+  "The 8, Palm Jumeirah",
+  "Tiara Residences, Palm Jumeirah",
+  "Oceana Atlantic, Palm Jumeirah",
+  "Signature Villas, Palm Jumeirah",
+  "Garden Homes, Palm Jumeirah",
+  "One Palm, Palm Jumeirah",
+  "Palme Couture Residences, Palm Jumeirah",
+  // Business Bay
+  "Executive Towers, Business Bay",
+  "Damac Paramount, Business Bay",
+  "Churchill Residency, Business Bay",
+  "Bay's Edge, Business Bay",
+  "Merano Tower, Business Bay",
+  "Nobles Tower, Business Bay",
+  // DIFC
+  "Index Tower, DIFC",
+  "Central Park Tower, DIFC",
+  "Park Towers, DIFC",
+  "Liberty House, DIFC",
+  // JVC
+  "Belgravia 1, JVC",
+  "Belgravia 2, JVC",
+  "Seasons Community, JVC",
+  "Park Lane, JVC",
+  "Bloom Heights, JVC",
+  // Dubai Hills
+  "Park Heights 1, Dubai Hills Estate",
+  "Park Heights 2, Dubai Hills Estate",
+  "Mulberry 1, Dubai Hills Estate",
+  "Mulberry 2, Dubai Hills Estate",
+  "Acacia, Dubai Hills Estate",
+  "Maple 1, Dubai Hills Estate",
+  // MBR City / Creek Harbour
+  "Creekside 18, Dubai Creek Harbour",
+  "Harbour Views 1, Dubai Creek Harbour",
+  "Harbour Views 2, Dubai Creek Harbour",
+  "Island Park 1, Dubai Creek Harbour",
+  "Address Harbour Point, Dubai Creek Harbour",
+  // Arabian Ranches
+  "Palmera 1, Arabian Ranches",
+  "Mirador, Arabian Ranches",
+  "Saheel, Arabian Ranches",
+  // City Walk
+  "Central Park at City Walk, Al Wasl",
+  "Eaton Place, JLT",
+  // JLT
+  "Goldcrest Views 1, JLT",
+  "Goldcrest Views 2, JLT",
+  "Platinum Tower, JLT",
+  "HDS Tower, JLT",
+  "Saba Tower 1, JLT",
+  // Sports City
+  "Elite Sports Residence 1, Dubai Sports City",
+  "Golf Tower 1, Dubai Sports City",
+  // Motor City
+  "Green Lakes Tower 1, JLT",
+  // Abu Dhabi
+  "The Gate Tower, Al Reem Island",
+  "Sun Tower, Al Reem Island",
+  "Sky Tower, Al Reem Island",
+  "Corniche Residence, Corniche Road Abu Dhabi",
+  "Saadiyat Beach Residences, Saadiyat Island",
+];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +140,12 @@ interface FormData {
   phone: string;
   email: string;
   notes: string;
+}
+
+interface FieldErrors {
+  unit?: string;
+  name?: string;
+  contact?: string; // covers phone + email together
 }
 
 interface ValuationResult {
@@ -64,7 +178,6 @@ interface ValuationResult {
   sources: { url: string; title: string }[];
 }
 
-// Exact shape of the `data` field in the `final` stream event
 interface ApiResponse {
   leadId: string;
   createdAt: string;
@@ -84,6 +197,26 @@ interface ApiResponse {
   listings: { size: string; date: string; price: number; headline: string; notes: string }[];
 }
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 2500;
+const STREAM_TIMEOUT_MS = 90_000; // 90s
+
+const processingSteps = [
+  { label: "Preparing",         desc: "Validating property details" },
+  { label: "Searching market",  desc: "Reviewing live listings and sales" },
+  { label: "Building estimate", desc: "Turning research into pricing guidance" },
+  { label: "Ready to review",   desc: "Formatting your valuation report" },
+];
+
+const phaseMap: Record<string, number> = {
+  started: 0,
+  searching_web: 1,
+  generating_estimate: 2,
+  final: 3,
+};
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const fmt = (n: number, currency = "AED") =>
@@ -92,6 +225,22 @@ const fmt = (n: number, currency = "AED") =>
 function extractCommunity(unit: string): string {
   if (!unit) return "Your Property";
   return unit.split(",")[0]?.trim() || "Your Property";
+}
+
+function validateForm(form: FormData): FieldErrors {
+  const errors: FieldErrors = {};
+  if (!form.unit.trim() || form.unit.trim().length < 5) {
+    errors.unit = "Please enter the building or unit name (at least 5 characters).";
+  }
+  if (!form.name.trim() || form.name.trim().length < 2) {
+    errors.name = "Your name is required.";
+  }
+  const hasPhone = form.phone.trim().length > 5;
+  const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
+  if (!hasPhone && !hasEmail) {
+    errors.contact = "Please provide a phone number or email so we can follow up.";
+  }
+  return errors;
 }
 
 function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
@@ -150,21 +299,92 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
   };
 }
 
-// ─── Static config ────────────────────────────────────────────────────────────
+// Core streaming fetch — throws on failure, returns ApiResponse on success
+async function fetchValuation(payload: object): Promise<ApiResponse> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), STREAM_TIMEOUT_MS);
 
-const processingSteps = [
-  { label: "Preparing",         desc: "Validating property details" },
-  { label: "Searching market",  desc: "Reviewing live listings and sales" },
-  { label: "Building estimate", desc: "Turning research into pricing guidance" },
-  { label: "Ready to review",   desc: "Formatting your valuation report" },
-];
+  try {
+    const res = await fetch("/api/valuation/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
 
-const phaseMap: Record<string, number> = {
-  started: 0,
-  searching_web: 1,
-  generating_estimate: 2,
-  final: 3,
-};
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      if (res.status === 429) {
+        const retry = errData?.retryAfterSeconds;
+        throw new Error(
+          retry
+            ? `Service at capacity. Retrying in ${retry} seconds…`
+            : (errData?.error ?? "Too many requests.")
+        );
+      }
+      throw new Error(errData?.error ?? `Request failed (${res.status}).`);
+    }
+
+    if (!res.body) throw new Error("Streaming not supported in this browser.");
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let finalData: ApiResponse | null = null;
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        let evt: { event: string; data?: ApiResponse; error?: string };
+        try { evt = JSON.parse(line); } catch { continue; }
+
+        if (evt.event === "error") throw new Error(evt.error ?? "Valuation failed.");
+        if (evt.event === "final" && evt.data) finalData = evt.data;
+      }
+    }
+
+    if (!finalData) throw new Error("Stream ended before a result was returned.");
+    return finalData;
+
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+// ─── Autocomplete hook ────────────────────────────────────────────────────────
+
+function useBuildingSuggestions(query: string) {
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) { setSuggestions([]); return; }
+
+    const matches = BUILDING_SUGGESTIONS.filter((b) =>
+      b.toLowerCase().includes(q)
+    ).slice(0, 6);
+    setSuggestions(matches);
+  }, [query]);
+
+  return suggestions;
+}
+
+// ─── Field error component ────────────────────────────────────────────────────
+
+const FieldError = ({ message }: { message?: string }) =>
+  message ? (
+    <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+      <AlertTriangle className="h-3 w-3 flex-shrink-0" />
+      {message}
+    </p>
+  ) : null;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -177,19 +397,120 @@ const ValuationPage = () => {
   const [result, setResult] = useState<ValuationResult | null>(null);
   const [activeProcessStep, setActiveProcessStep] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [globalError, setGlobalError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
+  const unitInputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  const updateField = (key: keyof FormData, val: string) =>
+  const suggestions = useBuildingSuggestions(form.unit);
+
+  const updateField = useCallback((key: keyof FormData, val: string) => {
     setForm((f) => ({ ...f, [key]: val }));
+
+    // Live validation after first submit attempt
+    if (submitAttempted) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        if (key === "unit") {
+          if (val.trim().length >= 5) delete next.unit;
+          else next.unit = "Please enter the building or unit name (at least 5 characters).";
+        }
+        if (key === "name") {
+          if (val.trim().length >= 2) delete next.name;
+          else next.name = "Your name is required.";
+        }
+        if (key === "phone" || key === "email") {
+          const phone = key === "phone" ? val : form.phone;
+          const email = key === "email" ? val : form.email;
+          const hasPhone = phone.trim().length > 5;
+          const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+          if (hasPhone || hasEmail) delete next.contact;
+          else next.contact = "Please provide a phone number or email so we can follow up.";
+        }
+        return next;
+      });
+    }
+  }, [submitAttempted, form.phone, form.email]);
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node) &&
+        unitInputRef.current && !unitInputRef.current.contains(e.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const runValuation = useCallback(async (payload: object, attempt: number) => {
+    try {
+      const data = await fetchValuation(payload);
+
+      // Update phase to final on success
+      setActiveProcessStep(3);
+      setResult(mapApiToResult(data as ApiResponse, form));
+      setStep("results");
+      topRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      console.error(`[ValuationPage] attempt ${attempt}:`, err);
+
+      // Detect abort = timeout
+      const isTimeout = err instanceof Error && err.name === "AbortError";
+      const isRetryable = isTimeout || (
+        !msg.includes("Too many requests") &&
+        !msg.includes("capacity") &&
+        attempt < MAX_RETRIES
+      );
+
+      if (isRetryable) {
+        const nextAttempt = attempt + 1;
+        setRetryCount(nextAttempt);
+        setActiveProcessStep(0); // reset progress
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+        await runValuation(payload, nextAttempt);
+      } else {
+        setGlobalError(
+          isTimeout
+            ? "The request timed out after multiple attempts. Please try again."
+            : msg
+        );
+        setStep("form");
+        topRef.current?.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [form]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitAttempted(true);
+
+    const errors = validateForm(form);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      // Scroll to first error
+      topRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    setFieldErrors({});
+    setGlobalError(null);
+    setRetryCount(0);
     setStep("processing");
     setActiveProcessStep(0);
-    setError(null);
     topRef.current?.scrollIntoView({ behavior: "smooth" });
 
+    // Kick off stream — phase updates happen inside runValuation via phaseMap
+    // We hook into the stream for phase events separately
     const apiPayload = {
       propertyName: form.unit,
       location: form.location,
@@ -205,11 +526,21 @@ const ValuationPage = () => {
       notes: form.notes,
     };
 
+    // Run with phase tracking
+    await runValuationWithPhases(apiPayload, 1);
+  };
+
+  // Separate function that also tracks phases (keeps runValuation clean for retries)
+  const runValuationWithPhases = async (payload: object, attempt: number) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), STREAM_TIMEOUT_MS);
+
     try {
       const res = await fetch("/api/valuation/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(apiPayload),
+        body: JSON.stringify(payload),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
@@ -219,13 +550,13 @@ const ValuationPage = () => {
           throw new Error(
             retry
               ? `Service at capacity. Please try again in ${retry} seconds.`
-              : (errData?.error ?? "Too many requests. Please try again shortly.")
+              : (errData?.error ?? "Too many requests.")
           );
         }
-        throw new Error(errData?.error ?? "The valuation request failed.");
+        throw new Error(errData?.error ?? `Request failed (${res.status}).`);
       }
 
-      if (!res.body) throw new Error("Streaming is not supported in this browser.");
+      if (!res.body) throw new Error("Streaming not supported in this browser.");
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -258,11 +589,29 @@ const ValuationPage = () => {
       topRef.current?.scrollIntoView({ behavior: "smooth" });
 
     } catch (err) {
+      clearTimeout(timeout);
       const msg = err instanceof Error ? err.message : "Something went wrong.";
-      console.error("[ValuationPage]", err);
-      setError(msg);
-      setStep("form");
-      topRef.current?.scrollIntoView({ behavior: "smooth" });
+      const isTimeout = err instanceof Error && err.name === "AbortError";
+      const isRetryable = (isTimeout || !msg.includes("Too many requests")) && attempt < MAX_RETRIES;
+
+      console.error(`[ValuationPage] attempt ${attempt}:`, err);
+
+      if (isRetryable) {
+        setRetryCount(attempt);
+        setActiveProcessStep(0);
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+        await runValuationWithPhases(payload, attempt + 1);
+      } else {
+        setGlobalError(
+          isTimeout
+            ? "The valuation timed out. Please try again."
+            : msg
+        );
+        setStep("form");
+        topRef.current?.scrollIntoView({ behavior: "smooth" });
+      }
+    } finally {
+      clearTimeout(timeout);
     }
   };
 
@@ -355,11 +704,12 @@ const ValuationPage = () => {
               </div>
             </section>
 
-            {/* Error banner */}
-            {error && (
+            {/* Global error banner */}
+            {globalError && (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-4">
-                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-sm text-destructive font-medium">
-                  {error}
+                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-sm text-destructive font-medium flex items-start gap-3">
+                  <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                  <span>{globalError}</span>
                 </div>
               </div>
             )}
@@ -378,9 +728,9 @@ const ValuationPage = () => {
                 </div>
                 <div className="h-px bg-border/50 my-6" />
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
-                  {/* Row 1 — Unit / Location / City */}
+                  {/* Row 1 — Unit (with autocomplete) / Location / City */}
                   <div className="grid sm:grid-cols-4 gap-4">
                     <div className="sm:col-span-2">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
@@ -388,12 +738,45 @@ const ValuationPage = () => {
                         <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
                       </label>
                       <div className="relative">
-                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.unit} onChange={(e) => updateField("unit", e.target.value)}
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
+                        <input
+                          ref={unitInputRef}
+                          value={form.unit}
+                          onChange={(e) => { updateField("unit", e.target.value); setShowSuggestions(true); }}
+                          onFocus={() => setShowSuggestions(true)}
+                          onKeyDown={(e) => { if (e.key === "Escape") setShowSuggestions(false); }}
                           placeholder="Dubai Marina, Marina Gate 2, Unit 2704"
-                          className="pl-10 h-12 bg-background" required />
+                          autoComplete="off"
+                          className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
+                            fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+                          }`}
+                        />
+                        {/* Suggestions dropdown */}
+                        {showSuggestions && suggestions.length > 0 && (
+                          <div ref={suggestionsRef}
+                            className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden">
+                            {suggestions.map((s) => (
+                              <button key={s} type="button"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  updateField("unit", s);
+                                  // Auto-fill location from suggestion
+                                  const parts = s.split(", ");
+                                  if (parts.length > 1) updateField("location", parts.slice(1).join(", "));
+                                  setShowSuggestions(false);
+                                  unitInputRef.current?.blur();
+                                }}>
+                                <Building2 className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                                <span className="text-foreground">{s}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
+                      <FieldError message={fieldErrors.unit} />
                     </div>
+
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Community / Area</label>
                       <div className="relative">
@@ -402,6 +785,7 @@ const ValuationPage = () => {
                           placeholder="Dubai Marina" className="pl-10 h-12 bg-background" />
                       </div>
                     </div>
+
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">City</label>
                       <Select value={form.city} onValueChange={(v) => updateField("city", v)}>
@@ -465,32 +849,48 @@ const ValuationPage = () => {
                     </div>
                   </div>
 
-                  {/* Row 3 — Name / Phone / Email */}
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Name</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.name} onChange={(e) => updateField("name", e.target.value)}
-                          placeholder="Your name" className="pl-10 h-12 bg-background" />
+                  {/* Row 3 — Name / Phone / Email (all required / at least one contact) */}
+                  <div>
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+                          Name
+                          <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                        </label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input value={form.name} onChange={(e) => updateField("name", e.target.value)}
+                            placeholder="Your name"
+                            className={`pl-10 h-12 bg-background ${fieldErrors.name ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
+                        </div>
+                        <FieldError message={fieldErrors.name} />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+                          Phone
+                          <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or email</span>
+                        </label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input value={form.phone} onChange={(e) => updateField("phone", e.target.value)}
+                            placeholder="+971 50 000 0000"
+                            className={`pl-10 h-12 bg-background ${fieldErrors.contact ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+                          Email
+                          <span className="text-[9px] text-muted-foreground/60 font-normal normal-case tracking-normal">or phone</span>
+                        </label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input value={form.email} onChange={(e) => updateField("email", e.target.value)}
+                            placeholder="owner@example.com" type="email"
+                            className={`pl-10 h-12 bg-background ${fieldErrors.contact ? "border-destructive focus-visible:ring-destructive/20" : ""}`} />
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Phone</label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.phone} onChange={(e) => updateField("phone", e.target.value)}
-                          placeholder="+971 50 000 0000" className="pl-10 h-12 bg-background" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Email</label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.email} onChange={(e) => updateField("email", e.target.value)}
-                          placeholder="owner@example.com" type="email" className="pl-10 h-12 bg-background" />
-                      </div>
-                    </div>
+                    <FieldError message={fieldErrors.contact} />
                   </div>
 
                   {/* Notes */}
@@ -530,6 +930,14 @@ const ValuationPage = () => {
               <h2 className="text-3xl font-bold mb-2">{extractCommunity(form.unit)}</h2>
               <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales, and supporting sources.</p>
               <span className="inline-block px-3 py-1 rounded-full border border-border text-sm font-medium">{form.city}</span>
+
+              {/* Retry notice */}
+              {retryCount > 0 && (
+                <div className="mt-4 flex items-center gap-2 text-sm text-[#D4A847]">
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                  Retrying… attempt {retryCount + 1} of {MAX_RETRIES + 1}
+                </div>
+              )}
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
                 {processingSteps.map((ps, i) => (
