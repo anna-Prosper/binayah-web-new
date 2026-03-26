@@ -292,6 +292,18 @@ const AREA_KEYWORDS: Record<string, string> = {
   corniche: "Corniche Road",
   meydan: "Meydan / MBR City", "mbr city": "Meydan / MBR City",
   "damac hills": "Damac Hills",
+  "damac hills 2": "Damac Hills 2 (Akoya Oxygen)", "akoya oxygen": "Damac Hills 2 (Akoya Oxygen)",
+  villanova: "Villanova (Dubailand)", amaranta: "Villanova (Dubailand)",
+  mudon: "Mudon",
+  serena: "Serena (Dubailand)",
+  "the valley": "The Valley",
+  "emaar south": "Emaar South",
+  "town square": "Town Square",
+  "silicon oasis": "Silicon Oasis",
+  "discovery gardens": "Discovery Gardens",
+  jge: "Jumeirah Golf Estates", "jumeirah golf": "Jumeirah Golf Estates",
+  dubailand: "Dubailand",
+  "nad al sheba": "Nad Al Sheba",
   "dubai south": "Dubai South / Expo City",
   "motor city": "Motor City",
   "sports city": "Dubai Sports City",
@@ -1105,7 +1117,7 @@ const ValuationPage = () => {
                           onChange={(e) => { updateField("unit", e.target.value); setShowBuildingSuggestions(true); }}
                           onFocus={() => setShowBuildingSuggestions(true)}
                           onKeyDown={(e) => { if (e.key === "Escape") setShowBuildingSuggestions(false); }}
-                          placeholder={form.area ? `Building in ${form.area}…` : "e.g. Marina Gate 2, Unit 2704"}
+                          placeholder={form.area ? `Building / cluster in ${form.area}…` : "e.g. Amaranta 2 / Marina Gate 2, Unit 152"}
                           autoComplete="off"
                           className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
                             fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
