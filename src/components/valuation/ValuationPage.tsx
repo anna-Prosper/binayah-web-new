@@ -490,8 +490,8 @@ const phaseMap: Record<string, number> = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const fmt = (n: number, currency = "AED") =>
-  `${currency} ${n.toLocaleString("en-US")}`;
+const fmt = (n: number | null | undefined, currency = "AED") =>
+  n == null ? "—" : `${currency} ${Math.round(n).toLocaleString("en-US")}`;
 
 function extractCommunity(unit: string): string {
   if (!unit) return "Your Property";
@@ -650,6 +650,9 @@ const ValuationPage = () => {
   const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
   const [smartQuery, setSmartQuery] = useState("");
   const [smartParsed, setSmartParsed] = useState<ParsedValuation>({});
+  const [showPlaces, setShowPlaces] = useState(false);
+  const placesRef = useRef<HTMLDivElement>(null);
+  const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
   const [unlocked, setUnlocked] = useState(false);
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
   const [gateErrors, setGateErrors] = useState<GateErrors>({});
@@ -686,6 +689,10 @@ const ValuationPage = () => {
       if (buildingSuggestionsRef.current && !buildingSuggestionsRef.current.contains(target) &&
           unitInputRef.current && !unitInputRef.current.contains(target)) {
         setShowBuildingSuggestions(false);
+      }
+      if (placesRef.current && !placesRef.current.contains(target) &&
+          unitInputRef.current && !unitInputRef.current.contains(target)) {
+        setShowPlaces(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -1103,7 +1110,7 @@ const ValuationPage = () => {
                       </div>
                     </div>
 
-                    {/* Building + Unit — filtered by area */}
+                    {/* Building + Unit — Google Places live search with local fallback */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
                         Building / Unit
@@ -1111,19 +1118,66 @@ const ValuationPage = () => {
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
+                        {placesLoading && (
+                          <RefreshCw className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground animate-spin z-10 pointer-events-none" />
+                        )}
                         <input
                           ref={unitInputRef}
                           value={form.unit}
-                          onChange={(e) => { updateField("unit", e.target.value); setShowBuildingSuggestions(true); }}
-                          onFocus={() => setShowBuildingSuggestions(true)}
-                          onKeyDown={(e) => { if (e.key === "Escape") setShowBuildingSuggestions(false); }}
-                          placeholder={form.area ? `Building / cluster in ${form.area}…` : "e.g. Amaranta 2 / Marina Gate 2, Unit 152"}
+                          onChange={(e) => {
+                            updateField("unit", e.target.value);
+                            setShowBuildingSuggestions(true);
+                            setShowPlaces(true);
+                          }}
+                          onFocus={() => { setShowBuildingSuggestions(true); setShowPlaces(true); }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Escape") { setShowBuildingSuggestions(false); setShowPlaces(false); }
+                          }}
+                          placeholder={form.area ? `Search in ${form.area}…` : "Search any building, community, villa…"}
                           autoComplete="off"
                           className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
                             fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
                           }`}
                         />
-                        {showBuildingSuggestions && (() => {
+
+                        {/* Google Places results — shown when available */}
+                        {showPlaces && placesResults.length > 0 && (
+                          <div ref={placesRef}
+                            className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden max-h-64 overflow-y-auto">
+                            <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 bg-muted/30 border-b border-border/30">
+                              Live results
+                            </p>
+                            {placesResults.map((p) => (
+                              <button key={p.placeId} type="button"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-start gap-2.5 border-b border-border/30 last:border-0"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  // Fill building field with the full description
+                                  updateField("unit", p.building || p.description.split(",")[0].trim());
+                                  // Auto-fill area + city from Places response
+                                  if (p.area)  setForm((f) => ({ ...f, area: p.area }));
+                                  if (p.city && Object.keys(LOCATION_DATA).includes(p.city))
+                                    setForm((f) => ({ ...f, city: p.city }));
+                                  setShowPlaces(false);
+                                  setShowBuildingSuggestions(false);
+                                  unitInputRef.current?.blur();
+                                }}>
+                                <MapPin className="h-3.5 w-3.5 text-[#0B3D2E] flex-shrink-0 mt-0.5" />
+                                <div className="min-w-0">
+                                  <p className="font-medium text-foreground truncate">
+                                    {p.building || p.description.split(",")[0]}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground truncate mt-0.5">
+                                    {[p.area, p.city, "UAE"].filter(Boolean).join(", ")}
+                                  </p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Local fallback — shown when no Places results yet */}
+                        {showBuildingSuggestions && placesResults.length === 0 && !placesLoading && (() => {
                           const q = form.unit.trim().toLowerCase();
                           const pool = form.city && form.area
                             ? getBuildings(form.city, form.area)
@@ -1136,6 +1190,9 @@ const ValuationPage = () => {
                           return matches.length > 0 ? (
                             <div ref={buildingSuggestionsRef}
                               className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-border bg-card shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+                              <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 bg-muted/30 border-b border-border/30">
+                                Suggestions
+                              </p>
                               {matches.map((b) => (
                                 <button key={b} type="button"
                                   className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
@@ -1578,6 +1635,44 @@ const ValuationPage = () => {
   );
 };
 
+
+// ─── Google Places hook ───────────────────────────────────────────────────────
+
+interface PlacePrediction {
+  placeId: string;
+  description: string;
+  building: string;
+  area: string;
+  city: string;
+}
+
+function usePlacesSearch(query: string, enabled: boolean) {
+  const [results, setResults] = useState<PlacePrediction[]>([]);
+  const [loading, setLoading] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!enabled || query.trim().length < 2) { setResults([]); return; }
+
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/places?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setResults(data.predictions ?? []);
+      } catch {
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 300); // debounce 300ms
+
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [query, enabled]);
+
+  return { results, loading };
+}
 
 // ─── SmartTag ────────────────────────────────────────────────────────────────
 
