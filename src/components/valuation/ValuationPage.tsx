@@ -11,7 +11,6 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -263,7 +262,120 @@ function getBuildings(city: string, area: string): string[] {
   return LOCATION_DATA[city]?.find((a) => a.area === area)?.buildings ?? [];
 }
 
-// ─── Types ─// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ─// ─── Smart search parser (valuation context) ─────────────────────────────────
+
+const CITY_KEYWORDS: Record<string, string> = {
+  dubai: "Dubai", "abu dhabi": "Abu Dhabi", abudhabi: "Abu Dhabi",
+  sharjah: "Sharjah", ajman: "Ajman", rak: "RAK",
+  "ras al khaimah": "RAK",
+};
+
+const AREA_KEYWORDS: Record<string, string> = {
+  downtown: "Downtown Dubai", "downtown dubai": "Downtown Dubai",
+  marina: "Dubai Marina", "dubai marina": "Dubai Marina",
+  palm: "Palm Jumeirah", "palm jumeirah": "Palm Jumeirah",
+  jbr: "Jumeirah Beach Residence (JBR)",
+  "business bay": "Business Bay",
+  difc: "DIFC",
+  jvc: "Jumeirah Village Circle (JVC)",
+  jlt: "Jumeirah Lake Towers (JLT)",
+  "dubai hills": "Dubai Hills Estate", hills: "Dubai Hills Estate",
+  creek: "Dubai Creek Harbour", "creek harbour": "Dubai Creek Harbour",
+  bluewaters: "Bluewaters Island",
+  "city walk": "City Walk",
+  "arabian ranches": "Arabian Ranches",
+  "al barsha": "Al Barsha",
+  "al furjan": "Al Furjan",
+  "al reem": "Al Reem Island", "reem island": "Al Reem Island",
+  saadiyat: "Saadiyat Island",
+  yas: "Yas Island",
+  corniche: "Corniche Road",
+  meydan: "Meydan / MBR City", "mbr city": "Meydan / MBR City",
+  "damac hills": "Damac Hills",
+  "dubai south": "Dubai South / Expo City",
+  "motor city": "Motor City",
+  "sports city": "Dubai Sports City",
+  greens: "The Greens & The Views",
+};
+
+const VTYPE_KEYWORDS: Record<string, string> = {
+  apartment: "Apartment", apt: "Apartment", flat: "Apartment",
+  villa: "Villa", townhouse: "Townhouse", penthouse: "Penthouse", studio: "Studio",
+};
+
+const VBED_KEYWORDS: Record<string, string> = {
+  studio: "Studio",
+  "1 bed": "1", "1br": "1", "1 bdr": "1", "1bed": "1", "1 bedroom": "1",
+  "2 bed": "2", "2br": "2", "2 bdr": "2", "2bed": "2", "2 bedroom": "2",
+  "3 bed": "3", "3br": "3", "3 bdr": "3", "3bed": "3", "3 bedroom": "3",
+  "4 bed": "4", "4br": "4", "4bed": "4", "4 bedroom": "4",
+  "5 bed": "5", "5br": "5",
+};
+
+interface ParsedValuation {
+  unit?: string;
+  area?: string;
+  city?: string;
+  type?: string;
+  beds?: string;
+  size?: string;
+}
+
+function parseValuationSearch(input: string): ParsedValuation {
+  const lower = input.toLowerCase().trim();
+  const result: ParsedValuation = {};
+
+  // City — check longest matches first
+  const cityEntries = Object.entries(CITY_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
+  for (const [kw, val] of cityEntries) {
+    if (lower.includes(kw)) { result.city = val; break; }
+  }
+
+  // Area — check longest matches first
+  const areaEntries = Object.entries(AREA_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
+  for (const [kw, val] of areaEntries) {
+    if (lower.includes(kw)) { result.area = val; break; }
+  }
+
+  // Property type
+  for (const [kw, val] of Object.entries(VTYPE_KEYWORDS)) {
+    if (lower.includes(kw)) { result.type = val; break; }
+  }
+
+  // Bedrooms
+  const bedEntries = Object.entries(VBED_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
+  for (const [kw, val] of bedEntries) {
+    if (lower.includes(kw)) { result.beds = val; break; }
+  }
+
+  // Size
+  const sizeMatch = lower.match(/(\d[\d,]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm)/);
+  if (sizeMatch) result.size = sizeMatch[1].replace(/,/g, "") + " sq ft";
+
+  // Building — check known buildings for detected area
+  const cityKey = result.city || "Dubai";
+  if (result.area) {
+    const buildings = getBuildings(cityKey, result.area);
+    const found = buildings.find((b) => lower.includes(b.toLowerCase()));
+    if (found) { result.unit = found; return result; }
+  }
+
+  // Fallback: first comma-separated segment with capitals that isn't a keyword
+  const segments = input.split(/[,\/]/);
+  for (const seg of segments) {
+    const trimmed = seg.trim();
+    if (trimmed.length > 3 && /[A-Z]/.test(trimmed)) {
+      const lc = trimmed.toLowerCase();
+      const isKnown = [...Object.values(AREA_KEYWORDS), ...Object.values(CITY_KEYWORDS),
+                       ...Object.values(VTYPE_KEYWORDS)].some((v) => v.toLowerCase() === lc);
+      if (!isKnown) { result.unit = trimmed; break; }
+    }
+  }
+
+  return result;
+}
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type Step = "form" | "processing" | "results";
 
@@ -276,7 +388,6 @@ interface FormData {
   type: string;
   size: string;
   intent: string;
-  notes: string;
 }
 
 interface FieldErrors {
@@ -514,7 +625,7 @@ const ValuationPage = () => {
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormData>({
     unit: "", area: "", beds: "", baths: "", city: "Dubai",
-    type: "", size: "", intent: "", notes: "",
+    type: "", size: "", intent: "",
   });
   const [result, setResult] = useState<ValuationResult | null>(null);
   const [activeProcessStep, setActiveProcessStep] = useState(0);
@@ -525,6 +636,8 @@ const ValuationPage = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
   const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
+  const [smartQuery, setSmartQuery] = useState("");
+  const [smartParsed, setSmartParsed] = useState<ParsedValuation>({});
   const [unlocked, setUnlocked] = useState(false);
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
   const [gateErrors, setGateErrors] = useState<GateErrors>({});
@@ -640,7 +753,6 @@ const ValuationPage = () => {
       email: gate.email,
       phone: gate.phone,
       intent: form.intent,
-      notes: form.notes,
     };
 
     // Run with phase tracking
@@ -847,21 +959,78 @@ const ValuationPage = () => {
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
+                  {/* Smart search bar */}
+                  <div>
+                    <div className="relative">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none z-10" />
+                      <input
+                        value={smartQuery}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSmartQuery(val);
+                          if (val.trim().length > 2) {
+                            const parsed = parseValuationSearch(val);
+                            setSmartParsed(parsed);
+                            setForm((f) => ({
+                              ...f,
+                              ...(parsed.unit ? { unit: parsed.unit } : {}),
+                              ...(parsed.area ? { area: parsed.area } : {}),
+                              ...(parsed.city ? { city: parsed.city } : {}),
+                              ...(parsed.type ? { type: parsed.type } : {}),
+                              ...(parsed.beds ? { beds: parsed.beds } : {}),
+                              ...(parsed.size ? { size: parsed.size } : {}),
+                            }));
+                          } else if (val.trim().length === 0) {
+                            setSmartParsed({});
+                          }
+                        }}
+                        placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
+                        className="w-full pl-12 pr-16 h-14 bg-background rounded-2xl border-2 border-[#0B3D2E]/20 text-sm focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 transition-all placeholder:text-muted-foreground/50"
+                      />
+                      {smartQuery && (
+                        <button type="button"
+                          onClick={() => { setSmartQuery(""); setSmartParsed({}); }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                    {Object.keys(smartParsed).length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2.5">
+                        {smartParsed.city  && <SmartTag label="City"     value={smartParsed.city} />}
+                        {smartParsed.area  && <SmartTag label="Area"     value={smartParsed.area} />}
+                        {smartParsed.unit  && <SmartTag label="Building" value={smartParsed.unit} />}
+                        {smartParsed.type  && <SmartTag label="Type"     value={smartParsed.type} />}
+                        {smartParsed.beds  && <SmartTag label="Beds"     value={smartParsed.beds} />}
+                        {smartParsed.size  && <SmartTag label="Size"     value={smartParsed.size} />}
+                      </div>
+                    )}
+                    <p className="text-[11px] text-muted-foreground mt-2">
+                      Type to auto-fill, or complete the fields below.
+                    </p>
+                  </div>
 
                   {/* Row 1 — City → Area → Building (cascading, Property Finder style) */}
                   <div className="grid sm:grid-cols-3 gap-4">
 
                     {/* City */}
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">City</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 flex items-center gap-1">
+                        City
+                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                      </label>
                       <Select value={form.city} onValueChange={(v) => {
                         setForm((f) => ({ ...f, city: v, area: "", unit: "" }));
-                        if (submitAttempted) setFieldErrors((prev) => ({ ...prev, unit: undefined }));
+                        if (submitAttempted) setFieldErrors((prev) => {
+                          const next = { ...prev };
+                          delete (next as any).city;
+                          return next;
+                        });
                       }}>
-                        <SelectTrigger className="h-12 bg-background">
+                        <SelectTrigger className={`h-12 bg-background ${(fieldErrors as any).city ? "border-destructive" : ""}`}>
                           <div className="flex items-center gap-2">
                             <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                            <SelectValue />
+                            <SelectValue placeholder="Select city" />
                           </div>
                         </SelectTrigger>
                         <SelectContent>
@@ -870,6 +1039,11 @@ const ValuationPage = () => {
                           ))}
                         </SelectContent>
                       </Select>
+                      {(fieldErrors as any).city && (
+                        <p className="text-xs text-destructive mt-1 flex items-center gap-1">
+                          <AlertTriangle className="h-3 w-3 flex-shrink-0" />{(fieldErrors as any).city}
+                        </p>
+                      )}
                     </div>
 
                     {/* Area / Community — searchable */}
@@ -1023,14 +1197,6 @@ const ValuationPage = () => {
 
 
 
-                  {/* Notes */}
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Notes</label>
-                    <Textarea value={form.notes} onChange={(e) => updateField("notes", e.target.value)}
-                      placeholder="Renovated, vacant, sea view, high floor, upgraded kitchen"
-                      className="bg-background min-h-[100px]" />
-                  </div>
-
                   <div>
                     <button type="submit"
                       className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
@@ -1137,80 +1303,91 @@ const ValuationPage = () => {
               </div>
             </div>
 
-            {/* Fair Value + Confidence */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <div className="rounded-2xl overflow-hidden shadow-sm">
-                <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold mb-2">Fair Value</p>
-                  <p className="text-2xl sm:text-3xl font-bold">
-                    {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
+            {/* ── Price section — numbers blurred until unlocked ── */}
+            <div className="relative">
+
+              {/* Fair Value + Confidence */}
+              <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                <div className="rounded-2xl overflow-hidden shadow-sm">
+                  <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold mb-2">Fair Value</p>
+                    <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                      {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
+                    </p>
+                    <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-2">Confidence</p>
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlertTriangle className={`h-5 w-5 ${
+                      result.confidence === "High" ? "text-[#0B3D2E]"
+                        : result.confidence === "Medium" ? "text-[#D4A847]"
+                        : "text-destructive"
+                    }`} />
+                    <span className={`text-sm font-bold px-3 py-1 rounded-full ${
+                      result.confidence === "High" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]"
+                        : result.confidence === "Medium" ? "bg-[#D4A847]/15 text-[#B8922F]"
+                        : "bg-destructive/10 text-destructive"
+                    }`}>
+                      {result.confidence}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{result.confidenceReason}</p>
+                </div>
+              </div>
+
+              {/* Price bars */}
+              <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+                <div className="flex items-center gap-2.5 mb-6">
+                  <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
+                  <p className="text-sm font-semibold text-foreground">Price Comparison</p>
+                  {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
+                </div>
+                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#0B3D2E" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#1A7A5A" currency={result.currency} blurred={!unlocked} />
+                <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
+              </div>
+
+              {/* Suggested + Quick sale cards */}
+              <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center">
+                      <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]" />
+                    </div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Suggested List Price</p>
+                  </div>
+                  <p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                    {fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}
                   </p>
-                  <p className="text-sm text-white/80 mt-3 leading-relaxed">{result.fairValueExplanation}</p>
                 </div>
-              </div>
-              <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-2">Confidence</p>
-                <div className="flex items-center gap-2 mb-3">
-                  <AlertTriangle className={`h-5 w-5 ${
-                    result.confidence === "High" ? "text-[#0B3D2E]"
-                      : result.confidence === "Medium" ? "text-[#D4A847]"
-                      : "text-destructive"
-                  }`} />
-                  <span className={`text-sm font-bold px-3 py-1 rounded-full ${
-                    result.confidence === "High" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]"
-                      : result.confidence === "Medium" ? "bg-[#D4A847]/15 text-[#B8922F]"
-                      : "bg-destructive/10 text-destructive"
-                  }`}>
-                    {result.confidence}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{result.confidenceReason}</p>
-              </div>
-            </div>
-
-            {/* Copy */}
-            <div className="flex justify-end mb-4">
-              <button onClick={copySummary} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                {copied ? "Copied!" : "Copy summary"}
-              </button>
-            </div>
-
-            {/* Price bars */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
-                <p className="text-sm font-semibold text-foreground">Price Comparison</p>
-              </div>
-              <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} />
-              <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#0B3D2E" currency={result.currency} />
-              <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#1A7A5A" currency={result.currency} />
-              <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
-            </div>
-
-            {/* Suggested + Quick sale cards */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center">
-                    <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]" />
+                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-[#D4A847]/10 flex items-center justify-center">
+                      <TrendingDown className="h-3.5 w-3.5 text-[#D4A847]" />
+                    </div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Quick Sale Range</p>
                   </div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Suggested List Price</p>
+                  <p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                    {fmt(result.quickSaleLow, result.currency)} – {fmt(result.quickSaleHigh, result.currency)}
+                  </p>
                 </div>
-                <p className="text-xl font-bold">{fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}</p>
               </div>
-              <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#D4A847]/10 flex items-center justify-center">
-                    <TrendingDown className="h-3.5 w-3.5 text-[#D4A847]" />
-                  </div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Quick Sale Range</p>
+
+              {/* Copy — only shown when unlocked */}
+              {unlocked && (
+                <div className="flex justify-end mb-4">
+                  <button onClick={copySummary} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    {copied ? "Copied!" : "Copy summary"}
+                  </button>
                 </div>
-                <p className="text-xl font-bold">{fmt(result.quickSaleLow, result.currency)} – {fmt(result.quickSaleHigh, result.currency)}</p>
-              </div>
+              )}
             </div>
 
-            {/* ── Gate card OR gated content ── */}
+            {/* ── Gate card OR gated deep content ── */}
             {!unlocked ? (
               <GateCard
                 gate={gate}
@@ -1237,7 +1414,6 @@ const ValuationPage = () => {
                   if (!hasPhone && !hasEmail) errs.contact = "Please add a phone or email so we can follow up.";
                   if (Object.keys(errs).length) { setGateErrors(errs); return; }
                   setGateSubmitting(true);
-                  // Fire-and-forget: send lead with contact info
                   fetch("/api/leads", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -1391,6 +1567,15 @@ const ValuationPage = () => {
 };
 
 
+// ─── SmartTag ────────────────────────────────────────────────────────────────
+
+const SmartTag = ({ label, value }: { label: string; value: string }) => (
+  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0B3D2E]/8 text-[#0B3D2E] border border-[#0B3D2E]/15">
+    <span className="opacity-50 font-normal">{label}:</span>
+    {value}
+  </span>
+);
+
 // ─── GateCard ─────────────────────────────────────────────────────────────────
 
 const GateCard = ({
@@ -1403,39 +1588,8 @@ const GateCard = ({
   onUnlock: () => void;
 }) => (
   <div className="mb-8">
-    {/* Blurred preview of locked sections */}
-    <div className="relative rounded-2xl overflow-hidden mb-0">
-      <div className="pointer-events-none select-none blur-sm opacity-60 space-y-4">
-        {/* Fake comparable rows */}
-        <div className="rounded-2xl border border-border/50 bg-card p-8 shadow-sm">
-          <div className="flex items-center gap-2.5 mb-4">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center">
-              <Building2 className="h-4 w-4 text-white" />
-            </div>
-            <h3 className="text-xl font-bold">Comparable evidence</h3>
-          </div>
-          <div className="space-y-3">
-            {[1,2,3].map((n) => (
-              <div key={n} className="h-10 bg-muted/60 rounded-xl" />
-            ))}
-          </div>
-        </div>
-        <div className="rounded-2xl border border-border/50 bg-card p-8 shadow-sm">
-          <div className="h-5 w-32 bg-muted/60 rounded mb-3" />
-          <div className="space-y-2">
-            <div className="h-3 bg-muted/40 rounded w-full" />
-            <div className="h-3 bg-muted/40 rounded w-5/6" />
-            <div className="h-3 bg-muted/40 rounded w-4/6" />
-          </div>
-        </div>
-      </div>
-      {/* Gradient overlay */}
-      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
-        style={{ background: "linear-gradient(to top, hsl(var(--background)) 60%, transparent)" }} />
-    </div>
-
     {/* Unlock card */}
-    <div className="rounded-2xl border-2 border-[#0B3D2E]/20 bg-card p-8 shadow-lg relative overflow-hidden -mt-2">
+    <div className="rounded-2xl border-2 border-[#0B3D2E]/20 bg-card p-8 shadow-lg relative overflow-hidden">
       {/* Gold top line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]"
         style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
@@ -1451,7 +1605,7 @@ const GateCard = ({
       </div>
 
       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-        Enter your name and a contact so our team can follow up with tailored advice.
+        Enter your name and a contact to reveal the exact figures and get the full report.
         No spam — just one call or message if you want it.
       </p>
 
@@ -1532,9 +1686,9 @@ const GateCard = ({
 // ─── PriceBar ─────────────────────────────────────────────────────────────────
 
 const PriceBar = ({
-  label, low, high, min, max, color, currency = "AED",
+  label, low, high, min, max, color, currency = "AED", blurred = false,
 }: {
-  label: string; low: number; high: number; min: number; max: number; color: string; currency?: string;
+  label: string; low: number; high: number; min: number; max: number; color: string; currency?: string; blurred?: boolean;
 }) => {
   const range = max - min || 1;
   const leftPct = ((low - min) / range) * 100;
@@ -1547,7 +1701,7 @@ const PriceBar = ({
         <div className="h-3 rounded-full absolute top-0"
           style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 3)}%`, backgroundColor: color }} />
       </div>
-      <span className="text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap">
+      <span className={`text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none ${blurred ? "blur-md" : ""}`}>
         {fmt(low, currency)} – {fmt(high, currency)}
       </span>
     </div>
