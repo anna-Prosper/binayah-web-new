@@ -1513,8 +1513,52 @@ const ValuationPage = () => {
               )}
             </div>
 
-            {/* ── Gate card OR gated deep content ── */}
-            {!unlocked ? (
+            {/* ── Comparables — price + reasoning blurred until unlocked ── */}
+            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
+                  <Building2 className="h-4 w-4 text-white" />
+                </div>
+                <h3 className="text-xl font-bold">Comparable evidence</h3>
+                {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
+              </div>
+              <p className="text-sm text-muted-foreground mb-6 ml-[46px]">Strongest sales and active listings used in the estimate</p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
+                      <th className="pb-3 pr-4">Type</th>
+                      <th className="pb-3 pr-4">Size</th>
+                      <th className="pb-3 pr-4">Date</th>
+                      <th className="pb-3 pr-4">Price</th>
+                      <th className="pb-3">Why It Matters</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.comparables.map((c, i) => (
+                      <tr key={i} className="border-b border-border/50 last:border-0">
+                        <td className="py-3 pr-4">
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                            c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"
+                          }`}>{c.type}</span>
+                        </td>
+                        <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
+                        <td className="py-3 pr-4 text-muted-foreground">{c.date}</td>
+                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                          {fmt(c.price, result.currency)}
+                        </td>
+                        <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
+                          {c.reason}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* ── Gate card — inline unlock prompt ── */}
+            {!unlocked && (
               <GateCard
                 gate={gate}
                 gateErrors={gateErrors}
@@ -1555,72 +1599,35 @@ const ValuationPage = () => {
                   setUnlocked(true);
                 }}
               />
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-            {/* Comparables */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
-              <div className="flex items-center gap-2.5 mb-1">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
-                  <Building2 className="h-4 w-4 text-white" />
-                </div>
-                <h3 className="text-xl font-bold">Comparable evidence</h3>
-              </div>
-              <p className="text-sm text-muted-foreground mb-6 ml-[46px]">Strongest sales and active listings used in the estimate</p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
-                      <th className="pb-3 pr-4">Type</th>
-                      <th className="pb-3 pr-4">Size</th>
-                      <th className="pb-3 pr-4">Date</th>
-                      <th className="pb-3 pr-4">Price</th>
-                      <th className="pb-3">Why It Matters</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.comparables.map((c, i) => (
-                      <tr key={i} className="border-b border-border/50 last:border-0">
-                        <td className="py-3 pr-4">
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                            c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"
-                          }`}>{c.type}</span>
-                        </td>
-                        <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
-                        <td className="py-3 pr-4 text-muted-foreground">{c.date}</td>
-                        <td className="py-3 pr-4 font-bold">{fmt(c.price, result.currency)}</td>
-                        <td className="py-3 text-muted-foreground max-w-xs">{c.reason}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            )}
 
-            {/* Market read */}
+            {/* ── Market read — body blurred ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
                 <h3 className="text-xl font-bold">Market read</h3>
+                {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
               </div>
-              <p className="text-muted-foreground leading-relaxed">{result.marketRead}</p>
+              <p className={`text-muted-foreground leading-relaxed transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
+                {result.marketRead}
+              </p>
             </div>
 
-            {/* Strategy */}
+            {/* ── Strategy — text + bullets blurred ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-[#0B3D2E]/10 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-[#0B3D2E]" />
                 </div>
                 <h3 className="text-xl font-bold">Recommended strategy</h3>
+                {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
               </div>
-              <p className="text-muted-foreground leading-relaxed mb-4">{result.strategy}</p>
+              <p className={`text-muted-foreground leading-relaxed mb-4 transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
+                {result.strategy}
+              </p>
               <ul className="space-y-2.5">
                 {result.strategyBullets.map((b, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-muted-foreground text-sm">
+                  <li key={i} className={`flex items-start gap-2.5 text-muted-foreground text-sm transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
                     <ChevronRight className="h-4 w-4 mt-0.5 text-[#0B3D2E] flex-shrink-0" />
                     {b}
                   </li>
@@ -1628,7 +1635,7 @@ const ValuationPage = () => {
               </ul>
             </div>
 
-            {/* Moving factors */}
+            {/* ── Moving factors — always visible ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
@@ -1647,8 +1654,6 @@ const ValuationPage = () => {
                 ))}
               </ul>
             </div>
-              </motion.div>
-            )}
 
             {/* CTA */}
             <div className="rounded-3xl p-10 sm:p-14 text-center mb-12 relative overflow-hidden border border-border/30"
