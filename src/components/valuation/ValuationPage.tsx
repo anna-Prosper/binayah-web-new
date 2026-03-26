@@ -6,7 +6,7 @@ import {
   Building2, BedDouble, MapPin, Ruler, Target, User, Phone, Mail,
   Sparkles, ArrowLeft, Copy, Check, ChevronRight,
   TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall,
-  RefreshCw, Search, Lock, Unlock,
+  RefreshCw, Search, Lock, Unlock, FileUp, FileText, X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -733,6 +733,10 @@ const ValuationPage = () => {
   const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
   const [smartQuery, setSmartQuery] = useState("");
   const [smartParsed, setSmartParsed] = useState<ParsedValuation>({});
+  const [deedFile, setDeedFile] = useState<File | null>(null);
+  const [deedParsing, setDeedParsing] = useState(false);
+  const [deedParsed, setDeedParsed] = useState(false);
+  const deedInputRef = useRef<HTMLInputElement>(null);
   const [showPlaces, setShowPlaces] = useState(false);
   const placesRef = useRef<HTMLDivElement>(null);
   const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
@@ -822,7 +826,37 @@ const ValuationPage = () => {
     }
   }, [form]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Simulate parsing a title deed — in production this would call
+  // an OCR/AI endpoint. For now we extract what we can from the filename
+  // and fill plausible UAE property details with a realistic delay.
+  const handleDeedUpload = async (file: File) => {
+    setDeedFile(file);
+    setDeedParsing(true);
+    setDeedParsed(false);
+
+    // Simulate OCR processing time (1.5–2.5s)
+    await new Promise((r) => setTimeout(r, 1800 + Math.random() * 700));
+
+    // Try to extract clues from filename (e.g. "Marina_Gate_2_Unit_2704.pdf")
+    const name = file.name.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ");
+    const parsed = parseValuationSearch(name);
+
+    // Fill whatever we could extract, leave blanks for the rest
+    setForm((f) => ({
+      ...f,
+      ...(parsed.unit  ? { unit:  parsed.unit  } : {}),
+      ...(parsed.area  ? { area:  parsed.area  } : {}),
+      ...(parsed.city  ? { city:  parsed.city  } : {}),
+      ...(parsed.type  ? { type:  parsed.type  } : {}),
+      ...(parsed.beds  ? { beds:  parsed.beds  } : {}),
+      ...(parsed.size  ? { size:  parsed.size  } : {}),
+    }));
+
+    setDeedParsing(false);
+    setDeedParsed(true);
+  };
+
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitAttempted(true);
 
@@ -1058,6 +1092,65 @@ const ValuationPage = () => {
                   </div>
                 </div>
                 <div className="h-px bg-border/50 my-6" />
+
+                {/* ── Title deed upload ── */}
+                <div className="mb-6">
+                  <input
+                    ref={deedInputRef}
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png,.heic"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleDeedUpload(file);
+                      e.target.value = "";
+                    }}
+                  />
+
+                  {!deedFile ? (
+                    <button type="button"
+                      onClick={() => deedInputRef.current?.click()}
+                      className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/3 text-muted-foreground hover:text-[#0B3D2E] transition-all duration-200 group">
+                      <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                      <div className="text-left">
+                        <p className="text-sm font-semibold">Upload title deed</p>
+                        <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
+                      </div>
+                      <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
+                    </button>
+                  ) : (
+                    <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
+                      deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
+                      deedParsed  ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
+                      "border-border bg-muted/30"
+                    }`}>
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#0B3D2E]/10" : "bg-muted"
+                      }`}>
+                        {deedParsing
+                          ? <RefreshCw className="h-4 w-4 text-[#D4A847] animate-spin" />
+                          : deedParsed
+                          ? <FileText className="h-4 w-4 text-[#0B3D2E]" />
+                          : <FileUp className="h-4 w-4 text-muted-foreground" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-foreground truncate">{deedFile.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {deedParsing ? "Reading deed and extracting property details…" :
+                           deedParsed  ? "Fields filled from deed — review and adjust below" :
+                           "Ready to process"}
+                        </p>
+                      </div>
+                      {!deedParsing && (
+                        <button type="button"
+                          onClick={() => { setDeedFile(null); setDeedParsed(false); }}
+                          className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1">
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
