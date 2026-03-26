@@ -364,25 +364,60 @@ function parseValuationSearch(input: string): ParsedValuation {
   const sizeMatch = lower.match(/(\d[\d,]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm)/);
   if (sizeMatch) result.size = sizeMatch[1].replace(/,/g, "") + " sq ft";
 
-  // Building — check known buildings for detected area
+  // Building — search known buildings, first in detected area, then across whole city
   const cityKey = result.city || "Dubai";
-  if (result.area) {
-    const buildings = getBuildings(cityKey, result.area);
-    const found = buildings.find((b) => lower.includes(b.toLowerCase()));
-    if (found) { result.unit = found; return result; }
+  const buildingPool = result.area
+    ? getBuildings(cityKey, result.area)
+    : getAreas(cityKey).flatMap((a) => a.buildings);
+
+  // Try exact substring match against known buildings
+  const foundBuilding = buildingPool
+    .sort((a, b) => b.length - a.length) // longest match first
+    .find((b) => lower.includes(b.toLowerCase()));
+  if (foundBuilding) {
+    result.unit = foundBuilding;
+    // If area not yet set, derive it from the matched building
+    if (!result.area) {
+      const matchedArea = getAreas(cityKey).find((a) =>
+        a.buildings.includes(foundBuilding)
+      );
+      if (matchedArea) result.area = matchedArea.area;
+    }
+    return result;
   }
 
-  // Fallback: first comma-separated segment with capitals that isn't a keyword
-  const segments = input.split(/[,\/]/);
-  for (const seg of segments) {
-    const trimmed = seg.trim();
-    if (trimmed.length > 3 && /[A-Z]/.test(trimmed)) {
-      const lc = trimmed.toLowerCase();
-      const isKnown = [...Object.values(AREA_KEYWORDS), ...Object.values(CITY_KEYWORDS),
-                       ...Object.values(VTYPE_KEYWORDS)].some((v) => v.toLowerCase() === lc);
-      if (!isKnown) { result.unit = trimmed; break; }
+  // No building match — try word-level partial match (e.g. "shoreline" → "Shoreline Apartments")
+  const words = lower.split(/[\s,\/]+/).filter((w) => w.length > 3);
+  for (const word of words) {
+    const isKw = [...Object.values(AREA_KEYWORDS), ...Object.values(CITY_KEYWORDS),
+                  ...Object.values(VTYPE_KEYWORDS)].some((v) => v.toLowerCase().includes(word));
+    if (isKw) continue;
+    const partial = buildingPool
+      .sort((a, b) => b.length - a.length)
+      .find((b) => b.toLowerCase().includes(word));
+    if (partial) {
+      result.unit = partial;
+      if (!result.area) {
+        const matchedArea = getAreas(cityKey).find((a) => a.buildings.includes(partial));
+        if (matchedArea) result.area = matchedArea.area;
+      }
+      return result;
     }
   }
+
+  // Last fallback: use the raw input (stripped of known keywords) as the unit
+  // so OpenAI can resolve it via web search
+  const knownValues = new Set([
+    ...Object.values(AREA_KEYWORDS).map(v => v.toLowerCase()),
+    ...Object.values(CITY_KEYWORDS).map(v => v.toLowerCase()),
+    ...Object.values(VTYPE_KEYWORDS).map(v => v.toLowerCase()),
+  ]);
+  const stripped = input.split(/[,\/]/)
+    .map(s => s.trim())
+    .filter(s => s.length > 2 && !knownValues.has(s.toLowerCase()) &&
+      !/^\d+$/.test(s) && !/^(bed|bath|br|bdr|sqft|sf|sq)$/i.test(s))
+    .join(", ");
+  if (stripped) result.unit = stripped;
 
   return result;
 }
@@ -1001,6 +1036,15 @@ const ValuationPage = () => {
                             }));
                           } else if (val.trim().length === 0) {
                             setSmartParsed({});
+                            setForm((f) => ({
+                              ...f,
+                              unit: "",
+                              area: "",
+                              city: "",
+                              type: "",
+                              beds: "",
+                              size: "",
+                            }));
                           }
                         }}
                         placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
@@ -1008,7 +1052,20 @@ const ValuationPage = () => {
                       />
                       {smartQuery && (
                         <button type="button"
-                          onClick={() => { setSmartQuery(""); setSmartParsed({}); }}
+                          onClick={() => {
+                            setSmartQuery("");
+                            setSmartParsed({});
+                            // Reset only the fields that were auto-filled by smart search
+                            setForm((f) => ({
+                              ...f,
+                              unit: "",
+                              area: "",
+                              city: "",
+                              type: "",
+                              beds: "",
+                              size: "",
+                            }));
+                          }}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
                           Clear
                         </button>
