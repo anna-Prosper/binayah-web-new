@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Home, Key, Building2, Settings } from "lucide-react";
+import { Home, DoorOpen, Building2, Wrench } from "lucide-react";
 
 const offerings = [
   {
@@ -13,7 +13,7 @@ const offerings = [
     color: "#D4A847",
   },
   {
-    icon: Key,
+    icon: DoorOpen,
     title: "Rent Property",
     desc: "Discover exceptional rental homes in prime locations.",
     link: "/communities",
@@ -27,7 +27,7 @@ const offerings = [
     color: "#D4A847",
   },
   {
-    icon: Settings,
+    icon: Wrench,
     title: "Property Management",
     desc: "Complete management solutions to protect and grow your investment.",
     link: "/services",
