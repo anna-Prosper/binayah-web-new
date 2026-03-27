@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronDown, Phone, Menu, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -11,6 +11,7 @@ const navItems = [
   { label: "Developers", href: "/developers", isRoute: true },
   { label: "Communities", href: "/communities", isRoute: true },
   { label: "Services", href: "/services", isRoute: true },
+  { label: "Valuation", href: "/valuation", isRoute: true },
   { label: "News", href: "/news", isRoute: true },
   { label: "About", href: "/about", isRoute: true },
 ];
@@ -19,6 +20,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isSolid = scrolled || pathname !== "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -39,13 +42,13 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+        isSolid
           ? "bg-foreground/95 backdrop-blur-xl shadow-lg"
           : "bg-transparent"
       }`}
     >
       <div className="mx-auto max-w-[1600px] px-6 lg:px-10">
-        <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-20"}`}>
+        <div className={`flex items-center justify-between transition-all duration-300 ${isSolid ? "h-16" : "h-20"}`}>
           {/* Logo - far left */}
           <a href="/" className="flex items-center gap-2 group flex-shrink-0">
             <img src={binayahLogo} alt="Binayah Properties" className="h-10 w-auto brightness-0 invert" />
@@ -53,16 +56,19 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
           {/* Nav links */}
           <div className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => (
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
               <button
                 key={item.label}
                 onClick={() => handleNav(item.href, item.isRoute)}
-                className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                className={`relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium transition-colors uppercase tracking-[0.15em] group whitespace-nowrap ${isActive ? "text-accent" : "text-white/80 hover:text-white"}`}
               >
                 {item.label}
-                <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                <span className={`absolute bottom-0 left-4 right-4 h-[2px] bg-accent transition-transform origin-left ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
               </button>
-            ))}
+              );
+            })}
           </div>
 
           {/* Right actions */}

@@ -42,7 +42,7 @@ const InquirySection = () => {
                 { icon: MapPin, label: "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Rd, Dubai" },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
                     <item.icon className="h-4 w-4 text-primary" />
                   </div>
                   {item.href ? (
@@ -128,7 +128,8 @@ const InquirySection = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-primary/20 text-sm"
+              className="w-full py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:shadow-lg text-white text-sm"
+                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 16px rgba(212,168,71,0.25)" }}
             >
               <Send className="h-4 w-4" />
               Send Inquiry

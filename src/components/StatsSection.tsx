@@ -53,10 +53,14 @@ const StatsSection = () => (
             transition={{ duration: 0.5, delay: i * 0.12 }}
             className="text-center group"
           >
-            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-5 rounded-2xl bg-primary/8 border border-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all duration-300">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-5 rounded-2xl flex items-center justify-center transition-all duration-300"
+              style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.12)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, #0B3D2E, #1A7A5A)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))"; }}>
               <stat.icon className="h-5 w-5 sm:h-7 sm:w-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
             </div>
-            <p className="text-2xl sm:text-5xl font-bold text-foreground mb-1 sm:mb-2">
+            <p className="text-2xl sm:text-5xl font-bold mb-1 sm:mb-2"
+              style={{ background: "linear-gradient(to right, #0B3D2E, #1A7A5A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               {stat.value}
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">{stat.label}</p>

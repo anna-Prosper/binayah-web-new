@@ -78,7 +78,8 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
         </div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-10">
-          <Link href="/search?status=Secondary" className="inline-flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:-translate-y-0.5">
+          <Link href="/search?status=Secondary" className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:-translate-y-0.5 text-white"
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
             View All Properties
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
