@@ -17,7 +17,7 @@ const offerings = [
     title: "Rent Property",
     desc: "Discover exceptional rental homes in prime locations.",
     link: "/communities",
-    color: "#1A7A5A",
+    color: "#D4A847",
   },
   {
     icon: Building2,
@@ -31,7 +31,7 @@ const offerings = [
     title: "Property Management",
     desc: "Complete management solutions to protect and grow your investment.",
     link: "/services",
-    color: "#1A7A5A",
+    color: "#D4A847",
   },
 ];
 
