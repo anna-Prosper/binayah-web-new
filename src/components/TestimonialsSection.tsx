@@ -32,7 +32,7 @@ const TestimonialsSection = () => {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="py-24 bg-foreground text-background relative overflow-hidden">
+    <section className="py-24 text-background relative overflow-hidden" style={{ background: "linear-gradient(160deg, #1A1F2E 0%, #0F1218 60%, #0B3D2E 100%)" }}>
       {/* Background decoration */}
       <div className="absolute top-10 right-10 text-background/5">
         <Quote className="h-64 w-64" />
@@ -69,7 +69,7 @@ const TestimonialsSection = () => {
           >
             <div className="flex justify-center gap-1 mb-6">
               {Array.from({ length: testimonials[active].rating }).map((_, j) => (
-                <Star key={j} className="h-5 w-5 fill-accent text-accent" />
+                <Star key={j} className="h-5 w-5" style={{ fill: "#D4A847", color: "#D4A847" }} />
               ))}
             </div>
             <p className="text-lg sm:text-xl lg:text-2xl font-light leading-relaxed mb-8 text-background/80">
@@ -90,8 +90,9 @@ const TestimonialsSection = () => {
                 key={i}
                 onClick={() => setActive(i)}
                 className={`transition-all duration-300 rounded-full ${
-                  i === active ? "w-10 h-2.5 bg-accent" : "w-2.5 h-2.5 bg-background/20 hover:bg-background/40"
+                  i === active ? "w-10 h-2.5" : "w-2.5 h-2.5 bg-background/20 hover:bg-background/40"
                 }`}
+                style={i === active ? { background: "linear-gradient(90deg, #D4A847, #B8922F)" } : {}}
               />
             ))}
           </div>

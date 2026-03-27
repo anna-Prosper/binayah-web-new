@@ -18,7 +18,7 @@ const NewsletterStrip = () => {
   };
 
   return (
-    <section className="bg-accent py-10">
+    <section className="py-10 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #D4A847 0%, #C49B35 50%, #B8922F 100%)" }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <motion.form
           onSubmit={handleSubmit}
@@ -45,7 +45,7 @@ const NewsletterStrip = () => {
               className="flex-1 bg-accent-foreground/15 border border-accent-foreground/20 rounded-xl px-4 py-3 text-sm text-accent-foreground placeholder:text-accent-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent-foreground/30"
               required
             />
-            <button type="submit" className="bg-foreground hover:bg-foreground/90 text-background px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:-translate-y-0.5 flex-shrink-0">
+            <button type="submit" className="px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:-translate-y-0.5 hover:shadow-lg flex-shrink-0 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               Subscribe
             </button>
           </div>

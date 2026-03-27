@@ -82,7 +82,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             </a>
             <button
               onClick={() => handleNav("/contact", true)}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:shadow-lg hover:shadow-accent/20 hover:-translate-y-0.5 whitespace-nowrap"
+              className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 16px rgba(212,168,71,0.25)" }}
             >
               Get in Touch
             </button>
@@ -129,7 +129,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </a>
                 <button
                   onClick={() => handleNav("/contact", true)}
-                  className="w-full mt-2 bg-accent text-accent-foreground py-3 rounded-lg text-sm font-semibold"
+                  className="w-full mt-2 py-3 rounded-lg text-sm font-semibold text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
                 >
                   Get in Touch
                 </button>

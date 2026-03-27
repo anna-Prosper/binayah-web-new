@@ -324,10 +324,9 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <motion.div
-        className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-24 pb-6 sm:pb-12"
-        style={{ y: textY, opacity }}
-      >
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-24 pb-6 sm:pb-12">
+        {/* Headline fades + moves on scroll */}
+        <motion.div style={{ y: textY, opacity }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -344,7 +343,9 @@ const HeroSection = () => {
           </p>
         </motion.div>
 
-        {/* Search Card */}
+        </motion.div>{/* end headline fade wrapper */}
+
+        {/* Search Card — never fades, always fully opaque */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -589,15 +590,15 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-card rounded-2xl shadow-2xl border border-border z-50 p-5">
-                      <div className="mb-5">
-                        <p className="text-base font-bold text-foreground mb-3">Bedrooms</p>
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-50 p-4">
+                      <div className="mb-4">
+                        <p className="text-sm font-bold text-foreground mb-2.5">Bedrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bedroomOptions.map((b) => (
                             <button
                               key={b}
                               onMouseDown={(e) => { e.preventDefault(); setSelBedroom(selBedroom === b ? "" : b); }}
-                              className={`w-11 h-11 rounded-xl text-sm font-medium border-2 transition-all ${
+                              className={`min-w-[36px] h-9 px-2.5 rounded-lg text-xs font-medium border transition-all ${
                                 selBedroom === b
                                   ? "border-primary bg-primary text-primary-foreground"
                                   : "border-border bg-secondary/50 text-foreground hover:border-primary/40"
@@ -609,13 +610,13 @@ const HeroSection = () => {
                         </div>
                       </div>
                       <div>
-                        <p className="text-base font-bold text-foreground mb-3">Bathrooms</p>
+                        <p className="text-sm font-bold text-foreground mb-2.5">Bathrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bathroomOptions.map((b) => (
                             <button
                               key={b}
                               onMouseDown={(e) => { e.preventDefault(); setSelBathroom(selBathroom === b ? "" : b); }}
-                              className={`w-11 h-11 rounded-xl text-sm font-medium border-2 transition-all ${
+                              className={`min-w-[36px] h-9 px-2.5 rounded-lg text-xs font-medium border transition-all ${
                                 selBathroom === b
                                   ? "border-primary bg-primary text-primary-foreground"
                                   : "border-border bg-secondary/50 text-foreground hover:border-primary/40"
@@ -675,7 +676,7 @@ const HeroSection = () => {
             </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div

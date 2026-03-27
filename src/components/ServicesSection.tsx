@@ -13,7 +13,7 @@ const services = [
 ];
 
 const ServicesSection = () => (
-  <section id="services" className="py-14 sm:py-24 bg-primary text-primary-foreground relative overflow-hidden scroll-mt-20">
+  <section id="services" className="py-14 sm:py-24 text-primary-foreground relative overflow-hidden scroll-mt-20" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #0D4A36 50%, #1A7A5A 100%)" }}>
     {/* Background pattern */}
     <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
 
@@ -51,7 +51,7 @@ const ServicesSection = () => (
             transition={{ delay: i * 0.08 }}
             className="group bg-primary-foreground/5 hover:bg-primary-foreground/10 border border-primary-foreground/10 rounded-2xl p-6 transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300" style={{ background: "rgba(212,168,71,0.15)" }}>
               <s.icon className="h-5 w-5 text-accent group-hover:text-accent-foreground transition-colors" />
             </div>
             <h3 className="font-bold text-lg mb-2">

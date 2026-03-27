@@ -6,6 +6,7 @@ import AIPulseBanner from "@/components/AIPulseBanner";
 import ValuationStrip from "@/components/ValuationStrip";
 import StatsSection from "@/components/StatsSection";
 import WhatWeOffer from "@/components/WhatWeOffer";
+import CryptoBanner from "@/components/CryptoBanner";
 import FeaturedPropertiesClient from "@/components/FeaturedPropertiesServer";
 import OffPlanSectionClient from "@/components/OffPlanSectionServer";
 import CommunitiesSection from "@/components/CommunitiesSection";
@@ -41,6 +42,7 @@ export default function HomePageClient({ featuredListings, offPlanProjects, late
       <StatsSection />
       <WhatWeOffer />
       <FeaturedPropertiesClient listings={featuredListings} />
+      <CryptoBanner />
       <OffPlanSectionClient projects={offPlanProjects} />
       <CommunitiesSection />
       <PropertyMatcher />
