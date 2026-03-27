@@ -1109,8 +1109,11 @@ const ValuationPage = () => {
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
   const [gateErrors, setGateErrors] = useState<GateErrors>({});
   const [gateSubmitting, setGateSubmitting] = useState(false);
+  const [unlockHighlight, setUnlockHighlight] = useState(false);
   const [turnstileState, setTurnstileState] = useState<"idle" | "verifying" | "ready" | "error">("idle");
   const topRef = useRef<HTMLDivElement>(null);
+  const unlockSectionRef = useRef<HTMLDivElement>(null);
+  const unlockHighlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const unitInputRef = useRef<HTMLInputElement>(null);
   const areaSuggestionsRef = useRef<HTMLDivElement>(null);
   const buildingSuggestionsRef = useRef<HTMLDivElement>(null);
@@ -1166,10 +1169,30 @@ const ValuationPage = () => {
 
     return () => {
       cancelled = true;
+      if (unlockHighlightTimeoutRef.current) {
+        clearTimeout(unlockHighlightTimeoutRef.current);
+      }
       rejectPendingTurnstileRequest("Security verification was interrupted.");
       removeTurnstileWidget();
     };
   }, []);
+
+  const scrollToUnlockSection = useCallback(() => {
+    if (unlocked) {
+      return;
+    }
+
+    unlockSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setUnlockHighlight(true);
+
+    if (unlockHighlightTimeoutRef.current) {
+      clearTimeout(unlockHighlightTimeoutRef.current);
+    }
+
+    unlockHighlightTimeoutRef.current = setTimeout(() => {
+      setUnlockHighlight(false);
+    }, 1800);
+  }, [unlocked]);
 
   const runValuation = useCallback(async (payload: object, attempt: number) => {
     try {
@@ -2145,7 +2168,19 @@ const ValuationPage = () => {
             <div className="relative">
               {/* Fair Value + Confidence */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-2xl overflow-hidden shadow-sm">
+                <div
+                  aria-label={showLockedFairValuePreview ? "Unlock the full report to reveal fair value" : undefined}
+                  className={`rounded-2xl overflow-hidden shadow-sm ${showLockedFairValuePreview ? "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5" : ""}`}
+                  onClick={showLockedFairValuePreview ? scrollToUnlockSection : undefined}
+                  onKeyDown={showLockedFairValuePreview ? (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      scrollToUnlockSection();
+                    }
+                  } : undefined}
+                  role={showLockedFairValuePreview ? "button" : undefined}
+                  tabIndex={showLockedFairValuePreview ? 0 : undefined}
+                >
                   <div className="relative overflow-hidden bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
                     <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 42%), radial-gradient(circle at bottom left, rgba(255,255,255,0.12), transparent 46%)" }} />
                     <div className="relative">
@@ -2204,7 +2239,16 @@ const ValuationPage = () => {
                 <div className="flex items-center gap-2.5 mb-6">
                   <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
-                  {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
+                  {!unlocked && (
+                    <button
+                      aria-label="Unlock the full report"
+                      className="ml-auto inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+                      onClick={scrollToUnlockSection}
+                      type="button"
+                    >
+                      <Lock className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
                 <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
                   <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} fixedWidthPct={null} />
@@ -2216,7 +2260,19 @@ const ValuationPage = () => {
 
               {/* Suggested + Quick sale cards */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                <div
+                  aria-label={!unlocked && result.accessState === "preview" ? "Unlock the full report to reveal suggested list price" : undefined}
+                  className={`rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm ${!unlocked && result.accessState === "preview" ? "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5" : ""}`}
+                  onClick={!unlocked && result.accessState === "preview" ? scrollToUnlockSection : undefined}
+                  onKeyDown={!unlocked && result.accessState === "preview" ? (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      scrollToUnlockSection();
+                    }
+                  } : undefined}
+                  role={!unlocked && result.accessState === "preview" ? "button" : undefined}
+                  tabIndex={!unlocked && result.accessState === "preview" ? 0 : undefined}
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center">
                       <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]" />
@@ -2313,70 +2369,73 @@ const ValuationPage = () => {
 
             {/* ── Gate card — inline unlock prompt ── */}
             {!unlocked && (
-              <GateCard
-                gate={gate}
-                gateErrors={gateErrors}
-                gateSubmitting={gateSubmitting}
-                onChange={(field, val) => {
-                  setGate((g) => ({ ...g, [field]: val }));
-                  setGateErrors((prev) => {
-                    const next = { ...prev };
-                    if (field === "name") { if (val.trim().length >= 2) delete next.name; }
-                    if (field === "phone" || field === "email") {
-                      const phone = field === "phone" ? val : gate.phone;
-                      const email = field === "email" ? val : gate.email;
-                      if (phone.trim().length > 5 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) delete next.contact;
-                    }
-                    return next;
-                  });
-                }}
-                onUnlock={async () => {
-                  const errs: GateErrors = {};
-                  if (!gate.name.trim() || gate.name.trim().length < 2) errs.name = "Your name is required.";
-                  const hasPhone = gate.phone.trim().length > 5;
-                  const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
-                  if (!hasPhone && !hasEmail) errs.contact = "Please add a phone or email so we can follow up.";
-                  if (Object.keys(errs).length) { setGateErrors(errs); return; }
-                  if (!result?.leadId) {
-                    setGateErrors({ contact: "The valuation preview is missing. Please run the valuation again." });
-                    return;
-                  }
-
-                  setGateSubmitting(true);
-                  setGlobalError(null);
-
-                  try {
-                    const { turnstileConfig } = await loadValuationConfig();
-                    const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
-                    const response = await fetch("/api/valuation/unlock", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        leadId: result.leadId,
-                        ownerName: gate.name,
-                        phone: gate.phone,
-                        email: gate.email,
-                        ...(turnstileToken ? { turnstileToken } : {}),
-                      }),
+              <div ref={unlockSectionRef}>
+                <GateCard
+                  highlight={unlockHighlight}
+                  gate={gate}
+                  gateErrors={gateErrors}
+                  gateSubmitting={gateSubmitting}
+                  onChange={(field, val) => {
+                    setGate((g) => ({ ...g, [field]: val }));
+                    setGateErrors((prev) => {
+                      const next = { ...prev };
+                      if (field === "name") { if (val.trim().length >= 2) delete next.name; }
+                      if (field === "phone" || field === "email") {
+                        const phone = field === "phone" ? val : gate.phone;
+                        const email = field === "email" ? val : gate.email;
+                        if (phone.trim().length > 5 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) delete next.contact;
+                      }
+                      return next;
                     });
-
-                    const data = await response.json().catch(() => null) as ApiResponse | { error?: string } | null;
-                    if (!response.ok) {
-                      throw new Error((data as { error?: string } | null)?.error || "Could not unlock the full report.");
+                  }}
+                  onUnlock={async () => {
+                    const errs: GateErrors = {};
+                    if (!gate.name.trim() || gate.name.trim().length < 2) errs.name = "Your name is required.";
+                    const hasPhone = gate.phone.trim().length > 5;
+                    const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
+                    if (!hasPhone && !hasEmail) errs.contact = "Please add a phone or email so we can follow up.";
+                    if (Object.keys(errs).length) { setGateErrors(errs); return; }
+                    if (!result?.leadId) {
+                      setGateErrors({ contact: "The valuation preview is missing. Please run the valuation again." });
+                      return;
                     }
 
-                    setResult(mapApiToResult(data as ApiResponse, form));
-                    setUnlocked(true);
-                    setUseDeedResult(false);
-                  } catch (err) {
-                    const msg = err instanceof Error ? err.message : "Could not unlock the full report.";
-                    setGateErrors({ contact: msg });
-                  } finally {
-                    setGateSubmitting(false);
-                    resetTurnstileWidget();
-                  }
-                }}
-              />
+                    setGateSubmitting(true);
+                    setGlobalError(null);
+
+                    try {
+                      const { turnstileConfig } = await loadValuationConfig();
+                      const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+                      const response = await fetch("/api/valuation/unlock", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          leadId: result.leadId,
+                          ownerName: gate.name,
+                          phone: gate.phone,
+                          email: gate.email,
+                          ...(turnstileToken ? { turnstileToken } : {}),
+                        }),
+                      });
+
+                      const data = await response.json().catch(() => null) as ApiResponse | { error?: string } | null;
+                      if (!response.ok) {
+                        throw new Error((data as { error?: string } | null)?.error || "Could not unlock the full report.");
+                      }
+
+                      setResult(mapApiToResult(data as ApiResponse, form));
+                      setUnlocked(true);
+                      setUseDeedResult(false);
+                    } catch (err) {
+                      const msg = err instanceof Error ? err.message : "Could not unlock the full report.";
+                      setGateErrors({ contact: msg });
+                    } finally {
+                      setGateSubmitting(false);
+                      resetTurnstileWidget();
+                    }
+                  }}
+                />
+              </div>
             )}
 
             {/* ── Market read — body blurred ── */}
@@ -2896,17 +2955,22 @@ function stripSizeUnit(value: string): string {
 // ─── GateCard ─────────────────────────────────────────────────────────────────
 
 const GateCard = ({
-  gate, gateErrors, gateSubmitting, onChange, onUnlock,
+  gate, gateErrors, gateSubmitting, highlight = false, onChange, onUnlock,
 }: {
   gate: GateData;
   gateErrors: GateErrors;
   gateSubmitting: boolean;
+  highlight?: boolean;
   onChange: (field: keyof GateData, val: string) => void;
   onUnlock: () => void;
 }) => (
   <div className="mb-8">
     {/* Unlock card */}
-    <div className="rounded-2xl border-2 border-[#0B3D2E]/20 bg-card p-8 shadow-lg relative overflow-hidden">
+    <div className={`rounded-2xl border-2 bg-card p-8 shadow-lg relative overflow-hidden transition-all duration-500 ${
+      highlight
+        ? "border-[#D4A847]/55 shadow-[0_18px_44px_rgba(212,168,71,0.18)] ring-4 ring-[#D4A847]/10"
+        : "border-[#0B3D2E]/20"
+    }`}>
       {/* Gold top line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]"
         style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
