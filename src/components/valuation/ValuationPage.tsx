@@ -478,6 +478,7 @@ interface FormData {
   unit: string;
   area: string;
   beds: string;
+  maids: string;
   city: string;
   type: string;
   size: string;
@@ -598,6 +599,7 @@ interface DocumentExtractionResponse {
     city?: string;
     propertyType?: string;
     bedrooms?: string;
+    maids?: string;
     size?: string;
     ownerName?: string;
     phone?: string;
@@ -691,6 +693,9 @@ const phaseMap: Record<string, number> = {
   generating_estimate: 2,
   final: 3,
 };
+
+const BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4", "5", "6", "7", "7+"];
+const MAIDS_OPTIONS = ["No", "Yes"];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -1129,7 +1134,7 @@ const DEED_DUMMY_RESULT: ValuationResult = {
 const ValuationPage = () => {
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormData>({
-    unit: "", area: "", beds: "", city: "Dubai",
+    unit: "", area: "", beds: "", maids: "No", city: "Dubai",
     type: "", size: "",
   });
   const [result, setResult] = useState<ValuationResult | null>(null);
@@ -1310,6 +1315,7 @@ const ValuationPage = () => {
         ...(inquiry.city ? { city: inquiry.city } : {}),
         ...(inquiry.propertyType ? { type: inquiry.propertyType } : {}),
         ...(inquiry.bedrooms ? { beds: inquiry.bedrooms } : {}),
+        ...(inquiry.maids ? { maids: inquiry.maids } : {}),
         ...(inquiry.size ? { size: inquiry.size } : {}),
       }));
       setGate((current) => ({
@@ -1357,6 +1363,7 @@ const ValuationPage = () => {
         city: form.city,
         propertyType: form.type,
         bedrooms: form.beds,
+        maids: form.maids,
         size: form.size,
         ...(turnstileToken ? { turnstileToken } : {}),
       };
@@ -2055,11 +2062,12 @@ const ValuationPage = () => {
                     </div>
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Beds</label>
-                      <div className="relative">
-                        <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.beds} onChange={(e) => updateField("beds", e.target.value)}
-                          placeholder="2" className="pl-10 h-12 bg-background" />
-                      </div>
+                      <BedroomPicker
+                        maids={form.maids}
+                        onChange={(value) => updateField("beds", value)}
+                        onMaidsChange={(value) => updateField("maids", value)}
+                        value={form.beds}
+                      />
                     </div>
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Size</label>
@@ -2577,6 +2585,161 @@ const SmartTag = ({ label, value }: { label: string; value: string }) => (
     {value}
   </span>
 );
+
+const BedroomPicker = ({
+  maids,
+  onChange,
+  onMaidsChange,
+  value,
+}: {
+  maids: string;
+  onChange: (value: string) => void;
+  onMaidsChange: (value: string) => void;
+  value: string;
+}) => {
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (pickerRef.current && !pickerRef.current.contains(target)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  const handleSelect = (nextValue: string) => {
+    onChange(nextValue);
+    setOpen(false);
+  };
+
+  const handleMaidsSelect = (nextValue: string) => {
+    onMaidsChange(nextValue);
+  };
+
+  const triggerLabel = (() => {
+    if (!value && !maids) {
+      return "Select bedrooms";
+    }
+
+    const bedroomLabel =
+      value === "Studio"
+        ? "Studio"
+        : value
+          ? `${value} bed${value === "1" ? "" : "s"}`
+          : "";
+
+    const maidsLabel = maids === "Yes" ? "maid's room" : "";
+
+    return [bedroomLabel, maidsLabel].filter(Boolean).join(" · ") || "Select bedrooms";
+  })();
+
+  return (
+    <div className="relative" ref={pickerRef}>
+      <button
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        className="flex h-12 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background px-3 text-left text-sm text-foreground transition-colors hover:border-muted-foreground/30"
+        onClick={() => setOpen((current) => !current)}
+        type="button"
+      >
+        <span className={`truncate ${value || maids ? "text-foreground" : "text-muted-foreground"}`}>
+          {triggerLabel}
+        </span>
+        <svg
+          aria-hidden="true"
+          className={`h-4 w-4 flex-none text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 12 8"
+        >
+          <path
+            d="M1 1.5 6 6.5l5-5"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.75"
+          />
+        </svg>
+      </button>
+
+      {open ? (
+        <div className="absolute left-0 top-full z-50 mt-2 w-[min(380px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card p-4 shadow-[0_20px_40px_rgba(15,23,42,0.12)]">
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Bedrooms
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {BEDROOM_OPTIONS.map((option) => {
+                  const selected = value === option;
+                  return (
+                    <button
+                      aria-pressed={selected}
+                      className={`min-w-[54px] rounded-full border px-4 py-2 text-sm font-medium transition ${
+                        selected
+                          ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
+                          : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
+                      }`}
+                      key={option}
+                      onClick={() => handleSelect(option)}
+                      type="button"
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="grid gap-2 border-t border-border/60 pt-3">
+              <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Maid&apos;s room
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {MAIDS_OPTIONS.map((option) => {
+                  const selected = maids === option;
+                  return (
+                    <button
+                      aria-pressed={selected}
+                      className={`min-w-[64px] rounded-full border px-4 py-2 text-sm font-medium transition ${
+                        selected
+                          ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
+                          : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
+                      }`}
+                      key={option}
+                      onClick={() => handleMaidsSelect(option)}
+                      type="button"
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 // ─── GateCard ─────────────────────────────────────────────────────────────────
 
