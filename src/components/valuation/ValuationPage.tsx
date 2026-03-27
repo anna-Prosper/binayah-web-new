@@ -947,6 +947,37 @@ function getUniformPriceBarWidth(result: ValuationResult | null) {
   return widths.length ? Math.max(Math.min(...widths), 3) : 12;
 }
 
+function getPriceComparisonBounds(result: ValuationResult | null) {
+  if (!result) {
+    return null;
+  }
+
+  const bounds = [
+    result.quickSaleLow,
+    result.quickSaleHigh,
+    result.fairValueLow,
+    result.fairValueHigh,
+    result.suggestedListLow,
+    result.suggestedListHigh,
+  ]
+    .map((value) => Number(value))
+    .filter((value) => Number.isFinite(value)) as number[];
+
+  if (!bounds.length) {
+    return null;
+  }
+
+  let min = Math.min(...bounds);
+  let max = Math.max(...bounds);
+
+  if (min === max) {
+    min *= 0.95;
+    max *= 1.05;
+  }
+
+  return { min, max };
+}
+
 function normalizeTurnstileConfig(value: any): TurnstileConfig {
   const safeValue = value && typeof value === "object" ? value : {};
 
@@ -1629,6 +1660,8 @@ const ValuationPage = () => {
   const showLockedFairValuePreview = !unlocked && result?.accessState === "preview";
   const previewRangeScale = getPreviewRangeScale(result);
   const uniformPriceBarWidth = getUniformPriceBarWidth(result);
+  const priceComparisonBounds = getPriceComparisonBounds(result);
+  const useUniformPreviewBarWidth = !unlocked && result?.accessState === "preview";
 
   // ─── Render ────────────────────────────────────────────────────────────────
 
@@ -2269,9 +2302,9 @@ const ValuationPage = () => {
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
                 <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
-                  <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} previewScale={previewRangeScale} color="#D4A847" currency={result.currency} blurred={false} fixedWidthPct={uniformPriceBarWidth} />
-                  <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} previewScale={previewRangeScale} color="#0B3D2E" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={uniformPriceBarWidth} />
-                  <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} previewScale={previewRangeScale} color="#1A7A5A" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={uniformPriceBarWidth} />
+                  <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} previewScale={previewRangeScale} color="#D4A847" currency={result.currency} blurred={false} fixedWidthPct={useUniformPreviewBarWidth ? uniformPriceBarWidth : null} />
+                  <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} previewScale={previewRangeScale} color="#0B3D2E" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={useUniformPreviewBarWidth ? uniformPriceBarWidth : null} />
+                  <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} previewScale={previewRangeScale} color="#1A7A5A" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={useUniformPreviewBarWidth ? uniformPriceBarWidth : null} />
                 </div>
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
               </div>
@@ -3163,21 +3196,35 @@ const PriceBar = ({
   blurred?: boolean;
   textOverride?: string;
   maskedPreview?: boolean;
-  fixedWidthPct?: number;
+  fixedWidthPct?: number | null;
 }) => {
   const range = (max ?? 0) - (min ?? 0) || 1;
   const startValue = Math.min(low ?? min ?? 0, high ?? low ?? 0);
+  const endValue = Math.max(high ?? low ?? max ?? 0, low ?? min ?? 0);
   const previewStartPct = rangePreview
     ? previewScale
       ? ((rangePreview.startPercent - previewScale.anchorStart) / previewScale.span) * 100
       : rangePreview.startPercent
     : null;
+  const previewWidthPct = rangePreview
+    ? previewScale
+      ? (rangePreview.widthPercent / previewScale.span) * 100
+      : rangePreview.widthPercent
+    : null;
   const naturalStartPct =
     previewStartPct !== null
       ? previewStartPct
       : ((startValue - (min ?? 0)) / range) * 100;
-  const safeWidthPct = Math.min(Math.max(fixedWidthPct, 0), 100);
-  const leftPct = Math.min(Math.max(naturalStartPct, 0), 100 - safeWidthPct);
+  const naturalWidthPct =
+    previewWidthPct !== null
+      ? previewWidthPct
+      : ((endValue - startValue) / range) * 100;
+  const clampedStartPct = Math.min(Math.max(naturalStartPct, 0), 100);
+  const fixedWidthEnabled = Number.isFinite(fixedWidthPct as number) && (fixedWidthPct as number) > 0;
+  const safeWidthPct = fixedWidthEnabled
+    ? Math.min(Math.max(fixedWidthPct as number, 0), 100)
+    : Math.min(Math.max(naturalWidthPct, 0), 100 - clampedStartPct);
+  const leftPct = Math.min(clampedStartPct, 100 - safeWidthPct);
   const widthPct = Math.min(safeWidthPct, 100 - leftPct);
   const text = textOverride || `${fmt(low, currency)} – ${fmt(high, currency)}`;
   const valueClass =
