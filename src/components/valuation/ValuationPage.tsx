@@ -2284,9 +2284,18 @@ const ValuationPage = () => {
                     </div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Suggested List Price</p>
                   </div>
-                  <p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
-                    {fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}
-                  </p>
+                  {!unlocked && result.accessState === "preview" ? (
+                    <div className="grid gap-1.5">
+                      <MaskedInlineRange currency={result.currency} />
+                      <p className="text-xs text-muted-foreground/80">
+                        Exact range unlocks with the full report.
+                      </p>
+                    </div>
+                  ) : (
+                    <p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                      {fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}
+                    </p>
+                  )}
                 </div>
                 <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
@@ -2345,8 +2354,12 @@ const ValuationPage = () => {
                         </td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.date}</td>
-                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-md" : ""}`}>
-                          {fmt(c.price, result.currency)}
+                        <td className="py-3 pr-4 font-bold transition-all duration-500 select-none">
+                          {isLockedPreviewRow ? (
+                            <MaskedComparablePrice currency={result.currency} />
+                          ) : (
+                            fmt(c.price, result.currency)
+                          )}
                         </td>
                         <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
                           {c.reason}
@@ -2686,6 +2699,32 @@ const HiddenRangeValue = ({ currency = "AED" }: { currency?: string }) => {
         {currency} X,XXX,XXX - X,XXX,XXX
       </span>
     </div>
+  );
+};
+
+const MaskedInlineRange = ({ currency = "AED" }: { currency?: string }) => {
+  return (
+    <span className="inline-flex max-w-full items-baseline gap-2 text-foreground">
+      <span className="text-base font-semibold tracking-[0.08em] text-foreground">
+        {currency}
+      </span>
+      <span className="inline-block text-xl font-semibold tracking-[-0.04em] text-foreground/70 blur-[1.5px] select-none">
+        X,XXX,XXX - X,XXX,XXX
+      </span>
+    </span>
+  );
+};
+
+const MaskedComparablePrice = ({ currency = "AED" }: { currency?: string }) => {
+  return (
+    <span className="inline-flex items-baseline gap-2 text-foreground">
+      <span className="text-[0.98rem] font-semibold tracking-[0.08em] text-foreground">
+        {currency}
+      </span>
+      <span className="inline-block text-[1.02rem] font-semibold tracking-[0.02em] text-foreground/68 blur-[1.55px] select-none">
+        X,XXX,XXX
+      </span>
+    </span>
   );
 };
 
