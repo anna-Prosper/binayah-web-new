@@ -714,6 +714,52 @@ const FieldError = ({ message }: { message?: string }) =>
     </p>
   ) : null;
 
+// ─── Deed demo result ────────────────────────────────────────────────────────
+
+const DEED_DUMMY_RESULT: ValuationResult = {
+  currency: "AED",
+  community: "Marina Gate 1",
+  city: "Dubai",
+  country: "UAE",
+  tags: ["Apartment", "Dubai Marina", "Thinking of selling"],
+  fairValueLow: 2_750_000,
+  fairValueHigh: 2_950_000,
+  fairValueExplanation: "Based on 14 comparable transactions in Marina Gate 1 and surrounding Dubai Marina towers over the last 12 months, a 2-bedroom unit of this size is valued in the AED 2.75M–2.95M range, assuming standard finishes and a mid-range floor.",
+  confidence: "High",
+  confidenceReason: "Strong volume of recent comparable sales within the same building and community, with consistent price-per-sqft data available.",
+  quickSaleLow: 2_550_000,
+  quickSaleHigh: 2_700_000,
+  suggestedListLow: 2_900_000,
+  suggestedListHigh: 3_050_000,
+  comparables: [
+    { type: "Sale",    size: "1,210 sqft", date: "Jan 2026", price: 2_800_000, reason: "Same building, floor 18, standard finish. Sold in 23 days at AED 2,314/sqft." },
+    { type: "Sale",    size: "1,310 sqft", date: "Dec 2025", price: 2_950_000, reason: "Marina Gate 1, floor 22, upgraded kitchen and sea view." },
+    { type: "Listing", size: "1,247 sqft", date: "Mar 2026", price: 3_100_000, reason: "Current ask, same building. Listed 18 days ago, no offers reported yet." },
+    { type: "Sale",    size: "1,190 sqft", date: "Nov 2025", price: 2_680_000, reason: "Lower floor, community view. Useful quick-sale floor reference." },
+    { type: "Listing", size: "1,280 sqft", date: "Feb 2026", price: 2_950_000, reason: "Marina Gate 2 — closest comparable building, similar age and spec." },
+  ],
+  marketRead: "Dubai Marina continues to attract strong end-user and investor demand in Q1 2026. Marina Gate has outperformed the broader Marina average by ~4% over the past 12 months, driven by newer build quality and proximity to the Marina Walk. Average time-on-market for 2BR units is 28 days. Rental yields remain competitive at 5.8–6.4% gross.",
+  strategy: "Given the current demand and your intent to sell, listing at AED 2.9M–3.05M positions the unit competitively while leaving negotiation room. Price slightly below the most recent comparable listing to attract early offers. Vacant access will materially improve buyer interest and speed up the transaction.",
+  strategyBullets: [
+    "Stage for photography and enable flexible viewings — this building transacts faster with vacant access.",
+    "List at AED 2,950,000 and treat AED 2,800,000+ as a strong outcome.",
+    "If urgency is high, AED 2,650,000–2,700,000 targets cash buyers and should close in under 30 days.",
+  ],
+  movingFactors: [
+    "Exact floor level and view — sea or Marina views command a 5–10% premium.",
+    "Finish quality — renovated kitchens and bathrooms add AED 80,000–150,000.",
+    "Furnishing — fully furnished units achieve 3–8% higher asking prices.",
+    "Vacancy status — vacant units transact 20–30% faster.",
+    "Service charge exposure — buyers factor annual charges into offers.",
+  ],
+  disclaimer: "This is a simulated demo result. For a live AI-powered estimate using real market data, use the smart search or fill the fields manually.",
+  sources: [
+    { url: "https://www.propertyfinder.ae", title: "Property Finder — Marina Gate listings" },
+    { url: "https://www.bayut.com",          title: "Bayut — Dubai Marina transactions" },
+    { url: "https://www.dubailand.gov.ae",   title: "DLD — transaction records" },
+  ],
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const ValuationPage = () => {
@@ -736,6 +782,7 @@ const ValuationPage = () => {
   const [deedFile, setDeedFile] = useState<File | null>(null);
   const [deedParsing, setDeedParsing] = useState(false);
   const [deedParsed, setDeedParsed] = useState(false);
+  const [useDeedResult, setUseDeedResult] = useState(false);
   const deedInputRef = useRef<HTMLInputElement>(null);
   const [showPlaces, setShowPlaces] = useState(false);
   const placesRef = useRef<HTMLDivElement>(null);
@@ -874,6 +921,19 @@ const ValuationPage = () => {
     setStep("processing");
     setActiveProcessStep(0);
     topRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    // If deed was uploaded → show dummy result after simulated processing
+    if (deedParsed && deedFile) {
+      for (let i = 0; i < 4; i++) {
+        await new Promise((r) => setTimeout(r, 1100));
+        setActiveProcessStep(i + 1);
+      }
+      setResult(DEED_DUMMY_RESULT);
+      setUseDeedResult(true);
+      setStep("results");
+      topRef.current?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
 
     // Kick off stream — phase updates happen inside runValuation via phaseMap
     // We hook into the stream for phase events separately
@@ -1093,65 +1153,6 @@ const ValuationPage = () => {
                 </div>
                 <div className="h-px bg-border/50 my-6" />
 
-                {/* ── Title deed upload ── */}
-                <div className="mb-6">
-                  <input
-                    ref={deedInputRef}
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png,.heic"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleDeedUpload(file);
-                      e.target.value = "";
-                    }}
-                  />
-
-                  {!deedFile ? (
-                    <button type="button"
-                      onClick={() => deedInputRef.current?.click()}
-                      className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/3 text-muted-foreground hover:text-[#0B3D2E] transition-all duration-200 group">
-                      <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                      <div className="text-left">
-                        <p className="text-sm font-semibold">Upload title deed</p>
-                        <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
-                      </div>
-                      <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
-                    </button>
-                  ) : (
-                    <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
-                      deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
-                      deedParsed  ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
-                      "border-border bg-muted/30"
-                    }`}>
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                        deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#0B3D2E]/10" : "bg-muted"
-                      }`}>
-                        {deedParsing
-                          ? <RefreshCw className="h-4 w-4 text-[#D4A847] animate-spin" />
-                          : deedParsed
-                          ? <FileText className="h-4 w-4 text-[#0B3D2E]" />
-                          : <FileUp className="h-4 w-4 text-muted-foreground" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-foreground truncate">{deedFile.name}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {deedParsing ? "Reading deed and extracting property details…" :
-                           deedParsed  ? "Fields filled from deed — review and adjust below" :
-                           "Ready to process"}
-                        </p>
-                      </div>
-                      {!deedParsing && (
-                        <button type="button"
-                          onClick={() => { setDeedFile(null); setDeedParsed(false); }}
-                          className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1">
-                          <X className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
                   {/* Smart search bar */}
@@ -1225,6 +1226,71 @@ const ValuationPage = () => {
                     <p className="text-[11px] text-muted-foreground mt-2">
                       Type to auto-fill, or complete the fields below.
                     </p>
+                  </div>
+
+                  {/* Or divider + deed upload */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 h-px bg-border/50" />
+                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">or</span>
+                    <div className="flex-1 h-px bg-border/50" />
+                  </div>
+
+                  {/* ── Title deed upload ── */}
+                  <div>
+                    <input
+                      ref={deedInputRef}
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.heic"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleDeedUpload(file);
+                        e.target.value = "";
+                      }}
+                    />
+                    {!deedFile ? (
+                      <button type="button"
+                        onClick={() => deedInputRef.current?.click()}
+                        className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 text-muted-foreground hover:text-[#0B3D2E] transition-all duration-200 group">
+                        <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                        <div className="text-left">
+                          <p className="text-sm font-semibold">Upload title deed</p>
+                          <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
+                        </div>
+                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
+                      </button>
+                    ) : (
+                      <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
+                        deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
+                        deedParsed  ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
+                        "border-border bg-muted/30"
+                      }`}>
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                          deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#0B3D2E]/10" : "bg-muted"
+                        }`}>
+                          {deedParsing
+                            ? <RefreshCw className="h-4 w-4 text-[#D4A847] animate-spin" />
+                            : deedParsed
+                            ? <FileText className="h-4 w-4 text-[#0B3D2E]" />
+                            : <FileUp className="h-4 w-4 text-muted-foreground" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-foreground truncate">{deedFile.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {deedParsing ? "Reading deed and extracting property details…" :
+                             deedParsed  ? "Fields filled from deed — review and adjust below" :
+                             "Ready to process"}
+                          </p>
+                        </div>
+                        {!deedParsing && (
+                          <button type="button"
+                            onClick={() => { setDeedFile(null); setDeedParsed(false); setUseDeedResult(false); }}
+                            className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1">
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Row 1 — City → Area → Building (cascading, Property Finder style) */}
@@ -1542,10 +1608,20 @@ const ValuationPage = () => {
             className="max-w-4xl mx-auto px-4 sm:px-6 py-12"
           >
             {/* Back */}
-            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); }}
+            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#0B3D2E]/20 text-sm font-semibold text-[#0B3D2E] hover:bg-[#0B3D2E] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
               <ArrowLeft className="h-4 w-4" /> New Search
             </button>
+
+            {/* Demo banner */}
+            {useDeedResult && (
+              <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-6 py-3.5 mb-4 flex items-center gap-3">
+                <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0" />
+                <p className="text-sm text-[#B8922F] font-medium">
+                  <strong>Demo result</strong> — this is simulated data from the deed upload. Use the search or fill the form for a live AI valuation.
+                </p>
+              </div>
+            )}
 
             {/* Header */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
