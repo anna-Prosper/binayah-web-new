@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Home, DoorOpen, Building2, Wrench } from "lucide-react";
+import { Home, Users, Building2, Shield } from "lucide-react";
 
 const offerings = [
   {
@@ -13,7 +13,7 @@ const offerings = [
     color: "#D4A847",
   },
   {
-    icon: DoorOpen,
+    icon: Users,
     title: "Rent Property",
     desc: "Discover exceptional rental homes in prime locations.",
     link: "/communities",
@@ -27,7 +27,7 @@ const offerings = [
     color: "#D4A847",
   },
   {
-    icon: Wrench,
+    icon: Shield,
     title: "Property Management",
     desc: "Complete management solutions to protect and grow your investment.",
     link: "/services",
@@ -87,9 +87,9 @@ const WhatWeOffer = () => (
             >
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                style={{ background: `${item.color}20`, border: `1px solid ${item.color}30` }}
+                style={{ background: `${item.color}25`, border: `1px solid ${item.color}40` }}
               >
-                <item.icon className="h-6 w-6" style={{ color: item.color }} />
+                <item.icon className="h-6 w-6" style={{ color: item.color, strokeWidth: 1.75 }} />
               </div>
               <div>
                 <h3 className="font-bold text-lg text-white mb-2">{item.title}</h3>
