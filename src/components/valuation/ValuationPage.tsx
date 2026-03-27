@@ -832,6 +832,101 @@ function getPreviewRange(result: ValuationResult | null, label: string) {
   return result?.previewRanges?.find((range) => range.label.trim().toLowerCase() === normalizedLabel);
 }
 
+function getPreviewRangeScale(result: ValuationResult | null) {
+  const previewRanges = Array.isArray(result?.previewRanges) ? result.previewRanges : [];
+  const normalizedRanges = previewRanges
+    .map((range) => {
+      const start = Number(range?.startPercent);
+      const width = Number(range?.widthPercent);
+      if (!Number.isFinite(start) || !Number.isFinite(width) || width <= 0) {
+        return null;
+      }
+
+      return {
+        label: String(range?.label || "").trim().toLowerCase(),
+        start,
+        end: start + width,
+      };
+    })
+    .filter(Boolean) as { label: string; start: number; end: number }[];
+
+  if (!normalizedRanges.length) {
+    return null;
+  }
+
+  const quickSaleRange = normalizedRanges.find((range) => range.label === "quick sale");
+  const anchorStart = quickSaleRange ? quickSaleRange.start : Math.min(...normalizedRanges.map((range) => range.start));
+  const maxEnd = Math.max(...normalizedRanges.map((range) => range.end));
+  const span = maxEnd - anchorStart;
+
+  if (!(span > 0)) {
+    return null;
+  }
+
+  return {
+    anchorStart,
+    span,
+  };
+}
+
+function getUniformPriceBarWidth(result: ValuationResult | null) {
+  if (!result) {
+    return 12;
+  }
+
+  const previewScale = getPreviewRangeScale(result);
+  const previewWidths = (result.previewRanges || [])
+    .map((range) => {
+      const width = Number(range?.widthPercent);
+      if (!Number.isFinite(width) || width <= 0) {
+        return null;
+      }
+
+      if (previewScale) {
+        return (width / previewScale.span) * 100;
+      }
+
+      return width;
+    })
+    .filter((width) => Number.isFinite(width) && width > 0);
+
+  if (previewWidths.length) {
+    return Math.max(Math.min(...previewWidths), 3);
+  }
+
+  const ranges = [
+    [result.quickSaleLow, result.quickSaleHigh],
+    [result.fairValueLow, result.fairValueHigh],
+    [result.suggestedListLow, result.suggestedListHigh],
+  ]
+    .map(([low, high]) => {
+      const safeLow = Number(low);
+      const safeHigh = Number(high);
+      if (!Number.isFinite(safeLow) || !Number.isFinite(safeHigh)) {
+        return null;
+      }
+
+      return {
+        low: Math.min(safeLow, safeHigh),
+        high: Math.max(safeLow, safeHigh),
+      };
+    })
+    .filter(Boolean) as { low: number; high: number }[];
+
+  if (!ranges.length) {
+    return 12;
+  }
+
+  const minValue = Math.min(...ranges.map((range) => range.low));
+  const maxValue = Math.max(...ranges.map((range) => range.high));
+  const totalSpan = maxValue - minValue || 1;
+  const widths = ranges
+    .map((range) => ((range.high - range.low) / totalSpan) * 100)
+    .filter((width) => Number.isFinite(width) && width > 0);
+
+  return widths.length ? Math.max(Math.min(...widths), 3) : 12;
+}
+
 function normalizeTurnstileConfig(value: any): TurnstileConfig {
   const safeValue = value && typeof value === "object" ? value : {};
 
@@ -1512,6 +1607,8 @@ const ValuationPage = () => {
   };
 
   const showLockedFairValuePreview = !unlocked && result?.accessState === "preview";
+  const previewRangeScale = getPreviewRangeScale(result);
+  const uniformPriceBarWidth = getUniformPriceBarWidth(result);
 
   // ─── Render ────────────────────────────────────────────────────────────────
 
@@ -2170,9 +2267,11 @@ const ValuationPage = () => {
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
-                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} />
-                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} color="#0B3D2E" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
-                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} color="#1A7A5A" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
+                <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
+                  <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} previewScale={previewRangeScale} color="#D4A847" currency={result.currency} blurred={false} fixedWidthPct={uniformPriceBarWidth} />
+                  <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} previewScale={previewRangeScale} color="#0B3D2E" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={uniformPriceBarWidth} />
+                  <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} previewScale={previewRangeScale} color="#1A7A5A" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={uniformPriceBarWidth} />
+                </div>
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
               </div>
 
@@ -2641,7 +2740,7 @@ async function loadTurnstileScript() {
 // ─── PriceBar ─────────────────────────────────────────────────────────────────
 
 const PriceBar = ({
-  label, low, high, min, max, rangePreview, color, currency = "AED", blurred = false, textOverride,
+  label, low, high, min, max, rangePreview, previewScale, color, currency = "AED", blurred = false, textOverride, maskedPreview = false, fixedWidthPct = 18,
 }: {
   label: string;
   low: number | null;
@@ -2649,31 +2748,50 @@ const PriceBar = ({
   min: number | null;
   max: number | null;
   rangePreview?: PreviewRange;
+  previewScale?: { anchorStart: number; span: number } | null;
   color: string;
   currency?: string;
   blurred?: boolean;
   textOverride?: string;
+  maskedPreview?: boolean;
+  fixedWidthPct?: number;
 }) => {
   const range = (max ?? 0) - (min ?? 0) || 1;
-  const leftPct = rangePreview
-    ? rangePreview.startPercent
-    : (((low ?? min ?? 0) - (min ?? 0)) / range) * 100;
-  const widthPct = rangePreview
-    ? rangePreview.widthPercent
-    : (((high ?? low ?? 0) - (low ?? 0)) / range) * 100;
+  const startValue = Math.min(low ?? min ?? 0, high ?? low ?? 0);
+  const previewStartPct = rangePreview
+    ? previewScale
+      ? ((rangePreview.startPercent - previewScale.anchorStart) / previewScale.span) * 100
+      : rangePreview.startPercent
+    : null;
+  const naturalStartPct =
+    previewStartPct !== null
+      ? previewStartPct
+      : ((startValue - (min ?? 0)) / range) * 100;
+  const safeWidthPct = Math.min(Math.max(fixedWidthPct, 0), 100);
+  const leftPct = Math.min(Math.max(naturalStartPct, 0), 100 - safeWidthPct);
+  const widthPct = Math.min(safeWidthPct, 100 - leftPct);
   const text = textOverride || `${fmt(low, currency)} – ${fmt(high, currency)}`;
+  const valueClass =
+    "justify-self-start text-sm text-muted-foreground text-left whitespace-nowrap transition-all duration-500 select-none";
 
   return (
-    <div className="flex items-center gap-3 mb-4 min-w-0">
-      <span className="text-sm font-medium w-28 flex-shrink-0">{label}</span>
-      <div className="flex-1 h-3 bg-muted rounded-full relative overflow-hidden">
+    <>
+      <span className="text-sm font-medium pr-4">{label}</span>
+      <div className="h-3 min-w-0 bg-muted rounded-full relative overflow-hidden">
         <div className="h-3 rounded-full absolute top-0"
-          style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 3)}%`, backgroundColor: color }} />
+          style={{ left: `${leftPct}%`, width: `${widthPct}%`, backgroundColor: color }} />
       </div>
-      <span className={`text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none ${blurred ? "blur-md" : ""}`}>
-        {text}
-      </span>
-    </div>
+      {maskedPreview ? (
+        <span className={valueClass}>
+          <span>{currency}</span>
+          <span className="ml-2 inline-block blur-[1.6px] text-foreground/70">X,XXX,XXX - X,XXX,XXX</span>
+        </span>
+      ) : (
+        <span className={`${valueClass} ${blurred ? "blur-md" : ""}`}>
+          {text}
+        </span>
+      )}
+    </>
   );
 };
 
