@@ -696,6 +696,13 @@ const phaseMap: Record<string, number> = {
 
 const BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4", "5", "6", "7", "7+"];
 const MAIDS_OPTIONS = ["No", "Yes"];
+const SIZE_OPTIONS = [
+  500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1800, 2000,
+  2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4200, 4600, 5000, 5400,
+  5800, 6200, 6600, 7000, 7400, 7800, 8200, 9000,
+];
+const SIZE_UNIT_OPTIONS = ["sq ft", "sqm"];
+const DEFAULT_SIZE_UNIT = "sq ft";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -2071,11 +2078,10 @@ const ValuationPage = () => {
                     </div>
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Size</label>
-                      <div className="relative">
-                        <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.size} onChange={(e) => updateField("size", e.target.value)}
-                          placeholder="1,420 sq ft" className="pl-10 h-12 bg-background" />
-                      </div>
+                      <SizePicker
+                        onChange={(value) => updateField("size", value)}
+                        value={form.size}
+                      />
                     </div>
                   </div>
 
@@ -2740,6 +2746,214 @@ const BedroomPicker = ({
     </div>
   );
 };
+
+const SizePicker = ({
+  onChange,
+  value,
+}: {
+  onChange: (value: string) => void;
+  value: string;
+}) => {
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+  const parsedValue = parseSizeValue(value);
+  const normalizedValue = normalizeSizeOptionValue(parsedValue.amount);
+  const [selectedUnit, setSelectedUnit] = useState(parsedValue.unit);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (pickerRef.current && !pickerRef.current.contains(target)) {
+        setOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!value) {
+      return;
+    }
+
+    setSelectedUnit(parseSizeValue(value).unit);
+  }, [value]);
+
+  const handleSelect = (option: number) => {
+    onChange(formatSizeValue(option.toLocaleString("en-US"), selectedUnit));
+    setOpen(false);
+  };
+
+  const handleUnitChange = (nextUnit: string) => {
+    setSelectedUnit(nextUnit);
+    onChange(formatSizeValue(parsedValue.amount, nextUnit));
+  };
+
+  return (
+    <div className="relative" ref={pickerRef}>
+      <button
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        className="flex h-12 w-full items-center justify-between gap-3 rounded-xl border border-input bg-background px-3 text-left text-sm text-foreground transition-colors hover:border-muted-foreground/30"
+        onClick={() => setOpen((current) => !current)}
+        type="button"
+      >
+        <span className={`truncate ${value ? "text-foreground" : "text-muted-foreground"}`}>
+          {value || "Select or enter size"}
+        </span>
+        <svg
+          aria-hidden="true"
+          className={`h-4 w-4 flex-none text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 12 8"
+        >
+          <path
+            d="M1 1.5 6 6.5l5-5"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.75"
+          />
+        </svg>
+      </button>
+
+      {open ? (
+        <div className="absolute left-0 top-full z-50 mt-2 w-[min(380px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card p-4 shadow-[0_20px_40px_rgba(15,23,42,0.12)]">
+          <div className="grid gap-3">
+            <div className="grid grid-cols-[minmax(0,1fr)_112px] gap-2">
+              <div className="relative">
+                <Ruler className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  autoFocus
+                  className="h-11 bg-background pl-10"
+                  onChange={(event) => onChange(formatSizeValue(event.target.value, selectedUnit))}
+                  placeholder="Type any size"
+                  value={parsedValue.amount}
+                />
+              </div>
+              <div>
+                <div className="relative">
+                  <select
+                    className="h-11 w-full appearance-none rounded-xl border border-input bg-background px-3 pr-9 text-sm text-foreground outline-none transition-colors hover:border-muted-foreground/30 focus:border-[#0B3D2E]/40"
+                    onChange={(event) => handleUnitChange(event.target.value)}
+                    value={selectedUnit}
+                  >
+                    {SIZE_UNIT_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                    fill="none"
+                    viewBox="0 0 12 8"
+                  >
+                    <path
+                      d="M1 1.5 6 6.5l5-5"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.75"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Presets
+              </span>
+              <div className="flex max-h-[216px] flex-wrap gap-2 overflow-y-auto pr-1">
+                {SIZE_OPTIONS.map((option) => {
+                  const selected = normalizedValue === String(option);
+                  return (
+                    <button
+                      aria-pressed={selected}
+                      className={`rounded-full border px-3.5 py-2 text-sm font-medium transition ${
+                        selected
+                          ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
+                          : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
+                      }`}
+                      key={option}
+                      onClick={() => handleSelect(option)}
+                      type="button"
+                    >
+                      {option.toLocaleString("en-US")}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+function formatSizeValue(amount: string, unit = DEFAULT_SIZE_UNIT): string {
+  const normalizedAmount = stripSizeUnit(amount).trim();
+  if (!normalizedAmount) {
+    return "";
+  }
+
+  return `${normalizedAmount} ${unit}`;
+}
+
+function normalizeSizeOptionValue(value: string): string {
+  return stripSizeUnit(value)
+    .toLowerCase()
+    .replace(/,/g, "")
+    .trim();
+}
+
+function parseSizeValue(value: string): { amount: string; unit: string } {
+  const rawValue = String(value || "").trim();
+  if (!rawValue) {
+    return { amount: "", unit: DEFAULT_SIZE_UNIT };
+  }
+
+  const normalizedValue = rawValue.toLowerCase();
+  if (/\s*(sqm|sq m|m2)$/u.test(normalizedValue)) {
+    return {
+      amount: rawValue.replace(/\s*(sqm|sq m|m2)$/iu, "").trim(),
+      unit: "sqm",
+    };
+  }
+
+  if (/\s*(sq\.?\s*ft|sqft|sf)$/u.test(normalizedValue)) {
+    return {
+      amount: rawValue.replace(/\s*(sq\.?\s*ft|sqft|sf)$/iu, "").trim(),
+      unit: "sq ft",
+    };
+  }
+
+  return { amount: rawValue, unit: DEFAULT_SIZE_UNIT };
+}
+
+function stripSizeUnit(value: string): string {
+  return String(value || "")
+    .replace(/\s*(sq\.?\s*ft|sqft|sf|sqm|sq m|m2)$/iu, "")
+    .trim();
+}
 
 // ─── GateCard ─────────────────────────────────────────────────────────────────
 
