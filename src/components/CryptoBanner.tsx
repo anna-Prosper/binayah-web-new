@@ -3,43 +3,17 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Bitcoin } from "lucide-react";
 
-const cryptoIcons = ["₿", "Ξ", "◎", "✦"];
-
 const CryptoBanner = () => (
   <section className="relative overflow-hidden">
-    <div
-      className="absolute inset-0"
-      style={{ background: "linear-gradient(135deg, #1a0f00 0%, #3a2206 40%, #5a3a10 70%, #2a1800 100%)" }}
+    {/* Background image */}
+    <img
+      src="/assets/crypto-banner.jpeg"
+      alt="Buy property with cryptocurrency"
+      className="absolute inset-0 w-full h-full object-cover object-[center_25%]"
     />
-    {/* Gold shimmer overlay */}
-    <div
-      className="absolute inset-0 opacity-20"
-      style={{ background: "radial-gradient(ellipse at 30% 50%, #D4A847 0%, transparent 60%)" }}
-    />
-    {/* Dot texture */}
-    <div
-      className="absolute inset-0 opacity-[0.06]"
-      style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #D4A847 1px, transparent 0)", backgroundSize: "32px 32px" }}
-    />
-
-    {/* Floating crypto symbols */}
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {cryptoIcons.map((icon, i) => (
-        <motion.span
-          key={i}
-          className="absolute text-white/5 font-bold select-none"
-          style={{
-            fontSize: `${80 + i * 30}px`,
-            top: `${10 + i * 20}%`,
-            right: `${5 + i * 8}%`,
-          }}
-          animate={{ y: [0, -12, 0], rotate: [0, 3, 0] }}
-          transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.8 }}
-        >
-          {icon}
-        </motion.span>
-      ))}
-    </div>
+    {/* Rich dual overlay — matches reference */}
+    <div className="absolute inset-0 bg-gradient-to-r from-[#3a2206]/80 via-[#5a3a10]/40 to-transparent" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
     <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-10 sm:py-14">
       <motion.div
@@ -50,7 +24,6 @@ const CryptoBanner = () => (
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
       >
         <div className="flex items-center gap-5">
-          {/* Icon */}
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 border border-white/10"
             style={{ background: "rgba(212,168,71,0.15)" }}
@@ -77,25 +50,23 @@ const CryptoBanner = () => (
           </div>
         </div>
 
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <motion.a
-            href="https://wa.me/971504487540?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-bold tracking-wide transition-all duration-300"
-            style={{
-              background: "linear-gradient(135deg, #D4A847 0%, #C49B35 50%, #B8922F 100%)",
-              color: "#1a0f00",
-              boxShadow: "0 4px 20px rgba(212,168,71,0.4)",
-              border: "1px solid rgba(255,255,255,0.15)",
-            }}
-          >
-            Inquire Now
-            <ArrowRight className="h-4 w-4" />
-          </motion.a>
-        </div>
+        <motion.a
+          href="https://wa.me/971504487540?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+          className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-bold tracking-wide transition-all duration-300"
+          style={{
+            background: "linear-gradient(135deg, #D4A847 0%, #C49B35 50%, #B8922F 100%)",
+            color: "#1a0f00",
+            boxShadow: "0 4px 20px rgba(212,168,71,0.4)",
+            border: "1px solid rgba(255,255,255,0.15)",
+          }}
+        >
+          Inquire Now
+          <ArrowRight className="h-4 w-4" />
+        </motion.a>
       </motion.div>
     </div>
   </section>
