@@ -478,11 +478,9 @@ interface FormData {
   unit: string;
   area: string;
   beds: string;
-  baths: string;
   city: string;
   type: string;
   size: string;
-  intent: string;
 }
 
 interface FieldErrors {
@@ -600,7 +598,6 @@ interface DocumentExtractionResponse {
     city?: string;
     propertyType?: string;
     bedrooms?: string;
-    bathrooms?: string;
     size?: string;
     ownerName?: string;
     phone?: string;
@@ -745,7 +742,7 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
     community,
     city: form.city || "Dubai",
     country: "UAE",
-    tags: [form.type, community, form.intent].filter(Boolean) as string[],
+    tags: [form.type, community].filter(Boolean) as string[],
     fairValueLow: api.estimate_low,
     fairValueHigh: api.estimate_high,
     fairValueExplanation: api.estimate_summary,
@@ -795,7 +792,7 @@ function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): Valuati
     community,
     city: form.city || "Dubai",
     country: "UAE",
-    tags: [form.type, community, form.intent].filter(Boolean) as string[],
+    tags: [form.type, community].filter(Boolean) as string[],
     fairValueLow: null,
     fairValueHigh: null,
     confidence: api.preview?.confidence || "Low",
@@ -1132,8 +1129,8 @@ const DEED_DUMMY_RESULT: ValuationResult = {
 const ValuationPage = () => {
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormData>({
-    unit: "", area: "", beds: "", baths: "", city: "Dubai",
-    type: "", size: "", intent: "",
+    unit: "", area: "", beds: "", city: "Dubai",
+    type: "", size: "",
   });
   const [result, setResult] = useState<ValuationResult | null>(null);
   const [activeProcessStep, setActiveProcessStep] = useState(0);
@@ -1313,7 +1310,6 @@ const ValuationPage = () => {
         ...(inquiry.city ? { city: inquiry.city } : {}),
         ...(inquiry.propertyType ? { type: inquiry.propertyType } : {}),
         ...(inquiry.bedrooms ? { beds: inquiry.bedrooms } : {}),
-        ...(inquiry.bathrooms ? { baths: inquiry.bathrooms } : {}),
         ...(inquiry.size ? { size: inquiry.size } : {}),
       }));
       setGate((current) => ({
@@ -1361,9 +1357,7 @@ const ValuationPage = () => {
         city: form.city,
         propertyType: form.type,
         bedrooms: form.beds,
-        bathrooms: form.baths,
         size: form.size,
-        intent: form.intent,
         ...(turnstileToken ? { turnstileToken } : {}),
       };
 
@@ -2046,8 +2040,8 @@ const ValuationPage = () => {
                     </div>
                   </div>
 
-                                    {/* Row 2 — Type / Beds / Baths / Size / Intent */}
-                  <div className="grid sm:grid-cols-5 gap-4">
+                                    {/* Row 2 — Type / Beds / Size */}
+                  <div className="grid sm:grid-cols-3 gap-4">
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Type</label>
                       <Select value={form.type} onValueChange={(v) => updateField("type", v)}>
@@ -2068,31 +2062,12 @@ const ValuationPage = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Baths</label>
-                      <div className="relative">
-                        <BedDouble className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input value={form.baths} onChange={(e) => updateField("baths", e.target.value)}
-                          placeholder="2" className="pl-10 h-12 bg-background" />
-                      </div>
-                    </div>
-                    <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Size</label>
                       <div className="relative">
                         <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input value={form.size} onChange={(e) => updateField("size", e.target.value)}
                           placeholder="1,420 sq ft" className="pl-10 h-12 bg-background" />
                       </div>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Intent</label>
-                      <Select value={form.intent} onValueChange={(v) => updateField("intent", v)}>
-                        <SelectTrigger className="h-12 bg-background"><SelectValue placeholder="Select" /></SelectTrigger>
-                        <SelectContent>
-                          {["Thinking of selling", "Need a fast cash offer", "Curious about market value", "Want to list with an agent"].map((i) => (
-                            <SelectItem key={i} value={i}>{i}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                     </div>
                   </div>
 
