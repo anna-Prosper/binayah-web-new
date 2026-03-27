@@ -1194,6 +1194,39 @@ const ValuationPage = () => {
     }, 1800);
   }, [unlocked]);
 
+  const getUnlockCardProps = useCallback(
+    (
+      enabled: boolean,
+      label: string,
+    ): {
+      "aria-label"?: string;
+      className?: string;
+      onClick?: () => void;
+      onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
+      role?: "button";
+      tabIndex?: number;
+    } => {
+      if (!enabled) {
+        return {};
+      }
+
+      return {
+        "aria-label": label,
+        className: "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5",
+        onClick: scrollToUnlockSection,
+        onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            scrollToUnlockSection();
+          }
+        },
+        role: "button" as const,
+        tabIndex: 0,
+      };
+    },
+    [scrollToUnlockSection],
+  );
+
   const runValuation = useCallback(async (payload: object, attempt: number) => {
     try {
       const data = await fetchValuation(payload);
@@ -1587,6 +1620,11 @@ const ValuationPage = () => {
 
   const showLockedFairValuePreview = !unlocked && result?.accessState === "preview";
   const priceComparisonBounds = getPriceComparisonBounds(result);
+  const lockedPriceComparisonCardProps = getUnlockCardProps(!unlocked, "Unlock the full report");
+  const lockedComparableEvidenceCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal comparable evidence");
+  const lockedMarketReadCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal market read");
+  const lockedStrategyCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal recommended strategy");
+  const lockedMovingFactorsCardProps = getUnlockCardProps(Boolean(result?.movingFactorsLocked), "Unlock the full report to reveal what can move this estimate");
 
   // ─── Render ────────────────────────────────────────────────────────────────
 
@@ -2235,7 +2273,10 @@ const ValuationPage = () => {
               </div>
 
               {/* Price bars */}
-              <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+              <div
+                {...lockedPriceComparisonCardProps}
+                className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedPriceComparisonCardProps.className || ""}`}
+              >
                 <div className="flex items-center gap-2.5 mb-6">
                   <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
@@ -2317,7 +2358,10 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Comparables — price + reasoning blurred until unlocked ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div
+              {...lockedComparableEvidenceCardProps}
+              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedComparableEvidenceCardProps.className || ""}`}
+            >
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
                   <Building2 className="h-4 w-4 text-white" />
@@ -2439,7 +2483,10 @@ const ValuationPage = () => {
             )}
 
             {/* ── Market read — body blurred ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div
+              {...lockedMarketReadCardProps}
+              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedMarketReadCardProps.className || ""}`}
+            >
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
                 <h3 className="text-xl font-bold">Market read</h3>
@@ -2451,7 +2498,10 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Strategy — text + bullets blurred ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div
+              {...lockedStrategyCardProps}
+              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedStrategyCardProps.className || ""}`}
+            >
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-[#0B3D2E]/10 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-[#0B3D2E]" />
@@ -2473,7 +2523,10 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Moving factors — blurred in preview, visible after unlock ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm">
+            <div
+              {...lockedMovingFactorsCardProps}
+              className={`rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm ${lockedMovingFactorsCardProps.className || ""}`}
+            >
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
                   <AlertTriangle className="h-4 w-4 text-[#D4A847]" />
