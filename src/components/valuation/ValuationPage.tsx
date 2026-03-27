@@ -534,6 +534,7 @@ interface ValuationResult {
   strategy: string;
   strategyBullets: string[];
   movingFactors: string[];
+  movingFactorsLocked?: boolean;
   disclaimer: string;
   sources: { url: string; title: string }[];
 }
@@ -577,6 +578,8 @@ interface PreviewApiResponse {
       high: number | null;
     } | null;
     rangePreview: PreviewRange[];
+    movingFactors?: string[];
+    movingFactorsLocked?: boolean;
     sourceCount: number;
     hiddenComparableCount: number;
     comparableRows: {
@@ -764,6 +767,7 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
         ? `Vacancy status — vacant ${propType}s typically command a 3–8% premium.`
         : factor,
     ),
+    movingFactorsLocked: false,
     disclaimer: api.disclaimer || DEED_DUMMY_RESULT.disclaimer,
     sources: api.sources || [],
     sourceCount: Array.isArray(api.sources) ? api.sources.length : 0,
@@ -821,7 +825,14 @@ function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): Valuati
       "Suggested list pricing unlocks after the contact step.",
       "Quick-sale guidance unlocks after the contact step.",
     ],
-    movingFactors: DEED_DUMMY_RESULT.movingFactors,
+    movingFactors:
+      Array.isArray(api.preview?.movingFactors) && api.preview.movingFactors.length
+        ? api.preview.movingFactors
+        : DEED_DUMMY_RESULT.movingFactors,
+    movingFactorsLocked:
+      typeof api.preview?.movingFactorsLocked === "boolean"
+        ? api.preview.movingFactorsLocked
+        : true,
     disclaimer: "AI-assisted market snapshot. Not a formal appraisal.",
     sources: [],
   };
@@ -1107,6 +1118,7 @@ const DEED_DUMMY_RESULT: ValuationResult = {
     "Vacancy status — vacant units transact 20–30% faster.",
     "Service charge exposure — buyers factor annual charges into offers.",
   ],
+  movingFactorsLocked: false,
   disclaimer: "This is a simulated demo result. For a live AI-powered estimate using real market data, use the smart search or fill the fields manually.",
   sources: [
     { url: "https://www.propertyfinder.ae", title: "Property Finder — Marina Gate listings" },
@@ -2474,18 +2486,24 @@ const ValuationPage = () => {
               </ul>
             </div>
 
-            {/* ── Moving factors — always visible ── */}
+            {/* ── Moving factors — blurred in preview, visible after unlock ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
                   <AlertTriangle className="h-4 w-4 text-[#D4A847]" />
                 </div>
                 <h3 className="text-xl font-bold">What can move this estimate</h3>
+                {result.movingFactorsLocked ? <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" /> : null}
               </div>
               <p className="text-sm text-muted-foreground mb-4 ml-[46px]">Common reasons real-world pricing can shift</p>
               <ul className="space-y-2.5">
                 {result.movingFactors.map((f, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-muted-foreground text-sm">
+                  <li
+                    key={i}
+                    className={`flex items-start gap-2.5 text-muted-foreground text-sm transition-all duration-500 select-none ${
+                      result.movingFactorsLocked ? "blur-sm" : ""
+                    }`}
+                  >
                     <span className="h-2 w-2 rounded-full mt-1.5 flex-shrink-0"
                       style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }} />
                     {f}
