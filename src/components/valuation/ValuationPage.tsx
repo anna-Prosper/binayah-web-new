@@ -528,6 +528,7 @@ interface ValuationResult {
     date: string;
     price: number | null;
     reason: string;
+    visibility?: "full" | "teaser" | "locked";
   }[];
   marketRead: string;
   strategy: string;
@@ -571,6 +572,10 @@ interface PreviewApiResponse {
   preview: {
     confidence: "High" | "Medium" | "Low";
     confidenceReason: string;
+    quickSaleRange: {
+      low: number | null;
+      high: number | null;
+    } | null;
     rangePreview: PreviewRange[];
     sourceCount: number;
     hiddenComparableCount: number;
@@ -578,6 +583,7 @@ interface PreviewApiResponse {
       type: "Sale" | "Listing";
       size: string;
       date: string;
+      price: number | null;
       whyItMatters: string;
       visibility: "teaser" | "locked";
     }[];
@@ -716,6 +722,7 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
       date: c.date || "Not stated",
       price: c.price,
       reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
+      visibility: "full" as const,
     })),
     ...(api.listings ?? []).map((c) => ({
       type: "Listing" as const,
@@ -723,6 +730,7 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
       date: c.date || "Not stated",
       price: c.price,
       reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
+      visibility: "full" as const,
     })),
   ];
 
@@ -768,8 +776,9 @@ function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): Valuati
     type: row.type === "Listing" ? "Listing" : "Sale",
     size: row.size || "Not stated",
     date: row.date || "Not stated",
-    price: null,
+    price: row.visibility === "teaser" ? row.price ?? null : null,
     reason: row.whyItMatters || "Comparable detail unlocks with the full report.",
+    visibility: row.visibility,
   }));
 
   return {
@@ -790,8 +799,8 @@ function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): Valuati
       api.preview?.confidenceReason ||
       "Confidence depends on how closely the available evidence matches this exact property.",
     fairValueExplanation: "Exact valuation figures unlock when you request the full report.",
-    quickSaleLow: null,
-    quickSaleHigh: null,
+    quickSaleLow: api.preview?.quickSaleRange?.low ?? null,
+    quickSaleHigh: api.preview?.quickSaleRange?.high ?? null,
     suggestedListLow: null,
     suggestedListHigh: null,
     comparables: previewRows.length
@@ -803,6 +812,7 @@ function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): Valuati
             date: "Not stated",
             price: null,
             reason: "Comparable detail unlocks with the full report.",
+            visibility: "locked" as const,
           },
         ],
     marketRead: "Unlock the full report to reveal the market read for this property.",
@@ -1501,6 +1511,8 @@ const ValuationPage = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const showLockedFairValuePreview = !unlocked && result?.accessState === "preview";
+
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
@@ -2095,16 +2107,40 @@ const ValuationPage = () => {
 
             {/* ── Price section — numbers blurred until unlocked ── */}
             <div className="relative">
-
               {/* Fair Value + Confidence */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
                 <div className="rounded-2xl overflow-hidden shadow-sm">
-                  <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold mb-2">Fair Value</p>
-                    <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
-                      {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
-                    </p>
-                    <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
+                  <div className="relative overflow-hidden bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
+                    <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 42%), radial-gradient(circle at bottom left, rgba(255,255,255,0.12), transparent 46%)" }} />
+                    <div className="relative">
+                      <div className="mb-4 flex items-start justify-between gap-3">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/75 font-bold">Fair Value</p>
+                        {showLockedFairValuePreview && (
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+                            <Lock className="h-3 w-3" />
+                            Exact range ready
+                          </span>
+                        )}
+                      </div>
+
+                      {showLockedFairValuePreview ? (
+                        <div className="grid gap-4">
+                          <div className="inline-flex max-w-full items-center rounded-2xl border border-white/18 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-sm">
+                            <HiddenRangeValue currency={result.currency} />
+                          </div>
+                          <p className="max-w-xl text-sm leading-relaxed text-white/90">
+                            Comparable-backed fair value is prepared. Unlock the report to reveal the exact range and the reasoning behind it.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
+                            {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
+                          </p>
+                          <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
@@ -2134,7 +2170,7 @@ const ValuationPage = () => {
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
-                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
+                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} />
                 <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} color="#0B3D2E" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
                 <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} color="#1A7A5A" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
@@ -2200,7 +2236,7 @@ const ValuationPage = () => {
                   </thead>
                   <tbody>
                     {result.comparables.map((c, i) => {
-                      const isFirst = i === 0;
+                      const isLockedPreviewRow = !unlocked && c.visibility === "locked";
                       return (
                       <tr key={i} className="border-b border-border/50 last:border-0">
                         <td className="py-3 pr-4">
@@ -2210,10 +2246,10 @@ const ValuationPage = () => {
                         </td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.date}</td>
-                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${!unlocked && !isFirst ? "blur-md" : ""}`}>
+                        <td className={`py-3 pr-4 font-bold transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-md" : ""}`}>
                           {fmt(c.price, result.currency)}
                         </td>
-                        <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${!unlocked && !isFirst ? "blur-sm" : ""}`}>
+                        <td className={`py-3 text-muted-foreground max-w-xs transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
                           {c.reason}
                         </td>
                       </tr>
@@ -2543,6 +2579,16 @@ const GateCard = ({
     </div>
   </div>
 );
+
+const HiddenRangeValue = ({ currency = "AED" }: { currency?: string }) => {
+  return (
+    <div className="max-w-full text-white">
+      <span className="inline-block max-w-full text-2xl font-bold tracking-[0.02em] text-white/95 blur-[3px] sm:text-3xl">
+        {currency} X,XXX,XXX - X,XXX,XXX
+      </span>
+    </div>
+  );
+};
 
 async function loadTurnstileScript() {
   if (typeof window === "undefined") {
