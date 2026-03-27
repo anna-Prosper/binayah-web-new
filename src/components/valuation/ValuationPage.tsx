@@ -503,25 +503,30 @@ interface GateErrors {
 }
 
 interface ValuationResult {
+  leadId?: string;
+  createdAt?: string;
+  accessState?: "preview" | "unlocked";
+  previewRanges?: PreviewRange[];
+  sourceCount?: number;
   currency: string;
   community: string;
   city: string;
   country: string;
   tags: string[];
-  fairValueLow: number;
-  fairValueHigh: number;
+  fairValueLow: number | null;
+  fairValueHigh: number | null;
   confidence: "High" | "Medium" | "Low";
   confidenceReason: string;
   fairValueExplanation: string;
-  quickSaleLow: number;
-  quickSaleHigh: number;
-  suggestedListLow: number;
-  suggestedListHigh: number;
+  quickSaleLow: number | null;
+  quickSaleHigh: number | null;
+  suggestedListLow: number | null;
+  suggestedListHigh: number | null;
   comparables: {
     type: "Sale" | "Listing";
     size: string;
     date: string;
-    price: number;
+    price: number | null;
     reason: string;
   }[];
   marketRead: string;
@@ -535,6 +540,7 @@ interface ValuationResult {
 interface ApiResponse {
   leadId: string;
   createdAt: string;
+  accessState?: "preview" | "unlocked";
   currency: string;
   estimate_low: number;
   estimate_high: number;
@@ -551,11 +557,120 @@ interface ApiResponse {
   listings: { size: string; date: string; price: number; headline: string; notes: string }[];
 }
 
+interface PreviewRange {
+  label: string;
+  tone: "quick" | "fair" | "list";
+  startPercent: number;
+  widthPercent: number;
+}
+
+interface PreviewApiResponse {
+  leadId: string;
+  createdAt: string;
+  accessState?: "preview";
+  preview: {
+    confidence: "High" | "Medium" | "Low";
+    confidenceReason: string;
+    rangePreview: PreviewRange[];
+    sourceCount: number;
+    hiddenComparableCount: number;
+    comparableRows: {
+      type: "Sale" | "Listing";
+      size: string;
+      date: string;
+      whyItMatters: string;
+      visibility: "teaser" | "locked";
+    }[];
+  };
+}
+
+interface DocumentExtractionResponse {
+  inquiry?: {
+    propertyName?: string;
+    location?: string;
+    city?: string;
+    propertyType?: string;
+    bedrooms?: string;
+    bathrooms?: string;
+    size?: string;
+    ownerName?: string;
+    phone?: string;
+    email?: string;
+  };
+  fileName?: string;
+  mimeType?: string;
+  documentType?: string;
+  summary?: string;
+  warnings?: string[];
+  error?: string;
+}
+
+interface TurnstileConfig {
+  enabled: boolean;
+  configured: boolean;
+  siteKey: string;
+  action: string;
+}
+
+interface DocumentUploadConfig {
+  enabled: boolean;
+  configured: boolean;
+  maxFileSizeBytes: number;
+  accept: string;
+  acceptedMimeTypes: string[];
+}
+
+interface PendingTurnstileRequest {
+  resolve: (token: string) => void;
+  reject: (error: Error) => void;
+}
+
+interface TurnstileApi {
+  render(
+    container: HTMLElement,
+    options: {
+      sitekey: string;
+      action: string;
+      appearance?: "always" | "execute" | "interaction-only";
+      execution?: "render" | "execute";
+      callback: (token: string) => void;
+      "error-callback"?: () => void;
+      "expired-callback"?: () => void;
+      "timeout-callback"?: () => void;
+    },
+  ): string | number;
+  execute(widgetId?: string | number): void;
+  reset(widgetId?: string | number): void;
+  remove(widgetId: string | number): void;
+}
+
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2500;
-const STREAM_TIMEOUT_MS = 90_000; // 90s
+const STREAM_TIMEOUT_MS = 190_000;
+const turnstileScriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const defaultTurnstileConfig: TurnstileConfig = {
+  enabled: false,
+  configured: true,
+  siteKey: "",
+  action: "valuation_submit",
+};
+const defaultDocumentUploadConfig: DocumentUploadConfig = {
+  enabled: true,
+  configured: true,
+  maxFileSizeBytes: 8 * 1024 * 1024,
+  accept: ".pdf,.png,.jpg,.jpeg,.webp,.gif",
+  acceptedMimeTypes: ["application/pdf", "image/png", "image/jpeg", "image/webp", "image/gif"],
+};
+
+let turnstileScriptPromise: Promise<TurnstileApi> | null = null;
 
 const processingSteps = [
   { label: "Preparing",         desc: "Validating property details" },
@@ -590,6 +705,7 @@ function validateForm(form: FormData): FieldErrors {
 }
 
 function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
+  const defaultMovingFactors = DEED_DUMMY_RESULT.movingFactors;
   const community = extractCommunity(form.unit);
   const propType = form.type?.toLowerCase() || "property";
 
@@ -611,6 +727,9 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
   ];
 
   return {
+    leadId: api.leadId,
+    createdAt: api.createdAt,
+    accessState: api.accessState || "unlocked",
     currency: api.currency || "AED",
     community,
     city: form.city || "Dubai",
@@ -632,17 +751,148 @@ function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
       api.recommended_list_price?.note,
       api.quick_sale_range?.note,
     ].filter(Boolean) as string[],
-    movingFactors: [
-      "Specific floor level and direct view (sea, community, or road-facing).",
-      "Condition and quality of finishes — upgraded kitchens and bathrooms add material value.",
-      `Vacancy status — vacant ${propType}s typically command a 3–8% premium.`,
-      "Furnishing level and quality for rental-intent buyers.",
-      "Building age, facilities, and service charge ratio.",
-      "Proximity to metro, retail, and key landmarks.",
-    ],
-    disclaimer: api.disclaimer || "AI-assisted market snapshot. Not a formal appraisal.",
+    movingFactors: defaultMovingFactors.map((factor) =>
+      factor.includes("Vacancy status")
+        ? `Vacancy status — vacant ${propType}s typically command a 3–8% premium.`
+        : factor,
+    ),
+    disclaimer: api.disclaimer || DEED_DUMMY_RESULT.disclaimer,
     sources: api.sources || [],
+    sourceCount: Array.isArray(api.sources) ? api.sources.length : 0,
   };
+}
+
+function mapPreviewApiToResult(api: PreviewApiResponse, form: FormData): ValuationResult {
+  const community = extractCommunity(form.unit);
+  const previewRows: ValuationResult["comparables"] = (api.preview?.comparableRows ?? []).map((row) => ({
+    type: row.type === "Listing" ? "Listing" : "Sale",
+    size: row.size || "Not stated",
+    date: row.date || "Not stated",
+    price: null,
+    reason: row.whyItMatters || "Comparable detail unlocks with the full report.",
+  }));
+
+  return {
+    leadId: api.leadId,
+    createdAt: api.createdAt,
+    accessState: "preview",
+    previewRanges: api.preview?.rangePreview || [],
+    sourceCount: Number(api.preview?.sourceCount || 0),
+    currency: "AED",
+    community,
+    city: form.city || "Dubai",
+    country: "UAE",
+    tags: [form.type, community, form.intent].filter(Boolean) as string[],
+    fairValueLow: null,
+    fairValueHigh: null,
+    confidence: api.preview?.confidence || "Low",
+    confidenceReason:
+      api.preview?.confidenceReason ||
+      "Confidence depends on how closely the available evidence matches this exact property.",
+    fairValueExplanation: "Exact valuation figures unlock when you request the full report.",
+    quickSaleLow: null,
+    quickSaleHigh: null,
+    suggestedListLow: null,
+    suggestedListHigh: null,
+    comparables: previewRows.length
+      ? previewRows
+      : [
+          {
+            type: "Sale" as const,
+            size: "Not stated",
+            date: "Not stated",
+            price: null,
+            reason: "Comparable detail unlocks with the full report.",
+          },
+        ],
+    marketRead: "Unlock the full report to reveal the market read for this property.",
+    strategy: "Unlock the full report to reveal the recommended sale strategy.",
+    strategyBullets: [
+      "Suggested list pricing unlocks after the contact step.",
+      "Quick-sale guidance unlocks after the contact step.",
+    ],
+    movingFactors: DEED_DUMMY_RESULT.movingFactors,
+    disclaimer: "AI-assisted market snapshot. Not a formal appraisal.",
+    sources: [],
+  };
+}
+
+function getPreviewRange(result: ValuationResult | null, label: string) {
+  const normalizedLabel = label.trim().toLowerCase();
+  return result?.previewRanges?.find((range) => range.label.trim().toLowerCase() === normalizedLabel);
+}
+
+function normalizeTurnstileConfig(value: any): TurnstileConfig {
+  const safeValue = value && typeof value === "object" ? value : {};
+
+  return {
+    enabled: Boolean(safeValue.enabled),
+    configured:
+      typeof safeValue.configured === "boolean" ? safeValue.configured : !safeValue.enabled,
+    siteKey: String(safeValue.siteKey || "").trim(),
+    action: String(safeValue.action || "").trim() || "valuation_submit",
+  };
+}
+
+function normalizeDocumentUploadConfig(value: any): DocumentUploadConfig {
+  const safeValue = value && typeof value === "object" ? value : {};
+  const maxFileSizeBytes = Number(safeValue.maxFileSizeBytes);
+
+  return {
+    enabled:
+      typeof safeValue.enabled === "boolean"
+        ? safeValue.enabled
+        : defaultDocumentUploadConfig.enabled,
+    configured:
+      typeof safeValue.configured === "boolean"
+        ? safeValue.configured
+        : defaultDocumentUploadConfig.configured,
+    maxFileSizeBytes:
+      Number.isFinite(maxFileSizeBytes) && maxFileSizeBytes > 0
+        ? maxFileSizeBytes
+        : defaultDocumentUploadConfig.maxFileSizeBytes,
+    accept:
+      typeof safeValue.accept === "string" && safeValue.accept.trim()
+        ? safeValue.accept
+        : defaultDocumentUploadConfig.accept,
+    acceptedMimeTypes:
+      Array.isArray(safeValue.acceptedMimeTypes) && safeValue.acceptedMimeTypes.length
+        ? safeValue.acceptedMimeTypes.map((entry: unknown) => String(entry || "").trim()).filter(Boolean)
+        : defaultDocumentUploadConfig.acceptedMimeTypes,
+  };
+}
+
+function resolveDocumentMimeType(file: File) {
+  const normalizedType = String(file.type || "").trim().toLowerCase();
+  if (normalizedType) {
+    return normalizedType;
+  }
+
+  const fileName = file.name.toLowerCase();
+  if (fileName.endsWith(".pdf")) return "application/pdf";
+  if (fileName.endsWith(".png")) return "image/png";
+  if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) return "image/jpeg";
+  if (fileName.endsWith(".webp")) return "image/webp";
+  if (fileName.endsWith(".gif")) return "image/gif";
+  return "";
+}
+
+async function readFileAsBase64(file: File) {
+  return await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("The selected file could not be read."));
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      const separatorIndex = result.indexOf(",");
+      if (separatorIndex === -1) {
+        reject(new Error("The selected file could not be read."));
+        return;
+      }
+
+      resolve(result.slice(separatorIndex + 1));
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 // Core streaming fetch — throws on failure, returns ApiResponse on success
@@ -784,6 +1034,12 @@ const ValuationPage = () => {
   const [deedParsed, setDeedParsed] = useState(false);
   const [useDeedResult, setUseDeedResult] = useState(false);
   const deedInputRef = useRef<HTMLInputElement>(null);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetIdRef = useRef<string | number | null>(null);
+  const turnstileWidgetPromiseRef = useRef<Promise<TurnstileApi> | null>(null);
+  const turnstilePendingRef = useRef<PendingTurnstileRequest | null>(null);
+  const turnstileConfigRef = useRef<TurnstileConfig>(defaultTurnstileConfig);
+  const documentUploadConfigRef = useRef<DocumentUploadConfig>(defaultDocumentUploadConfig);
   const [showPlaces, setShowPlaces] = useState(false);
   const placesRef = useRef<HTMLDivElement>(null);
   const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
@@ -791,6 +1047,7 @@ const ValuationPage = () => {
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
   const [gateErrors, setGateErrors] = useState<GateErrors>({});
   const [gateSubmitting, setGateSubmitting] = useState(false);
+  const [turnstileState, setTurnstileState] = useState<"idle" | "verifying" | "ready" | "error">("idle");
   const topRef = useRef<HTMLDivElement>(null);
   const unitInputRef = useRef<HTMLInputElement>(null);
   const areaSuggestionsRef = useRef<HTMLDivElement>(null);
@@ -833,6 +1090,25 @@ const ValuationPage = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const { turnstileConfig } = await loadValuationConfig();
+        if (!cancelled && turnstileConfig.enabled && turnstileConfig.configured) {
+          await ensureTurnstileWidget(turnstileConfig);
+        }
+      } catch {}
+    })();
+
+    return () => {
+      cancelled = true;
+      rejectPendingTurnstileRequest("Security verification was interrupted.");
+      removeTurnstileWidget();
+    };
+  }, []);
+
   const runValuation = useCallback(async (payload: object, attempt: number) => {
     try {
       const data = await fetchValuation(payload);
@@ -873,34 +1149,71 @@ const ValuationPage = () => {
     }
   }, [form]);
 
-  // Simulate parsing a title deed — in production this would call
-  // an OCR/AI endpoint. For now we extract what we can from the filename
-  // and fill plausible UAE property details with a realistic delay.
   const handleDeedUpload = async (file: File) => {
     setDeedFile(file);
     setDeedParsing(true);
     setDeedParsed(false);
 
-    // Simulate OCR processing time (1.5–2.5s)
-    await new Promise((r) => setTimeout(r, 1800 + Math.random() * 700));
+    try {
+      setGlobalError(null);
+      setUseDeedResult(false);
 
-    // Try to extract clues from filename (e.g. "Marina_Gate_2_Unit_2704.pdf")
-    const name = file.name.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ");
-    const parsed = parseValuationSearch(name);
+      const { turnstileConfig, documentUploadConfig } = await loadValuationConfig();
+      const mimeType = resolveDocumentMimeType(file);
 
-    // Fill whatever we could extract, leave blanks for the rest
-    setForm((f) => ({
-      ...f,
-      ...(parsed.unit  ? { unit:  parsed.unit  } : {}),
-      ...(parsed.area  ? { area:  parsed.area  } : {}),
-      ...(parsed.city  ? { city:  parsed.city  } : {}),
-      ...(parsed.type  ? { type:  parsed.type  } : {}),
-      ...(parsed.beds  ? { beds:  parsed.beds  } : {}),
-      ...(parsed.size  ? { size:  parsed.size  } : {}),
-    }));
+      if (!mimeType || !documentUploadConfig.acceptedMimeTypes.includes(mimeType)) {
+        throw new Error("Unsupported file format. Upload PDF, PNG, JPG/JPEG, WEBP, or GIF.");
+      }
 
-    setDeedParsing(false);
-    setDeedParsed(true);
+      if (file.size > documentUploadConfig.maxFileSizeBytes) {
+        throw new Error("The selected file is too large for document extraction.");
+      }
+
+      const fileData = await readFileAsBase64(file);
+      const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+
+      const response = await fetch("/api/valuation/document", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          mimeType,
+          fileData,
+          ...(turnstileToken ? { turnstileToken } : {}),
+        }),
+      });
+
+      const data = await response.json().catch(() => null) as DocumentExtractionResponse | null;
+      if (!response.ok) {
+        throw new Error(data?.error || "Could not extract property details from the uploaded file.");
+      }
+
+      const inquiry = data?.inquiry || {};
+      setForm((current) => ({
+        ...current,
+        ...(inquiry.propertyName ? { unit: inquiry.propertyName } : {}),
+        ...(inquiry.location ? { area: inquiry.location } : {}),
+        ...(inquiry.city ? { city: inquiry.city } : {}),
+        ...(inquiry.propertyType ? { type: inquiry.propertyType } : {}),
+        ...(inquiry.bedrooms ? { beds: inquiry.bedrooms } : {}),
+        ...(inquiry.bathrooms ? { baths: inquiry.bathrooms } : {}),
+        ...(inquiry.size ? { size: inquiry.size } : {}),
+      }));
+      setGate((current) => ({
+        name: current.name || inquiry.ownerName || current.name,
+        phone: current.phone || inquiry.phone || current.phone,
+        email: current.email || inquiry.email || current.email,
+      }));
+      setDeedParsed(true);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Could not read the deed.";
+      setGlobalError(msg);
+      setDeedFile(null);
+      setDeedParsed(false);
+    } finally {
+      setDeedParsing(false);
+      resetTurnstileWidget();
+    }
   };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -922,37 +1235,27 @@ const ValuationPage = () => {
     setActiveProcessStep(0);
     topRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    // If deed was uploaded → show dummy result after simulated processing
-    if (deedParsed && deedFile) {
-      for (let i = 0; i < 4; i++) {
-        await new Promise((r) => setTimeout(r, 1100));
-        setActiveProcessStep(i + 1);
-      }
-      setResult(DEED_DUMMY_RESULT);
-      setUseDeedResult(true);
-      setStep("results");
-      topRef.current?.scrollIntoView({ behavior: "smooth" });
-      return;
+    try {
+      const { turnstileConfig } = await loadValuationConfig();
+      const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+      const apiPayload = {
+        propertyName: form.unit,
+        location: form.area,
+        city: form.city,
+        propertyType: form.type,
+        bedrooms: form.beds,
+        bathrooms: form.baths,
+        size: form.size,
+        intent: form.intent,
+        ...(turnstileToken ? { turnstileToken } : {}),
+      };
+
+      await runValuationWithPhases(apiPayload, 1);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Security verification failed.";
+      setGlobalError(msg);
+      setStep("form");
     }
-
-    // Kick off stream — phase updates happen inside runValuation via phaseMap
-    // We hook into the stream for phase events separately
-    const apiPayload = {
-      propertyName: form.unit,
-      location: form.area,
-      city: form.city,
-      propertyType: form.type,
-      bedrooms: form.beds,
-      bathrooms: form.baths,
-      size: form.size,
-      ownerName: gate.name,
-      email: gate.email,
-      phone: gate.phone,
-      intent: form.intent,
-    };
-
-    // Run with phase tracking
-    await runValuationWithPhases(apiPayload, 1);
   };
 
   // Separate function that also tracks phases (keeps runValuation clean for retries)
@@ -986,7 +1289,7 @@ const ValuationPage = () => {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
-      let finalData: ApiResponse | null = null;
+      let finalData: PreviewApiResponse | null = null;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -998,7 +1301,7 @@ const ValuationPage = () => {
 
         for (const line of lines) {
           if (!line.trim()) continue;
-          let evt: { event: string; data?: ApiResponse; error?: string };
+          let evt: { event: string; data?: PreviewApiResponse; error?: string };
           try { evt = JSON.parse(line); } catch { continue; }
 
           if (evt.event === "error") throw new Error(evt.error ?? "Valuation failed.");
@@ -1009,7 +1312,9 @@ const ValuationPage = () => {
 
       if (!finalData) throw new Error("Stream ended before a result was returned.");
 
-      setResult(mapApiToResult(finalData, form));
+      setResult(mapPreviewApiToResult(finalData, form));
+      setUnlocked(false);
+      setUseDeedResult(false);
       setStep("results");
       topRef.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -1037,8 +1342,150 @@ const ValuationPage = () => {
       }
     } finally {
       clearTimeout(timeout);
+      resetTurnstileWidget();
     }
   };
+
+  const loadValuationConfig = useCallback(async () => {
+    const response = await fetch("/api/valuation/config", {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("Could not load the valuation form settings.");
+    }
+
+    const data = await response.json().catch(() => null) as {
+      turnstile?: TurnstileConfig;
+      documentUpload?: DocumentUploadConfig;
+    } | null;
+    const nextTurnstileConfig = normalizeTurnstileConfig(data?.turnstile);
+    const nextDocumentUploadConfig = normalizeDocumentUploadConfig(data?.documentUpload);
+    turnstileConfigRef.current = nextTurnstileConfig;
+    documentUploadConfigRef.current = nextDocumentUploadConfig;
+
+    return {
+      turnstileConfig: nextTurnstileConfig,
+      documentUploadConfig: nextDocumentUploadConfig,
+    };
+  }, []);
+
+  const ensureTurnstileWidget = useCallback(async (config: TurnstileConfig) => {
+    if (!config.enabled) {
+      return null;
+    }
+
+    if (!config.configured) {
+      throw new Error("Security verification is temporarily unavailable. Please try again later.");
+    }
+
+    if (!turnstileContainerRef.current) {
+      throw new Error("Security verification is not ready yet. Please try again.");
+    }
+
+    if (turnstileWidgetIdRef.current !== null) {
+      const turnstile = await loadTurnstileScript();
+      setTurnstileState("ready");
+      return turnstile;
+    }
+
+    if (!turnstileWidgetPromiseRef.current) {
+      turnstileWidgetPromiseRef.current = (async () => {
+        const turnstile = await loadTurnstileScript();
+        if (turnstileWidgetIdRef.current === null && turnstileContainerRef.current) {
+          turnstileWidgetIdRef.current = turnstile.render(turnstileContainerRef.current, {
+            sitekey: config.siteKey,
+            action: config.action,
+            appearance: "execute",
+            execution: "execute",
+            callback(token) {
+              const pending = turnstilePendingRef.current;
+              if (!pending) return;
+              turnstilePendingRef.current = null;
+              setTurnstileState("ready");
+              pending.resolve(token);
+            },
+            "error-callback": () => rejectPendingTurnstileRequest("Security verification failed. Please try again."),
+            "expired-callback": () => rejectPendingTurnstileRequest("Security verification expired. Please try again."),
+            "timeout-callback": () => rejectPendingTurnstileRequest("Security verification timed out. Please try again."),
+          });
+        }
+
+        setTurnstileState("ready");
+        return turnstile;
+      })();
+    }
+
+    try {
+      return await turnstileWidgetPromiseRef.current;
+    } finally {
+      turnstileWidgetPromiseRef.current = null;
+    }
+  }, []);
+
+  const requestTurnstileToken = useCallback(async () => {
+    const config = turnstileConfigRef.current.enabled || turnstileConfigRef.current.siteKey
+      ? turnstileConfigRef.current
+      : (await loadValuationConfig()).turnstileConfig;
+
+    if (!config.enabled) {
+      return "";
+    }
+
+    const turnstile = await ensureTurnstileWidget(config);
+    if (!turnstile || turnstileWidgetIdRef.current === null) {
+      throw new Error("Security verification is not ready yet. Please try again.");
+    }
+
+    setTurnstileState("verifying");
+
+    return await new Promise<string>((resolve, reject) => {
+      rejectPendingTurnstileRequest("Security verification was interrupted.");
+      turnstilePendingRef.current = { resolve, reject };
+
+      try {
+        turnstile.reset(turnstileWidgetIdRef.current);
+        turnstile.execute(turnstileWidgetIdRef.current);
+      } catch {
+        rejectPendingTurnstileRequest("Security verification could not start. Please try again.");
+      }
+    });
+  }, [ensureTurnstileWidget, loadValuationConfig]);
+
+  const resetTurnstileWidget = useCallback(() => {
+    if (!window.turnstile || turnstileWidgetIdRef.current === null) return;
+
+    try {
+      window.turnstile.reset(turnstileWidgetIdRef.current);
+      if (turnstileConfigRef.current.enabled && turnstileConfigRef.current.configured) {
+        setTurnstileState("ready");
+      }
+    } catch {}
+  }, []);
+
+  const removeTurnstileWidget = useCallback(() => {
+    turnstileWidgetPromiseRef.current = null;
+
+    if (!window.turnstile || turnstileWidgetIdRef.current === null) {
+      turnstileWidgetIdRef.current = null;
+      return;
+    }
+
+    try {
+      window.turnstile.remove(turnstileWidgetIdRef.current);
+    } catch {}
+
+    turnstileWidgetIdRef.current = null;
+  }, []);
+
+  const rejectPendingTurnstileRequest = useCallback((message: string) => {
+    const pending = turnstilePendingRef.current;
+    if (!pending) return;
+    turnstilePendingRef.current = null;
+    setTurnstileState("error");
+    pending.reject(new Error(message));
+  }, []);
 
   const copySummary = () => {
     if (!result) return;
@@ -1240,7 +1687,7 @@ const ValuationPage = () => {
                     <input
                       ref={deedInputRef}
                       type="file"
-                      accept=".pdf,.jpg,.jpeg,.png,.heic"
+                      accept={documentUploadConfigRef.current.accept}
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -1255,7 +1702,7 @@ const ValuationPage = () => {
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
                         <div className="text-left">
                           <p className="text-sm font-semibold">Upload title deed</p>
-                          <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
+                          <p className="text-xs opacity-70">PDF, PNG, JPG, WEBP or GIF — we&apos;ll extract the property details automatically</p>
                         </div>
                         <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
                       </button>
@@ -1687,9 +2134,9 @@ const ValuationPage = () => {
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
-                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} blurred={false} />
-                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#0B3D2E" currency={result.currency} blurred={!unlocked} />
-                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#1A7A5A" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
+                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} color="#0B3D2E" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
+                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} color="#1A7A5A" currency={result.currency} blurred={!unlocked} textOverride={!unlocked && result.accessState === "preview" ? "— —" : undefined} />
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
               </div>
 
@@ -1803,20 +2250,44 @@ const ValuationPage = () => {
                   const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
                   if (!hasPhone && !hasEmail) errs.contact = "Please add a phone or email so we can follow up.";
                   if (Object.keys(errs).length) { setGateErrors(errs); return; }
+                  if (!result?.leadId) {
+                    setGateErrors({ contact: "The valuation preview is missing. Please run the valuation again." });
+                    return;
+                  }
+
                   setGateSubmitting(true);
-                  fetch("/api/leads", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      name: gate.name, phone: gate.phone, email: gate.email,
-                      source_page: "valuation", community: form.unit,
-                      emirate: form.city, interest_type: form.intent || "valuation",
-                      calculator_inputs: { ...form, ...gate },
-                    }),
-                  }).catch(() => {});
-                  await new Promise((r) => setTimeout(r, 400));
-                  setGateSubmitting(false);
-                  setUnlocked(true);
+                  setGlobalError(null);
+
+                  try {
+                    const { turnstileConfig } = await loadValuationConfig();
+                    const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+                    const response = await fetch("/api/valuation/unlock", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        leadId: result.leadId,
+                        ownerName: gate.name,
+                        phone: gate.phone,
+                        email: gate.email,
+                        ...(turnstileToken ? { turnstileToken } : {}),
+                      }),
+                    });
+
+                    const data = await response.json().catch(() => null) as ApiResponse | { error?: string } | null;
+                    if (!response.ok) {
+                      throw new Error((data as { error?: string } | null)?.error || "Could not unlock the full report.");
+                    }
+
+                    setResult(mapApiToResult(data as ApiResponse, form));
+                    setUnlocked(true);
+                    setUseDeedResult(false);
+                  } catch (err) {
+                    const msg = err instanceof Error ? err.message : "Could not unlock the full report.";
+                    setGateErrors({ contact: msg });
+                  } finally {
+                    setGateSubmitting(false);
+                    resetTurnstileWidget();
+                  }
                 }}
               />
             )}
@@ -1912,6 +2383,7 @@ const ValuationPage = () => {
         )}
       </AnimatePresence>
 
+      <div ref={turnstileContainerRef} className="h-0 overflow-hidden" />
       <Footer />
     </div>
   );
@@ -2072,16 +2544,78 @@ const GateCard = ({
   </div>
 );
 
+async function loadTurnstileScript() {
+  if (typeof window === "undefined") {
+    throw new Error("Security verification is not available in this browser.");
+  }
+
+  if (window.turnstile) {
+    return window.turnstile;
+  }
+
+  if (!turnstileScriptPromise) {
+    turnstileScriptPromise = new Promise<TurnstileApi>((resolve, reject) => {
+      const resolveTurnstile = () => {
+        if (window.turnstile) {
+          resolve(window.turnstile);
+          return;
+        }
+
+        reject(new Error("Security verification could not load. Please try again."));
+      };
+
+      const existingScript = document.querySelector(`script[src="${turnstileScriptUrl}"]`) as HTMLScriptElement | null;
+      if (existingScript) {
+        existingScript.addEventListener("load", resolveTurnstile, { once: true });
+        existingScript.addEventListener(
+          "error",
+          () => reject(new Error("Security verification could not load. Please try again.")),
+          { once: true },
+        );
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = turnstileScriptUrl;
+      script.async = true;
+      script.defer = true;
+      script.onload = resolveTurnstile;
+      script.onerror = () =>
+        reject(new Error("Security verification could not load. Please try again."));
+      document.head.appendChild(script);
+    }).catch((error) => {
+      turnstileScriptPromise = null;
+      throw error;
+    });
+  }
+
+  return await turnstileScriptPromise;
+}
+
 // ─── PriceBar ─────────────────────────────────────────────────────────────────
 
 const PriceBar = ({
-  label, low, high, min, max, color, currency = "AED", blurred = false,
+  label, low, high, min, max, rangePreview, color, currency = "AED", blurred = false, textOverride,
 }: {
-  label: string; low: number; high: number; min: number; max: number; color: string; currency?: string; blurred?: boolean;
+  label: string;
+  low: number | null;
+  high: number | null;
+  min: number | null;
+  max: number | null;
+  rangePreview?: PreviewRange;
+  color: string;
+  currency?: string;
+  blurred?: boolean;
+  textOverride?: string;
 }) => {
-  const range = max - min || 1;
-  const leftPct = ((low - min) / range) * 100;
-  const widthPct = ((high - low) / range) * 100;
+  const range = (max ?? 0) - (min ?? 0) || 1;
+  const leftPct = rangePreview
+    ? rangePreview.startPercent
+    : (((low ?? min ?? 0) - (min ?? 0)) / range) * 100;
+  const widthPct = rangePreview
+    ? rangePreview.widthPercent
+    : (((high ?? low ?? 0) - (low ?? 0)) / range) * 100;
+  const text = textOverride || `${fmt(low, currency)} – ${fmt(high, currency)}`;
 
   return (
     <div className="flex items-center gap-3 mb-4 min-w-0">
@@ -2091,7 +2625,7 @@ const PriceBar = ({
           style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 3)}%`, backgroundColor: color }} />
       </div>
       <span className={`text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none ${blurred ? "blur-md" : ""}`}>
-        {fmt(low, currency)} – {fmt(high, currency)}
+        {text}
       </span>
     </div>
   );
