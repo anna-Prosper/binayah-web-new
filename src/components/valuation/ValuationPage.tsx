@@ -2099,12 +2099,6 @@ const ValuationPage = () => {
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
             className="max-w-4xl mx-auto px-4 sm:px-6 py-12"
           >
-            {/* Back */}
-            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#0B3D2E]/20 text-sm font-semibold text-[#0B3D2E] hover:bg-[#0B3D2E] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
-              <ArrowLeft className="h-4 w-4" /> New Search
-            </button>
-
             {/* Demo banner */}
             {useDeedResult && (
               <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-6 py-3.5 mb-4 flex items-center gap-3">
@@ -2117,14 +2111,23 @@ const ValuationPage = () => {
 
             {/* Header */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
-                  <Target className="h-4 w-4 text-white" />
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] shadow-[0_10px_24px_rgba(11,61,46,0.18)]">
+                    <Target className="h-4.5 w-4.5 text-white" />
+                  </div>
+                  <p className="text-[0.78rem] font-bold uppercase tracking-[0.28em] text-[#B8922F]">
+                    Valuation Snapshot
+                  </p>
                 </div>
-                <p className="text-[10px] font-bold tracking-[0.2em] uppercase"
-                  style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                  Valuation Snapshot
-                </p>
+                <button
+                  onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06]"
+                  type="button"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  New Search
+                </button>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold mb-2">{result.community}, {result.city}, {result.country}</h2>
               <p className="text-muted-foreground mb-4">Key pricing guidance first, then comparable sales and market context.</p>
