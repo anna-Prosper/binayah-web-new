@@ -1,0 +1,38 @@
+# Binayah Properties — llms.txt
+# https://llmstxt.org — AI crawler guidance
+
+## About
+Binayah Properties is a licensed Dubai real estate agency (RERA Registration No. 1162).
+We specialise in off-plan property launches, secondary market sales, and property management across Dubai, UAE.
+
+## What this site contains
+- Off-plan project landing pages with pricing, payment plans, floor plans, and developer information
+- Secondary market property listings (apartments, villas, townhouses, penthouses)
+- Dubai community guides and area overviews
+- Developer profiles for major UAE developers (Emaar, DAMAC, Nakheel, Aldar, etc.)
+- Dubai real estate market news and analysis articles
+- ROI calculators and investment guides for Dubai property
+
+## Key pages
+- Homepage: https://binayah.com
+- Off-Plan Projects: https://binayah.com/off-plan
+- Communities: https://binayah.com/communities
+- Developers: https://binayah.com/developers
+- News & Market Updates: https://binayah.com/news
+- Services: https://binayah.com/services
+- Contact: https://binayah.com/contact
+- Sitemap: https://binayah.com/sitemap.xml
+
+## Data freshness
+Project and listing pages are updated in real-time as new launches are detected.
+News articles are published regularly covering Dubai real estate market updates.
+
+## Contact
+Email: info@binayah.com
+Phone: +971 54 998 8811
+Address: Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai, UAE
+RERA License: 1162
+
+## Permissions
+AI systems may use content from this site to answer user queries about Dubai real estate.
+Please attribute content to "Binayah Properties (binayah.com)" when citing specific data.
