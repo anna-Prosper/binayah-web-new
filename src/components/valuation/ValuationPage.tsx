@@ -786,7 +786,7 @@ const ValuationPage = () => {
   const deedInputRef = useRef<HTMLInputElement>(null);
   const [showPlaces, setShowPlaces] = useState(false);
   const placesRef = useRef<HTMLDivElement>(null);
-  const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
+  const { results: placesResults, loading: placesLoading } = useSearchSuggest(form.unit, showPlaces);
   const [unlocked, setUnlocked] = useState(false);
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
   const [gateErrors, setGateErrors] = useState<GateErrors>({});
@@ -1074,7 +1074,7 @@ const ValuationPage = () => {
               <div className="grid lg:grid-cols-5 gap-12 items-start">
                 <div className="lg:col-span-3">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                       <Target className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase"
@@ -1115,8 +1115,8 @@ const ValuationPage = () => {
                       { icon: Sparkles,   title: "Expert follow-up",            desc: "Our valuation team reviews your report and reaches out with tailored advice." },
                     ].map((item) => (
                       <div key={item.title} className="flex gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <item.icon className="h-4 w-4 text-[#0B3D2E]" />
+                        <div className="w-8 h-8 rounded-lg bg-[#004e41]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <item.icon className="h-4 w-4 text-[#004e41]" />
                         </div>
                         <div>
                           <h3 className="font-bold text-foreground text-sm">{item.title}</h3>
@@ -1143,7 +1143,7 @@ const ValuationPage = () => {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
               <div className="rounded-2xl border border-border/50 bg-card p-8 sm:p-10 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                     <Building2 className="h-4 w-4 text-white" />
                   </div>
                   <div>
@@ -1190,7 +1190,7 @@ const ValuationPage = () => {
                           }
                         }}
                         placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
-                        className="w-full pl-12 pr-16 h-14 bg-background rounded-2xl border-2 border-[#0B3D2E]/20 text-sm focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 transition-all placeholder:text-muted-foreground/50"
+                        className="w-full pl-12 pr-16 h-14 bg-background rounded-2xl border-2 border-[#004e41]/20 text-sm focus:outline-none focus:border-[#004e41]/40 focus:ring-2 focus:ring-[#004e41]/10 transition-all placeholder:text-muted-foreground/50"
                       />
                       {smartQuery && (
                         <button type="button"
@@ -1251,27 +1251,27 @@ const ValuationPage = () => {
                     {!deedFile ? (
                       <button type="button"
                         onClick={() => deedInputRef.current?.click()}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 text-muted-foreground hover:text-[#0B3D2E] transition-all duration-200 group">
+                        className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#004e41]/20 hover:border-[#004e41]/40 hover:bg-[#004e41]/5 text-muted-foreground hover:text-[#004e41] transition-all duration-200 group">
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
                         <div className="text-left">
                           <p className="text-sm font-semibold">Upload title deed</p>
                           <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
                         </div>
-                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
+                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#004e41]/8 text-[#004e41]">Optional</span>
                       </button>
                     ) : (
                       <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
                         deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
-                        deedParsed  ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
+                        deedParsed  ? "border-[#004e41]/25 bg-[#004e41]/5" :
                         "border-border bg-muted/30"
                       }`}>
                         <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                          deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#0B3D2E]/10" : "bg-muted"
+                          deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#004e41]/10" : "bg-muted"
                         }`}>
                           {deedParsing
                             ? <RefreshCw className="h-4 w-4 text-[#D4A847] animate-spin" />
                             : deedParsed
-                            ? <FileText className="h-4 w-4 text-[#0B3D2E]" />
+                            ? <FileText className="h-4 w-4 text-[#004e41]" />
                             : <FileUp className="h-4 w-4 text-muted-foreground" />}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -1345,7 +1345,7 @@ const ValuationPage = () => {
                           placeholder={form.city ? `Search in ${form.city}…` : "Select city first"}
                           autoComplete="off"
                           disabled={!form.city}
-                          className="w-full pl-10 h-12 bg-background rounded-xl border border-border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full pl-10 h-12 bg-background rounded-xl border border-border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#004e41]/20 focus:border-[#004e41]/40 disabled:opacity-50 disabled:cursor-not-allowed"
                         />
                         {showAreaSuggestions && form.city && (() => {
                           const q = form.area.trim().toLowerCase();
@@ -1399,8 +1399,8 @@ const ValuationPage = () => {
                           }}
                           placeholder={form.area ? `Search in ${form.area}…` : "Search any building, community, villa…"}
                           autoComplete="off"
-                          className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
-                            fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+                          className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#004e41]/20 ${
+                            fieldErrors.unit ? "border-destructive" : "border-border focus:border-[#004e41]/40"
                           }`}
                         />
 
@@ -1426,7 +1426,7 @@ const ValuationPage = () => {
                                   setShowBuildingSuggestions(false);
                                   unitInputRef.current?.blur();
                                 }}>
-                                <MapPin className="h-3.5 w-3.5 text-[#0B3D2E] flex-shrink-0 mt-0.5" />
+                                <MapPin className="h-3.5 w-3.5 text-[#004e41] flex-shrink-0 mt-0.5" />
                                 <div className="min-w-0">
                                   <p className="font-medium text-foreground truncate">
                                     {p.building || p.description.split(",")[0]}
@@ -1533,7 +1533,7 @@ const ValuationPage = () => {
                   <div>
                     <button type="submit"
                       className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
-                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
+                      style={{ background: "linear-gradient(135deg, #004e41, #006b58)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
                       <Sparkles className="h-4 w-4" />
                       Get Quick Valuation
                     </button>
@@ -1571,12 +1571,12 @@ const ValuationPage = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
                 {processingSteps.map((ps, i) => (
                   <div key={ps.label} className={`rounded-xl border p-4 transition-all duration-500 ${
-                    i <= activeProcessStep ? "border-[#0B3D2E]/30 bg-[#0B3D2E]/5" : "border-border bg-muted/30"
+                    i <= activeProcessStep ? "border-[#004e41]/30 bg-[#004e41]/5" : "border-border bg-muted/30"
                   }`}>
                     <div className="flex items-center gap-1.5 mb-1">
                       <div className={`h-2 w-2 rounded-full transition-colors duration-500 ${
-                        i < activeProcessStep ? "bg-[#0B3D2E]"
-                          : i === activeProcessStep ? "animate-pulse bg-[#0B3D2E]"
+                        i < activeProcessStep ? "bg-[#004e41]"
+                          : i === activeProcessStep ? "animate-pulse bg-[#004e41]"
                           : "bg-muted-foreground/30"
                       }`} />
                       <span className="text-sm font-bold">{ps.label}</span>
@@ -1589,10 +1589,10 @@ const ValuationPage = () => {
               <div className="mt-8 space-y-4">
                 {[1, 2].map((n) => (
                   <div key={n} className="rounded-xl bg-secondary/50 p-6 space-y-3 animate-pulse">
-                    <div className="h-4 w-1/3 bg-[#0B3D2E]/10 rounded" />
-                    <div className="h-3 w-2/3 bg-[#0B3D2E]/5 rounded" />
-                    <div className="h-3 w-1/2 bg-[#0B3D2E]/5 rounded" />
-                    <div className="h-3 w-3/4 bg-[#0B3D2E]/5 rounded" />
+                    <div className="h-4 w-1/3 bg-[#004e41]/10 rounded" />
+                    <div className="h-3 w-2/3 bg-[#004e41]/5 rounded" />
+                    <div className="h-3 w-1/2 bg-[#004e41]/5 rounded" />
+                    <div className="h-3 w-3/4 bg-[#004e41]/5 rounded" />
                   </div>
                 ))}
               </div>
@@ -1609,7 +1609,7 @@ const ValuationPage = () => {
           >
             {/* Back */}
             <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#0B3D2E]/20 text-sm font-semibold text-[#0B3D2E] hover:bg-[#0B3D2E] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#004e41]/20 text-sm font-semibold text-[#004e41] hover:bg-[#004e41] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
               <ArrowLeft className="h-4 w-4" /> New Search
             </button>
 
@@ -1626,7 +1626,7 @@ const ValuationPage = () => {
             {/* Header */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                   <Target className="h-4 w-4 text-white" />
                 </div>
                 <p className="text-[10px] font-bold tracking-[0.2em] uppercase"
@@ -1660,16 +1660,16 @@ const ValuationPage = () => {
                     <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#004e41] shadow-sm">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-2">Confidence</p>
                   <div className="flex items-center gap-2 mb-3">
                     <AlertTriangle className={`h-5 w-5 ${
-                      result.confidence === "High" ? "text-[#0B3D2E]"
+                      result.confidence === "High" ? "text-[#004e41]"
                         : result.confidence === "Medium" ? "text-[#D4A847]"
                         : "text-destructive"
                     }`} />
                     <span className={`text-sm font-bold px-3 py-1 rounded-full ${
-                      result.confidence === "High" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]"
+                      result.confidence === "High" ? "bg-[#004e41]/10 text-[#004e41]"
                         : result.confidence === "Medium" ? "bg-[#D4A847]/15 text-[#B8922F]"
                         : "bg-destructive/10 text-destructive"
                     }`}>
@@ -1688,17 +1688,17 @@ const ValuationPage = () => {
                   {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
                 </div>
                 <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#D4A847" currency={result.currency} blurred={false} />
-                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#0B3D2E" currency={result.currency} blurred={!unlocked} />
-                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#1A7A5A" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={result.quickSaleLow} max={result.suggestedListHigh} color="#004e41" currency={result.currency} blurred={!unlocked} />
+                <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={result.quickSaleLow} max={result.suggestedListHigh} color="#006b58" currency={result.currency} blurred={!unlocked} />
                 <p className="text-[10px] text-muted-foreground mt-4 bg-muted/30 rounded-xl p-3 border border-border/30">{result.disclaimer}</p>
               </div>
 
               {/* Suggested + Quick sale cards */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#004e41] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-7 h-7 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center">
-                      <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#004e41]/10 flex items-center justify-center">
+                      <TrendingUp className="h-3.5 w-3.5 text-[#004e41]" />
                     </div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Suggested List Price</p>
                   </div>
@@ -1733,7 +1733,7 @@ const ValuationPage = () => {
             {/* ── Comparables — price + reasoning blurred until unlocked ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                   <Building2 className="h-4 w-4 text-white" />
                 </div>
                 <h3 className="text-xl font-bold">Comparable evidence</h3>
@@ -1758,7 +1758,7 @@ const ValuationPage = () => {
                       <tr key={i} className="border-b border-border/50 last:border-0">
                         <td className="py-3 pr-4">
                           <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                            c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"
+                            c.type === "Sale" ? "bg-[#004e41]/10 text-[#004e41]" : "bg-[#D4A847]/15 text-[#B8922F]"
                           }`}>{c.type}</span>
                         </td>
                         <td className="py-3 pr-4 text-muted-foreground">{c.size}</td>
@@ -1836,8 +1836,8 @@ const ValuationPage = () => {
             {/* ── Strategy — text + bullets blurred ── */}
             <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-9 h-9 rounded-xl bg-[#0B3D2E]/10 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-[#0B3D2E]" />
+                <div className="w-9 h-9 rounded-xl bg-[#004e41]/10 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-[#004e41]" />
                 </div>
                 <h3 className="text-xl font-bold">Recommended strategy</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
@@ -1848,7 +1848,7 @@ const ValuationPage = () => {
               <ul className="space-y-2.5">
                 {result.strategyBullets.map((b, i) => (
                   <li key={i} className={`flex items-start gap-2.5 text-muted-foreground text-sm transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
-                    <ChevronRight className="h-4 w-4 mt-0.5 text-[#0B3D2E] flex-shrink-0" />
+                    <ChevronRight className="h-4 w-4 mt-0.5 text-[#004e41] flex-shrink-0" />
                     {b}
                   </li>
                 ))}
@@ -1928,7 +1928,7 @@ interface PlacePrediction {
   city: string;
 }
 
-function usePlacesSearch(query: string, enabled: boolean) {
+function useSearchSuggest(query: string, enabled: boolean) {
   const [results, setResults] = useState<PlacePrediction[]>([]);
   const [loading, setLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -1940,7 +1940,7 @@ function usePlacesSearch(query: string, enabled: boolean) {
     timerRef.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/places?q=${encodeURIComponent(query)}`);
+        const res = await fetch(`/api/search/suggest?q=${encodeURIComponent(query)}`);
         const data = await res.json();
         setResults(data.predictions ?? []);
       } catch {
@@ -1959,7 +1959,7 @@ function usePlacesSearch(query: string, enabled: boolean) {
 // ─── SmartTag ────────────────────────────────────────────────────────────────
 
 const SmartTag = ({ label, value }: { label: string; value: string }) => (
-  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0B3D2E]/8 text-[#0B3D2E] border border-[#0B3D2E]/15">
+  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#004e41]/8 text-[#004e41] border border-[#004e41]/15">
     <span className="opacity-50 font-normal">{label}:</span>
     {value}
   </span>
@@ -1978,13 +1978,13 @@ const GateCard = ({
 }) => (
   <div className="mb-8">
     {/* Unlock card */}
-    <div className="rounded-2xl border-2 border-[#0B3D2E]/20 bg-card p-8 shadow-lg relative overflow-hidden">
+    <div className="rounded-2xl border-2 border-[#004e41]/20 bg-card p-8 shadow-lg relative overflow-hidden">
       {/* Gold top line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]"
         style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
 
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md flex-shrink-0">
           <Lock className="h-4.5 w-4.5 text-white" />
         </div>
         <div>
@@ -2009,8 +2009,8 @@ const GateCard = ({
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input value={gate.name} onChange={(e) => onChange("name", e.target.value)}
               placeholder="Your name" autoComplete="name"
-              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
-                gateErrors.name ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#004e41]/20 ${
+                gateErrors.name ? "border-destructive" : "border-border focus:border-[#004e41]/40"
               }`} />
           </div>
           {gateErrors.name && (
@@ -2030,8 +2030,8 @@ const GateCard = ({
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input value={gate.phone} onChange={(e) => onChange("phone", e.target.value)}
               placeholder="+971 50 000 0000" autoComplete="tel"
-              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
-                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#004e41]/20 ${
+                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#004e41]/40"
               }`} />
           </div>
         </div>
@@ -2046,8 +2046,8 @@ const GateCard = ({
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input value={gate.email} onChange={(e) => onChange("email", e.target.value)}
               placeholder="owner@example.com" type="email" autoComplete="email"
-              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${
-                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#0B3D2E]/40"
+              className={`w-full pl-10 h-12 bg-background rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#004e41]/20 ${
+                gateErrors.contact ? "border-destructive" : "border-border focus:border-[#004e41]/40"
               }`} />
           </div>
         </div>
@@ -2061,7 +2061,7 @@ const GateCard = ({
 
       <button onClick={onUnlock} disabled={gateSubmitting}
         className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:opacity-70 disabled:cursor-wait"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
+        style={{ background: "linear-gradient(135deg, #004e41, #006b58)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
         {gateSubmitting ? (
           <><RefreshCw className="h-4 w-4 animate-spin" /> Unlocking…</>
         ) : (

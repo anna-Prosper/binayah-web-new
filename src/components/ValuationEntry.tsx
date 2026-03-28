@@ -46,9 +46,9 @@ const ValuationEntry = () => (
           initial={{ width: 0 }}
           whileInView={{ width: "3rem" }}
           viewport={{ once: true }}
-          className="h-[2px] bg-accent mx-auto mb-6"
+          className="h-[2px] bg-[#d1ae4a] mx-auto mb-6"
         />
-        <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
+        <p className="text-[#d1ae4a] font-semibold tracking-[0.4em] uppercase text-xs mb-4">
           Owner Tool
         </p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
@@ -76,12 +76,12 @@ const ValuationEntry = () => (
               key={step.title}
               className="flex items-start gap-4 p-5 rounded-2xl bg-card border border-border/50 shadow-sm"
             >
-              <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center mt-0.5">
-                <step.icon className="h-4.5 w-4.5 text-primary" />
+              <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#004e41]/8 flex items-center justify-center mt-0.5">
+                <step.icon className="h-4.5 w-4.5 text-[#004e41]" />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold text-accent tracking-widest uppercase">
+                  <span className="text-[10px] font-bold text-[#d1ae4a] tracking-widest uppercase">
                     Step {i + 1}
                   </span>
                 </div>
@@ -102,8 +102,8 @@ const ValuationEntry = () => (
           {/* Mock result card */}
           <div className="rounded-2xl border border-border/50 bg-card shadow-sm overflow-hidden">
             {/* Card header */}
-            <div className="bg-primary px-6 py-5">
-              <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-accent mb-1">
+            <div className="bg-[#004e41] px-6 py-5">
+              <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-[#d1ae4a] mb-1">
                 Valuation snapshot
               </p>
               <p className="text-white font-bold text-lg leading-snug">
@@ -126,7 +126,7 @@ const ValuationEntry = () => (
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                     {row.label}
                   </span>
-                  <span className={`text-sm font-bold ${row.highlight ? "text-primary" : "text-foreground"}`}>
+                  <span className={`text-sm font-bold ${row.highlight ? "text-[#004e41]" : "text-foreground"}`}>
                     {row.value}
                   </span>
                 </div>
@@ -144,7 +144,7 @@ const ValuationEntry = () => (
           {/* CTA */}
           <Link
             href="/valuation"
-            className="group flex items-center justify-between gap-4 px-7 py-5 rounded-2xl font-bold text-primary-foreground transition-all duration-200 hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-px active:translate-y-0"
+            className="group flex items-center justify-between gap-4 px-7 py-5 rounded-2xl font-bold text-[#004e41]-foreground transition-all duration-200 hover:shadow-xl hover:shadow-[#004e41]/20 hover:-translate-y-px active:translate-y-0"
             style={{ background: "linear-gradient(135deg, hsl(168,100%,15%), hsl(168,80%,22%))" }}
           >
             <div>
