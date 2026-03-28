@@ -66,9 +66,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("slug updatedAt createdAt")
       .lean();
 
+    const safeDate = (val: any): Date => {
+      try {
+        const d = new Date(val);
+        return isNaN(d.getTime()) ? new Date() : d;
+      } catch {
+        return new Date();
+      }
+    };
+
     const projectRoutes: MetadataRoute.Sitemap = projects.map((p: any) => ({
       url: `${BASE_URL}/project/${p.slug}`,
-      lastModified: new Date(p.updatedAt || p.createdAt || Date.now()),
+      lastModified: safeDate(p.updatedAt || p.createdAt),
       changeFrequency: "weekly" as const,
       priority: 0.9,
     }));
@@ -80,7 +89,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const articleRoutes: MetadataRoute.Sitemap = articles.map((a: any) => ({
       url: `${BASE_URL}/news/${a.slug}`,
-      lastModified: new Date(a.updatedAt || a.createdAt || Date.now()),
+      lastModified: safeDate(a.updatedAt || a.createdAt),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }));
