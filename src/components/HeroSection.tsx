@@ -281,6 +281,16 @@ const HeroSection = () => {
         setActiveSuggest(-1);
         return;
       }
+      // Tab — autofill top suggestion into search box, keep dropdown open ready to search
+      if (e.key === "Tab" && suggestions.length > 0) {
+        e.preventDefault();
+        const top = activeSuggest >= 0 ? suggestions[activeSuggest] : suggestions[0];
+        setSmartSearch(top.label);
+        handleSmartInput(top.label);
+        setSuggestOpen(false);
+        setActiveSuggest(-1);
+        return;
+      }
     }
     if (e.key === "Enter") handleSearch();
   };
@@ -384,10 +394,10 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -6 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-border rounded-2xl shadow-2xl overflow-hidden z-50"
+                      className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-border rounded-2xl shadow-2xl overflow-hidden z-50 max-h-[320px] overflow-y-auto"
                     >
-                      {/* Header */}
-                      <div className="flex items-center gap-1.5 px-4 py-2 border-b border-border/50 bg-[#004e41]/5">
+                      {/* Header — sticky so it stays visible while scrolling */}
+                      <div className="sticky top-0 flex items-center gap-1.5 px-4 py-2 border-b border-border/50 bg-white">
                         <Sparkles className="h-3 w-3 text-[#d1ae4a]" />
                         <span className="text-[10px] font-bold text-[#004e41] uppercase tracking-wider">AI Suggestions</span>
                         {suggestLoading && <Loader2 className="h-3 w-3 text-[#004e41]/40 animate-spin ml-auto" />}
