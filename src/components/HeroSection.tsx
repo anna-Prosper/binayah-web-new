@@ -1,12 +1,30 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Search, ChevronDown, Zap, X, Sparkles, MessageCircle } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { Search, ChevronDown, Zap, X, Sparkles, MessageCircle, MapPin, TrendingUp, Loader2 } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-const heroImage = "/assets/dubai-hero.jpg";
-import ParticleConstellation from "./ParticleConstellation";
+import Image from "next/image";
 import TypewriterHeadline from "./TypewriterHeadline";
+
+/* ── Debounce hook ── */
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}
+
+/* ── LLM suggestion types ── */
+interface Suggestion {
+  label: string;
+  sublabel?: string;
+  href: string;
+  type: "project" | "community" | "search" | "intent";
+  icon?: "map" | "trend" | "search";
+}
 
 const statusTabs = ["All", "Off-Plan", "Secondary"];
 const propertyTypes = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"];
@@ -120,6 +138,51 @@ const HeroSection = () => {
   const [selBudget, setSelBudget] = useState("");
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
+  /* ── LLM autocomplete state ── */
+  const [suggestions,     setSuggestions]     = useState<Suggestion[]>([]);
+  const [suggestLoading,  setSuggestLoading]  = useState(false);
+  const [suggestOpen,     setSuggestOpen]     = useState(false);
+  const [activeSuggest,   setActiveSuggest]   = useState(-1);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const abortRef           = useRef<AbortController | null>(null);
+  const debouncedQuery     = useDebounce(smartSearch, 350);
+
+  /* ── Fetch suggestions from /api/search/suggest (GPT-5.4-nano) ── */
+  useEffect(() => {
+    const q = debouncedQuery.trim();
+    if (q.length < 2 || isGeneralQuestion(q)) {
+      setSuggestions([]);
+      setSuggestOpen(false);
+      return;
+    }
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
+    setSuggestLoading(true);
+    fetch(`/api/search/suggest?q=${encodeURIComponent(q)}`, { signal: abortRef.current.signal })
+      .then((r) => r.json())
+      .then((data) => {
+        setSuggestions(data.suggestions?.slice(0, 6) ?? []);
+        setSuggestOpen(true);
+        setSuggestLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") { setSuggestions([]); setSuggestLoading(false); }
+      });
+    return () => abortRef.current?.abort();
+  }, [debouncedQuery]);
+
+  /* ── Close dropdown on outside click ── */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setSuggestOpen(false);
+        setActiveSuggest(-1);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
@@ -159,6 +222,21 @@ const HeroSection = () => {
     setSelBudget("");
   };
 
+  /* ── Select a suggestion — fills search + auto-populates filters ── */
+  const handleSelectSuggestion = useCallback((s: Suggestion) => {
+    setSmartSearch(s.label);
+    setSuggestOpen(false);
+    setActiveSuggest(-1);
+    // Run through local parser with the suggestion label
+    const { location, type, bedroom, budget, status, tags } = parseSmartSearch(s.label + (s.sublabel ? " " + s.sublabel : ""));
+    setParsedTags(tags);
+    if (location) setSelLocation(location);
+    if (type) setSelType(type);
+    if (bedroom) setSelBedroom(bedroom);
+    if (budget) setSelBudget(budget);
+    if (status) setActiveTab(status);
+  }, []);
+
   const handleSearch = () => {
     // If it's a general question, open AI chat with the question
     if (isQuestion && smartSearch.trim()) {
@@ -182,6 +260,28 @@ const HeroSection = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (suggestOpen && suggestions.length > 0) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveSuggest((a) => Math.min(a + 1, suggestions.length - 1));
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveSuggest((a) => Math.max(a - 1, -1));
+        return;
+      }
+      if (e.key === "Enter" && activeSuggest >= 0) {
+        e.preventDefault();
+        handleSelectSuggestion(suggestions[activeSuggest]);
+        return;
+      }
+      if (e.key === "Escape") {
+        setSuggestOpen(false);
+        setActiveSuggest(-1);
+        return;
+      }
+    }
     if (e.key === "Enter") handleSearch();
   };
 
@@ -189,14 +289,19 @@ const HeroSection = () => {
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-0">
       {/* Parallax Background */}
       <motion.div className="absolute inset-0" style={{ y: imageY }}>
-        <img src={heroImage} alt="Dubai skyline at golden hour" className="h-[120%] w-full object-cover" />
+        <Image
+          src="/assets/dubai-hero.jpg"
+          alt="Dubai skyline at golden hour — Binayah Properties"
+          fill
+          priority
+          className="object-cover scale-[1.15]"
+          sizes="100vw"
+          quality={85}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
 
-      {/* Particle constellation */}
-      <ParticleConstellation />
-
-      {/* Decorative elements */}
+      {/* Decorative vertical lines */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <div className="absolute top-1/4 left-8 w-px h-32 bg-gradient-to-b from-transparent via-accent/30 to-transparent hidden lg:block" />
         <div className="absolute top-1/3 right-8 w-px h-24 bg-gradient-to-b from-transparent via-white/20 to-transparent hidden lg:block" />
@@ -238,7 +343,7 @@ const HeroSection = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`relative px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-t-xl transition-all duration-300 ${
                   activeTab === tab
-                    ? "bg-primary text-primary-foreground shadow-lg"
+                    ? "bg-[#004e41] text-white shadow-lg"
                     : "bg-white/10 text-white/80 hover:bg-white/20 backdrop-blur-sm hover:text-white"
                 }`}
               >
@@ -250,20 +355,74 @@ const HeroSection = () => {
           <div className="bg-card/95 backdrop-blur-md rounded-b-2xl rounded-tr-2xl shadow-2xl shadow-black/20 border border-border/50">
             {/* Smart search bar */}
             <div className="px-5 sm:px-7 pt-5 sm:pt-6">
-              <div className="relative">
-                <Sparkles className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-accent" />
+              <div ref={searchContainerRef} className="relative">
+                {suggestLoading
+                  ? <Loader2 className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d1ae4a] animate-spin" />
+                  : <Sparkles className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-accent" />
+                }
                 <input
                   value={smartSearch}
-                  onChange={(e) => handleSmartInput(e.target.value)}
+                  onChange={(e) => { handleSmartInput(e.target.value); setSuggestOpen(true); setActiveSuggest(-1); }}
+                  onFocus={() => { if (smartSearch.trim().length >= 2) setSuggestOpen(true); }}
                   onKeyDown={handleKeyDown}
                   placeholder={`Try: ${searchPlaceholders[placeholderIndex]} — AI fills the filters`}
                   className="w-full pl-10 pr-10 py-3 bg-secondary/50 border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
+                  autoComplete="off"
+                  suppressHydrationWarning
                 />
                 {smartSearch && (
                   <button onClick={clearSmartSearch} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground">
                     <X className="h-4 w-4" />
                   </button>
                 )}
+
+                {/* ── LLM Suggestions Dropdown ── */}
+                <AnimatePresence>
+                  {suggestOpen && smartSearch.trim().length >= 2 && (suggestions.length > 0 || suggestLoading) && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-border rounded-2xl shadow-2xl overflow-hidden z-50"
+                    >
+                      {/* Header */}
+                      <div className="flex items-center gap-1.5 px-4 py-2 border-b border-border/50 bg-[#004e41]/5">
+                        <Sparkles className="h-3 w-3 text-[#d1ae4a]" />
+                        <span className="text-[10px] font-bold text-[#004e41] uppercase tracking-wider">AI Suggestions</span>
+                        {suggestLoading && <Loader2 className="h-3 w-3 text-[#004e41]/40 animate-spin ml-auto" />}
+                      </div>
+
+                      {suggestions.map((s, i) => (
+                        <button
+                          key={i}
+                          onMouseDown={() => handleSelectSuggestion(s)}
+                          onMouseEnter={() => setActiveSuggest(i)}
+                          className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-colors border-b border-border/30 last:border-0 ${
+                            activeSuggest === i ? "bg-[#004e41]/8" : "hover:bg-[#004e41]/5"
+                          }`}
+                        >
+                          <span className={`mt-0.5 flex-shrink-0 ${
+                            s.type === "project"   ? "text-[#d1ae4a]" :
+                            s.type === "community" ? "text-[#004e41]" :
+                            s.type === "intent"    ? "text-emerald-600" :
+                            "text-gray-400"
+                          }`}>
+                            {s.icon === "map"   ? <MapPin     className="h-3.5 w-3.5" /> :
+                             s.icon === "trend" ? <TrendingUp className="h-3.5 w-3.5" /> :
+                                                  <Search     className="h-3.5 w-3.5" />}
+                          </span>
+                          <span className="flex-1 min-w-0">
+                            <span className="block text-sm font-medium text-[#0d1a15] truncate">{s.label}</span>
+                            {s.sublabel && (
+                              <span className="block text-[11px] text-gray-400 mt-0.5 truncate">{s.sublabel}</span>
+                            )}
+                          </span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Parsed tags or question indicator */}
@@ -296,7 +455,7 @@ const HeroSection = () => {
                 <div className="flex flex-col justify-end">
                   <button
                     onClick={handleSearch}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-[13px] rounded-xl font-semibold flex items-center justify-center gap-2.5 transition-all hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 text-sm"
+                    className="w-full bg-[#d1ae4a] hover:bg-[#e0c472] text-[#003530] py-[13px] rounded-xl font-semibold flex items-center justify-center gap-2.5 transition-all hover:-translate-y-0.5 text-sm"
                   >
                     {isQuestion && smartSearch.trim() ? (
                       <>
