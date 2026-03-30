@@ -1,9 +1,9 @@
-import { NextRequest } from "next/server";
-
 import { getValuationApiUrl } from "@/lib/valuation-api";
 
-export async function POST(req: NextRequest) {
-  const backendUrl = getValuationApiUrl("stream");
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const backendUrl = getValuationApiUrl("config");
 
   if (!backendUrl) {
     return new Response(
@@ -12,18 +12,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const body = await req.text();
-
   const upstream = await fetch(backendUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
   });
 
   return new Response(upstream.body, {
     status: upstream.status,
     headers: {
-      "Content-Type": "application/x-ndjson",
+      "Content-Type": upstream.headers.get("Content-Type") ?? "application/json",
       "Cache-Control": "no-store",
     },
   });
