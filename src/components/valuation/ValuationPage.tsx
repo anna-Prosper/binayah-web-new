@@ -1059,7 +1059,7 @@ const ValuationPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar transparent={false} />
-      <div ref={topRef} className="h-20" />
+      <div ref={topRef} className="h-12 sm:h-16" />
 
       <AnimatePresence mode="wait">
 
@@ -1070,10 +1070,10 @@ const ValuationPage = () => {
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
           >
             {/* Hero */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8">
-              <div className="grid lg:grid-cols-5 gap-12 items-start">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-0 sm:pt-12 pb-6 sm:pb-8">
+              <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 items-start">
                 <div className="lg:col-span-3">
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
                     <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                       <Target className="h-4 w-4 text-white" />
                     </div>
@@ -1082,18 +1082,18 @@ const ValuationPage = () => {
                       Owner-Ready Valuation
                     </p>
                   </div>
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6">
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] mb-4 sm:mb-6">
                     Understand your property&apos;s{" "}
                     <span style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                       value
                     </span>{" "}in minutes.
                   </h1>
-                  <p className="text-muted-foreground text-lg max-w-lg mb-6">
+                  <p className="text-muted-foreground text-base sm:text-lg max-w-lg mb-5 sm:mb-6">
                     A refined estimate based on recent transactions, active listings, and comparable homes in the same market.
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {["Recent sales", "Live asking prices", "Expert guidance"].map((t) => (
-                      <span key={t} className="inline-flex items-center gap-2 px-4 py-2.5 bg-card text-foreground rounded-xl text-xs font-bold border border-border/50 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-300">
+                      <span key={t} className="inline-flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-card text-foreground rounded-xl text-[11px] sm:text-xs font-bold border border-border/50 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-300">
                         {t}
                       </span>
                     ))}
@@ -1101,7 +1101,7 @@ const ValuationPage = () => {
                 </div>
 
                 <div className="lg:col-span-2">
-                  <div className="rounded-2xl border border-border/50 bg-card p-6 space-y-5 shadow-sm">
+                  <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 space-y-4 sm:space-y-5 shadow-sm">
                     <div className="flex items-center gap-2.5">
                       <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
                       <p className="text-[10px] font-bold tracking-[0.2em] uppercase"
@@ -1132,7 +1132,7 @@ const ValuationPage = () => {
             {/* Global error banner */}
             {globalError && (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-4">
-                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-sm text-destructive font-medium flex items-start gap-3">
+                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 sm:px-6 py-4 text-sm text-destructive font-medium flex items-start gap-3">
                   <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
                   <span>{globalError}</span>
                 </div>
@@ -1140,18 +1140,18 @@ const ValuationPage = () => {
             )}
 
             {/* Form */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
-              <div className="rounded-2xl border border-border/50 bg-card p-8 sm:p-10 shadow-sm">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-14 sm:pb-20">
+              <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-10 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-2">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                     <Building2 className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold">Tell us about the property</h2>
+                    <h2 className="text-xl sm:text-3xl font-bold leading-tight">Tell us about the property</h2>
                     <p className="text-xs text-muted-foreground mt-0.5">All the core details in one screen. The more precise, the tighter the estimate.</p>
                   </div>
                 </div>
-                <div className="h-px bg-border/50 my-6" />
+                <div className="h-px bg-border/50 my-5 sm:my-6" />
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-6">
 
@@ -1229,7 +1229,7 @@ const ValuationPage = () => {
                   </div>
 
                   {/* Or divider + deed upload */}
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     <div className="flex-1 h-px bg-border/50" />
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">or</span>
                     <div className="flex-1 h-px bg-border/50" />
@@ -1251,16 +1251,16 @@ const ValuationPage = () => {
                     {!deedFile ? (
                       <button type="button"
                         onClick={() => deedInputRef.current?.click()}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#004e41]/20 hover:border-[#004e41]/40 hover:bg-[#004e41]/5 text-muted-foreground hover:text-[#004e41] transition-all duration-200 group">
+                        className="w-full flex flex-col items-start gap-3 px-4 sm:px-6 py-4 rounded-2xl border-2 border-dashed border-[#004e41]/20 hover:border-[#004e41]/40 hover:bg-[#004e41]/5 text-muted-foreground hover:text-[#004e41] transition-all duration-200 group sm:flex-row sm:items-center sm:justify-center">
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
                         <div className="text-left">
                           <p className="text-sm font-semibold">Upload title deed</p>
                           <p className="text-xs opacity-70">PDF, JPG or PNG — we&apos;ll extract the property details automatically</p>
                         </div>
-                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#004e41]/8 text-[#004e41]">Optional</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#004e41]/8 text-[#004e41] sm:ml-auto">Optional</span>
                       </button>
                     ) : (
-                      <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
+                      <div className={`flex flex-col items-start gap-3 px-4 sm:px-5 py-4 rounded-2xl border transition-all duration-300 sm:flex-row sm:items-center ${
                         deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
                         deedParsed  ? "border-[#004e41]/25 bg-[#004e41]/5" :
                         "border-border bg-muted/30"
@@ -1479,8 +1479,8 @@ const ValuationPage = () => {
                   </div>
 
                                     {/* Row 2 — Type / Beds / Baths / Size / Intent */}
-                  <div className="grid sm:grid-cols-5 gap-4">
-                    <div>
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                    <div className="col-span-2 sm:col-span-1">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Type</label>
                       <Select value={form.type} onValueChange={(v) => updateField("type", v)}>
                         <SelectTrigger className="h-12 bg-background"><SelectValue placeholder="Select" /></SelectTrigger>
@@ -1507,7 +1507,7 @@ const ValuationPage = () => {
                           placeholder="2" className="pl-10 h-12 bg-background" />
                       </div>
                     </div>
-                    <div>
+                    <div className="col-span-2 sm:col-span-1">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Size</label>
                       <div className="relative">
                         <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -1515,7 +1515,7 @@ const ValuationPage = () => {
                           placeholder="1,420 sq ft" className="pl-10 h-12 bg-background" />
                       </div>
                     </div>
-                    <div>
+                    <div className="col-span-2 sm:col-span-1">
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1.5 block">Intent</label>
                       <Select value={form.intent} onValueChange={(v) => updateField("intent", v)}>
                         <SelectTrigger className="h-12 bg-background"><SelectValue placeholder="Select" /></SelectTrigger>
@@ -1532,7 +1532,7 @@ const ValuationPage = () => {
 
                   <div>
                     <button type="submit"
-                      className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
+                      className="inline-flex w-full sm:w-auto justify-center items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
                       style={{ background: "linear-gradient(135deg, #004e41, #006b58)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
                       <Sparkles className="h-4 w-4" />
                       Get Quick Valuation
@@ -1552,11 +1552,11 @@ const ValuationPage = () => {
           <motion.div key="processing"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
-            className="max-w-3xl mx-auto px-4 sm:px-6 py-20"
+            className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20"
           >
-            <div className="rounded-2xl border border-border bg-card p-8 sm:p-12">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
-              <h2 className="text-3xl font-bold mb-2">{extractCommunity(form.unit)}</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 break-words">{extractCommunity(form.unit)}</h2>
               <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales, and supporting sources.</p>
               <span className="inline-block px-3 py-1 rounded-full border border-border text-sm font-medium">{form.city}</span>
 
@@ -1568,7 +1568,7 @@ const ValuationPage = () => {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mt-6 sm:mt-8">
                 {processingSteps.map((ps, i) => (
                   <div key={ps.label} className={`rounded-xl border p-4 transition-all duration-500 ${
                     i <= activeProcessStep ? "border-[#004e41]/30 bg-[#004e41]/5" : "border-border bg-muted/30"
@@ -1605,17 +1605,17 @@ const ValuationPage = () => {
           <motion.div key="results"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
-            className="max-w-4xl mx-auto px-4 sm:px-6 py-12"
+            className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12"
           >
             {/* Back */}
             <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#004e41]/20 text-sm font-semibold text-[#004e41] hover:bg-[#004e41] hover:text-white hover:border-transparent transition-all duration-300 mb-8">
+              className="flex w-full sm:w-auto justify-center items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#004e41]/20 text-sm font-semibold text-[#004e41] hover:bg-[#004e41] hover:text-white hover:border-transparent transition-all duration-300 mb-6 sm:mb-8">
               <ArrowLeft className="h-4 w-4" /> New Search
             </button>
 
             {/* Demo banner */}
             {useDeedResult && (
-              <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-6 py-3.5 mb-4 flex items-center gap-3">
+              <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 sm:px-6 py-3.5 mb-4 flex items-start gap-3">
                 <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0" />
                 <p className="text-sm text-[#B8922F] font-medium">
                   <strong>Demo result</strong> — this is simulated data from the deed upload. Use the search or fill the form for a live AI valuation.
@@ -1624,7 +1624,7 @@ const ValuationPage = () => {
             )}
 
             {/* Header */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                   <Target className="h-4 w-4 text-white" />
@@ -1634,11 +1634,11 @@ const ValuationPage = () => {
                   Valuation Snapshot
                 </p>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-2">{result.community}, {result.city}, {result.country}</h2>
+              <h2 className="text-2xl sm:text-4xl font-bold leading-tight break-words mb-2">{result.community}, {result.city}, {result.country}</h2>
               <p className="text-muted-foreground mb-4">Key pricing guidance first, then comparable sales and market context.</p>
               <div className="flex flex-wrap gap-2">
                 {result.tags.map((t) => (
-                  <span key={t} className="px-4 py-1.5 rounded-full text-sm font-medium text-foreground"
+                  <span key={t} className="px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-foreground"
                     style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
                     {t}
                   </span>
@@ -1652,7 +1652,7 @@ const ValuationPage = () => {
               {/* Fair Value + Confidence */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
                 <div className="rounded-2xl overflow-hidden shadow-sm">
-                  <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
+                  <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-5 sm:p-8 text-white">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold mb-2">Fair Value</p>
                     <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
                       {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
@@ -1660,7 +1660,7 @@ const ValuationPage = () => {
                     <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#004e41] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 border-l-[3px] border-l-[#004e41] shadow-sm">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-2">Confidence</p>
                   <div className="flex items-center gap-2 mb-3">
                     <AlertTriangle className={`h-5 w-5 ${
@@ -1681,7 +1681,7 @@ const ValuationPage = () => {
               </div>
 
               {/* Price bars */}
-              <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+              <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
                 <div className="flex items-center gap-2.5 mb-6">
                   <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
                   <p className="text-sm font-semibold text-foreground">Price Comparison</p>
@@ -1695,7 +1695,7 @@ const ValuationPage = () => {
 
               {/* Suggested + Quick sale cards */}
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#004e41] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 border-l-[3px] border-l-[#004e41] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 rounded-lg bg-[#004e41]/10 flex items-center justify-center">
                       <TrendingUp className="h-3.5 w-3.5 text-[#004e41]" />
@@ -1706,7 +1706,7 @@ const ValuationPage = () => {
                     {fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}
                   </p>
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 rounded-lg bg-[#D4A847]/10 flex items-center justify-center">
                       <TrendingDown className="h-3.5 w-3.5 text-[#D4A847]" />
@@ -1721,8 +1721,8 @@ const ValuationPage = () => {
 
               {/* Copy — only shown when unlocked */}
               {unlocked && (
-                <div className="flex justify-end mb-4">
-                  <button onClick={copySummary} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <div className="flex justify-stretch sm:justify-end mb-4">
+                  <button onClick={copySummary} className="flex w-full sm:w-auto justify-center items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     {copied ? "Copied!" : "Copy summary"}
                   </button>
@@ -1731,7 +1731,7 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Comparables — price + reasoning blurred until unlocked ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#004e41] to-[#006b58] flex items-center justify-center shadow-md">
                   <Building2 className="h-4 w-4 text-white" />
@@ -1739,8 +1739,36 @@ const ValuationPage = () => {
                 <h3 className="text-xl font-bold">Comparable evidence</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
               </div>
-              <p className="text-sm text-muted-foreground mb-6 ml-[46px]">Strongest sales and active listings used in the estimate</p>
-              <div className="overflow-x-auto">
+              <p className="text-sm text-muted-foreground mb-6 sm:ml-[46px]">Strongest sales and active listings used in the estimate</p>
+              <div className="space-y-3 md:hidden">
+                {result.comparables.map((c, i) => {
+                  const isFirst = i === 0;
+                  return (
+                    <div key={i} className="rounded-xl border border-border/50 bg-background/60 p-4">
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <span className={c.type === "Sale" ? "px-2.5 py-1 rounded-full text-xs font-bold bg-[#004e41]/10 text-[#004e41]" : "px-2.5 py-1 rounded-full text-xs font-bold bg-[#D4A847]/15 text-[#B8922F]"}>{c.type}</span>
+                        <p className={!unlocked && !isFirst ? "text-sm font-bold text-right transition-all duration-500 select-none blur-md" : "text-sm font-bold text-right transition-all duration-500 select-none"}>
+                          {fmt(c.price, result.currency)}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 mb-3 text-xs text-muted-foreground">
+                        <div>
+                          <p className="uppercase tracking-wider text-[10px] mb-1">Size</p>
+                          <p>{c.size}</p>
+                        </div>
+                        <div>
+                          <p className="uppercase tracking-wider text-[10px] mb-1">Date</p>
+                          <p>{c.date}</p>
+                        </div>
+                      </div>
+                      <p className={!unlocked && !isFirst ? "text-sm text-muted-foreground leading-relaxed transition-all duration-500 select-none blur-sm" : "text-sm text-muted-foreground leading-relaxed transition-all duration-500 select-none"}>
+                        {c.reason}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
@@ -1822,7 +1850,7 @@ const ValuationPage = () => {
             )}
 
             {/* ── Market read — body blurred ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
                 <h3 className="text-xl font-bold">Market read</h3>
@@ -1834,7 +1862,7 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Strategy — text + bullets blurred ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
+            <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-[#004e41]/10 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-[#004e41]" />
@@ -1856,14 +1884,14 @@ const ValuationPage = () => {
             </div>
 
             {/* ── Moving factors — always visible ── */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm">
+            <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-8 shadow-sm">
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
                   <AlertTriangle className="h-4 w-4 text-[#D4A847]" />
                 </div>
                 <h3 className="text-xl font-bold">What can move this estimate</h3>
               </div>
-              <p className="text-sm text-muted-foreground mb-4 ml-[46px]">Common reasons real-world pricing can shift</p>
+              <p className="text-sm text-muted-foreground mb-4 sm:ml-[46px]">Common reasons real-world pricing can shift</p>
               <ul className="space-y-2.5">
                 {result.movingFactors.map((f, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-muted-foreground text-sm">
@@ -1876,19 +1904,19 @@ const ValuationPage = () => {
             </div>
 
             {/* CTA */}
-            <div className="rounded-3xl p-10 sm:p-14 text-center mb-12 relative overflow-hidden border border-border/30"
+            <div className="rounded-3xl p-6 sm:p-14 text-center mb-12 relative overflow-hidden border border-border/30"
               style={{ background: "linear-gradient(160deg, hsl(40,20%,96%), hsl(43,40%,95%))" }}>
               <div className="absolute top-0 left-0 w-full h-[2px]"
                 style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
               <div className="absolute inset-0 opacity-[0.04]"
                 style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(212,168,71,0.4) 1px, transparent 0)", backgroundSize: "28px 28px" }} />
               <div className="relative">
-                <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg"
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl mx-auto mb-5 sm:mb-6 flex items-center justify-center shadow-lg"
                   style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.3)" }}>
                   <Target className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-foreground">Want a detailed appraisal?</h3>
-                <p className="text-muted-foreground max-w-lg mx-auto mb-10 leading-relaxed">
+                <p className="text-muted-foreground max-w-lg mx-auto mb-6 sm:mb-10 leading-relaxed">
                   Our RERA-certified valuation experts can provide a formal appraisal with an on-site inspection. Get a precise figure you can use for selling, financing, or legal purposes.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1959,9 +1987,9 @@ function useSearchSuggest(query: string, enabled: boolean) {
 // ─── SmartTag ────────────────────────────────────────────────────────────────
 
 const SmartTag = ({ label, value }: { label: string; value: string }) => (
-  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#004e41]/8 text-[#004e41] border border-[#004e41]/15">
+  <span className="inline-flex max-w-full items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#004e41]/8 text-[#004e41] border border-[#004e41]/15">
     <span className="opacity-50 font-normal">{label}:</span>
-    {value}
+    <span className="truncate">{value}</span>
   </span>
 );
 
@@ -1978,7 +2006,7 @@ const GateCard = ({
 }) => (
   <div className="mb-8">
     {/* Unlock card */}
-    <div className="rounded-2xl border-2 border-[#004e41]/20 bg-card p-8 shadow-lg relative overflow-hidden">
+    <div className="rounded-2xl border-2 border-[#004e41]/20 bg-card p-5 sm:p-8 shadow-lg relative overflow-hidden">
       {/* Gold top line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]"
         style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
@@ -2060,7 +2088,7 @@ const GateCard = ({
       )}
 
       <button onClick={onUnlock} disabled={gateSubmitting}
-        className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:opacity-70 disabled:cursor-wait"
+        className="inline-flex w-full sm:w-auto justify-center items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:opacity-70 disabled:cursor-wait"
         style={{ background: "linear-gradient(135deg, #004e41, #006b58)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
         {gateSubmitting ? (
           <><RefreshCw className="h-4 w-4 animate-spin" /> Unlocking…</>
@@ -2084,13 +2112,18 @@ const PriceBar = ({
   const widthPct = ((high - low) / range) * 100;
 
   return (
-    <div className="flex items-center gap-3 mb-4 min-w-0">
-      <span className="text-sm font-medium w-28 flex-shrink-0">{label}</span>
+    <div className="mb-4 min-w-0 rounded-xl border border-border/40 bg-background/60 p-3 sm:flex sm:items-center sm:gap-3 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0">
+      <div className="mb-2 flex items-center justify-between gap-3 sm:mb-0 sm:block sm:w-28 sm:flex-shrink-0">
+        <span className="text-sm font-medium">{label}</span>
+        <span className={blurred ? "text-sm text-muted-foreground text-right whitespace-nowrap transition-all duration-500 select-none sm:hidden blur-md" : "text-sm text-muted-foreground text-right whitespace-nowrap transition-all duration-500 select-none sm:hidden"}>
+          {fmt(low, currency)} – {fmt(high, currency)}
+        </span>
+      </div>
       <div className="flex-1 h-3 bg-muted rounded-full relative overflow-hidden">
         <div className="h-3 rounded-full absolute top-0"
           style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 3)}%`, backgroundColor: color }} />
       </div>
-      <span className={`text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none ${blurred ? "blur-md" : ""}`}>
+      <span className={blurred ? "hidden sm:block text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none blur-md" : "hidden sm:block text-sm text-muted-foreground flex-shrink-0 text-right whitespace-nowrap transition-all duration-500 select-none"}>
         {fmt(low, currency)} – {fmt(high, currency)}
       </span>
     </div>
