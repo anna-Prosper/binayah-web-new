@@ -551,11 +551,36 @@ interface ApiResponse {
   listings: { size: string; date: string; price: number; headline: string; notes: string }[];
 }
 
+interface DocumentExtractionResponse {
+  fileName?: string;
+  mimeType?: string;
+  summary?: string;
+  warnings?: string[];
+  inquiry?: {
+    propertyName?: string;
+    location?: string;
+    city?: string;
+    propertyType?: string;
+    bedrooms?: string;
+    size?: string;
+  };
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2500;
 const STREAM_TIMEOUT_MS = 90_000; // 90s
+const PROPERTY_DOCUMENT_ACCEPT = ".pdf,.png,.jpg,.jpeg,.webp,.gif";
+const PROPERTY_DOCUMENT_ACCEPTED_LABEL = "PDF, PNG, JPG/JPEG, WEBP, or GIF";
+const PROPERTY_DOCUMENT_ACCEPTED_MIME_TYPES = new Set([
+  "application/pdf",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+]);
+const PROPERTY_DOCUMENT_MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024;
 
 const processingSteps = [
   { label: "Preparing",         desc: "Validating property details" },
@@ -589,6 +614,74 @@ function validateForm(form: FormData): FieldErrors {
   return errors;
 }
 
+function resolvePropertyDocumentMimeType(fileName: string, mimeType?: string) {
+  const normalizedMimeType = String(mimeType || "").trim().toLowerCase();
+  if (PROPERTY_DOCUMENT_ACCEPTED_MIME_TYPES.has(normalizedMimeType)) {
+    return normalizedMimeType;
+  }
+
+  const normalizedFileName = fileName.trim().toLowerCase();
+  if (normalizedFileName.endsWith(".pdf")) return "application/pdf";
+  if (normalizedFileName.endsWith(".png")) return "image/png";
+  if (normalizedFileName.endsWith(".jpg") || normalizedFileName.endsWith(".jpeg")) return "image/jpeg";
+  if (normalizedFileName.endsWith(".webp")) return "image/webp";
+  if (normalizedFileName.endsWith(".gif")) return "image/gif";
+
+  return "";
+}
+
+async function readFileAsBase64(file: File) {
+  return await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onerror = () => {
+      reject(new Error("The selected file could not be read."));
+    };
+
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      const separatorIndex = result.indexOf(",");
+      if (separatorIndex === -1) {
+        reject(new Error("The selected file could not be read."));
+        return;
+      }
+
+      resolve(result.slice(separatorIndex + 1));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function buildExtractedFormFields(extraction: DocumentExtractionResponse): Partial<FormData> {
+  const inquiry = extraction?.inquiry ?? {};
+
+  return {
+    unit: String(inquiry.propertyName || "").trim(),
+    area: String(inquiry.location || "").trim(),
+    city: String(inquiry.city || "").trim(),
+    type: String(inquiry.propertyType || "").trim(),
+    beds: String(inquiry.bedrooms || "").trim(),
+    size: String(inquiry.size || "").trim(),
+  };
+}
+
+function mergeExtractedForm(current: FormData, extracted: Partial<FormData>): FormData {
+  const next = { ...current };
+
+  for (const [key, value] of Object.entries(extracted) as [keyof FormData, string | undefined][]) {
+    const cleanedValue = String(value || "").trim();
+    if (cleanedValue && !String(next[key] || "").trim()) {
+      next[key] = cleanedValue;
+    }
+  }
+
+  return next;
+}
+
+function countFilledFields(values: Partial<FormData>) {
+  return Object.values(values).filter((value) => String(value || "").trim()).length;
+}
 function mapApiToResult(api: ApiResponse, form: FormData): ValuationResult {
   const community = extractCommunity(form.unit);
   const propType = form.type?.toLowerCase() || "property";
@@ -714,52 +807,6 @@ const FieldError = ({ message }: { message?: string }) =>
     </p>
   ) : null;
 
-// ─── Deed demo result ────────────────────────────────────────────────────────
-
-const DEED_DUMMY_RESULT: ValuationResult = {
-  currency: "AED",
-  community: "Marina Gate 1",
-  city: "Dubai",
-  country: "UAE",
-  tags: ["Apartment", "Dubai Marina", "Thinking of selling"],
-  fairValueLow: 2_750_000,
-  fairValueHigh: 2_950_000,
-  fairValueExplanation: "Based on 14 comparable transactions in Marina Gate 1 and surrounding Dubai Marina towers over the last 12 months, a 2-bedroom unit of this size is valued in the AED 2.75M–2.95M range, assuming standard finishes and a mid-range floor.",
-  confidence: "High",
-  confidenceReason: "Strong volume of recent comparable sales within the same building and community, with consistent price-per-sqft data available.",
-  quickSaleLow: 2_550_000,
-  quickSaleHigh: 2_700_000,
-  suggestedListLow: 2_900_000,
-  suggestedListHigh: 3_050_000,
-  comparables: [
-    { type: "Sale",    size: "1,210 sqft", date: "Jan 2026", price: 2_800_000, reason: "Same building, floor 18, standard finish. Sold in 23 days at AED 2,314/sqft." },
-    { type: "Sale",    size: "1,310 sqft", date: "Dec 2025", price: 2_950_000, reason: "Marina Gate 1, floor 22, upgraded kitchen and sea view." },
-    { type: "Listing", size: "1,247 sqft", date: "Mar 2026", price: 3_100_000, reason: "Current ask, same building. Listed 18 days ago, no offers reported yet." },
-    { type: "Sale",    size: "1,190 sqft", date: "Nov 2025", price: 2_680_000, reason: "Lower floor, community view. Useful quick-sale floor reference." },
-    { type: "Listing", size: "1,280 sqft", date: "Feb 2026", price: 2_950_000, reason: "Marina Gate 2 — closest comparable building, similar age and spec." },
-  ],
-  marketRead: "Dubai Marina continues to attract strong end-user and investor demand in Q1 2026. Marina Gate has outperformed the broader Marina average by ~4% over the past 12 months, driven by newer build quality and proximity to the Marina Walk. Average time-on-market for 2BR units is 28 days. Rental yields remain competitive at 5.8–6.4% gross.",
-  strategy: "Given the current demand and your intent to sell, listing at AED 2.9M–3.05M positions the unit competitively while leaving negotiation room. Price slightly below the most recent comparable listing to attract early offers. Vacant access will materially improve buyer interest and speed up the transaction.",
-  strategyBullets: [
-    "Stage for photography and enable flexible viewings — this building transacts faster with vacant access.",
-    "List at AED 2,950,000 and treat AED 2,800,000+ as a strong outcome.",
-    "If urgency is high, AED 2,650,000–2,700,000 targets cash buyers and should close in under 30 days.",
-  ],
-  movingFactors: [
-    "Exact floor level and view — sea or Marina views command a 5–10% premium.",
-    "Finish quality — renovated kitchens and bathrooms add AED 80,000–150,000.",
-    "Furnishing — fully furnished units achieve 3–8% higher asking prices.",
-    "Vacancy status — vacant units transact 20–30% faster.",
-    "Service charge exposure — buyers factor annual charges into offers.",
-  ],
-  disclaimer: "This is a simulated demo result. For a live AI-powered estimate using real market data, use the smart search or fill the fields manually.",
-  sources: [
-    { url: "https://www.propertyfinder.ae", title: "Property Finder — Marina Gate listings" },
-    { url: "https://www.bayut.com",          title: "Bayut — Dubai Marina transactions" },
-    { url: "https://www.dubailand.gov.ae",   title: "DLD — transaction records" },
-  ],
-};
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const ValuationPage = () => {
@@ -782,7 +829,6 @@ const ValuationPage = () => {
   const [deedFile, setDeedFile] = useState<File | null>(null);
   const [deedParsing, setDeedParsing] = useState(false);
   const [deedParsed, setDeedParsed] = useState(false);
-  const [useDeedResult, setUseDeedResult] = useState(false);
   const deedInputRef = useRef<HTMLInputElement>(null);
   const [showPlaces, setShowPlaces] = useState(false);
   const placesRef = useRef<HTMLDivElement>(null);
@@ -873,34 +919,78 @@ const ValuationPage = () => {
     }
   }, [form]);
 
-  // Simulate parsing a title deed — in production this would call
-  // an OCR/AI endpoint. For now we extract what we can from the filename
-  // and fill plausible UAE property details with a realistic delay.
   const handleDeedUpload = async (file: File) => {
+    const mimeType = resolvePropertyDocumentMimeType(file.name, file.type);
+
+    setGlobalError(null);
     setDeedFile(file);
     setDeedParsing(true);
     setDeedParsed(false);
 
-    // Simulate OCR processing time (1.5–2.5s)
-    await new Promise((r) => setTimeout(r, 1800 + Math.random() * 700));
+    try {
+      if (!mimeType) {
+        throw new Error(`Unsupported file format. Upload ${PROPERTY_DOCUMENT_ACCEPTED_LABEL}.`);
+      }
 
-    // Try to extract clues from filename (e.g. "Marina_Gate_2_Unit_2704.pdf")
-    const name = file.name.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ");
-    const parsed = parseValuationSearch(name);
+      if (file.size > PROPERTY_DOCUMENT_MAX_FILE_SIZE_BYTES) {
+        throw new Error("The selected file is larger than 8 MB.");
+      }
 
-    // Fill whatever we could extract, leave blanks for the rest
-    setForm((f) => ({
-      ...f,
-      ...(parsed.unit  ? { unit:  parsed.unit  } : {}),
-      ...(parsed.area  ? { area:  parsed.area  } : {}),
-      ...(parsed.city  ? { city:  parsed.city  } : {}),
-      ...(parsed.type  ? { type:  parsed.type  } : {}),
-      ...(parsed.beds  ? { beds:  parsed.beds  } : {}),
-      ...(parsed.size  ? { size:  parsed.size  } : {}),
-    }));
+      const fileData = await readFileAsBase64(file);
+      const res = await fetch("/api/valuation/document", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          mimeType,
+          fileData,
+        }),
+      });
 
-    setDeedParsing(false);
-    setDeedParsed(true);
+      const extractionData = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(
+          (extractionData as { error?: string } | null)?.error ||
+            "Could not extract property details from the uploaded document.",
+        );
+      }
+
+      const extraction = (extractionData ?? {}) as DocumentExtractionResponse;
+      const extractedFields = buildExtractedFormFields(extraction);
+      if (!countFilledFields(extractedFields)) {
+        throw new Error("The document was uploaded, but no property details could be extracted.");
+      }
+
+      setForm((current) => mergeExtractedForm(current, extractedFields));
+      setSmartParsed({
+        ...(extractedFields.city ? { city: extractedFields.city } : {}),
+        ...(extractedFields.area ? { area: extractedFields.area } : {}),
+        ...(extractedFields.unit ? { unit: extractedFields.unit } : {}),
+        ...(extractedFields.type ? { type: extractedFields.type } : {}),
+        ...(extractedFields.beds ? { beds: extractedFields.beds } : {}),
+        ...(extractedFields.size ? { size: extractedFields.size } : {}),
+      });
+
+      if (submitAttempted && (extractedFields.unit || "").trim().length >= 5) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.unit;
+          return next;
+        });
+      }
+
+      setDeedParsed(true);
+    } catch (error) {
+      setDeedFile(null);
+      setDeedParsed(false);
+      setGlobalError(
+        error instanceof Error
+          ? error.message
+          : "Could not extract property details from the uploaded document.",
+      );
+    } finally {
+      setDeedParsing(false);
+    }
   };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -920,18 +1010,6 @@ const ValuationPage = () => {
     setActiveProcessStep(0);
     topRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    // If deed was uploaded → show dummy result after simulated processing
-    if (deedParsed && deedFile) {
-      for (let i = 0; i < 4; i++) {
-        await new Promise((r) => setTimeout(r, 1100));
-        setActiveProcessStep(i + 1);
-      }
-      setResult(DEED_DUMMY_RESULT);
-      setUseDeedResult(true);
-      setStep("results");
-      topRef.current?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
 
     // Kick off stream — phase updates happen inside runValuation via phaseMap
     // We hook into the stream for phase events separately
@@ -1238,7 +1316,7 @@ const ValuationPage = () => {
                     <input
                       ref={deedInputRef}
                       type="file"
-                      accept=".pdf,.jpg,.jpeg,.png,.heic"
+                      accept={PROPERTY_DOCUMENT_ACCEPT}
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -1282,7 +1360,7 @@ const ValuationPage = () => {
                         </div>
                         {!deedParsing && (
                           <button type="button"
-                            onClick={() => { setDeedFile(null); setDeedParsed(false); setUseDeedResult(false); }}
+                            onClick={() => { setDeedFile(null); setDeedParsed(false); }}
                             className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1">
                             <X className="h-4 w-4" />
                           </button>
@@ -1606,20 +1684,11 @@ const ValuationPage = () => {
             className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12"
           >
             {/* Back */}
-            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
+            <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); }}
               className="flex w-full sm:w-auto justify-center items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[#004e41]/20 text-sm font-semibold text-[#004e41] hover:bg-[#004e41] hover:text-white hover:border-transparent transition-all duration-300 mb-6 sm:mb-8">
               <ArrowLeft className="h-4 w-4" /> New Search
             </button>
 
-            {/* Demo banner */}
-            {useDeedResult && (
-              <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 sm:px-6 py-3.5 mb-4 flex items-start gap-3">
-                <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0" />
-                <p className="text-sm text-[#B8922F] font-medium">
-                  <strong>Demo result</strong> — this is simulated data from the deed upload. Use the search or fill the form for a live AI valuation.
-                </p>
-              </div>
-            )}
 
             {/* Header */}
             <div className="rounded-2xl border border-border/50 bg-card p-5 sm:p-8 mb-4 shadow-sm">
