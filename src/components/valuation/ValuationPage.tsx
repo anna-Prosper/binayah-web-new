@@ -910,8 +910,6 @@ const ValuationPage = () => {
     const errors = validateForm(form);
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
-      // Scroll to first error
-      topRef.current?.scrollIntoView({ behavior: "smooth" });
       return;
     }
 
