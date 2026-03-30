@@ -65,8 +65,14 @@ async function proxyValuationRequest(
   const upstreamUrl = resolveValuationUpstreamUrl(endpoint);
 
   if (!upstreamUrl) {
+    console.error(
+      `[valuation-api] Missing upstream URL for "${endpoint}". Set VALUATION_API_BASE_URL or NEXT_PUBLIC_VALUATION_API_BASE_URL in the deployment environment.`,
+    );
     return NextResponse.json(
-      { error: "Valuation API not configured." },
+      {
+        error:
+          "Valuation API not configured. Set VALUATION_API_BASE_URL in the deployment environment and redeploy.",
+      },
       { status: 503, headers: { "Cache-Control": "no-store" } },
     );
   }
@@ -120,9 +126,16 @@ async function proxyValuationRequest(
         "Cache-Control": "no-store",
       },
     });
-  } catch {
+  } catch (error) {
+    console.error(`[valuation-api] Failed to reach upstream for "${endpoint}"`, {
+      upstreamUrl,
+      error,
+    });
     return NextResponse.json(
-      { error: "Could not reach the valuation service." },
+      {
+        error:
+          "Could not reach the valuation service. Check VALUATION_API_BASE_URL and the upstream server availability.",
+      },
       { status: 502, headers: { "Cache-Control": "no-store" } },
     );
   }

@@ -1469,16 +1469,43 @@ const ValuationPage = () => {
       cache: "no-store",
     });
 
-    if (!response.ok) {
-      throw new Error("Could not load the valuation form settings.");
+    const responseText = await response.text();
+    let data: {
+      error?: string;
+      turnstile?: TurnstileConfig;
+      documentUpload?: DocumentUploadConfig;
+    } | null = null;
+
+    if (responseText) {
+      try {
+        data = JSON.parse(responseText) as {
+          error?: string;
+          turnstile?: TurnstileConfig;
+          documentUpload?: DocumentUploadConfig;
+        };
+      } catch {
+        data = null;
+      }
     }
 
-    const data = await response.json().catch(() => null) as {
+    if (!response.ok) {
+      const detail =
+        typeof data?.error === "string" && data.error.trim().length > 0
+          ? data.error.trim()
+          : responseText.trim();
+      throw new Error(
+        detail
+          ? `Could not load the valuation form settings. ${detail}`
+          : "Could not load the valuation form settings.",
+      );
+    }
+
+    const configData = data as {
       turnstile?: TurnstileConfig;
       documentUpload?: DocumentUploadConfig;
     } | null;
-    const nextTurnstileConfig = normalizeTurnstileConfig(data?.turnstile);
-    const nextDocumentUploadConfig = normalizeDocumentUploadConfig(data?.documentUpload);
+    const nextTurnstileConfig = normalizeTurnstileConfig(configData?.turnstile);
+    const nextDocumentUploadConfig = normalizeDocumentUploadConfig(configData?.documentUpload);
     turnstileConfigRef.current = nextTurnstileConfig;
     documentUploadConfigRef.current = nextDocumentUploadConfig;
 
@@ -1631,7 +1658,7 @@ const ValuationPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <div ref={topRef} className="h-20" />
+      <div ref={topRef} className="h-16 sm:h-20" />
 
       <AnimatePresence mode="wait">
 
@@ -1642,7 +1669,7 @@ const ValuationPage = () => {
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
           >
             {/* Hero */}
-            <section className="mx-auto max-w-7xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12">
+            <section className="mx-auto max-w-7xl px-4 pt-4 pb-8 sm:px-6 sm:pt-12">
               <div className="grid items-start gap-8 lg:grid-cols-5 lg:gap-12">
                 <div className="lg:col-span-3">
                   <div className="flex items-center gap-2 mb-4">
