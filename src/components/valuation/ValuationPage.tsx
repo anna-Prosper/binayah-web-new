@@ -1058,7 +1058,7 @@ const ValuationPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar transparent={false} />
       <div ref={topRef} className="h-20" />
 
       <AnimatePresence mode="wait">
