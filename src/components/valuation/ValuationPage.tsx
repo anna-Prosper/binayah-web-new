@@ -1642,8 +1642,8 @@ const ValuationPage = () => {
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
           >
             {/* Hero */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8">
-              <div className="grid lg:grid-cols-5 gap-12 items-start">
+            <section className="mx-auto max-w-7xl px-4 pt-8 pb-8 sm:px-6 sm:pt-12">
+              <div className="grid items-start gap-8 lg:grid-cols-5 lg:gap-12">
                 <div className="lg:col-span-3">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
@@ -1654,16 +1654,16 @@ const ValuationPage = () => {
                       Owner-Ready Valuation
                     </p>
                   </div>
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6">
+                  <h1 className="mb-6 text-3xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl">
                     Understand your property&apos;s{" "}
                     <span style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                       value
                     </span>{" "}in minutes.
                   </h1>
-                  <p className="text-muted-foreground text-lg max-w-lg mb-6">
+                  <p className="mb-6 max-w-xl text-base text-muted-foreground sm:text-lg">
                     A refined estimate based on recent transactions, active listings, and comparable homes in the same market.
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2.5">
                     {["Recent sales", "Live asking prices", "Expert guidance"].map((t) => (
                       <span key={t} className="inline-flex items-center gap-2 px-4 py-2.5 bg-card text-foreground rounded-xl text-xs font-bold border border-border/50 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-300">
                         {t}
@@ -1673,7 +1673,7 @@ const ValuationPage = () => {
                 </div>
 
                 <div className="lg:col-span-2">
-                  <div className="rounded-2xl border border-border/50 bg-card p-6 space-y-5 shadow-sm">
+                  <div className="space-y-5 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-6">
                     <div className="flex items-center gap-2.5">
                       <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
                       <p className="text-[10px] font-bold tracking-[0.2em] uppercase"
@@ -1712,20 +1712,20 @@ const ValuationPage = () => {
             )}
 
             {/* Form */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
-              <div className="rounded-2xl border border-border/50 bg-card p-8 sm:p-10 shadow-sm">
+            <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20">
+              <div className="rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-10">
                 <div className="flex items-center gap-2.5 mb-2">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
                     <Building2 className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold">Tell us about the property</h2>
+                    <h2 className="text-xl font-bold sm:text-3xl">Tell us about the property</h2>
                     <p className="text-xs text-muted-foreground mt-0.5">All the core details in one screen. The more precise, the tighter the estimate.</p>
                   </div>
                 </div>
                 <div className="h-px bg-border/50 my-6" />
 
-                <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                <form onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6">
 
                   {/* Smart search bar */}
                   <div>
@@ -1762,7 +1762,7 @@ const ValuationPage = () => {
                           }
                         }}
                         placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
-                        className="w-full pl-12 pr-16 h-14 bg-background rounded-2xl border-2 border-[#0B3D2E]/20 text-sm focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 transition-all placeholder:text-muted-foreground/50"
+                        className="h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-background pl-12 pr-20 text-[15px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 sm:pr-16"
                       />
                       {smartQuery && (
                         <button type="button"
@@ -1780,7 +1780,7 @@ const ValuationPage = () => {
                               size: "",
                             }));
                           }}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground sm:right-4 sm:text-xs">
                           Clear
                         </button>
                       )}
@@ -1823,21 +1823,21 @@ const ValuationPage = () => {
                     {!deedFile ? (
                       <button type="button"
                         onClick={() => deedInputRef.current?.click()}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 text-muted-foreground hover:text-[#0B3D2E] transition-all duration-200 group">
+                        className="group flex w-full flex-col items-start gap-3 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 px-5 py-4 text-left text-muted-foreground transition-all duration-200 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 hover:text-[#0B3D2E] sm:flex-row sm:items-center sm:justify-center sm:px-6">
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform" />
                         <div className="text-left">
                           <p className="text-sm font-semibold">Upload title deed</p>
                           <p className="text-xs opacity-70">PDF, PNG, JPG, WEBP or GIF — we&apos;ll extract the property details automatically</p>
                         </div>
-                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0B3D2E]/8 text-[#0B3D2E]">Optional</span>
+                        <span className="rounded-full bg-[#0B3D2E]/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#0B3D2E] sm:ml-auto">Optional</span>
                       </button>
                     ) : (
-                      <div className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all duration-300 ${
+                      <div className={`flex flex-col gap-3 rounded-2xl border px-4 py-4 transition-all duration-300 sm:flex-row sm:items-center sm:px-5 ${
                         deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
                         deedParsed  ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
                         "border-border bg-muted/30"
                       }`}>
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        <div className={`h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
                           deedParsing ? "bg-[#D4A847]/15" : deedParsed ? "bg-[#0B3D2E]/10" : "bg-muted"
                         }`}>
                           {deedParsing
@@ -1857,7 +1857,7 @@ const ValuationPage = () => {
                         {!deedParsing && (
                           <button type="button"
                             onClick={() => { setDeedFile(null); setDeedParsed(false); setUseDeedResult(false); }}
-                            className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 p-1">
+                            className="self-end p-1 text-muted-foreground transition-colors hover:text-foreground sm:self-auto">
                             <X className="h-4 w-4" />
                           </button>
                         )}
@@ -2085,7 +2085,7 @@ const ValuationPage = () => {
 
                   <div>
                     <button type="submit"
-                      className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]"
+                      className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] sm:w-auto"
                       style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
                       <Sparkles className="h-4 w-4" />
                       Get Quick Valuation
@@ -2105,11 +2105,11 @@ const ValuationPage = () => {
           <motion.div key="processing"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
-            className="max-w-3xl mx-auto px-4 sm:px-6 py-20"
+            className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20"
           >
-            <div className="rounded-2xl border border-border bg-card p-8 sm:p-12">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
-              <h2 className="text-3xl font-bold mb-2">{extractCommunity(form.unit)}</h2>
+              <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
               <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales, and supporting sources.</p>
               <span className="inline-block px-3 py-1 rounded-full border border-border text-sm font-medium">{form.city}</span>
 
@@ -2158,11 +2158,11 @@ const ValuationPage = () => {
           <motion.div key="results"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
-            className="max-w-4xl mx-auto px-4 sm:px-6 py-12"
+            className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12"
           >
             {/* Demo banner */}
             {useDeedResult && (
-              <div className="rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-6 py-3.5 mb-4 flex items-center gap-3">
+              <div className="mb-4 flex items-start gap-3 rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 py-3.5 sm:px-6">
                 <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0" />
                 <p className="text-sm text-[#B8922F] font-medium">
                   <strong>Demo result</strong> — this is simulated data from the deed upload. Use the search or fill the form for a live AI valuation.
@@ -2171,8 +2171,8 @@ const ValuationPage = () => {
             )}
 
             {/* Header */}
-            <div className="rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm">
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="mb-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8">
+              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] shadow-[0_10px_24px_rgba(11,61,46,0.18)]">
                     <Target className="h-4.5 w-4.5 text-white" />
@@ -2183,18 +2183,18 @@ const ValuationPage = () => {
                 </div>
                 <button
                   onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }}
-                  className="inline-flex h-10 items-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06]"
+                  className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06] sm:w-auto"
                   type="button"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   New Search
                 </button>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-2">{result.community}, {result.city}, {result.country}</h2>
+              <h2 className="mb-2 text-2xl font-bold sm:text-4xl">{result.community}, {result.city}, {result.country}</h2>
               <p className="text-muted-foreground mb-4">Key pricing guidance first, then comparable sales and market context.</p>
               <div className="flex flex-wrap gap-2">
                 {result.tags.map((t) => (
-                  <span key={t} className="px-4 py-1.5 rounded-full text-sm font-medium text-foreground"
+                  <span key={t} className="rounded-full px-3.5 py-1.5 text-xs font-medium text-foreground sm:px-4 sm:text-sm"
                     style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
                     {t}
                   </span>
@@ -2219,10 +2219,10 @@ const ValuationPage = () => {
                   role={showLockedFairValuePreview ? "button" : undefined}
                   tabIndex={showLockedFairValuePreview ? 0 : undefined}
                 >
-                  <div className="relative overflow-hidden bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-8 text-white">
+                  <div className="relative overflow-hidden bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] p-5 text-white sm:p-8">
                     <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 42%), radial-gradient(circle at bottom left, rgba(255,255,255,0.12), transparent 46%)" }} />
                     <div className="relative">
-                      <div className="mb-4 flex items-start justify-between gap-3">
+                      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <p className="text-[10px] uppercase tracking-[0.2em] text-white/75 font-bold">Fair Value</p>
                         {showLockedFairValuePreview && (
                           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
@@ -2252,7 +2252,7 @@ const ValuationPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-card p-8 border-l-[3px] border-l-[#0B3D2E] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-5 border-l-[3px] border-l-[#0B3D2E] shadow-sm sm:p-8">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-2">Confidence</p>
                   <div className="flex items-center gap-2 mb-3">
                     <AlertTriangle className={`h-5 w-5 ${
@@ -2275,7 +2275,7 @@ const ValuationPage = () => {
               {/* Price bars */}
               <div
                 {...lockedPriceComparisonCardProps}
-                className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedPriceComparisonCardProps.className || ""}`}
+                className={`mb-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8 ${lockedPriceComparisonCardProps.className || ""}`}
               >
                 <div className="flex items-center gap-2.5 mb-6">
                   <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]" />
@@ -2291,7 +2291,7 @@ const ValuationPage = () => {
                     </button>
                   )}
                 </div>
-                <div className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-4">
+                <div className="space-y-4 sm:grid sm:min-w-0 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:gap-x-3 sm:gap-y-4 sm:space-y-0">
                   <PriceBar label="Quick sale"     low={result.quickSaleLow}     high={result.quickSaleHigh}     min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Quick sale")} color="#D4A847" currency={result.currency} blurred={false} fixedWidthPct={null} />
                   <PriceBar label="Fair value"     low={result.fairValueLow}     high={result.fairValueHigh}     min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} color="#0B3D2E" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={null} />
                   <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={priceComparisonBounds?.min ?? result.quickSaleLow} max={priceComparisonBounds?.max ?? result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} color="#1A7A5A" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={null} />
@@ -2303,7 +2303,7 @@ const ValuationPage = () => {
               <div className="grid sm:grid-cols-2 gap-4 mb-4">
                 <div
                   aria-label={!unlocked && result.accessState === "preview" ? "Unlock the full report to reveal suggested list price" : undefined}
-                  className={`rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#0B3D2E] shadow-sm ${!unlocked && result.accessState === "preview" ? "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5" : ""}`}
+                  className={`rounded-2xl border border-border/50 bg-card p-5 border-l-[3px] border-l-[#0B3D2E] shadow-sm sm:p-6 ${!unlocked && result.accessState === "preview" ? "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5" : ""}`}
                   onClick={!unlocked && result.accessState === "preview" ? scrollToUnlockSection : undefined}
                   onKeyDown={!unlocked && result.accessState === "preview" ? (event) => {
                     if (event.key === "Enter" || event.key === " ") {
@@ -2333,7 +2333,7 @@ const ValuationPage = () => {
                     </p>
                   )}
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-card p-6 border-l-[3px] border-l-[#D4A847] shadow-sm">
+                <div className="rounded-2xl border border-border/50 bg-card p-5 border-l-[3px] border-l-[#D4A847] shadow-sm sm:p-6">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 rounded-lg bg-[#D4A847]/10 flex items-center justify-center">
                       <TrendingDown className="h-3.5 w-3.5 text-[#D4A847]" />
@@ -2348,7 +2348,7 @@ const ValuationPage = () => {
 
               {/* Copy — only shown when unlocked */}
               {unlocked && (
-                <div className="flex justify-end mb-4">
+                <div className="mb-4 flex justify-start sm:justify-end">
                   <button onClick={copySummary} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     {copied ? "Copied!" : "Copy summary"}
@@ -2360,7 +2360,7 @@ const ValuationPage = () => {
             {/* ── Comparables — price + reasoning blurred until unlocked ── */}
             <div
               {...lockedComparableEvidenceCardProps}
-              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedComparableEvidenceCardProps.className || ""}`}
+              className={`mb-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8 ${lockedComparableEvidenceCardProps.className || ""}`}
             >
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
@@ -2369,8 +2369,39 @@ const ValuationPage = () => {
                 <h3 className="text-xl font-bold">Comparable evidence</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" />}
               </div>
-              <p className="text-sm text-muted-foreground mb-6 ml-[46px]">Strongest sales and active listings used in the estimate</p>
-              <div className="overflow-x-auto">
+              <p className="mb-6 text-sm text-muted-foreground sm:ml-[46px]">Strongest sales and active listings used in the estimate</p>
+              <div className="grid gap-3 sm:hidden">
+                {result.comparables.map((c, i) => {
+                  const isLockedPreviewRow = !unlocked && c.visibility === "locked";
+                  return (
+                    <div key={i} className="rounded-2xl border border-border/50 bg-background/60 p-4">
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                          c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"
+                        }`}>{c.type}</span>
+                        <div className="text-right">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Price</p>
+                          <div className="mt-1 text-sm font-bold transition-all duration-500 select-none">
+                            {isLockedPreviewRow ? (
+                              <MaskedComparablePrice currency={result.currency} />
+                            ) : (
+                              fmt(c.price, result.currency)
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                        <span className="rounded-full bg-muted px-2.5 py-1">{c.size}</span>
+                        <span className="rounded-full bg-muted px-2.5 py-1">{c.date}</span>
+                      </div>
+                      <p className={`text-sm leading-relaxed text-muted-foreground transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
+                        {c.reason}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="hidden overflow-x-auto sm:block">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
@@ -2485,7 +2516,7 @@ const ValuationPage = () => {
             {/* ── Market read — body blurred ── */}
             <div
               {...lockedMarketReadCardProps}
-              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedMarketReadCardProps.className || ""}`}
+              className={`mb-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8 ${lockedMarketReadCardProps.className || ""}`}
             >
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }} />
@@ -2500,7 +2531,7 @@ const ValuationPage = () => {
             {/* ── Strategy — text + bullets blurred ── */}
             <div
               {...lockedStrategyCardProps}
-              className={`rounded-2xl border border-border/50 bg-card p-8 mb-4 shadow-sm ${lockedStrategyCardProps.className || ""}`}
+              className={`mb-4 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8 ${lockedStrategyCardProps.className || ""}`}
             >
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-[#0B3D2E]/10 flex items-center justify-center">
@@ -2525,7 +2556,7 @@ const ValuationPage = () => {
             {/* ── Moving factors — blurred in preview, visible after unlock ── */}
             <div
               {...lockedMovingFactorsCardProps}
-              className={`rounded-2xl border border-border/50 bg-card p-8 mb-8 shadow-sm ${lockedMovingFactorsCardProps.className || ""}`}
+              className={`mb-8 rounded-2xl border border-border/50 bg-card p-5 shadow-sm sm:p-8 ${lockedMovingFactorsCardProps.className || ""}`}
             >
               <div className="flex items-center gap-2.5 mb-1">
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
@@ -2534,7 +2565,7 @@ const ValuationPage = () => {
                 <h3 className="text-xl font-bold">What can move this estimate</h3>
                 {result.movingFactorsLocked ? <Lock className="h-3.5 w-3.5 text-muted-foreground ml-auto" /> : null}
               </div>
-              <p className="text-sm text-muted-foreground mb-4 ml-[46px]">Common reasons real-world pricing can shift</p>
+              <p className="mb-4 text-sm text-muted-foreground sm:ml-[46px]">Common reasons real-world pricing can shift</p>
               <ul className="space-y-2.5">
                 {result.movingFactors.map((f, i) => (
                   <li
@@ -2552,7 +2583,7 @@ const ValuationPage = () => {
             </div>
 
             {/* CTA */}
-            <div className="rounded-3xl p-10 sm:p-14 text-center mb-12 relative overflow-hidden border border-border/30"
+            <div className="relative mb-10 overflow-hidden rounded-3xl border border-border/30 p-6 text-center sm:mb-12 sm:p-14"
               style={{ background: "linear-gradient(160deg, hsl(40,20%,96%), hsl(43,40%,95%))" }}>
               <div className="absolute top-0 left-0 w-full h-[2px]"
                 style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
@@ -2564,7 +2595,7 @@ const ValuationPage = () => {
                   <Target className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-foreground">Want a detailed appraisal?</h3>
-                <p className="text-muted-foreground max-w-lg mx-auto mb-10 leading-relaxed">
+                <p className="mx-auto mb-8 max-w-lg leading-relaxed text-muted-foreground sm:mb-10">
                   Our RERA-certified valuation experts can provide a formal appraisal with an on-site inspection. Get a precise figure you can use for selling, financing, or legal purposes.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -2738,19 +2769,19 @@ const BedroomPicker = ({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-50 mt-2 w-[min(380px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card p-4 shadow-[0_20px_40px_rgba(15,23,42,0.12)]">
+        <div className="absolute left-0 top-full z-50 mt-2 w-full rounded-2xl border border-border bg-card p-3 shadow-[0_20px_40px_rgba(15,23,42,0.12)] sm:w-[min(380px,calc(100vw-2rem))] sm:max-w-[calc(100vw-2rem)] sm:p-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                 Bedrooms
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
                 {BEDROOM_OPTIONS.map((option) => {
                   const selected = value === option;
                   return (
                     <button
                       aria-pressed={selected}
-                      className={`min-w-[54px] rounded-full border px-4 py-2 text-sm font-medium transition ${
+                      className={`inline-flex min-w-0 items-center justify-center rounded-full border px-3 py-2 text-sm font-medium transition sm:min-w-[54px] sm:px-4 ${
                         selected
                           ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
                           : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
@@ -2769,13 +2800,13 @@ const BedroomPicker = ({
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                 Maid&apos;s room
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 {MAIDS_OPTIONS.map((option) => {
                   const selected = maids === option;
                   return (
                     <button
                       aria-pressed={selected}
-                      className={`min-w-[64px] rounded-full border px-4 py-2 text-sm font-medium transition ${
+                      className={`inline-flex min-w-0 items-center justify-center rounded-full border px-3 py-2 text-sm font-medium transition sm:min-w-[64px] sm:px-4 ${
                         selected
                           ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
                           : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
@@ -2884,9 +2915,9 @@ const SizePicker = ({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-50 mt-2 w-[min(380px,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card p-4 shadow-[0_20px_40px_rgba(15,23,42,0.12)]">
+        <div className="absolute left-0 top-full z-50 mt-2 w-full rounded-2xl border border-border bg-card p-3 shadow-[0_20px_40px_rgba(15,23,42,0.12)] sm:w-[min(380px,calc(100vw-2rem))] sm:max-w-[calc(100vw-2rem)] sm:p-4">
           <div className="grid gap-3">
-            <div className="grid grid-cols-[minmax(0,1fr)_112px] gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_112px]">
               <div className="relative">
                 <Ruler className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
@@ -2931,13 +2962,13 @@ const SizePicker = ({
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                 Presets
               </span>
-              <div className="flex max-h-[216px] flex-wrap gap-2 overflow-y-auto pr-1">
+              <div className="grid max-h-[216px] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:flex sm:flex-wrap">
                 {SIZE_OPTIONS.map((option) => {
                   const selected = normalizedValue === String(option);
                   return (
                     <button
                       aria-pressed={selected}
-                      className={`rounded-full border px-3.5 py-2 text-sm font-medium transition ${
+                      className={`inline-flex items-center justify-center rounded-full border px-3.5 py-2 text-sm font-medium transition ${
                         selected
                           ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_8px_18px_rgba(11,61,46,0.18)]"
                           : "border-border bg-background text-foreground hover:border-muted-foreground/30 hover:bg-muted/30"
@@ -3019,7 +3050,7 @@ const GateCard = ({
 }) => (
   <div className="mb-8">
     {/* Unlock card */}
-    <div className={`rounded-2xl border-2 bg-card p-8 shadow-lg relative overflow-hidden transition-all duration-500 ${
+    <div className={`relative overflow-hidden rounded-2xl border-2 bg-card p-5 shadow-lg transition-all duration-500 sm:p-8 ${
       highlight
         ? "border-[#D4A847]/55 shadow-[0_18px_44px_rgba(212,168,71,0.18)] ring-4 ring-[#D4A847]/10"
         : "border-[#0B3D2E]/20"
@@ -3028,7 +3059,7 @@ const GateCard = ({
       <div className="absolute top-0 left-0 right-0 h-[2px]"
         style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
 
-      <div className="flex items-center gap-3 mb-2">
+      <div className="mb-2 flex items-start gap-3">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
           <Lock className="h-4.5 w-4.5 text-white" />
         </div>
@@ -3105,7 +3136,7 @@ const GateCard = ({
       )}
 
       <button onClick={onUnlock} disabled={gateSubmitting}
-        className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:opacity-70 disabled:cursor-wait"
+        className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:w-auto"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
         {gateSubmitting ? (
           <><RefreshCw className="h-4 w-4 animate-spin" /> Unlocking…</>
@@ -3245,26 +3276,34 @@ const PriceBar = ({
   const widthPct = Math.min(safeWidthPct, 100 - leftPct);
   const text = textOverride || `${fmt(low, currency)} – ${fmt(high, currency)}`;
   const valueClass =
-    "justify-self-start text-sm text-muted-foreground text-left whitespace-nowrap transition-all duration-500 select-none";
+    "text-sm leading-snug text-muted-foreground transition-all duration-500 select-none sm:justify-self-start sm:text-left sm:whitespace-nowrap";
+  const valueMarkup = maskedPreview ? (
+    <span className={valueClass}>
+      <span>{currency}</span>
+      <span className="ml-2 inline-block blur-[1.6px] text-foreground/70">X,XXX,XXX - X,XXX,XXX</span>
+    </span>
+  ) : (
+    <span className={`${valueClass} ${blurred ? "blur-md" : ""}`}>
+      {text}
+    </span>
+  );
 
   return (
-    <>
-      <span className="text-sm font-medium pr-4">{label}</span>
+    <div className="grid gap-2 sm:contents">
+      <div className="flex items-center justify-between gap-3 sm:block">
+        <span className="text-sm font-medium sm:pr-4">{label}</span>
+        <div className="text-right sm:hidden">
+          {valueMarkup}
+        </div>
+      </div>
       <div className="h-3 min-w-0 bg-muted rounded-full relative overflow-hidden">
         <div className="h-3 rounded-full absolute top-0"
           style={{ left: `${leftPct}%`, width: `${widthPct}%`, backgroundColor: color }} />
       </div>
-      {maskedPreview ? (
-        <span className={valueClass}>
-          <span>{currency}</span>
-          <span className="ml-2 inline-block blur-[1.6px] text-foreground/70">X,XXX,XXX - X,XXX,XXX</span>
-        </span>
-      ) : (
-        <span className={`${valueClass} ${blurred ? "blur-md" : ""}`}>
-          {text}
-        </span>
-      )}
-    </>
+      <div className="hidden sm:block">
+        {valueMarkup}
+      </div>
+    </div>
   );
 };
 
