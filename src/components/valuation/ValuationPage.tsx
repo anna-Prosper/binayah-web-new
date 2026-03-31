@@ -335,6 +335,7 @@ interface ParsedValuation {
   city?: string;
   type?: string;
   beds?: string;
+  maids?: string;
   size?: string;
 }
 
@@ -384,6 +385,25 @@ function normalizeParsedSizeUnit(rawUnit: string): string {
   return /\b(sqm|sq m|m2)\b/i.test(rawUnit) ? "sqm" : "sq ft";
 }
 
+function detectMaidsPreference(input: string): string | undefined {
+  const lower = input.toLowerCase();
+
+  if (/\b(?:no|without)\s+(?:maid(?:'s)?(?:\s*room)?|maids?(?:\s*room)?|staff\s*room|service\s*room|helper(?:'s)?\s*room)\b/i.test(lower)) {
+    return "No";
+  }
+
+  if (/\b(?:with\s+)?maid(?:'s)?(?:\s*room)?\b/i.test(lower) ||
+      /\bmaids?(?:\s*room)?\b/i.test(lower) ||
+      /\bstaff\s*room\b/i.test(lower) ||
+      /\bservice\s*room\b/i.test(lower) ||
+      /\bhelper(?:'s)?\s*room\b/i.test(lower) ||
+      /\+\s*maid(?:'s)?\b/i.test(lower)) {
+    return "Yes";
+  }
+
+  return undefined;
+}
+
 function extractResidualUnitCandidate(input: string, locationKeywords: string[] = []): string | undefined {
   let residual = ` ${input} `;
   const removableKeywords = [
@@ -401,6 +421,13 @@ function extractResidualUnitCandidate(input: string, locationKeywords: string[] 
 
   residual = residual
     .replace(/(\d[\d,.]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm|sq m)\b/giu, " ")
+    .replace(/\b(?:no|without)\s+(?:maid(?:'s)?(?:\s*room)?|maids?(?:\s*room)?|staff\s*room|service\s*room|helper(?:'s)?\s*room)\b/giu, " ")
+    .replace(/\b(?:with\s+)?maid(?:'s)?(?:\s*room)?\b/giu, " ")
+    .replace(/\bmaids?(?:\s*room)?\b/giu, " ")
+    .replace(/\bstaff\s*room\b/giu, " ")
+    .replace(/\bservice\s*room\b/giu, " ")
+    .replace(/\bhelper(?:'s)?\s*room\b/giu, " ")
+    .replace(/\+\s*maid(?:'s)?\b/giu, " ")
     .replace(/[\/,]+/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -532,6 +559,8 @@ function parseValuationSearch(input: string): ParsedValuation {
     if (lower.includes(kw)) { result.beds = val; break; }
   }
 
+  result.maids = detectMaidsPreference(input);
+
   // Size
   const sizeMatch = lower.match(/(\d[\d,.]*)\s*(sq\.?\s*ft|sqft|sf|m2|sqm|sq m)/);
   if (sizeMatch) {
@@ -600,7 +629,7 @@ interface FormData {
   size: string;
 }
 
-const SMART_FIELD_KEYS = ["unit", "area", "city", "type", "beds", "size"] as const;
+const SMART_FIELD_KEYS = ["unit", "area", "city", "type", "beds", "maids", "size"] as const;
 
 type SmartFieldKey = (typeof SMART_FIELD_KEYS)[number];
 type SourceTrackedField = keyof FormData;
@@ -2081,6 +2110,7 @@ const ValuationPage = () => {
                         {smartParsed.unit  && <SmartTag label="Building" value={smartParsed.unit} />}
                         {smartParsed.type  && <SmartTag label="Type"     value={smartParsed.type} />}
                         {smartParsed.beds  && <SmartTag label="Beds"     value={smartParsed.beds} />}
+                        {smartParsed.maids && <SmartTag label="Maid's room" value={smartParsed.maids} />}
                         {smartParsed.size  && <SmartTag label="Size"     value={smartParsed.size} />}
                       </div>
                     )}
@@ -2987,6 +3017,7 @@ function formatSmartSuggestionSubtitle(parsed: ParsedValuation): string {
   const details = [
     parsed.type,
     parsed.beds ? (parsed.beds === "Studio" ? "Studio" : `${parsed.beds} BR`) : "",
+    parsed.maids === "Yes" ? "maid's room" : parsed.maids === "No" ? "no maid's room" : "",
     parsed.size,
   ].filter(Boolean).join(" · ");
 
