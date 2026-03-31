@@ -317,10 +317,15 @@ const VTYPE_KEYWORDS: Record<string, string> = {
 
 const VBED_KEYWORDS: Record<string, string> = {
   studio: "Studio",
+  "1 bhk": "1",
   "1 bed": "1", "1br": "1", "1 bdr": "1", "1bed": "1", "1 bedroom": "1",
+  "2 bhk": "2",
   "2 bed": "2", "2br": "2", "2 bdr": "2", "2bed": "2", "2 bedroom": "2",
+  "3 bhk": "3",
   "3 bed": "3", "3br": "3", "3 bdr": "3", "3bed": "3", "3 bedroom": "3",
+  "4 bhk": "4",
   "4 bed": "4", "4br": "4", "4bed": "4", "4 bedroom": "4",
+  "5 bhk": "5",
   "5 bed": "5", "5br": "5",
 };
 
@@ -345,12 +350,127 @@ const VILLA_AREAS = new Set([
 
 // Building name patterns that imply a type
 const BUILDING_TYPE_HINTS: [RegExp, string][] = [
-  [/villa(s)?/i,           "Villa"],
-  [/townhouse(s)?/i,       "Townhouse"],
-  [/penthouse(s)?/i,       "Penthouse"],
-  [/studio/i,              "Studio"],
-  [/tower|residence(s)?|apartment(s)?|flat(s)?|height(s)?|gate|park|view(s)?/i, "Apartment"],
+  [/\bvilla(s)?\b/i, "Villa"],
+  [/\btownhouse(s)?\b/i, "Townhouse"],
+  [/\bpenthouse(s)?\b/i, "Penthouse"],
+  [/\bstudio\b/i, "Studio"],
+  [/\btower\b|\bresidence(s)?\b|\bapartment(s)?\b|\bflat(s)?\b|\bheight(s)?\b|\bgate\b|\bpark\b|\bview(s)?\b/i, "Apartment"],
 ];
+
+const GENERIC_BUILDING_TOKENS = new Set([
+  "the", "tower", "towers", "residence", "residences",
+  "apartment", "apartments", "villa", "villas",
+  "townhouse", "townhouses", "building", "block", "phase",
+]);
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getSearchTokens(value: string): string[] {
+  const tokens = value.toLowerCase().match(/[a-z0-9]+/g);
+  return tokens ? tokens.filter((token) => token.length > 1) : [];
+}
+
+function getMeaningfulSearchTokens(value: string): string[] {
+  return getSearchTokens(value).filter((token) => !GENERIC_BUILDING_TOKENS.has(token));
+}
+
+function getNumericTokens(value: string): string[] {
+  return getSearchTokens(value).filter((token) => /^\d+$/.test(token));
+}
+
+function normalizeParsedSizeUnit(rawUnit: string): string {
+  return /\b(sqm|sq m|m2)\b/i.test(rawUnit) ? "sqm" : "sq ft";
+}
+
+function extractResidualUnitCandidate(input: string, locationKeywords: string[] = []): string | undefined {
+  let residual = ` ${input} `;
+  const removableKeywords = [
+    ...locationKeywords.filter(Boolean),
+    ...Object.keys(VTYPE_KEYWORDS),
+    ...Object.keys(VBED_KEYWORDS),
+  ];
+
+  for (const keyword of [...new Set(removableKeywords)].sort((a, b) => b.length - a.length)) {
+    residual = residual.replace(
+      new RegExp(`(^|[\\s,\\/()-])${escapeRegExp(keyword)}(?=$|[\\s,\\/()-])`, "ig"),
+      "$1",
+    );
+  }
+
+  residual = residual
+    .replace(/(\d[\d,.]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm|sq m)\b/giu, " ")
+    .replace(/[\/,]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^(?:in|at|on|for)\s+/i, "")
+    .trim();
+
+  if (!residual || residual.length < 3) {
+    return undefined;
+  }
+
+  if (/^(?:\d+|bed|beds|bath|baths|br|bdr|bhk|uae)$/i.test(residual)) {
+    return undefined;
+  }
+
+  return residual;
+}
+
+function scoreBuildingCandidate(query: string, building: string) {
+  const lowerQuery = query.toLowerCase().trim();
+  const lowerBuilding = building.toLowerCase();
+  const queryTokens = getMeaningfulSearchTokens(query);
+  const buildingTokens = new Set(getMeaningfulSearchTokens(building));
+  const matchedTokens = queryTokens.filter((token) => buildingTokens.has(token));
+  const queryNumbers = getNumericTokens(query);
+  const buildingNumbers = new Set(getNumericTokens(building));
+  const numberMatches = queryNumbers.filter((token) => buildingNumbers.has(token));
+
+  let score = 0;
+  const containsFullName = lowerQuery.includes(lowerBuilding);
+  const startsWithQuery = lowerBuilding.startsWith(lowerQuery);
+
+  if (containsFullName) score += 120;
+  if (startsWithQuery) score += 50;
+  score += matchedTokens.reduce((total, token) => total + Math.min(24, token.length * 3), 0);
+  score += numberMatches.length * 30;
+
+  if (queryTokens.length > 0 && matchedTokens.length === queryTokens.length) {
+    score += 20;
+  }
+
+  return {
+    containsFullName,
+    matchedTokens,
+    numberMatches,
+    score,
+    startsWithQuery,
+  };
+}
+
+function rankBuildingMatches(
+  buildingPool: { b: string; a: string; c: string }[],
+  query: string,
+) {
+  return buildingPool
+    .map((candidate) => ({
+      ...candidate,
+      ...scoreBuildingCandidate(query, candidate.b),
+    }))
+    .filter((candidate) =>
+      candidate.containsFullName ||
+      candidate.startsWithQuery ||
+      candidate.numberMatches.length > 0 ||
+      candidate.matchedTokens.length >= 2
+    )
+    .filter((candidate) => candidate.score >= 30)
+    .sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      return right.b.length - left.b.length;
+    });
+}
 
 function inferTypeFromContext(buildingName: string, areaName: string): string | undefined {
   // Check explicit type words in building name first
@@ -373,17 +493,27 @@ function resolveCity(area: string): string | undefined {
 function parseValuationSearch(input: string): ParsedValuation {
   const lower = input.toLowerCase().trim();
   const result: ParsedValuation = {};
+  let matchedCityKeyword = "";
+  let matchedAreaKeyword = "";
 
   // City — explicit keyword match first (longest first)
   const cityEntries = Object.entries(CITY_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
   for (const [kw, val] of cityEntries) {
-    if (lower.includes(kw)) { result.city = val; break; }
+    if (lower.includes(kw)) {
+      result.city = val;
+      matchedCityKeyword = kw;
+      break;
+    }
   }
 
   // Area — longest match first
   const areaEntries = Object.entries(AREA_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
   for (const [kw, val] of areaEntries) {
-    if (lower.includes(kw)) { result.area = val; break; }
+    if (lower.includes(kw)) {
+      result.area = val;
+      matchedAreaKeyword = kw;
+      break;
+    }
   }
 
   // If area found but no city yet, resolve city from area
@@ -403,12 +533,16 @@ function parseValuationSearch(input: string): ParsedValuation {
   }
 
   // Size
-  const sizeMatch = lower.match(/(\d[\d,]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm)/);
-  if (sizeMatch) result.size = sizeMatch[1].replace(/,/g, "") + " sq ft";
+  const sizeMatch = lower.match(/(\d[\d,.]*)\s*(sq\.?\s*ft|sqft|sf|m2|sqm|sq m)/);
+  if (sizeMatch) {
+    result.size = formatSizeValue(sizeMatch[1], normalizeParsedSizeUnit(sizeMatch[2]));
+  }
 
   // Building — search known buildings across all cities if no city detected yet
   const cityKey = result.city || "Dubai";
   const searchCities = result.city ? [result.city] : Object.keys(LOCATION_DATA);
+  const buildingSearchQuery = extractResidualUnitCandidate(input, [matchedAreaKeyword, matchedCityKeyword]) || input;
+  const buildingSearchLower = buildingSearchQuery.toLowerCase();
 
   const buildAllAreas = (cities: string[]) =>
     cities.flatMap((c) => getAreas(c).flatMap((a) => a.buildings.map((b) => ({ b, a: a.area, c }))));
@@ -420,7 +554,7 @@ function parseValuationSearch(input: string): ParsedValuation {
   // Exact substring match (longest first)
   const found = buildingPool
     .sort((x, y) => y.b.length - x.b.length)
-    .find(({ b }) => lower.includes(b.toLowerCase()));
+    .find(({ b }) => buildingSearchLower.includes(b.toLowerCase()));
 
   if (found) {
     result.unit = found.b;
@@ -431,22 +565,14 @@ function parseValuationSearch(input: string): ParsedValuation {
     return result;
   }
 
-  // Word-level partial match
-  const words = lower.split(/[\s,\/]+/).filter((w) => w.length > 3);
-  for (const word of words) {
-    const isKw = [...Object.values(AREA_KEYWORDS), ...Object.values(CITY_KEYWORDS),
-                  ...Object.values(VTYPE_KEYWORDS)].some((v) => v.toLowerCase().includes(word));
-    if (isKw) continue;
-    const partial = buildingPool
-      .sort((x, y) => y.b.length - x.b.length)
-      .find(({ b }) => b.toLowerCase().includes(word));
-    if (partial) {
-      result.unit = partial.b;
-      if (!result.area)  result.area = partial.a;
-      if (!result.city)  result.city = partial.c;
-      if (!result.type) result.type = inferTypeFromContext(partial.b, partial.a) ?? undefined;
-      return result;
-    }
+  const rankedMatches = rankBuildingMatches(buildingPool, buildingSearchQuery);
+  const partial = rankedMatches[0];
+  if (partial) {
+    result.unit = partial.b;
+    if (!result.area) result.area = partial.a;
+    if (!result.city) result.city = partial.c;
+    if (!result.type) result.type = inferTypeFromContext(partial.b, partial.a) ?? undefined;
+    return result;
   }
 
   // Type inference from area alone (even if no building matched)
@@ -454,18 +580,8 @@ function parseValuationSearch(input: string): ParsedValuation {
     result.type = inferTypeFromContext("", result.area) ?? undefined;
   }
 
-  // Last fallback: pass raw stripped input as unit for OpenAI to resolve
-  const knownValues = new Set([
-    ...Object.values(AREA_KEYWORDS).map(v => v.toLowerCase()),
-    ...Object.values(CITY_KEYWORDS).map(v => v.toLowerCase()),
-    ...Object.values(VTYPE_KEYWORDS).map(v => v.toLowerCase()),
-  ]);
-  const stripped = input.split(/[,\/]/)
-    .map(s => s.trim())
-    .filter(s => s.length > 2 && !knownValues.has(s.toLowerCase()) &&
-      !/^\d+$/.test(s) && !/^(bed|bath|br|bdr|sqft|sf|sq)$/i.test(s))
-    .join(", ");
-  if (stripped) result.unit = stripped;
+  const residualUnit = extractResidualUnitCandidate(input, [matchedAreaKeyword, matchedCityKeyword]);
+  if (residualUnit) result.unit = residualUnit;
 
   return result;
 }
@@ -483,6 +599,14 @@ interface FormData {
   type: string;
   size: string;
 }
+
+const SMART_FIELD_KEYS = ["unit", "area", "city", "type", "beds", "size"] as const;
+
+type SmartFieldKey = (typeof SMART_FIELD_KEYS)[number];
+type SourceTrackedField = keyof FormData;
+type FieldSource = "manual" | "smart" | "places" | "deed";
+type FieldSourceMap = Partial<Record<SourceTrackedField, FieldSource>>;
+type TrackedFormPatch = Partial<Record<SourceTrackedField, string>>;
 
 interface FieldErrors {
   unit?: string;
@@ -1089,8 +1213,11 @@ const ValuationPage = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
   const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
+  const [showSmartSuggestions, setShowSmartSuggestions] = useState(false);
   const [smartQuery, setSmartQuery] = useState("");
   const [smartParsed, setSmartParsed] = useState<ParsedValuation>({});
+  const [fieldSources, setFieldSources] = useState<FieldSourceMap>({ city: "manual", maids: "manual" });
+  const [smartSnapshot, setSmartSnapshot] = useState<Partial<Record<SmartFieldKey, string>>>({});
   const [deedFile, setDeedFile] = useState<File | null>(null);
   const [deedParsing, setDeedParsing] = useState(false);
   const [deedParsed, setDeedParsed] = useState(false);
@@ -1103,7 +1230,11 @@ const ValuationPage = () => {
   const turnstileConfigRef = useRef<TurnstileConfig>(defaultTurnstileConfig);
   const documentUploadConfigRef = useRef<DocumentUploadConfig>(defaultDocumentUploadConfig);
   const [showPlaces, setShowPlaces] = useState(false);
+  const smartInputRef = useRef<HTMLInputElement>(null);
+  const smartSuggestionsRef = useRef<HTMLDivElement>(null);
   const placesRef = useRef<HTMLDivElement>(null);
+  const smartPlacesQuery = smartParsed.unit || smartParsed.area || smartQuery;
+  const { results: smartPlacesResults, loading: smartPlacesLoading } = usePlacesSearch(smartPlacesQuery, showSmartSuggestions);
   const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
   const [unlocked, setUnlocked] = useState(false);
   const [gate, setGate] = useState<GateData>({ name: "", phone: "", email: "" });
@@ -1117,28 +1248,117 @@ const ValuationPage = () => {
   const unitInputRef = useRef<HTMLInputElement>(null);
   const areaSuggestionsRef = useRef<HTMLDivElement>(null);
   const buildingSuggestionsRef = useRef<HTMLDivElement>(null);
+  const hasSmartAutofill = SMART_FIELD_KEYS.some((key) => fieldSources[key] === "smart");
+  const smartSuggestions = buildSmartSuggestions(smartQuery, smartParsed, smartPlacesResults);
 
+  const setTrackedValues = useCallback((values: TrackedFormPatch, source: FieldSource) => {
+    const entries = (Object.entries(values) as [SourceTrackedField, string | undefined][])
+      .filter((entry): entry is [SourceTrackedField, string] => typeof entry[1] === "string");
 
-  const updateField = useCallback((key: keyof FormData, val: string) => {
-    setForm((f) => ({ ...f, [key]: val }));
+    if (!entries.length) {
+      return;
+    }
+
+    setForm((current) => {
+      const next = { ...current };
+      for (const [key, value] of entries) {
+        next[key] = value;
+      }
+      return next;
+    });
+
+    setFieldSources((current) => {
+      const next = { ...current };
+      for (const [key, value] of entries) {
+        if (value.trim()) next[key] = source;
+        else delete next[key];
+      }
+      return next;
+    });
 
     // Live validation after first submit attempt
-    if (submitAttempted) {
+    if (submitAttempted && Object.prototype.hasOwnProperty.call(values, "unit")) {
+      const unitValue = typeof values.unit === "string" ? values.unit : "";
       setFieldErrors((prev) => {
         const next = { ...prev };
-        if (key === "unit") {
-          if (val.trim().length >= 5) delete next.unit;
-          else next.unit = "Please enter the building or unit name (at least 5 characters).";
-        }
+        if (unitValue.trim().length >= 5) delete next.unit;
+        else next.unit = "Please enter the building or unit name (at least 5 characters).";
         return next;
       });
     }
   }, [submitAttempted]);
 
+  const updateField = useCallback((key: SourceTrackedField, val: string, source: FieldSource = "manual") => {
+    setTrackedValues({ [key]: val } as TrackedFormPatch, source);
+  }, [setTrackedValues]);
+
+  const applySmartSuggestion = useCallback((parsed: ParsedValuation) => {
+    const entries = SMART_FIELD_KEYS
+      .map((key) => [key, parsed[key]] as const)
+      .filter((entry): entry is [SmartFieldKey, string] => typeof entry[1] === "string" && entry[1].trim().length > 0);
+
+    if (!entries.length) {
+      return;
+    }
+
+    setSmartSnapshot((current) => {
+      const next = { ...current };
+      for (const [key] of entries) {
+        if (fieldSources[key] !== "smart") {
+          next[key] = form[key];
+        }
+      }
+      return next;
+    });
+
+    setTrackedValues(Object.fromEntries(entries) as TrackedFormPatch, "smart");
+    setSmartParsed(parsed);
+    setShowSmartSuggestions(false);
+  }, [fieldSources, form, setTrackedValues]);
+
+  const clearSmartAutofill = useCallback(() => {
+    const smartKeys = SMART_FIELD_KEYS.filter((key) => fieldSources[key] === "smart");
+    if (!smartKeys.length) {
+      return;
+    }
+
+    const restorePatch = smartKeys.reduce<TrackedFormPatch>((acc, key) => {
+      acc[key] = smartSnapshot[key] ?? "";
+      return acc;
+    }, {});
+
+    setTrackedValues(restorePatch, "manual");
+    setSmartSnapshot((current) => {
+      const next = { ...current };
+      for (const key of smartKeys) {
+        delete next[key];
+      }
+      return next;
+    });
+  }, [fieldSources, smartSnapshot, setTrackedValues]);
+
+  const handleSmartInputChange = useCallback((value: string) => {
+    setSmartQuery(value);
+
+    const trimmed = value.trim();
+    if (trimmed.length < 2) {
+      setSmartParsed({});
+      setShowSmartSuggestions(false);
+      return;
+    }
+
+    setSmartParsed(parseValuationSearch(value));
+    setShowSmartSuggestions(true);
+  }, []);
+
   // Close suggestions when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       const target = e.target as Node;
+      if (smartSuggestionsRef.current && !smartSuggestionsRef.current.contains(target) &&
+          smartInputRef.current && !smartInputRef.current.contains(target)) {
+        setShowSmartSuggestions(false);
+      }
       if (areaSuggestionsRef.current && !areaSuggestionsRef.current.contains(target)) {
         setShowAreaSuggestions(false);
       }
@@ -1307,8 +1527,7 @@ const ValuationPage = () => {
       }
 
       const inquiry = data?.inquiry || {};
-      setForm((current) => ({
-        ...current,
+      setTrackedValues({
         ...(inquiry.propertyName ? { unit: inquiry.propertyName } : {}),
         ...(inquiry.location ? { area: inquiry.location } : {}),
         ...(inquiry.city ? { city: inquiry.city } : {}),
@@ -1316,7 +1535,7 @@ const ValuationPage = () => {
         ...(inquiry.bedrooms ? { beds: inquiry.bedrooms } : {}),
         ...(inquiry.maids ? { maids: inquiry.maids } : {}),
         ...(inquiry.size ? { size: inquiry.size } : {}),
-      }));
+      }, "deed");
       setGate((current) => ({
         name: current.name || inquiry.ownerName || current.name,
         phone: current.phone || inquiry.phone || current.phone,
@@ -1761,57 +1980,98 @@ const ValuationPage = () => {
                     <div className="relative">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none z-10" />
                       <input
+                        ref={smartInputRef}
                         value={smartQuery}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setSmartQuery(val);
-                          if (val.trim().length > 2) {
-                            const parsed = parseValuationSearch(val);
-                            setSmartParsed(parsed);
-                            setForm((f) => ({
-                              ...f,
-                              ...(parsed.unit ? { unit: parsed.unit } : {}),
-                              ...(parsed.area ? { area: parsed.area } : {}),
-                              ...(parsed.city ? { city: parsed.city } : {}),
-                              ...(parsed.type ? { type: parsed.type } : {}),
-                              ...(parsed.beds ? { beds: parsed.beds } : {}),
-                              ...(parsed.size ? { size: parsed.size } : {}),
-                            }));
-                          } else if (val.trim().length === 0) {
-                            setSmartParsed({});
-                            setForm((f) => ({
-                              ...f,
-                              unit: "",
-                              area: "",
-                              city: "",
-                              type: "",
-                              beds: "",
-                              size: "",
-                            }));
+                        onChange={(e) => handleSmartInputChange(e.target.value)}
+                        onFocus={() => {
+                          if (smartQuery.trim().length >= 2) {
+                            setShowSmartSuggestions(true);
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") {
+                            setShowSmartSuggestions(false);
+                            return;
+                          }
+
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            if (smartSuggestions.length > 0) {
+                              applySmartSuggestion(smartSuggestions[0].parsed);
+                            }
                           }
                         }}
                         placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
                         className="h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-background pl-12 pr-20 text-[15px] transition-all placeholder:text-muted-foreground/50 focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 sm:pr-16"
                       />
-                      {smartQuery && (
+                      {(smartQuery || hasSmartAutofill) && (
                         <button type="button"
                           onClick={() => {
                             setSmartQuery("");
                             setSmartParsed({});
-                            // Reset only the fields that were auto-filled by smart search
-                            setForm((f) => ({
-                              ...f,
-                              unit: "",
-                              area: "",
-                              city: "",
-                              type: "",
-                              beds: "",
-                              size: "",
-                            }));
+                            setShowSmartSuggestions(false);
+                            clearSmartAutofill();
                           }}
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground sm:right-4 sm:text-xs">
                           Clear
                         </button>
+                      )}
+
+                      {showSmartSuggestions && smartQuery.trim().length >= 2 && (
+                        <div
+                          ref={smartSuggestionsRef}
+                          className="absolute top-full left-0 right-0 mt-1 z-50 rounded-2xl border border-border bg-card shadow-lg overflow-hidden"
+                        >
+                          <div className="border-b border-border/40 bg-muted/20 px-4 py-2">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70">
+                              Smart matches
+                            </p>
+                          </div>
+
+                          {smartSuggestions.length > 0 ? (
+                            <div className="max-h-72 overflow-y-auto">
+                              {smartSuggestions.map((suggestion) => (
+                                <button
+                                  key={suggestion.id}
+                                  type="button"
+                                  className="flex w-full items-start gap-3 border-b border-border/30 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/40 last:border-0"
+                                  onMouseDown={(event) => {
+                                    event.preventDefault();
+                                    applySmartSuggestion(suggestion.parsed);
+                                  }}
+                                >
+                                  <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
+                                    suggestion.kind === "detected" ? "bg-[#0B3D2E]/10" : "bg-[#D4A847]/12"
+                                  }`}>
+                                    {suggestion.kind === "detected"
+                                      ? <Sparkles className="h-4 w-4 text-[#0B3D2E]" />
+                                      : <MapPin className="h-4 w-4 text-[#B8922F]" />}
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <div className="flex items-center gap-2">
+                                      <p className="truncate font-semibold text-foreground">{suggestion.title}</p>
+                                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] ${
+                                        suggestion.kind === "detected"
+                                          ? "bg-[#0B3D2E]/8 text-[#0B3D2E]"
+                                          : "bg-[#D4A847]/14 text-[#B8922F]"
+                                      }`}>
+                                        {suggestion.kind === "detected" ? "Detected" : "Live"}
+                                      </span>
+                                    </div>
+                                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                                      {suggestion.subtitle}
+                                    </p>
+                                  </div>
+                                  <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="px-4 py-3 text-sm text-muted-foreground">
+                              {smartPlacesLoading ? "Looking up buildings and communities…" : "No confident match yet. Keep typing or fill the fields below."}
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                     {Object.keys(smartParsed).length > 0 && (
@@ -1825,7 +2085,7 @@ const ValuationPage = () => {
                       </div>
                     )}
                     <p className="text-[11px] text-muted-foreground mt-2">
-                      Type to auto-fill, or complete the fields below.
+                      Suggestions apply on selection. Manual edits below stay intact.
                     </p>
                   </div>
 
@@ -1904,7 +2164,7 @@ const ValuationPage = () => {
                         <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
                       </label>
                       <Select value={form.city} onValueChange={(v) => {
-                        setForm((f) => ({ ...f, city: v, area: "", unit: "" }));
+                        setTrackedValues({ city: v, area: "", unit: "" }, "manual");
                         if (submitAttempted) setFieldErrors((prev) => {
                           const next = { ...prev };
                           delete (next as any).city;
@@ -1938,7 +2198,7 @@ const ValuationPage = () => {
                         <input
                           value={form.area}
                           onChange={(e) => {
-                            setForm((f) => ({ ...f, area: e.target.value, unit: "" }));
+                            setTrackedValues({ area: e.target.value, unit: "" }, "manual");
                             setShowAreaSuggestions(true);
                           }}
                           onFocus={() => setShowAreaSuggestions(true)}
@@ -1961,7 +2221,7 @@ const ValuationPage = () => {
                                   className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-center gap-2.5 border-b border-border/30 last:border-0"
                                   onMouseDown={(e) => {
                                     e.preventDefault();
-                                    setForm((f) => ({ ...f, area: a.area, unit: "" }));
+                                    setTrackedValues({ area: a.area, unit: "" }, "manual");
                                     setShowAreaSuggestions(false);
                                   }}>
                                   <MapPin className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -2017,12 +2277,12 @@ const ValuationPage = () => {
                                 className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors flex items-start gap-2.5 border-b border-border/30 last:border-0"
                                 onMouseDown={(e) => {
                                   e.preventDefault();
-                                  // Fill building field with the full description
-                                  updateField("unit", p.building || p.description.split(",")[0].trim());
-                                  // Auto-fill area + city from Places response
-                                  if (p.area)  setForm((f) => ({ ...f, area: p.area }));
-                                  if (p.city && Object.keys(LOCATION_DATA).includes(p.city))
-                                    setForm((f) => ({ ...f, city: p.city }));
+                                  const placeCity = Object.prototype.hasOwnProperty.call(LOCATION_DATA, p.city) ? p.city : form.city;
+                                  setTrackedValues({
+                                    unit: p.building || p.description.split(",")[0].trim(),
+                                    ...(p.area ? { area: p.area } : {}),
+                                    ...(placeCity ? { city: placeCity } : {}),
+                                  }, "places");
                                   setShowPlaces(false);
                                   setShowBuildingSuggestions(false);
                                   unitInputRef.current?.blur();
@@ -2708,6 +2968,87 @@ interface PlacePrediction {
   building: string;
   area: string;
   city: string;
+}
+
+interface SmartSuggestion {
+  id: string;
+  kind: "detected" | "places";
+  parsed: ParsedValuation;
+  subtitle: string;
+  title: string;
+}
+
+function hasSmartParsedValue(parsed: ParsedValuation): boolean {
+  return SMART_FIELD_KEYS.some((key) => typeof parsed[key] === "string" && parsed[key]!.trim().length > 0);
+}
+
+function formatSmartSuggestionSubtitle(parsed: ParsedValuation): string {
+  const location = [parsed.area, parsed.city].filter(Boolean).join(", ");
+  const details = [
+    parsed.type,
+    parsed.beds ? (parsed.beds === "Studio" ? "Studio" : `${parsed.beds} BR`) : "",
+    parsed.size,
+  ].filter(Boolean).join(" · ");
+
+  return [location, details].filter(Boolean).join(" · ");
+}
+
+function buildSmartSuggestions(
+  query: string,
+  parsed: ParsedValuation,
+  placesResults: PlacePrediction[],
+): SmartSuggestion[] {
+  const trimmedQuery = query.trim();
+  if (trimmedQuery.length < 2) {
+    return [];
+  }
+
+  const suggestions: SmartSuggestion[] = [];
+  const seen = new Set<string>();
+
+  if (hasSmartParsedValue(parsed)) {
+    const title = parsed.unit || parsed.area || parsed.city || trimmedQuery;
+    const subtitle = formatSmartSuggestionSubtitle(parsed) || "Apply the detected property details";
+    const key = `${title.toLowerCase()}__${subtitle.toLowerCase()}`;
+
+    seen.add(key);
+    suggestions.push({
+      id: `detected:${key}`,
+      kind: "detected",
+      parsed,
+      subtitle,
+      title,
+    });
+  }
+
+  for (const place of placesResults) {
+    const placeTitle = place.building || place.description.split(",")[0].trim();
+    const placeCity = Object.prototype.hasOwnProperty.call(LOCATION_DATA, place.city) ? place.city : parsed.city;
+    const placeParsed: ParsedValuation = {
+      ...parsed,
+      unit: placeTitle || parsed.unit,
+      area: place.area || parsed.area,
+      city: placeCity,
+      type: parsed.type || inferTypeFromContext(placeTitle, place.area),
+    };
+    const subtitle = formatSmartSuggestionSubtitle(placeParsed) || place.description;
+    const key = `${placeTitle.toLowerCase()}__${subtitle.toLowerCase()}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    suggestions.push({
+      id: `place:${place.placeId}`,
+      kind: "places",
+      parsed: placeParsed,
+      subtitle,
+      title: placeTitle,
+    });
+  }
+
+  return suggestions.slice(0, 6);
 }
 
 function usePlacesSearch(query: string, enabled: boolean) {
