@@ -1652,6 +1652,8 @@ const ValuationPage = () => {
   const lockedMarketReadCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal market read");
   const lockedStrategyCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal recommended strategy");
   const lockedMovingFactorsCardProps = getUnlockCardProps(Boolean(result?.movingFactorsLocked), "Unlock the full report to reveal what can move this estimate");
+  const currentProcessingStep = Math.min(activeProcessStep + 1, processingSteps.length);
+  const processingProgress = `${(currentProcessingStep / processingSteps.length) * 100}%`;
 
   // ─── Render ────────────────────────────────────────────────────────────────
 
@@ -2132,9 +2134,9 @@ const ValuationPage = () => {
           <motion.div key="processing"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
-            className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20"
+            className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20"
           >
-            <div className="rounded-2xl border border-border bg-card p-5 sm:p-12">
+            <div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
               <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales, and supporting sources.</p>
@@ -2148,27 +2150,72 @@ const ValuationPage = () => {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
-                {processingSteps.map((ps, i) => (
-                  <div key={ps.label} className={`rounded-xl border p-4 transition-all duration-500 ${
-                    i <= activeProcessStep ? "border-[#0B3D2E]/30 bg-[#0B3D2E]/5" : "border-border bg-muted/30"
-                  }`}>
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <div className={`h-2 w-2 rounded-full transition-colors duration-500 ${
-                        i < activeProcessStep ? "bg-[#0B3D2E]"
-                          : i === activeProcessStep ? "animate-pulse bg-[#0B3D2E]"
-                          : "bg-muted-foreground/30"
-                      }`} />
-                      <span className="text-sm font-bold">{ps.label}</span>
+              <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-center">
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#0B3D2E]/10">
+                  <div
+                    className="h-full rounded-full bg-[linear-gradient(90deg,#0B3D2E_0%,#1A7A5A_100%)] transition-all duration-700"
+                    style={{ width: processingProgress }}
+                  />
+                </div>
+                <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B3D2E]/65">
+                  Step {currentProcessingStep} of {processingSteps.length}
+                </span>
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {processingSteps.map((ps, i) => {
+                  const isDone = i < activeProcessStep;
+                  const isActive = i === activeProcessStep;
+
+                  return (
+                    <div
+                      key={ps.label}
+                      className={`relative overflow-hidden rounded-[24px] border p-5 transition-all duration-500 sm:p-6 ${
+                        isDone
+                          ? "border-[#0B3D2E]/18 bg-white shadow-[0_18px_45px_rgba(11,61,46,0.08)]"
+                          : isActive
+                            ? "border-[#0B3D2E]/28 bg-[linear-gradient(180deg,rgba(11,61,46,0.08)_0%,rgba(255,255,255,0.96)_100%)] shadow-[0_22px_55px_rgba(11,61,46,0.14)]"
+                            : "border-border/80 bg-white/70"
+                      }`}
+                    >
+                      <div
+                        className={`absolute inset-x-0 top-0 h-1 transition-colors duration-500 ${
+                          isDone || isActive ? "bg-[linear-gradient(90deg,#0B3D2E_0%,#1A7A5A_100%)]" : "bg-transparent"
+                        }`}
+                      />
+
+                      <div className="flex items-start gap-3">
+                        <span
+                          className={`mt-1 h-3 w-3 shrink-0 rounded-full border transition-all duration-500 ${
+                            isDone
+                              ? "border-[#0B3D2E] bg-[#0B3D2E]"
+                              : isActive
+                                ? "border-[#0B3D2E] bg-[#0B3D2E] ring-4 ring-[#0B3D2E]/12"
+                                : "border-muted-foreground/20 bg-muted-foreground/25"
+                          } ${isActive ? "animate-pulse" : ""}`}
+                        />
+
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-muted-foreground/70">
+                            Phase {i + 1}
+                          </p>
+                          <h3 className="mt-2 text-xl font-bold leading-tight text-foreground">
+                            {ps.label}
+                          </h3>
+                        </div>
+                      </div>
+
+                      <p className="mt-5 text-sm leading-6 text-muted-foreground">
+                        {ps.desc}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground">{ps.desc}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="mt-8 space-y-4">
                 {[1, 2].map((n) => (
-                  <div key={n} className="rounded-xl bg-secondary/50 p-6 space-y-3 animate-pulse">
+                  <div key={n} className="rounded-[22px] border border-[#0B3D2E]/8 bg-white/80 p-6 space-y-3 animate-pulse shadow-[0_18px_45px_rgba(15,23,42,0.05)]">
                     <div className="h-4 w-1/3 bg-[#0B3D2E]/10 rounded" />
                     <div className="h-3 w-2/3 bg-[#0B3D2E]/5 rounded" />
                     <div className="h-3 w-1/2 bg-[#0B3D2E]/5 rounded" />
