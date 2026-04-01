@@ -98,7 +98,7 @@ const BED_HINTS: [RegExp, (typeof VALID_BEDS)[number]][] = [
 const UNIT_NOISE_TOKENS = new Set([
   "apartment", "appartment", "appartement", "apartments", "villa", "villas", "townhouse", "townhouses", "penthouse", "studio",
   "bed", "beds", "bedroom", "bedrooms", "br", "bdr", "bhk",
-  "with", "without", "in", "at", "on", "for", "near",
+  "with", "without", "in", "at", "on", "for", "near", "and", "or",
   "pool", "gym", "parking", "furnished", "unfurnished", "upgraded", "vacant", "tenanted",
 ]);
 

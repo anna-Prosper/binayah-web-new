@@ -375,7 +375,7 @@ const SEARCH_TOKEN_ALIASES: Record<string, string> = {
 const UNIT_NOISE_TOKENS = new Set([
   "apartment", "apartments", "villa", "villas", "townhouse", "townhouses", "penthouse", "studio",
   "bed", "beds", "bedroom", "bedrooms", "br", "bdr", "bhk",
-  "with", "without", "in", "at", "on", "for", "near",
+  "with", "without", "in", "at", "on", "for", "near", "and", "or",
   "pool", "gym", "parking", "furnished", "unfurnished", "upgraded", "vacant", "tenanted",
 ]);
 
@@ -450,7 +450,7 @@ function extractResidualUnitCandidate(input: string, locationKeywords: string[] 
     .replace(/\bwith\s+pool\b/giu, " ")
     .replace(/\b(?:pool|gym|parking|furnished|unfurnished|upgraded|vacant|tenanted)\b/giu, " ")
     .replace(/\b(?:near|close\s+to|next\s+to)\b/giu, " ")
-    .replace(/\b(?:in|at|on|for|with|without)\b/giu, " ")
+    .replace(/\b(?:in|at|on|for|with|without|and|or)\b/giu, " ")
     .replace(/[\/,]+/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -460,7 +460,7 @@ function extractResidualUnitCandidate(input: string, locationKeywords: string[] 
     return undefined;
   }
 
-  if (/^(?:\d+|bed|beds|bath|baths|br|bdr|bhk|uae)$/i.test(residual)) {
+  if (/^(?:\d+|bed|beds|bath|baths|br|bdr|bhk|uae|and|or)$/i.test(residual)) {
     return undefined;
   }
 
