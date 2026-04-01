@@ -311,21 +311,21 @@ const AREA_KEYWORDS: Record<string, string> = {
 };
 
 const VTYPE_KEYWORDS: Record<string, string> = {
-  apartment: "Apartment", apt: "Apartment", flat: "Apartment",
+  apartment: "Apartment", appartment: "Apartment", appartement: "Apartment", apt: "Apartment", flat: "Apartment",
   villa: "Villa", townhouse: "Townhouse", penthouse: "Penthouse", studio: "Studio",
 };
 
 const VBED_KEYWORDS: Record<string, string> = {
   studio: "Studio",
-  "1 bhk": "1",
+  "1 bhk": "1", "1bhk": "1",
   "1 bed": "1", "1br": "1", "1 bdr": "1", "1bed": "1", "1 bedroom": "1",
-  "2 bhk": "2",
+  "2 bhk": "2", "2bhk": "2",
   "2 bed": "2", "2br": "2", "2 bdr": "2", "2bed": "2", "2 bedroom": "2",
-  "3 bhk": "3",
+  "3 bhk": "3", "3bhk": "3",
   "3 bed": "3", "3br": "3", "3 bdr": "3", "3bed": "3", "3 bedroom": "3",
-  "4 bhk": "4",
+  "4 bhk": "4", "4bhk": "4",
   "4 bed": "4", "4br": "4", "4bed": "4", "4 bedroom": "4",
-  "5 bhk": "5",
+  "5 bhk": "5", "5bhk": "5",
   "5 bed": "5", "5br": "5",
 };
 
@@ -364,13 +364,32 @@ const GENERIC_BUILDING_TOKENS = new Set([
   "townhouse", "townhouses", "building", "block", "phase",
 ]);
 
+const SEARCH_TOKEN_ALIASES: Record<string, string> = {
+  appartment: "apartment",
+  appartements: "apartments",
+  appartement: "apartment",
+  appartments: "apartments",
+  khilafa: "khalifa",
+};
+
+const UNIT_NOISE_TOKENS = new Set([
+  "apartment", "apartments", "villa", "villas", "townhouse", "townhouses", "penthouse", "studio",
+  "bed", "beds", "bedroom", "bedrooms", "br", "bdr", "bhk",
+  "with", "without", "in", "at", "on", "for", "near",
+  "pool", "gym", "parking", "furnished", "unfurnished", "upgraded", "vacant", "tenanted",
+]);
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function getSearchTokens(value: string): string[] {
   const tokens = value.toLowerCase().match(/[a-z0-9]+/g);
-  return tokens ? tokens.filter((token) => token.length > 1) : [];
+  return tokens
+    ? tokens
+      .map((token) => SEARCH_TOKEN_ALIASES[token] ?? token)
+      .filter((token) => token.length > 1)
+    : [];
 }
 
 function getMeaningfulSearchTokens(value: string): string[] {
@@ -428,10 +447,13 @@ function extractResidualUnitCandidate(input: string, locationKeywords: string[] 
     .replace(/\bservice\s*room\b/giu, " ")
     .replace(/\bhelper(?:'s)?\s*room\b/giu, " ")
     .replace(/\+\s*maid(?:'s)?\b/giu, " ")
+    .replace(/\bwith\s+pool\b/giu, " ")
+    .replace(/\b(?:pool|gym|parking|furnished|unfurnished|upgraded|vacant|tenanted)\b/giu, " ")
+    .replace(/\b(?:near|close\s+to|next\s+to)\b/giu, " ")
+    .replace(/\b(?:in|at|on|for|with|without)\b/giu, " ")
     .replace(/[\/,]+/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .replace(/^(?:in|at|on|for)\s+/i, "")
     .trim();
 
   if (!residual || residual.length < 3) {
@@ -442,7 +464,26 @@ function extractResidualUnitCandidate(input: string, locationKeywords: string[] 
     return undefined;
   }
 
+  if (isLikelyNoisyUnitCandidate(residual)) {
+    return undefined;
+  }
+
   return residual;
+}
+
+function isLikelyNoisyUnitCandidate(value: string) {
+  const tokens = getSearchTokens(value);
+  if (!tokens.length) {
+    return true;
+  }
+
+  const nonNoiseTokens = tokens.filter((token) => !UNIT_NOISE_TOKENS.has(token));
+  if (!nonNoiseTokens.length) {
+    return true;
+  }
+
+  const noiseTokens = tokens.length - nonNoiseTokens.length;
+  return noiseTokens >= 3 && nonNoiseTokens.length <= 3;
 }
 
 function scoreBuildingCandidate(query: string, building: string) {
@@ -1262,7 +1303,9 @@ const ValuationPage = () => {
   const smartInputRef = useRef<HTMLInputElement>(null);
   const smartSuggestionsRef = useRef<HTMLDivElement>(null);
   const placesRef = useRef<HTMLDivElement>(null);
-  const smartPlacesQuery = smartParsed.unit || smartParsed.area || smartQuery;
+  const smartPlacesQuery = smartParsed.unit && !isLikelyNoisyUnitCandidate(smartParsed.unit)
+    ? smartParsed.unit
+    : smartQuery || smartParsed.area || smartParsed.unit || "";
   const { results: smartPlacesResults, loading: smartPlacesLoading } = usePlacesSearch(smartPlacesQuery, showSmartSuggestions);
   const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
   const [unlocked, setUnlocked] = useState(false);
@@ -1335,6 +1378,15 @@ const ValuationPage = () => {
       return;
     }
 
+    const nextSmartKeys = new Set(entries.map(([key]) => key));
+    const restorePatch = SMART_FIELD_KEYS.reduce<TrackedFormPatch>((acc, key) => {
+      if (fieldSources[key] === "smart" && !nextSmartKeys.has(key)) {
+        acc[key] = smartSnapshot[key] ?? "";
+      }
+
+      return acc;
+    }, {});
+
     setSmartSnapshot((current) => {
       const next = { ...current };
       for (const [key] of entries) {
@@ -1342,13 +1394,24 @@ const ValuationPage = () => {
           next[key] = form[key];
         }
       }
+
+      for (const key of SMART_FIELD_KEYS) {
+        if (!nextSmartKeys.has(key)) {
+          delete next[key];
+        }
+      }
+
       return next;
     });
+
+    if (Object.keys(restorePatch).length > 0) {
+      setTrackedValues(restorePatch, "manual");
+    }
 
     setTrackedValues(Object.fromEntries(entries) as TrackedFormPatch, "smart");
     setSmartParsed(parsed);
     setShowSmartSuggestions(false);
-  }, [fieldSources, form, setTrackedValues]);
+  }, [fieldSources, form, setTrackedValues, smartSnapshot]);
 
   const clearSmartAutofill = useCallback(() => {
     const smartKeys = SMART_FIELD_KEYS.filter((key) => fieldSources[key] === "smart");
@@ -2069,6 +2132,9 @@ const ValuationPage = () => {
                                   key={suggestion.id}
                                   type="button"
                                   className="flex w-full items-start gap-3 border-b border-border/30 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/40 last:border-0"
+                                  onClick={() => {
+                                    applySmartSuggestion(suggestion.parsed);
+                                  }}
                                   onMouseDown={(event) => {
                                     event.preventDefault();
                                     applySmartSuggestion(suggestion.parsed);
@@ -3244,7 +3310,14 @@ function mergeSmartSuggestions(
   );
 
   if (duplicateIndex >= 0) {
-    if (aiSuggestion.confidence && aiSuggestion.confidence >= 0.9 && !aiSuggestion.needsConfirmation) {
+    const duplicate = localSuggestions[duplicateIndex];
+    const aiFieldCount = countParsedSmartFields(aiSuggestion.parsed);
+    const duplicateFieldCount = countParsedSmartFields(duplicate.parsed);
+
+    if (
+      aiFieldCount > duplicateFieldCount ||
+      (aiFieldCount === duplicateFieldCount && aiSuggestion.kind === "ai")
+    ) {
       const withoutDuplicate = localSuggestions.filter((_, index) => index !== duplicateIndex);
       return [aiSuggestion, ...withoutDuplicate].slice(0, 6);
     }
@@ -3266,7 +3339,6 @@ function useValuationAISuggestion(
 ) {
   const [suggestion, setSuggestion] = useState<SmartSuggestion | null>(null);
   const [loading, setLoading] = useState(false);
-  const cacheRef = useRef<Map<string, SmartSuggestion | null>>(new Map());
   const requestCandidates = candidates.slice(0, 5).map((candidate) => ({
     kind: candidate.kind,
     parsed: candidate.parsed,
@@ -3282,12 +3354,6 @@ function useValuationAISuggestion(
   useEffect(() => {
     if (!shouldRequestAIValuationParse(query, parserResult, candidates)) {
       setSuggestion(null);
-      setLoading(false);
-      return;
-    }
-
-    if (cacheRef.current.has(requestKey)) {
-      setSuggestion(cacheRef.current.get(requestKey) ?? null);
       setLoading(false);
       return;
     }
@@ -3319,7 +3385,6 @@ function useValuationAISuggestion(
         }
 
         const nextSuggestion = buildAISmartSuggestion(normalizeAIValuationSuggestionPayload(data?.suggestion), query);
-        cacheRef.current.set(requestKey, nextSuggestion);
         setSuggestion(nextSuggestion);
       } catch {
         if (!controller.signal.aborted) {

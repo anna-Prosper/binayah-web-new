@@ -16,6 +16,8 @@ Rules:
 - Prefer the provided candidate values for unit, area, and city whenever possible.
 - When you choose a candidate for unit, area, or city, copy its canonical text exactly as provided.
 - Never invent a building or community name when no strong candidate exists.
+- Do not copy generic search text into unit. Amenities and modifiers like "with pool", "furnished", "vacant", or repeated "in" phrases are not unit names.
+- Common variants like "1bhk", "1 br", "1 bedroom", and misspellings like "appartment" should still be parsed into beds/type when clear.
 - If a field is unclear, return null for that field.
 - If multiple candidates are plausible, choose the best one, set needsConfirmation to true, and add short ambiguity notes.
 - Extract only these fields: unit, area, city, type, beds, maids, size.
@@ -72,6 +74,33 @@ interface AllowedValueResolution {
   rejected: boolean;
   value: string | null;
 }
+
+const TYPE_HINTS: [RegExp, (typeof VALID_TYPES)[number]][] = [
+  [/\b(?:apartment|appartment|appartement|apt|flat)\b/i, "Apartment"],
+  [/\bvilla\b/i, "Villa"],
+  [/\btownhouse\b/i, "Townhouse"],
+  [/\bpenthouse\b/i, "Penthouse"],
+  [/\bstudio\b/i, "Studio"],
+];
+
+const BED_HINTS: [RegExp, (typeof VALID_BEDS)[number]][] = [
+  [/\bstudio\b/i, "Studio"],
+  [/\b1\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "1"],
+  [/\b2\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "2"],
+  [/\b3\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "3"],
+  [/\b4\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "4"],
+  [/\b5\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "5"],
+  [/\b6\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "6"],
+  [/\b7\+\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "7+"],
+  [/\b7\s*(?:bed(?:room)?|br|bdr|bhk)\b/i, "7"],
+];
+
+const UNIT_NOISE_TOKENS = new Set([
+  "apartment", "appartment", "appartement", "apartments", "villa", "villas", "townhouse", "townhouses", "penthouse", "studio",
+  "bed", "beds", "bedroom", "bedrooms", "br", "bdr", "bhk",
+  "with", "without", "in", "at", "on", "for", "near",
+  "pool", "gym", "parking", "furnished", "unfurnished", "upgraded", "vacant", "tenanted",
+]);
 
 export async function POST(request: NextRequest) {
   const apiKey = String(process.env.OPENAI_API_KEY || "").trim();
@@ -167,7 +196,7 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
     const content = data?.choices?.[0]?.message?.content;
-    const suggestion = normalizeSuggestion(content, parserResult, candidates);
+    const suggestion = normalizeSuggestion(content, query, parserResult, candidates);
 
     return NextResponse.json({ suggestion }, { headers: noStoreHeaders });
   } catch (error) {
@@ -216,6 +245,7 @@ function sanitizeParsedPayload(value: unknown): ParsedValuationPayload {
 
 function normalizeSuggestion(
   content: unknown,
+  query: string,
   parserResult: ParsedValuationPayload,
   candidates: ReturnType<typeof sanitizeCandidates>,
 ): NormalizedSuggestion | null {
@@ -238,13 +268,15 @@ function normalizeSuggestion(
   const resolvedUnit = resolveAllowedValue(parsed.unit, allowedUnits);
   const resolvedArea = resolveAllowedValue(parsed.area, allowedAreas);
   const resolvedCity = resolveAllowedValue(parsed.city, allowedCities);
+  const parserType = normalizeEnumValue(parserResult.type, VALID_TYPES);
+  const parserBeds = normalizeEnumValue(parserResult.beds, VALID_BEDS);
   const normalized: NormalizedSuggestion = {
     parsed: {
-      unit: resolvedUnit.value,
+      unit: sanitizeResolvedUnitValue(resolvedUnit.value),
       area: resolvedArea.value,
       city: resolvedCity.value,
-      type: normalizeEnumValue(parsed.type, VALID_TYPES),
-      beds: normalizeEnumValue(parsed.beds, VALID_BEDS),
+      type: normalizeEnumValue(parsed.type, VALID_TYPES) ?? parserType ?? inferTypeFromQuery(query),
+      beds: normalizeEnumValue(parsed.beds, VALID_BEDS) ?? parserBeds ?? inferBedsFromQuery(query),
       maids: normalizeEnumValue(parsed.maids, VALID_MAIDS),
       size: normalizeSizeValue(parsed.size),
     },
@@ -289,6 +321,10 @@ function buildAllowedValueOptions(
   const addValue = (value: ParsedFieldValue) => {
     const canonical = normalizeNullableText(value);
     if (!canonical) {
+      return;
+    }
+
+    if (key === "unit" && isLikelyNoisyUnitCandidate(canonical)) {
       return;
     }
 
@@ -516,6 +552,53 @@ function pushAmbiguity(ambiguities: string[], value: string) {
 
 function normalizeText(value: unknown) {
   return String(value ?? "").trim();
+}
+
+function inferTypeFromQuery(query: string): (typeof VALID_TYPES)[number] | null {
+  for (const [pattern, type] of TYPE_HINTS) {
+    if (pattern.test(query)) {
+      return type;
+    }
+  }
+
+  return null;
+}
+
+function inferBedsFromQuery(query: string): (typeof VALID_BEDS)[number] | null {
+  for (const [pattern, beds] of BED_HINTS) {
+    if (pattern.test(query)) {
+      return beds;
+    }
+  }
+
+  return null;
+}
+
+function isLikelyNoisyUnitCandidate(value: string) {
+  const tokens = getComparableTokens(value);
+  if (!tokens.length) {
+    return true;
+  }
+
+  const nonNoiseTokens = tokens.filter((token) => !UNIT_NOISE_TOKENS.has(token));
+  if (!nonNoiseTokens.length) {
+    return true;
+  }
+
+  const noiseTokens = tokens.length - nonNoiseTokens.length;
+  return noiseTokens >= 3 && nonNoiseTokens.length <= 3;
+}
+
+function sanitizeResolvedUnitValue(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  if (isLikelyNoisyUnitCandidate(value)) {
+    return null;
+  }
+
+  return value;
 }
 
 const COMMON_VALUE_ALIASES: Record<string, string[]> = {
