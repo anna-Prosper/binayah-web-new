@@ -1278,7 +1278,12 @@ const ValuationPage = () => {
   const areaSuggestionsRef = useRef<HTMLDivElement>(null);
   const buildingSuggestionsRef = useRef<HTMLDivElement>(null);
   const hasSmartAutofill = SMART_FIELD_KEYS.some((key) => fieldSources[key] === "smart");
-  const smartSuggestions = buildSmartSuggestions(smartQuery, smartParsed, smartPlacesResults);
+  const localSmartSuggestions = buildSmartSuggestions(smartQuery, smartParsed, smartPlacesResults);
+  const {
+    suggestion: aiSmartParseSuggestion,
+    loading: smartAIParseLoading,
+  } = useValuationAISuggestion(smartQuery, smartParsed, localSmartSuggestions);
+  const smartSuggestions = mergeSmartSuggestions(localSmartSuggestions, aiSmartParseSuggestion);
 
   const setTrackedValues = useCallback((values: TrackedFormPatch, source: FieldSource) => {
     const entries = (Object.entries(values) as [SourceTrackedField, string | undefined][])
@@ -2070,22 +2075,40 @@ const ValuationPage = () => {
                                   }}
                                 >
                                   <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
-                                    suggestion.kind === "detected" ? "bg-[#0B3D2E]/10" : "bg-[#D4A847]/12"
+                                    suggestion.kind === "ai"
+                                      ? "bg-[#1A7A5A]/12"
+                                      : suggestion.kind === "detected"
+                                        ? "bg-[#0B3D2E]/10"
+                                        : "bg-[#D4A847]/12"
                                   }`}>
-                                    {suggestion.kind === "detected"
-                                      ? <Sparkles className="h-4 w-4 text-[#0B3D2E]" />
-                                      : <MapPin className="h-4 w-4 text-[#B8922F]" />}
+                                    {suggestion.kind === "places"
+                                      ? <MapPin className="h-4 w-4 text-[#B8922F]" />
+                                      : <Sparkles className={`h-4 w-4 ${
+                                          suggestion.kind === "ai" ? "text-[#1A7A5A]" : "text-[#0B3D2E]"
+                                        }`} />}
                                   </div>
                                   <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-2">
                                       <p className="truncate font-semibold text-foreground">{suggestion.title}</p>
                                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] ${
-                                        suggestion.kind === "detected"
-                                          ? "bg-[#0B3D2E]/8 text-[#0B3D2E]"
-                                          : "bg-[#D4A847]/14 text-[#B8922F]"
+                                        suggestion.kind === "ai"
+                                          ? "bg-[#1A7A5A]/12 text-[#1A7A5A]"
+                                          : suggestion.kind === "detected"
+                                            ? "bg-[#0B3D2E]/8 text-[#0B3D2E]"
+                                            : "bg-[#D4A847]/14 text-[#B8922F]"
                                       }`}>
-                                        {suggestion.kind === "detected" ? "Detected" : "Live"}
+                                        {suggestion.kind === "ai" ? "AI" : suggestion.kind === "detected" ? "Detected" : "Live"}
                                       </span>
+                                      {suggestion.needsConfirmation && (
+                                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                                          Review
+                                        </span>
+                                      )}
+                                      {typeof suggestion.confidence === "number" && suggestion.kind === "ai" && !suggestion.needsConfirmation && (
+                                        <span className="rounded-full bg-[#0B3D2E]/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0B3D2E]">
+                                          {Math.round(suggestion.confidence * 100)}%
+                                        </span>
+                                      )}
                                     </div>
                                     <p className="mt-1 truncate text-xs text-muted-foreground">
                                       {suggestion.subtitle}
@@ -2094,10 +2117,18 @@ const ValuationPage = () => {
                                   <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                                 </button>
                               ))}
+                              {smartAIParseLoading && (
+                                <div className="flex items-center gap-2 border-t border-border/30 px-4 py-2.5 text-xs text-muted-foreground">
+                                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                  AI is refining the match…
+                                </div>
+                              )}
                             </div>
                           ) : (
                             <div className="px-4 py-3 text-sm text-muted-foreground">
-                              {smartPlacesLoading ? "Looking up buildings and communities…" : "No confident match yet. Keep typing or fill the fields below."}
+                              {smartPlacesLoading || smartAIParseLoading
+                                ? "Looking up buildings and communities…"
+                                : "No confident match yet. Keep typing or fill the fields below."}
                             </div>
                           )}
                         </div>
@@ -3002,10 +3033,21 @@ interface PlacePrediction {
 
 interface SmartSuggestion {
   id: string;
-  kind: "detected" | "places";
+  confidence?: number;
+  kind: "ai" | "detected" | "places";
+  needsConfirmation?: boolean;
   parsed: ParsedValuation;
+  reasoning?: string;
   subtitle: string;
   title: string;
+}
+
+interface AIValuationSuggestionPayload {
+  ambiguities: string[];
+  confidence: number;
+  needsConfirmation: boolean;
+  parsed: ParsedValuation;
+  reasoning: string;
 }
 
 function hasSmartParsedValue(parsed: ParsedValuation): boolean {
@@ -3080,6 +3122,211 @@ function buildSmartSuggestions(
   }
 
   return suggestions.slice(0, 6);
+}
+
+function countParsedSmartFields(parsed: ParsedValuation) {
+  return SMART_FIELD_KEYS.filter((key) => typeof parsed[key] === "string" && parsed[key]!.trim().length > 0).length;
+}
+
+function areParsedValuationsEquivalent(left: ParsedValuation, right: ParsedValuation) {
+  return SMART_FIELD_KEYS.every((key) => String(left[key] || "").trim().toLowerCase() === String(right[key] || "").trim().toLowerCase());
+}
+
+function shouldRequestAIValuationParse(
+  query: string,
+  parsed: ParsedValuation,
+  candidates: SmartSuggestion[],
+) {
+  const trimmedQuery = query.trim();
+  const queryTokens = getSearchTokens(trimmedQuery);
+  if (trimmedQuery.length < 6 || queryTokens.length < 2) {
+    return false;
+  }
+
+  const firstCandidate = candidates[0];
+  const exactDetectedMatch = Boolean(
+    firstCandidate &&
+    firstCandidate.kind === "detected" &&
+    parsed.unit &&
+    firstCandidate.parsed.unit === parsed.unit &&
+    trimmedQuery.toLowerCase().includes(parsed.unit.toLowerCase()) &&
+    parsed.area &&
+    parsed.city,
+  );
+
+  if (exactDetectedMatch && countParsedSmartFields(parsed) >= 4) {
+    return false;
+  }
+
+  const missingCoreFields = !parsed.unit || !parsed.area || !parsed.type || !parsed.beds;
+  const hasMultipleCandidates = candidates.length > 1;
+  const hasComplexModifiers = /\b(with|without|near|vacant|tenanted|upgraded|furnished|unfurnished|view|floor|maid|staff|helper|service)\b/i.test(trimmedQuery);
+
+  return missingCoreFields || hasMultipleCandidates || hasComplexModifiers || countParsedSmartFields(parsed) <= 2;
+}
+
+function normalizeAIValuationSuggestionPayload(value: any): AIValuationSuggestionPayload | null {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  const parsedValue = value.parsed && typeof value.parsed === "object" ? value.parsed : {};
+  const parsed: ParsedValuation = {
+    unit: typeof parsedValue.unit === "string" ? parsedValue.unit.trim() : undefined,
+    area: typeof parsedValue.area === "string" ? parsedValue.area.trim() : undefined,
+    city: typeof parsedValue.city === "string" ? parsedValue.city.trim() : undefined,
+    type: typeof parsedValue.type === "string" ? parsedValue.type.trim() : undefined,
+    beds: typeof parsedValue.beds === "string" ? parsedValue.beds.trim() : undefined,
+    maids: typeof parsedValue.maids === "string" ? parsedValue.maids.trim() : undefined,
+    size: typeof parsedValue.size === "string" ? parsedValue.size.trim() : undefined,
+  };
+
+  if (!hasSmartParsedValue(parsed)) {
+    return null;
+  }
+
+  const confidence = Number(value.confidence);
+  return {
+    ambiguities: Array.isArray(value.ambiguities)
+      ? value.ambiguities.map((item: unknown) => String(item || "").trim()).filter(Boolean).slice(0, 4)
+      : [],
+    confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : 0,
+    needsConfirmation: Boolean(value.needsConfirmation),
+    parsed,
+    reasoning: typeof value.reasoning === "string" ? value.reasoning.trim() : "",
+  };
+}
+
+function buildAISmartSuggestion(
+  aiSuggestion: AIValuationSuggestionPayload | null,
+  query: string,
+): SmartSuggestion | null {
+  if (!aiSuggestion || !hasSmartParsedValue(aiSuggestion.parsed)) {
+    return null;
+  }
+
+  if (aiSuggestion.confidence < 0.68 && !aiSuggestion.needsConfirmation) {
+    return null;
+  }
+
+  const title = aiSuggestion.parsed.unit || aiSuggestion.parsed.area || aiSuggestion.parsed.city || query.trim();
+  const confidenceLabel = aiSuggestion.needsConfirmation
+    ? "Review before applying"
+    : aiSuggestion.confidence >= 0.9
+      ? "High confidence"
+      : `${Math.round(aiSuggestion.confidence * 100)}% confidence`;
+  const subtitle = [formatSmartSuggestionSubtitle(aiSuggestion.parsed), confidenceLabel]
+    .filter(Boolean)
+    .join(" · ");
+
+  return {
+    confidence: aiSuggestion.confidence,
+    id: `ai:${title.toLowerCase()}__${confidenceLabel.toLowerCase()}`,
+    kind: "ai",
+    needsConfirmation: aiSuggestion.needsConfirmation,
+    parsed: aiSuggestion.parsed,
+    reasoning: aiSuggestion.reasoning,
+    subtitle,
+    title,
+  };
+}
+
+function mergeSmartSuggestions(
+  localSuggestions: SmartSuggestion[],
+  aiSuggestion: SmartSuggestion | null,
+) {
+  if (!aiSuggestion) {
+    return localSuggestions;
+  }
+
+  const duplicateIndex = localSuggestions.findIndex((candidate) =>
+    areParsedValuationsEquivalent(candidate.parsed, aiSuggestion.parsed),
+  );
+
+  if (duplicateIndex >= 0) {
+    if (aiSuggestion.confidence && aiSuggestion.confidence >= 0.9 && !aiSuggestion.needsConfirmation) {
+      const withoutDuplicate = localSuggestions.filter((_, index) => index !== duplicateIndex);
+      return [aiSuggestion, ...withoutDuplicate].slice(0, 6);
+    }
+
+    return localSuggestions;
+  }
+
+  if (aiSuggestion.confidence && aiSuggestion.confidence >= 0.85 && !aiSuggestion.needsConfirmation) {
+    return [aiSuggestion, ...localSuggestions].slice(0, 6);
+  }
+
+  return [...localSuggestions, aiSuggestion].slice(0, 6);
+}
+
+function useValuationAISuggestion(
+  query: string,
+  parserResult: ParsedValuation,
+  candidates: SmartSuggestion[],
+) {
+  const [suggestion, setSuggestion] = useState<SmartSuggestion | null>(null);
+  const [loading, setLoading] = useState(false);
+  const requestCandidates = candidates.slice(0, 5).map((candidate) => ({
+    kind: candidate.kind,
+    parsed: candidate.parsed,
+    subtitle: candidate.subtitle,
+    title: candidate.title,
+  }));
+  const requestKey = JSON.stringify({
+    candidates: requestCandidates,
+    parserResult,
+    query,
+  });
+
+  useEffect(() => {
+    if (!shouldRequestAIValuationParse(query, parserResult, candidates)) {
+      setSuggestion(null);
+      setLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch("/api/valuation/parse", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            candidates: requestCandidates,
+            parserResult,
+            query,
+          }),
+          signal: controller.signal,
+        });
+
+        const data = await response.json().catch(() => null);
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setSuggestion(buildAISmartSuggestion(normalizeAIValuationSuggestionPayload(data?.suggestion), query));
+      } catch {
+        if (!controller.signal.aborted) {
+          setSuggestion(null);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }, 700);
+
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [requestKey]);
+
+  return { loading, suggestion };
 }
 
 function usePlacesSearch(query: string, enabled: boolean) {
