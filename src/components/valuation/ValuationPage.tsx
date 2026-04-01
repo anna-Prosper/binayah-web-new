@@ -1650,6 +1650,15 @@ const ValuationPage = () => {
     }
   };
 
+  const scrollToFirstFormError = useCallback((errors: FieldErrors) => {
+    if (errors.unit) {
+      const target = smartInputRef.current ?? unitInputRef.current;
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      target?.focus();
+      return;
+    }
+  }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitAttempted(true);
@@ -1657,8 +1666,7 @@ const ValuationPage = () => {
     const errors = validateForm(form);
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
-      // Scroll to first error
-      topRef.current?.scrollIntoView({ behavior: "smooth" });
+      scrollToFirstFormError(errors);
       return;
     }
 
