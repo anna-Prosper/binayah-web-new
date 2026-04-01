@@ -2211,9 +2211,6 @@ const ValuationPage = () => {
                         {smartParsed.size  && <SmartTag label="Size"     value={smartParsed.size} />}
                       </div>
                     )}
-                    <p className="text-[11px] text-muted-foreground mt-2">
-                      Suggestions apply on selection. Manual edits below stay intact.
-                    </p>
                   </div>
 
                   {/* Or divider + deed upload */}
