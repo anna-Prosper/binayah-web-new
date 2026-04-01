@@ -3937,7 +3937,7 @@ const HiddenRangeValue = ({ currency = "AED" }: { currency?: string }) => {
   return (
     <div className="max-w-full text-white">
       <span className="inline-block max-w-full text-2xl font-bold tracking-[0.02em] text-white/95 blur-[3px] sm:text-3xl">
-        {currency} X,XXX,XXX - X,XXX,XXX
+        {currency} range available after unlock
       </span>
     </div>
   );
@@ -3950,7 +3950,7 @@ const MaskedInlineRange = ({ currency = "AED" }: { currency?: string }) => {
         {currency}
       </span>
       <span className="inline-block text-xl font-semibold tracking-[-0.04em] text-foreground/70 blur-[1.5px] select-none">
-        X,XXX,XXX - X,XXX,XXX
+        range available after unlock
       </span>
     </span>
   );
@@ -3963,7 +3963,7 @@ const MaskedComparablePrice = ({ currency = "AED" }: { currency?: string }) => {
         {currency}
       </span>
       <span className="inline-block text-[1.02rem] font-semibold tracking-[0.02em] text-foreground/68 blur-[1.55px] select-none">
-        X,XXX,XXX
+        price available after unlock
       </span>
     </span>
   );
@@ -4065,7 +4065,7 @@ const PriceBar = ({
   const valueMarkup = maskedPreview ? (
     <span className={valueClass}>
       <span>{currency}</span>
-      <span className="ml-2 inline-block blur-[1.6px] text-foreground/70">X,XXX,XXX - X,XXX,XXX</span>
+      <span className="ml-2 inline-block blur-[1.6px] text-foreground/70">range available after unlock</span>
     </span>
   ) : (
     <span className={`${valueClass} ${blurred ? "blur-md" : ""}`}>
