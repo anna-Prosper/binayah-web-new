@@ -1,7 +1,7 @@
 /**
  * GET /api/places?q=Amaranta+2
  *
- * Proxies Google Places Autocomplete API, filtered to UAE properties.
+ * Proxies Places API (New) Autocomplete, filtered to UAE properties.
  * Keeps GOOGLE_PLACES_API_KEY server-side — never exposed to the browser.
  *
  * Returns:
@@ -13,9 +13,19 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-const UAE_LOCATION = "25.2048,55.2708"; // Dubai centre
-const UAE_RADIUS   = 300_000;            // 300 km covers all UAE emirates
-const LANGUAGE     = "en";
+const AUTOCOMPLETE_URL = "https://places.googleapis.com/v1/places:autocomplete";
+const LANGUAGE = "en";
+const REGION_CODE = "ae";
+const UAE_VIEWPORT = {
+  high: { latitude: 26.5, longitude: 56.5 },
+  low: { latitude: 22.5, longitude: 51.4 },
+} as const;
+const FIELD_MASK = [
+  "suggestions.placePrediction.placeId",
+  "suggestions.placePrediction.text.text",
+  "suggestions.placePrediction.structuredFormat.mainText.text",
+  "suggestions.placePrediction.structuredFormat.secondaryText.text",
+].join(",");
 
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q")?.trim();
@@ -28,31 +38,38 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Places API not configured." }, { status: 503 });
   }
 
-  const url = new URL("https://maps.googleapis.com/maps/api/place/autocomplete/json");
-  url.searchParams.set("input", q);
-  url.searchParams.set("key", key);
-  url.searchParams.set("language", LANGUAGE);
-  url.searchParams.set("components", "country:ae");           // restrict to UAE
-  url.searchParams.set("location", UAE_LOCATION);
-  url.searchParams.set("radius", String(UAE_RADIUS));
-  url.searchParams.set("strictbounds", "false");
-  // Bias toward establishments and sub-localities (buildings, communities)
-  url.searchParams.set("types", "establishment|sublocality|neighborhood|premise|street_address");
-
   try {
-    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
-    const data = await res.json() as GoogleAutocompleteResponse;
+    const res = await fetch(AUTOCOMPLETE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": key,
+        "X-Goog-FieldMask": FIELD_MASK,
+      },
+      body: JSON.stringify({
+        input: q,
+        includedRegionCodes: [REGION_CODE],
+        languageCode: LANGUAGE,
+        locationBias: {
+          rectangle: UAE_VIEWPORT,
+        },
+        regionCode: REGION_CODE,
+      }),
+      cache: "no-store",
+    });
 
-    if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
-      console.error("[places]", data.status, data.error_message);
+    const responseText = await res.text();
+    const data = parseAutocompleteResponse(responseText);
+
+    if (!res.ok) {
+      const errorMessage = data?.error?.message || responseText;
+      console.error("[places]", res.status, errorMessage);
       return NextResponse.json({ predictions: [] });
     }
 
-    const predictions = (data.predictions ?? []).map((p) => ({
-      placeId:     p.place_id,
-      description: p.description,
-      ...parseAddressComponents(p),
-    }));
+    const predictions = (data.suggestions ?? [])
+      .map(normalizePrediction)
+      .filter((prediction): prediction is PlacePrediction => Boolean(prediction));
 
     return NextResponse.json({ predictions });
   } catch (err) {
@@ -61,27 +78,53 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// ─── Parse address from prediction terms ─────────────────────────────────────
-// Google returns terms like:
-//   "Amaranta 2, Villanova, Dubai, United Arab Emirates"
-//   terms: [{Amaranta 2}, {Villanova}, {Dubai}, {United Arab Emirates}]
+function normalizePrediction(suggestion: GoogleSuggestion): PlacePrediction | null {
+  const prediction = suggestion.placePrediction;
+  if (!prediction) {
+    return null;
+  }
 
-function parseAddressComponents(prediction: GooglePrediction) {
-  const terms = prediction.terms ?? [];
-  const uaeIndex = terms.findIndex((t) =>
-    /united arab emirates|uae/i.test(t.value)
-  );
+  const description = normalizeText(prediction.text?.text)
+    || [normalizeText(prediction.structuredFormat?.mainText?.text), normalizeText(prediction.structuredFormat?.secondaryText?.text)]
+      .filter(Boolean)
+      .join(", ");
 
-  // Terms before UAE: [...building/cluster, area, city]
-  const meaningful = uaeIndex > 0 ? terms.slice(0, uaeIndex) : terms.slice(0, -1);
+  const placeId = normalizeText(prediction.placeId);
+  if (!placeId || !description) {
+    return null;
+  }
 
-  const city = normalizeCity(meaningful.at(-1)?.value ?? "");
-  const area = meaningful.length >= 2 ? meaningful.at(-2)?.value ?? "" : "";
-  // Everything before area is the building/unit description
-  const buildingParts = meaningful.slice(0, -2).map((t) => t.value).join(", ");
-  const building = buildingParts || (meaningful[0]?.value ?? "");
+  return {
+    placeId,
+    description,
+    ...parseAddressComponents(prediction, description),
+  };
+}
+
+function parseAddressComponents(prediction: GooglePlacePrediction, description: string) {
+  const mainText = normalizeText(prediction.structuredFormat?.mainText?.text);
+  const secondaryTerms = splitAddressTerms(prediction.structuredFormat?.secondaryText?.text);
+  const descriptionTerms = splitAddressTerms(description);
+
+  const city = normalizeCity(secondaryTerms.at(-1) ?? descriptionTerms.at(-1) ?? "");
+  const area = secondaryTerms.length >= 2
+    ? secondaryTerms.at(-2) ?? ""
+    : descriptionTerms.length >= 2
+      ? descriptionTerms.at(-2) ?? ""
+      : "";
+
+  const buildingParts = descriptionTerms.slice(0, -2);
+  const building = mainText || buildingParts.join(", ") || descriptionTerms[0] || "";
 
   return { building, area, city };
+}
+
+function splitAddressTerms(value: string | undefined) {
+  return normalizeText(value)
+    .split(",")
+    .map((term) => term.trim())
+    .filter(Boolean)
+    .filter((term) => !/united arab emirates|uae/i.test(term));
 }
 
 const UAE_CITIES: Record<string, string> = {
@@ -100,20 +143,55 @@ function normalizeCity(raw: string): string {
   return UAE_CITIES[lc] ?? raw;
 }
 
-// ─── Google API types ─────────────────────────────────────────────────────────
+function parseAutocompleteResponse(value: string): GoogleAutocompleteResponse {
+  if (!value.trim()) {
+    return {};
+  }
 
-interface GooglePrediction {
-  place_id: string;
-  description: string;
-  terms: { value: string; offset: number }[];
-  structured_formatting?: {
-    main_text: string;
-    secondary_text: string;
-  };
+  try {
+    return JSON.parse(value) as GoogleAutocompleteResponse;
+  } catch {
+    return {};
+  }
 }
 
+function normalizeText(value: unknown): string {
+  return String(value ?? "").trim();
+}
+
+interface PlacePrediction {
+  area: string;
+  building: string;
+  city: string;
+  description: string;
+  placeId: string;
+}
+
+// ─── Places API (New) types ───────────────────────────────────────────────────
+
 interface GoogleAutocompleteResponse {
-  status: string;
-  error_message?: string;
-  predictions: GooglePrediction[];
+  error?: {
+    message?: string;
+    status?: string;
+  };
+  suggestions?: GoogleSuggestion[];
+}
+
+interface GoogleSuggestion {
+  placePrediction?: GooglePlacePrediction;
+}
+
+interface GooglePlacePrediction {
+  placeId?: string;
+  text?: {
+    text?: string;
+  };
+  structuredFormat?: {
+    mainText?: {
+      text?: string;
+    };
+    secondaryText?: {
+      text?: string;
+    };
+  };
 }
