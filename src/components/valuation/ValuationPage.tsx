@@ -3129,7 +3129,7 @@ function countParsedSmartFields(parsed: ParsedValuation) {
 }
 
 function areParsedValuationsEquivalent(left: ParsedValuation, right: ParsedValuation) {
-  return SMART_FIELD_KEYS.every((key) => String(left[key] || "").trim().toLowerCase() === String(right[key] || "").trim().toLowerCase());
+  return SMART_FIELD_KEYS.every((key) => normalizeSmartComparableValue(left[key]) === normalizeSmartComparableValue(right[key]));
 }
 
 function shouldRequestAIValuationParse(
@@ -3266,6 +3266,7 @@ function useValuationAISuggestion(
 ) {
   const [suggestion, setSuggestion] = useState<SmartSuggestion | null>(null);
   const [loading, setLoading] = useState(false);
+  const cacheRef = useRef<Map<string, SmartSuggestion | null>>(new Map());
   const requestCandidates = candidates.slice(0, 5).map((candidate) => ({
     kind: candidate.kind,
     parsed: candidate.parsed,
@@ -3284,6 +3285,15 @@ function useValuationAISuggestion(
       setLoading(false);
       return;
     }
+
+    if (cacheRef.current.has(requestKey)) {
+      setSuggestion(cacheRef.current.get(requestKey) ?? null);
+      setLoading(false);
+      return;
+    }
+
+    setSuggestion(null);
+    setLoading(false);
 
     const controller = new AbortController();
     const timer = setTimeout(async () => {
@@ -3308,7 +3318,9 @@ function useValuationAISuggestion(
           return;
         }
 
-        setSuggestion(buildAISmartSuggestion(normalizeAIValuationSuggestionPayload(data?.suggestion), query));
+        const nextSuggestion = buildAISmartSuggestion(normalizeAIValuationSuggestionPayload(data?.suggestion), query);
+        cacheRef.current.set(requestKey, nextSuggestion);
+        setSuggestion(nextSuggestion);
       } catch {
         if (!controller.signal.aborted) {
           setSuggestion(null);
@@ -3327,6 +3339,16 @@ function useValuationAISuggestion(
   }, [requestKey]);
 
   return { loading, suggestion };
+}
+
+function normalizeSmartComparableValue(value: unknown) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function usePlacesSearch(query: string, enabled: boolean) {

@@ -14,6 +14,7 @@ You must return only JSON matching the provided schema.
 
 Rules:
 - Prefer the provided candidate values for unit, area, and city whenever possible.
+- When you choose a candidate for unit, area, or city, copy its canonical text exactly as provided.
 - Never invent a building or community name when no strong candidate exists.
 - If a field is unclear, return null for that field.
 - If multiple candidates are plausible, choose the best one, set needsConfirmation to true, and add short ambiguity notes.
@@ -58,6 +59,20 @@ interface NormalizedSuggestion {
   reasoning: string;
 }
 
+interface AllowedValueOption {
+  canonical: string;
+  compact: string;
+  forms: Set<string>;
+  loose: string;
+  numericTokens: Set<string>;
+  tokens: Set<string>;
+}
+
+interface AllowedValueResolution {
+  rejected: boolean;
+  value: string | null;
+}
+
 export async function POST(request: NextRequest) {
   const apiKey = String(process.env.OPENAI_API_KEY || "").trim();
   if (!apiKey) {
@@ -89,7 +104,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: MODEL,
         temperature: 0.1,
-        max_tokens: 400,
+        max_completion_tokens: 400,
         response_format: {
           type: "json_schema",
           json_schema: {
@@ -215,16 +230,19 @@ function normalizeSuggestion(
     return null;
   }
 
-  const allowedUnits = buildAllowedValueSet(candidates, parserResult, "unit");
-  const allowedAreas = buildAllowedValueSet(candidates, parserResult, "area");
-  const allowedCities = buildAllowedValueSet(candidates, parserResult, "city");
+  const allowedUnits = buildAllowedValueOptions(candidates, parserResult, "unit");
+  const allowedAreas = buildAllowedValueOptions(candidates, parserResult, "area");
+  const allowedCities = buildAllowedValueOptions(candidates, parserResult, "city");
 
   const parsed = sanitizeParsedPayload(parsedJson?.parsed);
+  const resolvedUnit = resolveAllowedValue(parsed.unit, allowedUnits);
+  const resolvedArea = resolveAllowedValue(parsed.area, allowedAreas);
+  const resolvedCity = resolveAllowedValue(parsed.city, allowedCities);
   const normalized: NormalizedSuggestion = {
     parsed: {
-      unit: constrainFreeTextToAllowed(parsed.unit, allowedUnits),
-      area: constrainFreeTextToAllowed(parsed.area, allowedAreas),
-      city: constrainFreeTextToAllowed(parsed.city, allowedCities),
+      unit: resolvedUnit.value,
+      area: resolvedArea.value,
+      city: resolvedCity.value,
       type: normalizeEnumValue(parsed.type, VALID_TYPES),
       beds: normalizeEnumValue(parsed.beds, VALID_BEDS),
       maids: normalizeEnumValue(parsed.maids, VALID_MAIDS),
@@ -243,56 +261,195 @@ function normalizeSuggestion(
     return null;
   }
 
-  if (normalized.parsed.unit && allowedUnits.size > 0 && !allowedUnits.has(normalizeComparableValue(normalized.parsed.unit))) {
-    normalized.parsed.unit = null;
+  if (resolvedUnit.rejected) {
     normalized.needsConfirmation = true;
+    pushAmbiguity(normalized.ambiguities, "Building match needs review.");
   }
 
-  if (normalized.parsed.area && allowedAreas.size > 0 && !allowedAreas.has(normalizeComparableValue(normalized.parsed.area))) {
-    normalized.parsed.area = null;
+  if (resolvedArea.rejected) {
     normalized.needsConfirmation = true;
+    pushAmbiguity(normalized.ambiguities, "Area match needs review.");
   }
 
-  if (normalized.parsed.city && allowedCities.size > 0 && !allowedCities.has(normalizeComparableValue(normalized.parsed.city))) {
-    normalized.parsed.city = null;
+  if (resolvedCity.rejected) {
     normalized.needsConfirmation = true;
+    pushAmbiguity(normalized.ambiguities, "City match needs review.");
   }
 
   return normalized;
 }
 
-function buildAllowedValueSet(
+function buildAllowedValueOptions(
   candidates: ReturnType<typeof sanitizeCandidates>,
   parserResult: ParsedValuationPayload,
   key: keyof Pick<ParsedValuationPayload, "unit" | "area" | "city">,
 ) {
-  const values = new Set<string>();
+  const values = new Map<string, AllowedValueOption>();
+
+  const addValue = (value: ParsedFieldValue) => {
+    const canonical = normalizeNullableText(value);
+    if (!canonical) {
+      return;
+    }
+
+    const comparable = normalizeComparableValue(canonical);
+    if (values.has(comparable)) {
+      return;
+    }
+
+    values.set(comparable, {
+      canonical,
+      compact: normalizeCompactValue(canonical),
+      forms: buildComparableForms(canonical),
+      loose: normalizeLooseValue(canonical),
+      numericTokens: new Set(getNumericTokens(canonical)),
+      tokens: new Set(getComparableTokens(canonical)),
+    });
+  };
 
   for (const candidate of candidates) {
-    const value = candidate.parsed[key];
-    if (value) {
-      values.add(normalizeComparableValue(value));
+    addValue(candidate.parsed[key]);
+  }
+
+  addValue(parserResult[key]);
+
+  return Array.from(values.values());
+}
+
+function resolveAllowedValue(value: ParsedFieldValue, allowedValues: AllowedValueOption[]): AllowedValueResolution {
+  const normalizedValue = normalizeNullableText(value);
+  if (!normalizedValue) {
+    return { rejected: false, value: null };
+  }
+
+  if (!allowedValues.length) {
+    return { rejected: false, value: normalizedValue };
+  }
+
+  const valueForms = buildComparableForms(normalizedValue);
+  const exactMatch = allowedValues.find((candidate) =>
+    hasSharedForm(candidate.forms, valueForms),
+  );
+
+  if (exactMatch) {
+    return { rejected: false, value: exactMatch.canonical };
+  }
+
+  const looseValue = normalizeLooseValue(normalizedValue);
+  const compactValue = normalizeCompactValue(normalizedValue);
+  const tokens = getComparableTokens(normalizedValue);
+  const numericTokens = getNumericTokens(normalizedValue);
+
+  if (compactValue.length < 4 && tokens.length < 2 && numericTokens.length === 0) {
+    return { rejected: true, value: null };
+  }
+
+  const rankedMatches = allowedValues
+    .map((candidate) => ({
+      candidate,
+      score: scoreAllowedValue(candidate, looseValue, compactValue, tokens, numericTokens),
+    }))
+    .filter((entry) => entry.score >= 24)
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+
+      return right.candidate.canonical.length - left.candidate.canonical.length;
+    });
+
+  const bestMatch = rankedMatches[0];
+  const secondBest = rankedMatches[1];
+
+  if (!bestMatch) {
+    return { rejected: true, value: null };
+  }
+
+  if (secondBest && bestMatch.score < secondBest.score + 12) {
+    return { rejected: true, value: null };
+  }
+
+  return { rejected: false, value: bestMatch.candidate.canonical };
+}
+
+function scoreAllowedValue(
+  candidate: AllowedValueOption,
+  looseValue: string,
+  compactValue: string,
+  tokens: string[],
+  numericTokens: string[],
+) {
+  const matchedTokens = tokens.filter((token) => candidate.tokens.has(token));
+  const matchedNumbers = numericTokens.filter((token) => candidate.numericTokens.has(token));
+  let score = 0;
+
+  if (compactValue.length >= 4 && (candidate.compact.includes(compactValue) || compactValue.includes(candidate.compact))) {
+    score += 22;
+  }
+
+  if (looseValue.length >= 4 && (candidate.loose.includes(looseValue) || looseValue.includes(candidate.loose))) {
+    score += 18;
+  }
+
+  score += matchedTokens.length * 10;
+  score += matchedNumbers.length * 20;
+
+  if (tokens.length > 0 && matchedTokens.length === tokens.length) {
+    score += 14;
+  }
+
+  if (numericTokens.length > 0 && matchedNumbers.length === numericTokens.length) {
+    score += 12;
+  }
+
+  return score;
+}
+
+function buildComparableForms(value: string) {
+  const forms = new Set<string>();
+  const add = (entry: string) => {
+    const normalized = normalizeNullableText(entry);
+    if (!normalized) {
+      return;
+    }
+
+    forms.add(normalizeComparableValue(normalized));
+    forms.add(normalizeLooseValue(normalized));
+    forms.add(normalizeCompactValue(normalized));
+  };
+
+  add(value);
+  add(value.replace(/\(([^)]+)\)/g, " "));
+
+  const parentheticalMatches = value.match(/\(([^)]+)\)/g) ?? [];
+  for (const match of parentheticalMatches) {
+    add(match.replace(/[()]/g, ""));
+  }
+
+  const aliases = COMMON_VALUE_ALIASES[normalizeComparableValue(value)] ?? [];
+  for (const alias of aliases) {
+    add(alias);
+  }
+
+  return forms;
+}
+
+function hasSharedForm(left: Set<string>, right: Set<string>) {
+  for (const value of left) {
+    if (right.has(value)) {
+      return true;
     }
   }
 
-  if (parserResult[key]) {
-    values.add(normalizeComparableValue(parserResult[key]));
-  }
-
-  return values;
+  return false;
 }
 
-function constrainFreeTextToAllowed(value: ParsedFieldValue, allowedValues: Set<string>) {
-  const normalizedValue = normalizeComparableValue(value);
-  if (!normalizedValue) {
-    return null;
-  }
+function getComparableTokens(value: string) {
+  return normalizeLooseValue(value).match(/[a-z0-9]+/g)?.filter((token) => token.length > 1 || /^\d+$/.test(token)) ?? [];
+}
 
-  if (!allowedValues.size || allowedValues.has(normalizedValue)) {
-    return normalizeNullableText(value);
-  }
-
-  return null;
+function getNumericTokens(value: string) {
+  return getComparableTokens(value).filter((token) => /^\d+$/.test(token));
 }
 
 function normalizeEnumValue<T extends readonly string[]>(value: ParsedFieldValue, allowedValues: T): T[number] | null {
@@ -329,11 +486,38 @@ function normalizeComparableValue(value: unknown) {
   return normalizeText(value).toLowerCase();
 }
 
+function normalizeLooseValue(value: unknown) {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeCompactValue(value: unknown) {
+  return normalizeLooseValue(value).replace(/\s+/g, "");
+}
+
 function normalizeNullableText(value: unknown): string | null {
   const normalized = normalizeText(value);
   return normalized || null;
 }
 
+function pushAmbiguity(ambiguities: string[], value: string) {
+  const normalized = normalizeText(value);
+  if (!normalized || ambiguities.includes(normalized) || ambiguities.length >= 4) {
+    return;
+  }
+
+  ambiguities.push(normalized);
+}
+
 function normalizeText(value: unknown) {
   return String(value ?? "").trim();
 }
+
+const COMMON_VALUE_ALIASES: Record<string, string[]> = {
+  rak: ["ras al khaimah", "ras al-khaimah"],
+};
