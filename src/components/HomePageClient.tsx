@@ -43,12 +43,22 @@ interface Listing {
   completionDate?: string;
 }
 
+interface Article {
+  _id: string;
+  title: string;
+  slug: string;
+  category?: string;
+  featuredImage?: string;
+  publishedAt?: string;
+}
+
 interface HomePageClientProps {
   featuredListings?: Listing[];
   offPlanProjects?: Listing[];
+  latestArticles?: Article[];
 }
 
-export default function HomePageClient({ featuredListings = [], offPlanProjects = [] }: HomePageClientProps) {
+export default function HomePageClient({ featuredListings = [], offPlanProjects = [], latestArticles = [] }: HomePageClientProps) {
   return (
     <>
       <Navbar />
@@ -68,7 +78,7 @@ export default function HomePageClient({ featuredListings = [], offPlanProjects 
       <ServicesSection />
       <TestimonialsSection />
       <InquirySection />
-      <NewsSection />
+      <NewsSection articles={latestArticles} />
       <NewsletterStrip />
       <Footer />
       <WhatsAppButton />
