@@ -7,7 +7,7 @@ const WhatsAppButton = () => (
     href="https://wa.me/971549988811"
     target="_blank"
     rel="noopener noreferrer"
-    className="fixed bottom-[88px] sm:bottom-24 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 bg-[#25D366] hover:bg-[#20bd5a] rounded-full flex items-center justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-1 transition-all"
+    className="fixed bottom-[68px] sm:bottom-24 right-4 sm:right-6 z-40 w-11 h-11 sm:w-14 sm:h-14 bg-[#25D366] hover:bg-[#20bd5a] rounded-full flex items-center justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-1 transition-all"
     initial={{ scale: 0 }}
     animate={{ scale: 1 }}
     transition={{ delay: 2, type: "spring", stiffness: 200 }}

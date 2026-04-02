@@ -12,29 +12,54 @@ const communities = [
 ];
 
 const CommunitiesSection = () => (
-  <section id="communities" className="py-14 sm:py-24 bg-card scroll-mt-20">
+  <section id="communities" className="py-12 sm:py-24 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center mb-8 sm:mb-14"
+        className="text-center mb-6 sm:mb-14"
       >
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: "3rem" }}
           viewport={{ once: true }}
-          className="h-[2px] bg-accent mx-auto mb-6"
+          className="h-[2px] mx-auto mb-4 sm:mb-6"
+          style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
-        <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
+        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
           Explore Dubai
         </p>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
           Premier <span className="italic font-light">Communities</span>
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* Mobile: horizontal scroll */}
+      <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
+        {communities.map((c, i) => (
+          <motion.div
+            key={c.name}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
+            className="flex-shrink-0 w-[60%] snap-center"
+          >
+            <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
+              <img src={c.image} alt={c.name} className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>
+                <p className="text-white/70 text-xs">{c.properties} properties</p>
+              </div>
+            </Link>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Desktop grid */}
+      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {communities.map((c, i) => (
           <motion.div
             key={c.name}
@@ -42,9 +67,8 @@ const CommunitiesSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="h-full"
           >
-            <Link href={`/communities/${c.slug}`} className="group block relative h-full rounded-2xl overflow-hidden aspect-[3/4]">
+            <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
               <img src={c.image} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5">
