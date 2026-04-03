@@ -66,9 +66,8 @@ const FeaturedProperties = () => {
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide ${
-                      p.status === "Off-Plan" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"
-                    }`}>
+                    <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       {p.status}
                     </span>
                   </div>

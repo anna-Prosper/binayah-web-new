@@ -31,7 +31,7 @@ export default function NewsPageClient({ articles }: { articles: Article[] }) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <section className="relative pt-32 pb-20 bg-primary text-primary-foreground overflow-hidden">
+      <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -51,7 +51,7 @@ export default function NewsPageClient({ articles }: { articles: Article[] }) {
                 <Link href={`/news/${a.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[16/10]">
                     <img src={a.featuredImage || FALLBACK_IMAGE} alt={a.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                    {a.category && <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-primary text-primary-foreground uppercase tracking-wider">{a.category}</span>}
+                    {a.category && <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>}
                   </div>
                   <div className="p-6 flex flex-col flex-1">
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-3">

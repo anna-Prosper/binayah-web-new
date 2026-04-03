@@ -93,8 +93,9 @@ const MarketDashboard = () => {
                       key={t.id}
                       onClick={() => setTab(t.id)}
                       className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-semibold transition-all ${
-                        tab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary"
+                        tab === t.id ? "text-white" : "text-muted-foreground hover:bg-secondary"
                       }`}
+                      style={tab === t.id ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                     >
                       <t.icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t.label}
                     </button>

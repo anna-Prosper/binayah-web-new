@@ -421,7 +421,7 @@ const HeroSection = () => {
                         <div className="flex flex-wrap gap-2">
                           {bedroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBedroom(selBedroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBedroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBedroom === b ? "border-primary text-white" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`} style={selBedroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
                           ))}
@@ -432,7 +432,7 @@ const HeroSection = () => {
                         <div className="flex flex-wrap gap-2">
                           {bathroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBathroom(selBathroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBathroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBathroom === b ? "border-primary text-white" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`} style={selBathroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
                           ))}

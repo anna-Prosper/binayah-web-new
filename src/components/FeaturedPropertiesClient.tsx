@@ -54,7 +54,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
               <Link href={`/project/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
                 <div className="relative overflow-hidden aspect-[3/2]">
                   <img src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
-                  <span className={`absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide ${p.status === "Off-Plan" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"}`}>{p.status}</span>
+                  <span className="absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{p.status}</span>
                 </div>
                 <div className="p-3">
                   <div className="flex items-center gap-1 text-muted-foreground text-[9px] mb-1 uppercase tracking-wider">
@@ -81,7 +81,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className={`absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide ${p.status === "Off-Plan" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"}`}>{p.status}</span>
+                    <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{p.status}</span>
                   </div>
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider">
