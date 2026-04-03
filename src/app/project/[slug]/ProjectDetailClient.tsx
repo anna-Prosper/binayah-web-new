@@ -63,28 +63,6 @@ const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency 
   return `${symbol} ${converted.toLocaleString()}`;
 };
 
-const formatPriceFull = (price: number | null, baseCurrency = "AED", targetCurrency = "AED") => {
-  if (!price) return null;
-  const rate = CURRENCY_RATES[targetCurrency] || 1;
-  const converted = Math.round(price * rate);
-  const symbol = CURRENCY_SYMBOLS[targetCurrency] || targetCurrency;
-  return `${symbol} ${converted.toLocaleString()}`;
-};
-
-const statusColor = (status: string) => {
-  switch (status) {
-    case "Ready":
-    case "Completed":
-      return "bg-emerald-500/90 text-white";
-    case "Off-Plan":
-      return "bg-primary text-primary-foreground";
-    case "New Launch":
-      return "bg-accent text-accent-foreground";
-    default:
-      return "bg-accent/80 text-accent-foreground";
-  }
-};
-
 const attractionIcon = (type: string) => {
   const t = type?.toLowerCase() || "";
   if (t.includes("beach") || t.includes("marina")) return Waves;
@@ -107,9 +85,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
+  const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [calcDownPct, setCalcDownPct] = useState(20);
   const [calcTerm, setCalcTerm] = useState(3);
-  const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
@@ -164,7 +142,145 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
     { question: "Is there a mortgage option available?", answer: "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50-80% depending on residency status. We can connect you with our banking partners for pre-approval." },
   ];
   const hasPaymentInfo = project.downPayment || project.paymentPlanSummary || project.paymentPlanDetails;
-  
+
+  const renderPaymentCalculator = () => {
+    if (!project.unitTypes || project.unitTypes.length === 0) return null;
+    const basePrice = project.startingPrice || 0;
+    if (!basePrice) return null;
+    const priceMultiplier = 1 + activeUnitTab * 0.35;
+    const totalPrice = Math.round(basePrice * priceMultiplier);
+    const downPayment = Math.round(totalPrice * calcDownPct / 100);
+    const constructionPct = Math.max(0, Math.min(60, 100 - calcDownPct - 20));
+    const handoverPct = 100 - calcDownPct - constructionPct;
+    const constructionAmount = Math.round(totalPrice * constructionPct / 100);
+    const handoverAmount = Math.round(totalPrice * handoverPct / 100);
+    const monthlyPayment = calcTerm > 0 ? Math.round(handoverAmount / (calcTerm * 12)) : 0;
+
+    const sliderPct = ((calcDownPct - 5) / (50 - 5)) * 100;
+
+    const breakdown = [
+      { label: "Down Payment", pct: calcDownPct, amount: downPayment, color: "#D4A847" },
+      ...(constructionPct > 0 ? [{ label: "Construction", pct: constructionPct, amount: constructionAmount, color: "#1A7A5A" }] : []),
+      ...(handoverPct > 0 ? [{ label: "Post-Handover", pct: handoverPct, amount: handoverAmount, color: "#0B3D2E" }] : []),
+    ];
+
+    return (
+      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+        {/* Header */}
+        <div className="p-4 sm:p-6 flex items-center gap-2.5" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 flex items-center justify-center">
+            <TrendingUp className="h-4 w-4 text-white" />
+          </div>
+          <div>
+            <h2 className="text-base sm:text-xl font-bold text-white">Payment Calculator</h2>
+            <p className="text-[10px] sm:text-xs text-white/60">Estimate your payment breakdown</p>
+          </div>
+        </div>
+
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
+          {/* Unit selector + Total */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase mb-2 block">Unit Type</label>
+              <select
+                value={activeUnitTab}
+                onChange={(e) => setActiveUnitTab(Number(e.target.value))}
+                className="w-full h-11 rounded-xl bg-muted/50 border border-border/50 px-3 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 appearance-none"
+              >
+                {project.unitTypes!.map((ut: string, i: number) => (
+                  <option key={i} value={i}>{ut}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase mb-2 block">Total Price</label>
+              <div className="h-11 rounded-xl bg-muted/50 border border-border/50 px-4 flex items-center gap-2">
+                <span className="text-sm font-bold text-foreground">{formatPrice(totalPrice, "AED", currency)}</span>
+                {currency === "AED" && (
+                  <span className="text-[10px] text-muted-foreground">~{formatPrice(totalPrice, "AED", "USD")}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Down payment slider */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase">Down Payment</label>
+              <span className="text-xs sm:text-sm font-bold" style={{ color: "#D4A847" }}>{calcDownPct}% · {formatPrice(downPayment, "AED", currency)}</span>
+            </div>
+            <div className="relative h-5 flex items-center">
+              <div className="absolute inset-x-0 h-1.5 rounded-full bg-border" />
+              <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${sliderPct}%`, background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+              <input type="range" min={5} max={50} step={5} value={calcDownPct} onChange={(e) => setCalcDownPct(Number(e.target.value))} className="absolute inset-0 w-full opacity-0 cursor-pointer h-full" />
+              <div className="absolute w-5 h-5 rounded-full border-2 border-white shadow-md pointer-events-none transition-all duration-150" style={{ left: `calc(${sliderPct}% - 10px)`, background: "linear-gradient(135deg, #D4A847, #B8922F)" }} />
+            </div>
+            <div className="flex justify-between text-[9px] text-muted-foreground mt-1.5">
+              <span>5%</span><span>25%</span><span>50%</span>
+            </div>
+          </div>
+
+          {/* Post-handover term */}
+          <div>
+            <div className="flex items-center justify-between mb-2.5">
+              <label className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase">Post-Handover Term</label>
+              <span className="text-xs sm:text-sm font-bold text-foreground">{calcTerm} {calcTerm === 1 ? "Year" : "Years"}</span>
+            </div>
+            <div className="flex gap-1.5 sm:gap-2">
+              {[1, 2, 3, 4, 5].map((yr) => (
+                <button
+                  key={yr}
+                  onClick={() => setCalcTerm(yr)}
+                  className={`flex-1 h-9 sm:h-10 rounded-xl text-xs font-bold transition-all ${
+                    calcTerm === yr ? "text-white shadow-md" : "bg-muted/50 text-muted-foreground hover:bg-muted border border-border/50"
+                  }`}
+                  style={calcTerm === yr ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                >
+                  {yr}Y
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Visual breakdown bar */}
+          <div className="flex rounded-full overflow-hidden h-3 sm:h-4 bg-muted/50">
+            {breakdown.map((item, i) => (
+              <div key={i} className="relative transition-all duration-500" style={{ width: `${item.pct}%`, backgroundColor: item.color }}>
+                {i < breakdown.length - 1 && <div className="absolute right-0 top-0 bottom-0 w-px bg-background" />}
+                {item.pct >= 15 && <span className="absolute inset-0 flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-white">{item.pct}%</span>}
+              </div>
+            ))}
+          </div>
+
+          {/* Breakdown cards */}
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-3">
+            {breakdown.map((item, i) => (
+              <div key={i} className="rounded-xl border border-border/50 p-2.5 sm:p-4 bg-muted/20">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                  <span className="text-[9px] sm:text-[11px] font-semibold text-muted-foreground truncate">{item.label}</span>
+                </div>
+                <p className="text-sm sm:text-lg font-bold text-foreground">{formatPrice(item.amount, "AED", currency)}</p>
+                <p className="text-[9px] sm:text-[10px] text-muted-foreground">{item.pct}% of total</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Monthly highlight */}
+          <div className="rounded-xl p-3.5 sm:p-5 flex items-center justify-between border" style={{ borderColor: "rgba(11,61,46,0.15)", background: "linear-gradient(135deg, rgba(11,61,46,0.04), rgba(26,122,90,0.06))" }}>
+            <div>
+              <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground">Est. Monthly Post-Handover</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground">{calcTerm} years · {calcTerm * 12} payments</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xl sm:text-2xl font-bold text-primary">{formatPrice(monthlyPayment, "AED", currency)}</p>
+              {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground">~{formatPrice(monthlyPayment, "AED", "USD")}/mo</p>}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -1023,6 +1139,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
+                  {/* Payment Calculator */}
+                  {renderPaymentCalculator()}
+
                   {/* Location & Nearby */}
                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8 overflow-hidden">
                     <div className="flex items-center gap-2.5 mb-6">
@@ -1805,6 +1924,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
+                  {/* Payment Calculator */}
+                  {renderPaymentCalculator()}
+
                   {/* Units Information */}
                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
                     <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
@@ -2252,166 +2374,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           </div>
         </div>
       </div>
-
-
-      {/* ───── PAYMENT CALCULATOR (Standalone) ───── */}
-      {false && project.unitTypes && project.unitTypes.length > 0 && (() => {
-        const basePrice = project.startingPrice || 0;
-        const priceMultiplier = 1 + activeUnitTab * 0.35;
-        const totalPrice = Math.round(basePrice * priceMultiplier);
-
-        const downPayment = Math.round(totalPrice * calcDownPct / 100);
-        const constructionPct = 30;
-        const constructionAmount = Math.round(totalPrice * constructionPct / 100);
-        const handoverPct = 100 - calcDownPct - constructionPct;
-        const handoverAmount = Math.round(totalPrice * handoverPct / 100);
-        const monthlyPayment = calcTerm > 0 ? Math.round(handoverAmount / (calcTerm * 12)) : 0;
-
-        const breakdownItems = [
-          { label: "Down Payment", pct: calcDownPct, amount: downPayment, color: "bg-accent" },
-          { label: "Construction Installments", pct: constructionPct, amount: constructionAmount, color: "bg-primary" },
-          { label: "Post-Handover", pct: handoverPct, amount: handoverAmount, color: "bg-emerald-500" },
-        ];
-
-        return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <TrendingUp className="h-4.5 w-4.5 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-foreground">Payment Calculator</h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">Plan your budget — estimate your payment breakdown</p>
-                </div>
-              </div>
-
-              {/* Unit selector + Total */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Unit Type</label>
-                  <select
-                    value={activeUnitTab}
-                    onChange={(e) => setActiveUnitTab(Number(e.target.value))}
-                    className="w-full h-10 rounded-xl bg-muted/50 border border-border/50 px-3 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  >
-                    {project.unitTypes!.map((ut, i) => (
-                      <option key={i} value={i}>{ut}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Total Price</label>
-                  <div className="h-10 rounded-xl bg-muted/50 border border-border/50 px-3 flex items-center">
-                    <span className="text-sm font-bold text-foreground">{formatPrice(totalPrice, "AED", currency)}</span>
-                    {currency === "AED" && (
-                      <span className="text-[10px] text-muted-foreground ml-2">~{formatPrice(totalPrice, "AED", "USD")}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Down payment slider */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-semibold text-muted-foreground">Down Payment</label>
-                  <span className="text-sm font-bold text-accent">{calcDownPct}% · {formatPrice(downPayment, "AED", currency)}</span>
-                </div>
-                <input
-                  type="range"
-                  min={5}
-                  max={50}
-                  step={5}
-                  value={calcDownPct}
-                  onChange={(e) => setCalcDownPct(Number(e.target.value))}
-                  className="w-full h-2 rounded-full appearance-none cursor-pointer bg-muted/50 accent-accent"
-                />
-                <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                  <span>5%</span>
-                  <span>25%</span>
-                  <span>50%</span>
-                </div>
-              </div>
-
-              {/* Post-handover term */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-semibold text-muted-foreground">Post-Handover Term</label>
-                  <span className="text-sm font-bold text-foreground">{calcTerm} {calcTerm === 1 ? "Year" : "Years"}</span>
-                </div>
-                <div className="flex gap-2">
-                  {[1, 2, 3, 4, 5].map((yr) => (
-                    <button
-                      key={yr}
-                      onClick={() => setCalcTerm(yr)}
-                      className={`flex-1 h-9 rounded-lg text-xs font-bold transition-all ${
-                        calcTerm === yr
-                          ? "bg-primary text-primary-foreground shadow-md"
-                          : "bg-muted/50 text-muted-foreground hover:bg-muted border border-border/50"
-                      }`}
-                    >
-                      {yr}Y
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Visual breakdown bar */}
-              <div className="flex rounded-full overflow-hidden h-4 mb-4 bg-muted/50">
-                {breakdownItems.map((item, i) => (
-                  <div
-                    key={i}
-                    className={`${item.color} relative transition-all duration-500`}
-                    style={{ width: `${item.pct}%` }}
-                  >
-                    {i < breakdownItems.length - 1 && (
-                      <div className="absolute right-0 top-0 bottom-0 w-px bg-background" />
-                    )}
-                    {item.pct >= 15 && (
-                      <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white">{item.pct}%</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Breakdown cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                {breakdownItems.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="rounded-xl border border-border/50 p-3 bg-muted/20"
-                  >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className={`w-2.5 h-2.5 rounded-full ${item.color}`} />
-                      <span className="text-[11px] font-semibold text-muted-foreground">{item.label}</span>
-                    </div>
-                    <p className="text-lg font-bold text-foreground">{formatPrice(item.amount, "AED", currency)}</p>
-                    <p className="text-[10px] text-muted-foreground">{item.pct}% of total</p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Monthly highlight */}
-              <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold text-muted-foreground">Est. Monthly Post-Handover</p>
-                  <p className="text-[10px] text-muted-foreground">{calcTerm} years · {calcTerm * 12} payments</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-primary">{formatPrice(monthlyPayment, "AED", currency)}</p>
-                  {currency === "AED" && (
-                    <p className="text-[10px] text-muted-foreground">~{formatPrice(monthlyPayment, "AED", "USD")}/mo</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
 
       {/* ───── SIMILAR PROJECTS ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
