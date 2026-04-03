@@ -1,9 +1,7 @@
-// @ts-nocheck
 "use client";
-
+// @ts-nocheck
 
 import Link from "next/link";
-
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, MapPin, Building2, Calendar, Wallet, Bed, Ruler, Shield,
@@ -25,6 +23,10 @@ import { useState, useEffect } from "react";
 
 type NearbyAttraction = { name: string; type: string; distance: string };
 type FAQ = { question: string; answer: string };
+
+interface ProjectDetailClientProps {
+  serverProject: any;
+}
 
 const CURRENCY_RATES: Record<string, number> = {
   AED: 1,
@@ -69,20 +71,6 @@ const formatPriceFull = (price: number | null, baseCurrency = "AED", targetCurre
   return `${symbol} ${converted.toLocaleString()}`;
 };
 
-const formatHandover = (date: string | null | undefined) => {
-  if (!date) return "TBA";
-  // If it's already a readable string like "Q4 2027", "2026", "December 2025" — use as-is
-  if (/^(Q[1-4]|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i.test(date)) return date;
-  if (/^\d{4}$/.test(date)) return date; // Just a year
-  try {
-    const d = new Date(date);
-    if (isNaN(d.getTime())) return date; // Return raw string if can't parse
-    return d.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-  } catch {
-    return date;
-  }
-};
-
 const statusColor = (status: string) => {
   switch (status) {
     case "Ready":
@@ -108,7 +96,9 @@ const attractionIcon = (type: string) => {
   return MapPin;
 };
 
-const ProjectDetailPage = ({ serverProject }: { serverProject: any }) => {
+
+const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
+  const project = serverProject;
   const [activeImage, setActiveImage] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showGallery, setShowGallery] = useState(false);
@@ -123,111 +113,14 @@ const ProjectDetailPage = ({ serverProject }: { serverProject: any }) => {
   const [calcTerm, setCalcTerm] = useState(3);
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
 
-const project = normalizeProject(serverProject);
-  const isLoading = false;
-  const error = null;
 
-  function normalizeProject(serverProject: any) {
-  const p = { ...(serverProject || {}) };
 
-  // aliases
-  p.googleMapsUrl = p.googleMapsUrl || p.mapUrl || "";
-  p.videoUrl = p.videoUrl || p.videos?.[0]?.url || p.videos?.[0] || "";
 
-  // empty strings -> safer defaults
-  p.community = p.community || "";
-  p.city = p.city || "Dubai";
-  p.country = p.country || "UAE";
 
-  // derive unitTypes from floorPlans if missing
-  if ((!p.unitTypes || p.unitTypes.length === 0) && Array.isArray(p.floorPlans)) {
-    const set = new Set<string>();
-    for (const fp of p.floorPlans) {
-      const b = fp?.bedrooms || "";
-      if (/studio/i.test(b)) set.add("Studio");
-      const m = b.match(/(\d+)\s*Bedroom/i);
-      if (m) set.add(`${m[1]} Bedroom`);
-    }
-    p.unitTypes = [...set].sort((a, b) => {
-      const ra = a === "Studio" ? 0 : Number(a.match(/\d+/)?.[0] || 99);
-      const rb = b === "Studio" ? 0 : Number(b.match(/\d+/)?.[0] || 99);
-      return ra - rb;
-    });
-  }
-
-  // derive size range from floorPlans if missing
-  if ((!p.unitSizeMin || !p.unitSizeMax) && Array.isArray(p.floorPlans)) {
-    const sizes: number[] = [];
-    for (const fp of p.floorPlans) {
-      const s = String(fp?.size || "");
-      for (const m of s.matchAll(/(\d{3,5})/g)) sizes.push(Number(m[1]));
-    }
-    if (sizes.length) {
-      p.unitSizeMin = p.unitSizeMin || Math.min(...sizes);
-      p.unitSizeMax = p.unitSizeMax || Math.max(...sizes);
-    }
-  }
-
-  // fallback starting price from description if still null
-  if (!p.startingPrice && typeof p.fullDescription === "string") {
-    const txt = p.fullDescription.replace(/<[^>]+>/g, " ");
-    const m = txt.match(/AED\s*([\d,]+)/i);
-    if (m) p.startingPrice = Number(m[1].replace(/,/g, ""));
-  }
-
-  // amenities fallback
-  if (!Array.isArray(p.amenities) || p.amenities.length === 0) {
-    const txt = (p.fullDescription || "").replace(/<[^>]+>/g, " ");
-    const known = ["Central AC","Gym","Children Pool","Beach Access","Waterfront","CCTV Cameras","Covered Parking","Children Play Area","Landmark View","Security","Shared Pool"];
-    p.amenities = known.filter(a => new RegExp(a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(txt));
-  }
-
-  return p;
-}
-
-  useEffect(() => {
-    if (project) {
-      document.title = project.metaTitle || `${project.name} | Binayah Real Estate`;
-    }
-    return () => { document.title = "Binayah Real Estate"; };
-  }, [project]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="flex flex-col items-center justify-center py-40 gap-4">
-          <div className="relative">
-            <div className="w-14 h-14 border-2 border-primary/20 rounded-full" />
-            <div className="w-14 h-14 border-2 border-primary border-t-transparent rounded-full animate-spin absolute inset-0" />
-          </div>
-          <p className="text-muted-foreground text-sm animate-pulse">Loading property details…</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!project || error) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="max-w-3xl mx-auto px-4 py-32 text-center">
-          <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
-            <Building2 className="h-10 w-10 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold text-foreground mb-4">Project Not Found</h1>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">The project you're looking for doesn't exist or may have been removed from our listings.</p>
-          <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back to Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const images = project.imageGallery?.length ? project.imageGallery :
-    project.featuredImage ? [project.featuredImage] : [
+  const images = project.imageGallery?.length ? project.imageGallery : [
     "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200",
   ];
   const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
@@ -242,109 +135,84 @@ const project = normalizeProject(serverProject);
     { question: "What are the nearby schools?", answer: "The area is well-served by reputable schools and nurseries within a short driving distance. Our team can provide a detailed list of nearby educational institutions based on your preferences." },
     { question: "Is there a mortgage option available?", answer: "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50-80% depending on residency status. We can connect you with our banking partners for pre-approval." },
   ];
-const hasPaymentInfo =
-  project.downPayment ||
-  project.paymentPlanSummary ||
-  project.paymentPlanDetails ||
-  project.paymentPlan;
+  const hasPaymentInfo = project.downPayment || project.paymentPlanSummary || project.paymentPlanDetails;
   
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar extraItems={
-        <div className="flex items-center gap-2">
-          {/* Currency Selector */}
-          <div className="relative">
-            <button
-              onClick={() => { setShowCurrencyDropdown(!showCurrencyDropdown); setShowLangDropdown(false); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
-            >
-              <Banknote className="h-3.5 w-3.5" />
-              {currency}
-              <ChevronDown className={`h-3 w-3 transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            {showCurrencyDropdown && (
-              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[110px]">
-                {Object.keys(CURRENCY_RATES).map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => { setCurrency(c); setShowCurrencyDropdown(false); }}
-                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors ${c === currency ? "text-accent font-bold" : "text-white/80"}`}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Language Selector */}
-          <div className="relative">
-            <button
-              onClick={() => { setShowLangDropdown(!showLangDropdown); setShowCurrencyDropdown(false); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
-            >
-              <Languages className="h-3.5 w-3.5" />
-              {LANGUAGES.find(l => l.code === language)?.flag}
-              <ChevronDown className={`h-3 w-3 transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            {showLangDropdown && (
-              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[140px]">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => { setLanguage(lang.code); setShowLangDropdown(false); }}
-                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors flex items-center gap-2 ${lang.code === language ? "text-accent font-bold" : "text-white/80"}`}
-                  >
-                    <span>{lang.flag}</span> {lang.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      } />
+      <Navbar />
 
       {/* ───── HERO SECTION ───── */}
       <section className="relative">
         {/* Full-width hero image */}
-        <div className="relative h-[45vh] sm:h-[65vh] lg:h-[70vh] overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={activeImage}
-              src={images[activeImage]}
-              alt={project.name}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
-              className="w-full h-full object-cover"
-            />
-          </AnimatePresence>
-
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/30 to-transparent" />
-
-
-
-          {/* Hero content at bottom */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
-            <div className="max-w-7xl mx-auto px-3 sm:px-6 pb-4 sm:pb-8">
-              {/* Breadcrumb */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/60 mb-2 sm:mb-4 pointer-events-auto flex-wrap"
+        <div className="relative h-[50vh] sm:h-[65vh] lg:h-[70vh] overflow-hidden">
+          {/* Mobile: horizontal scroll carousel */}
+          <div className="sm:hidden w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide flex"
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              const idx = Math.round(el.scrollLeft / el.clientWidth);
+              if (idx !== activeImage) setActiveImage(idx);
+            }}
+          >
+            {images.map((img, i) => (
+              <div key={i} className="w-full h-full flex-shrink-0 snap-center overflow-hidden"
+                onClick={() => { setActiveImage(i); setShowGallery(true); }}
               >
+                <img
+                  src={img}
+                  alt={`${project.name} ${i + 1}`}
+                  className="w-full h-full object-cover object-center"
+                  style={{ objectPosition: "center 40%" }}
+                />
+              </div>
+            ))}
+          </div>
+          {/* Mobile image counter */}
+          <div className="sm:hidden absolute bottom-5 right-4 z-30 bg-black/60 backdrop-blur-sm text-white text-[13px] font-bold px-3 py-1 rounded-lg tracking-wide">
+            {activeImage + 1}/{images.length}
+          </div>
+          {/* Desktop: single image with animation */}
+          <div className="hidden sm:block w-full h-full">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={activeImage}
+                src={images[activeImage]}
+                alt={project.name}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="w-full h-full object-cover"
+                onClick={() => setShowGallery(true)}
+              />
+            </AnimatePresence>
+          </div>
+
+          {/* Gradient overlays – stronger bottom fade on mobile for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent sm:from-foreground/80 sm:via-foreground/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/25 to-transparent pointer-events-none" />
+
+          {/* Breadcrumb - top left below navbar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="absolute top-14 sm:top-24 left-0 right-0 z-20"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              <div className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/50 flex-wrap">
                 <Link href="/" className="hover:text-white transition-colors">Home</Link>
                 <ChevronRight className="h-3 w-3" />
                 <Link href="/off-plan" className="hover:text-white transition-colors">Projects</Link>
                 <ChevronRight className="h-3 w-3" />
-                <span className="text-white/90">{project.name}</span>
-              </motion.div>
+                <span className="text-white/80 truncate max-w-[180px]">{project.name}</span>
+              </div>
+            </div>
+          </motion.div>
 
+          {/* Hero content at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 sm:gap-6">
                 {/* Left: Project info */}
                 <motion.div
@@ -353,46 +221,64 @@ const hasPaymentInfo =
                   transition={{ delay: 0.3, duration: 0.6 }}
                   className="pointer-events-auto flex-shrink-0"
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg ${statusColor(project.status)}`}>
+                  {/* Badges */}
+                  <div className="flex items-center gap-1.5 mb-2 sm:mb-2">
+                    <span className={`px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg ${statusColor(project.status)}`}>
                       {project.status}
                     </span>
-                    <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/20 backdrop-blur-md text-white border border-white/20 shadow-lg">
+                    <span className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
                       {project.propertyType}
                     </span>
                   </div>
-                  <p className="text-white/60 text-xs sm:text-sm font-medium mb-0.5 sm:mb-1 flex items-center gap-1.5">
-                    by <span className="text-accent font-semibold">{project.developerName}</span>
+                  {/* Developer name – hidden on mobile */}
+                  <p className="hidden sm:flex text-white text-xs sm:text-sm font-medium mb-0.5 sm:mb-1 items-center gap-1.5">
+                    by <span className="text-white font-semibold">{project.developerName}</span>
                   </p>
-                  <h1 className="text-xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.1]">
+                  {/* Project title */}
+                  <h1 className="text-[22px] sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]">
                     {project.name}
                   </h1>
-                  <p className="text-white/70 mt-1.5 sm:mt-3 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-base">
-                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-accent" />
-                    {project.community}, {project.city}, {project.country}
-                  </p>
+                  {/* Location with QR */}
+                  <div className="flex items-center gap-2 sm:gap-3 mt-1.5 sm:mt-3">
+                    <button
+                      onClick={() => setShowQrModal(true)}
+                      className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                      title="Regulatory Permit"
+                    >
+                      <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
+                        alt="Regulatory Permit QR"
+                        className="w-full h-full rounded-sm"
+                        loading="lazy"
+                      />
+                    </button>
+                    <p className="text-white/80 flex items-center gap-1.5 text-[12px] sm:text-base">
+                      <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+                      <span>{project.community}, {project.city}, {project.country}</span>
+                    </p>
+                  </div>
                 </motion.div>
 
-                {/* Right: Price above thumbnails */}
+                {/* Right: Price above thumbnails (desktop only) */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.6 }}
-                  className="flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0"
+                  className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0"
                 >
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-white/50 text-xs sm:text-sm">Starting from</span>
+                      <span className="hidden sm:inline text-white text-xs sm:text-sm">Starting from</span>
                       <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
                     </div>
                     {currency === "AED" && project.startingPrice && (
-                      <span className="text-white/40 text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
+                      <span className="text-white text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
                     )}
                   </div>
 
                   {images.length > 1 && (
-                    <div className="hidden lg:flex gap-2">
-                      {images.slice(0, 4).map((img: any, i: number) => (
+                    <div className="hidden lg:flex gap-2 items-end">
+                      {images.slice(0, 4).map((img, i) => (
                         <button
                           key={i}
                           onClick={() => setActiveImage(i)}
@@ -408,8 +294,8 @@ const hasPaymentInfo =
                     </div>
                   )}
 
-                  {/* Watch Tour + Photos inline */}
-                  <div className="flex items-center gap-2">
+                  {/* Watch Tour + Photos + Brochure inline */}
+                  <div className="hidden sm:flex items-center gap-2 flex-wrap">
                     {project.videoUrl && (
                       <a
                         href={project.videoUrl}
@@ -424,8 +310,16 @@ const hasPaymentInfo =
                       onClick={() => setShowGallery(true)}
                       className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-semibold text-white hover:bg-white/20 transition-all"
                     >
-                      <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white/70" /> {images.length} Photos
+                      <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white/70" /> Gallery
                     </button>
+                    <a
+                      href={project.brochureUrl || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-accent/90 hover:bg-accent border border-accent/50 text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-accent/20"
+                    >
+                      <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Brochure
+                    </a>
                   </div>
                 </motion.div>
               </div>
@@ -434,43 +328,123 @@ const hasPaymentInfo =
         </div>
       </section>
 
+      {/* Mobile Gallery + Brochure buttons — moved out of hero */}
+      <div className="sm:hidden px-4 py-3 flex gap-2 items-center">
+        <button
+          onClick={() => setShowGallery(true)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <ImageIcon className="h-3.5 w-3.5" /> Gallery ({images.length})
+        </button>
+        <a
+          href={project.brochureUrl || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+          style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+        >
+          <Download className="h-3.5 w-3.5" /> Brochure
+        </a>
+      </div>
 
       {/* ───── QUICK STATS CARDS ───── */}
-      <section className="py-4 sm:py-8">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3">
-            {[
-              { icon: Wallet, label: "Starting Price", value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null },
-              { icon: Bed, label: "Unit Types", value: project.unitTypes?.join(" · ") || "—", sub: null },
-              { icon: Ruler, label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} – ${Number(project.unitSizeMax).toLocaleString()} sqft` : "—", sub: null },
-              { icon: Calendar, label: "Handover", value: formatHandover(project.completionDate), sub: null },
-              { icon: Shield, label: "Ownership", value: project.titleType || "Freehold", sub: project.ownershipEligibility || "All Nationalities" },
-            ].map(({ icon: StatIcon, label, value, sub }, idx) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * idx + 0.2 }}
-                className="bg-card rounded-xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <StatIcon className="h-3.5 w-3.5 text-accent" />
-                  <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{label}</p>
-                </div>
-                <p className="text-sm font-bold text-foreground leading-snug">{value}</p>
-                {sub && <p className="text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
-              </motion.div>
-            ))}
+      <section className="py-4 sm:py-5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
+            {(() => {
+              const isReady = ["Ready", "Completed"].includes(project.status);
+              const handoverValue = isReady
+                ? "Ready to Move In"
+                : project.completionDate
+                  ? new Date(project.completionDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" })
+                  : "TBA";
+              const handoverIcon = isReady ? CheckCircle2 : Calendar;
+
+              const sqftToSqm = (sqft: number) => Math.round(sqft * 0.0929);
+              const sizeValue = project.unitSizeMin && project.unitSizeMax
+                ? `${Number(project.unitSizeMin).toLocaleString()} – ${Number(project.unitSizeMax).toLocaleString()} sqft`
+                : "—";
+              const sizeSub = project.unitSizeMin && project.unitSizeMax
+                ? `${sqftToSqm(Number(project.unitSizeMin)).toLocaleString()} – ${sqftToSqm(Number(project.unitSizeMax)).toLocaleString()} sqm`
+                : null;
+              const currencyKeys = Object.keys(CURRENCY_RATES);
+
+              return [
+                { icon: Building2, label: "Developer", value: project.developerName || "—", sub: null },
+                { icon: Wallet, label: "Starting Price", value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
+                { icon: Bed, label: "Unit Types", value: project.unitTypes?.join(" · ") || "—", sub: null },
+                { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
+                { icon: handoverIcon, label: isReady ? "Status" : "Handover", value: handoverValue, sub: null },
+                { icon: CreditCard, label: "Payment Plan", value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : "Flexible Plan", sub: project.paymentPlanSummary || "Easy Installments", isPaymentPlan: true },
+              ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * idx + 0.2 }}
+                  className="bg-card rounded-2xl p-3.5 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 min-h-[92px] flex flex-col justify-center"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <StatIcon className="h-4 w-4 text-accent" />
+                    <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{label}</p>
+                    {isCurrency && (
+                      <div className="ml-auto relative">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                          className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
+                        >
+                          {currency}
+                          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                        </button>
+                        <AnimatePresence>
+                          {showCurrencyDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl"
+                            >
+                              {currencyKeys.map((c) => (
+                                <button
+                                  key={c}
+                                  onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                                  className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
+                                >
+                                  {c}
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                  </div>
+                  {isPaymentPlan ? (
+                  <div>
+                      <p className="text-[13px] sm:text-sm font-bold text-foreground leading-snug">10% – 70% – 20%</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Booking – Construction – Handover</p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-[13px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
+                      {sub && <p className="text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
+                    </>
+                  )}
+                </motion.div>
+              ));
+            })()}
           </div>
         </div>
       </section>
 
       {/* ───── MAIN CONTENT ───── */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-10 lg:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-10 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-10 lg:gap-12">
 
           {/* ═══ LEFT COLUMN ═══ */}
-          <div className="lg:col-span-2 space-y-5 sm:space-y-8">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-8">
 
             {/* Tab Navigation */}
             <motion.div
@@ -510,30 +484,26 @@ const hasPaymentInfo =
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-5 sm:space-y-8"
+                  className="space-y-4 sm:space-y-8"
                 >
                   {/* Overview */}
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-1 h-6 rounded-full bg-accent" />
+                    <div>
+                      <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
+                      <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">About the Project</p>
                       <h2 className="text-lg sm:text-2xl font-bold text-foreground">Project Overview</h2>
                     </div>
                     {project.shortOverview && (
                       <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">{project.shortOverview}</p>
                     )}
                     {project.fullDescription && (
-                      <div
-                        className="text-sm sm:text-base text-muted-foreground leading-relaxed prose prose-sm max-w-none
-                          prose-headings:text-foreground prose-headings:font-bold prose-headings:mt-4 prose-headings:mb-2
-                          prose-p:mb-3 prose-li:mb-1 prose-strong:text-foreground prose-a:text-primary"
-                        dangerouslySetInnerHTML={{ __html: project.fullDescription }}
-                      />
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.fullDescription}</p>
                     )}
                   </div>
 
                   {/* Available Units */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const unitData = project.unitTypes.map((ut: any, idx: number) => {
+                    const unitData = project.unitTypes.map((ut: string, idx: number) => {
                       const totalTypes = project.unitTypes!.length;
                       const basePrice = project.startingPrice || 0;
                       const priceMultiplier = 1 + idx * 0.35;
@@ -563,23 +533,27 @@ const hasPaymentInfo =
                       <div className="rounded-3xl overflow-hidden">
                         {/* Section header */}
                         <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
-                            <Home className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           </div>
-                          <h2 className="text-lg sm:text-2xl font-bold text-foreground">Available Units</h2>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Browse Units</p>
+                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">Available Units</h2>
+                          </div>
                         </div>
 
                         {/* Unit type tabs */}
                         <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide">
-                          {unitData.map((unit: any, i: number) => (
+                          {unitData.map((unit, i) => (
                             <button
                               key={unit.name}
                               onClick={() => setActiveUnitTab(i)}
                               className={`flex-shrink-0 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
                                 activeUnitTab === i
-                                  ? "bg-gradient-to-r from-[#0B3D2E] to-[#1A7A5A] text-white shadow-lg shadow-[#0B3D2E]/25 scale-[1.02]"
-                                  : "bg-card text-muted-foreground hover:text-foreground border border-border hover:border-[#0B3D2E]/30 hover:shadow-sm"
+                                  ? "text-white shadow-lg shadow-primary/25 scale-[1.02]"
+                                  : "bg-card text-muted-foreground hover:text-foreground border border-border hover:border-primary/30 hover:shadow-sm"
                               }`}
+                              style={activeUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                             >
                               {unit.name}
                             </button>
@@ -596,12 +570,12 @@ const hasPaymentInfo =
                             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                             className="bg-card rounded-3xl border border-border/50 overflow-hidden shadow-sm"
                           >
-                            <div className="grid md:grid-cols-5 gap-0">
+                            <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                               {/* Floor plan side */}
-                              <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center p-3 sm:p-4 min-h-[200px] sm:min-h-[280px] md:min-h-[420px]">
-                                {project.floorPlans?.[activeUnitTab] ? (
+                              <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center p-4 sm:p-4 min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
+                                {project.floor_plans?.[activeUnitTab] ? (
                                   <img
-                                    src={project.floorPlans[activeUnitTab]}
+                                    src={project.floor_plans[activeUnitTab]}
                                     alt={`${activeUnit?.name} floor plan`}
                                     className="w-full h-full object-contain"
                                   />
@@ -612,18 +586,18 @@ const hasPaymentInfo =
                                   />
                                 )}
                                 <div className="absolute bottom-4 left-4">
-                                  <span className="inline-flex px-3 py-1.5 rounded-full text-xs font-bold bg-white/90 text-[#0B3D2E] backdrop-blur-sm shadow-sm border border-border/30">
+                                  <span className="inline-flex px-3 py-1.5 rounded-full text-xs font-bold bg-white/90 text-primary backdrop-blur-sm shadow-sm border border-border/30">
                                     {activeUnit?.name} Floor Plan
                                   </span>
                                 </div>
                               </div>
 
                               {/* Info side */}
-                              <div className="md:col-span-3 p-3.5 sm:p-6 md:p-8 flex flex-col justify-between gap-3 sm:gap-6">
+                              <div className="md:col-span-3 p-4 sm:p-6 md:p-8 flex flex-col justify-between gap-3 sm:gap-6">
                                 {/* Top: Title + status */}
                                 <div className="flex items-start justify-between gap-4">
                                   <div>
-                                    <h3 className="text-xl sm:text-3xl font-bold text-foreground">{activeUnit?.name}</h3>
+                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{activeUnit?.name}</h3>
                                     <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
                                   </div>
                                   <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
@@ -633,9 +607,9 @@ const hasPaymentInfo =
                                 </div>
 
                                 {/* Price card */}
-                                <div className="bg-gradient-to-br from-[#D4A847] via-[#C9A83E] to-[#B8922F] rounded-xl sm:rounded-2xl p-3 sm:p-5 text-white shadow-lg shadow-[#D4A847]/20">
+                                <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
                                   <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Price Range</p>
-                                  <p className="text-lg sm:text-3xl font-bold mt-0.5 sm:mt-1">
+                                  <p className="text-xl sm:text-3xl font-bold mt-1 sm:mt-1">
                                     {formatPrice(activeUnit?.minPrice, "AED", currency)} – {formatPrice(activeUnit?.maxPrice, "AED", currency)}
                                   </p>
                                   {currency === "AED" && (
@@ -649,11 +623,11 @@ const hasPaymentInfo =
                                 <div className="grid grid-cols-3 gap-2 sm:gap-3">
                                   {[
                                     { icon: Bed, value: activeUnit?.bedrooms === 0 ? "Studio" : activeUnit?.bedrooms, label: "Bedrooms" },
-                                    { icon: Users, value: activeUnit?.bathrooms, label: "Bathrooms" },
+                                    { icon: Users, value: activeUnit?.bathrooms, label: "Baths" },
                                     { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: "Sq. Ft." },
                                   ].map(({ icon: StatIcon, value, label }) => (
-                                    <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 text-center border border-border/30 hover:border-[#0B3D2E]/20 transition-all hover:shadow-sm group">
-                                      <StatIcon className="h-5 w-5 text-[#0B3D2E]/60 group-hover:text-[#0B3D2E] mx-auto mb-2 transition-colors" />
+                                    <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center border border-border/30 hover:border-primary/20 transition-all hover:shadow-sm group">
+                                      <StatIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary/60 group-hover:text-primary mx-auto mb-1.5 transition-colors" />
                                       <p className="text-base sm:text-lg font-bold text-foreground">{value}</p>
                                       <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{label}</p>
                                     </div>
@@ -663,14 +637,14 @@ const hasPaymentInfo =
                                 {/* Features */}
                                 <div>
                                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">Key Features</p>
-                                  <div className="flex flex-wrap gap-2">
+                                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {activeUnit?.features.map((f, fi) => (
                                       <motion.span
                                         key={fi}
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: fi * 0.04 }}
-                                        className="px-4 py-2 bg-muted/50 text-foreground/80 rounded-full text-xs font-medium border border-border/40 hover:border-[#0B3D2E]/25 hover:bg-[#0B3D2E]/[0.05] transition-all cursor-default"
+                                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-muted/50 text-foreground/80 rounded-full text-[11px] sm:text-xs font-medium border border-border/40 hover:border-primary/25 hover:bg-primary/[0.05] transition-all cursor-default"
                                       >
                                         {f}
                                       </motion.span>
@@ -699,7 +673,8 @@ const hasPaymentInfo =
                   {/* Download Brochure CTA */}
                   <a
                     href={project.brochureUrl || "#download-brochure"}
-                    className="flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full bg-gradient-to-r from-[#0B3D2E] to-[#1A7A5A] p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-[#0B3D2E]/20 hover:shadow-xl hover:shadow-[#0B3D2E]/30 hover:scale-[1.01] active:scale-[0.99]"
+                    className="flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
+                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
                       <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
@@ -714,22 +689,19 @@ const hasPaymentInfo =
                   {/* Key Highlights */}
                   {project.keyHighlights && project.keyHighlights.length > 0 && (
                     <div className="relative rounded-3xl overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0B3D2E]/[0.03] via-card to-[#D4A847]/[0.03]" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-card to-accent/[0.03]" />
                       <div className="relative p-4 sm:p-8">
                          <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
-                          <div className="relative">
-                            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-lg shadow-[#0B3D2E]/20">
-                              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                            </div>
-                            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse" />
+                          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
+                            <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           </div>
                           <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Why This Project</p>
                             <h2 className="text-lg sm:text-2xl font-bold text-foreground">Key Highlights</h2>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">What makes this project stand out</p>
                           </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                          {project.keyHighlights.map((h: any, i: number) => (
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+                          {project.keyHighlights.map((h: string, i: number) => (
                             <motion.div
                               key={i}
                               initial={{ opacity: 0, y: 16 }}
@@ -739,10 +711,10 @@ const hasPaymentInfo =
                               whileHover={{ scale: 1.02, y: -2 }}
                               className="group relative"
                             >
-                              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#0B3D2E]/10 to-[#D4A847]/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
-                              <div className="relative flex items-center gap-3 sm:gap-4 p-3.5 sm:p-5 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 group-hover:border-[#0B3D2E]/30 group-hover:shadow-lg group-hover:shadow-[#0B3D2E]/[0.06] transition-all duration-500">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#0B3D2E]/10 to-[#1A7A5A]/10 flex items-center justify-center flex-shrink-0 group-hover:from-[#0B3D2E]/20 group-hover:to-[#1A7A5A]/20 transition-all duration-500">
-                                  <Star className="h-4 w-4 sm:h-5 sm:w-5 text-[#D4A847] fill-[#D4A847]/30 group-hover:fill-[#D4A847]/60 transition-all duration-300" />
+                              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+                              <div className="relative flex items-center gap-2.5 sm:gap-4 p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 group-hover:border-primary/30 group-hover:shadow-lg group-hover:shadow-primary/[0.06] transition-all duration-500">
+                                <div className="w-8 h-8 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary/10 to-primary/80/10 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 group-hover:to-primary/80/20 transition-all duration-500">
+                                  <Star className="h-4 w-4 sm:h-5 sm:w-5 text-accent fill-accent/30 group-hover:fill-accent/60 transition-all duration-300" />
                                 </div>
                                 <span className="text-xs sm:text-sm font-medium text-foreground/80 group-hover:text-foreground leading-relaxed transition-colors duration-300">{h}</span>
                               </div>
@@ -784,7 +756,7 @@ const hasPaymentInfo =
 
                   {/* Floor Plans - Dedicated Section */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const floorPlanUnits = project.unitTypes.map((ut: any, idx: number) => {
+                    const floorPlanUnits = project.unitTypes.map((ut: string, idx: number) => {
                       const bedroomMatch = ut.match(/(\d+)/);
                       const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
                       const bathrooms = Math.max(1, bedrooms);
@@ -799,23 +771,25 @@ const hasPaymentInfo =
                     });
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="mb-8">
+                        <div className="mb-4 sm:mb-8">
                           <div className="flex items-center gap-2.5 mb-2">
                             <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                               <FileText className="h-4.5 w-4.5 text-primary" />
                             </div>
-                            <h2 className="text-xl font-bold text-foreground">Floor Plans</h2>
+                            <div>
+                              <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Layouts</p>
+                              <h2 className="text-lg sm:text-xl font-bold text-foreground">Floor Plans</h2>
+                            </div>
                           </div>
-                          <p className="text-sm text-muted-foreground ml-[46px]">Explore detailed layouts for each unit type</p>
                         </div>
 
                         {/* Unit type tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide -mx-2 px-2">
-                          {floorPlanUnits.map((unit: any, i: number) => (
+                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-4 mb-4 sm:mb-8 scrollbar-hide -mx-2 px-2">
+                          {floorPlanUnits.map((unit, i) => (
                             <button
                               key={unit.name}
                               onClick={() => setActiveFloorPlanTab(i)}
-                              className={`flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                              className={`flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                                 activeFloorPlanTab === i
                                   ? "bg-primary text-primary-foreground shadow-md"
                                   : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
@@ -840,9 +814,9 @@ const hasPaymentInfo =
                               role="img"
                               aria-label={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
                             >
-                              {project.floorPlans && project.floorPlans[activeFloorPlanTab] ? (
+                              {project.floor_plans && project.floor_plans[activeFloorPlanTab] ? (
                                 <img
-                                  src={project.floorPlans[activeFloorPlanTab]?.imageUrl}
+                                  src={project.floor_plans[activeFloorPlanTab]}
                                   alt={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
                                   className="w-full h-full object-contain rounded-2xl"
                                 />
@@ -856,38 +830,37 @@ const hasPaymentInfo =
                             </div>
 
                             {/* Details row */}
-                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-                              <div className="p-3.5 bg-muted/40 rounded-xl text-center">
-                                <Ruler className="h-4 w-4 text-primary mx-auto mb-1.5" />
-                                <p className="text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.unitSize.toLocaleString()} sqft</p>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Unit Size</p>
+                            <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 sm:gap-3 mt-3 sm:mt-0 mb-4 sm:mb-6">
+                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
+                                <Ruler className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
+                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.unitSize.toLocaleString()}</p>
+                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">sqft</p>
                               </div>
-                              <div className="p-3.5 bg-muted/40 rounded-xl text-center">
-                                <Bed className="h-4 w-4 text-primary mx-auto mb-1.5" />
-                                <p className="text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bedrooms === 0 ? "Studio" : floorPlanUnits[activeFloorPlanTab]?.bedrooms}</p>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Bedrooms</p>
+                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
+                                <Bed className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
+                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bedrooms === 0 ? "Studio" : floorPlanUnits[activeFloorPlanTab]?.bedrooms}</p>
+                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Beds</p>
                               </div>
-                              <div className="p-3.5 bg-muted/40 rounded-xl text-center">
-                                <Users className="h-4 w-4 text-primary mx-auto mb-1.5" />
-                                <p className="text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bathrooms}</p>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Bathrooms</p>
+                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
+                                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
+                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bathrooms}</p>
+                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Baths</p>
                               </div>
-                              <div className="p-3.5 bg-muted/40 rounded-xl text-center">
-                                <Compass className="h-4 w-4 text-primary mx-auto mb-1.5" />
-                                <p className="text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.balconyArea.toLocaleString()} sqft</p>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Balcony</p>
+                            </div>
+                            {/* Total area bar */}
+                            <div className="flex items-center justify-between bg-muted/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 mb-4 sm:mb-6">
+                              <div className="flex items-center gap-2">
+                                <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                                <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Total Area</span>
                               </div>
-                              <div className="p-3.5 bg-muted/40 rounded-xl text-center col-span-2 sm:col-span-1">
-                                <Home className="h-4 w-4 text-primary mx-auto mb-1.5" />
-                                <p className="text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.totalArea.toLocaleString()} sqft</p>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Total Area</p>
-                              </div>
+                              <span className="text-sm sm:text-base font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.totalArea.toLocaleString()} sqft</span>
                             </div>
 
                             {/* Download button */}
-                            <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full text-sm font-semibold text-[#134E3A] border-2 border-[#134E3A]/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#0B3D2E] hover:to-[#1A7A5A] hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-[#134E3A]/20 hover:scale-[1.02] active:scale-[0.98] group">
-                              <Download className="h-4 w-4 group-hover:translate-y-0.5 transition-transform" />
-                              Download Floor Plan PDF — {floorPlanUnits[activeFloorPlanTab]?.name}
+                            <button className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold text-primary border-2 border-primary/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] group">
+                              <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-y-0.5 transition-transform" />
+                              <span className="hidden sm:inline">Download Floor Plan PDF — {floorPlanUnits[activeFloorPlanTab]?.name}</span>
+                              <span className="sm:hidden">Download {floorPlanUnits[activeFloorPlanTab]?.name} PDF</span>
                             </button>
                           </motion.div>
                         </AnimatePresence>
@@ -914,109 +887,112 @@ const hasPaymentInfo =
                     const planSummary = project.paymentPlanSummary;
 
                     return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="flex items-center justify-between mb-6">
+                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                        {/* Header with gradient */}
+                        <div className="p-3.5 sm:p-5 flex items-center justify-between" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                           <div className="flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                              <CreditCard className="h-4.5 w-4.5 text-accent" />
+                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 flex items-center justify-center">
+                              <CreditCard className="h-4 w-4 text-white" />
                             </div>
                             <div>
-                              <h2 className="text-lg sm:text-xl font-bold text-foreground">Payment Plan</h2>
-                              <p className="text-xs text-muted-foreground mt-0.5">
+                              <h2 className="text-base sm:text-xl font-bold text-white">Payment Plan</h2>
+                              <p className="text-[10px] sm:text-xs text-white/60">
                                 For {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice, "AED", currency)}
                               </p>
                             </div>
                           </div>
                           {planSummary && (
-                            <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-[10px] font-bold bg-accent/15 text-accent border border-accent/20">
+                            <span className="px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold bg-white/15 text-white border border-white/20">
                               {planSummary}
                             </span>
                           )}
                         </div>
 
-                        {/* Progress bar overview */}
-                        <div className="flex rounded-full overflow-hidden h-3 mb-8 bg-muted/50">
-                          {milestones.map((m: any, i: number) => (
-                            <motion.div
-                              key={i}
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${m.pct}%` }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.15 * i + 0.3, duration: 0.5 }}
-                              className={`${m.color} ${i === 0 ? "rounded-l-full" : ""} ${i === milestones.length - 1 ? "rounded-r-full" : ""} relative`}
-                              style={{ minWidth: "2%" }}
-                            >
-                              {i < milestones.length - 1 && (
-                                <div className="absolute right-0 top-0 bottom-0 w-px bg-background" />
-                              )}
-                            </motion.div>
-                          ))}
-                        </div>
+                        <div className="p-3.5 sm:p-6 space-y-4 sm:space-y-6">
+                          {/* Progress bar */}
+                          <div className="flex rounded-full overflow-hidden h-2.5 sm:h-3 bg-muted/50">
+                            {milestones.map((m, i) => (
+                              <motion.div
+                                key={i}
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${m.pct}%` }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.15 * i + 0.3, duration: 0.5 }}
+                                className={`${m.color} ${i === 0 ? "rounded-l-full" : ""} ${i === milestones.length - 1 ? "rounded-r-full" : ""} relative`}
+                                style={{ minWidth: "2%" }}
+                              >
+                                {i < milestones.length - 1 && (
+                                  <div className="absolute right-0 top-0 bottom-0 w-px bg-background" />
+                                )}
+                              </motion.div>
+                            ))}
+                          </div>
 
-                        {/* Timeline steps */}
-                        <div className="relative">
-                          <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-border rounded-full" />
-                          <div className="space-y-0">
-                            {milestones.map((m: any, i: number) => {
-                              const amount = Math.round(unitPrice * m.pct / 100);
-                              const MIcon = m.icon;
-                              const cumulativePct = milestones.slice(0, i + 1).reduce((sum, ms) => sum + ms.pct, 0);
-                              return (
-                                <motion.div
-                                  key={i}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  whileInView={{ opacity: 1, x: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{ delay: 0.1 * i + 0.2 }}
-                                  className="flex items-start gap-4 py-4 relative"
-                                >
-                                  {/* Node */}
-                                  <div className={`w-8 h-8 rounded-full ${m.color} flex items-center justify-center flex-shrink-0 z-10 shadow-md`}>
-                                    <MIcon className="h-3.5 w-3.5 text-white" />
-                                  </div>
-
-                                  {/* Content */}
-                                  <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 min-w-0">
-                                    <div className="min-w-0">
-                                      <p className="text-sm font-bold text-foreground">{m.label}</p>
-                                      <p className="text-[11px] text-muted-foreground">Step {i + 1} of {milestones.length} · {cumulativePct}% total paid</p>
+                          {/* Timeline steps — compact on mobile */}
+                          <div className="relative">
+                            <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-[2px] bg-border rounded-full" />
+                            <div className="space-y-0">
+                              {milestones.map((m, i) => {
+                                const amount = Math.round(unitPrice * m.pct / 100);
+                                const MIcon = m.icon;
+                                const cumulativePct = milestones.slice(0, i + 1).reduce((sum, ms) => sum + ms.pct, 0);
+                                return (
+                                  <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 * i + 0.2 }}
+                                    className="flex items-center gap-2.5 sm:gap-4 py-2.5 sm:py-4 relative"
+                                  >
+                                    {/* Node */}
+                                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${m.color} flex items-center justify-center flex-shrink-0 z-10 shadow-md`}>
+                                      <MIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
                                     </div>
-                                    <div className="flex items-baseline gap-2 flex-shrink-0">
-                                      <span className="text-lg font-bold text-foreground">{m.pct}%</span>
-                                      <div className="flex flex-col">
-                                        <span className="text-sm font-semibold text-foreground">{formatPrice(amount, "AED", currency)}</span>
-                                        {currency === "AED" && (
-                                          <span className="text-[10px] text-muted-foreground">~{formatPrice(amount, "AED", "USD")}</span>
-                                        )}
+
+                                    {/* Content */}
+                                    <div className="flex-1 flex items-center justify-between gap-2 min-w-0">
+                                      <div className="min-w-0">
+                                        <p className="text-xs sm:text-sm font-bold text-foreground">{m.label}</p>
+                                        <p className="text-[9px] sm:text-[11px] text-muted-foreground">Step {i + 1} · {cumulativePct}% paid</p>
+                                      </div>
+                                      <div className="flex items-baseline gap-1.5 sm:gap-2 flex-shrink-0">
+                                        <span className="text-sm sm:text-lg font-bold text-foreground">{m.pct}%</span>
+                                        <div className="flex flex-col items-end">
+                                          <span className="text-[11px] sm:text-sm font-semibold text-foreground">{formatPrice(amount, "AED", currency)}</span>
+                                          {currency === "AED" && (
+                                            <span className="text-[9px] sm:text-[10px] text-muted-foreground">~{formatPrice(amount, "AED", "USD")}</span>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </motion.div>
-                              );
-                            })}
+                                  </motion.div>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
 
-                        {/* Total summary */}
-                        <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between">
-                          <p className="text-sm font-semibold text-muted-foreground">Total</p>
-                          <div className="text-right">
-                            <p className="text-lg font-bold text-foreground">{formatPrice(unitPrice, "AED", currency)}</p>
-                            {currency === "AED" && (
-                              <p className="text-[11px] text-muted-foreground">~{formatPrice(unitPrice, "AED", "USD")}</p>
-                            )}
+                          {/* Total summary */}
+                          <div className="pt-3 sm:pt-4 border-t border-border/50 flex items-center justify-between">
+                            <p className="text-xs sm:text-sm font-semibold text-muted-foreground">Total</p>
+                            <div className="text-right">
+                              <p className="text-base sm:text-lg font-bold text-foreground">{formatPrice(unitPrice, "AED", currency)}</p>
+                              {currency === "AED" && (
+                                <p className="text-[10px] sm:text-[11px] text-muted-foreground">~{formatPrice(unitPrice, "AED", "USD")}</p>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        {project.paymentPlanDetails && (
-                          <p className="mt-4 text-xs text-muted-foreground leading-relaxed bg-muted/30 rounded-xl p-3 border border-border/30">{project.paymentPlanDetails}</p>
-                        )}
+                          {project.paymentPlanDetails && (
+                            <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed bg-muted/30 rounded-xl p-2.5 sm:p-3 border border-border/30">{project.paymentPlanDetails}</p>
+                          )}
+                        </div>
                       </div>
                     );
                   })()}
 
                   {/* Location & Nearby */}
-                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8 overflow-hidden">
                     <div className="flex items-center gap-2.5 mb-6">
                       <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <MapPin className="h-4.5 w-4.5 text-primary" />
@@ -1032,11 +1008,11 @@ const hasPaymentInfo =
                     {/* Map embed */}
                     {(() => {
                       let embedSrc = "";
-                      if (project.googleMapsUrl) {
+                      if (project.mapUrl) {
                         // If it's already an embed URL, use directly; otherwise convert
-                        embedSrc = project.googleMapsUrl.includes("/embed/")
-                          ? project.googleMapsUrl
-                          : project.googleMapsUrl.replace("/maps/", "/maps/embed/");
+                        embedSrc = project.mapUrl.includes("/embed/")
+                          ? project.mapUrl
+                          : project.mapUrl.replace("/maps/", "/maps/embed/");
                       } else if (project.latitude && project.longitude) {
                         embedSrc = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d${project.longitude}!3d${project.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sae!4v1`;
                       } else {
@@ -1071,8 +1047,8 @@ const hasPaymentInfo =
                       ];
                       const items = nearby.length > 0 ? nearby : fallback;
                       return (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                          {items.map((item: any, i: number) => {
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                          {items.map((item, i) => {
                             const AIcon = attractionIcon(item.type);
                             return (
                               <motion.div
@@ -1126,24 +1102,24 @@ const hasPaymentInfo =
                             <p className="text-xs text-muted-foreground mt-0.5">Why invest in {project.name}</p>
                           </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
-                          {stats.map((s: any, i: number) => (
+                        <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mb-4 sm:mb-6">
+                          {stats.map((s, i) => (
                             <motion.div
                               key={i}
                               initial={{ opacity: 0, y: 8 }}
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true }}
                               transition={{ delay: i * 0.1 }}
-                              className="rounded-xl border border-border/50 p-2.5 sm:p-3 text-center bg-muted/20"
+                              className="rounded-xl border border-border/50 p-2 sm:p-3 text-center bg-muted/20"
                             >
-                              <s.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${s.iconClass} mx-auto mb-1 sm:mb-1.5`} />
-                              <p className="text-lg sm:text-xl font-bold text-foreground">{s.value}</p>
-                              <p className="text-[9px] sm:text-[10px] font-semibold text-muted-foreground">{s.label}</p>
-                              <p className="text-[8px] sm:text-[9px] text-muted-foreground/70">{s.sub}</p>
+                              <s.icon className={`h-4 w-4 ${s.iconClass} mx-auto mb-1`} />
+                              <p className="text-base sm:text-xl font-bold text-foreground">{s.value}</p>
+                              <p className="text-[8px] sm:text-[10px] font-semibold text-muted-foreground">{s.label}</p>
+                              <p className="text-[7px] sm:text-[9px] text-muted-foreground/70 hidden sm:block">{s.sub}</p>
                             </motion.div>
                           ))}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {reasons.map((reason, i) => (
                             <motion.div
                               key={i}
@@ -1151,7 +1127,7 @@ const hasPaymentInfo =
                               whileInView={{ opacity: 1, x: 0 }}
                               viewport={{ once: true }}
                               transition={{ delay: i * 0.05 }}
-                              className="flex items-center gap-2.5 rounded-xl border border-border/50 p-3 bg-muted/10 hover:bg-muted/30 transition-colors"
+                              className="flex items-center gap-2.5 rounded-xl border border-border/50 p-2.5 sm:p-3 bg-muted/10 hover:bg-muted/30 transition-colors"
                             >
                               <div className="w-6 h-6 rounded-full bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
                                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
@@ -1168,29 +1144,41 @@ const hasPaymentInfo =
                   {project.developerName && (
                     <div className="relative bg-card rounded-2xl border border-border/50 overflow-hidden">
                       {/* Subtle gradient accent bar */}
-                      <div className="h-1.5 bg-gradient-to-r from-[#0B3D2E] via-[#1A7A5A] to-[#D4A847]" />
-                      <div className="p-6 sm:p-8">
-                        <div className="flex items-center gap-2.5 mb-8">
+                      <div className="h-1.5 bg-gradient-to-r from-primary via-primary/60 to-accent" />
+                      <div className="p-4 sm:p-6 md:p-8">
+                        <div className="flex items-center gap-2.5 mb-5 sm:mb-8">
                           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                             <Building2 className="h-4.5 w-4.5 text-primary" />
                           </div>
-                          <h2 className="text-xl font-bold text-foreground">About the Developer</h2>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Developer</p>
+                            <h2 className="text-lg sm:text-xl font-bold text-foreground">About the Developer</h2>
+                          </div>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row gap-6">
+                        {/* Developer intro — inline on mobile */}
+                        <div className="flex items-start gap-3 sm:gap-6 mb-4 sm:mb-0">
                           {/* Developer logo placeholder */}
-                          <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <span className="text-2xl font-black text-primary/60">{project.developerName.split(" ").map(w => w[0]).join("").slice(0, 2)}</span>
+                          <div className="w-14 h-14 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <span className="text-xl sm:text-2xl font-black text-primary/60">{project.developerName.split(" ").map(w => w[0]).join("").slice(0, 2)}</span>
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1 sm:mb-2">{project.developerName}</h3>
-                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-6">
+                            <h3 className="text-base sm:text-xl font-bold text-foreground mb-1">{project.developerName}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                               {project.developerName} is a leading real estate developer in the UAE, known for delivering iconic residential and commercial projects across prime locations in Dubai.
                             </p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row sm:gap-6">
+                          {/* Spacer to align with content above on desktop */}
+                          <div className="hidden sm:block w-24 flex-shrink-0" />
+
+                          <div className="flex-1 min-w-0">
 
                             {/* Stats with icons */}
-                            <div className="grid grid-cols-3 gap-2 mb-4 sm:mb-6">
+                            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-4 sm:mb-6">
                               {[
                                 { value: "50+", label: "Projects Delivered", icon: Building2 },
                                 { value: "20+", label: "Years Experience", icon: Clock },
@@ -1204,11 +1192,11 @@ const hasPaymentInfo =
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.1 }}
-                                    className="text-center rounded-xl border border-border/50 bg-gradient-to-b from-muted/30 to-transparent py-3 sm:py-4 px-2 sm:px-3 hover:border-primary/20 hover:shadow-md transition-all duration-300"
+                                    className="text-center rounded-xl border border-border/50 bg-gradient-to-b from-muted/30 to-transparent py-2.5 sm:py-4 px-2 sm:px-3 hover:border-primary/20 hover:shadow-md transition-all duration-300"
                                   >
-                                    <StatIcon className="h-4 w-4 text-primary/60 mx-auto mb-2" />
-                                    <p className="text-lg sm:text-xl font-bold text-foreground">{stat.value}</p>
-                                    <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium mt-0.5">{stat.label}</p>
+                                    <StatIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary/60 mx-auto mb-1.5" />
+                                    <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
+                                    <p className="text-[8px] sm:text-[10px] text-muted-foreground font-medium mt-0.5">{stat.label}</p>
                                   </motion.div>
                                 );
                               })}
@@ -1257,11 +1245,11 @@ const hasPaymentInfo =
                             <Star className="h-4.5 w-4.5 text-accent" />
                           </div>
                           <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Lifestyle</p>
                             <h2 className="text-xl font-bold text-foreground">Amenities & Facilities</h2>
-                            <p className="text-xs text-muted-foreground mt-0.5">{amenities.length} world-class amenities</p>
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
                           {amenities.map((amenity, i) => {
                             const AIcon = getIcon(amenity);
                             return (
@@ -1271,12 +1259,12 @@ const hasPaymentInfo =
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.03 }}
-                                className="rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-3 flex flex-col items-center text-center gap-2"
+                                className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
                               >
-                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                                  <AIcon className="h-4 w-4 text-primary" />
+                                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
+                                  <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                                 </div>
-                                <span className="text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
+                                <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
                               </motion.div>
                             );
                           })}
@@ -1285,62 +1273,86 @@ const hasPaymentInfo =
                     );
                   })()}
 
-                  {/* FAQ */}
-                  {faqs.length > 0 && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                      <div className="flex items-center gap-2.5 mb-6">
-                        <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                          <MessageCircle className="h-4.5 w-4.5 text-primary" />
+                  {/* ───── PHOTO GALLERY ───── */}
+                  {images.length > 1 && (
+                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-accent/15 flex items-center justify-center">
+                            <ImageIcon className="h-4 w-4 text-accent" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Media</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground">Gallery</h2>
+                          </div>
                         </div>
-                        <h2 className="text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                        <button
+                          onClick={() => setShowGallery(true)}
+                          className="text-xs text-accent font-semibold hover:underline flex items-center gap-1"
+                        >
+                          View All ({images.length}) <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
                       </div>
-                      <div className="space-y-3">
-                        {faqs.map((faq: any, i: number) => (
-                          <motion.div
+
+                      {/* Mobile: horizontal scroll strip */}
+                      <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-2.5 pb-1">
+                        {images.slice(0, 6).map((img, i) => (
+                          <motion.button
                             key={i}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.04 }}
+                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
+                            className="relative flex-shrink-0 w-[70%] aspect-[3/2] rounded-xl overflow-hidden border border-border/50 snap-center"
+                          >
+                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                            {i === 5 && images.length > 6 && (
+                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
+                                <span className="text-white font-bold text-base">+{images.length - 6}</span>
+                              </div>
+                            )}
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {/* Desktop: straight row of 4 */}
+                      <div className="hidden sm:grid grid-cols-4 gap-3">
+                        {images.slice(0, 4).map((img, i) => (
+                          <motion.button
+                            key={i}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.05 }}
-                            className={`rounded-xl overflow-hidden transition-colors ${openFaq === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
+                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
+                            className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all"
                           >
-                            <button
-                              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                              className="w-full flex items-center justify-between p-4 sm:p-5 text-left"
-                            >
-                              <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
-                              <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
-                            </button>
-                            <AnimatePresence>
-                              {openFaq === i && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.25, ease: "easeOut" as const }}
-                                >
-                                  <div className="px-4 sm:px-5 pb-5">
-                                    <div className="w-12 h-px bg-primary/20 mb-3" />
-                                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </motion.div>
+                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
+                              <Eye className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </div>
+                            {i === 3 && images.length > 4 && (
+                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center rounded-2xl">
+                                <span className="text-white font-bold text-lg">+{images.length - 4}</span>
+                              </div>
+                            )}
+                          </motion.button>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Enquiry Form */}
-                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                    <div className="flex items-center gap-2.5 mb-6">
-                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                        <Mail className="h-4.5 w-4.5 text-accent" />
+                  {/* Enquiry Form — hidden on mobile (shown inline below price card in right column) */}
+                   <div className="hidden sm:block bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                    <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                        <Mail className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-accent" />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-foreground">Enquire About This Project</h2>
-                        <p className="text-xs text-muted-foreground mt-0.5">Get detailed pricing and availability from our team</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Get in Touch</p>
+                        <h2 className="text-base sm:text-xl font-bold text-foreground">Enquire About This Project</h2>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Get detailed pricing and availability</p>
                       </div>
                     </div>
 
@@ -1365,31 +1377,19 @@ const hasPaymentInfo =
                     ) : (
                       <form
                         onSubmit={(e) => { e.preventDefault(); setEnquirySubmitted(true); }}
-                        className="space-y-4"
+                        className="space-y-3 sm:space-y-4"
                       >
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Full Name *</label>
-                            <input
-                              type="text"
-                              required
-                              value={enquiryForm.name}
-                              onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
-                              className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                              placeholder="Your full name"
-                            />
-                          </div>
-                          <div>
-                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Email *</label>
-                            <input
-                              type="email"
-                              required
-                              value={enquiryForm.email}
-                              onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
-                              className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                              placeholder="your@email.com"
-                            />
-                          </div>
+                        {/* Core fields — always visible */}
+                        <div>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Full Name *</label>
+                          <input
+                            type="text"
+                            required
+                            value={enquiryForm.name}
+                            onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
+                            className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                            placeholder="Your full name"
+                          />
                         </div>
 
                         <div>
@@ -1400,12 +1400,12 @@ const hasPaymentInfo =
                               onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
                               className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
                             >
-                              <option value="+971">AE +971</option>
-                              <option value="+44">UK +44</option>
-                              <option value="+1">US +1</option>
-                              <option value="+91">IN +91</option>
-                              <option value="+86">CN +86</option>
-                              <option value="+7">RU +7</option>
+                              <option value="+971">🇦🇪 +971</option>
+                              <option value="+44">🇬🇧 +44</option>
+                              <option value="+1">🇺🇸 +1</option>
+                              <option value="+91">🇮🇳 +91</option>
+                              <option value="+86">🇨🇳 +86</option>
+                              <option value="+7">🇷🇺 +7</option>
                             </select>
                             <input
                               type="tel"
@@ -1418,67 +1418,107 @@ const hasPaymentInfo =
                           </div>
                         </div>
 
+                        {/* Pre-filled message */}
+                        <div className="bg-muted/20 rounded-xl px-3.5 py-2.5 border border-border/30">
+                          <p className="text-xs text-muted-foreground">
+                            <span className="font-semibold text-foreground/70">Message:</span> I'm interested in {project.name}. Please share pricing and availability.
+                          </p>
+                        </div>
+
+                        {/* Optional expander — mobile-first */}
                         <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Unit Type</label>
-                          <select
-                            value={enquiryForm.unitType}
-                            onChange={(e) => setEnquiryForm(f => ({ ...f, unitType: e.target.value }))}
-                            className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
+                          <button
+                            type="button"
+                            onClick={() => setShowMoreEnquiry(!showMoreEnquiry)}
+                            className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
                           >
-                            <option value="">Select a unit type</option>
-                            {project.unitTypes?.map((ut) => (
-                              <option key={ut} value={ut}>{ut}</option>
-                            ))}
-                          </select>
-                        </div>
+                            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreEnquiry ? "rotate-180" : ""}`} />
+                            {showMoreEnquiry ? "Hide details" : "Add more details (optional)"}
+                          </button>
 
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Message</label>
-                          <textarea
-                            rows={3}
-                            value={enquiryForm.message}
-                            onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
-                            className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
-                            placeholder={`I'm interested in ${project.name}. Please share more details...`}
-                          />
-                        </div>
-
-                        <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Contact Method</label>
-                          <div className="flex gap-2">
-                            {([
-                              { key: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle },
-                              { key: "email" as const, label: "Email", icon: Mail },
-                              { key: "phone" as const, label: "Phone", icon: Phone },
-                            ]).map((method) => {
-                              const MIcon = method.icon;
-                              return (
-                                <button
-                                  key={method.key}
-                                  type="button"
-                                  onClick={() => setEnquiryForm(f => ({ ...f, contactMethod: method.key }))}
-                                  className={`flex-1 h-10 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                                    enquiryForm.contactMethod === method.key
-                                      ? "bg-primary text-primary-foreground shadow-md"
-                                      : "bg-muted/50 text-muted-foreground hover:bg-muted border border-border/50"
-                                  }`}
+                          {showMoreEnquiry && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              className="space-y-3 mt-3 overflow-hidden"
+                            >
+                              <div>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Email</label>
+                                <input
+                                  type="email"
+                                  value={enquiryForm.email}
+                                  onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
+                                  className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                                  placeholder="your@email.com"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Unit Type</label>
+                                <select
+                                  value={enquiryForm.unitType}
+                                  onChange={(e) => setEnquiryForm(f => ({ ...f, unitType: e.target.value }))}
+                                  className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
                                 >
-                                  <MIcon className="h-3.5 w-3.5" />
-                                  {method.label}
-                                </button>
-                              );
-                            })}
-                          </div>
+                                  <option value="">Select a unit type</option>
+                                  {project.unitTypes?.map((ut) => (
+                                    <option key={ut} value={ut}>{ut}</option>
+                                  ))}
+                                </select>
+                              </div>
+                              <div>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Custom Message</label>
+                                <textarea
+                                  rows={2}
+                                  value={enquiryForm.message}
+                                  onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
+                                  className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
+                                  placeholder="Any specific requirements..."
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Contact Method</label>
+                                <div className="flex gap-2">
+                                  {([
+                                    { key: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle },
+                                    { key: "email" as const, label: "Email", icon: Mail },
+                                    { key: "phone" as const, label: "Phone", icon: Phone },
+                                  ]).map((method) => {
+                                    const MIcon = method.icon;
+                                    return (
+                                      <button
+                                        key={method.key}
+                                        type="button"
+                                        onClick={() => setEnquiryForm(f => ({ ...f, contactMethod: method.key }))}
+                                        className={`flex-1 h-10 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                                          enquiryForm.contactMethod === method.key
+                                            ? "text-white shadow-md"
+                                            : "bg-muted/50 text-muted-foreground hover:bg-muted border border-border/50"
+                                        }`}
+                                        style={enquiryForm.contactMethod === method.key
+                                          ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }
+                                          : undefined
+                                        }
+                                      >
+                                        <MIcon className="h-3.5 w-3.5" />
+                                        {method.label}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
                         </div>
 
                         <button
                           type="submit"
-                          className="w-full h-12 rounded-full bg-gradient-to-r from-[#D4A847] via-[#C4963F] to-[#B8922F] text-white font-bold text-sm transition-all duration-500 shadow-[0_0_20px_rgba(212,168,71,0.3)] hover:shadow-[0_0_30px_rgba(212,168,71,0.5)] hover:scale-[1.02] active:scale-[0.98]"
+                          className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+                          style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
                         >
-                          Submit Enquiry
+                          Send Quick Enquiry
                         </button>
 
-                        <p className="text-[10px] text-muted-foreground text-center">By submitting, you agree to be contacted regarding this property.</p>
+                        <p className="text-[10px] text-muted-foreground text-center">We'll get back to you within 2 hours</p>
                       </form>
                     )}
                   </div>
@@ -1486,31 +1526,31 @@ const hasPaymentInfo =
                   {/* Schedule Video Consultation */}
                   <a
                     href="#schedule-call"
-                    className="block rounded-2xl p-[2px] bg-gradient-to-r from-[#0B3D2E] via-[#1A7A5A] to-[#D4A847] transition-all duration-300 group hover:shadow-xl hover:shadow-[#134E3A]/15 hover:scale-[1.01]"
+                    className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-xl hover:shadow-primary/15 hover:scale-[1.01]"
                   >
                     <div className="rounded-[14px] bg-card/95 backdrop-blur-xl p-6 sm:p-8">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0B3D2E]/10 to-[#1A7A5A]/10 border border-[#134E3A]/15 flex items-center justify-center flex-shrink-0 group-hover:from-[#0B3D2E]/20 group-hover:to-[#1A7A5A]/20 transition-all">
-                          <Calendar className="h-5 w-5 text-[#134E3A]" />
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/80/10 border border-primary/15 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 group-hover:to-primary/80/20 transition-all">
+                          <Calendar className="h-5 w-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-bold text-foreground group-hover:text-[#134E3A] transition-colors">Schedule a Video Consultation</h3>
+                          <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">Schedule a Video Consultation</h3>
                           <p className="text-xs text-muted-foreground mt-0.5">Book a free video call with our property consultant — no obligations</p>
                         </div>
-                        <ArrowRight className="h-5 w-5 text-[#134E3A]/40 group-hover:text-[#134E3A] group-hover:translate-x-1 transition-all flex-shrink-0" />
+                        <ArrowRight className="h-5 w-5 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                     </div>
                     </div>
                   </a>
 
                   {/* What Buyers Say */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
                     <div className="flex items-center gap-2.5 mb-6">
                       <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
                         <MessageCircle className="h-4.5 w-4.5 text-accent" />
                       </div>
-                      <h2 className="text-xl font-bold text-foreground">What Buyers Say</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">What Buyers Say</h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="flex sm:grid sm:grid-cols-3 gap-2.5 sm:gap-4 overflow-x-auto scrollbar-hide -mx-2 px-2 sm:mx-0 sm:px-0 pb-2 sm:pb-0">
                       {[
                         { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
                         { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
@@ -1522,7 +1562,7 @@ const hasPaymentInfo =
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: i * 0.1 }}
-                          className="rounded-xl border border-border/50 bg-muted/20 p-4 flex flex-col"
+                          className="flex-shrink-0 w-[240px] sm:w-auto rounded-xl border border-border/50 bg-muted/20 p-3 sm:p-4 flex flex-col"
                         >
                           <span className="text-3xl text-accent/30 font-serif leading-none mb-2">"</span>
                           <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-3">{review.text}</p>
@@ -1542,6 +1582,54 @@ const hasPaymentInfo =
                       ))}
                     </div>
                   </div>
+
+                  {/* FAQ Section */}
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                    <div className="flex items-center gap-2.5 mb-6">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <FileText className="h-4.5 w-4.5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Common Questions</p>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {faqs.map((faq, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 8 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.05 }}
+                          className="border border-border/50 rounded-xl overflow-hidden"
+                        >
+                          <button
+                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                            className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/30 transition-colors"
+                          >
+                            <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
+                            <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                          </button>
+                          <AnimatePresence>
+                            {openFaq === i && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <div className="px-4 pb-4">
+                                  <div className="w-12 h-px bg-accent/30 mb-3" />
+                                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               )}
 
@@ -1553,93 +1641,156 @@ const hasPaymentInfo =
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-8"
+                  className="space-y-4 sm:space-y-8"
                 >
-                  {/* Pricing & Ownership */}
-                  <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                    <div className="bg-gradient-to-r from-[#0B3D2E] to-[#1A7A5A] p-6 sm:p-8">
-                      <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold">Starting Price</p>
-                      <p className="text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, project.currency, currency)}</p>
+                  {/* Pricing & Ownership — full card on desktop, just facts on mobile */}
+                  <div className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden">
+                    <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                      <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">Starting Price</p>
+                      <p className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                       {currency === "AED" && project.startingPrice && (
-                        <p className="text-primary-foreground/40 text-sm mt-1">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
+                        <p className="text-primary-foreground/40 text-xs sm:text-sm mt-1">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
                       )}
-                      {project.priceRange && <p className="text-primary-foreground/50 text-sm mt-2">{project.priceRange}</p>}
+                      {project.priceRange && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{project.priceRange}</p>}
                     </div>
-                    <div className="p-6 sm:p-8">
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Title Type</p>
-                          <p className="text-base font-bold text-foreground">{project.titleType || "Freehold"}</p>
+                    <div className="p-3.5 sm:p-6 md:p-8">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                        <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
+                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Title Type</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType || "Freehold"}</p>
                         </div>
-                        <div className="p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Ownership Eligibility</p>
-                          <p className="text-base font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                        <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
+                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Ownership</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Payment Plan */}
-                  {hasPaymentInfo && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
-                      <div className="flex items-center gap-2.5 mb-6">
-                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                          <CreditCard className="h-4.5 w-4.5 text-accent" />
-                        </div>
-                        <h2 className="text-xl font-bold text-foreground">Payment Plan</h2>
-                      </div>
-                      <div className="grid sm:grid-cols-2 gap-4 mb-5">
-                        {project.downPayment && (
-                          <div className="p-5 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/15">
-                            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-2">Down Payment</p>
-                            <p className="text-3xl font-bold text-accent">{project.downPayment}</p>
-                          </div>
-                        )}
-                        {project.paymentPlanSummary && (
-                          <div className="p-5 rounded-xl bg-muted/50">
-                            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-2">Plan Summary</p>
-                            <p className="text-base font-bold text-foreground">{project.paymentPlanSummary}</p>
-                          </div>
-                        )}
-                      </div>
-                      {project.paymentPlanDetails && (
-                        <div className="p-4 bg-muted/30 rounded-xl border border-border/30 mb-5">
-                          <p className="text-sm text-muted-foreground leading-relaxed">{project.paymentPlanDetails}</p>
-                        </div>
-                      )}
-                      {project.acceptedPaymentMethods && project.acceptedPaymentMethods.length > 0 && (
-                        <div>
-                          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-3">Accepted Methods</p>
-                          <div className="flex flex-wrap gap-2">
-                            {project.acceptedPaymentMethods.map((m: any, i: number) => (
-                              <span key={i} className="text-xs px-4 py-2.5 bg-card border border-border rounded-xl text-foreground font-semibold hover:border-primary/30 transition-colors">
-                                {m}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                  {/* Mobile-only: just Title Type + Ownership */}
+                  <div className="sm:hidden grid grid-cols-2 gap-2">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Title Type</p>
+                      <p className="text-sm font-bold text-foreground">{project.titleType || "Freehold"}</p>
                     </div>
-                  )}
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Ownership</p>
+                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                    </div>
+                  </div>
+
+                  {/* Payment Plan Visual Timeline */}
+                  {(() => {
+                    const downPct = parseInt(project.downPayment || "0") || 20;
+                    const duringPct = 100 - downPct > 40 ? Math.round((100 - downPct) * 0.6) : 100 - downPct - 20;
+                    const handoverPct = 100 - downPct - (duringPct > 0 ? duringPct : 0);
+                    const milestones = [
+                      { label: "On Booking", pct: downPct, desc: "Down Payment", icon: Wallet, color: "from-accent to-accent/80" },
+                      ...(duringPct > 0 ? [{ label: "During Construction", pct: duringPct, desc: "Progress-linked installments", icon: Building2, color: "from-primary to-primary/80" }] : []),
+                      ...(handoverPct > 0 ? [{ label: "On Handover", pct: handoverPct, desc: "Balance on completion", icon: Home, color: "from-primary to-[#145C42]" }] : []),
+                    ];
+                    return (
+                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                        <div className="p-3.5 sm:p-6 flex items-center gap-2.5 sm:gap-3" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                            <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                          </div>
+                          <div>
+                            <h2 className="text-base sm:text-xl font-bold text-white">Payment Plan</h2>
+                            {project.paymentPlanSummary && (
+                              <p className="text-white/60 text-xs sm:text-sm">{project.paymentPlanSummary}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="p-3.5 sm:p-8 space-y-4 sm:space-y-6">
+                          {/* Progress bar */}
+                          <div className="relative">
+                            <div className="flex rounded-full overflow-hidden h-2.5 sm:h-3 bg-muted/50">
+                              {milestones.map((m, i) => (
+                                <motion.div
+                                  key={i}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${m.pct}%` }}
+                                  transition={{ delay: 0.3 + i * 0.2, duration: 0.6, ease: "easeOut" }}
+                                  className={`bg-gradient-to-r ${m.color} ${i === 0 ? "rounded-l-full" : ""} ${i === milestones.length - 1 ? "rounded-r-full" : ""}`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Milestone cards */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4">
+                            {milestones.map((m, i) => {
+                              const MIcon = m.icon;
+                              return (
+                                <motion.div
+                                  key={i}
+                                  initial={{ opacity: 0, y: 15 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.2 + i * 0.1 }}
+                                  className="relative bg-card rounded-xl border-l-[3px] border-l-accent border border-border/50 p-3 sm:p-5 hover:shadow-md transition-shadow"
+                                >
+                                  <div className="flex items-center justify-between sm:block">
+                                    <div className="flex items-center gap-2 sm:mb-3">
+                                      <MIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-accent" />
+                                      <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{m.label}</p>
+                                    </div>
+                                    <p className="text-xl sm:text-3xl font-bold text-foreground">{m.pct}%</p>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-1">{m.desc}</p>
+                                  {project.startingPrice && (
+                                    <p className="text-sm font-semibold text-accent mt-2">
+                                      {formatPrice(Math.round(project.startingPrice * m.pct / 100), "AED", currency)}
+                                    </p>
+                                  )}
+                                </motion.div>
+                              );
+                            })}
+                          </div>
+
+                          {/* Payment details */}
+                          {project.paymentPlanDetails && (
+                            <div className="p-3 sm:p-4 bg-muted/30 rounded-xl border border-border/30">
+                              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{project.paymentPlanDetails}</p>
+                            </div>
+                          )}
+
+                          {/* Accepted methods */}
+                          {project.acceptedPaymentMethods && project.acceptedPaymentMethods.length > 0 && (
+                            <div>
+                              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-3">Accepted Methods</p>
+                              <div className="flex flex-wrap gap-2">
+                                {project.acceptedPaymentMethods.map((m: string, i: number) => (
+                                  <span key={i} className="text-[11px] sm:text-xs px-3 sm:px-4 py-2 sm:py-2.5 bg-card border border-border rounded-xl text-foreground font-semibold hover:border-primary/30 transition-colors">
+                                    {m}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Units Information */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
-                    <div className="flex items-center gap-2.5 mb-6">
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
+                    <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
                       <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <Bed className="h-4.5 w-4.5 text-primary" />
                       </div>
-                      <h2 className="text-xl font-bold text-foreground">Units Information</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">Units Information</h2>
                     </div>
-                    <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4">
                       {[
                         { label: "Unit Types", value: project.unitTypes?.join(", ") || "—", icon: Bed },
                         { label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} – ${Number(project.unitSizeMax).toLocaleString()} sqft` : "—", icon: Ruler },
                         { label: "Total Units", value: project.totalUnits?.toLocaleString() || "—", icon: Building2 },
                       ].map(({ label, value, icon: Icon }) => (
-                        <div key={label} className="p-5 bg-muted/40 rounded-xl text-center hover:bg-muted/60 transition-colors">
-                          <Icon className="h-5 w-5 text-primary mx-auto mb-2" />
-                          <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{label}</p>
-                          <p className="text-sm font-bold text-foreground">{value}</p>
+                        <div key={label} className="p-3 sm:p-5 bg-muted/40 rounded-xl text-center hover:bg-muted/60 transition-colors">
+                          <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1.5 sm:mb-2" />
+                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{label}</p>
+                          <p className="text-xs sm:text-sm font-bold text-foreground">{value}</p>
                         </div>
                       ))}
                     </div>
@@ -1661,18 +1812,18 @@ const hasPaymentInfo =
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-8"
+                  className="space-y-4 sm:space-y-8"
                 >
                   {faqs.length > 0 ? (
-                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                      <div className="flex items-center gap-2.5 mb-6">
-                        <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                          <MessageCircle className="h-4.5 w-4.5 text-primary" />
+                    <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                      <div className="flex items-center gap-2.5 p-3.5 sm:p-6 pb-0 sm:pb-0 mb-3 sm:mb-4">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                          <MessageCircle className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
                         </div>
-                        <h2 className="text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                        <h2 className="text-base sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
                       </div>
-                      <div className="space-y-3">
-                        {faqs.map((faq: any, i: number) => (
+                      <div className="px-3.5 sm:px-6 pb-3.5 sm:pb-6 space-y-2 sm:space-y-3">
+                        {faqs.map((faq, i) => (
                           <motion.div
                             key={i}
                             initial={{ opacity: 0 }}
@@ -1683,10 +1834,10 @@ const hasPaymentInfo =
                           >
                             <button
                               onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                              className="w-full flex items-center justify-between p-4 sm:p-5 text-left"
+                              className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
                             >
-                              <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
-                              <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
+                              <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
+                              <ChevronDown className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
                             </button>
                             <AnimatePresence>
                               {openFaq === i && (
@@ -1696,9 +1847,9 @@ const hasPaymentInfo =
                                   exit={{ height: 0, opacity: 0 }}
                                   transition={{ duration: 0.25, ease: "easeOut" as const }}
                                 >
-                                  <div className="px-4 sm:px-5 pb-5">
-                                    <div className="w-12 h-px bg-primary/20 mb-3" />
-                                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                                  <div className="px-3 sm:px-5 pb-3 sm:pb-5">
+                                    <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
+                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
                                   </div>
                                 </motion.div>
                               )}
@@ -1724,51 +1875,80 @@ const hasPaymentInfo =
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-8"
+                  className="space-y-4 sm:space-y-8"
                 >
                   {/* Location Info */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
-                    <div className="flex items-center gap-2.5 mb-6">
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
+                    <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
                       <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <MapPin className="h-4.5 w-4.5 text-primary" />
                       </div>
-                      <h2 className="text-xl font-bold text-foreground">Location</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">Location</h2>
                     </div>
-                    <div className="grid sm:grid-cols-3 gap-4 mb-5">
-                      <div className="p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Community</p>
-                        <p className="text-base font-bold text-foreground">{project.community || "—"}</p>
+                    <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-5">
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">Community</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">{project.community || "—"}</p>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">City</p>
-                        <p className="text-base font-bold text-foreground">{project.city}</p>
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">City</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">{project.city}</p>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Country</p>
-                        <p className="text-base font-bold text-foreground">{project.country}</p>
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">Country</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">{project.country}</p>
                       </div>
                     </div>
                     {project.locationDescription && (
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-5">{project.locationDescription}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-5">{project.locationDescription}</p>
                     )}
-                    {project.googleMapsUrl && (
-                      <a href={project.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-3 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors">
-                        <ExternalLink className="h-4 w-4" /> View on Google Maps
+                    {/* Google Maps Embed */}
+                    {(() => {
+                      let mapSrc = "";
+                      if (project.mapUrl) {
+                        // Try to convert standard Google Maps link to embed
+                        const placeMatch = project.mapUrl.match(/place\/([^/]+)/);
+                        if (placeMatch) {
+                          mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(placeMatch[1].replace(/\+/g, ' '))}`;
+                        }
+                      }
+                      if (!mapSrc && project.latitude && project.longitude) {
+                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.latitude},${project.longitude}`;
+                      }
+                      if (!mapSrc) {
+                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((project.community || '') + ', ' + project.city + ', ' + project.country)}`;
+                      }
+                      return (
+                        <div className="rounded-xl overflow-hidden mb-4 sm:mb-5 border border-border/30" style={{ aspectRatio: "16/9" }}>
+                          <iframe
+                            src={mapSrc}
+                            className="w-full h-full border-0"
+                            allowFullScreen
+                            loading="lazy"
+                            title="Location Map"
+                            style={{ filter: "grayscale(15%) contrast(1.05)" }}
+                          />
+                        </div>
+                      );
+                    })()}
+                    {project.mapUrl && (
+                      <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors">
+                        <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> View on Google Maps
                       </a>
                     )}
                   </div>
 
                   {/* Nearby Attractions */}
                   {nearby.length > 0 && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-6 sm:p-8">
-                      <div className="flex items-center gap-2.5 mb-6">
+                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
+                      <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
                         <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
                           <Compass className="h-4.5 w-4.5 text-accent" />
                         </div>
-                        <h2 className="text-xl font-bold text-foreground">Nearby Attractions</h2>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Nearby Attractions</h2>
                       </div>
-                      <div className="space-y-3">
-                        {nearby.map((a: any, i: number) => {
+                      <div className="space-y-2 sm:space-y-3">
+                        {nearby.map((a, i) => {
                           const AttrIcon = attractionIcon(a.type);
                           return (
                             <motion.div
@@ -1777,19 +1957,19 @@ const hasPaymentInfo =
                               whileInView={{ opacity: 1, x: 0 }}
                               viewport={{ once: true }}
                               transition={{ delay: i * 0.06 }}
-                              className="flex items-center justify-between p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
+                              className="flex items-center justify-between p-3 sm:p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
                             >
-                              <div className="flex items-center gap-3.5">
-                                <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
-                                  <AttrIcon className="h-4.5 w-4.5 text-primary" />
+                              <div className="flex items-center gap-2.5 sm:gap-3.5">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
+                                  <AttrIcon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
                                 </div>
                                 <div>
-                                  <p className="text-sm font-semibold text-foreground">{a.name}</p>
-                                  <p className="text-xs text-muted-foreground">{a.type}</p>
+                                  <p className="text-xs sm:text-sm font-semibold text-foreground">{a.name}</p>
+                                  <p className="text-[10px] sm:text-xs text-muted-foreground">{a.type}</p>
                                 </div>
                               </div>
                               {a.distance && (
-                                <span className="text-xs font-bold text-primary bg-primary/10 px-3.5 py-2 rounded-lg">{a.distance}</span>
+                                <span className="text-[10px] sm:text-xs font-bold text-primary bg-primary/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg">{a.distance}</span>
                               )}
                             </motion.div>
                           );
@@ -1800,20 +1980,11 @@ const hasPaymentInfo =
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
 
-          {/* ═══ RIGHT COLUMN — STICKY SIDEBAR ═══ */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-6 space-y-5">
-
-              {/* CTA Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg shadow-foreground/5"
-              >
-                <div className="relative bg-gradient-to-br from-[#0B3D2E] via-[#134E3A] to-[#1A7A5A] p-6 overflow-hidden">
+            {/* Mobile-only: Quick Enquiry — after tab content */}
+            <div className="sm:hidden space-y-0 mt-4">
+              <div className="rounded-2xl rounded-b-none overflow-hidden shadow-lg shadow-foreground/5">
+                <div className="relative p-5 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
                     {project.ctaHeadline || "Interested?"}
@@ -1826,7 +1997,92 @@ const hasPaymentInfo =
                     <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
                   )}
                 </div>
-                <div className="p-5 space-y-3">
+                <div className="px-4 pb-2 pt-2 bg-card border-x border-border/50">
+                  <p className="text-[11px] text-muted-foreground text-center">
+                    Have questions? <span className="font-semibold text-foreground/70">Fill in below</span> ↓
+                  </p>
+                </div>
+              </div>
+              <div className="bg-card rounded-2xl rounded-t-none border border-border/50 border-t-0 p-4">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Quick Enquiry</p>
+                {enquirySubmitted ? (
+                  <div className="text-center py-6">
+                    <CheckCircle2 className="h-6 w-6 text-emerald-500 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-foreground">Sent!</p>
+                    <p className="text-xs text-muted-foreground">We'll call you within 2 hours.</p>
+                    <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">Send another</button>
+                  </div>
+                ) : (
+                  <form onSubmit={(e) => { e.preventDefault(); setEnquirySubmitted(true); }} className="space-y-3">
+                    <input
+                      type="text" required
+                      value={enquiryForm.name}
+                      onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
+                      className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                      placeholder="Your name"
+                    />
+                    <div className="flex gap-2">
+                      <select
+                        value={enquiryForm.countryCode}
+                        onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
+                        className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none appearance-none"
+                      >
+                        <option value="+971">🇦🇪 +971</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+91">🇮🇳 +91</option>
+                      </select>
+                      <input
+                        type="tel" required
+                        value={enquiryForm.phone}
+                        onChange={(e) => setEnquiryForm(f => ({ ...f, phone: e.target.value }))}
+                        className="flex-1 h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none"
+                        placeholder="50 123 4567"
+                      />
+                    </div>
+                    <div className="bg-muted/20 rounded-xl px-3 py-2 border border-border/30">
+                      <p className="text-[11px] text-muted-foreground"><span className="font-semibold text-foreground/70">Re:</span> {project.name} — pricing & availability</p>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full h-11 rounded-full text-white font-bold text-sm active:scale-[0.98] transition-all"
+                      style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
+                    >
+                      Send Quick Enquiry
+                    </button>
+                    <p className="text-[10px] text-muted-foreground text-center">We'll get back within 2 hours</p>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ═══ RIGHT COLUMN — STICKY SIDEBAR ═══ */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-6 space-y-5 -mt-2 sm:mt-0">
+
+              {/* CTA Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg shadow-foreground/5 sm:rounded-b-2xl rounded-b-none"
+              >
+                <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
+                  <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
+                    {project.ctaHeadline || "Interested?"}
+                  </p>
+                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
+                  {currency === "AED" && project.startingPrice && (
+                    <p className="text-primary-foreground/40 text-sm mt-0.5 relative z-10">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
+                  )}
+                  {project.priceRange && (
+                    <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
+                  )}
+                </div>
+                {/* Desktop: full CTA buttons */}
+                <div className="hidden sm:block p-5 space-y-3">
                   {project.ctaSubheadline && (
                     <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline}</p>
                   )}
@@ -1840,42 +2096,51 @@ const hasPaymentInfo =
                   </a>
                   <a
                     href={`tel:${project.contactPhone}`}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#D4A847] via-[#C9A83E] to-[#B8922F] text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-[#D4A847]/25 hover:shadow-xl hover:shadow-[#D4A847]/40 hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]"
+                    style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   >
                     <Phone className="h-4 w-4" /> Call Now
                   </a>
                   <a
                     href="#live-chat"
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-[#134E3A]/30 text-[#134E3A] rounded-full text-sm font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-[#0B3D2E] hover:to-[#1A7A5A] hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-[#134E3A]/20 hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <MessageCircle className="h-4 w-4" /> Live Chat
                   </a>
+                  {(project.brochureUrl || project.masterPlanUrl) && (
+                    <div className="grid grid-cols-2 gap-2 pt-2">
+                      {project.brochureUrl && (
+                        <a href={project.brochureUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold text-primary border border-primary/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-md">
+                          <Download className="h-3.5 w-3.5" /> Brochure
+                        </a>
+                      )}
+                      {project.masterPlanUrl && (
+                        <a href={project.masterPlanUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold text-primary border border-primary/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-md">
+                          <FileText className="h-3.5 w-3.5" /> Master Plan
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {(project.brochureUrl || project.masterPlanUrl) && (
-                  <div className="px-5 pb-5 grid grid-cols-2 gap-2">
-                    {project.brochureUrl && (
-                      <a href={project.brochureUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold text-[#134E3A] border border-[#134E3A]/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#0B3D2E] hover:to-[#1A7A5A] hover:text-white hover:border-transparent hover:shadow-md">
-                        <Download className="h-3.5 w-3.5" /> Brochure
-                      </a>
-                    )}
-                    {project.masterPlanUrl && (
-                      <a href={project.masterPlanUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold text-[#134E3A] border border-[#134E3A]/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#0B3D2E] hover:to-[#1A7A5A] hover:text-white hover:border-transparent hover:shadow-md">
-                        <FileText className="h-3.5 w-3.5" /> Master Plan
-                      </a>
-                    )}
-                  </div>
-                )}
+                {/* Mobile: compact nudge instead of duplicate buttons */}
+                <div className="sm:hidden px-4 pb-4 pt-2">
+                  <p className="text-[11px] text-muted-foreground text-center">
+                    Have questions? <span className="font-semibold text-foreground/70">Tap below</span> to reach us instantly ↓
+                  </p>
+                </div>
               </motion.div>
 
-              {/* Quick Facts */}
+
+
+              {/* Quick Facts — connected to price card on mobile */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
-                className="bg-card rounded-2xl border border-border/50 p-5"
+                className="bg-card rounded-2xl border border-border/50 p-5 -mt-[1px] sm:mt-0 rounded-t-none sm:rounded-t-2xl border-t-0 sm:border-t"
               >
                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">Project Details</h3>
-                <div className="space-y-0">
+                <div className="divide-y divide-border/40">
                   {[
                     { label: "Developer", value: project.developerName },
                     { label: "Community", value: project.community },
@@ -1887,12 +2152,30 @@ const hasPaymentInfo =
                     { label: "Eligibility", value: project.ownershipEligibility },
                     { label: "Total Units", value: project.totalUnits?.toLocaleString() },
                     { label: "Availability", value: project.availabilityStatus },
-                  ].filter(f => f.value).map(({ label, value }, idx) => (
-                    <div key={label} className={`flex justify-between items-center py-3 text-sm ${idx > 0 ? "border-t border-border/30" : ""}`}>
+                  ].filter(f => f.value).map(({ label, value }) => (
+                    <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>
                       <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
                     </div>
                   ))}
+                </div>
+                {/* QR Code row */}
+                <div className="mt-4 pt-4 border-t border-border/40 flex items-center gap-3">
+                  <button
+                    onClick={() => setShowQrModal(true)}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white border border-border/50 p-1 shadow-sm hover:shadow-md hover:border-primary/30 active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                    title="Scan QR Code"
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
+                      alt="QR Code"
+                      className="w-full h-full rounded-sm"
+                      loading="lazy"
+                    />
+                  </button>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-foreground">Regulatory Permit</p>
+                  </div>
                 </div>
               </motion.div>
 
@@ -1908,7 +2191,7 @@ const hasPaymentInfo =
                     <Users className="h-3.5 w-3.5 text-primary" /> Ideal For
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {project.targetBuyers.map((b: any, i: number) => {
+                    {project.targetBuyers.map((b: string, i: number) => {
                       const buyerIcons: Record<string, React.ElementType> = {
                         "End Users": Home,
                         "Investors": TrendingUp,
@@ -1938,8 +2221,9 @@ const hasPaymentInfo =
         </div>
       </div>
 
+
       {/* ───── PAYMENT CALCULATOR (Standalone) ───── */}
-      {project.startingPrice && project.unitTypes && project.unitTypes.length > 0 && (() => {
+      {false && project.unitTypes && project.unitTypes.length > 0 && (() => {
         const basePrice = project.startingPrice || 0;
         const priceMultiplier = 1 + activeUnitTab * 0.35;
         const totalPrice = Math.round(basePrice * priceMultiplier);
@@ -2042,7 +2326,7 @@ const hasPaymentInfo =
 
               {/* Visual breakdown bar */}
               <div className="flex rounded-full overflow-hidden h-4 mb-4 bg-muted/50">
-                {breakdownItems.map((item: any, i: number) => (
+                {breakdownItems.map((item, i) => (
                   <div
                     key={i}
                     className={`${item.color} relative transition-all duration-500`}
@@ -2060,7 +2344,7 @@ const hasPaymentInfo =
 
               {/* Breakdown cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                {breakdownItems.map((item: any, i: number) => (
+                {breakdownItems.map((item, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 8 }}
@@ -2098,7 +2382,7 @@ const hasPaymentInfo =
       })()}
 
       {/* ───── SIMILAR PROJECTS ───── */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div className="flex items-center gap-2.5 mb-6">
           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
             <Building2 className="h-4.5 w-4.5 text-primary" />
@@ -2111,7 +2395,7 @@ const hasPaymentInfo =
             { name: "Bluewaters Residences", price: 2500000, location: "Bluewaters Island", status: "Ready" },
             { name: "Palm Beach Towers", price: 3200000, location: "Palm Jumeirah", status: "Off-Plan" },
             { name: "Dubai Creek Harbour", price: 1500000, location: "Creek Harbour", status: "Off-Plan" },
-          ].map((p: any, i: number) => (
+          ].map((p, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: 20 }}
@@ -2147,7 +2431,7 @@ const hasPaymentInfo =
       </div>
 
       {/* ───── BUYER'S GUIDE ───── */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
         <div className="flex items-center gap-2.5 mb-6">
           <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
             <FileText className="h-4.5 w-4.5 text-accent" />
@@ -2157,7 +2441,7 @@ const hasPaymentInfo =
             <p className="text-xs text-muted-foreground mt-0.5">Essential reading for property buyers</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
           {[
             { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
             { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
@@ -2165,7 +2449,7 @@ const hasPaymentInfo =
             { title: "Dubai Marina Living Guide", desc: "Everything you need to know about living in Dubai Marina", icon: Compass },
             { title: "Understanding Payment Plans", desc: "A breakdown of how developer payment plans work", icon: CreditCard },
             { title: "First-Time Buyer Tips", desc: "Expert advice for making your first property investment", icon: Star },
-          ].map((guide: any, i: number) => (
+          ].map((guide, i) => (
             <motion.a
               key={i}
               href="#"
@@ -2173,7 +2457,7 @@ const hasPaymentInfo =
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group"
+              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group"
             >
               <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
                 <guide.icon className="h-4 w-4 text-primary" />
@@ -2189,64 +2473,130 @@ const hasPaymentInfo =
 
       {/* ───── FULL GALLERY MODAL ───── */}
       <AnimatePresence>
-        {showGallery && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-xl"
-          >
-            <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
-              <span className="text-white/60 text-sm">{images.length} photos</span>
-              <button
-                onClick={() => setShowGallery(false)}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-              >
-                <X className="h-5 w-5 text-white" />
-              </button>
-            </div>
-            <div className="h-full overflow-y-auto py-16 px-4">
-              <div className="max-w-5xl mx-auto columns-1 sm:columns-2 gap-3 space-y-3">
-                {images.map((img: any, i: number) => (
+        {showGallery && (() => {
+          const galleryImages = images;
+          const masterPlanImages = project.masterPlanUrl ? [project.masterPlanUrl] : [];
+          const [galleryTab, setGalleryTab] = [
+            // We'll use activeTab state trick — but since we can't add new state here,
+            // let's use a simple approach: gallery mode only for now
+          ] as any;
+          
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex flex-col"
+              onClick={(e) => { if (e.target === e.currentTarget) setShowGallery(false); }}
+            >
+              {/* Top bar: tabs + close */}
+              <div className="flex items-center justify-center pt-4 pb-2 relative flex-shrink-0">
+                <div className="flex items-center gap-6">
+                  <button className="text-white text-sm font-semibold border-b-2 border-accent pb-1">
+                    Gallery ({galleryImages.length})
+                  </button>
+                  {masterPlanImages.length > 0 && (
+                    <button
+                      className="text-white/50 text-sm font-semibold pb-1 border-b-2 border-transparent hover:text-white/80 transition-colors"
+                      onClick={() => {
+                        setActiveImage(0);
+                        window.open(project.masterPlanUrl!, '_blank');
+                      }}
+                    >
+                      Masterplan ({masterPlanImages.length})
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowGallery(false)}
+                  className="absolute right-4 top-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                >
+                  <X className="h-5 w-5 text-white" />
+                </button>
+              </div>
+
+              {/* Main image area with nav arrows */}
+              <div className="flex-1 flex items-center justify-center relative min-h-0 px-16">
+                {/* Left arrow */}
+                <button
+                  onClick={() => setActiveImage(activeImage > 0 ? activeImage - 1 : galleryImages.length - 1)}
+                  className="absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all hover:scale-110"
+                >
+                  <ChevronRight className="h-6 w-6 text-white rotate-180" />
+                </button>
+
+                {/* Image */}
+                <AnimatePresence mode="wait">
                   <motion.img
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 }}
-                    src={img}
-                    alt={`${project.name} ${i + 1}`}
-                    className="w-full rounded-xl cursor-pointer hover:opacity-90 transition-opacity break-inside-avoid"
-                    onClick={() => { setActiveImage(i); setShowGallery(false); }}
+                    key={activeImage}
+                    src={galleryImages[activeImage]}
+                    alt={`${project.name} ${activeImage + 1}`}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-h-full max-w-full object-contain rounded-lg"
                   />
+                </AnimatePresence>
+
+                {/* Right arrow */}
+                <button
+                  onClick={() => setActiveImage(activeImage < galleryImages.length - 1 ? activeImage + 1 : 0)}
+                  className="absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all hover:scale-110"
+                >
+                  <ChevronRight className="h-6 w-6 text-white" />
+                </button>
+              </div>
+
+              {/* Counter */}
+              <div className="text-center py-2 flex-shrink-0">
+                <span className="text-white/70 text-sm font-semibold">{activeImage + 1}/{galleryImages.length}</span>
+              </div>
+
+              {/* Thumbnail strip */}
+              <div className="flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide">
+                {galleryImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
+                      i === activeImage
+                        ? "border-accent shadow-lg shadow-accent/30 scale-105"
+                        : "border-transparent opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
                 ))}
               </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
 
       {/* ───── STICKY MOBILE CTA BAR ───── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-        <div className="flex gap-2 px-3 py-3 max-w-lg mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
           <a
             href={`https://wa.me/${(project.whatsappNumber || project.contactPhone || '+971500000000').replace(/[^0-9]/g, '')}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm transition-all duration-300 shadow-md shadow-[#25D366]/20 hover:shadow-lg hover:shadow-[#25D366]/30 active:scale-[0.97]"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] transition-all duration-300 shadow-md shadow-[#25D366]/20 active:scale-[0.97]"
           >
             <MessageCircle className="h-4 w-4" />
             WhatsApp
           </a>
           <a
             href={`tel:${project.contactPhone || '+971500000000'}`}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-full bg-gradient-to-r from-[#D4A847] via-[#C9A83E] to-[#B8922F] text-white font-semibold text-sm transition-all duration-300 shadow-md shadow-[#D4A847]/20 hover:shadow-lg hover:shadow-[#D4A847]/30 active:scale-[0.97]"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] transition-all duration-300 shadow-md shadow-accent/20 active:scale-[0.97]"
+            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
           >
             <Phone className="h-4 w-4" />
             Call
           </a>
           <a
             href="#live-chat"
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-full border-2 border-[#134E3A]/30 text-[#134E3A] font-semibold text-sm transition-all duration-300 hover:bg-gradient-to-r hover:from-[#0B3D2E] hover:to-[#1A7A5A] hover:text-white hover:border-transparent hover:shadow-md active:scale-[0.97]"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full border-2 border-primary/30 text-primary font-bold text-[13px] transition-all duration-300 active:scale-[0.97]"
           >
             <MessageCircle className="h-4 w-4" />
             Live Chat
@@ -2254,13 +2604,53 @@ const hasPaymentInfo =
         </div>
       </div>
       {/* Add bottom padding on mobile so content isn't hidden behind sticky bar */}
-      <div className="h-20 lg:hidden" />
+      <div className="h-24 lg:hidden" />
+
+      {/* QR Code Modal */}
+      <AnimatePresence>
+        {showQrModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowQrModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col items-center gap-3 max-w-[280px] sm:max-w-xs"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-48 h-48 sm:w-56 sm:h-56">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=2`}
+                  alt="QR Code"
+                  className="w-full h-full"
+                />
+              </div>
+              <p className="text-sm font-semibold text-foreground text-center">{project.name}</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Regulatory Permit</p>
+              <button
+                onClick={() => setShowQrModal(false)}
+                className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Tap anywhere to close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
-      <WhatsAppButton />
-      <AIChatWidget />
+      <div className="hidden lg:block">
+        <WhatsAppButton />
+        <AIChatWidget />
+      </div>
     </div>
   );
 };
 
-export default ProjectDetailPage;
+export default ProjectDetailClient;
