@@ -324,7 +324,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       href={project.brochureUrl || "#"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-accent/90 hover:bg-accent border border-accent/50 text-xs sm:text-sm font-semibold text-white transition-all shadow-lg shadow-accent/20"
+                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
                     >
                       <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Brochure
                     </a>
@@ -1100,7 +1101,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <iframe
                             src={embedSrc}
                             className="w-full h-full border-0"
-                            style={{ filter: "grayscale(30%) sepia(15%) hue-rotate(100deg) contrast(1.05) brightness(0.95)" }}
                             allowFullScreen
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
@@ -1325,8 +1325,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       ))}
                     </div>
                   </div>
-                </motion.div>
-              )}
 
 
                   {/* About the Developer */}
@@ -1598,6 +1596,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                     </div>
                   </a>
+
+                </motion.div>
+              )}
 
               {/* ─── PAYMENT TAB ─── */}
               {activeTab === "payment" && (
@@ -1893,7 +1894,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             allowFullScreen
                             loading="lazy"
                             title="Location Map"
-                            style={{ filter: "grayscale(30%) sepia(15%) hue-rotate(100deg) contrast(1.05) brightness(0.95)" }}
                           />
                         </div>
                       );
