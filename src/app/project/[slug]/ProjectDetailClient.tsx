@@ -1175,7 +1175,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           </div>
                           <div>
                             <h2 className="text-lg sm:text-xl font-bold text-foreground">Investment Highlights</h2>
-                            <p className="text-xs text-muted-foreground mt-0.5">Why invest in {project.name}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mb-4 sm:mb-6">
@@ -2224,57 +2223,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
-      {/* ───── BUYER'S GUIDE ───── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
-        <div className="flex items-center justify-between mb-5 sm:mb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-              <FileText className="h-4.5 w-4.5 text-accent" />
-            </div>
-            <div>
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">Buyer&apos;s Guide & Resources</h2>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Essential reading for property buyers</p>
-            </div>
-          </div>
-          <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
-            View All <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
-          {[
-            { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
-            { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
-            { title: "Off-Plan vs Ready Properties", desc: "Compare the pros and cons of each investment type", icon: TrendingUp },
-            { title: "Dubai Marina Living Guide", desc: "Everything you need to know about living in Dubai Marina", icon: Compass },
-            { title: "Understanding Payment Plans", desc: "A breakdown of how developer payment plans work", icon: CreditCard },
-            { title: "First-Time Buyer Tips", desc: "Expert advice for making your first property investment", icon: Star },
-          ].map((guide, i) => (
-            <motion.a
-              key={i}
-              href="#"
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group"
-            >
-              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
-                <guide.icon className="h-4 w-4 text-primary" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{guide.title}</p>
-                <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{guide.desc}</p>
-              </div>
-            </motion.a>
-          ))}
-        </div>
-        <div className="sm:hidden text-center mt-3">
-          <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
-            View All Guides <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-      </div>
-
       {/* ───── WHAT BUYERS SAY ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
         <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
@@ -2319,6 +2267,58 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
+
+
+      {/* ───── BUYER'S GUIDE ───── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
+        <div className="flex items-center justify-between mb-5 sm:mb-6">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+              <FileText className="h-4.5 w-4.5 text-accent" />
+            </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-foreground">Buyer&apos;s Guide & Resources</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Essential reading for property buyers</p>
+            </div>
+          </div>
+          <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
+            View All <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
+          {[
+            { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
+            { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
+            { title: "Off-Plan vs Ready Properties", desc: "Compare the pros and cons of each investment type", icon: TrendingUp },
+            { title: "Dubai Marina Living Guide", desc: "Everything you need to know about living in Dubai Marina", icon: Compass },
+            { title: "Understanding Payment Plans", desc: "A breakdown of how developer payment plans work", icon: CreditCard },
+            { title: "First-Time Buyer Tips", desc: "Expert advice for making your first property investment", icon: Star },
+          ].map((guide, i) => (
+            <motion.a
+              key={i}
+              href="#"
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group"
+            >
+              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
+                <guide.icon className="h-4 w-4 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{guide.title}</p>
+                <p className="hidden sm:block text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{guide.desc}</p>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+        <div className="sm:hidden text-center mt-3">
+          <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
+            View All Guides <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+      </div>
 
       {/* ───── FULL GALLERY MODAL ───── */}
       <AnimatePresence>
