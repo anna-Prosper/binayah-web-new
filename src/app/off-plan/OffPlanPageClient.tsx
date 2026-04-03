@@ -99,7 +99,7 @@ export default function OffPlanPageClient({
                 transition={{ delay: Math.min(i * 0.06, 0.3) }}
                 className="h-full"
               >
-                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={p.slug === "__fallback__" ? "#" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
