@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;
+    --foreground: 200 25% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 200 25% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 25% 10%;
+    --primary: 168 100% 15%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 43 55% 93%;
+    --secondary-foreground: 200 25% 10%;
+    --muted: 40 15% 94%;
+    --muted-foreground: 200 10% 45%;
+    --accent: 43 60% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
+    --ring: 168 60% 28%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 200 25% 6%;
+    --foreground: 40 20% 95%;
+    --card: 200 20% 10%;
+    --card-foreground: 40 20% 95%;
+    --popover: 200 20% 10%;
+    --popover-foreground: 40 20% 95%;
+    --primary: 168 100% 20%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 15% 15%;
+    --secondary-foreground: 40 20% 95%;
+    --muted: 200 15% 15%;
+    --muted-foreground: 200 10% 60%;
+    --accent: 43 60% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 200 15% 18%;
+    --input: 200 15% 18%;
+    --ring: 168 55% 40%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+/* Pulse Design Tokens */
+:root {
+  --pulse-bg: 168 30% 8%;
+  --pulse-surface: 168 22% 13%;
+  --pulse-surface-hover: 168 22% 16%;
+  --pulse-border: 168 20% 20%;
+  --pulse-border-hover: 43 55% 55%;
+  --pulse-gold: 43 55% 55%;
+  --pulse-gold-light: 43 60% 62%;
+  --pulse-gold-dark: 43 50% 45%;
+  --pulse-green: 160 60% 30%;
+  --pulse-green-light: 160 55% 42%;
+  --pulse-red: 0 72% 51%;
+  --pulse-text: 40 20% 95%;
+  --pulse-text-muted: 168 10% 60%;
+  --pulse-text-dim: 168 10% 42%;
+  --pulse-glass: 168 22% 13%;
+  --pulse-glass-border: 168 20% 20%;
+}
+
+/* Pulse Dark Theme — scoped overrides */
+.pulse-dark {
+  --background: 200 25% 6%;
+  --foreground: 40 20% 95%;
+  --card: 200 18% 11%;
+  --card-foreground: 40 20% 95%;
+  --popover: 200 18% 11%;
+  --popover-foreground: 40 20% 95%;
+  --primary: 168 80% 28%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 15% 15%;
+  --secondary-foreground: 40 20% 95%;
+  --muted: 200 12% 16%;
+  --muted-foreground: 200 10% 55%;
+  --accent: 43 60% 55%;
+  --accent-foreground: 0 0% 100%;
+  --border: 200 12% 18%;
+  --input: 200 12% 18%;
+  --ring: 168 55% 40%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  .pulse-glass {
+    @apply relative overflow-hidden backdrop-blur-md rounded-xl;
+    background: hsl(var(--pulse-surface) / 0.7);
+    border: 1px solid hsl(var(--pulse-border) / 0.6);
+  }
+
+  .pulse-glass::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  }
+
+  .pulse-glass-hover {
+    @apply transition-all duration-300;
+  }
+  .pulse-glass-hover:hover {
+    border-color: hsl(var(--pulse-gold) / 0.3);
+    box-shadow: 0 0 20px -5px hsl(var(--pulse-gold) / 0.1);
+  }
+
+  .pulse-gold-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .pulse-gold-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 33%, rgba(212,168,71,0.08) 50%, transparent 67%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .pulse-gold-shimmer:hover::after {
+    transform: translateX(100%);
+  }
+
+  .pulse-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--pulse-gold)) 0%, hsl(var(--pulse-gold-light)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Hide floating action buttons when mobile nav is open */
+body.mobile-nav-open .fixed.bottom-4,
+body.mobile-nav-open .fixed.bottom-6,
+body.mobile-nav-open .fixed.bottom-\[68px\],
+body.mobile-nav-open .fixed.bottom-24 {
+  display: none !important;
+}

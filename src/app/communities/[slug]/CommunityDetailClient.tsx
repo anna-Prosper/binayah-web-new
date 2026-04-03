@@ -1,0 +1,94 @@
+"use client";
+
+
+
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { motion } from "framer-motion";
+import { ArrowLeft, Building, CalendarDays, ChevronRight, MapPin } from "lucide-react";
+import Link from "next/link";
+
+const communityImages: Record<string, string> = {
+  "downtown-dubai": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop",
+  "palm-jumeirah": "https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=1200&h=600&fit=crop",
+  "dubai-marina": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200&h=600&fit=crop",
+  "business-bay": "https://images.unsplash.com/photo-1546412414-e1885259563a?w=1200&h=600&fit=crop",
+};
+
+interface Props {
+  slug: string;
+  communityName: string;
+  communityDescription?: string;
+  communityImage?: string;
+  projects: any[];
+}
+
+export default function CommunityDetailPage({ slug, communityName, communityDescription, communityImage, projects }: Props) {
+  const heroImage = communityImage || communityImages[slug] || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop";
+  const desc = communityDescription || "";
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <section className="relative pt-24 pb-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heroImage} alt={communityName} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-foreground/30" />
+        </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">
+          <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <Link href="/communities" className="hover:text-white transition-colors">Communities</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <span className="text-white">{communityName}</span>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">{communityName}</h1>
+            {desc && <p className="text-white/70 max-w-2xl text-lg">{desc.slice(0, 200)}</p>}
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl font-bold text-foreground mb-8">Properties in {communityName} ({projects.length})</h2>
+          {projects && projects.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {projects.map((p, i) => (
+                <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
+                  <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                    <div className="relative overflow-hidden aspect-[4/3]">
+                      <img src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2"><Building className="h-3 w-3" /> {p.developerName}</p>
+                      <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors">{p.name}</h3>
+                      <div className="flex items-center justify-between border-t border-border pt-3">
+                        <p className="text-sm font-bold text-primary">{p.startingPrice ? `From AED ${(p.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}</p>
+                        {p.completionDate && <p className="text-xs text-muted-foreground flex items-center gap-1"><CalendarDays className="h-3 w-3" />{(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}</p>}
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-card rounded-2xl border border-border/50">
+              <MapPin className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-muted-foreground">No properties listed in {communityName} yet.</p>
+              <Link href="/communities" className="inline-flex items-center gap-2 text-primary font-semibold mt-4 hover:underline">
+                <ArrowLeft className="h-4 w-4" /> Browse all communities
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+}
