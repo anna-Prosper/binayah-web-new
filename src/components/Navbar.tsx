@@ -62,10 +62,15 @@ const Navbar = () => {
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("mobile-nav-open");
     } else {
       document.body.style.overflow = "";
+      document.body.classList.remove("mobile-nav-open");
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("mobile-nav-open");
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ const Navbar = () => {
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl shadow-lg"
+        className="fixed sm:fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl shadow-lg max-sm:absolute"
         style={{ background: isSolid ? "linear-gradient(135deg, #0B3D2E, #1A7A5A)" : "transparent" }}
       >
         <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">

@@ -67,6 +67,49 @@
   }
 }
 
+/* Pulse Design Tokens */
+:root {
+  --pulse-bg: 168 30% 8%;
+  --pulse-surface: 168 22% 13%;
+  --pulse-surface-hover: 168 22% 16%;
+  --pulse-border: 168 20% 20%;
+  --pulse-border-hover: 43 55% 55%;
+  --pulse-gold: 43 55% 55%;
+  --pulse-gold-light: 43 60% 62%;
+  --pulse-gold-dark: 43 50% 45%;
+  --pulse-green: 160 60% 30%;
+  --pulse-green-light: 160 55% 42%;
+  --pulse-red: 0 72% 51%;
+  --pulse-text: 40 20% 95%;
+  --pulse-text-muted: 168 10% 60%;
+  --pulse-text-dim: 168 10% 42%;
+  --pulse-glass: 168 22% 13%;
+  --pulse-glass-border: 168 20% 20%;
+}
+
+/* Pulse Dark Theme — scoped overrides */
+.pulse-dark {
+  --background: 200 25% 6%;
+  --foreground: 40 20% 95%;
+  --card: 200 18% 11%;
+  --card-foreground: 40 20% 95%;
+  --popover: 200 18% 11%;
+  --popover-foreground: 40 20% 95%;
+  --primary: 168 80% 28%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 15% 15%;
+  --secondary-foreground: 40 20% 95%;
+  --muted: 200 12% 16%;
+  --muted-foreground: 200 10% 55%;
+  --accent: 43 60% 55%;
+  --accent-foreground: 0 0% 100%;
+  --border: 200 12% 18%;
+  --input: 200 12% 18%;
+  --ring: 168 55% 40%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -85,4 +128,57 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
   }
+}
+
+@layer utilities {
+  .pulse-glass {
+    @apply relative overflow-hidden backdrop-blur-md rounded-xl;
+    background: hsl(var(--pulse-surface) / 0.7);
+    border: 1px solid hsl(var(--pulse-border) / 0.6);
+  }
+
+  .pulse-glass::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  }
+
+  .pulse-glass-hover {
+    @apply transition-all duration-300;
+  }
+  .pulse-glass-hover:hover {
+    border-color: hsl(var(--pulse-gold) / 0.3);
+    box-shadow: 0 0 20px -5px hsl(var(--pulse-gold) / 0.1);
+  }
+
+  .pulse-gold-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .pulse-gold-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 33%, rgba(212,168,71,0.08) 50%, transparent 67%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .pulse-gold-shimmer:hover::after {
+    transform: translateX(100%);
+  }
+
+  .pulse-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--pulse-gold)) 0%, hsl(var(--pulse-gold-light)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Hide floating action buttons when mobile nav is open */
+body.mobile-nav-open .fixed.bottom-4,
+body.mobile-nav-open .fixed.bottom-6,
+body.mobile-nav-open .fixed.bottom-\[68px\],
+body.mobile-nav-open .fixed.bottom-24 {
+  display: none !important;
 }

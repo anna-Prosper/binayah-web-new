@@ -60,7 +60,7 @@ interface HomePageClientProps {
 
 export default function HomePageClient({ featuredListings = [], offPlanProjects = [], latestArticles = [] }: HomePageClientProps) {
   return (
-    <>
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
       <HeroSection />
       <AIPulseBanner />
@@ -84,6 +84,6 @@ export default function HomePageClient({ featuredListings = [], offPlanProjects 
       <WhatsAppButton />
       <AIChatWidget />
       <ScrollToTop />
-    </>
+    </div>
   );
 }

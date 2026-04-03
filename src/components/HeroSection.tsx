@@ -138,8 +138,8 @@ const HeroSection = () => {
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const opacity = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   useEffect(() => {
     const interval = setInterval(() => setPlaceholderIndex((p) => (p + 1) % searchPlaceholders.length), 3500);
@@ -215,7 +215,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0">
+    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center overflow-hidden pt-16 pb-8 sm:pt-0 sm:pb-0">
       <motion.div className="absolute inset-0" style={{ y: imageY }}>
         <img src={heroImage} alt="Dubai skyline" className="h-[120%] w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
