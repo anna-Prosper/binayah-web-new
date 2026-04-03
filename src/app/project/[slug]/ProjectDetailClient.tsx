@@ -115,6 +115,36 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
+  // QR code: use permitUrl from DB if available, otherwise project page URL
+  const qrUrl = project.permitUrl || (origin ? `${origin}/project/${project.slug}` : `/project/${project.slug}`);
+
+  const handleEnquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: enquiryForm.name,
+          email: enquiryForm.email,
+          phone: `${enquiryForm.countryCode} ${enquiryForm.phone}`,
+          type: "project-enquiry",
+          message: enquiryForm.message || `Interested in ${project.name}. Please share pricing and availability.`,
+          source: `project-detail:${project.slug}`,
+          unitType: enquiryForm.unitType,
+          contactMethod: enquiryForm.contactMethod,
+        }),
+      });
+    } catch {}
+    setEnquirySubmitted(true);
+    setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" });
+  };
 
 
 
@@ -140,7 +170,59 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <Navbar extraItems={
+        <div className="flex items-center gap-2">
+          {/* Currency Selector */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowCurrencyDropdown(!showCurrencyDropdown); setShowLangDropdown(false); }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
+            >
+              <Banknote className="h-3.5 w-3.5" />
+              {currency}
+              <ChevronDown className={`h-3 w-3 transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`} />
+            </button>
+            {showCurrencyDropdown && (
+              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[110px]">
+                {Object.keys(CURRENCY_RATES).map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => { setCurrency(c); setShowCurrencyDropdown(false); }}
+                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors ${c === currency ? "text-accent font-bold" : "text-white/80"}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Language Selector */}
+          <div className="relative">
+            <button
+              onClick={() => { setShowLangDropdown(!showLangDropdown); setShowCurrencyDropdown(false); }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
+            >
+              <Languages className="h-3.5 w-3.5" />
+              {LANGUAGES.find(l => l.code === language)?.flag}
+              <ChevronDown className={`h-3 w-3 transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
+            </button>
+            {showLangDropdown && (
+              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[140px]">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => { setLanguage(lang.code); setShowLangDropdown(false); }}
+                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors flex items-center gap-2 ${lang.code === language ? "text-accent font-bold" : "text-white/80"}`}
+                  >
+                    <span>{lang.flag}</span> {lang.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      } />
 
       {/* ───── HERO SECTION ───── */}
       <section className="relative">
@@ -223,7 +305,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 >
                   {/* Badges */}
                   <div className="flex items-center gap-1.5 mb-2 sm:mb-2">
-                    <span className={`px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg ${statusColor(project.status)}`}>
+                    <span
+                      className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg text-white"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
                       {project.status}
                     </span>
                     <span className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
@@ -246,7 +331,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       title="Regulatory Permit"
                     >
                       <img
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
                         alt="Regulatory Permit QR"
                         className="w-full h-full rounded-sm"
                         loading="lazy"
@@ -1376,7 +1461,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </motion.div>
                     ) : (
                       <form
-                        onSubmit={(e) => { e.preventDefault(); setEnquirySubmitted(true); }}
+                        onSubmit={handleEnquirySubmit}
                         className="space-y-3 sm:space-y-4"
                       >
                         {/* Core fields — always visible */}
@@ -2013,7 +2098,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">Send another</button>
                   </div>
                 ) : (
-                  <form onSubmit={(e) => { e.preventDefault(); setEnquirySubmitted(true); }} className="space-y-3">
+                  <form onSubmit={handleEnquirySubmit} className="space-y-3">
                     <input
                       type="text" required
                       value={enquiryForm.name}
@@ -2167,7 +2252,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     title="Scan QR Code"
                   >
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
                       alt="QR Code"
                       className="w-full h-full rounded-sm"
                       loading="lazy"
@@ -2406,7 +2491,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             >
               <div className="h-36 bg-muted/30 flex items-center justify-center relative">
                 <Building2 className="h-10 w-10 text-muted-foreground/20" />
-                <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold ${p.status === "Ready" ? "bg-emerald-500/90 text-white" : "bg-primary text-primary-foreground"}`}>
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold text-white"
+                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   {p.status}
                 </span>
               </div>
@@ -2626,7 +2712,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             >
               <div className="w-48 h-48 sm:w-56 sm:h-56">
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(`/project/${project.slug}`)}&bgcolor=ffffff&color=0B3D2E&margin=2`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=2`}
                   alt="QR Code"
                   className="w-full h-full"
                 />

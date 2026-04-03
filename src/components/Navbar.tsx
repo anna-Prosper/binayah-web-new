@@ -33,7 +33,7 @@ const moreNav = [
   { label: "Contact", href: "/contact" },
 ];
 
-const Navbar = () => {
+const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -184,6 +184,12 @@ const Navbar = () => {
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}>
                 Get in Touch
               </button>
+              {extraItems && (
+                <>
+                  <div className="w-px h-6 bg-white/15" />
+                  {extraItems}
+                </>
+              )}
             </div>
 
             <button className="lg:hidden text-white min-w-[44px] min-h-[44px] flex items-center justify-center" onClick={() => setMobileOpen(!mobileOpen)}>
