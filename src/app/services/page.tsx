@@ -158,7 +158,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ PROPERTY MANAGEMENT ═══ */}
-      <section className="py-14 sm:py-24">
+      <section className="pt-14 pb-8 sm:pt-24 sm:pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
@@ -196,7 +196,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ ADDITIONAL SERVICES ═══ */}
-      <section className="py-14 sm:py-24" style={{ background: "linear-gradient(180deg, hsl(var(--muted) / 0.3) 0%, hsl(var(--background)) 100%)" }}>
+      <section className="pt-4 pb-14 sm:pt-6 sm:pb-24" style={{ background: "linear-gradient(180deg, hsl(var(--muted) / 0.3) 0%, hsl(var(--background)) 100%)" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #0B3D2E, #1A7A5A)" }} />

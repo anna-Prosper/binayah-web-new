@@ -598,25 +598,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex gap-1 sm:gap-1.5 bg-muted/50 p-1 sm:p-1.5 rounded-2xl border border-border/50 overflow-x-auto scrollbar-hide"
+              className="flex gap-1 sm:gap-1.5 bg-muted/50 p-1 sm:p-1.5 rounded-2xl border border-border/50"
             >
               {(["overview", "location", "payment", "faq"] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all capitalize whitespace-nowrap ${
+                  className={`flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                     activeTab === tab
-                      ? "bg-card text-foreground shadow-md"
+                      ? "text-white shadow-md"
                       : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                   }`}
+                  style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                 >
-                  {activeTab === tab && (
-                    <motion.div
-                      layoutId="activeTabBg"
-                      className="absolute inset-0 bg-card rounded-xl shadow-md"
-                      transition={{ type: "spring", duration: 0.4 }}
-                    />
-                  )}
                   <span className="relative z-10 uppercase">{tab === "faq" ? "FAQ" : tab}</span>
                 </button>
               ))}
@@ -643,9 +637,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {project.shortOverview && (
                       <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">{project.shortOverview}</p>
                     )}
-                    {project.fullDescription && (
-                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.fullDescription}</p>
-                    )}
+                    {project.fullDescription && (() => {
+                      const clean = project.fullDescription.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+                      return clean ? <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{clean}</p> : null;
+                    })()}
                   </div>
 
                   {/* Available Units */}
@@ -900,6 +895,76 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                     </div>
                   </motion.div>
+
+                  {/* ───── PHOTO GALLERY ───── */}
+                  {images.length > 1 && (
+                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-xl bg-accent/15 flex items-center justify-center">
+                            <ImageIcon className="h-4 w-4 text-accent" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Media</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground">Gallery</h2>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setShowGallery(true)}
+                          className="text-xs text-accent font-semibold hover:underline flex items-center gap-1"
+                        >
+                          View All ({images.length}) <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Mobile: horizontal scroll strip */}
+                      <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-2.5 pb-1">
+                        {images.slice(0, 6).map((img, i) => (
+                          <motion.button
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.04 }}
+                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
+                            className="relative flex-shrink-0 w-[70%] aspect-[3/2] rounded-xl overflow-hidden border border-border/50 snap-center"
+                          >
+                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                            {i === 5 && images.length > 6 && (
+                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
+                                <span className="text-white font-bold text-base">+{images.length - 6}</span>
+                              </div>
+                            )}
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {/* Desktop: straight row of 4 */}
+                      <div className="hidden sm:grid grid-cols-4 gap-3">
+                        {images.slice(0, 4).map((img, i) => (
+                          <motion.button
+                            key={i}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.05 }}
+                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
+                            className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all"
+                          >
+                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
+                              <Eye className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </div>
+                            {i === 3 && images.length > 4 && (
+                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center rounded-2xl">
+                                <span className="text-white font-bold text-lg">+{images.length - 4}</span>
+                              </div>
+                            )}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Floor Plans - Dedicated Section */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
@@ -1291,6 +1356,119 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
+                  {/* Amenities & Facilities */}
+                  {(() => {
+                    const amenityIcons: Record<string, React.ElementType> = {
+                      "swimming pool": Waves, "pool": Waves,
+                      "gymnasium": Dumbbell, "gym": Dumbbell, "fitness": Dumbbell,
+                      "kids": Baby, "children": Baby, "play area": Baby,
+                      "concierge": Star, "lobby": Star,
+                      "parking": Car, "valet": Car,
+                      "security": Lock, "cctv": Lock,
+                      "spa": HeartPulse, "sauna": HeartPulse,
+                      "bbq": Flame, "barbeque": Flame,
+                      "jogging": TrendingUp, "running": TrendingUp, "track": TrendingUp,
+                      "retail": Store, "shop": Store,
+                      "garden": TreePine, "landscape": TreePine, "park": TreePine,
+                      "smart": Smartphone, "home automation": Smartphone,
+                    };
+                    const getIcon = (name: string) => {
+                      const lower = name.toLowerCase();
+                      for (const [key, icon] of Object.entries(amenityIcons)) {
+                        if (lower.includes(key)) return icon;
+                      }
+                      return Shield;
+                    };
+                    const amenities = project.amenities && project.amenities.length > 0
+                      ? project.amenities
+                      : ["Swimming Pool", "Gymnasium", "Kids Play Area", "Concierge Service", "Parking", "24/7 Security", "Spa & Sauna", "BBQ Area", "Jogging Track", "Retail Outlets", "Landscaped Gardens", "Smart Home Features"];
+
+                    return (
+                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                        <div className="flex items-center gap-2.5 mb-6">
+                          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                            <Star className="h-4.5 w-4.5 text-accent" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Lifestyle</p>
+                            <h2 className="text-xl font-bold text-foreground">Amenities & Facilities</h2>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
+                          {amenities.map((amenity, i) => {
+                            const AIcon = getIcon(amenity);
+                            return (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.03 }}
+                                className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
+                              >
+                                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
+                                  <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                                </div>
+                                <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* FAQ Section */}
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                    <div className="flex items-center gap-2.5 mb-6">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <FileText className="h-4.5 w-4.5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Common Questions</p>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {faqs.map((faq, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 8 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.05 }}
+                          className="border border-border/50 rounded-xl overflow-hidden"
+                        >
+                          <button
+                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                            className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/30 transition-colors"
+                          >
+                            <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
+                            <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                          </button>
+                          <AnimatePresence>
+                            {openFaq === i && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <div className="px-4 pb-4">
+                                  <div className="w-12 h-px bg-accent/30 mb-3" />
+                                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+
                   {/* About the Developer */}
                   {project.developerName && (
                     <div className="relative bg-card rounded-2xl border border-border/50 overflow-hidden">
@@ -1358,138 +1536,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             </a>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Amenities & Facilities */}
-                  {(() => {
-                    const amenityIcons: Record<string, React.ElementType> = {
-                      "swimming pool": Waves, "pool": Waves,
-                      "gymnasium": Dumbbell, "gym": Dumbbell, "fitness": Dumbbell,
-                      "kids": Baby, "children": Baby, "play area": Baby,
-                      "concierge": Star, "lobby": Star,
-                      "parking": Car, "valet": Car,
-                      "security": Lock, "cctv": Lock,
-                      "spa": HeartPulse, "sauna": HeartPulse,
-                      "bbq": Flame, "barbeque": Flame,
-                      "jogging": TrendingUp, "running": TrendingUp, "track": TrendingUp,
-                      "retail": Store, "shop": Store,
-                      "garden": TreePine, "landscape": TreePine, "park": TreePine,
-                      "smart": Smartphone, "home automation": Smartphone,
-                    };
-                    const getIcon = (name: string) => {
-                      const lower = name.toLowerCase();
-                      for (const [key, icon] of Object.entries(amenityIcons)) {
-                        if (lower.includes(key)) return icon;
-                      }
-                      return Shield;
-                    };
-                    const amenities = project.amenities && project.amenities.length > 0
-                      ? project.amenities
-                      : ["Swimming Pool", "Gymnasium", "Kids Play Area", "Concierge Service", "Parking", "24/7 Security", "Spa & Sauna", "BBQ Area", "Jogging Track", "Retail Outlets", "Landscaped Gardens", "Smart Home Features"];
-
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="flex items-center gap-2.5 mb-6">
-                          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                            <Star className="h-4.5 w-4.5 text-accent" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Lifestyle</p>
-                            <h2 className="text-xl font-bold text-foreground">Amenities & Facilities</h2>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
-                          {amenities.map((amenity, i) => {
-                            const AIcon = getIcon(amenity);
-                            return (
-                              <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.03 }}
-                                className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
-                              >
-                                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
-                                  <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                                </div>
-                                <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                  {/* ───── PHOTO GALLERY ───── */}
-                  {images.length > 1 && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-xl bg-accent/15 flex items-center justify-center">
-                            <ImageIcon className="h-4 w-4 text-accent" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Media</p>
-                            <h2 className="text-base sm:text-lg font-bold text-foreground">Gallery</h2>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setShowGallery(true)}
-                          className="text-xs text-accent font-semibold hover:underline flex items-center gap-1"
-                        >
-                          View All ({images.length}) <ArrowRight className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-
-                      {/* Mobile: horizontal scroll strip */}
-                      <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-2.5 pb-1">
-                        {images.slice(0, 6).map((img, i) => (
-                          <motion.button
-                            key={i}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.04 }}
-                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
-                            className="relative flex-shrink-0 w-[70%] aspect-[3/2] rounded-xl overflow-hidden border border-border/50 snap-center"
-                          >
-                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
-                            {i === 5 && images.length > 6 && (
-                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
-                                <span className="text-white font-bold text-base">+{images.length - 6}</span>
-                              </div>
-                            )}
-                          </motion.button>
-                        ))}
-                      </div>
-
-                      {/* Desktop: straight row of 4 */}
-                      <div className="hidden sm:grid grid-cols-4 gap-3">
-                        {images.slice(0, 4).map((img, i) => (
-                          <motion.button
-                            key={i}
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.05 }}
-                            onClick={() => { setActiveImage(i); setShowGallery(true); }}
-                            className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all"
-                          >
-                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
-                              <Eye className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            </div>
-                            {i === 3 && images.length > 4 && (
-                              <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center rounded-2xl">
-                                <span className="text-white font-bold text-lg">+{images.length - 4}</span>
-                              </div>
-                            )}
-                          </motion.button>
-                        ))}
                       </div>
                     </div>
                   )}
@@ -1692,97 +1738,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                     </div>
                   </a>
-
-                  {/* What Buyers Say */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
-                    <div className="flex items-center gap-2.5 mb-6">
-                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                        <MessageCircle className="h-4.5 w-4.5 text-accent" />
-                      </div>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">What Buyers Say</h2>
-                    </div>
-                    <div className="flex sm:grid sm:grid-cols-3 gap-2.5 sm:gap-4 overflow-x-auto scrollbar-hide -mx-2 px-2 sm:mx-0 sm:px-0 pb-2 sm:pb-0">
-                      {[
-                        { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
-                        { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
-                        { name: "James K.", unit: "1 Bedroom", rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatar: "https://i.pravatar.cc/80?img=53" },
-                      ].map((review, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 8 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex-shrink-0 w-[240px] sm:w-auto rounded-xl border border-border/50 bg-muted/20 p-3 sm:p-4 flex flex-col"
-                        >
-                          <span className="text-3xl text-accent/30 font-serif leading-none mb-2">"</span>
-                          <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-3">{review.text}</p>
-                          <div className="flex items-center gap-0.5 mb-2">
-                            {Array.from({ length: 5 }).map((_, si) => (
-                              <Star key={si} className={`h-3.5 w-3.5 ${si < review.rating ? "text-accent fill-accent" : "text-border"}`} />
-                            ))}
-                          </div>
-                          <div className="flex items-center gap-2.5">
-                            <img src={review.avatar} alt={review.name} className="w-8 h-8 rounded-full object-cover border border-border/50" />
-                            <div>
-                              <p className="text-xs font-bold text-foreground">{review.name}</p>
-                              <p className="text-[10px] text-muted-foreground">{review.unit} Buyer</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* FAQ Section */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                    <div className="flex items-center gap-2.5 mb-6">
-                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <FileText className="h-4.5 w-4.5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Common Questions</p>
-                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      {faqs.map((faq, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 8 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.05 }}
-                          className="border border-border/50 rounded-xl overflow-hidden"
-                        >
-                          <button
-                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                            className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/30 transition-colors"
-                          >
-                            <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
-                            <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
-                          </button>
-                          <AnimatePresence>
-                            {openFaq === i && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                              >
-                                <div className="px-4 pb-4">
-                                  <div className="w-12 h-px bg-accent/30 mb-3" />
-                                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
 
               {/* ─── PAYMENT TAB ─── */}
               {activeTab === "payment" && (
@@ -2286,12 +2241,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
 
 
-              {/* Quick Facts — connected to price card on mobile */}
+              {/* Quick Facts — desktop only */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
-                className="bg-card rounded-2xl border border-border/50 p-5 -mt-[1px] sm:mt-0 rounded-t-none sm:rounded-t-2xl border-t-0 sm:border-t"
+                className="hidden sm:block bg-card rounded-2xl border border-border/50 p-5"
               >
                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">Project Details</h3>
                 <div className="divide-y divide-border/40">
@@ -2466,90 +2421,136 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
+                  {/* What Buyers Say */}
+                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
+                    <div className="flex items-center gap-2.5 mb-6">
+                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                        <MessageCircle className="h-4.5 w-4.5 text-accent" />
+                      </div>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">What Buyers Say</h2>
+                    </div>
+                    <div className="flex sm:grid sm:grid-cols-3 gap-2.5 sm:gap-4 overflow-x-auto scrollbar-hide -mx-2 px-2 sm:mx-0 sm:px-0 pb-2 sm:pb-0">
+                      {[
+                        { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
+                        { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
+                        { name: "James K.", unit: "1 Bedroom", rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatar: "https://i.pravatar.cc/80?img=53" },
+                      ].map((review, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: 8 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex-shrink-0 w-[240px] sm:w-auto rounded-xl border border-border/50 bg-muted/20 p-3 sm:p-4 flex flex-col"
+                        >
+                          <span className="text-3xl text-accent/30 font-serif leading-none mb-2">"</span>
+                          <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-3">{review.text}</p>
+                          <div className="flex items-center gap-0.5 mb-2">
+                            {Array.from({ length: 5 }).map((_, si) => (
+                              <Star key={si} className={`h-3.5 w-3.5 ${si < review.rating ? "text-accent fill-accent" : "text-border"}`} />
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-2.5">
+                            <img src={review.avatar} alt={review.name} className="w-8 h-8 rounded-full object-cover border border-border/50" />
+                            <div>
+                              <p className="text-xs font-bold text-foreground">{review.name}</p>
+                              <p className="text-[10px] text-muted-foreground">{review.unit} Buyer</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+
       {/* ───── FULL GALLERY MODAL ───── */}
       <AnimatePresence>
         {showGallery && (() => {
           const galleryImages = images;
-          const masterPlanImages = project.masterPlanUrl ? [project.masterPlanUrl] : [];
-          const [galleryTab, setGalleryTab] = [
-            // We'll use activeTab state trick — but since we can't add new state here,
-            // let's use a simple approach: gallery mode only for now
-          ] as any;
-          
+          const handleSwipe = (dir: number) => {
+            if (dir < 0) setActiveImage(activeImage < galleryImages.length - 1 ? activeImage + 1 : 0);
+            else setActiveImage(activeImage > 0 ? activeImage - 1 : galleryImages.length - 1);
+          };
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-2xl flex flex-col"
-              onClick={(e) => { if (e.target === e.currentTarget) setShowGallery(false); }}
+              className="fixed inset-0 z-[200] bg-black flex flex-col"
             >
-              {/* Top bar: tabs + close */}
-              <div className="flex items-center justify-center pt-4 pb-2 relative flex-shrink-0">
-                <div className="flex items-center gap-6">
-                  <button className="text-white text-sm font-semibold border-b-2 border-accent pb-1">
-                    Gallery ({galleryImages.length})
-                  </button>
-                  {masterPlanImages.length > 0 && (
-                    <button
-                      className="text-white/50 text-sm font-semibold pb-1 border-b-2 border-transparent hover:text-white/80 transition-colors"
-                      onClick={() => {
-                        setActiveImage(0);
-                        window.open(project.masterPlanUrl!, '_blank');
-                      }}
-                    >
-                      Masterplan ({masterPlanImages.length})
-                    </button>
-                  )}
-                </div>
+              {/* Top bar */}
+              <div className="flex items-center justify-between px-4 py-3 sm:py-4 flex-shrink-0 bg-black/80 backdrop-blur-sm relative z-10">
+                <span className="text-white/70 text-sm font-semibold">{activeImage + 1} / {galleryImages.length}</span>
+                <p className="text-white text-sm font-bold truncate max-w-[50%] hidden sm:block">{project.name}</p>
                 <button
                   onClick={() => setShowGallery(false)}
-                  className="absolute right-4 top-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
                 >
                   <X className="h-5 w-5 text-white" />
                 </button>
               </div>
 
-              {/* Main image area with nav arrows */}
-              <div className="flex-1 flex items-center justify-center relative min-h-0 px-16">
-                {/* Left arrow */}
+              {/* Main image area — swipeable on mobile */}
+              <div
+                className="flex-1 flex items-center justify-center relative min-h-0 touch-pan-y"
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  (e.currentTarget as any)._touchStartX = touch.clientX;
+                  (e.currentTarget as any)._touchStartY = touch.clientY;
+                }}
+                onTouchEnd={(e) => {
+                  const startX = (e.currentTarget as any)._touchStartX;
+                  const startY = (e.currentTarget as any)._touchStartY;
+                  if (startX == null) return;
+                  const endX = e.changedTouches[0].clientX;
+                  const endY = e.changedTouches[0].clientY;
+                  const diffX = endX - startX;
+                  const diffY = endY - startY;
+                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    handleSwipe(diffX > 0 ? 1 : -1);
+                  }
+                }}
+              >
+                {/* Desktop nav arrows */}
                 <button
-                  onClick={() => setActiveImage(activeImage > 0 ? activeImage - 1 : galleryImages.length - 1)}
-                  className="absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all hover:scale-110"
+                  onClick={() => handleSwipe(1)}
+                  className="hidden sm:flex absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
                 >
                   <ChevronRight className="h-6 w-6 text-white rotate-180" />
                 </button>
 
-                {/* Image */}
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={activeImage}
                     src={galleryImages[activeImage]}
                     alt={`${project.name} ${activeImage + 1}`}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.3 }}
-                    className="max-h-full max-w-full object-contain rounded-lg"
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.2 }}
+                    className="max-h-full max-w-full object-contain sm:px-16 select-none"
+                    draggable={false}
                   />
                 </AnimatePresence>
 
-                {/* Right arrow */}
                 <button
-                  onClick={() => setActiveImage(activeImage < galleryImages.length - 1 ? activeImage + 1 : 0)}
-                  className="absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all hover:scale-110"
+                  onClick={() => handleSwipe(-1)}
+                  className="hidden sm:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
                 >
                   <ChevronRight className="h-6 w-6 text-white" />
                 </button>
+
+                {/* Mobile swipe hint */}
+                <div className="sm:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
+                  {galleryImages.map((_, i) => (
+                    <button key={i} onClick={() => setActiveImage(i)}
+                      className={`rounded-full transition-all ${i === activeImage ? "w-6 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`} />
+                  ))}
+                </div>
               </div>
 
-              {/* Counter */}
-              <div className="text-center py-2 flex-shrink-0">
-                <span className="text-white/70 text-sm font-semibold">{activeImage + 1}/{galleryImages.length}</span>
-              </div>
-
-              {/* Thumbnail strip */}
-              <div className="flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide">
+              {/* Desktop thumbnail strip */}
+              <div className="hidden sm:flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide bg-black/80">
                 {galleryImages.map((img, i) => (
                   <button
                     key={i}
