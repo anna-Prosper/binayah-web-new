@@ -46,7 +46,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-          {(projects || []).map((p, i) => {
+          {(projects || []).filter(Boolean).map((p, i) => {
             const price = p.startingPrice
               ? p.startingPrice >= 1_000_000
                 ? `${p.currency} ${(p.startingPrice / 1_000_000).toFixed(1)}M`

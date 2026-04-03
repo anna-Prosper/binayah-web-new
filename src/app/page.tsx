@@ -152,9 +152,9 @@ export default async function HomePage() {
 
   return (
     <HomePageClient
-      featuredListings={JSON.parse(JSON.stringify(listings))}
-      offPlanProjects={JSON.parse(JSON.stringify(projects))}
-      latestArticles={JSON.parse(JSON.stringify(articles))}
+      featuredListings={(JSON.parse(JSON.stringify(listings)) as any[]).filter(Boolean)}
+      offPlanProjects={(JSON.parse(JSON.stringify(projects)) as any[]).filter(Boolean)}
+      latestArticles={(JSON.parse(JSON.stringify(articles)) as any[]).filter(Boolean)}
     />
   );
 }

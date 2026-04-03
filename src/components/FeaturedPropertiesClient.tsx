@@ -73,7 +73,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
 
         {/* Desktop grid */}
         <div className="hidden sm:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
-          {listings.map((p, i) => {
+          {listings.filter(Boolean).map((p, i) => {
             const sizeRange = p.unitSizeMin && p.unitSizeMax ? `${p.unitSizeMin}–${p.unitSizeMax} sqft` : null;
             return (
               <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}>
