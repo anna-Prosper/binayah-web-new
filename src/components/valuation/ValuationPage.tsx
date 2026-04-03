@@ -659,8 +659,10 @@ function parseValuationSearch(input: string): ParsedValuation {
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Step = "form" | "processing" | "results";
+type TransactionType = "buy" | "rent";
 
 interface FormData {
+  transactionType: string;
   unit: string;
   area: string;
   beds: string;
@@ -897,6 +899,13 @@ const SIZE_OPTIONS = [
 ];
 const SIZE_UNIT_OPTIONS = ["sq ft", "sqm"];
 const DEFAULT_SIZE_UNIT = "sq ft";
+const TRANSACTION_TYPE_OPTIONS: Array<{
+  value: TransactionType;
+  label: string;
+}> = [
+  { value: "buy", label: "Sale" },
+  { value: "rent", label: "Rent" },
+];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -1271,6 +1280,7 @@ const DEED_DUMMY_RESULT: ValuationResult = {
 const ValuationPage = () => {
   const [step, setStep] = useState<Step>("form");
   const [form, setForm] = useState<FormData>({
+    transactionType: "buy",
     unit: "", area: "", beds: "", maids: "No", city: "Dubai",
     type: "", size: "",
   });
@@ -1681,6 +1691,7 @@ const ValuationPage = () => {
       const { turnstileConfig } = await loadValuationConfig();
       const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
       const apiPayload = {
+        transactionType: form.transactionType,
         propertyName: form.unit,
         location: form.area,
         city: form.city,
@@ -2082,6 +2093,41 @@ const ValuationPage = () => {
 
                   {/* Smart search bar */}
                   <div>
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <div className="inline-flex rounded-full border border-border/60 bg-muted/35 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]">
+                        {TRANSACTION_TYPE_OPTIONS.map((option) => {
+                          const active = form.transactionType === option.value;
+
+                          return (
+                            <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => updateField("transactionType", option.value)}
+                              className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 sm:px-5 ${
+                                active
+                                  ? "text-white shadow-[0_10px_24px_rgba(11,61,46,0.22)]"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              style={
+                                active
+                                  ? {
+                                      background:
+                                        option.value === "buy"
+                                          ? "linear-gradient(135deg, #0B3D2E, #1A7A5A)"
+                                          : "linear-gradient(135deg, #D4A847, #B8922F)",
+                                    }
+                                  : undefined
+                              }
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <p className="hidden text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground/70 sm:block">
+                        Search mode
+                      </p>
+                    </div>
                     <div className="relative">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none z-10" />
                       <input
