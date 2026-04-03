@@ -51,7 +51,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
         <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
           {listings.map((p, i) => (
             <motion.div key={p._id} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="flex-shrink-0 w-[260px] snap-start">
-              <Link href={p.slug === "__fallback__" ? "/off-plan" : `/project/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
+              <Link href={`/project/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
                 <div className="relative overflow-hidden aspect-[3/2]">
                   <img src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
                   <span className={`absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide ${p.status === "Off-Plan" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground"}`}>{p.status}</span>
@@ -77,7 +77,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
             const sizeRange = p.unitSizeMin && p.unitSizeMax ? `${p.unitSizeMin}–${p.unitSizeMax} sqft` : null;
             return (
               <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}>
-                <Link href={p.slug === "__fallback__" ? "/off-plan" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

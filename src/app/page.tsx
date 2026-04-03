@@ -27,7 +27,7 @@ const FALLBACK_PROJECTS = [
   {
     _id: "fallback-project-1",
     name: "Binghatti Hillcrest",
-    slug: "__fallback__",
+    slug: "binghatti-hillcrest",
     status: "Off-Plan",
     developerName: "Binghatti Developers",
     community: "Arjan",
@@ -48,7 +48,7 @@ const FALLBACK_PROJECTS = [
   {
     _id: "fallback-project-2",
     name: "Emaar Beachfront",
-    slug: "__fallback__",
+    slug: "binghatti-hillcrest",
     status: "Off-Plan",
     developerName: "Emaar Properties",
     community: "Dubai Harbour",
@@ -63,7 +63,7 @@ const FALLBACK_PROJECTS = [
   {
     _id: "fallback-project-3",
     name: "Sobha Hartland II",
-    slug: "__fallback__",
+    slug: "binghatti-hillcrest",
     status: "Off-Plan",
     developerName: "Sobha Realty",
     community: "MBR City",
@@ -78,7 +78,7 @@ const FALLBACK_PROJECTS = [
   {
     _id: "fallback-project-4",
     name: "Tilal Al Ghaf Villas",
-    slug: "__fallback__",
+    slug: "binghatti-hillcrest",
     status: "Off-Plan",
     developerName: "Majid Al Futtaim",
     community: "Tilal Al Ghaf",
@@ -152,9 +152,9 @@ export default async function HomePage() {
 
   return (
     <HomePageClient
-      featuredListings={(JSON.parse(JSON.stringify(listings)) as any[]).filter(Boolean)}
-      offPlanProjects={(JSON.parse(JSON.stringify(projects)) as any[]).filter(Boolean)}
-      latestArticles={(JSON.parse(JSON.stringify(articles)) as any[]).filter(Boolean)}
+      featuredListings={JSON.parse(JSON.stringify(listings)).filter(Boolean)}
+      offPlanProjects={JSON.parse(JSON.stringify(projects)).filter(Boolean)}
+      latestArticles={JSON.parse(JSON.stringify(articles)).filter(Boolean)}
     />
   );
 }
