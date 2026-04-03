@@ -2226,16 +2226,21 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
       {/* ───── BUYER'S GUIDE ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
-        <div className="flex items-center gap-2.5 mb-6">
-          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-            <FileText className="h-4.5 w-4.5 text-accent" />
+        <div className="flex items-center justify-between mb-5 sm:mb-6">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+              <FileText className="h-4.5 w-4.5 text-accent" />
+            </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-foreground">Buyer&apos;s Guide & Resources</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Essential reading for property buyers</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-foreground">Buyer's Guide & Resources</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">Essential reading for property buyers</p>
-          </div>
+          <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
+            View All <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
           {[
             { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
             { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
@@ -2263,6 +2268,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             </motion.a>
           ))}
         </div>
+        <div className="sm:hidden text-center mt-3">
+          <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
+            View All Guides <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
       </div>
 
       {/* ───── WHAT BUYERS SAY ───── */}
@@ -2277,7 +2287,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-3 sm:gap-5">
+        <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
           {[
             { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
             { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
@@ -2289,7 +2299,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12 }}
-              className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
+              className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
             >
               <div className="flex items-center gap-0.5 mb-3">
                 {Array.from({ length: 5 }).map((_, si) => (
