@@ -9,9 +9,9 @@ const serviceOffplan = "https://images.unsplash.com/photo-1486406146926-c627a92a
 const serviceManagement = "https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=600&h=400&fit=crop";
 
 const offerings = [
+  { image: serviceSell, title: "Sell Property", desc: "Expert valuation, marketing, and negotiation to maximize your return.", link: "/valuation" },
   { image: serviceBuy, title: "Buy Property", desc: "Find your perfect home from premium residential listings across Dubai.", link: "/search?intent=buy" },
   { image: serviceRent, title: "Rent Property", desc: "Discover exceptional rental homes in prime locations.", link: "/search?intent=rent" },
-  { image: serviceSell, title: "Sell Property", desc: "Expert valuation, marketing, and negotiation to maximize your return.", link: "/valuation" },
   { image: serviceOffplan, title: "Off-Plan Investment", desc: "Exclusive off-plan projects with high ROI potential.", link: "/off-plan" },
   { image: serviceManagement, title: "Property Management", desc: "Complete management solutions to protect your investment.", link: "/services" },
 ];
