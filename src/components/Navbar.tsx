@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Phone, Menu, X, ChevronDown, Globe, MessageCircle } from "lucide-react";
+import { Phone, Menu, X, ChevronDown, Globe, MessageCircle, Banknote } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -46,6 +46,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [mobileCurrency, setMobileCurrency] = useState("AED");
   const [mobileLanguage, setMobileLanguage] = useState("en");
   const [phoneHover, setPhoneHover] = useState(false);
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
@@ -77,6 +79,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     const handleClick = (e: MouseEvent) => {
       if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
       if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) setInsightsOpen(false);
+      setShowCurrencyDropdown(false);
+      setShowLangDropdown(false);
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -162,7 +166,52 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+              {/* Currency selector */}
+              <div className="relative">
+                <button
+                  onClick={() => { setShowCurrencyDropdown(!showCurrencyDropdown); setShowLangDropdown(false); }}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold rounded-md transition-all border border-white/10"
+                >
+                  <Banknote className="h-3 w-3" />
+                  {mobileCurrency}
+                  <ChevronDown className={`h-2.5 w-2.5 transition-transform ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                </button>
+                {showCurrencyDropdown && (
+                  <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[100px]">
+                    {CURRENCIES.map((c) => (
+                      <button key={c} onClick={() => { setMobileCurrency(c); setShowCurrencyDropdown(false); }}
+                        className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors ${c === mobileCurrency ? "text-accent font-bold" : "text-white/80"}`}>
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Language selector */}
+              <div className="relative">
+                <button
+                  onClick={() => { setShowLangDropdown(!showLangDropdown); setShowCurrencyDropdown(false); }}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold rounded-md transition-all border border-white/10"
+                >
+                  {selectedLang.flag}
+                  <ChevronDown className={`h-2.5 w-2.5 transition-transform ${showLangDropdown ? "rotate-180" : ""}`} />
+                </button>
+                {showLangDropdown && (
+                  <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[130px]">
+                    {LANGUAGES_LIST.map((lang) => (
+                      <button key={lang.code} onClick={() => { setMobileLanguage(lang.code); setShowLangDropdown(false); }}
+                        className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors flex items-center gap-2 ${lang.code === mobileLanguage ? "text-accent font-bold" : "text-white/80"}`}>
+                        <span>{lang.flag}</span> {lang.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="w-px h-5 bg-white/15" />
+
               <div className="relative flex items-center"
                 onMouseEnter={() => setPhoneHover(true)}
                 onMouseLeave={() => setPhoneHover(false)}>

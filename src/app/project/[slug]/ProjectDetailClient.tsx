@@ -7,7 +7,7 @@ import {
   ArrowLeft, MapPin, Building2, Calendar, Wallet, Bed, Ruler, Shield,
   Phone, MessageCircle, Mail, ChevronRight, ChevronDown, Play, CheckCircle2,
   Star, Clock, Users, FileText, ExternalLink, Download, Image as ImageIcon,
-  Home, Landmark, TrendingUp, CreditCard, Banknote, Globe, Languages, Compass, Waves, X,
+  Home, Landmark, TrendingUp, CreditCard, Globe, Compass, Waves, X,
   Sparkles, Eye, ArrowRight, Dumbbell, Baby, Car, Lock, Flame,
   TreePine, Store, Smartphone, HeartPulse,
 } from "lucide-react";
@@ -105,8 +105,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
   const [currency, setCurrency] = useState("AED");
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
-  const [language, setLanguage] = useState("en");
-  const [showLangDropdown, setShowLangDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
   const [calcDownPct, setCalcDownPct] = useState(20);
@@ -170,59 +168,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar extraItems={
-        <div className="flex items-center gap-2">
-          {/* Currency Selector */}
-          <div className="relative">
-            <button
-              onClick={() => { setShowCurrencyDropdown(!showCurrencyDropdown); setShowLangDropdown(false); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
-            >
-              <Banknote className="h-3.5 w-3.5" />
-              {currency}
-              <ChevronDown className={`h-3 w-3 transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            {showCurrencyDropdown && (
-              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[110px]">
-                {Object.keys(CURRENCY_RATES).map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => { setCurrency(c); setShowCurrencyDropdown(false); }}
-                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors ${c === currency ? "text-accent font-bold" : "text-white/80"}`}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Language Selector */}
-          <div className="relative">
-            <button
-              onClick={() => { setShowLangDropdown(!showLangDropdown); setShowCurrencyDropdown(false); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-md transition-all border border-white/10"
-            >
-              <Languages className="h-3.5 w-3.5" />
-              {LANGUAGES.find(l => l.code === language)?.flag}
-              <ChevronDown className={`h-3 w-3 transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            {showLangDropdown && (
-              <div className="absolute right-0 top-full mt-2 bg-foreground border border-white/10 rounded-lg shadow-2xl z-[100] py-1 min-w-[140px]">
-                {LANGUAGES.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => { setLanguage(lang.code); setShowLangDropdown(false); }}
-                    className={`w-full text-left px-3.5 py-2 text-xs hover:bg-white/10 transition-colors flex items-center gap-2 ${lang.code === language ? "text-accent font-bold" : "text-white/80"}`}
-                  >
-                    <span>{lang.flag}</span> {lang.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      } />
+      <Navbar />
 
       {/* ───── HERO SECTION ───── */}
       <section className="relative">
@@ -876,9 +822,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               onClick={() => setActiveFloorPlanTab(i)}
                               className={`flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                                 activeFloorPlanTab === i
-                                  ? "bg-primary text-primary-foreground shadow-md"
+                                  ? "text-white shadow-md"
                                   : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
                               }`}
+                              style={activeFloorPlanTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                             >
                               {unit.name}
                             </button>
