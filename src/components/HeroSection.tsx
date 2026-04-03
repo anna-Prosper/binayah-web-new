@@ -215,7 +215,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center overflow-hidden pt-16 pb-8 sm:pt-0 sm:pb-0">
+    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0">
       <motion.div className="absolute inset-0" style={{ y: imageY }}>
         <img src={heroImage} alt="Dubai skyline" className="h-[120%] w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
@@ -357,7 +357,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
                       <div className="p-3 border-b border-border">
                         <input value={locationSearch} onChange={(e) => setLocationSearch(e.target.value)}
                           placeholder="Search areas..." autoFocus
@@ -391,11 +391,11 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {propertyTypes.map((t) => (
                           <button key={t} onMouseDown={(e) => { e.preventDefault(); setSelType(selType === t ? "" : t); setOpenDropdown(null); }}
-                            className={`w-full text-left px-3 py-3 text-sm rounded-xl hover:bg-muted/60 transition-colors ${selType === t ? "font-semibold text-primary" : "text-foreground"}`}>
+                            className={`w-full text-left px-4 py-3.5 text-sm rounded-xl hover:bg-muted/50 transition-colors ${selType === t ? "font-semibold text-primary bg-primary/5" : "text-foreground"}`}>
                             {t}
                           </button>
                         ))}
@@ -415,24 +415,24 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] p-4">
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] p-5">
                       <div className="mb-4">
-                        <p className="text-sm font-bold text-foreground mb-2.5">Bedrooms</p>
+                        <p className="text-base font-bold text-foreground mb-3">Bedrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bedroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBedroom(selBedroom === b ? "" : b); }}
-                              className={`min-w-[36px] h-9 px-2.5 rounded-lg text-xs font-medium border transition-all ${selBedroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border bg-secondary/50 text-foreground hover:border-primary/40"}`}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBedroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`}>
                               {b}
                             </button>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-foreground mb-2.5">Bathrooms</p>
+                        <p className="text-base font-bold text-foreground mb-3">Bathrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bathroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBathroom(selBathroom === b ? "" : b); }}
-                              className={`min-w-[36px] h-9 px-2.5 rounded-lg text-xs font-medium border transition-all ${selBathroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border bg-secondary/50 text-foreground hover:border-primary/40"}`}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBathroom === b ? "border-primary bg-primary text-primary-foreground" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`}>
                               {b}
                             </button>
                           ))}
@@ -451,11 +451,11 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {budgets.map((b) => (
                           <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBudget(selBudget === b ? "" : b); setOpenDropdown(null); }}
-                            className={`w-full text-left px-3 py-3 text-sm rounded-xl hover:bg-muted/60 transition-colors ${selBudget === b ? "font-semibold text-primary" : "text-foreground"}`}>
+                            className={`w-full text-left px-4 py-3.5 text-sm rounded-xl hover:bg-muted/50 transition-colors ${selBudget === b ? "font-semibold text-primary bg-primary/5" : "text-foreground"}`}>
                             AED {b}
                           </button>
                         ))}
