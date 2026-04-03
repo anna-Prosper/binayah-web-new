@@ -55,34 +55,21 @@ const ROICalculator = () => {
 
           {/* Results */}
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-3 sm:space-y-4">
-            {/* Yield cards + ROI hero */}
+            {/* Mobile: compact 3-col + expandable projection */}
             <div className="sm:hidden">
-              {/* Mobile: yields + ROI in one row */}
               <div className="grid grid-cols-3 gap-2 mb-3">
                 <ResultCardCompact label="Gross Yield" value={`${results.grossYield.toFixed(1)}%`} />
                 <ResultCardCompact label="Net Yield" value={`${results.netYield.toFixed(1)}%`} />
                 <ResultCardCompact label="5yr ROI" value={`${results.totalROI.toFixed(1)}%`} highlight />
               </div>
-
-              {/* Expandable projection */}
-              <button
-                onClick={() => setShowProjection(!showProjection)}
-                className="w-full bg-card rounded-xl p-3.5 border border-border/50 shadow-sm flex items-center justify-between text-sm font-semibold text-foreground"
-              >
-                <span className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" /> 5-Year Breakdown
-                </span>
+              <button onClick={() => setShowProjection(!showProjection)}
+                className="w-full bg-card rounded-xl p-3.5 border border-border/50 shadow-sm flex items-center justify-between text-sm font-semibold text-foreground">
+                <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> 5-Year Breakdown</span>
                 <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-300 ${showProjection ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
                 {showProjection && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                     <div className="bg-card rounded-b-xl px-4 pb-4 pt-2 border-x border-b border-border/50 space-y-2.5">
                       <ProjectionRow label="Property Value (Yr 5)" value={`AED ${fmt(results.year5Value)}`} />
                       <ProjectionRow label="Capital Appreciation" value={`AED ${fmt(results.year5Value - price)}`} />
@@ -97,7 +84,7 @@ const ROICalculator = () => {
               </AnimatePresence>
             </div>
 
-            {/* Desktop: original layout */}
+            {/* Desktop layout */}
             <div className="hidden sm:block space-y-4">
               <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Your Results</p>
               <div className="grid grid-cols-2 gap-4">
@@ -138,18 +125,11 @@ const SliderInput = ({ label, value, onChange, min, max, step, prefix, suffix, f
   min: number; max: number; step: number; prefix?: string; suffix?: string; format?: (n: number) => string;
 }) => {
   const percent = ((value - min) / (max - min)) * 100;
-  
   return (
     <div>
       <div className="flex justify-between items-center mb-2.5">
         <label className="text-[10px] sm:text-xs font-semibold tracking-wider text-muted-foreground uppercase">{label}</label>
-        <motion.span
-          key={value}
-          initial={{ scale: 1.1, color: "hsl(168, 100%, 25%)" }}
-          animate={{ scale: 1, color: "hsl(var(--foreground))" }}
-          transition={{ duration: 0.3 }}
-          className="text-xs sm:text-sm font-bold text-foreground"
-        >
+        <motion.span key={value} initial={{ scale: 1.1, color: "hsl(168, 100%, 25%)" }} animate={{ scale: 1, color: "hsl(var(--foreground))" }} transition={{ duration: 0.3 }} className="text-xs sm:text-sm font-bold text-foreground">
           {prefix}{format ? format(value) : value}{suffix}
         </motion.span>
       </div>
@@ -157,17 +137,10 @@ const SliderInput = ({ label, value, onChange, min, max, step, prefix, suffix, f
         <div className="h-2 rounded-full bg-border overflow-hidden">
           <div className="h-full rounded-full bg-primary transition-all duration-150" style={{ width: `${percent}%` }} />
         </div>
-        <input
-          type="range"
-          min={min} max={max} step={step} value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          style={{ WebkitAppearance: "none", margin: 0 }}
-        />
-        <div
-          className="absolute top-1/2 -translate-y-1/2 w-5 h-5 sm:w-4 sm:h-4 rounded-full bg-primary border-2 border-background shadow-md pointer-events-none transition-all duration-150"
-          style={{ left: `calc(${percent}% - ${percent > 50 ? 10 : 8}px)` }}
-        />
+        <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" style={{ WebkitAppearance: "none", margin: 0 }} />
+        <div className="absolute top-1/2 -translate-y-1/2 w-5 h-5 sm:w-4 sm:h-4 rounded-full bg-primary border-2 border-background shadow-md pointer-events-none transition-all duration-150"
+          style={{ left: `calc(${percent}% - ${percent > 50 ? 10 : 8}px)` }} />
       </div>
     </div>
   );
@@ -175,15 +148,7 @@ const SliderInput = ({ label, value, onChange, min, max, step, prefix, suffix, f
 
 const ResultCardCompact = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
   <div className={`rounded-xl p-3 border text-center ${highlight ? "bg-primary/10 border-primary/30" : "bg-card border-border/50"}`}>
-    <motion.p
-      key={value}
-      initial={{ scale: 1.05 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className={`text-lg font-bold mb-0.5 ${highlight ? "text-primary" : "text-foreground"}`}
-    >
-      {value}
-    </motion.p>
+    <motion.p key={value} initial={{ scale: 1.05 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }} className={`text-lg font-bold mb-0.5 ${highlight ? "text-primary" : "text-foreground"}`}>{value}</motion.p>
     <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-wide">{label}</p>
   </div>
 );

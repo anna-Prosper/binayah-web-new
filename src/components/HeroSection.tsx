@@ -278,7 +278,7 @@ const HeroSection = () => {
             ))}
           </div>
 
-          <div className="backdrop-blur-2xl rounded-b-2xl rounded-tr-2xl shadow-2xl border border-white/20 overflow-hidden"
+          <div className="backdrop-blur-2xl rounded-b-2xl rounded-tr-2xl shadow-2xl border border-white/20"
             style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%)" }}>
             <div className="px-5 sm:px-7 pt-5 sm:pt-6">
               <div className="relative">
@@ -346,7 +346,7 @@ const HeroSection = () => {
             </div>
 
             <div className="p-5 sm:p-7 pt-4">
-              <div ref={dropdownRef} className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 relative">
+              <div ref={dropdownRef} className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 relative" style={{ overflow: "visible" }}>
 
                 {/* Location */}
                 <div className="relative">
@@ -357,7 +357,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-50 overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
                       <div className="p-3 border-b border-border">
                         <input value={locationSearch} onChange={(e) => setLocationSearch(e.target.value)}
                           placeholder="Search areas..." autoFocus
@@ -391,7 +391,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-50 overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
                       <div className="p-1.5">
                         {propertyTypes.map((t) => (
                           <button key={t} onMouseDown={(e) => { e.preventDefault(); setSelType(selType === t ? "" : t); setOpenDropdown(null); }}
@@ -415,7 +415,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-50 p-4">
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] p-4">
                       <div className="mb-4">
                         <p className="text-sm font-bold text-foreground mb-2.5">Bedrooms</p>
                         <div className="flex flex-wrap gap-2">
@@ -451,7 +451,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-50 overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
                       <div className="p-1.5">
                         {budgets.map((b) => (
                           <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBudget(selBudget === b ? "" : b); setOpenDropdown(null); }}
