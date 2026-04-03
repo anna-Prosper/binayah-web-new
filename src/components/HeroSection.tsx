@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
 
-const heroImage = "/assets/dubai-hero.jpg";
+const heroImage = "/assets/dubai-hero.png";
 
 const statusTabs = ["Buy", "Rent", "Off-Plan"];
 const mobileTabs = ["Buy", "Rent", "Off-Plan"];
@@ -278,7 +278,7 @@ const HeroSection = () => {
             ))}
           </div>
 
-          <div className="backdrop-blur-2xl rounded-b-2xl rounded-tr-2xl shadow-2xl border border-white/20"
+          <div className="backdrop-blur-2xl rounded-b-2xl rounded-tr-2xl shadow-2xl border border-white/20 overflow-visible"
             style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%)" }}>
             <div className="px-5 sm:px-7 pt-5 sm:pt-6">
               <div className="relative">
@@ -291,7 +291,7 @@ const HeroSection = () => {
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     onFocus={() => setShowSuggestions(smartSearch.trim().length >= 2)}
                     placeholder={`Try: ${searchPlaceholders[placeholderIndex]}`}
-                    className="w-full pl-24 sm:pl-28 pr-12 py-4 bg-white/8 border border-white/12 rounded-2xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/30 transition-all" />
+                    className="w-full pl-24 sm:pl-28 pr-12 py-4 bg-white border border-white/30 rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-all shadow-sm" />
                   {smartSearch ? (
                     <button onClick={clearSmartSearch} className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-white/40 hover:text-white">
                       <X className="h-4 w-4" />
@@ -345,16 +345,16 @@ const HeroSection = () => {
               ) : null}
             </div>
 
-            <div className="p-5 sm:p-7 pt-4">
+            <div className="px-5 sm:px-7 pb-5 sm:pb-7 pt-3">
               <div ref={dropdownRef} className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 relative" style={{ overflow: "visible" }}>
 
                 {/* Location */}
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/40 uppercase block mb-1.5">Location</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Location</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "location" ? null : "location")}
-                    className="w-full bg-white/8 border border-white/12 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between hover:bg-white/12 transition-all focus:outline-none">
-                    <span className={selLocation ? "text-white" : "text-white/40"}>{selLocation || "All Locations"}</span>
-                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
+                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    <span className={selLocation ? "text-foreground font-medium" : "text-muted-foreground"}>{selLocation || "All Locations"}</span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
                     <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
@@ -384,11 +384,11 @@ const HeroSection = () => {
 
                 {/* Property Type */}
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/40 uppercase block mb-1.5">Property type</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Property type</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
-                    className="w-full bg-white/8 border border-white/12 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between hover:bg-white/12 transition-all focus:outline-none">
-                    <span className={selType ? "text-white" : "text-white/40"}>{selType || "Property type"}</span>
-                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
+                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType || "Property type"}</span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
                     <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
@@ -406,13 +406,13 @@ const HeroSection = () => {
 
                 {/* Beds & Baths */}
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/40 uppercase block mb-1.5">Beds & Baths</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Beds & Baths</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "beds" ? null : "beds")}
-                    className="w-full bg-white/8 border border-white/12 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between hover:bg-white/12 transition-all focus:outline-none">
-                    <span className={(selBedroom || selBathroom) ? "text-white" : "text-white/40"}>
+                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    <span className={(selBedroom || selBathroom) ? "text-foreground font-medium" : "text-muted-foreground"}>
                       {[selBedroom && `${selBedroom} bed`, selBathroom && `${selBathroom} bath`].filter(Boolean).join(", ") || "Beds & Baths"}
                     </span>
-                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
                     <div className="absolute top-full left-0 mt-2 w-72 bg-card rounded-2xl shadow-2xl border border-border z-[200] p-4">
@@ -444,11 +444,11 @@ const HeroSection = () => {
 
                 {/* Budget */}
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/40 uppercase block mb-1.5">Your Budget</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Your Budget</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "budget" ? null : "budget")}
-                    className="w-full bg-white/8 border border-white/12 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between hover:bg-white/12 transition-all focus:outline-none">
-                    <span className={selBudget ? "text-white" : "text-white/40"}>{selBudget || "Max. Price"}</span>
-                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
+                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    <span className={selBudget ? "text-foreground font-medium" : "text-muted-foreground"}>{selBudget || "Max. Price"}</span>
+                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (
                     <div className="absolute top-full left-0 mt-2 w-52 bg-card rounded-2xl shadow-2xl border border-border z-[200] overflow-hidden">
