@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ClipboardCheck, BarChart3, Wallet, Users, Wrench, ShieldCheck, Star, Home, ArrowRight } from "lucide-react";
+import { ClipboardCheck, BarChart3, Wallet, Users, Wrench, Star, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const services = [
@@ -11,7 +11,6 @@ const services = [
   { icon: BarChart3, title: "Marketing", desc: "Professional listing and exposure across top platforms" },
   { icon: Users, title: "Tenant Management", desc: "Screening, contracts, and ongoing tenant relations" },
   { icon: Wrench, title: "Maintenance", desc: "Repairs, upkeep, and 24/7 emergency support" },
-  { icon: ShieldCheck, title: "Dispute Resolution", desc: "Expert mediation and legal support when needed" },
 ];
 
 const ServicesSection = () => (
