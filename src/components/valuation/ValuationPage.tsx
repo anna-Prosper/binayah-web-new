@@ -2577,7 +2577,7 @@ const ValuationPage = () => {
             <div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
-              <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales, and supporting sources.</p>
+              <p className="text-muted-foreground mb-3">Key pricing guidance first, then comparable sales and market context.</p>
               <span className="inline-block px-3 py-1 rounded-full border border-border text-sm font-medium">{form.city}</span>
 
               {/* Retry notice */}
