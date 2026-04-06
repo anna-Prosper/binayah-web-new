@@ -71,7 +71,7 @@ const MOCK_PROJECT = {
     { question: "Is this Golden Visa eligible?", answer: "Units valued at AED 2M+ qualify for the UAE Golden Visa." },
   ],
   downPayment: "10%",
-  paymentPlanSummary: "10/50/40 Payment Plan",
+  paymentPlanSummary: "10/50/40",
   paymentPlanDetails: "10% on booking, 50% during construction in monthly installments, 40% on handover (Q4 2026).",
   floorPlans: [
     { bedrooms: "Studio", category: "Studio", size: "346 – 367 Sq Ft", unitInfo: "346 – 367 Sq Ft", imageUrl: "https://manage.tanamiproperties.com/Project/Floor_Image/3136/Gallery/62848.jpg" },

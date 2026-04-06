@@ -273,13 +273,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   transition={{ delay: 0.5, duration: 0.6 }}
                   className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0"
                 >
-                  <div className="flex flex-col gap-0.5">
-                    <div className="flex items-baseline gap-2">
-                      <span className="hidden sm:inline text-white text-xs sm:text-sm">Starting from</span>
-                      <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
-                    </div>
+                  <div className="flex flex-col gap-0.5 lg:items-end">
+                    <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">Starting from</span>
+                    <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
                     {currency === "AED" && project.startingPrice && (
-                      <span className="text-white text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
+                      <span className="text-white/60 text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
                     )}
                   </div>
 
@@ -905,7 +903,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             </div>
 
                             {/* Details row */}
-                            <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 sm:gap-3 mt-3 sm:mt-0 mb-4 sm:mb-6">
+                            <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mt-3 sm:mt-4 mb-4 sm:mb-6">
                               <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
                                 <Ruler className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
                                 <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.unitSize.toLocaleString()}</p>
@@ -1329,10 +1327,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {/* About the Developer */}
                   {project.developerName && (
                     <div className="relative bg-card rounded-2xl border border-border/50 overflow-hidden">
-                      {/* Subtle gradient accent bar */}
                       <div className="h-1.5 bg-gradient-to-r from-primary via-primary/60 to-accent" />
                       <div className="p-4 sm:p-6 md:p-8">
-                        <div className="flex items-center gap-2.5 mb-5 sm:mb-8">
+                        {/* Header */}
+                        <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
                           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                             <Building2 className="h-4.5 w-4.5 text-primary" />
                           </div>
@@ -1342,57 +1340,48 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           </div>
                         </div>
 
-                        {/* Developer intro — inline on mobile */}
-                        <div className="flex items-start gap-3 sm:gap-6 mb-4 sm:mb-0">
-                          {/* Developer logo placeholder */}
-                          <div className="w-14 h-14 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <span className="text-xl sm:text-2xl font-black text-primary/60">{project.developerName.split(" ").map(w => w[0]).join("").slice(0, 2)}</span>
+                        {/* Developer name + description */}
+                        <div className="flex items-start gap-4 mb-5 sm:mb-6">
+                          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-border/50 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <span className="text-xl font-black text-primary/60">{project.developerName.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}</span>
                           </div>
-
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-base sm:text-xl font-bold text-foreground mb-1">{project.developerName}</h3>
+                          <div>
+                            <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">{project.developerName}</h3>
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                               {project.developerName} is a leading real estate developer in the UAE, known for delivering iconic residential and commercial projects across prime locations in Dubai.
                             </p>
                           </div>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row sm:gap-6">
-                          {/* Spacer to align with content above on desktop */}
-                          <div className="hidden sm:block w-24 flex-shrink-0" />
-
-                          <div className="flex-1 min-w-0">
-
-                            {/* Stats with icons */}
-                            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-4 sm:mb-6">
-                              {[
-                                { value: "50+", label: "Projects Delivered", icon: Building2 },
-                                { value: "20+", label: "Years Experience", icon: Clock },
-                                { value: "10K+", label: "Units Completed", icon: Home },
-                              ].map((stat, i) => {
-                                const StatIcon = stat.icon;
-                                return (
-                                  <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
-                                    className="text-center rounded-xl border border-border/50 bg-gradient-to-b from-muted/30 to-transparent py-2.5 sm:py-4 px-2 sm:px-3 hover:border-primary/20 hover:shadow-md transition-all duration-300"
-                                  >
-                                    <StatIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary/60 mx-auto mb-1.5" />
-                                    <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
-                                    <p className="text-[8px] sm:text-[10px] text-muted-foreground font-medium mt-0.5">{stat.label}</p>
-                                  </motion.div>
-                                );
-                              })}
-                            </div>
-
-                            <a href="#developer-profile" className="inline-flex items-center gap-2 text-sm font-bold text-primary bg-primary/5 hover:bg-primary/10 px-4 py-2 rounded-full transition-all duration-300 group">
-                              View Developer Profile <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                            </a>
-                          </div>
+                        {/* Stats row */}
+                        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
+                          {[
+                            { value: "50+", label: "Projects Delivered", icon: Building2 },
+                            { value: "20+", label: "Years Experience", icon: Clock },
+                            { value: "10K+", label: "Units Completed", icon: Home },
+                          ].map((stat, i) => {
+                            const StatIcon = stat.icon;
+                            return (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="flex flex-col items-center text-center rounded-xl border border-border/50 bg-muted/20 py-3 sm:py-4 px-2 hover:border-primary/20 hover:shadow-sm transition-all duration-300"
+                              >
+                                <StatIcon className="h-4 w-4 text-primary/60 mb-1.5" />
+                                <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
+                                <p className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 leading-tight">{stat.label}</p>
+                              </motion.div>
+                            );
+                          })}
                         </div>
+
+                        {/* CTA */}
+                        <a href="#developer-profile" className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
+                          View Developer Profile <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                        </a>
                       </div>
                     </div>
                   )}
@@ -2285,7 +2274,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             View All <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 items-stretch">
           {[
             { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
             { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
@@ -2301,7 +2290,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group"
+              className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group h-full"
             >
               <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
                 <guide.icon className="h-4 w-4 text-primary" />
