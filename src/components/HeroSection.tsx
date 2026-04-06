@@ -417,25 +417,25 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-5">
-                      <div className="mb-5">
-                        <p className="text-sm font-bold text-foreground mb-3">Bedrooms</p>
-                        <div className="flex flex-wrap gap-2">
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-4">
+                      <div className="mb-4">
+                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">Bedrooms</p>
+                        <div className="flex flex-wrap gap-1.5">
                           {bedroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBedroom(selBedroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-semibold border-2 transition-all ${selBedroom === b ? "border-primary text-white shadow-md" : "border-border/50 bg-muted/40 text-foreground hover:border-primary/40 hover:bg-primary/5"}`}
+                              className={`min-w-[36px] h-9 px-2.5 rounded-xl text-sm font-semibold transition-all ${selBedroom === b ? "text-white shadow-sm" : "bg-muted/60 text-foreground hover:bg-primary/10 hover:text-primary"}`}
                               style={selBedroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
                           ))}
                         </div>
                       </div>
-                      <div className="border-t border-border/40 pt-4">
-                        <p className="text-sm font-bold text-foreground mb-3">Bathrooms</p>
-                        <div className="flex flex-wrap gap-2">
+                      <div className="border-t border-border/40 pt-3.5">
+                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">Bathrooms</p>
+                        <div className="flex flex-wrap gap-1.5">
                           {bathroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBathroom(selBathroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-semibold border-2 transition-all ${selBathroom === b ? "border-primary text-white shadow-md" : "border-border/50 bg-muted/40 text-foreground hover:border-primary/40 hover:bg-primary/5"}`}
+                              className={`min-w-[36px] h-9 px-2.5 rounded-xl text-sm font-semibold transition-all ${selBathroom === b ? "text-white shadow-sm" : "bg-muted/60 text-foreground hover:bg-primary/10 hover:text-primary"}`}
                               style={selBathroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
@@ -444,7 +444,7 @@ const HeroSection = () => {
                       </div>
                       {(selBedroom || selBathroom) && (
                         <button onMouseDown={(e) => { e.preventDefault(); setSelBedroom(""); setSelBathroom(""); }}
-                          className="mt-4 text-xs text-muted-foreground hover:text-primary transition-colors underline underline-offset-2">
+                          className="mt-3 text-[11px] text-muted-foreground hover:text-primary transition-colors underline underline-offset-2">
                           Clear selection
                         </button>
                       )}
