@@ -479,7 +479,7 @@ const HeroSection = () => {
                 <div className="flex flex-col justify-end col-span-2 lg:col-span-1">
                   <button onClick={handleSearch}
                     className="w-full text-white py-[13px] rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] text-sm tracking-wide uppercase"
-                    style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}>
+                    style={{ background: " linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}>
                     <Search className="h-4 w-4" />
                     {isQuestion && smartSearch.trim() ? "Ask AI" : "Search"}
                   </button>
