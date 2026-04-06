@@ -78,6 +78,7 @@ const MOCK_PROJECT = {
     { bedrooms: "1", category: "1 Bedroom", size: "669 – 718 Sq Ft", unitInfo: "669 – 718 Sq Ft", imageUrl: "https://manage.tanamiproperties.com/Project/Floor_Image/3136/Gallery/62836.jpg" },
     { bedrooms: "2", category: "2 Bedrooms", size: "1,029 – 1,249 Sq Ft", unitInfo: "1,029 – 1,249 Sq Ft", imageUrl: "https://manage.tanamiproperties.com/Project/Floor_Image/3136/Gallery/62834.jpg" },
   ],
+  targetBuyers: ["End Users", "Investors", "Families", "Couples"],
   masterPlanImages: ["https://manage.tanamiproperties.com/Project/LayoutPlan/3136/Gallery/3171.webp"],
   brochureUrl: "https://www.tanamiproperties.com/Projects/Binghatti-Hillcrest-Brochure-Download",
   mapUrl: "",
