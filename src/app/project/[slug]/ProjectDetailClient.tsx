@@ -390,7 +390,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * idx + 0.2 }}
-                  className="bg-card rounded-2xl p-3.5 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 min-h-[92px] flex flex-col justify-center"
+                  className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 min-h-[80px] sm:min-h-[92px] flex flex-col justify-center"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <StatIcon className="h-4 w-4 text-accent" />
@@ -430,13 +430,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
                   {isPaymentPlan ? (
                   <div>
-                      <p className="text-[13px] sm:text-sm font-bold text-foreground leading-snug">10% – 70% – 20%</p>
-                      <p className="text-[10px] text-muted-foreground mt-0.5">Booking – Construction – Handover</p>
+                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">10% – 70% – 20%</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">Booking – Construction – Handover</p>
                     </div>
                   ) : (
                     <>
-                      <p className="text-[13px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
-                      {sub && <p className="text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
+                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
+                      {sub && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
                     </>
                   )}
                 </motion.div>
@@ -1569,19 +1569,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {/* Schedule Video Consultation */}
                   <a
                     href="#schedule-call"
-                    className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-xl hover:shadow-primary/15 hover:scale-[1.01]"
+                    className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-lg hover:shadow-primary/15 hover:scale-[1.01]"
                   >
-                    <div className="rounded-[14px] bg-card/95 backdrop-blur-xl p-6 sm:p-8">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/80/10 border border-primary/15 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 group-hover:to-primary/80/20 transition-all">
-                          <Calendar className="h-5 w-5 text-primary" />
+                    <div className="rounded-[14px] bg-card/95 backdrop-blur-xl p-4 sm:p-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/15 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 transition-all">
+                          <Calendar className="h-4.5 w-4.5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">Schedule a Video Consultation</h3>
-                          <p className="text-xs text-muted-foreground mt-0.5">Book a free video call with our property consultant — no obligations</p>
+                          <h3 className="text-sm font-bold text-primary">Schedule a Video Consultation</h3>
+                          <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Book a free video call with our property consultant — no obligations</p>
                         </div>
-                        <ArrowRight className="h-5 w-5 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
-                    </div>
+                        <ArrowRight className="h-4 w-4 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
+                      </div>
                     </div>
                   </a>
 
