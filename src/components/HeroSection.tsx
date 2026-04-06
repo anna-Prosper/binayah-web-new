@@ -215,8 +215,8 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center overflow-hidden pt-16 pb-8 sm:pt-0 sm:pb-0">
-      <motion.div className="absolute inset-0" style={{ y: imageY }}>
+    <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0" style={{ overflow: "visible" }}>
+      <motion.div className="absolute inset-0 overflow-hidden" style={{ y: imageY }}>
         <img src={heroImage} alt="Dubai skyline" className="h-[120%] w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
@@ -352,29 +352,30 @@ const HeroSection = () => {
                 <div className="relative">
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Location</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "location" ? null : "location")}
-                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md">
                     <span className={selLocation ? "text-foreground font-medium" : "text-muted-foreground"}>{selLocation || "All Locations"}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
-                      <div className="p-3 border-b border-border">
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
+                      <div className="p-3 border-b border-border/50">
                         <input value={locationSearch} onChange={(e) => setLocationSearch(e.target.value)}
                           placeholder="Search areas..." autoFocus
-                          className="w-full px-3 py-2 text-sm bg-secondary/50 rounded-lg border border-border focus:outline-none" />
+                          className="w-full px-3 py-2 text-sm bg-muted/50 rounded-xl border border-border/50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all" />
                       </div>
                       <div className="max-h-64 overflow-y-auto">
-                        <p className="px-4 pt-3 pb-1.5 text-xs font-bold text-muted-foreground uppercase tracking-wider">Popular locations</p>
+                        <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Popular locations</p>
                         {popularLocations.filter((l) => !locationSearch || l.name.toLowerCase().includes(locationSearch.toLowerCase())).map((loc) => (
                           <button key={loc.name} onMouseDown={(e) => { e.preventDefault(); setSelLocation(loc.name); setLocationSearch(""); setOpenDropdown(null); }}
-                            className={`w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-muted/60 transition-colors ${selLocation === loc.name ? "bg-primary/5" : ""}`}>
-                            <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                              <MapPin className="h-4 w-4 text-muted-foreground" />
+                            className={`w-full text-left px-4 py-2.5 flex items-center gap-3 hover:bg-primary/5 transition-colors border-b border-border/20 last:border-0 ${selLocation === loc.name ? "bg-primary/8" : ""}`}>
+                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${selLocation === loc.name ? "bg-primary/15" : "bg-muted"}`}>
+                              <MapPin className={`h-3.5 w-3.5 ${selLocation === loc.name ? "text-primary" : "text-muted-foreground"}`} />
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-foreground">{loc.name}</p>
+                              <p className={`text-sm font-medium ${selLocation === loc.name ? "text-primary" : "text-foreground"}`}>{loc.name}</p>
                               <p className="text-xs text-muted-foreground">{loc.city}</p>
                             </div>
+                            {selLocation === loc.name && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />}
                           </button>
                         ))}
                       </div>
@@ -386,17 +387,18 @@ const HeroSection = () => {
                 <div className="relative">
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Property type</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
-                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md">
                     <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType || "Property type"}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {propertyTypes.map((t) => (
                           <button key={t} onMouseDown={(e) => { e.preventDefault(); setSelType(selType === t ? "" : t); setOpenDropdown(null); }}
-                            className={`w-full text-left px-4 py-3.5 text-sm rounded-xl hover:bg-muted/50 transition-colors ${selType === t ? "font-semibold text-primary bg-primary/5" : "text-foreground"}`}>
+                            className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors flex items-center justify-between ${selType === t ? "font-semibold text-primary bg-primary/8" : "text-foreground hover:bg-muted/60"}`}>
                             {t}
+                            {selType === t && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                           </button>
                         ))}
                       </div>
@@ -408,36 +410,44 @@ const HeroSection = () => {
                 <div className="relative">
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Beds & Baths</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "beds" ? null : "beds")}
-                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md">
                     <span className={(selBedroom || selBathroom) ? "text-foreground font-medium" : "text-muted-foreground"}>
                       {[selBedroom && `${selBedroom} bed`, selBathroom && `${selBathroom} bath`].filter(Boolean).join(", ") || "Beds & Baths"}
                     </span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] p-5">
-                      <div className="mb-4">
-                        <p className="text-base font-bold text-foreground mb-3">Bedrooms</p>
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-5">
+                      <div className="mb-5">
+                        <p className="text-sm font-bold text-foreground mb-3">Bedrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bedroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBedroom(selBedroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBedroom === b ? "border-primary text-white" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`} style={selBedroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-semibold border-2 transition-all ${selBedroom === b ? "border-primary text-white shadow-md" : "border-border/50 bg-muted/40 text-foreground hover:border-primary/40 hover:bg-primary/5"}`}
+                              style={selBedroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
                           ))}
                         </div>
                       </div>
-                      <div>
-                        <p className="text-base font-bold text-foreground mb-3">Bathrooms</p>
+                      <div className="border-t border-border/40 pt-4">
+                        <p className="text-sm font-bold text-foreground mb-3">Bathrooms</p>
                         <div className="flex flex-wrap gap-2">
                           {bathroomOptions.map((b) => (
                             <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBathroom(selBathroom === b ? "" : b); }}
-                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-medium border-2 transition-all ${selBathroom === b ? "border-primary text-white" : "border-border/60 bg-[#f5f0e8] text-foreground hover:border-primary/40"}`} style={selBathroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
+                              className={`min-w-[44px] h-11 px-3 rounded-2xl text-sm font-semibold border-2 transition-all ${selBathroom === b ? "border-primary text-white shadow-md" : "border-border/50 bg-muted/40 text-foreground hover:border-primary/40 hover:bg-primary/5"}`}
+                              style={selBathroom === b ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
                               {b}
                             </button>
                           ))}
                         </div>
                       </div>
+                      {(selBedroom || selBathroom) && (
+                        <button onMouseDown={(e) => { e.preventDefault(); setSelBedroom(""); setSelBathroom(""); }}
+                          className="mt-4 text-xs text-muted-foreground hover:text-primary transition-colors underline underline-offset-2">
+                          Clear selection
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -446,17 +456,18 @@ const HeroSection = () => {
                 <div className="relative">
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Your Budget</label>
                   <button onClick={() => setOpenDropdown(openDropdown === "budget" ? null : "budget")}
-                    className="w-full bg-white/90 hover:bg-white border border-white/50 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none shadow-sm backdrop-blur-sm">
+                    className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md">
                     <span className={selBudget ? "text-foreground font-medium" : "text-muted-foreground"}>{selBudget || "Max. Price"}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-border/30 z-[9999] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {budgets.map((b) => (
                           <button key={b} onMouseDown={(e) => { e.preventDefault(); setSelBudget(selBudget === b ? "" : b); setOpenDropdown(null); }}
-                            className={`w-full text-left px-4 py-3.5 text-sm rounded-xl hover:bg-muted/50 transition-colors ${selBudget === b ? "font-semibold text-primary bg-primary/5" : "text-foreground"}`}>
-                            AED {b}
+                            className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors flex items-center justify-between ${selBudget === b ? "font-semibold text-primary bg-primary/8" : "text-foreground hover:bg-muted/60"}`}>
+                            <span>AED {b}</span>
+                            {selBudget === b && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                           </button>
                         ))}
                       </div>
