@@ -171,9 +171,10 @@ function SearchContent() {
                 onClick={() => setStatus(tab)}
                 className={`px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                   status === tab
-                    ? "bg-primary text-primary-foreground shadow-sm"
+                    ? "text-white shadow-sm"
                     : "bg-background text-muted-foreground hover:text-foreground border border-border"
                 }`}
+                style={status === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
                 {tab}
                 {tab === "Off-Plan" && projectCount > 0 && (
@@ -226,7 +227,8 @@ function SearchContent() {
               <p className="text-muted-foreground mb-6">Try adjusting your filters or search terms.</p>
               <button
                 onClick={clearFilters}
-                className="px-6 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors"
+                className="px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 Clear All Filters
               </button>

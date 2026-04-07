@@ -87,7 +87,7 @@ export default function DevelopersPageClient({
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 bg-primary text-primary-foreground overflow-hidden">
+      <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -190,7 +190,7 @@ export default function DevelopersPageClient({
             {hasMore && !loading && !search && (
               <button
                 onClick={loadMore}
-                className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+                className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 Load More Developers
               </button>

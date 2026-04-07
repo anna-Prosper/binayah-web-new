@@ -66,3 +66,4 @@ __pycache__/
 *.pyc
 src 3/
 .env.example
+*.sql.gz

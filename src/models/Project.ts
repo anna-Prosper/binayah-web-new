@@ -82,6 +82,7 @@ export interface IProject extends Document {
   tags: string[];
   areas: string[];
   viewCount: number;
+  permitUrl: string;
   publishStatus: string;
   publishedAt: string;
   createdAt: string;
@@ -180,6 +181,7 @@ const ProjectSchema = new Schema<IProject>(
     tags: { type: [String], default: [] },
     areas: { type: [String], default: [] },
     viewCount: { type: Number, default: 0 },
+    permitUrl: String,
     publishStatus: { type: String, default: "Published", index: true },
     publishedAt: String,
   },

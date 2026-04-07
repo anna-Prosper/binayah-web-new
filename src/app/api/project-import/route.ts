@@ -7,19 +7,13 @@ export const dynamic = "force-dynamic";
 const IMPORT_SECRET = process.env.PROJECT_IMPORT_SECRET;
 
 const KNOWN_CITIES = [
-  "Dubai",
-  "Abu Dhabi",
-  "Sharjah",
-  "Ras Al Khaimah",
-  "Ajman",
-  "Umm Al Quwain",
-  "Fujairah",
+  "Dubai", "Abu Dhabi", "Sharjah", "Ras Al Khaimah",
+  "Ajman", "Umm Al Quwain", "Fujairah",
 ];
 
 function slugify(value: string) {
   return String(value || "")
-    .toLowerCase()
-    .trim()
+    .toLowerCase().trim()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
@@ -32,9 +26,7 @@ function extractSlugFromUrl(url?: string) {
     const u = new URL(url);
     const parts = u.pathname.split("/").filter(Boolean);
     return parts[parts.length - 1] || "";
-  } catch {
-    return "";
-  }
+  } catch { return ""; }
 }
 
 function parsePriceCandidate(input?: string) {
@@ -52,20 +44,6 @@ function parsePriceCandidate(input?: string) {
   return { amount: Math.round(amount), currency };
 }
 
-function collectPrices(price?: string, features?: string[]) {
-  const values: { amount: number; currency: string }[] = [];
-  const p = parsePriceCandidate(price);
-  if (p) values.push(p);
-  for (const f of features || []) {
-    const v = parsePriceCandidate(f);
-    if (v) values.push(v);
-  }
-  if (!values.length) return null;
-  const currency = values[0].currency;
-  const amounts = values.map((v) => v.amount).sort((a, b) => a - b);
-  return { currency, min: amounts[0], max: amounts[amounts.length - 1] };
-}
-
 function formatMoney(amount: number, currency: string) {
   return `${currency} ${amount.toLocaleString()}`;
 }
@@ -75,14 +53,10 @@ function splitAddress(address?: string) {
   if (!parts.length) return { city: "Dubai", community: "" };
   const last = parts[parts.length - 1];
   const first = parts[0];
-  const lastIsCity = KNOWN_CITIES.some((c) => c.toLowerCase() === last.toLowerCase());
-  const firstIsCity = KNOWN_CITIES.some((c) => c.toLowerCase() === first.toLowerCase());
-  if (lastIsCity) {
+  if (KNOWN_CITIES.some((c) => c.toLowerCase() === last.toLowerCase()))
     return { city: last, community: parts.slice(0, -1).join(", ") };
-  }
-  if (firstIsCity) {
+  if (KNOWN_CITIES.some((c) => c.toLowerCase() === first.toLowerCase()))
     return { city: first, community: parts.slice(1).join(", ") };
-  }
   return { city: "Dubai", community: parts.join(", ") };
 }
 
@@ -91,33 +65,18 @@ function normalizeDeveloper(dev?: string) {
   return String(dev)
     .replace(/\bDeveloper\b/gi, "")
     .replace(/\bView developer details\b/gi, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
+    .replace(/\s{2,}/g, " ").trim();
 }
 
 function cleanDescription(desc?: string) {
   if (!desc) return "";
-  return String(desc)
-    .replace(/Show full description/gi, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
+  return String(desc).replace(/Show full description/gi, "").replace(/\s{2,}/g, " ").trim();
 }
 
 function toParagraphHtml(text: string) {
   if (!text) return "";
   const safe = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   return `<p>${safe}</p>`;
-}
-
-function deriveUnitTypes(beds?: string) {
-  if (!beds) return [] as string[];
-  const trimmed = String(beds).trim();
-  if (!trimmed) return [];
-  const num = parseInt(trimmed, 10);
-  if (!Number.isNaN(num)) {
-    return [num === 0 ? "Studio" : `${num} Bedroom`];
-  }
-  return [trimmed];
 }
 
 function unique(arr: string[]) {
@@ -135,28 +94,142 @@ function stripEmpty<T extends Record<string, any>>(obj: T) {
   return out;
 }
 
-function mapPayloadToProject(payload: any) {
+// ─── New format mapper (all_projects structure) ────────────────────────────────
+
+function mapNewFormat(data: any) {
+  const p = data.all_projects;
+  const hero = p.hero_stats || {};
+  const overview = p.overview || {};
+  const details = p.project_details || {};
+  const sidebar = p.property_sidebar?.project_info || {};
+  const locationInfo = p.location_and_nearby?.info || {};
+  const wp = p.wordpress_data || {};
+
+  const name = String(
+    overview.title || sidebar.title || hero.hero_stats?.title || wp.title || ""
+  ).trim();
+
+  const slug = slugify(name);
+
+  const city = locationInfo.city || sidebar.city || hero.hero_location?.split(",").pop()?.trim() || "Dubai";
+  const community = locationInfo.community || sidebar.community || hero.hero_location || "";
+
+  // Price — parse from hero_price_aed
+  const priceRaw = hero.hero_price_aed || "";
+  const priceNum = parsePriceCandidate(priceRaw);
+
+  // Images
+  const galleryImages = unique([
+    ...(hero.hero_gallery || []),
+  ]);
+  const featuredImage = hero.hero_image || galleryImages[0] || "";
+
+  // Unit types from available_units
+  const unitTypes = unique(
+    (p.available_units || p.floor_plans || []).map((u: any) => u.title || u.beds || "")
+  );
+
+  // Floor plans
+  const floorPlans = (p.floor_plans || p.available_units || []).map((fp: any) => ({
+    title: fp.title || "",
+    beds: fp.beds || "",
+    size: fp.size || "",
+    image: fp.image || "",
+    pdf: fp.pdf || "",
+  }));
+
+  // Payment plan
+  const paymentPlan = p.payment_plan?.steps?.length
+    ? {
+        structure: p.payment_plan_details?.structure_text || "",
+        steps: p.payment_plan.steps.map((s: any) => ({
+          percent: s.percent || "",
+          title: s.title || "",
+          description: s.amount || "",
+        })),
+      }
+    : undefined;
+
+  // Amenities
+  const amenities = unique([
+    ...(details.amenities || []),
+  ]);
+
+  // Key highlights
+  const highlights = p.key_highlights || [];
+
+  const description = cleanDescription(overview.full_desc || wp.content || "");
+  const shortOverview = overview.short_desc || description.slice(0, 280).trim();
+  const fullDescription = toParagraphHtml(description);
+
+  // Video tour
+  const videoTour = p.video_tour?.url
+    ? { url: p.video_tour.url, title: p.video_tour.title || "", thumbnail: p.video_tour.thumbnail || "" }
+    : undefined;
+
+  // Master plan
+  const masterPlanImage = details.master_plan_image || "";
+
+  // FAQs
+  const faqs = (p.property_faqs || []).map((f: any) => ({
+    question: f.question || f.q || "",
+    answer: f.answer || f.a || "",
+  }));
+
+  const mapped = {
+    name,
+    slug,
+    source: "tanami",
+    status: hero.hero_status || sidebar.status || "Off-Plan",
+    projectType: "Residential",
+    propertyType: hero.hero_type || sidebar.property_type || "Apartment",
+    developerName: normalizeDeveloper(
+      details.developer_name || hero.hero_developer || sidebar.developer || ""
+    ),
+    developerLogo: details.developer_logo || "",
+    community,
+    city,
+    country: locationInfo.country || "UAE",
+    mapUrl: p.location_nearby?.google_map_url || locationInfo.google_map_url || "",
+    startingPrice: priceNum?.amount ?? null,
+    displayPrice: priceRaw,
+    currency: priceNum?.currency || "AED",
+    priceRange: priceRaw,
+    unitTypes,
+    sizeRange: hero.stat_size_range || "",
+    handover: hero.stat_handover || "",
+    ownership: hero.stat_ownership || "",
+    totalUnits: sidebar.total_units || "",
+    shortOverview,
+    fullDescription,
+    featuredImage,
+    imageGallery: galleryImages,
+    masterPlanImage,
+    floorPlans: floorPlans.length ? floorPlans : undefined,
+    paymentPlan,
+    amenities: amenities.length ? amenities : undefined,
+    highlights: highlights.length ? highlights : undefined,
+    videoTour,
+    brochureUrl: p.brochure_url || "",
+    faqs: faqs.length ? faqs : undefined,
+    publishStatus: "Draft",
+  };
+
+  return stripEmpty(mapped);
+}
+
+// ─── Legacy flat format mapper ─────────────────────────────────────────────────
+
+function mapLegacyFormat(payload: any) {
   const name = String(payload?.title || payload?.name || "").trim();
   const sourceUrl = String(payload?.url || "").trim();
   const slug = slugify(payload?.slug || extractSlugFromUrl(sourceUrl) || name);
   const { city, community } = splitAddress(payload?.address || payload?.location || "");
 
-  const prices = collectPrices(payload?.price, payload?.features);
-  const startingPrice = prices ? prices.min : null;
-  const currency = prices ? prices.currency : "AED";
-  const priceRange = prices && prices.min !== prices.max
-    ? `${formatMoney(prices.min, currency)} - ${formatMoney(prices.max, currency)}`
-    : prices
-      ? formatMoney(prices.min, currency)
-      : "";
-
+  const priceNum = parsePriceCandidate(payload?.price);
   const description = cleanDescription(payload?.description || "");
-  const shortOverview = description ? description.slice(0, 280).trim() : "";
-  const fullDescription = description ? toParagraphHtml(description) : "";
 
   const images = unique([...(payload?.images || [])]);
-  const localImages = unique([...(payload?.local_images || [])]);
-  const masterPlanImages = images.filter((u) => /master[_-]?plan/i.test(u));
 
   const mapped = {
     name,
@@ -174,23 +247,33 @@ function mapPayloadToProject(payload: any) {
     latitude: payload?.latitude ? Number(payload.latitude) : undefined,
     longitude: payload?.longitude ? Number(payload.longitude) : undefined,
     mapUrl: payload?.map_url || "",
-    startingPrice,
+    startingPrice: priceNum?.amount ?? null,
     displayPrice: payload?.price || "",
-    currency,
-    priceRange,
+    currency: priceNum?.currency || "AED",
+    priceRange: payload?.price || "",
     bedrooms: payload?.beds ? String(payload.beds) : "",
-    bathrooms: payload?.baths ? String(payload.baths) : "",
-    unitTypes: deriveUnitTypes(payload?.beds),
-    shortOverview,
-    fullDescription,
+    shortOverview: description.slice(0, 280).trim(),
+    fullDescription: toParagraphHtml(description),
     featuredImage: payload?.thumbnail || images[0] || "",
     imageGallery: images,
-    localImages,
-    masterPlanImages,
     publishStatus: "Draft",
   };
+
   return stripEmpty(mapped);
 }
+
+// ─── Auto-detect format ────────────────────────────────────────────────────────
+
+function mapPayloadToProject(payload: any) {
+  // New format: has all_projects key
+  if (payload?.all_projects) {
+    return mapNewFormat(payload);
+  }
+  // Legacy flat format
+  return mapLegacyFormat(payload);
+}
+
+// ─── Route handlers ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   if (!IMPORT_SECRET) {
@@ -216,14 +299,9 @@ export async function POST(req: NextRequest) {
     const payload = items[i];
     try {
       const project = mapPayloadToProject(payload);
-      if (!project.name || !project.slug) {
-        throw new Error("Missing title/slug");
-      }
+      if (!project.name || !project.slug) throw new Error("Missing title/slug");
 
-      const filter = project.sourceUrl
-        ? { sourceUrl: project.sourceUrl }
-        : { slug: project.slug };
-
+      const filter = { slug: project.slug };
       const existing = await Project.findOne(filter).select("_id").lean();
       if (existing) {
         await Project.updateOne(filter, { $set: project });

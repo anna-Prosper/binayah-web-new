@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Sparkles, ArrowLeft, Home, MapPin, Wallet, Bed, Loader2, RotateCcw,
-  Building2, Heart, Clock, CheckSquare, ArrowRight,
+  Building2, CheckSquare, ArrowRight,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
@@ -18,6 +18,7 @@ type QuestionDef = {
   icon: React.ElementType;
   options: string[];
   multi?: boolean;
+  popular?: string[];
 };
 
 const questions: QuestionDef[] = [
@@ -26,7 +27,8 @@ const questions: QuestionDef[] = [
     question: "What's your goal?",
     subtitle: "This shapes everything — from location to ROI focus.",
     icon: Home,
-    options: ["Buy to live in", "Buy to invest (rental income)", "Buy to flip (capital gains)", "Rent a home", "Rent an office / commercial"],
+    options: ["Buy to live in", "Buy to invest", "Buy to flip", "Rent a home", "Rent commercial"],
+    popular: ["Buy to live in", "Buy to invest"],
   },
   {
     id: "propertyType",
@@ -34,6 +36,7 @@ const questions: QuestionDef[] = [
     subtitle: "Each type has different yields and lifestyle benefits.",
     icon: Building2,
     options: ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio", "No preference"],
+    popular: ["Apartment", "Villa"],
   },
   {
     id: "areas",
@@ -42,8 +45,7 @@ const questions: QuestionDef[] = [
     icon: MapPin,
     options: [
       "Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "Business Bay",
-      "JVC / JVT", "Dubai Hills", "Creek Harbour", "MBR City / Sobha",
-      "Emaar Beachfront", "Dubai South / Expo City", "No preference",
+      "JVC / JVT", "Dubai Hills", "Creek Harbour", "No preference",
     ],
     multi: true,
   },
@@ -54,8 +56,9 @@ const questions: QuestionDef[] = [
     icon: Wallet,
     options: [
       "Under AED 500K", "AED 500K – 1M", "AED 1M – 2M", "AED 2M – 5M",
-      "AED 5M – 10M", "AED 10M+", "Under 80K/yr rent", "80K – 200K/yr rent",
+      "AED 5M – 10M", "AED 10M+",
     ],
+    popular: ["AED 1M – 2M", "AED 2M – 5M"],
   },
   {
     id: "bedrooms",
@@ -63,25 +66,6 @@ const questions: QuestionDef[] = [
     subtitle: "Studios yield highest %, but families need space.",
     icon: Bed,
     options: ["Studio", "1 Bedroom", "2 Bedrooms", "3 Bedrooms", "4+ Bedrooms", "Flexible"],
-  },
-  {
-    id: "lifestyle",
-    question: "What matters most to you?",
-    subtitle: "Pick up to 3 priorities — we'll weight our recommendations.",
-    icon: Heart,
-    options: [
-      "Beach / waterfront", "City views / skyline", "Family-friendly / schools",
-      "Nightlife & dining", "Peace & privacy", "Metro / commute",
-      "Golf / sports", "High rental yield", "Capital appreciation",
-    ],
-    multi: true,
-  },
-  {
-    id: "timeline",
-    question: "When do you want to move?",
-    subtitle: "Off-plan = savings, ready = instant. We'll match accordingly.",
-    icon: Clock,
-    options: ["Immediately (ready)", "Within 6 months", "1–2 years (off-plan OK)", "Just exploring"],
   },
 ];
 
@@ -186,16 +170,14 @@ const PropertyMatcher = () => {
       areas: Array.isArray(ans.areas) ? ans.areas : ans.areas ? [ans.areas] : ["No preference"],
       budget: ans.budget || "Not specified",
       bedrooms: ans.bedrooms || "Flexible",
-      lifestyle: Array.isArray(ans.lifestyle) ? ans.lifestyle : ans.lifestyle ? [ans.lifestyle] : ["Not specified"],
-      timeline: ans.timeline || "Not specified",
+      lifestyle: ["Not specified"],
+      timeline: "Not specified",
     };
 
     try {
       const resp = await fetch(MATCHER_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ profile }),
       });
 
@@ -248,13 +230,16 @@ const PropertyMatcher = () => {
   };
 
   return (
-    <section id="property-matcher" className="py-24 bg-card relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+    <section id="property-matcher" className="py-12 sm:py-24 relative overflow-hidden border-y border-border/30" style={{ background: "linear-gradient(160deg, hsl(40,20%,96%), hsl(43,40%,95%))" }}>
+      <div className="absolute top-0 left-0 w-full h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, #D4A847, transparent)" }} />
+      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(212,168,71,0.4) 1px, transparent 0)", backgroundSize: "28px 28px" }} />
+      <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.08]" style={{ background: "radial-gradient(circle at top right, #D4A847, transparent 70%)" }} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-          <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mx-auto mb-6" />
-          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">AI Property Matcher</p>
+        {/* Desktop header */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="hidden sm:block text-center mb-12">
+          <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }} />
+          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>AI Property Matcher</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
             Find Your <span className="italic font-light">Perfect Match</span>
           </h2>
@@ -264,63 +249,77 @@ const PropertyMatcher = () => {
         </motion.div>
 
         <div className="bg-background rounded-2xl shadow-sm border border-border/50 overflow-hidden">
-          {/* Progress */}
+          {/* Progress - collapsed header on mobile */}
           {!showResult && (
-            <div className="px-6 pt-6">
-              <div className="flex gap-1 mb-2">
+            <div className="px-4 sm:px-6 pt-4 sm:pt-6">
+              {/* Mobile: compact header inside card */}
+              <div className="sm:hidden flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" style={{ color: "#D4A847" }} />
+                  <span className="text-sm font-bold text-foreground">Find Your Match</span>
+                </div>
+                <span className="text-xs text-muted-foreground font-medium">{step + 1} / {questions.length}</span>
+              </div>
+              <div className="flex gap-1 mb-1 sm:mb-2">
                 {questions.map((_, i) => (
-                  <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? "bg-primary" : i === step ? "bg-primary/60" : "bg-border"}`} />
+                  <div key={i} className={`h-1 sm:h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? "bg-primary" : i === step ? "bg-primary/60" : "bg-border"}`} />
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground">{step + 1} of {questions.length}</p>
+              <p className="hidden sm:block text-xs text-muted-foreground">{step + 1} of {questions.length}</p>
             </div>
           )}
 
-          <div className="p-6 sm:p-8 min-h-[380px]">
+          <div className="p-4 sm:p-8 min-h-[300px] sm:min-h-[380px]">
             <AnimatePresence mode="wait">
               {!showResult ? (
                 <motion.div key={step} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.2 }}>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <current.icon className="h-5 w-5 text-primary" />
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <current.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground">{current.question}</h3>
+                    <h3 className="text-base sm:text-xl font-bold text-foreground">{current.question}</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-6 ml-[52px]">{current.subtitle}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{current.subtitle}</p>
 
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                     {current.options.map((opt) => {
                       const isSelected = current.multi && multiSelections.includes(opt);
+                      const isPopular = current.popular?.includes(opt);
                       return (
                         <button
                           key={opt}
                           onClick={() => current.multi ? toggleMulti(opt) : handleSingleSelect(opt)}
-                          className={`text-left px-4 py-3 rounded-xl border transition-all text-sm font-medium flex items-center gap-2 ${
+                          className={`text-left px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border transition-all text-xs sm:text-sm font-medium flex items-center gap-2 ${
                             isSelected
                               ? "border-primary bg-primary/10 text-primary"
-                              : "border-border hover:border-primary hover:bg-primary/5 text-foreground hover:text-primary"
+                              : isPopular
+                                ? "border-primary/40 bg-primary/5 text-foreground hover:border-primary hover:bg-primary/10"
+                                : "border-border hover:border-primary hover:bg-primary/5 text-foreground hover:text-primary"
                           }`}
                         >
                           {current.multi && (
-                            <CheckSquare className={`h-4 w-4 flex-shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground/30"}`} />
+                            <CheckSquare className={`h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground/30"}`} />
                           )}
-                          {opt}
+                          <span className="flex-1">{opt}</span>
+                          {isPopular && !current.multi && (
+                            <span className="hidden sm:inline text-[9px] uppercase tracking-wider font-bold text-primary/60">Popular</span>
+                          )}
                         </button>
                       );
                     })}
                   </div>
 
-                  <div className="mt-5 flex items-center justify-between">
+                  <div className="mt-4 sm:mt-5 flex items-center justify-between">
                     {step > 0 ? (
-                      <button onClick={() => { setStep(step - 1); setMultiSelections([]); }} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                        <ArrowLeft className="h-3.5 w-3.5" /> Back
+                      <button onClick={() => { setStep(step - 1); setMultiSelections([]); }} className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors">
+                        <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Back
                       </button>
                     ) : <div />}
                     {current.multi && (
                       <button
                         onClick={confirmMulti}
                         disabled={multiSelections.length === 0}
-                        className="px-5 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-semibold disabled:opacity-40 hover:bg-primary/90 transition-colors"
+                        className="px-4 sm:px-5 py-2 text-white rounded-xl text-xs sm:text-sm font-semibold disabled:opacity-40 transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                       >
                         Continue →
                       </button>
@@ -330,7 +329,7 @@ const PropertyMatcher = () => {
               ) : (
                 <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                   {loading && !result ? (
-                    <div className="flex flex-col items-center justify-center py-16">
+                    <div className="flex flex-col items-center justify-center py-12 sm:py-16">
                       <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
                       <p className="text-muted-foreground text-sm">Analyzing your profile & finding perfect matches...</p>
                       <p className="text-muted-foreground/60 text-xs mt-1">This takes ~10 seconds</p>
@@ -338,7 +337,7 @@ const PropertyMatcher = () => {
                   ) : (
                     <>
                       <div className="flex items-center gap-2 mb-5">
-                        <Sparkles className="h-5 w-5 text-accent" />
+                        <Sparkles className="h-5 w-5" style={{ color: "#D4A847" }} />
                         <h3 className="text-lg font-bold text-foreground">Your Personalized Recommendations</h3>
                       </div>
                       <ResultContent result={result} />

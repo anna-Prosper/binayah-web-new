@@ -11,8 +11,7 @@ const stats = [
 ];
 
 const StatsSection = () => (
-  <section className="py-14 sm:py-24 bg-card relative overflow-hidden">
-    {/* Subtle pattern */}
+  <section className="py-10 sm:py-24 bg-card relative overflow-hidden">
     <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "40px 40px" }} />
 
     <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
@@ -21,29 +20,53 @@ const StatsSection = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="text-center mb-10 sm:mb-16"
+        className="text-center mb-6 sm:mb-16"
       >
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: "3rem" }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="h-[2px] bg-accent mx-auto mb-6"
+          className="h-[2px] mx-auto mb-3 sm:mb-6"
+          style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
-        <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
+        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
           Why Choose Us
         </p>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-          Award Winning Real Estate
-          <br />
-          <span className="italic font-light">Agency in Dubai</span>
+        <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+          <span className="sm:hidden">Award-Winning Agency</span>
+          <span className="hidden sm:inline">Award Winning Real Estate<br /><span className="italic font-light">Agency in Dubai</span></span>
         </h2>
-        <p className="mt-5 text-muted-foreground max-w-lg mx-auto">
+        <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
           With over a decade of experience, we've helped thousands of clients find their dream properties in Dubai's most sought-after communities.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+      {/* Mobile: compact stats with icons */}
+      <div className="sm:hidden grid grid-cols-2 gap-3">
+        {stats.map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+            className="flex items-center gap-3 rounded-xl px-3 py-3"
+            style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.05), rgba(26,122,90,0.08))" }}
+          >
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+              <stat.icon className="h-4 w-4 text-white" />
+            </div>
+            <div>
+              <p className="text-lg font-bold text-foreground leading-none">{stat.value}</p>
+              <p className="text-[9px] text-muted-foreground font-medium mt-0.5 leading-tight">{stat.label}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Desktop: original card grid */}
+      <div className="hidden sm:grid grid-cols-4 gap-6 lg:gap-10">
         {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -53,17 +76,12 @@ const StatsSection = () => (
             transition={{ duration: 0.5, delay: i * 0.12 }}
             className="text-center group"
           >
-            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-5 rounded-2xl flex items-center justify-center transition-all duration-300"
-              style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.12)" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, #0B3D2E, #1A7A5A)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))"; }}>
-              <stat.icon className="h-5 w-5 sm:h-7 sm:w-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
+            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-all duration-300 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
+              <stat.icon className="h-7 w-7 text-[#0B3D2E] group-hover:text-white transition-colors duration-300 relative z-10" />
             </div>
-            <p className="text-2xl sm:text-5xl font-bold mb-1 sm:mb-2"
-              style={{ background: "linear-gradient(to right, #0B3D2E, #1A7A5A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              {stat.value}
-            </p>
-            <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">{stat.label}</p>
+            <p className="text-5xl font-bold text-foreground mb-2">{stat.value}</p>
+            <p className="text-sm text-muted-foreground font-medium tracking-wide">{stat.label}</p>
           </motion.div>
         ))}
       </div>

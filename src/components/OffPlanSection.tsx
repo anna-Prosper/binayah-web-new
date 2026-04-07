@@ -25,8 +25,8 @@ const OffPlanSection = () => {
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4"
         >
           <div>
-            <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Off Plan</p>
+            <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Off Plan</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               Trending <span className="italic font-light">Developments</span>
             </h2>

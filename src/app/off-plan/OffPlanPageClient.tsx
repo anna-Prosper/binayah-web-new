@@ -74,7 +74,7 @@ export default function OffPlanPageClient({
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <section className="relative pt-32 pb-20 bg-primary text-primary-foreground overflow-hidden">
+      <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -99,7 +99,7 @@ export default function OffPlanPageClient({
                 transition={{ delay: Math.min(i * 0.06, 0.3) }}
                 className="h-full"
               >
-                <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                <Link href={p.slug === "__fallback__" ? "#" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <img
                       src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
@@ -147,7 +147,8 @@ export default function OffPlanPageClient({
             {hasMore && !loading && (
               <button
                 onClick={loadMore}
-                className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+                className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 Load More Projects
               </button>
