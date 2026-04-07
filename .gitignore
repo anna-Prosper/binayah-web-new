@@ -67,3 +67,4 @@ __pycache__/
 src 3/
 .env.example
 *.sql.gz
+*.sql.gz
