@@ -2567,10 +2567,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <div className="hidden overflow-x-auto sm:block">
                 <table className="w-full table-fixed text-sm">
                   <colgroup>
-                    <col className="w-[7rem]"/>
+                    <col className="w-[6rem]"/>
+                    <col className="w-[8rem]"/>
+                    <col className="w-[9rem]"/>
                     <col className="w-[10rem]"/>
-                    <col className="w-[11rem]"/>
-                    <col className="w-[9.75rem]"/>
                     <col/>
                   </colgroup>
                   <thead>
