@@ -2565,13 +2565,20 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             })}
               </div>
               <div className="hidden overflow-x-auto sm:block">
-                <table className="w-full text-sm">
+                <table className="w-full table-fixed text-sm">
+                  <colgroup>
+                    <col className="w-[7rem]"/>
+                    <col className="w-[10rem]"/>
+                    <col className="w-[11rem]"/>
+                    <col className="w-[9.75rem]"/>
+                    <col/>
+                  </colgroup>
                   <thead>
                     <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-[#66706d] border-b border-[#e3ddcf]">
                       <th className="pb-3 pr-4">Type</th>
                       <th className="pb-3 pr-4">Size</th>
-                      <th className="pb-3 pr-4">Date</th>
-                      <th className="pb-3 pr-4">Price</th>
+                      <th className="pb-3 pr-4 whitespace-nowrap">Date</th>
+                      <th className="pb-3 pr-4 whitespace-nowrap">Price</th>
                       <th className="pb-3">Why It Matters</th>
                     </tr>
                   </thead>
@@ -2583,8 +2590,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                           <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"}`}>{c.type}</span>
                         </td>
                         <td className="py-3 pr-4 text-[#66706d]">{c.size}</td>
-                        <td className="py-3 pr-4 text-[#66706d]">{c.date}</td>
-                        <td className="py-3 pr-4 font-bold transition-all duration-500 select-none">
+                        <td className="py-3 pr-4 whitespace-nowrap text-[#66706d]">{c.date}</td>
+                        <td className="py-3 pr-4 whitespace-nowrap font-bold transition-all duration-500 select-none">
                           {isLockedPreviewRow ? (<MaskedComparablePrice currency={result.currency}/>) : (fmt(c.price, result.currency))}
                         </td>
                         <td className={`py-3 text-[#66706d] max-w-xs transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
