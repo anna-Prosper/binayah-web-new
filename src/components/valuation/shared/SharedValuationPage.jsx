@@ -799,6 +799,9 @@ function getDeliveryNotice(delivery) {
     return {
         message,
         tone: ((_a = summary === null || summary === void 0 ? void 0 : summary.tone) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === "success" ? "success" : "warning",
+        action: delivery && typeof delivery === "object" && delivery.whatsapp && typeof delivery.whatsapp === "object"
+            ? delivery.whatsapp.action || null
+            : null,
     };
 }
 function normalizeTurnstileConfig(value) {
@@ -2113,7 +2116,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   <div className={`mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full ${deliveryNotice.tone === "success" ? "bg-[#0B3D2E] text-white" : "bg-[#D4A847]/18 text-[#B8922F]"}`}>
                     {deliveryNotice.tone === "success" ? <Check className="h-3.5 w-3.5"/> : <AlertTriangle className="h-3.5 w-3.5"/>}
                   </div>
-                  <p className="text-sm font-medium leading-relaxed">{deliveryNotice.message}</p>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium leading-relaxed">{deliveryNotice.message}</p>
+                    {deliveryNotice.action && typeof deliveryNotice.action.href === "string" && deliveryNotice.action.href ? (<a href={deliveryNotice.action.href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.22)] transition-transform duration-300 hover:scale-[1.02] hover:bg-[#1da851]">
+                        <MessageCircle className="h-4 w-4"/>
+                        {deliveryNotice.action.label || "Send Hi on WhatsApp"}
+                      </a>) : null}
+                  </div>
                 </div>)}
               <div className="flex flex-wrap gap-2">
                 {result.tags.map((t) => (<span key={t} className="rounded-full px-3.5 py-1.5 text-xs font-medium text-[#10231e] sm:px-4 sm:text-sm" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
@@ -2961,7 +2970,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         </div>
         <div className="flex items-start gap-2.5">
           <MessageCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
-          <span>PDF delivered to the same number on WhatsApp when a phone is provided.</span>
+          <span>If that number hasn&apos;t already messaged us on WhatsApp, we&apos;ll ask you to send a quick Hi first, then deliver the PDF automatically.</span>
         </div>
       </div>
 
