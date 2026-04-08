@@ -2363,6 +2363,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         setResult(mapApiToResult(data, form));
                         setUnlocked(true);
                         setUseDeedResult(false);
+                        topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                     catch (err) {
                         const msg = err instanceof Error ? err.message : "Could not unlock the full report.";
