@@ -2591,9 +2591,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <table className="w-full table-fixed text-sm">
                   <colgroup>
                     <col className="w-[6rem]"/>
-                    <col className="w-[8rem]"/>
-                    <col className="w-[9rem]"/>
-                    <col className="w-[10rem]"/>
+                    <col className="w-[7.5rem]"/>
+                    <col className="w-[8.5rem]"/>
+                    <col className="w-[16rem]"/>
                     <col/>
                   </colgroup>
                   <thead>
@@ -3355,11 +3355,11 @@ const MaskedInlineRange = ({ currency = "AED" }) => {
     </span>);
 };
 const MaskedComparablePrice = ({ currency = "AED" }) => {
-    return (<span className="inline-flex items-baseline gap-2 text-[#10231e]">
+    return (<span className="inline-flex whitespace-nowrap text-[#10231e] md:min-w-[15rem] items-baseline gap-2">
       <span className="text-[0.98rem] font-semibold tracking-[0.08em] text-[#10231e]">
         {currency}
       </span>
-      <span className="inline-block text-[1.02rem] font-semibold tracking-[0.02em] text-[rgba(16,35,30,0.68)] blur-[1.55px] select-none">
+      <span className="inline-block whitespace-nowrap text-[1.02rem] font-semibold tracking-[0.02em] text-[rgba(16,35,30,0.68)] blur-[1.55px] select-none">
         price available after unlock
       </span>
     </span>);
