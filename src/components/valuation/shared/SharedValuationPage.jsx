@@ -2541,7 +2541,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className="mb-6 text-sm text-[#66706d] sm:ml-[46px]">Strongest sales and active listings used in the estimate</p>
-              <div className="grid gap-3 sm:hidden">
+              <div className="grid gap-3 md:hidden">
                 {result.comparables.map((c, i) => {
                 const isLockedPreviewRow = !unlocked && c.visibility === "locked";
                 return (<div key={i} className="rounded-2xl border border-[rgba(227,221,207,0.5)] bg-[rgba(250,247,242,0.6)] p-4">
@@ -2564,7 +2564,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </div>);
             })}
               </div>
-              <div className="hidden overflow-x-auto sm:block">
+              <div className="hidden overflow-x-auto md:block">
                 <table className="w-full table-fixed text-sm">
                   <colgroup>
                     <col className="w-[6rem]"/>
