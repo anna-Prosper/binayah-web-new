@@ -692,6 +692,7 @@ function mapApiToResult(api, form) {
         disclaimer: api.disclaimer || DEED_DUMMY_RESULT.disclaimer,
         sources: api.sources || [],
         sourceCount: Array.isArray(api.sources) ? api.sources.length : 0,
+        delivery: api.delivery || null,
     };
 }
 function mapPreviewApiToResult(api, form) {
@@ -755,6 +756,7 @@ function mapPreviewApiToResult(api, form) {
             : true,
         disclaimer: "AI-assisted market snapshot. Not a formal appraisal.",
         sources: [],
+        delivery: null,
     };
 }
 function getPreviewRange(result, label) {
@@ -786,6 +788,18 @@ function getPriceComparisonBounds(result) {
         max *= 1.05;
     }
     return { min, max };
+}
+function getDeliveryNotice(delivery) {
+    var _a;
+    const summary = delivery && typeof delivery === "object" ? delivery.summary : null;
+    const message = typeof (summary === null || summary === void 0 ? void 0 : summary.message) === "string" ? summary.message.trim() : "";
+    if (!message) {
+        return null;
+    }
+    return {
+        message,
+        tone: ((_a = summary === null || summary === void 0 ? void 0 : summary.tone) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === "success" ? "success" : "warning",
+    };
 }
 function normalizeTurnstileConfig(value) {
     const safeValue = value && typeof value === "object" ? value : {};
@@ -1561,6 +1575,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const lockedMarketReadCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal market read");
     const lockedStrategyCardProps = getUnlockCardProps(!unlocked, "Unlock the full report to reveal recommended strategy");
     const lockedMovingFactorsCardProps = getUnlockCardProps(Boolean(result === null || result === void 0 ? void 0 : result.movingFactorsLocked), "Unlock the full report to reveal what can move this estimate");
+    const deliveryNotice = getDeliveryNotice(result === null || result === void 0 ? void 0 : result.delivery);
     const currentProcessingStep = Math.min(activeProcessStep + 1, processingSteps.length);
     const processingProgress = `${(currentProcessingStep / processingSteps.length) * 100}%`;
     // ─── Render ────────────────────────────────────────────────────────────────
@@ -2092,6 +2107,14 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               </div>
               <h2 className="mb-2 text-2xl font-bold sm:text-4xl">{result.community}, {result.city}, {result.country}</h2>
               <p className="text-[#66706d] mb-4">Key pricing guidance first, then comparable sales and market context.</p>
+              {deliveryNotice && (<div className={`mb-4 flex items-start gap-3 rounded-2xl border px-4 py-3.5 sm:px-5 ${deliveryNotice.tone === "success"
+                    ? "border-[#0B3D2E]/18 bg-[#0B3D2E]/[0.045] text-[#0B3D2E]"
+                    : "border-[#D4A847]/30 bg-[#D4A847]/8 text-[#8a6920]"}`}>
+                  <div className={`mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full ${deliveryNotice.tone === "success" ? "bg-[#0B3D2E] text-white" : "bg-[#D4A847]/18 text-[#B8922F]"}`}>
+                    {deliveryNotice.tone === "success" ? <Check className="h-3.5 w-3.5"/> : <AlertTriangle className="h-3.5 w-3.5"/>}
+                  </div>
+                  <p className="text-sm font-medium leading-relaxed">{deliveryNotice.message}</p>
+                </div>)}
               <div className="flex flex-wrap gap-2">
                 {result.tags.map((t) => (<span key={t} className="rounded-full px-3.5 py-1.5 text-xs font-medium text-[#10231e] sm:px-4 sm:text-sm" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
                     {t}
@@ -2305,7 +2328,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     const hasPhone = gate.phone.trim().length > 5;
                     const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
                     if (!hasPhone && !hasEmail)
-                        errs.contact = "Please add a phone or email so we can follow up.";
+                        errs.contact = "Please add a phone or email so we can send the PDF report.";
                     if (Object.keys(errs).length) {
                         setGateErrors(errs);
                         return;
@@ -2923,14 +2946,24 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         </div>
         <div>
           <h3 className="font-bold text-[#10231e] text-lg leading-tight">Unlock the full report</h3>
-          <p className="text-xs text-[#66706d] mt-0.5">Comparables, market read, and strategy — free</p>
+          <p className="text-xs text-[#66706d] mt-0.5">Unlock on the web and send the PDF to email or WhatsApp</p>
         </div>
       </div>
 
       <p className="text-sm text-[#66706d] mb-6 leading-relaxed">
-        Enter your name and a contact to reveal the exact figures and get the full report.
-        No spam — just one call or message if you want it.
+        Enter your name and at least one contact. We&apos;ll unlock the report here instantly and send the same PDF report to the email address and/or WhatsApp number you provide.
       </p>
+
+      <div className="mb-6 grid gap-2 rounded-2xl border border-[#0B3D2E]/10 bg-[#faf7f2] p-3.5 text-sm text-[#46524d] sm:grid-cols-2 sm:p-4">
+        <div className="flex items-start gap-2.5">
+          <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
+          <span>PDF delivered to the email address you enter.</span>
+        </div>
+        <div className="flex items-start gap-2.5">
+          <MessageCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
+          <span>PDF delivered to the same number on WhatsApp when a phone is provided.</span>
+        </div>
+      </div>
 
       <div className="grid sm:grid-cols-3 gap-4 mb-4">
         {/* Name */}
@@ -2978,7 +3011,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         </p>)}
 
       <button onClick={onUnlock} disabled={gateSubmitting} className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:w-auto" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
-        {gateSubmitting ? (<><RefreshCw className="h-4 w-4 animate-spin"/> Unlocking…</>) : (<><Unlock className="h-4 w-4"/> See full report</>)}
+        {gateSubmitting ? (<><RefreshCw className="h-4 w-4 animate-spin"/> Unlocking and sending…</>) : (<><Unlock className="h-4 w-4"/> Unlock and send report</>)}
       </button>
     </div>
   </div>);
