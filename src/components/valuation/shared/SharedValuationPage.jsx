@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, } from "lucide-react";
+import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
 const LOCATION_DATA = {
     Dubai: [
         { area: "Downtown Dubai", buildings: [
@@ -1070,17 +1070,84 @@ const DEED_DUMMY_RESULT = {
 };
 // ─── Component ────────────────────────────────────────────────────────────────
 const defaultResolveApiUrl = (path) => path;
+const INITIAL_FORM_STATE = {
+    transactionType: "buy",
+    unit: "",
+    area: "",
+    beds: "",
+    maids: "No",
+    city: "Dubai",
+    type: "",
+    size: "",
+};
+function cleanReportField(value) {
+    return typeof value === "string" ? value.trim() : "";
+}
+function buildFormFromInquiry(inquiry, fallback = INITIAL_FORM_STATE) {
+    const safeInquiry = inquiry && typeof inquiry === "object" ? inquiry : {};
+    const transactionType = cleanReportField(safeInquiry.transactionType).toLowerCase() === "rent" ? "rent" : "buy";
+    return {
+        transactionType: cleanReportField(safeInquiry.transactionType) ? transactionType : fallback.transactionType,
+        unit: cleanReportField(safeInquiry.propertyName) || fallback.unit,
+        area: cleanReportField(safeInquiry.location) || fallback.area,
+        beds: cleanReportField(safeInquiry.bedrooms) || fallback.beds,
+        maids: cleanReportField(safeInquiry.maids) || fallback.maids,
+        city: cleanReportField(safeInquiry.city) || fallback.city,
+        type: cleanReportField(safeInquiry.propertyType) || fallback.type,
+        size: cleanReportField(safeInquiry.size) || fallback.size,
+    };
+}
+function getLeadIdFromCurrentUrl() {
+    if (typeof window === "undefined") {
+        return "";
+    }
+    try {
+        const url = new URL(window.location.href);
+        return cleanReportField(url.searchParams.get("leadId"));
+    }
+    catch (_a) {
+        return "";
+    }
+}
+function replaceLeadIdInCurrentUrl(leadId) {
+    if (typeof window === "undefined") {
+        return;
+    }
+    const normalizedLeadId = cleanReportField(leadId);
+    try {
+        const url = new URL(window.location.href);
+        if (normalizedLeadId) {
+            url.searchParams.set("leadId", normalizedLeadId);
+        }
+        else {
+            url.searchParams.delete("leadId");
+        }
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+    catch (_a) { }
+}
+function buildShareUrlForLeadId(leadId) {
+    const normalizedLeadId = cleanReportField(leadId);
+    if (!normalizedLeadId || typeof window === "undefined") {
+        return "";
+    }
+    try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("leadId", normalizedLeadId);
+        return url.toString();
+    }
+    catch (_a) {
+        return "";
+    }
+}
 const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = defaultResolveApiUrl }) => {
     var _a, _b, _c, _d, _e, _f;
     const [step, setStep] = useState("form");
-    const [form, setForm] = useState({
-        transactionType: "buy",
-        unit: "", area: "", beds: "", maids: "No", city: "Dubai",
-        type: "", size: "",
-    });
+    const [form, setForm] = useState(INITIAL_FORM_STATE);
     const [result, setResult] = useState(null);
     const [activeProcessStep, setActiveProcessStep] = useState(0);
     const [copied, setCopied] = useState(false);
+    const [linkCopied, setLinkCopied] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const [globalError, setGlobalError] = useState(null);
@@ -1118,9 +1185,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const [gateSubmitting, setGateSubmitting] = useState(false);
     const [unlockHighlight, setUnlockHighlight] = useState(false);
     const [turnstileState, setTurnstileState] = useState("idle");
+    const [loadingSavedReport, setLoadingSavedReport] = useState(false);
     const topRef = useRef(null);
     const unlockSectionRef = useRef(null);
     const unlockHighlightTimeoutRef = useRef(null);
+    const reportHydrationAttemptedRef = useRef(false);
     const unitInputRef = useRef(null);
     const areaSuggestionsRef = useRef(null);
     const buildingSuggestionsRef = useRef(null);
@@ -1276,6 +1345,121 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             removeTurnstileWidget();
         };
     }, []);
+    const applyLoadedReport = useCallback((data) => {
+        var _a;
+        const nextForm = buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE);
+        setForm(nextForm);
+        setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
+        setSmartParsed({});
+        setFieldErrors({});
+        setGateErrors({});
+        setFieldSources({ city: "manual", maids: "manual" });
+        setSmartSnapshot({});
+        setGate({ name: "", phone: "", email: "" });
+        setGlobalError(null);
+        setUseDeedResult(false);
+        setDeedFile(null);
+        setDeedParsing(false);
+        setDeedParsed(false);
+        setLoadingSavedReport(false);
+        if ((data === null || data === void 0 ? void 0 : data.accessState) === "preview") {
+            setResult(mapPreviewApiToResult(data, nextForm));
+            setUnlocked(false);
+        }
+        else {
+            setResult(mapApiToResult(data, nextForm));
+            setUnlocked((data === null || data === void 0 ? void 0 : data.accessState) === "unlocked");
+        }
+        if (data === null || data === void 0 ? void 0 : data.leadId) {
+            replaceLeadIdInCurrentUrl(data.leadId);
+        }
+        setStep("results");
+        (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, []);
+    const copyShareLink = useCallback(() => {
+        const shareUrl = buildShareUrlForLeadId(result === null || result === void 0 ? void 0 : result.leadId);
+        if (!shareUrl || !navigator.clipboard) {
+            return;
+        }
+        navigator.clipboard.writeText(shareUrl);
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 2000);
+    }, [result === null || result === void 0 ? void 0 : result.leadId]);
+    const resetForNewSearch = useCallback(() => {
+        var _a;
+        setStep("form");
+        setForm(INITIAL_FORM_STATE);
+        setResult(null);
+        setUnlocked(false);
+        setGate({ name: "", phone: "", email: "" });
+        setGateErrors({});
+        setGateSubmitting(false);
+        setFieldErrors({});
+        setSubmitAttempted(false);
+        setGlobalError(null);
+        setRetryCount(0);
+        setActiveProcessStep(0);
+        setUseDeedResult(false);
+        setDeedFile(null);
+        setDeedParsing(false);
+        setDeedParsed(false);
+        setSmartQuery("");
+        setSmartParsed({});
+        setShowSmartSuggestions(false);
+        setShowAreaSuggestions(false);
+        setShowBuildingSuggestions(false);
+        setShowPlaces(false);
+        setFieldSources({ city: "manual", maids: "manual" });
+        setSmartSnapshot({});
+        setCopied(false);
+        setLinkCopied(false);
+        setLoadingSavedReport(false);
+        replaceLeadIdInCurrentUrl("");
+        (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, []);
+    useEffect(() => {
+        if (reportHydrationAttemptedRef.current) {
+            return;
+        }
+        reportHydrationAttemptedRef.current = true;
+        const leadId = getLeadIdFromCurrentUrl();
+        if (!leadId) {
+            return;
+        }
+        let cancelled = false;
+        setLoadingSavedReport(true);
+        setGlobalError(null);
+        setStep("processing");
+        void (async () => {
+            try {
+                const response = await fetch(resolveApiUrl(`/api/valuation/report?leadId=${encodeURIComponent(leadId)}`), {
+                    headers: { Accept: "application/json" },
+                    cache: "no-store",
+                });
+                const data = await response.json().catch(() => null);
+                if (!response.ok) {
+                    throw new Error((data === null || data === void 0 ? void 0 : data.error) || "Could not load the saved valuation report.");
+                }
+                if (cancelled) {
+                    return;
+                }
+                applyLoadedReport(data);
+            }
+            catch (err) {
+                const msg = err instanceof Error ? err.message : "Could not load the saved valuation report.";
+                if (cancelled) {
+                    return;
+                }
+                replaceLeadIdInCurrentUrl("");
+                setLoadingSavedReport(false);
+                setGlobalError(msg);
+                setStep("form");
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [applyLoadedReport, resolveApiUrl]);
     const scrollToUnlockSection = useCallback(() => {
         var _a;
         if (unlocked) {
@@ -1314,9 +1498,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             const data = await fetchValuation(payload, resolveApiUrl);
             // Update phase to final on success
             setActiveProcessStep(3);
-            setResult(mapApiToResult(data, form));
-            setStep("results");
-            (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+            applyLoadedReport(data);
         }
         catch (err) {
             const msg = err instanceof Error ? err.message : "Something went wrong.";
@@ -1341,7 +1523,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 (_b = topRef.current) === null || _b === void 0 ? void 0 : _b.scrollIntoView({ behavior: "smooth" });
             }
         }
-    }, [form]);
+    }, [applyLoadedReport, form, resolveApiUrl]);
     const handleDeedUpload = async (file) => {
         setDeedFile(file);
         setDeedParsing(true);
@@ -1481,11 +1663,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             }
             if (!finalData)
                 throw new Error("Stream ended before a result was returned.");
-            setResult(mapPreviewApiToResult(finalData, form));
-            setUnlocked(false);
-            setUseDeedResult(false);
-            setStep("results");
-            (_e = topRef.current) === null || _e === void 0 ? void 0 : _e.scrollIntoView({ behavior: "smooth" });
+            applyLoadedReport(finalData);
         }
         catch (err) {
             clearTimeout(timeout);
@@ -2106,7 +2284,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
         {/* ── Processing ── */}
         {step === "processing" && (<motion.div key="processing" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-            <div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
+            {loadingSavedReport ? (<div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
+                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Saved Report</p>
+                <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Loading valuation link</h2>
+                <p className="text-[#66706d]">Reopening the saved report from the shareable link.</p>
+                <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-white px-4 py-2 text-sm font-medium text-[#0B3D2E]">
+                  <RefreshCw className="h-4 w-4 animate-spin"/>
+                  Fetching report details…
+                </div>
+              </div>) : (<div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
               <p className="text-[#66706d] mb-3">Key pricing guidance first, then comparable sales and market context.</p>
@@ -2170,7 +2356,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div className="h-3 w-3/4 bg-[#0B3D2E]/5 rounded"/>
                   </div>))}
               </div>
-            </div>
+            </div>)}
           </motion.div>)}
 
         {/* ── Results ── */}
@@ -2194,10 +2380,16 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     Valuation Snapshot
                   </p>
                 </div>
-                <button onClick={() => { setStep("form"); setResult(null); setUnlocked(false); setGate({ name: "", phone: "", email: "" }); setUseDeedResult(false); }} className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06] sm:w-auto" type="button">
-                  <ArrowLeft className="h-4 w-4"/>
-                  New Search
-                </button>
+                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                  {result.leadId ? (<button onClick={copyShareLink} className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-white px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.03] sm:w-auto" type="button">
+                      {linkCopied ? <Check className="h-4 w-4"/> : <Link2 className="h-4 w-4"/>}
+                      {linkCopied ? "Link Copied" : "Copy Link"}
+                    </button>) : null}
+                  <button onClick={resetForNewSearch} className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06] sm:w-auto" type="button">
+                    <ArrowLeft className="h-4 w-4"/>
+                    New Search
+                  </button>
+                </div>
               </div>
               <h2 className="mb-2 text-2xl font-bold sm:text-4xl">{result.community}, {result.city}, {result.country}</h2>
               <p className="text-[#66706d] mb-4">Key pricing guidance first, then comparable sales and market context.</p>
@@ -2451,10 +2643,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         if (!response.ok) {
                             throw new Error((data === null || data === void 0 ? void 0 : data.error) || "Could not unlock the full report.");
                         }
-                        setResult(mapApiToResult(data, form));
-                        setUnlocked(true);
-                        setUseDeedResult(false);
-                        topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        applyLoadedReport(data);
                     }
                     catch (err) {
                         const msg = err instanceof Error ? err.message : "Could not unlock the full report.";

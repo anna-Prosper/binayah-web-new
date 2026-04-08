@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type ValuationEndpoint = "config" | "document" | "stream" | "unlock";
+type ValuationEndpoint = "config" | "document" | "report" | "stream" | "unlock";
 
-const endpointPattern = /\/(config|document|stream|unlock)$/;
+const endpointPattern = /\/(config|document|report|stream|unlock)$/;
 
 export function resolveValuationUpstreamUrl(endpoint: ValuationEndpoint): string {
   const explicitBaseUrl = cleanText(
