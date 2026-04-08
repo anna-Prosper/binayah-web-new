@@ -624,6 +624,66 @@ const TRANSACTION_TYPE_OPTIONS = [
 ];
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const fmt = (n, currency = "AED") => n == null ? "—" : `${currency} ${Math.round(n).toLocaleString("en-US")}`;
+function normalizeValuationRichText(value) {
+    return String(value || "")
+        .replace(/\u00A0/g, " ")
+        .replace(/[•‣▪▫◦●○]/g, "-")
+        .replace(/[ \t]+/g, " ")
+        .trim();
+}
+function parseValuationRichTextParts(value) {
+    const source = normalizeValuationRichText(value);
+    if (!source) {
+        return [];
+    }
+    const parts = [];
+    let cursor = 0;
+    const pushText = (text) => {
+        const normalized = String(text || "").replace(/[ \t]+/g, " ");
+        if (!normalized) {
+            return;
+        }
+        const previous = parts[parts.length - 1];
+        if ((previous === null || previous === void 0 ? void 0 : previous.type) === "text") {
+            previous.text += normalized;
+            return;
+        }
+        parts.push({ type: "text", text: normalized });
+    };
+    while (cursor < source.length) {
+        const openIndex = source.indexOf("**", cursor);
+        if (openIndex < 0) {
+            pushText(source.slice(cursor));
+            break;
+        }
+        const closeIndex = source.indexOf("**", openIndex + 2);
+        if (closeIndex < 0) {
+            pushText(source.slice(cursor));
+            break;
+        }
+        if (openIndex > cursor) {
+            pushText(source.slice(cursor, openIndex));
+        }
+        const strongText = String(source.slice(openIndex + 2, closeIndex) || "").replace(/[ \t]+/g, " ").trim();
+        if (strongText) {
+            parts.push({ type: "strong", text: strongText });
+        }
+        else {
+            pushText(source.slice(openIndex, closeIndex + 2));
+        }
+        cursor = closeIndex + 2;
+    }
+    return parts;
+}
+function renderValuationRichText(text, keyPrefix = "valuation-rich-text") {
+    const parts = parseValuationRichTextParts(text);
+    if (!parts.length) {
+        return text;
+    }
+    return parts.map((part, index) => part.type === "strong" ? (<strong key={`${keyPrefix}-${index}`} className="font-semibold">
+          {part.text}
+        </strong>) : (<React.Fragment key={`${keyPrefix}-${index}`}>{part.text}</React.Fragment>));
+}
 function extractCommunity(unit) {
     var _a;
     if (!unit)
@@ -685,9 +745,11 @@ function mapApiToResult(api, form) {
             (_h = api.recommended_list_price) === null || _h === void 0 ? void 0 : _h.note,
             (_j = api.quick_sale_range) === null || _j === void 0 ? void 0 : _j.note,
         ].filter(Boolean),
-        movingFactors: defaultMovingFactors.map((factor) => factor.includes("Vacancy status")
-            ? `Vacancy status — vacant ${propType}s typically command a 3–8% premium.`
-            : factor),
+        movingFactors: Array.isArray(api.moving_factors) && api.moving_factors.length
+            ? api.moving_factors
+            : defaultMovingFactors.map((factor) => factor.includes("Vacancy status")
+                ? `Vacancy status - vacant ${propType}s typically command a **3-8% premium**.`
+                : factor),
         movingFactorsLocked: false,
         disclaimer: api.disclaimer || DEED_DUMMY_RESULT.disclaimer,
         sources: api.sources || [],
@@ -941,7 +1003,7 @@ const DEED_DUMMY_RESULT = {
     tags: ["Apartment", "Dubai Marina", "Thinking of selling"],
     fairValueLow: 2750000,
     fairValueHigh: 2950000,
-    fairValueExplanation: "Based on 14 comparable transactions in Marina Gate 1 and surrounding Dubai Marina towers over the last 12 months, a 2-bedroom unit of this size is valued in the AED 2.75M–2.95M range, assuming standard finishes and a mid-range floor.",
+    fairValueExplanation: "Based on 14 comparable transactions in **Marina Gate 1** and surrounding Dubai Marina towers over the last 12 months, a 2-bedroom unit of this size is valued in the **AED 2.75M–2.95M** range, assuming standard finishes and a mid-range floor.",
     confidence: "High",
     confidenceReason: "Strong volume of recent comparable sales within the same building and community, with consistent price-per-sqft data available.",
     quickSaleLow: 2550000,
@@ -949,24 +1011,24 @@ const DEED_DUMMY_RESULT = {
     suggestedListLow: 2900000,
     suggestedListHigh: 3050000,
     comparables: [
-        { type: "Sale", size: "1,210 sqft", date: "Jan 2026", price: 2800000, reason: "Same building, floor 18, standard finish. Sold in 23 days at AED 2,314/sqft." },
-        { type: "Sale", size: "1,310 sqft", date: "Dec 2025", price: 2950000, reason: "Marina Gate 1, floor 22, upgraded kitchen and sea view." },
-        { type: "Listing", size: "1,247 sqft", date: "Mar 2026", price: 3100000, reason: "Current ask, same building. Listed 18 days ago, no offers reported yet." },
-        { type: "Sale", size: "1,190 sqft", date: "Nov 2025", price: 2680000, reason: "Lower floor, community view. Useful quick-sale floor reference." },
-        { type: "Listing", size: "1,280 sqft", date: "Feb 2026", price: 2950000, reason: "Marina Gate 2 — closest comparable building, similar age and spec." },
+        { type: "Sale", size: "1,210 sqft", date: "Jan 2026", price: 2800000, reason: "Same building, floor 18, standard finish. Sold in 23 days at **AED 2,314/sqft**." },
+        { type: "Sale", size: "1,310 sqft", date: "Dec 2025", price: 2950000, reason: "**Marina Gate 1**, floor 22, upgraded kitchen and sea view." },
+        { type: "Listing", size: "1,247 sqft", date: "Mar 2026", price: 3100000, reason: "Current ask in the same building at **AED 3,100,000**. Listed 18 days ago, no offers reported yet." },
+        { type: "Sale", size: "1,190 sqft", date: "Nov 2025", price: 2680000, reason: "Lower floor, community view. Useful quick-sale floor reference around **AED 2,680,000**." },
+        { type: "Listing", size: "1,280 sqft", date: "Feb 2026", price: 2950000, reason: "**Marina Gate 2** - closest comparable building, similar age and spec." },
     ],
-    marketRead: "Dubai Marina continues to attract strong end-user and investor demand in Q1 2026. Marina Gate has outperformed the broader Marina average by ~4% over the past 12 months, driven by newer build quality and proximity to the Marina Walk. Average time-on-market for 2BR units is 28 days. Rental yields remain competitive at 5.8–6.4% gross.",
-    strategy: "Given the current demand and your intent to sell, listing at AED 2.9M–3.05M positions the unit competitively while leaving negotiation room. Price slightly below the most recent comparable listing to attract early offers. Vacant access will materially improve buyer interest and speed up the transaction.",
+    marketRead: "Dubai Marina continues to attract strong end-user and investor demand in Q1 2026. **Marina Gate** has outperformed the broader Marina average by **~4%** over the past 12 months, driven by newer build quality and proximity to the Marina Walk. Average time-on-market for 2BR units is **28 days**. Rental yields remain competitive at **5.8–6.4% gross**.",
+    strategy: "Given the current demand and your intent to sell, listing at **AED 2.9M–3.05M** positions the unit competitively while leaving negotiation room. Price slightly below the most recent comparable listing to attract early offers. Vacant access will materially improve buyer interest and speed up the transaction.",
     strategyBullets: [
         "Stage for photography and enable flexible viewings — this building transacts faster with vacant access.",
-        "List at AED 2,950,000 and treat AED 2,800,000+ as a strong outcome.",
-        "If urgency is high, AED 2,650,000–2,700,000 targets cash buyers and should close in under 30 days.",
+        "List at **AED 2,950,000** and treat **AED 2,800,000+** as a strong outcome.",
+        "If urgency is high, **AED 2,650,000–2,700,000** targets cash buyers and should close in under 30 days.",
     ],
     movingFactors: [
-        "Exact floor level and view — sea or Marina views command a 5–10% premium.",
-        "Finish quality — renovated kitchens and bathrooms add AED 80,000–150,000.",
-        "Furnishing — fully furnished units achieve 3–8% higher asking prices.",
-        "Vacancy status — vacant units transact 20–30% faster.",
+        "Exact floor level and view — sea or Marina views command a **5–10% premium**.",
+        "Finish quality — renovated kitchens and bathrooms add **AED 80,000–150,000**.",
+        "Furnishing — fully furnished units achieve **3–8%** higher asking prices.",
+        "Vacancy status — vacant units transact **20–30% faster**.",
         "Service charge exposure — buyers factor annual charges into offers.",
     ],
     movingFactorsLocked: false,
@@ -2163,7 +2225,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                           <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
                             {fmt(result.fairValueLow, result.currency)} – {fmt(result.fairValueHigh, result.currency)}
                           </p>
-                          <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{result.fairValueExplanation}</p>
+                          <p className={`text-sm text-white/80 mt-3 leading-relaxed transition-all duration-500 ${!unlocked ? "blur-sm opacity-60" : ""}`}>{renderValuationRichText(result.fairValueExplanation, "fair-value-explanation")}</p>
                         </>)}
                     </div>
                   </div>
@@ -2180,7 +2242,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       {result.confidence}
                     </span>
                   </div>
-                  <p className="text-sm text-[#66706d] leading-relaxed">{result.confidenceReason}</p>
+                  <p className="text-sm text-[#66706d] leading-relaxed">{renderValuationRichText(result.confidenceReason, "confidence-reason")}</p>
                 </div>
               </div>
 
@@ -2198,7 +2260,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   <PriceBar label="Fair value" low={result.fairValueLow} high={result.fairValueHigh} min={(_c = priceComparisonBounds === null || priceComparisonBounds === void 0 ? void 0 : priceComparisonBounds.min) !== null && _c !== void 0 ? _c : result.quickSaleLow} max={(_d = priceComparisonBounds === null || priceComparisonBounds === void 0 ? void 0 : priceComparisonBounds.max) !== null && _d !== void 0 ? _d : result.suggestedListHigh} rangePreview={getPreviewRange(result, "Fair value")} color="#0B3D2E" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={null}/>
                   <PriceBar label="Suggested list" low={result.suggestedListLow} high={result.suggestedListHigh} min={(_e = priceComparisonBounds === null || priceComparisonBounds === void 0 ? void 0 : priceComparisonBounds.min) !== null && _e !== void 0 ? _e : result.quickSaleLow} max={(_f = priceComparisonBounds === null || priceComparisonBounds === void 0 ? void 0 : priceComparisonBounds.max) !== null && _f !== void 0 ? _f : result.suggestedListHigh} rangePreview={getPreviewRange(result, "Suggested list")} color="#1A7A5A" currency={result.currency} blurred={!unlocked} maskedPreview={!unlocked && result.accessState === "preview"} fixedWidthPct={null}/>
                 </div>
-                <p className="text-[10px] text-[#66706d] mt-4 bg-[rgba(244,239,231,0.3)] rounded-xl p-3 border border-[rgba(227,221,207,0.3)]">{result.disclaimer}</p>
+                <p className="text-[10px] text-[#66706d] mt-4 bg-[rgba(244,239,231,0.3)] rounded-xl p-3 border border-[rgba(227,221,207,0.3)]">{renderValuationRichText(result.disclaimer, "disclaimer")}</p>
               </div>
 
               {/* Suggested + Quick sale cards */}
@@ -2274,7 +2336,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         <span className="rounded-full bg-[#f4efe7] px-2.5 py-1">{c.date}</span>
                       </div>
                       <p className={`text-sm leading-relaxed text-[#66706d] transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
-                        {c.reason}
+                        {renderValuationRichText(c.reason, `comparable-mobile-${i}`)}
                       </p>
                     </div>);
             })}
@@ -2303,7 +2365,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                           {isLockedPreviewRow ? (<MaskedComparablePrice currency={result.currency}/>) : (fmt(c.price, result.currency))}
                         </td>
                         <td className={`py-3 text-[#66706d] max-w-xs transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
-                          {c.reason}
+                          {renderValuationRichText(c.reason, `comparable-desktop-${i}`)}
                         </td>
                       </tr>);
             })}
@@ -2384,7 +2446,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className={`text-[#66706d] leading-relaxed transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
-                {result.marketRead}
+                {renderValuationRichText(result.marketRead, "market-read")}
               </p>
             </div>
 
@@ -2398,12 +2460,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className={`text-[#66706d] leading-relaxed mb-4 transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
-                {result.strategy}
+                {renderValuationRichText(result.strategy, "strategy")}
               </p>
               <ul className="space-y-2.5">
                 {result.strategyBullets.map((b, i) => (<li key={i} className={`flex items-start gap-2.5 text-[#66706d] text-sm transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
                     <ChevronRight className="h-4 w-4 mt-0.5 text-[#0B3D2E] flex-shrink-0"/>
-                    {b}
+                    <span>{renderValuationRichText(b, `strategy-bullet-${i}`)}</span>
                   </li>))}
               </ul>
             </div>
@@ -2421,7 +2483,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <ul className="space-y-2.5">
                 {result.movingFactors.map((f, i) => (<li key={i} className={`flex items-start gap-2.5 text-[#66706d] text-sm transition-all duration-500 select-none ${result.movingFactorsLocked ? "blur-sm" : ""}`}>
                     <span className="h-2 w-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}/>
-                    {f}
+                    <span>{renderValuationRichText(f, `moving-factor-${i}`)}</span>
                   </li>))}
               </ul>
             </div>
