@@ -719,6 +719,29 @@ function extractCommunity(unit) {
         return "Your Property";
     return ((_a = unit.split(",")[0]) === null || _a === void 0 ? void 0 : _a.trim()) || "Your Property";
 }
+function sanitizeComparableDisplayDate(value) {
+    const normalized = String(value || "").trim();
+    if (!normalized) {
+        return "";
+    }
+    let match = normalized.match(/^(\d{4})[-/](\d{1,2})[-/](\?+|x+|0{1,2}|unknown|n\/a|na)$/i);
+    if (match) {
+        return `${String(Number(match[1])).padStart(4, "0")}-${String(Number(match[2])).padStart(2, "0")}`;
+    }
+    match = normalized.match(/^(\d{4})[-/](\?+|x+|0{1,2}|unknown|n\/a|na)$/i);
+    if (match) {
+        return String(Number(match[1]));
+    }
+    match = normalized.match(/^([A-Za-z]+)\s+(\?+|x+|0{1,2}|unknown|n\/a|na)(?:,)?\s+(\d{4})$/i);
+    if (match) {
+        return `${match[1]} ${match[3]}`;
+    }
+    match = normalized.match(/^(\?+|x+|0{1,2}|unknown|n\/a|na)\s+([A-Za-z]+)(?:,)?\s+(\d{4})$/i);
+    if (match) {
+        return `${match[2]} ${match[3]}`;
+    }
+    return normalized;
+}
 function validateForm(form) {
     const errors = {};
     if (!form.unit.trim() || form.unit.trim().length < 5) {
@@ -735,7 +758,7 @@ function mapApiToResult(api, form) {
         ...((_b = api.transactions) !== null && _b !== void 0 ? _b : []).map((c) => ({
             type: "Sale",
             size: c.size || "Not stated",
-            date: c.date || "Not stated",
+            date: sanitizeComparableDisplayDate(c.date) || "Not stated",
             price: c.price,
             reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
             visibility: "full",
@@ -743,7 +766,7 @@ function mapApiToResult(api, form) {
         ...((_c = api.listings) !== null && _c !== void 0 ? _c : []).map((c) => ({
             type: "Listing",
             size: c.size || "Not stated",
-            date: c.date || "Not stated",
+            date: sanitizeComparableDisplayDate(c.date) || "Not stated",
             price: c.price,
             reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
             visibility: "full",
@@ -794,7 +817,7 @@ function mapPreviewApiToResult(api, form) {
         return ({
             type: row.type === "Listing" ? "Listing" : "Sale",
             size: row.size || "Not stated",
-            date: row.date || "Not stated",
+            date: sanitizeComparableDisplayDate(row.date) || "Not stated",
             price: row.visibility === "teaser" ? (_a = row.price) !== null && _a !== void 0 ? _a : null : null,
             reason: row.whyItMatters || "Comparable detail unlocks with the full report.",
             visibility: row.visibility,
