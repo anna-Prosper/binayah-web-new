@@ -631,6 +631,35 @@ function normalizeValuationRichText(value) {
         .replace(/[ \t]+/g, " ")
         .trim();
 }
+function humanizeBedroomPhrasing(value) {
+    return String(value || "").replace(/\b([1-6])(?:\s*[- ]?\s*)(bedroom|bedrooms|bed|beds|bdr|bdrs|br)\b/gi, (match, count, _label, offset, source) => {
+        const word = bedroomCountToWord(count);
+        if (!word) {
+            return match;
+        }
+        const shouldCapitalize = offset === 0 || /[.!?]\s*$/.test(source.slice(0, offset));
+        const normalizedWord = shouldCapitalize ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+        return `${normalizedWord}-bedroom`;
+    });
+}
+function bedroomCountToWord(value) {
+    switch (String(value || "")) {
+        case "1":
+            return "one";
+        case "2":
+            return "two";
+        case "3":
+            return "three";
+        case "4":
+            return "four";
+        case "5":
+            return "five";
+        case "6":
+            return "six";
+        default:
+            return "";
+    }
+}
 function parseValuationRichTextParts(value) {
     const source = normalizeValuationRichText(value);
     if (!source) {
@@ -639,7 +668,7 @@ function parseValuationRichTextParts(value) {
     const parts = [];
     let cursor = 0;
     const pushText = (text) => {
-        const normalized = String(text || "").replace(/[ \t]+/g, " ");
+        const normalized = humanizeBedroomPhrasing(String(text || "").replace(/[ \t]+/g, " "));
         if (!normalized) {
             return;
         }
@@ -664,7 +693,7 @@ function parseValuationRichTextParts(value) {
         if (openIndex > cursor) {
             pushText(source.slice(cursor, openIndex));
         }
-        const strongText = String(source.slice(openIndex + 2, closeIndex) || "").replace(/[ \t]+/g, " ").trim();
+        const strongText = humanizeBedroomPhrasing(String(source.slice(openIndex + 2, closeIndex) || "").replace(/[ \t]+/g, " ")).trim();
         if (strongText) {
             parts.push({ type: "strong", text: strongText });
         }
