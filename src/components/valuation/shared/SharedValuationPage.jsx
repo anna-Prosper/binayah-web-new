@@ -1097,43 +1097,45 @@ function buildFormFromInquiry(inquiry, fallback = INITIAL_FORM_STATE) {
         size: cleanReportField(safeInquiry.size) || fallback.size,
     };
 }
-function getLeadIdFromCurrentUrl() {
+function getValuationIdFromCurrentUrl() {
     if (typeof window === "undefined") {
         return "";
     }
     try {
         const url = new URL(window.location.href);
-        return cleanReportField(url.searchParams.get("leadId"));
+        return cleanReportField(url.searchParams.get("valuation") || url.searchParams.get("leadId"));
     }
     catch (_a) {
         return "";
     }
 }
-function replaceLeadIdInCurrentUrl(leadId) {
+function replaceValuationIdInCurrentUrl(valuationId) {
     if (typeof window === "undefined") {
         return;
     }
-    const normalizedLeadId = cleanReportField(leadId);
+    const normalizedValuationId = cleanReportField(valuationId);
     try {
         const url = new URL(window.location.href);
-        if (normalizedLeadId) {
-            url.searchParams.set("leadId", normalizedLeadId);
+        if (normalizedValuationId) {
+            url.searchParams.set("valuation", normalizedValuationId);
         }
         else {
-            url.searchParams.delete("leadId");
+            url.searchParams.delete("valuation");
         }
+        url.searchParams.delete("leadId");
         window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
     }
     catch (_a) { }
 }
-function buildShareUrlForLeadId(leadId) {
-    const normalizedLeadId = cleanReportField(leadId);
-    if (!normalizedLeadId || typeof window === "undefined") {
+function buildShareUrlForValuationId(valuationId) {
+    const normalizedValuationId = cleanReportField(valuationId);
+    if (!normalizedValuationId || typeof window === "undefined") {
         return "";
     }
     try {
         const url = new URL(window.location.href);
-        url.searchParams.set("leadId", normalizedLeadId);
+        url.searchParams.set("valuation", normalizedValuationId);
+        url.searchParams.delete("leadId");
         return url.toString();
     }
     catch (_a) {
@@ -1371,13 +1373,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             setUnlocked((data === null || data === void 0 ? void 0 : data.accessState) === "unlocked");
         }
         if (data === null || data === void 0 ? void 0 : data.leadId) {
-            replaceLeadIdInCurrentUrl(data.leadId);
+            replaceValuationIdInCurrentUrl(data.leadId);
         }
         setStep("results");
         (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
     const copyShareLink = useCallback(() => {
-        const shareUrl = buildShareUrlForLeadId(result === null || result === void 0 ? void 0 : result.leadId);
+        const shareUrl = buildShareUrlForValuationId(result === null || result === void 0 ? void 0 : result.leadId);
         if (!shareUrl || !navigator.clipboard) {
             return;
         }
@@ -1414,7 +1416,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setCopied(false);
         setLinkCopied(false);
         setLoadingSavedReport(false);
-        replaceLeadIdInCurrentUrl("");
+        replaceValuationIdInCurrentUrl("");
         (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
     useEffect(() => {
@@ -1422,8 +1424,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             return;
         }
         reportHydrationAttemptedRef.current = true;
-        const leadId = getLeadIdFromCurrentUrl();
-        if (!leadId) {
+        const valuationId = getValuationIdFromCurrentUrl();
+        if (!valuationId) {
             return;
         }
         let cancelled = false;
@@ -1432,7 +1434,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setStep("processing");
         void (async () => {
             try {
-                const response = await fetch(resolveApiUrl(`/api/valuation/report?leadId=${encodeURIComponent(leadId)}`), {
+                const response = await fetch(resolveApiUrl(`/api/valuation/report?valuation=${encodeURIComponent(valuationId)}`), {
                     headers: { Accept: "application/json" },
                     cache: "no-store",
                 });
@@ -1450,7 +1452,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 if (cancelled) {
                     return;
                 }
-                replaceLeadIdInCurrentUrl("");
+                replaceValuationIdInCurrentUrl("");
                 setLoadingSavedReport(false);
                 setGlobalError(msg);
                 setStep("form");
