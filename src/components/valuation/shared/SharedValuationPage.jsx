@@ -2362,7 +2362,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
           </motion.div>)}
 
         {/* ── Results ── */}
-        {step === "results" && result && (<motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+        {step === "results" && result && (<motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
             {/* Demo banner */}
             {useDeedResult && (<div className="mb-4 flex items-start gap-3 rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 py-3.5 sm:px-6">
                 <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0"/>
