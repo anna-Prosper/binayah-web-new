@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     if (!apiKey) return new Response(JSON.stringify({ error: "AI not configured" }), { status: 500, headers: { "Content-Type": "application/json" } });
 
     await connectDB();
-    const projects = await Project.find({ publishStatus: "Published" }).select("name slug status propertyType developerName community startingPrice priceRange unitTypes shortOverview").limit(50).lean();
+    const projects = await Project.find({ publishStatus: "published" }).select("name slug status propertyType developerName community startingPrice priceRange unitTypes shortOverview").limit(50).lean();
 
     const listingsContext = projects.length ? "\n\nAVAILABLE LISTINGS:\n" + projects.map((p) => `- ${p.name} (slug: ${p.slug}) | ${p.developerName} | ${p.community} | ${p.propertyType} | ${p.priceRange || `From AED ${p.startingPrice}`} | ${p.status}`).join("\n") : "";
 

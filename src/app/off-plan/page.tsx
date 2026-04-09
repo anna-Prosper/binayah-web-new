@@ -70,12 +70,12 @@ export default async function OffPlanPage() {
     const CARD_FIELDS = "name slug status developerName community startingPrice completionDate shortOverview featuredImage imageGallery";
 
     const [dbProjects, dbCount] = await Promise.all([
-      Project.find({ publishStatus: "Published" })
+      Project.find({ publishStatus: "published" })
         .select(CARD_FIELDS)
         .sort({ createdAt: -1 })
         .limit(12)
         .lean(),
-      Project.countDocuments({ publishStatus: "Published" }),
+      Project.countDocuments({ publishStatus: "published" }),
     ]);
 
     if (dbProjects.length > 0) {

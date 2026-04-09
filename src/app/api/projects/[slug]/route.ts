@@ -11,7 +11,7 @@ export async function GET(
 ) {
   await connectDB();
   const { slug } = await params;
-  const project = await Project.findOne({ slug, publishStatus: "Published" }).lean();
+  const project = await Project.findOne({ slug, publishStatus: "published" }).lean();
   if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 });
   
   return NextResponse.json(project, {

@@ -22,7 +22,7 @@ export async function GET() {
   await connectDB();
 
   const [projects, listings] = await Promise.all([
-    Project.find({ publishStatus: "Published" })
+    Project.find({ publishStatus: "published" })
       .select("community startingPrice propertyType bedrooms")
       .lean(),
     Listing.find({ publishStatus: "Published" })

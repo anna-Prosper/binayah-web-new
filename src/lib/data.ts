@@ -14,7 +14,7 @@ import { cache } from "react";
 
 export const getPublishedProjects = cache(async (limit?: number) => {
   await connectDB();
-  const query = Project.find({ publishStatus: "Published" })
+  const query = Project.find({ publishStatus: "published" })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -23,12 +23,12 @@ export const getPublishedProjects = cache(async (limit?: number) => {
 
 export const getProjectBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Project.findOne({ slug, publishStatus: "Published" }).lean();
+  return Project.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 export const getProjectsByCity = cache(async (city: string, limit?: number) => {
   await connectDB();
-  const query = Project.find({ publishStatus: "Published", city })
+  const query = Project.find({ publishStatus: "published", city })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -37,21 +37,21 @@ export const getProjectsByCity = cache(async (city: string, limit?: number) => {
 
 export const getProjectsByCommunity = cache(async (community: string) => {
   await connectDB();
-  return Project.find({ publishStatus: "Published", community })
+  return Project.find({ publishStatus: "published", community })
     .sort({ createdAt: -1 })
     .lean();
 });
 
 export const getProjectsByDeveloper = cache(async (developerName: string) => {
   await connectDB();
-  return Project.find({ publishStatus: "Published", developerName })
+  return Project.find({ publishStatus: "published", developerName })
     .sort({ createdAt: -1 })
     .lean();
 });
 
 export const getProjectsByStatus = cache(async (status: string, limit?: number) => {
   await connectDB();
-  const query = Project.find({ publishStatus: "Published", status })
+  const query = Project.find({ publishStatus: "published", status })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -61,7 +61,7 @@ export const getProjectsByStatus = cache(async (status: string, limit?: number) 
 export const searchProjects = cache(async (searchTerm: string, limit = 20) => {
   await connectDB();
   return Project.find({
-    publishStatus: "Published",
+    publishStatus: "published",
     $or: [
       { name: { $regex: searchTerm, $options: "i" } },
       { community: { $regex: searchTerm, $options: "i" } },
@@ -205,7 +205,7 @@ export const getDeveloperWithProjects = cache(async (slug: string) => {
   const developer = await Developer.findOne({ slug, publishStatus: "Published" }).lean();
   if (!developer) return null;
   const projects = await Project.find({
-    publishStatus: "Published",
+    publishStatus: "published",
     developerName: developer.name,
   })
     .sort({ createdAt: -1 })
@@ -237,7 +237,7 @@ export const getStats = cache(async () => {
   await connectDB();
   const [projectCount, buildingCount, listingCount, communityCount, developerCount] =
     await Promise.all([
-      Project.countDocuments({ publishStatus: "Published" }),
+      Project.countDocuments({ publishStatus: "published" }),
       Building.countDocuments({ publishStatus: "Published" }),
       Listing.countDocuments({ publishStatus: "Published" }),
       Community.countDocuments({ publishStatus: "Published" }),

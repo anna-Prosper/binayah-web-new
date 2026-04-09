@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get("limit") || "48"), 100);
   const skip = parseInt(searchParams.get("skip") || "0");
 
-  const filter: Record<string, unknown> = { publishStatus: "Published" };
+  const filter: Record<string, unknown> = { publishStatus: "published" };
   if (community) filter.community = community;
   if (status) filter.status = status;
   if (search) {

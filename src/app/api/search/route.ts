@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
   let listingCount = 0;
 
   if (searchOffPlan) {
-    const projectFilter: Record<string, any> = { publishStatus: "Published" };
+    const projectFilter: Record<string, any> = { publishStatus: "published" };
 
     if (type) projectFilter.propertyType = { $regex: escapeRegex(type), $options: "i" };
     if (location) projectFilter.community = { $regex: communityRegex(location) };
