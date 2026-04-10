@@ -88,7 +88,7 @@ export const getOffPlanProjects = cache(async () => {
 
 export const getBuildings = cache(async (limit?: number) => {
   await connectDB();
-  const query = Building.find({ publishStatus: "Published" })
+  const query = Building.find({ publishStatus: "published" })
     .sort({ name: 1 })
     .lean();
   if (limit) query.limit(limit);
@@ -97,12 +97,12 @@ export const getBuildings = cache(async (limit?: number) => {
 
 export const getBuildingBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Building.findOne({ slug, publishStatus: "Published" }).lean();
+  return Building.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 export const getBuildingsByLocation = cache(async (location: string) => {
   await connectDB();
-  return Building.find({ publishStatus: "Published", location })
+  return Building.find({ publishStatus: "published", location })
     .sort({ name: 1 })
     .lean();
 });
@@ -113,7 +113,7 @@ export const getBuildingsByLocation = cache(async (location: string) => {
 
 export const getListings = cache(async (limit?: number) => {
   await connectDB();
-  const query = Listing.find({ publishStatus: "Published" })
+  const query = Listing.find({ publishStatus: "published" })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -122,12 +122,12 @@ export const getListings = cache(async (limit?: number) => {
 
 export const getListingBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Listing.findOne({ slug, publishStatus: "Published" }).lean();
+  return Listing.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 export const getListingsByType = cache(async (listingType: string, limit?: number) => {
   await connectDB();
-  const query = Listing.find({ publishStatus: "Published", listingType })
+  const query = Listing.find({ publishStatus: "published", listingType })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -136,7 +136,7 @@ export const getListingsByType = cache(async (listingType: string, limit?: numbe
 
 export const getListingsByCommunity = cache(async (community: string) => {
   await connectDB();
-  return Listing.find({ publishStatus: "Published", community })
+  return Listing.find({ publishStatus: "published", community })
     .sort({ createdAt: -1 })
     .lean();
 });
@@ -147,14 +147,14 @@ export const getListingsByCommunity = cache(async (community: string) => {
 
 export const getCommunities = cache(async () => {
   await connectDB();
-  return Community.find({ publishStatus: "Published" })
+  return Community.find({ publishStatus: "published" })
     .sort({ name: 1 })
     .lean();
 });
 
 export const getCommunityBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Community.findOne({ slug, publishStatus: "Published" }).lean();
+  return Community.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 // ═══════════════════════════════════════════════
@@ -163,7 +163,7 @@ export const getCommunityBySlug = cache(async (slug: string) => {
 
 export const getArticles = cache(async (limit?: number) => {
   await connectDB();
-  const query = Article.find({ publishStatus: "Published" })
+  const query = Article.find({ publishStatus: "published" })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -172,12 +172,12 @@ export const getArticles = cache(async (limit?: number) => {
 
 export const getArticleBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Article.findOne({ slug, publishStatus: "Published" }).lean();
+  return Article.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 export const getArticlesByCategory = cache(async (category: string, limit?: number) => {
   await connectDB();
-  const query = Article.find({ publishStatus: "Published", category })
+  const query = Article.find({ publishStatus: "published", category })
     .sort({ createdAt: -1 })
     .lean();
   if (limit) query.limit(limit);
@@ -190,19 +190,19 @@ export const getArticlesByCategory = cache(async (category: string, limit?: numb
 
 export const getDevelopers = cache(async () => {
   await connectDB();
-  return Developer.find({ publishStatus: "Published" })
+  return Developer.find({ publishStatus: "published" })
     .sort({ name: 1 })
     .lean();
 });
 
 export const getDeveloperBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Developer.findOne({ slug, publishStatus: "Published" }).lean();
+  return Developer.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 export const getDeveloperWithProjects = cache(async (slug: string) => {
   await connectDB();
-  const developer = await Developer.findOne({ slug, publishStatus: "Published" }).lean();
+  const developer = await Developer.findOne({ slug, publishStatus: "published" }).lean();
   if (!developer) return null;
   const projects = await Project.find({
     publishStatus: "published",
@@ -219,14 +219,14 @@ export const getDeveloperWithProjects = cache(async (slug: string) => {
 
 export const getAgents = cache(async () => {
   await connectDB();
-  return Agent.find({ publishStatus: "Published" })
+  return Agent.find({ publishStatus: "published" })
     .sort({ name: 1 })
     .lean();
 });
 
 export const getAgentBySlug = cache(async (slug: string) => {
   await connectDB();
-  return Agent.findOne({ slug, publishStatus: "Published" }).lean();
+  return Agent.findOne({ slug, publishStatus: "published" }).lean();
 });
 
 // ═══════════════════════════════════════════════
@@ -238,10 +238,10 @@ export const getStats = cache(async () => {
   const [projectCount, buildingCount, listingCount, communityCount, developerCount] =
     await Promise.all([
       Project.countDocuments({ publishStatus: "published" }),
-      Building.countDocuments({ publishStatus: "Published" }),
-      Listing.countDocuments({ publishStatus: "Published" }),
-      Community.countDocuments({ publishStatus: "Published" }),
-      Developer.countDocuments({ publishStatus: "Published" }),
+      Building.countDocuments({ publishStatus: "published" }),
+      Listing.countDocuments({ publishStatus: "published" }),
+      Community.countDocuments({ publishStatus: "published" }),
+      Developer.countDocuments({ publishStatus: "published" }),
     ]);
   return { projectCount, buildingCount, listingCount, communityCount, developerCount };
 });

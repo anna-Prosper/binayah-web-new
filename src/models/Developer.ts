@@ -40,7 +40,7 @@ const DeveloperSchema = new Schema<IDeveloper>(
     metaDescription: String,
     viewCount: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
-    publishStatus: { type: String, default: "Published" },
+    publishStatus: { type: String, default: "published" },
   },
   { timestamps: true }
 );

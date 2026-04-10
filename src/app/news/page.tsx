@@ -7,7 +7,7 @@ export const revalidate = 300;
 export default async function NewsPage() {
   await connectDB();
   const articles = await Article.find({
-    publishStatus: "Published",
+    publishStatus: "published",
     $or: [
       { content: { $regex: /\S/ } },
       { excerpt: { $regex: /\S/ } },

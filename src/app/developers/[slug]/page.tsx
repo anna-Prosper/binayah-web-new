@@ -16,7 +16,7 @@ export default async function DeveloperDetailPage({ params }: Props) {
 
   const developer = await Developer.findOne({
     slug,
-    publishStatus: "Published",
+    publishStatus: "published",
   }).lean();
 
   if (!developer) return notFound();
@@ -25,7 +25,7 @@ export default async function DeveloperDetailPage({ params }: Props) {
   // This handles mismatches like "Deniz Development" vs "Deniz Developments"
   const escapedName = developer.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const projects = await Project.find({
-    publishStatus: "Published",
+    publishStatus: "published",
     developerName: { $regex: new RegExp(`^${escapedName}`, "i") },
   })
     .select(

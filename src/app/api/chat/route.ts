@@ -114,7 +114,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
 
   // Fetch relevant listings
   if (intent !== "offplan") {
-    const lFilter: Record<string, any> = { publishStatus: "Published" };
+    const lFilter: Record<string, any> = { publishStatus: "published" };
     if (communities.length > 0) lFilter.community = { $regex: communities.join("|"), $options: "i" };
     if (types.length > 0) lFilter.propertyType = { $regex: types.join("|"), $options: "i" };
     if (intent === "rent") lFilter.listingType = "Rent";
@@ -141,7 +141,7 @@ async function fetchRelevantData(terms: ReturnType<typeof extractSearchTerms>) {
   if (intent === "general" || intent === "investment" || intent === "pricing") {
     const [projectCount, listingCount] = await Promise.all([
       Project.countDocuments({ publishStatus: "published" }),
-      Listing.countDocuments({ publishStatus: "Published" }),
+      Listing.countDocuments({ publishStatus: "published" }),
     ]);
     context += `\n\n--- PORTFOLIO SUMMARY ---\nBinayah currently has ${projectCount} off-plan projects and ${listingCount} secondary market listings across Dubai.\n`;
   }

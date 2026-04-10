@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     body = {};
   }
 
-  const publishStatus = body?.publishStatus || (body?.action === "approve" ? "Published" : undefined);
+  const publishStatus = body?.publishStatus || (body?.action === "approve" ? "published" : undefined);
   if (!publishStatus) {
     return NextResponse.json({ error: "Missing publishStatus" }, { status: 400 });
   }

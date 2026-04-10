@@ -20,7 +20,7 @@ function cleanWpHtml(html: string): string {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   await connectDB();
   const { slug } = await params;
-  const article = await Article.findOne({ slug, publishStatus: "Published" }).lean();
+  const article = await Article.findOne({ slug, publishStatus: "published" }).lean();
   if (!article) return { title: "Not Found" };
   return {
     title: (article as any).metaTitle || `${(article as any).title} | Binayah Properties`,
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   await connectDB();
   const { slug } = await params;
-  const article = await Article.findOne({ slug, publishStatus: "Published" }).lean();
+  const article = await Article.findOne({ slug, publishStatus: "published" }).lean();
   if (!article) notFound();
 
   const serialized = JSON.parse(JSON.stringify(article));

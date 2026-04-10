@@ -6,7 +6,7 @@ export const revalidate = 300;
 
 export default async function CommunitiesPage() {
   await connectDB();
-  const communities = await Community.find({ publishStatus: "Published" })
+  const communities = await Community.find({ publishStatus: "published" })
     .select("name slug description featuredImage imageGallery viewCount")
     .sort({ createdAt: -1 })
     .lean();

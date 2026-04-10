@@ -157,7 +157,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (searchSecondary) {
-    const listingFilter: Record<string, any> = { publishStatus: "Published" };
+    const listingFilter: Record<string, any> = { publishStatus: "published" };
 
     if (intent === "buy") listingFilter.listingType = "Sale";
     if (intent === "rent") listingFilter.listingType = "Rent";

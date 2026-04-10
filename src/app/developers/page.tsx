@@ -9,13 +9,13 @@ export default async function DevelopersPage() {
   await connectDB();
 
   const [rawDevelopers, totalCount, projectCounts] = await Promise.all([
-    Developer.find({ publishStatus: "Published" })
+    Developer.find({ publishStatus: "published" })
       .select("name slug logo description")
       .sort({ name: 1 })
       .lean(),
-    Developer.countDocuments({ publishStatus: "Published" }),
+    Developer.countDocuments({ publishStatus: "published" }),
     Project.aggregate([
-      { $match: { publishStatus: "Published" } },
+      { $match: { publishStatus: "published" } },
       { $group: { _id: "$developerName", count: { $sum: 1 } } },
     ]),
   ]);

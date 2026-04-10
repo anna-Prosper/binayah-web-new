@@ -38,7 +38,7 @@ const CommunitySchema = new Schema<ICommunity>(
     projectCount: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },
     order: { type: Number, default: 0 },
-    publishStatus: { type: String, default: "Published" },
+    publishStatus: { type: String, default: "published" },
   },
   { timestamps: true }
 );

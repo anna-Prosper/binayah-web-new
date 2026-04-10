@@ -36,7 +36,7 @@ const ArticleSchema = new Schema<IArticle>(
     metaDescription: String,
     viewCount: { type: Number, default: 0 },
     publishedAt: { type: String, index: true },
-    publishStatus: { type: String, default: "Published" },
+    publishStatus: { type: String, default: "published" },
   },
   { timestamps: true }
 );

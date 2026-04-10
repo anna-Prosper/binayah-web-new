@@ -38,7 +38,7 @@ const AgentSchema = new Schema<IAgent>(
     linkedin: String,
     whatsapp: String,
     viewCount: { type: Number, default: 0 },
-    publishStatus: { type: String, default: "Published" },
+    publishStatus: { type: String, default: "published" },
   },
   { timestamps: true }
 );

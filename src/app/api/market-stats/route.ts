@@ -25,7 +25,7 @@ export async function GET() {
     Project.find({ publishStatus: "published" })
       .select("community startingPrice propertyType bedrooms")
       .lean(),
-    Listing.find({ publishStatus: "Published" })
+    Listing.find({ publishStatus: "published" })
       .select("community price size sizeUnit propertyType listingType bedrooms")
       .lean(),
   ]);

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get("limit") || "48"), 200);
   const skip = parseInt(searchParams.get("skip") || "0");
 
-  const filter: Record<string, unknown> = { publishStatus: "Published" };
+  const filter: Record<string, unknown> = { publishStatus: "published" };
   if (search) {
     filter.name = { $regex: search, $options: "i" };
   }
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
   // Get real project counts grouped by developerName
   const projectCounts = await Project.aggregate([
-    { $match: { publishStatus: "Published" } },
+    { $match: { publishStatus: "published" } },
     { $group: { _id: "$developerName", count: { $sum: 1 } } },
   ]);
 

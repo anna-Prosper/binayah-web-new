@@ -14,12 +14,12 @@ export default async function CommunityPage({ params }: { params: Promise<{ slug
   await connectDB();
 
   // Get community from DB
-  const community = await Community.findOne({ slug, publishStatus: "Published" }).lean();
+  const community = await Community.findOne({ slug, publishStatus: "published" }).lean();
   const communityName = community?.name || slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   // Match projects by: community field, name containing community, or areas containing community
   const projects = await Project.find({
-    publishStatus: "Published",
+    publishStatus: "published",
     $or: [
       { community: communityName },
       { community: { $regex: communityName, $options: "i" } },

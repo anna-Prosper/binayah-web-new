@@ -28,7 +28,7 @@ const BuildingSchema = new Schema<IBuilding>(
     projectType: String,
     ownershipType: String,
     grossFloorArea: String,
-    publishStatus: { type: String, default: "Published" },
+    publishStatus: { type: String, default: "published" },
   },
   { timestamps: true }
 );

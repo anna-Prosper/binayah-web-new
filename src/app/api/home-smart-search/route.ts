@@ -96,7 +96,7 @@ async function loadSuggestionCandidates(query: string) {
 
   const [communitiesResult, projectsResult, developersResult] = await Promise.allSettled([
     Community.find({
-      publishStatus: "Published",
+      publishStatus: "published",
       $or: [
         { name: searchRegex },
         { displayName: searchRegex },
@@ -107,7 +107,7 @@ async function loadSuggestionCandidates(query: string) {
       .limit(5)
       .lean(),
     Project.find({
-      publishStatus: "Published",
+      publishStatus: "published",
       $or: [
         { name: searchRegex },
         { community: searchRegex },
@@ -119,7 +119,7 @@ async function loadSuggestionCandidates(query: string) {
       .limit(5)
       .lean(),
     Developer.find({
-      publishStatus: "Published",
+      publishStatus: "published",
       name: searchRegex,
     })
       .select("name description projectCount")
