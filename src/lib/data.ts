@@ -6,6 +6,7 @@ import Community from "@/models/Community";
 import Article from "@/models/Article";
 import Developer from "@/models/Developer";
 import Agent from "@/models/Agent";
+import ConstructionUpdate from "@/models/ConstructionUpdate";
 import { cache } from "react";
 
 // ═══════════════════════════════════════════════
@@ -227,6 +228,31 @@ export const getAgents = cache(async () => {
 export const getAgentBySlug = cache(async (slug: string) => {
   await connectDB();
   return Agent.findOne({ slug, publishStatus: "published" }).lean();
+});
+
+// ═══════════════════════════════════════════════
+// CONSTRUCTION UPDATES
+// ═══════════════════════════════════════════════
+
+export const getConstructionUpdates = cache(async (limit?: number) => {
+  await connectDB();
+  const query = ConstructionUpdate.find()
+    .sort({ progress: 1, publishedAt: -1 })
+    .lean();
+  if (limit) query.limit(limit);
+  return query;
+});
+
+export const getConstructionUpdateBySlug = cache(async (slug: string) => {
+  await connectDB();
+  return ConstructionUpdate.findOne({ slug }).lean();
+});
+
+export const getConstructionUpdatesByDeveloper = cache(async (developerName: string) => {
+  await connectDB();
+  return ConstructionUpdate.find({ developerName })
+    .sort({ progress: 1 })
+    .lean();
 });
 
 // ═══════════════════════════════════════════════
