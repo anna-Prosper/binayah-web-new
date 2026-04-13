@@ -724,7 +724,11 @@ function sanitizeComparableDisplayDate(value) {
     if (!normalized) {
         return "";
     }
-    let match = normalized.match(/^(\d{4})[-/](\d{1,2})[-/](\?+|x+|0{1,2}|unknown|n\/a|na)$/i);
+    let match = normalized.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[T\s].*)?$/);
+    if (match) {
+        return `${String(Number(match[1])).padStart(4, "0")}-${String(Number(match[2])).padStart(2, "0")}-${String(Number(match[3])).padStart(2, "0")}`;
+    }
+    match = normalized.match(/^(\d{4})[-/](\d{1,2})[-/](\?+|x+|0{1,2}|unknown|n\/a|na)$/i);
     if (match) {
         return `${String(Number(match[1])).padStart(4, "0")}-${String(Number(match[2])).padStart(2, "0")}`;
     }
