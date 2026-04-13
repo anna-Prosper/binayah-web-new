@@ -12,7 +12,7 @@ export const metadata = {
 export default async function ConstructionUpdatesPage() {
   await connectDB();
   const updates = await ConstructionUpdate.find()
-    .sort({ progress: 1, publishedAt: -1 })
+    .sort({ publishedAt: -1 })
     .lean();
 
   const serialized = JSON.parse(JSON.stringify(updates));
