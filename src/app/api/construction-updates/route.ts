@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   }
 
   const updates = await ConstructionUpdate.find(filter)
-    .sort({ progress: 1, publishedAt: -1 })
+    .sort({ publishedAt: -1 })
     .limit(limit)
     .lean();
 
