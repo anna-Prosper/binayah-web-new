@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -115,7 +116,7 @@ export default function PropertyDetailClient({
   const handleInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("/api/inquiries", {
+      await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

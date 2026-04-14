@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Building2, ChevronDown, Loader2, MapPin, MessageCircle, Search, Sparkles, X, Zap } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
@@ -167,8 +168,8 @@ const HeroSection = () => {
     setIsSmartLoading(true);
     smartTimerRef.current = setTimeout(async () => {
       const [smartResult, placesResult] = await Promise.allSettled([
-        fetch(`/api/home-smart-search?q=${encodeURIComponent(trimmed)}&tab=${encodeURIComponent(activeTab)}`, { cache: "no-store" }),
-        fetch(`/api/places?q=${encodeURIComponent(trimmed)}`, { cache: "no-store" }),
+        fetch(apiUrl(`/api/home-smart-search?q=${encodeURIComponent(trimmed)}&tab=${encodeURIComponent(activeTab)}`), { cache: "no-store" }),
+        fetch(apiUrl(`/api/places?q=${encodeURIComponent(trimmed)}`), { cache: "no-store" }),
       ]);
 
       if (smartRequestRef.current !== requestId) return;
