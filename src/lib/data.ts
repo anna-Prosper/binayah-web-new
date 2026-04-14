@@ -237,7 +237,7 @@ export const getAgentBySlug = cache(async (slug: string) => {
 export const getConstructionUpdates = cache(async (limit?: number) => {
   await connectDB();
   const query = ConstructionUpdate.find()
-    .sort({ progress: 1, publishedAt: -1 })
+    .sort({ publishedAt: -1 })
     .lean();
   if (limit) query.limit(limit);
   return query;

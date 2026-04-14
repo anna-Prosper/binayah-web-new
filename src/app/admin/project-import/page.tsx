@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -65,7 +66,7 @@ export default function ProjectImportAdminPage() {
     setIsSubmitting(true);
     try {
       window.localStorage.setItem("projectImportSecret", secret.trim());
-      const res = await fetch("/api/project-import", {
+      const res = await fetch(apiUrl("/api/project-import"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

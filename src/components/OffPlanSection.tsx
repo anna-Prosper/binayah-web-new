@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
@@ -10,7 +11,7 @@ const OffPlanSection = () => {
   const { data: projects } = useQuery({
     queryKey: ["homepage-projects"],
     queryFn: async () => {
-      const res = await fetch("/api/projects?limit=4");
+      const res = await fetch(apiUrl("/api/projects?limit=4"));
       return res.json();
     },
   });

@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
@@ -29,7 +30,7 @@ const MarketDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/market-stats")
+    fetch(apiUrl("/api/market-stats"))
       .then((res) => res.json())
       .then((d) => setData(d))
       .catch(console.error)

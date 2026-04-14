@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -47,7 +48,7 @@ export default function AdminProjectsPage() {
         return;
       }
       window.localStorage.setItem("projectAdminSecret", secret.trim());
-      const res = await fetch("/api/admin/projects?status=Draft&limit=200", {
+      const res = await fetch(apiUrl("/api/admin/projects?status=Draft&limit=200"), {
         headers: { "x-admin-secret": secret.trim() },
       });
       const data = await res.json();
@@ -68,7 +69,7 @@ export default function AdminProjectsPage() {
     setStatus(null);
     setApprovingId(id);
     try {
-      const res = await fetch(`/api/admin/projects/${id}`, {
+      const res = await fetch(apiUrl(`/api/admin/projects/${id}`), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

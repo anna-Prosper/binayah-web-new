@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -40,7 +41,7 @@ export default function OffPlanPageClient({
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/projects?limit=${BATCH_SIZE}&skip=${projects.length}`);
+      const res = await fetch(apiUrl(`/api/projects?limit=${BATCH_SIZE}&skip=${projects.length}`));
       const newProjects: Project[] = await res.json();
       if (newProjects.length === 0) {
         setHasMore(false);

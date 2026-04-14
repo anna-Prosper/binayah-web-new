@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import { motion } from "framer-motion";
 import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
@@ -10,7 +11,7 @@ const FeaturedProperties = () => {
   const { data: projects } = useQuery({
     queryKey: ["featured-projects"],
     queryFn: async () => {
-      const res = await fetch("/api/projects?limit=3");
+      const res = await fetch(apiUrl("/api/projects?limit=3"));
       return res.json();
     },
   });
