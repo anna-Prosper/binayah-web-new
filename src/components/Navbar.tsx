@@ -17,8 +17,8 @@ const LANGUAGES_LIST = [
 ];
 
 const primaryNav = [
-  { label: "Buy", href: "/search?intent=buy" },
-  { label: "Rent", href: "/search?intent=rent" },
+  { label: "Buy", href: "/buy" },
+  { label: "Rent", href: "/rent" },
   { label: "Off Plan", href: "/off-plan" },
 ];
 const insightsNav = [
