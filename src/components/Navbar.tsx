@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "@/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -18,27 +18,29 @@ const LANGUAGES_LIST = [
   { code: "in", label: "India (EN)", flag: "🇮🇳" },
 ];
 
-const primaryNav = [
-  { label: "Buy", href: "/search?intent=buy" },
-  { label: "Rent", href: "/search?intent=rent" },
-  { label: "Off Plan", href: "/off-plan" },
-];
-const insightsNav = [
-  { label: "Market Pulse", href: "/pulse" },
-  { label: "Communities", href: "/communities" },
-  { label: "Valuation", href: "/valuation" },
-  { label: "Guides", href: "/news" },
-];
-const moreNav = [
-  { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
 
 const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
+  const t = useTranslations("nav");
+
+  const primaryNav = [
+    { label: t("buy"), href: "/search?intent=buy" },
+    { label: t("rent"), href: "/search?intent=rent" },
+    { label: t("offPlan"), href: "/off-plan" },
+  ];
+  const insightsNav = [
+    { label: t("pulse"), href: "/pulse" },
+    { label: t("communities"), href: "/communities" },
+    { label: t("valuation"), href: "/valuation" },
+    { label: t("guides"), href: "/news" },
+  ];
+  const moreNav = [
+    { label: t("services"), href: "/services" },
+    { label: t("about"), href: "/about" },
+    { label: t("contact"), href: "/contact" },
+  ];
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

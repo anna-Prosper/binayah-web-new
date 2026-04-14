@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
+import { useTranslations } from "next-intl";
 import {
   buildHomeSearchUrl,
   createEmptyHomeSearchDraft,
@@ -63,6 +64,10 @@ interface PlacePrediction {
 }
 
 const HeroSection = () => {
+  const t = useTranslations("home.hero");
+  const tNav = useTranslations("nav");
+  const tabLabel = (tab: HomeSearchTab) =>
+    tab === "Buy" ? tNav("buy") : tab === "Rent" ? tNav("rent") : tNav("offPlan");
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<HomeSearchTab>("Buy");
   const [smartSearch, setSmartSearch] = useState("");
@@ -387,7 +392,7 @@ const HeroSection = () => {
               <TypewriterHeadline /><br /><span className="italic font-light">in Dubai</span>
             </h1>
             <p className="hidden sm:block text-white/60 text-sm sm:text-lg max-w-xl mx-auto font-light px-4 sm:px-0">
-              Your trusted partner for buying, selling & renting properties in Dubai
+              {t("subtitle")}
             </p>
             <p className="sm:hidden text-white/50 text-xs font-light">2,500+ listings across 50+ communities</p>
           </motion.div>
@@ -402,7 +407,7 @@ const HeroSection = () => {
                 className={`flex-1 py-2 text-[10px] font-bold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/60 backdrop-blur-sm border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
-                {tab}
+                {tabLabel(tab)}
               </button>
             ))}
           </div>
@@ -466,7 +471,7 @@ const HeroSection = () => {
                 className={`relative px-5 sm:px-8 py-2.5 sm:py-3 text-[11px] sm:text-xs font-semibold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/70 hover:bg-white/15 backdrop-blur-sm hover:text-white border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
-                {tab}
+                {tabLabel(tab)}
               </button>
             ))}
           </div>
