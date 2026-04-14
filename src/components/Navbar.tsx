@@ -55,6 +55,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [showLangDropdown, setShowLangDropdown] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
+  const currencyRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -87,8 +89,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     const handleClick = (e: MouseEvent) => {
       if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
       if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) setInsightsOpen(false);
-      setShowCurrencyDropdown(false);
-      setShowLangDropdown(false);
+      if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) setShowCurrencyDropdown(false);
+      if (langRef.current && !langRef.current.contains(e.target as Node)) setShowLangDropdown(false);
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -198,7 +200,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
             <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
               {/* Currency selector */}
-              <div className="relative">
+              <div className="relative" ref={currencyRef}>
                 <button
                   onClick={() => { setShowCurrencyDropdown(!showCurrencyDropdown); setShowLangDropdown(false); }}
                   className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold rounded-md transition-all border border-white/10"
@@ -223,7 +225,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
 
               {/* Language selector — Amazon-style: flag + name, navigates locale */}
-              <div className="relative">
+              <div className="relative" ref={langRef}>
                 <button
                   onClick={() => { setShowLangDropdown(!showLangDropdown); setShowCurrencyDropdown(false); }}
                   className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold rounded-md transition-all border border-white/10"
