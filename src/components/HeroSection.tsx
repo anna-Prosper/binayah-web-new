@@ -398,7 +398,7 @@ const HeroSection = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-2 text-[10px] font-bold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/60 backdrop-blur-sm border-t border-x border-white/10"}`}
+                className={`flex-1 py-2 text-[10px] font-bold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/60 backdrop-blur-sm border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
                 {tab}
@@ -462,7 +462,7 @@ const HeroSection = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`relative px-5 sm:px-8 py-2.5 sm:py-3 text-[11px] sm:text-xs font-semibold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/70 hover:bg-white/15 backdrop-blur-sm hover:text-white border-t border-x border-white/10"}`}
+                className={`relative px-5 sm:px-8 py-2.5 sm:py-3 text-[11px] sm:text-xs font-semibold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/70 hover:bg-white/15 backdrop-blur-sm hover:text-white border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
                 {tab}
