@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 const unitStudio = "/assets/unit-studio.jpg";
 const unit1br = "/assets/unit-1br.jpg";
 const unit2br = "/assets/unit-2br.jpg";
@@ -21,7 +23,7 @@ interface UnitImagePlaceholderProps {
 
 const UnitImagePlaceholder = ({ bedrooms, unitName }: UnitImagePlaceholderProps) => {
   const image = unitImages[bedrooms] || (bedrooms >= 4 ? unitPenthouse : unit1br);
-  return <img src={image} alt={unitName} className="w-full h-full object-cover" />;
+  return <Image src={image} alt={unitName} fill className="object-cover" />;
 };
 
 export default UnitImagePlaceholder;

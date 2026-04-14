@@ -2,6 +2,7 @@
 
 import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 const binayahLogo = "/assets/binayah-logo.png";
 
 const Footer = () => (
@@ -13,7 +14,7 @@ const Footer = () => (
       <div className="py-10 sm:py-16 grid md:grid-cols-12 gap-8 sm:gap-10">
         <div className="md:col-span-4">
           <div className="mb-5">
-            <img src={binayahLogo} alt="Binayah Properties" className="h-10 w-auto brightness-0 invert" />
+            <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-10 w-auto brightness-0 invert" />
           </div>
           <p className="text-sm leading-relaxed text-white/50 mb-6 max-w-xs">
             Binayah Real Estate — Dubai's trusted property partner. We connect clients with exceptional homes and investments.

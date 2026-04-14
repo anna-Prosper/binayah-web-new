@@ -5,6 +5,7 @@ import { Building2, ChevronDown, Loader2, MapPin, MessageCircle, Search, Sparkle
 import { motion, useScroll, useTransform } from "framer-motion";
 import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
 import {
@@ -366,7 +367,7 @@ const HeroSection = () => {
   return (
     <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0" style={{ overflow: "visible" }}>
       <motion.div className="absolute inset-0 overflow-hidden" style={{ y: imageY }}>
-        <img src={heroImage} alt="Dubai skyline" className="h-[120%] w-full object-cover" />
+        <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
 

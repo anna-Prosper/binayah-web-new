@@ -5,6 +5,7 @@ import { Phone, Menu, X, ChevronDown, Globe, MessageCircle, Banknote } from "luc
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -106,7 +107,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
           <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-12 sm:h-16" : "h-14 sm:h-20"}`}>
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <img src={binayahLogo} alt="Binayah Properties" className="h-8 sm:h-10 w-auto brightness-0 invert" />
+              <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-8 sm:h-10 w-auto brightness-0 invert" />
             </Link>
 
             {/* Desktop nav */}
@@ -259,7 +260,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
           >
             <div className="flex items-center justify-between px-4 h-14 flex-shrink-0">
               <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
-                <img src={binayahLogo} alt="Binayah Properties" className="h-8 w-auto brightness-0 invert" />
+                <Image src={binayahLogo} alt="Binayah Properties" height={32} width={100} className="h-8 w-auto brightness-0 invert" />
               </Link>
               <button onClick={() => setMobileOpen(false)} className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white">
                 <X className="h-7 w-7" />

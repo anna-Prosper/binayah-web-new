@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 
@@ -271,7 +272,7 @@ function SearchContent() {
                       <motion.div key={project._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
                         <Link href={`/project/${project.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                           <div className="relative overflow-hidden aspect-[4/3]">
-                            <img src={project.featuredImage || project.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={project.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                            <Image src={project.featuredImage || project.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={project.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{project.status || "Off-Plan"}</span>
@@ -306,7 +307,7 @@ function SearchContent() {
                       <motion.div key={listing._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
                         <Link href={`/property/${listing.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                           <div className="relative overflow-hidden aspect-[4/3]">
-                            <img src={listing.featuredImage || listing.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={listing.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                            <Image src={listing.featuredImage || listing.images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={listing.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? "For Rent" : "For Sale"}</span>

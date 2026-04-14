@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
 import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
+import NextImage from "next/image";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.jpg";
 const videoThumbnail = "/assets/video-thumbnail.jpg";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -163,11 +164,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               <div key={i} className="w-full h-full flex-shrink-0 snap-center overflow-hidden"
                 onClick={() => { setActiveImage(i); setShowGallery(true); }}
               >
-                <img
+                <NextImage
                   src={img}
                   alt={`${project.name} ${i + 1}`}
-                  className="w-full h-full object-cover object-center"
+                  fill
+                  sizes="100vw"
+                  className="object-cover object-center"
                   style={{ objectPosition: "center 40%" }}
+                  priority={i === 0}
                 />
               </div>
             ))}
@@ -253,11 +257,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
                       title="Regulatory Permit"
                     >
-                      <img
+                      <NextImage
                         src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
                         alt="Regulatory Permit QR"
+                        width={80}
+                        height={80}
                         className="w-full h-full rounded-sm"
-                        loading="lazy"
                       />
                     </button>
                     <p className="text-white/80 flex items-center gap-1.5 text-[12px] sm:text-base">
@@ -294,7 +299,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               : "border-white/20 opacity-70 hover:opacity-100 hover:border-white/50"
                           }`}
                         >
-                          <img src={img} alt="" className="w-full h-full object-cover" />
+                          <NextImage src={img} alt="" fill sizes="64px" className="object-cover" />
                         </button>
                       ))}
                     </div>
@@ -577,10 +582,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               {/* Floor plan side */}
                               <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center p-4 sm:p-4 min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
                                 {project.floor_plans?.[activeUnitTab] ? (
-                                  <img
+                                  <NextImage
                                     src={project.floor_plans[activeUnitTab]}
                                     alt={`${activeUnit?.name} floor plan`}
-                                    className="w-full h-full object-contain"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 40vw"
+                                    className="object-contain"
                                   />
                                 ) : (
                                   <UnitImagePlaceholder
@@ -735,11 +742,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     viewport={{ once: true }}
                     className="bg-card rounded-2xl border border-border/50 overflow-hidden"
                   >
-                    <div className="relative group cursor-pointer">
-                      <img
+                    <div className="relative aspect-video group cursor-pointer">
+                      <NextImage
                         src={project.imageGallery?.[0] || videoThumbnail}
                         alt={`${project.name} video overview`}
-                        className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 60vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10 group-hover:from-black/80 transition-all duration-500" />
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -790,7 +799,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             onClick={() => { setActiveImage(i); setShowGallery(true); }}
                             className="relative flex-shrink-0 w-[70%] aspect-[3/2] rounded-xl overflow-hidden border border-border/50 snap-center"
                           >
-                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                            <NextImage src={img} alt={`${project.name} - ${i + 1}`} fill sizes="70vw" className="object-cover" />
                             {i === 5 && images.length > 6 && (
                               <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
                                 <span className="text-white font-bold text-base">+{images.length - 6}</span>
@@ -812,7 +821,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             onClick={() => { setActiveImage(i); setShowGallery(true); }}
                             className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all"
                           >
-                            <img src={img} alt={`${project.name} - ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            <NextImage src={img} alt={`${project.name} - ${i + 1}`} fill sizes="25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
                               <Eye className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             </div>
@@ -889,10 +898,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               aria-label={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
                             >
                               {project.floor_plans && project.floor_plans[activeFloorPlanTab] ? (
-                                <img
+                                <NextImage
                                   src={project.floor_plans[activeFloorPlanTab]}
                                   alt={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
-                                  className="w-full h-full object-contain rounded-2xl"
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, 60vw"
+                                  className="object-contain rounded-2xl"
                                 />
                               ) : (
                                 <FloorPlanPlaceholder
@@ -2108,11 +2119,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white border border-border/50 p-1 shadow-sm hover:shadow-md hover:border-primary/30 active:scale-95 transition-all cursor-pointer flex-shrink-0"
                     title="Scan QR Code"
                   >
-                    <img
+                    <NextImage
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
                       alt="QR Code"
+                      width={100}
+                      height={100}
                       className="w-full h-full rounded-sm"
-                      loading="lazy"
                     />
                   </button>
                   <div className="flex-1 min-w-0">
@@ -2246,7 +2258,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
               <div className="flex items-center gap-3 pt-3 border-t border-border/50">
-                <img src={review.avatar} alt={review.name} className="w-9 h-9 rounded-full object-cover" style={{ border: "2px solid rgba(212,168,71,0.2)" }} />
+                <NextImage src={review.avatar} alt={review.name} width={36} height={36} className="rounded-full object-cover" style={{ border: "2px solid rgba(212,168,71,0.2)" }} />
                 <div>
                   <p className="text-sm font-bold text-foreground">{review.name}</p>
                   <p className="text-[11px] text-muted-foreground">{review.unit} Buyer</p>
@@ -2408,7 +2420,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         : "border-transparent opacity-50 hover:opacity-80"
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <NextImage src={img} alt="" fill sizes="80px" className="object-cover" />
                   </button>
                 ))}
               </div>
@@ -2468,9 +2480,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="w-48 h-48 sm:w-56 sm:h-56">
-                <img
+                <NextImage
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=2`}
                   alt="QR Code"
+                  width={400}
+                  height={400}
                   className="w-full h-full"
                 />
               </div>

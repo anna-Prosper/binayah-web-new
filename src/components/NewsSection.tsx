@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const FALLBACK_ARTICLES = [
   { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" },
@@ -73,7 +74,7 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
           >
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-xl overflow-hidden border border-border/50">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <img src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} className="w-full h-full object-cover" loading="lazy" />
+                <Image src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} fill sizes="100vw" className="object-cover" />
                 <span className="absolute top-2 left-2 text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-3">
@@ -97,7 +98,7 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
           >
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <img src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                <Image src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                 <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-6">

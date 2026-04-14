@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 interface Listing {
@@ -136,11 +137,12 @@ export default function ListingsPageClient({
                     className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20"
                   >
                     <div className="relative overflow-hidden aspect-[4/3]">
-                      <img
+                      <Image
                         src={l.featuredImage || l.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
                         alt={l.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
