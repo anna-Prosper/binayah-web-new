@@ -1,22 +1,20 @@
-import { connectDB } from "@/lib/mongodb";
-import Article from "@/models/Article";
 import NewsPageClient from "./NewsPageClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 300;
 
 export default async function NewsPage() {
-  await connectDB();
-  const articles = await Article.find({
-    publishStatus: "published",
-    $or: [
-      { content: { $regex: /\S/ } },
-      { excerpt: { $regex: /\S/ } },
-    ],
-  })
-    .select("title slug excerpt category featuredImage publishedAt readTime")
-    .sort({ createdAt: -1 })
-    .limit(30)
-    .lean();
+  let articles: any[] = [];
+  try {
+    const res = await fetch(serverApiUrl("/api/news"), {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) {
+      articles = await res.json();
+    }
+  } catch (err) {
+    console.warn("[NewsPage] API unavailable:", (err as Error).message);
+  }
 
-  return <NewsPageClient articles={JSON.parse(JSON.stringify(articles))} />;
+  return <NewsPageClient articles={articles} />;
 }

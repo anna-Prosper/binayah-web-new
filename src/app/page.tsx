@@ -1,4 +1,5 @@
 import HomePageClient from "@/components/HomePageClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +45,6 @@ const FALLBACK_PROJECTS = [
     unitSizeMin: 333,
     unitSizeMax: 1028,
   },
-,
   {
     _id: "fallback-project-2",
     name: "Emaar Beachfront",
@@ -125,36 +125,33 @@ export default async function HomePage() {
   let articles = FALLBACK_ARTICLES as any[];
 
   try {
-    const { connectDB } = await import("@/lib/mongodb");
-    const Project = (await import("@/models/Project")).default;
-    const Listing = (await import("@/models/Listing")).default;
-    const Article = (await import("@/models/Article")).default;
-
-    await connectDB();
-
-    const PROJECT_CARD = "name slug status developerName community city startingPrice completionDate shortOverview featuredImage imageGallery propertyType unitTypes unitSizeMin unitSizeMax currency handover";
-    const LISTING_CARD = "title slug propertyId listingType propertyType bedrooms bathrooms size sizeUnit price currency community city featuredImage imageGallery";
-    const ARTICLE_CARD = "title slug category featuredImage publishedAt";
-
-    const [dbListings, dbProjects, dbArticles] = await Promise.all([
-      Listing.find({ publishStatus: "published" }).select(LISTING_CARD).sort({ createdAt: -1 }).limit(3).lean(),
-      Project.find({ publishStatus: "published" }).select(PROJECT_CARD).sort({ createdAt: -1 }).limit(4).lean(),
-      Article.find({ publishStatus: "published", $or: [{ content: { $regex: /\S/ } }, { excerpt: { $regex: /\S/ } }] })
-        .select(ARTICLE_CARD).sort({ createdAt: -1 }).limit(3).lean(),
+    const [projectsRes, listingsRes, articlesRes] = await Promise.all([
+      fetch(serverApiUrl("/api/projects?limit=4"), { next: { revalidate: 60 } }),
+      fetch(serverApiUrl("/api/listings?limit=3"), { next: { revalidate: 60 } }),
+      fetch(serverApiUrl("/api/news?limit=3"), { next: { revalidate: 60 } }),
     ]);
 
-    if (dbListings.length > 0) listings = dbListings as any[];
-    if (dbProjects.length > 0) projects = dbProjects as any[];
-    if (dbArticles.length > 0) articles = dbArticles as any[];
+    if (projectsRes.ok) {
+      const dbProjects = await projectsRes.json();
+      if (dbProjects.length > 0) projects = dbProjects;
+    }
+    if (listingsRes.ok) {
+      const dbListings = await listingsRes.json();
+      if (dbListings.length > 0) listings = dbListings;
+    }
+    if (articlesRes.ok) {
+      const dbArticles = await articlesRes.json();
+      if (dbArticles.length > 0) articles = dbArticles;
+    }
   } catch (err) {
-    console.warn("[HomePage] DB unavailable, using fallback data:", (err as Error).message);
+    console.warn("[HomePage] API unavailable, using fallback data:", (err as Error).message);
   }
 
   return (
     <HomePageClient
-      featuredListings={JSON.parse(JSON.stringify(listings)).filter(Boolean)}
-      offPlanProjects={JSON.parse(JSON.stringify(projects)).filter(Boolean)}
-      latestArticles={JSON.parse(JSON.stringify(articles)).filter(Boolean)}
+      featuredListings={listings.filter(Boolean)}
+      offPlanProjects={projects.filter(Boolean)}
+      latestArticles={articles.filter(Boolean)}
     />
   );
 }

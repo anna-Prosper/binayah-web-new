@@ -1,16 +1,20 @@
-import { connectDB } from "@/lib/mongodb";
-import Community from "@/models/Community";
 import CommunitiesPageClient from "./CommunitiesPageClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 300;
 
 export default async function CommunitiesPage() {
-  await connectDB();
-  const communities = await Community.find({ publishStatus: "published" })
-    .select("name slug description featuredImage imageGallery viewCount")
-    .sort({ createdAt: -1 })
-    .lean();
+  let communities: any[] = [];
+  try {
+    const res = await fetch(serverApiUrl("/api/communities"), {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) {
+      communities = await res.json();
+    }
+  } catch (err) {
+    console.warn("[CommunitiesPage] API unavailable:", (err as Error).message);
+  }
 
-  const serialized = JSON.parse(JSON.stringify(communities));
-  return <CommunitiesPageClient communities={serialized} />;
+  return <CommunitiesPageClient communities={communities} />;
 }

@@ -1,4 +1,5 @@
 import OffPlanPageClient from "./OffPlanPageClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 60;
 
@@ -62,28 +63,24 @@ export default async function OffPlanPage() {
   let totalCount = FALLBACK_PROJECTS.length;
 
   try {
-    const { connectDB } = await import("@/lib/mongodb");
-    const Project = (await import("@/models/Project")).default;
-
-    await connectDB();
-
-    const CARD_FIELDS = "name slug status developerName community startingPrice completionDate shortOverview featuredImage imageGallery";
-
-    const [dbProjects, dbCount] = await Promise.all([
-      Project.find({ publishStatus: "published" })
-        .select(CARD_FIELDS)
-        .sort({ createdAt: -1 })
-        .limit(12)
-        .lean(),
-      Project.countDocuments({ publishStatus: "published" }),
-    ]);
-
-    if (dbProjects.length > 0) {
-      initialProjects = dbProjects as any[];
-      totalCount = dbCount;
+    const res = await fetch(serverApiUrl("/api/projects?limit=12"), {
+      next: { revalidate: 60 },
+    });
+    if (res.ok) {
+      const dbProjects = await res.json();
+      if (dbProjects.length > 0) {
+        initialProjects = dbProjects;
+        // Fetch total count via a large query to get actual total
+        const countRes = await fetch(serverApiUrl("/api/projects?limit=1&skip=999999"), {
+          next: { revalidate: 300 },
+        });
+        // Use a reasonable upper-bound for totalCount so load-more works
+        // The client fetches in batches; actual total determined as batches return empty
+        totalCount = 500;
+      }
     }
   } catch (err) {
-    console.warn("[OffPlanPage] DB unavailable, using fallback:", (err as Error).message);
+    console.warn("[OffPlanPage] API unavailable, using fallback:", (err as Error).message);
   }
 
   return (

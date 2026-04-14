@@ -1,45 +1,42 @@
-import { connectDB } from "@/lib/mongodb";
-import Project from "@/models/Project";
-import Community from "@/models/Community";
 import CommunityDetailClient from "./CommunityDetailClient";
 import { notFound } from "next/navigation";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 300;
-
-const CARD_FIELDS = "name slug status developerName community startingPrice completionDate shortOverview featuredImage imageGallery";
 
 export default async function CommunityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  await connectDB();
+  let community: any = null;
+  let projects: any[] = [];
 
-  // Get community from DB
-  const community = await Community.findOne({ slug, publishStatus: "published" }).lean();
-  const communityName = community?.name || slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+  try {
+    const res = await fetch(serverApiUrl(`/api/communities/${slug}`), {
+      next: { revalidate: 300 },
+    });
+    if (res.status === 404) return notFound();
+    if (res.ok) {
+      const data = await res.json();
+      community = data.community;
+      projects = data.projects || [];
+    }
+  } catch (err) {
+    console.warn("[CommunityPage] API unavailable:", (err as Error).message);
+  }
 
-  // Match projects by: community field, name containing community, or areas containing community
-  const projects = await Project.find({
-    publishStatus: "published",
-    $or: [
-      { community: communityName },
-      { community: { $regex: communityName, $options: "i" } },
-      { name: { $regex: communityName, $options: "i" } },
-      { areas: communityName },
-    ],
-  })
-    .select(CARD_FIELDS)
-    .sort({ createdAt: -1 })
-    .limit(60)
-    .lean();
+  if (!community) return notFound();
 
-  const serialized = JSON.parse(JSON.stringify(projects));
+  const communityName =
+    community.name ||
+    slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+
   return (
     <CommunityDetailClient
       slug={slug}
       communityName={communityName}
-      communityDescription={community?.description?.replace(/<[^>]*>/g, "") || ""}
-      communityImage={community?.imageGallery?.[0] || community?.featuredImage || ""}
-      projects={serialized}
+      communityDescription={community.description?.replace(/<[^>]*>/g, "") || ""}
+      communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
+      projects={projects}
     />
   );
 }

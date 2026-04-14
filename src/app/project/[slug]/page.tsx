@@ -1,30 +1,30 @@
-import { connectDB } from "@/lib/mongodb";
-import Project from "@/models/Project";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "./ProjectDetailClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try {
-    await connectDB();
-    const project = await Project.findOne({ slug, publishStatus: "published" }).lean();
-    if (!project) return { title: "Not Found" };
-    const p = project as any;
-    const seo = p.seo || {};
+    const res = await fetch(serverApiUrl(`/api/projects/${slug}`), {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return { title: "Not Found" };
+    const project = await res.json();
+    const seo = project.seo || {};
     return {
-      title: seo.metaTitle || `${p.name} | Binayah Properties`,
-      description: seo.metaDescription || p.shortOverview || "",
+      title: seo.metaTitle || `${project.name} | Binayah Properties`,
+      description: seo.metaDescription || project.shortOverview || "",
       openGraph: {
-        title: seo.ogTitle || seo.metaTitle || p.name,
-        description: seo.ogDescription || seo.metaDescription || p.shortOverview || "",
-        images: seo.ogImage ? [{ url: seo.ogImage }] : p.featuredImage ? [{ url: p.featuredImage }] : [],
+        title: seo.ogTitle || seo.metaTitle || project.name,
+        description: seo.ogDescription || seo.metaDescription || project.shortOverview || "",
+        images: seo.ogImage ? [{ url: seo.ogImage }] : project.featuredImage ? [{ url: project.featuredImage }] : [],
         type: seo.ogType || "website",
       },
       twitter: {
         card: seo.twitterCard || "summary_large_image",
-        title: seo.twitterTitle || seo.metaTitle || p.name,
+        title: seo.twitterTitle || seo.metaTitle || project.name,
         description: seo.twitterDescription || seo.metaDescription || "",
       },
       ...(seo.canonicalUrl ? { alternates: { canonical: seo.canonicalUrl } } : {}),
@@ -38,27 +38,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
 
   try {
-    await connectDB();
-    const project = await Project.findOne({ slug, publishStatus: "published" }).lean();
-    if (!project) notFound();
-    const serialized = JSON.parse(JSON.stringify(project));
-
-    // imageGallery: extract URLs for backward compat with client component
-    if (serialized.imageGallery && Array.isArray(serialized.imageGallery)) {
-      serialized.imageGallery = serialized.imageGallery.map((item: any) =>
-        typeof item === "object" && item.url ? item.url : item
-      );
-    }
-
-    // localImages: same
-    if (serialized.localImages && Array.isArray(serialized.localImages)) {
-      serialized.localImages = serialized.localImages.map((item: any) =>
-        typeof item === "object" && item.url ? item.url : item
-      );
-    }
-
-    return <ProjectDetailClient serverProject={serialized} />;
+    const res = await fetch(serverApiUrl(`/api/projects/${slug}`), {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return notFound();
+    const project = await res.json();
+    return <ProjectDetailClient serverProject={project} />;
   } catch {
-    notFound();
+    return notFound();
   }
 }

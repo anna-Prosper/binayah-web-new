@@ -1,6 +1,5 @@
-import { connectDB } from "@/lib/mongodb";
-import ConstructionUpdate from "@/models/ConstructionUpdate";
 import ConstructionUpdatesClient from "./ConstructionUpdatesClient";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 300;
 
@@ -10,11 +9,17 @@ export const metadata = {
 };
 
 export default async function ConstructionUpdatesPage() {
-  await connectDB();
-  const updates = await ConstructionUpdate.find()
-    .sort({ publishedAt: -1 })
-    .lean();
+  let updates: any[] = [];
+  try {
+    const res = await fetch(serverApiUrl("/api/construction-updates"), {
+      next: { revalidate: 300 },
+    });
+    if (res.ok) {
+      updates = await res.json();
+    }
+  } catch (err) {
+    console.warn("[ConstructionUpdatesPage] API unavailable:", (err as Error).message);
+  }
 
-  const serialized = JSON.parse(JSON.stringify(updates));
-  return <ConstructionUpdatesClient updates={serialized} />;
+  return <ConstructionUpdatesClient updates={updates} />;
 }

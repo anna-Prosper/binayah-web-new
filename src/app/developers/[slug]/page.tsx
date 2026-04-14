@@ -1,8 +1,6 @@
-import { connectDB } from "@/lib/mongodb";
-import Developer from "@/models/Developer";
-import Project from "@/models/Project";
 import DeveloperDetailClient from "./DeveloperDetailClient";
 import { notFound } from "next/navigation";
+import { serverApiUrl } from "@/lib/api";
 
 export const revalidate = 300;
 
@@ -12,32 +10,30 @@ interface Props {
 
 export default async function DeveloperDetailPage({ params }: Props) {
   const { slug } = await params;
-  await connectDB();
 
-  const developer = await Developer.findOne({
-    slug,
-    publishStatus: "published",
-  }).lean();
+  let developer: any = null;
+  let projects: any[] = [];
+
+  try {
+    const res = await fetch(serverApiUrl(`/api/developers/${slug}`), {
+      next: { revalidate: 300 },
+    });
+    if (res.status === 404) return notFound();
+    if (res.ok) {
+      const data = await res.json();
+      developer = data.developer;
+      projects = data.projects || [];
+    }
+  } catch (err) {
+    console.warn("[DeveloperDetailPage] API unavailable:", (err as Error).message);
+  }
 
   if (!developer) return notFound();
 
-  // Use case-insensitive regex to match developerName in projects
-  // This handles mismatches like "Deniz Development" vs "Deniz Developments"
-  const escapedName = developer.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const projects = await Project.find({
-    publishStatus: "published",
-    developerName: { $regex: new RegExp(`^${escapedName}`, "i") },
-  })
-    .select(
-      "name slug status community startingPrice completionDate featuredImage imageGallery propertyType developerName"
-    )
-    .sort({ createdAt: -1 })
-    .lean();
-
   return (
     <DeveloperDetailClient
-      developer={JSON.parse(JSON.stringify(developer))}
-      projects={JSON.parse(JSON.stringify(projects))}
+      developer={developer}
+      projects={projects}
     />
   );
 }
