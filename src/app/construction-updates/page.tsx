@@ -1,7 +1,7 @@
 import ConstructionUpdatesClient from "./ConstructionUpdatesClient";
 import { serverApiUrl } from "@/lib/api";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Construction Updates | Binayah Properties",
@@ -11,9 +11,7 @@ export const metadata = {
 export default async function ConstructionUpdatesPage() {
   let updates: any[] = [];
   try {
-    const res = await fetch(serverApiUrl("/api/construction-updates"), {
-      next: { revalidate: 300 },
-    });
+    const res = await fetch(serverApiUrl("/api/construction-updates"));
     if (res.ok) {
       updates = await res.json();
     }

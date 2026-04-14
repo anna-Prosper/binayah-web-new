@@ -126,9 +126,9 @@ export default async function HomePage() {
 
   try {
     const [projectsRes, listingsRes, articlesRes] = await Promise.all([
-      fetch(serverApiUrl("/api/projects?limit=4"), { next: { revalidate: 60 } }),
-      fetch(serverApiUrl("/api/listings?limit=3"), { next: { revalidate: 60 } }),
-      fetch(serverApiUrl("/api/news?limit=3"), { next: { revalidate: 60 } }),
+      fetch(serverApiUrl("/api/projects?limit=4")),
+      fetch(serverApiUrl("/api/listings?limit=3")),
+      fetch(serverApiUrl("/api/news?limit=3")),
     ]);
 
     if (projectsRes.ok) {

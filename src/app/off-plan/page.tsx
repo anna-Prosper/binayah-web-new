@@ -1,7 +1,7 @@
 import OffPlanPageClient from "./OffPlanPageClient";
 import { serverApiUrl } from "@/lib/api";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const FALLBACK_PROJECTS = [
   {
@@ -63,17 +63,12 @@ export default async function OffPlanPage() {
   let totalCount = FALLBACK_PROJECTS.length;
 
   try {
-    const res = await fetch(serverApiUrl("/api/projects?limit=12"), {
-      next: { revalidate: 60 },
-    });
+    const res = await fetch(serverApiUrl("/api/projects?limit=12"));
     if (res.ok) {
       const dbProjects = await res.json();
       if (dbProjects.length > 0) {
         initialProjects = dbProjects;
         // Fetch total count via a large query to get actual total
-        const countRes = await fetch(serverApiUrl("/api/projects?limit=1&skip=999999"), {
-          next: { revalidate: 300 },
-        });
         // Use a reasonable upper-bound for totalCount so load-more works
         // The client fetches in batches; actual total determined as batches return empty
         totalCount = 500;

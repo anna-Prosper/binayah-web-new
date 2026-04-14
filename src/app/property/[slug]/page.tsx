@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import PropertyDetailClient from "./PropertyDetailClient";
 import { serverApiUrl } from "@/lib/api";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -11,9 +11,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   try {
-    const res = await fetch(serverApiUrl(`/api/listings/${slug}`), {
-      next: { revalidate: 60 },
-    });
+    const res = await fetch(serverApiUrl(`/api/listings/${slug}`));
     if (!res.ok) return { title: "Not Found" };
     const { listing } = await res.json();
     const seo = listing.seo || {};
@@ -45,9 +43,7 @@ export default async function PropertyPage({
   const { slug } = await params;
 
   try {
-    const res = await fetch(serverApiUrl(`/api/listings/${slug}`), {
-      next: { revalidate: 60 },
-    });
+    const res = await fetch(serverApiUrl(`/api/listings/${slug}`));
     if (res.status === 404) return notFound();
     if (!res.ok) return notFound();
     const { listing, similarListings } = await res.json();

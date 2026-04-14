@@ -2,7 +2,7 @@ import DeveloperDetailClient from "./DeveloperDetailClient";
 import { notFound } from "next/navigation";
 import { serverApiUrl } from "@/lib/api";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,9 +15,7 @@ export default async function DeveloperDetailPage({ params }: Props) {
   let projects: any[] = [];
 
   try {
-    const res = await fetch(serverApiUrl(`/api/developers/${slug}`), {
-      next: { revalidate: 300 },
-    });
+    const res = await fetch(serverApiUrl(`/api/developers/${slug}`));
     if (res.status === 404) return notFound();
     if (res.ok) {
       const data = await res.json();

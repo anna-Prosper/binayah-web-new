@@ -2,14 +2,12 @@ import { notFound } from "next/navigation";
 import ConstructionUpdateDetailClient from "./ConstructionUpdateDetailClient";
 import { serverApiUrl } from "@/lib/api";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try {
-    const res = await fetch(serverApiUrl(`/api/construction-updates/${slug}`), {
-      next: { revalidate: 300 },
-    });
+    const res = await fetch(serverApiUrl(`/api/construction-updates/${slug}`));
     if (!res.ok) return { title: "Not Found" };
     const { update } = await res.json();
     return {
@@ -25,9 +23,7 @@ export default async function ConstructionUpdatePage({ params }: { params: Promi
   const { slug } = await params;
 
   try {
-    const res = await fetch(serverApiUrl(`/api/construction-updates/${slug}`), {
-      next: { revalidate: 300 },
-    });
+    const res = await fetch(serverApiUrl(`/api/construction-updates/${slug}`));
     if (res.status === 404) return notFound();
     if (!res.ok) return notFound();
     const { update, related } = await res.json();
