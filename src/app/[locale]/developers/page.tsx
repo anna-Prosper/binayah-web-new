@@ -1,4 +1,4 @@
-import DevelopersPageClient from "./DevelopersPageClient";
+import DevelopersPageClient from "@/app/developers/DevelopersPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

@@ -1,4 +1,4 @@
-import ListingsPageClient from "../rent/ListingsPageClient";
+import ListingsPageClient from "@/app/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

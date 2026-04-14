@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import NewsDetailClient from "./NewsDetailClient";
+import NewsDetailClient from "@/app/news/[slug]/NewsDetailClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

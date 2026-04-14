@@ -1,4 +1,4 @@
-import CommunityDetailClient from "./CommunityDetailClient";
+import CommunityDetailClient from "@/app/communities/[slug]/CommunityDetailClient";
 import { notFound } from "next/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 

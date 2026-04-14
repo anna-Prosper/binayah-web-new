@@ -1,4 +1,4 @@
-import SearchPageClient from "./SearchPageClient";
+import SearchPageClient from "@/app/search/SearchPageClient";
 
 export const revalidate = 60;
 

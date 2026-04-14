@@ -1,4 +1,4 @@
-import OffPlanPageClient from "./OffPlanPageClient";
+import OffPlanPageClient from "@/app/off-plan/OffPlanPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

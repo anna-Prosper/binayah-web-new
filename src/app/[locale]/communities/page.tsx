@@ -1,4 +1,4 @@
-import CommunitiesPageClient from "./CommunitiesPageClient";
+import CommunitiesPageClient from "@/app/communities/CommunitiesPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

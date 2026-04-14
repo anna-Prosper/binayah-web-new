@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import ConstructionUpdateDetailClient from "./ConstructionUpdateDetailClient";
+import ConstructionUpdateDetailClient from "@/app/construction-updates/[slug]/ConstructionUpdateDetailClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;

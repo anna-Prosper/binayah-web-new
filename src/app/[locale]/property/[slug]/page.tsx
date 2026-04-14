@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import PropertyDetailClient from "./PropertyDetailClient";
+import PropertyDetailClient from "@/app/property/[slug]/PropertyDetailClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 60;
