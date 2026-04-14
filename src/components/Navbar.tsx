@@ -103,7 +103,14 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const switchLocale = (locale: string) => {
     setShowLangDropdown(false);
     setMobileOpen(false);
-    router.replace(pathname, { locale });
+    // Strip any existing locale prefix from the current browser path
+    const currentPath = window.location.pathname;
+    const stripped = currentPath.replace(/^\/(ru|kz|in)(\/|$)/, "/") || "/";
+    const target =
+      locale === "en"
+        ? stripped + window.location.search
+        : `/${locale}${stripped === "/" ? "" : stripped}${window.location.search}`;
+    window.location.href = target;
   };
 
   const isSolid = scrolled || !isHome || isMobile;
