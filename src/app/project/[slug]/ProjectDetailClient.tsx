@@ -1089,7 +1089,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           ? project.mapUrl
                           : project.mapUrl.replace("/maps/", "/maps/embed/");
                       } else if (project.latitude && project.longitude) {
-                        embedSrc = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d${project.longitude}!3d${project.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sae!4v1`;
+                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.latitude},${project.longitude}&zoom=15`;
                       } else {
                         // Fallback: search by project name + community
                         const query = encodeURIComponent(`${project.name}, ${project.community || project.city}, ${project.country}`);
