@@ -7,7 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 interface Listing {
@@ -137,7 +137,7 @@ export default function ListingsPageClient({
                     className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20"
                   >
                     <div className="relative overflow-hidden aspect-[4/3]">
-                      <Image
+                      <ImageWithFallback
                         src={l.featuredImage || l.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
                         alt={l.name}
                         fill
