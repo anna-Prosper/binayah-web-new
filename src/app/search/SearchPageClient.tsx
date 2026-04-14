@@ -78,6 +78,14 @@ function SearchContent() {
 
   const [status, setStatus] = useState<SearchStatus>(normalizeStatus(params.get("status"), initialIntent));
   const [intent, setIntent] = useState<SearchIntent>(initialIntent);
+
+  // Sync tab when URL params change (e.g. nav links between Buy/Rent/Off-Plan)
+  useEffect(() => {
+    const urlIntent = (params.get("intent") as SearchIntent) || "";
+    const urlStatus = params.get("status");
+    setIntent(urlIntent);
+    setStatus(normalizeStatus(urlStatus, urlIntent));
+  }, [searchParams]);
   const [type, setType] = useState(params.get("type") || "");
   const [location, setLocation] = useState(params.get("location") || "");
   const [beds, setBeds] = useState(params.get("bedrooms") || "");
