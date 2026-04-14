@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -118,7 +119,7 @@ function SearchContent() {
     if (q) params.set("q", q);
 
     try {
-      const response = await fetch(`/api/search?${params.toString()}`);
+      const response = await fetch(apiUrl(`/api/search?${params.toString()}`));
       if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
       setProjects(data.projects || []);

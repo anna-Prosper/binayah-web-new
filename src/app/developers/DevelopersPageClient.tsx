@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -37,7 +38,7 @@ export default function DevelopersPageClient({
     if (loading || !hasMore || search) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/developers?limit=${BATCH_SIZE}&skip=${developers.length}`);
+      const res = await fetch(apiUrl(`/api/developers?limit=${BATCH_SIZE}&skip=${developers.length}`));
       if (!res.ok) throw new Error("Failed to fetch");
       const newDevs: Developer[] = await res.json();
       if (!Array.isArray(newDevs) || newDevs.length === 0) {
@@ -69,7 +70,7 @@ export default function DevelopersPageClient({
     setSearching(true);
     searchTimeout.current = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/developers?q=${encodeURIComponent(value)}&limit=100`);
+        const res = await fetch(apiUrl(`/api/developers?q=${encodeURIComponent(value)}&limit=100`));
         if (!res.ok) throw new Error("Search failed");
         const results: Developer[] = await res.json();
         setDevelopers(Array.isArray(results) ? results : []);

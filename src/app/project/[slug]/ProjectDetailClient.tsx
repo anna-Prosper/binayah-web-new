@@ -1,6 +1,7 @@
 "use client";
 // @ts-nocheck
 
+import { apiUrl } from "@/lib/api";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -101,7 +102,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("/api/inquiries", {
+      await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

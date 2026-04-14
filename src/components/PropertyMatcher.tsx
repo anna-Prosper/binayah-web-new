@@ -8,8 +8,9 @@ import {
   Building2, CheckSquare, ArrowRight,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { apiUrl } from "@/lib/api";
 
-const MATCHER_URL = "/api/property-matcher";
+const MATCHER_URL = apiUrl("/api/property-matcher");
 
 type QuestionDef = {
   id: string;

@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
+import { apiUrl } from "@/lib/api";
+
 const binayahLogo = "/assets/binayah-logo.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = "/api/chat";
+const CHAT_URL = apiUrl("/api/chat");
 
 async function streamChat({
   messages,

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, MapPin, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { apiUrl } from "@/lib/api";
 
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
@@ -17,7 +18,7 @@ const InquirySection = () => {
     e.preventDefault();
     setSending(true);
     try {
-      await fetch("/api/inquiries", {
+      await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
