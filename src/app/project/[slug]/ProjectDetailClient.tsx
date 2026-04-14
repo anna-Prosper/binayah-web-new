@@ -18,8 +18,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
 import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
 import NextImage from "next/image";
-const amenitiesPlaceholder = "/assets/amenities-placeholder.jpg";
-const videoThumbnail = "/assets/video-thumbnail.jpg";
+const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
+const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 

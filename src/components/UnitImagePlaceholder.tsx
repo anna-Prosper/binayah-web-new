@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 
-const unitStudio = "/assets/unit-studio.jpg";
-const unit1br = "/assets/unit-1br.jpg";
-const unit2br = "/assets/unit-2br.jpg";
-const unit3br = "/assets/unit-3br.jpg";
-const unitPenthouse = "/assets/unit-penthouse.jpg";
+const unitStudio = "/assets/unit-studio.webp";
+const unit1br = "/assets/unit-1br.webp";
+const unit2br = "/assets/unit-2br.webp";
+const unit3br = "/assets/unit-3br.webp";
+const unitPenthouse = "/assets/unit-penthouse.webp";
 
 const unitImages: Record<number, string> = {
   0: unitStudio,

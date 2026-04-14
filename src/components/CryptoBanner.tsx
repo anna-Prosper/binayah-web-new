@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-const cryptoBg = "/assets/crypto-banner.jpeg";
+const cryptoBg = "/assets/crypto-banner.webp";
 
 const CryptoBanner = () => (
   <section className="relative overflow-hidden my-2 sm:my-0">

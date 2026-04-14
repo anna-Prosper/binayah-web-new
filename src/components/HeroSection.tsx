@@ -26,7 +26,7 @@ import {
   parseHomeSearchQuery,
 } from "@/lib/home-smart-search";
 
-const heroImage = "/assets/dubai-hero.png";
+const heroImage = "/assets/dubai-hero.webp";
 
 const statusTabs: HomeSearchTab[] = ["Buy", "Rent", "Off-Plan"];
 const popularLocations = [
