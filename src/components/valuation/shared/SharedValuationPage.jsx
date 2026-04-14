@@ -748,15 +748,28 @@ function sanitizeComparableDisplayDate(value) {
 }
 function validateForm(form) {
     const errors = {};
-    if (!form.unit.trim() || form.unit.trim().length < 5) {
-        errors.unit = "Please enter the building or unit name (at least 5 characters).";
+    if (!form.city.trim()) {
+        errors.city = "Please select the city.";
+    }
+    if (!form.area.trim()) {
+        errors.area = "Please enter the community.";
+    }
+    if (!form.type.trim()) {
+        errors.type = "Please select the property type.";
+    }
+    if (requiresUnitFieldForForm(form.type) && (!form.unit.trim() || form.unit.trim().length < 3)) {
+        errors.unit = "Please enter the building or project name.";
     }
     return errors;
+}
+function requiresUnitFieldForForm(propertyType) {
+    const normalizedType = cleanReportField(propertyType).toLowerCase();
+    return normalizedType.includes("apartment") || normalizedType.includes("penthouse") || normalizedType.includes("commercial");
 }
 function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const defaultMovingFactors = DEED_DUMMY_RESULT.movingFactors;
-    const community = extractCommunity(form.unit);
+    const community = ((_a = api === null || api === void 0 ? void 0 : api.property_identity) === null || _a === void 0 ? void 0 : _a.normalizedLocation) || form.area || extractCommunity(form.unit);
     const propType = ((_a = form.type) === null || _a === void 0 ? void 0 : _a.toLowerCase()) || "property";
     const comparables = [
         ...((_b = api.transactions) !== null && _b !== void 0 ? _b : []).map((c) => ({
@@ -783,7 +796,7 @@ function mapApiToResult(api, form) {
         currency: api.currency || "AED",
         community,
         city: form.city || "Dubai",
-        country: "UAE",
+        country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
         tags: [form.type, community].filter(Boolean),
         fairValueLow: api.estimate_low,
         fairValueHigh: api.estimate_high,
@@ -815,7 +828,7 @@ function mapApiToResult(api, form) {
 }
 function mapPreviewApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
-    const community = extractCommunity(form.unit);
+    const community = ((_a = api === null || api === void 0 ? void 0 : api.property_identity) === null || _a === void 0 ? void 0 : _a.normalizedLocation) || form.area || extractCommunity(form.unit);
     const previewRows = ((_b = (_a = api.preview) === null || _a === void 0 ? void 0 : _a.comparableRows) !== null && _b !== void 0 ? _b : []).map((row) => {
         var _a;
         return ({
@@ -836,7 +849,7 @@ function mapPreviewApiToResult(api, form) {
         currency: "AED",
         community,
         city: form.city || "Dubai",
-        country: "UAE",
+        country: (((_e = api === null || api === void 0 ? void 0 : api.market) === null || _e === void 0 ? void 0 : _e.countryCode) || "AE") === "AE" ? "UAE" : ((_f = api === null || api === void 0 ? void 0 : api.market) === null || _f === void 0 ? void 0 : _f.countryCode) || "UAE",
         tags: [form.type, community].filter(Boolean),
         fairValueLow: null,
         fairValueHigh: null,
@@ -1098,6 +1111,7 @@ const DEED_DUMMY_RESULT = {
 // ─── Component ────────────────────────────────────────────────────────────────
 const defaultResolveApiUrl = (path) => path;
 const INITIAL_FORM_STATE = {
+    countryCode: "AE",
     transactionType: "buy",
     unit: "",
     area: "",
@@ -1114,9 +1128,10 @@ function buildFormFromInquiry(inquiry, fallback = INITIAL_FORM_STATE) {
     const safeInquiry = inquiry && typeof inquiry === "object" ? inquiry : {};
     const transactionType = cleanReportField(safeInquiry.transactionType).toLowerCase() === "rent" ? "rent" : "buy";
     return {
+        countryCode: cleanReportField(safeInquiry.countryCode) || fallback.countryCode,
         transactionType: cleanReportField(safeInquiry.transactionType) ? transactionType : fallback.transactionType,
         unit: cleanReportField(safeInquiry.propertyName) || fallback.unit,
-        area: cleanReportField(safeInquiry.location) || fallback.area,
+        area: cleanReportField(safeInquiry.community) || cleanReportField(safeInquiry.location) || fallback.area,
         beds: cleanReportField(safeInquiry.bedrooms) || fallback.beds,
         maids: cleanReportField(safeInquiry.maids) || fallback.maids,
         city: cleanReportField(safeInquiry.city) || fallback.city,
@@ -1581,7 +1596,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 throw new Error((data === null || data === void 0 ? void 0 : data.error) || "Could not extract property details from the uploaded file.");
             }
             const inquiry = (data === null || data === void 0 ? void 0 : data.inquiry) || {};
-            setTrackedValues(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (inquiry.propertyName ? { unit: inquiry.propertyName } : {})), (inquiry.location ? { area: inquiry.location } : {})), (inquiry.city ? { city: inquiry.city } : {})), (inquiry.propertyType ? { type: inquiry.propertyType } : {})), (inquiry.bedrooms ? { beds: inquiry.bedrooms } : {})), (inquiry.maids ? { maids: inquiry.maids } : {})), (inquiry.size ? { size: inquiry.size } : {})), "deed");
+            setTrackedValues(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (inquiry.propertyName ? { unit: inquiry.propertyName } : {})), ((inquiry.community || inquiry.location) ? { area: inquiry.community || inquiry.location } : {})), (inquiry.city ? { city: inquiry.city } : {})), (inquiry.propertyType ? { type: inquiry.propertyType } : {})), (inquiry.bedrooms ? { beds: inquiry.bedrooms } : {})), (inquiry.maids ? { maids: inquiry.maids } : {})), (inquiry.size ? { size: inquiry.size } : {})), "deed");
             setGate((current) => ({
                 name: current.name || inquiry.ownerName || current.name,
                 phone: current.phone || inquiry.phone || current.phone,
@@ -1628,7 +1643,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         try {
             const { turnstileConfig } = await loadValuationConfig();
             const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
-            const apiPayload = Object.assign({ transactionType: form.transactionType, propertyName: form.unit, location: form.area, city: form.city, propertyType: form.type, bedrooms: form.beds, maids: form.maids, size: form.size }, (turnstileToken ? { turnstileToken } : {}));
+            const apiPayload = Object.assign({ countryCode: form.countryCode || "AE", transactionType: form.transactionType, propertyName: form.unit, community: form.area, location: form.area, city: form.city, propertyType: form.type, bedrooms: form.beds, maids: form.maids, size: form.size }, (turnstileToken ? { turnstileToken } : {}));
             await runValuationWithPhases(apiPayload, 1);
         }
         catch (err) {
@@ -2165,14 +2180,17 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
                     {/* Area / Community — searchable */}
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Area / Community</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
+                        Area / Community
+                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                      </label>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
                         <input value={form.area} onChange={(e) => {
                 setTrackedValues({ area: e.target.value, unit: "" }, "manual");
                 setShowAreaSuggestions(true);
             }} onFocus={() => setShowAreaSuggestions(true)} onKeyDown={(e) => { if (e.key === "Escape")
-            setShowAreaSuggestions(false); }} placeholder={form.city ? `Search in ${form.city}…` : "Select city first"} autoComplete="off" disabled={!form.city} className="w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border border-[#e3ddcf] px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed"/>
+            setShowAreaSuggestions(false); }} placeholder={form.city ? `Search in ${form.city}…` : "Select city first"} autoComplete="off" disabled={!form.city} className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed ${fieldErrors.area ? "border-[#b42318]" : "border-[#e3ddcf]"}`}/>
                         {showAreaSuggestions && form.city && (() => {
                 const q = form.area.trim().toLowerCase();
                 const matches = getAreas(form.city)
@@ -2191,6 +2209,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                             </div>) : null;
             })()}
                       </div>
+                      {fieldErrors.area && (<p className="text-xs text-[#b42318] mt-1 flex items-center gap-1">
+                          <AlertTriangle className="h-3 w-3 flex-shrink-0"/>{fieldErrors.area}
+                        </p>)}
                     </div>
 
                     {/* Building + Unit — Google Places live search with local fallback */}
