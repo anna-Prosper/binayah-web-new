@@ -1,7 +1,7 @@
 import HomePageClient from "@/components/HomePageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const FALLBACK_LISTINGS = [
   {
@@ -126,9 +126,9 @@ export default async function HomePage() {
 
   try {
     const [projectsRes, listingsRes, articlesRes] = await Promise.all([
-      fetch(serverApiUrl("/api/projects?limit=4")),
-      fetch(serverApiUrl("/api/listings?limit=3")),
-      fetch(serverApiUrl("/api/news?limit=3")),
+      serverFetch(serverApiUrl("/api/projects?limit=4")),
+      serverFetch(serverApiUrl("/api/listings?limit=3")),
+      serverFetch(serverApiUrl("/api/news?limit=3")),
     ]);
 
     if (projectsRes.ok) {

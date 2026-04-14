@@ -1,12 +1,12 @@
 import CommunitiesPageClient from "./CommunitiesPageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function CommunitiesPage() {
   let communities: any[] = [];
   try {
-    const res = await fetch(serverApiUrl("/api/communities"));
+    const res = await serverFetch(serverApiUrl("/api/communities"));
     if (res.ok) {
       communities = await res.json();
     }

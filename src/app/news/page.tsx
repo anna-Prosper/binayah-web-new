@@ -1,12 +1,12 @@
 import NewsPageClient from "./NewsPageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function NewsPage() {
   let articles: any[] = [];
   try {
-    const res = await fetch(serverApiUrl("/api/news"));
+    const res = await serverFetch(serverApiUrl("/api/news"));
     if (res.ok) {
       articles = await res.json();
     }

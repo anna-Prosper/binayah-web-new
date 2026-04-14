@@ -1,7 +1,7 @@
 import OffPlanPageClient from "./OffPlanPageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const FALLBACK_PROJECTS = [
   {
@@ -63,7 +63,7 @@ export default async function OffPlanPage() {
   let totalCount = FALLBACK_PROJECTS.length;
 
   try {
-    const res = await fetch(serverApiUrl("/api/projects?limit=12"));
+    const res = await serverFetch(serverApiUrl("/api/projects?limit=12"));
     if (res.ok) {
       const dbProjects = await res.json();
       if (dbProjects.length > 0) {

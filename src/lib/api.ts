@@ -26,3 +26,15 @@ export function serverApiUrl(path: string): string {
     "";
   return base ? `${base}${path}` : path;
 }
+
+/**
+ * Fetch wrapper for server components — times out after `ms` milliseconds
+ * so cold Render starts don't block the build for 60s+.
+ * Falls back gracefully; callers should handle a non-ok response.
+ */
+export async function serverFetch(
+  url: string,
+  ms = 8000
+): Promise<Response> {
+  return fetch(url, { signal: AbortSignal.timeout(ms) });
+}

@@ -1,14 +1,14 @@
 import DevelopersPageClient from "./DevelopersPageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function DevelopersPage() {
   let initialDevelopers: any[] = [];
   let totalCount = 0;
 
   try {
-    const res = await fetch(serverApiUrl("/api/developers?limit=200"));
+    const res = await serverFetch(serverApiUrl("/api/developers?limit=200"));
     if (res.ok) {
       const data = await res.json();
       initialDevelopers = Array.isArray(data) ? data : [];

@@ -1,8 +1,8 @@
 import CommunityDetailClient from "./CommunityDetailClient";
 import { notFound } from "next/navigation";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function CommunityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -11,7 +11,7 @@ export default async function CommunityPage({ params }: { params: Promise<{ slug
   let projects: any[] = [];
 
   try {
-    const res = await fetch(serverApiUrl(`/api/communities/${slug}`));
+    const res = await serverFetch(serverApiUrl(`/api/communities/${slug}`));
     if (res.status === 404) return notFound();
     if (res.ok) {
       const data = await res.json();

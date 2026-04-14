@@ -1,7 +1,7 @@
 import ListingsPageClient from "../rent/ListingsPageClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata = {
   title: "Properties for Sale in Dubai | Binayah Properties",
@@ -14,8 +14,8 @@ export default async function BuyPage() {
 
   try {
     const [listingsRes, countRes] = await Promise.all([
-      fetch(serverApiUrl("/api/listings?listingType=Sale&limit=9")),
-      fetch(serverApiUrl("/api/listings?listingType=Sale&countOnly=1")),
+      serverFetch(serverApiUrl("/api/listings?listingType=Sale&limit=9")),
+      serverFetch(serverApiUrl("/api/listings?listingType=Sale&countOnly=1")),
     ]);
 
     if (listingsRes.ok) initialListings = await listingsRes.json();

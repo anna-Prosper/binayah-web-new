@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "./ProjectDetailClient";
-import { serverApiUrl } from "@/lib/api";
+import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try {
-    const res = await fetch(serverApiUrl(`/api/projects/${slug}`));
+    const res = await serverFetch(serverApiUrl(`/api/projects/${slug}`));
     if (!res.ok) return { title: "Not Found" };
     const project = await res.json();
     const seo = project.seo || {};
@@ -36,7 +36,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
 
   try {
-    const res = await fetch(serverApiUrl(`/api/projects/${slug}`));
+    const res = await serverFetch(serverApiUrl(`/api/projects/${slug}`));
     if (!res.ok) return notFound();
     const project = await res.json();
     return <ProjectDetailClient serverProject={project} />;
