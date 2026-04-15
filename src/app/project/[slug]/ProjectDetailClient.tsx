@@ -161,7 +161,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             }}
           >
             {images.map((img, i) => (
-              <div key={i} className="w-full h-full flex-shrink-0 snap-center overflow-hidden"
+              <div key={i} className="relative w-full h-full flex-shrink-0 snap-center overflow-hidden"
                 onClick={() => { setActiveImage(i); setShowGallery(true); }}
               >
                 <NextImage
@@ -180,26 +180,26 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           <div className="sm:hidden absolute bottom-5 right-4 z-30 bg-black/60 backdrop-blur-sm text-white text-[13px] font-bold px-3 py-1 rounded-lg tracking-wide">
             {activeImage + 1}/{images.length}
           </div>
-          {/* Desktop: single image with animation */}
-          <div className="hidden sm:block w-full h-full">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={activeImage}
-                src={images[activeImage]}
-                alt={project.name}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-                className="w-full h-full object-cover"
-                onClick={() => setShowGallery(true)}
-              />
-            </AnimatePresence>
+          {/* Desktop: single image */}
+          <div className="hidden sm:block w-full h-full cursor-pointer" onClick={() => setShowGallery(true)}>
+            <NextImage
+              key={activeImage}
+              src={images[activeImage]}
+              alt={project.name}
+              fill
+              sizes="100vw"
+              className="object-cover transition-opacity duration-500"
+              priority
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                target.src = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200";
+              }}
+            />
           </div>
 
-          {/* Gradient overlays – stronger bottom fade on mobile for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent sm:from-foreground/80 sm:via-foreground/20 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/25 to-transparent pointer-events-none" />
+          {/* Gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 to-transparent pointer-events-none" />
 
           {/* Breadcrumb - top left below navbar */}
           <motion.div
@@ -293,7 +293,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <button
                           key={i}
                           onClick={() => setActiveImage(i)}
-                          className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
+                          className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
                             i === activeImage
                               ? "border-accent shadow-lg shadow-accent/20 scale-110"
                               : "border-white/20 opacity-70 hover:opacity-100 hover:border-white/50"
