@@ -8,8 +8,6 @@ import Image from "next/image";
 
 import { apiUrl } from "@/lib/api";
 
-import { apiUrl } from "@/lib/api";
-
 const binayahLogo = "/assets/binayah-logo.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
