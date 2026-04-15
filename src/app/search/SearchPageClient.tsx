@@ -4,6 +4,9 @@ import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { CardActions } from "@/components/PropertyActions";
+import PropertyComparison from "@/components/PropertyComparison";
+import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
@@ -276,8 +279,8 @@ function SearchContent() {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{project.status || "Off-Plan"}</span>
-                              <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-primary/80 text-white backdrop-blur-sm">Off-Plan</span>
                             </div>
+                            <CardActions propertyId={project._id} slug={project.slug} title={project.name} type="project" />
                           </div>
                           <div className="p-4">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
@@ -311,8 +314,8 @@ function SearchContent() {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? "For Rent" : "For Sale"}</span>
-                              {listing.propertyType && <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-black/40 backdrop-blur-sm text-white">{listing.propertyType}</span>}
                             </div>
+                            <CardActions propertyId={listing._id} slug={listing.slug} title={listing.title} />
                           </div>
                           <div className="p-4">
                             {listing.community && <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5"><MapPin className="h-3 w-3" />{listing.community}{listing.city ? `, ${listing.city}` : ""}</p>}
@@ -337,6 +340,8 @@ function SearchContent() {
 
       <Footer />
       <WhatsAppButton />
+      <PropertyComparison />
+      <FavoritesDrawer />
     </div>
   );
 }

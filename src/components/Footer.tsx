@@ -89,6 +89,39 @@ const Footer = () => (
         </div>
       </div>
 
+      {/* Trust Badges */}
+      <div className="border-t border-white/8 py-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+              <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">RERA Registered</p>
+              <p className="text-xs text-white/60 font-medium">ORN: 1040</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+              <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <div>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">DLD Certified</p>
+              <p className="text-xs text-white/60 font-medium">Dubai Land Department</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+              <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">Est. 2010</p>
+              <p className="text-xs text-white/60 font-medium">15+ Years in Dubai</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Extra bottom padding on mobile to clear FABs */}
       <div className="border-t border-white/8 py-6 pb-20 sm:pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-xs text-white/30">© 2026 Binayah Properties. All rights reserved.</p>

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Bed, Maximize, MapPin, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { CardActions } from "@/components/PropertyActions";
 
 interface Project {
   _id: string;
@@ -83,6 +84,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
                     <ImageWithFallback src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{p.status}</span>
+                    <CardActions propertyId={p._id} slug={p.slug} title={p.name} type="project" />
                   </div>
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider">

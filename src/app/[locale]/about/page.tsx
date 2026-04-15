@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Award, Users, Building2, Globe, CheckCircle2 } from "lucide-react";
 
@@ -26,6 +27,7 @@ export default function AboutPage() {
   return (
   <div className="min-h-screen bg-background">
     <Navbar />
+    <Breadcrumbs items={[{ label: "About Us", href: "/about" }]} />
 
     {/* Hero */}
     <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>

@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ClipboardCheck, BarChart3, Wallet, Users, Wrench, ShieldCheck,
@@ -65,6 +66,7 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
+      <Breadcrumbs items={[{ label: "Services", href: "/services" }]} />
 
       {/* ═══ HERO ═══ */}
       <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>

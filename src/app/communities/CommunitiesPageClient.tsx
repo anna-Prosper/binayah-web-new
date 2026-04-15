@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
@@ -24,6 +25,7 @@ export default function CommunitiesPageClient({ communities }: { communities: Co
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <Breadcrumbs items={[{ label: "Communities", href: "/communities" }]} />
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">

@@ -14,8 +14,6 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Share2,
-  Heart,
   Building2,
   Home,
   Check,
@@ -25,6 +23,9 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { DetailActions, CardActions } from "@/components/PropertyActions";
+import PropertyComparison from "@/components/PropertyComparison";
+import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -309,7 +310,7 @@ export default function PropertyDetailClient({
                 )}
 
                 {/* Price */}
-                <div className="mb-8">
+                <div className="mb-5">
                   <p className="text-3xl font-bold text-primary">
                     {formatPrice(listing.price, listing.currency)}
                   </p>
@@ -318,6 +319,15 @@ export default function PropertyDetailClient({
                       / year
                     </span>
                   )}
+                </div>
+
+                {/* Actions */}
+                <div className="mb-8">
+                  <DetailActions
+                    propertyId={listing._id}
+                    slug={listing.slug}
+                    title={listing.title}
+                  />
                 </div>
 
                 {/* Key Stats */}
@@ -648,6 +658,7 @@ export default function PropertyDetailClient({
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                         {l.listingType === "Rent" ? "For Rent" : "For Sale"}
                       </span>
+                      <CardActions propertyId={l._id} slug={l.slug} title={l.title} />
                     </div>
                     <div className="p-5">
                       {l.community && (
@@ -746,6 +757,8 @@ export default function PropertyDetailClient({
 
       <Footer />
       <WhatsAppButton />
+      <PropertyComparison />
+      <FavoritesDrawer />
     </div>
   );
 }

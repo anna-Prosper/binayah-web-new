@@ -7,6 +7,11 @@ import HeroSection from "@/components/HeroSection";
 import AIPulseBanner from "@/components/AIPulseBanner";
 
 // Below-the-fold: code-split and lazy-loaded
+const FAQSection           = dynamic(() => import("@/components/FAQSection"));
+const MortgageCalculator   = dynamic(() => import("@/components/MortgageCalculator"));
+const CookieConsent        = dynamic(() => import("@/components/CookieConsent"));
+const PropertyComparison   = dynamic(() => import("@/components/PropertyComparison"));
+const FavoritesDrawer      = dynamic(() => import("@/components/FavoritesDrawer"));
 const ValuationStrip       = dynamic(() => import("@/components/ValuationStrip"));
 const StatsSection         = dynamic(() => import("@/components/StatsSection"));
 const WhatWeOffer          = dynamic(() => import("@/components/WhatWeOffer"));
@@ -83,10 +88,15 @@ export default function HomePageClient({ featuredListings = [], offPlanProjects 
       <TestimonialsSection />
       <InquirySection />
       <NewsSection articles={latestArticles} />
+      <MortgageCalculator />
+      <FAQSection />
       <NewsletterStrip />
       <Footer />
       <WhatsAppButton />
       <AIChatWidget />
+      <CookieConsent />
+      <PropertyComparison />
+      <FavoritesDrawer />
       <ScrollToTop />
     </div>
   );

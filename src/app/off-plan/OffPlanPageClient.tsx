@@ -4,6 +4,9 @@ import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { CardActions } from "@/components/PropertyActions";
+import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -75,6 +78,7 @@ export default function OffPlanPageClient({
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <Breadcrumbs items={[{ label: "Off Plan", href: "/off-plan" }]} />
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
@@ -112,6 +116,7 @@ export default function OffPlanPageClient({
                     <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                       {p.status || "Off-Plan"}
                     </span>
+                    <CardActions propertyId={p._id} slug={p.slug} title={p.name} type="project" />
                   </div>
                   <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
@@ -163,6 +168,7 @@ export default function OffPlanPageClient({
 
       <Footer />
       <WhatsAppButton />
+      <FavoritesDrawer />
     </div>
   );
 }

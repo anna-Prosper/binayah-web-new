@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { ReviewJsonLd } from "./JsonLd";
 
 const testimonials = [
   {
@@ -36,6 +37,13 @@ const TestimonialsSection = () => {
 
   return (
     <section className="py-8 sm:py-24 bg-foreground text-background relative overflow-hidden">
+      <ReviewJsonLd
+        reviews={testimonials.map((t) => ({
+          author: t.name,
+          reviewBody: t.text,
+          ratingValue: t.rating,
+        }))}
+      />
       {/* Decorative quote — desktop only */}
       <div className="absolute top-10 right-10 text-background/5 hidden sm:block">
         <Quote className="h-64 w-64" />

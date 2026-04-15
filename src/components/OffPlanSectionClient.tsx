@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
+import { CardActions } from "@/components/PropertyActions";
 
 
 interface Project {
@@ -74,6 +75,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
                     <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                       {p.status}
                     </span>
+                    <CardActions propertyId={p._id || p.id || p.slug} slug={p.slug} title={p.name} type="project" />
                   </div>
                   <div className="p-5 flex flex-col flex-1">
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2">

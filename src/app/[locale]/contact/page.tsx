@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { useState } from "react";
@@ -35,6 +36,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <Breadcrumbs items={[{ label: "Contact", href: "/contact" }]} />
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
