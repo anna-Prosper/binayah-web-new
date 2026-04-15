@@ -7,19 +7,29 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { apiUrl } from "@/lib/api";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+    try {
+      const res = await fetch(apiUrl("/api/inquiries"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, inquiryType: "General", source: "contact-page" }),
+      });
+      if (!res.ok) throw new Error("Request failed");
       toast.success("Message sent! We'll get back to you shortly.");
       setForm({ name: "", email: "", phone: "", message: "" });
-    }, 1000);
+    } catch {
+      toast.error("Failed to send message. Please try again or call us directly.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (

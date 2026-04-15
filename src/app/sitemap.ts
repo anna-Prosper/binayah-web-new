@@ -2,6 +2,27 @@ import { MetadataRoute } from "next";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
+const LOCALES = ["en", "ru", "kz", "in"] as const;
+
+function localeUrl(path: string, locale: string) {
+  const prefix = locale === "en" ? "" : `/${locale}`;
+  return `${BASE}${prefix}${path}`;
+}
+
+function withAlternates(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
+  const languages: Record<string, string> = {};
+  for (const locale of LOCALES) {
+    languages[locale === "en" ? "x-default" : locale] = localeUrl(path, locale);
+    if (locale !== "en") languages[locale] = localeUrl(path, locale);
+  }
+  return {
+    url: localeUrl(path, "en"),
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates: { languages },
+  };
+}
 
 async function fetchSlugs(path: string): Promise<string[]> {
   try {
@@ -18,7 +39,6 @@ async function fetchSlugs(path: string): Promise<string[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  // Fetch all slugs concurrently
   const [projects, listings, articles, communities, updates, developers] =
     await Promise.all([
       fetchSlugs("/api/projects?limit=1000&fields=slug"),
@@ -30,58 +50,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: BASE, lastModified: now, changeFrequency: "daily", priority: 1.0 },
-    { url: `${BASE}/off-plan`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
-    { url: `${BASE}/buy`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
-    { url: `${BASE}/rent`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
-    { url: `${BASE}/search`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
-    { url: `${BASE}/communities`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${BASE}/developers`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${BASE}/news`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
-    { url: `${BASE}/construction-updates`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
-    { url: `${BASE}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${BASE}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${BASE}/valuation`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    withAlternates("/", 1.0, "daily", now),
+    withAlternates("/off-plan", 0.9, "daily", now),
+    withAlternates("/buy", 0.9, "daily", now),
+    withAlternates("/rent", 0.9, "daily", now),
+    withAlternates("/search", 0.8, "daily", now),
+    withAlternates("/communities", 0.8, "weekly", now),
+    withAlternates("/developers", 0.7, "weekly", now),
+    withAlternates("/news", 0.7, "daily", now),
+    withAlternates("/construction-updates", 0.7, "daily", now),
+    withAlternates("/services", 0.6, "monthly", now),
+    withAlternates("/about", 0.5, "monthly", now),
+    withAlternates("/contact", 0.5, "monthly", now),
+    withAlternates("/valuation", 0.5, "monthly", now),
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
-    ...projects.map((slug) => ({
-      url: `${BASE}/project/${slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
-    ...listings.map((slug) => ({
-      url: `${BASE}/property/${slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    })),
-    ...articles.map((slug) => ({
-      url: `${BASE}/news/${slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    })),
-    ...communities.map((slug) => ({
-      url: `${BASE}/communities/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...updates.map((slug) => ({
-      url: `${BASE}/construction-updates/${slug}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    })),
-    ...developers.map((slug) => ({
-      url: `${BASE}/developers/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
+    ...projects.map((slug) => withAlternates(`/project/${slug}`, 0.8, "weekly", now)),
+    ...listings.map((slug) => withAlternates(`/property/${slug}`, 0.7, "weekly", now)),
+    ...articles.map((slug) => withAlternates(`/news/${slug}`, 0.6, "weekly", now)),
+    ...communities.map((slug) => withAlternates(`/communities/${slug}`, 0.7, "monthly", now)),
+    ...updates.map((slug) => withAlternates(`/construction-updates/${slug}`, 0.6, "weekly", now)),
+    ...developers.map((slug) => withAlternates(`/developers/${slug}`, 0.6, "monthly", now)),
   ];
 
   return [...staticPages, ...dynamicPages];

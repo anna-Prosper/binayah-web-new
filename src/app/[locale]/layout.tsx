@@ -21,13 +21,35 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
+
 export const metadata: Metadata = {
   title: "Binayah Properties — Dubai Real Estate",
   description: "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
+  metadataBase: new URL(siteUrl),
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "Binayah Properties — Dubai Real Estate",
     description: "Dubai's trusted property partner for buying, selling & renting properties.",
     type: "website",
+    url: siteUrl,
+    images: [
+      {
+        url: "/assets/dubai-hero.webp",
+        width: 1200,
+        height: 630,
+        alt: "Binayah Properties — Dubai Real Estate",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Binayah Properties — Dubai Real Estate",
+    description: "Dubai's trusted property partner for buying, selling & renting properties.",
+    images: ["/assets/dubai-hero.webp"],
   },
 };
 
