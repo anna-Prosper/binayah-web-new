@@ -9,12 +9,12 @@ export const revalidate = 300;
 
 export const metadata = {
   title: "Dubai Market Pulse | Binayah Properties",
-  description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, and community comparisons across top areas.",
+  description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
 };
 
-async function getMarketData() {
+async function fetchJson(path: string) {
   try {
-    const res = await serverFetch(serverApiUrl("/api/market-stats"), 10_000);
+    const res = await serverFetch(serverApiUrl(path), 12_000);
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -23,7 +23,10 @@ async function getMarketData() {
 }
 
 export default async function PulsePage() {
-  const data = await getMarketData();
+  const [marketStats, marketData] = await Promise.all([
+    fetchJson("/api/market-stats"),
+    fetchJson("/api/market-data"),
+  ]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,24 +53,27 @@ export default async function PulsePage() {
             Dubai Market <span className="italic font-light">Pulse</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
-            Live analytics across Dubai&apos;s top communities — price per sqft, rental yields,
-            investment scores, and supply breakdown. Updated every 5 minutes.
+            Live analytics across Dubai&apos;s top communities — prices, rental yields, DLD transactions,
+            exchange rates, and economic indicators. Updated automatically.
           </p>
-          <div className="flex items-center gap-2 mt-5">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-primary-foreground/60">Live data · refreshes every 5 min</span>
+          <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-primary-foreground/60">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Live listings data
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+              DLD transactions
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              Exchange rates · World Bank
+            </div>
           </div>
         </div>
       </section>
 
-      {!data && (
-        <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-          <Activity className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-          <p className="text-muted-foreground">Market data is temporarily unavailable. Please try again shortly.</p>
-        </div>
-      )}
-
-      <PulsePageClient data={data} />
+      <PulsePageClient marketStats={marketStats} marketData={marketData} />
 
       <Footer />
       <WhatsAppButton />
