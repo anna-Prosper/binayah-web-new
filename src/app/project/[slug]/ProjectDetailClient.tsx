@@ -18,6 +18,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
 import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
 import NextImage from "next/image";
+import ImageWithFallback from "@/components/ImageWithFallback";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -164,13 +165,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               <div key={i} className="relative w-full h-full flex-shrink-0 snap-center overflow-hidden"
                 onClick={() => { setActiveImage(i); setShowGallery(true); }}
               >
-                <NextImage
+                <ImageWithFallback
                   src={img}
                   alt={`${project.name} ${i + 1}`}
                   fill
                   sizes="100vw"
                   className="object-cover object-center"
-                  style={{ objectPosition: "center 40%" }}
                   priority={i === 0}
                 />
               </div>
@@ -182,18 +182,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           </div>
           {/* Desktop: single image */}
           <div className="hidden sm:block w-full h-full cursor-pointer" onClick={() => setShowGallery(true)}>
-            <NextImage
+            <ImageWithFallback
               key={activeImage}
               src={images[activeImage]}
               alt={project.name}
               fill
               sizes="100vw"
-              className="object-cover transition-opacity duration-500"
+              className="object-cover"
               priority
-              onError={(e) => {
-                const target = e.currentTarget as HTMLImageElement;
-                target.src = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200";
-              }}
             />
           </div>
 
@@ -299,7 +295,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               : "border-white/20 opacity-70 hover:opacity-100 hover:border-white/50"
                           }`}
                         >
-                          <NextImage src={img} alt="" fill sizes="64px" className="object-cover" />
+                          <ImageWithFallback src={img} alt="" fill sizes="64px" className="object-cover" />
                         </button>
                       ))}
                     </div>
@@ -799,7 +795,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             onClick={() => { setActiveImage(i); setShowGallery(true); }}
                             className="relative flex-shrink-0 w-[70%] aspect-[3/2] rounded-xl overflow-hidden border border-border/50 snap-center"
                           >
-                            <NextImage src={img} alt={`${project.name} - ${i + 1}`} fill sizes="70vw" className="object-cover" />
+                            <ImageWithFallback src={img} alt={`${project.name} - ${i + 1}`} fill sizes="70vw" className="object-cover" />
                             {i === 5 && images.length > 6 && (
                               <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
                                 <span className="text-white font-bold text-base">+{images.length - 6}</span>
@@ -821,7 +817,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             onClick={() => { setActiveImage(i); setShowGallery(true); }}
                             className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all"
                           >
-                            <NextImage src={img} alt={`${project.name} - ${i + 1}`} fill sizes="25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <ImageWithFallback src={img} alt={`${project.name} - ${i + 1}`} fill sizes="25vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
                               <Eye className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             </div>
@@ -2414,13 +2410,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
                       i === activeImage
                         ? "border-accent shadow-lg shadow-accent/30 scale-105"
                         : "border-transparent opacity-50 hover:opacity-80"
                     }`}
                   >
-                    <NextImage src={img} alt="" fill sizes="80px" className="object-cover" />
+                    <ImageWithFallback src={img} alt="" fill sizes="80px" className="object-cover" />
                   </button>
                 ))}
               </div>
