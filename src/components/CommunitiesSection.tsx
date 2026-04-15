@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const communities = [
   { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=800&fit=crop" },
@@ -47,7 +48,7 @@ const CommunitiesSection = () => (
             className="flex-shrink-0 w-[60%] snap-center"
           >
             <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
-              <img src={c.image} alt={c.name} className="w-full h-full object-cover" loading="lazy" />
+              <Image src={c.image} alt={c.name} fill sizes="100vw" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>
@@ -69,7 +70,7 @@ const CommunitiesSection = () => (
             transition={{ delay: i * 0.1 }}
           >
             <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
-              <img src={c.image} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+              <Image src={c.image} alt={c.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5">
                 <h3 className="text-white font-bold text-lg mb-1">{c.name}</h3>

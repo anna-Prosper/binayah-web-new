@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -39,7 +40,7 @@ export default function CommunitiesPageClient({ communities }: { communities: Co
             {communities.map((c, i) => (
               <motion.div key={c._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className="h-full">
                 <Link href={`/communities/${c.slug}`} className="group block relative h-full rounded-2xl overflow-hidden aspect-[3/4]">
-                  <img src={c.imageGallery?.[0] || c.featuredImage || FALLBACK_IMAGE} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                  <ImageWithFallback src={c.imageGallery?.[0] || c.featuredImage || FALLBACK_IMAGE} alt={c.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
                     <h3 className="text-white font-bold text-lg mb-1">{c.name}</h3>

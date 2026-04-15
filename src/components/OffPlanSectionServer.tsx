@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 interface Project {
   _id: string;
@@ -37,7 +38,7 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
             <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="h-full">
               <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                 <div className="relative overflow-hidden aspect-[4/3]">
-                  <img src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                  <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>
                 </div>
                 <div className="p-4 flex flex-col flex-1">

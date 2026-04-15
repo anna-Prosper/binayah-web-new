@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import Image from "next/image";
+
+import { apiUrl } from "@/lib/api";
 
 import { apiUrl } from "@/lib/api";
 
@@ -169,7 +172,7 @@ const AIChatWidget = () => {
             {/* Header */}
             <div className="px-5 py-4 flex items-center gap-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
-              <img src={binayahLogo} alt="Binayah" className="h-7 w-auto brightness-0 invert" />
+              <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
               <div>
                 <p className="text-white font-bold text-sm tracking-wide">Binayah AI Assistant</p>
                 <p className="text-white/60 text-xs">Ask about properties, areas &amp; more</p>

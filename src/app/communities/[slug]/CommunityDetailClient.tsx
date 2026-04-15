@@ -8,6 +8,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { ArrowLeft, Building, CalendarDays, ChevronRight, MapPin } from "lucide-react";
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 const communityImages: Record<string, string> = {
   "downtown-dubai": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop",
@@ -33,7 +34,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
       <Navbar />
       <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImage} alt={communityName} className="w-full h-full object-cover" />
+          <ImageWithFallback src={heroImage} alt={communityName} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-foreground/30" />
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">
@@ -60,7 +61,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
                 <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                   <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                     <div className="relative overflow-hidden aspect-[4/3]">
-                      <img src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                      <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>
                     </div>
                     <div className="p-5">

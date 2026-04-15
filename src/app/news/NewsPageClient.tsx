@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 
@@ -50,7 +51,7 @@ export default function NewsPageClient({ articles }: { articles: Article[] }) {
               <motion.div key={a._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: Math.min(i * 0.06, 0.3) }} className="h-full">
                 <Link href={`/news/${a.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[16/10]">
-                    <img src={a.featuredImage || FALLBACK_IMAGE} alt={a.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                    <ImageWithFallback src={a.featuredImage || FALLBACK_IMAGE} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     {a.category && <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>}
                   </div>
                   <div className="p-6 flex flex-col flex-1">

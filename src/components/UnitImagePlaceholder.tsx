@@ -1,10 +1,12 @@
 "use client";
 
-const unitStudio = "/assets/unit-studio.jpg";
-const unit1br = "/assets/unit-1br.jpg";
-const unit2br = "/assets/unit-2br.jpg";
-const unit3br = "/assets/unit-3br.jpg";
-const unitPenthouse = "/assets/unit-penthouse.jpg";
+import Image from "next/image";
+
+const unitStudio = "/assets/unit-studio.webp";
+const unit1br = "/assets/unit-1br.webp";
+const unit2br = "/assets/unit-2br.webp";
+const unit3br = "/assets/unit-3br.webp";
+const unitPenthouse = "/assets/unit-penthouse.webp";
 
 const unitImages: Record<number, string> = {
   0: unitStudio,
@@ -21,7 +23,7 @@ interface UnitImagePlaceholderProps {
 
 const UnitImagePlaceholder = ({ bedrooms, unitName }: UnitImagePlaceholderProps) => {
   const image = unitImages[bedrooms] || (bedrooms >= 4 ? unitPenthouse : unit1br);
-  return <img src={image} alt={unitName} className="w-full h-full object-cover" />;
+  return <Image src={image} alt={unitName} fill className="object-cover" />;
 };
 
 export default UnitImagePlaceholder;

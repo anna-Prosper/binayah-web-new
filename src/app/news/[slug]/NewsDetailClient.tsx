@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, ChevronRight, Clock } from "lucide-react";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 interface Article {
   _id: string;
@@ -38,7 +39,7 @@ export default function NewsDetailClient({ article }: { article: Article }) {
       {/* Hero */}
       <section className="relative pt-24 pb-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} className="w-full h-full object-cover" />
+          <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/70 to-foreground/40" />
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative pt-12">

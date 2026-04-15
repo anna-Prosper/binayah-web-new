@@ -5,8 +5,10 @@ import { Building2, ChevronDown, Loader2, MapPin, MessageCircle, Search, Sparkle
 import { motion, useScroll, useTransform } from "framer-motion";
 import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
+import { useTranslations } from "next-intl";
 import {
   buildHomeSearchUrl,
   createEmptyHomeSearchDraft,
@@ -25,7 +27,7 @@ import {
   parseHomeSearchQuery,
 } from "@/lib/home-smart-search";
 
-const heroImage = "/assets/dubai-hero.png";
+const heroImage = "/assets/dubai-hero.webp";
 
 const statusTabs: HomeSearchTab[] = ["Buy", "Rent", "Off-Plan"];
 const popularLocations = [
@@ -62,6 +64,10 @@ interface PlacePrediction {
 }
 
 const HeroSection = () => {
+  const t = useTranslations("home.hero");
+  const tNav = useTranslations("nav");
+  const tabLabel = (tab: HomeSearchTab) =>
+    tab === "Buy" ? tNav("buy") : tab === "Rent" ? tNav("rent") : tNav("offPlan");
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<HomeSearchTab>("Buy");
   const [smartSearch, setSmartSearch] = useState("");
@@ -366,7 +372,7 @@ const HeroSection = () => {
   return (
     <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0" style={{ overflow: "visible" }}>
       <motion.div className="absolute inset-0 overflow-hidden" style={{ y: imageY }}>
-        <img src={heroImage} alt="Dubai skyline" className="h-[120%] w-full object-cover" />
+        <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
 
@@ -383,10 +389,10 @@ const HeroSection = () => {
             <motion.div initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 0.8, delay: 0.3 }} className="h-[2px] bg-accent mx-auto mb-4 sm:mb-6" />
             <p className="hidden sm:block text-accent font-medium tracking-[0.4em] uppercase text-[10px] sm:text-sm mb-3 sm:mb-5">Binayah Properties</p>
             <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] mb-4 sm:mb-6">
-              <TypewriterHeadline /><br /><span className="italic font-light">in Dubai</span>
+              <TypewriterHeadline /><br /><span className="italic font-light">Dubai</span>
             </h1>
             <p className="hidden sm:block text-white/60 text-sm sm:text-lg max-w-xl mx-auto font-light px-4 sm:px-0">
-              Your trusted partner for buying, selling & renting properties in Dubai
+              {t("subtitle")}
             </p>
             <p className="sm:hidden text-white/50 text-xs font-light">2,500+ listings across 50+ communities</p>
           </motion.div>
@@ -398,10 +404,10 @@ const HeroSection = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 py-2 text-[10px] font-bold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/60 backdrop-blur-sm border-t border-x border-white/10"}`}
+                className={`flex-1 py-2 text-[10px] font-bold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/60 backdrop-blur-sm border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
-                {tab}
+                {tabLabel(tab)}
               </button>
             ))}
           </div>
@@ -462,10 +468,10 @@ const HeroSection = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`relative px-5 sm:px-8 py-2.5 sm:py-3 text-[11px] sm:text-xs font-semibold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/70 hover:bg-white/15 backdrop-blur-sm hover:text-white border-t border-x border-white/10"}`}
+                className={`relative px-5 sm:px-8 py-2.5 sm:py-3 text-[11px] sm:text-xs font-semibold tracking-[0.15em] uppercase rounded-t-xl transition-all duration-300 focus:outline-none ${activeTab === tab ? "text-white shadow-lg" : "bg-white/8 text-white/70 hover:bg-white/15 backdrop-blur-sm hover:text-white border-t border-x border-white/10"}`}
                 style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
-                {tab}
+                {tabLabel(tab)}
               </button>
             ))}
           </div>

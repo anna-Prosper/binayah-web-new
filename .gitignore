@@ -60,6 +60,11 @@ components.json
 # Data fix scripts folder
 data-fix-scripts/
 
+# Local data & backups
+downloaded_images/
+db-backup-*/
+project_schema.json
+
 # Python
 venv/
 __pycache__/

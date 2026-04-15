@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 const serviceBuy = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop";
 const serviceRent = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop";
 const serviceSell = "https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=600&h=400&fit=crop";
@@ -39,7 +40,7 @@ const WhatWeOffer = () => (
           <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="snap-start flex-shrink-0 w-[62%]">
             <Link href={item.link} className="group block rounded-xl overflow-hidden bg-white/[0.06] border border-white/10">
               <div className="relative h-[130px]">
-                <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-active:scale-105" loading="lazy" />
+                <Image src={item.image} alt={item.title} fill sizes="62vw" className="object-cover transition-transform duration-500 group-active:scale-105" />
               </div>
               <div className="p-3">
                 <h3 className="font-bold text-sm text-white mb-0.5">{item.title}</h3>
@@ -55,7 +56,7 @@ const WhatWeOffer = () => (
         {offerings.map((item, i) => (
           <motion.div key={item.title} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
             <Link href={item.link} className="group block relative h-[280px] lg:h-[300px] rounded-2xl overflow-hidden">
-              <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+              <Image src={item.image} alt={item.title} fill sizes="(max-width: 1024px) 50vw, 20vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="font-bold text-base lg:text-lg text-white mb-1">{item.title}</h3>
