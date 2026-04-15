@@ -180,15 +180,18 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
     : `https://binayah.com/${type === "project" ? "project" : "property"}/${slug}`;
 
   return (
-    <div className="absolute top-3 right-3 flex gap-1.5 z-10" onClick={(e) => e.preventDefault()}>
+    <div
+      className="absolute top-3 right-3 flex gap-1.5 z-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200"
+      onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+    >
       {/* Favorite */}
       <button
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFav(propertyId); }}
         title={isFav ? "Remove from favorites" : "Save to favorites"}
-        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+        className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 ${
           isFav
             ? "bg-red-500 text-white"
-            : "bg-black/40 backdrop-blur-sm text-white hover:bg-black/60"
+            : "bg-white/90 text-foreground/70 hover:text-red-500"
         }`}
       >
         <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
@@ -200,12 +203,12 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!cmpFull) toggleCmp(propertyId); }}
           disabled={cmpFull}
           title={cmpFull ? "Max 3 properties" : isCmp ? "Remove from comparison" : "Compare"}
-          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+          className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 ${
             isCmp
               ? "bg-[#1A7A5A] text-white"
               : cmpFull
-                ? "bg-black/20 text-white/40 cursor-not-allowed"
-                : "bg-black/40 backdrop-blur-sm text-white hover:bg-black/60"
+                ? "bg-white/50 text-foreground/30 cursor-not-allowed"
+                : "bg-white/90 text-foreground/70 hover:text-[#1A7A5A]"
           }`}
         >
           <ArrowLeftRight className="h-3.5 w-3.5" />
@@ -225,7 +228,7 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
             }
           }}
           title="Share"
-          className="w-8 h-8 rounded-lg bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-all"
+          className="w-8 h-8 rounded-full bg-white/90 text-foreground/70 flex items-center justify-center shadow-md hover:text-primary hover:scale-110 transition-all"
         >
           <Share2 className="h-3.5 w-3.5" />
         </button>
