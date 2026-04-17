@@ -34,6 +34,7 @@ interface Project {
   propertyType?: string;
   slug: string;
   startingPrice?: number;
+  currency?: string;
   status?: string;
 }
 
