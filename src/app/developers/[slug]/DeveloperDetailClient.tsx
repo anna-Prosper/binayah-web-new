@@ -36,6 +36,7 @@ interface Project {
   community?: string;
   status?: string;
   startingPrice?: number;
+  currency?: string;
   completionDate?: string;
   featuredImage?: string;
   imageGallery?: string[];
