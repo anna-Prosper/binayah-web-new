@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { MERGED_PROPERTY_TYPES, normalizePropertyType } from "@/lib/property-types";
 
 export const dynamic = "force-dynamic";
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const MODEL = "gpt-5.4-nano";
-const VALID_TYPES = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"] as const;
+const VALID_TYPES = MERGED_PROPERTY_TYPES;
 const VALID_BEDS = ["Studio", "1", "2", "3", "4", "5", "6", "7", "7+"] as const;
 const VALID_MAIDS = ["Yes", "No"] as const;
 
@@ -21,7 +22,7 @@ Rules:
 - If a field is unclear, return null for that field.
 - If multiple candidates are plausible, choose the best one, set needsConfirmation to true, and add short ambiguity notes.
 - Extract only these fields: unit, area, city, type, beds, maids, size.
-- type must be one of: Apartment, Villa, Townhouse, Penthouse, Studio, or null.
+- type must be one of: Apartment, Villa, Commercial, Plot, or null. Fold townhouse into Villa, and fold penthouse or studio into Apartment.
 - beds must be one of: Studio, 1, 2, 3, 4, 5, 6, 7, 7+, or null.
 - maids must be "Yes" if the query indicates a maid/staff/helper/service room, "No" only if the query explicitly excludes it, otherwise null.
 - Preserve size units like sq ft or sqm when present.
@@ -77,10 +78,10 @@ interface AllowedValueResolution {
 
 const TYPE_HINTS: [RegExp, (typeof VALID_TYPES)[number]][] = [
   [/\b(?:apartment|appartment|appartement|apt|flat)\b/i, "Apartment"],
-  [/\bvilla\b/i, "Villa"],
-  [/\btownhouse\b/i, "Townhouse"],
-  [/\bpenthouse\b/i, "Penthouse"],
-  [/\bstudio\b/i, "Studio"],
+  [/\b(?:penthouse|studio|duplex|hotel apartment|hotel apartments|hotel apt)\b/i, "Apartment"],
+  [/\b(?:villa|townhouse|compound)\b/i, "Villa"],
+  [/\b(?:commercial|office|shop|retail|warehouse)\b/i, "Commercial"],
+  [/\b(?:plot|land)\b/i, "Plot"],
 ];
 
 const BED_HINTS: [RegExp, (typeof VALID_BEDS)[number]][] = [
@@ -236,7 +237,7 @@ function sanitizeParsedPayload(value: unknown): ParsedValuationPayload {
     unit: normalizeNullableText(safeValue.unit),
     area: normalizeNullableText(safeValue.area),
     city: normalizeNullableText(safeValue.city),
-    type: normalizeNullableText(safeValue.type),
+    type: normalizePropertyTypeValue(safeValue.type),
     beds: normalizeNullableText(safeValue.beds),
     maids: normalizeNullableText(safeValue.maids),
     size: normalizeNullableText(safeValue.size),
@@ -268,14 +269,14 @@ function normalizeSuggestion(
   const resolvedUnit = resolveAllowedValue(parsed.unit, allowedUnits);
   const resolvedArea = resolveAllowedValue(parsed.area, allowedAreas);
   const resolvedCity = resolveAllowedValue(parsed.city, allowedCities);
-  const parserType = normalizeEnumValue(parserResult.type, VALID_TYPES);
+  const parserType = normalizePropertyTypeValue(parserResult.type);
   const parserBeds = normalizeEnumValue(parserResult.beds, VALID_BEDS);
   const normalized: NormalizedSuggestion = {
     parsed: {
       unit: sanitizeResolvedUnitValue(resolvedUnit.value),
       area: resolvedArea.value,
       city: resolvedCity.value,
-      type: normalizeEnumValue(parsed.type, VALID_TYPES) ?? parserType ?? inferTypeFromQuery(query),
+      type: normalizePropertyTypeValue(parsed.type) ?? parserType ?? inferTypeFromQuery(query),
       beds: normalizeEnumValue(parsed.beds, VALID_BEDS) ?? parserBeds ?? inferBedsFromQuery(query),
       maids: normalizeEnumValue(parsed.maids, VALID_MAIDS),
       size: normalizeSizeValue(parsed.size),
@@ -496,6 +497,14 @@ function normalizeEnumValue<T extends readonly string[]>(value: ParsedFieldValue
 
   const match = allowedValues.find((entry) => normalizeComparableValue(entry) === normalized);
   return match ?? null;
+}
+
+function normalizePropertyTypeValue(value: ParsedFieldValue) {
+  const normalized = normalizePropertyType(value ?? "", "");
+  return normalizeEnumValue(
+    typeof normalized === "string" ? normalized : String(normalized ?? ""),
+    VALID_TYPES,
+  );
 }
 
 function normalizeSizeValue(value: ParsedFieldValue) {

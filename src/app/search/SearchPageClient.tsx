@@ -13,6 +13,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
+import {
+  formatPropertyTypeLabel,
+  homeSearchPropertyTypeOptions,
+  normalizePropertyType,
+} from "@/lib/property-types";
 
 type SearchIntent = "" | "buy" | "rent" | "off-plan";
 type SearchStatus = "All" | "Off-Plan" | "Secondary";
@@ -55,7 +60,7 @@ const secondaryModes: Array<{ label: string; value: SearchIntent }> = [
   { label: "Buy", value: "buy" },
   { label: "Rent", value: "rent" },
 ];
-const propertyTypes = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio", "Duplex", "Hotel Apartment"];
+const propertyTypes = homeSearchPropertyTypeOptions;
 const locations = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City"];
 const bedrooms = ["Studio", "1", "2", "3", "4", "5", "6", "7+"];
 const bathrooms = ["1", "2", "3", "4", "5", "6", "7+"];
@@ -90,7 +95,7 @@ function SearchContent() {
     setIntent(urlIntent);
     setStatus(normalizeStatus(urlStatus, urlIntent));
   }, [searchParams]);
-  const [type, setType] = useState(params.get("type") || "");
+  const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || "", "")));
   const [location, setLocation] = useState(params.get("location") || "");
   const [beds, setBeds] = useState(params.get("bedrooms") || "");
   const [baths, setBaths] = useState(params.get("bathrooms") || "");
@@ -122,7 +127,7 @@ function SearchContent() {
     const params = new URLSearchParams();
     if (status !== "All") params.set("status", status);
     if (intent) params.set("intent", intent);
-    if (type) params.set("type", type);
+    if (type) params.set("type", String(normalizePropertyType(type, type)));
     if (location) params.set("location", location);
     if (beds) params.set("bedrooms", beds);
     if (baths) params.set("bathrooms", baths);
@@ -153,7 +158,7 @@ function SearchContent() {
     const params = new URLSearchParams();
     if (status !== "All") params.set("status", status);
     if (intent) params.set("intent", intent);
-    if (type) params.set("type", type);
+    if (type) params.set("type", String(normalizePropertyType(type, type)));
     if (location) params.set("location", location);
     if (beds) params.set("bedrooms", beds);
     if (baths) params.set("bathrooms", baths);
@@ -179,7 +184,7 @@ function SearchContent() {
   const activeFilters = [
     status !== "All" ? status : "",
     intent === "buy" ? "Buy" : intent === "rent" ? "Rent" : "",
-    type,
+    type ? formatPropertyTypeLabel(type, type) : "",
     location,
     beds ? `${beds} bed` : "",
     baths ? `${baths} bath` : "",
@@ -346,12 +351,26 @@ function SearchContent() {
   );
 }
 
-function FilterSelect({ placeholder, options, value, onChange }: { placeholder: string; options: string[]; value: string; onChange: (value: string) => void }) {
+function FilterSelect({
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  placeholder: string;
+  options: Array<string | { label: string; value: string }>;
+  value: string;
+  onChange: (value: string) => void;
+}) {
   return (
     <div className="relative">
       <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all">
         <option value="">{placeholder}</option>
-        {options.map((option) => <option key={option} value={option}>{option}</option>)}
+        {options.map((option) => {
+          const optionValue = typeof option === "string" ? option : option.value;
+          const optionLabel = typeof option === "string" ? option : option.label;
+          return <option key={optionValue} value={optionValue}>{optionLabel}</option>;
+        })}
       </select>
       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>

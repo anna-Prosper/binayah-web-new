@@ -36,8 +36,8 @@ const questions: QuestionDef[] = [
     question: "What type of property?",
     subtitle: "Each type has different yields and lifestyle benefits.",
     icon: Building2,
-    options: ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio", "No preference"],
-    popular: ["Apartment", "Villa"],
+    options: ["Apartment", "Villa / Townhouse", "No preference"],
+    popular: ["Apartment", "Villa / Townhouse"],
   },
   {
     id: "areas",

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import PropertyDetailClient from "@/app/property/[slug]/PropertyDetailClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { formatPropertyTypeLabel } from "@/lib/property-types";
 
 export const revalidate = 60;
 
@@ -19,7 +20,7 @@ export async function generateMetadata({
       title: seo.metaTitle || `${listing.name} | Binayah Properties`,
       description:
         seo.metaDescription ||
-        `${listing.propertyType || "Property"} for ${listing.listingType || "Sale"} in ${listing.community || "Dubai"}`,
+        `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "Sale"} in ${listing.community || "Dubai"}`,
       openGraph: {
         title: seo.ogTitle || seo.metaTitle || listing.name,
         description: seo.ogDescription || seo.metaDescription || "",

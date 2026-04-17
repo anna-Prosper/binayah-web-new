@@ -9,6 +9,7 @@ import Image from "next/image";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
 import { useTranslations } from "next-intl";
+import { formatPropertyTypeLabel, normalizePropertyType } from "@/lib/property-types";
 import {
   buildHomeSearchUrl,
   createEmptyHomeSearchDraft,
@@ -251,13 +252,13 @@ const HeroSection = () => {
     intent: activeIntent,
     location: selLocation || null,
     project: null,
-    propertyType: selType || null,
+    propertyType: selType ? String(normalizePropertyType(selType, selType)) : null,
   });
 
   const applyDraftToFilters = (draft: Partial<HomeSearchDraft>) => {
     if (draft.intent) setActiveTab(formatIntentLabel(draft.intent) as HomeSearchTab);
     if (draft.location) setSelLocation(draft.location);
-    if (draft.propertyType) setSelType(draft.propertyType);
+    if (draft.propertyType) setSelType(String(normalizePropertyType(draft.propertyType, draft.propertyType)));
     if (draft.bedrooms) setSelBedroom(draft.bedrooms);
     if (draft.bathrooms) setSelBathroom(draft.bathrooms);
     if (draft.budgetLabel) setSelBudget(draft.budgetLabel);
@@ -640,7 +641,7 @@ const HeroSection = () => {
                     onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
                   >
-                    <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType || "Property type"}</span>
+                    <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType ? formatPropertyTypeLabel(selType, selType) : "Property type"}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
@@ -656,7 +657,7 @@ const HeroSection = () => {
                             }}
                             className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors flex items-center justify-between ${selType === propertyType ? "font-semibold text-primary bg-primary/8" : "text-foreground hover:bg-muted/60"}`}
                           >
-                            {propertyType}
+                            {formatPropertyTypeLabel(propertyType, propertyType)}
                             {selType === propertyType && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                           </button>
                         ))}

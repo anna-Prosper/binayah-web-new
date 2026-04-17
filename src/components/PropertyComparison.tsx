@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCompare } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
+import { formatPropertyTypeLabel } from "@/lib/property-types";
 
 interface Property {
   _id: string;
@@ -76,6 +77,7 @@ export default function PropertyComparison() {
   const getValue = (p: Property, key: string): string => {
     if (key === "priceFormatted") return formatPrice(p.price, p.currency);
     if (key === "size") return p.size ? `${new Intl.NumberFormat("en-AE").format(p.size)} ${p.sizeUnit || "sqft"}` : "-";
+    if (key === "propertyType") return p.propertyType ? formatPropertyTypeLabel(p.propertyType, p.propertyType) : "-";
     const val = (p as unknown as Record<string, unknown>)[key];
     if (val == null) return "-";
     return String(val);

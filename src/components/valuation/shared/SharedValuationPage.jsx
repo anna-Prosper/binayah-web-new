@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
+import { normalizePropertyType, requiresPropertyNameForPropertyType, valuationPropertyTypeOptions, } from "@/lib/property-types";
 const LOCATION_DATA = {
     Dubai: [
         { area: "Downtown Dubai", buildings: [
@@ -286,7 +287,8 @@ const AREA_KEYWORDS = {
 };
 const VTYPE_KEYWORDS = {
     apartment: "Apartment", appartment: "Apartment", appartement: "Apartment", apt: "Apartment", flat: "Apartment",
-    villa: "Villa", townhouse: "Townhouse", penthouse: "Penthouse", studio: "Studio",
+    penthouse: "Apartment", studio: "Apartment",
+    villa: "Villa", townhouse: "Villa", compound: "Villa",
 };
 const VBED_KEYWORDS = {
     studio: "Studio",
@@ -313,9 +315,9 @@ const VILLA_AREAS = new Set([
 // Building name patterns that imply a type
 const BUILDING_TYPE_HINTS = [
     [/\bvilla(s)?\b/i, "Villa"],
-    [/\btownhouse(s)?\b/i, "Townhouse"],
-    [/\bpenthouse(s)?\b/i, "Penthouse"],
-    [/\bstudio\b/i, "Studio"],
+    [/\btownhouse(s)?\b/i, "Villa"],
+    [/\bpenthouse(s)?\b/i, "Apartment"],
+    [/\bstudio\b/i, "Apartment"],
     [/\btower\b|\bresidence(s)?\b|\bapartment(s)?\b|\bflat(s)?\b|\bheight(s)?\b|\bgate\b|\bpark\b|\bview(s)?\b/i, "Apartment"],
 ];
 const GENERIC_BUILDING_TOKENS = new Set([
@@ -760,8 +762,7 @@ function validateForm(form) {
     return errors;
 }
 function requiresUnitFieldForForm(propertyType) {
-    const normalizedType = cleanReportField(propertyType).toLowerCase();
-    return normalizedType.includes("apartment") || normalizedType.includes("penthouse") || normalizedType.includes("commercial");
+    return requiresPropertyNameForPropertyType(propertyType);
 }
 function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
@@ -1132,7 +1133,7 @@ function buildFormFromInquiry(inquiry, fallback = INITIAL_FORM_STATE) {
         beds: cleanReportField(safeInquiry.bedrooms) || fallback.beds,
         maids: cleanReportField(safeInquiry.maids) || fallback.maids,
         city: cleanReportField(safeInquiry.city) || fallback.city,
-        type: cleanReportField(safeInquiry.propertyType) || fallback.type,
+        type: normalizePropertyType(safeInquiry.propertyType, "") || fallback.type,
         size: cleanReportField(safeInquiry.size) || fallback.size,
     };
 }
@@ -1593,7 +1594,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 throw new Error((data === null || data === void 0 ? void 0 : data.error) || "Could not extract property details from the uploaded file.");
             }
             const inquiry = (data === null || data === void 0 ? void 0 : data.inquiry) || {};
-            setTrackedValues(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (inquiry.propertyName ? { unit: inquiry.propertyName } : {})), ((inquiry.community || inquiry.location) ? { area: inquiry.community || inquiry.location } : {})), (inquiry.city ? { city: inquiry.city } : {})), (inquiry.propertyType ? { type: inquiry.propertyType } : {})), (inquiry.bedrooms ? { beds: inquiry.bedrooms } : {})), (inquiry.maids ? { maids: inquiry.maids } : {})), (inquiry.size ? { size: inquiry.size } : {})), "deed");
+            setTrackedValues(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (inquiry.propertyName ? { unit: inquiry.propertyName } : {})), ((inquiry.community || inquiry.location) ? { area: inquiry.community || inquiry.location } : {})), (inquiry.city ? { city: inquiry.city } : {})), (inquiry.propertyType ? { type: normalizePropertyType(inquiry.propertyType, "") } : {})), (inquiry.bedrooms ? { beds: inquiry.bedrooms } : {})), (inquiry.maids ? { maids: inquiry.maids } : {})), (inquiry.size ? { size: inquiry.size } : {})), "deed");
             setGate((current) => ({
                 name: current.name || inquiry.ownerName || current.name,
                 phone: current.phone || inquiry.phone || current.phone,
@@ -2296,7 +2297,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <div className="relative">
                         <select value={form.type} onChange={(event) => updateField("type", event.target.value)} className="h-12 w-full appearance-none rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 pr-10 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40">
                           <option value="">Select if known</option>
-                          {["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"].map((t) => (<option key={t} value={t}>{t}</option>))}
+                          {valuationPropertyTypeOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
                         </select>
                         <svg aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#66706d]" fill="none" viewBox="0 0 12 8">
                           <path d="M1 1.5 6 6.5l5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75"/>

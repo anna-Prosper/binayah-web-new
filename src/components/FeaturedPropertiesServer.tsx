@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { BedDouble, Bath, Maximize, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { formatPropertyTypeLabel } from "@/lib/property-types";
 
 interface Listing {
   _id: string;
@@ -53,7 +54,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                   </span>
                   {l.propertyType && (
                     <span className="absolute top-3 right-3 text-[10px] font-medium px-2.5 py-1 rounded-lg bg-black/40 backdrop-blur-sm text-white">
-                      {l.propertyType}
+                      {formatPropertyTypeLabel(l.propertyType, l.propertyType)}
                     </span>
                   )}
                 </div>

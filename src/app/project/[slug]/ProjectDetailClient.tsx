@@ -19,6 +19,7 @@ import AIChatWidget from "@/components/AIChatWidget";
 import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
 import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { formatPropertyTypeLabel } from "@/lib/property-types";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -235,7 +236,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       {project.status}
                     </span>
                     <span className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
-                      {project.propertyType}
+                      {formatPropertyTypeLabel(project.propertyType, project.propertyType)}
                     </span>
                   </div>
                   {/* Developer name – hidden on mobile */}
@@ -2094,7 +2095,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     { label: "Developer", value: project.developerName },
                     { label: "Community", value: project.community },
                     { label: "City", value: `${project.city}, ${project.country}` },
-                    { label: "Property Type", value: project.propertyType },
+                    { label: "Property Type", value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
                     { label: "Project Type", value: project.projectType },
                     { label: "Status", value: project.status },
                     { label: "Title", value: project.titleType },

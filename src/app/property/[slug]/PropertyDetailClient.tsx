@@ -23,6 +23,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
@@ -215,7 +216,7 @@ export default function PropertyDetailClient({
                 </span>
                 {listing.propertyType && (
                   <span className="text-[11px] font-medium px-3 py-1.5 rounded-lg bg-black/40 backdrop-blur-sm text-white">
-                    {listing.propertyType}
+                    {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
                   </span>
                 )}
               </div>
@@ -365,7 +366,7 @@ export default function PropertyDetailClient({
                     <div className="bg-card rounded-xl p-4 border border-border/50 text-center">
                       <Home className="h-5 w-5 text-primary mx-auto mb-2" />
                       <p className="text-sm font-bold text-foreground">
-                        {listing.propertyType}
+                        {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
                       </p>
                       <p className="text-xs text-muted-foreground">Type</p>
                     </div>
@@ -428,7 +429,7 @@ export default function PropertyDetailClient({
                         Property
                       </span>
                       <span className="text-sm font-medium text-foreground">
-                        {listing.propertyType}
+                        {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
                       </span>
                     </>
                   )}

@@ -1,5 +1,11 @@
+import {
+  formatPropertyTypeLabel,
+  homeSearchPropertyTypeOptions,
+  normalizePropertyType,
+} from "@/lib/property-types";
+
 export const HOME_SEARCH_TABS = ["Buy", "Rent", "Off-Plan"] as const;
-export const HOME_SEARCH_PROPERTY_TYPES = ["Apartment", "Villa", "Townhouse", "Penthouse", "Studio", "Compound", "Duplex", "Hotel Apartment"] as const;
+export const HOME_SEARCH_PROPERTY_TYPES = homeSearchPropertyTypeOptions.map((option) => option.value) as ["Apartment", "Villa"];
 export const HOME_SEARCH_BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4", "5", "6", "7", "7+"] as const;
 export const HOME_SEARCH_BATHROOM_OPTIONS = ["1", "2", "3", "4", "5", "6", "7", "7+"] as const;
 export const HOME_SEARCH_BUY_BUDGETS = ["Up to 500K", "500K - 1M", "1M - 2M", "2M - 5M", "5M - 10M", "10M+"] as const;
@@ -136,13 +142,8 @@ const INTENT_PATTERNS: Array<[RegExp, HomeSearchIntent]> = [
 ];
 
 const PROPERTY_TYPE_PATTERNS: Array<[RegExp, HomeSearchDraft["propertyType"]]> = [
-  [/\b(hotel apartment|hotel apt)\b/i, "Hotel Apartment"],
-  [/\btownhouse\b/i, "Townhouse"],
-  [/\bpenthouse\b/i, "Penthouse"],
-  [/\bcompound\b/i, "Compound"],
-  [/\bduplex\b/i, "Duplex"],
-  [/\bstudio\b/i, "Studio"],
-  [/\b(villa|villas)\b/i, "Villa"],
+  [/\b(hotel apartment|hotel apartments|hotel apt|duplex|penthouse|studio)\b/i, "Apartment"],
+  [/\b(townhouse|townhouses|compound|villa|villas)\b/i, "Villa"],
   [/\b(apartment|apartments|appartment|apt|flat)\b/i, "Apartment"],
 ];
 
@@ -298,7 +299,7 @@ export function buildHomeSearchTags(draft: HomeSearchDraft) {
   if (draft.project) tags.push({ key: "project", label: "Project", value: draft.project });
   if (draft.location) tags.push({ key: "location", label: "Location", value: draft.location });
   if (draft.developer) tags.push({ key: "developer", label: "Developer", value: draft.developer });
-  if (draft.propertyType) tags.push({ key: "type", label: "Type", value: draft.propertyType });
+  if (draft.propertyType) tags.push({ key: "type", label: "Type", value: formatPropertyTypeLabel(draft.propertyType, draft.propertyType) });
   if (draft.bedrooms) tags.push({ key: "beds", label: "Beds", value: draft.bedrooms === "Studio" ? "Studio" : `${draft.bedrooms} BR` });
   if (draft.bathrooms) tags.push({ key: "baths", label: "Baths", value: draft.bathrooms === "7+" ? "7+ Bath" : `${draft.bathrooms} Bath` });
   if (draft.furnishing) tags.push({ key: "furnishing", label: "Finish", value: draft.furnishing });
@@ -313,7 +314,7 @@ export function buildHomeSearchSummary(draft: HomeSearchDraft, rawQuery = "") {
 
   if (draft.furnishing) descriptors.push(draft.furnishing.toLowerCase());
   if (draft.bedrooms) descriptors.push(draft.bedrooms === "Studio" ? "studio" : `${draft.bedrooms}-bed`);
-  if (draft.propertyType) descriptors.push(draft.propertyType.toLowerCase());
+  if (draft.propertyType) descriptors.push(String(normalizePropertyType(draft.propertyType, draft.propertyType)).toLowerCase());
   else descriptors.push(draft.project ? "project" : "property");
 
   let summary = `${lead} ${descriptors.join(" ")}`.replace(/\s+/g, " ").trim();
@@ -359,7 +360,7 @@ export function buildHomeSearchUrl(args: {
   const budgetMin = args.manual?.budgetMin ?? args.draft?.budgetMin ?? null;
   const budgetMax = args.manual?.budgetMax ?? args.draft?.budgetMax ?? null;
 
-  if (propertyType) params.set("type", propertyType);
+  if (propertyType) params.set("type", String(normalizePropertyType(propertyType, propertyType)));
   if (location) params.set("location", location);
   if (city) params.set("city", city);
   if (bedrooms) params.set("bedrooms", bedrooms);
@@ -427,7 +428,7 @@ export function createGroupedHomeSearchSuggestions(args: {
   }));
 
   const projects = (args.suggestions?.projects ?? []).slice(0, 4).map((candidate) => ({
-    badge: candidate.propertyType || "Project",
+    badge: candidate.propertyType ? formatPropertyTypeLabel(candidate.propertyType, candidate.propertyType) : "Project",
     id: `project-${slugify(candidate.name)}`,
     kind: "project" as const,
     parsed: {
