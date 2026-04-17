@@ -44,7 +44,7 @@ export const MERGED_PROPERTY_TYPES = ["Apartment", "Villa", "Commercial", "Plot"
 export type MergedPropertyType = (typeof MERGED_PROPERTY_TYPES)[number];
 
 export const valuationPropertyTypeOptions = [
-  { value: "Apartment", label: "Apartment / Penthouse / Studio" },
+  { value: "Apartment", label: "Apartment" },
   { value: "Villa", label: "Villa / Townhouse" },
   { value: "Commercial", label: "Commercial" },
   { value: "Plot", label: "Plot" },
