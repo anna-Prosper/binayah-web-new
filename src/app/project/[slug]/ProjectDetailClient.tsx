@@ -1387,9 +1387,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         </div>
 
                         {/* CTA */}
-                        <a href="#developer-profile" className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
+                        <Link href={`/developers/${project.developerSlug || (project.developerName ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "")}`} className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
                           View Developer Profile <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   )}
