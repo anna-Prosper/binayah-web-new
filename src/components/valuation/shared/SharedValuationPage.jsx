@@ -754,9 +754,6 @@ function validateForm(form) {
     if (!form.area.trim()) {
         errors.area = "Please enter the community.";
     }
-    if (!form.type.trim()) {
-        errors.type = "Please select the property type.";
-    }
     if (requiresUnitFieldForForm(form.type) && (!form.unit.trim() || form.unit.trim().length < 3)) {
         errors.unit = "Please enter the building or project name.";
     }
@@ -2295,10 +2292,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                                     {/* Row 2 — Type / Beds / Size */}
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Type</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Type (optional)</label>
                       <div className="relative">
                         <select value={form.type} onChange={(event) => updateField("type", event.target.value)} className="h-12 w-full appearance-none rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 pr-10 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40">
-                          <option value="">Select</option>
+                          <option value="">Select if known</option>
                           {["Apartment", "Villa", "Townhouse", "Penthouse", "Studio"].map((t) => (<option key={t} value={t}>{t}</option>))}
                         </select>
                         <svg aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#66706d]" fill="none" viewBox="0 0 12 8">
