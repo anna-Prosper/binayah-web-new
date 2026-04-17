@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { formatProjectPrice } from "@/lib/formatPrice";
 import { Bed, Maximize, MapPin, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -24,13 +25,7 @@ interface Project {
 }
 
 const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) => {
-  const fmt = (p: Project) => {
-    if (!p.startingPrice) return "Price on request";
-    const cur = p.currency || "AED";
-    return p.startingPrice >= 1_000_000
-      ? `${cur} ${(p.startingPrice / 1_000_000).toFixed(1)}M`
-      : `${cur} ${(p.startingPrice / 1_000).toFixed(0)}K`;
-  };
+  const fmt = (p: Project) => formatProjectPrice(p.startingPrice, p.currency || "AED");
 
   return (
     <section id="sale" className="py-12 sm:py-24 bg-background scroll-mt-20">

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { formatProjectPrice } from "@/lib/formatPrice";
 
 interface Project {
   _id: string;
@@ -48,7 +49,7 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
                   </div>
                   <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">{p.name}</h3>
                   <div className="mt-auto flex items-center justify-between border-t border-border pt-2.5">
-                    <p className="text-xs font-bold text-primary">{p.startingPrice ? `From AED ${(p.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}</p>
+                    <p className="text-xs font-bold text-primary">{formatProjectPrice(p.startingPrice, p.currency)}</p>
                     {p.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}</p>}
                   </div>
                 </div>

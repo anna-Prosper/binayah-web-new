@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import { formatProjectPrice } from "@/lib/formatPrice";
 
 
 const OffPlanSection = () => {
@@ -43,9 +44,7 @@ const OffPlanSection = () => {
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {(projects || []).map((p, i) => {
             const price = p.startingPrice
-              ? p.startingPrice >= 1_000_000
-                ? `${p.currency} ${(p.startingPrice / 1_000_000).toFixed(1)}M`
-                : `${p.currency} ${(p.startingPrice / 1_000).toFixed(0)}K`
+              ? formatProjectPrice(p.startingPrice, p.currency)
               : "Price on request";
 
             return (

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CardActions } from "@/components/PropertyActions";
+import { formatProjectPrice } from "@/lib/formatPrice";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
@@ -127,7 +128,7 @@ export default function OffPlanPageClient({
                     {p.shortOverview && <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{p.shortOverview}</p>}
                     <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
                       <p className="text-sm font-bold text-primary">
-                        {p.startingPrice ? `From AED ${(p.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}
+                        {formatProjectPrice(p.startingPrice, p.currency)}
                       </p>
                       {p.completionDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">

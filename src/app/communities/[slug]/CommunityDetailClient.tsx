@@ -3,6 +3,7 @@
 
 
 import Navbar from "@/components/Navbar";
+import { formatProjectPrice } from "@/lib/formatPrice";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
@@ -68,7 +69,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
                       <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2"><Building className="h-3 w-3" /> {p.developerName}</p>
                       <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors">{p.name}</h3>
                       <div className="flex items-center justify-between border-t border-border pt-3">
-                        <p className="text-sm font-bold text-primary">{p.startingPrice ? `From AED ${(p.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}</p>
+                        <p className="text-sm font-bold text-primary">{formatProjectPrice(p.startingPrice, p.currency)}</p>
                         {p.completionDate && <p className="text-xs text-muted-foreground flex items-center gap-1"><CalendarDays className="h-3 w-3" />{(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}</p>}
                       </div>
                     </div>

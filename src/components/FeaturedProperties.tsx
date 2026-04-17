@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import { formatProjectPrice } from "@/lib/formatPrice";
 
 
 const FeaturedProperties = () => {
@@ -39,11 +40,7 @@ const FeaturedProperties = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
           {(projects || []).map((p, i) => {
-            const price = p.startingPrice
-              ? p.startingPrice >= 1_000_000
-                ? `${p.currency} ${(p.startingPrice / 1_000_000).toFixed(1)}M`
-                : `${p.currency} ${(p.startingPrice / 1_000).toFixed(0)}K`
-              : "Price on request";
+            const price = formatProjectPrice(p.startingPrice, p.currency);
 
             const sizeRange = p.unitSizeMin && p.unitSizeMax
               ? `${p.unitSizeMin}–${p.unitSizeMax} sqft`

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
+import { formatProjectPrice } from "@/lib/formatPrice";
 import PropertyComparison from "@/components/PropertyComparison";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
@@ -294,7 +295,7 @@ function SearchContent() {
                             </div>
                             <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{project.name}</h3>
                             <div className="flex items-center justify-between border-t border-border pt-2.5">
-                              <p className="text-xs font-bold text-primary">{project.startingPrice ? `From AED ${(project.startingPrice / 1_000_000).toFixed(1)}M` : "Price on request"}</p>
+                              <p className="text-xs font-bold text-primary">{formatProjectPrice(project.startingPrice, project.currency)}</p>
                               {project.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const date = new Date(project.completionDate || ""); return Number.isNaN(date.getTime()) ? project.completionDate : date.getFullYear(); } catch { return project.completionDate; } })()}</p>}
                             </div>
                           </div>

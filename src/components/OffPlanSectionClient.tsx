@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { CardActions } from "@/components/PropertyActions";
+import { formatProjectPrice } from "@/lib/formatPrice";
 
 
 interface Project {
@@ -48,11 +49,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {(projects || []).filter(Boolean).map((p, i) => {
-            const price = p.startingPrice
-              ? p.startingPrice >= 1_000_000
-                ? `${p.currency} ${(p.startingPrice / 1_000_000).toFixed(1)}M`
-                : `${p.currency} ${(p.startingPrice / 1_000).toFixed(0)}K`
-              : "Price on request";
+            const price = formatProjectPrice(p.startingPrice, p.currency);
 
             return (
               <motion.div
