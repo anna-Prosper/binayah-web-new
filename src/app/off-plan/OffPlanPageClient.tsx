@@ -21,6 +21,7 @@ interface Project {
   community?: string;
   status: string;
   startingPrice?: number;
+  currency?: string;
   completionDate?: string;
   shortOverview?: string;
   featuredImage?: string;

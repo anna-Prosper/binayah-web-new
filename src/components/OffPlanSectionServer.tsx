@@ -13,6 +13,7 @@ interface Project {
   developerName?: string;
   community?: string;
   startingPrice?: number;
+  currency?: string;
   completionDate?: string;
   status?: string;
   featuredImage?: string;
