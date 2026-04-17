@@ -59,8 +59,10 @@ const LANGUAGES = [
 
 const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency = "AED") => {
   if (!price) return "Price on Request";
+  // Normalize: prices stored as decimal millions (e.g. 1.5 = AED 1.5M)
+  const normalized = price < 1_000 ? price * 1_000_000 : price;
   const rate = CURRENCY_RATES[targetCurrency] || 1;
-  const converted = price * rate;
+  const converted = normalized * rate;
   const symbol = CURRENCY_SYMBOLS[targetCurrency] || targetCurrency;
   if (converted >= 1_000_000) return `${symbol} ${(converted / 1_000_000).toFixed(1)}M`;
   if (converted >= 1_000) return `${symbol} ${(converted / 1_000).toFixed(0)}K`;
@@ -510,7 +512,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
                     const unitData = project.unitTypes.map((ut: string, idx: number) => {
                       const totalTypes = project.unitTypes!.length;
-                      const basePrice = project.startingPrice || 0;
+                      const rawPrice = project.startingPrice || 0;
+                      const basePrice = rawPrice < 1_000 ? rawPrice * 1_000_000 : rawPrice;
                       const priceMultiplier = 1 + idx * 0.35;
                       const minPrice = Math.round(basePrice * priceMultiplier);
                       const maxPrice = Math.round(minPrice * 1.3);
@@ -953,7 +956,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                   {/* Payment Plan Visual Timeline */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const basePrice = project.startingPrice || 0;
+                    const rawPrice = project.startingPrice || 0;
+                    const basePrice = rawPrice < 1_000 ? rawPrice * 1_000_000 : rawPrice;
                     const priceMultiplier = 1 + activeUnitTab * 0.35;
                     const unitPrice = Math.round(basePrice * priceMultiplier);
 
@@ -1704,7 +1708,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   <p className="text-xs text-muted-foreground mt-1">{m.desc}</p>
                                   {project.startingPrice && (
                                     <p className="text-sm font-semibold text-accent mt-2">
-                                      {formatPrice(Math.round(project.startingPrice * m.pct / 100), "AED", currency)}
+                                      {formatPrice(Math.round((project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice) * m.pct / 100), "AED", currency)}
                                     </p>
                                   )}
                                 </motion.div>
