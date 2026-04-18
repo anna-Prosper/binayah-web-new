@@ -151,7 +151,7 @@ export default function ListingsPageClient({
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                         {l.listingType === "Rent" ? "For Rent" : "For Sale"}
                       </span>
-                      <CardActions propertyId={l._id} slug={l.slug} title={l.name} />
+                      <CardActions propertyId={l.slug} slug={l.slug} title={l.name} />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">

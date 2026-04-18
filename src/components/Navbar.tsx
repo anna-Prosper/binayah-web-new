@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Phone, Menu, X, ChevronDown, Globe, MessageCircle, Banknote } from "lucide-react";
+import { Phone, Menu, X, ChevronDown, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
 import { usePathname, useRouter } from "@/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import UserMenu from "@/components/UserMenu";
+import { useFavorites } from "@/components/PropertyActions";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -117,6 +118,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         : `/${locale}${stripped === "/" ? "" : stripped}${window.location.search}`;
     window.location.href = target;
   };
+
+  const { ids: favIds } = useFavorites();
+  const openFavoritesDrawer = () => window.dispatchEvent(new Event("open-favorites-drawer"));
 
   const isSolid = scrolled || !isHome || isMobile;
   const selectedLang = LANGUAGES_LIST.find((l) => l.code === currentLocale) || LANGUAGES_LIST[0];
@@ -297,6 +301,18 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 Get in Touch
               </button>
               <div className="w-px h-5 bg-white/15" />
+              <button
+                onClick={openFavoritesDrawer}
+                className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+                aria-label="Saved properties"
+              >
+                <Heart className="h-4 w-4" />
+                {favIds.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                    {favIds.length}
+                  </span>
+                )}
+              </button>
               <UserMenu />
               {extraItems && (
                 <>

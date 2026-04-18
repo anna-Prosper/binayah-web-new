@@ -1,7 +1,8 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { User, Heart, LogOut, ChevronDown } from "lucide-react";
@@ -10,6 +11,7 @@ export default function UserMenu() {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -26,8 +28,8 @@ export default function UserMenu() {
   if (!session) {
     return (
       <button
-        onClick={() => signIn("google")}
-        className="flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+        onClick={() => router.push("/signin")}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all border border-white/20"
       >
         <User className="h-4 w-4" />
         Sign in

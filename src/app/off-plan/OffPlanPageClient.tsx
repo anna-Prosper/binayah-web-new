@@ -118,7 +118,7 @@ export default function OffPlanPageClient({
                     <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                       {p.status || "Off-Plan"}
                     </span>
-                    <CardActions propertyId={p._id} slug={p.slug} title={p.name} type="project" />
+                    <CardActions propertyId={p.slug} slug={p.slug} title={p.name} type="project" />
                   </div>
                   <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">

@@ -1,0 +1,85 @@
+{
+  "task": "User identity layer that the rest of the website's features plug into. Visitors register or log in (email or Google). They can save favourite properties to a personal list and receive price change alerts. They can also submit their own property via a simple form — basic details, photos, asking price, current situation. Status shows 'Under Review' immediately. The agent gets a CRM alert and calls the owner within 24 hours to gather proper details and list it correctly. Without this login layer, we can't build saved searches, price alerts, personalisation, or the property map wishlists that keep users coming back.",
+  "iteration": 2,
+  "maxIterations": 3,
+  "phase": "done",
+  "plan": "PATCH PASS — reviewer flagged 3 findings. Feature is functionally complete; these are narrow correctness fixes only. DO NOT touch anything outside the 3 files below. DO NOT refactor. Goal: make reviewer pass so QA can run.\n\nFIX 1 (CRITICAL — security, timing leak) — src/app/admin/submissions/page.tsx.\nThe current safeCompare pads both inputs to Math.max(a.length, b.length), so comparison time is controlled by the attacker's input length, leaking the real secret length. Replace the entire safeCompare function body with the length-first short-circuit:\n\n  function safeCompare(a: string, b: string): boolean {\n    if (a.length !== b.length) return false;\n    return timingSafeEqual(Buffer.from(a), Buffer.from(b));\n  }\n\nKeep the import `import { timingSafeEqual } from 'crypto';` as is. No other changes to this file. The length-mismatch early return is itself a timing side channel on length, but that is the industry-standard tradeoff and matches the reviewer's suggested fix — do not try to 'improve' it further.\n\nFIX 2 (MAJOR — least-privilege) — src/app/api/list-your-property/route.ts, GET handler.\nAdd a Mongo projection so the browser only sees what the UI needs. Change:\n\n  const submissions = await col\n    .find({ userId: session.user.id })\n    .sort({ createdAt: -1 })\n    .limit(50)\n    .toArray();\n\nto:\n\n  const submissions = await col\n    .find(\n      { userId: session.user.id },\n      { projection: { propertyType: 1, community: 1, askingPrice: 1, status: 1, createdAt: 1 } }\n    )\n    .sort({ createdAt: -1 })\n    .limit(50)\n    .toArray();\n\n_id is returned by default, which the UI uses as a React key — that's fine, keep it. Do NOT touch the POST handler or any validation logic.\n\nFIX 3 (MINOR — UX) — src/app/profile/ProfileClient.tsx, submissions useEffect (around line 62).\nThe .catch(() => {}) silently swallows network/401 errors, so users see 'No submissions yet' when the real cause is a failed fetch. Add a loadError state:\n\n- Add `const [loadError, setLoadError] = useState<string | null>(null);` next to the submissions state.\n- In the useEffect: on non-ok response OR caught error, call setLoadError('Could not load submissions. Please refresh.'). Still call setLoading(false) in the finally branch.\n- In the render where submissions are shown: if loadError is truthy, render a small muted red line (e.g. `<p className=\"text-sm text-red-600\">{loadError}</p>`) in place of the list. If loadError is null and submissions is empty, keep the existing 'No submissions yet' empty state.\n\nDO NOT change the layout, the status badges, the card structure, or anything else in ProfileClient.tsx. Only the error state and its render branch.\n\nAFTER FIXES:\n- Run `npx tsc --noEmit` from /Users/zoop/binayah-properties. Must pass.\n- Run `npm run build`. Must succeed.\n- Commit with message 'fix: address reviewer findings (timing-safe secret compare, GET projection, submissions error state)'.\n\nACCEPTANCE CRITERIA (unchanged from iteration 1, plus these new ones):\n- safeCompare returns false immediately when lengths differ; only does constant-time buffer compare when lengths match.\n- GET /api/list-your-property response body contains ONLY propertyType, community, askingPrice, status, createdAt, _id per submission — no userId, userEmail, phone, description, etc.\n- On /profile, if the fetch fails (e.g. force a 500 by temporarily breaking the route in dev), a visible error message appears instead of 'No submissions yet'. (QA does not need to force a failure; spot-check that the loadError code path exists and renders.)\n\nNON-GOALS this iteration:\n- Do NOT add new features, endpoints, env vars, or refactor existing files.\n- Do NOT change the admin page layout, POST validation, rate limit, audit trail, navbar, signin, favorites, or anything else.\n- Do NOT attempt to 'also fix' anything not explicitly listed above.",
+  "diff": "diff --git a/src/app/admin/submissions/page.tsx b/src/app/admin/submissions/page.tsx\nindex 86558402..db3e8353 100644\n--- a/src/app/admin/submissions/page.tsx\n+++ b/src/app/admin/submissions/page.tsx\n@@ -4,12 +4,9 @@ import { cookies } from \"next/headers\";\n import { timingSafeEqual } from \"crypto\";\n import clientPromise from \"@/lib/mongodb\";\n \n-// Constant-time string comparison — pads both strings to equal length\n function safeCompare(a: string, b: string): boolean {\n-  const len = Math.max(a.length, b.length);\n-  const aBytes = Buffer.from(a.padEnd(len, \"\\0\"));\n-  const bBytes = Buffer.from(b.padEnd(len, \"\\0\"));\n-  return timingSafeEqual(aBytes, bBytes);\n+  if (a.length !== b.length) return false;\n+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));\n }\n \n function formatDate(d: unknown): string {\ndiff --git a/src/app/api/list-your-property/route.ts b/src/app/api/list-your-property/route.ts\nindex 4d69822b..833b2fa8 100644\n--- a/src/app/api/list-your-property/route.ts\n+++ b/src/app/api/list-your-property/route.ts\n@@ -33,7 +33,10 @@ export async function GET(_req: NextRequest) {\n   const col = client.db(\"binayah_web_new_dev\").collection(\"property_submissions\");\n \n   const submissions = await col\n-    .find({ userId: session.user.id })\n+    .find(\n+      { userId: session.user.id },\n+      { projection: { propertyType: 1, community: 1, askingPrice: 1, status: 1, createdAt: 1 } }\n+    )\n     .sort({ createdAt: -1 })\n     .limit(50)\n     .toArray();\ndiff --git a/src/app/profile/ProfileClient.tsx b/src/app/profile/ProfileClient.tsx\nindex 565876a1..417001f9 100644\n--- a/src/app/profile/ProfileClient.tsx\n+++ b/src/app/profile/ProfileClient.tsx\n@@ -52,14 +52,20 @@ function StatusBadge({ status }: { status?: string }) {\n export default function ProfileClient({ user }: Props) {\n   const [submissions, setSubmissions] = useState<Submission[]>([]);\n   const [loadingSubmissions, setLoadingSubmissions] = useState(true);\n+  const [loadError, setLoadError] = useState<string | null>(null);\n \n   useEffect(() => {\n     fetch(\"/api/list-your-property\")\n-      .then((r) => r.json())\n+      .then((r) => {\n+        if (!r.ok) throw new Error(\"non-ok response\");\n+        return r.json();\n+      })\n       .then((data) => {\n         if (data.submissions) setSubmissions(data.submissions);\n       })\n-      .catch(() => {})\n+      .catch(() => {\n+        setLoadError(\"Could not load submissions. Please refresh.\");\n+      })\n       .finally(() => setLoadingSubmissions(false));\n   }, []);\n \n@@ -149,6 +155,8 @@ export default function ProfileClient({ user }: Props) {\n               <div className=\"flex items-center justify-center py-8\">\n                 <div className=\"w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin\" />\n               </div>\n+            ) : loadError ? (\n+              <p className=\"text-sm text-red-600\">{loadError}</p>\n             ) : submissions.length === 0 ? (\n               <p className=\"text-sm text-muted-foreground\">\n                 No submissions yet.{\" \"}\n",
+  "devReport": {
+    "commitSha": "43c64759",
+    "filesChanged": [
+      "src/app/admin/submissions/page.tsx",
+      "src/app/api/list-your-property/route.ts",
+      "src/app/profile/ProfileClient.tsx"
+    ],
+    "summary": "Fixed all 3 reviewer findings: safeCompare now length-short-circuits before timingSafeEqual; GET handler adds MongoDB projection to restrict response fields; ProfileClient adds loadError state with visible error render branch",
+    "blocker": null
+  },
+  "reviewerReport": {
+    "passed": true,
+    "findings": [],
+    "summary": "All 3 prior findings correctly addressed: safeCompare uses length-check before timingSafeEqual (no padding), GET projection excludes userId/userEmail/phone, ProfileClient surfaces load errors to user."
+  },
+  "qaReport": {
+    "passed": false,
+    "tested": [
+      "dev server responsiveness (GET / → 200)",
+      "homepage loads cleanly",
+      "Navbar source contains 'List Your Property' link in desktop and mobile menus",
+      "GET /signin → 404 (middleware routing bug)",
+      "GET /list-your-property → 404 (middleware routing bug)",
+      "GET /profile → 404 (middleware routing bug)",
+      "GET /admin/submissions → 404 (middleware routing bug)",
+      "GET /admin/submissions?secret=garbage → 404 (can't reach page at all)",
+      "GET /api/list-your-property (unauthenticated) → 401 (correct, API routes unaffected)",
+      "GET /search → 200 (regression check, existing locale route works)",
+      "code inspection: safeCompare fix, MongoDB projection fix, loadError state fix — all verified correct in source",
+      "Navbar handleNav('/list-your-property') navigates to broken route"
+    ],
+    "bugs": [
+      {
+        "severity": "critical",
+        "description": "All identity layer pages (/signin, /profile, /list-your-property, /admin/submissions) return HTTP 404 — next-intl middleware rewrites them to /en/* which has no matching route in the [locale] directory.",
+        "reproSteps": "1. curl -sI http://localhost:3000/signin — see x-middleware-rewrite: /en/signin and HTTP 404. 2. Same for /profile, /list-your-property, /admin/submissions. 3. None of these paths exist under src/app/[locale]/ — they only exist at the top-level src/app/. 4. next-intl's middleware intercepts all non-API requests and rewrites to /en/* for the default English locale, causing a 404 since the actual files are not in [locale].",
+        "expected": "/signin, /profile, /list-your-property, /admin/submissions all return 200 (or appropriate auth redirect)",
+        "actual": "All four pages return HTTP 404 Not Found with next-intl generating alternate hreflang links but no content",
+        "file": "src/middleware.ts (next-intl middleware intercepts these routes) — fix: either move pages into src/app/[locale]/ or add explicit exclusions in middleware for these paths"
+      },
+      {
+        "severity": "critical",
+        "description": "Navbar 'List Your Property' button navigates to /list-your-property which 404s — golden path entry point is broken.",
+        "reproSteps": "1. Load homepage at http://localhost:3000. 2. Click 'List Your Property' in the Navbar. 3. router.push('/list-your-property') fires. 4. next-intl middleware rewrites to /en/list-your-property → 404.",
+        "expected": "User lands on the list-your-property form page",
+        "actual": "User sees a 404 page",
+        "file": "src/components/Navbar.tsx (handleNav uses bare /list-your-property path) + src/middleware.ts"
+      }
+    ],
+    "consoleErrors": [],
+    "screenshots": [],
+    "regressions": [
+      "Existing pages in src/app/[locale]/ (/, /search, /buy, etc.) all continue to work correctly — no regression there.",
+      "API routes (/api/*) work correctly — middleware skips them."
+    ],
+    "viewportsTested": [
+      "desktop"
+    ],
+    "notes": {
+      "codeInspectionFindings": [
+        "PASS — FIX 1: safeCompare in src/app/admin/submissions/page.tsx correctly short-circuits on length mismatch before timingSafeEqual. Matches plan exactly.",
+        "PASS — FIX 2: GET handler in src/app/api/list-your-property/route.ts has MongoDB projection {propertyType:1, community:1, askingPrice:1, status:1, createdAt:1}. userId/userEmail/phone/description excluded.",
+        "PASS — FIX 3: ProfileClient.tsx has loadError state, non-ok response throws, catch sets loadError message, render branch (line 158-159) shows red text before empty-state check.",
+        "FAIL — Routing: Pages at src/app/signin, src/app/profile, src/app/list-your-property, src/app/admin/submissions are not under src/app/[locale]/ so next-intl middleware's rewrite to /en/* results in 404 for all of them.",
+        "NOTE — This routing bug existed since the identity layer was first added (commit c6d37ba7) and was not introduced by the current patch iteration. But it blocks all user-facing functionality."
+      ],
+      "rootCauseSummary": "The identity layer pages were placed at src/app/{signin,profile,list-your-property}/ and src/app/admin/submissions/ (top-level app directory) rather than under src/app/[locale]/. The next-intl middleware (src/middleware.ts) rewrites all non-API requests to /en/*, so these pages get rewritten to /en/signin, /en/profile, etc. Since no routes exist under [locale] for these paths, Next.js returns 404. The fix is to move the pages into src/app/[locale]/ OR add these path prefixes to the middleware exclusion list."
+    },
+    "blocker": "All identity layer pages return 404 due to next-intl middleware routing conflict. Pages must be moved to src/app/[locale]/ or excluded from the intl middleware to be accessible."
+  },
+  "pmDecision": "timeout",
+  "summary": "Iteration 2 — feature is functionally complete but reviewer found 1 critical (safeCompare timing leak leaks secret length), 1 major (GET returns full Mongo docs including userId), 1 minor (swallowed fetch error). All three are narrow correctness fixes, not design problems. Patch then send to QA.",
+  "securitySensitive": true,
+  "history": [],
+  "startedAt": "2026-04-18T09:04:18.011Z",
+  "devServerPid": 6648,
+  "screenshotsUsed": 0
+}

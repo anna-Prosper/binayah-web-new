@@ -273,7 +273,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {/* Save / Share actions */}
                   <div className="mt-3">
                     <DetailActions
-                      propertyId={String(project._id)}
+                      propertyId={project.slug}
                       slug={project.slug}
                       title={project.name}
                       type="project"

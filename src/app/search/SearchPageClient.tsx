@@ -287,7 +287,7 @@ function SearchContent() {
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{project.status || "Off-Plan"}</span>
                             </div>
-                            <CardActions propertyId={project._id} slug={project.slug} title={project.name} type="project" />
+                            <CardActions propertyId={project.slug} slug={project.slug} title={project.name} type="project" />
                           </div>
                           <div className="p-4">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
@@ -322,7 +322,7 @@ function SearchContent() {
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? "For Rent" : "For Sale"}</span>
                             </div>
-                            <CardActions propertyId={listing._id} slug={listing.slug} title={listing.title} />
+                            <CardActions propertyId={listing.slug} slug={listing.slug} title={listing.title} />
                           </div>
                           <div className="p-4">
                             {listing.community && <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5"><MapPin className="h-3 w-3" />{listing.community}{listing.city ? `, ${listing.city}` : ""}</p>}

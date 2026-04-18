@@ -72,18 +72,6 @@ export default function FavoritesDrawer() {
 
   return (
     <>
-      {/* Floating favorites button */}
-      {ids.length > 0 && !open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-20 right-4 z-50 w-12 h-12 rounded-full bg-red-500 text-white flex items-center justify-center shadow-xl hover:bg-red-600 transition-all animate-in slide-in-from-right"
-        >
-          <Heart className="h-5 w-5 fill-current" />
-          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white text-red-500 text-[10px] font-bold flex items-center justify-center shadow">
-            {ids.length}
-          </span>
-        </button>
-      )}
 
       {/* Drawer backdrop */}
       {open && (
@@ -184,7 +172,7 @@ export default function FavoritesDrawer() {
                         {/* Actions */}
                         <div className="flex flex-col items-end gap-1">
                           <button
-                            onClick={() => toggle(p._id)}
+                            onClick={() => toggle(p.slug)}
                             className="w-7 h-7 rounded-lg border border-border flex items-center justify-center hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all text-muted-foreground"
                             title="Remove from favorites"
                           >

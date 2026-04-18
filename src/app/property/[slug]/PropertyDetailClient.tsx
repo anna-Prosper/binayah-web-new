@@ -325,7 +325,7 @@ export default function PropertyDetailClient({
                 {/* Actions */}
                 <div className="mb-8">
                   <DetailActions
-                    propertyId={listing._id}
+                    propertyId={listing.slug}
                     slug={listing.slug}
                     title={listing.title}
                   />
@@ -659,7 +659,7 @@ export default function PropertyDetailClient({
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                         {l.listingType === "Rent" ? "For Rent" : "For Sale"}
                       </span>
-                      <CardActions propertyId={l._id} slug={l.slug} title={l.title} />
+                      <CardActions propertyId={l.slug} slug={l.slug} title={l.title} />
                     </div>
                     <div className="p-5">
                       {l.community && (
