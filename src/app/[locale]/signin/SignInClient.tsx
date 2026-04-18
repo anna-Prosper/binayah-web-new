@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 type Tab = "signin" | "signup";
 
@@ -13,6 +13,7 @@ export default function SignInClient() {
   const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
+  const resetSuccess = searchParams.get("reset") === "1";
   const [tab, setTab] = useState<Tab>("signin");
   const [googleLoading, setGoogleLoading] = useState(false);
 
@@ -118,16 +119,30 @@ export default function SignInClient() {
           backgroundSize: "48px 48px",
         }}
       />
+      <Link
+        href="/"
+        className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+      </Link>
       <div className="relative w-full max-w-md">
+        {resetSuccess && (
+          <div className="mb-4 flex items-center gap-2 p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground">
+            <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+            Password reset successfully. Please sign in with your new password.
+          </div>
+        )}
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-            >
-              <span className="text-white font-bold text-2xl">B</span>
-            </div>
+            <Link href="/" aria-label="Binayah home">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center hover:opacity-90 transition-opacity"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+              >
+                <span className="text-white font-bold text-2xl">B</span>
+              </div>
+            </Link>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground">Welcome to Binayah</h1>
               <p className="text-sm text-muted-foreground mt-1">Sign in to save favorites &amp; more</p>
@@ -210,7 +225,7 @@ export default function SignInClient() {
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-[#1A7A5A] hover:underline"
+                    className="text-xs text-primary hover:underline"
                   >
                     Forgot password?
                   </Link>

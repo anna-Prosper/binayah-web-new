@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 export default function ResetPasswordClient() {
   const searchParams = useSearchParams();
@@ -22,25 +22,24 @@ export default function ResetPasswordClient() {
   const validatePassword = (pw: string) =>
     /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(pw);
 
-  if (!token) {
+  if (!token || badToken) {
+    const msg = !token
+      ? "Invalid or missing reset token."
+      : "This reset link is invalid or has expired.";
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <Link
+          href="/"
+          className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to Binayah
+        </Link>
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 text-center space-y-4 max-w-md w-full">
-          <p className="text-red-500 font-medium">Invalid or missing reset token.</p>
-          <Link href="/forgot-password" className="text-sm text-[#1A7A5A] hover:underline">
-            Request a new reset link
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (badToken) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 text-center space-y-4 max-w-md w-full">
-          <p className="text-red-500 font-medium">This reset link is invalid or has expired.</p>
-          <Link href="/forgot-password" className="text-sm text-[#1A7A5A] hover:underline">
+          <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center mx-auto">
+            <span className="text-red-500 text-xl">!</span>
+          </div>
+          <p className="text-foreground font-medium">{msg}</p>
+          <Link href="/forgot-password" className="block text-sm text-primary hover:underline">
             Request a new reset link
           </Link>
         </div>
@@ -93,16 +92,24 @@ export default function ResetPasswordClient() {
           backgroundSize: "48px 48px",
         }}
       />
+      <Link
+        href="/"
+        className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+      </Link>
       <div className="relative w-full max-w-md">
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-            >
-              <span className="text-white font-bold text-2xl">B</span>
-            </div>
+            <Link href="/" aria-label="Binayah home">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center hover:opacity-90 transition-opacity"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+              >
+                <span className="text-white font-bold text-2xl">B</span>
+              </div>
+            </Link>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground">Set a new password</h1>
               <p className="text-sm text-muted-foreground mt-1">

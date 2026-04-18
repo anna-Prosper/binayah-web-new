@@ -164,7 +164,8 @@ export default function AdminProjectsPage() {
                     <button
                       onClick={() => approveItem(p._id)}
                       disabled={approvingId === p._id}
-                      className="w-full h-9 rounded-xl bg-emerald-600 text-white text-xs font-semibold disabled:opacity-60"
+                      className="w-full h-9 rounded-xl text-white text-xs font-semibold disabled:opacity-60 transition-opacity hover:opacity-90"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
                       {approvingId === p._id ? "Approving..." : "Approve"}
                     </button>

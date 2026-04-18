@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default function ForgotPasswordClient() {
   const [email, setEmail] = useState("");
@@ -39,16 +40,24 @@ export default function ForgotPasswordClient() {
           backgroundSize: "48px 48px",
         }}
       />
+      <Link
+        href="/"
+        className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+      </Link>
       <div className="relative w-full max-w-md">
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-            >
-              <span className="text-white font-bold text-2xl">B</span>
-            </div>
+            <Link href="/" aria-label="Binayah home">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center hover:opacity-90 transition-opacity"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+              >
+                <span className="text-white font-bold text-2xl">B</span>
+              </div>
+            </Link>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-foreground">Forgot password?</h1>
               <p className="text-sm text-muted-foreground mt-1">
@@ -59,12 +68,12 @@ export default function ForgotPasswordClient() {
 
           {done ? (
             <div className="w-full text-center space-y-4">
-              <div className="p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+              <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-foreground text-sm">
                 If that email is registered, a reset link has been sent. Check your inbox (and spam folder).
               </div>
               <Link
                 href="/signin"
-                className="block text-sm text-[#1A7A5A] hover:underline"
+                className="block text-sm text-primary hover:underline"
               >
                 Back to sign in
               </Link>
