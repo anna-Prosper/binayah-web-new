@@ -49,25 +49,28 @@ export default function FavoritesDrawer() {
       return;
     }
     if (properties.length === 0) setLoading(true);
-    const fetchOne = async (id: string): Promise<{ id: string; data: FavProperty | null }> => {
+    const fetchOne = async (id: string): Promise<{ id: string; data: FavProperty | null; notFound: boolean }> => {
       const [listingRes, projectRes] = await Promise.allSettled([
         fetch(apiUrl(`/api/listings/${id}`)),
         fetch(apiUrl(`/api/projects/${id}`)),
       ]);
       if (listingRes.status === "fulfilled" && listingRes.value.ok) {
-        return { id, data: await listingRes.value.json() };
+        return { id, data: await listingRes.value.json(), notFound: false };
       }
       if (projectRes.status === "fulfilled" && projectRes.value.ok) {
-        return { id, data: await projectRes.value.json() };
+        return { id, data: await projectRes.value.json(), notFound: false };
       }
-      return { id, data: null };
+      // Only mark as gone when both endpoints explicitly returned 404.
+      // Network errors, 5xx, or Render cold-start timeouts must NOT remove saved items.
+      const listing404 = listingRes.status === "fulfilled" && listingRes.value.status === 404;
+      const project404 = projectRes.status === "fulfilled" && projectRes.value.status === 404;
+      return { id, data: null, notFound: listing404 && project404 };
     };
     Promise.all(ids.map(fetchOne)).then((results) => {
       const valid = results.filter((r) => r.data !== null).map((r) => r.data as FavProperty);
-      const stale = results.filter((r) => r.data === null).map((r) => r.id);
+      const stale = results.filter((r) => r.notFound).map((r) => r.id);
       setProperties(valid);
       setLoading(false);
-      // Auto-clean stale favorites (pre-slug-fix ObjectIds or deleted properties)
       if (stale.length > 0) stale.forEach((id) => toggle(id));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
