@@ -1,0 +1,95 @@
+"use client";
+
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { User, Heart, LogOut, ChevronDown } from "lucide-react";
+
+export default function UserMenu() {
+  const { data: session, status } = useSession();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  if (status === "loading") {
+    return <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />;
+  }
+
+  if (!session) {
+    return (
+      <button
+        onClick={() => signIn("google")}
+        className="flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+      >
+        <User className="h-4 w-4" />
+        Sign in
+      </button>
+    );
+  }
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 rounded-full hover:bg-muted/60 px-2 py-1 transition-colors"
+      >
+        {session.user.image ? (
+          <Image
+            src={session.user.image}
+            alt={session.user.name || "User"}
+            width={32}
+            height={32}
+            className="rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <User className="h-4 w-4 text-primary" />
+          </div>
+        )}
+        <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 top-full mt-2 w-52 bg-card border border-border/50 rounded-xl shadow-xl py-1.5 z-50">
+          <div className="px-4 py-2.5 border-b border-border/50">
+            <p className="text-sm font-semibold text-foreground truncate">{session.user.name}</p>
+            <p className="text-xs text-muted-foreground truncate">{session.user.email}</p>
+          </div>
+          <Link
+            href="/profile"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <User className="h-4 w-4 text-muted-foreground" />
+            My Profile
+          </Link>
+          <Link
+            href="/profile#favorites"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <Heart className="h-4 w-4 text-muted-foreground" />
+            My Favorites
+          </Link>
+          <div className="border-t border-border/50 mt-1 pt-1">
+            <button
+              onClick={() => { setOpen(false); signOut(); }}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-500 hover:bg-muted/50 transition-colors w-full text-left"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useSession } from "next-auth/react";
 import { Heart, Share2, ArrowLeftRight, Link2, Check, X } from "lucide-react";
 
 // ─── Favorites ───────────────────────────────────────────────────────────────
@@ -8,41 +9,104 @@ import { Heart, Share2, ArrowLeftRight, Link2, Check, X } from "lucide-react";
 const FAV_KEY = "binayah_favorites";
 
 export function useFavorites() {
+  const { data: session, status } = useSession();
   const [ids, setIds] = useState<string[]>([]);
+  const synced = useRef(false);
 
+  // Load: DB when authed, localStorage when not
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(FAV_KEY);
-      if (stored) setIds(JSON.parse(stored));
-    } catch {
-      /* ignore */
+    if (status === "loading") return;
+
+    if (session?.user?.id) {
+      // Authenticated — fetch from DB, merge localStorage, clear localStorage
+      const merge = async () => {
+        try {
+          const res = await fetch("/api/favorites");
+          const data = res.ok ? await res.json() : { ids: [] };
+          const dbIds: string[] = data.ids ?? [];
+
+          const local = (() => {
+            try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]") as string[]; }
+            catch { return []; }
+          })();
+
+          const merged = Array.from(new Set([...dbIds, ...local]));
+
+          // Push any localStorage-only ids to DB
+          const toSync = local.filter((id) => !dbIds.includes(id));
+          await Promise.all(toSync.map((id) => fetch("/api/favorites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })));
+
+          if (local.length > 0) localStorage.removeItem(FAV_KEY);
+          setIds(merged);
+          synced.current = true;
+        } catch {
+          /* fall back to localStorage */
+          try {
+            const stored = localStorage.getItem(FAV_KEY);
+            if (stored) setIds(JSON.parse(stored));
+          } catch { /* ignore */ }
+        }
+      };
+      merge();
+    } else {
+      // Unauthenticated — use localStorage
+      try {
+        const stored = localStorage.getItem(FAV_KEY);
+        if (stored) setIds(JSON.parse(stored));
+      } catch { /* ignore */ }
     }
+  }, [session?.user?.id, status]);
+
+  // Listen for cross-tab localStorage updates when unauthed
+  useEffect(() => {
+    if (session?.user?.id) return;
     const handler = () => {
       try {
         const stored = localStorage.getItem(FAV_KEY);
         setIds(stored ? JSON.parse(stored) : []);
-      } catch {
-        /* ignore */
-      }
+      } catch { /* ignore */ }
     };
     window.addEventListener("favorites-update", handler);
     return () => window.removeEventListener("favorites-update", handler);
-  }, []);
+  }, [session?.user?.id]);
 
-  const toggle = useCallback((id: string) => {
-    setIds((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
-      localStorage.setItem(FAV_KEY, JSON.stringify(next));
+  const toggle = useCallback(async (id: string) => {
+    if (session?.user?.id) {
+      // Optimistic update then DB write
+      setIds((prev) => {
+        const removing = prev.includes(id);
+        const next = removing ? prev.filter((x) => x !== id) : [...prev, id];
+        fetch("/api/favorites", {
+          method: removing ? "DELETE" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        }).catch(() => { /* ignore */ });
+        return next;
+      });
+    } else {
+      setIds((prev) => {
+        const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+        localStorage.setItem(FAV_KEY, JSON.stringify(next));
+        window.dispatchEvent(new Event("favorites-update"));
+        return next;
+      });
+    }
+  }, [session?.user?.id]);
+
+  const clear = useCallback(async () => {
+    if (session?.user?.id) {
+      // Delete all from DB one by one
+      const current = ids;
+      setIds([]);
+      await Promise.all(current.map((id) =>
+        fetch("/api/favorites", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
+      ));
+    } else {
+      setIds([]);
+      localStorage.removeItem(FAV_KEY);
       window.dispatchEvent(new Event("favorites-update"));
-      return next;
-    });
-  }, []);
-
-  const clear = useCallback(() => {
-    setIds([]);
-    localStorage.removeItem(FAV_KEY);
-    window.dispatchEvent(new Event("favorites-update"));
-  }, []);
+    }
+  }, [session?.user?.id, ids]);
 
   return { ids, toggle, clear, has: (id: string) => ids.includes(id) };
 }

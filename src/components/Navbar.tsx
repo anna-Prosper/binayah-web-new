@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import UserMenu from "@/components/UserMenu";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -287,6 +288,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 Get in Touch
               </button>
+              <div className="w-px h-5 bg-white/15" />
+              <UserMenu />
               {extraItems && (
                 <>
                   <div className="w-px h-6 bg-white/15" />
@@ -449,7 +452,10 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </motion.div>
             </div>
 
-            <div className="flex-shrink-0 px-6 pb-6 pt-3">
+            <div className="flex-shrink-0 px-6 pb-6 pt-3 space-y-3">
+              <div className="flex items-center justify-between py-2">
+                <UserMenu />
+              </div>
               <button
                 onClick={() => handleNav("/contact")}
                 className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
