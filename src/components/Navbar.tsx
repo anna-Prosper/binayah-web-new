@@ -146,6 +146,14 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </button>
               ))}
 
+              <button
+                onClick={() => handleNav("/list-your-property")}
+                className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+              >
+                List Your Property
+                <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+              </button>
+
               <div
                 ref={insightsRef}
                 className="relative"
@@ -338,6 +346,16 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   {item.label}
                 </motion.button>
               ))}
+
+              <motion.button
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.12, duration: 0.3 }}
+                onClick={() => handleNav("/list-your-property")}
+                className="w-full text-left px-2 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10"
+              >
+                List Your Property
+              </motion.button>
 
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }} className="border-b border-white/10">
                 <button

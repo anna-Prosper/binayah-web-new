@@ -35,6 +35,13 @@ export default function FavoritesDrawer() {
   const [properties, setProperties] = useState<FavProperty[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Allow other components to open the drawer via a custom window event
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("open-favorites-drawer", handler);
+    return () => window.removeEventListener("open-favorites-drawer", handler);
+  }, []);
+
   // Fetch property details when drawer opens
   useEffect(() => {
     if (!open || ids.length === 0) {

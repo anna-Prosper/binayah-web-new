@@ -3,13 +3,70 @@
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { LogOut, Heart, Bell, User, Home } from "lucide-react";
 
 interface Props {
   user: { id: string; name?: string | null; email?: string | null; image?: string | null };
 }
 
+interface Submission {
+  _id: string;
+  propertyType?: string;
+  community?: string;
+  askingPrice?: number | null;
+  status?: string;
+  createdAt?: string;
+}
+
+function StatusBadge({ status }: { status?: string }) {
+  const normalized = status === "new" || !status ? "under_review" : status;
+  if (normalized === "under_review") {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+        Under Review
+      </span>
+    );
+  }
+  if (normalized === "contacted") {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+        Agent Contacted
+      </span>
+    );
+  }
+  if (normalized === "listed") {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+        Listed
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+      Under Review
+    </span>
+  );
+}
+
 export default function ProfileClient({ user }: Props) {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/list-your-property")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.submissions) setSubmissions(data.submissions);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingSubmissions(false));
+  }, []);
+
+  const openFavorites = () => {
+    window.dispatchEvent(new Event("open-favorites-drawer"));
+  };
+
   return (
     <>
       {/* Hero */}
@@ -48,9 +105,9 @@ export default function ProfileClient({ user }: Props) {
 
           {/* Quick actions */}
           <div className="grid sm:grid-cols-3 gap-4">
-            <Link
-              href="/#offplan"
-              className="bg-card border border-border/50 rounded-2xl p-6 flex flex-col gap-3 hover:border-primary/20 hover:shadow-md transition-all group"
+            <button
+              onClick={openFavorites}
+              className="bg-card border border-border/50 rounded-2xl p-6 flex flex-col gap-3 hover:border-primary/20 hover:shadow-md transition-all group text-left"
             >
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Heart className="h-5 w-5 text-primary" />
@@ -59,7 +116,7 @@ export default function ProfileClient({ user }: Props) {
                 <p className="font-semibold text-foreground group-hover:text-primary transition-colors">My Favorites</p>
                 <p className="text-sm text-muted-foreground">View saved properties</p>
               </div>
-            </Link>
+            </button>
 
             <Link
               href="/list-your-property"
@@ -83,6 +140,53 @@ export default function ProfileClient({ user }: Props) {
                 <p className="text-sm text-muted-foreground">Coming soon</p>
               </div>
             </div>
+          </div>
+
+          {/* My Submissions */}
+          <div className="bg-card border border-border/50 rounded-2xl p-6">
+            <h2 className="font-semibold text-foreground mb-4">My Submissions</h2>
+            {loadingSubmissions ? (
+              <div className="flex items-center justify-center py-8">
+                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : submissions.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No submissions yet.{" "}
+                <Link href="/list-your-property" className="underline hover:text-foreground">
+                  List your property
+                </Link>{" "}
+                to get started.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {submissions.map((s) => (
+                  <div
+                    key={s._id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-border/40 last:border-0"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">
+                        {s.propertyType || "Property"}
+                        {s.community ? ` — ${s.community}` : ""}
+                      </p>
+                      {s.askingPrice ? (
+                        <p className="text-xs text-muted-foreground">
+                          AED {Number(s.askingPrice).toLocaleString()}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <StatusBadge status={s.status} />
+                      {s.createdAt && (
+                        <span className="text-[11px] text-muted-foreground">
+                          {new Date(s.createdAt).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Sign out */}

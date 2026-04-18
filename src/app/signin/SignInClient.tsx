@@ -59,6 +59,10 @@ export default function SignInClient() {
             Continue with Google
           </button>
 
+          <p className="text-xs text-muted-foreground/60 text-center">
+            Email sign-in coming soon
+          </p>
+
           <p className="text-xs text-muted-foreground text-center">
             By signing in you agree to our{" "}
             <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a>
