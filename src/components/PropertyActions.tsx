@@ -74,18 +74,22 @@ export function useFavorites() {
     }
   }, [session?.user?.id, status]);
 
-  // Listen for cross-tab localStorage updates when unauthed
+  // Listen for cross-instance updates (both authed and unauthed)
   useEffect(() => {
-    if (session?.user?.id) return;
-    const handler = () => {
-      try {
-        const stored = localStorage.getItem(FAV_KEY);
-        setIds(stored ? JSON.parse(stored) : []);
-      } catch { /* ignore */ }
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.authed) {
+        setIds(detail.ids);
+      } else {
+        try {
+          const stored = localStorage.getItem(FAV_KEY);
+          setIds(stored ? JSON.parse(stored) : []);
+        } catch { /* ignore */ }
+      }
     };
     window.addEventListener("favorites-update", handler);
     return () => window.removeEventListener("favorites-update", handler);
-  }, [session?.user?.id]);
+  }, []);
 
   const toggle = useCallback(async (id: string) => {
     if (session?.user?.id) {
@@ -98,6 +102,7 @@ export function useFavorites() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id }),
         }).catch(() => { /* ignore */ });
+        window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: next, authed: true } }));
         return next;
       });
     } else {
@@ -112,12 +117,12 @@ export function useFavorites() {
 
   const clear = useCallback(async () => {
     if (session?.user?.id) {
-      // Delete all from DB one by one
       const current = ids;
       setIds([]);
       await Promise.all(current.map((id) =>
         fetch("/api/favorites", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
       ));
+      window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: [], authed: true } }));
     } else {
       setIds([]);
       localStorage.removeItem(FAV_KEY);

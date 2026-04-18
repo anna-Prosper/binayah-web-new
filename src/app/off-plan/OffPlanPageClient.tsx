@@ -40,41 +40,48 @@ export default function OffPlanPageClient({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialProjects.length < totalCount);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
+  const hasMoreRef = useRef(initialProjects.length < totalCount);
+  const projectsLengthRef = useRef(initialProjects.length);
 
   const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (loadingRef.current || !hasMoreRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     try {
-      const res = await fetch(apiUrl(`/api/projects?limit=${BATCH_SIZE}&skip=${projects.length}`));
+      const res = await fetch(apiUrl(`/api/projects?limit=${BATCH_SIZE}&skip=${projectsLengthRef.current}`));
       const newProjects: Project[] = await res.json();
       if (newProjects.length === 0) {
+        hasMoreRef.current = false;
         setHasMore(false);
       } else {
-        setProjects((prev) => [...prev, ...newProjects]);
-        if (projects.length + newProjects.length >= totalCount) {
-          setHasMore(false);
-        }
+        setProjects((prev) => {
+          const next = [...prev, ...newProjects];
+          projectsLengthRef.current = next.length;
+          if (next.length >= totalCount) {
+            hasMoreRef.current = false;
+            setHasMore(false);
+          }
+          return next;
+        });
       }
     } catch (err) {
       console.error("Failed to load more projects:", err);
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  }, [loading, hasMore, projects.length, totalCount]);
+  }, [totalCount]);
 
-  // Intersection Observer: trigger load when 2 rows from bottom
+  // Stable observer — created once, reads latest state via refs
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          loadMore();
-        }
-      },
-      { rootMargin: "600px" } // ~2 rows ahead
+      (entries) => { if (entries[0].isIntersecting) loadMore(); },
+      { rootMargin: "400px" }
     );
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [loadMore, hasMore, loading]);
+  }, [loadMore]);
 
   return (
     <div className="min-h-screen bg-background">

@@ -49,36 +49,50 @@ export default function ListingsPageClient({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialListings.length < totalCount);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
+  const hasMoreRef = useRef(initialListings.length < totalCount);
+  const listingsLengthRef = useRef(initialListings.length);
 
   const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (loadingRef.current || !hasMoreRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     try {
       const res = await fetch(
-        apiUrl(`/api/listings?listingType=${listingType}&limit=${BATCH_SIZE}&skip=${listings.length}`)
+        apiUrl(`/api/listings?listingType=${listingType}&limit=${BATCH_SIZE}&skip=${listingsLengthRef.current}`)
       );
       const newListings: Listing[] = await res.json();
       if (newListings.length === 0) {
+        hasMoreRef.current = false;
         setHasMore(false);
       } else {
-        setListings((prev) => [...prev, ...newListings]);
-        if (listings.length + newListings.length >= totalCount) setHasMore(false);
+        setListings((prev) => {
+          const next = [...prev, ...newListings];
+          listingsLengthRef.current = next.length;
+          if (next.length >= totalCount) {
+            hasMoreRef.current = false;
+            setHasMore(false);
+          }
+          return next;
+        });
       }
     } catch {
       console.error("Failed to load more listings");
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  }, [loading, hasMore, listings.length, totalCount, listingType]);
+  }, [totalCount, listingType]);
 
+  // Stable observer — created once, reads latest state via refs
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => { if (entries[0].isIntersecting && hasMore && !loading) loadMore(); },
-      { rootMargin: "600px" }
+      (entries) => { if (entries[0].isIntersecting) loadMore(); },
+      { rootMargin: "400px" }
     );
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [loadMore, hasMore, loading]);
+  }, [loadMore]);
 
   const formatPrice = (listing: Listing) => {
     if (!listing.price) return "Price on request";
