@@ -48,24 +48,29 @@ export default function FavoritesDrawer() {
       if (ids.length === 0) setProperties([]);
       return;
     }
-    setLoading(true);
-    const fetchOne = async (id: string): Promise<FavProperty | null> => {
+    if (properties.length === 0) setLoading(true);
+    const fetchOne = async (id: string): Promise<{ id: string; data: FavProperty | null }> => {
       const [listingRes, projectRes] = await Promise.allSettled([
         fetch(apiUrl(`/api/listings/${id}`)),
         fetch(apiUrl(`/api/projects/${id}`)),
       ]);
       if (listingRes.status === "fulfilled" && listingRes.value.ok) {
-        return await listingRes.value.json();
+        return { id, data: await listingRes.value.json() };
       }
       if (projectRes.status === "fulfilled" && projectRes.value.ok) {
-        return await projectRes.value.json();
+        return { id, data: await projectRes.value.json() };
       }
-      return null;
+      return { id, data: null };
     };
     Promise.all(ids.map(fetchOne)).then((results) => {
-      setProperties(results.filter((r): r is FavProperty => r !== null));
+      const valid = results.filter((r) => r.data !== null).map((r) => r.data as FavProperty);
+      const stale = results.filter((r) => r.data === null).map((r) => r.id);
+      setProperties(valid);
       setLoading(false);
+      // Auto-clean stale favorites (pre-slug-fix ObjectIds or deleted properties)
+      if (stale.length > 0) stale.forEach((id) => toggle(id));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, ids]);
 
   return (
