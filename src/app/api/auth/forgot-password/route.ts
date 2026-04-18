@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       });
 
       const baseUrl = process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
-      const resetLink = `${baseUrl}/en/reset-password?token=${rawToken}`;
+      const resetLink = `${baseUrl}/reset-password?token=${rawToken}`;
 
       const html = `
         <div style="font-family:sans-serif;max-width:520px;margin:auto;padding:32px 24px;background:#fff;border-radius:12px;border:1px solid #e5e7eb;">

@@ -21,27 +21,20 @@ export async function checkRateLimit(
   const now = new Date();
   const id = `${bucket}:${key}`;
 
-  const doc = await col.findOneAndUpdate(
-    { _id: id as any, expiresAt: { $gt: now } },
-    { $inc: { count: 1 } },
-    { returnDocument: "after" }
-  );
-  const existing = (doc as any)?.value ?? doc;
-
-  if (existing) {
-    return existing.count <= max;
-  }
-
-  // No active window — create a new one.
+  // Single atomic upsert: $inc always increments the counter; $setOnInsert only
+  // fires on insert, so expiresAt is set once and never reset by concurrent requests.
+  // This eliminates the TOCTOU race where two concurrent first-hit requests both
+  // fall through to a $set that resets count to 1.
   await col.updateOne(
     { _id: id as any },
     {
-      $set: {
-        count: 1,
-        expiresAt: new Date(now.getTime() + windowMs),
-      },
+      $inc: { count: 1 },
+      $setOnInsert: { expiresAt: new Date(now.getTime() + windowMs) },
     },
     { upsert: true }
   );
-  return true;
+
+  // Read back the updated count to decide whether the request is allowed.
+  const after = await col.findOne({ _id: id as any });
+  return (after?.count ?? 1) <= max;
 }
