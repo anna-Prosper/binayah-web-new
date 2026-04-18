@@ -44,13 +44,14 @@ export default function UserMenu() {
         {session.user.image ? (
           <Image
             src={session.user.image}
-            alt={session.user.name || "User"}
+            alt=""
             width={32}
             height={32}
-            className="rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover shrink-0"
+            referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
             <User className="h-4 w-4 text-primary" />
           </div>
         )}
