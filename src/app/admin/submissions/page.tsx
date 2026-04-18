@@ -4,12 +4,9 @@ import { cookies } from "next/headers";
 import { timingSafeEqual } from "crypto";
 import clientPromise from "@/lib/mongodb";
 
-// Constant-time string comparison — pads both strings to equal length
 function safeCompare(a: string, b: string): boolean {
-  const len = Math.max(a.length, b.length);
-  const aBytes = Buffer.from(a.padEnd(len, "\0"));
-  const bBytes = Buffer.from(b.padEnd(len, "\0"));
-  return timingSafeEqual(aBytes, bBytes);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
 function formatDate(d: unknown): string {

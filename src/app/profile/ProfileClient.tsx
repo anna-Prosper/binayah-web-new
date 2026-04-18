@@ -52,14 +52,20 @@ function StatusBadge({ status }: { status?: string }) {
 export default function ProfileClient({ user }: Props) {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/list-your-property")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("non-ok response");
+        return r.json();
+      })
       .then((data) => {
         if (data.submissions) setSubmissions(data.submissions);
       })
-      .catch(() => {})
+      .catch(() => {
+        setLoadError("Could not load submissions. Please refresh.");
+      })
       .finally(() => setLoadingSubmissions(false));
   }, []);
 
@@ -149,6 +155,8 @@ export default function ProfileClient({ user }: Props) {
               <div className="flex items-center justify-center py-8">
                 <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
+            ) : loadError ? (
+              <p className="text-sm text-red-600">{loadError}</p>
             ) : submissions.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 No submissions yet.{" "}

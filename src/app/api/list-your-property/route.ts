@@ -33,7 +33,10 @@ export async function GET(_req: NextRequest) {
   const col = client.db("binayah_web_new_dev").collection("property_submissions");
 
   const submissions = await col
-    .find({ userId: session.user.id })
+    .find(
+      { userId: session.user.id },
+      { projection: { propertyType: 1, community: 1, askingPrice: 1, status: 1, createdAt: 1 } }
+    )
     .sort({ createdAt: -1 })
     .limit(50)
     .toArray();
