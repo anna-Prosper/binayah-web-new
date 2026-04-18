@@ -1,12 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import { cookies } from "next/headers";
-import { timingSafeEqual } from "crypto";
+import crypto, { timingSafeEqual } from "crypto";
 import clientPromise from "@/lib/mongodb";
 
-function safeCompare(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+function safeCompare(candidate: string, secret: string): boolean {
+  const key = "binayah-admin-compare";
+  const a = crypto.createHmac("sha256", key).update(candidate).digest();
+  const b = crypto.createHmac("sha256", key).update(secret).digest();
+  return timingSafeEqual(a, b);
 }
 
 function formatDate(d: unknown): string {
@@ -18,11 +20,7 @@ function formatDate(d: unknown): string {
   }
 }
 
-export default async function AdminInquiriesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ secret?: string }>;
-}) {
+export default async function AdminInquiriesPage() {
   const adminSecret = process.env.ADMIN_SECRET;
 
   if (!adminSecret) {
@@ -33,18 +31,14 @@ export default async function AdminInquiriesPage({
     );
   }
 
-  const resolvedParams = await searchParams;
   const cookieStore = await cookies();
-  const querySecret = resolvedParams.secret || "";
   const cookieSecret = cookieStore.get("admin_secret")?.value || "";
-  const candidate = querySecret || cookieSecret;
-
-  const isAuthed = candidate.length > 0 && safeCompare(candidate, adminSecret);
+  const isAuthed = cookieSecret.length > 0 && safeCompare(cookieSecret, adminSecret);
 
   if (!isAuthed) {
     return (
       <div style={{ fontFamily: "monospace", padding: "2rem", color: "#c00" }}>
-        401 — Unauthorized
+        401 — Unauthorized. Visit /api/admin/session?secret=YOUR_SECRET to sign in.
       </div>
     );
   }
@@ -72,8 +66,6 @@ export default async function AdminInquiriesPage({
     whiteSpace: "nowrap",
   };
 
-  const secretParam = querySecret ? `?secret=${querySecret}` : "";
-
   return (
     <div
       style={{
@@ -90,7 +82,7 @@ export default async function AdminInquiriesPage({
       `}</style>
       {/* Nav */}
       <div style={{ marginBottom: 16 }}>
-        <a href={`..${secretParam}`} style={{ fontSize: 13, color: "#1A7A5A" }}>
+        <a href=".." style={{ fontSize: 13, color: "#1A7A5A" }}>
           &larr; Back to Admin
         </a>
       </div>

@@ -2,21 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/mailer";
-
-// Rate limit: max 3 forgot-password requests per email per hour
-const fpRateMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkFpRateLimit(email: string): boolean {
-  const now = Date.now();
-  const entry = fpRateMap.get(email);
-  if (!entry || now > entry.resetAt) {
-    fpRateMap.set(email, { count: 1, resetAt: now + 60 * 60 * 1000 });
-    return true;
-  }
-  if (entry.count >= 3) return false;
-  entry.count++;
-  return true;
-}
+import { checkRateLimit } from "@/lib/rateLimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -36,7 +22,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Rate limit by email (no enumeration risk — rate limits on email are OK)
-  if (!checkFpRateLimit(email)) {
+  // Always return 200 even when limited, to prevent enumeration of the limit state.
+  if (!(await checkRateLimit("forgot", email, 3, 60 * 60 * 1000))) {
     return NextResponse.json({ ok: true });
   }
 

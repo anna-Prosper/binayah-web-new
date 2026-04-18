@@ -1,18 +1,16 @@
 export const dynamic = "force-dynamic";
 
 import { cookies } from "next/headers";
-import { timingSafeEqual } from "crypto";
+import crypto, { timingSafeEqual } from "crypto";
 
-function safeCompare(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+function safeCompare(candidate: string, secret: string): boolean {
+  const key = "binayah-admin-compare";
+  const a = crypto.createHmac("sha256", key).update(candidate).digest();
+  const b = crypto.createHmac("sha256", key).update(secret).digest();
+  return timingSafeEqual(a, b);
 }
 
-export default async function AdminLandingPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ secret?: string }>;
-}) {
+export default async function AdminLandingPage() {
   const adminSecret = process.env.ADMIN_SECRET;
 
   if (!adminSecret) {
@@ -23,23 +21,17 @@ export default async function AdminLandingPage({
     );
   }
 
-  const resolvedParams = await searchParams;
   const cookieStore = await cookies();
-  const querySecret = resolvedParams.secret || "";
   const cookieSecret = cookieStore.get("admin_secret")?.value || "";
-  const candidate = querySecret || cookieSecret;
-
-  const isAuthed = candidate.length > 0 && safeCompare(candidate, adminSecret);
+  const isAuthed = cookieSecret.length > 0 && safeCompare(cookieSecret, adminSecret);
 
   if (!isAuthed) {
     return (
       <div style={{ fontFamily: "monospace", padding: "2rem", color: "#c00" }}>
-        401 — Unauthorized. Append ?secret=YOUR_SECRET to the URL.
+        401 — Unauthorized. Visit /api/admin/session?secret=YOUR_SECRET to sign in.
       </div>
     );
   }
-
-  const secretParam = querySecret ? `?secret=${querySecret}` : "";
 
   return (
     <div
@@ -59,7 +51,7 @@ export default async function AdminLandingPage({
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 400 }}>
         <a
-          href={`inquiries${secretParam}`}
+          href="inquiries"
           style={{
             display: "block",
             padding: "16px 20px",
@@ -80,7 +72,7 @@ export default async function AdminLandingPage({
           </span>
         </a>
         <a
-          href={`submissions${secretParam}`}
+          href="submissions"
           style={{
             display: "block",
             padding: "16px 20px",

@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function ResetPasswordClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const params = useParams<{ locale?: string }>();
+  const locale = params?.locale || "en";
   const token = searchParams.get("token") || "";
 
   const [password, setPassword] = useState("");
@@ -75,7 +77,7 @@ export default function ResetPasswordClient() {
         setLoading(false);
         return;
       }
-      router.push("/en/signin?reset=1");
+      router.push(`/${locale}/signin?reset=1`);
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);

@@ -1,21 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import clientPromise from "@/lib/mongodb";
-
-// Simple in-memory rate limiter: max 5 signups per IP per 10 min
-const signupRateMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkSignupRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = signupRateMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    signupRateMap.set(ip, { count: 1, resetAt: now + 10 * 60 * 1000 });
-    return true;
-  }
-  if (entry.count >= 5) return false;
-  entry.count++;
-  return true;
-}
+import { checkRateLimit } from "@/lib/rateLimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_RE = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
@@ -24,7 +10,7 @@ export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 
-  if (!checkSignupRateLimit(ip)) {
+  if (!(await checkRateLimit("signup", ip, 5, 10 * 60 * 1000))) {
     return NextResponse.json(
       { error: "Too many signup attempts. Try again later." },
       { status: 429 }
@@ -62,21 +48,23 @@ export async function POST(req: NextRequest) {
   const db = client.db("binayah_web_new_dev");
   const users = db.collection("users");
 
+  // Duplicate check BEFORE bcrypt so we don't waste 10+ rounds on known conflicts.
   const existing = await users.findOne(
     { email },
     { projection: { _id: 1, passwordHash: 1 } }
   );
 
+  if (existing?.passwordHash) {
+    // Already has a password — don't leak existence, just 409
+    return NextResponse.json(
+      { error: "Email already registered." },
+      { status: 409 }
+    );
+  }
+
   const passwordHash = await bcrypt.hash(password, 10);
 
   if (existing) {
-    if (existing.passwordHash) {
-      // Already has a password — don't leak existence, just 409
-      return NextResponse.json(
-        { error: "Email already registered." },
-        { status: 409 }
-      );
-    }
     // Google-only user — attach password hash (merge)
     await users.updateOne(
       { _id: existing._id },

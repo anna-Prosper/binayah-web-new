@@ -34,31 +34,32 @@ export async function POST(req: NextRequest) {
   const tokens = db.collection("password_reset_tokens");
   const users = db.collection("users");
 
-  const tokenDoc = await tokens.findOne({
-    tokenHash,
-    usedAt: null,
-    expiresAt: { $gt: new Date() },
-  });
+  // Atomic claim: find an unused, unexpired token and mark it used in one operation.
+  const claimed = await tokens.findOneAndUpdate(
+    {
+      tokenHash,
+      usedAt: null,
+      expiresAt: { $gt: new Date() },
+    },
+    { $set: { usedAt: new Date() } },
+    { returnDocument: "before" }
+  );
 
+  // MongoDB Node driver v5+ returns the document directly; v4 wraps in .value
+  const tokenDoc = (claimed as any)?.value ?? claimed;
   if (!tokenDoc) {
     return NextResponse.json({ error: "Invalid or expired reset link." }, { status: 400 });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-
   await users.updateOne(
     { _id: tokenDoc.userId },
     {
       $set: {
         passwordHash,
-        emailVerified: new Date(), // ensure emailVerified is set
+        emailVerified: new Date(),
       },
     }
-  );
-
-  await tokens.updateOne(
-    { _id: tokenDoc._id },
-    { $set: { usedAt: new Date() } }
   );
 
   return NextResponse.json({ ok: true });
