@@ -20,6 +20,7 @@ import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
 import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
+import { DetailActions } from "@/components/PropertyActions";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -268,6 +269,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
                       <span>{project.community}, {project.city}, {project.country}</span>
                     </p>
+                  </div>
+                  {/* Save / Share actions */}
+                  <div className="mt-3">
+                    <DetailActions
+                      propertyId={String(project._id)}
+                      slug={project.slug}
+                      title={project.name}
+                      type="project"
+                    />
                   </div>
                 </motion.div>
 

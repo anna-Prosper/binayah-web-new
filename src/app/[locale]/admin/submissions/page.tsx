@@ -72,12 +72,20 @@ export default async function AdminSubmissionsPage({
     whiteSpace: "nowrap",
   };
 
+  const secretParam = querySecret ? `?secret=${querySecret}` : "";
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", margin: 0, padding: 24, background: "#fafafa", minHeight: "100vh" }}>
       <style>{`
         tr:hover td { background: #f0f7f4 !important; }
         a { color: #0B3D2E; }
       `}</style>
+      {/* Nav */}
+      <div style={{ marginBottom: 16 }}>
+        <a href={`..${secretParam}`} style={{ fontSize: 13, color: "#1A7A5A" }}>
+          &larr; Back to Admin
+        </a>
+      </div>
       <h1 style={{ fontSize: "1.5rem", marginBottom: "0.5rem", color: "#0B3D2E" }}>
         Property Submissions — Agent Call List
       </h1>

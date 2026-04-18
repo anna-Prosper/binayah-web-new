@@ -1,0 +1,12 @@
+export const dynamic = "force-dynamic";
+
+import { Suspense } from "react";
+import ForgotPasswordClient from "./ForgotPasswordClient";
+
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense>
+      <ForgotPasswordClient />
+    </Suspense>
+  );
+}

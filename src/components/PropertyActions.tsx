@@ -4,6 +4,23 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { Heart, Share2, ArrowLeftRight, Link2, Check, X } from "lucide-react";
 
+// ─── Outside-click hook ──────────────────────────────────────────────────────
+
+function useOutsideClick(ref: React.RefObject<HTMLElement | null>, handler: () => void) {
+  useEffect(() => {
+    const listener = (e: MouseEvent | TouchEvent) => {
+      if (!ref.current || ref.current.contains(e.target as Node)) return;
+      handler();
+    };
+    document.addEventListener("mousedown", listener);
+    document.addEventListener("touchstart", listener);
+    return () => {
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
+    };
+  }, [ref, handler]);
+}
+
 // ─── Favorites ───────────────────────────────────────────────────────────────
 
 const FAV_KEY = "binayah_favorites";
@@ -163,6 +180,8 @@ export function useCompare() {
 
 function SharePopover({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(popoverRef, onClose);
 
   const copyLink = async () => {
     try {
@@ -186,6 +205,7 @@ function SharePopover({ url, title, onClose }: { url: string; title: string; onC
 
   return (
     <div
+      ref={popoverRef}
       className="absolute right-0 top-full mt-1 z-30 bg-card border border-border rounded-xl shadow-xl p-3 w-56 animate-in fade-in zoom-in-95 duration-150"
       onClick={(e) => e.stopPropagation()}
     >
@@ -252,6 +272,7 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
       <button
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFav(propertyId); }}
         title={isFav ? "Remove from favorites" : "Save to favorites"}
+        aria-label={isFav ? "Remove from favorites" : "Save to favorites"}
         className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 ${
           isFav
             ? "bg-red-500 text-white"
@@ -267,6 +288,7 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!cmpFull) toggleCmp(propertyId); }}
           disabled={cmpFull}
           title={cmpFull ? "Max 3 properties" : isCmp ? "Remove from comparison" : "Compare"}
+          aria-label={cmpFull ? "Max 3 properties for comparison" : isCmp ? "Remove from comparison" : "Add to comparison"}
           className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 ${
             isCmp
               ? "bg-[#1A7A5A] text-white"
@@ -292,6 +314,7 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
             }
           }}
           title="Share"
+          aria-label="Share this property"
           className="w-8 h-8 rounded-full bg-white/90 text-foreground/70 flex items-center justify-center shadow-md hover:text-primary hover:scale-110 transition-all"
         >
           <Share2 className="h-3.5 w-3.5" />
@@ -326,15 +349,15 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
     ? window.location.href
     : `https://binayah.com/${type === "project" ? "project" : "property"}/${slug}`;
 
+  const sharePopoverRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(sharePopoverRef, () => setShareOpen(false));
+
   const handleShare = async () => {
     if (navigator.share) {
       try { await navigator.share({ title, url }); } catch { /* cancelled */ }
     } else {
-      try {
-        await navigator.clipboard.writeText(url);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch { /* fallback */ }
+      // On desktop open the share popover
+      setShareOpen((prev) => !prev);
     }
   };
 
@@ -342,6 +365,7 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
     <div className="flex items-center gap-2">
       <button
         onClick={() => toggleFav(propertyId)}
+        aria-label={isFav ? "Remove from favorites" : "Save to favorites"}
         className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all ${
           isFav
             ? "bg-red-50 text-red-500 border-red-200"
@@ -356,6 +380,7 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
         <button
           onClick={() => { if (!cmpFull) toggleCmp(propertyId); }}
           disabled={cmpFull}
+          aria-label={isCmp ? "Remove from comparison" : "Add to comparison"}
           className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all ${
             isCmp
               ? "bg-[#1A7A5A]/10 text-[#1A7A5A] border-[#1A7A5A]/20"
@@ -369,14 +394,18 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
         </button>
       )}
 
-      <div className="relative">
+      <div className="relative" ref={sharePopoverRef}>
         <button
           onClick={handleShare}
+          aria-label="Share this property"
           className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-card text-foreground border border-border hover:bg-muted transition-all"
         >
           {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Share2 className="h-3.5 w-3.5" />}
           {copied ? "Copied!" : "Share"}
         </button>
+        {shareOpen && (
+          <SharePopover url={url} title={title} onClose={() => setShareOpen(false)} />
+        )}
       </div>
     </div>
   );
