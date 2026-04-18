@@ -21,20 +21,32 @@ export async function checkRateLimit(
   const now = new Date();
   const id = `${bucket}:${key}`;
 
-  // Single atomic upsert: $inc always increments the counter; $setOnInsert only
-  // fires on insert, so expiresAt is set once and never reset by concurrent requests.
-  // This eliminates the TOCTOU race where two concurrent first-hit requests both
-  // fall through to a $set that resets count to 1.
-  await col.updateOne(
-    { _id: id as any },
-    {
-      $inc: { count: 1 },
-      $setOnInsert: { expiresAt: new Date(now.getTime() + windowMs) },
-    },
-    { upsert: true }
+  // Step 1: try to increment a currently-active window.
+  const active = await col.updateOne(
+    { _id: id as any, expiresAt: { $gt: now } },
+    { $inc: { count: 1 } }
   );
 
-  // Read back the updated count to decide whether the request is allowed.
+  if (active.matchedCount === 0) {
+    // No active window — either doc doesn't exist OR it's expired-but-not-yet-reaped.
+    // Delete any stale doc (no-op if absent) and insert a fresh one. Use upsert with
+    // $setOnInsert so a concurrent first-hitter won't reset count back to 1.
+    await col.deleteOne({ _id: id as any, expiresAt: { $lte: now } });
+    await col.updateOne(
+      { _id: id as any },
+      {
+        $setOnInsert: {
+          count: 1,
+          expiresAt: new Date(now.getTime() + windowMs),
+        },
+      },
+      { upsert: true }
+    );
+    // Fresh window, count === 1, allowed.
+    return true;
+  }
+
+  // Read back the incremented count to decide.
   const after = await col.findOne({ _id: id as any });
   return (after?.count ?? 1) <= max;
 }
