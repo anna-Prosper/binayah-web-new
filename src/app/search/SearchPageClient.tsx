@@ -7,7 +7,6 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
 import { formatProjectPrice } from "@/lib/formatPrice";
 import PropertyComparison from "@/components/PropertyComparison";
-import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
@@ -348,7 +347,6 @@ function SearchContent() {
       <Footer />
       <WhatsAppButton />
       <PropertyComparison />
-      <FavoritesDrawer />
     </div>
   );
 }

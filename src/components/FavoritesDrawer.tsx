@@ -42,32 +42,30 @@ export default function FavoritesDrawer() {
     return () => window.removeEventListener("open-favorites-drawer", handler);
   }, []);
 
-  // Fetch property details when drawer opens
+  // Fetch property details when drawer opens (parallel)
   useEffect(() => {
     if (!open || ids.length === 0) {
       if (ids.length === 0) setProperties([]);
       return;
     }
     setLoading(true);
-    const fetchAll = async () => {
-      const results: FavProperty[] = [];
-      for (const id of ids) {
-        try {
-          const res = await fetch(apiUrl(`/api/listings/${id}`));
-          if (res.ok) {
-            results.push(await res.json());
-            continue;
-          }
-        } catch { /* try project */ }
-        try {
-          const res = await fetch(apiUrl(`/api/projects/${id}`));
-          if (res.ok) results.push(await res.json());
-        } catch { /* skip */ }
+    const fetchOne = async (id: string): Promise<FavProperty | null> => {
+      const [listingRes, projectRes] = await Promise.allSettled([
+        fetch(apiUrl(`/api/listings/${id}`)),
+        fetch(apiUrl(`/api/projects/${id}`)),
+      ]);
+      if (listingRes.status === "fulfilled" && listingRes.value.ok) {
+        return await listingRes.value.json();
       }
-      setProperties(results);
-      setLoading(false);
+      if (projectRes.status === "fulfilled" && projectRes.value.ok) {
+        return await projectRes.value.json();
+      }
+      return null;
     };
-    fetchAll();
+    Promise.all(ids.map(fetchOne)).then((results) => {
+      setProperties(results.filter((r): r is FavProperty => r !== null));
+      setLoading(false);
+    });
   }, [open, ids]);
 
   return (
@@ -78,7 +76,7 @@ export default function FavoritesDrawer() {
         <div className="fixed inset-0 z-50 bg-black/50" onClick={() => setOpen(false)}>
           {/* Drawer panel */}
           <div
-            className="absolute right-0 top-0 h-full w-full max-w-md bg-background shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+            className="absolute right-0 top-0 h-full w-full max-w-md bg-background shadow-2xl flex flex-col animate-in slide-in-from-right duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}

@@ -277,6 +277,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       slug={project.slug}
                       title={project.name}
                       type="project"
+                      variant="hero"
                     />
                   </div>
                 </motion.div>

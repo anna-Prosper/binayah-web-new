@@ -7,7 +7,6 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CardActions } from "@/components/PropertyActions";
 import { formatProjectPrice } from "@/lib/formatPrice";
-import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -170,7 +169,6 @@ export default function OffPlanPageClient({
 
       <Footer />
       <WhatsAppButton />
-      <FavoritesDrawer />
     </div>
   );
 }

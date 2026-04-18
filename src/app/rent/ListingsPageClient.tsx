@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
-import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { motion } from "framer-motion";
 import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
@@ -217,7 +216,6 @@ export default function ListingsPageClient({
       <Footer />
       <WhatsAppButton />
       <PropertyComparison />
-      <FavoritesDrawer />
     </div>
   );
 }

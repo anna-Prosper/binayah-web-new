@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import FavoritesDrawer from "@/components/FavoritesDrawer";
 import ProfileClient from "./ProfileClient";
 
 export default async function ProfilePage() {
@@ -17,7 +16,6 @@ export default async function ProfilePage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <ProfileClient user={session.user} />
-      <FavoritesDrawer />
       <Footer />
       <WhatsAppButton />
     </div>

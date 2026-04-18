@@ -334,9 +334,10 @@ interface DetailActionsProps {
   slug: string;
   title: string;
   type?: "property" | "project";
+  variant?: "light" | "hero";
 }
 
-export function DetailActions({ propertyId, slug, title, type = "property" }: DetailActionsProps) {
+export function DetailActions({ propertyId, slug, title, type = "property", variant = "light" }: DetailActionsProps) {
   const { toggle: toggleFav, has: hasFav } = useFavorites();
   const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = useCompare();
   const [shareOpen, setShareOpen] = useState(false);
@@ -356,21 +357,40 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
     if (navigator.share) {
       try { await navigator.share({ title, url }); } catch { /* cancelled */ }
     } else {
-      // On desktop open the share popover
       setShareOpen((prev) => !prev);
     }
   };
+
+  const isHero = variant === "hero";
+  const base = "flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all";
+  const favClasses = isHero
+    ? (isFav
+        ? "bg-red-500/90 text-white border-red-400 backdrop-blur-sm shadow-lg"
+        : "bg-white/10 text-white border-white/25 backdrop-blur-sm hover:bg-white/20 hover:border-white/40")
+    : (isFav
+        ? "bg-red-50 text-red-500 border-red-200"
+        : "bg-card text-foreground border-border hover:border-red-200 hover:text-red-500");
+  const cmpClasses = isHero
+    ? (isCmp
+        ? "bg-accent/90 text-white border-accent/60 backdrop-blur-sm"
+        : cmpFull
+          ? "bg-white/5 text-white/40 border-white/10 backdrop-blur-sm cursor-not-allowed"
+          : "bg-white/10 text-white border-white/25 backdrop-blur-sm hover:bg-white/20 hover:border-white/40")
+    : (isCmp
+        ? "bg-[#1A7A5A]/10 text-[#1A7A5A] border-[#1A7A5A]/20"
+        : cmpFull
+          ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-50"
+          : "bg-card text-foreground border-border hover:border-[#1A7A5A]/30 hover:text-[#1A7A5A]");
+  const shareClasses = isHero
+    ? "bg-white/10 text-white border-white/25 backdrop-blur-sm hover:bg-white/20 hover:border-white/40"
+    : "bg-card text-foreground border-border hover:bg-muted";
 
   return (
     <div className="flex items-center gap-2">
       <button
         onClick={() => toggleFav(propertyId)}
         aria-label={isFav ? "Remove from favorites" : "Save to favorites"}
-        className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all ${
-          isFav
-            ? "bg-red-50 text-red-500 border-red-200"
-            : "bg-card text-foreground border-border hover:border-red-200 hover:text-red-500"
-        }`}
+        className={`${base} ${favClasses}`}
       >
         <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
         {isFav ? "Saved" : "Save"}
@@ -381,13 +401,7 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
           onClick={() => { if (!cmpFull) toggleCmp(propertyId); }}
           disabled={cmpFull}
           aria-label={isCmp ? "Remove from comparison" : "Add to comparison"}
-          className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all ${
-            isCmp
-              ? "bg-[#1A7A5A]/10 text-[#1A7A5A] border-[#1A7A5A]/20"
-              : cmpFull
-                ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-50"
-                : "bg-card text-foreground border-border hover:border-[#1A7A5A]/30 hover:text-[#1A7A5A]"
-          }`}
+          className={`${base} ${cmpClasses}`}
         >
           <ArrowLeftRight className="h-3.5 w-3.5" />
           {isCmp ? "Comparing" : "Compare"}
@@ -398,7 +412,7 @@ export function DetailActions({ propertyId, slug, title, type = "property" }: De
         <button
           onClick={handleShare}
           aria-label="Share this property"
-          className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-card text-foreground border border-border hover:bg-muted transition-all"
+          className={`${base} ${shareClasses}`}
         >
           {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Share2 className="h-3.5 w-3.5" />}
           {copied ? "Copied!" : "Share"}

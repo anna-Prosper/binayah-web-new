@@ -26,7 +26,6 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
-import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -759,7 +758,6 @@ export default function PropertyDetailClient({
       <Footer />
       <WhatsAppButton />
       <PropertyComparison />
-      <FavoritesDrawer />
     </div>
   );
 }

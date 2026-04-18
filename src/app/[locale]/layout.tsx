@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { OrganizationJsonLd } from "@/components/JsonLd";
+import FavoritesDrawer from "@/components/FavoritesDrawer";
 import "../globals.css";
 import Providers from "../providers";
 
@@ -78,7 +79,10 @@ export default async function LocaleLayout({
       <body className={jakarta.className}>
         <OrganizationJsonLd />
         <NextIntlClientProvider messages={messages}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <FavoritesDrawer />
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>
