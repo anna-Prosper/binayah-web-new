@@ -92,6 +92,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
+  const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
@@ -521,33 +522,66 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                   {/* Available Units */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const unitData = project.unitTypes.map((ut: string, idx: number) => {
-                      const totalTypes = project.unitTypes!.length;
-                      const rawPrice = project.startingPrice || 0;
-                      const basePrice = rawPrice < 1_000 ? rawPrice * 1_000_000 : rawPrice;
-                      const priceMultiplier = 1 + idx * 0.35;
-                      const minPrice = Math.round(basePrice * priceMultiplier);
-                      const maxPrice = Math.round(minPrice * 1.3);
-                      const baseSize = Number(project.unitSizeMin) || 400;
-                      const maxSize = Number(project.unitSizeMax) || 2500;
-                      const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
-                      const unitMinSize = Math.round(baseSize + sizeStep * idx);
-                      const unitMaxSize = Math.round(unitMinSize + sizeStep * 0.8) || unitMinSize + 200;
-                      const bedroomMatch = ut.match(/(\d+)/);
-                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                      const bathrooms = Math.max(1, bedrooms);
-                      const features = [
-                        "Built-in Wardrobes",
-                        bedrooms >= 2 ? "Maid's Room" : null,
-                        idx % 2 === 0 ? "Sea View" : "City View",
-                        "Balcony",
-                        bedrooms >= 3 ? "Private Terrace" : null,
-                        "Central A/C",
-                        ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
-                      ].filter(Boolean) as string[];
-                      return { name: ut, minPrice, maxPrice, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
-                    });
-                    const activeUnit = unitData[activeUnitTab];
+                    // Multi-type: derive unit data from priceByType filtered by activePropertyType
+                    const hasMultiplePropertyTypes = (project.propertyTypes?.length ?? 0) > 1;
+                    const filteredPriceByType: any[] = hasMultiplePropertyTypes
+                      ? (project.priceByType || []).filter((p: any) => p.propertyType === activePropertyType)
+                      : [];
+
+                    const unitData = hasMultiplePropertyTypes && filteredPriceByType.length > 0
+                      ? filteredPriceByType.map((p: any, idx: number) => {
+                          const ut: string = p.type || "";
+                          const bedroomMatch = ut.match(/(\d+)/);
+                          const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                          const bathrooms = Math.max(1, bedrooms);
+                          const rawMin = p.priceMin || 0;
+                          const rawMax = p.priceMax || 0;
+                          const minPrice = rawMin < 1_000 ? rawMin * 1_000_000 : rawMin;
+                          const maxPrice = rawMax < 1_000 ? rawMax * 1_000_000 : rawMax;
+                          const sizeStr: string = p.size || "";
+                          const sizeParts = sizeStr.split("-").map((s: string) => parseInt(s.replace(/[^0-9]/g, ""))).filter(Boolean);
+                          const minSize = sizeParts[0] || 0;
+                          const maxSize = sizeParts[1] || minSize;
+                          const features = [
+                            "Built-in Wardrobes",
+                            bedrooms >= 2 ? "Maid's Room" : null,
+                            idx % 2 === 0 ? "Sea View" : "City View",
+                            "Balcony",
+                            bedrooms >= 3 ? "Private Terrace" : null,
+                            "Central A/C",
+                            ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                          ].filter(Boolean) as string[];
+                          return { name: ut, minPrice, maxPrice, minSize, maxSize, bedrooms, bathrooms, features, available: true };
+                        })
+                      : project.unitTypes.map((ut: string, idx: number) => {
+                          const totalTypes = project.unitTypes!.length;
+                          const rawPrice = project.startingPrice || 0;
+                          const basePrice = rawPrice < 1_000 ? rawPrice * 1_000_000 : rawPrice;
+                          const priceMultiplier = 1 + idx * 0.35;
+                          const minPrice = Math.round(basePrice * priceMultiplier);
+                          const maxPrice = Math.round(minPrice * 1.3);
+                          const baseSize = Number(project.unitSizeMin) || 400;
+                          const maxSize = Number(project.unitSizeMax) || 2500;
+                          const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
+                          const unitMinSize = Math.round(baseSize + sizeStep * idx);
+                          const unitMaxSize = Math.round(unitMinSize + sizeStep * 0.8) || unitMinSize + 200;
+                          const bedroomMatch = ut.match(/(\d+)/);
+                          const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                          const bathrooms = Math.max(1, bedrooms);
+                          const features = [
+                            "Built-in Wardrobes",
+                            bedrooms >= 2 ? "Maid's Room" : null,
+                            idx % 2 === 0 ? "Sea View" : "City View",
+                            "Balcony",
+                            bedrooms >= 3 ? "Private Terrace" : null,
+                            "Central A/C",
+                            ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                          ].filter(Boolean) as string[];
+                          return { name: ut, minPrice, maxPrice, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
+                        });
+
+                    const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, unitData.length - 1));
+                    const activeUnit = unitData[clampedUnitTab];
                     return (
                       <div className="rounded-3xl overflow-hidden">
                         {/* Section header */}
@@ -561,18 +595,38 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           </div>
                         </div>
 
-                        {/* Unit type tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide">
+                        {/* Primary property type tabs — only when project has multiple property types */}
+                        {hasMultiplePropertyTypes && (
+                          <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-4 mb-2 scrollbar-hide border-b border-border/40">
+                            {(project.propertyTypes as string[]).map((pt) => (
+                              <button
+                                key={pt}
+                                onClick={() => { setActivePropertyType(pt); setActiveUnitTab(0); }}
+                                className={`flex-shrink-0 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 whitespace-nowrap ${
+                                  activePropertyType === pt
+                                    ? "text-white shadow-lg shadow-primary/25"
+                                    : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
+                                }`}
+                                style={activePropertyType === pt ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                              >
+                                {pt}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Secondary bedroom type tabs */}
+                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide mt-3">
                           {unitData.map((unit, i) => (
                             <button
                               key={unit.name}
                               onClick={() => setActiveUnitTab(i)}
                               className={`flex-shrink-0 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
-                                activeUnitTab === i
+                                clampedUnitTab === i
                                   ? "text-white shadow-lg shadow-primary/25 scale-[1.02]"
                                   : "bg-card text-muted-foreground hover:text-foreground border border-border hover:border-primary/30 hover:shadow-sm"
                               }`}
-                              style={activeUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                              style={clampedUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                             >
                               {unit.name}
                             </button>
@@ -582,7 +636,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         {/* Unit detail card */}
                         <AnimatePresence mode="wait">
                           <motion.div
-                            key={activeUnitTab}
+                            key={`${activePropertyType}-${clampedUnitTab}`}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
@@ -592,9 +646,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                               {/* Floor plan side */}
                               <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center p-4 sm:p-4 min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
-                                {project.floor_plans?.[activeUnitTab] ? (
+                                {project.floor_plans?.[clampedUnitTab] ? (
                                   <NextImage
-                                    src={project.floor_plans[activeUnitTab]}
+                                    src={project.floor_plans[clampedUnitTab]}
                                     alt={`${activeUnit?.name} floor plan`}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 40vw"
@@ -2111,6 +2165,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     { label: "Community", value: project.community },
                     { label: "City", value: `${project.city}, ${project.country}` },
                     { label: "Property Type", value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
+                    ...(project.propertyTypes?.length > 0 ? [{ label: "Property Types", value: project.propertyTypes.join(" · ") }] : []),
                     { label: "Project Type", value: project.projectType },
                     { label: "Status", value: project.status },
                     { label: "Title", value: project.titleType },
