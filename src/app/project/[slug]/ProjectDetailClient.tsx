@@ -646,9 +646,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                               {/* Floor plan side */}
                               <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center p-4 sm:p-4 min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
-                                {project.floor_plans?.[clampedUnitTab] ? (
+                                {(hasMultiplePropertyTypes
+                                    ? project.floorPlans?.find((fp: any) => fp.propertyType === activePropertyType && fp.type === filteredPriceByType[clampedUnitTab]?.type)?.image
+                                    : project.floor_plans?.[clampedUnitTab]
+                                ) ? (
                                   <NextImage
-                                    src={project.floor_plans[clampedUnitTab]}
+                                    src={(hasMultiplePropertyTypes
+                                      ? project.floorPlans?.find((fp: any) => fp.propertyType === activePropertyType && fp.type === filteredPriceByType[clampedUnitTab]?.type)?.image
+                                      : project.floor_plans?.[clampedUnitTab]) as string}
                                     alt={`${activeUnit?.name} floor plan`}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 40vw"
@@ -2165,7 +2170,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     { label: "Community", value: project.community },
                     { label: "City", value: `${project.city}, ${project.country}` },
                     { label: "Property Type", value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
-                    ...(project.propertyTypes?.length > 0 ? [{ label: "Property Types", value: project.propertyTypes.join(" · ") }] : []),
+                    ...(project.propertyTypes?.length > 0 ? [{ label: "Property Types", value: project.propertyTypes?.join(" · ") }] : []),
                     { label: "Project Type", value: project.projectType },
                     { label: "Status", value: project.status },
                     { label: "Title", value: project.titleType },
