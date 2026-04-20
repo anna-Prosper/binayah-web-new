@@ -598,7 +598,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         {/* Primary property type tabs — segmented control */}
                         {hasMultiplePropertyTypes && (
                           <div className="mb-5">
-                            <p className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground/60 mb-2.5 pl-0.5">Property Type</p>
+                            <p className="text-xs uppercase tracking-widest font-bold text-foreground/70 mb-2.5 pl-0.5">Property Type</p>
                             <div className="inline-flex w-full gap-1.5 p-1.5 bg-muted/50 rounded-2xl border border-border/30">
                               {(project.propertyTypes as string[]).map((pt) => (
                                 <button
@@ -612,10 +612,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 >
                                   {pt.toLowerCase().includes("villa") || pt.toLowerCase().includes("townhouse") ? (
                                     <Home className="w-3.5 h-3.5 flex-shrink-0" />
+                                  ) : pt.toLowerCase().includes("penthouse") ? (
+                                    <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
                                   ) : (
                                     <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
                                   )}
-                                  {pt}
+                                  <span className="truncate">{pt}</span>
                                 </button>
                               ))}
                             </div>
