@@ -521,7 +521,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
 
                   {/* Available Units */}
-                  {project.unitTypes && project.unitTypes.length > 0 && (() => {
+                  {((project.unitTypes?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
                     // Multi-type: derive unit data from priceByType filtered by activePropertyType
                     const hasMultiplePropertyTypes = (project.propertyTypes?.length ?? 0) > 1;
                     const filteredPriceByType: any[] = hasMultiplePropertyTypes
