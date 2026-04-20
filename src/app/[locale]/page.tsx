@@ -1,7 +1,7 @@
 import HomePageClient from "@/components/HomePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 120;
 
 const FALLBACK_LISTINGS = [
   {

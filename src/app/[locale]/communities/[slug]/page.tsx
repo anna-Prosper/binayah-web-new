@@ -1,28 +1,17 @@
 import CommunityDetailClient from "@/app/communities/[slug]/CommunityDetailClient";
 import { notFound } from "next/navigation";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { getCommunity } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function CommunityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  let community: any = null;
-  let projects: any[] = [];
+  const data = await getCommunity(slug);
 
-  try {
-    const res = await serverFetch(serverApiUrl(`/api/communities/${slug}`));
-    if (res.status === 404) return notFound();
-    if (res.ok) {
-      const data = await res.json();
-      community = data.community;
-      projects = data.projects || [];
-    }
-  } catch (err) {
-    console.warn("[CommunityPage] API unavailable:", (err as Error).message);
-  }
+  if (!data || !data.community) return notFound();
 
-  if (!community) return notFound();
+  const { community, projects } = data;
 
   const communityName =
     community.name ||
@@ -34,7 +23,7 @@ export default async function CommunityPage({ params }: { params: Promise<{ slug
       communityName={communityName}
       communityDescription={community.description?.replace(/<[^>]*>/g, "") || ""}
       communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
-      projects={projects}
+      projects={projects || []}
     />
   );
 }

@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 /**
  * Returns the full API URL for a given path.
  * In production, routes to the external Fastify API.
@@ -38,3 +40,39 @@ export async function serverFetch(
 ): Promise<Response> {
   return fetch(url, { signal: AbortSignal.timeout(ms) });
 }
+
+// ---------------------------------------------------------------------------
+// React.cache() helpers — dedupe the generateMetadata + page double-fetch.
+// Each helper is request-scoped: two callers in the same render tree get one
+// upstream fetch. ISR revalidate on the route handles cross-request caching.
+// ---------------------------------------------------------------------------
+
+// Typed as `any` to match current call sites; tightening types is out of scope.
+async function fetchJsonOr404<T = any>(path: string): Promise<T | null> {
+  try {
+    const res = await serverFetch(serverApiUrl(path));
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
+export const getProject = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/projects/${slug}`)
+);
+export const getListing = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/listings/${slug}`)
+);
+export const getNewsArticle = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/news/${slug}`)
+);
+export const getDeveloper = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/developers/${slug}`)
+);
+export const getCommunity = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/communities/${slug}`)
+);
+export const getConstructionUpdate = cache(async (slug: string) =>
+  fetchJsonOr404(`/api/construction-updates/${slug}`)
+);

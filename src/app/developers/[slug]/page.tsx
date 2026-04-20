@@ -2,7 +2,7 @@ import DeveloperDetailClient from "@/app/developers/[slug]/DeveloperDetailClient
 import { notFound } from "next/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ slug: string }>;

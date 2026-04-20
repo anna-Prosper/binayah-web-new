@@ -1,7 +1,7 @@
 import DevelopersPageClient from "@/app/developers/DevelopersPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function DevelopersPage() {
   let initialDevelopers: any[] = [];

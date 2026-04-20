@@ -1,8 +1,8 @@
 import DeveloperDetailClient from "@/app/developers/[slug]/DeveloperDetailClient";
 import { notFound } from "next/navigation";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { getDeveloper } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -11,27 +11,16 @@ interface Props {
 export default async function DeveloperDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  let developer: any = null;
-  let projects: any[] = [];
+  const data = await getDeveloper(slug);
 
-  try {
-    const res = await serverFetch(serverApiUrl(`/api/developers/${slug}`));
-    if (res.status === 404) return notFound();
-    if (res.ok) {
-      const data = await res.json();
-      developer = data.developer;
-      projects = data.projects || [];
-    }
-  } catch (err) {
-    console.warn("[DeveloperDetailPage] API unavailable:", (err as Error).message);
-  }
+  if (!data || !data.developer) return notFound();
 
-  if (!developer) return notFound();
+  const { developer, projects } = data;
 
   return (
     <DeveloperDetailClient
       developer={developer}
-      projects={projects}
+      projects={projects || []}
     />
   );
 }

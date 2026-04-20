@@ -1,7 +1,7 @@
 import NewsPageClient from "@/app/news/NewsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export default async function NewsPage() {
   let articles: any[] = [];
