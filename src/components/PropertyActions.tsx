@@ -102,14 +102,23 @@ export function useFavorites() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id }),
         }).catch(() => { /* ignore */ });
-        window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: next, authed: true } }));
+        // Defer the dispatch so it doesn't fire synchronously inside the state
+        // updater — that triggers the React "Cannot update a component while
+        // rendering a different component" warning (e.g. Navbar re-renders
+        // while FavoritesDrawer is mid-render).
+        queueMicrotask(() => {
+          window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: next, authed: true } }));
+        });
         return next;
       });
     } else {
       setIds((prev) => {
         const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
         localStorage.setItem(FAV_KEY, JSON.stringify(next));
-        window.dispatchEvent(new Event("favorites-update"));
+        // Same deferral — avoid synchronous cross-component dispatch during render.
+        queueMicrotask(() => {
+          window.dispatchEvent(new Event("favorites-update"));
+        });
         return next;
       });
     }
