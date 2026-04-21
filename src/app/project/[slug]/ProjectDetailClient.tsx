@@ -70,6 +70,32 @@ const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency 
   return `${symbol} ${converted.toLocaleString()}`;
 };
 
+// Collapse consecutive bedroom types with count ≥ 4 that appear 3+ in a row into "X–Y Bedrooms"
+const formatUnitTypes = (types: string[], sep = " · ") => {
+  if (!types?.length) return "—";
+  const parsed = types.map(t => {
+    const m = t.match(/(\d+)/);
+    return { label: t, bed: m ? parseInt(m[1]) : -1 };
+  });
+  const out: string[] = [];
+  let i = 0;
+  while (i < parsed.length) {
+    const cur = parsed[i];
+    if (cur.bed >= 4) {
+      let j = i + 1;
+      while (j < parsed.length && parsed[j].bed === cur.bed + (j - i) && parsed[j].bed >= 4) j++;
+      if (j - i >= 3) {
+        out.push(`${cur.bed}–${parsed[j - 1].bed} Bedrooms`);
+        i = j;
+        continue;
+      }
+    }
+    out.push(cur.label);
+    i++;
+  }
+  return out.join(sep);
+};
+
 const attractionIcon = (type: string) => {
   const t = type?.toLowerCase() || "";
   if (t.includes("beach") || t.includes("marina")) return Waves;
@@ -407,7 +433,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               return [
                 { icon: Building2, label: "Developer", value: project.developerName || "—", sub: null },
                 { icon: Wallet, label: "Starting Price", value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
-                { icon: Bed, label: "Unit Types", value: project.unitTypes?.join(" · ") || "—", sub: null },
+                { icon: Bed, label: "Unit Types", value: formatUnitTypes(project.unitTypes, " · "), sub: null },
                 { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
                 { icon: handoverIcon, label: isReady ? "Status" : "Handover", value: handoverValue, sub: null },
                 { icon: CreditCard, label: "Payment Plan", value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : "Flexible Plan", sub: project.paymentPlanSummary || "Easy Installments", isPaymentPlan: true },
@@ -1971,7 +1997,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4">
                       {[
-                        { label: "Unit Types", value: project.unitTypes?.join(", ") || "—", icon: Bed },
+                        { label: "Unit Types", value: formatUnitTypes(project.unitTypes, ", "), icon: Bed },
                         { label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} – ${Number(project.unitSizeMax).toLocaleString()} sqft` : "—", icon: Ruler },
                       ].map(({ label, value, icon: Icon }) => (
                         <div key={label} className="p-3 sm:p-5 bg-muted/40 rounded-xl text-center hover:bg-muted/60 transition-colors">
