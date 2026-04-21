@@ -139,24 +139,24 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1 min-w-0 overflow-hidden flex-shrink">
               {primaryNav.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => handleNav(item.href)}
-                  className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
                   {item.label}
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
               ))}
 
               <button
                 onClick={() => handleNav("/list-your-property")}
-                className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                className="relative hidden xl:flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
               >
                 List Your Property
-                <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </button>
 
               <div
@@ -212,7 +212,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 min-w-0">
+            <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
               {/* Currency selector */}
               <div className="relative" ref={currencyRef}>
                 <button
@@ -296,12 +296,12 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               <button
                 onClick={() => handleNav("/contact")}
-                className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
+                className="hidden xl:flex px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
               >
                 Get in Touch
               </button>
-              <div className="w-px h-5 bg-white/15" />
+              <div className="hidden xl:block w-px h-5 bg-white/15" />
               <NotificationsBell />
               <button
                 onClick={openFavoritesDrawer}
