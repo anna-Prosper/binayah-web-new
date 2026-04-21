@@ -130,7 +130,7 @@ function ProfileClientInner({ user }: Props) {
           </button>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
           {/* Mobile: vertical stack. Desktop: horizontal. */}
           <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left sm:gap-6">
             {/* Avatar */}
@@ -169,7 +169,7 @@ function ProfileClientInner({ user }: Props) {
 
       {/* Sticky tab bar */}
       <div className="sticky top-0 z-30 bg-background border-b border-border shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="flex gap-1 overflow-x-auto scrollbar-none py-2">
             {tabs.map((t) => (
               <button
@@ -189,8 +189,8 @@ function ProfileClientInner({ user }: Props) {
       </div>
 
       {/* Tab content */}
-      <section className="py-8 sm:py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="py-10 sm:py-16 min-h-[70vh]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
 
           {/* ── Saved tab ── */}
           {activeTab === "saved" && (
@@ -224,7 +224,7 @@ function ProfileClientInner({ user }: Props) {
                   </Link>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {submissions.map((s) => (
                     <div
                       key={s._id}

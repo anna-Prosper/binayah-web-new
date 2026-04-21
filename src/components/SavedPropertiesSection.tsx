@@ -137,7 +137,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
   // Loading state — 3 skeleton cards
   if (isLoading && ids.length > 0) {
     return (
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
         <SkeletonCard />
         <SkeletonCard />
         <SkeletonCard />
@@ -156,7 +156,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
   }
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
       {properties.map((p) => {
         const displayTitle = p.title || p.name || "Property";
         const displayPrice = formatPrice(p.price || p.startingPrice, p.currency);
