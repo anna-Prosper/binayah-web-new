@@ -100,7 +100,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
     >
       <section
         aria-labelledby={`subscribe-${slug}-heading`}
-        className="relative rounded-[15px] overflow-hidden px-4 py-4"
+        className="relative rounded-[15px] overflow-hidden px-5 py-5"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         {/* Texture */}
@@ -111,33 +111,36 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
         {/* Gold glow */}
         <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full pointer-events-none blur-2xl" style={{ background: "radial-gradient(circle, rgba(212,168,71,0.2), transparent 65%)" }} />
 
-        <div className="relative flex items-center gap-3">
-          {/* Bell */}
+        <div className="relative flex items-center gap-4">
+          {/* Bell icon */}
           <div
-            className="relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: "rgba(212,168,71,0.15)", border: "1px solid rgba(212,168,71,0.3)" }}
+            className="relative flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+            style={{ background: "rgba(212,168,71,0.18)", border: "1px solid rgba(212,168,71,0.4)", boxShadow: "0 4px 16px rgba(212,168,71,0.15)" }}
           >
             {subscribed
-              ? <BellRing className="h-4 w-4" style={{ color: "#D4A847" }} />
-              : <Bell className="h-4 w-4" style={{ color: "#D4A847" }} />
+              ? <BellRing className="h-5 w-5" style={{ color: "#D4A847" }} />
+              : <Bell className="h-5 w-5" style={{ color: "#D4A847" }} />
             }
             {!subscribed && (
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-[#0B3D2E] animate-pulse" style={{ background: "#D4A847" }} />
+              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-[#0B3D2E] animate-pulse" style={{ background: "#D4A847" }} />
             )}
           </div>
 
-          {/* Text */}
+          {/* Text block */}
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] leading-none mb-1" style={{ color: "#D4A847" }}>Stay Updated</p>
-            <p id={`subscribe-${slug}-heading`} className="text-xs font-semibold text-white/90 truncate leading-none">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1" style={{ color: "#D4A847" }}>Stay Updated</p>
+            <p id={`subscribe-${slug}-heading`} className="text-sm font-bold text-white leading-snug truncate">
               {projectName}
             </p>
-            {/* Benefit chips — one line */}
-            <div className="flex items-center gap-2.5 mt-2">
-              {BENEFITS.map(({ Icon, label }, i) => (
-                <span key={label} className="flex items-center gap-1 text-[10px] text-white/45">
-                  {i > 0 && <span className="w-px h-2.5 bg-white/15 flex-shrink-0" />}
-                  <Icon className="h-2.5 w-2.5 flex-shrink-0" style={{ color: "rgba(212,168,71,0.6)" }} />
+            {/* Benefit chips */}
+            <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+              {BENEFITS.map(({ Icon, label }) => (
+                <span
+                  key={label}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium"
+                  style={{ background: "rgba(212,168,71,0.12)", border: "1px solid rgba(212,168,71,0.2)", color: "rgba(255,255,255,0.65)" }}
+                >
+                  <Icon className="h-3 w-3 flex-shrink-0" style={{ color: "#D4A847" }} />
                   {label}
                 </span>
               ))}
@@ -151,11 +154,11 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
                 key="done"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex items-center gap-1.5 flex-shrink-0 px-3 py-2 rounded-xl"
-                style={{ background: "rgba(212,168,71,0.15)", border: "1px solid rgba(212,168,71,0.25)" }}
+                className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl"
+                style={{ background: "rgba(212,168,71,0.12)", border: "1px solid rgba(212,168,71,0.3)" }}
               >
-                <Check className="h-3.5 w-3.5 flex-shrink-0" style={{ color: "#D4A847" }} strokeWidth={3} />
-                <span className="text-[11px] font-bold" style={{ color: "#D4A847" }}>Subscribed</span>
+                <Check className="h-4 w-4" style={{ color: "#D4A847" }} strokeWidth={3} />
+                <span className="text-sm font-bold" style={{ color: "#D4A847" }}>Subscribed</span>
               </motion.div>
             ) : (
               <motion.button
@@ -164,21 +167,19 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
                 animate={{ opacity: 1, x: 0 }}
                 onClick={handleClick}
                 disabled={loading}
-                className="flex-shrink-0 flex items-center gap-1.5 h-9 px-4 rounded-xl font-bold text-xs text-white transition-all duration-200 hover:opacity-90 active:scale-[0.97] disabled:opacity-50 whitespace-nowrap"
-                style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 3px 12px rgba(212,168,71,0.4)" }}
+                className="flex-shrink-0 flex items-center gap-2 h-11 px-5 rounded-xl font-bold text-sm text-white transition-all duration-200 hover:scale-[1.03] hover:opacity-95 active:scale-[0.97] disabled:opacity-50 whitespace-nowrap"
+                style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.45)" }}
               >
                 {loading
-                  ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  : isAuthed
-                    ? <><Bell className="h-3.5 w-3.5" />Subscribe</>
-                    : <><Bell className="h-3.5 w-3.5" />Subscribe</>
+                  ? <Loader2 className="h-4 w-4 animate-spin" />
+                  : <><Bell className="h-4 w-4" />Subscribe</>
                 }
               </motion.button>
             )}
           </AnimatePresence>
         </div>
 
-        {error && <p className="relative mt-2 text-[10px] font-semibold text-red-400 text-right">{error}</p>}
+        {error && <p className="relative mt-2 text-[11px] font-semibold text-red-400 text-right">{error}</p>}
       </section>
     </div>
   );
