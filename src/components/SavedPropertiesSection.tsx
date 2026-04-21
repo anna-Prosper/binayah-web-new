@@ -103,7 +103,9 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
 
   const properties = data?.properties ?? [];
 
-  const handleRemove = (p: FavProperty) => {
+  const handleRemove = (e: React.MouseEvent, p: FavProperty) => {
+    e.preventDefault();
+    e.stopPropagation();
     const storedId = ids.find((id) => id === p._id || id === p.slug) ?? p.slug;
     toggle(storedId);
     if (onCountChange) onCountChange(ids.length - 1);
@@ -164,8 +166,11 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
             key={p._id}
             className="group relative bg-card border border-border/60 rounded-2xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
           >
+            {/* Stretched link — makes entire card clickable */}
+            <Link href={href} className="absolute inset-0 z-[1] rounded-2xl" aria-label={displayTitle} />
+
             {/* Image — 4:3 */}
-            <Link href={href} className="block relative aspect-[4/3] overflow-hidden bg-muted">
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
               {image ? (
                 <>
                   <Image
@@ -183,7 +188,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
                 </div>
               )}
 
-              {/* Type badge — top left */}
+              {/* Type badge */}
               {(isProject || isForRent) && (
                 <span
                   className={`absolute top-3 left-3 text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm border ${
@@ -196,33 +201,30 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
                 </span>
               )}
 
-              {/* Bedrooms — bottom left over gradient */}
+              {/* Bedrooms */}
               {p.bedrooms && (
                 <div className="absolute bottom-3 left-3 flex items-center gap-1 text-[10px] font-medium text-white/90">
                   <Bed className="h-3 w-3" />
                   {p.bedrooms} bed
                 </div>
               )}
-            </Link>
+            </div>
 
-            {/* Remove button — visible on hover */}
+            {/* Remove button — above the stretched link */}
             <button
-              onClick={() => handleRemove(p)}
+              onClick={(e) => handleRemove(e, p)}
               title="Remove from saved"
               aria-label="Remove from saved"
-              className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/90 text-foreground/60 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all shadow-sm opacity-0 group-hover:opacity-100 z-10"
+              className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/90 text-foreground/60 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all shadow-sm opacity-0 group-hover:opacity-100 z-[2]"
             >
               <X className="h-3 w-3" />
             </button>
 
             {/* Card body */}
-            <div className="p-4">
-              <Link
-                href={href}
-                className="text-sm font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 leading-snug block mb-1.5"
-              >
+            <div className="p-4 relative z-0">
+              <p className="text-sm font-semibold text-foreground line-clamp-2 leading-snug mb-1.5">
                 {displayTitle}
-              </Link>
+              </p>
               {p.community && (
                 <p className="text-xs text-muted-foreground flex items-center gap-1 mb-3">
                   <MapPin className="h-3 w-3 flex-shrink-0" />

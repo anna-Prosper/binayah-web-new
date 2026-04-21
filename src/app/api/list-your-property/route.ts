@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import clientPromise from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 
 const VALID_PROPERTY_TYPES = [
   "Apartment",
@@ -137,4 +138,63 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json({ ok: true });
+}
+
+export async function PATCH(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  let body: { id?: string; action?: string; propertyType?: string; community?: string; askingPrice?: number | null };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const { id, action } = body;
+  if (!id || !action) return NextResponse.json({ error: "id and action required" }, { status: 400 });
+
+  let objectId: ObjectId;
+  try {
+    objectId = new ObjectId(id);
+  } catch {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
+
+  const client = await clientPromise;
+  const col = client.db("binayah_web_new_dev").collection("property_submissions");
+
+  if (action === "cancel") {
+    const result = await col.updateOne(
+      { _id: objectId, userId: session.user.id, status: { $in: ["under_review", "new"] } },
+      { $set: { status: "cancelled", cancelledAt: new Date() } }
+    );
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Not found or already processed" }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  }
+
+  if (action === "edit") {
+    const update: Record<string, unknown> = { updatedAt: new Date() };
+    if (body.propertyType && VALID_PROPERTY_TYPES.includes(body.propertyType)) {
+      update.propertyType = body.propertyType;
+    }
+    if (body.community) {
+      update.community = String(body.community).slice(0, 200);
+    }
+    if (body.askingPrice !== undefined) {
+      update.askingPrice = body.askingPrice !== null && body.askingPrice !== 0 ? Number(body.askingPrice) : null;
+    }
+    const result = await col.updateOne(
+      { _id: objectId, userId: session.user.id, status: { $in: ["under_review", "new"] } },
+      { $set: update }
+    );
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Not found or already processed" }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  }
+
+  return NextResponse.json({ error: "Invalid action" }, { status: 400 });
 }

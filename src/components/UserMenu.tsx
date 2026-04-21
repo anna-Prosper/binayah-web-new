@@ -48,26 +48,47 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
     );
   }
 
+  const avatar = session.user.image ? (
+    <Image
+      src={session.user.image}
+      alt=""
+      width={32}
+      height={32}
+      className="w-8 h-8 rounded-full object-cover shrink-0"
+      referrerPolicy="no-referrer"
+    />
+  ) : (
+    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+      <User className="h-4 w-4 text-primary" />
+    </div>
+  );
+
+  // Compact (mobile): avatar links directly to profile, no dropdown
+  if (compact) {
+    return (
+      <Link
+        href="/profile"
+        className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:opacity-85 transition-opacity"
+        aria-label="My Profile"
+      >
+        {avatar}
+      </Link>
+    );
+  }
+
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative flex items-center gap-0.5" ref={ref}>
+      {/* Avatar — direct link to profile */}
+      <Link href="/profile" className="rounded-full hover:opacity-85 transition-opacity" aria-label="My Profile">
+        {avatar}
+      </Link>
+
+      {/* Chevron — opens dropdown */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-2 rounded-full hover:bg-muted/60 px-2 py-1 transition-colors${compact ? " min-w-[44px] min-h-[44px] justify-center" : ""}`}
+        className="p-1 rounded-full hover:bg-muted/60 transition-colors"
+        aria-label="Account menu"
       >
-        {session.user.image ? (
-          <Image
-            src={session.user.image}
-            alt=""
-            width={32}
-            height={32}
-            className="w-8 h-8 rounded-full object-cover shrink-0"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-            <User className="h-4 w-4 text-primary" />
-          </div>
-        )}
         <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
@@ -86,12 +107,12 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
             My Profile
           </Link>
           <Link
-            href="/profile#favorites"
+            href="/profile?tab=saved"
             onClick={() => setOpen(false)}
             className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-muted/50 transition-colors"
           >
             <Heart className="h-4 w-4 text-muted-foreground" />
-            My Favorites
+            Saved Properties
           </Link>
           <div className="border-t border-border/50 mt-1 pt-1">
             <button
