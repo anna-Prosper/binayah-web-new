@@ -329,15 +329,15 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
             {/* Mobile right cluster: bell + heart + avatar + hamburger */}
             <div className="flex lg:hidden items-center gap-1 flex-shrink-0">
-              {/* Bell — hidden on narrow screens (< sm / 640px) to save space on iPhone SE */}
-              <div className="hidden sm:flex">
+              {/* Bell — hidden only at <=320px (iPhone SE); visible at 360px+ (390px iPhone 12 included) */}
+              <div className="hidden min-[360px]:flex">
                 <NotificationsBell />
               </div>
 
               {/* Heart / Favorites */}
               <button
                 onClick={openFavoritesDrawer}
-                className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+                className="relative w-9 h-9 min-w-[44px] min-h-[44px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
                 aria-label="Saved properties"
               >
                 <Heart className="h-4 w-4" />

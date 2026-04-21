@@ -30,7 +30,7 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
       return (
         <button
           onClick={() => router.push("/signin")}
-          className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+          className="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
           aria-label="Sign in"
         >
           <User className="h-4 w-4" />
@@ -52,7 +52,7 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full hover:bg-muted/60 px-2 py-1 transition-colors"
+        className={`flex items-center gap-2 rounded-full hover:bg-muted/60 px-2 py-1 transition-colors${compact ? " min-w-[44px] min-h-[44px] justify-center" : ""}`}
       >
         {session.user.image ? (
           <Image
