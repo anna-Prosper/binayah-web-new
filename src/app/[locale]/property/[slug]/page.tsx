@@ -3,7 +3,7 @@ import PropertyDetailClient from "@/app/property/[slug]/PropertyDetailClient";
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export async function generateMetadata({
   params,

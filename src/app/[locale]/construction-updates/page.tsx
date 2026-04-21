@@ -1,7 +1,7 @@
 import ConstructionUpdatesClient from "@/app/construction-updates/ConstructionUpdatesClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export const metadata = {
   title: "Construction Updates | Binayah Properties",

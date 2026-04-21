@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import ConstructionUpdateDetailClient from "@/app/construction-updates/[slug]/ConstructionUpdateDetailClient";
 import { getConstructionUpdate } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

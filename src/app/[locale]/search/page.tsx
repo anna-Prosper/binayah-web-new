@@ -1,6 +1,6 @@
 import SearchPageClient from "@/app/search/SearchPageClient";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default function SearchPage() {
   return <SearchPageClient />;

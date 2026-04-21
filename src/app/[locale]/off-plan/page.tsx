@@ -1,7 +1,7 @@
 import OffPlanPageClient from "@/app/off-plan/OffPlanPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 const FALLBACK_PROJECTS = [
   {

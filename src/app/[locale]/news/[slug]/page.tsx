@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/news/[slug]/NewsDetailClient";
 import { getNewsArticle } from "@/lib/api";
 
-export const revalidate = 600;
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

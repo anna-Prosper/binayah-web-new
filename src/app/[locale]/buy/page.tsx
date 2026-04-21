@@ -1,7 +1,7 @@
 import ListingsPageClient from "@/app/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export const metadata = {
   title: "Properties for Sale in Dubai | Binayah Properties",

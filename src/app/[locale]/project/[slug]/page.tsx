@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/project/[slug]/ProjectDetailClient";
 import { getProject } from "@/lib/api";
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
