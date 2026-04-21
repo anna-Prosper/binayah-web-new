@@ -154,38 +154,13 @@ function ProfileClientInner({ user }: Props) {
               <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">{user.name || "My Profile"}</h1>
               <p className="text-white/70 text-sm mt-0.5 mb-3">{user.email}</p>
 
-              {/* Stat pills */}
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2">
-                <button
-                  onClick={() => switchTab("saved")}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                    activeTab === "saved"
-                      ? "bg-white text-[#0B3D2E] border-white"
-                      : "bg-white/10 text-white/90 border-white/20 hover:bg-white/20"
-                  }`}
-                >
-                  Saved {favIds.length}
-                </button>
-                <button
-                  onClick={() => switchTab("submissions")}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                    activeTab === "submissions"
-                      ? "bg-white text-[#0B3D2E] border-white"
-                      : "bg-white/10 text-white/90 border-white/20 hover:bg-white/20"
-                  }`}
-                >
-                  Submissions {submissions.length}
-                </button>
-                <button
-                  onClick={() => switchTab("subscriptions")}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                    activeTab === "subscriptions"
-                      ? "bg-white text-[#0B3D2E] border-white"
-                      : "bg-white/10 text-white/90 border-white/20 hover:bg-white/20"
-                  }`}
-                >
-                  Subscriptions {subscribedSlugs.length}
-                </button>
+              {/* Stat chips — display only, tab bar below handles navigation */}
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mt-1">
+                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{favIds.length}</span> Saved</span>
+                <span className="text-white/30">·</span>
+                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{submissions.length}</span> Submissions</span>
+                <span className="text-white/30">·</span>
+                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{subscribedSlugs.length}</span> Subscriptions</span>
               </div>
             </div>
           </div>
