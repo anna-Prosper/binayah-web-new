@@ -88,9 +88,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
     unitTypes: Array.isArray(serverProject.unitTypes) ? serverProject.unitTypes : [],
     propertyTypes: Array.isArray(serverProject.propertyTypes) && serverProject.propertyTypes.length > 0
       ? serverProject.propertyTypes
-      : typeof serverProject.propertyType === "string" && serverProject.propertyType.includes(",")
-        ? serverProject.propertyType.split(",").map((s: string) => s.trim()).filter(Boolean)
-        : Array.isArray(serverProject.propertyTypes) ? serverProject.propertyTypes : [],
+      : Array.isArray(serverProject.propertyType) && serverProject.propertyType.length > 0
+        ? serverProject.propertyType
+        : typeof serverProject.propertyType === "string" && serverProject.propertyType.includes(",")
+          ? serverProject.propertyType.split(",").map((s: string) => s.trim()).filter(Boolean)
+          : [],
   };
   const [activeImage, setActiveImage] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -529,64 +531,86 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
 
                   {/* Available Units */}
-                  {((project.unitTypes?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
-                    // Multi-type: derive unit data from priceByType filtered by activePropertyType
+                  {((project.unitTypes?.length ?? 0) > 0 || (project.unitsByType?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
                     const hasMultiplePropertyTypes = (project.propertyTypes?.length ?? 0) > 1;
+                    // priceByType entries with a propertyType field (older schema)
                     const filteredPriceByType: any[] = hasMultiplePropertyTypes
                       ? (project.priceByType || []).filter((p: any) => p.propertyType === activePropertyType)
                       : [];
 
-                    const unitData = hasMultiplePropertyTypes && filteredPriceByType.length > 0
-                      ? filteredPriceByType.map((p: any, idx: number) => {
-                          const ut: string = p.type || "";
-                          const bedroomMatch = ut.match(/(\d+)/);
-                          const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                          const bathrooms = Math.max(1, bedrooms);
-                          const rawMin = p.priceMin || 0;
-                          const rawMax = p.priceMax || 0;
-                          const minPrice = rawMin < 1_000 ? rawMin * 1_000_000 : rawMin;
-                          const maxPrice = rawMax < 1_000 ? rawMax * 1_000_000 : rawMax;
-                          const sizeStr: string = p.size || "";
-                          const sizeParts = sizeStr.split("-").map((s: string) => parseInt(s.replace(/[^0-9]/g, ""))).filter(Boolean);
-                          const minSize = sizeParts[0] || 0;
-                          const maxSize = sizeParts[1] || minSize;
-                          const features = [
-                            "Built-in Wardrobes",
-                            bedrooms >= 2 ? "Maid's Room" : null,
-                            idx % 2 === 0 ? "Sea View" : "City View",
-                            "Balcony",
-                            bedrooms >= 3 ? "Private Terrace" : null,
-                            "Central A/C",
-                            ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
-                          ].filter(Boolean) as string[];
-                          return { name: ut, minPrice, maxPrice, minSize, maxSize, bedrooms, bathrooms, features, available: true };
-                        })
-                      : project.unitTypes.map((ut: string, idx: number) => {
-                          const totalTypes = project.unitTypes!.length;
-                          const rawPrice = project.startingPrice || 0;
-                          const basePrice = rawPrice < 1_000 ? rawPrice * 1_000_000 : rawPrice;
-                          const priceMultiplier = 1 + idx * 0.35;
-                          const minPrice = Math.round(basePrice * priceMultiplier);
-                          const maxPrice = Math.round(minPrice * 1.3);
-                          const baseSize = Number(project.unitSizeMin) || 400;
-                          const maxSize = Number(project.unitSizeMax) || 2500;
-                          const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
-                          const unitMinSize = Math.round(baseSize + sizeStep * idx);
-                          const unitMaxSize = Math.round(unitMinSize + sizeStep * 0.8) || unitMinSize + 200;
-                          const bedroomMatch = ut.match(/(\d+)/);
-                          const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                          const bathrooms = Math.max(1, bedrooms);
-                          const features = [
-                            "Built-in Wardrobes",
-                            bedrooms >= 2 ? "Maid's Room" : null,
-                            idx % 2 === 0 ? "Sea View" : "City View",
-                            "Balcony",
-                            bedrooms >= 3 ? "Private Terrace" : null,
-                            "Central A/C",
-                            ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
-                          ].filter(Boolean) as string[];
-                          return { name: ut, minPrice, maxPrice, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
-                        });
+                    const buildUnitEntry = (ut: string, idx: number, sizeMin: number, sizeMax: number, totalTypes: number, activeType: string) => {
+                      const bedroomMatch = ut.match(/(\d+)/);
+                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                      const bathrooms = Math.max(1, bedrooms);
+                      const priceEntry = (project.priceByType || []).find((p: any) => p.type === ut);
+                      const rawMin = priceEntry?.priceMin || 0;
+                      const rawMax = priceEntry?.priceMax || 0;
+                      const resolvedMin = rawMin > 0 ? (rawMin < 1_000 ? rawMin * 1_000_000 : rawMin) : 0;
+                      const resolvedMax = rawMax > 0 ? (rawMax < 1_000 ? rawMax * 1_000_000 : rawMax) : 0;
+                      const rawStarting = project.startingPrice || 0;
+                      const base = rawStarting < 1_000 ? rawStarting * 1_000_000 : rawStarting;
+                      const minPrice = resolvedMin || Math.round(base * (1 + idx * 0.35));
+                      const maxPrice = resolvedMax || Math.round(minPrice * 1.3);
+                      const sizeStep = totalTypes > 1 ? (sizeMax - sizeMin) / (totalTypes - 1) : 0;
+                      const unitMinSize = Math.round(sizeMin + sizeStep * idx);
+                      const unitMaxSize = Math.round(unitMinSize + (sizeStep > 0 ? sizeStep * 0.8 : 200));
+                      const features = [
+                        "Built-in Wardrobes",
+                        bedrooms >= 2 ? "Maid's Room" : null,
+                        idx % 2 === 0 ? "Sea View" : "City View",
+                        "Balcony",
+                        bedrooms >= 3 ? "Private Terrace" : null,
+                        "Central A/C",
+                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                      ].filter(Boolean) as string[];
+                      return { name: ut, minPrice, maxPrice, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
+                    };
+
+                    const unitData = (() => {
+                      if (hasMultiplePropertyTypes) {
+                        // Use unitsByType for per-property-type unit lists (correct size ranges + unit types)
+                        const ubt = (project.unitsByType || []).find((u: any) => u.propertyType === activePropertyType);
+                        if (ubt?.unitTypes?.length > 0) {
+                          return (ubt.unitTypes as string[]).map((ut, idx) =>
+                            buildUnitEntry(ut, idx, ubt.sizeMin || Number(project.unitSizeMin) || 400, ubt.sizeMax || Number(project.unitSizeMax) || 2500, ubt.unitTypes.length, activePropertyType)
+                          );
+                        }
+                        // Fall back to filteredPriceByType (projects with propertyType in priceByType)
+                        if (filteredPriceByType.length > 0) {
+                          return filteredPriceByType.map((p: any, idx: number) => {
+                            const ut: string = p.type || "";
+                            const bedroomMatch = ut.match(/(\d+)/);
+                            const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                            const bathrooms = Math.max(1, bedrooms);
+                            const rawMin = p.priceMin || 0;
+                            const rawMax = p.priceMax || 0;
+                            const minPrice = rawMin < 1_000 ? rawMin * 1_000_000 : rawMin;
+                            const maxPrice = rawMax < 1_000 ? rawMax * 1_000_000 : rawMax;
+                            const sizeStr: string = p.size || "";
+                            const sizeParts = sizeStr.split("-").map((s: string) => parseInt(s.replace(/[^0-9]/g, ""))).filter(Boolean);
+                            const minSize = sizeParts[0] || 0;
+                            const maxSize = sizeParts[1] || minSize;
+                            const features = [
+                              "Built-in Wardrobes",
+                              bedrooms >= 2 ? "Maid's Room" : null,
+                              idx % 2 === 0 ? "Sea View" : "City View",
+                              "Balcony",
+                              bedrooms >= 3 ? "Private Terrace" : null,
+                              "Central A/C",
+                              ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                            ].filter(Boolean) as string[];
+                            return { name: ut, minPrice, maxPrice, minSize, maxSize, bedrooms, bathrooms, features, available: true };
+                          });
+                        }
+                      }
+                      // Single property type: use unitTypes with calculated pricing
+                      const totalTypes = project.unitTypes?.length ?? 0;
+                      const baseSize = Number(project.unitSizeMin) || 400;
+                      const topSize = Number(project.unitSizeMax) || 2500;
+                      return (project.unitTypes || []).map((ut: string, idx: number) =>
+                        buildUnitEntry(ut, idx, baseSize, topSize, totalTypes, "")
+                      );
+                    })();
 
                     const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, unitData.length - 1));
                     const activeUnit = unitData[clampedUnitTab];
