@@ -745,10 +745,10 @@ function ProfileClientInner({ user }: Props) {
                                       role="switch"
                                       aria-checked={on}
                                       title={`${on ? "Disable" : "Enable"} ${label} notifications`}
-                                      className={`relative w-8 h-[18px] rounded-full transition-colors duration-200 flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${on ? "bg-[#0B3D2E]" : "bg-border"}`}
+                                      className={`relative w-11 h-6 rounded-full transition-colors duration-200 flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${on ? "bg-[#0B3D2E]" : "bg-gray-200 dark:bg-gray-600"}`}
                                     >
                                       <span
-                                        className={`absolute top-[2px] w-[14px] h-[14px] rounded-full bg-white shadow-sm transition-transform duration-200 ${on ? "translate-x-[18px]" : "translate-x-[2px]"}`}
+                                        className={`absolute top-[3px] w-[18px] h-[18px] rounded-full bg-white shadow-md transition-transform duration-200 ${on ? "translate-x-[22px]" : "translate-x-[3px]"}`}
                                       />
                                     </button>
                                   </div>
