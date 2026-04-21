@@ -1626,6 +1626,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   )}
 
+                  {/* Subscribe for project updates */}
+                  <ProjectSubscribeSection
+                    slug={project.slug}
+                    projectName={project.name}
+                    projectImage={project.featuredImage || project.images?.[0] || null}
+                    prefillEmail={enquiryForm.email}
+                  />
+
                   {/* Enquiry Form — hidden on mobile (shown inline below price card in right column) */}
                    <div className="hidden sm:block bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
                     <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
@@ -1826,14 +1834,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </form>
                     )}
                   </div>
-
-                  {/* Subscribe for project updates */}
-                  <ProjectSubscribeSection
-                    slug={project.slug}
-                    projectName={project.name}
-                    projectImage={project.featuredImage || project.images?.[0] || null}
-                    prefillEmail={enquiryForm.email}
-                  />
 
                   {/* Schedule Video Consultation */}
                   <a
