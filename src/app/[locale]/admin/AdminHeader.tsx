@@ -79,11 +79,11 @@ export default function AdminHeader({ title, backHref, name, email, avatar }: Ad
                 alt=""
                 width={32}
                 height={32}
-                className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                className="w-8 h-8 min-w-[44px] min-h-[44px] rounded-full object-cover border-2 border-white/20"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold border-2 border-white/20">
+              <div className="w-8 h-8 min-w-[44px] min-h-[44px] rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold border-2 border-white/20">
                 {initials}
               </div>
             )}
