@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { User, Heart, LogOut, ChevronDown } from "lucide-react";
 
-export default function UserMenu() {
+export default function UserMenu({ compact = false }: { compact?: boolean }) {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -26,6 +26,17 @@ export default function UserMenu() {
   }
 
   if (!session) {
+    if (compact) {
+      return (
+        <button
+          onClick={() => router.push("/signin")}
+          className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+          aria-label="Sign in"
+        >
+          <User className="h-4 w-4" />
+        </button>
+      );
+    }
     return (
       <button
         onClick={() => router.push("/signin")}

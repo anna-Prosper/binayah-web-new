@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Phone, Menu, X, ChevronDown, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
+import { Phone, Menu, X, ChevronDown, ChevronRight, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
 import { usePathname, useRouter } from "@/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import UserMenu from "@/components/UserMenu";
 import { useFavorites } from "@/components/PropertyActions";
 import { NotificationsBell } from "@/components/NotificationsBell";
@@ -27,6 +28,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const pathname = usePathname();
   const currentLocale = useLocale();
   const t = useTranslations("nav");
+  const { data: session, status } = useSession();
 
   const primaryNav = [
     { label: t("buy"), href: "/search?intent=buy" },
@@ -212,6 +214,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
             </div>
 
+            {/* Desktop right cluster */}
             <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
               {/* Currency selector */}
               <div className="relative" ref={currencyRef}>
@@ -324,9 +327,39 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               )}
             </div>
 
-            <button className="lg:hidden text-white min-w-[44px] min-h-[44px] flex items-center justify-center" onClick={() => setMobileOpen(!mobileOpen)}>
-              {mobileOpen ? <X className="h-7 w-7" /> : <Menu className="h-6 w-6" />}
-            </button>
+            {/* Mobile right cluster: bell + heart + avatar + hamburger */}
+            <div className="flex lg:hidden items-center gap-1 flex-shrink-0">
+              {/* Bell — hidden on narrow screens (< sm / 640px) to save space on iPhone SE */}
+              <div className="hidden sm:flex">
+                <NotificationsBell />
+              </div>
+
+              {/* Heart / Favorites */}
+              <button
+                onClick={openFavoritesDrawer}
+                className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+                aria-label="Saved properties"
+              >
+                <Heart className="h-4 w-4" />
+                {favIds.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                    {favIds.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Avatar / Sign in — compact for mobile */}
+              <UserMenu compact />
+
+              {/* Hamburger — always rightmost */}
+              <button
+                className="text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileOpen ? <X className="h-7 w-7" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
@@ -342,6 +375,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             className="lg:hidden fixed inset-0 z-[100] flex flex-col"
             style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 50%, #1A7A5A 100%)" }}
           >
+            {/* Menu header bar */}
             <div className="flex items-center justify-between px-4 h-14 flex-shrink-0">
               <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
                 <Image src={binayahLogo} alt="Binayah Properties" height={32} width={100} className="h-8 w-auto brightness-0 invert" />
@@ -351,7 +385,81 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 pb-6 pt-2">
+            <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2">
+
+              {/* ── Account card ─────────────────────────────────────────── */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="mb-4"
+              >
+                {status === "loading" ? (
+                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4 animate-pulse h-20" />
+                ) : session?.user ? (
+                  /* Signed-in card */
+                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4 flex items-center gap-3">
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt=""
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white font-bold text-lg">
+                          {session.user.name?.charAt(0) ?? "U"}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-semibold text-sm truncate">{session.user.name}</p>
+                      <p className="text-white/60 text-[11px] truncate">{session.user.email}</p>
+                    </div>
+                    <div className="flex flex-col gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => handleNav("/profile")}
+                        className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-white bg-white/20 hover:bg-white/30 transition-colors whitespace-nowrap"
+                      >
+                        My Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          setMobileOpen(false);
+                          openFavoritesDrawer();
+                        }}
+                        className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-white bg-white/20 hover:bg-white/30 transition-colors whitespace-nowrap flex items-center gap-1"
+                      >
+                        <Heart className="h-3 w-3" />
+                        Saved {favIds.length > 0 && `(${favIds.length})`}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  /* Signed-out card */
+                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl">👤</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-semibold text-sm">Welcome</p>
+                      <p className="text-white/60 text-[11px]">Sign in to save properties</p>
+                    </div>
+                    <button
+                      onClick={() => handleNav("/signin")}
+                      className="px-4 py-2 rounded-xl text-[12px] font-bold text-white whitespace-nowrap flex-shrink-0"
+                      style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* ── Nav links ─────────────────────────────────────────────── */}
               {primaryNav.map((item, i) => (
                 <motion.button
                   key={item.label}
@@ -359,9 +467,10 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05, duration: 0.3 }}
                   onClick={() => handleNav(item.href)}
-                  className="w-full text-left px-2 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10"
+                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
                 >
                   {item.label}
+                  <ChevronRight className="h-4 w-4 text-white/40" />
                 </motion.button>
               ))}
 
@@ -370,15 +479,39 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.12, duration: 0.3 }}
                 onClick={() => handleNav("/list-your-property")}
-                className="w-full text-left px-2 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10"
+                className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
               >
                 List Your Property
+                <ChevronRight className="h-4 w-4 text-white/40" />
+              </motion.button>
+
+              {/* Saved Properties row */}
+              <motion.button
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.14, duration: 0.3 }}
+                onClick={() => {
+                  setMobileOpen(false);
+                  setTimeout(() => openFavoritesDrawer(), 50);
+                }}
+                className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Heart className="h-4 w-4 text-red-400" />
+                  Saved Properties
+                  {favIds.length > 0 && (
+                    <span className="ml-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold">
+                      {favIds.length}
+                    </span>
+                  )}
+                </span>
+                <ChevronRight className="h-4 w-4 text-white/40" />
               </motion.button>
 
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }} className="border-b border-white/10">
                 <button
                   onClick={() => { setMobileInsightsOpen(!mobileInsightsOpen); setMobileCompanyOpen(false); }}
-                  className="w-full flex items-center justify-between px-2 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium"
+                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
                 >
                   Insights
                   <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileInsightsOpen ? "rotate-180" : ""}`} />
@@ -401,7 +534,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="border-b border-white/10">
                 <button
                   onClick={() => { setMobileCompanyOpen(!mobileCompanyOpen); setMobileInsightsOpen(false); }}
-                  className="w-full flex items-center justify-between px-2 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium"
+                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
                 >
                   Company
                   <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileCompanyOpen ? "rotate-180" : ""}`} />
@@ -421,7 +554,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Mobile language switcher — Amazon-style */}
+              {/* Mobile language switcher */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.3 }} className="pt-5 pb-2 border-b border-white/10">
                 <p className="px-2 pb-2 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">Language</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -442,10 +575,12 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </div>
               </motion.div>
 
+              {/* Currency */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.3 }} className="pt-4 flex items-center gap-3">
                 <button
+                  title="Tap to cycle currency"
                   onClick={() => { const idx = CURRENCIES.indexOf(mobileCurrency); setMobileCurrency(CURRENCIES[(idx + 1) % CURRENCIES.length]); }}
-                  className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition-colors min-h-[44px]"
+                  className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 transition-colors min-h-[44px] min-w-[120px]"
                 >
                   <Globe className="h-4 w-4 text-accent" />
                   <span className="text-sm font-bold text-white uppercase tracking-wider">{mobileCurrency}</span>
@@ -453,10 +588,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </button>
               </motion.div>
 
+              {/* Contact actions */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35, duration: 0.3 }} className="pt-4 border-t border-white/10 space-y-1">
                 <a href="tel:+971549988811" className="flex items-center gap-3 px-2 py-3 text-white/80 text-sm hover:text-white transition-colors min-h-[48px]">
-                  <div className="w-10 h-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-[18px] w-[18px] text-[#60A5FA]" />
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="h-[18px] w-[18px] text-white" />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-medium text-white">Call Us</span>
@@ -486,20 +622,17 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   </div>
                 </button>
               </motion.div>
-            </div>
 
-            <div className="flex-shrink-0 px-6 pb-6 pt-3 space-y-3">
-              <div className="flex items-center justify-between py-2">
-                <UserMenu />
-                <NotificationsBell />
-              </div>
-              <button
-                onClick={() => handleNav("/contact")}
-                className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
-                style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
-              >
-                Get in Touch
-              </button>
+              {/* Get in Touch CTA */}
+              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.3 }} className="pt-4">
+                <button
+                  onClick={() => handleNav("/contact")}
+                  className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
+                  style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
+                >
+                  Get in Touch
+                </button>
+              </motion.div>
             </div>
           </motion.div>
         )}
