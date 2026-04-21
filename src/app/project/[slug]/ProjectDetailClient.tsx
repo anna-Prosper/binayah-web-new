@@ -23,7 +23,6 @@ import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions } from "@/components/PropertyActions";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
-import { ProjectSubscribeBanner } from "@/components/ProjectSubscribeBanner";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -2449,14 +2448,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           </div>
         </div>
       </div>
-
-      {/* ───── SUBSCRIBE BANNER ───── */}
-      <ProjectSubscribeBanner
-        slug={project.slug}
-        projectName={project.name}
-        projectImage={project.featuredImage || project.images?.[0] || null}
-        prefillEmail={enquiryForm.email}
-      />
 
       {/* ───── SIMILAR PROJECTS ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
