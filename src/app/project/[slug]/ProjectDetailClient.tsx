@@ -83,7 +83,11 @@ const attractionIcon = (type: string) => {
 
 
 const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
-  const project = serverProject;
+  const project = {
+    ...serverProject,
+    unitTypes: Array.isArray(serverProject.unitTypes) ? serverProject.unitTypes : [],
+    propertyTypes: Array.isArray(serverProject.propertyTypes) ? serverProject.propertyTypes : [],
+  };
   const [activeImage, setActiveImage] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showGallery, setShowGallery] = useState(false);
