@@ -2,6 +2,10 @@ export const dynamic = "force-dynamic";
 
 import clientPromise from "@/lib/mongodb";
 import { isAdminSession } from "@/lib/admin-auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import AdminHeader from "../AdminHeader";
+import InquiriesMobileList from "./InquiriesMobileList";
 
 function formatDate(d: unknown): string {
   if (!d) return "";
@@ -32,45 +36,54 @@ export default async function AdminInquiriesPage() {
     );
   }
 
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email ?? "";
+  const name = session?.user?.name ?? email.split("@")[0];
+  const avatar = session?.user?.image;
+
   const client = await clientPromise;
   const col = client.db("binayah_web_new_dev").collection("inquiries");
   const inquiries = await col.find({}).sort({ createdAt: -1 }).limit(200).toArray();
 
+  // Serialize for client component (remove ObjectId, convert dates)
+  const serialized = inquiries.map((row) => ({
+    id: String(row._id),
+    name: (row.name as string) || "",
+    email: (row.email as string) || "",
+    phone: (row.phone as string) || "",
+    source: (row.source as string) || "",
+    type: (row.type as string) || "",
+    message: (row.message as string) || "",
+    date: formatDate(row.createdAt),
+  }));
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Nav */}
-      <header className="bg-[#0B3D2E] text-white px-6 py-4 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/en/admin" className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-              Dashboard
-            </a>
-            <span className="text-white/20">/</span>
-            <span className="text-white font-medium text-sm">Inquiries</span>
-          </div>
-          <a
-            href="/api/auth/signout?callbackUrl=/en/admin"
-            className="text-xs bg-white/10 hover:bg-white/20 border border-white/10 px-3 py-1.5 rounded-lg transition-colors"
-          >
-            Sign out
-          </a>
-        </div>
-      </header>
+      <AdminHeader
+        title="Inquiries"
+        backHref="/en/admin"
+        name={name ?? "Admin"}
+        email={email}
+        avatar={avatar ?? null}
+      />
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Inquiries</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Inquiries</h1>
             <p className="text-gray-500 text-sm mt-0.5">
               {inquiries.length} {inquiries.length === 1 ? "inquiry" : "inquiries"} · newest first
             </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        {/* Mobile card list — visible below md */}
+        <div className="md:hidden">
+          <InquiriesMobileList inquiries={serialized} />
+        </div>
+
+        {/* Desktop table — hidden below md */}
+        <div className="hidden md:block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

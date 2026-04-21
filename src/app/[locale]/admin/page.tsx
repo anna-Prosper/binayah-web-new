@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { isAdminSession } from "@/lib/admin-auth";
 import clientPromise from "@/lib/mongodb";
+import AdminHeader from "./AdminHeader";
 
 export default async function AdminLandingPage() {
   if (!(await isAdminSession())) {
@@ -79,57 +80,35 @@ export default async function AdminLandingPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Nav */}
-      <header className="bg-[#0B3D2E] text-white px-6 py-4 shadow-sm">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#D4A847] flex items-center justify-center font-bold text-[#0B3D2E] text-sm">B</div>
-            <div>
-              <div className="font-semibold text-base leading-tight">Binayah Admin</div>
-              <div className="text-white/50 text-xs">Dashboard</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {avatar ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={avatar} alt={name} className="w-8 h-8 rounded-full object-cover border-2 border-white/20" />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-semibold">
-                {name[0]?.toUpperCase()}
-              </div>
-            )}
-            <div className="hidden sm:block">
-              <div className="text-sm font-medium leading-tight">{name}</div>
-              <div className="text-white/50 text-xs">{email}</div>
-            </div>
-            <a
-              href="/api/auth/signout?callbackUrl=/en/admin"
-              className="ml-2 text-xs bg-white/10 hover:bg-white/20 border border-white/10 px-3 py-1.5 rounded-lg transition-colors"
-            >
-              Sign out
-            </a>
-          </div>
-        </div>
-      </header>
+      <AdminHeader
+        title="Dashboard"
+        name={name ?? "Admin"}
+        email={email}
+        avatar={avatar ?? null}
+      />
 
       {/* Main */}
-      <main className="max-w-6xl mx-auto px-6 py-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900">Good to see you, {name.split(" ")[0]}.</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
+            Good to see you, {(name ?? "Admin").split(" ")[0]}.
+          </h2>
           <p className="text-gray-500 text-sm mt-1">Here&apos;s an overview of your data.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {/* 1 col on mobile, 2 on sm/md, 3 on lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {cards.map((card) => (
             <a
               key={card.href}
               href={card.href}
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-gray-300 hover:shadow-md transition-all duration-150 flex flex-col"
+              className="group bg-white rounded-2xl border border-gray-200 p-5 md:p-6 hover:border-gray-300 hover:shadow-md transition-all duration-150 flex flex-col"
             >
               <div className={`w-12 h-12 rounded-xl ${card.iconBg} flex items-center justify-center mb-5`}>
                 {card.icon}
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-1 tabular-nums">
+              {/* Responsive count text */}
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 tabular-nums">
                 {card.count.toLocaleString()}
               </div>
               <div className="font-semibold text-gray-800 text-sm mb-1">{card.label}</div>

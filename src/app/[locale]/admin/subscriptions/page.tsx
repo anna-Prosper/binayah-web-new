@@ -2,6 +2,10 @@ export const dynamic = "force-dynamic";
 
 import clientPromise from "@/lib/mongodb";
 import { isAdminSession } from "@/lib/admin-auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import AdminHeader from "../AdminHeader";
+import SubscriptionsMobileList from "./SubscriptionsMobileList";
 
 function formatDate(d: unknown): string {
   if (!d) return "";
@@ -32,6 +36,11 @@ export default async function AdminSubscriptionsPage() {
     );
   }
 
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email ?? "";
+  const name = session?.user?.name ?? email.split("@")[0];
+  const avatar = session?.user?.image;
+
   const client = await clientPromise;
   const col = client.db("binayah_web_new_dev").collection("project_subscriptions");
   const subs = await col.find({}).sort({ createdAt: -1 }).limit(500).toArray();
@@ -45,33 +54,28 @@ export default async function AdminSubscriptionsPage() {
   }
   const projects = Object.entries(byProject).sort((a, b) => b[1].length - a[1].length);
 
+  // Serialize for client components
+  const serializedProjects = projects.map(([slug, list]) => ({
+    slug,
+    subscribers: list.map((item) => ({
+      email: item.email,
+      date: formatDate(item.createdAt),
+    })),
+  }));
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Nav */}
-      <header className="bg-[#0B3D2E] text-white px-6 py-4 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/en/admin" className="flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-              Dashboard
-            </a>
-            <span className="text-white/20">/</span>
-            <span className="text-white font-medium text-sm">Subscribers</span>
-          </div>
-          <a
-            href="/api/auth/signout?callbackUrl=/en/admin"
-            className="text-xs bg-white/10 hover:bg-white/20 border border-white/10 px-3 py-1.5 rounded-lg transition-colors"
-          >
-            Sign out
-          </a>
-        </div>
-      </header>
+      <AdminHeader
+        title="Subscribers"
+        backHref="/en/admin"
+        name={name ?? "Admin"}
+        email={email}
+        avatar={avatar ?? null}
+      />
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900">Project Subscribers</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Project Subscribers</h1>
           <p className="text-gray-500 text-sm mt-0.5">
             {subs.length} {subs.length === 1 ? "subscriber" : "subscribers"} across {projects.length} {projects.length === 1 ? "project" : "projects"}
           </p>
@@ -83,7 +87,15 @@ export default async function AdminSubscriptionsPage() {
           </div>
         )}
 
-        <div className="flex flex-col gap-6">
+        {/* Mobile card list — visible below md */}
+        {projects.length > 0 && (
+          <div className="md:hidden">
+            <SubscriptionsMobileList projects={serializedProjects} />
+          </div>
+        )}
+
+        {/* Desktop table view — hidden below md */}
+        <div className="hidden md:flex flex-col gap-6">
           {projects.map(([slug, list]) => (
             <div key={slug} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
