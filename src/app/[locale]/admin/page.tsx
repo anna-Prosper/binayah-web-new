@@ -28,7 +28,7 @@ export default async function AdminLandingPage() {
   if (!isAuthed) {
     return (
       <div style={{ fontFamily: "monospace", padding: "2rem", color: "#c00" }}>
-        401 — Unauthorized. Visit /api/admin/session?secret=YOUR_SECRET to sign in.
+        401 — Unauthorized.
       </div>
     );
   }

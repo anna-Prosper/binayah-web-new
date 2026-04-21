@@ -8,28 +8,31 @@ function safeCompare(candidate: string, secret: string): boolean {
   return timingSafeEqual(a, b);
 }
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const adminSecret = process.env.ADMIN_SECRET;
   if (!adminSecret) {
     return NextResponse.json({ error: "not_configured" }, { status: 503 });
   }
-  const url = new URL(req.url);
-  const candidate = (url.searchParams.get("secret") || "").trim();
-  const next = url.searchParams.get("next") || "/en/admin";
-  // Only allow same-origin relative paths for `next`
-  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/en/admin";
+
+  let candidate = "";
+  try {
+    const body = await req.json();
+    candidate = (body?.secret || "").trim();
+  } catch {
+    return NextResponse.json({ error: "invalid_body" }, { status: 400 });
+  }
 
   if (candidate.length === 0 || !safeCompare(candidate, adminSecret)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const res = NextResponse.redirect(new URL(safeNext, req.url));
+  const res = NextResponse.json({ ok: true });
   res.cookies.set("admin_secret", adminSecret, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 8, // 8 hours
+    maxAge: 60 * 60 * 8,
   });
   return res;
 }
