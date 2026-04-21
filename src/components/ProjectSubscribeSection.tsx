@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Bell, BellRing, Check, Loader2, TrendingUp, Building2, Sparkles } from "lucide-react";
+import { Bell, BellRing, BellOff, Check, Loader2, TrendingUp, Building2, Sparkles } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +15,14 @@ function addLocalSub(slug: string) {
   try {
     const list = JSON.parse(localStorage.getItem(LOCAL_SUB_KEY) || "[]") as string[];
     if (!list.includes(slug)) localStorage.setItem(LOCAL_SUB_KEY, JSON.stringify([...list, slug]));
+  } catch { /* */ }
+}
+
+function removeLocalSub(slug: string) {
+  if (typeof window === "undefined") return;
+  try {
+    const list = JSON.parse(localStorage.getItem(LOCAL_SUB_KEY) || "[]") as string[];
+    localStorage.setItem(LOCAL_SUB_KEY, JSON.stringify(list.filter((s) => s !== slug)));
   } catch { /* */ }
 }
 
@@ -65,7 +73,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
   useEffect(() => { setSubscribed(subscribedSlugs.includes(slug)); }, [slug, subscribedSlugs]);
 
   const handleClick = useCallback(async () => {
-    if (subscribed || loading) return;
+    if (loading) return;
 
     if (!isAuthed) {
       router.push(`/signin?callbackUrl=/project/${slug}`);
@@ -75,20 +83,32 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/project-subscriptions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, projectName, projectImage }),
-      });
-      const data = await res.json();
-      if (!res.ok && !data.ok) {
-        setError(res.status === 429 ? "Too many requests." : "Could not subscribe.");
-        return;
+      if (subscribed) {
+        const res = await fetch("/api/project-subscriptions", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug }),
+        });
+        if (!res.ok) { setError("Could not unsubscribe."); return; }
+        setSubscribed(false);
+        removeLocalSub(slug);
+        dispatchSubUpdate();
+      } else {
+        const res = await fetch("/api/project-subscriptions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug, projectName, projectImage }),
+        });
+        const data = await res.json();
+        if (!res.ok && !data.ok) {
+          setError(res.status === 429 ? "Too many requests." : "Could not subscribe.");
+          return;
+        }
+        setSubscribed(true);
+        addLocalSub(slug);
+        if (!data.alreadySubscribed) pushLocalNotification({ slug, projectName, projectImage });
+        dispatchSubUpdate();
       }
-      setSubscribed(true);
-      addLocalSub(slug);
-      if (!data.alreadySubscribed) pushLocalNotification({ slug, projectName, projectImage });
-      dispatchSubUpdate();
     } catch { setError("Network error."); }
     finally { setLoading(false); }
   }, [subscribed, loading, isAuthed, slug, projectName, projectImage, router]);
@@ -150,16 +170,30 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
           {/* CTA */}
           <AnimatePresence mode="wait" initial={false}>
             {subscribed ? (
-              <motion.div
+              <motion.button
                 key="done"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl"
+                onClick={handleClick}
+                disabled={loading}
+                title="Click to unsubscribe"
+                className="group flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50"
                 style={{ background: "rgba(212,168,71,0.12)", border: "1px solid rgba(212,168,71,0.3)" }}
               >
-                <Check className="h-4 w-4" style={{ color: "#D4A847" }} strokeWidth={3} />
-                <span className="text-sm font-bold" style={{ color: "#D4A847" }}>Subscribed</span>
-              </motion.div>
+                {loading
+                  ? <Loader2 className="h-4 w-4 animate-spin" style={{ color: "#D4A847" }} />
+                  : <>
+                      <span className="group-hover:hidden flex items-center gap-2">
+                        <Check className="h-4 w-4" style={{ color: "#D4A847" }} strokeWidth={3} />
+                        <span className="text-sm font-bold" style={{ color: "#D4A847" }}>Subscribed</span>
+                      </span>
+                      <span className="hidden group-hover:flex items-center gap-2">
+                        <BellOff className="h-4 w-4 text-red-400" />
+                        <span className="text-sm font-bold text-red-400">Unsubscribe</span>
+                      </span>
+                    </>
+                }
+              </motion.button>
             ) : (
               <motion.button
                 key="cta"
