@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/navigation";
-import { LogOut, Home, User, Building2, Bell } from "lucide-react";
+import { LogOut, Home, User, Building2, Bell, CheckCircle2, Clock, Phone } from "lucide-react";
 import { useFavorites } from "@/components/PropertyActions";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import SavedPropertiesSection from "@/components/SavedPropertiesSection";
@@ -26,37 +26,31 @@ interface Submission {
 
 type Tab = "saved" | "submissions" | "subscriptions";
 
-function StatusBadge({ status }: { status?: string }) {
+function getStatusConfig(status?: string) {
   const normalized = status === "new" || !status ? "under_review" : status;
-  if (normalized === "under_review") {
-    return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-800">
-        Under Review
-      </span>
-    );
-  }
-  if (normalized === "contacted") {
-    return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-100 text-blue-800">
-        Agent Contacted
-      </span>
-    );
-  }
-  if (normalized === "listed") {
-    return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-100 text-green-800">
-        Listed
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-yellow-100 text-yellow-800">
-      Under Review
-    </span>
-  );
+  if (normalized === "contacted") return {
+    label: "Agent Contacted",
+    borderColor: "border-l-blue-500",
+    pillBg: "bg-blue-500/10",
+    pillText: "text-blue-500",
+    Icon: Phone,
+  };
+  if (normalized === "listed") return {
+    label: "Listed",
+    borderColor: "border-l-emerald-500",
+    pillBg: "bg-emerald-500/10",
+    pillText: "text-emerald-600",
+    Icon: CheckCircle2,
+  };
+  return {
+    label: "Under Review",
+    borderColor: "border-l-amber-400",
+    pillBg: "bg-amber-500/10",
+    pillText: "text-amber-500",
+    Icon: Clock,
+  };
 }
 
-// Inner component that reads search params (must be wrapped in Suspense)
 function ProfileClientInner({ user }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -69,12 +63,10 @@ function ProfileClientInner({ user }: Props) {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [tooltipId, setTooltipId] = useState<string | null>(null);
 
   const { ids: favIds } = useFavorites();
   const { subscribedSlugs, loading: subsLoading } = useProjectSubscriptions();
 
-  // Load submissions when tab becomes active
   useEffect(() => {
     if (activeTab !== "submissions") return;
     if (submissions.length > 0 || loadingSubmissions) return;
@@ -108,77 +100,106 @@ function ProfileClientInner({ user }: Props) {
 
   return (
     <>
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section
-        className="relative pt-28 sm:pt-32 pb-12 sm:pb-16 text-white overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}
+        className="relative overflow-hidden pt-24 sm:pt-28"
+        style={{ background: "linear-gradient(135deg, #061a11 0%, #0B3D2E 35%, #0e4f37 65%, #145C3F 100%)" }}
       >
+        {/* Diagonal luxury stripe */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }}
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 72px)",
+          }}
+        />
+        {/* Radial depth glow */}
+        <div
+          className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(ellipse at center, rgba(26,122,90,0.22) 0%, transparent 65%)" }}
         />
 
-        {/* Sign-out button — top right */}
-        <div className="absolute top-4 right-4 z-10">
+        {/* Sign out */}
+        <div className="absolute top-4 right-4 sm:top-5 sm:right-6 z-10">
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-all border border-white/20 min-h-[44px] min-w-[44px]"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white/60 hover:text-white/90 border border-white/10 hover:border-white/25 hover:bg-white/10 transition-all"
             title="Sign out"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Sign out</span>
           </button>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
-          {/* Mobile: vertical stack. Desktop: horizontal. */}
-          <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left sm:gap-6">
-            {/* Avatar */}
-            {user.image ? (
-              <Image
-                src={user.image}
-                alt=""
-                width={72}
-                height={72}
-                referrerPolicy="no-referrer"
-                className="rounded-full border-4 border-white/20 flex-shrink-0 mb-3 sm:mb-0"
-              />
-            ) : (
-              <div className="w-[72px] h-[72px] rounded-full border-4 border-white/20 bg-white/10 flex items-center justify-center flex-shrink-0 mb-3 sm:mb-0">
-                <User className="h-7 w-7 text-white/70" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 pb-10 relative">
+          <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-6 sm:gap-8">
+            {/* Avatar with gold ring */}
+            <div className="flex-shrink-0">
+              <div
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-[3px]"
+                style={{
+                  background: "linear-gradient(135deg, #D4A847 0%, #F0D080 50%, #B8922F 100%)",
+                  boxShadow: "0 0 40px rgba(212,168,71,0.25)",
+                }}
+              >
+                <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-[#0B3D2E]">
+                  {user.image ? (
+                    <Image
+                      src={user.image}
+                      alt=""
+                      width={112}
+                      height={112}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#0e5038] flex items-center justify-center">
+                      <User className="h-10 w-10 text-white/30" />
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
 
-            {/* Name + email + stat pills */}
+            {/* Name + email + stat chips */}
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white truncate">{user.name || "My Profile"}</h1>
-              <p className="text-white/70 text-sm mt-0.5 mb-3">{user.email}</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight mb-1 truncate">
+                {user.name || "My Profile"}
+              </h1>
+              <p className="text-sm text-white/45 mb-5 sm:mb-6">{user.email}</p>
 
-              {/* Stat chips — display only, tab bar below handles navigation */}
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mt-1">
-                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{favIds.length}</span> Saved</span>
-                <span className="text-white/30">·</span>
-                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{submissions.length}</span> Submissions</span>
-                <span className="text-white/30">·</span>
-                <span className="text-white/70 text-sm"><span className="font-semibold text-white">{subscribedSlugs.length}</span> Subscriptions</span>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-2.5">
+                {[
+                  { count: favIds.length, label: "Saved" },
+                  { count: submissions.length, label: "Submissions" },
+                  { count: subscribedSlugs.length, label: "Subscriptions" },
+                ].map(({ count, label }) => (
+                  <div
+                    key={label}
+                    className="flex items-baseline gap-1.5 px-4 py-2 rounded-full border border-white/10 bg-black/20"
+                  >
+                    <span className="text-lg font-bold text-white leading-none">{count}</span>
+                    <span className="text-xs text-white/45">{label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Sticky tab bar */}
+      {/* ── Tab bar — underline indicator ── */}
       <div className="sticky top-0 z-30 bg-background border-b border-border shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="flex gap-1 overflow-x-auto scrollbar-none py-2">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8">
+          <div className="flex overflow-x-auto scrollbar-none -mb-px">
             {tabs.map((t) => (
               <button
                 key={t.id}
                 onClick={() => switchTab(t.id)}
-                className={`whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium transition-all flex-shrink-0 ${
+                className={`relative whitespace-nowrap px-5 py-4 text-sm font-semibold transition-colors flex-shrink-0 border-b-2 ${
                   activeTab === t.id
-                    ? "bg-[#0B3D2E] text-white"
-                    : "bg-background text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "text-foreground border-[#0B3D2E]"
+                    : "text-muted-foreground border-transparent hover:text-foreground hover:border-border"
                 }`}
               >
                 {t.label}
@@ -188,150 +209,159 @@ function ProfileClientInner({ user }: Props) {
         </div>
       </div>
 
-      {/* Tab content */}
-      <section className="py-10 sm:py-16 min-h-[70vh]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      {/* ── Tab content ── */}
+      <section className="py-10 sm:py-14 min-h-[70vh]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8">
 
-          {/* ── Saved tab ── */}
-          {activeTab === "saved" && (
-            <SavedPropertiesSection />
-          )}
+          {/* ── Saved ── */}
+          {activeTab === "saved" && <SavedPropertiesSection />}
 
-          {/* ── Submissions tab ── */}
+          {/* ── Submissions ── */}
           {activeTab === "submissions" && (
             <div>
               {loadingSubmissions ? (
-                <div className="flex items-center justify-center py-16">
+                <div className="flex items-center justify-center py-20">
                   <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 </div>
               ) : loadError ? (
                 <p className="text-sm text-red-600">{loadError}</p>
               ) : submissions.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <Home className="h-7 w-7 text-muted-foreground/40" />
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-5">
+                    <Home className="h-7 w-7 text-muted-foreground/30" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-1">No submissions yet</h3>
-                  <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-                    List your property to get started — our agents will review and contact you.
+                  <h3 className="text-lg font-semibold text-foreground mb-2">No submissions yet</h3>
+                  <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
+                    List your property and our agents will review and contact you within 24 hours.
                   </p>
                   <Link
                     href="/list-your-property"
-                    className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5"
+                    className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-xl hover:-translate-y-0.5"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
                   >
                     List a Property
                   </Link>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {submissions.map((s) => (
-                    <div
-                      key={s._id}
-                      className="bg-card border border-border/50 rounded-xl p-4 flex flex-col gap-3"
-                    >
-                      <div className="flex items-start justify-between gap-3">
+                <div className="space-y-3">
+                  {submissions.map((s) => {
+                    const cfg = getStatusConfig(s.status);
+                    const StatusIcon = cfg.Icon;
+                    return (
+                      <div
+                        key={s._id}
+                        className={`bg-card border border-border/50 border-l-4 ${cfg.borderColor} rounded-xl p-5 flex items-start justify-between gap-4 hover:shadow-md transition-shadow`}
+                      >
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-foreground truncate">
+                          <p className="text-sm font-semibold text-foreground">
                             {s.propertyType || "Property"}
                             {s.community ? ` — ${s.community}` : ""}
                           </p>
                           {s.askingPrice ? (
-                            <p className="text-xs font-bold text-primary mt-0.5">
+                            <p className="text-xs font-bold mt-0.5" style={{ color: "#D4A847" }}>
                               AED {Number(s.askingPrice).toLocaleString()}
                             </p>
                           ) : (
                             <p className="text-xs text-muted-foreground mt-0.5">Price on request</p>
                           )}
-                        </div>
-                        <StatusBadge status={s.status} />
-                      </div>
-                      <div className="flex items-center justify-between pt-2 border-t border-border/40">
-                        {s.createdAt ? (
-                          <span className="text-[11px] text-muted-foreground">
-                            {new Date(s.createdAt).toLocaleDateString()}
-                          </span>
-                        ) : (
-                          <span />
-                        )}
-                        <div className="relative">
-                          <button
-                            onClick={() => setTooltipId(tooltipId === s._id ? null : s._id)}
-                            className="text-xs text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2.5 py-1"
-                          >
-                            View details
-                          </button>
-                          {tooltipId === s._id && (
-                            <div className="absolute bottom-full right-0 mb-1.5 w-48 bg-card border border-border rounded-xl shadow-xl p-3 text-xs text-muted-foreground text-center z-10">
-                              Details page coming soon
-                              <div className="absolute bottom-0 right-4 translate-y-1/2 rotate-45 w-2 h-2 bg-card border-r border-b border-border" />
-                            </div>
+                          {s.createdAt && (
+                            <p className="text-[11px] text-muted-foreground mt-2">
+                              Submitted{" "}
+                              {new Date(s.createdAt).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </p>
                           )}
                         </div>
+                        <div
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold flex-shrink-0 ${cfg.pillBg} ${cfg.pillText}`}
+                        >
+                          <StatusIcon className="h-3 w-3" />
+                          {cfg.label}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
           )}
 
-          {/* ── Subscriptions tab ── */}
+          {/* ── Subscriptions ── */}
           {activeTab === "subscriptions" && (
             <div>
               {subsLoading ? (
-                <div className="flex items-center justify-center py-16">
+                <div className="flex items-center justify-center py-20">
                   <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 </div>
               ) : subscribedSlugs.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <Bell className="h-7 w-7 text-muted-foreground/40" />
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-5">
+                    <Bell className="h-7 w-7 text-muted-foreground/30" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-1">No project subscriptions</h3>
-                  <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-                    Subscribe to off-plan projects to get notified about price changes, new floor plans, and construction milestones.
+                  <h3 className="text-lg font-semibold text-foreground mb-2">No project subscriptions</h3>
+                  <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
+                    Subscribe to off-plan projects to get notified about price changes, new floor plans, and milestones.
                   </p>
                   <Link
                     href="/off-plan"
-                    className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5"
+                    className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-xl hover:-translate-y-0.5"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
                   >
                     Browse Off-Plan Projects
                   </Link>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    You are subscribed to {subscribedSlugs.length} project{subscribedSlugs.length !== 1 ? "s" : ""}.
+                <div>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    {subscribedSlugs.length} project{subscribedSlugs.length !== 1 ? "s" : ""} subscribed
                   </p>
-                  {subscribedSlugs.map((slug) => (
-                    <div
-                      key={slug}
-                      className="bg-card border border-border/50 rounded-xl p-4 flex items-center justify-between gap-4"
-                    >
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <Building2 className="h-5 w-5 text-primary" />
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {subscribedSlugs.map((slug) => (
+                      <div
+                        key={slug}
+                        className="group bg-card border border-border/60 rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                      >
+                        {/* Gradient project header */}
+                        <div
+                          className="h-20 relative overflow-hidden flex items-center justify-center"
+                          style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}
+                        >
+                          <Building2 className="h-10 w-10 text-white/8 absolute" />
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              backgroundImage:
+                                "repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px)",
+                            }}
+                          />
+                          <span className="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/25">
+                            Subscribed
+                          </span>
                         </div>
-                        <div className="min-w-0">
+                        {/* Body */}
+                        <div className="p-4 flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <Link
+                              href={`/project/${slug}`}
+                              className="text-sm font-semibold text-foreground hover:text-primary transition-colors block truncate"
+                            >
+                              {slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                            </Link>
+                            <p className="text-xs text-muted-foreground mt-0.5">Off-plan project</p>
+                          </div>
                           <Link
                             href={`/project/${slug}`}
-                            className="text-sm font-semibold text-foreground hover:text-primary transition-colors truncate block"
+                            className="text-xs text-muted-foreground hover:text-primary transition-colors flex-shrink-0 border border-border/70 rounded-lg px-2.5 py-1.5 hover:border-primary/50"
                           >
-                            {slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                            View
                           </Link>
-                          <p className="text-xs text-muted-foreground">Subscribed to updates</p>
                         </div>
                       </div>
-                      <Link
-                        href={`/project/${slug}`}
-                        className="text-xs text-muted-foreground hover:text-primary transition-colors flex-shrink-0 border border-border rounded-lg px-2.5 py-1"
-                      >
-                        View project
-                      </Link>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -343,14 +373,15 @@ function ProfileClientInner({ user }: Props) {
   );
 }
 
-// Exported default wraps in Suspense for useSearchParams
 export default function ProfileClient({ user }: Props) {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
       <ProfileClientInner user={user} />
     </Suspense>
   );
