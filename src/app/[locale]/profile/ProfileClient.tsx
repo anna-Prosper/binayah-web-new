@@ -699,43 +699,35 @@ function ProfileClientInner({ user }: Props) {
                       return (
                         <div
                           key={slug}
-                          className="group bg-card border border-border/60 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
+                          className="group bg-card border border-border/60 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                         >
-                          {/* Project image */}
-                          <div className="relative h-40 overflow-hidden">
+                          {/* Project image — clicking goes to project */}
+                          <Link href={`/project/${slug}`} className="block relative h-44 overflow-hidden">
                             {projectImage ? (
                               <>
                                 <Image src={projectImage} alt={projectName} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
                               </>
                             ) : (
                               <div className="w-full h-full relative flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}>
-                                <Building2 className="h-10 w-10 text-white/10" />
+                                <Building2 className="h-12 w-12 text-white/10" />
                                 <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px)" }} />
                               </div>
                             )}
-                            <span className="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/25 backdrop-blur-sm">
+                            {/* Name + developer over image */}
+                            <div className="absolute bottom-0 left-0 right-0 px-4 pb-3.5">
+                              <p className="text-sm font-bold text-white leading-snug truncate drop-shadow-sm">{projectName}</p>
+                              {developerName && <p className="text-[11px] text-white/60 mt-0.5 truncate">{developerName}</p>}
+                            </div>
+                            <span className="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 backdrop-blur-sm">
                               Subscribed
                             </span>
-                          </div>
-
-                          {/* Name + View */}
-                          <div className="px-4 pt-3.5 pb-0 flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                              <Link href={`/project/${slug}`} className="text-sm font-semibold text-foreground hover:text-primary transition-colors block truncate">
-                                {projectName}
-                              </Link>
-                              <p className="text-xs text-muted-foreground mt-0.5 truncate">{developerName || "Off-plan project"}</p>
-                            </div>
-                            <Link href={`/project/${slug}`} className="text-xs text-muted-foreground hover:text-primary transition-colors flex-shrink-0 border border-border/70 rounded-lg px-2.5 py-1.5 hover:border-primary/50 mt-0.5">
-                              View
-                            </Link>
-                          </div>
+                          </Link>
 
                           {/* Notification toggles */}
-                          <div className="px-4 pt-3 pb-2">
-                            <p className="text-[10px] font-medium text-muted-foreground mb-2 uppercase tracking-wide">Notifications</p>
-                            <div className="flex gap-1.5">
+                          <div className="px-4 pt-3.5 pb-3">
+                            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2.5">Notify via</p>
+                            <div className="flex gap-2">
                               {([
                                 { key: "email" as const, label: "Email", Icon: Mail },
                                 { key: "whatsapp" as const, label: "WhatsApp", Icon: MessageCircle },
@@ -744,40 +736,36 @@ function ProfileClientInner({ user }: Props) {
                                 <button
                                   key={key}
                                   onClick={() => toggleNotif(slug, key)}
-                                  className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium transition-all ${
+                                  title={prefs[key] ? `Disable ${label}` : `Enable ${label}`}
+                                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all flex-1 justify-center ${
                                     prefs[key]
-                                      ? "bg-primary/10 text-primary border border-primary/20"
-                                      : "bg-muted text-muted-foreground border border-border/50 opacity-60"
+                                      ? "bg-[#0B3D2E] text-white shadow-sm"
+                                      : "bg-muted/60 text-muted-foreground/45 border border-border/40"
                                   }`}
                                 >
-                                  <Icon className="h-2.5 w-2.5" />
-                                  {label}
+                                  <Icon className="h-3 w-3 flex-shrink-0" />
+                                  <span className="truncate">{label}</span>
                                 </button>
                               ))}
                             </div>
                           </div>
 
-                          {/* Unsubscribe */}
-                          <div className="px-4 py-3 border-t border-border/40 mt-1">
+                          {/* Footer */}
+                          <div className="px-4 py-2.5 border-t border-border/40 flex items-center justify-between">
+                            <Link href={`/project/${slug}`} className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
+                              View project →
+                            </Link>
                             {isConfirming ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-muted-foreground">Unsubscribe?</span>
-                                <button
-                                  onClick={() => doUnsubscribe(slug)}
-                                  disabled={unsubscribing}
-                                  className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors disabled:opacity-50"
-                                >
-                                  {unsubscribing ? "…" : "Yes, remove"}
+                                <span className="text-xs text-muted-foreground">Sure?</span>
+                                <button onClick={() => doUnsubscribe(slug)} disabled={unsubscribing} className="text-xs font-semibold text-red-500 hover:text-red-600 disabled:opacity-50 transition-colors">
+                                  {unsubscribing ? "…" : "Yes"}
                                 </button>
-                                <button onClick={() => setUnsubscribeConfirm(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                                  Keep
-                                </button>
+                                <button onClick={() => setUnsubscribeConfirm(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">No</button>
                               </div>
                             ) : (
-                              <button
-                                onClick={() => setUnsubscribeConfirm(slug)}
-                                className="text-xs text-muted-foreground hover:text-red-500 transition-colors"
-                              >
+                              <button onClick={() => setUnsubscribeConfirm(slug)} className="flex items-center gap-1 text-xs text-muted-foreground/50 hover:text-red-500 transition-colors">
+                                <Trash2 className="h-3 w-3" />
                                 Unsubscribe
                               </button>
                             )}
