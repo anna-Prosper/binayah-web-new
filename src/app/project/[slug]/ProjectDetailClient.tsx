@@ -21,6 +21,7 @@ import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions } from "@/components/PropertyActions";
+import { SubscribeButton } from "@/components/SubscribeButton";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
@@ -307,13 +308,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <span>{project.community}, {project.city}, {project.country}</span>
                     </p>
                   </div>
-                  {/* Save / Share actions */}
-                  <div className="mt-3">
+                  {/* Save / Subscribe / Share actions */}
+                  <div className="mt-3 flex items-center gap-2 flex-wrap">
                     <DetailActions
                       propertyId={project.slug}
                       slug={project.slug}
                       title={project.name}
                       type="project"
+                      variant="hero"
+                    />
+                    <SubscribeButton
+                      slug={project.slug}
+                      projectName={project.name}
+                      projectImage={project.featuredImage || project.images?.[0] || null}
                       variant="hero"
                     />
                   </div>
@@ -1635,19 +1642,40 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="text-center py-10"
+                        className="py-8 space-y-6"
                       >
-                        <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
-                          <CheckCircle2 className="h-7 w-7 text-emerald-500" />
+                        {/* Thank-you message */}
+                        <div className="text-center">
+                          <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle2 className="h-7 w-7 text-emerald-500" />
+                          </div>
+                          <h3 className="text-lg font-bold text-foreground mb-1">Thank You!</h3>
+                          <p className="text-sm text-muted-foreground">Our team will contact you shortly via your preferred method.</p>
+                          <button
+                            onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }}
+                            className="mt-4 text-xs font-semibold text-primary hover:underline"
+                          >
+                            Submit another enquiry
+                          </button>
                         </div>
-                        <h3 className="text-lg font-bold text-foreground mb-1">Thank You!</h3>
-                        <p className="text-sm text-muted-foreground">Our team will contact you shortly via your preferred method.</p>
-                        <button
-                          onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }}
-                          className="mt-4 text-xs font-semibold text-primary hover:underline"
-                        >
-                          Submit another enquiry
-                        </button>
+                        {/* Subscribe CTA */}
+                        <div className="border border-border/50 rounded-xl p-4 bg-muted/20 space-y-3">
+                          <p className="text-sm font-semibold text-foreground text-center">
+                            Want updates on {project.name}?
+                          </p>
+                          <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                            Subscribe to hear first about price changes, new launches, and construction milestones.
+                          </p>
+                          <div className="flex justify-center">
+                            <SubscribeButton
+                              slug={project.slug}
+                              projectName={project.name}
+                              projectImage={project.featuredImage || project.images?.[0] || null}
+                              variant="cta"
+                              prefillEmail={enquiryForm.email}
+                            />
+                          </div>
+                        </div>
                       </motion.div>
                     ) : (
                       <form
@@ -2192,11 +2220,29 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               <div className="bg-card rounded-2xl rounded-t-none border border-border/50 border-t-0 p-4">
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Quick Enquiry</p>
                 {enquirySubmitted ? (
-                  <div className="text-center py-6">
-                    <CheckCircle2 className="h-6 w-6 text-emerald-500 mx-auto mb-2" />
-                    <p className="text-sm font-bold text-foreground">Sent!</p>
-                    <p className="text-xs text-muted-foreground">We'll call you within 2 hours.</p>
-                    <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">Send another</button>
+                  <div className="py-4 space-y-4">
+                    {/* Thank-you */}
+                    <div className="text-center">
+                      <CheckCircle2 className="h-6 w-6 text-emerald-500 mx-auto mb-2" />
+                      <p className="text-sm font-bold text-foreground">Sent!</p>
+                      <p className="text-xs text-muted-foreground">We&apos;ll call you within 2 hours.</p>
+                      <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">Send another</button>
+                    </div>
+                    {/* Subscribe CTA */}
+                    <div className="border border-border/50 rounded-xl p-3 bg-muted/20 space-y-2">
+                      <p className="text-xs font-semibold text-foreground text-center">
+                        Want updates on {project.name}?
+                      </p>
+                      <div className="flex justify-center">
+                        <SubscribeButton
+                          slug={project.slug}
+                          projectName={project.name}
+                          projectImage={project.featuredImage || project.images?.[0] || null}
+                          variant="cta"
+                          prefillEmail={enquiryForm.email}
+                        />
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <form onSubmit={handleEnquirySubmit} className="space-y-3">

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import UserMenu from "@/components/UserMenu";
 import { useFavorites } from "@/components/PropertyActions";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -301,6 +302,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 Get in Touch
               </button>
               <div className="w-px h-5 bg-white/15" />
+              <NotificationsBell />
               <button
                 onClick={openFavoritesDrawer}
                 className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
@@ -489,6 +491,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             <div className="flex-shrink-0 px-6 pb-6 pt-3 space-y-3">
               <div className="flex items-center justify-between py-2">
                 <UserMenu />
+                <NotificationsBell />
               </div>
               <button
                 onClick={() => handleNav("/contact")}

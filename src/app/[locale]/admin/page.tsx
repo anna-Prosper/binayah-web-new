@@ -43,9 +43,20 @@ export default async function AdminLandingPage() {
         minHeight: "100vh",
       }}
     >
-      <h1 style={{ fontSize: "1.5rem", marginBottom: "0.5rem", color: "#0B3D2E" }}>
-        Binayah Admin
-      </h1>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+        <h1 style={{ fontSize: "1.5rem", color: "#0B3D2E", margin: 0 }}>
+          Binayah Admin
+        </h1>
+        <a
+          href="/api/admin/signout"
+          style={{ fontSize: 13, color: "#1A7A5A", fontWeight: 600, textDecoration: "none" }}
+        >
+          Sign out
+        </a>
+      </div>
+      <p style={{ color: "#888", fontSize: 12, marginBottom: 4 }}>
+        Signed in as admin &mdash; session valid 8h from bootstrap.
+      </p>
       <p style={{ color: "#666", fontSize: 14, marginBottom: 32 }}>
         Select a section to view:
       </p>
