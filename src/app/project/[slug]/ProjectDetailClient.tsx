@@ -819,15 +819,25 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                                 {/* Price card */}
                                 {activeUnit?.contactUs ? (
-                                  <div className="rounded-2xl p-4 sm:p-5 bg-muted/40 border border-border/50 flex flex-col gap-1">
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">Pricing</p>
-                                    <p className="text-xl sm:text-2xl font-bold text-foreground">Contact Us for Pricing</p>
-                                    <p className="text-xs text-muted-foreground">Speak to our team for the latest rates on this unit type</p>
+                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Pricing</p>
+                                    <p className="text-xl sm:text-2xl font-bold mt-1">Contact Us for Pricing</p>
+                                    <p className="text-sm text-white/60 mt-1">Speak to our team for the latest rates on this unit type</p>
+                                  </div>
+                                ) : clampedUnitTab === 0 ? (
+                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Starting From</p>
+                                    <p className="text-xl sm:text-3xl font-bold mt-1">
+                                      {formatPrice(activeUnit?.minPrice, "AED", currency)}
+                                    </p>
+                                    {currency === "AED" && activeUnit?.minPrice && (
+                                      <p className="text-sm text-white/60 mt-1">~{formatPrice(activeUnit?.minPrice, "AED", "USD")}</p>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
                                     <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Price Range</p>
-                                    <p className="text-xl sm:text-3xl font-bold mt-1 sm:mt-1">
+                                    <p className="text-xl sm:text-3xl font-bold mt-1">
                                       {formatPrice(activeUnit?.minPrice, "AED", currency)} – {formatPrice(activeUnit?.maxPrice, "AED", currency)}
                                     </p>
                                     {currency === "AED" && (
