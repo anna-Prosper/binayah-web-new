@@ -373,7 +373,7 @@ function ProfileClientInner({ user }: Props) {
                   {user.image ? (
                     <Image src={user.image} alt="" width={112} height={112} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-[#0e5038] flex items-center justify-center">
+                    <div className="w-full h-full bg-[#0B3D2E] flex items-center justify-center">
                       <User className="h-10 w-10 text-white/30" />
                     </div>
                   )}
@@ -709,7 +709,7 @@ function ProfileClientInner({ user }: Props) {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
                               </>
                             ) : (
-                              <div className="w-full h-full relative flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}>
+                              <div className="w-full h-full relative flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                                 <Building2 className="h-12 w-12 text-white/10" />
                                 <div className="absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px)" }} />
                               </div>
@@ -745,7 +745,7 @@ function ProfileClientInner({ user }: Props) {
                                       role="switch"
                                       aria-checked={on}
                                       title={`${on ? "Disable" : "Enable"} ${label} notifications`}
-                                      style={on ? { background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" } : undefined}
+                                      style={on ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                                       className={`relative overflow-hidden w-14 h-8 rounded-full transition-colors duration-200 flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${on ? "" : "bg-gray-200 dark:bg-gray-600"}`}
                                     >
                                       <span

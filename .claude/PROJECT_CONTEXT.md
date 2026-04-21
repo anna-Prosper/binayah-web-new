@@ -4,6 +4,125 @@
 
 ---
 
+# §0 — Where to find things (read this first)
+
+| What | Path |
+|---|---|
+| This context file | `.claude/PROJECT_CONTEXT.md` |
+| **Design system (canonical)** | **`.claude/DESIGN_SYSTEM.md`** — all color tokens, gradients, buttons, glass variants, animations, copy voice |
+| Design principles (quality bar) | `.claude/DESIGN_PRINCIPLES.md` — principles; DESIGN_SYSTEM.md expresses them for Binayah |
+| Active iterate state | `.iterate/state.json` |
+| Past iteration archives | `.iterate/state.*.json` (timestamped) |
+| Iterate metrics log (append-only) | `.iterate/metrics.jsonl` |
+| Dev server PID | `.iterate/devserver.pid` |
+| Abort flag | `.iterate/abort` |
+| Dev server log (orchestrator) | `/tmp/iterate-dev-server.log` |
+| Auto-memory index | `/Users/zoop/.claude/projects/-Users-zoop-binayah-properties/memory/MEMORY.md` |
+| Workspace-wide CLAUDE.md | `/Users/zoop/CLAUDE.md` |
+| Shared credentials | `/Users/zoop/.env.shared` |
+
+## Codebase map — use before `grep` for first-pass navigation
+
+```
+src/
+├── app/
+│   ├── [locale]/                     # All user-facing pages (next-intl locale-wrapped)
+│   │   ├── layout.tsx                # Root layout for localized routes
+│   │   ├── page.tsx                  # Homepage
+│   │   ├── profile/                  # /profile — signed-in area (hero, tabs: saved/submissions/subs)
+│   │   ├── admin/                    # /admin/* dashboard (landing + inquiries + submissions + subscriptions)
+│   │   │   └── [token]/              # Hidden admin login URL (OAuth + email allowlist)
+│   │   ├── off-plan/                 # Off-plan project listing/detail
+│   │   ├── project/[slug]/           # Project detail (multi-property-type tabs)
+│   │   ├── property/[slug]/          # Individual property detail
+│   │   ├── news/[slug]/              # News articles
+│   │   ├── communities/              # Community landing pages
+│   │   ├── developers/               # Developer pages
+│   │   ├── buy/ | rent/              # Listing pages by transaction type
+│   │   ├── list-your-property/       # Seller submission flow
+│   │   ├── construction-updates/
+│   │   ├── pulse/                    # AI market pulse feature
+│   │   ├── about/ | contact/
+│   │   ├── forgot-password/ | reset-password/
+│   │   └── error.tsx
+│   └── api/                          # Next.js API routes (most proxy to Fastify)
+│       ├── auth/                     # NextAuth handlers (Google OAuth)
+│       ├── favorites/hydrate/        # Auth-gated favorites hydration
+│       ├── list-your-property/       # Submission capture
+│       ├── notifications/            # User notifications
+│       ├── project-subscriptions/
+│       └── test/auth-seed/           # Test-only auth seed (production-guarded)
+├── components/                       # ~40+ components; notable ones:
+│   ├── Navbar.tsx                    # Global nav — desktop + mobile cluster + fullscreen menu
+│   ├── UserMenu.tsx                  # Signed-in avatar dropdown
+│   ├── FavoritesDrawer.tsx           # Saved-properties drawer (opens via window event)
+│   ├── NotificationsBell.tsx         # Navbar bell + badge
+│   ├── PropertyActions.tsx           # ⚠ Favorites state hub — useFavorites() lives here, NOT in src/hooks/
+│   ├── SubscribeButton.tsx           # Project-level subscribe
+│   ├── ProjectSubscribeSection.tsx
+│   ├── SavedPropertiesSection.tsx    # /profile Saved tab grid
+│   ├── Footer.tsx
+│   ├── HeroSection.tsx | HomePageClient.tsx
+│   ├── FeaturedProperties*.tsx       # Server + Client + Section variants
+│   ├── ListPropertyForm.tsx
+│   ├── AIChatWidget.tsx | AIPulseBanner.tsx
+│   ├── InquirySection.tsx | NewsSection.tsx | CommunitiesSection.tsx
+│   ├── NewsletterStrip.tsx | CookieConsent.tsx | CryptoBanner.tsx
+│   └── (many more — use Glob "src/components/*.tsx" if hunting specific)
+├── hooks/
+│   ├── useProjectSubscriptions.ts    # Subscription state
+│   └── use-toast.ts                  # ⚠ favorites hook is NOT here — see PropertyActions.tsx
+├── lib/
+│   ├── auth.ts                       # NextAuth config
+│   ├── api.ts                        # apiUrl() — Fastify host builder
+│   └── session.ts                    # Session helpers
+├── i18n/                             # next-intl config
+├── data/                             # Static data (communities, developers)
+├── types/                            # Shared TS types
+├── navigation.ts                     # next-intl navigation wrappers (useRouter etc.)
+└── middleware.ts                     # Locale routing middleware
+```
+
+**Directions — where does X live?**
+- **Favorites state?** `components/PropertyActions.tsx` (NOT `hooks/`). Import `useFavorites` from there.
+- **Navbar + mobile menu?** `components/Navbar.tsx` — both are in the same file.
+- **Admin UI?** `app/[locale]/admin/*`. Shared header is `AdminHeader.tsx`.
+- **Style tokens / design vocabulary?** `.claude/DESIGN_SYSTEM.md` is **canonical** (colors, gradients, buttons, glass, animations). `app/globals.css` is the CSS source; §2 below has codebase-specific gotchas and locked patterns.
+- **API base URL?** `lib/api.ts` — `apiUrl(path)` builds `https://binayah-api.onrender.com{path}`.
+- **Fastify routes (external)?** Live in `/Users/zoop/binayah-api/src/routes/` (different repo).
+- **Tests?** No formal test suite yet. QA uses Playwright MCP against dev server.
+- **Env vars?** `.env.local` (local), Vercel dashboard (staging/prod). Shared creds at `/Users/zoop/.env.shared`.
+- **Router hooks?** `src/navigation.ts` — use `useRouter` from here, NOT `next/navigation`, to preserve locale.
+
+**When an iterate run starts, read in this order:** (1) this file, (2) `.iterate/state.json` (for current task + stage), (3) the most recent archived `iterate-state.*.json` if you need prior stage history. Past DEV diffs, REVIEW findings, and QA bug lists live inside those archives — grep them before rediscovering the same issue.
+
+## QA environment — constant facts, do NOT re-check these each run
+
+**Playwright:** v1.59.1, already installed. Do NOT reinstall or version-check.
+- Use Playwright MCP (`mcp__playwright__*`) — preferred for QA agents.
+- Node scripts: `node -e "const { chromium } = require('@playwright/test'); ..."` (not npx ts-node).
+
+**Dev server:** `http://localhost:3000` — orchestrator starts it. Trust it's live.
+
+**Auth seed:** `GET http://localhost:3000/api/test/auth-seed` → `{"ok":true,"user":"qa@test.binayah.com"}`
+- Sets a session cookie. Use for any authenticated-page tests (profile, favorites, etc).
+- Blocked in production — safe to call in local QA.
+
+**Atlas DNS unreachable in sandbox:** Routes hitting MongoDB directly will 500. Expected — mark `severity: "env"`, do not fail the stage. Vercel staging has real DB — QA-LIVE catches it.
+
+**Package manager:** `npm`. Build: `npm run build`. Dev: `npm run dev` (Turbopack).
+
+**TypeScript:** Strict mode. `npx tsc --noEmit` must pass. No `any` on new props.
+
+## Frequently-missing dev packages (already present, do NOT reinstall)
+
+- `@playwright/test` v1.59.1
+- `typescript`, `@types/react`, `@types/node`
+
+If an agent drops an orphan `*.spec.ts` at repo root, **delete it after the run** — breaks `tsc --noEmit`.
+
+---
+
 # §1 — Tech Directory
 
 ## Deploy targets
@@ -117,7 +236,9 @@ project.floorPlans[i].propertyType    // NEW — "Apartment" | "Villa" | ""
 
 # §2 — Style Guide
 
-Read these tokens and patterns before adding ANY new UI component. The golden rule: **match what's next to you**. If your button sits next to an existing button, copy the existing button's classes and modify only what you must.
+> **`.claude/DESIGN_SYSTEM.md` is the canonical source** for all design tokens, gradients, button patterns, glass variants, animations, and copy voice. Read it first for any UI work. This §2 covers **codebase-specific gotchas, locked implementation patterns, and component maps** — things the design system doesn't track. Don't duplicate design-system content here; add implementation gotchas only.
+
+The golden rule: **match what's next to you**. If your button sits next to an existing button, copy the existing button's classes and modify only what you must.
 
 ## Color tokens (from `src/app/globals.css`)
 
@@ -222,6 +343,18 @@ Property cards use `rounded-xl`, inquiry/auth cards use `rounded-2xl`. Hovers: `
 - Library: `lucide-react`. Sizes: `h-3 w-3` (micro) / `h-4 w-4` (default) / `h-5 w-5` (prominent).
 - In icon buttons: always match button h-w to give a square tap target.
 
+## Project subscribe — components map
+
+Three surfaces, one source of truth (`/api/project-subscriptions`):
+
+| Component | File | Where it renders | Shape |
+|---|---|---|---|
+| `SubscribeButton` | `src/components/SubscribeButton.tsx` | hero bar, enquire success CTA, mobile thank-you | small pill button + popover email capture |
+| `ProjectSubscribeSection` | `src/components/ProjectSubscribeSection.tsx` | project detail page, under the enquire form | full-width card with 3 benefit bullets + inline email form |
+| `useProjectSubscriptions` | `src/hooks/useProjectSubscriptions.ts` | reads current user's subs, listens for `subscriptions-update` event | hook |
+
+All three dispatch `window.dispatchEvent(new Event("subscriptions-update"))` after a mutation so the bell, section, and button stay in sync. If you add a new surface, reuse the hook + dispatch the same event.
+
 ## Floating elements — **map before you add a new one**
 
 Current `fixed` bottom-right elements (any page):
@@ -248,12 +381,31 @@ Current `fixed` bottom-right elements (any page):
 
 ---
 
+## New components (shipped Apr 2026 — mobile + profile + admin)
+
+| Component | File | Purpose |
+|---|---|---|
+| `SavedPropertiesSection` | `src/components/SavedPropertiesSection.tsx` | Inline saved-properties grid on profile page. Reuses `useFavorites()` + `/api/favorites/hydrate`. Stale removal in `useEffect`. Remove uses stored-id lookup: `ids.find(id => id === p._id \|\| id === p.slug)`. |
+| `AdminHeader` | `src/app/[locale]/admin/AdminHeader.tsx` | Shared client component for all 4 admin pages. Props: `{ title, backHref? }`. Green `#0B3D2E` bar, avatar dropdown with sign-out. |
+| `InquiriesMobileList` | `src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx` | `"use client"` accordion cards for mobile admin inquiries view (`md:hidden`). |
+| `SubmissionsMobileList` | `src/app/[locale]/admin/submissions/SubmissionsMobileList.tsx` | `"use client"` accordion cards for mobile admin submissions view (`md:hidden`). |
+| `SubscriptionsMobileList` | `src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx` | `"use client"` accordion cards for mobile admin subscriptions view (`md:hidden`). |
+
+## Key patterns locked in (do not change without intent)
+
+- **FavoritesDrawer is mounted ONCE** in `src/app/[locale]/layout.tsx`. Do NOT import/render it in any page component — it will double-mount and cause two overlapping drawers. To open it from anywhere: `window.dispatchEvent(new Event('open-favorites-drawer'))`.
+- **UserMenu `compact` prop** — pass `compact={true}` in the mobile navbar header to get the icon-only 36px version. Desktop always uses default (full dropdown).
+- **Profile tabs** are URL-driven: `/profile?tab=saved` (default), `/profile?tab=submissions`, `/profile?tab=subscriptions`. Use `useSearchParams` + `router.replace` from `@/navigation`.
+- **Profile hero stats** — plain `<span>` chips, NOT clickable buttons. Tab navigation lives in the sticky tab bar below the hero only.
+- **Admin mobile pattern** — desktop table: `hidden md:block`. Mobile cards: `md:hidden`. Never put tables inside `overflow-x-auto` on mobile; use the card fallback.
+
+
 ## Update protocol
 
 When iterate loop ships:
 1. New `src/app/api/**/route.ts` → add row to Internal API routes table
-2. New `fixed *` element → add to Floating elements map
-3. New CSS token or hex-literal pattern → add to Color tokens or Button patterns
+2. New `fixed *` element → add to Floating elements map (this §2)
+3. New CSS token, gradient, or button pattern → add to **`.claude/DESIGN_SYSTEM.md`** (not here)
 4. New Fastify route consumed → add to External API table (grep `/Users/zoop/binayah-api/src/routes/` for truth)
 5. New "gotcha" encountered → add to the relevant section with date
 

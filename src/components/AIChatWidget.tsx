@@ -168,7 +168,7 @@ const AIChatWidget = () => {
             style={{ height: "min(520px, calc(100vh - 140px))", boxShadow: "0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(11,61,46,0.12)" }}
           >
             {/* Header */}
-            <div className="px-5 py-4 flex items-center gap-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}>
+            <div className="px-5 py-4 flex items-center gap-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
               <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
               <div>

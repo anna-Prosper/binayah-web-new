@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^16.2.3",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.16.5",

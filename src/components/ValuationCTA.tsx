@@ -111,7 +111,7 @@ const ValuationCTA = () => {
               whileTap={{ scale: 0.97 }}
               className="group inline-flex items-center gap-2.5 px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-xs sm:text-sm font-bold tracking-wide text-white transition-all duration-300"
               style={{
-                background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)",
+                background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)",
                 boxShadow: "0 6px 28px rgba(11,61,46,0.4)",
               }}
             >

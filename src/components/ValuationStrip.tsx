@@ -18,7 +18,7 @@ const ValuationStrip = () => {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, #0B3D2E 0%, #0D4A36 40%, #1A7A5A 100%)",
+          background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)",
         }}
       />
       {/* Subtle radial glow */}

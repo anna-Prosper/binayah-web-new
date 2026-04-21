@@ -69,7 +69,7 @@ export default function ServicesPage() {
       <Breadcrumbs items={[{ label: "Services", href: "/services" }]} />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 text-white overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}>
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         {/* Dot pattern */}
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         {/* Decorative lines */}
@@ -234,7 +234,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ WHY CHOOSE BINAYAH ═══ */}
-      <section className="py-14 sm:py-24 text-white relative overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 50%, #1A7A5A 100%)" }}>
+      <section className="py-14 sm:py-24 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #D4A847, transparent 70%)" }} />
 
@@ -306,7 +306,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="py-14 sm:py-20 relative overflow-hidden" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 50%, #1A7A5A 100%)" }}>
+      <section className="py-14 sm:py-20 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
         <div className="absolute -top-16 right-0 w-64 h-64 rounded-full opacity-[0.08]" style={{ background: "radial-gradient(circle, #D4A847, transparent 70%)" }} />
 

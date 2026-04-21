@@ -373,7 +373,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="lg:hidden fixed inset-0 z-[100] flex flex-col"
-            style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 50%, #1A7A5A 100%)" }}
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             {/* Menu header bar */}
             <div className="flex items-center justify-between px-4 h-14 flex-shrink-0">

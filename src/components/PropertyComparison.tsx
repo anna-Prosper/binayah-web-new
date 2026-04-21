@@ -91,7 +91,7 @@ export default function PropertyComparison() {
           <button
             onClick={() => setOpen(true)}
             className="flex items-center gap-2 px-5 py-3 rounded-full text-white text-sm font-medium shadow-xl"
-            style={{ background: "linear-gradient(135deg, #1A7A5A, #0B3D2E)" }}
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             <ArrowLeftRight className="h-4 w-4" />
             Compare ({ids.length})

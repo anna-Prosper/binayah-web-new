@@ -98,7 +98,7 @@ export default function ListingsPageClient({
 
       <section
         className="relative pt-32 pb-20 text-white overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #145C3F 40%, #1A7A5A 100%)" }}
+        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div
           className="absolute inset-0 opacity-[0.04]"

@@ -16,7 +16,7 @@ export default function ValuationBanner() {
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #0B3D2E 0%, #1A7A5A 50%, #0B3D2E 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
 
       {/* Dot texture */}
       <div className="absolute inset-0 opacity-[0.04]"
