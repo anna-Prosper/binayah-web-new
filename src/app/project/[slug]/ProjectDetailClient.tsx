@@ -676,44 +676,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       );
                     })();
 
-                    // Group consecutive unit types with bedrooms >= 4 that appear 3+ in a row
-                    // e.g. [4 Bed, 5 Bed, 6 Bed] → one "4-6 Bedrooms" tab
-                    const displayUnits = (() => {
-                      const out: (typeof unitData[0] & { _groupedLabel?: string })[] = [];
-                      let i = 0;
-                      while (i < unitData.length) {
-                        const cur = unitData[i];
-                        if (cur.bedrooms >= 4) {
-                          let j = i + 1;
-                          while (
-                            j < unitData.length &&
-                            unitData[j].bedrooms === cur.bedrooms + (j - i) &&
-                            unitData[j].bedrooms >= 4
-                          ) j++;
-                          if (j - i >= 3) {
-                            const last = unitData[j - 1];
-                            out.push({
-                              ...cur,
-                              name: `${cur.bedrooms}–${last.bedrooms} Bedrooms`,
-                              _groupedLabel: `${cur.bedrooms}–${last.bedrooms} Bedrooms`,
-                              maxSize: last.maxSize,
-                              bedrooms: last.bedrooms,
-                              contactUs: true,
-                              minPrice: 0,
-                              maxPrice: 0,
-                            });
-                            i = j;
-                            continue;
-                          }
-                        }
-                        out.push(cur);
-                        i++;
-                      }
-                      return out;
-                    })();
-
-                    const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, displayUnits.length - 1));
-                    const activeUnit = displayUnits[clampedUnitTab];
+                    const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, unitData.length - 1));
+                    const activeUnit = unitData[clampedUnitTab];
                     return (
                       <div className="rounded-3xl overflow-hidden">
                         {/* Section header */}
@@ -758,7 +722,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                         {/* Secondary bedroom type tabs */}
                         <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide">
-                          {displayUnits.map((unit, i) => (
+                          {unitData.map((unit, i) => (
                             <button
                               key={unit.name}
                               onClick={() => setActiveUnitTab(i)}
