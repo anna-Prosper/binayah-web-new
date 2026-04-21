@@ -6,6 +6,7 @@ import { Heart, X, Trash2, ExternalLink, Building2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useFavorites } from "./PropertyActions";
+import { apiUrl } from "@/lib/api";
 
 interface FavProperty {
   _id: string;
@@ -40,15 +41,51 @@ export default function FavoritesDrawer() {
     return () => window.removeEventListener("open-favorites-drawer", handler);
   }, []);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["favorites-hydrate", ids],
     queryFn: async () => {
       if (ids.length === 0) return { properties: [], stale: [] };
+
       const res = await fetch("/api/favorites/hydrate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ids }),
       });
+
+      // Unauthenticated users (and guests with localStorage favorites) get 401
+      // from the auth-gated hydrate endpoint. Fall back to fetching each listing
+      // directly from the public Fastify API — the same approach used before the
+      // hydrate endpoint existed.
+      if (res.status === 401) {
+        const results = await Promise.allSettled(
+          ids.map(async (id) => {
+            const [listingRes, projectRes] = await Promise.allSettled([
+              fetch(apiUrl(`/api/listings/${id}`)),
+              fetch(apiUrl(`/api/projects/${id}`)),
+            ]);
+            if (listingRes.status === "fulfilled" && listingRes.value.ok) {
+              return (await listingRes.value.json()) as FavProperty;
+            }
+            if (projectRes.status === "fulfilled" && projectRes.value.ok) {
+              return (await projectRes.value.json()) as FavProperty;
+            }
+            return null;
+          })
+        );
+        const properties: FavProperty[] = [];
+        const stale: string[] = [];
+        results.forEach((result, i) => {
+          if (result.status === "fulfilled") {
+            if (result.value !== null) {
+              properties.push(result.value);
+            } else {
+              stale.push(ids[i]);
+            }
+          }
+        });
+        return { properties, stale };
+      }
+
       if (!res.ok) throw new Error("hydrate failed");
       return res.json() as Promise<{ properties: FavProperty[]; stale: string[] }>;
     },
@@ -116,6 +153,11 @@ export default function FavoritesDrawer() {
               ) : loading ? (
                 <div className="flex items-center justify-center h-40">
                   <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : isError ? (
+                <div className="flex flex-col items-center justify-center h-40 text-center">
+                  <p className="text-sm font-medium text-foreground mb-1">Could not load properties</p>
+                  <p className="text-xs text-muted-foreground">Please try again later</p>
                 </div>
               ) : (
                 <div className="space-y-3">
