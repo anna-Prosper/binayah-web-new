@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Heart, X, Trash2, ExternalLink, Building2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useFavorites } from "./PropertyActions";
-import { apiUrl } from "@/lib/api";
 
 interface FavProperty {
   _id: string;
@@ -32,8 +32,6 @@ function formatPrice(price?: number, currency = "AED") {
 export default function FavoritesDrawer() {
   const { ids, toggle, clear } = useFavorites();
   const [open, setOpen] = useState(false);
-  const [properties, setProperties] = useState<FavProperty[]>([]);
-  const [loading, setLoading] = useState(false);
 
   // Allow other components to open the drawer via a custom window event
   useEffect(() => {
@@ -42,39 +40,30 @@ export default function FavoritesDrawer() {
     return () => window.removeEventListener("open-favorites-drawer", handler);
   }, []);
 
-  // Fetch property details when drawer opens (parallel)
+  const { data, isLoading } = useQuery({
+    queryKey: ["favorites-hydrate", ids],
+    queryFn: async () => {
+      if (ids.length === 0) return { properties: [], stale: [] };
+      const res = await fetch("/api/favorites/hydrate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      if (!res.ok) throw new Error("hydrate failed");
+      return res.json() as Promise<{ properties: FavProperty[]; stale: string[] }>;
+    },
+    enabled: open && ids.length > 0,
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const properties = data?.properties ?? [];
+  const loading = isLoading;
+
+  // Remove stale favorites (404 from both listing + project endpoints)
   useEffect(() => {
-    if (!open || ids.length === 0) {
-      if (ids.length === 0) setProperties([]);
-      return;
-    }
-    if (properties.length === 0) setLoading(true);
-    const fetchOne = async (id: string): Promise<{ id: string; data: FavProperty | null; notFound: boolean }> => {
-      const [listingRes, projectRes] = await Promise.allSettled([
-        fetch(apiUrl(`/api/listings/${id}`)),
-        fetch(apiUrl(`/api/projects/${id}`)),
-      ]);
-      if (listingRes.status === "fulfilled" && listingRes.value.ok) {
-        return { id, data: await listingRes.value.json(), notFound: false };
-      }
-      if (projectRes.status === "fulfilled" && projectRes.value.ok) {
-        return { id, data: await projectRes.value.json(), notFound: false };
-      }
-      // Only mark as gone when both endpoints explicitly returned 404.
-      // Network errors, 5xx, or Render cold-start timeouts must NOT remove saved items.
-      const listing404 = listingRes.status === "fulfilled" && listingRes.value.status === 404;
-      const project404 = projectRes.status === "fulfilled" && projectRes.value.status === 404;
-      return { id, data: null, notFound: listing404 && project404 };
-    };
-    Promise.all(ids.map(fetchOne)).then((results) => {
-      const valid = results.filter((r) => r.data !== null).map((r) => r.data as FavProperty);
-      const stale = results.filter((r) => r.notFound).map((r) => r.id);
-      setProperties(valid);
-      setLoading(false);
-      if (stale.length > 0) stale.forEach((id) => toggle(id));
-    });
+    data?.stale?.forEach((id) => toggle(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, ids]);
+  }, [data?.stale]);
 
   return (
     <>

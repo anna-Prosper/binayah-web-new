@@ -48,6 +48,7 @@ Push env vars via API (Vercel token + Render token live in `/Users/zoop/.env.sha
 | `/api/auth/forgot-password` | send reset link | rate-limited (3/email/hour), always 200 (no enumeration) |
 | `/api/auth/reset-password` | redeem reset token | atomic findOneAndUpdate |
 | `/api/favorites` | GET/POST/DELETE user's favorites | `getServerSession` |
+| `/api/favorites/hydrate` (POST) | batch-fetch property details for saved favorites | `getServerSession`; verifies all ids are in user's own favorites (403 if not) |
 | `/api/list-your-property` | submit property listing | `getServerSession` |
 | `/api/admin/session` | bootstrap admin cookie | validates ADMIN_SECRET |
 | `/api/test/auth-seed` | **dev-only** — issues JWT cookie for QA | blocked in prod |
@@ -93,6 +94,24 @@ Push env vars via API (Vercel token + Render token live in `/Users/zoop/.env.sha
 3. **Render sets `NODE_ENV=production`** → build deps must be in `dependencies`, not `devDependencies` (tailwind, postcss, typescript, @types/*).
 4. **Google avatars blocked by next/image** unless `lh3.googleusercontent.com` is in `remotePatterns`. `alt` text leaks out of broken 32px image box when blocked — always use empty `alt=""` for decorative avatars, and `referrerPolicy="no-referrer"`.
 5. **In-memory `Map` rate limiters are no-ops on Vercel** (each lambda = fresh isolate). Use MongoDB-backed TTL collection.
+6. **Legacy projects have `propertyTypes: undefined` not `[]`** (iter Apr 20) — MongoDB returns the field absent when not set despite schema `default: []`. Always use optional-chain: `project.propertyTypes?.length`, `project.propertyTypes?.join(...)`. Never bare-access `.length` or `.join`.
+
+## Project schema — multi-property-type (iter Apr 20)
+
+Projects now support **multiple property types** (e.g. Apartment + Villa in the same project). Shape:
+
+```ts
+project.propertyType: string          // legacy singular — still populated, used for hero badge / listing filters
+project.propertyTypes?: string[]      // NEW plural — drives two-level tabs. undefined on legacy docs.
+project.priceByType[i].propertyType   // NEW — "Apartment" | "Villa" | ""
+project.floorPlans[i].propertyType    // NEW — "Apartment" | "Villa" | ""
+```
+
+**UI rule:** In `ProjectDetailClient.tsx`, when `project.propertyTypes?.length > 1` render primary property-type tabs; filter `priceByType` / `floorPlans` by `entry.propertyType === activePropertyType` before rendering bedroom sub-tabs. When `<= 1` or undefined, render flat bedroom tabs (legacy path, zero regression).
+
+**Known latent bug (not yet fixed, waiting for real data):** The floor plan image slot at `ProjectDetailClient.tsx:646` still reads from flat `project.floor_plans[clampedUnitTab]` even for multi-type projects. Once a multi-type project actually uploads PNG floor plans, thread `floorPlans[].image` filtered by `activePropertyType` instead. Sensia is seeded with empty image strings so nothing visibly breaks today.
+
+**Test project:** `sensia-by-beyond` has `propertyTypes: ["Apartment", "Villa"]` with 2BR/3BR Apartments and 4BR/5BR Villas.
 
 ---
 

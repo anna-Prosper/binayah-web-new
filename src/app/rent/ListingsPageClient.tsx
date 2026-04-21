@@ -10,7 +10,8 @@ import { motion } from "framer-motion";
 import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useMemo } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface Listing {
   _id: string;
@@ -45,54 +46,43 @@ export default function ListingsPageClient({
   title: string;
   subtitle: string;
 }) {
-  const [listings, setListings] = useState<Listing[]>(initialListings);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initialListings.length < totalCount);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const loadingRef = useRef(false);
-  const hasMoreRef = useRef(initialListings.length < totalCount);
-  const listingsLengthRef = useRef(initialListings.length);
 
-  const loadMore = useCallback(async () => {
-    if (loadingRef.current || !hasMoreRef.current) return;
-    loadingRef.current = true;
-    setLoading(true);
-    try {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["listings", listingType],
+    queryFn: async ({ pageParam = 0 }) => {
       const res = await fetch(
-        apiUrl(`/api/listings?listingType=${listingType}&limit=${BATCH_SIZE}&skip=${listingsLengthRef.current}`)
+        apiUrl(`/api/listings?listingType=${listingType}&limit=${BATCH_SIZE}&skip=${pageParam}`)
       );
-      const newListings: Listing[] = await res.json();
-      if (newListings.length === 0) {
-        hasMoreRef.current = false;
-        setHasMore(false);
-      } else {
-        setListings((prev) => {
-          const next = [...prev, ...newListings];
-          listingsLengthRef.current = next.length;
-          if (next.length >= totalCount) {
-            hasMoreRef.current = false;
-            setHasMore(false);
-          }
-          return next;
-        });
-      }
-    } catch {
-      console.error("Failed to load more listings");
-    } finally {
-      loadingRef.current = false;
-      setLoading(false);
-    }
-  }, [totalCount, listingType]);
+      if (!res.ok) throw new Error("fetch failed");
+      return res.json() as Promise<Listing[]>;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const loaded = allPages.flat().length;
+      if (loaded >= totalCount) return undefined;
+      if (lastPage.length === 0) return undefined;
+      return loaded;
+    },
+    initialData: { pages: [initialListings], pageParams: [0] },
+    staleTime: 60 * 1000,
+  });
 
-  // Stable observer — created once, reads latest state via refs
+  const listings = useMemo(() => data?.pages.flat() ?? initialListings, [data, initialListings]);
+
+  // Stable observer — fires fetchNextPage when sentinel enters viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => { if (entries[0].isIntersecting) loadMore(); },
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
       { rootMargin: "400px" }
     );
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [loadMore]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const formatPrice = (listing: Listing) => {
     if (!listing.price) return "Price on request";
@@ -203,22 +193,22 @@ export default function ListingsPageClient({
           )}
 
           <div ref={loaderRef} className="mt-12 text-center">
-            {loading && (
+            {isFetchingNextPage && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
                 <span className="text-sm">Loading more...</span>
               </div>
             )}
-            {hasMore && !loading && (
+            {hasNextPage && !isFetchingNextPage && (
               <button
-                onClick={loadMore}
+                onClick={() => fetchNextPage()}
                 className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 Load More
               </button>
             )}
-            {!hasMore && listings.length > BATCH_SIZE && (
+            {!hasNextPage && listings.length > BATCH_SIZE && (
               <p className="text-sm text-muted-foreground">
                 Showing all {listings.length} properties
               </p>
