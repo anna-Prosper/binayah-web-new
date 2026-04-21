@@ -328,7 +328,7 @@ function ProfileClientInner({ user }: Props) {
       {/* ── Hero ── */}
       <section
         className="relative overflow-hidden pt-24 sm:pt-28"
-        style={{ background: "linear-gradient(135deg, #061a11 0%, #0B3D2E 35%, #0e4f37 65%, #145C3F 100%)" }}
+        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div
           className="absolute inset-0 pointer-events-none"
@@ -448,7 +448,7 @@ function ProfileClientInner({ user }: Props) {
                 onClick={saveProfile}
                 disabled={saving}
                 className="flex items-center gap-1.5 px-5 py-2 text-sm font-semibold text-white rounded-lg transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
-                style={{ background: "linear-gradient(to right, #0B3D2E, #145C3F)" }}
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 {saving ? <div className="w-3.5 h-3.5 border border-white/40 border-t-white rounded-full animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                 {saving ? "Saving…" : "Save changes"}
@@ -633,7 +633,7 @@ function ProfileClientInner({ user }: Props) {
                                 onClick={saveEditSub}
                                 disabled={savingSub}
                                 className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-white rounded-lg disabled:opacity-60"
-                                style={{ background: "linear-gradient(to right, #0B3D2E, #145C3F)" }}
+                                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                               >
                                 {savingSub ? <div className="w-3 h-3 border border-white/40 border-t-white rounded-full animate-spin" /> : <Save className="h-3 w-3" />}
                                 {savingSub ? "Saving…" : "Save"}

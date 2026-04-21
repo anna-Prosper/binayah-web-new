@@ -96,7 +96,7 @@ export default function ListYourPropertySection() {
             {/* Main card */}
             <div
               className="relative rounded-3xl overflow-hidden p-8 sm:p-10"
-              style={{ background: "linear-gradient(135deg, #061a11 0%, #0B3D2E 40%, #145C3F 100%)" }}
+              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
             >
               {/* Texture */}
               <div
