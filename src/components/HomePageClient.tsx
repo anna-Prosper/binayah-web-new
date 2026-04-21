@@ -22,6 +22,7 @@ const PropertyMatcher      = dynamic(() => import("@/components/PropertyMatcher"
 const MarketDashboard      = dynamic(() => import("@/components/MarketDashboard"));
 const ROICalculator        = dynamic(() => import("@/components/ROICalculator"));
 const ValuationCTA         = dynamic(() => import("@/components/ValuationCTA"));
+const ListYourPropertySection = dynamic(() => import("@/components/ListYourPropertySection"));
 const ServicesSection      = dynamic(() => import("@/components/ServicesSection"));
 const TestimonialsSection  = dynamic(() => import("@/components/TestimonialsSection"));
 const InquirySection       = dynamic(() => import("@/components/InquirySection"));
@@ -83,6 +84,7 @@ export default function HomePageClient({ featuredListings = [], offPlanProjects 
       <MarketDashboard />
       <ROICalculator />
       <ValuationCTA />
+      <ListYourPropertySection />
       <ServicesSection />
       <TestimonialsSection />
       <InquirySection />
