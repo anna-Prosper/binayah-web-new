@@ -62,7 +62,7 @@ export default async function AdminLandingPage() {
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 400 }}>
         <a
-          href="inquiries"
+          href="/en/admin/inquiries"
           style={{
             display: "block",
             padding: "16px 20px",
@@ -83,7 +83,7 @@ export default async function AdminLandingPage() {
           </span>
         </a>
         <a
-          href="submissions"
+          href="/en/admin/submissions"
           style={{
             display: "block",
             padding: "16px 20px",

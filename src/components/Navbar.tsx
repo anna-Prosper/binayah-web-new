@@ -212,7 +212,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 min-w-0">
               {/* Currency selector */}
               <div className="relative" ref={currencyRef}>
                 <button
@@ -285,7 +285,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                         animate={{ opacity: 1, width: "auto" }}
                         exit={{ opacity: 0, width: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="text-sm font-medium whitespace-nowrap overflow-hidden"
+                        className="hidden xl:block text-sm font-medium whitespace-nowrap overflow-hidden"
                       >
                         +971 54 998 8811
                       </motion.span>
