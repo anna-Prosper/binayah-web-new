@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   LogOut, Home, User, Building2, Bell,
   CheckCircle2, Clock, Phone, Pencil, MapPin, X, Save,
-  Mail, MessageCircle, Send, Trash2, Edit3, Check,
+  Mail, MessageCircle, Send, Trash2, Edit3,
 } from "lucide-react";
 import { useFavorites } from "@/components/PropertyActions";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
@@ -726,8 +726,8 @@ function ProfileClientInner({ user }: Props) {
 
                           {/* Notification toggles */}
                           <div className="px-4 pt-3.5 pb-3">
-                            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2.5">Notify via</p>
-                            <div className="flex gap-2">
+                            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-3">Notify via</p>
+                            <div className="space-y-2.5">
                               {([
                                 { key: "email" as const, label: "Email", Icon: Mail },
                                 { key: "whatsapp" as const, label: "WhatsApp", Icon: MessageCircle },
@@ -735,22 +735,23 @@ function ProfileClientInner({ user }: Props) {
                               ] as const).map(({ key, label, Icon }) => {
                                 const on = prefs[key];
                                 return (
-                                  <button
-                                    key={key}
-                                    onClick={() => toggleNotif(slug, key)}
-                                    title={on ? `Disable ${label}` : `Enable ${label}`}
-                                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-[11px] font-medium transition-all flex-1 justify-center border ${
-                                      on
-                                        ? "bg-[#0B3D2E] text-white border-[#0B3D2E] shadow-sm"
-                                        : "bg-background text-muted-foreground/60 border-border/60 hover:border-border"
-                                    }`}
-                                  >
-                                    {on
-                                      ? <Check className="h-3 w-3 flex-shrink-0" />
-                                      : <Icon className="h-3 w-3 flex-shrink-0 opacity-50" />
-                                    }
-                                    <span className="truncate">{label}</span>
-                                  </button>
+                                  <div key={key} className="flex items-center justify-between">
+                                    <div className={`flex items-center gap-2 text-xs transition-colors duration-200 ${on ? "text-foreground" : "text-muted-foreground/40"}`}>
+                                      <Icon className="h-3.5 w-3.5 flex-shrink-0" />
+                                      <span className="font-medium">{label}</span>
+                                    </div>
+                                    <button
+                                      onClick={() => toggleNotif(slug, key)}
+                                      role="switch"
+                                      aria-checked={on}
+                                      title={`${on ? "Disable" : "Enable"} ${label} notifications`}
+                                      className={`relative w-8 h-[18px] rounded-full transition-colors duration-200 flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${on ? "bg-[#0B3D2E]" : "bg-border"}`}
+                                    >
+                                      <span
+                                        className={`absolute top-[2px] w-[14px] h-[14px] rounded-full bg-white shadow-sm transition-transform duration-200 ${on ? "translate-x-[18px]" : "translate-x-[2px]"}`}
+                                      />
+                                    </button>
+                                  </div>
                                 );
                               })}
                             </div>

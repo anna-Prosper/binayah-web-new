@@ -77,18 +77,14 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div className="relative flex items-center gap-0.5" ref={ref}>
-      {/* Avatar — direct link to profile */}
-      <Link href="/profile" className="rounded-full hover:opacity-85 transition-opacity" aria-label="My Profile">
-        {avatar}
-      </Link>
-
-      {/* Chevron — opens dropdown */}
+    <div className="relative flex items-center" ref={ref}>
+      {/* Avatar — opens dropdown */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="p-1 rounded-full hover:bg-muted/60 transition-colors"
+        className="flex items-center gap-1 rounded-full hover:opacity-85 transition-opacity focus:outline-none"
         aria-label="Account menu"
       >
+        {avatar}
         <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
