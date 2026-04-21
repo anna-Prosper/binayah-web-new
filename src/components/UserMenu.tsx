@@ -22,7 +22,7 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
   }, []);
 
   if (status === "loading") {
-    return <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />;
+    return <div className="w-9 h-9 rounded-full bg-white/10 animate-pulse" />;
   }
 
   if (!session) {
@@ -52,14 +52,14 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
     <Image
       src={session.user.image}
       alt=""
-      width={32}
-      height={32}
-      className="w-8 h-8 rounded-full object-cover shrink-0"
+      width={36}
+      height={36}
+      className="w-9 h-9 rounded-full object-cover shrink-0 border border-white/20"
       referrerPolicy="no-referrer"
     />
   ) : (
-    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-      <User className="h-4 w-4 text-primary" />
+    <div className="w-9 h-9 rounded-full border border-white/20 bg-white/10 flex items-center justify-center shrink-0 text-white/80">
+      <User className="h-4 w-4" />
     </div>
   );
 
