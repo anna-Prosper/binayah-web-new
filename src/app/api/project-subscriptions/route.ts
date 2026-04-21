@@ -8,6 +8,21 @@ import { checkRateLimit } from "@/lib/rateLimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Strip HTML tags and trim to max length to prevent injection via body.projectName. */
+function sanitizeProjectName(raw: string, max = 200): string {
+  return raw.replace(/<[^>]*>/g, "").slice(0, max).trim();
+}
+
+/** Escape characters that have special meaning in HTML. */
+function escHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 async function getCollections() {
   const client = await clientPromise;
   const db = client.db("binayah_web_new_dev");
@@ -69,7 +84,7 @@ export async function POST(req: NextRequest) {
   const slug = (body.slug || "").trim();
   if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 });
 
-  const projectName = (body.projectName || slug).trim();
+  const projectName = sanitizeProjectName(body.projectName || slug);
   const projectImage: string | null = body.projectImage || null;
 
   // Determine email — session takes priority
@@ -139,6 +154,7 @@ export async function POST(req: NextRequest) {
       process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
     const unsubscribeUrl = `${baseUrl}/api/project-subscriptions/unsubscribe?token=${unsubscribeToken}`;
 
+    const safeProjectName = escHtml(projectName);
     sendMail({
       to: email,
       subject: `You're subscribed to ${projectName} updates`,
@@ -151,7 +167,7 @@ export async function POST(req: NextRequest) {
           </div>
           <h2 style="color:#0B3D2E;margin:0 0 8px;">You're subscribed!</h2>
           <p style="color:#4b5563;margin:0 0 16px;line-height:1.6;">
-            You'll be the first to hear about updates for <strong>${projectName}</strong>, including:
+            You'll be the first to hear about updates for <strong>${safeProjectName}</strong>, including:
           </p>
           <ul style="color:#4b5563;margin:0 0 24px;padding-left:20px;line-height:1.8;">
             <li>Price changes</li>

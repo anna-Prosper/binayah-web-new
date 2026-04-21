@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
+/** Escape characters that have special meaning in HTML. */
+function escHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const token = (url.searchParams.get("token") || "").trim();
@@ -77,7 +87,7 @@ export async function GET(req: NextRequest) {
 
     return renderPage(
       "Unsubscribed",
-      `You've been unsubscribed from updates for <strong>${row.projectName ?? row.slug}</strong>. You won't receive any further emails about this project.`
+      `You've been unsubscribed from updates for <strong>${escHtml(String(row.projectName ?? row.slug))}</strong>. You won't receive any further emails about this project.`
     );
   } catch (err) {
     console.error("[unsubscribe]", err);

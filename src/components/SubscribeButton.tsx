@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Bell, BellRing, X, Check, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 
 const SUB_KEY = "binayah_project_subscriptions";
+const LOCAL_NOTIF_KEY = "binayah_notifications";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Read/write the anon localStorage subscription set. */
@@ -20,6 +22,40 @@ function readLocalSubs(): Set<string> {
 function writeLocalSubs(set: Set<string>) {
   if (typeof window === "undefined") return;
   localStorage.setItem(SUB_KEY, JSON.stringify(Array.from(set)));
+}
+
+/** Push a notification into the anon localStorage list used by NotificationsBell. */
+function pushLocalNotification({
+  slug,
+  projectName,
+  projectImage,
+}: {
+  slug: string;
+  projectName: string;
+  projectImage?: string | null;
+}) {
+  if (typeof window === "undefined") return;
+  try {
+    const items = JSON.parse(localStorage.getItem(LOCAL_NOTIF_KEY) || "[]");
+    // De-duplicate by slug + type so re-subscribing doesn't stack entries
+    const filtered = items.filter(
+      (n: { slug?: string; type?: string }) => !(n.slug === slug && n.type === "subscribed")
+    );
+    filtered.unshift({
+      id: `local-${slug}-${Date.now()}`,
+      slug,
+      projectName,
+      projectImage: projectImage ?? null,
+      type: "subscribed",
+      title: `Subscribed to ${projectName}`,
+      body: "You'll be first to hear about price changes, new floor plans, construction milestones, and launch events.",
+      read: false,
+      createdAt: new Date().toISOString(),
+    });
+    localStorage.setItem(LOCAL_NOTIF_KEY, JSON.stringify(filtered));
+  } catch {
+    // ignore
+  }
 }
 
 // Dispatch a cross-component event so NotificationsBell can refresh
@@ -47,6 +83,10 @@ export function SubscribeButton({
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated" && !!session?.user?.email;
 
+  // Shared subscription state — module-level dedup ensures this runs once
+  // even when multiple SubscribeButton instances exist on the same page.
+  const { subscribedSlugs } = useProjectSubscriptions();
+
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
@@ -54,25 +94,10 @@ export function SubscribeButton({
   const [toast, setToast] = useState<string | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  // ── Initialise subscribed state ─────────────────────────────────────────
+  // ── Initialise subscribed state from shared hook ────────────────────────
   useEffect(() => {
-    if (status === "loading") return;
-
-    if (isAuthed) {
-      // Check DB
-      fetch("/api/project-subscriptions")
-        .then((r) => r.json())
-        .then((data: { slugs?: string[] }) => {
-          if (data.slugs?.includes(slug)) setSubscribed(true);
-        })
-        .catch(() => {
-          // Fallback to localStorage
-          setSubscribed(readLocalSubs().has(slug));
-        });
-    } else {
-      setSubscribed(readLocalSubs().has(slug));
-    }
-  }, [slug, isAuthed, status]);
+    setSubscribed(subscribedSlugs.includes(slug));
+  }, [slug, subscribedSlugs]);
 
   // Update popoverEmail when prefill changes (e.g., form just submitted)
   useEffect(() => {
@@ -176,6 +201,8 @@ export function SubscribeButton({
             showToast("Already subscribed — check your inbox.");
           } else {
             showToast("Subscribed! Check your email for confirmation.");
+            // Write a notification into localStorage so the anon bell lights up
+            pushLocalNotification({ slug, projectName, projectImage });
           }
           setShowPopover(false);
           dispatchSubUpdate();
