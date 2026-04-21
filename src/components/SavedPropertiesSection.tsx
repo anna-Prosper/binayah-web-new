@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Heart, X, Building2, MapPin, ExternalLink } from "lucide-react";
 import Image from "next/image";
@@ -96,16 +97,18 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
     staleTime: 2 * 60 * 1000,
   });
 
-  // Auto-remove stale ids
-  const stale = data?.stale ?? [];
-  if (stale.length > 0) {
-    stale.forEach((id) => toggle(id));
-  }
+  // Auto-remove stale ids — must be in useEffect to avoid calling toggle during render
+  useEffect(() => {
+    data?.stale?.forEach((id) => toggle(id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.stale]);
 
   const properties = data?.properties ?? [];
 
-  const handleRemove = (slug: string) => {
-    toggle(slug);
+  const handleRemove = (p: FavProperty) => {
+    // Use the stored identifier (may be _id for older saves, slug for newer)
+    const storedId = ids.find((id) => id === p._id || id === p.slug) ?? p.slug;
+    toggle(storedId);
     if (onCountChange) onCountChange(ids.length - 1);
   };
 
@@ -182,7 +185,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
               )}
               {/* Remove button overlay */}
               <button
-                onClick={() => handleRemove(p.slug)}
+                onClick={() => handleRemove(p)}
                 title="Remove from saved"
                 aria-label="Remove from saved"
                 className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-white/90 text-foreground/70 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all shadow-sm opacity-0 group-hover:opacity-100"
