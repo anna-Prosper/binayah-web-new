@@ -1,15 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { cookies } from "next/headers";
-import crypto, { timingSafeEqual } from "crypto";
 import clientPromise from "@/lib/mongodb";
-
-function safeCompare(candidate: string, secret: string): boolean {
-  const key = "binayah-admin-compare";
-  const a = crypto.createHmac("sha256", key).update(candidate).digest();
-  const b = crypto.createHmac("sha256", key).update(secret).digest();
-  return timingSafeEqual(a, b);
-}
+import { isAdminSession } from "@/lib/admin-auth";
 
 function formatDate(d: unknown): string {
   if (!d) return "";
@@ -21,24 +13,10 @@ function formatDate(d: unknown): string {
 }
 
 export default async function AdminSubmissionsPage() {
-  const adminSecret = process.env.ADMIN_SECRET;
-
-  if (!adminSecret) {
-    return (
-      <div style={{ fontFamily: "monospace", padding: "2rem" }}>
-        503 — ADMIN_SECRET is not configured.
-      </div>
-    );
-  }
-
-  const cookieStore = await cookies();
-  const cookieSecret = cookieStore.get("admin_secret")?.value || "";
-  const isAuthed = cookieSecret.length > 0 && safeCompare(cookieSecret, adminSecret);
-
-  if (!isAuthed) {
+  if (!(await isAdminSession())) {
     return (
       <div style={{ fontFamily: "monospace", padding: "2rem", color: "#c00" }}>
-        401 — Unauthorized. Visit /api/admin/session?secret=YOUR_SECRET to sign in.
+        401 — Unauthorized.
       </div>
     );
   }

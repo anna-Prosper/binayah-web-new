@@ -1,37 +1,19 @@
 export const dynamic = "force-dynamic";
 
-import { cookies } from "next/headers";
-import crypto, { timingSafeEqual } from "crypto";
-
-function safeCompare(candidate: string, secret: string): boolean {
-  const key = "binayah-admin-compare";
-  const a = crypto.createHmac("sha256", key).update(candidate).digest();
-  const b = crypto.createHmac("sha256", key).update(secret).digest();
-  return timingSafeEqual(a, b);
-}
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { isAdminSession } from "@/lib/admin-auth";
 
 export default async function AdminLandingPage() {
-  const adminSecret = process.env.ADMIN_SECRET;
-
-  if (!adminSecret) {
-    return (
-      <div style={{ fontFamily: "monospace", padding: "2rem" }}>
-        503 — ADMIN_SECRET is not configured.
-      </div>
-    );
-  }
-
-  const cookieStore = await cookies();
-  const cookieSecret = cookieStore.get("admin_secret")?.value || "";
-  const isAuthed = cookieSecret.length > 0 && safeCompare(cookieSecret, adminSecret);
-
-  if (!isAuthed) {
+  if (!(await isAdminSession())) {
     return (
       <div style={{ fontFamily: "monospace", padding: "2rem", color: "#c00" }}>
         401 — Unauthorized.
       </div>
     );
   }
+
+  const session = await getServerSession(authOptions);
 
   return (
     <div
@@ -48,14 +30,14 @@ export default async function AdminLandingPage() {
           Binayah Admin
         </h1>
         <a
-          href="/api/admin/signout"
+          href="/api/auth/signout?callbackUrl=/en/admin"
           style={{ fontSize: 13, color: "#1A7A5A", fontWeight: 600, textDecoration: "none" }}
         >
           Sign out
         </a>
       </div>
       <p style={{ color: "#888", fontSize: 12, marginBottom: 4 }}>
-        Signed in as admin &mdash; session valid 8h from bootstrap.
+        Signed in as {session?.user?.email}
       </p>
       <p style={{ color: "#666", fontSize: 14, marginBottom: 32 }}>
         Select a section to view:
