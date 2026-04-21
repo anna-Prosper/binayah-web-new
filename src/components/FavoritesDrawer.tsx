@@ -248,7 +248,10 @@ export default function FavoritesDrawer() {
                         {/* Actions */}
                         <div className="flex flex-col items-end gap-1">
                           <button
-                            onClick={() => toggle(p.slug)}
+                            onClick={() => {
+                              const storedId = ids.find((id) => id === (p as any)._id || id === p.slug) ?? p.slug;
+                              toggle(storedId);
+                            }}
                             className="w-7 h-7 rounded-lg border border-border flex items-center justify-center hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all text-muted-foreground"
                             title="Remove from favorites"
                           >
