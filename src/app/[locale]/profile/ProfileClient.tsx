@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   LogOut, Home, User, Building2, Bell,
   CheckCircle2, Clock, Phone, Pencil, MapPin, X, Save,
-  Mail, MessageCircle, Send, Trash2, Edit3,
+  Mail, MessageCircle, Send, Trash2, Edit3, Check,
 } from "lucide-react";
 import { useFavorites } from "@/components/PropertyActions";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
@@ -732,21 +732,27 @@ function ProfileClientInner({ user }: Props) {
                                 { key: "email" as const, label: "Email", Icon: Mail },
                                 { key: "whatsapp" as const, label: "WhatsApp", Icon: MessageCircle },
                                 { key: "telegram" as const, label: "Telegram", Icon: Send },
-                              ] as const).map(({ key, label, Icon }) => (
-                                <button
-                                  key={key}
-                                  onClick={() => toggleNotif(slug, key)}
-                                  title={prefs[key] ? `Disable ${label}` : `Enable ${label}`}
-                                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all flex-1 justify-center ${
-                                    prefs[key]
-                                      ? "bg-[#0B3D2E] text-white shadow-sm"
-                                      : "bg-muted/60 text-muted-foreground/45 border border-border/40"
-                                  }`}
-                                >
-                                  <Icon className="h-3 w-3 flex-shrink-0" />
-                                  <span className="truncate">{label}</span>
-                                </button>
-                              ))}
+                              ] as const).map(({ key, label, Icon }) => {
+                                const on = prefs[key];
+                                return (
+                                  <button
+                                    key={key}
+                                    onClick={() => toggleNotif(slug, key)}
+                                    title={on ? `Disable ${label}` : `Enable ${label}`}
+                                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-[11px] font-medium transition-all flex-1 justify-center border ${
+                                      on
+                                        ? "bg-[#0B3D2E] text-white border-[#0B3D2E] shadow-sm"
+                                        : "bg-background text-muted-foreground/60 border-border/60 hover:border-border"
+                                    }`}
+                                  >
+                                    {on
+                                      ? <Check className="h-3 w-3 flex-shrink-0" />
+                                      : <Icon className="h-3 w-3 flex-shrink-0 opacity-50" />
+                                    }
+                                    <span className="truncate">{label}</span>
+                                  </button>
+                                );
+                              })}
                             </div>
                           </div>
 
