@@ -591,7 +591,7 @@ const HeroSection = () => {
                     onClick={() => setOpenDropdown(openDropdown === "location" ? null : "location")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
                   >
-                    <span className={selLocation ? "text-foreground font-medium" : "text-muted-foreground"}>{selLocation || "All Locations"}</span>
+                    <span className={selLocation ? "text-foreground font-medium" : "text-muted-foreground"}>{selLocation || t("filterLocation")}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
@@ -641,7 +641,7 @@ const HeroSection = () => {
                     onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
                   >
-                    <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType ? formatPropertyTypeLabel(selType, selType) : "Property type"}</span>
+                    <span className={selType ? "text-foreground font-medium" : "text-muted-foreground"}>{selType ? formatPropertyTypeLabel(selType, selType) : t("filterPropertyType")}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
@@ -673,7 +673,7 @@ const HeroSection = () => {
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
                   >
                     <span className={(selBedroom || selBathroom) ? "text-foreground font-medium" : "text-muted-foreground"}>
-                      {[selBedroom && `${selBedroom} bed`, selBathroom && `${selBathroom} bath`].filter(Boolean).join(", ") || "Beds & Baths"}
+                      {[selBedroom && `${selBedroom} bed`, selBathroom && `${selBathroom} bath`].filter(Boolean).join(", ") || t("filterBedsBaths")}
                     </span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
@@ -737,7 +737,7 @@ const HeroSection = () => {
                     onClick={() => setOpenDropdown(openDropdown === "budget" ? null : "budget")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
                   >
-                    <span className={selBudget ? "text-foreground font-medium" : "text-muted-foreground"}>{selBudget || "Max. Price"}</span>
+                    <span className={selBudget ? "text-foreground font-medium" : "text-muted-foreground"}>{selBudget || t("filterBudget")}</span>
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (

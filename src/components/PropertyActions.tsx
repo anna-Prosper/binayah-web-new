@@ -190,6 +190,7 @@ interface DetailActionsProps {
 }
 
 export function DetailActions({ propertyId, slug, title, type = "property", variant = "light" }: DetailActionsProps) {
+  const t = useTranslations("share");
   const { toggle: toggleFav, has: hasFav } = _useFavorites();
   const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = _useCompare();
   const [shareOpen, setShareOpen] = useState(false);
@@ -245,7 +246,7 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
         className={`${base} ${favClasses}`}
       >
         <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
-        {isFav ? "Saved" : "Save"}
+        {isFav ? t("saved") : t("save")}
       </button>
 
       {type === "property" && (
@@ -267,7 +268,7 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
           className={`${base} ${shareClasses}`}
         >
           {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Share2 className="h-3.5 w-3.5" />}
-          {copied ? "Copied!" : "Share"}
+          {copied ? t("copied") : t("share")}
         </button>
         {shareOpen && (
           <SharePopover url={url} title={title} onClose={() => setShareOpen(false)} />

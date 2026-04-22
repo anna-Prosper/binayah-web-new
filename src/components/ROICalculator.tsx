@@ -53,10 +53,10 @@ const ROICalculator = () => {
               {t("inputParameters")}
             </h3>
             <div className="space-y-6 sm:space-y-7">
-              <SliderInput label="Purchase Price"       value={price}         onChange={setPrice}         min={500000}  max={50000000} step={100000} prefix="AED " format={fmt} />
-              <SliderInput label="Annual Rent"          value={annualRent}    onChange={setAnnualRent}    min={20000}   max={5000000}  step={10000}  prefix="AED " format={fmt} />
-              <SliderInput label="Service Charges / yr" value={serviceCharge} onChange={setServiceCharge} min={0}       max={500000}   step={1000}   prefix="AED " format={fmt} />
-              <SliderInput label="Annual Appreciation"  value={appreciation}  onChange={setAppreciation}  min={0}       max={20}       step={0.5}    suffix="%" />
+              <SliderInput label={t("purchasePrice")}       value={price}         onChange={setPrice}         min={500000}  max={50000000} step={100000} prefix="AED " format={fmt} />
+              <SliderInput label={t("annualRent")}          value={annualRent}    onChange={setAnnualRent}    min={20000}   max={5000000}  step={10000}  prefix="AED " format={fmt} />
+              <SliderInput label={t("serviceCharges")} value={serviceCharge} onChange={setServiceCharge} min={0}       max={500000}   step={1000}   prefix="AED " format={fmt} />
+              <SliderInput label={t("annualAppreciation")}  value={appreciation}  onChange={setAppreciation}  min={0}       max={20}       step={0.5}    suffix="%" />
             </div>
           </motion.div>
 
@@ -66,9 +66,9 @@ const ROICalculator = () => {
             {/* Mobile: 3-col compact + accordion */}
             <div className="sm:hidden space-y-3">
               <div className="grid grid-cols-3 gap-2">
-                <ResultCardCompact label="Gross Yield" value={`${results.grossYield.toFixed(1)}%`} />
-                <ResultCardCompact label="Net Yield"   value={`${results.netYield.toFixed(1)}%`} />
-                <ResultCardCompact label="5yr ROI"     value={`${results.totalROI.toFixed(1)}%`} highlight />
+                <ResultCardCompact label={t("grossYield")} value={`${results.grossYield.toFixed(1)}%`} />
+                <ResultCardCompact label={t("netYield")}   value={`${results.netYield.toFixed(1)}%`} />
+                <ResultCardCompact label={t("fiveYrROI")}     value={`${results.totalROI.toFixed(1)}%`} highlight />
               </div>
               <button onClick={() => setShowProjection(!showProjection)}
                 className="w-full bg-card rounded-xl p-3.5 border border-border/60 flex items-center justify-between text-sm font-semibold text-foreground">
@@ -79,12 +79,12 @@ const ROICalculator = () => {
                 {showProjection && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                     <div className="bg-card rounded-b-xl px-4 pb-4 pt-3 border-x border-b border-border/60 space-y-2.5">
-                      <ProjectionRow label="Property Value (Yr 5)"  value={`AED ${fmt(results.year5Value)}`} />
-                      <ProjectionRow label="Capital Appreciation"    value={`AED ${fmt(results.year5Value - price)}`} />
-                      <ProjectionRow label="Total Rental Income"     value={`AED ${fmt(results.totalRent5)}`} />
+                      <ProjectionRow label={t("propertyValueYear5")}  value={`AED ${fmt(results.year5Value)}`} />
+                      <ProjectionRow label={t("capitalAppreciation")}    value={`AED ${fmt(results.year5Value - price)}`} />
+                      <ProjectionRow label={t("totalRentalIncome")}     value={`AED ${fmt(results.totalRent5)}`} />
                       <div className="border-t border-border pt-2.5 mt-1">
-                        <ProjectionRow label="Total Return" value={`AED ${fmt(results.totalReturn5)}`} bold />
-                        <ProjectionRow label="Total ROI"    value={`${results.totalROI.toFixed(1)}%`} bold accent />
+                        <ProjectionRow label={t("totalReturn")} value={`AED ${fmt(results.totalReturn5)}`} bold />
+                        <ProjectionRow label={t("totalROI")}    value={`${results.totalROI.toFixed(1)}%`} bold accent />
                       </div>
                     </div>
                   </motion.div>
@@ -99,8 +99,8 @@ const ROICalculator = () => {
 
               {/* Yield cards */}
               <div className="grid grid-cols-2 gap-4">
-                <ResultCard icon={Percent} label="Gross Yield" value={`${results.grossYield.toFixed(1)}%`} />
-                <ResultCard icon={Percent} label="Net Yield"   value={`${results.netYield.toFixed(1)}%`} />
+                <ResultCard icon={Percent} label={t("grossYield")} value={`${results.grossYield.toFixed(1)}%`} />
+                <ResultCard icon={Percent} label={t("netYield")}   value={`${results.netYield.toFixed(1)}%`} />
               </div>
 
               {/* 5-year projection */}
@@ -112,12 +112,12 @@ const ROICalculator = () => {
                   {t("fiveYearProjection")}
                 </h4>
                 <div className="space-y-3">
-                  <ProjectionRow label="Property Value (Year 5)" value={`AED ${fmt(results.year5Value)}`} />
-                  <ProjectionRow label="Capital Appreciation"    value={`AED ${fmt(results.year5Value - price)}`} />
-                  <ProjectionRow label="Total Rental Income"     value={`AED ${fmt(results.totalRent5)}`} />
+                  <ProjectionRow label={t("propertyValueYear5")} value={`AED ${fmt(results.year5Value)}`} />
+                  <ProjectionRow label={t("capitalAppreciation")}    value={`AED ${fmt(results.year5Value - price)}`} />
+                  <ProjectionRow label={t("totalRentalIncome")}     value={`AED ${fmt(results.totalRent5)}`} />
                   <div className="border-t border-border pt-3 mt-1">
-                    <ProjectionRow label="Total Return" value={`AED ${fmt(results.totalReturn5)}`} bold />
-                    <ProjectionRow label="Total ROI"    value={`${results.totalROI.toFixed(1)}%`} bold accent />
+                    <ProjectionRow label={t("totalReturn")} value={`AED ${fmt(results.totalReturn5)}`} bold />
+                    <ProjectionRow label={t("totalROI")}    value={`${results.totalROI.toFixed(1)}%`} bold accent />
                   </div>
                 </div>
               </div>

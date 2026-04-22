@@ -234,7 +234,15 @@
         "headlineStart": "Your property,",
         "headlineGold": "everywhere at once.",
         "bodyText": "One listing goes live on the UAE's top portals simultaneously. No juggling multiple accounts: your dedicated agent does it all.",
-        "multiPortalLabel": "Binayah Multi-Portal Listing"
+        "multiPortalLabel": "Binayah Multi-Portal Listing",
+        "feature1": "Live on all portals within 24 hours",
+        "feature2": "Professional photography & listing copy included",
+        "feature3": "One dedicated agent handles every enquiry",
+        "feature4": "Reach 2M+ active buyers and renters in the UAE",
+        "feature5": "Zero upfront fees, commission only on completion",
+        "feature6": "Real-time dashboard: views, leads, and performance",
+        "statActiveBuyers": "Active buyers",
+        "statTopPortals": "Top portals"
       },
       "testimonials": {
         "label": "Client Reviews",
@@ -834,7 +842,16 @@
     "idealFor": "Ideal For",
     "whatsapp": "WhatsApp",
     "call": "Call",
-    "tapToClose": "Tap anywhere to close"
+    "tapToClose": "Tap anywhere to close",
+    "propertyTypesLabel": "Property Types",
+    "projectTypeLabel": "Project Type",
+    "eligibility": "Eligibility",
+    "availability": "Availability",
+    "onHandover": "On Handover",
+    "balanceOnCompletion": "Balance on completion",
+    "easyInstallments": "Easy Installments",
+    "flexiblePlan": "Flexible Plan",
+    "allNationalities": "All Nationalities"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",
@@ -1284,7 +1301,16 @@
     "footnoteLead": "* Projections are estimates based on your inputs and do not constitute financial advice.",
     "getPersonalizedAdvice": "Get personalised investment advice",
     "fiveYearBreakdown": "5-Year Breakdown",
-    "yourResults": "Your Results"
+    "yourResults": "Your Results",
+    "purchasePrice": "Purchase Price",
+    "serviceCharges": "Service Charges / yr",
+    "annualAppreciation": "Annual Appreciation",
+    "propertyValueYear5": "Property Value (Year 5)",
+    "capitalAppreciation": "Capital Appreciation",
+    "totalRentalIncome": "Total Rental Income",
+    "totalReturn": "Total Return",
+    "totalROI": "Total ROI",
+    "fiveYrROI": "5yr ROI"
   },
   "aiChat": {
     "greeting": "Hi! I'm Binayah AI. Ask me anything about Dubai real estate.",
@@ -1320,7 +1346,11 @@
     "forPreciseAnalysis": "for precise analysis.",
     "dubaiMarket": "Dubai Real Estate",
     "marketSegments": "Market Segments",
-    "contactTeam": "Contact our investment team"
+    "contactTeam": "Contact our investment team",
+    "tabPricePerSqft": "Price / sqft",
+    "tabRentalYields": "Rental Yields",
+    "tabByArea": "By Area",
+    "offPlan": "Off-Plan"
   },
   "propertyComparison": {
     "title": "Compare Properties",
@@ -1356,7 +1386,29 @@
     "back": "Back",
     "continue": "Continue →",
     "startOver": "Start Over",
-    "analyzing": "Analysing your profile and finding perfect matches..."
+    "analyzing": "Analysing your profile and finding perfect matches...",
+    "questions": {
+      "purpose": {
+        "question": "What's your goal?",
+        "subtitle": "This shapes everything, from location to ROI focus."
+      },
+      "propertyType": {
+        "question": "What type of property?",
+        "subtitle": "Each type has different yields and lifestyle benefits."
+      },
+      "areas": {
+        "question": "Which areas interest you?",
+        "subtitle": "Select all that appeal, or pick No preference."
+      },
+      "budget": {
+        "question": "What's your budget?",
+        "subtitle": "We'll find the best value within your range."
+      },
+      "bedrooms": {
+        "question": "How many bedrooms?",
+        "subtitle": "Studios yield highest %, but families need space."
+      }
+    }
   },
   "valuationBanner": {
     "label": "AI Property Valuation",
@@ -1385,7 +1437,10 @@
     "copied": "Link copied!",
     "copyLink": "Copy link",
     "whatsapp": "WhatsApp",
-    "email": "Email"
+    "email": "Email",
+    "save": "Save",
+    "saved": "Saved",
+    "share": "Share"
   },
   "featuredPropertiesServer": {
     "viewAll": "View All Properties"

@@ -234,7 +234,15 @@
         "headlineStart": "عقارك،",
         "headlineGold": "في كل مكان في آنٍ واحد.",
         "bodyText": "يُنشر إعلانك على كبرى بوابات العقارات في آنٍ واحد.",
-        "multiPortalLabel": "قائمة Binayah متعددة المنصات"
+        "multiPortalLabel": "قائمة Binayah متعددة المنصات",
+        "feature1": "نشر فوري على جميع المنصات خلال 24 ساعة",
+        "feature2": "تصوير احترافي وكتابة إعلانات مشمولة",
+        "feature3": "وكيل متخصص يتابع جميع الاستفسارات",
+        "feature4": "الوصول إلى أكثر من 2 مليون مشترٍ ومستأجر نشط",
+        "feature5": "بدون رسوم مسبقة، العمولة عند إتمام الصفقة فقط",
+        "feature6": "لوحة بيانات فورية: المشاهدات والعملاء المحتملين والأداء",
+        "statActiveBuyers": "مشترٍ نشط",
+        "statTopPortals": "منصات رائدة"
       },
       "testimonials": {
         "label": "آراء العملاء",
@@ -834,7 +842,16 @@
     "idealFor": "مثالي لـ",
     "whatsapp": "واتساب",
     "call": "اتصال",
-    "tapToClose": "انقر في أي مكان للإغلاق"
+    "tapToClose": "انقر في أي مكان للإغلاق",
+    "propertyTypesLabel": "أنواع العقارات",
+    "projectTypeLabel": "نوع المشروع",
+    "eligibility": "أهلية التملك",
+    "availability": "حالة التوفر",
+    "onHandover": "عند التسليم",
+    "balanceOnCompletion": "الرصيد عند الاكتمال",
+    "easyInstallments": "أقساط ميسرة",
+    "flexiblePlan": "خطة مرنة",
+    "allNationalities": "جميع الجنسيات"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1284,7 +1301,16 @@
     "footnoteLead": "*التوقعات تقديرية.",
     "getPersonalizedAdvice": "احصل على مشورة شخصية",
     "fiveYearBreakdown": "تفاصيل 5 سنوات",
-    "yourResults": "نتائجك"
+    "yourResults": "نتائجك",
+    "purchasePrice": "سعر الشراء",
+    "serviceCharges": "رسوم الخدمة / سنة",
+    "annualAppreciation": "التقدير السنوي",
+    "propertyValueYear5": "قيمة العقار (السنة 5)",
+    "capitalAppreciation": "الزيادة الرأسمالية",
+    "totalRentalIncome": "إجمالي دخل الإيجار",
+    "totalReturn": "إجمالي العائد",
+    "totalROI": "العائد الإجمالي",
+    "fiveYrROI": "عائد 5 سنوات"
   },
   "aiChat": {
     "greeting": "مرحباً! أنا Binayah AI. اسألني عن أي شيء يتعلق بعقارات دبي.",
@@ -1320,7 +1346,11 @@
     "forPreciseAnalysis": "للتحليل الدقيق.",
     "dubaiMarket": "سوق دبي",
     "marketSegments": "قطاعات السوق",
-    "contactTeam": "تواصل مع فريقنا الاستثماري"
+    "contactTeam": "تواصل مع فريقنا الاستثماري",
+    "tabPricePerSqft": "السعر / قدم مربع",
+    "tabRentalYields": "عوائد الإيجار",
+    "tabByArea": "حسب المنطقة",
+    "offPlan": "على الخارطة"
   },
   "propertyComparison": {
     "title": "مقارنة العقارات",
@@ -1356,7 +1386,29 @@
     "back": "رجوع",
     "continue": "متابعة ←",
     "startOver": "البدء من جديد",
-    "analyzing": "نحلل ملفك..."
+    "analyzing": "نحلل ملفك...",
+    "questions": {
+      "purpose": {
+        "question": "ما هدفك من الشراء؟",
+        "subtitle": "هذا يحدد الموقع والنوع ومحور العائد على الاستثمار."
+      },
+      "propertyType": {
+        "question": "ما نوع العقار الذي تبحث عنه؟",
+        "subtitle": "لكل نوع عوائد مختلفة ومميزات أسلوب حياة خاصة."
+      },
+      "areas": {
+        "question": "ما المناطق التي تهمك؟",
+        "subtitle": "اختر كل ما يناسبك، أو اختر بدون تفضيل."
+      },
+      "budget": {
+        "question": "ما ميزانيتك؟",
+        "subtitle": "سنجد أفضل قيمة ضمن نطاقك."
+      },
+      "bedrooms": {
+        "question": "كم عدد غرف النوم؟",
+        "subtitle": "الاستوديوهات تحقق أعلى عائد، والعائلات تحتاج مساحة."
+      }
+    }
   },
   "valuationBanner": {
     "label": "تقييم العقار بالذكاء الاصطناعي",
@@ -1385,7 +1437,10 @@
     "copied": "تم نسخ الرابط!",
     "copyLink": "نسخ الرابط",
     "whatsapp": "واتساب",
-    "email": "البريد الإلكتروني"
+    "email": "البريد الإلكتروني",
+    "save": "حفظ",
+    "saved": "محفوظ",
+    "share": "مشاركة"
   },
   "featuredPropertiesServer": {
     "viewAll": "عرض جميع العقارات"

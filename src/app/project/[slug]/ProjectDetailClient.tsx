@@ -441,12 +441,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               const currencyKeys = Object.keys(CURRENCY_RATES);
 
               return [
-                { icon: Building2, label: "Developer", value: project.developerName || "—", sub: null },
-                { icon: Wallet, label: "Starting Price", value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
-                { icon: Bed, label: "Unit Types", value: formatUnitTypes(project.unitTypes, " · "), sub: null },
+                { icon: Building2, label: t("developer"), value: project.developerName || "—", sub: null },
+                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
+                { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
                 { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
-                { icon: handoverIcon, label: isReady ? "Status" : "Handover", value: handoverValue, sub: null },
-                { icon: CreditCard, label: "Payment Plan", value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : "Flexible Plan", sub: project.paymentPlanSummary || "Easy Installments", isPaymentPlan: true },
+                { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
+                { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : t("flexiblePlan"), sub: project.paymentPlanSummary || t("easyInstallments"), isPaymentPlan: true },
               ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
                 <motion.div
                   key={label}
@@ -1084,7 +1084,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       { pct: 10, label: "After 3 Months", icon: Calendar, color: "bg-primary" },
                       { pct: 10, label: "After 6 Months", icon: Clock, color: "bg-primary" },
                       { pct: 30, label: "During Construction", icon: Building2, color: "bg-primary/70" },
-                      { pct: 40, label: "On Handover", icon: CheckCircle2, color: "bg-emerald-500" },
+                      { pct: 40, label: t("onHandover"), icon: CheckCircle2, color: "bg-emerald-500" },
                     ];
 
                     // Use project payment plan data if available
@@ -1776,7 +1776,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         </div>
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
                           <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
                         </div>
                       </div>
                     </div>
@@ -1789,7 +1789,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
                     </div>
                   </div>
 
@@ -1801,7 +1801,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     const milestones = [
                       { label: "On Booking", pct: downPct, desc: "Down Payment", icon: Wallet, color: "from-accent to-accent/80" },
                       ...(duringPct > 0 ? [{ label: "During Construction", pct: duringPct, desc: "Progress-linked installments", icon: Building2, color: "from-primary to-primary/80" }] : []),
-                      ...(handoverPct > 0 ? [{ label: "On Handover", pct: handoverPct, desc: "Balance on completion", icon: Home, color: "from-primary to-[#145C42]" }] : []),
+                      ...(handoverPct > 0 ? [{ label: t("onHandover"), pct: handoverPct, desc: t("balanceOnCompletion"), icon: Home, color: "from-primary to-[#145C42]" }] : []),
                     ];
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
@@ -2260,16 +2260,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">{t("projectDetailsLabel")}</h3>
                 <div className="divide-y divide-border/40">
                   {[
-                    { label: "Developer", value: project.developerName },
-                    { label: "Community", value: project.community },
-                    { label: "City", value: `${project.city}, ${project.country}` },
-                    { label: "Property Type", value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
-                    ...(project.propertyTypes?.length > 0 ? [{ label: "Property Types", value: project.propertyTypes?.join(" · ") }] : []),
-                    { label: "Project Type", value: project.projectType },
-                    { label: "Status", value: project.status },
-                    { label: "Title", value: project.titleType },
-                    { label: "Eligibility", value: project.ownershipEligibility },
-                    { label: "Availability", value: project.availabilityStatus },
+                    { label: t("developer"), value: project.developerName },
+                    { label: t("communityLabel"), value: project.community },
+                    { label: t("cityLabel"), value: `${project.city}, ${project.country}` },
+                    { label: t("propertyTypeLabel"), value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
+                    ...(project.propertyTypes?.length > 0 ? [{ label: t("propertyTypesLabel"), value: project.propertyTypes?.join(" · ") }] : []),
+                    { label: t("projectTypeLabel"), value: project.projectType },
+                    { label: t("status"), value: project.status },
+                    { label: t("titleType"), value: project.titleType },
+                    { label: t("eligibility"), value: project.ownershipEligibility },
+                    { label: t("availability"), value: project.availabilityStatus },
                   ].filter(f => f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>

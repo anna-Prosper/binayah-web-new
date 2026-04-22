@@ -140,7 +140,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-1 min-w-0 overflow-hidden flex-shrink">
+            <div className="hidden lg:flex items-center gap-1 min-w-0 flex-shrink">
               {primaryNav.map((item) => (
                 <button
                   key={item.label}

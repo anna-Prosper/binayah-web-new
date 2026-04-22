@@ -120,6 +120,7 @@ const ResultContent = ({ result }: { result: string }) => {
 // ─── Component ───
 const PropertyMatcher = () => {
   const t = useTranslations("propertyMatcher");
+  const questionDefs = t.raw("questions") as Record<string, { question: string; subtitle: string }>;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
@@ -281,9 +282,9 @@ const PropertyMatcher = () => {
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                       <current.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <h3 className="text-base sm:text-xl font-bold text-foreground">{current.question}</h3>
+                    <h3 className="text-base sm:text-xl font-bold text-foreground">{questionDefs?.[current.id]?.question ?? current.question}</h3>
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{current.subtitle}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{questionDefs?.[current.id]?.subtitle ?? current.subtitle}</p>
 
                   <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                     {current.options.map((opt) => {

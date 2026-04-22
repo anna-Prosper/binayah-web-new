@@ -12,13 +12,13 @@ const PORTALS = [
   { name: "Houza", color: "#6366F1", bg: "rgba(99,102,241,0.12)" },
 ];
 
-const BENEFITS = [
-  { Icon: Zap, text: "Live on all portals within 24 hours" },
-  { Icon: Camera, text: "Professional photography & listing copy included" },
-  { Icon: HeadphonesIcon, text: "One dedicated agent handles every enquiry" },
-  { Icon: Users, text: "Reach 2M+ active buyers and renters in the UAE" },
-  { Icon: CheckCircle2, text: "Zero upfront fees — commission only on completion" },
-  { Icon: BarChart3, text: "Real-time dashboard: views, leads, and performance" },
+const BENEFIT_ICONS = [
+  { Icon: Zap, key: "feature1" },
+  { Icon: Camera, key: "feature2" },
+  { Icon: HeadphonesIcon, key: "feature3" },
+  { Icon: Users, key: "feature4" },
+  { Icon: CheckCircle2, key: "feature5" },
+  { Icon: BarChart3, key: "feature6" },
 ];
 
 export default function ListYourPropertySection() {
@@ -67,12 +67,12 @@ export default function ListYourPropertySection() {
 
             {/* Benefits */}
             <ul className="space-y-3 mb-9">
-              {BENEFITS.map(({ Icon, text }) => (
-                <li key={text} className="flex items-center gap-3 text-sm text-foreground/80">
+              {BENEFIT_ICONS.map(({ Icon, key }) => (
+                <li key={key} className="flex items-center gap-3 text-sm text-foreground/80">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Icon className="h-3.5 w-3.5 text-primary" />
                   </div>
-                  {text}
+                  {t(key as any)}
                 </li>
               ))}
             </ul>
@@ -118,8 +118,8 @@ export default function ListYourPropertySection() {
                 {/* Stats row */}
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {[
-                    { value: "2M+", label: "Active buyers" },
-                    { value: "3+", label: "Top portals" },
+                    { value: "2M+", label: t("statActiveBuyers") },
+                    { value: "3+", label: t("statTopPortals") },
                     { value: "24h", label: "Time to live" },
                   ].map(({ value, label }) => (
                     <div key={label} className="text-center p-4 rounded-2xl bg-white/5 border border-white/8">

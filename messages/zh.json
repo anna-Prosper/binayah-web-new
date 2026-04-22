@@ -240,7 +240,15 @@
         "headlineStart": "您的房产，",
         "headlineGold": "同时出现在各大平台。",
         "bodyText": "您的房源同步发布至阿联酋顶级房产门户网站。",
-        "multiPortalLabel": "Binayah多平台发布"
+        "multiPortalLabel": "Binayah多平台发布",
+        "feature1": "24小时内上线所有房产平台",
+        "feature2": "包含专业摄影与房源文案",
+        "feature3": "专属经纪人处理所有咨询",
+        "feature4": "覆盖阿联酋200万+活跃买家和租户",
+        "feature5": "零预付费用，成交后收取佣金",
+        "feature6": "实时数据看板：浏览量、潜客与业绩",
+        "statActiveBuyers": "活跃买家",
+        "statTopPortals": "顶级平台"
       },
       "testimonials": {
         "label": "客户评价",
@@ -840,7 +848,16 @@
     "idealFor": "适合人群",
     "whatsapp": "WhatsApp",
     "call": "致电",
-    "tapToClose": "点击任意处关闭"
+    "tapToClose": "点击任意处关闭",
+    "propertyTypesLabel": "房产类型",
+    "projectTypeLabel": "项目类型",
+    "eligibility": "购买资格",
+    "availability": "房源状态",
+    "onHandover": "交房时付",
+    "balanceOnCompletion": "交房结清余款",
+    "easyInstallments": "灵活分期",
+    "flexiblePlan": "弹性付款方案",
+    "allNationalities": "所有国籍均可"
   },
   "propertyDetail": {
     "backToProperties": "返回房产列表",
@@ -1290,7 +1307,16 @@
     "footnoteLead": "*预测仅供参考。",
     "getPersonalizedAdvice": "获取个性化建议",
     "fiveYearBreakdown": "5年明细",
-    "yourResults": "您的结果"
+    "yourResults": "您的结果",
+    "purchasePrice": "购买价格",
+    "serviceCharges": "物业费/年",
+    "annualAppreciation": "年增值率",
+    "propertyValueYear5": "第5年房产价值",
+    "capitalAppreciation": "资本增值",
+    "totalRentalIncome": "5年租金总收入",
+    "totalReturn": "总回报",
+    "totalROI": "总ROI",
+    "fiveYrROI": "5年ROI"
   },
   "aiChat": {
     "greeting": "您好！我是Binayah AI助手。请随时询问迪拜房地产相关问题。",
@@ -1326,7 +1352,11 @@
     "forPreciseAnalysis": "以进行精准分析。",
     "dubaiMarket": "迪拜市场",
     "marketSegments": "市场细分",
-    "contactTeam": "联系投资团队"
+    "contactTeam": "联系投资团队",
+    "tabPricePerSqft": "每平方英尺价格",
+    "tabRentalYields": "租金回报率",
+    "tabByArea": "按区域",
+    "offPlan": "期房"
   },
   "propertyComparison": {
     "title": "对比房产",
@@ -1362,7 +1392,29 @@
     "back": "返回",
     "continue": "继续 →",
     "startOver": "重新开始",
-    "analyzing": "正在分析您的需求..."
+    "analyzing": "正在分析您的需求...",
+    "questions": {
+      "purpose": {
+        "question": "您的购房目标是什么？",
+        "subtitle": "这将决定选址、房型及回报重点。"
+      },
+      "propertyType": {
+        "question": "您希望购买哪类房产？",
+        "subtitle": "不同类型的租金回报率和生活方式各有优势。"
+      },
+      "areas": {
+        "question": "您感兴趣的区域有哪些？",
+        "subtitle": "可多选，或选择不限区域。"
+      },
+      "budget": {
+        "question": "您的预算是多少？",
+        "subtitle": "我们将在您的预算范围内为您找到最优选择。"
+      },
+      "bedrooms": {
+        "question": "需要几间卧室？",
+        "subtitle": "开放式公寓回报率最高，家庭用户则需要更大空间。"
+      }
+    }
   },
   "valuationBanner": {
     "label": "AI房产估价",
@@ -1391,7 +1443,10 @@
     "copied": "链接已复制！",
     "copyLink": "复制链接",
     "whatsapp": "WhatsApp",
-    "email": "邮件"
+    "email": "邮件",
+    "save": "收藏",
+    "saved": "已收藏",
+    "share": "分享"
   },
   "featuredPropertiesServer": {
     "viewAll": "查看全部房产"

@@ -70,7 +70,7 @@ const MarketDashboard = () => {
                 { label: t("avgPrice"), value: `AED ${formatNum(data.summary.avgPricePerSqft)}` },
                 { label: t("transactions"), value: formatNum(data.summary.totalListings) },
                 { label: t("rentalYield"), value: `${data.summary.avgYield}%` },
-                { label: "Off-Plan", value: `${data.summary.offPlanShare}%` },
+                { label: t("offPlan"), value: `${data.summary.offPlanShare}%` },
               ].map((s) => (
                 <div key={s.label} className="bg-background rounded-lg sm:rounded-xl p-2 sm:p-5 border border-border/50 text-center sm:text-left">
                   <p className="text-[8px] sm:text-xs text-muted-foreground font-medium mb-0.5 sm:mb-1 truncate">{s.label}</p>
@@ -88,19 +88,19 @@ const MarketDashboard = () => {
                 {/* Tabs */}
                 <div className="flex gap-1 mb-4 sm:mb-6">
                   {([
-                    { id: "prices" as Tab, label: "Price / sqft", icon: BarChart3 },
-                    { id: "yields" as Tab, label: "Rental Yields", icon: PieIcon },
-                    { id: "transactions" as Tab, label: "By Area", icon: TrendingUp },
-                  ]).map((t) => (
+                    { id: "prices" as Tab, label: t("tabPricePerSqft"), icon: BarChart3 },
+                    { id: "yields" as Tab, label: t("tabRentalYields"), icon: PieIcon },
+                    { id: "transactions" as Tab, label: t("tabByArea"), icon: TrendingUp },
+                  ]).map((tab_item) => (
                     <button
-                      key={t.id}
-                      onClick={() => setTab(t.id)}
+                      key={tab_item.id}
+                      onClick={() => setTab(tab_item.id)}
                       className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-semibold transition-all ${
-                        tab === t.id ? "text-white" : "text-muted-foreground hover:bg-secondary"
+                        tab === tab_item.id ? "text-white" : "text-muted-foreground hover:bg-secondary"
                       }`}
-                      style={tab === t.id ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                      style={tab === tab_item.id ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                     >
-                      <t.icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t.label}
+                      <tab_item.icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {tab_item.label}
                     </button>
                   ))}
                 </div>
