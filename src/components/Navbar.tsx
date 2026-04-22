@@ -18,8 +18,8 @@ const CURRENCIES = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"];
 const LANGUAGES_LIST = [
   { code: "en", label: "English", flag: "🇬🇧" },
   { code: "ru", label: "Русский", flag: "🇷🇺" },
-  { code: "kz", label: "Қазақша", flag: "🇰🇿" },
-  { code: "in", label: "India (EN)", flag: "🇮🇳" },
+  { code: "zh", label: "中文", flag: "🇨🇳" },
+  { code: "ar", label: "العربية", flag: "🇦🇪" },
 ];
 
 
@@ -112,14 +112,13 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const switchLocale = (locale: string) => {
     setShowLangDropdown(false);
     setMobileOpen(false);
-    // Strip any existing locale prefix from the current browser path
-    const currentPath = window.location.pathname;
-    const stripped = currentPath.replace(/^\/(ru|kz|in)(\/|$)/, "/") || "/";
-    const target =
-      locale === "en"
-        ? stripped + window.location.search
-        : `/${locale}${stripped === "/" ? "" : stripped}${window.location.search}`;
-    window.location.href = target;
+    // Persist the choice BEFORE navigation so middleware honors it immediately.
+    // max-age = 1 year, path=/ so every route sees it.
+    document.cookie = `BINAYAH_LOCALE=${locale}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+    // next-intl router.replace with {locale} handles prefix add/strip correctly
+    // and does not produce /xx/yy double-prefixes because `pathname` from
+    // next-intl's usePathname is already locale-stripped.
+    router.replace(pathname, { locale });
   };
 
   const { ids: favIds } = useFavorites();

@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "buy": "购买",
+    "rent": "租赁",
+    "offPlan": "期房",
+    "pulse": "市场动态",
+    "communities": "社区",
+    "valuation": "估价",
+    "guides": "指南",
+    "developers": "开发商",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们"
+  },
+  "common": {
+    "viewAll": "查看全部",
+    "learnMore": "了解更多",
+    "contactAgent": "联系经纪人",
+    "getValuation": "获取估价",
+    "fromPrice": "起价 {price}",
+    "priceOnRequest": "价格面议",
+    "bedrooms": "卧室",
+    "bathrooms": "浴室",
+    "area": "面积",
+    "sqft": "平方英尺",
+    "readMore": "阅读更多",
+    "backToAll": "返回",
+    "loading": "加载中...",
+    "noResults": "未找到结果",
+    "search": "搜索"
+  },
+  "home": {
+    "hero": {
+      "title": "在迪拜寻找您的梦想房产",
+      "subtitle": "迪拜值得信赖的房产合作伙伴，提供豪华住宅、期房投资和专业指导。",
+      "searchPlaceholder": "按社区、项目或开发商搜索..."
+    },
+    "featured": "精选房产",
+    "offPlan": "期房项目",
+    "communities": "优质社区",
+    "news": "最新资讯",
+    "crypto": {
+      "accepting": "现已接受",
+      "title": "用加密货币购买房产",
+      "subtitle": "比特币和加密货币"
+    }
+  },
+  "search": {
+    "title": "查找房产",
+    "buy": "购买",
+    "rent": "租赁",
+    "filters": "筛选",
+    "sortBy": "排序方式",
+    "propertyType": "房产类型",
+    "community": "社区",
+    "minPrice": "最低价格",
+    "maxPrice": "最高价格",
+    "bedrooms": "卧室",
+    "anyBedrooms": "任意",
+    "results": "找到 {count} 套房产",
+    "noResults": "未找到符合条件的房产"
+  },
+  "offPlan": {
+    "title": "期房房产",
+    "subtitle": "探索迪拜最佳期房投资机会",
+    "completion": "竣工时间",
+    "startingFrom": "起价"
+  },
+  "rent": {
+    "title": "租赁房产",
+    "subtitle": "探索迪拜优质公寓、别墅和联排别墅"
+  },
+  "buy": {
+    "title": "出售房产",
+    "subtitle": "浏览迪拜二手市场房产"
+  },
+  "valuation": {
+    "title": "房产估价",
+    "subtitle": "获取迪拜房产的即时AI智能估价"
+  },
+  "contact": {
+    "title": "联系我们",
+    "name": "全名",
+    "email": "电子邮件",
+    "phone": "电话",
+    "message": "留言",
+    "send": "发送消息",
+    "whatsapp": "WhatsApp联系",
+    "address": "地址",
+    "office": "办公时间"
+  },
+  "footer": {
+    "tagline": "迪拜值得信赖的房产合作伙伴，提供购买、销售和租赁服务。",
+    "quickLinks": "快速链接",
+    "services": "服务",
+    "contact": "联系方式",
+    "rights": "版权所有。"
+  },
+  "lang": {
+    "en": "English",
+    "ru": "Русский",
+    "zh": "中文",
+    "ar": "العربية"
+  }
+}
