@@ -6,6 +6,9 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
+import { FavoritesProvider } from "@/context/FavoritesContext";
+import { CompareProvider } from "@/context/CompareContext";
+import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
 import "../globals.css";
 import Providers from "../providers";
 
@@ -80,8 +83,14 @@ export default async function LocaleLayout({
         <OrganizationJsonLd />
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            {children}
-            <FavoritesDrawer />
+            <FavoritesProvider>
+              <CompareProvider>
+                <SubscriptionsProvider>
+                  {children}
+                  <FavoritesDrawer />
+                </SubscriptionsProvider>
+              </CompareProvider>
+            </FavoritesProvider>
           </Providers>
         </NextIntlClientProvider>
       </body>

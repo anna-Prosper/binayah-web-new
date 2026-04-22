@@ -43,9 +43,6 @@ function pushLocalNotification({ slug, projectName, projectImage }: { slug: stri
   } catch { /* */ }
 }
 
-function dispatchSubUpdate() {
-  queueMicrotask(() => window.dispatchEvent(new Event("subscriptions-update")));
-}
 
 export interface ProjectSubscribeSectionProps {
   slug: string;
@@ -64,7 +61,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated" && !!session?.user?.email;
   const router = useRouter();
-  const { subscribedSlugs } = useProjectSubscriptions();
+  const { subscribedSlugs, refresh: refreshSubs } = useProjectSubscriptions();
 
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,7 +89,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
         if (!res.ok) { setError("Could not unsubscribe."); return; }
         setSubscribed(false);
         removeLocalSub(slug);
-        dispatchSubUpdate();
+        refreshSubs();
       } else {
         const res = await fetch("/api/project-subscriptions", {
           method: "POST",
@@ -107,7 +104,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
         setSubscribed(true);
         addLocalSub(slug);
         if (!data.alreadySubscribed) pushLocalNotification({ slug, projectName, projectImage });
-        dispatchSubUpdate();
+        refreshSubs();
       }
     } catch { setError("Network error."); }
     finally { setLoading(false); }

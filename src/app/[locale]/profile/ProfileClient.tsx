@@ -16,6 +16,7 @@ import { useFavorites } from "@/components/PropertyActions";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import SavedPropertiesSection from "@/components/SavedPropertiesSection";
 import { apiUrl } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
   user: { id: string; name?: string | null; email?: string | null; image?: string | null };
@@ -111,7 +112,8 @@ function ProfileClientInner({ user }: Props) {
   const [savingSub, setSavingSub] = useState(false);
 
   const { ids: favIds } = useFavorites();
-  const { subscribedSlugs, loading: subsLoading, refresh: refreshSubs } = useProjectSubscriptions();
+  const { subscribedSlugs, loading: subsLoading, refresh: refreshSubs, unsubscribe: ctxUnsubscribe } = useProjectSubscriptions();
+  const { toast } = useToast();
 
   // Fetch profile extras
   useEffect(() => {
@@ -222,28 +224,26 @@ function ProfileClientInner({ user }: Props) {
   const toggleNotif = async (slug: string, channel: keyof NotifPrefs) => {
     const current = getNotifPrefs(slug);
     const updated = { ...current, [channel]: !current[channel] };
-    setProfileExtra((prev) => ({
-      ...prev,
-      notifPrefs: { ...prev.notifPrefs, [slug]: updated },
-    }));
-    await fetch("/api/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ notifPrefs: { [slug]: updated } }),
-    }).catch(() => {});
+    const prev = profileExtra;
+    setProfileExtra((p) => ({ ...p, notifPrefs: { ...p.notifPrefs, [slug]: updated } }));
+    try {
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notifPrefs: { [slug]: updated } }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } catch {
+      setProfileExtra(prev);
+      toast({ title: "Couldn't save preference", description: "Please try again.", variant: "destructive" });
+    }
   };
 
   // ── Unsubscribe ───────────────────────────────────────────────────────────
   const doUnsubscribe = async (slug: string) => {
     setUnsubscribing(true);
     try {
-      await fetch("/api/project-subscriptions", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug }),
-      });
-      window.dispatchEvent(new CustomEvent("subscriptions-update"));
-      refreshSubs();
+      await ctxUnsubscribe(slug);
     } finally {
       setUnsubscribeConfirm(null);
       setUnsubscribing(false);
@@ -252,6 +252,8 @@ function ProfileClientInner({ user }: Props) {
 
   // ── Submission cancel/edit ────────────────────────────────────────────────
   const doCancel = async (id: string) => {
+    const prev = submissions;
+    setSubmissions((s) => s.map((sub) => (sub._id === id ? { ...sub, status: "cancelled" } : sub)));
     setCancelling(true);
     try {
       const res = await fetch("/api/list-your-property", {
@@ -259,11 +261,10 @@ function ProfileClientInner({ user }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, action: "cancel" }),
       });
-      if (res.ok) {
-        setSubmissions((prev) =>
-          prev.map((s) => (s._id === id ? { ...s, status: "cancelled" } : s))
-        );
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } catch {
+      setSubmissions(prev);
+      toast({ title: "Couldn't cancel submission", description: "Please try again.", variant: "destructive" });
     } finally {
       setCancelConfirm(null);
       setCancelling(false);
@@ -281,6 +282,19 @@ function ProfileClientInner({ user }: Props) {
 
   const saveEditSub = async () => {
     if (!editSubId) return;
+    const prev = submissions;
+    setSubmissions((s) =>
+      s.map((sub) =>
+        sub._id === editSubId
+          ? {
+              ...sub,
+              propertyType: editSubForm.propertyType || sub.propertyType,
+              community: editSubForm.community || sub.community,
+              askingPrice: editSubForm.askingPrice ? Number(editSubForm.askingPrice) : sub.askingPrice,
+            }
+          : sub
+      )
+    );
     setSavingSub(true);
     try {
       const res = await fetch("/api/list-your-property", {
@@ -294,21 +308,11 @@ function ProfileClientInner({ user }: Props) {
           askingPrice: editSubForm.askingPrice ? Number(editSubForm.askingPrice) : null,
         }),
       });
-      if (res.ok) {
-        setSubmissions((prev) =>
-          prev.map((s) =>
-            s._id === editSubId
-              ? {
-                  ...s,
-                  propertyType: editSubForm.propertyType || s.propertyType,
-                  community: editSubForm.community || s.community,
-                  askingPrice: editSubForm.askingPrice ? Number(editSubForm.askingPrice) : s.askingPrice,
-                }
-              : s
-          )
-        );
-        setEditSubId(null);
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setEditSubId(null);
+    } catch {
+      setSubmissions(prev);
+      toast({ title: "Couldn't save changes", description: "Please try again.", variant: "destructive" });
     } finally {
       setSavingSub(false);
     }

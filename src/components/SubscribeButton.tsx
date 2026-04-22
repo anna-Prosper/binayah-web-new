@@ -58,10 +58,6 @@ function pushLocalNotification({
   }
 }
 
-// Dispatch a cross-component event so NotificationsBell can refresh
-function dispatchSubUpdate() {
-  queueMicrotask(() => window.dispatchEvent(new Event("subscriptions-update")));
-}
 
 export interface SubscribeButtonProps {
   slug: string;
@@ -85,7 +81,7 @@ export function SubscribeButton({
 
   // Shared subscription state — module-level dedup ensures this runs once
   // even when multiple SubscribeButton instances exist on the same page.
-  const { subscribedSlugs } = useProjectSubscriptions();
+  const { subscribedSlugs, refresh: refreshSubs } = useProjectSubscriptions();
 
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -145,7 +141,7 @@ export function SubscribeButton({
         } else {
           showToast("Subscribed! Check your email for confirmation.");
         }
-        dispatchSubUpdate();
+        refreshSubs();
       }
     } catch {
       setSubscribed(false);
@@ -165,14 +161,14 @@ export function SubscribeButton({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slug }),
       });
-      dispatchSubUpdate();
+      refreshSubs();
     } catch {
       setSubscribed(true); // revert
       showToast("Network error — please try again.");
     } finally {
       setLoading(false);
     }
-  }, [slug, showToast]);
+  }, [slug, showToast, refreshSubs]);
 
   // ── Subscribe (anon with email) ─────────────────────────────────────────
   const subscribeAnon = useCallback(
@@ -205,7 +201,7 @@ export function SubscribeButton({
             pushLocalNotification({ slug, projectName, projectImage });
           }
           setShowPopover(false);
-          dispatchSubUpdate();
+          refreshSubs();
         }
       } catch {
         showToast("Network error — please try again.");

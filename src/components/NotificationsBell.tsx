@@ -4,6 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Bell, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "@/navigation";
+import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
+import { useToast } from "@/hooks/use-toast";
 
 const LOCAL_NOTIF_KEY = "binayah_notifications";
 
@@ -46,42 +48,63 @@ export function NotificationsBell() {
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated" && !!session?.user?.id;
   const router = useRouter();
+  const { toast } = useToast();
+  const { subscribedSlugs } = useProjectSubscriptions();
 
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const drawerRef = useRef<HTMLDivElement>(null);
 
+  // Area 3: syncedForUser ref — prevents re-fetch on tab focus
+  const syncedForUser = useRef<string | null>(null);
+
   const unreadCount = items.filter((n) => !n.read).length;
 
   // ── Fetch / load notifications ─────────────────────────────────────────
   const loadNotifications = useCallback(async () => {
+    if (status === "loading") return;
+
+    // Area 3: short-circuit if already synced for this user/session
+    const currentKey = isAuthed ? session!.user!.id! : "__anon__";
+    if (syncedForUser.current === currentKey) return;
+
     if (isAuthed) {
       try {
         const res = await fetch("/api/notifications");
         if (res.ok) {
           const data = await res.json();
           setItems(data.items ?? []);
+          // Mark synced only on success
+          syncedForUser.current = currentKey;
           return;
         }
       } catch {
-        // fall through to localStorage
+        // fall through to localStorage — do NOT set syncedForUser so we retry next time
       }
     }
     // Anon or DB unreachable → localStorage
     setItems(readLocalNotifs());
-  }, [isAuthed]);
+    syncedForUser.current = currentKey;
+  }, [isAuthed, status, session]);
 
+  // Initial load + session changes
   useEffect(() => {
     if (status === "loading") return;
     loadNotifications();
   }, [status, loadNotifications]);
 
-  // Listen for subscription events to refresh the bell
-  useEffect(() => {
-    const handler = () => loadNotifications();
-    window.addEventListener("subscriptions-update", handler);
-    return () => window.removeEventListener("subscriptions-update", handler);
+  // Area 3: force-refresh when subscribedSlugs change (new subscription created)
+  const forceLoad = useCallback(async () => {
+    syncedForUser.current = null; // invalidate cache
+    await loadNotifications();
   }, [loadNotifications]);
+
+  useEffect(() => {
+    if (status === "loading") return;
+    // Only force-refresh on subsequent changes (not on initial mount — initial load covers it)
+    if (syncedForUser.current !== null) forceLoad();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subscribedSlugs, status, forceLoad]);
 
   // Close drawer on outside click
   useEffect(() => {
@@ -99,31 +122,44 @@ export function NotificationsBell() {
     };
   }, [open]);
 
-  // ── Mark as read ───────────────────────────────────────────────────────
+  // ── Mark as read (Area 2: rollback + toast on failure) ─────────────────
   const markRead = useCallback(
     async (item: NotificationItem) => {
+      // Capture prev state before optimistic update
+      const prev = items;
+
       // Optimistic local update
-      setItems((prev) =>
-        prev.map((n) => (n.id === item.id ? { ...n, read: true } : n))
+      setItems((p) =>
+        p.map((n) => (n.id === item.id ? { ...n, read: true } : n))
       );
 
       if (isAuthed) {
-        fetch("/api/notifications", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ids: [item.id] }),
-        }).catch(() => {});
+        try {
+          const res = await fetch("/api/notifications", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ids: [item.id] }),
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          // Navigate only on success
+          setOpen(false);
+          router.push(`/project/${item.slug}`);
+        } catch {
+          // Revert and toast — do NOT navigate
+          setItems(prev);
+          toast({ title: "Couldn't mark as read", description: "Please try again.", variant: "destructive" });
+        }
       } else {
+        // Anon — localStorage write (rare failure)
         const updated = readLocalNotifs().map((n) =>
           n.id === item.id ? { ...n, read: true } : n
         );
         writeLocalNotifs(updated);
+        setOpen(false);
+        router.push(`/project/${item.slug}`);
       }
-
-      setOpen(false);
-      router.push(`/project/${item.slug}`);
     },
-    [isAuthed, router]
+    [isAuthed, router, items, toast]
   );
 
   return (

@@ -1,8 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useSession } from "next-auth/react";
+import { useState, useEffect, useRef } from "react";
 import { Heart, Share2, ArrowLeftRight, Link2, Check, X } from "lucide-react";
+import { useFavorites as _useFavorites } from "@/context/FavoritesContext";
+import { useCompare as _useCompare } from "@/context/CompareContext";
+
+// Re-export from context so existing import paths keep working
+export { useFavorites } from "@/context/FavoritesContext";
+export { useCompare } from "@/context/CompareContext";
 
 // ─── Outside-click hook ──────────────────────────────────────────────────────
 
@@ -19,175 +24,6 @@ function useOutsideClick(ref: React.RefObject<HTMLElement | null>, handler: () =
       document.removeEventListener("touchstart", listener);
     };
   }, [ref, handler]);
-}
-
-// ─── Favorites ───────────────────────────────────────────────────────────────
-
-const FAV_KEY = "binayah_favorites";
-
-export function useFavorites() {
-  const { data: session, status } = useSession();
-  const [ids, setIds] = useState<string[]>([]);
-  const synced = useRef(false);
-
-  // Load: DB when authed, localStorage when not
-  useEffect(() => {
-    if (status === "loading") return;
-
-    if (session?.user?.id) {
-      // Authenticated — fetch from DB, merge localStorage, clear localStorage
-      const merge = async () => {
-        try {
-          const res = await fetch("/api/favorites");
-          const data = res.ok ? await res.json() : { ids: [] };
-          const dbIds: string[] = data.ids ?? [];
-
-          const local = (() => {
-            try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]") as string[]; }
-            catch { return []; }
-          })();
-
-          const merged = Array.from(new Set([...dbIds, ...local]));
-
-          // Push any localStorage-only ids to DB
-          const toSync = local.filter((id) => !dbIds.includes(id));
-          await Promise.all(toSync.map((id) => fetch("/api/favorites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })));
-
-          if (local.length > 0) localStorage.removeItem(FAV_KEY);
-          setIds(merged);
-          synced.current = true;
-        } catch {
-          /* fall back to localStorage */
-          try {
-            const stored = localStorage.getItem(FAV_KEY);
-            if (stored) setIds(JSON.parse(stored));
-          } catch { /* ignore */ }
-        }
-      };
-      merge();
-    } else {
-      // Unauthenticated — use localStorage
-      try {
-        const stored = localStorage.getItem(FAV_KEY);
-        if (stored) setIds(JSON.parse(stored));
-      } catch { /* ignore */ }
-    }
-  }, [session?.user?.id, status]);
-
-  // Listen for cross-instance updates (both authed and unauthed)
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail?.authed) {
-        setIds(detail.ids);
-      } else {
-        try {
-          const stored = localStorage.getItem(FAV_KEY);
-          setIds(stored ? JSON.parse(stored) : []);
-        } catch { /* ignore */ }
-      }
-    };
-    window.addEventListener("favorites-update", handler);
-    return () => window.removeEventListener("favorites-update", handler);
-  }, []);
-
-  const toggle = useCallback(async (id: string) => {
-    if (session?.user?.id) {
-      // Optimistic update then DB write
-      setIds((prev) => {
-        const removing = prev.includes(id);
-        const next = removing ? prev.filter((x) => x !== id) : [...prev, id];
-        fetch("/api/favorites", {
-          method: removing ? "DELETE" : "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id }),
-        }).catch(() => { /* ignore */ });
-        // Defer the dispatch so it doesn't fire synchronously inside the state
-        // updater — that triggers the React "Cannot update a component while
-        // rendering a different component" warning (e.g. Navbar re-renders
-        // while FavoritesDrawer is mid-render).
-        queueMicrotask(() => {
-          window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: next, authed: true } }));
-        });
-        return next;
-      });
-    } else {
-      setIds((prev) => {
-        const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
-        localStorage.setItem(FAV_KEY, JSON.stringify(next));
-        // Same deferral — avoid synchronous cross-component dispatch during render.
-        queueMicrotask(() => {
-          window.dispatchEvent(new Event("favorites-update"));
-        });
-        return next;
-      });
-    }
-  }, [session?.user?.id]);
-
-  const clear = useCallback(async () => {
-    if (session?.user?.id) {
-      const current = ids;
-      setIds([]);
-      await Promise.all(current.map((id) =>
-        fetch("/api/favorites", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
-      ));
-      window.dispatchEvent(new CustomEvent("favorites-update", { detail: { ids: [], authed: true } }));
-    } else {
-      setIds([]);
-      localStorage.removeItem(FAV_KEY);
-      window.dispatchEvent(new Event("favorites-update"));
-    }
-  }, [session?.user?.id, ids]);
-
-  return { ids, toggle, clear, has: (id: string) => ids.includes(id) };
-}
-
-// ─── Compare ────────────────────────────────────────────────────────────────
-
-const CMP_KEY = "binayah_compare";
-
-export function useCompare() {
-  const [ids, setIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CMP_KEY);
-      if (stored) setIds(JSON.parse(stored));
-    } catch {
-      /* ignore */
-    }
-    const handler = () => {
-      try {
-        const stored = localStorage.getItem(CMP_KEY);
-        setIds(stored ? JSON.parse(stored) : []);
-      } catch {
-        /* ignore */
-      }
-    };
-    window.addEventListener("compare-update", handler);
-    return () => window.removeEventListener("compare-update", handler);
-  }, []);
-
-  const toggle = useCallback((id: string) => {
-    setIds((prev) => {
-      const next = prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : prev.length < 3
-          ? [...prev, id]
-          : prev;
-      localStorage.setItem(CMP_KEY, JSON.stringify(next));
-      window.dispatchEvent(new Event("compare-update"));
-      return next;
-    });
-  }, []);
-
-  const clear = useCallback(() => {
-    setIds([]);
-    localStorage.removeItem(CMP_KEY);
-    window.dispatchEvent(new Event("compare-update"));
-  }, []);
-
-  return { ids, toggle, clear, has: (id: string) => ids.includes(id) };
 }
 
 // ─── Share ───────────────────────────────────────────────────────────────────
@@ -266,8 +102,8 @@ interface CardActionsProps {
 }
 
 export function CardActions({ propertyId, slug, title, type = "property" }: CardActionsProps) {
-  const { toggle: toggleFav, has: hasFav } = useFavorites();
-  const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = useCompare();
+  const { toggle: toggleFav, has: hasFav } = _useFavorites();
+  const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = _useCompare();
   const [shareOpen, setShareOpen] = useState(false);
   const isFav = hasFav(propertyId);
   const isCmp = hasCmp(propertyId);
@@ -352,8 +188,8 @@ interface DetailActionsProps {
 }
 
 export function DetailActions({ propertyId, slug, title, type = "property", variant = "light" }: DetailActionsProps) {
-  const { toggle: toggleFav, has: hasFav } = useFavorites();
-  const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = useCompare();
+  const { toggle: toggleFav, has: hasFav } = _useFavorites();
+  const { toggle: toggleCmp, has: hasCmp, ids: cmpIds } = _useCompare();
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const isFav = hasFav(propertyId);
