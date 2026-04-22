@@ -818,12 +818,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                               {/* Floor plan side */}
                               {(() => {
-                                // Match floor plan by unit type name; fall back to index-based floor_plans
+                                // Match floor plan: title match first, then fuzzy beds match, then index fallback
+                                const unitName = (activeUnit?.name || "").toLowerCase();
                                 const floorPlanImg =
                                   project.floorPlans?.find((fp: any) =>
-                                    fp.type === activeUnit?.name &&
-                                    (!fp.propertyType || fp.propertyType === activePropertyType)
+                                    fp.title?.toLowerCase() === unitName
                                   )?.image ||
+                                  project.floorPlans?.find((fp: any) =>
+                                    unitName && fp.title?.toLowerCase().includes(unitName.split(" ")[0])
+                                  )?.image ||
+                                  project.floorPlans?.[clampedUnitTab]?.image ||
                                   project.floor_plans?.[clampedUnitTab] ||
                                   null;
                                 return (
