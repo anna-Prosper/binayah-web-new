@@ -250,12 +250,12 @@
         "titleItalic": "Наши клиенты"
       },
       "offPlan": {
-        "label": "Off Plan",
+        "label": "Новостройки",
         "title": "Актуальные",
         "titleItalic": "проекты",
         "viewAll": "Все проекты",
         "newLaunches": "Новые запуски",
-        "offPlan": "Off-Plan",
+        "offPlan": "Новостройки",
         "projectsItalic": "проекты",
         "from": "От",
         "subtitle": "Новостройки Дубая: инвестируйте в лучшие объекты по ценам сегодняшнего дня."
@@ -1336,7 +1336,7 @@
     }
   },
   "marketDashboard": {
-    "title": "недвижимости Дубая",
+    "title": "Панель управления",
     "label": "Данные рынка в реальном времени",
     "avgPrice": "Ср. цена",
     "transactions": "Сделок",
