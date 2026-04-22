@@ -593,39 +593,51 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           return (
                             <motion.div
                               key={idx}
-                              initial={{ opacity: 0, y: 16 }}
+                              initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.35, delay: idx * 0.08 }}
-                              className="group relative rounded-2xl overflow-hidden border border-accent/25 bg-card shadow-sm hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 p-5 sm:p-6 flex flex-col gap-4"
+                              transition={{ duration: 0.4, delay: idx * 0.1 }}
+                              className="group relative rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
                             >
-                              {/* Gold glow on hover */}
-                              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                                style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(184,146,47,0.08) 0%, transparent 70%)" }} />
+                              {/* Top accent stripe — green-to-gold */}
+                              <div className="h-[3px] w-full shrink-0"
+                                style={{ background: "linear-gradient(90deg, #0B5E41 0%, #1A9068 40%, #D4A847 100%)" }} />
 
-                              {/* Top row: icon circle + badge */}
-                              <div className="flex items-start justify-between">
-                                <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                                  style={{ background: "linear-gradient(135deg, rgba(184,146,47,0.15) 0%, rgba(212,168,71,0.1) 100%)", border: "1px solid rgba(184,146,47,0.25)" }}>
-                                  <OfferIcon className="h-5 w-5 text-accent" />
+                              <div className="p-5 sm:p-6 flex flex-col gap-4 flex-1">
+                                {/* Icon + badge row */}
+                                <div className="flex items-start justify-between gap-2">
+                                  {/* Green gradient icon */}
+                                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm"
+                                    style={{ background: "linear-gradient(135deg, #0B5E41 0%, #1A9068 100%)" }}>
+                                    <OfferIcon className="h-5 w-5 text-white" strokeWidth={2} />
+                                  </div>
+                                  {offer.badge && (
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest text-white shrink-0 mt-0.5 shadow-sm"
+                                      style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)" }}>
+                                      <Sparkles className="h-2 w-2" />
+                                      {offer.badge}
+                                    </span>
+                                  )}
                                 </div>
-                                {offer.badge && (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest text-white"
-                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)" }}>
-                                    <Sparkles className="h-2 w-2" />
-                                    {offer.badge}
-                                  </span>
-                                )}
-                              </div>
 
-                              {/* Stat */}
-                              <div>
-                                <p className="text-3xl sm:text-4xl font-extrabold leading-none mb-1"
-                                  style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 60%, #B8922F 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                                  {offer.title}
-                                </p>
-                                {offer.description && (
-                                  <p className="text-sm font-medium text-foreground/70 leading-snug mt-1.5">{offer.description}</p>
-                                )}
+                                {/* Divider */}
+                                <div className="h-px bg-border/50" />
+
+                                {/* Stat + description */}
+                                <div className="space-y-1.5">
+                                  <p className="text-3xl sm:text-4xl font-extrabold leading-none tracking-tight"
+                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 55%, #B8922F 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                                    {offer.title}
+                                  </p>
+                                  {offer.description && (
+                                    <p className="text-sm font-medium text-foreground/65 leading-snug">{offer.description}</p>
+                                  )}
+                                </div>
+
+                                {/* Bottom tag */}
+                                <div className="mt-auto flex items-center gap-1.5 text-[10px] font-semibold text-primary/60 uppercase tracking-wider">
+                                  <CheckCircle2 className="h-3 w-3" />
+                                  {t("exclusiveOffers")}
+                                </div>
                               </div>
                             </motion.div>
                           );
