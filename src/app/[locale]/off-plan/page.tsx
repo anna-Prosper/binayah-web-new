@@ -1,4 +1,9 @@
 import OffPlanPageClient from "@/app/off-plan/OffPlanPageClient";
+
+export const metadata = {
+  title: "Off-Plan Properties in Dubai | Binayah Properties",
+  description: "Discover Dubai's best off-plan developments. High-ROI projects in prime locations with flexible payment plans. Browse with Binayah Properties.",
+};
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 300;
