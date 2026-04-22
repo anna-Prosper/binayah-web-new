@@ -80,7 +80,7 @@
   "home": {
     "hero": {
       "title": "Find Your Dream Property in Dubai",
-      "subtitle": "Luxury homes, off-plan investments, and expert guidance — from Dubai's most trusted real estate agency.",
+      "subtitle": "Luxury homes, off-plan investments, and expert guidance from Dubai's most trusted real estate agency.",
       "searchPlaceholder": "Search by community, project or developer...",
       "companyName": "Binayah Properties",
       "dubaiItalic": "Dubai",
@@ -171,7 +171,7 @@
         "label": "Property Management",
         "title": "Complete Property",
         "titleItalic": "Management",
-        "subtitle": "Your investment, protected and profitable — our RERA-certified team handles everything.",
+        "subtitle": "Your investment is protected and profitable: our RERA-certified team handles everything.",
         "titleMobile": "Our Services",
         "viewAll": "View All Services",
         "handover": "Handover & Snagging",
@@ -213,7 +213,7 @@
         "suggestedList": "Suggested List",
         "headlineStart": "What's Your Property",
         "headlineEnd": "Really Worth?",
-        "subline": "Get an AI-driven valuation in under 60 seconds — completely free.",
+        "subline": "Get an AI-driven valuation in under 60 seconds, completely free.",
         "sampleLabel": "Sample Valuation",
         "highConfidence": "High Confidence",
         "marketYear": "Dubai Real Estate 2025",
@@ -233,7 +233,7 @@
         "commissionOnly": "Commission only on completion",
         "headlineStart": "Your property,",
         "headlineGold": "everywhere at once.",
-        "bodyText": "One listing goes live on the UAE's top portals simultaneously. No juggling multiple accounts — your dedicated agent does it all.",
+        "bodyText": "One listing goes live on the UAE's top portals simultaneously. No juggling multiple accounts: your dedicated agent does it all.",
         "multiPortalLabel": "Binayah Multi-Portal Listing"
       },
       "testimonials": {
@@ -250,7 +250,7 @@
         "offPlan": "Off-Plan",
         "projectsItalic": "Projects",
         "from": "From",
-        "subtitle": "Explore Dubai's freshest off-plan developments — high-ROI projects in the city's most sought-after locations."
+        "subtitle": "Explore Dubai's freshest off-plan developments: high-ROI projects in the city's most sought-after locations."
       }
     }
   },
@@ -295,7 +295,7 @@
     "developer": "Developer",
     "units": "Units",
     "allProjects": "All Projects",
-    "subtitleWithCount": "Explore Dubai's latest off-plan developments — {count} projects available.",
+    "subtitleWithCount": "Explore Dubai's latest off-plan developments. {count} projects available.",
     "loadingMore": "Loading more projects...",
     "showingAll": "Showing all {count} projects"
   },
@@ -310,7 +310,7 @@
     "loadingMore": "Loading more...",
     "loadMore": "Load More",
     "showingAll": "Showing all {count} properties",
-    "subtitleWithCount": "{subtitle} — {count} properties available.",
+    "subtitleWithCount": "{subtitle}, {count} properties available.",
     "rentalsLabel": "Rentals",
     "secondaryMarketLabel": "Secondary Market",
     "forRent": "For Rent",
@@ -348,7 +348,7 @@
     "noMatch": "No confident match yet. Keep typing or fill the fields below.",
     "or": "or",
     "uploadTitleDeed": "Upload title deed",
-    "uploadDesc": "PDF, PNG, JPG, WEBP or GIF — we'll extract the property details automatically",
+    "uploadDesc": "PDF, PNG, JPG, WEBP or GIF. We'll extract the property details automatically.",
     "optional": "Optional",
     "city": "City",
     "required": "Required",
@@ -396,11 +396,11 @@
     "movingFactors": "What can move this estimate",
     "movingFactorsDesc": "Common reasons real-world pricing can shift",
     "wantAppraisal": "Want a formal appraisal?",
-    "appraisalDesc": "Our RERA-certified valuation experts provide a formal appraisal with an on-site inspection — suitable for selling, financing, or legal purposes.",
+    "appraisalDesc": "Our RERA-certified valuation experts provide a formal appraisal with an on-site inspection, suitable for selling, financing, or legal purposes.",
     "whatsappInquiry": "WhatsApp Inquiry",
     "callNow": "Call Now",
     "unlockTitle": "Unlock the full report",
-    "unlockSubtitle": "Unlock online — PDF delivered to your email or WhatsApp",
+    "unlockSubtitle": "Unlock online. PDF delivered to your email or WhatsApp.",
     "unlockDesc": "Enter your name and at least one contact. We'll unlock the report instantly and send the same PDF to your email and/or WhatsApp.",
     "pdfToEmail": "PDF delivered to the email address you enter.",
     "whatsappPdfDesc": "If that number hasn't already messaged us on WhatsApp, we'll ask you to send a quick Hi first, then deliver the PDF automatically.",
@@ -445,12 +445,12 @@
     "officeLabel": "Office"
   },
   "footer": {
-    "tagline": "Dubai's trusted real estate partner — buying, selling, and renting since 2010.",
+    "tagline": "Dubai's trusted real estate partner for buying, selling, and renting since 2010.",
     "quickLinks": "Quick Links",
     "services": "Services",
     "contact": "Contact",
     "rights": "All rights reserved.",
-    "taglineExtended": "Binayah Real Estate — Dubai's trusted property partner. We connect clients with exceptional homes and investments.",
+    "taglineExtended": "Binayah Real Estate, Dubai's trusted property partner. We connect clients with exceptional homes and investments.",
     "properties": "Properties",
     "company": "Company",
     "contactUs": "Contact Us",
@@ -488,7 +488,7 @@
     "heroLabel": "About Us",
     "heroTitle": "Dubai's Trusted",
     "heroTitleItalic": "Property Partner",
-    "heroSubtitle": "For over 15 years, Binayah has matched clients with exceptional homes and high-yield investments across Dubai — powered by AI, guided by experts.",
+    "heroSubtitle": "For over 15 years, Binayah has matched clients with exceptional homes and high-yield investments across Dubai, powered by AI and guided by experts.",
     "statsYears": "Years of Experience",
     "statsClients": "Happy Clients",
     "statsNationalities": "Nationalities Served",
@@ -667,7 +667,7 @@
     "heroLabel": "List Your Property",
     "heroTitle": "Sell or Rent",
     "heroTitleItalic": "Your Property",
-    "heroSubtitle": "Our expert team handles everything — from valuation to closing the deal.",
+    "heroSubtitle": "Our expert team handles everything from valuation to closing the deal.",
     "submittingAs": "Submitting as",
     "form": {
       "propertyType": "Property Type *",
@@ -775,7 +775,7 @@
     "preferredContact": "Preferred Contact Method",
     "responseTime": "We'll respond within 2 hours",
     "scheduleCall": "Schedule a Video Consultation",
-    "scheduleCallDesc": "Book a free video call with our property consultant — no obligation",
+    "scheduleCallDesc": "Book a free video call with our property consultant, no obligation.",
     "startingPrice": "Starting Price",
     "titleType": "Title Type",
     "ownership": "Ownership",
@@ -1016,7 +1016,7 @@
     "heroLabel": "What We Offer",
     "heroTitle": "Comprehensive Property",
     "heroTitleItalic": "Services",
-    "heroSubtitle": "From finding your dream home to managing your entire portfolio — end-to-end real estate services backed by 15+ years of Dubai market expertise.",
+    "heroSubtitle": "From finding your dream home to managing your entire portfolio: end-to-end real estate services backed by 15+ years of Dubai market expertise.",
     "learnMore": "Learn more",
     "getStarted": "Get Started",
     "contactUs": "Contact Us",
@@ -1043,17 +1043,17 @@
     "addLabel": "Real Estate Services",
     "addTitle": "More Than",
     "addTitleItalic": "Management",
-    "addSubtitle": "Whether you're buying, selling, renting, or investing — our full-service approach covers every angle.",
+    "addSubtitle": "Whether you're buying, selling, renting, or investing, our full-service approach covers every angle.",
     "whyLabel": "Why Binayah",
     "whyTitle": "Trusted by",
     "whyTitleItalic": "Thousands",
     "faqTitle": "Common",
     "faqTitleItalic": "Questions",
     "ctaTitle": "Need a Custom Solution?",
-    "ctaSubtitle": "Whether you own one unit or an entire portfolio — we'll build a tailored plan that maximises your returns.",
+    "ctaSubtitle": "Whether you own one unit or an entire portfolio, we'll build a tailored plan that maximises your returns.",
     "whatsappUs": "WhatsApp Us",
     "scheduleCall": "Schedule a Call",
-    "reraNote": "RERA Registration No. 1162 — Real Estate Regulation Authority of Dubai"
+    "reraNote": "RERA Registration No. 1162, Real Estate Regulation Authority of Dubai"
   },
   "constructionUpdates": {
     "heroLabel": "Progress Reports",
@@ -1127,11 +1127,11 @@
     "sendButton": "Send Inquiry",
     "sending": "Sending…",
     "sent": "Enquiry Sent!",
-    "reraNotice": "RERA Registration No. 1162 — Real Estate Regulation Authority of Dubai"
+    "reraNotice": "RERA Registration No. 1162, Real Estate Regulation Authority of Dubai"
   },
   "newsletter": {
     "title": "Stay Ahead of the Market",
-    "subtitle": "New projects, price shifts, and market insights — delivered to your inbox",
+    "subtitle": "New projects, price shifts, and market insights, delivered to your inbox.",
     "titleMobile": "Stay ahead of the Dubai market",
     "placeholder": "Your email address",
     "button": "Subscribe",
@@ -1206,12 +1206,12 @@
     "close": "Close",
     "toasts": {
       "subscribedSuccess": "Subscribed! Check your email for confirmation.",
-      "alreadySubscribed": "You're already subscribed — check your inbox.",
-      "alreadySubscribedAnon": "Already subscribed — check your inbox.",
-      "subscribeError": "Could not subscribe — please try again.",
-      "networkError": "Network error — please try again.",
-      "tooManyRequests": "Too many requests — please try again later.",
-      "unsubscribeError": "Could not unsubscribe — please try again."
+      "alreadySubscribed": "You're already subscribed. Check your inbox.",
+      "alreadySubscribedAnon": "Already subscribed. Check your inbox.",
+      "subscribeError": "Could not subscribe. Please try again.",
+      "networkError": "Network error. Please try again.",
+      "tooManyRequests": "Too many requests. Please try again later.",
+      "unsubscribeError": "Could not unsubscribe. Please try again."
     },
     "stayUpdated": "Stay Updated",
     "benefits": {
@@ -1363,7 +1363,7 @@
     "titleStart": "Know your property's",
     "titleGold": "true value",
     "titleEnd": "in minutes.",
-    "subtitle": "Our AI analyses recent sales, active listings, and market trends to give you a data-backed valuation — not a guess.",
+    "subtitle": "Our AI analyses recent sales, active listings, and market trends to give you a data-backed valuation, not a guess.",
     "getValuation": "Get Free Valuation",
     "uploadDeed": "Upload Title Deed"
   },
@@ -1371,7 +1371,7 @@
     "ownerTool": "Owner Tool",
     "instantProperty": "Instant Property",
     "valuationItalic": "Valuation",
-    "subtitle": "AI-powered pricing snapshot built from live Dubai market data — fair value, suggested list, and quick-sale range in under two minutes.",
+    "subtitle": "AI-powered pricing snapshot built from live Dubai market data: fair value, suggested list, and quick-sale range in under two minutes.",
     "ctaTitle": "Get your free valuation",
     "ctaSub": "2 minutes · No signup required",
     "step": "Step",
