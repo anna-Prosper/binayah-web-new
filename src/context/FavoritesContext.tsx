@@ -121,6 +121,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       try {
         await Promise.all(prev.map((id) =>
           fetch("/api/favorites", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
+            .then((r) => { if (!r.ok) throw new Error(String(r.status)); })
         ));
       } catch {
         setIds(prev);

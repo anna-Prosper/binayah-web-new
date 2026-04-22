@@ -81,7 +81,7 @@ export function SubscribeButton({
 
   // Shared subscription state — module-level dedup ensures this runs once
   // even when multiple SubscribeButton instances exist on the same page.
-  const { subscribedSlugs, refresh: refreshSubs } = useProjectSubscriptions();
+  const { subscribedSlugs, refresh: refreshSubs, isPending } = useProjectSubscriptions();
 
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -281,11 +281,11 @@ export function SubscribeButton({
       <button
         onClick={handleClick}
         aria-label={subscribed ? "Unsubscribe from project updates" : "Subscribe to project updates"}
-        disabled={loading}
+        disabled={loading || isPending(slug)}
         className={variant === "cta" ? ctaBaseClass : buttonClass}
         style={ctaStyle}
       >
-        {loading ? (
+        {loading || isPending(slug) ? (
           <Loader2 className="h-3.5 w-3.5 animate-spin" />
         ) : (
           <Icon className={`h-3.5 w-3.5 ${subscribed ? "fill-current" : ""}`} />
