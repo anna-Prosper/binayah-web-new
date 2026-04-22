@@ -768,10 +768,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   project.floor_plans?.[clampedUnitTab] ||
                                   null;
                                 return (
-                                  <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
+                                  <div className="md:col-span-2 relative bg-muted/20 flex flex-col items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
                                     {floorPlanImg ? (
-                                      <>
-                                        <div className="relative w-full h-full p-4">
+                                      <div className="flex flex-col w-full h-full">
+                                        <div className="relative flex-1 p-4" style={{ minHeight: 200 }}>
                                           <NextImage
                                             src={floorPlanImg as string}
                                             alt={`${activeUnit?.name} floor plan`}
@@ -780,12 +780,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                             className="object-contain"
                                           />
                                         </div>
-                                        <div className="absolute bottom-4 left-4">
-                                          <span className="inline-flex px-3 py-1.5 rounded-full text-xs font-bold bg-white/90 text-primary backdrop-blur-sm shadow-sm border border-border/30">
-                                            {activeUnit?.name} Floor Plan
-                                          </span>
+                                        <div className="px-4 pb-4">
+                                          <a
+                                            href={floorPlanImg as string}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            download
+                                            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-primary border border-primary/25 transition-all hover:bg-primary hover:text-white hover:border-transparent hover:shadow-md group"
+                                          >
+                                            <Download className="h-3.5 w-3.5 group-hover:translate-y-0.5 transition-transform" />
+                                            Download Floor Plan
+                                          </a>
                                         </div>
-                                      </>
+                                      </div>
                                     ) : (
                                       <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
                                         <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -1062,124 +1069,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                     </div>
                   )}
-
-                  {/* Floor Plans - Dedicated Section */}
-                  {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const floorPlanUnits = project.unitTypes.map((ut: string, idx: number) => {
-                      const bedroomMatch = ut.match(/(\d+)/);
-                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                      const bathrooms = Math.max(1, bedrooms);
-                      const baseSize = Number(project.unitSizeMin) || 400;
-                      const maxSize = Number(project.unitSizeMax) || 2500;
-                      const totalTypes = project.unitTypes!.length;
-                      const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
-                      const unitSize = Math.round(baseSize + sizeStep * idx);
-                      const balconyArea = Math.round(unitSize * 0.08);
-                      const totalArea = unitSize + balconyArea;
-                      return { name: ut, bedrooms, bathrooms, unitSize, balconyArea, totalArea };
-                    });
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="mb-4 sm:mb-8">
-                          <div className="flex items-center gap-2.5 mb-2">
-                            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                              <FileText className="h-4.5 w-4.5 text-primary" />
-                            </div>
-                            <div>
-                              <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Layouts</p>
-                              <h2 className="text-lg sm:text-xl font-bold text-foreground">Floor Plans</h2>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Unit type tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-4 mb-4 sm:mb-8 scrollbar-hide -mx-2 px-2">
-                          {floorPlanUnits.map((unit, i) => (
-                            <button
-                              key={unit.name}
-                              onClick={() => setActiveFloorPlanTab(i)}
-                              className={`flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-                                activeFloorPlanTab === i
-                                  ? "text-white shadow-md"
-                                  : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
-                              }`}
-                              style={activeFloorPlanTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
-                            >
-                              {unit.name}
-                            </button>
-                          ))}
-                        </div>
-
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={activeFloorPlanTab}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -12 }}
-                            transition={{ duration: 0.25 }}
-                          >
-                            {/* Large floor plan / unit image area */}
-                            <div
-                              className="w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl overflow-hidden border border-border/50"
-                              role="img"
-                              aria-label={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
-                            >
-                              {project.floor_plans && project.floor_plans[activeFloorPlanTab] ? (
-                                <NextImage
-                                  src={project.floor_plans[activeFloorPlanTab]}
-                                  alt={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
-                                  fill
-                                  sizes="(max-width: 768px) 100vw, 60vw"
-                                  className="object-contain rounded-2xl"
-                                />
-                              ) : (
-                                <FloorPlanPlaceholder
-                                  bedrooms={floorPlanUnits[activeFloorPlanTab]?.bedrooms || 0}
-                                  unitName={floorPlanUnits[activeFloorPlanTab]?.name || ""}
-                                  sqft={floorPlanUnits[activeFloorPlanTab]?.unitSize || 0}
-                                />
-                              )}
-                            </div>
-
-                            {/* Details row */}
-                            <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mt-3 sm:mt-4 mb-4 sm:mb-6">
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Ruler className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.unitSize.toLocaleString()}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">sqft</p>
-                              </div>
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Bed className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bedrooms === 0 ? "Studio" : floorPlanUnits[activeFloorPlanTab]?.bedrooms}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Beds</p>
-                              </div>
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bathrooms}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Baths</p>
-                              </div>
-                            </div>
-                            {/* Total area bar */}
-                            <div className="flex items-center justify-between bg-muted/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 mb-4 sm:mb-6">
-                              <div className="flex items-center gap-2">
-                                <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                                <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Total Area</span>
-                              </div>
-                              <span className="text-sm sm:text-base font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.totalArea.toLocaleString()} sqft</span>
-                            </div>
-
-                            {/* Download button */}
-                            <button className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold text-primary border-2 border-primary/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] group">
-                              <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-y-0.5 transition-transform" />
-                              <span className="hidden sm:inline">Download Floor Plan PDF — {floorPlanUnits[activeFloorPlanTab]?.name}</span>
-                              <span className="sm:hidden">Download {floorPlanUnits[activeFloorPlanTab]?.name} PDF</span>
-                            </button>
-                          </motion.div>
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })()}
-
 
                   {/* Payment Plan Visual Timeline */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
