@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { OrganizationJsonLd } from "@/components/JsonLd";
@@ -79,6 +80,7 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html
@@ -88,7 +90,7 @@ export default async function LocaleLayout({
       className={`${jakarta.variable} ${playfair.variable} ${notoArabic.variable}`}
     >
       <body className={jakarta.className}>
-        <OrganizationJsonLd />
+        <OrganizationJsonLd nonce={nonce} />
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <FavoritesProvider>

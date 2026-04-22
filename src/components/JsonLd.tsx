@@ -1,4 +1,4 @@
-export function OrganizationJsonLd() {
+export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
@@ -46,12 +46,13 @@ export function OrganizationJsonLd() {
   return (
     <script
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
 }
 
-export function BreadcrumbJsonLd({ items }: { items: { name: string; href: string }[] }) {
+export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -66,12 +67,13 @@ export function BreadcrumbJsonLd({ items }: { items: { name: string; href: strin
   return (
     <script
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
 }
 
-export function FAQJsonLd({ faqs }: { faqs: { question: string; answer: string }[] }) {
+export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -88,6 +90,7 @@ export function FAQJsonLd({ faqs }: { faqs: { question: string; answer: string }
   return (
     <script
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
@@ -95,8 +98,10 @@ export function FAQJsonLd({ faqs }: { faqs: { question: string; answer: string }
 
 export function ReviewJsonLd({
   reviews,
+  nonce,
 }: {
   reviews: { author: string; reviewBody: string; ratingValue: number }[];
+  nonce?: string;
 }) {
   const avg =
     reviews.reduce((sum, r) => sum + r.ratingValue, 0) / reviews.length;
@@ -126,6 +131,7 @@ export function ReviewJsonLd({
   return (
     <script
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
@@ -142,6 +148,7 @@ export function RealEstateListingJsonLd({
   bedrooms,
   bathrooms,
   size,
+  nonce,
 }: {
   name: string;
   description: string;
@@ -153,6 +160,7 @@ export function RealEstateListingJsonLd({
   bedrooms?: number;
   bathrooms?: number;
   size?: number;
+  nonce?: string;
 }) {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -188,6 +196,7 @@ export function RealEstateListingJsonLd({
   return (
     <script
       type="application/ld+json"
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
