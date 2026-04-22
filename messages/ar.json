@@ -98,7 +98,13 @@
       "filterBudget": "ميزانيتك",
       "match": "تطابق",
       "looksLikeQuestion": "يبدو هذا سؤالًا. سيفتح البحث Binayah AI.",
-      "clearSelection": "مسح الاختيار"
+      "clearSelection": "مسح الاختيار",
+      "typewriterPhrases": [
+        "عقارات من أجل",
+        "حياة ذكية في",
+        "مستقبلك في",
+        "بحث ذكي لـ"
+      ]
     },
     "featured": "عقارات مختارة",
     "offPlan": "مشاريع على الخارطة",
@@ -209,7 +215,11 @@
         "headlineEnd": "لعقارك؟",
         "subline": "احصل على تقييم ذكي خلال 60 ثانية — مجانًا.",
         "sampleLabel": "نموذج تقييم",
-        "highConfidence": "ثقة عالية"
+        "highConfidence": "ثقة عالية",
+        "marketYear": "عقارات دبي 2025",
+        "headlineGold": "احصل على تقييم مجاني",
+        "stripSubtitle": "تقييم عقاري بالذكاء الاصطناعي خلال 60 ثانية",
+        "mobileProof": "مجاني · فوري · لا يلزم تسجيل"
       },
       "listYourProperty": {
         "label": "بِع مع Binayah",

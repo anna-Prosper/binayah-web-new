@@ -98,7 +98,13 @@
       "filterBudget": "Ваш бюджет",
       "match": "совпадение",
       "looksLikeQuestion": "Похоже на вопрос. Поиск откроет Binayah AI.",
-      "clearSelection": "Сбросить"
+      "clearSelection": "Сбросить",
+      "typewriterPhrases": [
+        "Недвижимость для",
+        "Умная жизнь в",
+        "Ваше будущее в",
+        "ИИ-поиск для"
+      ]
     },
     "featured": "Избранные объекты",
     "offPlan": "Строящиеся проекты",
@@ -209,7 +215,11 @@
         "headlineEnd": "на самом деле?",
         "subline": "Оценка на основе ИИ за 60 секунд — бесплатно.",
         "sampleLabel": "Пример оценки",
-        "highConfidence": "Высокая уверенность"
+        "highConfidence": "Высокая уверенность",
+        "marketYear": "Недвижимость Дубая 2025",
+        "headlineGold": "Получите бесплатную оценку",
+        "stripSubtitle": "ИИ-оценка недвижимости за 60 секунд",
+        "mobileProof": "Бесплатно · Мгновенно · Без регистрации"
       },
       "listYourProperty": {
         "label": "Продайте с Binayah",

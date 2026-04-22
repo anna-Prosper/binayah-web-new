@@ -98,7 +98,13 @@
       "filterBudget": "Your Budget",
       "match": "match",
       "looksLikeQuestion": "This looks like a question. Search will open Binayah AI.",
-      "clearSelection": "Clear selection"
+      "clearSelection": "Clear selection",
+      "typewriterPhrases": [
+        "Properties For",
+        "Smart Living In",
+        "Your Future In",
+        "AI-Powered Search For"
+      ]
     },
     "featured": "Handpicked Properties",
     "offPlan": "Off-Plan Projects",
@@ -209,7 +215,11 @@
         "headlineEnd": "Really Worth?",
         "subline": "Get an AI-driven valuation in under 60 seconds — completely free.",
         "sampleLabel": "Sample Valuation",
-        "highConfidence": "High Confidence"
+        "highConfidence": "High Confidence",
+        "marketYear": "Dubai Real Estate 2025",
+        "headlineGold": "Get Your Free Valuation",
+        "stripSubtitle": "AI-powered property estimates in under 60 seconds",
+        "mobileProof": "Free · Instant · No Signup Required"
       },
       "listYourProperty": {
         "label": "Sell with Binayah",
