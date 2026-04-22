@@ -247,7 +247,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold rounded-md transition-all border border-white/10"
                 >
                   <span className="text-sm leading-none">{selectedLang.flag}</span>
-                  <span className="uppercase tracking-wide">{selectedLang.code === "in" ? "IN" : selectedLang.code.toUpperCase()}</span>
+                  <span className="uppercase tracking-wide">{selectedLang.code.toUpperCase()}</span>
                   <ChevronDown className={`h-2.5 w-2.5 transition-transform ${showLangDropdown ? "rotate-180" : ""}`} />
                 </button>
                 {showLangDropdown && (

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
-const LOCALES = ["en", "ru", "kz", "in"] as const;
+const LOCALES = ["en", "ru", "zh", "ar"] as const;
 
 function localeUrl(path: string, locale: string) {
   const prefix = locale === "en" ? "" : `/${locale}`;
