@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
 import { normalizePropertyType, requiresPropertyNameForPropertyType, valuationPropertyTypeOptions, } from "@/lib/property-types";
+import buildingsIndex from "@/data/buildings.json";
 const LOCATION_DATA = {
     Dubai: [
         { area: "Downtown Dubai", buildings: [
@@ -543,6 +544,20 @@ function parseValuationSearch(input) {
     const buildingPool = result.area
         ? getBuildings(cityKey, result.area).map((b) => ({ b, a: result.area, c: cityKey }))
         : buildAllAreas(searchCities);
+    // Full-input ranker first — preserves compound names like "Marina Gate" that the
+    // residual extractor would otherwise split after stripping the area keyword.
+    const fullInputRanked = rankBuildingMatches(buildingPool, input);
+    if (fullInputRanked[0] && fullInputRanked[0].score >= 60) {
+        const top = fullInputRanked[0];
+        result.unit = top.b;
+        if (!result.area)
+            result.area = top.a;
+        if (!result.city)
+            result.city = top.c;
+        if (!result.type)
+            result.type = inferTypeFromContext(top.b, top.a) ?? undefined;
+        return result;
+    }
     // Exact substring match (longest first)
     const found = buildingPool
         .sort((x, y) => y.b.length - x.b.length)
@@ -1219,8 +1234,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const smartPlacesQuery = smartParsed.unit && !isLikelyNoisyUnitCandidate(smartParsed.unit)
         ? smartParsed.unit
         : smartQuery || smartParsed.area || smartParsed.unit || "";
-    const { results: smartPlacesResults, loading: smartPlacesLoading } = usePlacesSearch(smartPlacesQuery, showSmartSuggestions, resolveApiUrl);
-    const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces, resolveApiUrl);
+    const { results: smartPlacesResults, loading: smartPlacesLoading } = usePlacesSearch(smartPlacesQuery, showSmartSuggestions);
+    const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
     const [unlocked, setUnlocked] = useState(false);
     const [gate, setGate] = useState({ name: "", phone: "", email: "" });
     const [gateErrors, setGateErrors] = useState({});
@@ -2212,7 +2227,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </p>)}
                     </div>
 
-                    {/* Building + Unit — Google Places live search with local fallback */}
+                    {/* Building + Unit — DLD buildings index live search */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         Building / Unit
@@ -2232,7 +2247,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 }
             }} placeholder={form.area ? `Search in ${form.area}…` : "Search any building, community, villa…"} autoComplete="off" className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${fieldErrors.unit ? "border-[#b42318]" : "border-[#e3ddcf] focus:border-[#0B3D2E]/40"}`}/>
 
-                        {/* Google Places results — shown when available */}
+                        {/* DLD buildings index results — shown when available */}
                         {showPlaces && placesResults.length > 0 && (<div ref={placesRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-64 overflow-y-auto">
                             <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[rgba(102,112,109,0.6)] bg-[rgba(244,239,231,0.3)] border-b border-[rgba(227,221,207,0.3)]">
                               Live results
@@ -2858,14 +2873,22 @@ function shouldRequestAIValuationParse(query, parsed, candidates) {
         return false;
     }
     const firstCandidate = candidates[0];
+    const queryLower = trimmedQuery.toLowerCase();
+    const unitLower = parsed.unit ? parsed.unit.toLowerCase() : "";
+    // Accept substring in either direction so numbered variants like "Marina Gate 1"
+    // still count as an exact detection when the user typed the base name "marina gate".
+    const unitOverlapsQuery = Boolean(unitLower && (queryLower.includes(unitLower) || unitLower.includes(queryLower)));
     const exactDetectedMatch = Boolean(firstCandidate &&
         firstCandidate.kind === "detected" &&
         parsed.unit &&
         firstCandidate.parsed.unit === parsed.unit &&
-        trimmedQuery.toLowerCase().includes(parsed.unit.toLowerCase()) &&
+        unitOverlapsQuery &&
         parsed.area &&
         parsed.city);
-    if (exactDetectedMatch && countParsedSmartFields(parsed) >= 4) {
+    // Skip AI when the local parser already nailed unit+area+city from the query.
+    // Type and beds often can't be inferred from a bare building name (e.g., "Burj Khalifa"),
+    // so requiring 4 fields over-triggers AI on trivially exact matches.
+    if (exactDetectedMatch && countParsedSmartFields(parsed) >= 3) {
         return false;
     }
     const missingCoreFields = !parsed.unit || !parsed.area || !parsed.type || !parsed.beds;
@@ -3021,7 +3044,45 @@ function normalizeSmartComparableValue(value) {
         .replace(/\s+/g, " ")
         .trim();
 }
-function usePlacesSearch(query, enabled, resolveApiUrl = defaultResolveApiUrl) {
+// Search DLD-derived buildings index (data/buildings.json) by building or area name.
+// Returns Google-Places-shaped records so the existing buildSmartSuggestions / dropdown
+// rendering logic works unchanged. Ranked by transaction volume (sales + rents).
+function searchBuildingsIndex(query, limit = 6) {
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) return [];
+    const tokens = q.split(/\s+/).filter((t) => t.length >= 2);
+    const scored = [];
+    for (const b of buildingsIndex.buildings) {
+        const bName = b.building.toLowerCase();
+        const bArea = b.area.toLowerCase();
+        let score = 0;
+        if (bName === q) score = 300;
+        else if (bName.startsWith(q)) score = 250;
+        else if (bArea.startsWith(q)) score = 200;
+        else if (bName.includes(q)) score = 175;
+        else if (bArea.includes(q)) score = 125;
+        else if (tokens.length >= 2 && tokens.every((t) => bName.includes(t) || bArea.includes(t))) score = 100;
+        if (score === 0) continue;
+        scored.push({ b, score });
+    }
+    scored.sort((x, y) => {
+        if (x.score !== y.score) return y.score - x.score;
+        return (y.b.sales + y.b.rents) - (x.b.sales + x.b.rents);
+    });
+    return scored.slice(0, limit).map(({ b }) => ({
+        placeId: `dld:${b.area}|${b.building}`.toLowerCase(),
+        building: b.building,
+        area: b.area,
+        city: b.city,
+        description: `${b.building}, ${b.area}, ${b.city}`,
+        sales: b.sales,
+        rents: b.rents,
+        units: b.units,
+    }));
+}
+// Autocomplete hook backed by the local DLD buildings index (no network, no Places API).
+// Kept under the `usePlacesSearch` name to avoid churn across the many call sites.
+function usePlacesSearch(query, enabled) {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const timerRef = useRef(null);
@@ -3030,25 +3091,13 @@ function usePlacesSearch(query, enabled, resolveApiUrl = defaultResolveApiUrl) {
             setResults([]);
             return;
         }
-        if (timerRef.current)
-            clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(async () => {
-            var _a;
-            setLoading(true);
-            try {
-                const res = await fetch(resolveApiUrl(`/api/places?q=${encodeURIComponent(query)}`));
-                const data = await res.json();
-                setResults((_a = data.predictions) !== null && _a !== void 0 ? _a : []);
-            }
-            catch (_b) {
-                setResults([]);
-            }
-            finally {
-                setLoading(false);
-            }
-        }, 300); // debounce 300ms
-        return () => { if (timerRef.current)
-            clearTimeout(timerRef.current); };
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setLoading(true);
+        timerRef.current = setTimeout(() => {
+            setResults(searchBuildingsIndex(query, 6));
+            setLoading(false);
+        }, 50); // tiny debounce — no network round-trip
+        return () => { if (timerRef.current) clearTimeout(timerRef.current); };
     }, [query, enabled]);
     return { results, loading };
 }
