@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Zap, Users, Camera, HeadphonesIcon, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const PORTALS = [
   { name: "Property Finder", color: "#E84043", bg: "rgba(232,64,67,0.12)" },
@@ -21,6 +22,7 @@ const BENEFITS = [
 ];
 
 export default function ListYourPropertySection() {
+  const t = useTranslations("home.sections.listYourProperty");
   return (
     <section className="py-16 sm:py-24 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,7 +37,7 @@ export default function ListYourPropertySection() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
               <Zap className="h-3.5 w-3.5 text-primary" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-primary">Sell or Rent With Us</span>
+              <span className="text-[11px] font-bold uppercase tracking-widest text-primary">{t("label")}</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
@@ -80,7 +82,7 @@ export default function ListYourPropertySection() {
               className="inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl text-white font-bold text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] group"
               style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 8px 30px rgba(212,168,71,0.35)" }}
             >
-              List My Property
+              {t("cta")}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>

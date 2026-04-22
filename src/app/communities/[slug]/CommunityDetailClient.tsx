@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Building, CalendarDays, ChevronRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { useTranslations } from "next-intl";
 
 const communityImages: Record<string, string> = {
   "downtown-dubai": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop",
@@ -27,6 +28,8 @@ interface Props {
 }
 
 export default function CommunityDetailPage({ slug, communityName, communityDescription, communityImage, projects }: Props) {
+  const t = useTranslations("communityDetail");
+  const tBreadcrumbs = useTranslations("breadcrumbs");
   const heroImage = communityImage || communityImages[slug] || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop";
   const desc = communityDescription || "";
 
@@ -40,9 +43,9 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">
           <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <Link href="/communities" className="hover:text-white transition-colors">Communities</Link>
+            <Link href="/communities" className="hover:text-white transition-colors">{t("breadcrumbCommunities")}</Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{communityName}</span>
           </div>
@@ -55,7 +58,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
 
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl font-bold text-foreground mb-8">Properties in {communityName} ({projects.length})</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-8">{t("properties")} {communityName} ({projects.length})</h2>
           {projects && projects.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.map((p, i) => (
@@ -80,9 +83,9 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
           ) : (
             <div className="text-center py-20 bg-card rounded-2xl border border-border/50">
               <MapPin className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">No properties listed in {communityName} yet.</p>
+              <p className="text-muted-foreground">{t("noProperties")}</p>
               <Link href="/communities" className="inline-flex items-center gap-2 text-primary font-semibold mt-4 hover:underline">
-                <ArrowLeft className="h-4 w-4" /> Browse all communities
+                <ArrowLeft className="h-4 w-4" /> {t("breadcrumbCommunities")}
               </Link>
             </div>
           )}

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Bell, BellRing, X, Check, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
+import { useTranslations } from "next-intl";
 
 const SUB_KEY = "binayah_project_subscriptions";
 const LOCAL_NOTIF_KEY = "binayah_notifications";
@@ -78,6 +79,7 @@ export function SubscribeButton({
 }: SubscribeButtonProps) {
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated" && !!session?.user?.email;
+  const t = useTranslations("subscribe");
 
   // Shared subscription state — module-level dedup ensures this runs once
   // even when multiple SubscribeButton instances exist on the same page.
@@ -137,19 +139,19 @@ export function SubscribeButton({
         showToast("Could not subscribe — please try again.");
       } else {
         if (data.alreadySubscribed) {
-          showToast("You're already subscribed — check your inbox.");
+          showToast(t("toasts.alreadySubscribed"));
         } else {
-          showToast("Subscribed! Check your email for confirmation.");
+          showToast(t("toasts.subscribedSuccess"));
         }
         refreshSubs();
       }
     } catch {
       setSubscribed(false);
-      showToast("Network error — please try again.");
+      showToast(t("toasts.networkError"));
     } finally {
       setLoading(false);
     }
-  }, [slug, projectName, projectImage, showToast]);
+  }, [slug, projectName, projectImage, showToast, t]);
 
   // ── Unsubscribe (authed) ────────────────────────────────────────────────
   const unsubscribeAuthed = useCallback(async () => {
@@ -164,11 +166,11 @@ export function SubscribeButton({
       refreshSubs();
     } catch {
       setSubscribed(true); // revert
-      showToast("Network error — please try again.");
+      showToast(t("toasts.networkError"));
     } finally {
       setLoading(false);
     }
-  }, [slug, showToast, refreshSubs]);
+  }, [slug, showToast, refreshSubs, t]);
 
   // ── Subscribe (anon with email) ─────────────────────────────────────────
   const subscribeAnon = useCallback(
@@ -183,9 +185,9 @@ export function SubscribeButton({
         const data = await res.json();
         if (!res.ok && !data.ok) {
           if (res.status === 429) {
-            showToast("Too many requests — please try again later.");
+            showToast(t("toasts.tooManyRequests"));
           } else {
-            showToast("Could not subscribe — please try again.");
+            showToast(t("toasts.subscribeError"));
           }
         } else {
           // Persist in localStorage so button stays gold on revisit
@@ -194,9 +196,9 @@ export function SubscribeButton({
           writeLocalSubs(subs);
           setSubscribed(true);
           if (data.alreadySubscribed) {
-            showToast("Already subscribed — check your inbox.");
+            showToast(t("toasts.alreadySubscribedAnon"));
           } else {
-            showToast("Subscribed! Check your email for confirmation.");
+            showToast(t("toasts.subscribedSuccess"));
             // Write a notification into localStorage so the anon bell lights up
             pushLocalNotification({ slug, projectName, projectImage });
           }
@@ -204,12 +206,12 @@ export function SubscribeButton({
           refreshSubs();
         }
       } catch {
-        showToast("Network error — please try again.");
+        showToast(t("toasts.networkError"));
       } finally {
         setLoading(false);
       }
     },
-    [slug, projectName, projectImage, showToast]
+    [slug, projectName, projectImage, showToast, t]
   );
 
   const handleClick = () => {
@@ -221,7 +223,7 @@ export function SubscribeButton({
     }
     if (subscribed && !isAuthed) {
       // Anon: already subscribed (localStorage) — just show message
-      showToast("Already subscribed — check your inbox.");
+      showToast(t("toasts.alreadySubscribedAnon"));
       return;
     }
     if (isAuthed) {
@@ -280,7 +282,7 @@ export function SubscribeButton({
       {/* Main button */}
       <button
         onClick={handleClick}
-        aria-label={subscribed ? "Unsubscribe from project updates" : "Subscribe to project updates"}
+        aria-label={subscribed ? t("unsubscribeAria") : t("subscribeAria")}
         disabled={loading || isPending(slug)}
         className={variant === "cta" ? ctaBaseClass : buttonClass}
         style={ctaStyle}
@@ -290,7 +292,7 @@ export function SubscribeButton({
         ) : (
           <Icon className={`h-3.5 w-3.5 ${subscribed ? "fill-current" : ""}`} />
         )}
-        {subscribed ? "Subscribed" : "Subscribe"}
+        {subscribed ? t("subscribedLabel") : t("subscribe")}
       </button>
 
       {/* Anon email-capture popover */}
@@ -301,17 +303,17 @@ export function SubscribeButton({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold text-foreground">Subscribe for updates</p>
+            <p className="text-xs font-semibold text-foreground">{t("popoverTitle")}</p>
             <button
               onClick={() => setShowPopover(false)}
               className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Close"
+              aria-label={t("close")}
             >
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
           <p className="text-[11px] text-muted-foreground mb-3 leading-relaxed">
-            Get notified about price changes, new floor plans, and launch events for{" "}
+            {t("popoverBody")}{" "}
             <span className="font-semibold text-foreground">{projectName}</span>.
           </p>
           <form
@@ -326,7 +328,7 @@ export function SubscribeButton({
               required
               value={popoverEmail}
               onChange={(e) => setPopoverEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder={t("emailPlaceholder")}
               className="w-full px-3 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
               autoFocus
             />
@@ -342,7 +344,7 @@ export function SubscribeButton({
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  <Check className="h-4 w-4" /> Confirm
+                  <Check className="h-4 w-4" /> {t("confirm")}
                 </span>
               )}
             </button>

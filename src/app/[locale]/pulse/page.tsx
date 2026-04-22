@@ -4,6 +4,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import PulsePageClient from "@/app/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 export const revalidate = 300;
 
@@ -23,6 +24,7 @@ async function fetchJson(path: string) {
 }
 
 export default async function PulsePage() {
+  const t = await getTranslations("pulse");
   const [marketStats, marketData] = await Promise.all([
     fetchJson("/api/market-stats"),
     fetchJson("/api/market-data"),
@@ -47,14 +49,13 @@ export default async function PulsePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <div className="flex items-center gap-3 mb-4">
             <Activity className="h-5 w-5 text-accent" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">Market Intelligence</p>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            Dubai Market <span className="italic font-light">Pulse</span>
+            {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
-            Live analytics across Dubai&apos;s top communities — prices, rental yields, DLD transactions,
-            exchange rates, and economic indicators. Updated automatically.
+            {t("heroSubtitle")}
           </p>
           <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-primary-foreground/60">
             <div className="flex items-center gap-2">

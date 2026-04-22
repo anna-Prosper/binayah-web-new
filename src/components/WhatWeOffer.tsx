@@ -3,34 +3,36 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 const serviceBuy = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop";
 const serviceRent = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop";
 const serviceSell = "https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=600&h=400&fit=crop";
 const serviceOffplan = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop";
 const serviceManagement = "https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=600&h=400&fit=crop";
 
-const offerings = [
-  { image: serviceSell, title: "Sell Property", desc: "Expert valuation, marketing, and negotiation to maximize your return.", link: "/valuation" },
-  { image: serviceBuy, title: "Buy Property", desc: "Find your perfect home from premium residential listings across Dubai.", link: "/search?intent=buy" },
-  { image: serviceRent, title: "Rent Property", desc: "Discover exceptional rental homes in prime locations.", link: "/search?intent=rent" },
-  { image: serviceOffplan, title: "Off-Plan Investment", desc: "Exclusive off-plan projects with high ROI potential.", link: "/off-plan" },
-  { image: serviceManagement, title: "Property Management", desc: "Complete management solutions to protect your investment.", link: "/services" },
-];
-
-const WhatWeOffer = () => (
+const WhatWeOffer = () => {
+  const t = useTranslations("home.sections.whatWeOffer");
+  const offerings = [
+    { image: serviceSell, title: t("sellProperty"), desc: t("sellDesc"), link: "/valuation" },
+    { image: serviceBuy, title: t("buyProperty"), desc: t("buyDesc"), link: "/search?intent=buy" },
+    { image: serviceRent, title: t("rentProperty"), desc: t("rentDesc"), link: "/search?intent=rent" },
+    { image: serviceOffplan, title: t("offPlanInvestment"), desc: t("offPlanDesc"), link: "/off-plan" },
+    { image: serviceManagement, title: t("propertyManagement"), desc: t("managementDesc"), link: "/services" },
+  ];
+  return (
   <section className="py-12 sm:py-24 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
     <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
 
     <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-5 sm:mb-14">
         <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-3 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>What We Offer</p>
+        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
         <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold">
-          <span className="sm:hidden">Our Services</span>
-          <span className="hidden sm:inline">Comprehensive Real Estate <span className="italic font-light">Solutions</span></span>
+          <span className="sm:hidden">{t("title")}</span>
+          <span className="hidden sm:inline">{t("titleDesktop")} <span className="italic font-light">{t("titleItalic")}</span></span>
         </h2>
         <p className="mt-3 sm:mt-5 text-white/60 max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
-          From buying your dream home to maximizing your investment returns, we provide end-to-end property services tailored to your goals.
+          {t("subtitle")}
         </p>
       </motion.div>
 
@@ -74,6 +76,7 @@ const WhatWeOffer = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default WhatWeOffer;

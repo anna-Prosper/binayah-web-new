@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 interface Developer {
   _id: string;
@@ -27,6 +28,8 @@ export default function DevelopersPageClient({
   initialDevelopers: Developer[];
   totalCount: number;
 }) {
+  const t = useTranslations("developers");
+  const tSearch = useTranslations("search");
   const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialDevelopers.length < totalCount);
@@ -100,15 +103,14 @@ export default function DevelopersPageClient({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
-              Developers
+              {t("heroLabel")}
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              Dubai&apos;s Leading{" "}
-              <span className="italic font-light">Developers</span>
+              {t("heroTitle")}{" "}
+              <span className="italic font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
-              Discover {totalCount.toLocaleString()} trusted developers shaping
-              Dubai&apos;s iconic skyline.
+              {t("heroSubtitle")}
             </p>
           </motion.div>
         </div>
@@ -123,7 +125,7 @@ export default function DevelopersPageClient({
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search developers..."
+                placeholder={t("searchPlaceholder")}
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
                 className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
@@ -165,7 +167,7 @@ export default function DevelopersPageClient({
                   </h3>
                   {dev.projectCount != null && dev.projectCount > 0 && (
                     <p className="text-xs font-semibold text-primary mt-auto pt-1">
-                      {dev.projectCount} {dev.projectCount === 1 ? "project" : "projects"}
+                      {dev.projectCount} {t("projects")}
                     </p>
                   )}
                 </Link>
@@ -176,7 +178,7 @@ export default function DevelopersPageClient({
           {developers.length === 0 && !searching && (
             <div className="text-center py-20">
               <Building2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-muted-foreground">No developers found.</p>
+              <p className="text-muted-foreground">{t("noResults")}</p>
             </div>
           )}
 
@@ -185,7 +187,7 @@ export default function DevelopersPageClient({
             {loading && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
-                <span className="text-sm">Loading more developers...</span>
+                <span className="text-sm">{tSearch("loadMore")}</span>
               </div>
             )}
             {hasMore && !loading && !search && (
@@ -193,7 +195,7 @@ export default function DevelopersPageClient({
                 onClick={loadMore}
                 className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                Load More Developers
+                {tSearch("loadMore")}
               </button>
             )}
             {!hasMore && !search && developers.length > 0 && (

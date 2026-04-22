@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 /* ── Data ── */
 
@@ -61,12 +62,13 @@ const stats = [
 /* ── Component ── */
 
 export default function ServicesPage() {
+  const t = useTranslations("services");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
-      <Breadcrumbs items={[{ label: "Services", href: "/services" }]} />
+      <Breadcrumbs items={[{ label: t("heroLabel"), href: "/services" }]} />
 
       {/* ═══ HERO ═══ */}
       <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
@@ -88,9 +90,9 @@ export default function ServicesPage() {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <motion.div initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 0.8, delay: 0.3 }} className="h-[2px] mb-5 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-3 sm:mb-4" style={{ color: "#D4A847" }}>Our Services</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-3 sm:mb-4" style={{ color: "#D4A847" }}>{t("heroLabel")}</p>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-[1.1]">
-              Complete Property<br /><span className="italic font-light">Solutions</span>
+              {t("heroTitle")}<br /><span className="italic font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-white/60 max-w-xl text-sm sm:text-lg leading-relaxed">
               From finding your dream home to managing your investment portfolio — we deliver end-to-end real estate services backed by 15+ years of Dubai market expertise.

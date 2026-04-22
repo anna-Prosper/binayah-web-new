@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, TrendingUp, Clock, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const pills = [
   { icon: TrendingUp, label: "Live market comps" },
@@ -12,6 +13,7 @@ const pills = [
 
 const ValuationStrip = () => {
   const router = useRouter();
+  const t = useTranslations("home.sections.valuation");
 
   return (
     <section className="relative overflow-hidden">
@@ -100,7 +102,7 @@ const ValuationStrip = () => {
               boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
             }}
           >
-            Get your valuation
+            {t("cta")}
             <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </motion.button>
         </div>

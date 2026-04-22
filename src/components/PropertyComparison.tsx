@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useCompare } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
+import { useTranslations } from "next-intl";
 
 interface Property {
   _id: string;
@@ -34,6 +35,7 @@ function formatPrice(price?: number, currency = "AED") {
 }
 
 export default function PropertyComparison() {
+  const t = useTranslations("propertyComparison");
   const { ids, toggle, clear } = useCompare();
   const [properties, setProperties] = useState<Property[]>([]);
   const [open, setOpen] = useState(false);
@@ -64,12 +66,12 @@ export default function PropertyComparison() {
   if (ids.length === 0) return null;
 
   const rows: { label: string; icon: React.ReactNode; key: string }[] = [
-    { label: "Price", icon: null, key: "priceFormatted" },
-    { label: "Type", icon: <Building2 className="h-3.5 w-3.5" />, key: "propertyType" },
-    { label: "Bedrooms", icon: <BedDouble className="h-3.5 w-3.5" />, key: "bedrooms" },
-    { label: "Bathrooms", icon: <Bath className="h-3.5 w-3.5" />, key: "bathrooms" },
-    { label: "Size", icon: <Maximize className="h-3.5 w-3.5" />, key: "size" },
-    { label: "Community", icon: <MapPin className="h-3.5 w-3.5" />, key: "community" },
+    { label: t("price"), icon: null, key: "priceFormatted" },
+    { label: t("type"), icon: <Building2 className="h-3.5 w-3.5" />, key: "propertyType" },
+    { label: t("bedrooms"), icon: <BedDouble className="h-3.5 w-3.5" />, key: "bedrooms" },
+    { label: t("bathrooms"), icon: <Bath className="h-3.5 w-3.5" />, key: "bathrooms" },
+    { label: t("area"), icon: <Maximize className="h-3.5 w-3.5" />, key: "size" },
+    { label: t("community"), icon: <MapPin className="h-3.5 w-3.5" />, key: "community" },
     { label: "Furnishing", icon: null, key: "furnishing" },
     { label: "Parking", icon: null, key: "parking" },
   ];
@@ -106,7 +108,7 @@ export default function PropertyComparison() {
             {/* Header */}
             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border">
               <div>
-                <h3 className="text-lg font-bold text-foreground">Compare Properties</h3>
+                <h3 className="text-lg font-bold text-foreground">{t("title")}</h3>
                 <p className="text-xs text-muted-foreground">
                   {ids.length} of 3 properties selected
                 </p>
@@ -116,7 +118,7 @@ export default function PropertyComparison() {
                   onClick={() => { clear(); setOpen(false); }}
                   className="text-xs text-muted-foreground hover:text-foreground px-3 py-1.5 border border-border rounded-lg transition-colors"
                 >
-                  Clear All
+                  {t("clear")}
                 </button>
                 <button
                   onClick={() => setOpen(false)}

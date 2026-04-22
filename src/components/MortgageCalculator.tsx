@@ -3,12 +3,14 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Calculator, TrendingUp, Banknote, Calendar } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function formatNumber(n: number) {
   return new Intl.NumberFormat("en-AE").format(Math.round(n));
 }
 
 export default function MortgageCalculator() {
+  const t = useTranslations("mortgageCalculator");
   const [price, setPrice] = useState(2000000);
   const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [rate, setRate] = useState(4.5);
@@ -52,10 +54,10 @@ export default function MortgageCalculator() {
             className="font-semibold tracking-[0.4em] uppercase text-xs mb-4"
             style={{ color: "#D4A847" }}
           >
-            Financial Tools
+            {t("label")}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-            Mortgage <span className="italic font-light">Calculator</span>
+            {t("title")}
           </h2>
           <p className="text-muted-foreground mt-3 text-sm max-w-lg mx-auto">
             Estimate your monthly mortgage payments for Dubai properties
@@ -68,7 +70,7 @@ export default function MortgageCalculator() {
             {/* Property Price */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-foreground">Property Price</label>
+                <label className="text-sm font-medium text-foreground">{t("propertyPrice")}</label>
                 <span className="text-sm font-semibold text-foreground">
                   AED {formatNumber(price)}
                 </span>
@@ -91,7 +93,7 @@ export default function MortgageCalculator() {
             {/* Down Payment */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-foreground">Down Payment</label>
+                <label className="text-sm font-medium text-foreground">{t("downPayment")}</label>
                 <span className="text-sm font-semibold text-foreground">
                   {downPaymentPct}% (AED {formatNumber(result.downPayment)})
                 </span>
@@ -114,7 +116,7 @@ export default function MortgageCalculator() {
             {/* Interest Rate */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-foreground">Interest Rate (p.a.)</label>
+                <label className="text-sm font-medium text-foreground">{t("interestRate")}</label>
                 <span className="text-sm font-semibold text-foreground">{rate}%</span>
               </div>
               <input
@@ -135,7 +137,7 @@ export default function MortgageCalculator() {
             {/* Loan Term */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-foreground">Loan Term</label>
+                <label className="text-sm font-medium text-foreground">{t("loanTerm")}</label>
                 <span className="text-sm font-semibold text-foreground">{years} years</span>
               </div>
               <input
@@ -164,7 +166,7 @@ export default function MortgageCalculator() {
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
             >
               <p className="text-white/60 text-xs uppercase tracking-widest mb-2">
-                Monthly Payment
+                {t("monthlyPayment")}
               </p>
               <p className="text-3xl sm:text-4xl font-bold">
                 AED {formatNumber(result.monthlyPayment)}
@@ -177,7 +179,7 @@ export default function MortgageCalculator() {
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
                   <Banknote className="h-5 w-5 text-accent" />
                 </div>
-                <p className="text-xs text-muted-foreground mb-1">Loan Amount</p>
+                <p className="text-xs text-muted-foreground mb-1">{t("loanAmount")}</p>
                 <p className="text-lg font-bold text-foreground">
                   AED {formatNumber(result.loanAmount)}
                 </p>
@@ -186,7 +188,7 @@ export default function MortgageCalculator() {
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
                   <TrendingUp className="h-5 w-5 text-accent" />
                 </div>
-                <p className="text-xs text-muted-foreground mb-1">Total Interest</p>
+                <p className="text-xs text-muted-foreground mb-1">{t("totalInterest")}</p>
                 <p className="text-lg font-bold text-foreground">
                   AED {formatNumber(result.totalInterest)}
                 </p>
@@ -195,7 +197,7 @@ export default function MortgageCalculator() {
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
                   <Calculator className="h-5 w-5 text-accent" />
                 </div>
-                <p className="text-xs text-muted-foreground mb-1">Total Payment</p>
+                <p className="text-xs text-muted-foreground mb-1">{t("totalPayment")}</p>
                 <p className="text-lg font-bold text-foreground">
                   AED {formatNumber(result.totalPayment)}
                 </p>
@@ -204,7 +206,7 @@ export default function MortgageCalculator() {
                 <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
                   <Calendar className="h-5 w-5 text-accent" />
                 </div>
-                <p className="text-xs text-muted-foreground mb-1">Down Payment</p>
+                <p className="text-xs text-muted-foreground mb-1">{t("downPayment")}</p>
                 <p className="text-lg font-bold text-foreground">
                   AED {formatNumber(result.downPayment)}
                 </p>

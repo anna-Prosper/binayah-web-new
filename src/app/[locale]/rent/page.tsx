@@ -1,5 +1,6 @@
 import ListingsPageClient from "@/app/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { getTranslations } from "next-intl/server";
 
 export const revalidate = 300;
 
@@ -9,6 +10,7 @@ export const metadata = {
 };
 
 export default async function RentPage() {
+  const t = await getTranslations("rent");
   let initialListings: any[] = [];
   let totalCount = 0;
 
@@ -29,8 +31,8 @@ export default async function RentPage() {
       initialListings={initialListings}
       totalCount={totalCount}
       listingType="Rent"
-      title="Properties for Rent"
-      subtitle="Discover Dubai's best rental apartments, villas and townhouses"
+      title={t("title")}
+      subtitle={t("subtitle")}
     />
   );
 }

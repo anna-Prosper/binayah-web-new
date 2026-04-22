@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 import { Send, Phone, Mail, MapPin, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { apiUrl } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
 
 const InquirySection = () => {
+  const t = useTranslations("inquiry");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -43,7 +45,6 @@ const InquirySection = () => {
     <section id="contact" className="relative py-10 sm:py-28 scroll-mt-20 overflow-hidden"
       style={{ background: "linear-gradient(180deg, hsl(var(--muted) / 0.3) 0%, hsl(var(--background)) 100%)" }}
     >
-      {/* Decorative gradient circles */}
       <div className="absolute top-0 left-0 w-72 h-72 rounded-full opacity-[0.03]"
         style={{ background: "radial-gradient(circle, hsl(var(--accent)), transparent 70%)" }}
       />
@@ -70,25 +71,24 @@ const InquirySection = () => {
               className="h-[2px] bg-accent mb-6"
             />
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-3">
-              Get In Touch
+              {t("label")}
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-[1.15]">
-              Quick <span className="italic font-light text-foreground/80">Assistance</span>
+              {t("title")} <span className="italic font-light text-foreground/80">{t("titleItalic")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md leading-relaxed">
-              Send us your details and our property experts will get back to you within 24 hours.
-              Schedule viewings in person or virtually.
+              {t("subtitle")}
             </p>
 
             <div className="flex items-center gap-4 mb-8">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Clock className="h-3.5 w-3.5 text-accent" />
-                <span>24hr Response</span>
+                <span>{t("response24h")}</span>
               </div>
               <div className="w-px h-3.5 bg-border" />
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Shield className="h-3.5 w-3.5 text-accent" />
-                <span>RERA Licensed</span>
+                <span>{t("reraLicensed")}</span>
               </div>
             </div>
 
@@ -115,17 +115,17 @@ const InquirySection = () => {
             </div>
 
             <p className="mt-10 text-[11px] text-muted-foreground/50 tracking-wide">
-              RERA Registration No. 1162 — Real Estate Regulation Authority of Dubai
+              {t("reraNotice")}
             </p>
           </motion.div>
 
           {/* Mobile header */}
           <div className="lg:hidden text-center mb-2">
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-[10px] mb-2">Get In Touch</p>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-[10px] mb-2">{t("label")}</p>
             <h2 className="text-xl font-bold text-foreground mb-1">
-              Quick <span className="italic font-light text-foreground/80">Assistance</span>
+              {t("title")} <span className="italic font-light text-foreground/80">{t("titleItalic")}</span>
             </h2>
-            <p className="text-muted-foreground text-xs">Get a callback within 2 hours.</p>
+            <p className="text-muted-foreground text-xs">{t("subtitleMobile")}</p>
           </div>
 
           {/* Right — Form Card */}
@@ -140,11 +140,11 @@ const InquirySection = () => {
             {/* Mobile: compact 3-field layout */}
             <div className="sm:hidden space-y-4 mb-4">
               <div>
-                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Full Name</label>
-                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder="Your name" />
+                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("fullName")}</label>
+                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder={t("namePlaceholder")} />
               </div>
               <div>
-                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Phone</label>
+                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                 <div className="flex gap-2">
                   <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                     className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
@@ -159,24 +159,24 @@ const InquirySection = () => {
                 </div>
               </div>
               <div>
-                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Inquiry Type</label>
+                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("inquiryType")}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                   className={`${inputClasses} appearance-none cursor-pointer [&>option]:text-foreground [&>option]:bg-background`}>
-                  <option value="">Select type</option>
-                  <option value="buy">Buy a Property</option>
-                  <option value="rent">Rent a Property</option>
-                  <option value="offplan">Off-Plan Investment</option>
-                  <option value="management">Property Management</option>
-                  <option value="valuation">Valuation</option>
+                  <option value="">{t("selectType")}</option>
+                  <option value="buy">{t("typeOptions.buy")}</option>
+                  <option value="rent">{t("typeOptions.rent")}</option>
+                  <option value="offplan">{t("typeOptions.offplan")}</option>
+                  <option value="management">{t("typeOptions.management")}</option>
+                  <option value="valuation">{t("typeOptions.valuation")}</option>
                 </select>
               </div>
               <button type="button" onClick={() => setShowMessage(!showMessage)}
                 className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
                 <ChevronDown className={`h-3 w-3 transition-transform ${showMessage ? "rotate-180" : ""}`} />
-                Add a message (optional)
+                {t("addMessage")}
               </button>
               {showMessage && (
-                <textarea rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder="Tell us what you're looking for..." />
+                <textarea rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder={t("messagePlaceholder")} />
               )}
             </div>
 
@@ -184,17 +184,17 @@ const InquirySection = () => {
             <div className="hidden sm:block">
               <div className="grid sm:grid-cols-2 gap-5 mb-5">
                 <div>
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Full Name</label>
-                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder="Your name" />
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("fullName")}</label>
+                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder={t("namePlaceholder")} />
                 </div>
                 <div>
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Email</label>
-                  <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClasses} placeholder="you@email.com" />
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("email")}</label>
+                  <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClasses} placeholder={t("emailPlaceholder")} />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-5 mb-5">
                 <div>
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Phone</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                   <div className="flex gap-2">
                     <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                       className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
@@ -209,21 +209,21 @@ const InquirySection = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Inquiry Type</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("inquiryType")}</label>
                   <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                     className={`${inputClasses} appearance-none cursor-pointer [&>option]:text-foreground [&>option]:bg-background`}>
-                    <option value="">Select type</option>
-                    <option value="buy">Buy a Property</option>
-                    <option value="rent">Rent a Property</option>
-                    <option value="offplan">Off-Plan Investment</option>
-                    <option value="management">Property Management</option>
-                    <option value="valuation">Valuation</option>
+                    <option value="">{t("selectType")}</option>
+                    <option value="buy">{t("typeOptions.buy")}</option>
+                    <option value="rent">{t("typeOptions.rent")}</option>
+                    <option value="offplan">{t("typeOptions.offplan")}</option>
+                    <option value="management">{t("typeOptions.management")}</option>
+                    <option value="valuation">{t("typeOptions.valuation")}</option>
                   </select>
                 </div>
               </div>
               <div className="mb-6">
-                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">Message</label>
-                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder="Tell us what you're looking for..." />
+                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("addMessage")}</label>
+                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder={t("messagePlaceholder")} />
               </div>
             </div>
 
@@ -234,9 +234,9 @@ const InquirySection = () => {
               {sending ? (
                 <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
               ) : sent ? (
-                <>✓ Inquiry Sent!</>
+                <>{t("sent")}</>
               ) : (
-                <><Send className="h-4 w-4" /> Send Inquiry <ArrowRight className="h-3.5 w-3.5 opacity-60" /></>
+                <><Send className="h-4 w-4" /> {t("sendButton")} <ArrowRight className="h-3.5 w-3.5 opacity-60" /></>
               )}
             </motion.button>
           </motion.form>

@@ -1,0 +1,216 @@
+{
+  "task": "Add caching everywhere needed",
+  "baseSha": "03e4dd066e2787ec41ac2c4da9b9fccee486ebb4",
+  "stages": [
+    {
+      "id": 1,
+      "status": "passed",
+      "spec": "## Goal\nTune ISR revalidation windows on data-backed pages that already have `export const revalidate` but are set too aggressively (60–300s) for how often the underlying data actually changes. Pure page-constant tweaks — zero behavioural risk, immediately deployable.\n\n## Why this will be good\nToday every project detail page regenerates every 5 minutes even though project content (brochures, prices, floor plans) changes a few times per week. We're paying for upstream API calls and ISR regenerations we don't need. Bumping TTLs to match reality cuts Fastify/Render load on the origin API by 5-10x with zero user-visible change (ISR serves stale-while-revalidate so no one waits). `/search` is actually miscategorised — it takes user-typed queries, so it must be dynamic, not ISR-cached.\n\nProduction-ready: no loading state changes, no error handling changes, no UX changes. Just constants.\n\nBenchmark: Vercel's own marketing site uses 1h+ ISR on content pages. Stripe docs use 1h. Our 60s was tuned for 'new inventory appears quickly' but inventory changes are rare and a manual `revalidatePath` or 5min window in the next stage can handle bursts.\n\n## Files to touch\n\nFor each file below, change ONLY the `export const revalidate = N;` line. Do not touch logic, imports, or components.\n\n| File | Current | New | Rationale |\n|---|---|---|---|\n| `src/app/[locale]/page.tsx` | 120 | 300 | Homepage — featured projects/listings/news change daily at most |\n| `src/app/[locale]/off-plan/page.tsx` | 60 | 300 | Off-plan list — new projects appear weekly |\n| `src/app/[locale]/buy/page.tsx` | 60 | 300 | Listings list — new stock a few times/day |\n| `src/app/[locale]/rent/page.tsx` | 60 | 300 | Listings list — same |\n| `src/app/[locale]/project/[slug]/page.tsx` | 300 | 1800 | Project detail — content changes rarely, pricing updates maybe weekly |\n| `src/app/[locale]/property/[slug]/page.tsx` | 300 | 1800 | Property detail — same |\n| `src/app/[locale]/news/[slug]/page.tsx` | 600 | 3600 | News article body never changes after publish |\n| `src/app/[locale]/news/page.tsx` | 600 | 900 | News list — small bump to 15min |\n| `src/app/[locale]/construction-updates/page.tsx` | 60 | 600 | Construction updates posted weekly |\n| `src/app/[locale]/construction-updates/[slug]/page.tsx` | 60 | 600 | Same |\n\n**Leave unchanged (already correct):**\n- `communities/page.tsx`, `communities/[slug]/page.tsx` — 3600 ✓\n- `developers/page.tsx`, `developers/[slug]/page.tsx` — 3600 ✓\n- `pulse/page.tsx` — 300 (market data should be fresh) ✓\n\n**Fix miscategorised:** `src/app/[locale]/search/page.tsx` currently has `export const revalidate = 60;`. This page takes user query params (`?q=...&intent=buy`) — ISR caching a per-user search result is wrong. Replace with `export const dynamic = 'force-dynamic';`.\n\n## Acceptance criteria\n\n1. `npx tsc --noEmit` passes.\n2. `npm run build` completes successfully — Next build output must show each page with the updated `Revalidate` column.\n3. Dev server restart at http://localhost:3000 → every touched route loads without error.\n4. `/search?q=dubai` still returns fresh results on every reload (no stale cache behaviour).\n5. No other lines in these files change. Diff should be exactly 11 lines modified, all of them `export const revalidate = N;` or `export const dynamic = ...;`.\n\n## Out of scope for this stage\n- `generateStaticParams` for slug routes (separate stage if user wants it later).\n- Adding `next: { revalidate }` to individual `serverFetch` calls.\n- `force-static` on purely-static pages (about/contact/services/valuation) — covered in a future stage if wanted.\n- `next.config.ts` headers — Vercel defaults are already optimal for `_next/static`.\n- Any behaviour change, component change, or new API call.\n\n## DEV notes\n- Do NOT modify `src/lib/api.ts`. React.cache() dedup there is already correct.\n- Do NOT add `export const revalidate` to auth-gated pages (profile, admin, signin, reset-password) — they correctly have `export const dynamic = 'force-dynamic'` already.\n- Do NOT add `export const revalidate` to `src/app/[locale]/about/page.tsx`, `contact/page.tsx`, `services/page.tsx`, `valuation/page.tsx` — they're client components (`'use client'`) or have no data fetch, so ISR is a no-op; leaving them static is correct.\n- When you edit `/search/page.tsx`, remove the `export const revalidate = 60;` line entirely before adding `export const dynamic = 'force-dynamic';` — don't leave both.",
+      "demoPath": "1. Local: `npm run build` — check that the build output table shows the new Revalidate values per route. 2. Deploy to Vercel staging. 3. Hit https://staging.binayahhub.com/project/sensia-by-beyond — inspect response headers: `x-vercel-cache: HIT` on second request within 30min. 4. Hit /search?q=dubai — headers should show `x-vercel-cache: MISS` or dynamic rendering (no ISR caching of user queries)."
+    }
+  ],
+  "currentStage": 1,
+  "totalStages": 1,
+  "stageIteration": 1,
+  "maxIterationsPerStage": 3,
+  "phase": "done",
+  "plan": "## Goal\nTune ISR revalidation windows on data-backed pages that already have `export const revalidate` but are set too aggressively (60–300s) for how often the underlying data actually changes. Pure page-constant tweaks — zero behavioural risk, immediately deployable.\n\n## Why this will be good\nToday every project detail page regenerates every 5 minutes even though project content (brochures, prices, floor plans) changes a few times per week. We're paying for upstream API calls and ISR regenerations we don't need. Bumping TTLs to match reality cuts Fastify/Render load on the origin API by 5-10x with zero user-visible change (ISR serves stale-while-revalidate so no one waits). `/search` is actually miscategorised — it takes user-typed queries, so it must be dynamic, not ISR-cached.\n\nProduction-ready: no loading state changes, no error handling changes, no UX changes. Just constants.\n\nBenchmark: Vercel's own marketing site uses 1h+ ISR on content pages. Stripe docs use 1h. Our 60s was tuned for 'new inventory appears quickly' but inventory changes are rare and a manual `revalidatePath` or 5min window in the next stage can handle bursts.\n\n## Files to touch\n\nFor each file below, change ONLY the `export const revalidate = N;` line. Do not touch logic, imports, or components.\n\n| File | Current | New | Rationale |\n|---|---|---|---|\n| `src/app/[locale]/page.tsx` | 120 | 300 | Homepage — featured projects/listings/news change daily at most |\n| `src/app/[locale]/off-plan/page.tsx` | 60 | 300 | Off-plan list — new projects appear weekly |\n| `src/app/[locale]/buy/page.tsx` | 60 | 300 | Listings list — new stock a few times/day |\n| `src/app/[locale]/rent/page.tsx` | 60 | 300 | Listings list — same |\n| `src/app/[locale]/project/[slug]/page.tsx` | 300 | 1800 | Project detail — content changes rarely, pricing updates maybe weekly |\n| `src/app/[locale]/property/[slug]/page.tsx` | 300 | 1800 | Property detail — same |\n| `src/app/[locale]/news/[slug]/page.tsx` | 600 | 3600 | News article body never changes after publish |\n| `src/app/[locale]/news/page.tsx` | 600 | 900 | News list — small bump to 15min |\n| `src/app/[locale]/construction-updates/page.tsx` | 60 | 600 | Construction updates posted weekly |\n| `src/app/[locale]/construction-updates/[slug]/page.tsx` | 60 | 600 | Same |\n\n**Leave unchanged (already correct):**\n- `communities/page.tsx`, `communities/[slug]/page.tsx` — 3600 ✓\n- `developers/page.tsx`, `developers/[slug]/page.tsx` — 3600 ✓\n- `pulse/page.tsx` — 300 (market data should be fresh) ✓\n\n**Fix miscategorised:** `src/app/[locale]/search/page.tsx` currently has `export const revalidate = 60;`. This page takes user query params (`?q=...&intent=buy`) — ISR caching a per-user search result is wrong. Replace with `export const dynamic = 'force-dynamic';`.\n\n## Acceptance criteria\n\n1. `npx tsc --noEmit` passes.\n2. `npm run build` completes successfully — Next build output must show each page with the updated `Revalidate` column.\n3. Dev server restart at http://localhost:3000 → every touched route loads without error.\n4. `/search?q=dubai` still returns fresh results on every reload (no stale cache behaviour).\n5. No other lines in these files change. Diff should be exactly 11 lines modified, all of them `export const revalidate = N;` or `export const dynamic = ...;`.\n\n## Out of scope for this stage\n- `generateStaticParams` for slug routes (separate stage if user wants it later).\n- Adding `next: { revalidate }` to individual `serverFetch` calls.\n- `force-static` on purely-static pages (about/contact/services/valuation) — covered in a future stage if wanted.\n- `next.config.ts` headers — Vercel defaults are already optimal for `_next/static`.\n- Any behaviour change, component change, or new API call.\n\n## DEV notes\n- Do NOT modify `src/lib/api.ts`. React.cache() dedup there is already correct.\n- Do NOT add `export const revalidate` to auth-gated pages (profile, admin, signin, reset-password) — they correctly have `export const dynamic = 'force-dynamic'` already.\n- Do NOT add `export const revalidate` to `src/app/[locale]/about/page.tsx`, `contact/page.tsx`, `services/page.tsx`, `valuation/page.tsx` — they're client components (`'use client'`) or have no data fetch, so ISR is a no-op; leaving them static is correct.\n- When you edit `/search/page.tsx`, remove the `export const revalidate = 60;` line entirely before adding `export const dynamic = 'force-dynamic';` — don't leave both.",
+  "diff": "diff --git a/src/app/[locale]/buy/page.tsx b/src/app/[locale]/buy/page.tsx\nindex fe16b5e2..ca6fb3b5 100644\n--- a/src/app/[locale]/buy/page.tsx\n+++ b/src/app/[locale]/buy/page.tsx\n@@ -1,7 +1,7 @@\n import ListingsPageClient from \"@/app/rent/ListingsPageClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 60;\n+export const revalidate = 300;\n \n export const metadata = {\n   title: \"Properties for Sale in Dubai | Binayah Properties\",\ndiff --git a/src/app/[locale]/construction-updates/[slug]/page.tsx b/src/app/[locale]/construction-updates/[slug]/page.tsx\nindex 3d487866..21494c64 100644\n--- a/src/app/[locale]/construction-updates/[slug]/page.tsx\n+++ b/src/app/[locale]/construction-updates/[slug]/page.tsx\n@@ -2,7 +2,7 @@ import { notFound } from \"next/navigation\";\n import ConstructionUpdateDetailClient from \"@/app/construction-updates/[slug]/ConstructionUpdateDetailClient\";\n import { getConstructionUpdate } from \"@/lib/api\";\n \n-export const revalidate = 60;\n+export const revalidate = 600;\n \n export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {\n   const { slug } = await params;\ndiff --git a/src/app/[locale]/construction-updates/page.tsx b/src/app/[locale]/construction-updates/page.tsx\nindex 98e38dc8..d6824a90 100644\n--- a/src/app/[locale]/construction-updates/page.tsx\n+++ b/src/app/[locale]/construction-updates/page.tsx\n@@ -1,7 +1,7 @@\n import ConstructionUpdatesClient from \"@/app/construction-updates/ConstructionUpdatesClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 60;\n+export const revalidate = 600;\n \n export const metadata = {\n   title: \"Construction Updates | Binayah Properties\",\ndiff --git a/src/app/[locale]/news/[slug]/page.tsx b/src/app/[locale]/news/[slug]/page.tsx\nindex 2fb23d80..661d4898 100644\n--- a/src/app/[locale]/news/[slug]/page.tsx\n+++ b/src/app/[locale]/news/[slug]/page.tsx\n@@ -2,7 +2,7 @@ import { notFound } from \"next/navigation\";\n import NewsDetailClient from \"@/app/news/[slug]/NewsDetailClient\";\n import { getNewsArticle } from \"@/lib/api\";\n \n-export const revalidate = 600;\n+export const revalidate = 3600;\n \n export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {\n   const { slug } = await params;\ndiff --git a/src/app/[locale]/news/page.tsx b/src/app/[locale]/news/page.tsx\nindex d6312d50..018b72eb 100644\n--- a/src/app/[locale]/news/page.tsx\n+++ b/src/app/[locale]/news/page.tsx\n@@ -1,7 +1,7 @@\n import NewsPageClient from \"@/app/news/NewsPageClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 600;\n+export const revalidate = 900;\n \n export default async function NewsPage() {\n   let articles: any[] = [];\ndiff --git a/src/app/[locale]/off-plan/page.tsx b/src/app/[locale]/off-plan/page.tsx\nindex 3bd48dd1..5acd913a 100644\n--- a/src/app/[locale]/off-plan/page.tsx\n+++ b/src/app/[locale]/off-plan/page.tsx\n@@ -1,7 +1,7 @@\n import OffPlanPageClient from \"@/app/off-plan/OffPlanPageClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 60;\n+export const revalidate = 300;\n \n const FALLBACK_PROJECTS = [\n   {\ndiff --git a/src/app/[locale]/page.tsx b/src/app/[locale]/page.tsx\nindex ec9daf0c..cb757215 100644\n--- a/src/app/[locale]/page.tsx\n+++ b/src/app/[locale]/page.tsx\n@@ -1,7 +1,7 @@\n import HomePageClient from \"@/components/HomePageClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 120;\n+export const revalidate = 300;\n \n const FALLBACK_LISTINGS = [\n   {\ndiff --git a/src/app/[locale]/project/[slug]/page.tsx b/src/app/[locale]/project/[slug]/page.tsx\nindex 5cc9ad87..ea8575df 100644\n--- a/src/app/[locale]/project/[slug]/page.tsx\n+++ b/src/app/[locale]/project/[slug]/page.tsx\n@@ -2,7 +2,7 @@ import { notFound } from \"next/navigation\";\n import ProjectDetailClient from \"@/app/project/[slug]/ProjectDetailClient\";\n import { getProject } from \"@/lib/api\";\n \n-export const revalidate = 300;\n+export const revalidate = 1800;\n \n export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {\n   const { slug } = await params;\ndiff --git a/src/app/[locale]/property/[slug]/page.tsx b/src/app/[locale]/property/[slug]/page.tsx\nindex 0a88b0d8..f2f8e151 100644\n--- a/src/app/[locale]/property/[slug]/page.tsx\n+++ b/src/app/[locale]/property/[slug]/page.tsx\n@@ -3,7 +3,7 @@ import PropertyDetailClient from \"@/app/property/[slug]/PropertyDetailClient\";\n import { getListing } from \"@/lib/api\";\n import { formatPropertyTypeLabel } from \"@/lib/property-types\";\n \n-export const revalidate = 300;\n+export const revalidate = 1800;\n \n export async function generateMetadata({\n   params,\ndiff --git a/src/app/[locale]/rent/page.tsx b/src/app/[locale]/rent/page.tsx\nindex 084664fe..770413ae 100644\n--- a/src/app/[locale]/rent/page.tsx\n+++ b/src/app/[locale]/rent/page.tsx\n@@ -1,7 +1,7 @@\n import ListingsPageClient from \"@/app/rent/ListingsPageClient\";\n import { serverApiUrl, serverFetch } from \"@/lib/api\";\n \n-export const revalidate = 60;\n+export const revalidate = 300;\n \n export const metadata = {\n   title: \"Properties for Rent in Dubai | Binayah Properties\",\ndiff --git a/src/app/[locale]/search/page.tsx b/src/app/[locale]/search/page.tsx\nindex bb2e17e1..45b56146 100644\n--- a/src/app/[locale]/search/page.tsx\n+++ b/src/app/[locale]/search/page.tsx\n@@ -1,6 +1,6 @@\n import SearchPageClient from \"@/app/search/SearchPageClient\";\n \n-export const revalidate = 60;\n+export const dynamic = 'force-dynamic';\n \n export default function SearchPage() {\n   return <SearchPageClient />;",
+  "devReport": {
+    "commitSha": "eaf60eb5",
+    "filesChanged": [
+      "src/app/[locale]/page.tsx",
+      "src/app/[locale]/off-plan/page.tsx",
+      "src/app/[locale]/buy/page.tsx",
+      "src/app/[locale]/rent/page.tsx",
+      "src/app/[locale]/project/[slug]/page.tsx",
+      "src/app/[locale]/property/[slug]/page.tsx",
+      "src/app/[locale]/news/[slug]/page.tsx",
+      "src/app/[locale]/news/page.tsx",
+      "src/app/[locale]/construction-updates/page.tsx",
+      "src/app/[locale]/construction-updates/[slug]/page.tsx",
+      "src/app/[locale]/search/page.tsx"
+    ],
+    "summary": "Tuned ISR TTLs on 10 pages (120s→300s homepage, 60s→300s listing/off-plan, 300s→1800s detail pages, 600s→3600s news articles, 600s→900s news list, 60s→600s construction); flipped /search from revalidate=60 to force-dynamic",
+    "fixtureVerified": false,
+    "blocker": null,
+    "designBrief": {
+      "direction": "no aesthetic direction needed for this scope"
+    },
+    "selfGrade": [
+      {
+        "action": "page.tsx: 120 → 300",
+        "done": true,
+        "evidence": "src/app/[locale]/page.tsx: revalidate = 300"
+      },
+      {
+        "action": "off-plan/page.tsx: 60 → 300",
+        "done": true,
+        "evidence": "src/app/[locale]/off-plan/page.tsx: revalidate = 300"
+      },
+      {
+        "action": "buy/page.tsx: 60 → 300",
+        "done": true,
+        "evidence": "src/app/[locale]/buy/page.tsx: revalidate = 300"
+      },
+      {
+        "action": "rent/page.tsx: 60 → 300",
+        "done": true,
+        "evidence": "src/app/[locale]/rent/page.tsx: revalidate = 300"
+      },
+      {
+        "action": "project/[slug]/page.tsx: 300 → 1800",
+        "done": true,
+        "evidence": "src/app/[locale]/project/[slug]/page.tsx: revalidate = 1800"
+      },
+      {
+        "action": "property/[slug]/page.tsx: 300 → 1800",
+        "done": true,
+        "evidence": "src/app/[locale]/property/[slug]/page.tsx: revalidate = 1800"
+      },
+      {
+        "action": "news/[slug]/page.tsx: 600 → 3600",
+        "done": true,
+        "evidence": "src/app/[locale]/news/[slug]/page.tsx: revalidate = 3600"
+      },
+      {
+        "action": "news/page.tsx: 600 → 900",
+        "done": true,
+        "evidence": "src/app/[locale]/news/page.tsx: revalidate = 900"
+      },
+      {
+        "action": "construction-updates/page.tsx: 60 → 600",
+        "done": true,
+        "evidence": "src/app/[locale]/construction-updates/page.tsx: revalidate = 600"
+      },
+      {
+        "action": "construction-updates/[slug]/page.tsx: 60 → 600",
+        "done": true,
+        "evidence": "src/app/[locale]/construction-updates/[slug]/page.tsx: revalidate = 600"
+      },
+      {
+        "action": "search/page.tsx: remove revalidate=60, add force-dynamic",
+        "done": true,
+        "evidence": "src/app/[locale]/search/page.tsx: export const dynamic = 'force-dynamic'"
+      }
+    ]
+  },
+  "reviewerReport": {
+    "passed": true,
+    "findings": [],
+    "summary": "skipped — trivial diff (22 lines, no risky paths, only ISR constant changes)",
+    "skippedReason": "trivial_diff"
+  },
+  "qaReport": {
+    "passed": true,
+    "tested": [
+      "constants verification — all 11 files",
+      "auth-gated pages unchanged check",
+      "TypeScript noEmit",
+      "smoke test: / (200)",
+      "smoke test: /buy (200)",
+      "smoke test: /search?q=dubai (200)"
+    ],
+    "bugs": [],
+    "designChecked": false,
+    "designSkipReason": "no frontend in stage diff — pure constants change",
+    "benchmarkScores": [],
+    "consoleErrors": [],
+    "screenshots": [],
+    "regressions": [],
+    "viewportsTested": [
+      "desktop"
+    ],
+    "blocker": null,
+    "testManifest": {
+      "/": {
+        "testedInStage": 1,
+        "testedInIter": 1,
+        "testedAfterSha": "eaf60eb54dfb7212b11121a44f7da1bfd7c5b303",
+        "diffFiles": [
+          "src/app/[locale]/page.tsx"
+        ],
+        "passedAt": "2026-04-22T00:00:00Z"
+      },
+      "/buy": {
+        "testedInStage": 1,
+        "testedInIter": 1,
+        "testedAfterSha": "eaf60eb54dfb7212b11121a44f7da1bfd7c5b303",
+        "diffFiles": [
+          "src/app/[locale]/buy/page.tsx"
+        ],
+        "passedAt": "2026-04-22T00:00:00Z"
+      },
+      "/search": {
+        "testedInStage": 1,
+        "testedInIter": 1,
+        "testedAfterSha": "eaf60eb54dfb7212b11121a44f7da1bfd7c5b303",
+        "diffFiles": [
+          "src/app/[locale]/search/page.tsx"
+        ],
+        "passedAt": "2026-04-22T00:00:00Z"
+      }
+    }
+  },
+  "liveTestReport": {
+    "passed": true,
+    "stagingUrl": "https://staging.binayahhub.com",
+    "pagesChecked": [
+      "/",
+      "/buy",
+      "/off-plan",
+      "/news",
+      "/search?q=dubai"
+    ],
+    "consoleErrors": [],
+    "bugs": [
+      {
+        "severity": "minor",
+        "description": "next/image returns 404 for FALLBACK_LISTINGS unsplash image on homepage (photo-1582407947304-fd86f28320c5) — pre-existing, unsplash URL itself 404s; fallback data only shows when API fails",
+        "page": "/",
+        "type": "visual",
+        "consoleOutput": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "severity": "minor",
+        "description": "next/image returns 400 for one S3 article image on /news (Reasons-why-should-you-consult article) — S3 object itself returns 200 so this is a pre-existing next/image optimisation issue; article page still renders",
+        "page": "/news",
+        "type": "visual",
+        "consoleOutput": "Failed to load resource: the server responded with a status of 400 ()"
+      }
+    ],
+    "screenshots": [],
+    "blocker": null
+  },
+  "pmDecision": "ship",
+  "summary": "auto-shipped, confidence=90 — ISR TTLs tuned on 10 pages, search fixed to force-dynamic",
+  "securitySensitive": false,
+  "history": [],
+  "stageHistory": [
+    {
+      "stage": 1,
+      "summary": "Tuned ISR TTLs on 10 page files + fixed search dynamic=force-dynamic",
+      "passedAt": "2026-04-21T19:11:22Z",
+      "commitSha": "eaf60eb54dfb7212b11121a44f7da1bfd7c5b303"
+    }
+  ],
+  "regressionSweepDone": false,
+  "startedAt": "2026-04-21T19:00:59Z",
+  "devServerPid": 35954,
+  "screenshotsUsed": 0,
+  "pushedSha": "eaf60eb54dfb7212b11121a44f7da1bfd7c5b303",
+  "vercelDeployUrl": "https://binayah-web-bomyy6pv4-prosper3.vercel.app",
+  "testFixture": null,
+  "metricsLog": ".iterate/metrics.jsonl",
+  "flags": {},
+  "loopContext": {
+    "designRoute": "dev",
+    "designRouteReason": "No UI changes — caching constants only; designer not needed."
+  },
+  "contextGaps": [
+    {
+      "section": "§1 — Tech Directory (External API)",
+      "missing": "Caching strategy: all data-backed pages under src/app/[locale]/ use `export const revalidate` (ISR), auth-gated/admin use `export const dynamic = 'force-dynamic'`. Slug detail fetchers in src/lib/api.ts are wrapped in React.cache() to dedupe generateMetadata + page render. Do not add `generateStaticParams` to slug routes — inventory churn makes pre-gen unhelpful."
+    }
+  ]
+}

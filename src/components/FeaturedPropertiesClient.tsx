@@ -6,6 +6,7 @@ import { Bed, Maximize, MapPin, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { CardActions } from "@/components/PropertyActions";
+import { useTranslations } from "next-intl";
 
 interface Project {
   _id: string;
@@ -25,6 +26,7 @@ interface Project {
 }
 
 const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) => {
+  const t = useTranslations("home.sections.featured");
   const fmt = (p: Project) => formatProjectPrice(p.startingPrice, p.currency || "AED");
 
   return (
@@ -34,13 +36,13 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-6 sm:mb-14 gap-3">
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Featured Listings</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Handpicked <span className="italic font-light">Properties</span>
+              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
             </h2>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
-            View All Properties <ArrowUpRight className="h-4 w-4" />
+            {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
 

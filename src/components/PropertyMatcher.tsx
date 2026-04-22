@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { apiUrl } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 const MATCHER_URL = apiUrl("/api/property-matcher");
 
@@ -117,6 +118,7 @@ const ResultContent = ({ result }: { result: string }) => {
 
 // ─── Component ───
 const PropertyMatcher = () => {
+  const t = useTranslations("propertyMatcher");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
@@ -240,9 +242,9 @@ const PropertyMatcher = () => {
         {/* Desktop header */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="hidden sm:block text-center mb-12">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>AI Property Matcher</p>
+          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            Find Your <span className="italic font-light">Perfect Match</span>
+            {t("title")}
           </h2>
           <p className="mt-4 text-muted-foreground max-w-md mx-auto">
             Answer {questions.length} quick questions and our AI will recommend the best properties for you.

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { useTranslations } from "next-intl";
 
 const FALLBACK_ARTICLES = [
   { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" },
@@ -27,6 +28,7 @@ function formatDate(dateStr?: string) {
 }
 
 const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) => {
+  const t = useTranslations("home.sections.news");
   const articles = propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
     _id: String(i), title: a.title, slug: a.slug, category: a.category,
     featuredImage: a.image, publishedAt: a.date
@@ -36,9 +38,9 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       {/* Mobile: compact inline header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
-        <h2 className="text-sm font-bold text-foreground">Latest News</h2>
+        <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
         <Link href="/news" className="group flex items-center gap-1 text-primary font-semibold text-xs">
-          All Articles <ArrowUpRight className="h-3 w-3" />
+          {t("viewAll")} <ArrowUpRight className="h-3 w-3" />
         </Link>
       </div>
 
@@ -53,11 +55,11 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
           <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>Blog</p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            Latest <span className="italic font-light">News</span>
+            {t("title")}
           </h2>
         </div>
         <Link href="/news" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
-          All Articles <ArrowUpRight className="h-4 w-4" />
+          {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
         </Link>
       </motion.div>
 

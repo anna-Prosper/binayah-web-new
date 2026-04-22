@@ -5,10 +5,12 @@ import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Tab = "signin" | "signup";
 
 export default function SignInClient() {
+  const t = useTranslations("signIn");
   const searchParams = useSearchParams();
   const router = useRouter();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -39,7 +41,7 @@ export default function SignInClient() {
     e.preventDefault();
     setSiError("");
     if (!siEmail || !siPassword) {
-      setSiError("Please enter your email and password.");
+      setSiError(t("errors.enterEmailPassword"));
       return;
     }
     setSiLoading(true);
@@ -51,7 +53,7 @@ export default function SignInClient() {
     });
     setSiLoading(false);
     if (res?.error) {
-      setSiError("Invalid email or password.");
+      setSiError(t("errors.invalidCredentials"));
     } else {
       router.push(callbackUrl);
     }
@@ -61,15 +63,15 @@ export default function SignInClient() {
     e.preventDefault();
     setSuError("");
     if (!suName.trim()) {
-      setSuError("Please enter your name.");
+      setSuError(t("errors.enterName"));
       return;
     }
     if (!suEmail) {
-      setSuError("Please enter your email.");
+      setSuError(t("errors.enterEmail"));
       return;
     }
     if (!validatePassword(suPassword)) {
-      setSuError("Password must be at least 8 characters with a letter and a digit.");
+      setSuError(t("errors.passwordTooWeak"));
       return;
     }
     setSuLoading(true);
@@ -81,13 +83,13 @@ export default function SignInClient() {
       });
       if (res.status === 409) {
         setSuLoading(false);
-        setSuError("This email is already registered. Try signing in.");
+        setSuError(t("errors.emailTaken"));
         return;
       }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setSuLoading(false);
-        setSuError((data as { error?: string }).error || "Something went wrong. Please try again.");
+        setSuError((data as { error?: string }).error || t("errors.genericError"));
         return;
       }
       // Auto sign-in
@@ -99,14 +101,14 @@ export default function SignInClient() {
       });
       setSuLoading(false);
       if (signInRes?.error) {
-        setSuError("Account created! Please sign in.");
+        setSuError(t("errors.accountCreated"));
         setTab("signin");
       } else {
         router.push(callbackUrl);
       }
     } catch {
       setSuLoading(false);
-      setSuError("Network error. Please try again.");
+      setSuError(t("errors.networkError"));
     }
   };
 
@@ -123,13 +125,13 @@ export default function SignInClient() {
         href="/"
         className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+        <ArrowLeft className="h-4 w-4" /> {t("backLink")}
       </Link>
       <div className="relative w-full max-w-md">
         {resetSuccess && (
           <div className="mb-4 flex items-center gap-2 p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground">
             <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-            Password reset successfully. Please sign in with your new password.
+            {t("resetSuccess")}
           </div>
         )}
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
@@ -144,8 +146,8 @@ export default function SignInClient() {
               </div>
             </Link>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-foreground">Welcome to Binayah</h1>
-              <p className="text-sm text-muted-foreground mt-1">Sign in to save favorites &amp; more</p>
+              <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+              <p className="text-sm text-muted-foreground mt-1">{t("subtitle")}</p>
             </div>
           </div>
 
@@ -154,7 +156,7 @@ export default function SignInClient() {
             onClick={() => { setGoogleLoading(true); signIn("google", { callbackUrl }); }}
             disabled={googleLoading}
             className="w-full flex items-center justify-center gap-3 px-6 py-3.5 border border-border rounded-xl bg-background hover:bg-muted/50 transition-colors font-medium text-foreground disabled:opacity-70"
-            aria-label="Continue with Google"
+            aria-label={t("googleButton")}
           >
             {googleLoading ? (
               <div className="w-5 h-5 border-2 border-border border-t-primary rounded-full animate-spin" />
@@ -166,13 +168,13 @@ export default function SignInClient() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
             )}
-            {googleLoading ? "Redirecting to Google…" : "Continue with Google"}
+            {googleLoading ? t("googleRedirecting") : t("googleButton")}
           </button>
 
           {/* Divider */}
           <div className="w-full flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-muted-foreground">or</span>
+            <span className="text-xs text-muted-foreground">{t("or")}</span>
             <div className="flex-1 h-px bg-border" />
           </div>
 
@@ -186,7 +188,7 @@ export default function SignInClient() {
                   : "bg-background text-muted-foreground hover:text-foreground"
               }`}
             >
-              Sign in
+              {t("tabs.signIn")}
             </button>
             <button
               onClick={() => setTab("signup")}
@@ -196,7 +198,7 @@ export default function SignInClient() {
                   : "bg-background text-muted-foreground hover:text-foreground"
               }`}
             >
-              Create account
+              {t("tabs.createAccount")}
             </button>
           </div>
 
@@ -205,7 +207,7 @@ export default function SignInClient() {
             <form onSubmit={handleSignIn} className="w-full space-y-4" noValidate>
               <div>
                 <label htmlFor="si-email" className="block text-sm font-medium text-foreground mb-1.5">
-                  Email
+                  {t("form.emailLabel")}
                 </label>
                 <input
                   id="si-email"
@@ -214,20 +216,20 @@ export default function SignInClient() {
                   value={siEmail}
                   onChange={(e) => setSiEmail(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                  placeholder="you@example.com"
+                  placeholder={t("form.emailPlaceholder")}
                   required
                 />
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="si-password" className="block text-sm font-medium text-foreground">
-                    Password
+                    {t("form.passwordLabel")}
                   </label>
                   <Link
                     href="/forgot-password"
                     className="text-xs text-primary hover:underline"
                   >
-                    Forgot password?
+                    {t("form.forgotPassword")}
                   </Link>
                 </div>
                 <div className="relative">
@@ -238,7 +240,7 @@ export default function SignInClient() {
                     value={siPassword}
                     onChange={(e) => setSiPassword(e.target.value)}
                     className="w-full px-4 py-3 pr-11 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                    placeholder="••••••••"
+                    placeholder={t("form.passwordPlaceholder")}
                     required
                   />
                   <button
@@ -260,7 +262,7 @@ export default function SignInClient() {
                 className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-60"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                {siLoading ? "Signing in…" : "Sign in"}
+                {siLoading ? t("buttons.signingIn") : t("buttons.signIn")}
               </button>
             </form>
           )}
@@ -270,7 +272,7 @@ export default function SignInClient() {
             <form onSubmit={handleSignUp} className="w-full space-y-4" noValidate>
               <div>
                 <label htmlFor="su-name" className="block text-sm font-medium text-foreground mb-1.5">
-                  Full name
+                  {t("form.fullNameLabel")}
                 </label>
                 <input
                   id="su-name"
@@ -279,13 +281,13 @@ export default function SignInClient() {
                   value={suName}
                   onChange={(e) => setSuName(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                  placeholder="Jane Smith"
+                  placeholder={t("form.fullNamePlaceholder")}
                   required
                 />
               </div>
               <div>
                 <label htmlFor="su-email" className="block text-sm font-medium text-foreground mb-1.5">
-                  Email
+                  {t("form.emailLabel")}
                 </label>
                 <input
                   id="su-email"
@@ -294,13 +296,13 @@ export default function SignInClient() {
                   value={suEmail}
                   onChange={(e) => setSuEmail(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                  placeholder="you@example.com"
+                  placeholder={t("form.emailPlaceholder")}
                   required
                 />
               </div>
               <div>
                 <label htmlFor="su-password" className="block text-sm font-medium text-foreground mb-1.5">
-                  Password
+                  {t("form.passwordLabel")}
                 </label>
                 <div className="relative">
                   <input
@@ -310,7 +312,7 @@ export default function SignInClient() {
                     value={suPassword}
                     onChange={(e) => setSuPassword(e.target.value)}
                     className="w-full px-4 py-3 pr-11 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                    placeholder="Min 8 chars, letter + digit"
+                    placeholder={t("form.passwordHint")}
                     required
                   />
                   <button
@@ -324,7 +326,7 @@ export default function SignInClient() {
                 </div>
                 {suPassword && !validatePassword(suPassword) && (
                   <p className="text-xs text-amber-500 mt-1">
-                    At least 8 characters with a letter and a digit.
+                    {t("errors.passwordHintInline")}
                   </p>
                 )}
               </div>
@@ -337,16 +339,16 @@ export default function SignInClient() {
                 className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-60"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                {suLoading ? "Creating account…" : "Create account"}
+                {suLoading ? t("buttons.creatingAccount") : t("buttons.createAccount")}
               </button>
             </form>
           )}
 
           <p className="text-xs text-muted-foreground text-center">
-            By signing in you agree to our{" "}
-            <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a>
-            {" "}and{" "}
-            <a href="/terms" className="underline hover:text-foreground">Terms of Service</a>.
+            {t("legal")}{" "}
+            <a href="/privacy" className="underline hover:text-foreground">{t("privacyPolicy")}</a>
+            {" "}{t("and")}{" "}
+            <a href="/terms" className="underline hover:text-foreground">{t("termsOfService")}</a>.
           </p>
         </div>
       </div>

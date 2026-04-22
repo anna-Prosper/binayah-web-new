@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
 import { BreadcrumbJsonLd } from "./JsonLd";
+import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem {
   label: string;
@@ -10,7 +11,8 @@ interface BreadcrumbItem {
 }
 
 export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
-  const allItems = [{ label: "Home", href: "/" }, ...items];
+  const t = useTranslations("breadcrumbs");
+  const allItems = [{ label: t("home"), href: "/" }, ...items];
 
   return (
     <>

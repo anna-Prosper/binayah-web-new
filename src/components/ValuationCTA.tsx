@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, BarChart3, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const stats = [
   { icon: Clock, value: "60s", label: "Average Time" },
@@ -12,6 +13,7 @@ const stats = [
 
 const ValuationCTA = () => {
   const router = useRouter();
+  const t = useTranslations("home.sections.valuation");
 
   return (
     <section className="relative py-10 sm:py-32 overflow-hidden">
@@ -115,7 +117,7 @@ const ValuationCTA = () => {
                 boxShadow: "0 6px 28px rgba(11,61,46,0.4)",
               }}
             >
-              Get Your Free Valuation
+              {t("cta")}
               <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </motion.button>
           </motion.div>

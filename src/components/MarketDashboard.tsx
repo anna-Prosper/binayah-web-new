@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { TrendingUp, BarChart3, PieChart as PieIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type Tab = "prices" | "yields" | "transactions";
 
@@ -25,6 +26,7 @@ interface MarketData {
 }
 
 const MarketDashboard = () => {
+  const t = useTranslations("marketDashboard");
   const [tab, setTab] = useState<Tab>("prices");
   const [data, setData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,8 +50,8 @@ const MarketDashboard = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-6 sm:mb-10">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Market Intelligence</p>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">Dubai Market <span className="italic font-light">Dashboard</span></h2>
+          <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">Dubai Market <span className="italic font-light">{t("title")}</span></h2>
           <p className="hidden sm:block mt-4 text-muted-foreground max-w-md mx-auto text-base">
             Live insights on prices, rental yields, and transaction trends across Dubai&apos;s top areas.
           </p>
@@ -58,16 +60,16 @@ const MarketDashboard = () => {
         {loading || !data ? (
           <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
             <Loader2 className="h-5 w-5 animate-spin" />
-            <span>Loading market data...</span>
+            <span>{t("loading")}</span>
           </div>
         ) : (
           <>
             {/* Key stats row */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-10">
               {[
-                { label: "Avg Price/sqft", value: `AED ${formatNum(data.summary.avgPricePerSqft)}` },
-                { label: "Active Listings", value: formatNum(data.summary.totalListings) },
-                { label: "Rental Yield", value: `${data.summary.avgYield}%` },
+                { label: t("avgPrice"), value: `AED ${formatNum(data.summary.avgPricePerSqft)}` },
+                { label: t("transactions"), value: formatNum(data.summary.totalListings) },
+                { label: t("rentalYield"), value: `${data.summary.avgYield}%` },
                 { label: "Off-Plan", value: `${data.summary.offPlanShare}%` },
               ].map((s) => (
                 <div key={s.label} className="bg-background rounded-lg sm:rounded-xl p-2 sm:p-5 border border-border/50 text-center sm:text-left">

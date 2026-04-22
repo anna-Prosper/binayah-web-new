@@ -2,9 +2,13 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 const cryptoBg = "/assets/crypto-banner.webp";
 
-const CryptoBanner = () => (
+const CryptoBanner = () => {
+  const t = useTranslations("home.crypto");
+  const tCommon = useTranslations("common");
+  return (
   <section className="relative overflow-hidden my-2 sm:my-0">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">
       {/* Background image */}
@@ -30,13 +34,13 @@ const CryptoBanner = () => (
       >
         <div>
           <p className="text-white/60 text-[9px] sm:text-[11px] font-semibold tracking-[0.3em] uppercase mb-1 sm:mb-2">
-            Now Accepting
+            {t("accepting")}
           </p>
           <h2 className="text-white text-lg sm:text-3xl lg:text-[2.5rem] font-bold leading-[1.15]">
-            Buy Property with
+            {t("title")}
           </h2>
           <p className="text-white/80 text-base sm:text-2xl lg:text-[2rem] italic font-light leading-tight mt-0.5">
-            Bitcoin & Crypto
+            {t("subtitle")}
           </p>
         </div>
 
@@ -54,7 +58,7 @@ const CryptoBanner = () => (
             border: "1px solid rgba(255,255,255,0.15)",
           }}
         >
-          Learn More
+          {tCommon("learnMore")}
           <ArrowRight className="h-4 w-4" />
         </motion.a>
       </motion.div>
@@ -75,6 +79,7 @@ const CryptoBanner = () => (
       </motion.a>
     </div>
   </section>
-);
+  );
+};
 
 export default CryptoBanner;

@@ -17,6 +17,7 @@ import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import SavedPropertiesSection from "@/components/SavedPropertiesSection";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface Props {
   user: { id: string; name?: string | null; email?: string | null; image?: string | null };
@@ -48,31 +49,32 @@ type Tab = "saved" | "submissions" | "subscriptions";
 
 const PROPERTY_TYPES = ["Apartment","Villa","Townhouse","Penthouse","Studio","Duplex","Office","Retail","Warehouse","Plot","Other"];
 
-function getStatusConfig(status?: string) {
+function getStatusConfig(status?: string, tProfile?: (key: string) => string) {
+  const tl = (key: string, fallback: string) => tProfile ? tProfile(key) : fallback;
   const normalized = status === "new" || !status ? "under_review" : status;
   if (normalized === "contacted") return {
-    label: "Agent Contacted",
+    label: tl("submissions.status.contacted", "Agent Contacted"),
     borderColor: "border-l-blue-500",
     pillBg: "bg-blue-500/10",
     pillText: "text-blue-500",
     Icon: Phone,
   };
   if (normalized === "listed") return {
-    label: "Listed",
+    label: tl("submissions.status.listed", "Listed"),
     borderColor: "border-l-emerald-500",
     pillBg: "bg-emerald-500/10",
     pillText: "text-emerald-600",
     Icon: CheckCircle2,
   };
   if (normalized === "cancelled") return {
-    label: "Cancelled",
+    label: tl("submissions.status.cancelled", "Cancelled"),
     borderColor: "border-l-gray-300",
     pillBg: "bg-gray-100",
     pillText: "text-gray-500",
     Icon: X,
   };
   return {
-    label: "Under Review",
+    label: tl("submissions.status.underReview", "Under Review"),
     borderColor: "border-l-amber-400",
     pillBg: "bg-amber-500/10",
     pillText: "text-amber-500",
@@ -81,11 +83,12 @@ function getStatusConfig(status?: string) {
 }
 
 function ProfileClientInner({ user }: Props) {
+  const tProfile = useTranslations("profile");
   const searchParams = useSearchParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>(() => {
-    const t = searchParams.get("tab");
-    if (t === "submissions" || t === "subscriptions") return t;
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "submissions" || tabParam === "subscriptions") return tabParam;
     return "saved";
   });
 
@@ -162,7 +165,7 @@ function ProfileClientInner({ user }: Props) {
       .then((data) => {
         if (data.submissions) setSubmissions(data.submissions);
       })
-      .catch(() => setLoadError("Could not load submissions. Please refresh."))
+      .catch(() => setLoadError(tProfile("errors.loadSubmissions")))
       .finally(() => setLoadingSubmissions(false));
   }, [activeTab, submissions.length, loadingSubmissions]);
 
@@ -209,7 +212,7 @@ function ProfileClientInner({ user }: Props) {
       }));
       setIsEditing(false);
     } catch (e) {
-      setSaveError(e instanceof Error ? e.message : "Could not save. Please try again.");
+      setSaveError(e instanceof Error ? e.message : tProfile("errors.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -235,7 +238,7 @@ function ProfileClientInner({ user }: Props) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
     } catch {
       setProfileExtra(prev);
-      toast({ title: "Couldn't save preference", description: "Please try again.", variant: "destructive" });
+      toast({ title: tProfile("errors.cantSavePref"), description: tProfile("errors.tryAgain"), variant: "destructive" });
     }
   };
 
@@ -264,7 +267,7 @@ function ProfileClientInner({ user }: Props) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
     } catch {
       setSubmissions(prev);
-      toast({ title: "Couldn't cancel submission", description: "Please try again.", variant: "destructive" });
+      toast({ title: tProfile("errors.cantCancel"), description: tProfile("errors.tryAgain"), variant: "destructive" });
     } finally {
       setCancelConfirm(null);
       setCancelling(false);
@@ -312,7 +315,7 @@ function ProfileClientInner({ user }: Props) {
       setEditSubId(null);
     } catch {
       setSubmissions(prev);
-      toast({ title: "Couldn't save changes", description: "Please try again.", variant: "destructive" });
+      toast({ title: tProfile("errors.cantSaveChanges"), description: tProfile("errors.tryAgain"), variant: "destructive" });
     } finally {
       setSavingSub(false);
     }
@@ -322,9 +325,9 @@ function ProfileClientInner({ user }: Props) {
   const canEditSub = (status?: string) => status === "under_review" || status === "new";
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: "saved", label: `Saved (${favIds.length})` },
-    { id: "submissions", label: `Submissions (${submissions.length})` },
-    { id: "subscriptions", label: `Subscriptions (${subscribedSlugs.length})` },
+    { id: "saved", label: tProfile("tabs.saved", { count: favIds.length }) },
+    { id: "submissions", label: tProfile("tabs.submissions", { count: submissions.length }) },
+    { id: "subscriptions", label: tProfile("tabs.subscriptions", { count: subscribedSlugs.length }) },
   ];
 
   return (
@@ -352,14 +355,14 @@ function ProfileClientInner({ user }: Props) {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white/60 hover:text-white/90 border border-white/10 hover:border-white/25 hover:bg-white/10 transition-all"
           >
             <Pencil className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Edit</span>
+            <span className="hidden sm:inline">{tProfile("editButton")}</span>
           </button>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white/60 hover:text-white/90 border border-white/10 hover:border-white/25 hover:bg-white/10 transition-all"
           >
             <LogOut className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Sign out</span>
+            <span className="hidden sm:inline">{tProfile("signOut")}</span>
           </button>
         </div>
 
@@ -406,7 +409,7 @@ function ProfileClientInner({ user }: Props) {
                 </div>
               ) : (
                 <button onClick={openEdit} className="text-xs text-white/30 hover:text-white/55 transition-colors">
-                  + Add phone &amp; location
+                  {tProfile("addPhoneLocation")}
                 </button>
               )}
             </div>
@@ -419,16 +422,16 @@ function ProfileClientInner({ user }: Props) {
         <div className="bg-card border-b border-border shadow-sm">
           <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-sm font-semibold text-foreground">Edit Profile</h2>
+              <h2 className="text-sm font-semibold text-foreground">{tProfile("edit.title")}</h2>
               <button onClick={() => setIsEditing(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                { key: "name", label: "Display name", type: "text", placeholder: user.name || "Your name", maxLength: 80 },
-                { key: "phone", label: "Phone number", type: "tel", placeholder: "+971 50 000 0000", maxLength: 20 },
-                { key: "location", label: "Location", type: "text", placeholder: "Dubai, UAE", maxLength: 100 },
+                { key: "name", label: tProfile("edit.displayName"), type: "text", placeholder: user.name || "Your name", maxLength: 80 },
+                { key: "phone", label: tProfile("edit.phoneNumber"), type: "tel", placeholder: tProfile("edit.phonePlaceholder"), maxLength: 20 },
+                { key: "location", label: tProfile("edit.location"), type: "text", placeholder: tProfile("edit.locationPlaceholder"), maxLength: 100 },
               ].map(({ key, label, type, placeholder, maxLength }) => (
                 <div key={key}>
                   <label className="block text-xs font-medium text-muted-foreground mb-1.5">{label}</label>
@@ -446,7 +449,7 @@ function ProfileClientInner({ user }: Props) {
             {saveError && <p className="text-xs text-red-500 mt-3">{saveError}</p>}
             <div className="flex items-center justify-end gap-3 mt-5">
               <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground border border-border rounded-lg transition-all hover:bg-muted">
-                Cancel
+                {tProfile("edit.cancel")}
               </button>
               <button
                 onClick={saveProfile}
@@ -455,7 +458,7 @@ function ProfileClientInner({ user }: Props) {
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 {saving ? <div className="w-3.5 h-3.5 border border-white/40 border-t-white rounded-full animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                {saving ? "Saving…" : "Save changes"}
+                {saving ? tProfile("edit.saving") : tProfile("edit.saveChanges")}
               </button>
             </div>
           </div>
@@ -504,16 +507,16 @@ function ProfileClientInner({ user }: Props) {
                   <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-5">
                     <Home className="h-7 w-7 text-muted-foreground/30" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">No submissions yet</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{tProfile("submissions.empty")}</h3>
                   <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
-                    List your property and our agents will review and contact you within 24 hours.
+                    {tProfile("submissions.emptyDesc")}
                   </p>
                   <Link
                     href="/list-your-property"
                     className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-xl hover:-translate-y-0.5"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
                   >
-                    List a Property
+                    {tProfile("submissions.listProperty")}
                   </Link>
                 </div>
               ) : (
@@ -541,11 +544,11 @@ function ProfileClientInner({ user }: Props) {
                                 AED {Number(s.askingPrice).toLocaleString()}
                               </p>
                             ) : (
-                              <p className="text-xs text-muted-foreground mt-0.5">Price on request</p>
+                              <p className="text-xs text-muted-foreground mt-0.5">{tProfile("submissions.priceOnRequest")}</p>
                             )}
                             {s.createdAt && (
                               <p className="text-[11px] text-muted-foreground mt-1.5">
-                                Submitted{" "}
+                                {tProfile("submissions.submitted")}{" "}
                                 {new Date(s.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                               </p>
                             )}
@@ -554,16 +557,16 @@ function ProfileClientInner({ user }: Props) {
                               <div className="flex items-center gap-3 mt-2.5">
                                 {isCancellingThis ? (
                                   <div className="flex items-center gap-2">
-                                    <span className="text-xs text-muted-foreground">Cancel submission?</span>
+                                    <span className="text-xs text-muted-foreground">{tProfile("submissions.cancelConfirm")}</span>
                                     <button
                                       onClick={() => doCancel(s._id)}
                                       disabled={cancelling}
                                       className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors disabled:opacity-50"
                                     >
-                                      {cancelling ? "…" : "Yes"}
+                                      {cancelling ? "…" : tProfile("submissions.cancelConfirmYes")}
                                     </button>
                                     <button onClick={() => setCancelConfirm(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                                      No
+                                      {tProfile("submissions.cancelConfirmNo")}
                                     </button>
                                   </div>
                                 ) : (
@@ -573,7 +576,7 @@ function ProfileClientInner({ user }: Props) {
                                       className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium transition-colors"
                                     >
                                       <Edit3 className="h-3 w-3" />
-                                      Edit
+                                      {tProfile("submissions.edit")}
                                     </button>
                                     <span className="text-muted-foreground/30">·</span>
                                     <button
@@ -581,7 +584,7 @@ function ProfileClientInner({ user }: Props) {
                                       className="flex items-center gap-1 text-xs text-muted-foreground hover:text-red-500 transition-colors"
                                     >
                                       <Trash2 className="h-3 w-3" />
-                                      Cancel submission
+                                      {tProfile("submissions.cancelSubmission")}
                                     </button>
                                   </>
                                 )}
@@ -599,18 +602,18 @@ function ProfileClientInner({ user }: Props) {
                           <div className="border-t border-border/50 px-5 py-4 bg-muted/30">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                               <div>
-                                <label className="block text-xs font-medium text-muted-foreground mb-1">Property type</label>
+                                <label className="block text-xs font-medium text-muted-foreground mb-1">{tProfile("submissions.propertyType")}</label>
                                 <select
                                   value={editSubForm.propertyType}
                                   onChange={(e) => setEditSubForm((f) => ({ ...f, propertyType: e.target.value }))}
                                   className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                                 >
-                                  <option value="">Unchanged</option>
+                                  <option value="">{tProfile("submissions.unchanged")}</option>
                                   {PROPERTY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                                 </select>
                               </div>
                               <div>
-                                <label className="block text-xs font-medium text-muted-foreground mb-1">Community</label>
+                                <label className="block text-xs font-medium text-muted-foreground mb-1">{tProfile("submissions.community")}</label>
                                 <input
                                   type="text"
                                   value={editSubForm.community}
@@ -621,7 +624,7 @@ function ProfileClientInner({ user }: Props) {
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs font-medium text-muted-foreground mb-1">Asking price (AED)</label>
+                                <label className="block text-xs font-medium text-muted-foreground mb-1">{tProfile("submissions.askingPrice")}</label>
                                 <input
                                   type="number"
                                   value={editSubForm.askingPrice}
@@ -640,10 +643,10 @@ function ProfileClientInner({ user }: Props) {
                                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                               >
                                 {savingSub ? <div className="w-3 h-3 border border-white/40 border-t-white rounded-full animate-spin" /> : <Save className="h-3 w-3" />}
-                                {savingSub ? "Saving…" : "Save"}
+                                {savingSub ? tProfile("submissions.saving") : tProfile("submissions.save")}
                               </button>
                               <button onClick={() => setEditSubId(null)} className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground border border-border rounded-lg hover:bg-muted transition-all">
-                                Cancel
+                                {tProfile("submissions.cancel")}
                               </button>
                             </div>
                           </div>
@@ -668,22 +671,24 @@ function ProfileClientInner({ user }: Props) {
                   <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-5">
                     <Bell className="h-7 w-7 text-muted-foreground/30" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">No project subscriptions</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{tProfile("subscriptions.empty")}</h3>
                   <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
-                    Subscribe to off-plan projects to get notified about price changes, new floor plans, and milestones.
+                    {tProfile("subscriptions.emptyDesc")}
                   </p>
                   <Link
                     href="/off-plan"
                     className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-xl hover:-translate-y-0.5"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
                   >
-                    Browse Off-Plan Projects
+                    {tProfile("subscriptions.browseOffPlan")}
                   </Link>
                 </div>
               ) : (
                 <div>
                   <p className="text-sm text-muted-foreground mb-6">
-                    {subscribedSlugs.length} project{subscribedSlugs.length !== 1 ? "s" : ""} subscribed
+                    {subscribedSlugs.length !== 1
+                      ? tProfile("subscriptions.projectsSubscribedPlural", { count: subscribedSlugs.length })
+                      : tProfile("subscriptions.projectsSubscribed", { count: subscribedSlugs.length })}
                   </p>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {subscribedSlugs.map((slug) => {
@@ -724,13 +729,13 @@ function ProfileClientInner({ user }: Props) {
                               {developerName && <p className="text-[11px] text-white/60 mt-0.5 truncate">{developerName}</p>}
                             </div>
                             <span className="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/30 backdrop-blur-sm">
-                              Subscribed
+                              {tProfile("subscriptions.subscribed")}
                             </span>
                           </Link>
 
                           {/* Notification toggles */}
                           <div className="px-4 pt-3.5 pb-3">
-                            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-3">Notify via</p>
+                            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-3">{tProfile("subscriptions.notifyVia")}</p>
                             <div className="space-y-2.5">
                               {([
                                 { key: "email" as const, label: "Email", Icon: Mail },
@@ -765,20 +770,20 @@ function ProfileClientInner({ user }: Props) {
                           {/* Footer */}
                           <div className="px-4 py-2.5 border-t border-border/40 flex items-center justify-between">
                             <Link href={`/project/${slug}`} className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">
-                              View project →
+                              {tProfile("subscriptions.viewProject")}
                             </Link>
                             {isConfirming ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-muted-foreground">Sure?</span>
+                                <span className="text-xs text-muted-foreground">{tProfile("subscriptions.unsubscribeConfirm")}</span>
                                 <button onClick={() => doUnsubscribe(slug)} disabled={unsubscribing} className="text-xs font-semibold text-red-500 hover:text-red-600 disabled:opacity-50 transition-colors">
-                                  {unsubscribing ? "…" : "Yes"}
+                                  {unsubscribing ? "…" : tProfile("submissions.cancelConfirmYes")}
                                 </button>
-                                <button onClick={() => setUnsubscribeConfirm(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">No</button>
+                                <button onClick={() => setUnsubscribeConfirm(null)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{tProfile("submissions.cancelConfirmNo")}</button>
                               </div>
                             ) : (
                               <button onClick={() => setUnsubscribeConfirm(slug)} className="flex items-center gap-1 text-xs text-muted-foreground/50 hover:text-red-500 transition-colors">
                                 <Trash2 className="h-3 w-3" />
-                                Unsubscribe
+                                {tProfile("subscriptions.unsubscribe")}
                               </button>
                             )}
                           </div>

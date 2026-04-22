@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const communities = [
   { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=800&fit=crop" },
@@ -12,7 +13,9 @@ const communities = [
   { name: "Business Bay", slug: "business-bay", properties: "290+", image: "https://images.unsplash.com/photo-1546412414-e1885259563a?w=600&h=800&fit=crop" },
 ];
 
-const CommunitiesSection = () => (
+const CommunitiesSection = () => {
+  const t = useTranslations("home.sections.communities");
+  return (
   <section id="communities" className="py-12 sm:py-24 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <motion.div
@@ -29,10 +32,10 @@ const CommunitiesSection = () => (
           style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
         <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
-          Explore Dubai
+          {t("label")}
         </p>
         <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-          Premier <span className="italic font-light">Communities</span>
+          {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
         </h2>
       </motion.div>
 
@@ -52,7 +55,7 @@ const CommunitiesSection = () => (
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>
-                <p className="text-white/70 text-xs">{c.properties} properties</p>
+                <p className="text-white/70 text-xs">{c.properties} {t("properties")}</p>
               </div>
             </Link>
           </motion.div>
@@ -75,7 +78,7 @@ const CommunitiesSection = () => (
               <div className="absolute bottom-0 left-0 right-0 p-5">
                 <h3 className="text-white font-bold text-lg mb-1">{c.name}</h3>
                 <div className="flex items-center justify-between">
-                  <p className="text-white/70 text-sm">{c.properties} properties</p>
+                  <p className="text-white/70 text-sm">{c.properties} {t("properties")}</p>
                   <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
                     <ArrowUpRight className="h-4 w-4 text-white" />
                   </div>
@@ -87,6 +90,7 @@ const CommunitiesSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default CommunitiesSection;

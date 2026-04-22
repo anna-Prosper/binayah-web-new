@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ForgotPasswordClient() {
+  const t = useTranslations("forgotPassword");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -14,7 +16,7 @@ export default function ForgotPasswordClient() {
     e.preventDefault();
     setError("");
     if (!email) {
-      setError("Please enter your email address.");
+      setError(t("errors.enterEmail"));
       return;
     }
     setLoading(true);
@@ -44,7 +46,7 @@ export default function ForgotPasswordClient() {
         href="/"
         className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+        <ArrowLeft className="h-4 w-4" /> {t("backLink")}
       </Link>
       <div className="relative w-full max-w-md">
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
@@ -59,30 +61,28 @@ export default function ForgotPasswordClient() {
               </div>
             </Link>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-foreground">Forgot password?</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Enter your email and we&apos;ll send a reset link.
-              </p>
+              <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+              <p className="text-sm text-muted-foreground mt-1">{t("subtitle")}</p>
             </div>
           </div>
 
           {done ? (
             <div className="w-full text-center space-y-4">
               <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-foreground text-sm">
-                If that email is registered, a reset link has been sent. Check your inbox (and spam folder).
+                {t("successMessage")}
               </div>
               <Link
                 href="/signin"
                 className="block text-sm text-primary hover:underline"
               >
-                Back to sign in
+                {t("backToSignIn")}
               </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="w-full space-y-4" noValidate>
               <div>
                 <label htmlFor="fp-email" className="block text-sm font-medium text-foreground mb-1.5">
-                  Email address
+                  {t("emailLabel")}
                 </label>
                 <input
                   id="fp-email"
@@ -91,7 +91,7 @@ export default function ForgotPasswordClient() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                  placeholder="you@example.com"
+                  placeholder={t("emailPlaceholder")}
                   required
                 />
               </div>
@@ -102,11 +102,11 @@ export default function ForgotPasswordClient() {
                 className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-60"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                {loading ? "Sending…" : "Send reset link"}
+                {loading ? t("submitting") : t("submit")}
               </button>
               <div className="text-center">
                 <Link href="/signin" className="text-sm text-muted-foreground hover:text-foreground">
-                  Back to sign in
+                  {t("backToSignIn")}
                 </Link>
               </div>
             </form>

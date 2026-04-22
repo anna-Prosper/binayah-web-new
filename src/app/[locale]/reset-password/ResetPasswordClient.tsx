@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useSearchParams, useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ResetPasswordClient() {
+  const t = useTranslations("resetPassword");
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = useParams<{ locale?: string }>();
@@ -23,16 +25,14 @@ export default function ResetPasswordClient() {
     /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(pw);
 
   if (!token || badToken) {
-    const msg = !token
-      ? "Invalid or missing reset token."
-      : "This reset link is invalid or has expired.";
+    const msg = !token ? t("errors.invalidToken") : t("errors.expiredToken");
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <Link
           href="/"
           className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to Binayah
+          <ArrowLeft className="h-4 w-4" /> {t("backLink")}
         </Link>
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 text-center space-y-4 max-w-md w-full">
           <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center mx-auto">
@@ -40,7 +40,7 @@ export default function ResetPasswordClient() {
           </div>
           <p className="text-foreground font-medium">{msg}</p>
           <Link href="/forgot-password" className="block text-sm text-primary hover:underline">
-            Request a new reset link
+            {t("requestNewLink")}
           </Link>
         </div>
       </div>
@@ -51,11 +51,11 @@ export default function ResetPasswordClient() {
     e.preventDefault();
     setError("");
     if (!validatePassword(password)) {
-      setError("Password must be at least 8 characters with a letter and a digit.");
+      setError(t("errors.passwordTooWeak"));
       return;
     }
     if (password !== confirm) {
-      setError("Passwords do not match.");
+      setError(t("errors.passwordMismatch"));
       return;
     }
     setLoading(true);
@@ -67,7 +67,7 @@ export default function ResetPasswordClient() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        const msg = (data as { error?: string }).error || "Invalid or expired reset link.";
+        const msg = (data as { error?: string }).error || t("errors.expiredToken");
         if (res.status === 400) {
           setBadToken(true);
           return;
@@ -78,7 +78,7 @@ export default function ResetPasswordClient() {
       }
       router.push(`/${locale}/signin?reset=1`);
     } catch {
-      setError("Network error. Please try again.");
+      setError(t("errors.networkError"));
       setLoading(false);
     }
   };
@@ -96,7 +96,7 @@ export default function ResetPasswordClient() {
         href="/"
         className="absolute top-6 left-6 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Binayah
+        <ArrowLeft className="h-4 w-4" /> {t("backLink")}
       </Link>
       <div className="relative w-full max-w-md">
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">
@@ -111,17 +111,15 @@ export default function ResetPasswordClient() {
               </div>
             </Link>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-foreground">Set a new password</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Choose a strong password for your account.
-              </p>
+              <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+              <p className="text-sm text-muted-foreground mt-1">{t("subtitle")}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="w-full space-y-4" noValidate>
             <div>
               <label htmlFor="rp-password" className="block text-sm font-medium text-foreground mb-1.5">
-                New password
+                {t("newPasswordLabel")}
               </label>
               <div className="relative">
                 <input
@@ -131,25 +129,25 @@ export default function ResetPasswordClient() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-11 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                  placeholder="Min 8 chars, letter + digit"
+                  placeholder={t("passwordPlaceholder")}
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  aria-label={showPw ? "Hide password" : "Show password"}
+                  aria-label={showPw ? t("hidePassword") : t("showPassword")}
                 >
                   {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
               {password && !validatePassword(password) && (
-                <p className="text-xs text-amber-500 mt-1">At least 8 characters with a letter and a digit.</p>
+                <p className="text-xs text-amber-500 mt-1">{t("errors.passwordHintInline")}</p>
               )}
             </div>
             <div>
               <label htmlFor="rp-confirm" className="block text-sm font-medium text-foreground mb-1.5">
-                Confirm password
+                {t("confirmPasswordLabel")}
               </label>
               <input
                 id="rp-confirm"
@@ -158,11 +156,11 @@ export default function ResetPasswordClient() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition"
-                placeholder="Repeat password"
+                placeholder={t("confirmPlaceholder")}
                 required
               />
               {confirm && password !== confirm && (
-                <p className="text-xs text-red-500 mt-1">Passwords do not match.</p>
+                <p className="text-xs text-red-500 mt-1">{t("errors.mismatchInline")}</p>
               )}
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
@@ -172,7 +170,7 @@ export default function ResetPasswordClient() {
               className="w-full py-3 rounded-xl font-semibold text-white transition-all hover:opacity-90 disabled:opacity-60"
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
             >
-              {loading ? "Saving…" : "Reset password"}
+              {loading ? t("submitting") : t("submit")}
             </button>
           </form>
         </div>
