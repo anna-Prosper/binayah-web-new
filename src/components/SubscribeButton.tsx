@@ -340,7 +340,7 @@ export function SubscribeButton({
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Confirming…
+                  <Loader2 className="h-4 w-4 animate-spin" /> {t("confirming")}
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">

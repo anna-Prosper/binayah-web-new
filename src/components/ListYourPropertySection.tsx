@@ -41,14 +41,14 @@ export default function ListYourPropertySection() {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
-              Your property,{" "}
+              {t("headlineStart")}{" "}
               <span style={{ background: "linear-gradient(to right, #0B3D2E, #1A7A5A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                everywhere at once.
+                {t("headlineGold")}
               </span>
             </h2>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-7">
-              One listing goes live on the UAE&apos;s top portals simultaneously. No juggling multiple accounts — your dedicated agent does it all.
+              {t("bodyText")}
             </p>
 
             {/* Portal chips */}
@@ -111,9 +111,9 @@ export default function ListYourPropertySection() {
               <div className="relative">
                 {/* Header */}
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: "#D4A847" }}>
-                  Binayah Multi-Portal Listing
+                  {t("multiPortalLabel")}
                 </p>
-                <p className="text-2xl font-bold text-white mb-8">Your property reaches:</p>
+                <p className="text-2xl font-bold text-white mb-8">{t("propertyReaches")}</p>
 
                 {/* Stats row */}
                 <div className="grid grid-cols-3 gap-4 mb-8">
@@ -137,14 +137,14 @@ export default function ListYourPropertySection() {
                         <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: color }} />
                         <span className="text-sm font-semibold text-white/80">{name}</span>
                       </div>
-                      <span className="text-[11px] font-bold text-emerald-400">● Live</span>
+                      <span className="text-[11px] font-bold text-emerald-400">{t("live")}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* CTA hint */}
                 <div className="mt-6 pt-5 border-t border-white/10 text-center">
-                  <p className="text-xs text-white/35">One submission. We handle the rest.</p>
+                  <p className="text-xs text-white/35">{t("oneSubmission")}</p>
                 </div>
               </div>
             </div>
@@ -156,8 +156,8 @@ export default function ListYourPropertySection() {
             >
               <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0" />
               <div>
-                <p className="text-xs font-bold text-white">Zero upfront fees</p>
-                <p className="text-[10px] text-white/70">Commission only on completion</p>
+                <p className="text-xs font-bold text-white">{t("zeroFees")}</p>
+                <p className="text-[10px] text-white/70">{t("commissionOnly")}</p>
               </div>
             </div>
           </motion.div>

@@ -38,7 +38,7 @@ const ROICalculator = () => {
             {t("title")}
           </h2>
           <p className="hidden sm:block mt-4 text-muted-foreground max-w-md mx-auto">
-            Estimate your rental yield, capital gains, and total return on Dubai property investments.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -50,7 +50,7 @@ const ROICalculator = () => {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
                 <Calculator className="h-4 w-4 text-primary" />
               </div>
-              Input Parameters
+              {t("inputParameters")}
             </h3>
             <div className="space-y-6 sm:space-y-7">
               <SliderInput label="Purchase Price"       value={price}         onChange={setPrice}         min={500000}  max={50000000} step={100000} prefix="AED " format={fmt} />
@@ -72,7 +72,7 @@ const ROICalculator = () => {
               </div>
               <button onClick={() => setShowProjection(!showProjection)}
                 className="w-full bg-card rounded-xl p-3.5 border border-border/60 flex items-center justify-between text-sm font-semibold text-foreground">
-                <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> 5-Year Breakdown</span>
+                <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> {t("fiveYearBreakdown")}</span>
                 <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-300 ${showProjection ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
@@ -95,7 +95,7 @@ const ROICalculator = () => {
             {/* Desktop: full layout */}
             <div className="hidden sm:block space-y-4">
               {/* Yield label */}
-              <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">Your Results</p>
+              <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">{t("yourResults")}</p>
 
               {/* Yield cards */}
               <div className="grid grid-cols-2 gap-4">
@@ -109,7 +109,7 @@ const ROICalculator = () => {
                   <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
                     <TrendingUp className="h-3.5 w-3.5 text-primary" />
                   </div>
-                  5-Year Projection
+                  {t("fiveYearProjection")}
                 </h4>
                 <div className="space-y-3">
                   <ProjectionRow label="Property Value (Year 5)" value={`AED ${fmt(results.year5Value)}`} />
@@ -125,9 +125,9 @@ const ROICalculator = () => {
 
             {/* Footnote */}
             <p className="text-[10px] sm:text-[11px] text-muted-foreground text-center">
-              *Projections are estimates based on your inputs.{" "}
+              {t("footnoteLead")}{" "}
               <Link href="/contact" className="underline hover:text-foreground transition-colors inline-flex items-center gap-1">
-                <MessageCircle className="h-2.5 w-2.5 inline" /> Get personalized advice
+                <MessageCircle className="h-2.5 w-2.5 inline" /> {t("getPersonalizedAdvice")}
               </Link>
             </p>
           </motion.div>

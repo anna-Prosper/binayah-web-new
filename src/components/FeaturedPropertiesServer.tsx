@@ -5,6 +5,7 @@ import { BedDouble, Bath, Maximize, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
+import { useTranslations } from "next-intl";
 
 interface Listing {
   _id: string;
@@ -31,14 +32,15 @@ function formatPrice(price?: number, currency = "AED") {
 }
 
 export default function FeaturedPropertiesClient({ listings }: { listings: Listing[] }) {
+  const t = useTranslations("featuredPropertiesServer");
   return (
     <section id="featured" className="py-24 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6 mx-auto" />
-          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Featured</p>
+          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("label")}</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            Handpicked <span className="italic font-light">Properties</span>
+            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
           </h2>
         </motion.div>
 
@@ -66,8 +68,8 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                   )}
                   <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2">{l.title}</h3>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                    {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} Bed</span>}
-                    {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} Bath</span>}
+                    {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} {t("bed")}</span>}
+                    {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} {t("bath")}</span>}
                     {l.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                   </div>
                   <div className="border-t border-border pt-3">
@@ -82,7 +84,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-10">
           <Link href="/search?status=Secondary" className="inline-flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:-translate-y-0.5 text-white"
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-            View All Properties
+            {t("viewAll")}
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
         </motion.div>

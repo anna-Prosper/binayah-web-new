@@ -66,22 +66,22 @@ const ValuationCTA = () => {
               className="text-[10px] sm:text-[11px] font-semibold tracking-[0.35em] uppercase mb-2 sm:mb-4"
               style={{ color: "hsl(43 60% 55%)" }}
             >
-              <span className="sm:hidden">Detailed Property Report</span>
-              <span className="hidden sm:inline">Free Instant Estimate</span>
+              <span className="sm:hidden">{t("detailedReport")}</span>
+              <span className="hidden sm:inline">{t("freeEstimate")}</span>
             </p>
             <h2 className="text-white text-xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.15] mb-2 sm:mb-5">
-              What's Your Property{" "}
+              {t("headlineStart")}{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
                   backgroundImage: "linear-gradient(90deg, #D4A847, #B8922F)",
                 }}
               >
-                Really Worth?
+                {t("headlineEnd")}
               </span>
             </h2>
             <p className="text-white/55 text-xs sm:text-lg leading-relaxed max-w-lg mb-4 sm:mb-8">
-              Get an AI-driven valuation in under 60 seconds — completely free.
+              {t("subline")}
             </p>
 
             {/* Stats row only (pills removed) */}
@@ -138,7 +138,7 @@ const ValuationCTA = () => {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
                   <span className="text-white/40 text-xs font-medium tracking-wider uppercase">
-                    Sample Valuation
+                    {t("sampleLabel")}
                   </span>
                 </div>
                 <span
@@ -149,7 +149,7 @@ const ValuationCTA = () => {
                     border: "1px solid hsla(168, 80%, 40%, 0.2)",
                   }}
                 >
-                  High Confidence
+                  {t("highConfidence")}
                 </span>
               </div>
 
@@ -158,12 +158,12 @@ const ValuationCTA = () => {
                   <BarChart3 className="h-5 w-5 text-white/40" />
                 </div>
                 <div>
-                  <p className="text-white/70 text-sm font-medium">2BR Apartment · Downtown Dubai</p>
-                  <p className="text-white/30 text-xs">1,250 sqft · Tower A · Floor 24</p>
+                  <p className="text-white/70 text-sm font-medium">{t("demoProperty")}</p>
+                  <p className="text-white/30 text-xs">{t("demoDetails")}</p>
                 </div>
               </div>
 
-              <p className="text-white/50 text-sm mb-1">Estimated Fair Value</p>
+              <p className="text-white/50 text-sm mb-1">{t("estimatedFairValue")}</p>
               <p className="text-white text-3xl sm:text-5xl font-bold tracking-tight mb-4 sm:mb-6">
                 AED 2.4
                 <span className="text-2xl sm:text-3xl text-white/60 font-normal">M</span>
@@ -199,9 +199,9 @@ const ValuationCTA = () => {
                 />
               </div>
               <div className="flex justify-between text-[10px] text-white/40 font-medium tracking-wider uppercase mb-8">
-                <span>Quick Sale</span>
-                <span>Fair Value</span>
-                <span>Suggested List</span>
+                <span>{t("quickSale")}</span>
+                <span>{t("fairValue")}</span>
+                <span>{t("suggestedList")}</span>
               </div>
 
               <div className="grid grid-cols-3 gap-4">

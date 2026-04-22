@@ -9,6 +9,15 @@ import { useTranslations } from "next-intl";
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
 
+const COUNTRY_CODES = [
+  { code: "+971", label: "🇦🇪 +971" },
+  { code: "+44", label: "🇬🇧 +44" },
+  { code: "+1", label: "🇺🇸 +1" },
+  { code: "+91", label: "🇮🇳 +91" },
+  { code: "+86", label: "🇨🇳 +86" },
+  { code: "+7", label: "🇷🇺 +7" },
+];
+
 const InquirySection = () => {
   const t = useTranslations("inquiry");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
@@ -148,12 +157,7 @@ const InquirySection = () => {
                 <div className="flex gap-2">
                   <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                     className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
-                    <option value="+971">🇦🇪 +971</option>
-                    <option value="+44">🇬🇧 +44</option>
-                    <option value="+1">🇺🇸 +1</option>
-                    <option value="+91">🇮🇳 +91</option>
-                    <option value="+86">🇨🇳 +86</option>
-                    <option value="+7">🇷🇺 +7</option>
+                    {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
                   </select>
                   <input required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                 </div>
@@ -198,12 +202,7 @@ const InquirySection = () => {
                   <div className="flex gap-2">
                     <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                       className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
-                      <option value="+971">🇦🇪 +971</option>
-                      <option value="+44">🇬🇧 +44</option>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+91">🇮🇳 +91</option>
-                      <option value="+86">🇨🇳 +86</option>
-                      <option value="+7">🇷🇺 +7</option>
+                      {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
                     </select>
                     <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                   </div>

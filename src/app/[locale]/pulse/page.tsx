@@ -60,15 +60,15 @@ export default async function PulsePage() {
           <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-primary-foreground/60">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live listings data
+              {t("liveListings")}
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-              DLD transactions
+              {t("dldTransactions")}
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              Exchange rates · World Bank
+              {t("exchangeRates")}
             </div>
           </div>
         </div>

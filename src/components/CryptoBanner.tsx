@@ -74,7 +74,7 @@ const CryptoBanner = () => {
           boxShadow: "0 3px 16px rgba(212,168,71,0.3)",
         }}
       >
-        Learn More
+        {tCommon("learnMore")}
         <ArrowRight className="h-3.5 w-3.5" />
       </motion.a>
     </div>

@@ -34,7 +34,7 @@ const WhatsAppButton = () => {
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] shadow-md shadow-[#25D366]/20 active:scale-[0.97] transition-all"
         >
           <MessageCircle className="h-4 w-4" />
-          WhatsApp
+          {t("whatsapp")}
         </a>
         <a
           href="tel:+971549988811"
@@ -42,7 +42,7 @@ const WhatsAppButton = () => {
           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
         >
           <Phone className="h-4 w-4" />
-          Call
+          {t("call")}
         </a>
         <button
           onClick={() => {
@@ -52,7 +52,7 @@ const WhatsAppButton = () => {
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full border-2 border-primary/30 text-primary font-bold text-[13px] active:scale-[0.97] transition-all"
         >
           <MessageCircle className="h-4 w-4" />
-          Live Chat
+          {t("liveChat")}
         </button>
       </div>
     </div>

@@ -5,6 +5,7 @@ import {
   Target, TrendingUp, TrendingDown, BarChart3, ArrowRight, Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const steps = [
   {
@@ -31,7 +32,9 @@ const outputs = [
   { icon: BarChart3,    label: "Comparable evidence",   tone: "muted"   },
 ];
 
-const ValuationEntry = () => (
+const ValuationEntry = () => {
+  const t = useTranslations("valuationEntry");
+  return (
   <section className="py-24 bg-background">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
@@ -48,16 +51,13 @@ const ValuationEntry = () => (
           viewport={{ once: true }}
           className="h-[2px] bg-accent mx-auto mb-6"
         />
-        <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
-          Owner Tool
-        </p>
+        <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("ownerTool")}</p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-          Instant Property{" "}
-          <span className="italic font-light">Valuation</span>
+          {t("instantProperty")}{" "}
+          <span className="italic font-light">{t("valuationItalic")}</span>
         </h2>
         <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
-          AI-powered pricing snapshot built from live Dubai market data —
-          fair value, suggested list, and quick-sale range in under two minutes.
+          {t("subtitle")}
         </p>
       </motion.div>
 
@@ -82,7 +82,7 @@ const ValuationEntry = () => (
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[10px] font-bold text-accent tracking-widest uppercase">
-                    Step {i + 1}
+                    {`${t("step")} ${i + 1}`}
                   </span>
                 </div>
                 <p className="font-bold text-foreground text-sm">{step.title}</p>
@@ -104,13 +104,13 @@ const ValuationEntry = () => (
             {/* Card header */}
             <div className="bg-primary px-6 py-5">
               <p className="text-[10px] font-bold tracking-[0.22em] uppercase text-accent mb-1">
-                Valuation snapshot
+                {t("valuationSnapshot")}
               </p>
               <p className="text-white font-bold text-lg leading-snug">
-                Marina Gate 2 · Dubai Marina
+                {t("demoAddress")}
               </p>
               <p className="text-white/50 text-xs mt-1">
-                2 bed · 1,420 sq ft · High floor
+                {t("demoSpec")}
               </p>
             </div>
 
@@ -136,7 +136,7 @@ const ValuationEntry = () => (
             {/* Disclaimer */}
             <div className="px-6 py-3 bg-muted/40 border-t border-border/50">
               <p className="text-[10px] text-muted-foreground">
-                AI-assisted snapshot · Not a formal RERA appraisal
+                {t("demoDisclaimer")}
               </p>
             </div>
           </div>
@@ -148,9 +148,9 @@ const ValuationEntry = () => (
             style={{ background: "linear-gradient(135deg, hsl(168,100%,15%), hsl(168,80%,22%))" }}
           >
             <div>
-              <p className="text-base font-bold">Get your free valuation</p>
+              <p className="text-base font-bold">{t("ctaTitle")}</p>
               <p className="text-white/60 text-xs font-normal mt-0.5">
-                Takes 2 minutes · No signup required
+                {t("ctaSub")}
               </p>
             </div>
             <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-white/15 transition-colors">
@@ -161,6 +161,7 @@ const ValuationEntry = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default ValuationEntry;

@@ -83,9 +83,9 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           {/* Breadcrumb */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/40 mb-6 sm:mb-8">
-            <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white/70 transition-colors">{t("breadcrumbHome")}</Link>
             <ArrowRight className="h-3 w-3" />
-            <span className="text-white/70">Services</span>
+            <span className="text-white/70">{t("heroLabel")}</span>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
@@ -95,7 +95,7 @@ export default function ServicesPage() {
               {t("heroTitle")}<br /><span className="italic font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-white/60 max-w-xl text-sm sm:text-lg leading-relaxed">
-              From finding your dream home to managing your investment portfolio — we deliver end-to-end real estate services backed by 15+ years of Dubai market expertise.
+              {t("heroSubtitle")}
             </p>
           </motion.div>
 
@@ -117,8 +117,8 @@ export default function ServicesPage() {
       <section className="py-12 sm:py-20 bg-muted/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-3" style={{ color: "#D4A847" }}>How It Works</p>
-            <h2 className="text-2xl sm:text-4xl font-bold text-foreground">Simple <span className="italic font-light">Process</span></h2>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-3" style={{ color: "#D4A847" }}>{t("howItWorksLabel")}</p>
+            <h2 className="text-2xl sm:text-4xl font-bold text-foreground">{t("howItWorksTitle")} <span className="italic font-light">{t("howItWorksTitleItalic")}</span></h2>
           </motion.div>
 
           {/* Mobile: vertical timeline */}
@@ -166,12 +166,12 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Property Management</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("mgmtLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Complete Property <span className="italic font-light">Care</span>
+              {t("mgmtTitle")} <span className="italic font-light">{t("mgmtTitleItalic")}</span>
             </h2>
             <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
-              Our RERA-certified team ensures your investment is protected, profitable, and hassle-free.
+              {t("mgmtSubtitle")}
             </p>
           </motion.div>
 
@@ -204,12 +204,12 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #0B3D2E, #1A7A5A)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#0B3D2E" }}>Real Estate Services</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#0B3D2E" }}>{t("addLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Beyond <span className="italic font-light">Management</span>
+              {t("addTitle")} <span className="italic font-light">{t("addTitleItalic")}</span>
             </h2>
             <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
-              Whether you&apos;re buying, selling, renting, or investing — our full-service approach covers every angle.
+              {t("addSubtitle")}
             </p>
           </motion.div>
 
@@ -226,7 +226,7 @@ export default function ServicesPage() {
                   <h3 className="font-bold text-base sm:text-lg text-foreground mb-1.5 sm:mb-2 group-hover:text-primary transition-colors">{s.title}</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-3 sm:mb-4">{s.desc}</p>
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:gap-2.5 transition-all">
-                    Learn more <ArrowRight className="h-3 w-3" />
+                    {t("learnMore")} <ArrowRight className="h-3 w-3" />
                   </span>
                 </Link>
               </motion.div>
@@ -243,9 +243,9 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Why Binayah</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("whyLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold">
-              Trusted by <span className="italic font-light">Thousands</span>
+              {t("whyTitle")} <span className="italic font-light">{t("whyTitleItalic")}</span>
             </h2>
           </motion.div>
 
@@ -278,7 +278,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>FAQ</p>
             <h2 className="text-2xl sm:text-4xl font-bold text-foreground">
-              Common <span className="italic font-light">Questions</span>
+              {t("faqTitle")} <span className="italic font-light">{t("faqTitleItalic")}</span>
             </h2>
           </motion.div>
 
@@ -314,9 +314,9 @@ export default function ServicesPage() {
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative">
           <div className="text-center mb-8 sm:mb-10">
-            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Need a Custom Solution?</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">{t("ctaTitle")}</h2>
             <p className="text-white/60 max-w-lg mx-auto text-sm sm:text-base">
-              Whether you own one unit or an entire portfolio — our team will craft a tailored plan that maximizes your returns.
+              {t("ctaSubtitle")}
             </p>
           </div>
 
@@ -324,17 +324,17 @@ export default function ServicesPage() {
             <a href="https://wa.me/971549988811?text=Hi, I'd like to learn about your property services"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2.5 py-3.5 sm:py-4 rounded-xl sm:rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-sm transition-all hover:shadow-xl hover:shadow-[#25D366]/25 hover:scale-[1.02] active:scale-[0.98]">
-              <MessageCircle className="h-4 w-4" /> WhatsApp Us
+              <MessageCircle className="h-4 w-4" /> {t("whatsappUs")}
             </a>
             <Link href="/contact"
               className="flex items-center justify-center gap-2.5 py-3.5 sm:py-4 rounded-xl sm:rounded-full text-white font-bold text-sm transition-all hover:shadow-xl hover:shadow-accent/25 hover:scale-[1.02] active:scale-[0.98]"
               style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              <Phone className="h-4 w-4" /> Schedule a Call
+              <Phone className="h-4 w-4" /> {t("scheduleCall")}
             </Link>
           </div>
 
           <p className="text-center text-white/30 text-[11px] sm:text-xs mt-5 sm:mt-6">
-            RERA Registration No. 1162 — Real Estate Regulation Authority of Dubai
+            {t("reraNote")}
           </p>
         </div>
       </section>

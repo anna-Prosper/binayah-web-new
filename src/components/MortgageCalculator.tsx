@@ -60,7 +60,7 @@ export default function MortgageCalculator() {
             {t("title")}
           </h2>
           <p className="text-muted-foreground mt-3 text-sm max-w-lg mx-auto">
-            Estimate your monthly mortgage payments for Dubai properties
+            {t("subtitle")}
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export default function MortgageCalculator() {
                 className="w-full accent-[#1A7A5A]"
               />
               <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                <span>AED 300K</span>
-                <span>AED 50M</span>
+                <span>{t("minPrice")}</span>
+                <span>{t("maxPrice")}</span>
               </div>
             </div>
 
@@ -95,7 +95,7 @@ export default function MortgageCalculator() {
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-foreground">{t("downPayment")}</label>
                 <span className="text-sm font-semibold text-foreground">
-                  {downPaymentPct}% (AED {formatNumber(result.downPayment)})
+                  {`${downPaymentPct}% (AED ${formatNumber(result.downPayment)})`}
                 </span>
               </div>
               <input
@@ -138,7 +138,7 @@ export default function MortgageCalculator() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-foreground">{t("loanTerm")}</label>
-                <span className="text-sm font-semibold text-foreground">{years} years</span>
+                <span className="text-sm font-semibold text-foreground">{years} {t("years")}</span>
               </div>
               <input
                 type="range"
@@ -150,8 +150,8 @@ export default function MortgageCalculator() {
                 className="w-full accent-[#1A7A5A]"
               />
               <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-                <span>5 yrs</span>
-                <span>25 yrs</span>
+                <span>{t("minYears")}</span>
+                <span>{t("maxYears")}</span>
               </div>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function MortgageCalculator() {
               <p className="text-3xl sm:text-4xl font-bold">
                 AED {formatNumber(result.monthlyPayment)}
               </p>
-              <p className="text-white/50 text-xs mt-1">per month</p>
+              <p className="text-white/50 text-xs mt-1">{t("perMonth")}</p>
             </motion.div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -214,9 +214,7 @@ export default function MortgageCalculator() {
             </div>
 
             <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
-              * This calculator provides estimates only and does not constitute financial advice.
-              Actual rates and terms may vary by bank. UAE Central Bank regulations require a minimum
-              20% down payment for expats (15% for UAE nationals) on properties under AED 5M.
+              {t("disclaimer")}
             </p>
           </div>
         </div>

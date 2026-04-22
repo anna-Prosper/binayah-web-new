@@ -65,27 +65,27 @@ const ValuationStrip = () => {
                 className="hidden sm:block text-[10px] font-semibold tracking-[0.25em] uppercase mb-0.5"
                 style={{ color: "#D4A847" }}
               >
-                Dubai Market · 2026
+                {t("marketYear")}
               </p>
               {/* Desktop headline */}
               <h3 className="hidden sm:block text-white text-lg font-bold leading-snug">
-                Your UAE property could be worth more.{" "}
+                {t("headlineStart")}{" "}
                 <span
                   className="bg-clip-text text-transparent"
                   style={{ backgroundImage: "linear-gradient(90deg, #D4A847, #C49B35)" }}
                 >
-                  Find out in 2 minutes.
+                  {t("headlineGold")}
                 </span>
               </h3>
               {/* Mobile headline - no label, compact */}
               <h3 className="sm:hidden text-white text-base font-bold leading-snug tracking-tight">
-                Your UAE property could be worth more.
+                {t("headlineStart")}
               </h3>
               <p className="sm:hidden text-sm font-semibold mt-1 bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg, #D4A847, #C49B35)" }}>
-                Find out in 2 minutes.
+                {t("headlineGold")}
               </p>
               <p className="text-white/45 text-xs sm:text-sm leading-relaxed mt-1 hidden sm:block">
-                With rates shifting and demand at record highs, owners are getting AI valuations before deciding to sell, hold, or refinance.
+                {t("stripSubtitle")}
               </p>
             </div>
           </div>
@@ -109,7 +109,7 @@ const ValuationStrip = () => {
 
         {/* Mobile proof line - below CTA */}
         <p className="sm:hidden text-white/40 text-[9px] mt-2 tracking-wide">
-          AI-powered · Live comps · Ready in 2 min
+          {t("mobileProof")}
         </p>
       </div>
     </section>

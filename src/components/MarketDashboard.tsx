@@ -51,9 +51,9 @@ const MarketDashboard = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-6 sm:mb-10">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
           <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">Dubai Market <span className="italic font-light">{t("title")}</span></h2>
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">{t("dubaiMarket")} <span className="italic font-light">{t("title")}</span></h2>
           <p className="hidden sm:block mt-4 text-muted-foreground max-w-md mx-auto text-base">
-            Live insights on prices, rental yields, and transaction trends across Dubai&apos;s top areas.
+            {t("dashboardSubtitle")}
           </p>
         </motion.div>
 
@@ -76,7 +76,7 @@ const MarketDashboard = () => {
                   <p className="text-[8px] sm:text-xs text-muted-foreground font-medium mb-0.5 sm:mb-1 truncate">{s.label}</p>
                   <p className="text-sm sm:text-2xl font-bold text-foreground">{s.value}</p>
                   <p className="text-[8px] sm:text-xs font-semibold text-primary flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1 mt-0.5 sm:mt-1">
-                    <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3" /> Live data
+                    <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3" /> {t("liveData")}
                   </p>
                 </div>
               ))}
@@ -150,7 +150,7 @@ const MarketDashboard = () => {
 
               {/* Segment */}
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-background rounded-2xl p-4 sm:p-6 border border-border/50">
-                <h4 className="font-bold text-foreground mb-4 text-sm">Market Segments</h4>
+                <h4 className="font-bold text-foreground mb-4 text-sm">{t("marketSegments")}</h4>
 
                 {/* Mobile: horizontal stacked bar */}
                 <div className="sm:hidden">
@@ -202,8 +202,8 @@ const MarketDashboard = () => {
             </div>
 
             <p className="text-[10px] sm:text-[11px] text-muted-foreground text-center mt-6">
-              *Data is indicative and based on current market listings.{" "}
-              <Link href="/contact" className="underline hover:text-foreground transition-colors">Contact our investment team</Link> for precise analysis.
+              {t("dataIndicative")}{" "}
+              <Link href="/contact" className="underline hover:text-foreground transition-colors">{t("contactTeam")}</Link>{" "}{t("forPreciseAnalysis")}
             </p>
           </>
         )}

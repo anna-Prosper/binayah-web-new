@@ -156,7 +156,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onClick={() => handleNav("/list-your-property")}
                 className="relative hidden xl:flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
               >
-                List Your Property
+                {t("listYourProperty")}
                 <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </button>
 
@@ -167,7 +167,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseLeave={() => setInsightsOpen(false)}
               >
                 <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
-                  Insights
+                  {t("insights")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${insightsOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
@@ -193,7 +193,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseLeave={() => setMoreOpen(false)}
               >
                 <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
-                  Company
+                  {t("company")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
@@ -261,7 +261,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                         <span className="text-base leading-none">{lang.flag}</span>
                         <span>{lang.label}</span>
                         {lang.code === currentLocale && (
-                          <span className="ml-auto text-accent text-[10px]">✓</span>
+                          <span className="ml-auto text-accent text-[10px]">{"✓"}</span>
                         )}
                       </button>
                     ))}
@@ -289,7 +289,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                         transition={{ duration: 0.2 }}
                         className="hidden xl:block text-sm font-medium whitespace-nowrap overflow-hidden"
                       >
-                        +971 54 998 8811
+                        {t("phoneNumber")}
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -301,7 +301,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 className="hidden xl:flex px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
               >
-                Get in Touch
+                {t("getInTouch")}
               </button>
               <div className="hidden xl:block w-px h-5 bg-white/15" />
               <NotificationsBell />
@@ -423,7 +423,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                         onClick={() => handleNav("/profile")}
                         className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-white bg-white/20 hover:bg-white/30 transition-colors whitespace-nowrap"
                       >
-                        My Profile
+                        {t("myProfile")}
                       </button>
                       <button
                         onClick={() => {
@@ -433,7 +433,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                         className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-white bg-white/20 hover:bg-white/30 transition-colors whitespace-nowrap flex items-center gap-1"
                       >
                         <Heart className="h-3 w-3" />
-                        Saved {favIds.length > 0 && `(${favIds.length})`}
+                        {t("saved")} {favIds.length > 0 && `(${favIds.length})`}
                       </button>
                     </div>
                   </div>
@@ -444,15 +444,15 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                       <span className="text-white text-xl">👤</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white font-semibold text-sm">Welcome</p>
-                      <p className="text-white/60 text-[11px]">Sign in to save properties</p>
+                      <p className="text-white font-semibold text-sm">{t("welcome")}</p>
+                      <p className="text-white/60 text-[11px]">{t("signInToSave")}</p>
                     </div>
                     <button
                       onClick={() => handleNav("/signin")}
                       className="px-4 py-2 rounded-xl text-[12px] font-bold text-white whitespace-nowrap flex-shrink-0"
                       style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                     >
-                      Sign in
+                      {t("signIn")}
                     </button>
                   </div>
                 )}
@@ -480,7 +480,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onClick={() => handleNav("/list-your-property")}
                 className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
               >
-                List Your Property
+                {t("listYourProperty")}
                 <ChevronRight className="h-4 w-4 text-white/40" />
               </motion.button>
 
@@ -497,7 +497,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 <span className="flex items-center gap-2.5">
                   <Heart className="h-4 w-4 text-red-400" />
-                  Saved Properties
+                  {t("savedProperties")}
                   {favIds.length > 0 && (
                     <span className="ml-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold">
                       {favIds.length}
@@ -512,7 +512,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   onClick={() => { setMobileInsightsOpen(!mobileInsightsOpen); setMobileCompanyOpen(false); }}
                   className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
                 >
-                  Insights
+                  {t("insights")}
                   <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileInsightsOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
@@ -535,7 +535,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   onClick={() => { setMobileCompanyOpen(!mobileCompanyOpen); setMobileInsightsOpen(false); }}
                   className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
                 >
-                  Company
+                  {t("company")}
                   <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileCompanyOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
@@ -555,7 +555,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               {/* Mobile language switcher */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.3 }} className="pt-5 pb-2 border-b border-white/10">
-                <p className="px-2 pb-2 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">Language</p>
+                <p className="px-2 pb-2 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">{t("language")}</p>
                 <div className="grid grid-cols-2 gap-2">
                   {LANGUAGES_LIST.map((lang) => (
                     <button
@@ -594,8 +594,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     <Phone className="h-[18px] w-[18px] text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-medium text-white">Call Us</span>
-                    <span className="text-[12px] text-white/50">+971 54 998 8811</span>
+                    <span className="font-medium text-white">{t("callUs")}</span>
+                    <span className="text-[12px] text-white/50">{t("phoneNumber")}</span>
                   </div>
                 </a>
                 <a href="https://wa.me/971549988811" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-2 py-3 text-white/80 text-sm hover:text-white transition-colors min-h-[48px]">
@@ -603,8 +603,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-medium text-white">Chat on WhatsApp</span>
-                    <span className="text-[12px] text-white/50">+971 54 998 8811</span>
+                    <span className="font-medium text-white">{t("chatWhatsApp")}</span>
+                    <span className="text-[12px] text-white/50">{t("phoneNumber")}</span>
                   </div>
                 </a>
                 <button
@@ -616,8 +616,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     <MessageCircle className="h-[18px] w-[18px] text-[#D4A847]" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-medium text-white">Live Chat</span>
-                    <span className="text-[12px] text-white/50">Chat with our team</span>
+                    <span className="font-medium text-white">{t("liveChat")}</span>
+                    <span className="text-[12px] text-white/50">{t("chatWithTeam")}</span>
                   </div>
                 </button>
               </motion.div>
@@ -629,7 +629,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
                   style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                 >
-                  Get in Touch
+                  {t("getInTouch")}
                 </button>
               </motion.div>
             </div>

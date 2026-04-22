@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -74,8 +75,8 @@ interface SimilarListing {
   images?: string[];
 }
 
-function formatPrice(price?: number, currency = "AED") {
-  if (!price) return "Price on request";
+function formatPrice(price?: number, currency = "AED", fallback = "Price on request") {
+  if (!price) return fallback;
   if (price >= 1_000_000)
     return `${currency} ${(price / 1_000_000).toFixed(1)}M`;
   return `${currency} ${price.toLocaleString()}`;
@@ -88,6 +89,7 @@ export default function PropertyDetailClient({
   listing: Listing;
   similarListings: SimilarListing[];
 }) {
+  const t = useTranslations("propertyDetail");
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -95,7 +97,7 @@ export default function PropertyDetailClient({
     name: "",
     email: "",
     phone: "",
-    message: `Hi, I'm interested in "${listing.title}". Please share more details.`,
+    message: t('inquiryDefaultMessage', { title: listing.title }),
   });
 
   const allImages = [
@@ -128,14 +130,14 @@ export default function PropertyDetailClient({
         }),
       });
       toast({
-        title: "Inquiry Sent!",
-        description: "Our team will get back to you shortly.",
+        title: t("inquirySent"),
+        description: t("teamReply"),
       });
       setForm((f) => ({ ...f, name: "", email: "", phone: "" }));
     } catch {
       toast({
-        title: "Inquiry Sent!",
-        description: "Our team will get back to you shortly.",
+        title: t("inquirySent"),
+        description: t("teamReply"),
       });
     }
   };
@@ -156,7 +158,7 @@ export default function PropertyDetailClient({
             href="/"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to Properties
+            <ArrowLeft className="h-4 w-4" /> {t("backToProperties")}
           </Link>
         </div>
       </div>
@@ -211,7 +213,7 @@ export default function PropertyDetailClient({
               {/* Tags */}
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
-                  {listing.listingType === "Rent" ? "For Rent" : "For Sale"}
+                  {listing.listingType === "Rent" ? t("forRent") : t("forSale")}
                 </span>
                 {listing.propertyType && (
                   <span className="text-[11px] font-medium px-3 py-1.5 rounded-lg bg-black/40 backdrop-blur-sm text-white">
@@ -251,7 +253,7 @@ export default function PropertyDetailClient({
                         }}
                       >
                         <span className="text-white font-semibold text-sm">
-                          +{allImages.length - 4} more
+                          +{allImages.length - 4} {t("more")}
                         </span>
                       </div>
                     )}
@@ -312,12 +314,10 @@ export default function PropertyDetailClient({
                 {/* Price */}
                 <div className="mb-5">
                   <p className="text-3xl font-bold text-primary">
-                    {formatPrice(listing.price, listing.currency)}
+                    {formatPrice(listing.price, listing.currency, t("priceOnRequest"))}
                   </p>
                   {listing.listingType === "Rent" && (
-                    <span className="text-sm text-muted-foreground">
-                      / year
-                    </span>
+                    <span className="text-sm text-muted-foreground">{t("perYear")}</span>
                   )}
                 </div>
 
@@ -338,7 +338,7 @@ export default function PropertyDetailClient({
                       <p className="text-lg font-bold text-foreground">
                         {listing.bedrooms}
                       </p>
-                      <p className="text-xs text-muted-foreground">Bedrooms</p>
+                      <p className="text-xs text-muted-foreground">{t("bedrooms")}</p>
                     </div>
                   )}
                   {listing.bathrooms != null && (
@@ -347,7 +347,7 @@ export default function PropertyDetailClient({
                       <p className="text-lg font-bold text-foreground">
                         {listing.bathrooms}
                       </p>
-                      <p className="text-xs text-muted-foreground">Bathrooms</p>
+                      <p className="text-xs text-muted-foreground">{t("bathrooms")}</p>
                     </div>
                   )}
                   {listing.size != null && (
@@ -367,7 +367,7 @@ export default function PropertyDetailClient({
                       <p className="text-sm font-bold text-foreground">
                         {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
                       </p>
-                      <p className="text-xs text-muted-foreground">Type</p>
+                      <p className="text-xs text-muted-foreground">{t("type")}</p>
                     </div>
                   )}
                 </div>
@@ -382,7 +382,7 @@ export default function PropertyDetailClient({
                   className="mb-10"
                 >
                   <h2 className="text-xl font-bold text-foreground mb-4">
-                    Description
+                    {t("description")}
                   </h2>
                   <div className="prose prose-sm max-w-none text-muted-foreground leading-relaxed">
                     {listing.cleanDescription
@@ -405,27 +405,27 @@ export default function PropertyDetailClient({
                 className="mb-10"
               >
                 <h2 className="text-xl font-bold text-foreground mb-4">
-                  Property Details
+                  {t("propertyDetails")}
                 </h2>
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8 bg-card rounded-xl p-6 border border-border/50">
                   {listing.propertyId && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        Reference
+                        {t("reference")}
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {listing.propertyId}
                       </span>
                     </>
                   )}
-                  <span className="text-sm text-muted-foreground">Type</span>
+                  <span className="text-sm text-muted-foreground">{t("type")}</span>
                   <span className="text-sm font-medium text-foreground">
-                    {listing.listingType === "Rent" ? "For Rent" : "For Sale"}
+                    {listing.listingType === "Rent" ? t("forRent") : t("forSale")}
                   </span>
                   {listing.propertyType && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        Property
+                        {t("property")}
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
@@ -435,7 +435,7 @@ export default function PropertyDetailClient({
                   {listing.community && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        Community
+                        {t("community")}
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {listing.community}
@@ -445,7 +445,7 @@ export default function PropertyDetailClient({
                   {listing.areas?.[0] && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        Area
+                        {t("area")}
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {listing.areas?.[0]}
@@ -455,7 +455,7 @@ export default function PropertyDetailClient({
                   {listing.city && (
                     <>
                       <span className="text-sm text-muted-foreground">
-                        City
+                        {t("city")}
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {listing.city}
@@ -474,7 +474,7 @@ export default function PropertyDetailClient({
                   className="mb-10"
                 >
                   <h2 className="text-xl font-bold text-foreground mb-4">
-                    Features
+                    {t("features")}
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {listing.features.map((a, i) => (
@@ -502,7 +502,7 @@ export default function PropertyDetailClient({
                     className="mb-10"
                   >
                     <h2 className="text-xl font-bold text-foreground mb-4">
-                      Location
+                      {t("location")}
                     </h2>
                     <div className="rounded-xl overflow-hidden border border-border/50 aspect-[16/9]">
                       <iframe
@@ -529,10 +529,10 @@ export default function PropertyDetailClient({
                 className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm"
               >
                 <p className="text-lg font-bold text-foreground mb-1">
-                  Interested in this property?
+                  {t("interestedTitle")}
                 </p>
                 <p className="text-sm text-muted-foreground mb-5">
-                  Get in touch with our team for viewings & more details.
+                  {t("interestedSubtitle")}
                 </p>
 
                 <div className="space-y-3 mb-5">
@@ -543,21 +543,21 @@ export default function PropertyDetailClient({
                     className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] hover:bg-[#22c55e] text-white rounded-xl font-semibold text-sm transition-colors"
                   >
                     <MessageCircle className="h-4 w-4" />
-                    WhatsApp
+                    {t("whatsapp")}
                   </a>
                   <a
                     href="tel:+97154998811"
                     className="flex items-center justify-center gap-2 w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-colors"
                   >
                     <Phone className="h-4 w-4" />
-                    Call +971 54 998 8811
+                    {t("callUs")}
                   </a>
                   <a
                     href="mailto:info@binayah.com"
                     className="flex items-center justify-center gap-2 w-full py-3 bg-card hover:bg-muted text-foreground border border-border rounded-xl font-semibold text-sm transition-colors"
                   >
                     <Mail className="h-4 w-4" />
-                    Email Us
+                    {t("emailUs")}
                   </a>
                 </div>
               </motion.div>
@@ -570,7 +570,7 @@ export default function PropertyDetailClient({
                 className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm"
               >
                 <p className="text-lg font-bold text-foreground mb-4">
-                  Send an Inquiry
+                  {t("sendInquiry")}
                 </p>
                 <form onSubmit={handleInquiry} className="space-y-3">
                   <input
@@ -615,7 +615,7 @@ export default function PropertyDetailClient({
                     className="w-full py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2"
                   >
                     <Send className="h-4 w-4" />
-                    Send Inquiry
+                    {t("sendInquiryBtn")}
                   </button>
                 </form>
               </motion.div>
@@ -629,7 +629,7 @@ export default function PropertyDetailClient({
         <section className="py-20 bg-card">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <h2 className="text-2xl font-bold text-foreground mb-8">
-              Similar Properties
+              {t("similarProperties")}
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {similarListings.map((l, i) => (
@@ -656,7 +656,7 @@ export default function PropertyDetailClient({
                         loading="lazy"
                       />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
-                        {l.listingType === "Rent" ? "For Rent" : "For Sale"}
+                        {l.listingType === "Rent" ? t("forRent") : t("forSale")}
                       </span>
                       <CardActions propertyId={l.slug} slug={l.slug} title={l.title} />
                     </div>
@@ -674,13 +674,13 @@ export default function PropertyDetailClient({
                         {l.bedrooms != null && (
                           <span className="flex items-center gap-1">
                             <BedDouble className="h-3 w-3" />
-                            {l.bedrooms} Bed
+                            {l.bedrooms} {t("bed")}
                           </span>
                         )}
                         {l.bathrooms != null && (
                           <span className="flex items-center gap-1">
                             <Bath className="h-3 w-3" />
-                            {l.bathrooms} Bath
+                            {l.bathrooms} {t("bath")}
                           </span>
                         )}
                         {l.size != null && (
@@ -692,7 +692,7 @@ export default function PropertyDetailClient({
                       </div>
                       <div className="border-t border-border pt-3">
                         <p className="text-sm font-bold text-primary">
-                          {formatPrice(l.price, l.currency)}
+                          {formatPrice(l.price, l.currency, t("priceOnRequest"))}
                         </p>
                       </div>
                     </div>

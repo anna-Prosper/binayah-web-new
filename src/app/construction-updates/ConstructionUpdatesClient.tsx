@@ -207,13 +207,13 @@ export default function ConstructionUpdatesClient({ updates }: { updates: Constr
                     {update.launchDate && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        <span>Launch: {update.launchDate}</span>
+                        <span>{t("launchLabel")}: {update.launchDate}</span>
                       </div>
                     )}
                     {update.completionDate && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        <span>Handover: {update.completionDate}</span>
+                        <span>{t("handoverLabel")}: {update.completionDate}</span>
                       </div>
                     )}
                   </div>

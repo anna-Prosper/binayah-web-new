@@ -96,7 +96,7 @@ export default function PropertyComparison() {
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             <ArrowLeftRight className="h-4 w-4" />
-            Compare ({ids.length})
+            {`${t("compareCount")} (${ids.length})`}
           </button>
         </div>
       )}
@@ -110,7 +110,7 @@ export default function PropertyComparison() {
               <div>
                 <h3 className="text-lg font-bold text-foreground">{t("title")}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {ids.length} of 3 properties selected
+                  {t("selectedCount", { count: ids.length })}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -160,7 +160,7 @@ export default function PropertyComparison() {
                               onClick={() => toggle(p._id)}
                               className="mt-1 text-[10px] text-red-400 hover:text-red-500 transition-colors"
                             >
-                              Remove
+                              {t("remove")}
                             </button>
                           </th>
                         ))}
@@ -169,7 +169,7 @@ export default function PropertyComparison() {
                             <div className="aspect-[4/3] rounded-xl border-2 border-dashed border-border flex items-center justify-center mb-3">
                               <Plus className="h-6 w-6 text-muted-foreground/30" />
                             </div>
-                            <p className="text-xs text-muted-foreground">Add property</p>
+                            <p className="text-xs text-muted-foreground">{t("addProperty")}</p>
                           </th>
                         )}
                       </tr>

@@ -388,14 +388,14 @@ const HeroSection = () => {
         <motion.div style={{ y: textY, opacity }}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} className="text-center mb-8 sm:mb-14">
             <motion.div initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 0.8, delay: 0.3 }} className="h-[2px] bg-accent mx-auto mb-4 sm:mb-6" />
-            <p className="hidden sm:block text-accent font-medium tracking-[0.4em] uppercase text-[10px] sm:text-sm mb-3 sm:mb-5">Binayah Properties</p>
+            <p className="hidden sm:block text-accent font-medium tracking-[0.4em] uppercase text-[10px] sm:text-sm mb-3 sm:mb-5">{t("companyName")}</p>
             <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] mb-4 sm:mb-6">
-              <TypewriterHeadline /><br /><span className="italic font-light">Dubai</span>
+              <TypewriterHeadline /><br /><span className="italic font-light">{t("dubaiItalic")}</span>
             </h1>
             <p className="hidden sm:block text-white/60 text-sm sm:text-lg max-w-xl mx-auto font-light px-4 sm:px-0">
               {t("subtitle")}
             </p>
-            <p className="sm:hidden text-white/50 text-xs font-light">2,500+ listings across 50+ communities</p>
+            <p className="sm:hidden text-white/50 text-xs font-light">{t("mobileSubtitle")}</p>
           </motion.div>
         </motion.div>
 
@@ -483,7 +483,7 @@ const HeroSection = () => {
                 <div className="flex items-center">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10">
                     <Sparkles className="h-4 w-4" style={{ color: "#D4A847" }} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:block" style={{ color: "#D4A847" }}>Smart AI Search</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:block" style={{ color: "#D4A847" }}>{t("smartAiSearch")}</span>
                   </div>
                   <input
                     value={smartSearch}
@@ -500,7 +500,7 @@ const HeroSection = () => {
                         <X className="h-4 w-4" />
                       </button>
                     ) : (
-                      <div className="text-[10px] text-white/30 hidden sm:block">⌘K</div>
+                      <div className="text-[10px] text-white/30 hidden sm:block">{t("cmdK")}</div>
                     )}
                   </div>
                 </div>
@@ -545,8 +545,8 @@ const HeroSection = () => {
                       ))}
                     </div>
                     <div className="px-4 py-2.5 text-[10px] text-muted-foreground border-t border-border/30 bg-muted/20 flex items-center justify-between">
-                      <span>Enter to search</span>
-                      <span>Use ↑↓ to browse</span>
+                      <span>{t("enterToSearch")}</span>
+                      <span>{t("arrowsToBrowse")}</span>
                     </div>
                   </div>
                 )}
@@ -559,7 +559,7 @@ const HeroSection = () => {
                   </p>
                   {!isQuestion && smartDraft.confidence > 0 ? (
                     <span className="text-[10px] text-white/50 uppercase tracking-wider whitespace-nowrap">
-                      {Math.round(smartDraft.confidence * 100)}% match
+                      {`${Math.round(smartDraft.confidence * 100)}% ${t("match")}`}
                     </span>
                   ) : null}
                 </div>
@@ -568,7 +568,7 @@ const HeroSection = () => {
               {isQuestion && smartSearch.trim() ? (
                 <div className="flex items-center gap-2 mt-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium text-accent border border-accent/20" style={{ background: "rgba(212,168,71,0.1)" }}>
-                    <MessageCircle className="h-3 w-3" /> This looks like a question. Search will open Binayah AI.
+                    <MessageCircle className="h-3 w-3" /> {t("looksLikeQuestion")}
                   </span>
                 </div>
               ) : parsedTags.length > 0 ? (
@@ -586,7 +586,7 @@ const HeroSection = () => {
             <div className="px-5 sm:px-7 pb-5 sm:pb-7 pt-3">
               <div ref={filtersRef} className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 relative" style={{ overflow: "visible" }}>
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Location</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">{t("filterLocation")}</label>
                   <button
                     onClick={() => setOpenDropdown(openDropdown === "location" ? null : "location")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
@@ -606,7 +606,7 @@ const HeroSection = () => {
                         />
                       </div>
                       <div className="max-h-64 overflow-y-auto">
-                        <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Popular locations</p>
+                        <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("popularLocations")}</p>
                         {popularLocations
                           .filter((location) => !locationSearch || location.name.toLowerCase().includes(locationSearch.toLowerCase()))
                           .map((location) => (
@@ -636,7 +636,7 @@ const HeroSection = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Property type</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">{t("filterPropertyType")}</label>
                   <button
                     onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
@@ -667,7 +667,7 @@ const HeroSection = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Beds & Baths</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">{t("filterBedsBaths")}</label>
                   <button
                     onClick={() => setOpenDropdown(openDropdown === "beds" ? null : "beds")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"
@@ -680,7 +680,7 @@ const HeroSection = () => {
                   {openDropdown === "beds" && (
                     <div className="absolute top-full left-0 mt-2 w-72 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-4">
                       <div className="mb-4">
-                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">Bedrooms</p>
+                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">{t("bedrooms")}</p>
                         <div className="flex flex-wrap gap-1.5">
                           {HOME_SEARCH_BEDROOM_OPTIONS.map((bedroom) => (
                             <button
@@ -698,7 +698,7 @@ const HeroSection = () => {
                         </div>
                       </div>
                       <div className="border-t border-border/40 pt-3.5">
-                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">Bathrooms</p>
+                        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">{t("bathrooms")}</p>
                         <div className="flex flex-wrap gap-1.5">
                           {HOME_SEARCH_BATHROOM_OPTIONS.map((bathroom) => (
                             <button
@@ -724,7 +724,7 @@ const HeroSection = () => {
                           }}
                           className="mt-3 text-[11px] text-muted-foreground hover:text-primary transition-colors underline underline-offset-2"
                         >
-                          Clear selection
+                          {t("clearSelection")}
                         </button>
                       )}
                     </div>
@@ -732,7 +732,7 @@ const HeroSection = () => {
                 </div>
 
                 <div className="relative">
-                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">Your Budget</label>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-white/70 uppercase block mb-1.5">{t("filterBudget")}</label>
                   <button
                     onClick={() => setOpenDropdown(openDropdown === "budget" ? null : "budget")}
                     className="w-full bg-white/95 hover:bg-white border border-white/40 rounded-xl px-3.5 py-[11px] text-sm text-left flex items-center justify-between transition-all focus:outline-none focus:ring-2 focus:ring-accent/30 shadow-sm backdrop-blur-md"

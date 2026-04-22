@@ -53,7 +53,7 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
       >
         <div>
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>Blog</p>
+          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
           <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
             {t("title")}
           </h2>

@@ -200,7 +200,7 @@ export default function DevelopersPageClient({
             )}
             {!hasMore && !search && developers.length > 0 && (
               <p className="text-sm text-muted-foreground">
-                Showing all {developers.length.toLocaleString()} developers
+                {t("showingAll", { count: developers.length.toLocaleString() })}
               </p>
             )}
           </div>

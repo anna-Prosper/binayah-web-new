@@ -97,7 +97,7 @@ export default function OffPlanPageClient({
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("title")}</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{t("title")}</h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
-              Explore Dubai&apos;s latest off-plan developments — {totalCount.toLocaleString()} projects available.
+              {t("subtitleWithCount", { count: totalCount.toLocaleString() })}
             </p>
           </motion.div>
         </div>
@@ -158,7 +158,7 @@ export default function OffPlanPageClient({
             {loading && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
-                <span className="text-sm">Loading more projects...</span>
+                <span className="text-sm">{t("loadingMore")}</span>
               </div>
             )}
             {hasMore && !loading && (
@@ -171,7 +171,7 @@ export default function OffPlanPageClient({
               </button>
             )}
             {!hasMore && projects.length > 12 && (
-              <p className="text-sm text-muted-foreground">Showing all {projects.length.toLocaleString()} projects</p>
+              <p className="text-sm text-muted-foreground">{t("showingAll", { count: projects.length.toLocaleString() })}</p>
             )}
           </div>
         </div>

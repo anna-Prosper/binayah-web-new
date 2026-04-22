@@ -11,6 +11,7 @@ import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useEffect, useRef, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface Listing {
@@ -46,6 +47,7 @@ export default function ListingsPageClient({
   title: string;
   subtitle: string;
 }) {
+  const t = useTranslations("rent");
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
@@ -110,14 +112,14 @@ export default function ListingsPageClient({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
-              {listingType === "Rent" ? "Rentals" : "Secondary Market"}
+              {listingType === "Rent" ? t("rentalsLabel") : t("secondaryMarketLabel")}
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               {title.split(" ").slice(0, -1).join(" ")}{" "}
               <span className="italic font-light">{title.split(" ").slice(-1)}</span>
             </h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
-              {subtitle} — {totalCount} properties available.
+              {t("subtitleWithCount", { subtitle, count: totalCount })}
             </p>
           </motion.div>
         </div>
@@ -126,7 +128,7 @@ export default function ListingsPageClient({
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {listings.length === 0 ? (
-            <p className="text-center text-muted-foreground py-20">No listings found.</p>
+            <p className="text-center text-muted-foreground py-20">{t("noListings")}</p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {listings.map((l, i) => (
@@ -152,7 +154,7 @@ export default function ListingsPageClient({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
-                        {l.listingType === "Rent" ? "For Rent" : "For Sale"}
+                        {l.listingType === "Rent" ? t("forRent") : t("forSale")}
                       </span>
                       <CardActions propertyId={l.slug} slug={l.slug} title={l.name} />
                     </div>
@@ -170,7 +172,7 @@ export default function ListingsPageClient({
                       <div className="flex gap-3 text-xs text-muted-foreground mb-3">
                         {l.bedrooms && (
                           <span className="flex items-center gap-1">
-                            <BedDouble className="h-3 w-3" /> {l.bedrooms} Bed
+                            <BedDouble className="h-3 w-3" /> {`${l.bedrooms} ${t("bed")}`}
                           </span>
                         )}
                         {l.size && (
@@ -182,7 +184,7 @@ export default function ListingsPageClient({
                       <div className="mt-auto border-t border-border pt-3">
                         <p className="text-sm font-bold text-primary">
                           {formatPrice(l)}
-                          {l.listingType === "Rent" && <span className="text-xs font-normal text-muted-foreground"> / year</span>}
+                          {l.listingType === "Rent" && <span className="text-xs font-normal text-muted-foreground">{" "}{t("perYear")}</span>}
                         </p>
                       </div>
                     </div>
@@ -196,7 +198,7 @@ export default function ListingsPageClient({
             {isFetchingNextPage && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
-                <span className="text-sm">Loading more...</span>
+                <span className="text-sm">{t("loadingMore")}</span>
               </div>
             )}
             {hasNextPage && !isFetchingNextPage && (
@@ -205,12 +207,12 @@ export default function ListingsPageClient({
                 className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                Load More
+                {t("loadMore")}
               </button>
             )}
             {!hasNextPage && listings.length > BATCH_SIZE && (
               <p className="text-sm text-muted-foreground">
-                Showing all {listings.length} properties
+                {t("showingAll", { count: listings.length })}
               </p>
             )}
           </div>

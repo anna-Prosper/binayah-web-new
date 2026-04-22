@@ -74,19 +74,19 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Phone className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="tel:+971549988811" className="hover:text-accent transition-colors">+971 54 998 8811</a>
+              <a href="tel:+971549988811" className="hover:text-accent transition-colors">{t("phoneNumber")}</a>
             </li>
             <li className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Mail className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="mailto:info@binayah.com" className="hover:text-accent transition-colors">info@binayah.com</a>
+              <a href="mailto:info@binayah.com" className="hover:text-accent transition-colors">{t("email")}</a>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <MapPin className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="https://maps.google.com/?q=Business+Bay+Marasi+Drive+Dubai+UAE" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Business Bay, Marasi Drive, Dubai, UAE</a>
+              <a href="https://maps.google.com/?q=Business+Bay+Marasi+Drive+Dubai+UAE" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">{t("address")}</a>
             </li>
           </ul>
         </div>
@@ -101,7 +101,7 @@ const Footer = () => {
             </div>
             <div>
               <p className="text-[10px] text-white/30 uppercase tracking-wider">{t("reraRegistered")}</p>
-              <p className="text-xs text-white/60 font-medium">ORN: 1040</p>
+              <p className="text-xs text-white/60 font-medium">{t("ornNumber")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

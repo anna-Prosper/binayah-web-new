@@ -54,7 +54,7 @@ const StudioPlan = ({ unitName, sqft }: { unitName: string; sqft: number }) => (
     <rect x="110" y="200" width="170" height="60" fill="none" stroke={planColors.wall} strokeWidth="1.5" strokeDasharray="6,3" />
     <RoomLabel x={195} y={235} label="Balcony" />
     <DoorArc x={150} y={200} rotation={180} />
-    <text x="150" y="272" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{unitName} • {sqft} sqft</text>
+    <text x="150" y="272" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{`${unitName} • ${sqft} sqft`}</text>
   </svg>
 );
 
@@ -77,7 +77,7 @@ const OneBRPlan = ({ unitName, sqft }: { unitName: string; sqft: number }) => (
     <RoomLabel x={225} y={258} label="Balcony" />
     <rect x="85" y="155" width="60" height="60" fill="white" stroke={planColors.wall} strokeWidth="1.5" />
     <RoomLabel x={115} y={188} label="Entry" />
-    <text x="160" y="288" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{unitName} • {sqft} sqft</text>
+    <text x="160" y="288" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{`${unitName} • ${sqft} sqft`}</text>
   </svg>
 );
 
@@ -103,7 +103,7 @@ const TwoBRPlan = ({ unitName, sqft }: { unitName: string; sqft: number }) => (
     <RoomLabel x={300} y={213} label="Maid's" />
     <rect x="155" y="245" width="190" height="50" fill="none" stroke={planColors.wall} strokeWidth="1.5" strokeDasharray="6,3" />
     <RoomLabel x={250} y={273} label="Balcony" />
-    <text x="180" y="308" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{unitName} • {sqft} sqft</text>
+    <text x="180" y="308" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{`${unitName} • ${sqft} sqft`}</text>
   </svg>
 );
 
@@ -130,7 +130,7 @@ const ThreeBRPlan = ({ unitName, sqft }: { unitName: string; sqft: number }) => 
     <RoomLabel x={325} y={223} label="Maid's Room" />
     <rect x="145" y="255" width="240" height="60" fill="none" stroke={planColors.wall} strokeWidth="1.5" strokeDasharray="6,3" />
     <RoomLabel x={265} y={288} label="Terrace / Balcony" />
-    <text x="200" y="328" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{unitName} • {sqft} sqft</text>
+    <text x="200" y="328" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{`${unitName} • ${sqft} sqft`}</text>
   </svg>
 );
 
@@ -160,7 +160,7 @@ const LargePlan = ({ unitName, sqft, bedrooms }: { unitName: string; sqft: numbe
     <RoomLabel x={327} y={233} label="Maid's" />
     <rect x="155" y="265" width="230" height="70" fill="none" stroke={planColors.wall} strokeWidth="1.5" strokeDasharray="6,3" />
     <RoomLabel x={270} y={303} label="Private Terrace" />
-    <text x="200" y="348" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{unitName} • {sqft} sqft</text>
+    <text x="200" y="348" textAnchor="middle" fill={planColors.accent} fontSize="9" fontWeight="700" fontFamily="system-ui">{`${unitName} • ${sqft} sqft`}</text>
   </svg>
 );
 

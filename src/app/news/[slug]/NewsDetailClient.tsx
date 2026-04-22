@@ -90,7 +90,7 @@ export default function NewsDetailClient({ article }: { article: Article }) {
           ) : article.excerpt ? (
             <p className="text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
           ) : (
-            <p className="text-muted-foreground">No content available.</p>
+            <p className="text-muted-foreground">{t("noContent")}</p>
           )}
 
           {/* Tags */}

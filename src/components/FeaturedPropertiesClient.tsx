@@ -97,7 +97,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
                     </div>
                     <div className="border-t border-border pt-4 flex items-center justify-between mt-auto">
                       <p className="text-xl font-bold text-primary">{fmt(p)}</p>
-                      <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">Details <ArrowUpRight className="h-3 w-3" /></span>
+                      <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">{t("details")} <ArrowUpRight className="h-3 w-3" /></span>
                     </div>
                   </div>
                 </Link>
