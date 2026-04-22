@@ -5,3 +5,5 @@
 {"ts":"2026-04-22T07:02:07Z","stage":1,"iter":1,"fromPhase":"pm","toPhase":"dev","role":"pm","passed":null}
 {"ts":"2026-04-22T09:47:32Z","stage":1,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
 {"ts":"2026-04-22T09:51:00Z","stage":1,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
+{"ts":"2026-04-22T09:58:01Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false}
+{"ts":"2026-04-22T10:02:25Z","stage":1,"iter":2,"fromPhase":"qa","toPhase":"push","role":"qa","passed":true}

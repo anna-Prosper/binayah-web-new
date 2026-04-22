@@ -43,7 +43,6 @@ export async function DELETE(req: NextRequest) {
   const col = await getFavoritesCollection();
   await col.updateOne(
     { userId: session.user.id },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     { $pull: { propertyIds: id } as any, $set: { updatedAt: new Date() } }
   );
   return NextResponse.json({ ok: true });

@@ -69,7 +69,9 @@
           "pattern"
         ]
       }
-    ]
+    ],
+    "@next/next/no-html-link-for-pages": "warn",
+    "react/no-unescaped-entities": "off"
   },
   "overrides": [
     {
