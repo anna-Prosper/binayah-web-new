@@ -566,26 +566,80 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     })()}
                   </div>
 
-                  {/* Exclusive Offers stripe */}
-                  {(project.exclusiveOffers?.length ?? 0) > 0 && (
-                    <div className="rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 50%, #B8922F 100%)" }}>
-                      <div className="px-5 py-4 sm:px-6 sm:py-5">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Sparkles className="h-4 w-4 text-white/80 flex-shrink-0" />
-                          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-white/80">{t("limitedTime")}</p>
+                  {/* ─── EXCLUSIVE OFFERS ─── */}
+                  {(project.offers?.length ?? 0) > 0 && (
+                    <div className="space-y-4">
+                      {/* Section header */}
+                      <div>
+                        <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
+                        <div className="flex items-center gap-2 mb-1">
+                          <Sparkles className="h-3.5 w-3.5 text-accent" />
+                          <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("limitedTime")}</p>
                         </div>
-                        <p className="text-base sm:text-lg font-bold text-white mb-3">{t("exclusiveOffers")}</p>
-                        <div className="flex flex-col sm:flex-row gap-2.5">
-                          {(project.exclusiveOffers as { title: string; description?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => (
-                            <div key={idx} className="flex-1 bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20">
-                              {offer.badge && (
-                                <span className="inline-block px-2 py-0.5 bg-white/20 rounded-full text-[9px] font-bold text-white uppercase tracking-widest mb-2">{offer.badge}</span>
-                              )}
-                              <p className="text-sm font-bold text-white leading-snug">{offer.title}</p>
-                              {offer.description && <p className="text-xs text-white/70 mt-1 leading-relaxed">{offer.description}</p>}
+                        <h3 className="text-lg sm:text-2xl font-bold text-foreground">{t("exclusiveOffers")}</h3>
+                      </div>
+
+                      {/* Offer cards */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        {(project.offers as { title: string; description?: string; image?: string; url?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: idx * 0.08 }}
+                            className="group relative rounded-2xl overflow-hidden border border-accent/20 shadow-lg hover:shadow-accent/20 hover:shadow-xl transition-shadow duration-300"
+                            style={{ minHeight: 220 }}
+                          >
+                            {/* Background image */}
+                            {offer.image ? (
+                              <NextImage
+                                src={offer.image}
+                                alt={offer.description || offer.title}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                sizes="(max-width: 640px) 100vw, 33vw"
+                              />
+                            ) : (
+                              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1209 0%, #2d1f0a 100%)" }} />
+                            )}
+
+                            {/* Dark gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+
+                            {/* Gold shimmer border */}
+                            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-accent/40 transition-all duration-300" />
+
+                            {/* Content */}
+                            <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-5">
+                              {/* Top: badge */}
+                              <div>
+                                {offer.badge ? (
+                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest"
+                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)", color: "#fff" }}>
+                                    <Sparkles className="h-2.5 w-2.5" />
+                                    {offer.badge}
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 text-[9px] font-semibold uppercase tracking-widest text-white/70 border border-white/15">
+                                    <Star className="h-2.5 w-2.5" />
+                                    {t("exclusiveOffers")}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Bottom: stat + description */}
+                              <div>
+                                <p className="text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5 drop-shadow-lg"
+                                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>
+                                  {offer.title}
+                                </p>
+                                {offer.description && (
+                                  <p className="text-sm font-medium text-white/80 leading-snug">{offer.description}</p>
+                                )}
+                              </div>
                             </div>
-                          ))}
-                        </div>
+                          </motion.div>
+                        ))}
                       </div>
                     </div>
                   )}
