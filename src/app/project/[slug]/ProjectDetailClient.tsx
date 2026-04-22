@@ -173,7 +173,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
 
   const images = project.imageGallery?.length ? project.imageGallery : [
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200",
+    "/assets/amenities-placeholder.webp",
   ];
   const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
   const dbFaqs = (project.faqs as FAQ[] | null) || [];

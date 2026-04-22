@@ -19,8 +19,8 @@ const FALLBACK_LISTINGS = [
     currency: "AED",
     community: "Dubai Marina",
     city: "Dubai",
-    featuredImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/amenities-placeholder.webp",
+    imageGallery: ["/assets/amenities-placeholder.webp"],
   },
 ];
 
@@ -38,8 +38,8 @@ const FALLBACK_PROJECTS = [
     handover: "Q4 2026",
     completionDate: "2026-12-01",
     shortOverview: "Striking modern residential development of studio, 1 & 2-bedroom apartments in Arjan, Dubai.",
-    featuredImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
     propertyType: "Apartment",
     unitTypes: ["Studio", "1 BR", "2 BR"],
     unitSizeMin: 333,
@@ -56,8 +56,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 1850000,
     currency: "AED",
     handover: "Q2 2027",
-    featuredImage: "https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
     propertyType: "Apartment",
   },
   {
@@ -71,8 +71,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 1200000,
     currency: "AED",
     handover: "Q1 2027",
-    featuredImage: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
     propertyType: "Apartment",
   },
   {
@@ -86,8 +86,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 3500000,
     currency: "AED",
     handover: "Q3 2026",
-    featuredImage: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/amenities-placeholder.webp",
+    imageGallery: ["/assets/amenities-placeholder.webp"],
     propertyType: "Villa",
   },
 ];
@@ -98,7 +98,7 @@ const FALLBACK_ARTICLES = [
     title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible",
     slug: "best-offplan-under-2m",
     category: "Investment",
-    featuredImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop",
+    featuredImage: "/assets/dubai-hero.webp",
     publishedAt: "2026-02-09",
   },
   {
@@ -106,7 +106,7 @@ const FALLBACK_ARTICLES = [
     title: "Tax Benefits of Owning Property in Dubai — The Complete Picture",
     slug: "tax-benefits-dubai-property",
     category: "Guides",
-    featuredImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+    featuredImage: "/assets/dubai-hero.webp",
     publishedAt: "2026-02-07",
   },
   {
@@ -114,7 +114,7 @@ const FALLBACK_ARTICLES = [
     title: "Is Dubai Property a Good Investment in 2026?",
     slug: "dubai-property-investment-2026",
     category: "Market Insights",
-    featuredImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=360&fit=crop",
+    featuredImage: "/assets/dubai-hero.webp",
     publishedAt: "2026-02-07",
   },
 ];

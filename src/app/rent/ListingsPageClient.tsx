@@ -146,7 +146,7 @@ export default function ListingsPageClient({
                   >
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <ImageWithFallback
-                        src={l.featuredImage || l.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"}
+                        src={l.featuredImage || l.imageGallery?.[0] || "/assets/amenities-placeholder.webp"}
                         alt={l.name}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

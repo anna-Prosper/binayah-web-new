@@ -23,7 +23,7 @@ interface Article {
   publishedAt?: string;
 }
 
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=600&fit=crop";
+const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 
 function formatDate(dateStr?: string) {
   if (!dateStr) return "";

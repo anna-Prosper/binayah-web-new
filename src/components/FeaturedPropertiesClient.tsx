@@ -52,7 +52,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
             <motion.div key={p._id} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="flex-shrink-0 w-[260px] snap-start">
               <Link href={`/project/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
                 <div className="relative overflow-hidden aspect-[3/2]">
-                  <ImageWithFallback src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="100vw" className="object-cover" />
+                  <ImageWithFallback src={p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"} alt={p.name} fill sizes="100vw" className="object-cover" />
                   <span className="absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{p.status}</span>
                 </div>
                 <div className="p-3">
@@ -78,7 +78,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
               <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}>
                 <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
-                    <ImageWithFallback src={p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                    <ImageWithFallback src={p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{p.status}</span>
                     <CardActions propertyId={p.slug} slug={p.slug} title={p.name} type="project" />

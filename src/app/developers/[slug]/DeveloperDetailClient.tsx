@@ -192,7 +192,7 @@ export default function DeveloperDetailClient({
                         src={
                           p.featuredImage ||
                           p.imageGallery?.[0] ||
-                          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"
+                          "/assets/amenities-placeholder.webp"
                         }
                         alt={p.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"

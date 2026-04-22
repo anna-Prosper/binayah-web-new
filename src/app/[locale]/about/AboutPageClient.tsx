@@ -79,7 +79,7 @@ export default function AboutPage() {
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <div className="aspect-[4/3] rounded-2xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1582407947092-37608ff63de2?w=800&h=600&fit=crop"
+                src="/assets/dubai-hero.webp"
                 alt="Dubai skyline"
                 className="w-full h-full object-cover"
               />

@@ -7,10 +7,10 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const communities = [
-  { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=800&fit=crop" },
-  { name: "Palm Jumeirah", slug: "palm-jumeirah", properties: "320+", image: "https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=600&h=800&fit=crop" },
-  { name: "Dubai Marina", slug: "dubai-marina", properties: "580+", image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&h=800&fit=crop" },
-  { name: "Business Bay", slug: "business-bay", properties: "290+", image: "https://images.unsplash.com/photo-1546412414-e1885259563a?w=600&h=800&fit=crop" },
+  { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "/assets/dubai-hero.webp" },
+  { name: "Palm Jumeirah", slug: "palm-jumeirah", properties: "320+", image: "/assets/dubai-hero.webp" },
+  { name: "Dubai Marina", slug: "dubai-marina", properties: "580+", image: "/assets/dubai-hero.webp" },
+  { name: "Business Bay", slug: "business-bay", properties: "290+", image: "/assets/dubai-hero.webp" },
 ];
 
 const CommunitiesSection = () => {
