@@ -857,7 +857,13 @@
     "balanceOnCompletion": "交房结清余款",
     "easyInstallments": "灵活分期",
     "flexiblePlan": "弹性付款方案",
-    "allNationalities": "所有国籍均可"
+    "allNationalities": "所有国籍均可",
+    "estRentalYield": "预估租金回报率",
+    "annualROI": "年化ROI",
+    "capitalGrowth": "资本增值",
+    "yearOnYear": "同比增长",
+    "occupancyRate": "入住率",
+    "areaAverage": "区域平均"
   },
   "propertyDetail": {
     "backToProperties": "返回房产列表",
@@ -1356,7 +1362,14 @@
     "tabPricePerSqft": "每平方英尺价格",
     "tabRentalYields": "租金回报率",
     "tabByArea": "按区域",
-    "offPlan": "期房"
+    "offPlan": "期房",
+    "segments": {
+      "Other": "其他",
+      "Apartments": "公寓",
+      "Villas": "别墅",
+      "Commercial": "商业",
+      "Townhouses": "联排别墅"
+    }
   },
   "propertyComparison": {
     "title": "对比房产",

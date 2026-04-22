@@ -851,7 +851,13 @@
     "balanceOnCompletion": "Balance on completion",
     "easyInstallments": "Easy Installments",
     "flexiblePlan": "Flexible Plan",
-    "allNationalities": "All Nationalities"
+    "allNationalities": "All Nationalities",
+    "estRentalYield": "Est. Rental Yield",
+    "annualROI": "Annual ROI",
+    "capitalGrowth": "Capital Growth",
+    "yearOnYear": "Year-on-Year",
+    "occupancyRate": "Occupancy Rate",
+    "areaAverage": "Area Average"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",
@@ -1350,7 +1356,14 @@
     "tabPricePerSqft": "Price / sqft",
     "tabRentalYields": "Rental Yields",
     "tabByArea": "By Area",
-    "offPlan": "Off-Plan"
+    "offPlan": "Off-Plan",
+    "segments": {
+      "Other": "Other",
+      "Apartments": "Apartments",
+      "Villas": "Villas",
+      "Commercial": "Commercial",
+      "Townhouses": "Townhouses"
+    }
   },
   "propertyComparison": {
     "title": "Compare Properties",

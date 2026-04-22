@@ -1292,9 +1292,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     ];
                     const reasons = highlights.length > 0 ? highlights : defaultReasons;
                     const stats = [
-                      { label: "Est. Rental Yield", value: "7-9%", sub: "Annual ROI", icon: TrendingUp, iconClass: "text-emerald-500" },
-                      { label: "Capital Growth", value: "12-15%", sub: "Year-on-Year", icon: Sparkles, iconClass: "text-accent" },
-                      { label: "Occupancy Rate", value: "90%+", sub: "Area Average", icon: Users, iconClass: "text-primary" },
+                      { label: t("estRentalYield"), value: "7-9%", sub: t("annualROI"), icon: TrendingUp, iconClass: "text-emerald-500" },
+                      { label: t("capitalGrowth"), value: "12-15%", sub: t("yearOnYear"), icon: Sparkles, iconClass: "text-accent" },
+                      { label: t("occupancyRate"), value: "90%+", sub: t("areaAverage"), icon: Users, iconClass: "text-primary" },
                     ];
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">

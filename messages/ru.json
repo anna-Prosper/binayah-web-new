@@ -851,7 +851,13 @@
     "balanceOnCompletion": "Остаток при сдаче",
     "easyInstallments": "Удобная рассрочка",
     "flexiblePlan": "Гибкий план",
-    "allNationalities": "Для всех национальностей"
+    "allNationalities": "Для всех национальностей",
+    "estRentalYield": "Доходность аренды",
+    "annualROI": "Годовой ROI",
+    "capitalGrowth": "Рост стоимости",
+    "yearOnYear": "Год к году",
+    "occupancyRate": "Заполняемость",
+    "areaAverage": "Среднее по району"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
@@ -1350,7 +1356,14 @@
     "tabPricePerSqft": "Цена / кв.м",
     "tabRentalYields": "Доходность аренды",
     "tabByArea": "По районам",
-    "offPlan": "Новостройки"
+    "offPlan": "Новостройки",
+    "segments": {
+      "Other": "Прочее",
+      "Apartments": "Апартаменты",
+      "Villas": "Виллы",
+      "Commercial": "Коммерческая",
+      "Townhouses": "Таунхаусы"
+    }
   },
   "propertyComparison": {
     "title": "Сравнение объектов",

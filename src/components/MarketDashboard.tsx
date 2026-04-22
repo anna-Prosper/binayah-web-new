@@ -27,6 +27,7 @@ interface MarketData {
 
 const MarketDashboard = () => {
   const t = useTranslations("marketDashboard");
+  const segmentNames = t.raw("segments") as Record<string, string>;
   const [tab, setTab] = useState<Tab>("prices");
   const [data, setData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -163,7 +164,7 @@ const MarketDashboard = () => {
                     {data.segments.map((s) => (
                       <div key={s.name} className="flex items-center gap-2 text-xs">
                         <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />
-                        <span className="text-muted-foreground">{s.name}</span>
+                        <span className="text-muted-foreground">{segmentNames[s.name] ?? s.name}</span>
                         <span className="font-semibold text-foreground ml-auto">{s.value}%</span>
                       </div>
                     ))}
@@ -174,7 +175,7 @@ const MarketDashboard = () => {
                 <div className="hidden sm:block">
                   <div className="h-[200px]">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data.segments} layout="vertical" barSize={20}>
+                      <BarChart data={data.segments.map((s) => ({ ...s, name: segmentNames[s.name] ?? s.name }))} layout="vertical" barSize={20}>
                         <XAxis type="number" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} domain={[0, 60]} />
                         <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} width={90} />
                         <Tooltip formatter={(v: number) => [`${v}%`, "Share"]} contentStyle={{ borderRadius: 12, fontSize: 12 }} />
@@ -191,7 +192,7 @@ const MarketDashboard = () => {
                       <div key={s.name} className="flex items-center justify-between text-xs">
                         <div className="flex items-center gap-2">
                           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} />
-                          <span className="text-muted-foreground">{s.name}</span>
+                          <span className="text-muted-foreground">{segmentNames[s.name] ?? s.name}</span>
                         </div>
                         <span className="font-semibold text-foreground">{s.value}%</span>
                       </div>

@@ -851,7 +851,13 @@
     "balanceOnCompletion": "الرصيد عند الاكتمال",
     "easyInstallments": "أقساط ميسرة",
     "flexiblePlan": "خطة مرنة",
-    "allNationalities": "جميع الجنسيات"
+    "allNationalities": "جميع الجنسيات",
+    "estRentalYield": "العائد الإيجاري المتوقع",
+    "annualROI": "العائد السنوي",
+    "capitalGrowth": "نمو رأس المال",
+    "yearOnYear": "سنة بعد سنة",
+    "occupancyRate": "نسبة الإشغال",
+    "areaAverage": "متوسط المنطقة"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1350,7 +1356,14 @@
     "tabPricePerSqft": "السعر / قدم مربع",
     "tabRentalYields": "عوائد الإيجار",
     "tabByArea": "حسب المنطقة",
-    "offPlan": "على الخارطة"
+    "offPlan": "على الخارطة",
+    "segments": {
+      "Other": "أخرى",
+      "Apartments": "شقق",
+      "Villas": "فيلات",
+      "Commercial": "تجاري",
+      "Townhouses": "تاون هاوس"
+    }
   },
   "propertyComparison": {
     "title": "مقارنة العقارات",
