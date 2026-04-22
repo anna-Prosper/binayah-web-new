@@ -9,7 +9,7 @@ import {
   Star, Clock, Users, FileText, ExternalLink, Download, Image as ImageIcon,
   Home, Landmark, TrendingUp, CreditCard, Globe, Compass, Waves, X,
   Sparkles, Eye, ArrowRight, Dumbbell, Baby, Car, Lock, Flame,
-  TreePine, Store, Smartphone, HeartPulse,
+  TreePine, Store, Smartphone, HeartPulse, Tag, Percent,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -567,8 +567,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
 
                   {/* ─── EXCLUSIVE OFFERS ─── */}
-                  {(project.offers?.length ?? 0) > 0 && (
-                    <div className="space-y-4">
+                  {(project.offers?.length ?? 0) > 0 && (() => {
+                    const offerIcons = (desc: string, title: string) => {
+                      const s = (desc + " " + title).toLowerCase();
+                      if (s.includes("payment") || s.includes("plan") || s.includes("50/50") || s.includes("installment")) return CreditCard;
+                      if (s.includes("discount") || s.includes("fee") || s.includes("waiver") || s.includes("%")) return Percent;
+                      return Tag;
+                    };
+                    return (
+                    <div className="space-y-5">
                       {/* Section header */}
                       <div>
                         <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
@@ -581,68 +588,52 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                       {/* Offer cards */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                        {(project.offers as { title: string; description?: string; image?: string; url?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: idx * 0.08 }}
-                            className="group relative rounded-2xl overflow-hidden border border-accent/20 shadow-lg hover:shadow-accent/20 hover:shadow-xl transition-shadow duration-300"
-                            style={{ minHeight: 220 }}
-                          >
-                            {/* Background image */}
-                            {offer.image ? (
-                              <NextImage
-                                src={offer.image}
-                                alt={offer.description || offer.title}
-                                fill
-                                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                sizes="(max-width: 640px) 100vw, 33vw"
-                              />
-                            ) : (
-                              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #1a1209 0%, #2d1f0a 100%)" }} />
-                            )}
+                        {(project.offers as { title: string; description?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => {
+                          const OfferIcon = offerIcons(offer.description || "", offer.title);
+                          return (
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0, y: 16 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.35, delay: idx * 0.08 }}
+                              className="group relative rounded-2xl overflow-hidden border border-accent/25 bg-card shadow-sm hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 p-5 sm:p-6 flex flex-col gap-4"
+                            >
+                              {/* Gold glow on hover */}
+                              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                                style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(184,146,47,0.08) 0%, transparent 70%)" }} />
 
-                            {/* Dark gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-
-                            {/* Gold shimmer border */}
-                            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-accent/40 transition-all duration-300" />
-
-                            {/* Content */}
-                            <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-5">
-                              {/* Top: badge */}
-                              <div>
-                                {offer.badge ? (
-                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest"
-                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)", color: "#fff" }}>
-                                    <Sparkles className="h-2.5 w-2.5" />
+                              {/* Top row: icon circle + badge */}
+                              <div className="flex items-start justify-between">
+                                <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                                  style={{ background: "linear-gradient(135deg, rgba(184,146,47,0.15) 0%, rgba(212,168,71,0.1) 100%)", border: "1px solid rgba(184,146,47,0.25)" }}>
+                                  <OfferIcon className="h-5 w-5 text-accent" />
+                                </div>
+                                {offer.badge && (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest text-white"
+                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)" }}>
+                                    <Sparkles className="h-2 w-2" />
                                     {offer.badge}
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 text-[9px] font-semibold uppercase tracking-widest text-white/70 border border-white/15">
-                                    <Star className="h-2.5 w-2.5" />
-                                    {t("exclusiveOffers")}
                                   </span>
                                 )}
                               </div>
 
-                              {/* Bottom: stat + description */}
+                              {/* Stat */}
                               <div>
-                                <p className="text-3xl sm:text-4xl font-extrabold text-white leading-none mb-1.5 drop-shadow-lg"
-                                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>
+                                <p className="text-3xl sm:text-4xl font-extrabold leading-none mb-1"
+                                  style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 60%, #B8922F 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                   {offer.title}
                                 </p>
                                 {offer.description && (
-                                  <p className="text-sm font-medium text-white/80 leading-snug">{offer.description}</p>
+                                  <p className="text-sm font-medium text-foreground/70 leading-snug mt-1.5">{offer.description}</p>
                                 )}
                               </div>
-                            </div>
-                          </motion.div>
-                        ))}
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
+                    );
+                  })()}
 
                   {/* Available Units */}
                   {((project.unitTypes?.length ?? 0) > 0 || (project.unitsByType?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
