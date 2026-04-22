@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Zap, Users, Camera, HeadphonesIcon, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const PORTALS = [
   { name: "Property Finder", color: "#E84043", bg: "rgba(232,64,67,0.12)" },
@@ -11,16 +12,17 @@ const PORTALS = [
   { name: "Houza", color: "#6366F1", bg: "rgba(99,102,241,0.12)" },
 ];
 
-const BENEFITS = [
-  { Icon: Zap, text: "Live on all portals within 24 hours" },
-  { Icon: Camera, text: "Professional photography & listing copy included" },
-  { Icon: HeadphonesIcon, text: "One dedicated agent handles every enquiry" },
-  { Icon: Users, text: "Reach 2M+ active buyers and renters in the UAE" },
-  { Icon: CheckCircle2, text: "Zero upfront fees — commission only on completion" },
-  { Icon: BarChart3, text: "Real-time dashboard: views, leads, and performance" },
+const BENEFIT_ICONS = [
+  { Icon: Zap, key: "feature1" },
+  { Icon: Camera, key: "feature2" },
+  { Icon: HeadphonesIcon, key: "feature3" },
+  { Icon: Users, key: "feature4" },
+  { Icon: CheckCircle2, key: "feature5" },
+  { Icon: BarChart3, key: "feature6" },
 ];
 
 export default function ListYourPropertySection() {
+  const t = useTranslations("home.sections.listYourProperty");
   return (
     <section className="py-16 sm:py-24 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,18 +37,18 @@ export default function ListYourPropertySection() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
               <Zap className="h-3.5 w-3.5 text-primary" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-primary">Sell or Rent With Us</span>
+              <span className="text-[11px] font-bold uppercase tracking-widest text-primary">{t("label")}</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-4">
-              Your property,{" "}
+              {t("headlineStart")}{" "}
               <span style={{ background: "linear-gradient(to right, #0B3D2E, #1A7A5A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                everywhere at once.
+                {t("headlineGold")}
               </span>
             </h2>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-7">
-              One listing goes live on the UAE&apos;s top portals simultaneously. No juggling multiple accounts — your dedicated agent does it all.
+              {t("bodyText")}
             </p>
 
             {/* Portal chips */}
@@ -65,12 +67,12 @@ export default function ListYourPropertySection() {
 
             {/* Benefits */}
             <ul className="space-y-3 mb-9">
-              {BENEFITS.map(({ Icon, text }) => (
-                <li key={text} className="flex items-center gap-3 text-sm text-foreground/80">
+              {BENEFIT_ICONS.map(({ Icon, key }) => (
+                <li key={key} className="flex items-center gap-3 text-sm text-foreground/80">
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Icon className="h-3.5 w-3.5 text-primary" />
                   </div>
-                  {text}
+                  {t(key as any)}
                 </li>
               ))}
             </ul>
@@ -80,7 +82,7 @@ export default function ListYourPropertySection() {
               className="inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl text-white font-bold text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] group"
               style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 8px 30px rgba(212,168,71,0.35)" }}
             >
-              List My Property
+              {t("cta")}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
@@ -109,15 +111,15 @@ export default function ListYourPropertySection() {
               <div className="relative">
                 {/* Header */}
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: "#D4A847" }}>
-                  Binayah Multi-Portal Listing
+                  {t("multiPortalLabel")}
                 </p>
-                <p className="text-2xl font-bold text-white mb-8">Your property reaches:</p>
+                <p className="text-2xl font-bold text-white mb-8">{t("propertyReaches")}</p>
 
                 {/* Stats row */}
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   {[
-                    { value: "2M+", label: "Active buyers" },
-                    { value: "3+", label: "Top portals" },
+                    { value: "2M+", label: t("statActiveBuyers") },
+                    { value: "3+", label: t("statTopPortals") },
                     { value: "24h", label: "Time to live" },
                   ].map(({ value, label }) => (
                     <div key={label} className="text-center p-4 rounded-2xl bg-white/5 border border-white/8">
@@ -135,14 +137,14 @@ export default function ListYourPropertySection() {
                         <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ background: color }} />
                         <span className="text-sm font-semibold text-white/80">{name}</span>
                       </div>
-                      <span className="text-[11px] font-bold text-emerald-400">● Live</span>
+                      <span className="text-[11px] font-bold text-emerald-400">{t("live")}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* CTA hint */}
                 <div className="mt-6 pt-5 border-t border-white/10 text-center">
-                  <p className="text-xs text-white/35">One submission. We handle the rest.</p>
+                  <p className="text-xs text-white/35">{t("oneSubmission")}</p>
                 </div>
               </div>
             </div>
@@ -154,8 +156,8 @@ export default function ListYourPropertySection() {
             >
               <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0" />
               <div>
-                <p className="text-xs font-bold text-white">Zero upfront fees</p>
-                <p className="text-[10px] text-white/70">Commission only on completion</p>
+                <p className="text-xs font-bold text-white">{t("zeroFees")}</p>
+                <p className="text-[10px] text-white/70">{t("commissionOnly")}</p>
               </div>
             </div>
           </motion.div>

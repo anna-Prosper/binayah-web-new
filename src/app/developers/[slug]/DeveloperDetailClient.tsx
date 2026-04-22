@@ -15,6 +15,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface Developer {
   _id: string;
@@ -67,6 +68,7 @@ export default function DeveloperDetailClient({
   developer: Developer;
   projects: Project[];
 }) {
+  const t = useTranslations("developerDetail");
   const cleanDescription = developer.description
     ? stripHtml(developer.description)
     : "";
@@ -90,7 +92,7 @@ export default function DeveloperDetailClient({
             href="/developers"
             className="inline-flex items-center gap-2 text-sm text-primary-foreground/60 hover:text-primary-foreground mb-8 transition-colors"
           >
-            <ArrowLeft className="h-4 w-4" /> All Developers
+            <ArrowLeft className="h-4 w-4" /> {t("breadcrumbDevelopers")}
           </Link>
 
           <motion.div
@@ -111,7 +113,7 @@ export default function DeveloperDetailClient({
             </div>
             <div>
               <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-3">
-                Developer
+                {t("about")}
               </p>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
                 {developer.name}
@@ -136,7 +138,7 @@ export default function DeveloperDetailClient({
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 hover:text-primary-foreground transition-colors"
                   >
-                    <Globe className="h-3.5 w-3.5" /> Website
+                    <Globe className="h-3.5 w-3.5" /> {t("website")}
                   </a>
                 )}
                 {developer.email && (
@@ -165,7 +167,7 @@ export default function DeveloperDetailClient({
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-bold text-foreground mb-8">
-            Projects by {developer.name}{" "}
+            {t("projects")} {developer.name}{" "}
             <span className="text-muted-foreground font-normal text-lg">
               ({projects.length})
             </span>
@@ -239,7 +241,7 @@ export default function DeveloperDetailClient({
             <div className="text-center py-16">
               <Building2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
               <p className="text-muted-foreground">
-                No published projects found for this developer.
+                {t("noProjects")}
               </p>
             </div>
           )}

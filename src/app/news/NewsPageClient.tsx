@@ -8,6 +8,7 @@ import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Article {
   _id: string;
@@ -30,18 +31,19 @@ function formatDate(dateStr?: string) {
 }
 
 export default function NewsPageClient({ articles }: { articles: Article[] }) {
+  const t = useTranslations("news");
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Breadcrumbs items={[{ label: "News", href: "/news" }]} />
+      <Breadcrumbs items={[{ label: t("heroLabel"), href: "/news" }]} />
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Blog</p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">Latest <span className="italic font-light">News & Insights</span></h1>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span></h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
-              Stay informed with Dubai&apos;s real estate trends, investment tips, and market analysis — {articles.length} articles.
+              {t("heroSubtitle")}
             </p>
           </motion.div>
         </div>

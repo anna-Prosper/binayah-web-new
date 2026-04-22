@@ -6,9 +6,11 @@ import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "luci
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { formatProjectPrice } from "@/lib/formatPrice";
+import { useTranslations } from "next-intl";
 
 
 const FeaturedProperties = () => {
+  const t = useTranslations("home.sections.featured");
   const { data: projects } = useQuery({
     queryKey: ["featured-projects"],
     queryFn: async () => {
@@ -28,13 +30,13 @@ const FeaturedProperties = () => {
         >
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Featured Listings</p>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("label")}</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Handpicked <span className="italic font-light">Properties</span>
+              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
             </h2>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
-            View All Properties <ArrowUpRight className="h-4 w-4" />
+            {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
 
@@ -91,7 +93,7 @@ const FeaturedProperties = () => {
                     <div className="mt-auto border-t border-border pt-4 flex items-center justify-between">
                       <p className="text-xl font-bold text-primary">{price}</p>
                       <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">
-                        Details <ArrowUpRight className="h-3 w-3" />
+                        {t("details")} <ArrowUpRight className="h-3 w-3" />
                       </span>
                     </div>
                   </div>

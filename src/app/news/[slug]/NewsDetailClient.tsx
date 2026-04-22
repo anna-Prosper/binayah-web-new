@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, ChevronRight, Clock } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { useTranslations } from "next-intl";
 
 interface Article {
   _id: string;
@@ -32,6 +33,8 @@ function formatDate(dateStr?: string) {
 }
 
 export default function NewsDetailClient({ article }: { article: Article }) {
+  const t = useTranslations("newsDetail");
+  const tBreadcrumbs = useTranslations("breadcrumbs");
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -44,9 +47,9 @@ export default function NewsDetailClient({ article }: { article: Article }) {
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative pt-12">
           <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <Link href="/news" className="hover:text-white transition-colors">News</Link>
+            <Link href="/news" className="hover:text-white transition-colors">{t("breadcrumbNews")}</Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white/80 truncate max-w-[200px]">{article.title}</span>
           </div>
@@ -64,7 +67,7 @@ export default function NewsDetailClient({ article }: { article: Article }) {
               {article.readTime && (
                 <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {article.readTime}</span>
               )}
-              {article.author && <span>By {article.author}</span>}
+              {article.author && <span>{t("publishedOn")} {article.author}</span>}
             </div>
           </motion.div>
         </div>
@@ -87,13 +90,13 @@ export default function NewsDetailClient({ article }: { article: Article }) {
           ) : article.excerpt ? (
             <p className="text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
           ) : (
-            <p className="text-muted-foreground">No content available.</p>
+            <p className="text-muted-foreground">{t("noContent")}</p>
           )}
 
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
             <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Tags</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">{t("tags")}</h3>
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) => (
                   <span key={tag} className="text-xs px-3 py-1.5 rounded-lg bg-muted text-muted-foreground">{tag}</span>
@@ -105,7 +108,7 @@ export default function NewsDetailClient({ article }: { article: Article }) {
           {/* Back link */}
           <div className="mt-12">
             <Link href="/news" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
-              <ArrowLeft className="h-4 w-4" /> Back to News
+              <ArrowLeft className="h-4 w-4" /> {t("backToNews")}
             </Link>
           </div>
         </div>

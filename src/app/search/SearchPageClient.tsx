@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   formatPropertyTypeLabel,
   homeSearchPropertyTypeOptions,
@@ -68,8 +69,8 @@ const bathrooms = ["1", "2", "3", "4", "5", "6", "7+"];
 const buyBudgets = ["Up to 500K", "500K - 1M", "1M - 2M", "2M - 5M", "5M - 10M", "10M+"];
 const rentBudgets = ["Up to 100K", "100K - 200K", "200K - 350K", "350K - 500K", "500K+"];
 
-function formatPrice(price?: number, currency = "AED") {
-  if (!price) return "Price on request";
+function formatPrice(price?: number, currency = "AED", fallback = "Price on request") {
+  if (!price) return fallback;
   if (price >= 1_000_000) return `${currency} ${(price / 1_000_000).toFixed(1)}M`;
   return `${currency} ${price.toLocaleString()}`;
 }
@@ -104,6 +105,7 @@ function SearchContent() {
   const [developer, setDeveloper] = useState(params.get("developer") || "");
   const [q, setQ] = useState(params.get("q") || "");
 
+  const t = useTranslations("search");
   const [projects, setProjects] = useState<Project[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [projectCount, setProjectCount] = useState(0);
@@ -203,7 +205,7 @@ function SearchContent() {
           <div className="flex gap-3 mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input value={q} onChange={(event) => setQ(event.target.value)} onKeyDown={(event) => event.key === "Enter" && fetchResults()} placeholder="Search properties, communities, projects, developers..." className="w-full pl-11 pr-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
+              <input value={q} onChange={(event) => setQ(event.target.value)} onKeyDown={(event) => event.key === "Enter" && fetchResults()} placeholder={t("title")} className="w-full pl-11 pr-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
             </div>
             <button onClick={() => setFiltersOpen(!filtersOpen)} className="px-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2 lg:hidden">
               <SlidersHorizontal className="h-4 w-4" />
@@ -213,7 +215,7 @@ function SearchContent() {
           <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
             {statusTabs.map((tab) => (
               <button key={tab} onClick={() => setStatus(tab)} className={`px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${status === tab ? "text-white shadow-sm" : "bg-background text-muted-foreground hover:text-foreground border border-border"}`} style={status === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
-                {tab}
+                {tab === "All" ? t("tabAll") : tab === "Off-Plan" ? t("tabOffPlan") : t("tabSecondary")}
               </button>
             ))}
           </div>
@@ -221,27 +223,27 @@ function SearchContent() {
           {status !== "Off-Plan" && (
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
               {secondaryModes.map((mode) => (
-                <button key={mode.label} onClick={() => { setStatus(mode.value ? "Secondary" : "All"); setIntent(mode.value); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value && (status === "Secondary" || mode.value === "") ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
-                  {mode.label}
+                <button key={mode.value || "any"} onClick={() => { setStatus(mode.value ? "Secondary" : "All"); setIntent(mode.value); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value && (status === "Secondary" || mode.value === "") ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
+                  {mode.value === "" ? t("tabAnySecondary") : mode.value === "buy" ? t("buy") : t("rent")}
                 </button>
               ))}
             </div>
           )}
 
           <div className={`grid grid-cols-2 lg:grid-cols-6 gap-3 ${filtersOpen ? "block" : "hidden lg:grid"}`}>
-            <FilterSelect placeholder="Property Type" value={type} onChange={setType} options={propertyTypes} />
-            <FilterSelect placeholder="Location" value={location} onChange={setLocation} options={locations} />
-            <FilterSelect placeholder="Bedrooms" value={beds} onChange={setBeds} options={bedrooms} />
-            <FilterSelect placeholder="Bathrooms" value={baths} onChange={setBaths} options={bathrooms} />
-            <FilterSelect placeholder="Budget" value={budget} onChange={setBudget} options={budgetOptions} />
-            <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder="Developer" className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+            <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} />
+            <FilterSelect placeholder={t("community")} value={location} onChange={setLocation} options={locations} />
+            <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} />
+            <FilterSelect placeholder={t("bedrooms")} value={baths} onChange={setBaths} options={bathrooms} />
+            <FilterSelect placeholder={t("minPrice")} value={budget} onChange={setBudget} options={budgetOptions} />
+            <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("community")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
           </div>
 
           <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-muted-foreground">{loading ? "Searching..." : `${totalResults.toLocaleString()} properties found`}</p>
+            <p className="text-sm text-muted-foreground">{loading ? t("noResults") : t("results", { count: totalResults })}</p>
             {activeFilters.length > 0 && (
               <button onClick={clearFilters} className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
-                <X className="h-3 w-3" /> Clear filters
+                <X className="h-3 w-3" /> {t("clearFilters")}
               </button>
             )}
           </div>
@@ -261,21 +263,21 @@ function SearchContent() {
       <section className="py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {loading ? (
-            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>Searching properties...</span></div>
+            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("noResults")}</span></div>
           ) : totalResults === 0 ? (
             <div className="text-center py-20">
               <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">No properties found</h3>
-              <p className="text-muted-foreground mb-6">Try adjusting your filters or search terms.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">{t("noResults")}</h3>
+              <p className="text-muted-foreground mb-6">{t("clearFilters")}</p>
               <button onClick={clearFilters} className="px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                Clear All Filters
+                {t("clearFilters")}
               </button>
             </div>
           ) : (
             <>
               {projects.length > 0 && (
                 <div className="mb-12">
-                  <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />Off-Plan Projects<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
+                  <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {projects.map((project, index) => (
                       <motion.div key={project._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
@@ -309,7 +311,7 @@ function SearchContent() {
               {listings.length > 0 && (
                 <div>
                   {(status === "All" || status === "Off-Plan") && projects.length > 0 && (
-                    <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />Secondary Properties<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
+                    <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {listings.map((listing, index) => (
@@ -331,7 +333,7 @@ function SearchContent() {
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
                             </div>
-                            <div className="border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{formatPrice(listing.price, listing.currency)}</p></div>
+                            <div className="border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{formatPrice(listing.price, listing.currency, t("priceOnRequest"))}</p></div>
                           </div>
                         </Link>
                       </motion.div>

@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { apiUrl } from "@/lib/api";
 import Link from "next/link";
@@ -27,6 +26,7 @@ const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 type NearbyAttraction = { name: string; type: string; distance: string };
 type FAQ = { question: string; answer: string };
@@ -60,8 +60,8 @@ const LANGUAGES = [
   { code: "zh", label: "中文", flag: "🇨🇳" },
 ];
 
-const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency = "AED") => {
-  if (!price) return "Price on Request";
+const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency = "AED", fallback = "Price on Request") => {
+  if (!price) return fallback;
   // Normalize: prices stored as decimal millions (e.g. 1.5 = AED 1.5M)
   const normalized = price < 1_000 ? price * 1_000_000 : price;
   const rate = CURRENCY_RATES[targetCurrency] || 1;
@@ -111,6 +111,8 @@ const attractionIcon = (type: string) => {
 
 
 const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
+  const t = useTranslations("projectDetail");
+  const tCommon = useTranslations("common");
   const project = {
     ...serverProject,
     unitTypes: Array.isArray(serverProject.unitTypes) ? serverProject.unitTypes : [],
@@ -249,9 +251,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/50 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                <Link href="/" className="hover:text-white transition-colors">{t("breadcrumbHome")}</Link>
                 <ChevronRight className="h-3 w-3" />
-                <Link href="/off-plan" className="hover:text-white transition-colors">Projects</Link>
+                <Link href="/off-plan" className="hover:text-white transition-colors">{t("breadcrumbProjects")}</Link>
                 <ChevronRight className="h-3 w-3" />
                 <span className="text-white/80 truncate max-w-[180px]">{project.name}</span>
               </div>
@@ -283,7 +285,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
                   {/* Developer name – hidden on mobile */}
                   <p className="hidden sm:flex text-white text-xs sm:text-sm font-medium mb-0.5 sm:mb-1 items-center gap-1.5">
-                    by <span className="text-white font-semibold">{project.developerName}</span>
+                    {t("byDeveloper")} <span className="text-white font-semibold">{project.developerName}</span>
                   </p>
                   {/* Project title */}
                   <h1 className="text-[22px] sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]">
@@ -335,7 +337,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0"
                 >
                   <div className="flex flex-col gap-0.5 lg:items-end">
-                    <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">Starting from</span>
+                    <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">{t("startingFrom")}</span>
                     <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
                     {currency === "AED" && project.startingPrice && (
                       <span className="text-white/60 text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
@@ -369,7 +371,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-semibold text-white hover:bg-white/20 transition-all"
                       >
-                        <Play className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-accent fill-accent" /> Watch Tour
+                        <Play className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-accent fill-accent" /> {t("watchTour")}
                       </a>
                     )}
                     <button
@@ -377,7 +379,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
                       style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
-                      <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Gallery
+                      <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("gallery")}
                     </button>
                     <a
                       href={project.brochureUrl || "#"}
@@ -386,7 +388,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
                       style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
                     >
-                      <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Brochure
+                      <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
                     </a>
                   </div>
                 </motion.div>
@@ -403,7 +405,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
-          <ImageIcon className="h-3.5 w-3.5" /> Gallery ({images.length})
+          <ImageIcon className="h-3.5 w-3.5" /> {t("galleryButton")} ({images.length})
         </button>
         <a
           href={project.brochureUrl || "#"}
@@ -412,7 +414,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
         >
-          <Download className="h-3.5 w-3.5" /> Brochure
+          <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
         </a>
       </div>
 
@@ -439,12 +441,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               const currencyKeys = Object.keys(CURRENCY_RATES);
 
               return [
-                { icon: Building2, label: "Developer", value: project.developerName || "—", sub: null },
-                { icon: Wallet, label: "Starting Price", value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
-                { icon: Bed, label: "Unit Types", value: formatUnitTypes(project.unitTypes, " · "), sub: null },
+                { icon: Building2, label: t("developer"), value: project.developerName || "—", sub: null },
+                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
+                { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
                 { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
-                { icon: handoverIcon, label: isReady ? "Status" : "Handover", value: handoverValue, sub: null },
-                { icon: CreditCard, label: "Payment Plan", value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : "Flexible Plan", sub: project.paymentPlanSummary || "Easy Installments", isPaymentPlan: true },
+                { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
+                { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : t("flexiblePlan"), sub: project.paymentPlanSummary || t("easyInstallments"), isPaymentPlan: true },
               ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
                 <motion.div
                   key={label}
@@ -491,8 +493,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   </div>
                   {isPaymentPlan ? (
                   <div>
-                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">10% – 70% – 20%</p>
-                      <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">Booking – Construction – Handover</p>
+                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{t("paymentPlanDefault")}</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("paymentPlanDefaultDesc")}</p>
                     </div>
                   ) : (
                     <>
@@ -552,8 +554,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <div className="space-y-4">
                     <div>
                       <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
-                      <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">About the Project</p>
-                      <h2 className="text-lg sm:text-2xl font-bold text-foreground">Project Overview</h2>
+                      <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">{t("aboutTheProject")}</p>
+                      <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("projectOverview")}</h2>
                     </div>
                     {project.shortOverview && (
                       <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">{project.shortOverview}</p>
@@ -570,9 +572,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div className="px-5 py-4 sm:px-6 sm:py-5">
                         <div className="flex items-center gap-2 mb-3">
                           <Sparkles className="h-4 w-4 text-white/80 flex-shrink-0" />
-                          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-white/80">Limited Time</p>
+                          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-white/80">{t("limitedTime")}</p>
                         </div>
-                        <p className="text-base sm:text-lg font-bold text-white mb-3">Exclusive Offers</p>
+                        <p className="text-base sm:text-lg font-bold text-white mb-3">{t("exclusiveOffers")}</p>
                         <div className="flex flex-col sm:flex-row gap-2.5">
                           {(project.exclusiveOffers as { title: string; description?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => (
                             <div key={idx} className="flex-1 bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20">
@@ -694,15 +696,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           </div>
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Browse Units</p>
-                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">Available Units</h2>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("browseUnits")}</p>
+                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("availableUnits")}</h2>
                           </div>
                         </div>
 
                         {/* Primary property type tabs — segmented control */}
                         {hasMultiplePropertyTypes && (
                           <div className="mb-5">
-                            <p className="text-xs uppercase tracking-widest font-bold text-foreground/70 mb-2.5 pl-0.5">Property Type</p>
+                            <p className="text-xs uppercase tracking-widest font-bold text-foreground/70 mb-2.5 pl-0.5">{t("propertyTypeLabel")}</p>
                             <div className="inline-flex w-full gap-1.5 p-1.5 bg-muted/50 rounded-2xl border border-border/30">
                               {(project.propertyTypes as string[]).map((pt) => (
                                 <button
@@ -768,10 +770,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   project.floor_plans?.[clampedUnitTab] ||
                                   null;
                                 return (
-                                  <div className="md:col-span-2 relative bg-muted/20 flex items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
+                                  <div className="md:col-span-2 relative bg-muted/20 flex flex-col items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
                                     {floorPlanImg ? (
-                                      <>
-                                        <div className="relative w-full h-full p-4">
+                                      <div className="flex flex-col w-full h-full">
+                                        <div className="relative flex-1 p-4" style={{ minHeight: 200 }}>
                                           <NextImage
                                             src={floorPlanImg as string}
                                             alt={`${activeUnit?.name} floor plan`}
@@ -780,20 +782,27 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                             className="object-contain"
                                           />
                                         </div>
-                                        <div className="absolute bottom-4 left-4">
-                                          <span className="inline-flex px-3 py-1.5 rounded-full text-xs font-bold bg-white/90 text-primary backdrop-blur-sm shadow-sm border border-border/30">
-                                            {activeUnit?.name} Floor Plan
-                                          </span>
+                                        <div className="px-4 pb-4">
+                                          <a
+                                            href={floorPlanImg as string}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            download
+                                            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-primary border border-primary/25 transition-all hover:bg-primary hover:text-white hover:border-transparent hover:shadow-md group"
+                                          >
+                                            <Download className="h-3.5 w-3.5 group-hover:translate-y-0.5 transition-transform" />
+                                            {t("downloadFloorPlan")}
+                                          </a>
                                         </div>
-                                      </>
+                                      </div>
                                     ) : (
                                       <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
                                         <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
                                           <FileText className="h-7 w-7 text-primary/60" />
                                         </div>
                                         <div>
-                                          <p className="font-semibold text-foreground text-sm">Floor Plan on Request</p>
-                                          <p className="text-xs text-muted-foreground mt-1">Contact us to receive the full floor plan for this unit</p>
+                                          <p className="font-semibold text-foreground text-sm">{t("floorPlanOnRequest")}</p>
+                                          <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
                                         </div>
                                         <a
                                           href={`${project.whatsappNumber?.startsWith("http") ? project.whatsappNumber : `https://wa.me/${project.whatsappNumber || "971543048"}`}`.replace(/text=.*/, `text=${encodeURIComponent(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}`)}
@@ -803,7 +812,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                                         >
                                           <MessageCircle className="h-4 w-4" />
-                                          Request Floor Plan
+                                          {t("requestFloorPlan")}
                                         </a>
                                       </div>
                                     )}
@@ -821,20 +830,20 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   </div>
                                   <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                    Available
+                                    {t("available")}
                                   </span>
                                 </div>
 
                                 {/* Price card */}
                                 {activeUnit?.contactUs ? (
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Pricing</p>
-                                    <p className="text-xl sm:text-2xl font-bold mt-1">Contact Us for Pricing</p>
-                                    <p className="text-sm text-white/60 mt-1">Speak to our team for the latest rates on this unit type</p>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("pricingLabel")}</p>
+                                    <p className="text-xl sm:text-2xl font-bold mt-1">{t("contactForPricing")}</p>
+                                    <p className="text-sm text-white/60 mt-1">{t("contactForPricingDesc")}</p>
                                   </div>
                                 ) : clampedUnitTab === 0 ? (
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Starting From</p>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("startingFromLabel")}</p>
                                     <p className="text-xl sm:text-3xl font-bold mt-1">
                                       {formatPrice(activeUnit?.minPrice, "AED", currency)}
                                     </p>
@@ -844,7 +853,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   </div>
                                 ) : (
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">Price Range</p>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("priceRangeLabel")}</p>
                                     <p className="text-xl sm:text-3xl font-bold mt-1">
                                       {formatPrice(activeUnit?.minPrice, "AED", currency)} – {formatPrice(activeUnit?.maxPrice, "AED", currency)}
                                     </p>
@@ -873,7 +882,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                                 {/* Features */}
                                 <div>
-                                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">Key Features</p>
+                                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">{t("keyFeatures")}</p>
                                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {activeUnit?.features.map((f, fi) => (
                                       <motion.span
@@ -897,7 +906,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-[1.02] transition-all duration-300"
                                 >
                                   <MessageCircle className="h-4 w-4" />
-                                  Enquire About This Unit
+                                  {t("enquireAboutUnit")}
                                 </a>
                               </div>
                             </div>
@@ -917,8 +926,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs sm:text-sm font-bold text-white">Download Project Brochure</p>
-                      <p className="text-[10px] sm:text-[11px] text-white/70">Get the full {project.name} brochure with floor plans & pricing</p>
+                      <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
+                      <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
                     </div>
                     <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
                   </a>
@@ -933,8 +942,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                           </div>
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Why This Project</p>
-                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">Key Highlights</h2>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("whyThisProject")}</p>
+                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("keyHighlights")}</h2>
                           </div>
                         </div>
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
@@ -985,10 +994,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2.5 py-1 rounded-full bg-accent/90 text-accent-foreground text-[10px] font-bold uppercase tracking-wider">Video Tour</span>
+                          <span className="px-2.5 py-1 rounded-full bg-accent/90 text-accent-foreground text-[10px] font-bold uppercase tracking-wider">{t("videoTourLabel")}</span>
                         </div>
-                        <h3 className="text-lg font-bold text-white">Discover {project.name}</h3>
-                        <p className="text-white/60 text-xs mt-1">Take an immersive virtual tour of the development</p>
+                        <h3 className="text-lg font-bold text-white">{t("discoverProject")} {project.name}</h3>
+                        <p className="text-white/60 text-xs mt-1">{t("virtualTourDesc")}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -1002,15 +1011,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <ImageIcon className="h-4 w-4 text-accent" />
                           </div>
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Media</p>
-                            <h2 className="text-base sm:text-lg font-bold text-foreground">Gallery</h2>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("mediaLabel")}</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground">{t("galleryLabel")}</h2>
                           </div>
                         </div>
                         <button
                           onClick={() => setShowGallery(true)}
                           className="text-xs text-accent font-semibold hover:underline flex items-center gap-1"
                         >
-                          View All ({images.length}) <ArrowRight className="h-3.5 w-3.5" />
+                          {t("viewAll")} ({images.length}) <ArrowRight className="h-3.5 w-3.5" />
                         </button>
                       </div>
 
@@ -1063,124 +1072,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   )}
 
-                  {/* Floor Plans - Dedicated Section */}
-                  {project.unitTypes && project.unitTypes.length > 0 && (() => {
-                    const floorPlanUnits = project.unitTypes.map((ut: string, idx: number) => {
-                      const bedroomMatch = ut.match(/(\d+)/);
-                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                      const bathrooms = Math.max(1, bedrooms);
-                      const baseSize = Number(project.unitSizeMin) || 400;
-                      const maxSize = Number(project.unitSizeMax) || 2500;
-                      const totalTypes = project.unitTypes!.length;
-                      const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
-                      const unitSize = Math.round(baseSize + sizeStep * idx);
-                      const balconyArea = Math.round(unitSize * 0.08);
-                      const totalArea = unitSize + balconyArea;
-                      return { name: ut, bedrooms, bathrooms, unitSize, balconyArea, totalArea };
-                    });
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="mb-4 sm:mb-8">
-                          <div className="flex items-center gap-2.5 mb-2">
-                            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                              <FileText className="h-4.5 w-4.5 text-primary" />
-                            </div>
-                            <div>
-                              <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Layouts</p>
-                              <h2 className="text-lg sm:text-xl font-bold text-foreground">Floor Plans</h2>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Unit type tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-4 mb-4 sm:mb-8 scrollbar-hide -mx-2 px-2">
-                          {floorPlanUnits.map((unit, i) => (
-                            <button
-                              key={unit.name}
-                              onClick={() => setActiveFloorPlanTab(i)}
-                              className={`flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-                                activeFloorPlanTab === i
-                                  ? "text-white shadow-md"
-                                  : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
-                              }`}
-                              style={activeFloorPlanTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
-                            >
-                              {unit.name}
-                            </button>
-                          ))}
-                        </div>
-
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={activeFloorPlanTab}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -12 }}
-                            transition={{ duration: 0.25 }}
-                          >
-                            {/* Large floor plan / unit image area */}
-                            <div
-                              className="w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl overflow-hidden border border-border/50"
-                              role="img"
-                              aria-label={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
-                            >
-                              {project.floor_plans && project.floor_plans[activeFloorPlanTab] ? (
-                                <NextImage
-                                  src={project.floor_plans[activeFloorPlanTab]}
-                                  alt={`${project.name} ${floorPlanUnits[activeFloorPlanTab]?.name} Floor Plan`}
-                                  fill
-                                  sizes="(max-width: 768px) 100vw, 60vw"
-                                  className="object-contain rounded-2xl"
-                                />
-                              ) : (
-                                <FloorPlanPlaceholder
-                                  bedrooms={floorPlanUnits[activeFloorPlanTab]?.bedrooms || 0}
-                                  unitName={floorPlanUnits[activeFloorPlanTab]?.name || ""}
-                                  sqft={floorPlanUnits[activeFloorPlanTab]?.unitSize || 0}
-                                />
-                              )}
-                            </div>
-
-                            {/* Details row */}
-                            <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mt-3 sm:mt-4 mb-4 sm:mb-6">
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Ruler className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.unitSize.toLocaleString()}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">sqft</p>
-                              </div>
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Bed className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bedrooms === 0 ? "Studio" : floorPlanUnits[activeFloorPlanTab]?.bedrooms}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Beds</p>
-                              </div>
-                              <div className="p-2 sm:p-3.5 bg-muted/40 rounded-lg sm:rounded-xl text-center">
-                                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary mx-auto mb-1" />
-                                <p className="text-xs sm:text-sm font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.bathrooms}</p>
-                                <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">Baths</p>
-                              </div>
-                            </div>
-                            {/* Total area bar */}
-                            <div className="flex items-center justify-between bg-muted/30 rounded-xl px-3 py-2 sm:px-4 sm:py-3 mb-4 sm:mb-6">
-                              <div className="flex items-center gap-2">
-                                <Home className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                                <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">Total Area</span>
-                              </div>
-                              <span className="text-sm sm:text-base font-bold text-foreground">{floorPlanUnits[activeFloorPlanTab]?.totalArea.toLocaleString()} sqft</span>
-                            </div>
-
-                            {/* Download button */}
-                            <button className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold text-primary border-2 border-primary/25 transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] group">
-                              <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:translate-y-0.5 transition-transform" />
-                              <span className="hidden sm:inline">Download Floor Plan PDF — {floorPlanUnits[activeFloorPlanTab]?.name}</span>
-                              <span className="sm:hidden">Download {floorPlanUnits[activeFloorPlanTab]?.name} PDF</span>
-                            </button>
-                          </motion.div>
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })()}
-
-
                   {/* Payment Plan Visual Timeline */}
                   {project.unitTypes && project.unitTypes.length > 0 && (() => {
                     const rawPrice = project.startingPrice || 0;
@@ -1193,7 +1084,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       { pct: 10, label: "After 3 Months", icon: Calendar, color: "bg-primary" },
                       { pct: 10, label: "After 6 Months", icon: Clock, color: "bg-primary" },
                       { pct: 30, label: "During Construction", icon: Building2, color: "bg-primary/70" },
-                      { pct: 40, label: "On Handover", icon: CheckCircle2, color: "bg-emerald-500" },
+                      { pct: 40, label: t("onHandover"), icon: CheckCircle2, color: "bg-emerald-500" },
                     ];
 
                     // Use project payment plan data if available
@@ -1208,9 +1099,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               <CreditCard className="h-4 w-4 text-white" />
                             </div>
                             <div>
-                              <h2 className="text-base sm:text-xl font-bold text-white">Payment Plan</h2>
+                              <h2 className="text-base sm:text-xl font-bold text-white">{t("paymentPlanLabel")}</h2>
                               <p className="text-[10px] sm:text-xs text-white/60">
-                                For {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice, "AED", currency)}
+                                {t("forUnit")} {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice, "AED", currency)}
                               </p>
                             </div>
                           </div>
@@ -1267,7 +1158,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                     <div className="flex-1 flex items-center justify-between gap-2 min-w-0">
                                       <div className="min-w-0">
                                         <p className="text-xs sm:text-sm font-bold text-foreground">{m.label}</p>
-                                        <p className="text-[9px] sm:text-[11px] text-muted-foreground">Step {i + 1} · {cumulativePct}% paid</p>
+                                        <p className="text-[9px] sm:text-[11px] text-muted-foreground">{t("paymentStep", { step: i + 1 })} · {t("paymentStepPaid", { pct: cumulativePct })}</p>
                                       </div>
                                       <div className="flex items-baseline gap-1.5 sm:gap-2 flex-shrink-0">
                                         <span className="text-sm sm:text-lg font-bold text-foreground">{m.pct}%</span>
@@ -1287,7 +1178,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                           {/* Total summary */}
                           <div className="pt-3 sm:pt-4 border-t border-border/50 flex items-center justify-between">
-                            <p className="text-xs sm:text-sm font-semibold text-muted-foreground">Total</p>
+                            <p className="text-xs sm:text-sm font-semibold text-muted-foreground">{t("totalLabel")}</p>
                             <div className="text-right">
                               <p className="text-base sm:text-lg font-bold text-foreground">{formatPrice(unitPrice, "AED", currency)}</p>
                               {currency === "AED" && (
@@ -1312,7 +1203,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <MapPin className="h-4.5 w-4.5 text-primary" />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-foreground">Location & Nearby</h2>
+                        <h2 className="text-xl font-bold text-foreground">{t("locationNearby")}</h2>
                         {project.locationDescription && (
                           <p className="text-xs text-muted-foreground mt-0.5">{project.locationDescription}</p>
                         )}
@@ -1401,9 +1292,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     ];
                     const reasons = highlights.length > 0 ? highlights : defaultReasons;
                     const stats = [
-                      { label: "Est. Rental Yield", value: "7-9%", sub: "Annual ROI", icon: TrendingUp, iconClass: "text-emerald-500" },
-                      { label: "Capital Growth", value: "12-15%", sub: "Year-on-Year", icon: Sparkles, iconClass: "text-accent" },
-                      { label: "Occupancy Rate", value: "90%+", sub: "Area Average", icon: Users, iconClass: "text-primary" },
+                      { label: t("estRentalYield"), value: "7-9%", sub: t("annualROI"), icon: TrendingUp, iconClass: "text-emerald-500" },
+                      { label: t("capitalGrowth"), value: "12-15%", sub: t("yearOnYear"), icon: Sparkles, iconClass: "text-accent" },
+                      { label: t("occupancyRate"), value: "90%+", sub: t("areaAverage"), icon: Users, iconClass: "text-primary" },
                     ];
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
@@ -1412,7 +1303,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <TrendingUp className="h-4.5 w-4.5 text-emerald-500" />
                           </div>
                           <div>
-                            <h2 className="text-lg sm:text-xl font-bold text-foreground">Investment Highlights</h2>
+                            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("investmentHighlights")}</h2>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-1.5 sm:gap-3 mb-4 sm:mb-6">
@@ -1487,8 +1378,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <Star className="h-4.5 w-4.5 text-accent" />
                           </div>
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Lifestyle</p>
-                            <h2 className="text-xl font-bold text-foreground">Amenities & Facilities</h2>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("lifestyleLabel")}</p>
+                            <h2 className="text-xl font-bold text-foreground">{t("amenitiesFacilities")}</h2>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
@@ -1522,8 +1413,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <FileText className="h-4.5 w-4.5 text-primary" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Common Questions</p>
-                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("commonQuestions")}</p>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("faqLabel")}</h2>
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -1575,8 +1466,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <Building2 className="h-4.5 w-4.5 text-primary" />
                           </div>
                           <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Developer</p>
-                            <h2 className="text-lg sm:text-xl font-bold text-foreground">About the Developer</h2>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("developer")}</p>
+                            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("aboutDeveloper")}</h2>
                           </div>
                         </div>
 
@@ -1588,7 +1479,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <div>
                             <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">{project.developerName}</h3>
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                              {project.developerName} is a leading real estate developer in the UAE, known for delivering iconic residential and commercial projects across prime locations in Dubai.
+                              {t("developerDesc", { name: project.developerName })}
                             </p>
                           </div>
                         </div>
@@ -1620,7 +1511,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                         {/* CTA */}
                         <Link href={`/developers/${project.developerSlug || (project.developerName ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "")}`} className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
-                          View Developer Profile <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                          {t("viewDeveloperProfile")} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                         </Link>
                       </div>
                     </div>
@@ -1641,9 +1532,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <Mail className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-accent" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">Get in Touch</p>
-                        <h2 className="text-base sm:text-xl font-bold text-foreground">Enquire About This Project</h2>
-                        <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Get detailed pricing and availability</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("getInTouch")}</p>
+                        <h2 className="text-base sm:text-xl font-bold text-foreground">{t("enquireLabel")}</h2>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">{t("enquireDesc")}</p>
                       </div>
                     </div>
 
@@ -1658,22 +1549,22 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
                             <CheckCircle2 className="h-7 w-7 text-emerald-500" />
                           </div>
-                          <h3 className="text-lg font-bold text-foreground mb-1">Thank You!</h3>
-                          <p className="text-sm text-muted-foreground">Our team will contact you shortly via your preferred method.</p>
+                          <h3 className="text-lg font-bold text-foreground mb-1">{t("thankYou")}</h3>
+                          <p className="text-sm text-muted-foreground">{t("enquireThankYouDesc")}</p>
                           <button
                             onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }}
                             className="mt-4 text-xs font-semibold text-primary hover:underline"
                           >
-                            Submit another enquiry
+                            {t("submitAnotherEnquiry")}
                           </button>
                         </div>
                         {/* Subscribe CTA */}
                         <div className="border border-border/50 rounded-xl p-4 bg-muted/20 space-y-3">
                           <p className="text-sm font-semibold text-foreground text-center">
-                            Want updates on {project.name}?
+                            {t("wantUpdates", { name: project.name })}
                           </p>
                           <p className="text-xs text-muted-foreground text-center leading-relaxed">
-                            Subscribe to hear first about price changes, new launches, and construction milestones.
+                            {t("subscribeDesc")}
                           </p>
                           <div className="flex justify-center">
                             <SubscribeButton
@@ -1693,7 +1584,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       >
                         {/* Core fields — always visible */}
                         <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Full Name *</label>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("fullName")} *</label>
                           <input
                             type="text"
                             required
@@ -1705,19 +1596,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         </div>
 
                         <div>
-                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Phone Number *</label>
+                          <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("phoneNumber")} *</label>
                           <div className="flex gap-2">
                             <select
                               value={enquiryForm.countryCode}
                               onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
                               className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
                             >
-                              <option value="+971">🇦🇪 +971</option>
-                              <option value="+44">🇬🇧 +44</option>
-                              <option value="+1">🇺🇸 +1</option>
-                              <option value="+91">🇮🇳 +91</option>
-                              <option value="+86">🇨🇳 +86</option>
-                              <option value="+7">🇷🇺 +7</option>
+                              <option value="+971">+971</option>
+                              <option value="+44">+44</option>
+                              <option value="+1">+1</option>
+                              <option value="+91">+91</option>
+                              <option value="+86">+86</option>
+                              <option value="+7">+7</option>
                             </select>
                             <input
                               type="tel"
@@ -1733,7 +1624,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         {/* Pre-filled message */}
                         <div className="bg-muted/20 rounded-xl px-3.5 py-2.5 border border-border/30">
                           <p className="text-xs text-muted-foreground">
-                            <span className="font-semibold text-foreground/70">Message:</span> I'm interested in {project.name}. Please share pricing and availability.
+                            <span className="font-semibold text-foreground/70">{t("messageLabel")}:</span> {t("interestedInProject", { name: project.name })}
                           </p>
                         </div>
 
@@ -1745,7 +1636,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
                           >
                             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreEnquiry ? "rotate-180" : ""}`} />
-                            {showMoreEnquiry ? "Hide details" : "Add more details (optional)"}
+                            {showMoreEnquiry ? t("hideDetails") : t("addMoreDetails")}
                           </button>
 
                           {showMoreEnquiry && (
@@ -1755,7 +1646,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               className="space-y-3 mt-3 overflow-hidden"
                             >
                               <div>
-                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Email</label>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("emailLabel")}</label>
                                 <input
                                   type="email"
                                   value={enquiryForm.email}
@@ -1765,20 +1656,20 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 />
                               </div>
                               <div>
-                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Unit Type</label>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("preferredUnitType")}</label>
                                 <select
                                   value={enquiryForm.unitType}
                                   onChange={(e) => setEnquiryForm(f => ({ ...f, unitType: e.target.value }))}
                                   className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
                                 >
-                                  <option value="">Select a unit type</option>
+                                  <option value="">{t("selectUnitType")}</option>
                                   {project.unitTypes?.map((ut) => (
                                     <option key={ut} value={ut}>{ut}</option>
                                   ))}
                                 </select>
                               </div>
                               <div>
-                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Custom Message</label>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("customMessage")}</label>
                                 <textarea
                                   rows={2}
                                   value={enquiryForm.message}
@@ -1788,7 +1679,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 />
                               </div>
                               <div>
-                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Preferred Contact Method</label>
+                                <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("preferredContact")}</label>
                                 <div className="flex gap-2">
                                   {([
                                     { key: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle },
@@ -1827,10 +1718,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
                           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
                         >
-                          Send Quick Enquiry
+                          {t("sendQuickEnquiry")}
                         </button>
 
-                        <p className="text-[10px] text-muted-foreground text-center">We'll get back to you within 2 hours</p>
+                        <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                       </form>
                     )}
                   </div>
@@ -1846,8 +1737,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <Calendar className="h-4.5 w-4.5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-bold text-primary">Schedule a Video Consultation</h3>
-                          <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Book a free video call with our property consultant — no obligations</p>
+                          <h3 className="text-sm font-bold text-primary">{t("scheduleCall")}</h3>
+                          <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{t("scheduleCallDesc")}</p>
                         </div>
                         <ArrowRight className="h-4 w-4 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                       </div>
@@ -1870,7 +1761,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {/* Pricing & Ownership — full card on desktop, just facts on mobile */}
                   <div className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden">
                     <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                      <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">Starting Price</p>
+                      <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
                       <p className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                       {currency === "AED" && project.startingPrice && (
                         <p className="text-primary-foreground/40 text-xs sm:text-sm mt-1">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
@@ -1880,12 +1771,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <div className="p-3.5 sm:p-6 md:p-8">
                       <div className="grid grid-cols-2 gap-2 sm:gap-4">
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Title Type</p>
+                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
                           <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType || "Freehold"}</p>
                         </div>
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Ownership</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
                         </div>
                       </div>
                     </div>
@@ -1893,12 +1784,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {/* Mobile-only: just Title Type + Ownership */}
                   <div className="sm:hidden grid grid-cols-2 gap-2">
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Title Type</p>
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
                       <p className="text-sm font-bold text-foreground">{project.titleType || "Freehold"}</p>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">Ownership</p>
-                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || "All Nationalities"}</p>
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
+                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
                     </div>
                   </div>
 
@@ -1910,7 +1801,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     const milestones = [
                       { label: "On Booking", pct: downPct, desc: "Down Payment", icon: Wallet, color: "from-accent to-accent/80" },
                       ...(duringPct > 0 ? [{ label: "During Construction", pct: duringPct, desc: "Progress-linked installments", icon: Building2, color: "from-primary to-primary/80" }] : []),
-                      ...(handoverPct > 0 ? [{ label: "On Handover", pct: handoverPct, desc: "Balance on completion", icon: Home, color: "from-primary to-[#145C42]" }] : []),
+                      ...(handoverPct > 0 ? [{ label: t("onHandover"), pct: handoverPct, desc: t("balanceOnCompletion"), icon: Home, color: "from-primary to-[#145C42]" }] : []),
                     ];
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
@@ -1919,7 +1810,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                           </div>
                           <div>
-                            <h2 className="text-base sm:text-xl font-bold text-white">Payment Plan</h2>
+                            <h2 className="text-base sm:text-xl font-bold text-white">{t("paymentPlanLabel")}</h2>
                             {project.paymentPlanSummary && (
                               <p className="text-white/60 text-xs sm:text-sm">{project.paymentPlanSummary}</p>
                             )}
@@ -1982,7 +1873,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           {/* Accepted methods */}
                           {project.acceptedPaymentMethods && project.acceptedPaymentMethods.length > 0 && (
                             <div>
-                              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-3">Accepted Methods</p>
+                              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-3">{t("acceptedMethods")}</p>
                               <div className="flex flex-wrap gap-2">
                                 {project.acceptedPaymentMethods.map((m: string, i: number) => (
                                   <span key={i} className="text-[11px] sm:text-xs px-3 sm:px-4 py-2 sm:py-2.5 bg-card border border-border rounded-xl text-foreground font-semibold hover:border-primary/30 transition-colors">
@@ -2004,7 +1895,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <Bed className="h-4.5 w-4.5 text-primary" />
                       </div>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">Units Information</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("unitsInfo")}</h2>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4">
                       {[
@@ -2044,7 +1935,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                           <MessageCircle className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
                         </div>
-                        <h2 className="text-base sm:text-xl font-bold text-foreground">Frequently Asked Questions</h2>
+                        <h2 className="text-base sm:text-xl font-bold text-foreground">{t("faqLabel")}</h2>
                       </div>
                       <div className="px-3.5 sm:px-6 pb-3.5 sm:pb-6 space-y-2 sm:space-y-3">
                         {faqs.map((faq, i) => (
@@ -2085,7 +1976,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   ) : (
                     <div className="bg-card rounded-2xl border border-border/50 p-6 text-center">
                       <MessageCircle className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
-                      <p className="text-sm text-muted-foreground">No FAQs available for this project yet.</p>
+                      <p className="text-sm text-muted-foreground">{t("noFaqs")}</p>
                     </div>
                   )}
                 </motion.div>
@@ -2107,19 +1998,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <MapPin className="h-4.5 w-4.5 text-primary" />
                       </div>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">Location</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
                     </div>
                     <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-5">
                       <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">Community</p>
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("communityLabel")}</p>
                         <p className="text-xs sm:text-base font-bold text-foreground">{project.community || "—"}</p>
                       </div>
                       <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">City</p>
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("cityLabel")}</p>
                         <p className="text-xs sm:text-base font-bold text-foreground">{project.city}</p>
                       </div>
                       <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">Country</p>
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("countryLabel")}</p>
                         <p className="text-xs sm:text-base font-bold text-foreground">{project.country}</p>
                       </div>
                     </div>
@@ -2156,7 +2047,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     })()}
                     {project.mapUrl && (
                       <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors">
-                        <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> View on Google Maps
+                        <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t("viewOnGoogleMaps")}
                       </a>
                     )}
                   </div>
@@ -2168,7 +2059,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
                           <Compass className="h-4.5 w-4.5 text-accent" />
                         </div>
-                        <h2 className="text-lg sm:text-xl font-bold text-foreground">Nearby Attractions</h2>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("nearbyAttractions")}</h2>
                       </div>
                       <div className="space-y-2 sm:space-y-3">
                         {nearby.map((a, i) => {
@@ -2222,25 +2113,25 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </div>
                 <div className="px-4 pb-2 pt-2 bg-card border-x border-border/50">
                   <p className="text-[11px] text-muted-foreground text-center">
-                    Have questions? <span className="font-semibold text-foreground/70">Fill in below</span> ↓
+                    {t("haveQuestions")} <span className="font-semibold text-foreground/70">{t("fillBelow")}</span> ↓
                   </p>
                 </div>
               </div>
               <div className="bg-card rounded-2xl rounded-t-none border border-border/50 border-t-0 p-4">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Quick Enquiry</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{t("quickEnquiry")}</p>
                 {enquirySubmitted ? (
                   <div className="py-4 space-y-4">
                     {/* Thank-you */}
                     <div className="text-center">
                       <CheckCircle2 className="h-6 w-6 text-emerald-500 mx-auto mb-2" />
-                      <p className="text-sm font-bold text-foreground">Sent!</p>
-                      <p className="text-xs text-muted-foreground">We&apos;ll call you within 2 hours.</p>
-                      <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">Send another</button>
+                      <p className="text-sm font-bold text-foreground">{t("sentLabel")}</p>
+                      <p className="text-xs text-muted-foreground">{t("callWithin")}</p>
+                      <button onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" }); }} className="mt-2 text-xs text-primary font-semibold">{t("sendAnother")}</button>
                     </div>
                     {/* Subscribe CTA */}
                     <div className="border border-border/50 rounded-xl p-3 bg-muted/20 space-y-2">
                       <p className="text-xs font-semibold text-foreground text-center">
-                        Want updates on {project.name}?
+                        {t("wantUpdates", { name: project.name })}
                       </p>
                       <div className="flex justify-center">
                         <SubscribeButton
@@ -2268,10 +2159,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
                         className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none appearance-none"
                       >
-                        <option value="+971">🇦🇪 +971</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+971">+971</option>
+                        <option value="+44">+44</option>
+                        <option value="+1">+1</option>
+                        <option value="+91">+91</option>
                       </select>
                       <input
                         type="tel" required
@@ -2282,16 +2173,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       />
                     </div>
                     <div className="bg-muted/20 rounded-xl px-3 py-2 border border-border/30">
-                      <p className="text-[11px] text-muted-foreground"><span className="font-semibold text-foreground/70">Re:</span> {project.name} — pricing & availability</p>
+                      <p className="text-[11px] text-muted-foreground"><span className="font-semibold text-foreground/70">{t("rePrefix")}</span> {project.name}</p>
                     </div>
                     <button
                       type="submit"
                       className="w-full h-11 rounded-full text-white font-bold text-sm active:scale-[0.98] transition-all"
                       style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                     >
-                      Send Quick Enquiry
+                      {t("sendQuickEnquiry")}
                     </button>
-                    <p className="text-[10px] text-muted-foreground text-center">We'll get back within 2 hours</p>
+                    <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                   </form>
                 )}
               </div>
@@ -2333,26 +2224,26 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/35 hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    <MessageCircle className="h-4 w-4" /> WhatsApp Inquiry
+                    <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
                   <a
                     href={`tel:${project.contactPhone}`}
                     className="w-full flex items-center justify-center gap-2 py-3.5 text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   >
-                    <Phone className="h-4 w-4" /> Call Now
+                    <Phone className="h-4 w-4" /> {t("callNow")}
                   </a>
                   <a
                     href="#live-chat"
                     className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    <MessageCircle className="h-4 w-4" /> Live Chat
+                    <MessageCircle className="h-4 w-4" /> {t("liveChat")}
                   </a>
                 </div>
                 {/* Mobile: compact nudge instead of duplicate buttons */}
                 <div className="sm:hidden px-4 pb-4 pt-2">
                   <p className="text-[11px] text-muted-foreground text-center">
-                    Have questions? <span className="font-semibold text-foreground/70">Tap below</span> to reach us instantly ↓
+                    {t("haveQuestions")} <span className="font-semibold text-foreground/70">{t("tapBelow")}</span> {t("toReachUs")} ↓
                   </p>
                 </div>
               </motion.div>
@@ -2366,19 +2257,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="hidden sm:block bg-card rounded-2xl border border-border/50 p-5"
               >
-                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">Project Details</h3>
+                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">{t("projectDetailsLabel")}</h3>
                 <div className="divide-y divide-border/40">
                   {[
-                    { label: "Developer", value: project.developerName },
-                    { label: "Community", value: project.community },
-                    { label: "City", value: `${project.city}, ${project.country}` },
-                    { label: "Property Type", value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
-                    ...(project.propertyTypes?.length > 0 ? [{ label: "Property Types", value: project.propertyTypes?.join(" · ") }] : []),
-                    { label: "Project Type", value: project.projectType },
-                    { label: "Status", value: project.status },
-                    { label: "Title", value: project.titleType },
-                    { label: "Eligibility", value: project.ownershipEligibility },
-                    { label: "Availability", value: project.availabilityStatus },
+                    { label: t("developer"), value: project.developerName },
+                    { label: t("communityLabel"), value: project.community },
+                    { label: t("cityLabel"), value: `${project.city}, ${project.country}` },
+                    { label: t("propertyTypeLabel"), value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
+                    ...(project.propertyTypes?.length > 0 ? [{ label: t("propertyTypesLabel"), value: project.propertyTypes?.join(" · ") }] : []),
+                    { label: t("projectTypeLabel"), value: project.projectType },
+                    { label: t("status"), value: project.status },
+                    { label: t("titleType"), value: project.titleType },
+                    { label: t("eligibility"), value: project.ownershipEligibility },
+                    { label: t("availability"), value: project.availabilityStatus },
                   ].filter(f => f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>
@@ -2402,7 +2293,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     />
                   </button>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-foreground">Regulatory Permit</p>
+                    <p className="text-xs font-semibold text-foreground">{t("regulatoryPermit")}</p>
                   </div>
                 </div>
               </motion.div>
@@ -2416,7 +2307,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-primary/10 p-5"
                 >
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4 flex items-center gap-2">
-                    <Users className="h-3.5 w-3.5 text-primary" /> Ideal For
+                    <Users className="h-3.5 w-3.5 text-primary" /> {t("idealFor")}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {project.targetBuyers.map((b: string, i: number) => {
@@ -2455,7 +2346,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
             <Building2 className="h-4.5 w-4.5 text-primary" />
           </div>
-          <h2 className="text-xl font-bold text-foreground">Similar Projects</h2>
+          <h2 className="text-xl font-bold text-foreground">{t("similarProjects")}</h2>
         </div>
         <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
           {[
@@ -2486,7 +2377,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-muted-foreground">Starting from</p>
+                    <p className="text-xs text-muted-foreground">{t("startingFrom")}</p>
                     <p className="text-sm font-bold text-accent">{formatPrice(p.price, "AED", currency)}</p>
                   </div>
                   <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center cursor-pointer">
@@ -2506,8 +2397,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             <MessageCircle className="h-4.5 w-4.5" style={{ color: "#D4A847" }} />
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>Testimonials</p>
-            <h2 className="text-lg sm:text-xl font-bold text-foreground">What Buyers Say</h2>
+            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>{t("testimonialsLabel")}</p>
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatBuyersSay")}</h2>
           </div>
         </div>
 
@@ -2535,7 +2426,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <NextImage src={review.avatar} alt={review.name} width={36} height={36} className="rounded-full object-cover" style={{ border: "2px solid rgba(212,168,71,0.2)" }} />
                 <div>
                   <p className="text-sm font-bold text-foreground">{review.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{review.unit} Buyer</p>
+                  <p className="text-[11px] text-muted-foreground">{review.unit} {t("buyerSuffix")}</p>
                 </div>
               </div>
             </motion.div>
@@ -2553,12 +2444,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               <FileText className="h-4.5 w-4.5 text-accent" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">Buyer&apos;s Guide & Resources</h2>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Essential reading for property buyers</p>
+              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("buyerGuide")}</h2>
+              <p className="text-[11px] text-muted-foreground mt-0.5">{t("buyerGuideDesc")}</p>
             </div>
           </div>
           <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
-            View All <ArrowRight className="h-3 w-3" />
+            {t("viewAll")} <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 items-stretch">
@@ -2591,7 +2482,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
         <div className="sm:hidden text-center mt-3">
           <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
-            View All Guides <ArrowRight className="h-3 w-3" />
+            {t("viewAllGuides")} <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       </div>
@@ -2713,7 +2604,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] transition-all duration-300 shadow-md shadow-[#25D366]/20 active:scale-[0.97]"
           >
             <MessageCircle className="h-4 w-4" />
-            WhatsApp
+            {t("whatsapp")}
           </a>
           <a
             href={`tel:${project.contactPhone || '+971500000000'}`}
@@ -2721,14 +2612,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
           >
             <Phone className="h-4 w-4" />
-            Call
+            {t("call")}
           </a>
           <a
             href="#live-chat"
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full border-2 border-primary/30 text-primary font-bold text-[13px] transition-all duration-300 active:scale-[0.97]"
           >
             <MessageCircle className="h-4 w-4" />
-            Live Chat
+            {t("liveChat")}
           </a>
         </div>
       </div>
@@ -2763,12 +2654,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 />
               </div>
               <p className="text-sm font-semibold text-foreground text-center">{project.name}</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Regulatory Permit</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t("regulatoryPermit")}</p>
               <button
                 onClick={() => setShowQrModal(false)}
                 className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                Tap anywhere to close
+                {t("tapToClose")}
               </button>
             </motion.div>
           </motion.div>

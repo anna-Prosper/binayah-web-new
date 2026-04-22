@@ -4,8 +4,10 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calculator, TrendingUp, Percent, ChevronDown, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const ROICalculator = () => {
+  const t = useTranslations("roiCalculator");
   const [price, setPrice] = useState(2000000);
   const [annualRent, setAnnualRent] = useState(120000);
   const [serviceCharge, setServiceCharge] = useState(15000);
@@ -31,12 +33,12 @@ const ROICalculator = () => {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Investment Tool</p>
+          <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
           <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            ROI <span className="italic font-light">Calculator</span>
+            {t("title")}
           </h2>
           <p className="hidden sm:block mt-4 text-muted-foreground max-w-md mx-auto">
-            Estimate your rental yield, capital gains, and total return on Dubai property investments.
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -48,13 +50,13 @@ const ROICalculator = () => {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
                 <Calculator className="h-4 w-4 text-primary" />
               </div>
-              Input Parameters
+              {t("inputParameters")}
             </h3>
             <div className="space-y-6 sm:space-y-7">
-              <SliderInput label="Purchase Price"       value={price}         onChange={setPrice}         min={500000}  max={50000000} step={100000} prefix="AED " format={fmt} />
-              <SliderInput label="Annual Rent"          value={annualRent}    onChange={setAnnualRent}    min={20000}   max={5000000}  step={10000}  prefix="AED " format={fmt} />
-              <SliderInput label="Service Charges / yr" value={serviceCharge} onChange={setServiceCharge} min={0}       max={500000}   step={1000}   prefix="AED " format={fmt} />
-              <SliderInput label="Annual Appreciation"  value={appreciation}  onChange={setAppreciation}  min={0}       max={20}       step={0.5}    suffix="%" />
+              <SliderInput label={t("purchasePrice")}       value={price}         onChange={setPrice}         min={500000}  max={50000000} step={100000} prefix="AED " format={fmt} />
+              <SliderInput label={t("annualRent")}          value={annualRent}    onChange={setAnnualRent}    min={20000}   max={5000000}  step={10000}  prefix="AED " format={fmt} />
+              <SliderInput label={t("serviceCharges")} value={serviceCharge} onChange={setServiceCharge} min={0}       max={500000}   step={1000}   prefix="AED " format={fmt} />
+              <SliderInput label={t("annualAppreciation")}  value={appreciation}  onChange={setAppreciation}  min={0}       max={20}       step={0.5}    suffix="%" />
             </div>
           </motion.div>
 
@@ -64,25 +66,25 @@ const ROICalculator = () => {
             {/* Mobile: 3-col compact + accordion */}
             <div className="sm:hidden space-y-3">
               <div className="grid grid-cols-3 gap-2">
-                <ResultCardCompact label="Gross Yield" value={`${results.grossYield.toFixed(1)}%`} />
-                <ResultCardCompact label="Net Yield"   value={`${results.netYield.toFixed(1)}%`} />
-                <ResultCardCompact label="5yr ROI"     value={`${results.totalROI.toFixed(1)}%`} highlight />
+                <ResultCardCompact label={t("grossYield")} value={`${results.grossYield.toFixed(1)}%`} />
+                <ResultCardCompact label={t("netYield")}   value={`${results.netYield.toFixed(1)}%`} />
+                <ResultCardCompact label={t("fiveYrROI")}     value={`${results.totalROI.toFixed(1)}%`} highlight />
               </div>
               <button onClick={() => setShowProjection(!showProjection)}
                 className="w-full bg-card rounded-xl p-3.5 border border-border/60 flex items-center justify-between text-sm font-semibold text-foreground">
-                <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> 5-Year Breakdown</span>
+                <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> {t("fiveYearBreakdown")}</span>
                 <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-300 ${showProjection ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
                 {showProjection && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                     <div className="bg-card rounded-b-xl px-4 pb-4 pt-3 border-x border-b border-border/60 space-y-2.5">
-                      <ProjectionRow label="Property Value (Yr 5)"  value={`AED ${fmt(results.year5Value)}`} />
-                      <ProjectionRow label="Capital Appreciation"    value={`AED ${fmt(results.year5Value - price)}`} />
-                      <ProjectionRow label="Total Rental Income"     value={`AED ${fmt(results.totalRent5)}`} />
+                      <ProjectionRow label={t("propertyValueYear5")}  value={`AED ${fmt(results.year5Value)}`} />
+                      <ProjectionRow label={t("capitalAppreciation")}    value={`AED ${fmt(results.year5Value - price)}`} />
+                      <ProjectionRow label={t("totalRentalIncome")}     value={`AED ${fmt(results.totalRent5)}`} />
                       <div className="border-t border-border pt-2.5 mt-1">
-                        <ProjectionRow label="Total Return" value={`AED ${fmt(results.totalReturn5)}`} bold />
-                        <ProjectionRow label="Total ROI"    value={`${results.totalROI.toFixed(1)}%`} bold accent />
+                        <ProjectionRow label={t("totalReturn")} value={`AED ${fmt(results.totalReturn5)}`} bold />
+                        <ProjectionRow label={t("totalROI")}    value={`${results.totalROI.toFixed(1)}%`} bold accent />
                       </div>
                     </div>
                   </motion.div>
@@ -93,12 +95,12 @@ const ROICalculator = () => {
             {/* Desktop: full layout */}
             <div className="hidden sm:block space-y-4">
               {/* Yield label */}
-              <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">Your Results</p>
+              <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground">{t("yourResults")}</p>
 
               {/* Yield cards */}
               <div className="grid grid-cols-2 gap-4">
-                <ResultCard icon={Percent} label="Gross Yield" value={`${results.grossYield.toFixed(1)}%`} />
-                <ResultCard icon={Percent} label="Net Yield"   value={`${results.netYield.toFixed(1)}%`} />
+                <ResultCard icon={Percent} label={t("grossYield")} value={`${results.grossYield.toFixed(1)}%`} />
+                <ResultCard icon={Percent} label={t("netYield")}   value={`${results.netYield.toFixed(1)}%`} />
               </div>
 
               {/* 5-year projection */}
@@ -107,15 +109,15 @@ const ROICalculator = () => {
                   <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
                     <TrendingUp className="h-3.5 w-3.5 text-primary" />
                   </div>
-                  5-Year Projection
+                  {t("fiveYearProjection")}
                 </h4>
                 <div className="space-y-3">
-                  <ProjectionRow label="Property Value (Year 5)" value={`AED ${fmt(results.year5Value)}`} />
-                  <ProjectionRow label="Capital Appreciation"    value={`AED ${fmt(results.year5Value - price)}`} />
-                  <ProjectionRow label="Total Rental Income"     value={`AED ${fmt(results.totalRent5)}`} />
+                  <ProjectionRow label={t("propertyValueYear5")} value={`AED ${fmt(results.year5Value)}`} />
+                  <ProjectionRow label={t("capitalAppreciation")}    value={`AED ${fmt(results.year5Value - price)}`} />
+                  <ProjectionRow label={t("totalRentalIncome")}     value={`AED ${fmt(results.totalRent5)}`} />
                   <div className="border-t border-border pt-3 mt-1">
-                    <ProjectionRow label="Total Return" value={`AED ${fmt(results.totalReturn5)}`} bold />
-                    <ProjectionRow label="Total ROI"    value={`${results.totalROI.toFixed(1)}%`} bold accent />
+                    <ProjectionRow label={t("totalReturn")} value={`AED ${fmt(results.totalReturn5)}`} bold />
+                    <ProjectionRow label={t("totalROI")}    value={`${results.totalROI.toFixed(1)}%`} bold accent />
                   </div>
                 </div>
               </div>
@@ -123,9 +125,9 @@ const ROICalculator = () => {
 
             {/* Footnote */}
             <p className="text-[10px] sm:text-[11px] text-muted-foreground text-center">
-              *Projections are estimates based on your inputs.{" "}
+              {t("footnoteLead")}{" "}
               <Link href="/contact" className="underline hover:text-foreground transition-colors inline-flex items-center gap-1">
-                <MessageCircle className="h-2.5 w-2.5 inline" /> Get personalized advice
+                <MessageCircle className="h-2.5 w-2.5 inline" /> {t("getPersonalizedAdvice")}
               </Link>
             </p>
           </motion.div>

@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 
 import { apiUrl } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 const binayahLogo = "/assets/binayah-logo.png";
 
@@ -76,6 +77,7 @@ async function streamChat({
 }
 
 const AIChatWidget = () => {
+  const t = useTranslations("aiChat");
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -131,12 +133,12 @@ const AIChatWidget = () => {
         onDelta: upsertAssistant,
         onDone: () => setIsLoading(false),
         onError: (msg) => {
-          setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+          setMessages((prev) => [...prev, { role: "assistant", content: msg || t("errorGeneric") }]);
           setIsLoading(false);
         },
       });
     } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, something went wrong. Please try again." }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: t("errorGeneric") }]);
       setIsLoading(false);
     }
   };
@@ -151,7 +153,7 @@ const AIChatWidget = () => {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
-        aria-label="AI Chat Support"
+        aria-label={t("open")}
       >
         {open ? <X className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" /> : <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />}
       </motion.button>
@@ -172,8 +174,8 @@ const AIChatWidget = () => {
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
               <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
               <div>
-                <p className="text-white font-bold text-sm tracking-wide">Binayah AI Assistant</p>
-                <p className="text-white/60 text-xs">Ask about properties, areas &amp; more</p>
+                <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+                <p className="text-white/60 text-xs">{t("subtitle")}</p>
               </div>
             </div>
 
@@ -182,10 +184,10 @@ const AIChatWidget = () => {
               {messages.length === 0 && (
                 <div className="text-center py-8">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}><Bot className="h-7 w-7" style={{ color: "#1A7A5A" }} /></div>
-                  <p className="text-sm font-semibold text-foreground mb-1">How can I help you today?</p>
-                  <p className="text-xs text-muted-foreground">Ask about properties, prices, areas or investment advice.</p>
+                  <p className="text-sm font-semibold text-foreground mb-1">{t("greeting")}</p>
+                  <p className="text-xs text-muted-foreground">{t("placeholder")}</p>
                   <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                    {["Properties in Downtown", "Off-plan projects", "Investment advice"].map((q) => (
+                    {[t("suggestions.bestAreas"), t("suggestions.offPlanROI"), t("suggestions.goldenVisa")].map((q) => (
                       <button
                         key={q}
                         onClick={() => { setInput(q); }}
@@ -247,7 +249,7 @@ const AIChatWidget = () => {
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about properties..."
+                  placeholder={t("placeholder")}
                   className="flex-1 bg-secondary/50 border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all" style={{ "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
                 />
                 <button

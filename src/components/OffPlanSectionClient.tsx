@@ -5,6 +5,7 @@ import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { CardActions } from "@/components/PropertyActions";
 import { formatProjectPrice } from "@/lib/formatPrice";
+import { useTranslations } from "next-intl";
 
 
 interface Project {
@@ -23,6 +24,7 @@ interface Project {
 }
 
 const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
+  const t = useTranslations("home.sections.offPlan");
   return (
     <section id="offplan" className="py-14 sm:py-24 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -34,16 +36,16 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
         >
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>Off Plan</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Trending <span className="italic font-light">Developments</span>
+              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
             </h2>
             <p className="mt-4 text-muted-foreground max-w-lg">
-              Explore Dubai's latest off-plan properties — promising investments yet to be completed, across prime locations.
+              {t("subtitle")}
             </p>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
-            View All Projects <ArrowUpRight className="h-4 w-4" />
+            {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
 
@@ -82,7 +84,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
                       {p.name}
                     </h3>
                     <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-                      <p className="text-sm font-bold text-primary">From {price}</p>
+                      <p className="text-sm font-bold text-primary">{t("from")} {price}</p>
                       {p.completionDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <CalendarDays className="h-3 w-3" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}

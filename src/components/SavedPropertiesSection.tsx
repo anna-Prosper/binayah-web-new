@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useFavorites } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 interface FavProperty {
   _id: string;
@@ -48,6 +49,7 @@ interface SavedPropertiesSectionProps {
 }
 
 export default function SavedPropertiesSection({ onCountChange }: SavedPropertiesSectionProps) {
+  const t = useTranslations("savedProperties");
   const { ids, toggle } = useFavorites();
 
   const { data, isLoading, isError } = useQuery({
@@ -117,16 +119,16 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
         <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-5">
           <Heart className="h-7 w-7 text-muted-foreground/30" />
         </div>
-        <h3 className="text-lg font-semibold text-foreground mb-2">No saved properties</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{t("empty")}</h3>
         <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
-          Tap the heart icon on any property to save it here for quick access.
+          {t("emptyDesc")}
         </p>
         <Link
           href="/search"
           className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-xl hover:-translate-y-0.5"
           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
         >
-          Browse Properties
+          {t("browse")}
         </Link>
       </div>
     );
@@ -145,8 +147,8 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <p className="text-sm font-medium text-foreground mb-1">Could not load saved properties</p>
-        <p className="text-xs text-muted-foreground">Please refresh the page to try again.</p>
+        <p className="text-sm font-medium text-foreground mb-1">{t("loadError")}</p>
+        <p className="text-xs text-muted-foreground">{t("loadErrorDesc")}</p>
       </div>
     );
   }
@@ -197,7 +199,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
                       : "bg-blue-600/80 text-white border-blue-400/30"
                   }`}
                 >
-                  {isProject ? "Off-Plan" : "For Rent"}
+                  {isProject ? t("offPlanBadge") : t("forRentBadge")}
                 </span>
               )}
 
@@ -205,7 +207,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
               {p.bedrooms && (
                 <div className="absolute bottom-3 left-3 flex items-center gap-1 text-[10px] font-medium text-white/90">
                   <Bed className="h-3 w-3" />
-                  {p.bedrooms} bed
+                  {p.bedrooms} {t("beds")}
                 </div>
               )}
             </div>
@@ -213,8 +215,8 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
             {/* Remove button — above the stretched link */}
             <button
               onClick={(e) => handleRemove(e, p)}
-              title="Remove from saved"
-              aria-label="Remove from saved"
+              title={t("removeFromSaved")}
+              aria-label={t("removeFromSaved")}
               className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/90 text-foreground/60 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all shadow-sm opacity-0 group-hover:opacity-100 z-[2]"
             >
               <X className="h-3 w-3" />

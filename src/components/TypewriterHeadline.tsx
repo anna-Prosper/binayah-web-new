@@ -2,15 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const phrases = [
-  "Properties For",
-  "Smart Living In",
-  "Your Future In",
-  "AI-Powered Search For",
-];
+import { useTranslations } from "next-intl";
 
 const TypewriterHeadline = () => {
+  const t = useTranslations("home.hero");
+  const phrases = t.raw("typewriterPhrases") as string[];
+
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -25,7 +22,6 @@ const TypewriterHeadline = () => {
         if (charIndex < currentPhrase.length) {
           setCharIndex(charIndex + 1);
         } else {
-          // Pause at full text
           setTimeout(() => setIsDeleting(true), 2000);
         }
       } else {

@@ -8,6 +8,7 @@ import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Community {
   _id: string;
@@ -22,17 +23,18 @@ interface Community {
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=800&fit=crop";
 
 export default function CommunitiesPageClient({ communities }: { communities: Community[] }) {
+  const t = useTranslations("communities");
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Breadcrumbs items={[{ label: "Communities", href: "/communities" }]} />
+      <Breadcrumbs items={[{ label: t("heroLabel"), href: "/communities" }]} />
       <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">Explore Dubai</p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">Premier <span className="italic font-light">Communities</span></h1>
-            <p className="text-primary-foreground/70 max-w-2xl text-lg">Discover Dubai&apos;s most sought-after neighborhoods — {communities.length} communities.</p>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span></h1>
+            <p className="text-primary-foreground/70 max-w-2xl text-lg">{t("heroSubtitle")}</p>
           </motion.div>
         </div>
       </section>
@@ -48,7 +50,7 @@ export default function CommunitiesPageClient({ communities }: { communities: Co
                     <h3 className="text-white font-bold text-lg mb-1">{c.name}</h3>
                     {c.description && <p className="text-white/60 text-xs mb-2 line-clamp-2">{c.description.replace(/<[^>]*>/g, "").slice(0, 100)}</p>}
                     <div className="flex items-center justify-between">
-                      <p className="text-white/70 text-sm">View projects</p>
+                      <p className="text-white/70 text-sm">{t("viewCommunity")}</p>
                       <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0"><ArrowUpRight className="h-4 w-4 text-white" /></div>
                     </div>
                   </div>

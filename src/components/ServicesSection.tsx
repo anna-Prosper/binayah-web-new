@@ -3,17 +3,19 @@
 import { motion } from "framer-motion";
 import { ClipboardCheck, BarChart3, Wallet, Users, Wrench, Star, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
-const services = [
-  { icon: ClipboardCheck, title: "Handover & Snagging", desc: "Thorough inspection and seamless handover process", popular: true },
-  { icon: Wallet, title: "Rent Collection", desc: "Cheque tracking, deposits, and financial reporting", popular: true },
-  { icon: Home, title: "Sell Your Property", desc: "Expert valuation, marketing, and negotiation support", popular: false },
-  { icon: BarChart3, title: "Marketing", desc: "Professional listing and exposure across top platforms" },
-  { icon: Users, title: "Tenant Management", desc: "Screening, contracts, and ongoing tenant relations" },
-  { icon: Wrench, title: "Maintenance", desc: "Repairs, upkeep, and 24/7 emergency support" },
-];
-
-const ServicesSection = () => (
+const ServicesSection = () => {
+  const t = useTranslations("home.sections.services");
+  const services = [
+    { icon: ClipboardCheck, title: t("handover"), desc: t("handoverDesc"), popular: true },
+    { icon: Wallet, title: t("rentCollection"), desc: t("rentCollectionDesc"), popular: true },
+    { icon: Home, title: t("sellProperty"), desc: t("sellPropertyDesc"), popular: false },
+    { icon: BarChart3, title: t("marketing"), desc: t("marketingDesc") },
+    { icon: Users, title: t("tenantManagement"), desc: t("tenantManagementDesc") },
+    { icon: Wrench, title: t("maintenance"), desc: t("maintenanceDesc") },
+  ];
+  return (
   <section id="services" className="py-10 sm:py-24 text-white relative overflow-hidden scroll-mt-20" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
     <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
 
@@ -33,13 +35,13 @@ const ServicesSection = () => (
           style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
         <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>
-          Property Management
+          {t("label")}
         </p>
         <h2 className="text-4xl lg:text-5xl font-bold">
-          Complete Property <span className="italic font-light">Care</span>
+          {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
         </h2>
         <p className="mt-5 text-white/60 max-w-lg mx-auto text-base">
-          Comprehensive management ensuring your investment is protected.
+          {t("subtitle")}
         </p>
       </motion.div>
 
@@ -48,7 +50,7 @@ const ServicesSection = () => (
         <div className="flex items-center gap-2">
           <div className="h-[2px] w-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
           <p className="font-semibold tracking-[0.3em] uppercase text-[10px]" style={{ color: "#D4A847" }}>
-            Property Management
+            {t("label")}
           </p>
         </div>
       </div>
@@ -87,7 +89,7 @@ const ServicesSection = () => (
           >
             {s.popular && (
               <span className="absolute -top-1.5 right-2 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[7px] font-bold uppercase tracking-wider bg-[#D4A847] text-[#0B3D2E]">
-                <Star className="h-1.5 w-1.5 fill-current" /> Popular
+                <Star className="h-1.5 w-1.5 fill-current" /> {t("popular")}
               </span>
             )}
             <div className="w-8 h-8 rounded-lg bg-[#D4A847]/20 flex items-center justify-center mb-2 relative overflow-hidden">
@@ -111,11 +113,12 @@ const ServicesSection = () => (
           href="/services"
           className="inline-flex items-center gap-2 px-6 py-2.5 sm:py-3 rounded-full text-[12px] sm:text-sm font-bold transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] text-white border border-white/20 hover:border-white/40 bg-white/[0.06] hover:bg-white/10"
         >
-          View All Services <ArrowRight className="h-3.5 w-3.5" />
+          {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default ServicesSection;

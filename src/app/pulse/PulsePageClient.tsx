@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
@@ -102,6 +103,7 @@ function Kpi({ label, value, sub, icon: Icon, accent = false }: { label: string;
 // ── Main Component ─────────────────────────────────────────────────────────
 
 export default function PulsePageClient({ marketStats, marketData }: { marketStats: MarketStats | null; marketData: MarketData | null }) {
+  const t = useTranslations("pulse");
   const [sortKey, setSortKey] = useState<SortKey>("totalListings");
   const [sortAsc, setSortAsc] = useState(false);
   const [chartView, setChartView] = useState<ChartView>("price");
@@ -154,24 +156,24 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       {marketStats && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <Kpi label="Avg Price / sqft" value={AED(marketStats.summary.avgPricePerSqft)} sub="Live listings" icon={DollarSign} accent />
-          <Kpi label="Active Listings" value={marketStats.summary.totalListings.toLocaleString()} sub={`${marketStats.summary.offPlanCount} off-plan · ${marketStats.summary.secondaryCount} secondary`} icon={Building2} />
-          <Kpi label="Avg Rental Yield" value={`${marketStats.summary.avgYield}%`} sub="Gross, annualised" icon={Percent} />
-          <Kpi label="Off-Plan Share" value={`${marketStats.summary.offPlanShare}%`} sub="of total inventory" icon={TrendingUp} />
+          <Kpi label={t("kpiAvgPriceSqft")} value={AED(marketStats.summary.avgPricePerSqft)} sub={t("kpiLiveListings")} icon={DollarSign} accent />
+          <Kpi label={t("kpiActiveListings")} value={marketStats.summary.totalListings.toLocaleString()} sub={`${marketStats.summary.offPlanCount} off-plan · ${marketStats.summary.secondaryCount} secondary`} icon={Building2} />
+          <Kpi label={t("kpiAvgYield")} value={`${marketStats.summary.avgYield}%`} sub={t("kpiGrossAnnualised")} icon={Percent} />
+          <Kpi label={t("kpiOffPlanShare")} value={`${marketStats.summary.offPlanShare}%`} sub={t("kpiOfTotalInventory")} icon={TrendingUp} />
         </motion.div>
       )}
 
       {/* ── DLD Transaction Analytics ────────────────────────────── */}
       {txData?.hasData ? (
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-          <SectionHeader label="DLD Transactions" title="Official Transaction" titleItalic="Data" />
+          <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
 
           <div className="grid sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
             {[
-              { label: "Total Transactions", value: txData.summary.totalTransactions.toLocaleString(), sub: "last 12 months" },
-              { label: "Total Value", value: AED(txData.summary.totalValue, true), sub: "sales volume" },
-              { label: "Avg Transaction", value: AED(txData.summary.avgTransactionValue, true), sub: "per sale" },
-              { label: "Avg Sold Price/sqft", value: txData.summary.avgPpsf > 0 ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—", sub: "actual sold" },
+              { label: t("totalTransactions"), value: txData.summary.totalTransactions.toLocaleString(), sub: t("last12Months") },
+              { label: t("totalValue"), value: AED(txData.summary.totalValue, true), sub: t("salesVolume") },
+              { label: t("avgTransaction"), value: AED(txData.summary.avgTransactionValue, true), sub: t("perSale") },
+              { label: t("avgSoldPriceSqft"), value: txData.summary.avgPpsf > 0 ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—", sub: t("actualSold") },
             ].map((s) => (
               <div key={s.label} className="bg-card border border-border/50 rounded-xl p-4">
                 <p className="text-xs text-muted-foreground mb-1">{s.label}</p>
@@ -185,7 +187,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             {/* Monthly volume */}
             {txData.monthly.length > 0 && (
               <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                <h4 className="font-semibold text-sm text-foreground mb-4">Monthly Transaction Volume</h4>
+                <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
                 <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={txData.monthly}>
@@ -209,7 +211,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             {/* Avg sold price trend */}
             {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
               <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                <h4 className="font-semibold text-sm text-foreground mb-4">Avg Sold Price / sqft Trend</h4>
+                <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
                 <div className="h-[220px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
@@ -228,7 +230,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           {/* Top areas by transactions */}
           {txData.byArea.length > 0 && (
             <div className="mt-4 bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-              <h4 className="font-semibold text-sm text-foreground mb-4">Top Areas by Transaction Volume</h4>
+              <h4 className="font-semibold text-sm text-foreground mb-4">{t("topAreas")}</h4>
               <div className="h-[200px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={txData.byArea.slice(0, 8)} barSize={22}>
@@ -251,8 +253,8 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center">
           <RefreshCw className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-          <p className="text-sm font-medium text-muted-foreground">DLD transaction data is being fetched</p>
-          <p className="text-xs text-muted-foreground/60 mt-1">The system automatically downloads from Dubai Data Portal on startup. Check back shortly.</p>
+          <p className="text-sm font-medium text-muted-foreground">{t("dldFetching")}</p>
+          <p className="text-xs text-muted-foreground/60 mt-1">{t("dldFetchingSub")}</p>
         </motion.div>
       )}
 
@@ -261,7 +263,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
         <>
           {topInvestment.length > 0 && (
             <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <SectionHeader label="Investment" title="Top Investment" titleItalic="Areas" />
+              <SectionHeader label={t("investment")} title={t("topInvestmentTitle")} titleItalic={t("topInvestmentItalic")} />
               <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
                 {topInvestment.map((c, i) => (
                   <button key={c.area} onClick={() => setSelectedArea(selectedArea === c.area ? null : c.area)}
@@ -274,10 +276,10 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                       <ScoreBadge score={c.investmentScore} />
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div><p className="text-muted-foreground">Yield</p><p className="font-bold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : "—"}</p></div>
-                      <div><p className="text-muted-foreground">Price/sqft</p><p className="font-bold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
-                      <div><p className="text-muted-foreground">Avg Sale</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : "—"}</p></div>
-                      <div><p className="text-muted-foreground">Avg Rent/yr</p><p className="font-semibold text-foreground">{c.avgRentPrice > 0 ? AED(c.avgRentPrice, true) : "—"}</p></div>
+                      <div><p className="text-muted-foreground">{t("yield")}</p><p className="font-bold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : "—"}</p></div>
+                      <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-bold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
+                      <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : "—"}</p></div>
+                      <div><p className="text-muted-foreground">{t("avgRentYr")}</p><p className="font-semibold text-foreground">{c.avgRentPrice > 0 ? AED(c.avgRentPrice, true) : "—"}</p></div>
                     </div>
                   </button>
                 ))}
@@ -290,10 +292,10 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
               className="bg-card border border-accent/20 rounded-2xl p-5 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="font-bold text-foreground">{selectedArea} — Investment Profile</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">Relative scores vs. all tracked areas (100 = best)</p>
+                  <h3 className="font-bold text-foreground">{selectedArea} — {t("investmentProfile")}</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t("relativeScores")}</p>
                 </div>
-                <button onClick={() => setSelectedArea(null)} className="text-xs text-muted-foreground hover:text-foreground">Close ✕</button>
+                <button onClick={() => setSelectedArea(null)} className="text-xs text-muted-foreground hover:text-foreground">{t("close")} &times;</button>
               </div>
               <div className="h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -376,7 +378,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             </div>
 
             <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col">
-              <h3 className="font-bold text-sm text-foreground mb-4">Property Mix</h3>
+              <h3 className="font-bold text-sm text-foreground mb-4">{t("propertyMix")}</h3>
               <div className="flex h-4 rounded-full overflow-hidden mb-5">
                 {marketStats.segments.map((s) => <div key={s.name} className="h-full" style={{ width: `${s.value}%`, background: s.color }} />)}
               </div>
@@ -395,27 +397,27 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                 ))}
               </div>
               <div className="mt-5 pt-4 border-t border-border/30 grid grid-cols-2 gap-3">
-                <div className="text-center"><p className="text-xs text-muted-foreground mb-1">Off-Plan</p><p className="text-xl font-bold text-foreground">{marketStats.summary.offPlanCount.toLocaleString()}</p></div>
-                <div className="text-center"><p className="text-xs text-muted-foreground mb-1">Secondary</p><p className="text-xl font-bold text-foreground">{marketStats.summary.secondaryCount.toLocaleString()}</p></div>
+                <div className="text-center"><p className="text-xs text-muted-foreground mb-1">{t("offPlan")}</p><p className="text-xl font-bold text-foreground">{marketStats.summary.offPlanCount.toLocaleString()}</p></div>
+                <div className="text-center"><p className="text-xs text-muted-foreground mb-1">{t("secondary")}</p><p className="text-xl font-bold text-foreground">{marketStats.summary.secondaryCount.toLocaleString()}</p></div>
               </div>
             </div>
           </motion.div>
 
           {/* Community table */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <SectionHeader label="Comparison" title="Community" titleItalic="Comparison" />
+            <SectionHeader label={t("comparison")} title={t("communityTitle")} titleItalic={t("communityItalic")} />
             <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/50 bg-muted/30">
                       {([
-                        { key: "area" as SortKey, label: "Community" },
-                        { key: "avgPricePerSqft" as SortKey, label: "AED/sqft" },
-                        { key: "avgSalePrice" as SortKey, label: "Avg Sale" },
-                        { key: "rentalYield" as SortKey, label: "Yield" },
-                        { key: "totalListings" as SortKey, label: "Listings" },
-                        { key: "investmentScore" as SortKey, label: "Score" },
+                        { key: "area" as SortKey, label: t("colCommunity") },
+                        { key: "avgPricePerSqft" as SortKey, label: t("colAedSqft") },
+                        { key: "avgSalePrice" as SortKey, label: t("colAvgSale") },
+                        { key: "rentalYield" as SortKey, label: t("colYield") },
+                        { key: "totalListings" as SortKey, label: t("colListings") },
+                        { key: "investmentScore" as SortKey, label: t("colScore") },
                       ]).map((col) => (
                         <th key={col.key} onClick={() => handleSort(col.key)}
                           className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none">
@@ -454,11 +456,11 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       {/* ── Currency Converter ───────────────────────────────────── */}
       {rates && Object.keys(rates).length > 0 && (
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-          <SectionHeader label="Exchange Rates" title="Currency" titleItalic="Converter" />
+          <SectionHeader label={t("exchangeRates")} title={t("currencyTitle")} titleItalic={t("currencyItalic")} />
           <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="flex-1">
-                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Amount in AED</label>
+                <label className="text-xs font-medium text-muted-foreground mb-1.5 block">{t("amountInAed")}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">AED</span>
                   <input
@@ -470,7 +472,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                 </div>
               </div>
               <div className="sm:w-48 flex items-end">
-                <p className="text-xs text-muted-foreground pb-1">Rates from European Central Bank via Frankfurter.app · updated every 6h</p>
+                <p className="text-xs text-muted-foreground pb-1">{t("ratesSource")}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -491,7 +493,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                       </div>
                     </div>
                     <p className="text-base sm:text-lg font-bold text-foreground">{formattedConverted}</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">1 AED = {rates[c.code].toFixed(4)} {c.code}</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">{t("aedRate")} {rates[c.code].toFixed(4)} {c.code}</p>
                   </div>
                 );
               })}
@@ -503,7 +505,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       {/* ── Economic Indicators ──────────────────────────────────── */}
       {Object.keys(indicators).length > 0 && (
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <SectionHeader label="World Bank Data" title="UAE Economic" titleItalic="Indicators" />
+          <SectionHeader label={t("worldBankData")} title={t("uaeEconomic")} titleItalic={t("indicatorsItalic")} />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {Object.entries(indicators).map(([label, data]) => {
               const isLarge = data.value >= 1_000_000_000;
@@ -524,7 +526,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             })}
           </div>
           <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
-            <Globe className="h-3 w-3" /> Source: World Bank Open Data · updated weekly
+            <Globe className="h-3 w-3" /> {t("worldBankSource")}
           </p>
         </motion.section>
       )}
@@ -532,7 +534,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       {/* ── News Feed ────────────────────────────────────────────── */}
       {news.length > 0 && (
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-          <SectionHeader label="Market News" title="Real Estate" titleItalic="News" />
+          <SectionHeader label={t("marketNews")} title={t("realEstate")} titleItalic={t("newsItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {news.slice(0, 9).map((item) => (
               <a key={item.url} href={item.url} target="_blank" rel="noopener noreferrer"
@@ -553,9 +555,8 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       )}
 
       <p className="text-[10px] text-muted-foreground text-center pb-4">
-        Listing data from Binayah database · Transaction data from Dubai Land Department via Dubai Data Portal ·
-        Exchange rates via Frankfurter/ECB · Economic data via World Bank Open Data ·{" "}
-        <Link href="/contact" className="underline hover:text-foreground">Contact us</Link> for full reports.
+        {t("dataAttribution")}{" "}
+        <Link href="/contact" className="underline hover:text-foreground">{t("contactUs")}</Link>{" "}{t("forFullReports")}
       </p>
     </div>
   );
@@ -578,5 +579,6 @@ function SectionHeader({ label, title, titleItalic }: { label: string; title: st
 }
 
 function EmptyChart() {
-  return <div className="h-full flex items-center justify-center text-sm text-muted-foreground/60">Not enough data for this view</div>;
+  const t = useTranslations("pulse");
+  return <div className="h-full flex items-center justify-center text-sm text-muted-foreground/60">{t("notEnoughData")}</div>;
 }

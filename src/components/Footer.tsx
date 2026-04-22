@@ -3,9 +3,12 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 const binayahLogo = "/assets/binayah-logo.png";
 
-const Footer = () => (
+const Footer = () => {
+  const t = useTranslations("footer");
+  return (
   <footer className="text-white/70" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       {/* Top border accent */}
@@ -17,7 +20,7 @@ const Footer = () => (
             <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-10 w-auto brightness-0 invert" />
           </div>
           <p className="text-sm leading-relaxed text-white/50 mb-6 max-w-xs">
-            Binayah Real Estate — Dubai's trusted property partner. We connect clients with exceptional homes and investments.
+            {t("taglineExtended")}
           </p>
           <div className="flex gap-3">
             {/* Instagram */}
@@ -44,46 +47,46 @@ const Footer = () => (
         </div>
 
         <div className="md:col-span-2">
-          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">Properties</h4>
+          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">{t("properties")}</h4>
           <ul className="space-y-3 text-sm">
-            <li><Link href="/search?type=buy" className="hover:text-accent transition-colors">Buy</Link></li>
-            <li><Link href="/search?type=rent" className="hover:text-accent transition-colors">Rent</Link></li>
-            <li><Link href="/off-plan" className="hover:text-accent transition-colors">Off Plan</Link></li>
-            <li><Link href="/communities" className="hover:text-accent transition-colors">Communities</Link></li>
-            <li><Link href="/valuation" className="hover:text-accent transition-colors">Valuation</Link></li>
+            <li><Link href="/search?type=buy" className="hover:text-accent transition-colors">{t("links.buy")}</Link></li>
+            <li><Link href="/search?type=rent" className="hover:text-accent transition-colors">{t("links.rent")}</Link></li>
+            <li><Link href="/off-plan" className="hover:text-accent transition-colors">{t("links.offPlan")}</Link></li>
+            <li><Link href="/communities" className="hover:text-accent transition-colors">{t("links.communities")}</Link></li>
+            <li><Link href="/valuation" className="hover:text-accent transition-colors">{t("links.valuation")}</Link></li>
           </ul>
         </div>
 
         <div className="md:col-span-2">
-          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">Company</h4>
+          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">{t("company")}</h4>
           <ul className="space-y-3 text-sm">
-            <li><Link href="/services" className="hover:text-accent transition-colors">Services</Link></li>
-            <li><Link href="/about" className="hover:text-accent transition-colors">About Us</Link></li>
-            <li><Link href="/news" className="hover:text-accent transition-colors">News</Link></li>
-            <li><Link href="/contact" className="hover:text-accent transition-colors">Contact</Link></li>
+            <li><Link href="/services" className="hover:text-accent transition-colors">{t("links.services")}</Link></li>
+            <li><Link href="/about" className="hover:text-accent transition-colors">{t("links.about")}</Link></li>
+            <li><Link href="/news" className="hover:text-accent transition-colors">{t("links.news")}</Link></li>
+            <li><Link href="/contact" className="hover:text-accent transition-colors">{t("links.contact")}</Link></li>
           </ul>
         </div>
 
         <div className="md:col-span-4">
-          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">Contact Us</h4>
+          <h4 className="font-semibold text-white mb-5 text-xs uppercase tracking-[0.2em]">{t("contactUs")}</h4>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Phone className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="tel:+971549988811" className="hover:text-accent transition-colors">+971 54 998 8811</a>
+              <a href="tel:+971549988811" className="hover:text-accent transition-colors">{t("phoneNumber")}</a>
             </li>
             <li className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Mail className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="mailto:info@binayah.com" className="hover:text-accent transition-colors">info@binayah.com</a>
+              <a href="mailto:info@binayah.com" className="hover:text-accent transition-colors">{t("email")}</a>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <MapPin className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="https://maps.google.com/?q=Business+Bay+Marasi+Drive+Dubai+UAE" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Business Bay, Marasi Drive, Dubai, UAE</a>
+              <a href="https://maps.google.com/?q=Business+Bay+Marasi+Drive+Dubai+UAE" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">{t("address")}</a>
             </li>
           </ul>
         </div>
@@ -97,8 +100,8 @@ const Footer = () => (
               <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <div>
-              <p className="text-[10px] text-white/30 uppercase tracking-wider">RERA Registered</p>
-              <p className="text-xs text-white/60 font-medium">ORN: 1040</p>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">{t("reraRegistered")}</p>
+              <p className="text-xs text-white/60 font-medium">{t("ornNumber")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -106,8 +109,8 @@ const Footer = () => (
               <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
             </div>
             <div>
-              <p className="text-[10px] text-white/30 uppercase tracking-wider">DLD Certified</p>
-              <p className="text-xs text-white/60 font-medium">Dubai Land Department</p>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">{t("dldCertified")}</p>
+              <p className="text-xs text-white/60 font-medium">{t("dubaiLandDept")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -115,8 +118,8 @@ const Footer = () => (
               <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
             <div>
-              <p className="text-[10px] text-white/30 uppercase tracking-wider">Est. 2010</p>
-              <p className="text-xs text-white/60 font-medium">15+ Years in Dubai</p>
+              <p className="text-[10px] text-white/30 uppercase tracking-wider">{t("established")}</p>
+              <p className="text-xs text-white/60 font-medium">{t("yearsInDubai")}</p>
             </div>
           </div>
         </div>
@@ -124,10 +127,10 @@ const Footer = () => (
 
       {/* Extra bottom padding on mobile to clear FABs */}
       <div className="border-t border-white/8 py-6 pb-20 sm:pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-white/30">© 2026 Binayah Properties. All rights reserved.</p>
+        <p className="text-xs text-white/30">{t("copyright")} {t("rights")}</p>
         <div className="flex items-center gap-6 text-xs text-white/30">
-          <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-white/60 transition-colors">Terms of Service</a>
+          <a href="#" className="hover:text-white/60 transition-colors">{t("privacyPolicy")}</a>
+          <a href="#" className="hover:text-white/60 transition-colors">{t("termsOfService")}</a>
           <a href="/design-guidelines" className="hover:text-white/60 transition-colors" title="Design Guidelines">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </a>
@@ -135,6 +138,7 @@ const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default Footer;

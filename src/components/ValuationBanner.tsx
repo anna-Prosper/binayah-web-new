@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Target, TrendingUp, Sparkles, ArrowRight, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const stats = [
   { value: "48h", label: "Average turnaround" },
@@ -12,6 +13,7 @@ const stats = [
 
 export default function ValuationBanner() {
   const router = useRouter();
+  const t = useTranslations("valuationBanner");
 
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
@@ -46,20 +48,20 @@ export default function ValuationBanner() {
                 <Target className="h-4 w-4 text-white" />
               </div>
               <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/60">
-                AI Property Valuation
+                {t("label")}
               </p>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.1] mb-5">
-              Know your property's{" "}
+              {t("titleStart")}{" "}
               <span style={{ background: "linear-gradient(to right, #D4A847, #F0C960)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                true value
+                {t("titleGold")}
               </span>
-              {" "}in minutes.
+              {" "}{t("titleEnd")}
             </h2>
 
             <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg">
-              Our AI analyses recent sales, active listings, and market trends to give you a data-backed valuation — not a guess.
+              {t("subtitle")}
             </p>
 
             {/* Stats row */}
@@ -82,7 +84,7 @@ export default function ValuationBanner() {
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.4)" }}
               >
                 <Sparkles className="h-4 w-4" />
-                Get Free Valuation
+                {t("getValuation")}
                 <ArrowRight className="h-4 w-4" />
               </motion.button>
 
@@ -93,7 +95,7 @@ export default function ValuationBanner() {
                 className="inline-flex items-center gap-2.5 px-7 py-4 rounded-full font-bold text-white/80 text-sm border border-white/20 hover:border-white/40 hover:text-white transition-all"
               >
                 <FileText className="h-4 w-4" />
-                Upload Title Deed
+                {t("uploadDeed")}
               </motion.button>
             </div>
           </motion.div>

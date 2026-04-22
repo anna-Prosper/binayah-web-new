@@ -3,16 +3,17 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Brain, TrendingUp, BarChart3, Zap, Activity } from "lucide-react";
-
-const pulseStats = [
-  { icon: Brain, label: "AI Models Active", value: "3", suffix: "" },
-  { icon: BarChart3, label: "Listings Analyzed", value: "30,847", suffix: "+" },
-  { icon: TrendingUp, label: "Market Signals", value: "1,245", suffix: "" },
-  { icon: Activity, label: "Price Updates", value: "Live", suffix: "" },
-  { icon: Zap, label: "Match Accuracy", value: "96", suffix: "%" },
-];
+import { useTranslations } from "next-intl";
 
 const AIPulseBanner = () => {
+  const t = useTranslations("home.sections.aiBanner");
+  const pulseStats = [
+    { icon: Brain, label: t("aiModels"), value: "3", suffix: "" },
+    { icon: BarChart3, label: t("listingsAnalyzed"), value: "30,847", suffix: "+" },
+    { icon: TrendingUp, label: t("marketSignals"), value: "1,245", suffix: "" },
+    { icon: Activity, label: t("priceUpdates"), value: t("live"), suffix: "" },
+    { icon: Zap, label: t("matchAccuracy"), value: "96", suffix: "%" },
+  ];
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const AIPulseBanner = () => {
       setActiveIndex((prev) => (prev + 1) % pulseStats.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [pulseStats.length]);
 
   return (
     <section className="relative bg-foreground overflow-hidden hidden sm:block">
@@ -49,8 +50,8 @@ const AIPulseBanner = () => {
               />
             </div>
             <div>
-              <p className="text-[11px] font-bold tracking-wider text-accent uppercase">AI-Powered</p>
-              <p className="text-[10px] text-background/40">Real-time analysis</p>
+              <p className="text-[11px] font-bold tracking-wider text-accent uppercase">{t("label")}</p>
+              <p className="text-[10px] text-background/40">{t("sublabel")}</p>
             </div>
           </div>
 
@@ -82,7 +83,7 @@ const AIPulseBanner = () => {
               animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            <span className="text-[11px] font-semibold text-background/50 uppercase tracking-wider">Live</span>
+            <span className="text-[11px] font-semibold text-background/50 uppercase tracking-wider">{t("live")}</span>
           </div>
         </div>
       </div>
@@ -100,7 +101,7 @@ const AIPulseBanner = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <Activity className="h-3.5 w-3.5 text-background/40" />
-            <span className="text-[11px] font-bold text-background/50">Live</span>
+            <span className="text-[11px] font-bold text-background/50">{t("live")}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Zap className="h-3.5 w-3.5 text-accent" />

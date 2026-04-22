@@ -5,6 +5,7 @@ import { Building, CalendarDays, MapPin, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatProjectPrice } from "@/lib/formatPrice";
+import { useTranslations } from "next-intl";
 
 interface Project {
   _id: string;
@@ -21,17 +22,18 @@ interface Project {
 }
 
 export default function OffPlanSectionClient({ projects }: { projects: Project[] }) {
+  const t = useTranslations("home.sections.offPlan");
   return (
     <section id="offplan" className="py-24 bg-card scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
-            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">New Launches</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">Off-Plan <span className="italic font-light">Projects</span></h2>
+            <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("newLaunches")}</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">{t("offPlan")} <span className="italic font-light">{t("projectsItalic")}</span></h2>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
-            View All <ArrowUpRight className="h-4 w-4" />
+            {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
 

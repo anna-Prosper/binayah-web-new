@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { FAQJsonLd } from "./JsonLd";
+import { useTranslations } from "next-intl";
 
 const faqs = [
   {
@@ -39,6 +40,7 @@ const faqs = [
 ];
 
 export default function FAQSection() {
+  const t = useTranslations("faq");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -54,10 +56,10 @@ export default function FAQSection() {
             className="font-semibold tracking-[0.4em] uppercase text-xs mb-4"
             style={{ color: "#D4A847" }}
           >
-            FAQ
+            {t("label")}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-            Frequently Asked <span className="italic font-light">Questions</span>
+            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
           </h2>
         </div>
 

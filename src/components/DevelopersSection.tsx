@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building2 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const TOP_DEVELOPERS = [
   { name: "Emaar Properties", slug: "emaar-properties" },
@@ -20,6 +21,7 @@ const TOP_DEVELOPERS = [
 ];
 
 const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
+  const t = useTranslations("developers");
   return (
     <section id="developers" className="py-14 sm:py-24 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -37,17 +39,17 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
               className="h-[2px] bg-accent mb-6"
             />
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
-              Trusted Partners
+              {t("heroLabel")}
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Top <span className="italic font-light">Developers</span>
+              {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
             </h2>
           </div>
           <Link
             href="/developers"
             className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all"
           >
-            View All Developers <ArrowUpRight className="h-4 w-4" />
+            {t("viewDeveloper")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
 

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
 import { normalizePropertyType, requiresPropertyNameForPropertyType, valuationPropertyTypeOptions, } from "@/lib/property-types";
@@ -1199,6 +1200,7 @@ function buildShareUrlForValuationId(valuationId) {
 }
 const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = defaultResolveApiUrl }) => {
     var _a, _b, _c, _d, _e, _f;
+    const tv = useTranslations("valuation");
     const [step, setStep] = useState("form");
     const [form, setForm] = useState(INITIAL_FORM_STATE);
     const [result, setResult] = useState(null);
@@ -1925,21 +1927,21 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <Target className="h-4 w-4 text-white"/>
                     </div>
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                      Owner-Ready Valuation
+                      {tv("ownerReadyValuation")}
                     </p>
                   </div>
                   <h1 className="mb-6 text-3xl font-bold leading-[1.08] sm:text-5xl lg:text-6xl">
-                    Understand your property&apos;s{" "}
+                    {tv("heroTitle")}{" "}
                     <span style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                      value
-                    </span>{" "}in minutes.
+                      {tv("heroTitleHighlight")}
+                    </span>{" "}{tv("heroTitleSuffix")}
                   </h1>
                   <p className="mb-6 max-w-xl text-base text-[#66706d] sm:text-lg">
-                    A refined estimate based on recent transactions, active listings, and comparable homes in the same market.
+                    {tv("heroSubtitle")}
                   </p>
                   <div className="flex flex-wrap gap-2.5">
-                    {["Recent sales", "Live asking prices", "Expert guidance"].map((t) => (<span key={t} className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-[#10231e] rounded-xl text-xs font-bold border border-[rgba(227,221,207,0.5)] shadow-sm hover:border-[rgba(11,61,46,0.3)] hover:shadow-md transition-all duration-300">
-                        {t}
+                    {[tv("recentSales"), tv("liveAskingPrices"), tv("expertGuidance")].map((chip) => (<span key={chip} className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-[#10231e] rounded-xl text-xs font-bold border border-[rgba(227,221,207,0.5)] shadow-sm hover:border-[rgba(11,61,46,0.3)] hover:shadow-md transition-all duration-300">
+                        {chip}
                       </span>))}
                   </div>
                 </div>
@@ -1949,13 +1951,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div className="flex items-center gap-2.5">
                       <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}/>
                       <p className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                        What You Get
+                        {tv("whatYouGet")}
                       </p>
                     </div>
                     {[
-                { icon: TrendingUp, title: "Sharper fair value range", desc: "Built from same-building sales, nearby comparables, and current asking prices." },
-                { icon: Target, title: "Actionable pricing guidance", desc: "See fair value, suggested list price, and quick-sale range in one snapshot." },
-                { icon: Sparkles, title: "Expert follow-up", desc: "Our valuation team reviews your report and reaches out with tailored advice." },
+                { icon: TrendingUp, title: tv("wyg1Title"), desc: tv("wyg1Desc") },
+                { icon: Target, title: tv("wyg2Title"), desc: tv("wyg2Desc") },
+                { icon: Sparkles, title: tv("wyg3Title"), desc: tv("wyg3Desc") },
             ].map((item) => (<div key={item.title} className="flex gap-3">
                         <div className="w-8 h-8 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <item.icon className="h-4 w-4 text-[#0B3D2E]"/>
@@ -1986,8 +1988,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <Building2 className="h-4 w-4 text-white"/>
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold sm:text-3xl">Tell us about the property</h2>
-                    <p className="text-xs text-[#66706d] mt-0.5">All the core details in one screen. The more precise, the tighter the estimate.</p>
+                    <h2 className="text-xl font-bold sm:text-3xl">{tv("tellUsAbout")}</h2>
+                    <p className="text-xs text-[#66706d] mt-0.5">{tv("formSubtitle")}</p>
                   </div>
                 </div>
                 <div className="h-px bg-[rgba(227,221,207,0.5)] my-6"/>
@@ -2014,7 +2016,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             })}
                       </div>
                       <p className="hidden text-[11px] font-medium uppercase tracking-[0.16em] text-[rgba(102,112,109,0.7)] sm:block">
-                        Search mode
+                        {tv("searchMode")}
                       </p>
                     </div>
                     <div className="relative">
@@ -2041,13 +2043,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     setShowSmartSuggestions(false);
                     clearSmartAutofill();
                 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-medium text-[#66706d] transition-colors hover:text-[#10231e] sm:right-4 sm:text-xs">
-                          Clear
+                          {tv("clear")}
                         </button>)}
 
                       {showSmartSuggestions && smartQuery.trim().length >= 2 && (<div ref={smartSuggestionsRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-2xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden">
                           <div className="border-b border-[rgba(227,221,207,0.4)] bg-[rgba(244,239,231,0.2)] px-4 py-2">
                             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(102,112,109,0.7)]">
-                              Smart matches
+                              {tv("smartMatches")}
                             </p>
                           </div>
 
@@ -2078,7 +2080,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                                         {suggestion.kind === "ai" ? "AI" : suggestion.kind === "detected" ? "Detected" : "Live"}
                                       </span>
                                       {suggestion.needsConfirmation && (<span className="rounded-full bg-[#f4efe7] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#66706d]">
-                                          Review
+                                          {tv("review")}
                                         </span>)}
                                       {typeof suggestion.confidence === "number" && suggestion.kind === "ai" && !suggestion.needsConfirmation && (<span className="rounded-full bg-[#0B3D2E]/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0B3D2E]">
                                           {Math.round(suggestion.confidence * 100)}%
@@ -2092,12 +2094,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                                 </button>))}
                               {smartAIParseLoading && (<div className="flex items-center gap-2 border-t border-[rgba(227,221,207,0.3)] px-4 py-2.5 text-xs text-[#66706d]">
                                   <RefreshCw className="h-3.5 w-3.5 animate-spin"/>
-                                  AI is refining the match…
+                                  {tv("aiRefining")}
                                 </div>)}
                             </div>) : (<div className="px-4 py-3 text-sm text-[#66706d]">
                               {smartPlacesLoading || smartAIParseLoading
-                        ? "Looking up buildings and communities…"
-                        : "No confident match yet. Keep typing or fill the fields below."}
+                        ? tv("lookingUp")
+                        : tv("noMatch")}
                             </div>)}
                         </div>)}
                     </div>
@@ -2115,7 +2117,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   {/* Or divider + deed upload */}
                   <div className="flex items-center gap-4">
                     <div className="flex-1 h-px bg-[rgba(227,221,207,0.5)]"/>
-                    <span className="text-xs font-semibold text-[#66706d] uppercase tracking-wider">or</span>
+                    <span className="text-xs font-semibold text-[#66706d] uppercase tracking-wider">{tv("or")}</span>
                     <div className="flex-1 h-px bg-[rgba(227,221,207,0.5)]"/>
                   </div>
 
@@ -2131,10 +2133,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     {!deedFile ? (<button type="button" onClick={() => { var _a; return (_a = deedInputRef.current) === null || _a === void 0 ? void 0 : _a.click(); }} className="group flex w-full flex-col items-start gap-3 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 px-5 py-4 text-left text-[#66706d] transition-all duration-200 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 hover:text-[#0B3D2E] sm:flex-row sm:items-center sm:justify-center sm:px-6">
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform"/>
                         <div className="text-left">
-                          <p className="text-sm font-semibold">Upload title deed</p>
-                          <p className="text-xs opacity-70">PDF, PNG, JPG, WEBP or GIF — we&apos;ll extract the property details automatically</p>
+                          <p className="text-sm font-semibold">{tv("uploadTitleDeed")}</p>
+                          <p className="text-xs opacity-70">{tv("uploadDesc")}</p>
                         </div>
-                        <span className="rounded-full bg-[#0B3D2E]/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#0B3D2E] sm:ml-auto">Optional</span>
+                        <span className="rounded-full bg-[#0B3D2E]/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#0B3D2E] sm:ml-auto">{tv("optional")}</span>
                       </button>) : (<div className={`flex flex-col gap-3 rounded-2xl border px-4 py-4 transition-all duration-300 sm:flex-row sm:items-center sm:px-5 ${deedParsing ? "border-[#D4A847]/30 bg-[#D4A847]/5" :
                     deedParsed ? "border-[#0B3D2E]/25 bg-[#0B3D2E]/5" :
                         "border-[#e3ddcf] bg-[rgba(244,239,231,0.3)]"}`}>
@@ -2165,8 +2167,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     {/* City */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-                        City
-                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                        {tv("city")}
+                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
                       </label>
                       <div className="relative">
                         <MapPin className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#66706d] flex-shrink-0"/>
@@ -2194,8 +2196,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     {/* Area / Community — searchable */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-                        Area / Community
-                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+                        {tv("areaCommunity")}
+                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
                       </label>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
@@ -2217,7 +2219,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         }}>
                                   <MapPin className="h-3.5 w-3.5 text-[#66706d] flex-shrink-0"/>
                                   <span>{a.area}</span>
-                                  <span className="ml-auto text-[10px] text-[rgba(102,112,109,0.6)]">{a.buildings.length} buildings</span>
+                                  <span className="ml-auto text-[10px] text-[rgba(102,112,109,0.6)]">{a.buildings.length} {tv("buildings")}</span>
                                 </button>))}
                             </div>) : null;
             })()}
@@ -2230,8 +2232,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     {/* Building + Unit — DLD buildings index live search */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-                        Building / Unit
-                        {requiresUnitFieldForForm(form.type) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>}
+                        {tv("buildingUnit")}
+                        {requiresUnitFieldForForm(form.type) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>}
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
@@ -2250,7 +2252,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         {/* DLD buildings index results — shown when available */}
                         {showPlaces && placesResults.length > 0 && (<div ref={placesRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-64 overflow-y-auto">
                             <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[rgba(102,112,109,0.6)] bg-[rgba(244,239,231,0.3)] border-b border-[rgba(227,221,207,0.3)]">
-                              Live results
+                              {tv("liveResults")}
                             </p>
                             {placesResults.map((p) => (<button key={p.placeId} type="button" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
                         var _a;
@@ -2286,7 +2288,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     : pool.slice(0, 7);
                 return matches.length > 0 ? (<div ref={buildingSuggestionsRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-60 overflow-y-auto">
                               <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[rgba(102,112,109,0.6)] bg-[rgba(244,239,231,0.3)] border-b border-[rgba(227,221,207,0.3)]">
-                                Suggestions
+                                {tv("suggestions")}
                               </p>
                               {matches.map((b) => (<button key={b} type="button" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-center gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
                             var _a;
@@ -2308,10 +2310,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                                     {/* Row 2 — Type / Beds / Size */}
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Type (optional)</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">{tv("typeOptional")}</label>
                       <div className="relative">
                         <select value={form.type} onChange={(event) => updateField("type", event.target.value)} className="h-12 w-full appearance-none rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 pr-10 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40">
-                          <option value="">Select if known</option>
+                          <option value="">{tv("selectIfKnown")}</option>
                           {valuationPropertyTypeOptions.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
                         </select>
                         <svg aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#66706d]" fill="none" viewBox="0 0 12 8">
@@ -2320,11 +2322,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Beds</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">{tv("beds")}</label>
                       <BedroomPicker maids={form.maids} onChange={(value) => updateField("beds", value)} onMaidsChange={(value) => updateField("maids", value)} value={form.beds}/>
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">Size</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">{tv("size")}</label>
                       <SizePicker onChange={(value) => updateField("size", value)} value={form.size}/>
                     </div>
                   </div>
@@ -2334,10 +2336,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   <div>
                     <button type="submit" className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] sm:w-auto" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
                       <Sparkles className="h-4 w-4"/>
-                      Get Quick Valuation
+                      {tv("getValuation")}
                     </button>
                     <p className="text-xs text-[#66706d] mt-3">
-                      Views, upgrades, floor, vacancy, furnishings, and condition help refine the estimate.
+                      {tv("formDisclaimer")}
                     </p>
                   </div>
                 </form>
@@ -2348,23 +2350,23 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         {/* ── Processing ── */}
         {step === "processing" && (<motion.div key="processing" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             {loadingSavedReport ? (<div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
-                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Saved Report</p>
-                <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Loading valuation link</h2>
-                <p className="text-[#66706d]">Reopening the saved report from the shareable link.</p>
+                <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>{tv("savedReport")}</p>
+                <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{tv("loadingLink")}</h2>
+                <p className="text-[#66706d]">{tv("reopeningReport")}</p>
                 <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-white px-4 py-2 text-sm font-medium text-[#0B3D2E]">
                   <RefreshCw className="h-4 w-4 animate-spin"/>
-                  Fetching report details…
+                  {tv("fetchingReport")}
                 </div>
               </div>) : (<div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
-              <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>Valuation Snapshot</p>
+              <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>{tv("valuationSnapshot")}</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
-              <p className="text-[#66706d] mb-3">Key pricing guidance first, then comparable sales and market context.</p>
+              <p className="text-[#66706d] mb-3">{tv("processingSubtitle")}</p>
               <span className="inline-block px-3 py-1 rounded-full border border-[#e3ddcf] text-sm font-medium">{form.city}</span>
 
               {/* Retry notice */}
               {retryCount > 0 && (<div className="mt-4 flex items-center gap-2 text-sm text-[#D4A847]">
                   <RefreshCw className="h-4 w-4 animate-spin"/>
-                  Retrying… attempt {retryCount + 1} of {MAX_RETRIES + 1}
+                  {tv("retrying")} {retryCount + 1} / {MAX_RETRIES + 1}
                 </div>)}
 
               <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-center">
@@ -2372,7 +2374,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   <div className="h-full rounded-full bg-[linear-gradient(90deg,#0B3D2E_0%,#1A7A5A_100%)] transition-all duration-700" style={{ width: processingProgress }}/>
                 </div>
                 <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B3D2E]/65">
-                  Step {currentProcessingStep} of {processingSteps.length}
+                  {tv("step")} {currentProcessingStep} / {processingSteps.length}
                 </span>
               </div>
 
@@ -2396,7 +2398,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
                         <div className="min-w-0 flex-1">
                           <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[rgba(102,112,109,0.7)]">
-                            Phase {i + 1}
+                            {tv("phase")} {i + 1}
                           </p>
                           <h3 className="mt-2 text-xl font-bold leading-tight text-[#10231e]">
                             {ps.label}
@@ -2428,7 +2430,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             {useDeedResult && (<div className="mb-4 flex items-start gap-3 rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 py-3.5 sm:px-6">
                 <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0"/>
                 <p className="text-sm text-[#B8922F] font-medium">
-                  <strong>Demo result</strong> — this is simulated data from the deed upload. Use the search or fill the form for a live AI valuation.
+                  <strong>{tv("demoResult")}</strong> — {tv("demoResultDesc")}
                 </p>
               </div>)}
 
@@ -2440,22 +2442,22 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <Target className="h-4.5 w-4.5 text-white"/>
                   </div>
                   <p className="text-[0.78rem] font-bold uppercase tracking-[0.28em] text-[#B8922F]">
-                    Valuation Snapshot
+                    {tv("valuationSnapshot")}
                   </p>
                 </div>
                 <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                   {result.leadId ? (<button onClick={copyShareLink} className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-white px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.03] sm:w-auto" type="button">
                       {linkCopied ? <Check className="h-4 w-4"/> : <Link2 className="h-4 w-4"/>}
-                      {linkCopied ? "Link Copied" : "Copy Link"}
+                      {linkCopied ? tv("linkCopied") : tv("copyLink")}
                     </button>) : null}
                   <button onClick={resetForNewSearch} className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/12 bg-[#0B3D2E]/[0.03] px-4 text-[0.82rem] font-semibold text-[#0B3D2E] transition-all duration-300 hover:border-[#0B3D2E]/22 hover:bg-[#0B3D2E]/[0.06] sm:w-auto" type="button">
                     <ArrowLeft className="h-4 w-4"/>
-                    New Search
+                    {tv("newSearch")}
                   </button>
                 </div>
               </div>
               <h2 className="mb-2 text-2xl font-bold sm:text-4xl">{result.community}, {result.city}, {result.country}</h2>
-              <p className="text-[#66706d] mb-4">Key pricing guidance first, then comparable sales and market context.</p>
+              <p className="text-[#66706d] mb-4">{tv("processingSubtitle")}</p>
               {deliveryNotice && (<div className={`mb-4 flex items-start gap-3 rounded-2xl border px-4 py-3.5 sm:px-5 ${deliveryNotice.tone === "success"
                     ? "border-[#0B3D2E]/18 bg-[#0B3D2E]/[0.045] text-[#0B3D2E]"
                     : "border-[#D4A847]/30 bg-[#D4A847]/8 text-[#8a6920]"}`}>
@@ -2491,10 +2493,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 42%), radial-gradient(circle at bottom left, rgba(255,255,255,0.12), transparent 46%)" }}/>
                     <div className="relative">
                       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/75 font-bold">Fair Value</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/75 font-bold">{tv("fairValue")}</p>
                         {showLockedFairValuePreview && (<span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
                             <Lock className="h-3 w-3"/>
-                            Exact range ready
+                            {tv("exactRangeReady")}
                           </span>)}
                       </div>
 
@@ -2503,7 +2505,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                             <HiddenRangeValue currency={result.currency}/>
                           </div>
                           <p className="max-w-xl text-sm leading-relaxed text-white/90">
-                            Comparable-backed fair value is prepared. Unlock the report to reveal the exact range and the reasoning behind it.
+                            {tv("fairValuePrepared")}
                           </p>
                         </div>) : (<>
                           <p className={`text-2xl sm:text-3xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
@@ -2515,7 +2517,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   </div>
                 </div>
                 <div className="rounded-2xl border border-[rgba(227,221,207,0.5)] bg-white p-5 border-l-[3px] border-l-[#0B3D2E] shadow-sm sm:p-8">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-2">Confidence</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-2">{tv("confidence")}</p>
                   <div className="flex items-center gap-2 mb-3">
                     <AlertTriangle className={`h-5 w-5 ${result.confidence === "High" ? "text-[#0B3D2E]"
                 : result.confidence === "Medium" ? "text-[#D4A847]"
@@ -2534,7 +2536,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <div {...lockedPriceComparisonCardProps} className={`mb-4 rounded-2xl border border-[rgba(227,221,207,0.5)] bg-white p-5 shadow-sm sm:p-8 ${lockedPriceComparisonCardProps.className || ""}`}>
                 <div className="flex items-center gap-2.5 mb-6">
                   <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#D4A847] to-[#B8922F]"/>
-                  <p className="text-sm font-semibold text-[#10231e]">Price Comparison</p>
+                  <p className="text-sm font-semibold text-[#10231e]">{tv("priceComparison")}</p>
                   {!unlocked && (<button aria-label="Unlock the full report" className="ml-auto inline-flex h-7 w-7 items-center justify-center rounded-full text-[#66706d] transition-colors hover:bg-[#f4efe7]/50 hover:text-[#10231e]" onClick={scrollToUnlockSection} type="button">
                       <Lock className="h-3.5 w-3.5"/>
                     </button>)}
@@ -2559,12 +2561,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div className="w-7 h-7 rounded-lg bg-[#0B3D2E]/10 flex items-center justify-center">
                       <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]"/>
                     </div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d]">Suggested List Price</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d]">{tv("suggestedListPrice")}</p>
                   </div>
                   {!unlocked && result.accessState === "preview" ? (<div className="grid gap-1.5">
                       <MaskedInlineRange currency={result.currency}/>
                       <p className="text-xs text-[rgba(102,112,109,0.8)]">
-                        Exact range unlocks with the full report.
+                        {tv("exactRangeUnlocks")}
                       </p>
                     </div>) : (<p className={`text-xl font-bold transition-all duration-500 select-none ${!unlocked ? "blur-md" : ""}`}>
                       {fmt(result.suggestedListLow, result.currency)} – {fmt(result.suggestedListHigh, result.currency)}
@@ -2575,7 +2577,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div className="w-7 h-7 rounded-lg bg-[#D4A847]/10 flex items-center justify-center">
                       <TrendingDown className="h-3.5 w-3.5 text-[#D4A847]"/>
                     </div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d]">Quick Sale Range</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d]">{tv("quickSaleRange")}</p>
                   </div>
                   <p className="text-xl font-bold">
                     {fmt(result.quickSaleLow, result.currency)} – {fmt(result.quickSaleHigh, result.currency)}
@@ -2598,10 +2600,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md">
                   <Building2 className="h-4 w-4 text-white"/>
                 </div>
-                <h3 className="text-xl font-bold">Comparable evidence</h3>
+                <h3 className="text-xl font-bold">{tv("comparableEvidence")}</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
-              <p className="mb-6 text-sm text-[#66706d] sm:ml-[46px]">Strongest sales and active listings used in the estimate</p>
+              <p className="mb-6 text-sm text-[#66706d] sm:ml-[46px]">{tv("comparableDesc")}</p>
               <div className="grid gap-3 md:hidden">
                 {result.comparables.map((c, i) => {
                 const isLockedPreviewRow = !unlocked && c.visibility === "locked";
@@ -2609,7 +2611,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <div className="mb-3 flex items-start justify-between gap-3">
                         <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"}`}>{c.type}</span>
                         <div className="text-right">
-                          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#66706d]">Price</p>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#66706d]">{tv("price")}</p>
                           <div className="mt-1 text-sm font-bold transition-all duration-500 select-none">
                             {isLockedPreviewRow ? (<MaskedComparablePrice currency={result.currency}/>) : (fmt(c.price, result.currency))}
                           </div>
@@ -2636,11 +2638,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   </colgroup>
                   <thead>
                     <tr className="text-left text-[10px] uppercase tracking-[0.2em] text-[#66706d] border-b border-[#e3ddcf]">
-                      <th className="pb-3 pr-4">Type</th>
-                      <th className="pb-3 pr-4">Size</th>
-                      <th className="pb-3 pr-4 whitespace-nowrap">Date</th>
-                      <th className="pb-3 pr-4 whitespace-nowrap">Price</th>
-                      <th className="pb-3">Why It Matters</th>
+                      <th className="pb-3 pr-4">{tv("type")}</th>
+                      <th className="pb-3 pr-4">{tv("size")}</th>
+                      <th className="pb-3 pr-4 whitespace-nowrap">{tv("date")}</th>
+                      <th className="pb-3 pr-4 whitespace-nowrap">{tv("price")}</th>
+                      <th className="pb-3">{tv("whyItMatters")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2730,7 +2732,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             <div {...lockedMarketReadCardProps} className={`mb-4 rounded-2xl border border-[rgba(227,221,207,0.5)] bg-white p-5 shadow-sm sm:p-8 ${lockedMarketReadCardProps.className || ""}`}>
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-1 h-6 rounded-full" style={{ background: "linear-gradient(to bottom, #D4A847, #B8922F)" }}/>
-                <h3 className="text-xl font-bold">Market read</h3>
+                <h3 className="text-xl font-bold">{tv("marketRead")}</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className={`text-[#66706d] leading-relaxed transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
@@ -2744,7 +2746,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <div className="w-9 h-9 rounded-xl bg-[#0B3D2E]/10 flex items-center justify-center">
                   <Sparkles className="h-4 w-4 text-[#0B3D2E]"/>
                 </div>
-                <h3 className="text-xl font-bold">Recommended strategy</h3>
+                <h3 className="text-xl font-bold">{tv("recommendedStrategy")}</h3>
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className={`text-[#66706d] leading-relaxed mb-4 transition-all duration-500 select-none ${!unlocked ? "blur-sm" : ""}`}>
@@ -2764,10 +2766,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <div className="w-9 h-9 rounded-xl bg-[#D4A847]/10 flex items-center justify-center">
                   <AlertTriangle className="h-4 w-4 text-[#D4A847]"/>
                 </div>
-                <h3 className="text-xl font-bold">What can move this estimate</h3>
+                <h3 className="text-xl font-bold">{tv("movingFactors")}</h3>
                 {result.movingFactorsLocked ? <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/> : null}
               </div>
-              <p className="mb-4 text-sm text-[#66706d] sm:ml-[46px]">Common reasons real-world pricing can shift</p>
+              <p className="mb-4 text-sm text-[#66706d] sm:ml-[46px]">{tv("movingFactorsDesc")}</p>
               <ul className="space-y-2.5">
                 {result.movingFactors.map((f, i) => (<li key={i} className={`flex items-start gap-2.5 text-[#66706d] text-sm transition-all duration-500 select-none ${result.movingFactorsLocked ? "blur-sm" : ""}`}>
                     <span className="h-2 w-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}/>
@@ -2784,18 +2786,18 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.3)" }}>
                   <Target className="h-6 w-6 text-white"/>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-[#10231e]">Want a detailed appraisal?</h3>
+                <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-[#10231e]">{tv("wantAppraisal")}</h3>
                 <p className="mx-auto mb-8 max-w-lg leading-relaxed text-[#66706d] sm:mb-10">
-                  Our RERA-certified valuation experts can provide a formal appraisal with an on-site inspection. Get a precise figure you can use for selling, financing, or legal purposes.
+                  {tv("appraisalDesc")}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a href="https://wa.me/971549988811?text=Hi%2C%20I%20just%20used%20the%20online%20valuation%20tool%20and%20would%20like%20a%20detailed%20appraisal." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #25D366, #1DA851)", boxShadow: "0 8px 24px -4px rgba(37,211,102,0.3)" }}>
                     <MessageCircle className="h-5 w-5"/>
-                    WhatsApp Inquiry
+                    {tv("whatsappInquiry")}
                   </a>
                   <a href="tel:+971549988811" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.3)" }}>
                     <PhoneCall className="h-5 w-5"/>
-                    Call Now
+                    {tv("callNow")}
                   </a>
                 </div>
               </div>
@@ -3164,7 +3166,7 @@ const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
-                Bedrooms
+                {tv("bedrooms")}
               </span>
               <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
                 {BEDROOM_OPTIONS.map((option) => {
@@ -3179,7 +3181,7 @@ const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
             </div>
             <div className="grid gap-2 border-t border-[rgba(227,221,207,0.6)] pt-3">
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
-                Maid&apos;s room
+                {tv("maidsRoom")}
               </span>
               <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 {MAIDS_OPTIONS.map((option) => {
@@ -3270,7 +3272,7 @@ const SizePicker = ({ onChange, value, }) => {
             </div>
             <div className="grid gap-2">
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
-                Presets
+                {tv("presets")}
               </span>
               <div className="grid max-h-[216px] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:flex sm:flex-wrap">
                 {SIZE_OPTIONS.map((option) => {
@@ -3339,23 +3341,23 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
           <Lock className="h-4.5 w-4.5 text-white"/>
         </div>
         <div>
-          <h3 className="font-bold text-[#10231e] text-lg leading-tight">Unlock the full report</h3>
-          <p className="text-xs text-[#66706d] mt-0.5">Unlock on the web and send the PDF to email or WhatsApp</p>
+          <h3 className="font-bold text-[#10231e] text-lg leading-tight">{tv("unlockTitle")}</h3>
+          <p className="text-xs text-[#66706d] mt-0.5">{tv("unlockSubtitle")}</p>
         </div>
       </div>
 
       <p className="text-sm text-[#66706d] mb-6 leading-relaxed">
-        Enter your name and at least one contact. We&apos;ll unlock the report here instantly and send the same PDF report to the email address and/or WhatsApp number you provide.
+        {tv("unlockDesc")}
       </p>
 
       <div className="mb-6 grid gap-2 rounded-2xl border border-[#0B3D2E]/10 bg-[#faf7f2] p-3.5 text-sm text-[#46524d] sm:grid-cols-2 sm:p-4">
         <div className="flex items-start gap-2.5">
           <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
-          <span>PDF delivered to the email address you enter.</span>
+          <span>{tv("pdfToEmail")}</span>
         </div>
         <div className="flex items-start gap-2.5">
           <MessageCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
-          <span>If that number hasn&apos;t already messaged us on WhatsApp, we&apos;ll ask you to send a quick Hi first, then deliver the PDF automatically.</span>
+          <span>{tv("whatsappPdfDesc")}</span>
         </div>
       </div>
 
@@ -3363,8 +3365,8 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         {/* Name */}
         <div>
           <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-            Name
-            <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">Required</span>
+            {tv("name")}
+            <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
           </label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d]"/>
@@ -3378,8 +3380,8 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         {/* Phone */}
         <div>
           <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-            Phone
-            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">or email</span>
+            {tv("phone")}
+            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orEmail")}</span>
           </label>
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d]"/>
@@ -3390,8 +3392,8 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         {/* Email */}
         <div>
           <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
-            Email
-            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">or phone</span>
+            {tv("email")}
+            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orPhone")}</span>
           </label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d]"/>
@@ -3405,34 +3407,37 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         </p>)}
 
       <button onClick={onUnlock} disabled={gateSubmitting} className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 sm:w-auto" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
-        {gateSubmitting ? (<><RefreshCw className="h-4 w-4 animate-spin"/> Unlocking and sending…</>) : (<><Unlock className="h-4 w-4"/> Unlock and send report</>)}
+        {gateSubmitting ? (<><RefreshCw className="h-4 w-4 animate-spin"/> {tv("unlocking")}</>) : (<><Unlock className="h-4 w-4"/> {tv("unlockAndSend")}</>)}
       </button>
     </div>
   </div>);
 const HiddenRangeValue = ({ currency = "AED" }) => {
+    const tv = useTranslations("valuation");
     return (<div className="max-w-full text-white">
       <span className="inline-block max-w-full text-2xl font-bold tracking-[0.02em] text-white/95 blur-[3px] sm:text-3xl">
-        {currency} range available after unlock
+        {currency} {tv("rangeAfterUnlock")}
       </span>
     </div>);
 };
 const MaskedInlineRange = ({ currency = "AED" }) => {
+    const tv = useTranslations("valuation");
     return (<span className="inline-flex max-w-full items-baseline gap-2 text-[#10231e]">
       <span className="text-base font-semibold tracking-[0.08em] text-[#10231e]">
         {currency}
       </span>
       <span className="inline-block text-xl font-semibold tracking-[-0.04em] text-[rgba(16,35,30,0.7)] blur-[1.5px] select-none">
-        range available after unlock
+        {tv("rangeAfterUnlock")}
       </span>
     </span>);
 };
 const MaskedComparablePrice = ({ currency = "AED" }) => {
+    const tv = useTranslations("valuation");
     return (<span className="inline-flex whitespace-nowrap text-[#10231e] md:min-w-[15rem] items-baseline gap-2">
       <span className="text-[0.98rem] font-semibold tracking-[0.08em] text-[#10231e]">
         {currency}
       </span>
       <span className="inline-block whitespace-nowrap text-[1.02rem] font-semibold tracking-[0.02em] text-[rgba(16,35,30,0.68)] blur-[1.55px] select-none">
-        price available after unlock
+        {tv("priceAfterUnlock")}
       </span>
     </span>);
 };
@@ -3474,6 +3479,7 @@ async function loadTurnstileScript() {
 }
 // ─── PriceBar ─────────────────────────────────────────────────────────────────
 const PriceBar = ({ label, low, high, min, max, rangePreview, color, currency = "AED", blurred = false, textOverride, maskedPreview = false, fixedWidthPct = 18, }) => {
+    const tv = useTranslations("valuation");
     var _a, _b, _c, _d, _e;
     const range = (max !== null && max !== void 0 ? max : 0) - (min !== null && min !== void 0 ? min : 0) || 1;
     const startValue = Math.min((_a = low !== null && low !== void 0 ? low : min) !== null && _a !== void 0 ? _a : 0, (_b = high !== null && high !== void 0 ? high : low) !== null && _b !== void 0 ? _b : 0);
@@ -3501,7 +3507,7 @@ const PriceBar = ({ label, low, high, min, max, rangePreview, color, currency = 
     const valueClass = "text-sm leading-snug text-[#66706d] transition-all duration-500 select-none sm:justify-self-start sm:text-left sm:whitespace-nowrap";
     const valueMarkup = maskedPreview ? (<span className={valueClass}>
       <span>{currency}</span>
-      <span className="ml-2 inline-block blur-[1.6px] text-[rgba(16,35,30,0.7)]">range available after unlock</span>
+      <span className="ml-2 inline-block blur-[1.6px] text-[rgba(16,35,30,0.7)]">{tv("rangeAfterUnlock")}</span>
     </span>) : (<span className={`${valueClass} ${blurred ? "blur-md" : ""}`}>
       {text}
     </span>);

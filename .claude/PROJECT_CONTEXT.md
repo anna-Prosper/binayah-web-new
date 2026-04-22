@@ -185,7 +185,12 @@ Push env vars via API (Vercel token + Render token live in `/Users/zoop/.env.sha
 
 ## Routing — next-intl
 
-- **`localePrefix: "as-needed"`**, locales `[en, ru, kz, in]`, default `en`.
+- **`localePrefix: "as-needed"`**, locales `[en, ru, zh, ar]`, default `en`. (kz/in removed Apr 2026)
+- **Language switching:** use `router.replace(pathname, { locale })` from `@/navigation` — NOT `window.location.href`. Raw href causes double-prefix bugs.
+- **Cookie:** `BINAYAH_LOCALE` (1yr, path=/) — written in middleware for all 4 code paths including English.
+- **RTL:** `<html dir="rtl">` for Arabic locale, set in `src/app/[locale]/layout.tsx`.
+- **Geo-detection:** `CF-IPCountry` / `X-Vercel-IP-Country` → 26 countries mapped (CN/TW/HK/SG→zh, MENA→ar, RU/KZ/BY/UA etc→ru).
+- **sitemap.ts:** has its own `LOCALES` const (line 5) — must be kept in sync with routing.ts when locales change.
 - **ALL user-facing pages MUST live under `src/app/[locale]/`.** Top-level `src/app/<route>/` is NOT served — middleware rewrites to `/<locale>/<route>` which would 404.
 - API routes stay at `src/app/api/` (middleware skip-lists them).
 - Root `src/app/layout.tsx` is intentionally empty (`return children`). Real layout (fonts, providers, `<html>`, `<body>`) lives in `src/app/[locale]/layout.tsx`.

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { ReviewJsonLd } from "./JsonLd";
+import { useTranslations } from "next-intl";
 
 const testimonials = [
   {
@@ -30,6 +31,7 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
+  const t = useTranslations("home.sections.testimonials");
   const [active, setActive] = useState(0);
 
   const next = () => setActive((p) => (p + 1) % testimonials.length);
@@ -65,16 +67,16 @@ const TestimonialsSection = () => {
             style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
           />
           <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>
-            Client Stories
+            {t("label")}
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold">
-            What Our <span className="italic font-light">Clients Say</span>
+            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
           </h2>
         </motion.div>
 
         {/* Mobile: compact inline header */}
         <div className="sm:hidden flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-background">Client Stories</h2>
+          <h2 className="text-sm font-bold text-background">{t("label")}</h2>
           <span className="text-[10px] text-background/40">{active + 1} / {testimonials.length}</span>
         </div>
 

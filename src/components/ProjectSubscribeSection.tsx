@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
+import { useTranslations } from "next-intl";
 
 const LOCAL_SUB_KEY = "binayah_project_subscriptions";
 const LOCAL_NOTIF_KEY = "binayah_notifications";
@@ -43,9 +44,6 @@ function pushLocalNotification({ slug, projectName, projectImage }: { slug: stri
   } catch { /* */ }
 }
 
-function dispatchSubUpdate() {
-  queueMicrotask(() => window.dispatchEvent(new Event("subscriptions-update")));
-}
 
 export interface ProjectSubscribeSectionProps {
   slug: string;
@@ -54,17 +52,18 @@ export interface ProjectSubscribeSectionProps {
   prefillEmail?: string;
 }
 
-const BENEFITS = [
-  { Icon: TrendingUp, label: "Price alerts" },
-  { Icon: Building2, label: "Construction" },
-  { Icon: Sparkles, label: "New units" },
-];
-
 export function ProjectSubscribeSection({ slug, projectName, projectImage }: ProjectSubscribeSectionProps) {
+  const t = useTranslations("subscribe");
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated" && !!session?.user?.email;
   const router = useRouter();
-  const { subscribedSlugs } = useProjectSubscriptions();
+  const { subscribedSlugs, refresh: refreshSubs } = useProjectSubscriptions();
+
+  const BENEFITS = [
+    { Icon: TrendingUp, label: t("benefits.priceAlerts") },
+    { Icon: Building2, label: t("benefits.construction") },
+    { Icon: Sparkles, label: t("benefits.newUnits") },
+  ];
 
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,10 +88,10 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ slug }),
         });
-        if (!res.ok) { setError("Could not unsubscribe."); return; }
+        if (!res.ok) { setError(t("errors.couldNotUnsubscribe")); return; }
         setSubscribed(false);
         removeLocalSub(slug);
-        dispatchSubUpdate();
+        refreshSubs();
       } else {
         const res = await fetch("/api/project-subscriptions", {
           method: "POST",
@@ -101,17 +100,17 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
         });
         const data = await res.json();
         if (!res.ok && !data.ok) {
-          setError(res.status === 429 ? "Too many requests." : "Could not subscribe.");
+          setError(res.status === 429 ? t("errors.tooManyRequests") : t("errors.couldNotSubscribe"));
           return;
         }
         setSubscribed(true);
         addLocalSub(slug);
         if (!data.alreadySubscribed) pushLocalNotification({ slug, projectName, projectImage });
-        dispatchSubUpdate();
+        refreshSubs();
       }
-    } catch { setError("Network error."); }
+    } catch { setError(t("errors.networkError")); }
     finally { setLoading(false); }
-  }, [subscribed, loading, isAuthed, slug, projectName, projectImage, router]);
+  }, [subscribed, loading, isAuthed, slug, projectName, projectImage, router, t]);
 
   return (
     <div
@@ -148,7 +147,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
 
           {/* Text block */}
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1" style={{ color: "#D4A847" }}>Stay Updated</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1" style={{ color: "#D4A847" }}>{t("stayUpdated")}</p>
             <p id={`subscribe-${slug}-heading`} className="text-sm font-bold text-white leading-snug truncate">
               {projectName}
             </p>
@@ -185,11 +184,11 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
                   : <>
                       <span className="group-hover:hidden flex items-center gap-2">
                         <Check className="h-4 w-4" style={{ color: "#D4A847" }} strokeWidth={3} />
-                        <span className="text-sm font-bold" style={{ color: "#D4A847" }}>Subscribed</span>
+                        <span className="text-sm font-bold" style={{ color: "#D4A847" }}>{t("subscribedLabel")}</span>
                       </span>
                       <span className="hidden group-hover:flex items-center gap-2">
                         <BellOff className="h-4 w-4 text-red-400" />
-                        <span className="text-sm font-bold text-red-400">Unsubscribe</span>
+                        <span className="text-sm font-bold text-red-400">{t("unsubscribeLabel")}</span>
                       </span>
                     </>
                 }
@@ -206,7 +205,8 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
               >
                 {loading
                   ? <Loader2 className="h-4 w-4 animate-spin" />
-                  : <><Bell className="h-4 w-4" />Subscribe</>
+                  : <><Bell className="h-4 w-4" />{t("subscribe")}</>
+
                 }
               </motion.button>
             )}

@@ -1,0 +1,120 @@
+{
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "i18next"
+  ],
+  "rules": {
+    "i18next/no-literal-string": [
+      "error",
+      {
+        "markupOnly": true,
+        "ignoreCallee": [
+          "useTranslations",
+          "getTranslations",
+          "z.string",
+          "z.object",
+          "z.enum",
+          "cn",
+          "cva",
+          "clsx",
+          "twMerge"
+        ],
+        "ignoreAttribute": [
+          "className",
+          "style",
+          "src",
+          "href",
+          "alt",
+          "type",
+          "id",
+          "key",
+          "name",
+          "role",
+          "aria-label",
+          "aria-labelledby",
+          "aria-describedby",
+          "data-testid",
+          "rel",
+          "target",
+          "method",
+          "action",
+          "encType",
+          "autoComplete",
+          "inputMode",
+          "pattern",
+          "placeholder",
+          "defaultValue"
+        ],
+        "ignoreProperty": [
+          "className",
+          "style",
+          "src",
+          "href",
+          "alt",
+          "type",
+          "id",
+          "key",
+          "name",
+          "role",
+          "data-testid",
+          "rel",
+          "target",
+          "method",
+          "action",
+          "encType",
+          "autoComplete",
+          "inputMode",
+          "pattern"
+        ]
+      }
+    ],
+    "@next/next/no-html-link-for-pages": "warn",
+    "react/no-unescaped-entities": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/app/**/admin/**/*.{ts,tsx}"
+      ],
+      "rules": {
+        "i18next/no-literal-string": "off"
+      }
+    },
+    {
+      "files": [
+        "src/app/api/**/*.ts",
+        "src/app/**/route.ts",
+        "src/middleware.ts",
+        "src/i18n/**/*.ts",
+        "src/lib/**/*.ts",
+        "src/hooks/**/*.ts",
+        "src/types/**/*.ts",
+        "src/data/**/*.ts",
+        "src/navigation.ts"
+      ],
+      "rules": {
+        "i18next/no-literal-string": "off"
+      }
+    },
+    {
+      "files": [
+        "**/*.test.*",
+        "**/*.spec.*"
+      ],
+      "rules": {
+        "i18next/no-literal-string": "off"
+      }
+    },
+    {
+      "files": [
+        "src/app/not-found.tsx",
+        "src/app/error.tsx"
+      ],
+      "rules": {
+        "i18next/no-literal-string": "off"
+      }
+    }
+  ]
+}

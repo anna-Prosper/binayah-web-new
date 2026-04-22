@@ -6,40 +6,43 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Award, Users, Building2, Globe, CheckCircle2 } from "lucide-react";
-
-const stats = [
-  { icon: Building2, value: "15+", label: "Years of Experience" },
-  { icon: Users, value: "5,000+", label: "Happy Clients" },
-  { icon: Globe, value: "30+", label: "Nationalities Served" },
-  { icon: Award, value: "50+", label: "Industry Awards" },
-];
-
-const values = [
-  { title: "Client-First Approach", desc: "Every decision we make is guided by the best interests of our clients." },
-  { title: "Transparency", desc: "We believe in honest communication and full transparency in every transaction." },
-  { title: "Market Expertise", desc: "Deep knowledge of Dubai's real estate landscape across all segments." },
-  { title: "Innovation", desc: "Leveraging AI and cutting-edge technology to deliver smarter property solutions." },
-  { title: "Integrity", desc: "We uphold the highest ethical standards in every interaction." },
-  { title: "Excellence", desc: "Committed to delivering exceptional service at every touchpoint." },
-];
+import { useTranslations } from "next-intl";
 
 export default function AboutPage() {
+  const t = useTranslations("about");
+
+  const stats = [
+    { icon: Building2, value: "15+", label: t("statsYears") },
+    { icon: Users, value: "5,000+", label: t("statsClients") },
+    { icon: Globe, value: "30+", label: t("statsNationalities") },
+    { icon: Award, value: "50+", label: t("statsAwards") },
+  ];
+
+  const values = [
+    { title: t("value1Title"), desc: t("value1Desc") },
+    { title: t("value2Title"), desc: t("value2Desc") },
+    { title: t("value3Title"), desc: t("value3Desc") },
+    { title: t("value4Title"), desc: t("value4Desc") },
+    { title: t("value5Title"), desc: t("value5Desc") },
+    { title: t("value6Title"), desc: t("value6Desc") },
+  ];
+
   return (
   <div className="min-h-screen bg-background">
     <Navbar />
-    <Breadcrumbs items={[{ label: "About Us", href: "/about" }]} />
+    <Breadcrumbs items={[{ label: t("breadcrumb"), href: "/about" }]} />
 
     {/* Hero */}
     <section className="relative pt-32 pb-20 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
       <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">About Us</p>
+          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Dubai's Trusted <span className="italic font-light">Property Partner</span>
+            {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-lg leading-relaxed">
-            Binayah Real Estate has been connecting clients with exceptional homes and investments across Dubai for over 15 years. Our AI-powered approach combined with deep market expertise ensures every client finds their perfect match.
+            {t("heroSubtitle")}
           </p>
         </motion.div>
       </div>
@@ -85,18 +88,12 @@ export default function AboutPage() {
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-              Our <span className="italic font-light">Story</span>
+              {t("storyTitle")} <span className="italic font-light">{t("storyTitleItalic")}</span>
             </h2>
             <div className="space-y-4 text-foreground/70 leading-relaxed">
-              <p>
-                Founded with a vision to redefine real estate in Dubai, Binayah Properties has grown from a boutique agency to one of the city's most respected property consultancies.
-              </p>
-              <p>
-                We specialize in off-plan developments, luxury resale properties, property management, and investment advisory. Our team of multilingual experts understands the diverse needs of a global clientele.
-              </p>
-              <p>
-                Today, we combine traditional real estate expertise with AI-driven market intelligence to deliver unparalleled service and results.
-              </p>
+              <p>{t("storyP1")}</p>
+              <p>{t("storyP2")}</p>
+              <p>{t("storyP3")}</p>
             </div>
           </motion.div>
         </div>
@@ -109,7 +106,7 @@ export default function AboutPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mx-auto mb-6" />
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-            Our <span className="italic font-light">Values</span>
+            {t("valuesTitle")} <span className="italic font-light">{t("valuesTitleItalic")}</span>
           </h2>
         </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

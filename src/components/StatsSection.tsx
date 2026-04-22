@@ -2,15 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Building2, Users, Award, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const stats = [
-  { icon: Building2, value: "2,500+", label: "Properties Listed" },
-  { icon: Users, value: "1,200+", label: "Happy Clients" },
-  { icon: Award, value: "15+", label: "Industry Awards" },
-  { icon: MapPin, value: "50+", label: "Communities Covered" },
-];
-
-const StatsSection = () => (
+const StatsSection = () => {
+  const t = useTranslations("home.sections.stats");
+  const stats = [
+    { icon: Building2, value: "2,500+", label: t("propertiesListed") },
+    { icon: Users, value: "1,200+", label: t("happyClients") },
+    { icon: Award, value: "15+", label: t("industryAwards") },
+    { icon: MapPin, value: "50+", label: t("communitiesCovered") },
+  ];
+  return (
   <section className="py-10 sm:py-24 bg-card relative overflow-hidden">
     <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "40px 40px" }} />
 
@@ -31,14 +33,14 @@ const StatsSection = () => (
           style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
         <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
-          Why Choose Us
+          {t("label")}
         </p>
         <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-          <span className="sm:hidden">Award-Winning Agency</span>
-          <span className="hidden sm:inline">Award Winning Real Estate<br /><span className="italic font-light">Agency in Dubai</span></span>
+          <span className="sm:hidden">{t("titleMobile")}</span>
+          <span className="hidden sm:inline">{t("title")}<br /><span className="italic font-light">{t("titleItalic")}</span></span>
         </h2>
         <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
-          With over a decade of experience, we've helped thousands of clients find their dream properties in Dubai's most sought-after communities.
+          {t("subtitle")}
         </p>
       </motion.div>
 
@@ -87,6 +89,7 @@ const StatsSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default StatsSection;

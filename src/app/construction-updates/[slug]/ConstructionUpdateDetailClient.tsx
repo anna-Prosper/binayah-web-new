@@ -5,6 +5,7 @@ import { ArrowLeft, Building2, MapPin, Calendar, TrendingUp, Play, ChevronRight 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { useTranslations } from "next-intl";
 
 interface Video {
   title: string;
@@ -46,6 +47,8 @@ export default function ConstructionUpdateDetailClient({
   update: ConstructionUpdate;
   related: ConstructionUpdate[];
 }) {
+  const t = useTranslations("constructionUpdateDetail");
+  const tUpdates = useTranslations("constructionUpdates");
   const progress = update.progress ?? 0;
   const isCompleted = progress >= 100;
 
@@ -77,7 +80,7 @@ export default function ConstructionUpdateDetailClient({
                 className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white mb-3 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                Back to Construction Updates
+                {t("backToUpdates")}
               </Link>
 
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white max-w-3xl">
@@ -101,7 +104,7 @@ export default function ConstructionUpdateDetailClient({
                   className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white ${progressColor(update.progress)}`}
                 >
                   <TrendingUp className="w-3.5 h-3.5" />
-                  {isCompleted ? "Completed" : `${Math.round(progress)}% Complete`}
+                  {isCompleted ? tUpdates("filterCompleted") : `${Math.round(progress)}%`}
                 </span>
               </div>
             </div>
@@ -115,7 +118,7 @@ export default function ConstructionUpdateDetailClient({
             <div className="lg:col-span-2 space-y-8">
               {/* Progress */}
               <div className="bg-card rounded-2xl border border-border p-5 sm:p-6">
-                <h2 className="text-lg font-bold text-foreground mb-4">Construction Progress</h2>
+                <h2 className="text-lg font-bold text-foreground mb-4">{t("progress")}</h2>
                 <div className="relative">
                   <div className="h-4 rounded-full bg-muted overflow-hidden">
                     <div
@@ -124,7 +127,7 @@ export default function ConstructionUpdateDetailClient({
                     />
                   </div>
                   <p className="text-center mt-2 text-2xl font-bold text-foreground">
-                    {isCompleted ? "100% — Completed" : `${Math.round(progress)}%`}
+                    {isCompleted ? `100% — ${tUpdates("filterCompleted")}` : `${Math.round(progress)}%`}
                   </p>
                 </div>
 
@@ -133,7 +136,7 @@ export default function ConstructionUpdateDetailClient({
                     <div className="bg-muted/50 rounded-xl p-3 sm:p-4">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
                         <Calendar className="w-3.5 h-3.5" />
-                        Launch Date
+                        {t("launchDate")}
                       </div>
                       <p className="text-sm font-semibold text-foreground">{update.launchDate}</p>
                     </div>
@@ -142,7 +145,7 @@ export default function ConstructionUpdateDetailClient({
                     <div className="bg-muted/50 rounded-xl p-3 sm:p-4">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
                         <Calendar className="w-3.5 h-3.5" />
-                        {isCompleted ? "Completed" : "Expected Handover"}
+                        {isCompleted ? t("statusCompleted") : t("completionDate")}
                       </div>
                       <p className="text-sm font-semibold text-foreground">{update.completionDate}</p>
                     </div>
@@ -153,7 +156,7 @@ export default function ConstructionUpdateDetailClient({
               {/* Videos */}
               {update.videos.length > 0 && (
                 <div className="bg-card rounded-2xl border border-border p-5 sm:p-6">
-                  <h2 className="text-lg font-bold text-foreground mb-4">Construction Videos</h2>
+                  <h2 className="text-lg font-bold text-foreground mb-4">{t("constructionVideos")}</h2>
                   <div className="space-y-4">
                     {update.videos.map((video, i) => {
                       const embedUrl = getYouTubeEmbedUrl(video.url);
@@ -180,7 +183,7 @@ export default function ConstructionUpdateDetailClient({
                               className="flex items-center gap-2 px-4 py-3 bg-muted/50 rounded-xl text-sm text-primary hover:underline"
                             >
                               <Play className="w-4 h-4" />
-                              Watch Video
+                              {t("watchVideo")}
                             </a>
                           )}
                         </div>
@@ -195,38 +198,38 @@ export default function ConstructionUpdateDetailClient({
             <div className="space-y-6">
               {/* Project Info */}
               <div className="bg-card rounded-2xl border border-border p-5">
-                <h3 className="text-sm font-bold text-foreground mb-3">Project Details</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">{t("projectDetails")}</h3>
                 <dl className="space-y-3 text-sm">
                   <div>
-                    <dt className="text-muted-foreground text-xs">Project</dt>
+                    <dt className="text-muted-foreground text-xs">{t("project")}</dt>
                     <dd className="font-medium text-foreground">{update.title}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground text-xs">Developer</dt>
+                    <dt className="text-muted-foreground text-xs">{t("developer")}</dt>
                     <dd className="font-medium text-foreground">{update.developerName || "—"}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground text-xs">Location</dt>
+                    <dt className="text-muted-foreground text-xs">{t("location")}</dt>
                     <dd className="font-medium text-foreground">{update.projectLocation || "—"}</dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground text-xs">Status</dt>
-                    <dd className="font-medium text-foreground">{isCompleted ? "Completed" : "Under Construction"}</dd>
+                    <dt className="text-muted-foreground text-xs">{t("status")}</dt>
+                    <dd className="font-medium text-foreground">{isCompleted ? t("statusCompleted") : t("statusUnderConstruction")}</dd>
                   </div>
                 </dl>
               </div>
 
               {/* CTA */}
               <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-5 text-center">
-                <p className="text-sm font-bold text-primary-foreground mb-1">Interested in this project?</p>
-                <p className="text-xs text-primary-foreground/70 mb-4">Get exclusive pricing and availability</p>
+                <p className="text-sm font-bold text-primary-foreground mb-1">{t("interested")}</p>
+                <p className="text-xs text-primary-foreground/70 mb-4">{t("exclusivePricing")}</p>
                 <a
                   href={`https://wa.me/971543048?text=I'm interested in ${update.title}. Please share updates.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary rounded-xl text-sm font-semibold hover:bg-white/90 transition-colors"
                 >
-                  Get in Touch
+                  {t("getInTouch")}
                 </a>
               </div>
 
@@ -234,7 +237,7 @@ export default function ConstructionUpdateDetailClient({
               {related.length > 0 && (
                 <div className="bg-card rounded-2xl border border-border p-5">
                   <h3 className="text-sm font-bold text-foreground mb-3">
-                    More from {update.developerName}
+                    {t("moreFrom")} {update.developerName}
                   </h3>
                   <div className="space-y-2.5">
                     {related.map((r) => (

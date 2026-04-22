@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { apiUrl } from "@/lib/api";
+import { useTranslations } from "next-intl";
 
 const MATCHER_URL = apiUrl("/api/property-matcher");
 
@@ -72,6 +73,7 @@ const questions: QuestionDef[] = [
 
 // ─── Result renderer ───
 const ResultContent = ({ result }: { result: string }) => {
+  const t = useTranslations("propertyMatcher");
   const segments = useMemo(() => {
     const parts: { type: "text" | "link"; content: string; slug?: string }[] = [];
     const regex = /\[VIEW_PROPERTY:([\w-]+)\]/g;
@@ -106,7 +108,7 @@ const ResultContent = ({ result }: { result: string }) => {
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
               <Building2 className="h-4 w-4 text-primary" />
             </div>
-            <span className="text-sm font-semibold text-primary flex-1">View Full Property Details</span>
+            <span className="text-sm font-semibold text-primary flex-1">{t("viewFullDetails")}</span>
             <ArrowRight className="h-4 w-4 text-primary opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
           </Link>
         )
@@ -117,6 +119,8 @@ const ResultContent = ({ result }: { result: string }) => {
 
 // ─── Component ───
 const PropertyMatcher = () => {
+  const t = useTranslations("propertyMatcher");
+  const questionDefs = t.raw("questions") as Record<string, { question: string; subtitle: string }>;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
@@ -240,12 +244,12 @@ const PropertyMatcher = () => {
         {/* Desktop header */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="hidden sm:block text-center mb-12">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>AI Property Matcher</p>
+          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            Find Your <span className="italic font-light">Perfect Match</span>
+            {t("title")}
           </h2>
           <p className="mt-4 text-muted-foreground max-w-md mx-auto">
-            Answer {questions.length} quick questions and our AI will recommend the best properties for you.
+            {t("subtitle", { count: questions.length })}
           </p>
         </motion.div>
 
@@ -257,7 +261,7 @@ const PropertyMatcher = () => {
               <div className="sm:hidden flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4" style={{ color: "#D4A847" }} />
-                  <span className="text-sm font-bold text-foreground">Find Your Match</span>
+                  <span className="text-sm font-bold text-foreground">{t("findYourMatch")}</span>
                 </div>
                 <span className="text-xs text-muted-foreground font-medium">{step + 1} / {questions.length}</span>
               </div>
@@ -266,7 +270,7 @@ const PropertyMatcher = () => {
                   <div key={i} className={`h-1 sm:h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? "bg-primary" : i === step ? "bg-primary/60" : "bg-border"}`} />
                 ))}
               </div>
-              <p className="hidden sm:block text-xs text-muted-foreground">{step + 1} of {questions.length}</p>
+              <p className="hidden sm:block text-xs text-muted-foreground">{step + 1} {t("of")} {questions.length}</p>
             </div>
           )}
 
@@ -278,9 +282,9 @@ const PropertyMatcher = () => {
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                       <current.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    <h3 className="text-base sm:text-xl font-bold text-foreground">{current.question}</h3>
+                    <h3 className="text-base sm:text-xl font-bold text-foreground">{questionDefs?.[current.id]?.question ?? current.question}</h3>
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{current.subtitle}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{questionDefs?.[current.id]?.subtitle ?? current.subtitle}</p>
 
                   <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                     {current.options.map((opt) => {
@@ -303,7 +307,7 @@ const PropertyMatcher = () => {
                           )}
                           <span className="flex-1">{opt}</span>
                           {isPopular && !current.multi && (
-                            <span className="hidden sm:inline text-[9px] uppercase tracking-wider font-bold text-primary/60">Popular</span>
+                            <span className="hidden sm:inline text-[9px] uppercase tracking-wider font-bold text-primary/60">{t("popular")}</span>
                           )}
                         </button>
                       );
@@ -313,7 +317,7 @@ const PropertyMatcher = () => {
                   <div className="mt-4 sm:mt-5 flex items-center justify-between">
                     {step > 0 ? (
                       <button onClick={() => { setStep(step - 1); setMultiSelections([]); }} className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors">
-                        <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Back
+                        <ArrowLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("back")}
                       </button>
                     ) : <div />}
                     {current.multi && (
@@ -322,7 +326,7 @@ const PropertyMatcher = () => {
                         disabled={multiSelections.length === 0}
                         className="px-4 sm:px-5 py-2 text-white rounded-xl text-xs sm:text-sm font-semibold disabled:opacity-40 transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                       >
-                        Continue →
+                        {t("continue")}
                       </button>
                     )}
                   </div>
@@ -332,18 +336,18 @@ const PropertyMatcher = () => {
                   {loading && !result ? (
                     <div className="flex flex-col items-center justify-center py-12 sm:py-16">
                       <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
-                      <p className="text-muted-foreground text-sm">Analyzing your profile & finding perfect matches...</p>
-                      <p className="text-muted-foreground/60 text-xs mt-1">This takes ~10 seconds</p>
+                      <p className="text-muted-foreground text-sm">{t("analyzing")}</p>
+                      <p className="text-muted-foreground/60 text-xs mt-1">{t("takesTime")}</p>
                     </div>
                   ) : (
                     <>
                       <div className="flex items-center gap-2 mb-5">
                         <Sparkles className="h-5 w-5" style={{ color: "#D4A847" }} />
-                        <h3 className="text-lg font-bold text-foreground">Your Personalized Recommendations</h3>
+                        <h3 className="text-lg font-bold text-foreground">{t("personalizedRecs")}</h3>
                       </div>
                       <ResultContent result={result} />
                       <button onClick={reset} className="mt-6 flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
-                        <RotateCcw className="h-4 w-4" /> Start Over
+                        <RotateCcw className="h-4 w-4" /> {t("startOver")}
                       </button>
                     </>
                   )}

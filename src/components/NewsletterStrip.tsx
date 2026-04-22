@@ -4,15 +4,17 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 const NewsletterStrip = () => {
   const [email, setEmail] = useState("");
   const { toast } = useToast();
+  const t = useTranslations("newsletter");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      toast({ title: "Subscribed!", description: "You'll receive the latest UAE real estate updates." });
+      toast({ title: t("successTitle"), description: t("successDesc") });
       setEmail("");
     }
   };
@@ -33,14 +35,14 @@ const NewsletterStrip = () => {
               <Mail className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="font-bold text-white text-sm">Subscribe to Our Newsletter</p>
-              <p className="text-white/70 text-xs">Latest UAE real estate updates</p>
+              <p className="font-bold text-white text-sm">{t("title")}</p>
+              <p className="text-white/70 text-xs">{t("subtitle")}</p>
             </div>
           </div>
 
           {/* Mobile: compact single-line label */}
           <p className="sm:hidden text-white font-bold text-sm text-center">
-            Get the latest Dubai market updates
+            {t("titleMobile")}
           </p>
 
           <div className="flex flex-1 w-full sm:w-auto gap-2 min-w-0">
@@ -48,7 +50,7 @@ const NewsletterStrip = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
+              placeholder={t("placeholder")}
               className="flex-1 min-w-0 bg-white/25 border border-white/20 rounded-full px-4 py-3 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/35"
               required
             />
@@ -57,7 +59,7 @@ const NewsletterStrip = () => {
               className="font-bold px-5 sm:px-6 py-3 rounded-full text-sm transition-all hover:-translate-y-0.5 flex-shrink-0 whitespace-nowrap shadow-lg"
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", color: "white" }}
             >
-              Subscribe
+              {t("button")}
             </button>
           </div>
         </motion.form>
