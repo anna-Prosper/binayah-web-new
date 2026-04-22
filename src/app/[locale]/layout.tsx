@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/assets/dubai-hero.webp",
+        url: "/assets/og-image.webp",
         width: 1200,
         height: 630,
         alt: "Binayah Properties — Dubai Real Estate",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Binayah Properties — Dubai Real Estate",
     description: "Dubai's trusted property partner for buying, selling & renting properties.",
-    images: ["/assets/dubai-hero.webp"],
+    images: ["/assets/og-image.webp"],
   },
 };
 
