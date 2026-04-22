@@ -863,7 +863,12 @@
     "capitalGrowth": "资本增值",
     "yearOnYear": "同比增长",
     "occupancyRate": "入住率",
-    "areaAverage": "区域平均"
+    "areaAverage": "区域平均",
+    "floorPlansLabel": "户型图",
+    "floorPlans": "户型图",
+    "bedsLabel": "卧室",
+    "bathsLabel": "卫生间",
+    "viewFullSize": "查看原图"
   },
   "propertyDetail": {
     "backToProperties": "返回房产列表",

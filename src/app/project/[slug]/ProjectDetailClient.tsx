@@ -1016,7 +1016,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   )}
 
-                  {/* Project Video Overview */}
+                  {/* Project Video Overview — only if valid embeddable URL */}
+                  {project.videoUrl && /youtube\.com\/watch|youtu\.be\/|youtube\.com\/embed|vimeo\.com\/\d/.test(project.videoUrl) && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -1046,6 +1047,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                     </div>
                   </motion.div>
+                  )}
 
                   {/* ───── PHOTO GALLERY ───── */}
                   {images.length > 1 && (
@@ -1789,6 +1791,98 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                     </div>
                   </a>
+
+                  {/* ───── FLOOR PLANS GALLERY ───── */}
+                  {(project.floorPlans?.length ?? 0) > 0 && (() => {
+                    const fps = (project.floorPlans as { title: string; type?: string; beds?: string; baths?: string; size?: string; image?: string; pdf?: string }[]);
+                    const activeFp = fps[activeFloorPlanTab] ?? fps[0];
+                    return (
+                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                        {/* Header */}
+                        <div className="px-4 sm:px-6 py-4 border-b border-border/50 flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                            <FileText className="h-4 w-4 text-accent" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("floorPlansLabel")}</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground leading-tight">{project.name} — {t("floorPlans")}</h2>
+                          </div>
+                          {project.floorPlanPdfUrl && (
+                            <a href={project.floorPlanPdfUrl} target="_blank" rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/30 text-accent text-xs font-semibold hover:bg-accent/10 transition-colors shrink-0">
+                              <Download className="h-3.5 w-3.5" />
+                              PDF
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Tab pills */}
+                        <div className="px-4 sm:px-6 pt-4 flex gap-2 flex-wrap">
+                          {fps.map((fp, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setActiveFloorPlanTab(i)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${activeFloorPlanTab === i ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"}`}
+                            >
+                              {fp.title}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Active floor plan */}
+                        {activeFp?.image ? (
+                          <div className="p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row gap-4">
+                              {/* Image */}
+                              <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-muted border border-border/50">
+                                <NextImage
+                                  src={activeFp.image}
+                                  alt={activeFp.title}
+                                  fill
+                                  className="object-contain"
+                                  sizes="(max-width: 640px) 100vw, 50vw"
+                                />
+                              </div>
+                              {/* Specs */}
+                              <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
+                                <h3 className="font-bold text-foreground text-base">{activeFp.title}</h3>
+                                {activeFp.type && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Building2 className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.type}
+                                  </div>
+                                )}
+                                {activeFp.beds && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.beds} {t("bedsLabel")}
+                                    {activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                                  </div>
+                                )}
+                                {activeFp.size && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.size}
+                                  </div>
+                                )}
+                                <a
+                                  href={activeFp.image}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                  {t("viewFullSize")}
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="p-6 text-center text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
                 </motion.div>
               )}

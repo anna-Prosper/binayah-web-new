@@ -857,7 +857,12 @@
     "capitalGrowth": "Capital Growth",
     "yearOnYear": "Year-on-Year",
     "occupancyRate": "Occupancy Rate",
-    "areaAverage": "Area Average"
+    "areaAverage": "Area Average",
+    "floorPlansLabel": "Floor Plans",
+    "floorPlans": "Floor Plans",
+    "bedsLabel": "Beds",
+    "bathsLabel": "Baths",
+    "viewFullSize": "View full size"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",

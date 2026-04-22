@@ -857,7 +857,12 @@
     "capitalGrowth": "نمو رأس المال",
     "yearOnYear": "سنة بعد سنة",
     "occupancyRate": "نسبة الإشغال",
-    "areaAverage": "متوسط المنطقة"
+    "areaAverage": "متوسط المنطقة",
+    "floorPlansLabel": "مخططات الطوابق",
+    "floorPlans": "مخططات الطوابق",
+    "bedsLabel": "غرف نوم",
+    "bathsLabel": "حمامات",
+    "viewFullSize": "عرض بالحجم الكامل"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",

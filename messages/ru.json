@@ -857,7 +857,12 @@
     "capitalGrowth": "Рост стоимости",
     "yearOnYear": "Год к году",
     "occupancyRate": "Заполняемость",
-    "areaAverage": "Среднее по району"
+    "areaAverage": "Среднее по району",
+    "floorPlansLabel": "Планировки",
+    "floorPlans": "Планировки",
+    "bedsLabel": "Спален",
+    "bathsLabel": "Ванных",
+    "viewFullSize": "Полный размер"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
