@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "@/navigation";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 const LOCAL_NOTIF_KEY = "binayah_notifications";
 
@@ -54,6 +55,7 @@ export function NotificationsBell() {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("notificationsBell");
 
   // Area 3: syncedForUser ref — prevents re-fetch on tab focus
   const syncedForUser = useRef<string | null>(null);
@@ -147,7 +149,7 @@ export function NotificationsBell() {
         } catch {
           // Revert and toast — do NOT navigate
           setItems(prev);
-          toast({ title: "Couldn't mark as read", description: "Please try again.", variant: "destructive" });
+          toast({ title: t("cantMarkRead"), description: t("tryAgain"), variant: "destructive" });
         }
       } else {
         // Anon — localStorage write (rare failure)
@@ -167,12 +169,12 @@ export function NotificationsBell() {
       {/* Bell button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
+        aria-label={unreadCount > 0 ? t("ariaLabelUnread", { count: unreadCount }) : t("ariaLabel")}
         className="relative w-9 h-9 min-w-[44px] min-h-[44px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{unreadCount > 9 ? "9+" : unreadCount}</span>
         )}
       </button>
 
@@ -180,11 +182,11 @@ export function NotificationsBell() {
       {open && (
         <div className="absolute right-0 top-full mt-2 z-[200] w-80 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-            <p className="text-sm font-semibold text-foreground">Notifications</p>
+            <p className="text-sm font-semibold text-foreground">{t("title")}</p>
             <button
               onClick={() => setOpen(false)}
               className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Close notifications"
+              aria-label={t("close")}
             >
               <X className="h-4 w-4" />
             </button>
@@ -193,7 +195,7 @@ export function NotificationsBell() {
           <div className="max-h-96 overflow-y-auto">
             {items.length === 0 ? (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-                No notifications yet.
+                {t("empty")}
               </div>
             ) : (
               items.map((item) => (
