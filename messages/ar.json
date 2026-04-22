@@ -284,7 +284,7 @@
     "clearFilters": "مسح الفلاتر",
     "showing": "عرض {count} عقار",
     "loadMore": "تحميل المزيد",
-    "offPlanProjects": "مشاريع الخطط المسبقة",
+    "offPlanProjects": "مشاريع على الخارطة",
     "secondaryProperties": "العقارات الثانوية",
     "priceOnRequest": "السعر عند الطلب",
     "tabAll": "الكل",
@@ -303,9 +303,9 @@
     "developer": "المطور",
     "units": "الوحدات",
     "allProjects": "جميع المشاريع",
-    "subtitleWithCount": "استكشف أحدث مشاريع الخطط المسبقة في دبي. {count} مشروع متاح.",
+    "subtitleWithCount": "استكشف أحدث المشاريع على الخارطة في دبي. {count} مشروع متاح.",
     "loadingMore": "جارٍ تحميل المزيد من المشاريع...",
-    "showingAll": "عرض جميع المشاريع {count}"
+    "showingAll": "عرض {count} مشروع"
   },
   "rent": {
     "title": "عقارات للإيجار",
@@ -317,7 +317,7 @@
     "bed": "غرفة",
     "loadingMore": "جارٍ التحميل...",
     "loadMore": "تحميل المزيد",
-    "showingAll": "عرض جميع {count} عقارات",
+    "showingAll": "عرض {count} عقار",
     "subtitleWithCount": "{subtitle}، {count} عقار متاح.",
     "rentalsLabel": "إيجارات",
     "secondaryMarketLabel": "السوق الثانوي",
@@ -334,7 +334,7 @@
     "heroTitle": "افهم قيمة عقارك",
     "heroTitleHighlight": "",
     "heroTitleSuffix": "في دقائق.",
-    "heroSubtitle": "تقدير دقيق استناداً إلى المعاملات الأخيرة والقوائم النشطة والعقارات المماثلة.",
+    "heroSubtitle": "تقدير مدعوم بالذكاء الاصطناعي، مبني على المعاملات الأخيرة والقوائم النشطة والعقارات المماثلة.",
     "whatYouGet": "ما ستحصل عليه",
     "wyg1Title": "نطاق القيمة العادلة",
     "wyg1Desc": "مبني على مبيعات نفس المبنى والعقارات المجاورة.",
@@ -438,7 +438,7 @@
     "heroLabel": "اتصل بنا",
     "heroTitle": "تواصل",
     "heroTitleItalic": "معنا",
-    "heroSubtitle": "هل أنت مستعد للعثور على عقار أحلامك؟ فريقنا هنا للمساعدة.",
+    "heroSubtitle": "نحن هنا لمساعدتك في العثور على عقارك المثالي في دبي.",
     "infoTitle": "معلومات الاتصال",
     "formTitle": "أرسل لنا رسالة",
     "namePlaceholder": "اسمك",
@@ -653,7 +653,7 @@
       "empty": "لا توجد اشتراكات في المشاريع",
       "emptyDesc": "اشترك في مشاريع على الخارطة لتلقي إشعارات حول تغييرات الأسعار والمخططات الجديدة والمراحل.",
       "browseOffPlan": "تصفح مشاريع على الخارطة",
-      "projectsSubscribed": "مشروع {count} مشترك",
+      "projectsSubscribed": "{count} مشروع مشترك",
       "projectsSubscribedPlural": "{count} مشاريع مشترك بها",
       "notifyVia": "الإشعار عبر",
       "viewProject": "عرض المشروع ←",
@@ -920,7 +920,7 @@
     "projects": "مشاريع",
     "viewDeveloper": "عرض المطور",
     "noResults": "لم يُعثر على مطورين",
-    "showingAll": "عرض جميع المطورين {count}"
+    "showingAll": "عرض {count} مطور"
   },
   "developerDetail": {
     "overview": "نظرة عامة",
@@ -937,7 +937,7 @@
     "heroLabel": "آخر التحديثات",
     "heroTitle": "الأخبار",
     "heroTitleItalic": "والتحليلات",
-    "heroSubtitle": "ابق على اطلاع بسوق العقارات في دبي",
+    "heroSubtitle": "ابق في الصدارة مع آخر أخبار ورؤى سوق عقارات دبي.",
     "searchPlaceholder": "البحث في المقالات...",
     "readMore": "اقرأ المزيد",
     "noArticles": "لم يُعثر على مقالات",
@@ -1154,7 +1154,7 @@
   },
   "newsletter": {
     "title": "اشترك في نشرتنا البريدية",
-    "subtitle": "آخر تحديثات سوق العقارات في الإمارات",
+    "subtitle": "مشاريع جديدة، تحولات الأسعار، ورؤى السوق — مباشرةً إلى بريدك.",
     "titleMobile": "احصل على آخر تحديثات سوق دبي",
     "placeholder": "عنوان بريدك الإلكتروني",
     "button": "اشترك",
@@ -1264,7 +1264,7 @@
     "ariaLabel": "الرجوع إلى الأعلى"
   },
   "faq": {
-    "title": "أسئلة مكررة",
+    "title": "الأسئلة الشائعة",
     "titleItalic": "",
     "label": "الأسئلة الشائعة"
   },
@@ -1395,7 +1395,7 @@
     "popular": "شائع",
     "takesTime": "يستغرق ~10 ثوانٍ",
     "personalizedRecs": "توصياتك الشخصية",
-    "subtitle": "أجب على {count} أسئلة وسيوصي الذكاء الاصطناعي بأفضل العقارات.",
+    "subtitle": "أجب على {count} أسئلة وسيختار ذكاؤنا الاصطناعي أفضل العقارات المناسبة لك.",
     "back": "رجوع",
     "continue": "متابعة ←",
     "startOver": "البدء من جديد",
