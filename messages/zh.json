@@ -462,7 +462,11 @@
       "about": "关于我们",
       "news": "资讯",
       "contact": "联系我们"
-    }
+    },
+    "phoneNumber": "+971 54 998 8811",
+    "email": "info@binayah.com",
+    "address": "商业湾，马拉西大道，迪拜，阿联酋",
+    "ornNumber": "ORN: 1040"
   },
   "lang": {
     "en": "English",

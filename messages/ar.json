@@ -462,7 +462,11 @@
       "about": "من نحن",
       "news": "الأخبار",
       "contact": "اتصل بنا"
-    }
+    },
+    "phoneNumber": "+971 54 998 8811",
+    "email": "info@binayah.com",
+    "address": "خليج الأعمال، طريق مراسي، دبي، الإمارات",
+    "ornNumber": "ORN: 1040"
   },
   "lang": {
     "en": "English",

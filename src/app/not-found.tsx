@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import Link from "next/link";
 import { Home, Search, Phone } from "lucide-react";
 

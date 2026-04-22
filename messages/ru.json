@@ -462,7 +462,11 @@
       "about": "О нас",
       "news": "Новости",
       "contact": "Контакты"
-    }
+    },
+    "phoneNumber": "+971 54 998 8811",
+    "email": "info@binayah.com",
+    "address": "Бизнес-Бэй, Мараси Драйв, Дубай, ОАЭ",
+    "ornNumber": "ORN: 1040"
   },
   "lang": {
     "en": "English",
