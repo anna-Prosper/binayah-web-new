@@ -427,7 +427,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               const handoverValue = isReady
                 ? "Ready to Move In"
                 : project.completionDate
-                  ? new Date(project.completionDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" })
+                  ? (() => { const d = new Date(project.completionDate); return isNaN(d.getTime()) ? project.completionDate : d.toLocaleDateString("en-GB", { month: "short", year: "numeric" }); })()
                   : "TBA";
               const handoverIcon = isReady ? CheckCircle2 : Calendar;
 
