@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-const serviceBuy = "/assets/unit-2br.webp";
-const serviceRent = "/assets/unit-1br.webp";
-const serviceSell = "/assets/dubai-hero.webp";
-const serviceOffplan = "/assets/marina-gate-hero.webp";
-const serviceManagement = "/assets/unit-penthouse.webp";
+const serviceBuy = "/assets/service-buy.webp";
+const serviceRent = "/assets/service-rent.webp";
+const serviceSell = "/assets/service-sell.webp";
+const serviceOffplan = "/assets/service-offplan.webp";
+const serviceManagement = "/assets/service-management.webp";
 
 const WhatWeOffer = () => {
   const t = useTranslations("home.sections.whatWeOffer");
