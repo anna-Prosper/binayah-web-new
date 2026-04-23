@@ -110,7 +110,9 @@
         "智慧生活在",
         "您的未来在",
         "AI驱动搜索"
-      ]
+      ],
+      "searchCta": "搜索",
+      "askAiCta": "询问 AI"
     },
     "featured": "精选房产",
     "offPlan": "期房项目",
@@ -225,7 +227,10 @@
         "marketYear": "迪拜房地产 2025",
         "headlineGold": "获取免费估价",
         "stripSubtitle": "AI驱动的房产估价，60秒内完成",
-        "mobileProof": "免费 · 即时 · 无需注册"
+        "mobileProof": "免费 · 即时 · 无需注册",
+        "pillMarketComps": "实时市场对比",
+        "pillReady": "2 分钟内完成",
+        "pillAiEstimate": "AI 智能估价"
       },
       "listYourProperty": {
         "label": "与Binayah合作出售",
@@ -870,7 +875,20 @@
     "bathsLabel": "卫生间",
     "viewFullSize": "查看原图",
     "ctaHeadlineDefault": "预约免费咨询",
-    "ctaSubheadlineDefault": "立即与我们的房产专家交谈，获取独家报价"
+    "ctaSubheadlineDefault": "立即与我们的房产专家交谈，获取独家报价",
+    "tabOverview": "概览",
+    "tabLocation": "位置",
+    "tabPayment": "付款",
+    "tabFaq": "常见问题",
+    "projectsDelivered": "已交付项目",
+    "yearsExperience": "行业经验",
+    "unitsCompleted": "已完工单位",
+    "reasonPrimeWaterfront": "绝佳海滨位置",
+    "reasonHighRentalDemand": "高租赁需求区域",
+    "reasonGoldenVisa": "可申请黄金签证",
+    "reasonTaxFree": "零税收回报",
+    "reasonCapitalAppreciation": "资产增值强劲",
+    "reasonWorldClassAmenities": "世界级配套设施"
   },
   "propertyDetail": {
     "backToProperties": "返回房产列表",
@@ -1279,7 +1297,19 @@
   "faq": {
     "title": "常见",
     "titleItalic": "问题",
-    "label": "常见问题"
+    "label": "常见问题",
+    "q1": "外国人如何在迪拜购置房产？",
+    "a1": "外国人可以在迪拜指定区域购买永久产权房产。您需要有效护照，无需居住签证。Binayah 会全程协助您 — 从物业甄选、DLD 登记到交房。",
+    "q2": "什么是楼花（off-plan）？是否值得投资？",
+    "a2": "楼花是在项目建设中或建设前直接向开发商购买，价格通常低于现房，并提供灵活分期付款（常见 60/40 或 70/30）。迪拜楼花市场历史上在交房时带来 20%–40% 的增值。",
+    "q3": "在迪拜购置房产涉及哪些费用？",
+    "a3": "主要费用包括：DLD 4% 转让费、2% 中介佣金、约 4,200 迪拉姆 DLD 行政费以及约 5,000–10,000 迪拉姆的 NOC 与受托人费用。迪拜没有房产税、资本利得税或租金所得税。",
+    "q4": "通过房产投资能否获得黄金签证？",
+    "a4": "可以。投资 200 万迪拉姆或以上的迪拜房产即可申请 10 年黄金签证。楼花或现房都可以，多套房产可合并计算。Binayah 可以帮您筛选符合黄金签证条件的物业。",
+    "q5": "在迪拜可以获得怎样的租金回报？",
+    "a5": "迪拜是全球租金回报最高的市场之一，平均净回报 5%–8%。JVC、Dubai Silicon Oasis、International City 等区域可达 8%–10%，Dubai Marina、Downtown 等优质地段平均 5%–7%。我们的 Pulse 仪表板提供各区域实时数据。",
+    "q6": "Binayah 的物业管理服务是怎样运作的？",
+    "a6": "我们的全套物业管理包括租客招募、租金收取、维护协调、DEWA / Ejari 办理以及定期巡检。我们收取具有竞争力的管理费，全包式服务让您省心收租。"
   },
   "mortgageCalculator": {
     "title": "按揭计算器",
@@ -1511,6 +1541,18 @@
     "privatePool": "私人泳池",
     "bedroomCount": "{count, plural, =0 {开间} other {# 室}}",
     "bedroomsLabel": "卧室",
-    "sqftLabel": "平方英尺"
+    "sqftLabel": "平方英尺",
+    "swimmingPool": "游泳池",
+    "gymnasium": "健身房",
+    "kidsPlayArea": "儿童游乐区",
+    "conciergeService": "礼宾服务",
+    "parking": "停车位",
+    "security24x7": "24/7 安保",
+    "spaSauna": "水疗中心与桑拿",
+    "bbqArea": "烧烤区",
+    "joggingTrack": "跑步道",
+    "retailOutlets": "商铺",
+    "landscapedGardens": "景观花园",
+    "smartHomeFeatures": "智能家居"
   }
 }

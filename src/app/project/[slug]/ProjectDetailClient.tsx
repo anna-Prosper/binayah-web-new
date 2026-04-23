@@ -549,7 +549,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   }`}
                   style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                 >
-                  <span className="relative z-10 uppercase">{tab === "faq" ? "FAQ" : tab}</span>
+                  <span className="relative z-10 uppercase">{t(({ overview: "tabOverview", location: "tabLocation", payment: "tabPayment", faq: "tabFaq" } as const)[tab])}</span>
                 </button>
               ))}
             </motion.div>
@@ -1361,12 +1361,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {(() => {
                     const highlights = project.investmentHighlights || [];
                     const defaultReasons = [
-                      "Prime waterfront location",
-                      "High rental demand area",
-                      "Golden Visa eligible",
-                      "Tax-free returns",
-                      "Strong capital appreciation",
-                      "World-class amenities",
+                      t("reasonPrimeWaterfront"),
+                      t("reasonHighRentalDemand"),
+                      t("reasonGoldenVisa"),
+                      t("reasonTaxFree"),
+                      t("reasonCapitalAppreciation"),
+                      t("reasonWorldClassAmenities"),
                     ];
                     const reasons = highlights.length > 0 ? highlights : defaultReasons;
                     const stats = [
@@ -1447,7 +1447,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     };
                     const amenities = project.amenities && project.amenities.length > 0
                       ? project.amenities
-                      : ["Swimming Pool", "Gymnasium", "Kids Play Area", "Concierge Service", "Parking", "24/7 Security", "Spa & Sauna", "BBQ Area", "Jogging Track", "Retail Outlets", "Landscaped Gardens", "Smart Home Features"];
+                      : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")];
 
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
@@ -1565,9 +1565,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         {/* Stats row */}
                         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
                           {[
-                            { value: "50+", label: "Projects Delivered", icon: Building2 },
-                            { value: "20+", label: "Years Experience", icon: Clock },
-                            { value: "10K+", label: "Units Completed", icon: Home },
+                            { value: "50+", label: t("projectsDelivered"), icon: Building2 },
+                            { value: "20+", label: t("yearsExperience"), icon: Clock },
+                            { value: "10K+", label: t("unitsCompleted"), icon: Home },
                           ].map((stat, i) => {
                             const StatIcon = stat.icon;
                             return (

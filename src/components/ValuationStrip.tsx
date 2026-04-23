@@ -5,15 +5,14 @@ import { ArrowRight, TrendingUp, Clock, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const pills = [
-  { icon: TrendingUp, label: "Live market comps" },
-  { icon: Clock, label: "Ready in 2 minutes" },
-  { icon: Sparkles, label: "AI-powered estimate" },
-];
-
 const ValuationStrip = () => {
   const router = useRouter();
   const t = useTranslations("home.sections.valuation");
+  const pills = [
+    { icon: TrendingUp, label: t("pillMarketComps") },
+    { icon: Clock, label: t("pillReady") },
+    { icon: Sparkles, label: t("pillAiEstimate") },
+  ];
 
   return (
     <section className="relative overflow-hidden">

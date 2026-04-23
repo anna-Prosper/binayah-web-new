@@ -458,7 +458,7 @@ const HeroSection = () => {
               style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
             >
               {isQuestion ? <MessageCircle className="h-4 w-4" /> : <Search className="h-4 w-4" />}
-              {isQuestion ? "Ask AI" : "Search"}
+              {isQuestion ? t("askAiCta") : t("searchCta")}
             </button>
           </div>
         </motion.div>
@@ -769,7 +769,7 @@ const HeroSection = () => {
                     style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
                   >
                     {isQuestion ? <MessageCircle className="h-4 w-4" /> : <Search className="h-4 w-4" />}
-                    {isQuestion && smartSearch.trim() ? "Ask AI" : "Search"}
+                    {isQuestion && smartSearch.trim() ? t("askAiCta") : t("searchCta")}
                   </button>
                 </div>
               </div>
