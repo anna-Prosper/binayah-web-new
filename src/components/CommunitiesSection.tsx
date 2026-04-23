@@ -6,12 +6,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-const S3 = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/communities";
 const communities = [
-  { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: `${S3}/downtown-dubai/rove-home-at-downtown-dubai_01.jpg` },
-  { name: "Palm Jumeirah", slug: "palm-jumeirah", properties: "320+", image: `${S3}/palm-jumeirah/Palm-Jumeirah-Dubai.jpg` },
-  { name: "Dubai Marina", slug: "dubai-marina", properties: "580+", image: `${S3}/dubai-marina/Dubai-Marina.jpg` },
-  { name: "Business Bay", slug: "business-bay", properties: "290+", image: `${S3}/business-bay/featured.webp` },
+  { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "/assets/communities/downtown-dubai.webp" },
+  { name: "Palm Jumeirah", slug: "palm-jumeirah", properties: "320+", image: "/assets/communities/palm-jumeirah.webp" },
+  { name: "Dubai Marina", slug: "dubai-marina", properties: "580+", image: "/assets/communities/dubai-marina.webp" },
+  { name: "Business Bay", slug: "business-bay", properties: "290+", image: "/assets/communities/business-bay.webp" },
 ];
 
 const CommunitiesSection = () => {

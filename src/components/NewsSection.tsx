@@ -88,24 +88,25 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
         ))}
       </div>
 
-      {/* Desktop grid */}
-      <div className="hidden sm:grid md:grid-cols-3 gap-7">
+      {/* Desktop: horizontal scroll row */}
+      <div className="hidden sm:flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6">
         {articles.map((a, i) => (
           <motion.div
             key={a.slug}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.12 }}
+            transition={{ delay: i * 0.08 }}
+            className="flex-shrink-0 w-[340px] lg:w-[380px] snap-start"
           >
-            <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+            <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20 h-full">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="380px" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                 <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-6">
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-3"><Calendar className="h-3 w-3" /> {formatDate(a.publishedAt) || (a as any).date}</p>
-                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug">{a.title}</h3>
+                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{a.title}</h3>
               </div>
             </Link>
           </motion.div>
