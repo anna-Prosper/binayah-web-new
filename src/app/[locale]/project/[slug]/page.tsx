@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/project/[slug]/ProjectDetailClient";
 import { getProject } from "@/lib/api";
+import { applyTranslation } from "@/lib/applyTranslation";
 
 export const revalidate = 1800;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const project = await getProject(slug);
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const project = applyTranslation(await getProject(slug), locale);
   if (!project) return { title: "Not Found" };
   const seo = project.seo || {};
   return {
@@ -27,9 +28,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const project = await getProject(slug);
+export default async function ProjectPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const project = applyTranslation(await getProject(slug), locale);
   if (!project) return notFound();
   return <ProjectDetailClient serverProject={project} />;
 }
