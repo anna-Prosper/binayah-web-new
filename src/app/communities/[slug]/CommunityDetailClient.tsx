@@ -12,11 +12,12 @@ import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 
+const S3_COMM = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/communities";
 const communityImages: Record<string, string> = {
-  "downtown-dubai": "/assets/dubai-hero.webp",
-  "palm-jumeirah": "/assets/dubai-hero.webp",
-  "dubai-marina": "/assets/dubai-hero.webp",
-  "business-bay": "/assets/dubai-hero.webp",
+  "downtown-dubai": `${S3_COMM}/downtown-dubai/rove-home-at-downtown-dubai_01.jpg`,
+  "palm-jumeirah": `${S3_COMM}/palm-jumeirah/Palm-Jumeirah-Dubai.jpg`,
+  "dubai-marina": `${S3_COMM}/dubai-marina/Dubai-Marina.jpg`,
+  "business-bay": `${S3_COMM}/business-bay/featured.webp`,
 };
 
 interface Props {
