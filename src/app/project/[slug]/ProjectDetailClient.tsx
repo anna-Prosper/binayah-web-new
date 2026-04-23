@@ -113,6 +113,21 @@ const attractionIcon = (type: string) => {
 const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
+  const tE = useTranslations("enums");
+  const tEnum = (v: string | undefined | null) => {
+    if (!v) return "";
+    const key = v.toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)).join("");
+    if (!key) return v;
+    try { const out = tE(key as any); return out && out !== key ? out : v; } catch { return v; }
+  };
+  const tBed = (raw: string | undefined | null) => {
+    if (!raw) return "";
+    const s = raw.trim();
+    if (/^studio$/i.test(s)) return tEnum("Studio");
+    const m = s.match(/^(\d+)\s*\+?\s*(?:bedroom|br|bed)s?$/i);
+    if (!m) return raw;
+    try { return tE("bedroomCount", { count: parseInt(m[1], 10) } as any); } catch { return raw; }
+  };
   const project = {
     ...serverProject,
     unitTypes: Array.isArray(serverProject.unitTypes) ? serverProject.unitTypes : [],
@@ -277,10 +292,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg text-white"
                       style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
-                      {project.status}
+                      {tEnum(project.status)}
                     </span>
                     <span className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
-                      {formatPropertyTypeLabel(project.propertyType, project.propertyType)}
+                      {(Array.isArray(project.propertyType) ? project.propertyType : [project.propertyType]).filter(Boolean).map((p: string) => tEnum(p)).join(" · ")}
                     </span>
                   </div>
                   {/* Developer name – hidden on mobile */}
@@ -697,13 +712,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       const unitMinSize = Math.round(sizeMin + sizeStep * idx);
                       const unitMaxSize = Math.round(unitMinSize + (sizeStep > 0 ? sizeStep * 0.8 : 200));
                       const features = [
-                        "Built-in Wardrobes",
-                        bedrooms >= 2 ? "Maid's Room" : null,
-                        idx % 2 === 0 ? "Sea View" : "City View",
-                        "Balcony",
-                        bedrooms >= 3 ? "Private Terrace" : null,
-                        "Central A/C",
-                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                        tE("builtInWardrobes"),
+                        bedrooms >= 2 ? tE("maidsRoom") : null,
+                        idx % 2 === 0 ? tE("seaView") : tE("cityView"),
+                        tE("balcony"),
+                        bedrooms >= 3 ? tE("privateTerrace") : null,
+                        tE("centralAC"),
+                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? tE("privatePool") : null,
                       ].filter(Boolean) as string[];
                       return { name: ut, minPrice, maxPrice, contactUs, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
                     };
@@ -780,7 +795,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   ) : (
                                     <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
                                   )}
-                                  <span className="truncate">{pt}</span>
+                                  <span className="truncate">{tEnum(pt)}</span>
                                 </button>
                               ))}
                             </div>
@@ -800,7 +815,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               }`}
                               style={clampedUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                             >
-                              {unit.name}
+                              {tBed(unit.name)}
                             </button>
                           ))}
                         </div>
@@ -886,7 +901,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 {/* Top: Title + status */}
                                 <div className="flex items-start justify-between gap-4">
                                   <div>
-                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{activeUnit?.name}</h3>
+                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{tBed(activeUnit?.name)}</h3>
                                     <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
                                   </div>
                                   <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
@@ -929,9 +944,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 {/* Stats */}
                                 <div className="grid grid-cols-3 gap-2 sm:gap-3">
                                   {[
-                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? "Studio" : activeUnit?.bedrooms, label: "Bedrooms" },
-                                    { icon: Users, value: activeUnit?.bathrooms, label: "Baths" },
-                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: "Sq. Ft." },
+                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? tE("studio") : activeUnit?.bedrooms, label: tE("bedroomsLabel") },
+                                    { icon: Users, value: activeUnit?.bathrooms, label: t("bathsLabel") },
+                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: tE("sqftLabel") },
                                   ].map(({ icon: StatIcon, value, label }) => (
                                     <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center border border-border/30 hover:border-primary/20 transition-all hover:shadow-sm group">
                                       <StatIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary/60 group-hover:text-primary mx-auto mb-1.5 transition-colors" />
@@ -1927,11 +1942,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div className="grid grid-cols-2 gap-2 sm:gap-4">
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
                           <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType || "Freehold"}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
                         </div>
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
                           <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
                         </div>
                       </div>
                     </div>
@@ -1940,11 +1955,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <div className="sm:hidden grid grid-cols-2 gap-2">
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.titleType || "Freehold"}</p>
+                      <p className="text-sm font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
+                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
                     </div>
                   </div>
 
@@ -2067,7 +2082,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {project.availabilityStatus && (
                       <div className="mt-5 flex items-center gap-2.5 p-3 bg-emerald-500/8 rounded-xl border border-emerald-500/15">
                         <span className={`w-2.5 h-2.5 rounded-full ${project.availabilityStatus === "Available" ? "bg-emerald-500 animate-pulse" : "bg-accent"}`} />
-                        <span className="text-sm font-semibold text-foreground">{project.availabilityStatus}</span>
+                        <span className="text-sm font-semibold text-foreground">{tEnum(project.availabilityStatus)}</span>
                       </div>
                     )}
                   </div>
@@ -2256,7 +2271,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-5 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || "Interested?"}
+                    {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
                   <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                   {currency === "AED" && project.startingPrice && (
@@ -2358,7 +2373,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || "Interested?"}
+                    {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
                   <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                   {currency === "AED" && project.startingPrice && (
@@ -2370,8 +2385,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </div>
                 {/* Desktop: full CTA buttons */}
                 <div className="hidden sm:block p-5 space-y-3">
-                  {project.ctaSubheadline && (
-                    <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline}</p>
+                  {(project.ctaSubheadline || t("ctaSubheadlineDefault")) && (
+                    <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline || t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
                     href={`https://wa.me/${project.whatsappNumber?.replace(/\+/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
@@ -2418,12 +2433,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     { label: t("developer"), value: project.developerName },
                     { label: t("communityLabel"), value: project.community },
                     { label: t("cityLabel"), value: `${project.city}, ${project.country}` },
-                    { label: t("propertyTypeLabel"), value: project.propertyTypes?.length > 0 ? project.propertyTypes.join(" · ") : formatPropertyTypeLabel(project.propertyType, project.propertyType) },
-                    { label: t("projectTypeLabel"), value: project.projectType },
-                    { label: t("status"), value: project.status },
-                    { label: t("titleType"), value: project.titleType },
-                    { label: t("eligibility"), value: project.ownershipEligibility },
-                    { label: t("availability"), value: project.availabilityStatus },
+                    { label: t("propertyTypeLabel"), value: project.propertyTypes?.length > 0 ? project.propertyTypes.map((pt: string) => tEnum(pt)).join(" · ") : tEnum(Array.isArray(project.propertyType) ? project.propertyType[0] : project.propertyType) },
+                    { label: t("projectTypeLabel"), value: tEnum(project.projectType) },
+                    { label: t("status"), value: tEnum(project.status) },
+                    { label: t("titleType"), value: tEnum(project.titleType) },
+                    { label: t("eligibility"), value: tEnum(project.ownershipEligibility) },
+                    { label: t("availability"), value: tEnum(project.availabilityStatus) },
                   ].filter(f => f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>

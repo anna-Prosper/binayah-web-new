@@ -862,7 +862,9 @@
     "floorPlans": "مخططات الطوابق",
     "bedsLabel": "غرف نوم",
     "bathsLabel": "حمامات",
-    "viewFullSize": "عرض بالحجم الكامل"
+    "viewFullSize": "عرض بالحجم الكامل",
+    "ctaHeadlineDefault": "احجز استشارة مجانية",
+    "ctaSubheadlineDefault": "تحدث مع خبراء العقارات لدينا اليوم واحصل على أسعار حصرية"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1462,5 +1464,47 @@
   },
   "featuredPropertiesServer": {
     "viewAll": "عرض جميع العقارات"
+  },
+  "enums": {
+    "apartment": "شقة",
+    "villa": "فيلا",
+    "townhouse": "تاون هاوس",
+    "penthouse": "بنتهاوس",
+    "duplex": "دوبلكس",
+    "commercial": "تجاري",
+    "office": "مكتب",
+    "retail": "محل تجاري",
+    "studio": "استوديو",
+    "hotelApartment": "شقة فندقية",
+    "serviceApartment": "شقة مخدومة",
+    "residential": "سكني",
+    "mixedUse": "متعدد الاستخدامات",
+    "offPlan": "على الخارطة",
+    "ready": "جاهز",
+    "completed": "مكتمل",
+    "underConstruction": "قيد الإنشاء",
+    "comingSoon": "قريبا",
+    "launchingSoon": "يُطلق قريبا",
+    "newLaunch": "إطلاق جديد",
+    "available": "متاح",
+    "soldOut": "نفذ",
+    "limited": "توفر محدود",
+    "reserved": "محجوز",
+    "freehold": "ملكية حرة",
+    "leasehold": "حق انتفاع",
+    "allNationalities": "جميع الجنسيات",
+    "uaeNationals": "المواطنون الإماراتيون",
+    "gccNationals": "مواطنو دول الخليج",
+    "builtInWardrobes": "خزائن مدمجة",
+    "maidsRoom": "غرفة خادمة",
+    "seaView": "إطلالة على البحر",
+    "cityView": "إطلالة على المدينة",
+    "balcony": "شرفة",
+    "privateTerrace": "تراس خاص",
+    "centralAC": "تكييف مركزي",
+    "privatePool": "مسبح خاص",
+    "bedroomCount": "{count, plural, =0 {استوديو} =1 {غرفة نوم واحدة} =2 {غرفتا نوم} other {# غرف نوم}}",
+    "bedroomsLabel": "غرف النوم",
+    "sqftLabel": "قدم مربع"
   }
 }

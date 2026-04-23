@@ -862,7 +862,9 @@
     "floorPlans": "Планировки",
     "bedsLabel": "Спален",
     "bathsLabel": "Ванных",
-    "viewFullSize": "Полный размер"
+    "viewFullSize": "Полный размер",
+    "ctaHeadlineDefault": "Записаться на бесплатную консультацию",
+    "ctaSubheadlineDefault": "Поговорите с нашими экспертами по недвижимости и получите эксклюзивные цены"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
@@ -1462,5 +1464,47 @@
   },
   "featuredPropertiesServer": {
     "viewAll": "Все объекты"
+  },
+  "enums": {
+    "apartment": "Квартира",
+    "villa": "Вилла",
+    "townhouse": "Таунхаус",
+    "penthouse": "Пентхаус",
+    "duplex": "Дуплекс",
+    "commercial": "Коммерческая",
+    "office": "Офис",
+    "retail": "Торговое помещение",
+    "studio": "Студия",
+    "hotelApartment": "Отельные апартаменты",
+    "serviceApartment": "Апартаменты с обслуживанием",
+    "residential": "Жилой",
+    "mixedUse": "Смешанного назначения",
+    "offPlan": "На этапе строительства",
+    "ready": "Готово",
+    "completed": "Завершено",
+    "underConstruction": "Строится",
+    "comingSoon": "Скоро",
+    "launchingSoon": "Скоро запуск",
+    "newLaunch": "Новый проект",
+    "available": "Доступно",
+    "soldOut": "Продано",
+    "limited": "Ограниченное количество",
+    "reserved": "Зарезервировано",
+    "freehold": "Полная собственность",
+    "leasehold": "Долгосрочная аренда",
+    "allNationalities": "Все национальности",
+    "uaeNationals": "Граждане ОАЭ",
+    "gccNationals": "Граждане стран ССАГПЗ",
+    "builtInWardrobes": "Встроенные шкафы",
+    "maidsRoom": "Комната для прислуги",
+    "seaView": "Вид на море",
+    "cityView": "Вид на город",
+    "balcony": "Балкон",
+    "privateTerrace": "Приватная терраса",
+    "centralAC": "Центральный кондиционер",
+    "privatePool": "Частный бассейн",
+    "bedroomCount": "{count, plural, =0 {Студия} one {# спальня} few {# спальни} other {# спален}}",
+    "bedroomsLabel": "Спальни",
+    "sqftLabel": "Кв. фут"
   }
 }
