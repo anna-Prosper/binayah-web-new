@@ -18,25 +18,37 @@ const CommunitiesSection = () => {
   return (
   <section id="communities" className="py-12 sm:py-24 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      {/* Mobile: compact inline header */}
+      <div className="sm:hidden flex items-center justify-between mb-4">
+        <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
+        <Link href="/communities" className="group flex items-center gap-1 text-primary font-semibold text-xs">
+          {t("viewAll")} <ArrowUpRight className="h-3 w-3" />
+        </Link>
+      </div>
+
+      {/* Desktop: centered header with View All */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center mb-6 sm:mb-14"
+        className="hidden sm:block text-center mb-14 relative"
       >
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: "3rem" }}
           viewport={{ once: true }}
-          className="h-[2px] mx-auto mb-4 sm:mb-6"
+          className="h-[2px] mx-auto mb-6"
           style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
-        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
+        <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>
           {t("label")}
         </p>
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
+        <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
           {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
         </h2>
+        <Link href="/communities" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
+          {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
+        </Link>
       </motion.div>
 
       {/* Mobile: horizontal scroll */}

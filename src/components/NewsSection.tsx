@@ -29,10 +29,10 @@ function formatDate(dateStr?: string) {
 
 const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) => {
   const t = useTranslations("home.sections.news");
-  const articles = propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
+  const articles = (propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
     _id: String(i), title: a.title, slug: a.slug, category: a.category,
     featuredImage: a.image, publishedAt: a.date
-  }));
+  }))).slice(0, 3);
   return (
   <section id="news" className="py-12 sm:py-24 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -44,21 +44,19 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
         </Link>
       </div>
 
-      {/* Desktop: full header */}
+      {/* Desktop: centered header with View All */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="hidden sm:flex sm:items-end sm:justify-between mb-14"
+        className="hidden sm:block text-center mb-14 relative"
       >
-        <div>
-          <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            {t("title")}
-          </h2>
-        </div>
-        <Link href="/news" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
+        <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+        <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
+        <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
+          {t("title")}
+        </h2>
+        <Link href="/news" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
           {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
         </Link>
       </motion.div>
@@ -88,20 +86,19 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
         ))}
       </div>
 
-      {/* Desktop: horizontal scroll row */}
-      <div className="hidden sm:flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6">
+      {/* Desktop grid */}
+      <div className="hidden sm:grid md:grid-cols-3 gap-7">
         {articles.map((a, i) => (
           <motion.div
             key={a.slug}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            className="flex-shrink-0 w-[340px] lg:w-[380px] snap-start"
+            transition={{ delay: i * 0.12 }}
           >
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20 h-full">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="380px" className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                 <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-6">
