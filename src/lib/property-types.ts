@@ -96,7 +96,7 @@ export function formatPropertyTypeLabel(value: unknown, fallback = "") {
 
 export function requiresPropertyNameForPropertyType(value: unknown) {
   const normalizedValue = normalizePropertyType(value, "");
-  return normalizedValue === "Apartment" || normalizedValue === "Commercial";
+  return normalizedValue !== "Plot";
 }
 
 function matchesPropertyTypeGroup(normalizedValue: string, allowedTerms: readonly string[]) {
