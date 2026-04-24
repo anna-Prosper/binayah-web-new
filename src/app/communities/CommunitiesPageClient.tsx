@@ -20,7 +20,7 @@ interface Community {
   viewCount?: number;
 }
 
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=800&fit=crop";
+const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 
 export default function CommunitiesPageClient({ communities }: { communities: Community[] }) {
   const t = useTranslations("communities");

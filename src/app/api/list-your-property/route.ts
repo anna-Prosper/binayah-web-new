@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+import { sendMail } from "@/lib/mailer";
 
 const VALID_PROPERTY_TYPES = [
   "Apartment",
@@ -128,14 +129,27 @@ export async function POST(req: NextRequest) {
     at: new Date(),
   });
 
-  // TODO: send email notification when SMTP_USER / SMTP_PASS are configured
-  console.log("[list-your-property] New submission:", {
-    userEmail: session.user.email,
-    propertyType,
-    listingType,
-    community,
-    phone,
-  });
+  const inquiryEmail = process.env.INQUIRY_EMAIL;
+  if (inquiryEmail) {
+    sendMail({
+      to: inquiryEmail,
+      subject: `New Property Submission — ${propertyType} in ${community}`,
+      html: `
+        <h2>New Property Submission</h2>
+        <table>
+          <tr><td><b>User</b></td><td>${session.user.name || ""} (${session.user.email})</td></tr>
+          <tr><td><b>Type</b></td><td>${propertyType} — ${listingType}</td></tr>
+          <tr><td><b>Community</b></td><td>${community}</td></tr>
+          <tr><td><b>Bedrooms</b></td><td>${bedrooms ?? "—"}</td></tr>
+          <tr><td><b>Area</b></td><td>${areaSqft ? areaSqft + " sqft" : "—"}</td></tr>
+          <tr><td><b>Asking Price</b></td><td>${askingPrice ? "AED " + Number(askingPrice).toLocaleString() : "—"}</td></tr>
+          <tr><td><b>Phone</b></td><td>${phone}</td></tr>
+          <tr><td><b>Description</b></td><td>${description || "—"}</td></tr>
+        </table>
+      `,
+      text: `New submission: ${propertyType} in ${community} by ${session.user.email} (${phone})`,
+    }).catch(() => {});
+  }
 
   return NextResponse.json({ ok: true });
 }

@@ -1,4 +1,9 @@
 import OffPlanPageClient from "@/app/off-plan/OffPlanPageClient";
+
+export const metadata = {
+  title: "Off-Plan Properties in Dubai | Binayah Properties",
+  description: "Discover Dubai's best off-plan developments. High-ROI projects in prime locations with flexible payment plans. Browse with Binayah Properties.",
+};
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 300;
@@ -14,8 +19,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 799999,
     completionDate: "2026-12-01",
     shortOverview: "Studio, 1 & 2-bedroom apartments in Arjan, Dubai combining modern architectural elegance with urban living.",
-    featuredImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
   },
   {
     _id: "fallback-2",
@@ -27,8 +32,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 1850000,
     completionDate: "2027-06-01",
     shortOverview: "Stunning beachfront residences with panoramic sea views in Dubai Harbour.",
-    featuredImage: "https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
   },
   {
     _id: "fallback-3",
@@ -40,8 +45,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 1200000,
     completionDate: "2027-03-01",
     shortOverview: "Premium residences surrounded by an 8 million sq ft greenbelt in Mohammed Bin Rashid City.",
-    featuredImage: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/dubai-hero.webp",
+    imageGallery: ["/assets/dubai-hero.webp"],
   },
   {
     _id: "fallback-4",
@@ -53,8 +58,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 3500000,
     completionDate: "2026-09-01",
     shortOverview: "Luxury villas surrounding a crystal lagoon with world-class amenities.",
-    featuredImage: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
-    imageGallery: ["https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop"],
+    featuredImage: "/assets/amenities-placeholder.webp",
+    imageGallery: ["/assets/amenities-placeholder.webp"],
   },
 ];
 

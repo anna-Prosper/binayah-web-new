@@ -107,7 +107,7 @@ export default function PropertyDetailClient({
 
   if (allImages.length === 0) {
     allImages.push(
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200"
+      "/assets/amenities-placeholder.webp"
     );
   }
 
@@ -649,7 +649,7 @@ export default function PropertyDetailClient({
                         src={
                           l.featuredImage ||
                           l.images?.[0] ||
-                          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"
+                          "/assets/amenities-placeholder.webp"
                         }
                         alt={l.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"

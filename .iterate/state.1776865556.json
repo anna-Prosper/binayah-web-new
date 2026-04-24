@@ -1,0 +1,166 @@
+{
+  "task": "perfect translation across all languages",
+  "baseSha": "8519673da54499fa5f7e86f736b5b87ae9cbc2f6",
+  "stages": [
+    {
+      "id": 1,
+      "status": "in_progress",
+      "spec": "## Why this will be good\nUsers browsing the homepage in Chinese or Russian currently hit jarring English fragments (Why Choose Us, Our Services, Off Plan, AI-Powered) that break trust in a real-estate platform where price/trust signals matter. This closes the last visible gaps on the two locales most likely to produce buyers. Production-ready: values map to real keys already rendered by existing components (no code paths added, no new keys, no states to handle). Benchmark: Bayut/PropertyFinder's localized homepages — every badge, every label is translated, no half-English sections.\n\n## Scope\nEdit ONLY `messages/zh.json` and `messages/ru.json`. No component changes. No new or removed keys. No changes to `messages/en.json` or `messages/ar.json`.\n\n## Required edits — messages/zh.json (Simplified Chinese)\nReplace the values of these existing keys (currently English) with natural Simplified Chinese. All are under `home.sections.*`:\n\n1. `home.sections.stats.label` — currently `Why Choose Us` → translate to Simplified Chinese (short label, badge-style). Suggested: 为何选择我们\n2. `home.sections.stats.titleItalic` — currently `Agency in Dubai` → translate. Suggested: 迪拜中介 (to pair naturally with the preceding title fragment as rendered; DEV may adjust phrasing to read correctly when concatenated with sibling `stats.title` — check how the component composes them)\n3. `home.sections.whatWeOffer.title` — currently `Our Services` → Suggested: 我们的服务\n4. `home.sections.whatWeOffer.titleItalic` — currently `Solutions` → Suggested: 解决方案\n5. `home.sections.services.titleMobile` — currently `Our Services` → Suggested: 我们的服务\n6. `home.sections.services.titleItalic` — currently `Care` → Suggested: 关怀 or 服务 (pair naturally with the sibling title)\n7. `home.sections.services.marketing` — currently `Marketing` → Suggested: 营销\n8. `home.sections.services.maintenance` — currently `Maintenance` → Suggested: 维护 (or 物业管理 if context is property-management — check how this string is rendered; if it appears alongside 营销/销售 as a service category, 维护 or 维修保养 is the right register)\n9. `home.sections.services.popular` — currently `Popular` → Suggested: 热门\n10. `home.sections.aiBanner.label` — currently `AI-Powered` → Suggested: AI驱动 (concise, badge-friendly; `AI` is acceptable as industry loanword in Chinese tech UI)\n11. `home.sections.aiBanner.live` — currently `Live` → Suggested: 实时 (for a live-data badge) — DEV: confirm by checking the component; if it's a live-stream indicator use 直播, but market/AI banner context almost always = 实时\n12. `home.sections.offPlan.label` — currently `期房` (already Chinese, IS FINE) → VERIFY unchanged. (Planner listed this but it's already translated.)\n13. `home.sections.offPlan.offPlan` — currently `期房` (already Chinese, IS FINE) → VERIFY unchanged.\n\nNote on items 12 and 13: current values in zh.json are already `期房` (Chinese). Planner flagged them out of caution. DEV should verify they are correct Simplified Chinese for off-plan property (they are) and leave them as-is if already translated. If DEV disagrees with the existing translation, 期房 is the industry-standard term for off-plan — keep it.\n\n**Net: 11 strings need translating in zh.json, not 13.** Planner's list was a superset; trust the actual current values.\n\n## Required edits — messages/ru.json (Russian)\n\n1. `home.sections.offPlan.label` — currently `Off Plan` → replace with `Новостройки` (consistent with `nav.offPlan` and other ru.json off-plan keys)\n2. `home.sections.offPlan.offPlan` — currently `Off-Plan` → replace with `Новостройки`\n3. `marketDashboard.title` — currently the fragment `недвижимости Дубая` → replace with `Панель управления` (this key is rendered standalone as a heading meaning Dashboard; the English key is `Dashboard`, so the Russian must be a complete standalone heading, not a possessive fragment)\n\n## Acceptance criteria\n- `messages/zh.json` and `messages/ru.json` are valid JSON (no trailing commas, balanced braces, valid UTF-8).\n- Key count in both files is IDENTICAL to the pre-edit file (no additions, no removals). Verify with `jq` or Python: number of leaf keys before = number after.\n- For zh.json: after edit, none of the 11 target keys contain ASCII-only Latin text (allowance: `AI` inside `AI驱动` is acceptable as an industry loanword; no other English words allowed in those 11 values).\n- For ru.json: the 3 target keys contain only Cyrillic (plus spaces/punctuation). No `Off Plan` or `Off-Plan` strings remain.\n- Run `grep -n \"Off Plan\\|Off-Plan\" messages/ru.json` → must return zero matches.\n- Run a grep/jq scan over the full zh.json confirming no unintended new English strings were introduced. Excluded proper nouns per planner: Binayah, WhatsApp, AED, ROI, RERA, DLD, ORN, Marina Gate, FAQ, English, Re:, URLs, email addresses. The remaining known-acceptable English in zh.json (demo valuation labels, etc.) should be unchanged.\n- `npm run build` (or at minimum `next build` type-check / JSON parse) must still succeed. Locale files are imported at build — a syntax error fails the whole build.\n- Commit message: `fix(i18n): complete zh + ru translation gaps on homepage badges and marketDashboard`\n\n## Gotchas (from planner — respect these)\n- `offPlan.label` and `offPlan.offPlan` serve different UI purposes (section badge vs. property-type badge). In zh they're already both `期房` — leave as-is unless DEV finds a rendering reason to differ. In ru both become `Новостройки`.\n- `aiBanner.label` and `aiBanner.live` are UI badge labels — keep translations concise (2-4 characters ideal) so they don't break the badge pill width.\n- `marketDashboard.title` is rendered standalone. It MUST read as a complete heading on its own. `недвижимости Дубая` is a grammatical fragment (\"of Dubai's real estate\") — this is the exact bug being fixed. `Панель управления` is the complete standalone equivalent of Dashboard.\n- Do not touch any other keys in either file, even if they look imperfect. Scope is strictly these 14 string values (11 zh + 3 ru).\n- Do NOT add new keys, even if a sibling key seems missing — planner explicitly scoped this out.\n\n## Files to touch\n- `messages/zh.json`\n- `messages/ru.json`\n\n## Files NOT to touch\n- Any `.tsx` or `.ts` file\n- `messages/en.json`\n- `messages/ar.json`\n- Any config, package.json, lockfile\n\n## DEV workflow\n1. Open `messages/zh.json`, locate each of the 11 target keys under `home.sections.*`, replace the English value with the Chinese translation. Keep JSON formatting (indentation, trailing-comma style) identical to surrounding lines.\n2. Open `messages/ru.json`, edit the 3 keys.\n3. Validate both files parse as JSON (`python3 -c 'import json; json.load(open(\"messages/zh.json\"))'` and same for ru).\n4. Run final greps listed in acceptance criteria.\n5. Commit.\n\nNo UI verification needed beyond ensuring the build passes — these are string-for-string swaps in keys that are already wired and rendered."
+    }
+  ],
+  "currentStage": 1,
+  "totalStages": 1,
+  "stageIteration": 1,
+  "maxIterationsPerStage": 3,
+  "phase": "done",
+  "plannerOutput": {
+    "taskSummary": "Fix translation completeness in zh.json and ru.json: translate 13 surviving English strings in zh.json to Simplified Chinese, replace 2 English Off Plan strings in ru.json with Новостройки, and correct the ru.json marketDashboard.title fragment to Панель управления. No component changes, no new keys, no ar.json changes.",
+    "confirmedScope": [
+      "messages/zh.json: translate home.sections.stats.label, home.sections.stats.titleItalic, home.sections.whatWeOffer.title, home.sections.whatWeOffer.titleItalic, home.sections.services.titleMobile, home.sections.services.titleItalic, home.sections.services.marketing, home.sections.services.maintenance, home.sections.services.popular, home.sections.aiBanner.label, home.sections.aiBanner.live, home.sections.offPlan.label, home.sections.offPlan.offPlan — all to correct Simplified Chinese",
+      "messages/ru.json: replace home.sections.offPlan.label and home.sections.offPlan.offPlan (currently English Off Plan / Off-Plan) with Новостройки",
+      "messages/ru.json: correct marketDashboard.title from fragment недвижимости Дубая to Панель управления"
+    ],
+    "designDecisions": [
+      "zh.json: use natural Simplified Chinese real-estate industry vocabulary consistent with surrounding translations (e.g. 期房 for off-plan, 物业管理 for property management)",
+      "ru.json Off Plan: use Новостройки — consistent with nav.offPlan and other existing ru.json keys",
+      "ru.json FAQ label: leave as FAQ — internationally recognised abbreviation, no change",
+      "ar.json email placeholders (you@example.com, you@email.com): leave as-is — email addresses are universally understood",
+      "ValuationCTA and ValuationBanner hardcoded demo labels (Avg AED/sqft, Fair value, Accurate to ±3%): leave as-is — static sample numeric labels that are locale-agnostic",
+      "ru.json marketDashboard.title: correct to Панель управления to match the English key meaning (Dashboard)"
+    ],
+    "constraints": [
+      "Edit only messages/zh.json and messages/ru.json",
+      "Do not change messages/en.json (source of truth)",
+      "Do not add or remove any keys — only fix values of existing keys",
+      "After editing, verify zero remaining English-only strings in zh.json and ru.json (excluding proper nouns: Binayah, WhatsApp, AED, ROI, RERA, DLD, ORN, Marina Gate, FAQ, English, Re:, URLs, email addresses)"
+    ],
+    "outOfScope": [
+      "No component (.tsx) changes",
+      "No ar.json changes",
+      "No new translation keys",
+      "No en.json changes",
+      "No ValuationCTA or ValuationBanner wiring to i18n"
+    ],
+    "gotchas": [
+      "The two zh.json offPlan keys serve different purposes: offPlan.label is the section label badge (e.g. Off Plan), offPlan.offPlan is the property type badge — both need Chinese equivalents but they may have slightly different phrasing if needed",
+      "home.sections.aiBanner.label (AI-Powered) and home.sections.aiBanner.live (Live) are UI badge labels — Chinese equivalents should be concise and badge-friendly",
+      "marketDashboard.title in ru.json: the component reads this key standalone so it must read as a complete standalone heading, not a fragment",
+      "Use grep after edits to confirm no unintended English strings remain in the changed files"
+    ]
+  },
+  "plan": "## Why this will be good\nUsers browsing the homepage in Chinese or Russian currently hit jarring English fragments (Why Choose Us, Our Services, Off Plan, AI-Powered) that break trust in a real-estate platform where price/trust signals matter. This closes the last visible gaps on the two locales most likely to produce buyers. Production-ready: values map to real keys already rendered by existing components (no code paths added, no new keys, no states to handle). Benchmark: Bayut/PropertyFinder's localized homepages — every badge, every label is translated, no half-English sections.\n\n## Scope\nEdit ONLY `messages/zh.json` and `messages/ru.json`. No component changes. No new or removed keys. No changes to `messages/en.json` or `messages/ar.json`.\n\n## Required edits — messages/zh.json (Simplified Chinese)\nReplace the values of these existing keys (currently English) with natural Simplified Chinese. All are under `home.sections.*`:\n\n1. `home.sections.stats.label` — currently `Why Choose Us` → translate to Simplified Chinese (short label, badge-style). Suggested: 为何选择我们\n2. `home.sections.stats.titleItalic` — currently `Agency in Dubai` → translate. Suggested: 迪拜中介 (to pair naturally with the preceding title fragment as rendered; DEV may adjust phrasing to read correctly when concatenated with sibling `stats.title` — check how the component composes them)\n3. `home.sections.whatWeOffer.title` — currently `Our Services` → Suggested: 我们的服务\n4. `home.sections.whatWeOffer.titleItalic` — currently `Solutions` → Suggested: 解决方案\n5. `home.sections.services.titleMobile` — currently `Our Services` → Suggested: 我们的服务\n6. `home.sections.services.titleItalic` — currently `Care` → Suggested: 关怀 or 服务 (pair naturally with the sibling title)\n7. `home.sections.services.marketing` — currently `Marketing` → Suggested: 营销\n8. `home.sections.services.maintenance` — currently `Maintenance` → Suggested: 维护 (or 物业管理 if context is property-management — check how this string is rendered; if it appears alongside 营销/销售 as a service category, 维护 or 维修保养 is the right register)\n9. `home.sections.services.popular` — currently `Popular` → Suggested: 热门\n10. `home.sections.aiBanner.label` — currently `AI-Powered` → Suggested: AI驱动 (concise, badge-friendly; `AI` is acceptable as industry loanword in Chinese tech UI)\n11. `home.sections.aiBanner.live` — currently `Live` → Suggested: 实时 (for a live-data badge) — DEV: confirm by checking the component; if it's a live-stream indicator use 直播, but market/AI banner context almost always = 实时\n12. `home.sections.offPlan.label` — currently `期房` (already Chinese, IS FINE) → VERIFY unchanged. (Planner listed this but it's already translated.)\n13. `home.sections.offPlan.offPlan` — currently `期房` (already Chinese, IS FINE) → VERIFY unchanged.\n\nNote on items 12 and 13: current values in zh.json are already `期房` (Chinese). Planner flagged them out of caution. DEV should verify they are correct Simplified Chinese for off-plan property (they are) and leave them as-is if already translated. If DEV disagrees with the existing translation, 期房 is the industry-standard term for off-plan — keep it.\n\n**Net: 11 strings need translating in zh.json, not 13.** Planner's list was a superset; trust the actual current values.\n\n## Required edits — messages/ru.json (Russian)\n\n1. `home.sections.offPlan.label` — currently `Off Plan` → replace with `Новостройки` (consistent with `nav.offPlan` and other ru.json off-plan keys)\n2. `home.sections.offPlan.offPlan` — currently `Off-Plan` → replace with `Новостройки`\n3. `marketDashboard.title` — currently the fragment `недвижимости Дубая` → replace with `Панель управления` (this key is rendered standalone as a heading meaning Dashboard; the English key is `Dashboard`, so the Russian must be a complete standalone heading, not a possessive fragment)\n\n## Acceptance criteria\n- `messages/zh.json` and `messages/ru.json` are valid JSON (no trailing commas, balanced braces, valid UTF-8).\n- Key count in both files is IDENTICAL to the pre-edit file (no additions, no removals). Verify with `jq` or Python: number of leaf keys before = number after.\n- For zh.json: after edit, none of the 11 target keys contain ASCII-only Latin text (allowance: `AI` inside `AI驱动` is acceptable as an industry loanword; no other English words allowed in those 11 values).\n- For ru.json: the 3 target keys contain only Cyrillic (plus spaces/punctuation). No `Off Plan` or `Off-Plan` strings remain.\n- Run `grep -n \"Off Plan\\|Off-Plan\" messages/ru.json` → must return zero matches.\n- Run a grep/jq scan over the full zh.json confirming no unintended new English strings were introduced. Excluded proper nouns per planner: Binayah, WhatsApp, AED, ROI, RERA, DLD, ORN, Marina Gate, FAQ, English, Re:, URLs, email addresses. The remaining known-acceptable English in zh.json (demo valuation labels, etc.) should be unchanged.\n- `npm run build` (or at minimum `next build` type-check / JSON parse) must still succeed. Locale files are imported at build — a syntax error fails the whole build.\n- Commit message: `fix(i18n): complete zh + ru translation gaps on homepage badges and marketDashboard`\n\n## Gotchas (from planner — respect these)\n- `offPlan.label` and `offPlan.offPlan` serve different UI purposes (section badge vs. property-type badge). In zh they're already both `期房` — leave as-is unless DEV finds a rendering reason to differ. In ru both become `Новостройки`.\n- `aiBanner.label` and `aiBanner.live` are UI badge labels — keep translations concise (2-4 characters ideal) so they don't break the badge pill width.\n- `marketDashboard.title` is rendered standalone. It MUST read as a complete heading on its own. `недвижимости Дубая` is a grammatical fragment (\"of Dubai's real estate\") — this is the exact bug being fixed. `Панель управления` is the complete standalone equivalent of Dashboard.\n- Do not touch any other keys in either file, even if they look imperfect. Scope is strictly these 14 string values (11 zh + 3 ru).\n- Do NOT add new keys, even if a sibling key seems missing — planner explicitly scoped this out.\n\n## Files to touch\n- `messages/zh.json`\n- `messages/ru.json`\n\n## Files NOT to touch\n- Any `.tsx` or `.ts` file\n- `messages/en.json`\n- `messages/ar.json`\n- Any config, package.json, lockfile\n\n## DEV workflow\n1. Open `messages/zh.json`, locate each of the 11 target keys under `home.sections.*`, replace the English value with the Chinese translation. Keep JSON formatting (indentation, trailing-comma style) identical to surrounding lines.\n2. Open `messages/ru.json`, edit the 3 keys.\n3. Validate both files parse as JSON (`python3 -c 'import json; json.load(open(\"messages/zh.json\"))'` and same for ru).\n4. Run final greps listed in acceptance criteria.\n5. Commit.\n\nNo UI verification needed beyond ensuring the build passes — these are string-for-string swaps in keys that are already wired and rendered.",
+  "diff": "diff --git a/messages/ru.json b/messages/ru.json\nindex d9d04039..8d3314ac 100644\n--- a/messages/ru.json\n+++ b/messages/ru.json\n@@ -250,12 +250,12 @@\n         \"titleItalic\": \"Наши клиенты\"\n       },\n       \"offPlan\": {\n-        \"label\": \"Off Plan\",\n+        \"label\": \"Новостройки\",\n         \"title\": \"Актуальные\",\n         \"titleItalic\": \"проекты\",\n         \"viewAll\": \"Все проекты\",\n         \"newLaunches\": \"Новые запуски\",\n-        \"offPlan\": \"Off-Plan\",\n+        \"offPlan\": \"Новостройки\",\n         \"projectsItalic\": \"проекты\",\n         \"from\": \"От\",\n         \"subtitle\": \"Новостройки Дубая: инвестируйте в лучшие объекты по ценам сегодняшнего дня.\"\n@@ -1336,7 +1336,7 @@\n     }\n   },\n   \"marketDashboard\": {\n-    \"title\": \"недвижимости Дубая\",\n+    \"title\": \"Панель управления\",\n     \"label\": \"Данные рынка в реальном времени\",\n     \"avgPrice\": \"Ср. цена\",\n     \"transactions\": \"Сделок\",\ndiff --git a/messages/zh.json b/messages/zh.json\nindex aa76c056..2c33db2a 100644\n--- a/messages/zh.json\n+++ b/messages/zh.json\n@@ -145,9 +145,9 @@\n         \"blog\": \"博客\"\n       },\n       \"stats\": {\n-        \"label\": \"Why Choose Us\",\n+        \"label\": \"为何选择我们\",\n         \"title\": \"迪拜获奖房产\",\n-        \"titleItalic\": \"Agency in Dubai\",\n+        \"titleItalic\": \"机构\",\n         \"titleMobile\": \"获奖房产机构\",\n         \"subtitle\": \"自2010年起，深受迪拜数千名买家、卖家和投资者信赖。\",\n         \"propertiesListed\": \"在售房产\",\n@@ -157,9 +157,9 @@\n       },\n       \"whatWeOffer\": {\n         \"label\": \"我们的服务\",\n-        \"title\": \"Our Services\",\n+        \"title\": \"我们的服务\",\n         \"titleDesktop\": \"全面房产\",\n-        \"titleItalic\": \"Solutions\",\n+        \"titleItalic\": \"解决方案\",\n         \"subtitle\": \"从购置梦想之家到实现投资回报，我们提供量身定制的全方位房产服务。\",\n         \"sellProperty\": \"出售房产\",\n         \"sellDesc\": \"专业估价、营销与谈判，助您实现最大收益。\",\n@@ -176,9 +176,9 @@\n       \"services\": {\n         \"label\": \"物业管理\",\n         \"title\": \"全面房产\",\n-        \"titleItalic\": \"Care\",\n+        \"titleItalic\": \"关怀\",\n         \"subtitle\": \"全方位管理，确保您的投资有保障、有收益。\",\n-        \"titleMobile\": \"Our Services\",\n+        \"titleMobile\": \"我们的服务\",\n         \"viewAll\": \"查看所有服务\",\n         \"handover\": \"交房与验收\",\n         \"handoverDesc\": \"细致检验，顺畅交房\",\n@@ -186,18 +186,18 @@\n         \"rentCollectionDesc\": \"支票跟踪、押金管理与财务报告\",\n         \"sellProperty\": \"出售您的房产\",\n         \"sellPropertyDesc\": \"专业估价、营销与谈判支持\",\n-        \"marketing\": \"Marketing\",\n+        \"marketing\": \"营销\",\n         \"marketingDesc\": \"专业挂牌，在顶级平台广泛推广\",\n         \"tenantManagement\": \"租客管理\",\n         \"tenantManagementDesc\": \"筛选、合同及持续租客关系维护\",\n-        \"maintenance\": \"Maintenance\",\n+        \"maintenance\": \"维护\",\n         \"maintenanceDesc\": \"维修保养及24/7紧急支援\",\n-        \"popular\": \"Popular\"\n+        \"popular\": \"热门\"\n       },\n       \"aiBanner\": {\n-        \"label\": \"AI-Powered\",\n+        \"label\": \"AI驱动\",\n         \"sublabel\": \"实时分析\",\n-        \"live\": \"Live\",\n+        \"live\": \"实时\",\n         \"listingsAnalyzed\": \"已分析房源\",\n         \"marketSignals\": \"市场信号\",\n         \"priceUpdates\": \"价格更新\",",
+  "devReport": {
+    "commitSha": "38066f52",
+    "filesChanged": [
+      "messages/zh.json",
+      "messages/ru.json"
+    ],
+    "summary": "Translated 11 English strings in zh.json to Simplified Chinese; fixed 2 off-plan keys and marketDashboard title in ru.json",
+    "fixtureVerified": false,
+    "blocker": null,
+    "designBrief": {
+      "direction": "no aesthetic direction needed for this scope — pure JSON content editing, no UI changes"
+    },
+    "selfGrade": [
+      {
+        "action": "zh.json: translate home.sections.stats.label (Why Choose Us)",
+        "done": true,
+        "evidence": "messages/zh.json: stats.label = '为何选择我们'"
+      },
+      {
+        "action": "zh.json: translate home.sections.stats.titleItalic (Agency in Dubai)",
+        "done": true,
+        "evidence": "messages/zh.json: stats.titleItalic = '机构' (pairs with title '迪拜获奖房产' → '迪拜获奖房产机构')"
+      },
+      {
+        "action": "zh.json: translate home.sections.whatWeOffer.title (Our Services)",
+        "done": true,
+        "evidence": "messages/zh.json: whatWeOffer.title = '我们的服务'"
+      },
+      {
+        "action": "zh.json: translate home.sections.whatWeOffer.titleItalic (Solutions)",
+        "done": true,
+        "evidence": "messages/zh.json: whatWeOffer.titleItalic = '解决方案'"
+      },
+      {
+        "action": "zh.json: translate home.sections.services.titleMobile (Our Services)",
+        "done": true,
+        "evidence": "messages/zh.json: services.titleMobile = '我们的服务'"
+      },
+      {
+        "action": "zh.json: translate home.sections.services.titleItalic (Care)",
+        "done": true,
+        "evidence": "messages/zh.json: services.titleItalic = '关怀' (pairs with title '全面房产' → '全面房产关怀')"
+      },
+      {
+        "action": "zh.json: translate home.sections.services.marketing (Marketing)",
+        "done": true,
+        "evidence": "messages/zh.json: services.marketing = '营销'"
+      },
+      {
+        "action": "zh.json: translate home.sections.services.maintenance (Maintenance)",
+        "done": true,
+        "evidence": "messages/zh.json: services.maintenance = '维护' (desc already references 维修保养, consistent register)"
+      },
+      {
+        "action": "zh.json: translate home.sections.services.popular (Popular)",
+        "done": true,
+        "evidence": "messages/zh.json: services.popular = '热门'"
+      },
+      {
+        "action": "zh.json: translate home.sections.aiBanner.label (AI-Powered)",
+        "done": true,
+        "evidence": "messages/zh.json: aiBanner.label = 'AI驱动' (AI loanword acceptable per spec)"
+      },
+      {
+        "action": "zh.json: translate home.sections.aiBanner.live (Live)",
+        "done": true,
+        "evidence": "messages/zh.json: aiBanner.live = '实时' (confirmed real-time context from sibling sublabel '实时分析')"
+      },
+      {
+        "action": "zh.json: verify offPlan.label and offPlan.offPlan already Chinese (期房)",
+        "done": true,
+        "evidence": "messages/zh.json: both offPlan keys = '期房', unchanged"
+      },
+      {
+        "action": "ru.json: replace home.sections.offPlan.label (Off Plan) with Новостройки",
+        "done": true,
+        "evidence": "messages/ru.json: offPlan.label = 'Новостройки'"
+      },
+      {
+        "action": "ru.json: replace home.sections.offPlan.offPlan (Off-Plan) with Новостройки",
+        "done": true,
+        "evidence": "messages/ru.json: offPlan.offPlan = 'Новостройки'"
+      },
+      {
+        "action": "ru.json: fix marketDashboard.title (fragment недвижимости Дубая) to Панель управления",
+        "done": true,
+        "evidence": "messages/ru.json: marketDashboard.title = 'Панель управления'"
+      }
+    ],
+    "notes": "One pre-existing out-of-scope English string remains: ru.json `.pulse.offPlan = 'Off-Plan'` — spec explicitly says do not touch keys outside the 14 in scope. grep for Off Plan hits this untouched key. Flagged for PM awareness but not fixing per scope constraint."
+  },
+  "reviewerReport": null,
+  "qaReport": null,
+  "liveTestReport": null,
+  "pmDecision": "start",
+  "summary": "zh.json: 11 English strings translated to Simplified Chinese (stats, services, aiBanner sections). ru.json: offPlan label/badge fixed to Новостройки (×2), marketDashboard.title corrected to Панель управления. Deployed and READY on Vercel.",
+  "securitySensitive": false,
+  "history": [],
+  "stageHistory": [],
+  "regressionSweepDone": false,
+  "startedAt": "2026-04-22T12:00:00Z",
+  "devServerPid": null,
+  "screenshotsUsed": 0,
+  "pushedSha": "38066f52",
+  "vercelDeployUrl": "https://staging.binayahhub.com",
+  "testFixture": null,
+  "metricsLog": ".iterate/metrics.jsonl",
+  "flags": {
+    "noDesigner": true
+  },
+  "plannerQuestions": null,
+  "plannerDraftBrief": null,
+  "plannerAnswers": "use defaults"
+}

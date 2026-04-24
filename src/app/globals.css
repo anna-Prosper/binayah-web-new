@@ -180,3 +180,9 @@ body.mobile-nav-open .fixed.bottom-\[68px\],
 body.mobile-nav-open .fixed.bottom-24 {
   display: none !important;
 }
+
+/* Arabic locale — use Noto Sans Arabic for body text */
+[lang="ar"] body,
+[lang="ar"] {
+  font-family: var(--font-arabic), var(--font-jakarta), system-ui, sans-serif;
+}

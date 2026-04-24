@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-const serviceBuy = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop";
-const serviceRent = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop";
-const serviceSell = "https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=600&h=400&fit=crop";
-const serviceOffplan = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop";
-const serviceManagement = "https://images.unsplash.com/photo-1582407947304-fd86f28320c5?w=600&h=400&fit=crop";
+const serviceBuy = "/assets/service-buy.webp";
+const serviceRent = "/assets/service-rent.webp";
+const serviceSell = "/assets/service-sell.webp";
+const serviceOffplan = "/assets/service-offplan.webp";
+const serviceManagement = "/assets/service-management.webp";
 
 const WhatWeOffer = () => {
   const t = useTranslations("home.sections.whatWeOffer");

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { OrganizationJsonLd } from "@/components/JsonLd";
@@ -26,6 +27,13 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const notoArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-arabic",
+  display: "swap",
+});
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
 
 export const metadata: Metadata = {
@@ -43,7 +51,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/assets/dubai-hero.webp",
+        url: "/assets/og-image.webp",
         width: 1200,
         height: 630,
         alt: "Binayah Properties — Dubai Real Estate",
@@ -54,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Binayah Properties — Dubai Real Estate",
     description: "Dubai's trusted property partner for buying, selling & renting properties.",
-    images: ["/assets/dubai-hero.webp"],
+    images: ["/assets/og-image.webp"],
   },
 };
 
@@ -72,16 +80,17 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
       suppressHydrationWarning
-      className={`${jakarta.variable} ${playfair.variable}`}
+      className={`${jakarta.variable} ${playfair.variable} ${notoArabic.variable}`}
     >
       <body className={jakarta.className}>
-        <OrganizationJsonLd />
+        <OrganizationJsonLd nonce={nonce} />
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <FavoritesProvider>

@@ -8,10 +8,27 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
+// CSP is set dynamically in middleware.ts with a per-request nonce.
+// Static headers here cover everything except CSP.
+const securityHeaders = [
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "i.pravatar.cc" },
       { protocol: "https", hostname: "binayah.com" },
       { protocol: "https", hostname: "www.binayah.com" },

@@ -13,10 +13,10 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 
 const communityImages: Record<string, string> = {
-  "downtown-dubai": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop",
-  "palm-jumeirah": "https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=1200&h=600&fit=crop",
-  "dubai-marina": "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200&h=600&fit=crop",
-  "business-bay": "https://images.unsplash.com/photo-1546412414-e1885259563a?w=1200&h=600&fit=crop",
+  "downtown-dubai": "/assets/communities/downtown-dubai.webp",
+  "palm-jumeirah": "/assets/communities/palm-jumeirah.webp",
+  "dubai-marina": "/assets/communities/dubai-marina.webp",
+  "business-bay": "/assets/communities/business-bay.webp",
 };
 
 interface Props {
@@ -30,7 +30,7 @@ interface Props {
 export default function CommunityDetailPage({ slug, communityName, communityDescription, communityImage, projects }: Props) {
   const t = useTranslations("communityDetail");
   const tBreadcrumbs = useTranslations("breadcrumbs");
-  const heroImage = communityImage || communityImages[slug] || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=600&fit=crop";
+  const heroImage = communityImage || communityImages[slug] || "/assets/dubai-hero.webp";
   const desc = communityDescription || "";
 
   return (
@@ -65,7 +65,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
                 <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                   <Link href={`/project/${p.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                     <div className="relative overflow-hidden aspect-[4/3]">
-                      <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"} alt={p.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>
                     </div>
                     <div className="p-5">

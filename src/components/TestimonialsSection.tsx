@@ -12,21 +12,18 @@ const testimonials = [
     role: "Investor · Palm Jumeirah",
     text: "Binayah found me a 4BR villa in Palm Jumeirah under budget in just 10 days. They handled everything from viewing to handover — I didn't have to chase a single document.",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
   },
   {
     name: "James Richardson",
     role: "Homeowner · Dubai Marina",
     text: "Relocating from London, I expected months of searching. Binayah shortlisted five Marina apartments that matched exactly what we needed — we signed within two weeks.",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
   },
   {
     name: "Fatima Hassan",
     role: "Developer Partner",
     text: "We've worked with many agencies but Binayah consistently brings qualified, ready-to-close buyers. They sold 80% of our JVC launch inventory in the first quarter.",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
   },
 ];
 
@@ -106,11 +103,12 @@ const TestimonialsSection = () => {
                 "{testimonials[active].text}"
               </p>
               <div className="flex items-center justify-center gap-3 sm:block">
-                <img
-                  src={testimonials[active].image}
-                  alt={testimonials[active].name}
-                  className="w-10 h-10 sm:w-14 sm:h-14 rounded-full object-cover sm:mx-auto sm:mb-2.5 border-2 border-[#D4A847]/30"
-                />
+                <div
+                  className="w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center sm:mx-auto sm:mb-2.5 border-2 border-[#D4A847]/30 text-sm sm:text-lg font-bold flex-shrink-0"
+                  style={{ background: "linear-gradient(135deg, #0B5E41, #1A9068)", color: "#D4A847" }}
+                >
+                  {testimonials[active].name.charAt(0)}
+                </div>
                 <div className="sm:text-center">
                   <p className="font-semibold text-background text-sm sm:text-base">{testimonials[active].name}</p>
                   <p className="text-background/50 text-xs sm:text-sm">{testimonials[active].role}</p>

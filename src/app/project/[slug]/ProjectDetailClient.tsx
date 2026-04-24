@@ -9,7 +9,7 @@ import {
   Star, Clock, Users, FileText, ExternalLink, Download, Image as ImageIcon,
   Home, Landmark, TrendingUp, CreditCard, Globe, Compass, Waves, X,
   Sparkles, Eye, ArrowRight, Dumbbell, Baby, Car, Lock, Flame,
-  TreePine, Store, Smartphone, HeartPulse,
+  TreePine, Store, Smartphone, HeartPulse, Tag, Percent,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -113,6 +113,21 @@ const attractionIcon = (type: string) => {
 const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
+  const tE = useTranslations("enums");
+  const tEnum = (v: string | undefined | null) => {
+    if (!v) return "";
+    const key = v.toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)).join("");
+    if (!key) return v;
+    try { const out = tE(key as any); return out && out !== key ? out : v; } catch { return v; }
+  };
+  const tBed = (raw: string | undefined | null) => {
+    if (!raw) return "";
+    const s = raw.trim();
+    if (/^studio$/i.test(s)) return tEnum("Studio");
+    const m = s.match(/^(\d+)\s*\+?\s*(?:bedroom|br|bed)s?$/i);
+    if (!m) return raw;
+    try { return tE("bedroomCount", { count: parseInt(m[1], 10) } as any); } catch { return raw; }
+  };
   const project = {
     ...serverProject,
     unitTypes: Array.isArray(serverProject.unitTypes) ? serverProject.unitTypes : [],
@@ -173,7 +188,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
 
   const images = project.imageGallery?.length ? project.imageGallery : [
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200",
+    "/assets/amenities-placeholder.webp",
   ];
   const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
   const dbFaqs = (project.faqs as FAQ[] | null) || [];
@@ -277,10 +292,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold shadow-lg text-white"
                       style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
-                      {project.status}
+                      {tEnum(project.status)}
                     </span>
                     <span className="px-3 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
-                      {formatPropertyTypeLabel(project.propertyType, project.propertyType)}
+                      {(Array.isArray(project.propertyType) ? project.propertyType : [project.propertyType]).filter(Boolean).map((p: string) => tEnum(p)).join(" · ")}
                     </span>
                   </div>
                   {/* Developer name – hidden on mobile */}
@@ -427,7 +442,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               const handoverValue = isReady
                 ? "Ready to Move In"
                 : project.completionDate
-                  ? new Date(project.completionDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" })
+                  ? (() => { const d = new Date(project.completionDate); return isNaN(d.getTime()) ? project.completionDate : d.toLocaleDateString("en-GB", { month: "short", year: "numeric" }); })()
                   : "TBA";
               const handoverIcon = isReady ? CheckCircle2 : Calendar;
 
@@ -534,7 +549,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   }`}
                   style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                 >
-                  <span className="relative z-10 uppercase">{tab === "faq" ? "FAQ" : tab}</span>
+                  <span className="relative z-10 uppercase">{t(({ overview: "tabOverview", location: "tabLocation", payment: "tabPayment", faq: "tabFaq" } as const)[tab])}</span>
                 </button>
               ))}
             </motion.div>
@@ -566,29 +581,86 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     })()}
                   </div>
 
-                  {/* Exclusive Offers stripe */}
-                  {(project.exclusiveOffers?.length ?? 0) > 0 && (
-                    <div className="rounded-2xl overflow-hidden" style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 50%, #B8922F 100%)" }}>
-                      <div className="px-5 py-4 sm:px-6 sm:py-5">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Sparkles className="h-4 w-4 text-white/80 flex-shrink-0" />
-                          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-white/80">{t("limitedTime")}</p>
+                  {/* ─── EXCLUSIVE OFFERS ─── */}
+                  {(project.offers?.length ?? 0) > 0 && (() => {
+                    const offerIcons = (desc: string, title: string) => {
+                      const s = (desc + " " + title).toLowerCase();
+                      if (s.includes("payment") || s.includes("plan") || s.includes("50/50") || s.includes("installment")) return CreditCard;
+                      if (s.includes("discount") || s.includes("fee") || s.includes("waiver") || s.includes("%")) return Percent;
+                      return Tag;
+                    };
+                    return (
+                    <div className="space-y-5">
+                      {/* Section header */}
+                      <div>
+                        <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
+                        <div className="flex items-center gap-2 mb-1">
+                          <Sparkles className="h-3.5 w-3.5 text-accent" />
+                          <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("limitedTime")}</p>
                         </div>
-                        <p className="text-base sm:text-lg font-bold text-white mb-3">{t("exclusiveOffers")}</p>
-                        <div className="flex flex-col sm:flex-row gap-2.5">
-                          {(project.exclusiveOffers as { title: string; description?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => (
-                            <div key={idx} className="flex-1 bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20">
-                              {offer.badge && (
-                                <span className="inline-block px-2 py-0.5 bg-white/20 rounded-full text-[9px] font-bold text-white uppercase tracking-widest mb-2">{offer.badge}</span>
-                              )}
-                              <p className="text-sm font-bold text-white leading-snug">{offer.title}</p>
-                              {offer.description && <p className="text-xs text-white/70 mt-1 leading-relaxed">{offer.description}</p>}
-                            </div>
-                          ))}
-                        </div>
+                        <h3 className="text-lg sm:text-2xl font-bold text-foreground">{t("exclusiveOffers")}</h3>
+                      </div>
+
+                      {/* Offer cards */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        {(project.offers as { title: string; description?: string; badge?: string }[]).slice(0, 3).map((offer, idx) => {
+                          const OfferIcon = offerIcons(offer.description || "", offer.title);
+                          return (
+                            <motion.div
+                              key={idx}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.4, delay: idx * 0.1 }}
+                              className="group relative rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
+                            >
+                              {/* Top accent stripe — green-to-gold */}
+                              <div className="h-[3px] w-full shrink-0"
+                                style={{ background: "linear-gradient(90deg, #0B5E41 0%, #1A9068 40%, #D4A847 100%)" }} />
+
+                              <div className="p-5 sm:p-6 flex flex-col gap-4 flex-1">
+                                {/* Icon + badge row */}
+                                <div className="flex items-start justify-between gap-2">
+                                  {/* Green gradient icon */}
+                                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm"
+                                    style={{ background: "linear-gradient(135deg, #0B5E41 0%, #1A9068 100%)" }}>
+                                    <OfferIcon className="h-5 w-5 text-white" strokeWidth={2} />
+                                  </div>
+                                  {offer.badge && (
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest text-white shrink-0 mt-0.5 shadow-sm"
+                                      style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 100%)" }}>
+                                      <Sparkles className="h-2 w-2" />
+                                      {offer.badge}
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Divider */}
+                                <div className="h-px bg-border/50" />
+
+                                {/* Stat + description */}
+                                <div className="space-y-1.5">
+                                  <p className="text-3xl sm:text-4xl font-extrabold leading-none tracking-tight"
+                                    style={{ background: "linear-gradient(135deg, #B8922F 0%, #D4A847 55%, #B8922F 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                                    {offer.title}
+                                  </p>
+                                  {offer.description && (
+                                    <p className="text-sm font-medium text-foreground/65 leading-snug">{offer.description}</p>
+                                  )}
+                                </div>
+
+                                {/* Bottom tag */}
+                                <div className="mt-auto flex items-center gap-1.5 text-[10px] font-semibold text-primary/60 uppercase tracking-wider">
+                                  <CheckCircle2 className="h-3 w-3" />
+                                  {t("exclusiveOffers")}
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
+                    );
+                  })()}
 
                   {/* Available Units */}
                   {((project.unitTypes?.length ?? 0) > 0 || (project.unitsByType?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
@@ -640,13 +712,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       const unitMinSize = Math.round(sizeMin + sizeStep * idx);
                       const unitMaxSize = Math.round(unitMinSize + (sizeStep > 0 ? sizeStep * 0.8 : 200));
                       const features = [
-                        "Built-in Wardrobes",
-                        bedrooms >= 2 ? "Maid's Room" : null,
-                        idx % 2 === 0 ? "Sea View" : "City View",
-                        "Balcony",
-                        bedrooms >= 3 ? "Private Terrace" : null,
-                        "Central A/C",
-                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? "Private Pool" : null,
+                        tE("builtInWardrobes"),
+                        bedrooms >= 2 ? tE("maidsRoom") : null,
+                        idx % 2 === 0 ? tE("seaView") : tE("cityView"),
+                        tE("balcony"),
+                        bedrooms >= 3 ? tE("privateTerrace") : null,
+                        tE("centralAC"),
+                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? tE("privatePool") : null,
                       ].filter(Boolean) as string[];
                       return { name: ut, minPrice, maxPrice, contactUs, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
                     };
@@ -723,7 +795,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   ) : (
                                     <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
                                   )}
-                                  <span className="truncate">{pt}</span>
+                                  <span className="truncate">{tEnum(pt)}</span>
                                 </button>
                               ))}
                             </div>
@@ -743,7 +815,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               }`}
                               style={clampedUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
                             >
-                              {unit.name}
+                              {tBed(unit.name)}
                             </button>
                           ))}
                         </div>
@@ -761,12 +833,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
                               {/* Floor plan side */}
                               {(() => {
-                                // Match floor plan by unit type name; fall back to index-based floor_plans
+                                // Match floor plan: title match first, then fuzzy beds match, then index fallback
+                                const unitName = (activeUnit?.name || "").toLowerCase();
                                 const floorPlanImg =
                                   project.floorPlans?.find((fp: any) =>
-                                    fp.type === activeUnit?.name &&
-                                    (!fp.propertyType || fp.propertyType === activePropertyType)
+                                    fp.title?.toLowerCase() === unitName
                                   )?.image ||
+                                  project.floorPlans?.find((fp: any) =>
+                                    unitName && fp.title?.toLowerCase().includes(unitName.split(" ")[0])
+                                  )?.image ||
+                                  project.floorPlans?.[clampedUnitTab]?.image ||
                                   project.floor_plans?.[clampedUnitTab] ||
                                   null;
                                 return (
@@ -825,7 +901,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 {/* Top: Title + status */}
                                 <div className="flex items-start justify-between gap-4">
                                   <div>
-                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{activeUnit?.name}</h3>
+                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{tBed(activeUnit?.name)}</h3>
                                     <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
                                   </div>
                                   <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
@@ -868,9 +944,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 {/* Stats */}
                                 <div className="grid grid-cols-3 gap-2 sm:gap-3">
                                   {[
-                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? "Studio" : activeUnit?.bedrooms, label: "Bedrooms" },
-                                    { icon: Users, value: activeUnit?.bathrooms, label: "Baths" },
-                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: "Sq. Ft." },
+                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? tE("studio") : activeUnit?.bedrooms, label: tE("bedroomsLabel") },
+                                    { icon: Users, value: activeUnit?.bathrooms, label: t("bathsLabel") },
+                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: tE("sqftLabel") },
                                   ].map(({ icon: StatIcon, value, label }) => (
                                     <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center border border-border/30 hover:border-primary/20 transition-all hover:shadow-sm group">
                                       <StatIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary/60 group-hover:text-primary mx-auto mb-1.5 transition-colors" />
@@ -971,7 +1047,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   )}
 
-                  {/* Project Video Overview */}
+                  {/* Project Video Overview — only if valid embeddable URL */}
+                  {project.videoUrl && /youtube\.com\/watch|youtu\.be\/|youtube\.com\/embed|vimeo\.com\/\d/.test(project.videoUrl) && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -1001,6 +1078,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                     </div>
                   </motion.div>
+                  )}
 
                   {/* ───── PHOTO GALLERY ───── */}
                   {images.length > 1 && (
@@ -1283,12 +1361,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   {(() => {
                     const highlights = project.investmentHighlights || [];
                     const defaultReasons = [
-                      "Prime waterfront location",
-                      "High rental demand area",
-                      "Golden Visa eligible",
-                      "Tax-free returns",
-                      "Strong capital appreciation",
-                      "World-class amenities",
+                      t("reasonPrimeWaterfront"),
+                      t("reasonHighRentalDemand"),
+                      t("reasonGoldenVisa"),
+                      t("reasonTaxFree"),
+                      t("reasonCapitalAppreciation"),
+                      t("reasonWorldClassAmenities"),
                     ];
                     const reasons = highlights.length > 0 ? highlights : defaultReasons;
                     const stats = [
@@ -1369,7 +1447,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     };
                     const amenities = project.amenities && project.amenities.length > 0
                       ? project.amenities
-                      : ["Swimming Pool", "Gymnasium", "Kids Play Area", "Concierge Service", "Parking", "24/7 Security", "Spa & Sauna", "BBQ Area", "Jogging Track", "Retail Outlets", "Landscaped Gardens", "Smart Home Features"];
+                      : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")];
 
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
@@ -1487,9 +1565,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         {/* Stats row */}
                         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
                           {[
-                            { value: "50+", label: "Projects Delivered", icon: Building2 },
-                            { value: "20+", label: "Years Experience", icon: Clock },
-                            { value: "10K+", label: "Units Completed", icon: Home },
+                            { value: "50+", label: t("projectsDelivered"), icon: Building2 },
+                            { value: "20+", label: t("yearsExperience"), icon: Clock },
+                            { value: "10K+", label: t("unitsCompleted"), icon: Home },
                           ].map((stat, i) => {
                             const StatIcon = stat.icon;
                             return (
@@ -1745,6 +1823,98 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   </a>
 
+                  {/* ───── FLOOR PLANS GALLERY ───── */}
+                  {(project.floorPlans?.length ?? 0) > 0 && (() => {
+                    const fps = (project.floorPlans as { title: string; type?: string; beds?: string; baths?: string; size?: string; image?: string; pdf?: string }[]);
+                    const activeFp = fps[activeFloorPlanTab] ?? fps[0];
+                    return (
+                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                        {/* Header */}
+                        <div className="px-4 sm:px-6 py-4 border-b border-border/50 flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                            <FileText className="h-4 w-4 text-accent" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("floorPlansLabel")}</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground leading-tight">{project.name} — {t("floorPlans")}</h2>
+                          </div>
+                          {project.floorPlanPdfUrl && (
+                            <a href={project.floorPlanPdfUrl} target="_blank" rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/30 text-accent text-xs font-semibold hover:bg-accent/10 transition-colors shrink-0">
+                              <Download className="h-3.5 w-3.5" />
+                              PDF
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Tab pills */}
+                        <div className="px-4 sm:px-6 pt-4 flex gap-2 flex-wrap">
+                          {fps.map((fp, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setActiveFloorPlanTab(i)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${activeFloorPlanTab === i ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"}`}
+                            >
+                              {fp.title}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Active floor plan */}
+                        {activeFp?.image ? (
+                          <div className="p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row gap-4">
+                              {/* Image */}
+                              <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-muted border border-border/50">
+                                <NextImage
+                                  src={activeFp.image}
+                                  alt={activeFp.title}
+                                  fill
+                                  className="object-contain"
+                                  sizes="(max-width: 640px) 100vw, 50vw"
+                                />
+                              </div>
+                              {/* Specs */}
+                              <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
+                                <h3 className="font-bold text-foreground text-base">{activeFp.title}</h3>
+                                {activeFp.type && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Building2 className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.type}
+                                  </div>
+                                )}
+                                {activeFp.beds && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.beds} {t("bedsLabel")}
+                                    {activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                                  </div>
+                                )}
+                                {activeFp.size && (
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
+                                    {activeFp.size}
+                                  </div>
+                                )}
+                                <a
+                                  href={activeFp.image}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                  {t("viewFullSize")}
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="p-6 text-center text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
                 </motion.div>
               )}
 
@@ -1772,11 +1942,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div className="grid grid-cols-2 gap-2 sm:gap-4">
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
                           <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType || "Freehold"}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
                         </div>
                         <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
                           <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
+                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
                         </div>
                       </div>
                     </div>
@@ -1785,11 +1955,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <div className="sm:hidden grid grid-cols-2 gap-2">
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.titleType || "Freehold"}</p>
+                      <p className="text-sm font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility || t("allNationalities")}</p>
+                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
                     </div>
                   </div>
 
@@ -1912,7 +2082,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {project.availabilityStatus && (
                       <div className="mt-5 flex items-center gap-2.5 p-3 bg-emerald-500/8 rounded-xl border border-emerald-500/15">
                         <span className={`w-2.5 h-2.5 rounded-full ${project.availabilityStatus === "Available" ? "bg-emerald-500 animate-pulse" : "bg-accent"}`} />
-                        <span className="text-sm font-semibold text-foreground">{project.availabilityStatus}</span>
+                        <span className="text-sm font-semibold text-foreground">{tEnum(project.availabilityStatus)}</span>
                       </div>
                     )}
                   </div>
@@ -2101,7 +2271,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-5 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || "Interested?"}
+                    {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
                   <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                   {currency === "AED" && project.startingPrice && (
@@ -2203,7 +2373,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || "Interested?"}
+                    {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
                   <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
                   {currency === "AED" && project.startingPrice && (
@@ -2215,8 +2385,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </div>
                 {/* Desktop: full CTA buttons */}
                 <div className="hidden sm:block p-5 space-y-3">
-                  {project.ctaSubheadline && (
-                    <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline}</p>
+                  {(project.ctaSubheadline || t("ctaSubheadlineDefault")) && (
+                    <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline || t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
                     href={`https://wa.me/${project.whatsappNumber?.replace(/\+/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
@@ -2263,13 +2433,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     { label: t("developer"), value: project.developerName },
                     { label: t("communityLabel"), value: project.community },
                     { label: t("cityLabel"), value: `${project.city}, ${project.country}` },
-                    { label: t("propertyTypeLabel"), value: formatPropertyTypeLabel(project.propertyType, project.propertyType) },
-                    ...(project.propertyTypes?.length > 0 ? [{ label: t("propertyTypesLabel"), value: project.propertyTypes?.join(" · ") }] : []),
-                    { label: t("projectTypeLabel"), value: project.projectType },
-                    { label: t("status"), value: project.status },
-                    { label: t("titleType"), value: project.titleType },
-                    { label: t("eligibility"), value: project.ownershipEligibility },
-                    { label: t("availability"), value: project.availabilityStatus },
+                    { label: t("propertyTypeLabel"), value: project.propertyTypes?.length > 0 ? project.propertyTypes.map((pt: string) => tEnum(pt)).join(" · ") : tEnum(Array.isArray(project.propertyType) ? project.propertyType[0] : project.propertyType) },
+                    { label: t("projectTypeLabel"), value: tEnum(project.projectType) },
+                    { label: t("status"), value: tEnum(project.status) },
+                    { label: t("titleType"), value: tEnum(project.titleType) },
+                    { label: t("eligibility"), value: tEnum(project.ownershipEligibility) },
+                    { label: t("availability"), value: tEnum(project.availabilityStatus) },
                   ].filter(f => f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>

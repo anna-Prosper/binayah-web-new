@@ -7,9 +7,9 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 
 const FALLBACK_ARTICLES = [
-  { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" },
-  { slug: "tax-benefits-dubai-property", title: "Tax Benefits of Owning Property in Dubai — The Complete Picture", date: "7 Feb 2026", category: "Guides", image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop" },
-  { slug: "dubai-property-investment-2026", title: "Is Dubai Property a Good Investment in 2026?", date: "7 Feb 2026", category: "Market Insights", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=360&fit=crop" },
+  { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "/assets/dubai-hero.webp" },
+  { slug: "tax-benefits-dubai-property", title: "Tax Benefits of Owning Property in Dubai — The Complete Picture", date: "7 Feb 2026", category: "Guides", image: "/assets/dubai-hero.webp" },
+  { slug: "dubai-property-investment-2026", title: "Is Dubai Property a Good Investment in 2026?", date: "7 Feb 2026", category: "Market Insights", image: "/assets/dubai-hero.webp" },
 ];
 
 interface Article {
@@ -29,10 +29,10 @@ function formatDate(dateStr?: string) {
 
 const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) => {
   const t = useTranslations("home.sections.news");
-  const articles = propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
+  const articles = (propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
     _id: String(i), title: a.title, slug: a.slug, category: a.category,
     featuredImage: a.image, publishedAt: a.date
-  }));
+  }))).slice(0, 3);
   return (
   <section id="news" className="py-12 sm:py-24 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -44,21 +44,19 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
         </Link>
       </div>
 
-      {/* Desktop: full header */}
+      {/* Desktop: centered header with View All */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="hidden sm:flex sm:items-end sm:justify-between mb-14"
+        className="hidden sm:block text-center mb-14 relative"
       >
-        <div>
-          <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-          <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-            {t("title")}
-          </h2>
-        </div>
-        <Link href="/news" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
+        <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+        <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
+        <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
+          {t("title")}
+        </h2>
+        <Link href="/news" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
           {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
         </Link>
       </motion.div>
@@ -76,7 +74,7 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
           >
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-xl overflow-hidden border border-border/50">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <ImageWithFallback src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} fill sizes="100vw" className="object-cover" />
+                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="100vw" className="object-cover" />
                 <span className="absolute top-2 left-2 text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-3">
@@ -98,14 +96,14 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
             viewport={{ once: true }}
             transition={{ delay: i * 0.12 }}
           >
-            <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+            <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20 h-full">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <ImageWithFallback src={a.featuredImage || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                 <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-6">
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-3"><Calendar className="h-3 w-3" /> {formatDate(a.publishedAt) || (a as any).date}</p>
-                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug">{a.title}</h3>
+                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{a.title}</h3>
               </div>
             </Link>
           </motion.div>

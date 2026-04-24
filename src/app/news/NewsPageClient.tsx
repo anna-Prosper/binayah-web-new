@@ -21,7 +21,7 @@ interface Article {
   readTime?: string;
 }
 
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop";
+const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 
 function formatDate(dateStr?: string) {
   if (!dateStr) return "";

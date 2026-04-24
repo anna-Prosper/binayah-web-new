@@ -1,5 +1,10 @@
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "List Your Property in Dubai | Binayah Properties",
+  description: "Sell or rent your Dubai property with Binayah. RERA-certified agents, wide buyer network, full service from valuation to close.",
+};
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
