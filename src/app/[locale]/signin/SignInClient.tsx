@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, CheckCircle2, Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type Tab = "signin" | "signup";
@@ -16,6 +16,9 @@ export default function SignInClient() {
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const resetSuccess = searchParams.get("reset") === "1";
+  const verifiedSuccess = searchParams.get("verified") === "1";
+  const verifyError = searchParams.get("error") === "verify";
+
   const [tab, setTab] = useState<Tab>("signin");
   const [googleLoading, setGoogleLoading] = useState(false);
 
@@ -33,6 +36,7 @@ export default function SignInClient() {
   const [suShowPw, setSuShowPw] = useState(false);
   const [suError, setSuError] = useState("");
   const [suLoading, setSuLoading] = useState(false);
+  const [checkEmailAddress, setCheckEmailAddress] = useState("");
 
   const validatePassword = (pw: string) =>
     /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(pw);
@@ -52,7 +56,9 @@ export default function SignInClient() {
       callbackUrl,
     });
     setSiLoading(false);
-    if (res?.error) {
+    if (res?.error === "TooManyRequests") {
+      setSiError(t("tooManyAttempts"));
+    } else if (res?.error) {
       setSiError(t("errors.invalidCredentials"));
     } else {
       router.push(callbackUrl);
@@ -92,25 +98,66 @@ export default function SignInClient() {
         setSuError((data as { error?: string }).error || t("errors.genericError"));
         return;
       }
-      // Auto sign-in
-      const signInRes = await signIn("credentials", {
-        email: suEmail,
-        password: suPassword,
-        redirect: false,
-        callbackUrl,
-      });
+      const data = await res.json().catch(() => ({}));
       setSuLoading(false);
-      if (signInRes?.error) {
-        setSuError(t("errors.accountCreated"));
-        setTab("signin");
+
+      if ((data as { verified?: boolean }).verified) {
+        // Google-merged account — already verified, auto sign-in
+        const signInRes = await signIn("credentials", {
+          email: suEmail,
+          password: suPassword,
+          redirect: false,
+          callbackUrl,
+        });
+        if (signInRes?.error) {
+          setTab("signin");
+        } else {
+          router.push(callbackUrl);
+        }
       } else {
-        router.push(callbackUrl);
+        // New account — show check-email state
+        setCheckEmailAddress(suEmail);
       }
     } catch {
       setSuLoading(false);
       setSuError(t("errors.networkError"));
     }
   };
+
+  // Check-email screen shown after signup
+  if (checkEmailAddress) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <div className="relative w-full max-w-md">
+          <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Mail className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">{t("checkEmailTitle")}</h1>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                {t("checkEmailDesc", { email: checkEmailAddress })}
+              </p>
+              <p className="text-xs text-muted-foreground mt-3">{t("checkEmailNote")}</p>
+            </div>
+            <button
+              onClick={() => setCheckEmailAddress("")}
+              className="text-sm text-primary hover:underline"
+            >
+              {t("tabs.signIn")}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -132,6 +179,17 @@ export default function SignInClient() {
           <div className="mb-4 flex items-center gap-2 p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground">
             <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
             {t("resetSuccess")}
+          </div>
+        )}
+        {verifiedSuccess && (
+          <div className="mb-4 flex items-center gap-2 p-3.5 rounded-xl bg-primary/10 border border-primary/20 text-sm text-foreground">
+            <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+            {t("emailVerified")}
+          </div>
+        )}
+        {verifyError && (
+          <div className="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
+            {t("verifyExpired")}
           </div>
         )}
         <div className="bg-card border border-border/50 rounded-2xl shadow-xl p-8 sm:p-10 flex flex-col items-center gap-6">

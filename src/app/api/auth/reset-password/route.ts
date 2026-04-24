@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
       $set: {
         passwordHash,
         emailVerified: new Date(),
+        passwordChangedAt: new Date(),
       },
     }
   );

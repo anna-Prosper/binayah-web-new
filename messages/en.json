@@ -570,7 +570,13 @@
     "legal": "By signing in you agree to our",
     "privacyPolicy": "Privacy Policy",
     "and": "and",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "checkEmailTitle": "Check your email",
+    "checkEmailDesc": "We sent a verification link to {email}. Click it to activate your account.",
+    "checkEmailNote": "Didn't receive it? Check your spam folder.",
+    "emailVerified": "Email verified! You can now sign in.",
+    "verifyExpired": "That verification link has expired or already been used.",
+    "tooManyAttempts": "Too many sign-in attempts. Please wait a few minutes and try again."
   },
   "forgotPassword": {
     "backLink": "Back to Binayah",

@@ -576,7 +576,13 @@
     "legal": "登录即表示您同意我们的",
     "privacyPolicy": "隐私政策",
     "and": "和",
-    "termsOfService": "服务条款"
+    "termsOfService": "服务条款",
+    "checkEmailTitle": "查看您的邮箱",
+    "checkEmailDesc": "我们已向 {email} 发送了验证链接，请点击以激活您的账户。",
+    "checkEmailNote": "没有收到？请检查您的垃圾邮件文件夹。",
+    "emailVerified": "邮箱验证成功！您现在可以登录了。",
+    "verifyExpired": "该验证链接已过期或已被使用。",
+    "tooManyAttempts": "登录尝试次数过多，请等待几分钟后再试。"
   },
   "forgotPassword": {
     "backLink": "返回 Binayah",
