@@ -1330,6 +1330,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setTrackedValues(Object.fromEntries(entries), "smart");
         setSmartParsed(parsed);
         setShowSmartSuggestions(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fieldSources, form, setTrackedValues, smartSnapshot]);
     const clearSmartAutofill = useCallback(() => {
         const smartKeys = SMART_FIELD_KEYS.filter((key) => fieldSources[key] === "smart");
@@ -1582,6 +1583,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 (_b = topRef.current) === null || _b === void 0 ? void 0 : _b.scrollIntoView({ behavior: "smooth" });
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [applyLoadedReport, form, resolveApiUrl]);
     const handleDeedUpload = async (file) => {
         setDeedFile(file);
@@ -1781,6 +1783,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             turnstileConfig: nextTurnstileConfig,
             documentUploadConfig: nextDocumentUploadConfig,
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const ensureTurnstileWidget = useCallback(async (config) => {
         if (!config.enabled) {
@@ -1829,6 +1832,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         finally {
             turnstileWidgetPromiseRef.current = null;
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const requestTurnstileToken = useCallback(async () => {
         const config = turnstileConfigRef.current.enabled || turnstileConfigRef.current.siteKey
@@ -1853,6 +1857,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 rejectPendingTurnstileRequest("Security verification could not start. Please try again.");
             }
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ensureTurnstileWidget, loadValuationConfig]);
     const resetTurnstileWidget = useCallback(() => {
         if (!window.turnstile || turnstileWidgetIdRef.current === null)
@@ -3034,6 +3039,7 @@ function useValuationAISuggestion(query, parserResult, candidates, resolveApiUrl
             controller.abort();
             clearTimeout(timer);
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [requestKey]);
     return { loading, suggestion };
 }
