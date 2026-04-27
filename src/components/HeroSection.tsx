@@ -5,6 +5,7 @@ import { Building2, ChevronDown, Loader2, MapPin, MessageCircle, Search, Sparkle
 import { motion, useScroll, useTransform } from "framer-motion";
 import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import ParticleConstellation from "./ParticleConstellation";
 import TypewriterHeadline from "./TypewriterHeadline";
@@ -87,6 +88,7 @@ const HeroSection = () => {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [highlightedSuggestion, setHighlightedSuggestion] = useState(-1);
   const [isSmartLoading, setIsSmartLoading] = useState(false);
+  const [communityInfoResult, setCommunityInfoResult] = useState<{ name: string; slug: string } | null>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const smartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -146,6 +148,7 @@ const HeroSection = () => {
       setParsedTags([]);
       setIsQuestion(false);
       setSmartSuggestions(emptySuggestions);
+      setCommunityInfoResult(null);
       setHighlightedSuggestion(-1);
       return;
     }
@@ -220,6 +223,29 @@ const HeroSection = () => {
       if (searchRef.current?.contains(document.activeElement)) {
         setShowSuggestions(true);
       }
+
+      // When zero project/listing results come back for a meaningful query,
+      // check community_info_pages for a matching informational page.
+      if (countSuggestionItems(nextSuggestions) === 0 && trimmed.length >= 3) {
+        try {
+          const ciRes = await fetch(`/api/community-info?q=${encodeURIComponent(trimmed)}`, { cache: "no-store" });
+          if (smartRequestRef.current !== requestId) return; // stale
+          if (ciRes.ok) {
+            const ciData = await ciRes.json() as { exists: boolean; data?: { name: string; slug: string } };
+            if (ciData.exists && ciData.data?.slug) {
+              setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug });
+              setShowSuggestions(true);
+            } else {
+              setCommunityInfoResult(null);
+            }
+          }
+        } catch {
+          // Silently skip — no community info result shown
+          setCommunityInfoResult(null);
+        }
+      } else {
+        setCommunityInfoResult(null);
+      }
     }, 280);
   };
 
@@ -236,6 +262,7 @@ const HeroSection = () => {
     setIsQuestion(false);
     setShowSuggestions(false);
     setSmartSuggestions(emptySuggestions);
+    setCommunityInfoResult(null);
     setHighlightedSuggestion(-1);
     setIsSmartLoading(false);
   };
@@ -505,7 +532,7 @@ const HeroSection = () => {
                   </div>
                 </div>
 
-                {showSuggestions && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0) && (
+                {showSuggestions && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-card/95 backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
                     <div className="max-h-[26rem] overflow-y-auto">
                       {suggestionSections.map((section) => (
@@ -543,6 +570,30 @@ const HeroSection = () => {
                           })}
                         </div>
                       ))}
+
+                      {/* Community Information row — shown when project search returns zero results */}
+                      {communityInfoResult && (
+                        <div className="border-t border-border/30">
+                          <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Community Guide</p>
+                          <Link
+                            href={`/communities/${communityInfoResult.slug}`}
+                            onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
+                            onClick={() => setShowSuggestions(false)}
+                            className="w-full text-left px-4 py-3.5 flex items-center gap-3 transition-colors hover:bg-muted/60"
+                          >
+                            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-accent/10">
+                              <Building2 className="h-4 w-4 text-accent" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-medium truncate text-foreground">{communityInfoResult.name}</p>
+                              <p className="text-xs text-muted-foreground truncate">Community information</p>
+                            </div>
+                            <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full bg-accent/10 text-accent">
+                              Guide
+                            </span>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                     <div className="px-4 py-2.5 text-[10px] text-muted-foreground border-t border-border/30 bg-muted/20 flex items-center justify-between">
                       <span>{t("enterToSearch")}</span>
