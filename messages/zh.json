@@ -309,7 +309,9 @@
     "viewCommunityGuide": "查看 {name} 社区指南",
     "communityGuide": "社区指南",
     "explore": "探索",
-    "dubaiUAE": "迪拜，阿联酋"
+    "dubaiUAE": "迪拜，阿联酋",
+    "bathrooms": "浴室",
+    "developer": "开发商"
   },
   "offPlan": {
     "title": "迪拜期房",
@@ -945,7 +947,10 @@
     "searchPlaceholder": "搜索社区…",
     "properties": "套房源",
     "viewCommunity": "查看社区",
-    "noResults": "未找到符合的社区"
+    "noResults": "未找到符合的社区",
+    "badgeGuide": "社区指南",
+    "emptyTitle": "暂无社区",
+    "emptyBody": "我们正在持续添加新的社区指南，请稍后再来查看。"
   },
   "communityDetail": {
     "overview": "社区概览",
@@ -1583,5 +1588,72 @@
     "ctaButton": "浏览房产",
     "breadcrumbHome": "首页",
     "breadcrumbCommunities": "社区"
+  },
+  "privacyPolicy": {
+    "breadcrumb": "隐私政策",
+    "heroLabel": "法律",
+    "heroTitle": "隐私",
+    "heroTitleItalic": "政策",
+    "heroSubtitle": "我们如何收集、使用和保护您的个人信息。",
+    "lastUpdated": "最后更新：2026年1月",
+    "sections": {
+      "introduction": {
+        "title": "简介",
+        "body": "Binayah Properties LLC（\"Binayah\"、\"我们\"）致力于保护您的隐私。本隐私政策说明了当您访问我们的网站或使用我们的服务时，我们如何收集、使用、披露和保护您的信息。请仔细阅读本政策。如果您不同意其条款，请停止使用本网站。"
+      },
+      "dataCollected": {
+        "title": "我们收集的信息",
+        "body": "我们可能会收集您在注册网站、联系我们时自愿提供的个人信息，包括您的姓名、电子邮件地址、电话号码及您发送的任何消息。我们还会在您访问网站时自动收集某些信息，如IP地址、浏览器类型及浏览页面等。"
+      },
+      "dataUse": {
+        "title": "我们如何使用您的信息",
+        "body": "我们使用收集的信息来提供、维护和改善我们的服务；向您发送您已选择接收的房产列表、市场动态和促销材料；回应您的咨询并提供客户支持；以及遵守阿联酋适用的法律法规（包括RERA法规）。"
+      },
+      "yourRights": {
+        "title": "您的权利",
+        "body": "您有权访问、更正或删除我们持有的您的个人信息。如需行使这些权利，请通过privacy@binayah.com联系我们。我们将依据阿联酋适用的数据保护法规，在30天内回应所有请求。"
+      },
+      "contact": {
+        "title": "联系我们",
+        "body": "如果您对本隐私政策有任何疑问，请通过privacy@binayah.com联系我们的数据保护官，或致函：Binayah Properties LLC，阿联酋迪拜商业湾Marasi Drive。"
+      }
+    }
+  },
+  "termsOfService": {
+    "breadcrumb": "服务条款",
+    "heroLabel": "法律",
+    "heroTitle": "服务",
+    "heroTitleItalic": "条款",
+    "heroSubtitle": "在使用我们的平台之前，请仔细阅读这些条款。",
+    "lastUpdated": "最后更新：2026年1月",
+    "sections": {
+      "acceptance": {
+        "title": "接受条款",
+        "body": "通过访问或使用Binayah Properties网站及服务，即表示您同意受本服务条款及所有适用阿联酋法律法规的约束。如果您不同意这些条款的任何部分，则禁止您使用本网站。"
+      },
+      "useOfService": {
+        "title": "服务使用",
+        "body": "您只能出于合法目的并按照这些条款使用本网站。您同意不以任何限制或阻止他人使用本网站的方式使用本网站，也不得以任何可能损害Binayah Properties或网站用户的方式使用本网站。"
+      },
+      "intellectualProperty": {
+        "title": "知识产权",
+        "body": "本网站上的内容，包括但不限于文字、图形、标志、图像和软件，均为Binayah Properties LLC的财产，受阿联酋及国际版权和知识产权法律保护。未经我们事先书面同意，您不得复制、分发、修改或创建衍生作品。"
+      },
+      "liability": {
+        "title": "责任限制",
+        "body": "Binayah Properties以\"现状\"提供房产信息，不作任何形式的保证。我们不保证房源信息的准确性、完整性或及时性。在阿联酋法律允许的最大范围内，Binayah Properties对因使用本网站或依赖本网站提供的任何信息而产生的任何间接、附带或后果性损害不承担责任。"
+      },
+      "governing": {
+        "title": "适用法律",
+        "body": "本服务条款受迪拜酋长国法律及阿联酋联邦适用法律的管辖和解释。因本条款引起的任何争议均受迪拜法院的专属管辖。我们保留随时修改这些条款的权利，此类更改将在发布后立即生效。"
+      }
+    }
+  },
+  "communityMergedDetail": {
+    "propertiesTitle": "{communityName} 的房产 ({count})",
+    "propertiesEyebrow": "立即可用",
+    "noPropertiesNote": "暂无房源 — 请稍后再来查看。",
+    "browseSearch": "浏览所有房产",
+    "wikiAttribution": "社区信息来源于维基百科"
   }
 }

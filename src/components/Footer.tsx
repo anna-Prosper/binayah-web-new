@@ -129,8 +129,8 @@ const Footer = () => {
       <div className="border-t border-white/8 py-6 pb-20 sm:pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-xs text-white/30">{t("copyright")} {t("rights")}</p>
         <div className="flex items-center gap-6 text-xs text-white/30">
-          <a href="#" className="hover:text-white/60 transition-colors">{t("privacyPolicy")}</a>
-          <a href="#" className="hover:text-white/60 transition-colors">{t("termsOfService")}</a>
+          <Link href="/privacy-policy" className="hover:text-white/60 transition-colors">{t("privacyPolicy")}</Link>
+          <Link href="/terms-of-service" className="hover:text-white/60 transition-colors">{t("termsOfService")}</Link>
           <a href="/design-guidelines" className="hover:text-white/60 transition-colors" title="Design Guidelines">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </a>

@@ -257,9 +257,9 @@ function SearchContent() {
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} />
             <FilterSelect placeholder={t("community")} value={location} onChange={setLocation} options={locations} />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} />
-            <FilterSelect placeholder={t("bedrooms")} value={baths} onChange={setBaths} options={bathrooms} />
+            <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
             <FilterSelect placeholder={t("minPrice")} value={budget} onChange={setBudget} options={budgetOptions} />
-            <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("community")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+            <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
           </div>
 
           <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">

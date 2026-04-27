@@ -303,7 +303,9 @@
     "viewCommunityGuide": "View {name} Community Guide",
     "communityGuide": "Community Guide",
     "explore": "Explore",
-    "dubaiUAE": "Dubai, UAE"
+    "dubaiUAE": "Dubai, UAE",
+    "bathrooms": "Bathrooms",
+    "developer": "Developer"
   },
   "offPlan": {
     "title": "Off-Plan Properties",
@@ -939,7 +941,10 @@
     "searchPlaceholder": "Search communities...",
     "properties": "properties",
     "viewCommunity": "View Community",
-    "noResults": "No communities found"
+    "noResults": "No communities found",
+    "badgeGuide": "Community Guide",
+    "emptyTitle": "No communities found",
+    "emptyBody": "Check back soon — we are continuously adding new community guides."
   },
   "communityDetail": {
     "overview": "Overview",
@@ -1577,5 +1582,72 @@
     "ctaButton": "Browse Properties",
     "breadcrumbHome": "Home",
     "breadcrumbCommunities": "Communities"
+  },
+  "privacyPolicy": {
+    "breadcrumb": "Privacy Policy",
+    "heroLabel": "Legal",
+    "heroTitle": "Privacy",
+    "heroTitleItalic": "Policy",
+    "heroSubtitle": "How we collect, use, and protect your personal information.",
+    "lastUpdated": "Last updated: January 2026",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "body": "Binayah Properties LLC ('Binayah', 'we', 'us', or 'our') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. Please read this policy carefully. If you disagree with its terms, please discontinue use of the site."
+      },
+      "dataCollected": {
+        "title": "Information We Collect",
+        "body": "We may collect personal information that you voluntarily provide to us when you register on the site, express an interest in obtaining information about us or our products and services, or otherwise contact us. This includes your name, email address, phone number, and any messages you send. We also automatically collect certain information when you visit our site, such as your IP address, browser type, referring URLs, and pages viewed."
+      },
+      "dataUse": {
+        "title": "How We Use Your Information",
+        "body": "We use the information we collect to provide, maintain, and improve our services; to send you property listings, market updates, and promotional materials you have opted into; to respond to your inquiries and provide customer support; to comply with legal obligations in the UAE, including RERA regulations; and to detect and prevent fraud or unauthorized activity on our platform."
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "body": "You have the right to access, correct, or delete the personal information we hold about you. You may also object to certain types of processing or request that we restrict our use of your data. To exercise any of these rights, please contact us at privacy@binayah.com. We will respond to all requests within 30 days in accordance with applicable UAE data protection law."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "body": "If you have questions or concerns about this Privacy Policy, please contact our Data Protection Officer at privacy@binayah.com, or write to us at Binayah Properties LLC, Marasi Drive, Business Bay, Dubai, UAE."
+      }
+    }
+  },
+  "termsOfService": {
+    "breadcrumb": "Terms of Service",
+    "heroLabel": "Legal",
+    "heroTitle": "Terms of",
+    "heroTitleItalic": "Service",
+    "heroSubtitle": "Please read these terms carefully before using our platform.",
+    "lastUpdated": "Last updated: January 2026",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "body": "By accessing or using the Binayah Properties website and services, you agree to be bound by these Terms of Service and all applicable UAE laws and regulations. If you do not agree with any part of these terms, you are prohibited from using this site. These terms apply to all visitors, users, and others who access or use the service."
+      },
+      "useOfService": {
+        "title": "Use of Service",
+        "body": "You may use this site only for lawful purposes and in accordance with these Terms. You agree not to use this site to engage in any conduct that restricts or inhibits anyone's use or enjoyment of the site, or that could harm Binayah Properties or users of the site. You must not transmit any unsolicited or unauthorised advertising or promotional material, any junk mail, or any other form of similar solicitation."
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "body": "The content on this site, including but not limited to text, graphics, logos, images, and software, is the property of Binayah Properties LLC and is protected by UAE and international copyright and intellectual property laws. You may not reproduce, distribute, modify, or create derivative works without our prior written consent. Property listings are provided for personal, non-commercial informational use only."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "body": "Binayah Properties provides property information on an 'as is' basis without warranties of any kind. We do not guarantee the accuracy, completeness, or timeliness of listing information. To the fullest extent permitted by UAE law, Binayah Properties shall not be liable for any indirect, incidental, or consequential damages arising from your use of this site or reliance on any information provided herein."
+      },
+      "governing": {
+        "title": "Governing Law",
+        "body": "These Terms of Service shall be governed by and construed in accordance with the laws of the Emirate of Dubai and the applicable federal laws of the United Arab Emirates. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the Dubai courts. We reserve the right to modify these terms at any time, and such changes will be effective immediately upon posting."
+      }
+    }
+  },
+  "communityMergedDetail": {
+    "propertiesTitle": "Properties in {communityName} ({count})",
+    "propertiesEyebrow": "Available now",
+    "noPropertiesNote": "No listings yet — check back soon.",
+    "browseSearch": "Browse all properties",
+    "wikiAttribution": "Community information sourced from Wikipedia"
   }
 }
