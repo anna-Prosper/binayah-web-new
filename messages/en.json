@@ -1090,7 +1090,9 @@
     "ofTotal": "of total market",
     "tickerLabel": "LIVE MARKET",
     "tickerPricePerSqft": "{area} AED {price}/sqft",
-    "tickerYield": "{area} {yield}% yield"
+    "tickerYield": "{area} {yield}% yield",
+    "tabBinayah": "Binayah Data",
+    "tabOpenData": "DLD & Open Data"
   },
   "services": {
     "heroLabel": "What We Offer",

@@ -1090,7 +1090,9 @@
     "ofTotal": "من إجمالي السوق",
     "tickerLabel": "السوق المباشر",
     "tickerPricePerSqft": "{area} {price} درهم/قدم²",
-    "tickerYield": "{area} عائد {yield}٪"
+    "tickerYield": "{area} عائد {yield}٪",
+    "tabBinayah": "بيانات بناية",
+    "tabOpenData": "دائرة الأراضي والأملاك والبيانات المفتوحة"
   },
   "services": {
     "heroLabel": "ما نقدمه",

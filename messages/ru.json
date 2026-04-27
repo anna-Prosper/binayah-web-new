@@ -1090,7 +1090,9 @@
     "ofTotal": "от общего рынка",
     "tickerLabel": "РЫНОК В РЕАЛЬНОМ ВРЕМЕНИ",
     "tickerPricePerSqft": "{area} AED {price}/кв.фут",
-    "tickerYield": "{area} доходность {yield}%"
+    "tickerYield": "{area} доходность {yield}%",
+    "tabBinayah": "Данные Binayah",
+    "tabOpenData": "ДЗО и Открытые Данные"
   },
   "services": {
     "heroLabel": "Что мы предлагаем",

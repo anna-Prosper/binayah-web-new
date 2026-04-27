@@ -1096,7 +1096,9 @@
     "ofTotal": "占总市场",
     "tickerLabel": "实时市场",
     "tickerPricePerSqft": "{area} AED {price}/平方英尺",
-    "tickerYield": "{area} {yield}% 租金回报率"
+    "tickerYield": "{area} {yield}% 租金回报率",
+    "tabBinayah": "Binayah 数据",
+    "tabOpenData": "土地局与公开数据"
   },
   "services": {
     "heroLabel": "服务领域",
