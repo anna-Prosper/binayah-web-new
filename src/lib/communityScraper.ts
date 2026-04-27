@@ -1,12 +1,13 @@
 /**
- * Community Info Scraper — Wikipedia REST API
+ * Community Info Scraper
  *
- * Primary: Wikipedia page/summary API (free, no auth, no CAPTCHA, covers Dubai
- * communities AND buildings like Burj Vista).
- * Fallback: Wikipedia search API if direct title lookup misses.
+ * Three sources, tried in order:
+ *   1. Wikipedia REST API  — direct title lookup (covers famous towers + communities)
+ *   2. Wikipedia search API — fallback for partial/alternate names
+ *   3. Nominatim → Wikidata → Wikipedia — bridges abbreviations (JVC, JBR, DIFC)
+ *      and places whose name doesn't map directly to a Wikipedia title
  *
- * No BrightData required — the datacenter proxy zone we have doesn't bypass
- * CAPTCHA on Bayut/PropertyFinder anyway.
+ * All three are free, require no auth, and work in Vercel serverless.
  */
 
 // ---------------------------------------------------------------------------
@@ -27,7 +28,7 @@ export interface CommunityInfoPage {
 }
 
 // ---------------------------------------------------------------------------
-// Slug helper
+// Helpers
 // ---------------------------------------------------------------------------
 
 export function toSlug(name: string): string {
@@ -37,10 +38,6 @@ export function toSlug(name: string): string {
     .replace(/[\s_]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
-// ---------------------------------------------------------------------------
-// Score: how well does a name match the query?
-// ---------------------------------------------------------------------------
 
 function scoreMatch(entryName: string, query: string): number {
   const entry = entryName.toLowerCase().trim();
@@ -53,11 +50,11 @@ function scoreMatch(entryName: string, query: string): number {
   return overlap / Math.max(qWords.length, 1);
 }
 
-// ---------------------------------------------------------------------------
-// Wikipedia REST API helpers
-// ---------------------------------------------------------------------------
+const UA = "binayah-properties/1.0 (https://binayah.com)";
 
-const WIKI_UA = "binayah-properties/1.0 (https://binayah.com)";
+// ---------------------------------------------------------------------------
+// Source 1 + 2: Wikipedia REST API
+// ---------------------------------------------------------------------------
 
 interface WikiSummary {
   title: string;
@@ -71,7 +68,7 @@ async function wikiSummary(titleSlug: string): Promise<WikiSummary | null> {
   try {
     const res = await fetch(
       `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(titleSlug)}`,
-      { headers: { "User-Agent": WIKI_UA }, signal: AbortSignal.timeout(12_000) }
+      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(12_000) }
     );
     if (!res.ok) return null;
     return (await res.json()) as WikiSummary;
@@ -82,14 +79,12 @@ async function wikiSummary(titleSlug: string): Promise<WikiSummary | null> {
 
 async function wikiSearch(query: string): Promise<WikiSummary | null> {
   try {
-    const searchRes = await fetch(
+    const res = await fetch(
       `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query + " Dubai")}&format=json&srlimit=3&origin=*`,
-      { headers: { "User-Agent": WIKI_UA }, signal: AbortSignal.timeout(12_000) }
+      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(12_000) }
     );
-    if (!searchRes.ok) return null;
-    const searchData = await searchRes.json();
-    const hits: Array<{ title: string }> = searchData?.query?.search ?? [];
-
+    if (!res.ok) return null;
+    const hits: Array<{ title: string }> = (await res.json())?.query?.search ?? [];
     for (const hit of hits) {
       if (scoreMatch(hit.title, query) < 0.3) continue;
       const summary = await wikiSummary(hit.title.replace(/ /g, "_"));
@@ -102,11 +97,71 @@ async function wikiSearch(query: string): Promise<WikiSummary | null> {
 }
 
 // ---------------------------------------------------------------------------
-// Main scrape function
+// Source 3: Nominatim → Wikidata → Wikipedia
+// Handles abbreviations (JVC → Jumeirah Village Circle) and places with
+// non-English Wikipedia links.
+// ---------------------------------------------------------------------------
+
+async function nominatimBridge(query: string): Promise<WikiSummary | null> {
+  try {
+    // Step 1: Nominatim search — get OSM result with extratags
+    const nomRes = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + " Dubai")}&format=json&limit=1&extratags=1&namedetails=1`,
+      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(10_000) }
+    );
+    if (!nomRes.ok) return null;
+    const nomData = await nomRes.json();
+    const hit = nomData?.[0];
+    if (!hit) return null;
+
+    const tags = hit.extratags ?? {};
+    let wikiTitle: string | null = null;
+
+    // Step 2a: direct English Wikipedia tag
+    if (tags.wikipedia?.startsWith("en:")) {
+      wikiTitle = tags.wikipedia.slice(3).replace(/ /g, "_");
+    }
+    // Step 2b: Wikidata ID → resolve to enwiki title
+    else if (tags.wikidata) {
+      try {
+        const wdRes = await fetch(
+          `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${tags.wikidata}&props=sitelinks&sitefilter=enwiki&format=json`,
+          { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(8_000) }
+        );
+        if (wdRes.ok) {
+          const wdData = await wdRes.json();
+          const enwiki = wdData?.entities?.[tags.wikidata]?.sitelinks?.enwiki?.title;
+          if (enwiki) wikiTitle = enwiki.replace(/ /g, "_");
+        }
+      } catch {
+        // non-fatal
+      }
+    }
+    // Step 2c: use the English name from Nominatim as a Wikipedia title guess
+    else {
+      const enName =
+        hit.namedetails?.["name:en"] || hit.namedetails?.name;
+      if (enName && scoreMatch(enName, query) >= 0.4) {
+        wikiTitle = enName.replace(/ /g, "_");
+      }
+    }
+
+    if (!wikiTitle) return null;
+
+    const summary = await wikiSummary(wikiTitle);
+    if (!summary || scoreMatch(summary.title, query) < 0.25) return null;
+    return summary;
+  } catch {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Main
 // ---------------------------------------------------------------------------
 
 export async function scrapeCommunityInfo(query: string): Promise<CommunityInfoPage | null> {
-  // 1. Direct title lookup — convert "burj vista" → "Burj_Vista"
+  // Source 1: direct Wikipedia title
   const titleSlug = query
     .trim()
     .replace(/\b\w/g, (c) => c.toUpperCase())
@@ -114,20 +169,22 @@ export async function scrapeCommunityInfo(query: string): Promise<CommunityInfoP
 
   let summary = await wikiSummary(titleSlug);
 
-  // 2. If direct miss or poor match, try search
+  // Source 2: Wikipedia search
   if (!summary || scoreMatch(summary.title, query) < 0.3) {
     summary = await wikiSearch(query);
   }
 
-  if (!summary || !summary.title || scoreMatch(summary.title, query) < 0.3) {
-    return null;
+  // Source 3: Nominatim → Wikidata → Wikipedia
+  if (!summary || scoreMatch(summary.title, query) < 0.3) {
+    summary = await nominatimBridge(query);
   }
+
+  if (!summary?.title || scoreMatch(summary.title, query) < 0.25) return null;
 
   const isDubai =
     summary.description?.toLowerCase().includes("dubai") ||
     summary.extract?.toLowerCase().includes("dubai");
 
-  // Only surface pages that are actually about Dubai
   if (!isDubai) return null;
 
   const slug = toSlug(summary.title);
@@ -138,7 +195,7 @@ export async function scrapeCommunityInfo(query: string): Promise<CommunityInfoP
   return {
     slug,
     name: summary.title,
-    location: isDubai ? "Dubai, UAE" : undefined,
+    location: "Dubai, UAE",
     description: summary.extract?.slice(0, 600) ?? undefined,
     heroImage: summary.thumbnail?.source,
     sources: [wikiUrl],
