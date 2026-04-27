@@ -243,7 +243,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
             Browse Binayah&apos;s verified listings nearby.
           </p>
           <Link
-            href={location ? `/search?location=${encodeURIComponent(location)}` : "/properties"}
+            href={location ? `/search?location=${encodeURIComponent(location)}` : "/search"}
             className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl font-bold text-white transition-all hover:-translate-y-0.5 hover:shadow-2xl"
             style={{
               background: "linear-gradient(to right, #D4A847, #B8922F)",
