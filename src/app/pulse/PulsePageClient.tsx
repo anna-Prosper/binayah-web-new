@@ -243,15 +243,6 @@ function MarketSplitPanel({
 
 // ── Main Component ─────────────────────────────────────────────────────────
 
-// ── AED compact formatter ──────────────────────────────────────────────────
-
-const AEDCompact = (n: number): string => {
-  if (n >= 1_000_000_000) return `AED ${(n / 1_000_000_000).toFixed(1)}B`;
-  if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `AED ${(n / 1_000).toFixed(0)}K`;
-  return `AED ${n.toLocaleString()}`;
-};
-
 type MainTab = "market" | "binayah";
 
 export default function PulsePageClient({ marketStats, marketData }: { marketStats: MarketStats | null; marketData: MarketData | null }) {
@@ -706,7 +697,14 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             {/* ── Hero Stat Strip ────────────────────────────────────── */}
             {txData?.hasData ? (
               <>
-                <motion.div
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0 }}
+                >
+                  <SectionHeader label={t("dldHeroLabel")} title={t("totalTxYtd")} titleItalic={t("ytdLabel")} />
+                  <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -721,13 +719,13 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                   />
                   <Kpi
                     label={t("totalValueAed")}
-                    value={AEDCompact(txData.summary.totalValue)}
+                    value={AED(txData.summary.totalValue, true)}
                     sub={t("salesVolume")}
                     icon={TrendingUp}
                   />
                   <Kpi
                     label={t("avgDealSize")}
-                    value={AEDCompact(txData.summary.avgTransactionValue)}
+                    value={AED(txData.summary.avgTransactionValue, true)}
                     sub={t("perSale")}
                     icon={DollarSign}
                   />
@@ -739,6 +737,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                     icon={Activity}
                   />
                 </motion.div>
+                </motion.section>
 
                 {/* ── Transaction Volume Timeline (BarChart) ──────────── */}
                 {txData.monthly.length > 0 && (
@@ -884,10 +883,10 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                                   </div>
                                 </td>
                                 <td className="px-4 py-3 text-muted-foreground text-xs">
-                                  {row.totalValue > 0 ? AEDCompact(row.totalValue) : <span className="text-muted-foreground/40">—</span>}
+                                  {row.totalValue > 0 ? AED(row.totalValue, true) : <span className="text-muted-foreground/40">—</span>}
                                 </td>
                                 <td className="px-4 py-3 text-muted-foreground text-xs">
-                                  {row.avgPrice > 0 ? AEDCompact(row.avgPrice) : <span className="text-muted-foreground/40">—</span>}
+                                  {row.avgPrice > 0 ? AED(row.avgPrice, true) : <span className="text-muted-foreground/40">—</span>}
                                 </td>
                                 <td className="px-4 py-3">
                                   {row.avgPpsf > 0 ? (
@@ -905,57 +904,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                   </motion.section>
                 )}
 
-                {/* ── DLD Transaction Detail (existing section) ──────── */}
-                <motion.section
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.05 }}
-                >
-                  <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
-
-                  <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-                    {txData.monthly.length > 0 && (
-                      <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                        <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
-                        <div className="h-[220px]">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={txData.monthly}>
-                              <defs>
-                                <linearGradient id="txGrad" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor={C.primary} stopOpacity={0.15} />
-                                  <stop offset="95%" stopColor={C.primary} stopOpacity={0} />
-                                </linearGradient>
-                              </defs>
-                              <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                              <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                              <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                              <Tooltip formatter={(v: number) => [v.toLocaleString(), t("tooltipCount")]} contentStyle={TOOLTIP_STYLE} />
-                              <Area dataKey="count" stroke={C.primary} strokeWidth={2} fill="url(#txGrad)" dot={false} />
-                            </AreaChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    )}
-
-                    {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
-                      <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                        <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
-                        <div className="h-[220px]">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                              <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                              <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                              <Tooltip formatter={(v: number) => [`AED ${v.toLocaleString()}`, t("tooltipAvgPpsf")]} contentStyle={TOOLTIP_STYLE} />
-                              <Line dataKey="avgPpsf" stroke={C.accent} strokeWidth={2.5} dot={{ fill: C.accent, r: 3 }} />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </motion.section>
               </>
             ) : (
               <motion.div
