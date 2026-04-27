@@ -1,13 +1,12 @@
 /**
- * Community Info Scraper — BrightData Web Unlocker
+ * Community Info Scraper — Wikipedia REST API
  *
- * Strategy: try direct per-slug pages on real-estate portals.
- * This handles both community names (Downtown Dubai) and building names (Burj Vista).
+ * Primary: Wikipedia page/summary API (free, no auth, no CAPTCHA, covers Dubai
+ * communities AND buildings like Burj Vista).
+ * Fallback: Wikipedia search API if direct title lookup misses.
  *
- * Source priority:
- *   1. Bayut community page
- *   2. PropertyFinder community page
- *   3. Bayut listing search (fallback, extracts info from search results)
+ * No BrightData required — the datacenter proxy zone we have doesn't bypass
+ * CAPTCHA on Bayut/PropertyFinder anyway.
  */
 
 // ---------------------------------------------------------------------------
@@ -27,16 +26,6 @@ export interface CommunityInfoPage {
   scrapedAt: Date;
 }
 
-interface ScrapedCommunity {
-  name: string;
-  location?: string;
-  description?: string;
-  developerName?: string;
-  heroImage?: string;
-  amenities?: string[];
-  priceRange?: { min: number; max: number; currency: string };
-}
-
 // ---------------------------------------------------------------------------
 // Slug helper
 // ---------------------------------------------------------------------------
@@ -47,82 +36,6 @@ export function toSlug(name: string): string {
     .replace(/[^\w\s-]/g, "")
     .replace(/[\s_]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-// ---------------------------------------------------------------------------
-// BrightData fetch wrapper (15s timeout)
-// ---------------------------------------------------------------------------
-
-async function brightDataFetch(url: string): Promise<string | null> {
-  const proxyUrl = process.env.BRIGHTDATA_PROXY_URL;
-  const username = process.env.BRIGHTDATA_USERNAME;
-  const password = process.env.BRIGHTDATA_PASSWORD;
-
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15_000);
-
-  try {
-    const headers: Record<string, string> = {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      "Accept-Language": "en-US,en;q=0.9",
-    };
-
-    if (proxyUrl && username && password) {
-      const response = await fetch("https://api.brightdata.com/request", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${password}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          zone: username.replace("brd-customer-hl_2343de0d-zone-", ""),
-          url,
-          format: "raw",
-          country: "ae",
-        }),
-        signal: controller.signal,
-      });
-      if (response.ok) return await response.text();
-    }
-
-    const response = await fetch(url, { headers, signal: controller.signal });
-    if (!response.ok) return null;
-    return await response.text();
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Meta-tag extraction helpers (works across all SEO-optimised sites)
-// ---------------------------------------------------------------------------
-
-function extractMeta(html: string, attr: string, value: string): string | undefined {
-  const pattern = new RegExp(
-    `<meta[^>]+${attr}=["']${value}["'][^>]+content=["']([^"']{10,600})["']`,
-    "i"
-  );
-  const m = pattern.exec(html);
-  if (m) return m[1].trim();
-  // Reversed attribute order
-  const pattern2 = new RegExp(
-    `<meta[^>]+content=["']([^"']{10,600})["'][^>]+${attr}=["']${value}["']`,
-    "i"
-  );
-  return pattern2.exec(html)?.[1]?.trim();
-}
-
-function extractH1(html: string): string | undefined {
-  return /<h1[^>]*>([^<]{3,120})<\/h1>/i.exec(html)?.[1]?.trim();
-}
-
-function extractOgImage(html: string): string | undefined {
-  const img = extractMeta(html, "property", "og:image");
-  return img?.startsWith("http") ? img : undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -141,144 +54,94 @@ function scoreMatch(entryName: string, query: string): number {
 }
 
 // ---------------------------------------------------------------------------
-// Source 1: Bayut community/building page
-// URL: https://www.bayut.com/community/{slug}/
+// Wikipedia REST API helpers
 // ---------------------------------------------------------------------------
 
-async function scrapeBayut(query: string): Promise<{ url: string; data: ScrapedCommunity } | null> {
-  const slug = toSlug(query);
-  const url = `https://www.bayut.com/community/${slug}/`;
-  const html = await brightDataFetch(url);
-  if (!html) return null;
+const WIKI_UA = "binayah-properties/1.0 (https://binayah.com)";
 
-  // Bail out on 404/error pages — Bayut renders an h1 with the community name on real pages
-  const h1 = extractH1(html);
-  if (!h1 || scoreMatch(h1, query) < 0.4) return null;
+interface WikiSummary {
+  title: string;
+  description?: string;
+  extract?: string;
+  thumbnail?: { source: string };
+  content_urls?: { desktop?: { page?: string } };
+}
 
-  const description =
-    extractMeta(html, "name", "description") ??
-    extractMeta(html, "property", "og:description");
+async function wikiSummary(titleSlug: string): Promise<WikiSummary | null> {
+  try {
+    const res = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(titleSlug)}`,
+      { headers: { "User-Agent": WIKI_UA }, signal: AbortSignal.timeout(12_000) }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as WikiSummary;
+  } catch {
+    return null;
+  }
+}
 
-  const heroImage = extractOgImage(html);
+async function wikiSearch(query: string): Promise<WikiSummary | null> {
+  try {
+    const searchRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query + " Dubai")}&format=json&srlimit=3&origin=*`,
+      { headers: { "User-Agent": WIKI_UA }, signal: AbortSignal.timeout(12_000) }
+    );
+    if (!searchRes.ok) return null;
+    const searchData = await searchRes.json();
+    const hits: Array<{ title: string }> = searchData?.query?.search ?? [];
 
-  // Developer name — Bayut often shows "by {Developer}" near the heading
-  const devMatch = /by\s+([A-Z][a-zA-Z\s&]{2,50})/i.exec(html.slice(0, 5000));
-  const developerName = devMatch?.[1]?.trim();
-
-  // Location — look for "Dubai" suburb pattern in first 3000 chars
-  const locMatch = /(Downtown Dubai|Dubai Marina|Business Bay|Palm Jumeirah|JBR|JVC|JVT|Dubai Hills|Creek Harbour|MBR City|DIFC|Jumeirah|Al Barsha|Deira|Bur Dubai|Motor City|Sports City|Arabian Ranches|Dubai South|Dubai Silicon Oasis|International City|Discovery Gardens|Al Furjan|Meydan|Sobha Hartland)/i.exec(
-    html.slice(0, 8000)
-  );
-  const location = locMatch?.[1];
-
-  return { url, data: { name: h1, description, heroImage, developerName, location } };
+    for (const hit of hits) {
+      if (scoreMatch(hit.title, query) < 0.3) continue;
+      const summary = await wikiSummary(hit.title.replace(/ /g, "_"));
+      if (summary) return summary;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------------------
-// Source 2: PropertyFinder community page
-// URL: https://www.propertyfinder.ae/en/communities/{slug}.html
-// ---------------------------------------------------------------------------
-
-async function scrapePropertyFinder(query: string): Promise<{ url: string; data: ScrapedCommunity } | null> {
-  const slug = toSlug(query);
-  const url = `https://www.propertyfinder.ae/en/communities/${slug}.html`;
-  const html = await brightDataFetch(url);
-  if (!html) return null;
-
-  const h1 = extractH1(html);
-  if (!h1 || scoreMatch(h1, query) < 0.4) return null;
-
-  const description =
-    extractMeta(html, "name", "description") ??
-    extractMeta(html, "property", "og:description");
-
-  const heroImage = extractOgImage(html);
-
-  return { url, data: { name: h1, description, heroImage } };
-}
-
-// ---------------------------------------------------------------------------
-// Source 3: Bayut search results page (fallback)
-// URL: https://www.bayut.com/to-buy/apartments-in-{slug}-dubai/
-// Infers community name from page title / listings
-// ---------------------------------------------------------------------------
-
-async function scrapeBayutSearch(query: string): Promise<{ url: string; data: ScrapedCommunity } | null> {
-  const slug = toSlug(query);
-  const url = `https://www.bayut.com/to-buy/apartments-in-${slug}-dubai/`;
-  const html = await brightDataFetch(url);
-  if (!html) return null;
-
-  const ogTitle = extractMeta(html, "property", "og:title");
-  if (!ogTitle || scoreMatch(ogTitle, query) < 0.3) return null;
-
-  // Extract the community name from the og:title — usually "Apartments for Sale in X, Dubai"
-  const nameMatch = /(?:in|at)\s+([^,|]{3,80})/i.exec(ogTitle);
-  const name = nameMatch?.[1]?.trim() ?? ogTitle;
-
-  if (scoreMatch(name, query) < 0.3) return null;
-
-  const description =
-    extractMeta(html, "name", "description") ??
-    extractMeta(html, "property", "og:description");
-
-  const heroImage = extractOgImage(html);
-
-  return { url, data: { name, description, heroImage } };
-}
-
-// ---------------------------------------------------------------------------
-// Main scrape function — try sources in priority order, merge gaps
+// Main scrape function
 // ---------------------------------------------------------------------------
 
 export async function scrapeCommunityInfo(query: string): Promise<CommunityInfoPage | null> {
-  const sources: string[] = [];
-  let merged: Partial<ScrapedCommunity> = {};
+  // 1. Direct title lookup — convert "burj vista" → "Burj_Vista"
+  const titleSlug = query
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .replace(/\s+/g, "_");
 
-  const [r1, r2, r3] = await Promise.allSettled([
-    scrapeBayut(query),
-    scrapePropertyFinder(query),
-    scrapeBayutSearch(query),
-  ]);
+  let summary = await wikiSummary(titleSlug);
 
-  const results = [
-    r1.status === "fulfilled" ? r1.value : null,
-    r2.status === "fulfilled" ? r2.value : null,
-    r3.status === "fulfilled" ? r3.value : null,
-  ];
-
-  for (const result of results) {
-    if (!result) continue;
-
-    sources.push(result.url);
-    const data = result.data;
-
-    if (!merged.name) {
-      merged = { ...data };
-    } else {
-      if (!merged.location && data.location) merged.location = data.location;
-      if (!merged.description && data.description) merged.description = data.description;
-      if (!merged.developerName && data.developerName) merged.developerName = data.developerName;
-      if (!merged.heroImage && data.heroImage) merged.heroImage = data.heroImage;
-      if (!merged.amenities && data.amenities) merged.amenities = data.amenities;
-      if (!merged.priceRange && data.priceRange) merged.priceRange = data.priceRange;
-    }
+  // 2. If direct miss or poor match, try search
+  if (!summary || scoreMatch(summary.title, query) < 0.3) {
+    summary = await wikiSearch(query);
   }
 
-  if (!merged.name) return null;
+  if (!summary || !summary.title || scoreMatch(summary.title, query) < 0.3) {
+    return null;
+  }
 
-  const slug = toSlug(merged.name);
+  const isDubai =
+    summary.description?.toLowerCase().includes("dubai") ||
+    summary.extract?.toLowerCase().includes("dubai");
+
+  // Only surface pages that are actually about Dubai
+  if (!isDubai) return null;
+
+  const slug = toSlug(summary.title);
+  const wikiUrl =
+    summary.content_urls?.desktop?.page ??
+    `https://en.wikipedia.org/wiki/${encodeURIComponent(summary.title.replace(/ /g, "_"))}`;
 
   return {
     slug,
-    name: merged.name,
-    location: merged.location,
-    description: merged.description,
-    developerName: merged.developerName,
-    heroImage: merged.heroImage,
-    amenities: merged.amenities?.length ? merged.amenities : undefined,
-    priceRange: merged.priceRange,
-    sources,
+    name: summary.title,
+    location: isDubai ? "Dubai, UAE" : undefined,
+    description: summary.extract?.slice(0, 600) ?? undefined,
+    heroImage: summary.thumbnail?.source,
+    sources: [wikiUrl],
     scrapedAt: new Date(),
   };
 }
