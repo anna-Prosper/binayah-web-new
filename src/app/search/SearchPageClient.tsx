@@ -8,7 +8,7 @@ import { CardActions } from "@/components/PropertyActions";
 import { formatProjectPrice } from "@/lib/formatPrice";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
-import { Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
+import { ArrowRight, Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -113,6 +113,7 @@ function SearchContent() {
   const [loading, setLoading] = useState(true);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
+  const [communityLoading, setCommunityLoading] = useState(false);
 
   const budgetOptions = intent === "rent" ? rentBudgets : buyBudgets;
 
@@ -199,6 +200,8 @@ function SearchContent() {
 
   useEffect(() => {
     if (!loading && totalResults === 0 && q.trim().length >= 3) {
+      setCommunityInfo(null);
+      setCommunityLoading(true);
       fetch(`/api/community-info?q=${encodeURIComponent(q.trim())}`)
         .then((r) => r.ok ? r.json() : null)
         .then((data) => {
@@ -208,9 +211,11 @@ function SearchContent() {
             setCommunityInfo(null);
           }
         })
-        .catch(() => setCommunityInfo(null));
+        .catch(() => setCommunityInfo(null))
+        .finally(() => setCommunityLoading(false));
     } else {
       setCommunityInfo(null);
+      setCommunityLoading(false);
     }
   }, [loading, totalResults, q]);
 
@@ -288,49 +293,68 @@ function SearchContent() {
               <h3 className="text-lg font-semibold text-foreground mb-1">{t("noResults")}</h3>
               <button onClick={clearFilters} className="text-sm text-muted-foreground hover:text-primary transition-colors mb-10">{t("clearFilters")}</button>
 
-              {communityInfo ? (
-                <div className="w-full max-w-sm">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 text-center">
+              {communityLoading && (
+                <div className="w-full max-w-sm animate-pulse">
+                  <div className="h-3 w-52 bg-muted rounded-full mx-auto mb-5" />
+                  <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-sm">
+                    <div className="aspect-[4/3] bg-muted" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-3 bg-muted rounded-full w-full" />
+                      <div className="h-3 bg-muted rounded-full w-4/5" />
+                      <div className="h-3 bg-muted rounded-full w-3/5" />
+                      <div className="h-10 bg-muted rounded-xl mt-4" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!communityLoading && communityInfo && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-full max-w-sm"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-4 text-center">
                     {t("communityInfoFound", { name: communityInfo.name })}
                   </p>
-                  <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                  <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <Image
                         src={communityInfo.heroImage || "/assets/amenities-placeholder.webp"}
                         alt={communityInfo.name}
                         fill
                         sizes="384px"
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 25%, rgba(11,61,46,0.55) 65%, rgba(11,61,46,0.97) 100%)" }} />
                       <div className="absolute top-3 left-3">
-                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-sm text-white uppercase tracking-wider border border-white/20">
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-white uppercase tracking-wider shadow-sm">
                           {t("communityGuide")}
                         </span>
                       </div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <p className="flex items-center gap-1.5 text-white/70 text-xs mb-1">
+                      <div className="absolute bottom-5 left-5 right-5">
+                        <p className="flex items-center gap-1.5 text-white/60 text-xs mb-1.5">
                           <MapPin className="h-3 w-3" /> {t("dubaiUAE")}
                         </p>
-                        <h3 className="text-white font-bold text-xl leading-tight">{communityInfo.name}</h3>
+                        <h3 className="text-white font-extrabold text-2xl leading-tight tracking-tight">{communityInfo.name}</h3>
                       </div>
                     </div>
-                    <div className="p-4">
+                    <div className="p-5">
                       {communityInfo.description && (
-                        <p className="text-sm text-muted-foreground line-clamp-3 mb-4 leading-relaxed">
+                        <p className="text-sm text-muted-foreground line-clamp-3 mb-5 leading-relaxed">
                           {communityInfo.description}
                         </p>
                       )}
-                      <div className="flex items-center justify-between border-t border-border pt-3">
-                        <span className="text-xs text-muted-foreground">{t("viewCommunityGuide", { name: communityInfo.name })}</span>
-                        <span className="text-xs font-semibold text-primary group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
-                          {t("explore")} →
-                        </span>
+                      <div className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-semibold transition-all group-hover:shadow-lg group-hover:brightness-110" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <MapPin className="h-4 w-4" />
+                        {t("viewCommunityGuide", { name: communityInfo.name })}
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>
                   </Link>
-                </div>
-              ) : null}
+                </motion.div>
+              )}
             </div>
           ) : (
             <>

@@ -44,6 +44,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.keyone.com" },
       { protocol: "https", hostname: "stageproperties.com" },
       { protocol: "https", hostname: "www.stageproperties.com" },
+      { protocol: "https", hostname: "upload.wikimedia.org" },
+      { protocol: "https", hostname: "commons.wikimedia.org" },
     ],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 86400,
