@@ -11,7 +11,7 @@ import Link from "next/link";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 
 interface Props {
-  community: CommunityInfoPage;
+  community: Omit<CommunityInfoPage, "scrapedAt">;
   locale: string;
 }
 

@@ -2,9 +2,9 @@
  * Community Info Scraper — BrightData Web Unlocker
  *
  * Required env vars (add to .env.local + Vercel):
- *   BRIGHTDATA_PROXY_URL  = http://brd.superproxy.io:33335
- *   BRIGHTDATA_USERNAME   = brd-customer-hl_2343de0d-zone-datacenter_proxy1_uae
- *   BRIGHTDATA_PASSWORD   = mediog54pphl
+ *   BRIGHTDATA_PROXY_URL
+ *   BRIGHTDATA_USERNAME
+ *   BRIGHTDATA_PASSWORD
  *
  * Three target sources, scraped in order. First match for primary fields;
  * subsequent sources fill any still-empty fields.

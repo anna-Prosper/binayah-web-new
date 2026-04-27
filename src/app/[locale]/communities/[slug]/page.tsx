@@ -23,8 +23,10 @@ export default async function CommunityPage({
       .findOne({ slug });
 
     if (communityInfoDoc) {
-      // Serialize MongoDB doc (strip _id ObjectId which is not JSON-serializable)
-      const serialized: CommunityInfoPage = {
+      // Serialize MongoDB doc — strip _id (ObjectId) and scrapedAt (Date),
+      // neither of which is JSON-serializable across the RSC boundary, and
+      // neither is used by CommunityInfoDetailClient.
+      const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
         slug: communityInfoDoc.slug,
         name: communityInfoDoc.name,
         location: communityInfoDoc.location,
@@ -34,7 +36,6 @@ export default async function CommunityPage({
         amenities: communityInfoDoc.amenities,
         priceRange: communityInfoDoc.priceRange,
         sources: communityInfoDoc.sources,
-        scrapedAt: communityInfoDoc.scrapedAt,
       };
       return <CommunityInfoDetailClient community={serialized} locale={locale} />;
     }
