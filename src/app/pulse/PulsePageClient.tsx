@@ -1,17 +1,18 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   CartesianGrid, Cell, RadarChart, Radar, PolarGrid,
   PolarAngleAxis, PolarRadiusAxis, LineChart, Line, Area, AreaChart,
+  PieChart, Pie,
 } from "recharts";
 import {
   TrendingUp, BarChart3, Building2, ArrowUpDown, ChevronUp,
   ChevronDown, DollarSign, Percent, Activity, Star, Newspaper,
-  Globe, RefreshCw, ExternalLink,
+  Globe, RefreshCw, ExternalLink, Zap, BarChart2, Users,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -80,12 +81,43 @@ const CURRENCIES = [
   { code: "CNY", flag: "🇨🇳", label: "Chinese Yuan" },
 ];
 
+const INDICATOR_ICONS: Record<string, React.ElementType> = {
+  "GDP": TrendingUp,
+  "GDP per Capita": DollarSign,
+  "GDP Growth": BarChart2,
+  "Inflation Rate": Percent,
+  "Unemployment Rate": Users,
+  "Population": Users,
+};
+
 function ScoreBadge({ score }: { score: number }) {
   const color = score >= 70 ? "bg-emerald-100 text-emerald-700" : score >= 45 ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500";
   return <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${color}`}><Star className="h-2.5 w-2.5" />{score}</span>;
 }
 
-function Kpi({ label, value, sub, icon: Icon, accent = false }: { label: string; value: string; sub?: string; icon: React.ElementType; accent?: boolean }) {
+// ── Count-up KPI card ──────────────────────────────────────────────────────
+
+function AnimatedNumber({ value, decimals = 0, prefix = "", suffix = "" }: { value: number; decimals?: number; prefix?: string; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionVal = useMotionValue(0);
+  const rounded = useTransform(motionVal, (latest) => {
+    return `${prefix}${latest.toFixed(decimals)}${suffix}`;
+  });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (isInView) {
+      animate(motionVal, value, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
+    }
+  }, [isInView, motionVal, value]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+}
+
+function Kpi({ label, value, valueNum, decimals, prefix, suffix, sub, icon: Icon, accent = false }: {
+  label: string; value?: string; valueNum?: number; decimals?: number; prefix?: string; suffix?: string;
+  sub?: string; icon: React.ElementType; accent?: boolean;
+}) {
   return (
     <div className={`rounded-2xl p-4 sm:p-5 border ${accent ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border/50"}`}>
       <div className="flex items-start justify-between mb-3">
@@ -94,8 +126,108 @@ function Kpi({ label, value, sub, icon: Icon, accent = false }: { label: string;
           <Icon className={`h-4 w-4 ${accent ? "text-white" : "text-accent"}`} />
         </div>
       </div>
-      <p className={`text-2xl sm:text-3xl font-bold ${accent ? "text-white" : "text-foreground"}`}>{value}</p>
+      <p className={`text-2xl sm:text-3xl font-bold ${accent ? "text-white" : "text-foreground"}`}>
+        {valueNum !== undefined ? (
+          <AnimatedNumber value={valueNum} decimals={decimals ?? 0} prefix={prefix ?? ""} suffix={suffix ?? ""} />
+        ) : value}
+      </p>
       {sub && <p className={`text-xs mt-1 ${accent ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{sub}</p>}
+    </div>
+  );
+}
+
+// ── FX Rate Ticker ─────────────────────────────────────────────────────────
+
+function FxRateTicker({ rates, oneAedLabel }: { rates: Record<string, number>; oneAedLabel: string }) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
+      {CURRENCIES.filter((c) => rates[c.code] != null).map((c) => (
+        <div
+          key={c.code}
+          className="flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 sm:p-4 hover:border-accent/40 hover:shadow-sm transition-all min-h-[80px]"
+        >
+          <span className="text-xl sm:text-2xl mb-1">{c.flag}</span>
+          <p className="text-[10px] text-muted-foreground font-medium">{oneAedLabel}</p>
+          <p className="text-sm sm:text-base font-bold text-foreground">{rates[c.code].toFixed(4)}</p>
+          <p className="text-[10px] font-semibold text-accent mt-0.5">{c.code}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Market Split Donut ─────────────────────────────────────────────────────
+
+interface MarketSplitEntry { name: string; value: number; fill: string }
+
+const MARKET_SPLIT_TOOLTIP = {
+  ...TOOLTIP_STYLE,
+  background: "hsl(var(--card))",
+  color: "hsl(var(--foreground))",
+};
+
+function MarketSplitPanel({
+  offPlanCount, secondaryCount, offPlanShare,
+  offPlanLabel, secondaryLabel, ofTotalLabel,
+}: {
+  offPlanCount: number; secondaryCount: number; offPlanShare: number;
+  offPlanLabel: string; secondaryLabel: string; ofTotalLabel: string;
+}) {
+  const secondaryShare = Math.max(0, 100 - offPlanShare);
+  const data: MarketSplitEntry[] = [
+    { name: offPlanLabel, value: offPlanShare, fill: "hsl(168, 100%, 15%)" },
+    { name: secondaryLabel, value: secondaryShare, fill: "hsl(43, 60%, 55%)" },
+  ];
+
+  return (
+    <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6 flex flex-col">
+      <div className="h-[180px] sm:h-[200px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius="55%"
+              outerRadius="80%"
+              paddingAngle={3}
+              dataKey="value"
+              isAnimationActive
+            >
+              {data.map((entry, i) => (
+                <Cell key={i} fill={entry.fill} stroke="transparent" />
+              ))}
+            </Pie>
+            <Tooltip
+              formatter={(v: number, name: string) => [`${v.toFixed(1)}%`, name]}
+              contentStyle={MARKET_SPLIT_TOOLTIP}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="mt-2 space-y-3">
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: "hsl(168, 100%, 15%)" }} />
+            <span className="text-muted-foreground">{offPlanLabel}</span>
+          </div>
+          <div className="text-right">
+            <span className="font-bold text-foreground">{offPlanShare}%</span>
+            <span className="text-[10px] text-muted-foreground ml-1.5">({offPlanCount.toLocaleString()} {ofTotalLabel})</span>
+          </div>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: "hsl(43, 60%, 55%)" }} />
+            <span className="text-muted-foreground">{secondaryLabel}</span>
+          </div>
+          <div className="text-right">
+            <span className="font-bold text-foreground">{secondaryShare.toFixed(1)}%</span>
+            <span className="text-[10px] text-muted-foreground ml-1.5">({secondaryCount.toLocaleString()} {ofTotalLabel})</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -149,23 +281,154 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
   const aedNum = parseFloat(aedAmount.replace(/,/g, "")) || 0;
 
+  const CHART_TABS: { id: ChartView; label: string }[] = [
+    { id: "price", label: "Price / sqft" },
+    { id: "yield", label: "Rental Yield" },
+    { id: "volume", label: "Volume" },
+    { id: "bedroom", label: "By Bedrooms" },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
 
       {/* ── KPIs ─────────────────────────────────────────────────── */}
       {marketStats && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <Kpi label={t("kpiAvgPriceSqft")} value={AED(marketStats.summary.avgPricePerSqft)} sub={t("kpiLiveListings")} icon={DollarSign} accent />
-          <Kpi label={t("kpiActiveListings")} value={marketStats.summary.totalListings.toLocaleString()} sub={`${marketStats.summary.offPlanCount} off-plan · ${marketStats.summary.secondaryCount} secondary`} icon={Building2} />
-          <Kpi label={t("kpiAvgYield")} value={`${marketStats.summary.avgYield}%`} sub={t("kpiGrossAnnualised")} icon={Percent} />
-          <Kpi label={t("kpiOffPlanShare")} value={`${marketStats.summary.offPlanShare}%`} sub={t("kpiOfTotalInventory")} icon={TrendingUp} />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+        >
+          <Kpi
+            label={t("kpiAvgPriceSqft")}
+            valueNum={marketStats.summary.avgPricePerSqft}
+            prefix="AED "
+            sub={t("kpiLiveListings")}
+            icon={DollarSign}
+            accent
+          />
+          <Kpi
+            label={t("kpiActiveListings")}
+            valueNum={marketStats.summary.totalListings}
+            sub={`${marketStats.summary.offPlanCount} off-plan · ${marketStats.summary.secondaryCount} secondary`}
+            icon={Building2}
+          />
+          <Kpi
+            label={t("kpiAvgYield")}
+            valueNum={marketStats.summary.avgYield}
+            decimals={1}
+            suffix="%"
+            sub={t("kpiGrossAnnualised")}
+            icon={Percent}
+          />
+          <Kpi
+            label={t("kpiOffPlanShare")}
+            valueNum={marketStats.summary.offPlanShare}
+            suffix="%"
+            sub={t("kpiOfTotalInventory")}
+            icon={TrendingUp}
+          />
         </motion.div>
+      )}
+
+      {/* ── FX Rate Ticker ────────────────────────────────────────── */}
+      {rates && Object.keys(rates).length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.05 }}
+        >
+          <SectionHeader
+            label={t("fxTickerLabel")}
+            title={t("fxTickerTitle")}
+            titleItalic={t("fxTickerItalic")}
+          />
+          <FxRateTicker rates={rates} oneAedLabel={t("oneAed")} />
+        </motion.section>
+      )}
+
+      {/* ── Market Split: Off-Plan vs Secondary ──────────────────── */}
+      {marketStats && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.08 }}
+        >
+          <SectionHeader
+            label={t("marketSplitLabel")}
+            title={t("marketSplitTitle")}
+            titleItalic={t("marketSplitItalic")}
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <MarketSplitPanel
+              offPlanCount={marketStats.summary.offPlanCount}
+              secondaryCount={marketStats.summary.secondaryCount}
+              offPlanShare={marketStats.summary.offPlanShare}
+              offPlanLabel={t("offPlanListings")}
+              secondaryLabel={t("secondaryListings")}
+              ofTotalLabel={t("ofTotal")}
+            />
+
+            {/* Split bar + detail */}
+            <div className="sm:col-span-1 lg:col-span-2 bg-card border border-border/50 rounded-2xl p-4 sm:p-6 flex flex-col justify-center space-y-5">
+              {/* Visual split bar */}
+              <div>
+                <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                  <span>{t("offPlanListings")}</span>
+                  <span>{t("secondaryListings")}</span>
+                </div>
+                <div className="flex h-5 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full"
+                    style={{ background: "hsl(168, 100%, 15%)" }}
+                    initial={{ width: "0%" }}
+                    whileInView={{ width: `${marketStats.summary.offPlanShare}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                  <div
+                    className="h-full flex-1"
+                    style={{ background: "hsl(43, 60%, 55%)" }}
+                  />
+                </div>
+                <div className="flex justify-between text-xs font-bold mt-2">
+                  <span className="text-foreground">{marketStats.summary.offPlanShare}%</span>
+                  <span className="text-foreground">{Math.max(0, 100 - marketStats.summary.offPlanShare).toFixed(1)}%</span>
+                </div>
+              </div>
+
+              {/* Stat grid */}
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/30">
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground mb-1">{t("offPlanListings")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">
+                    <AnimatedNumber value={marketStats.summary.offPlanCount} />
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{t("offPlan")}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground mb-1">{t("secondaryListings")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">
+                    <AnimatedNumber value={marketStats.summary.secondaryCount} />
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{t("secondary")}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
       )}
 
       {/* ── DLD Transaction Analytics ────────────────────────────── */}
       {txData?.hasData ? (
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.05 }}
+        >
           <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
 
           <div className="grid sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
@@ -184,7 +447,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           </div>
 
           <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-            {/* Monthly volume */}
             {txData.monthly.length > 0 && (
               <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
                 <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
@@ -208,7 +470,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
               </div>
             )}
 
-            {/* Avg sold price trend */}
             {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
               <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
                 <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
@@ -227,7 +488,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             )}
           </div>
 
-          {/* Top areas by transactions */}
           {txData.byArea.length > 0 && (
             <div className="mt-4 bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
               <h4 className="font-semibold text-sm text-foreground mb-4">{t("topAreas")}</h4>
@@ -250,8 +510,12 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           )}
         </motion.section>
       ) : (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center"
+        >
           <RefreshCw className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
           <p className="text-sm font-medium text-muted-foreground">{t("dldFetching")}</p>
           <p className="text-xs text-muted-foreground/60 mt-1">{t("dldFetchingSub")}</p>
@@ -262,12 +526,20 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       {marketStats && (
         <>
           {topInvestment.length > 0 && (
-            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
               <SectionHeader label={t("investment")} title={t("topInvestmentTitle")} titleItalic={t("topInvestmentItalic")} />
               <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
                 {topInvestment.map((c, i) => (
-                  <button key={c.area} onClick={() => setSelectedArea(selectedArea === c.area ? null : c.area)}
-                    className={`text-left rounded-2xl border p-4 sm:p-5 transition-all hover:shadow-md ${selectedArea === c.area ? "border-accent bg-accent/5 shadow-md" : "border-border/50 bg-card hover:border-accent/40"}`}>
+                  <button
+                    key={c.area}
+                    onClick={() => setSelectedArea(selectedArea === c.area ? null : c.area)}
+                    className={`text-left rounded-2xl border p-4 sm:p-5 transition-all hover:shadow-md ${selectedArea === c.area ? "border-accent bg-accent/5 shadow-md" : "border-border/50 bg-card hover:border-accent/40"}`}
+                  >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center">{i + 1}</div>
@@ -288,8 +560,12 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           )}
 
           {radarData && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="bg-card border border-accent/20 rounded-2xl p-5 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="bg-card border border-accent/20 rounded-2xl p-5 sm:p-6"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-bold text-foreground">{selectedArea} — {t("investmentProfile")}</h3>
@@ -312,20 +588,23 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           )}
 
           {/* Charts + Segments */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="grid lg:grid-cols-3 gap-4 sm:gap-6"
+          >
             <div className="lg:col-span-2 bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
               <div className="flex flex-wrap gap-1.5 mb-5">
-                {([
-                  { id: "price" as ChartView, label: "Price / sqft" },
-                  { id: "yield" as ChartView, label: "Rental Yield" },
-                  { id: "volume" as ChartView, label: "Volume" },
-                  { id: "bedroom" as ChartView, label: "By Bedrooms" },
-                ]).map((t) => (
-                  <button key={t.id} onClick={() => setChartView(t.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${chartView === t.id ? "text-white shadow-sm" : "text-muted-foreground hover:bg-secondary"}`}
-                    style={chartView === t.id ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
-                    {t.label}
+                {CHART_TABS.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setChartView(tab.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${chartView === tab.id ? "text-white shadow-sm" : "text-muted-foreground hover:bg-secondary"}`}
+                    style={chartView === tab.id ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                  >
+                    {tab.label}
                   </button>
                 ))}
               </div>
@@ -404,7 +683,12 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           </motion.div>
 
           {/* Community table */}
-          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
             <SectionHeader label={t("comparison")} title={t("communityTitle")} titleItalic={t("communityItalic")} />
             <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
               <div className="overflow-x-auto">
@@ -419,8 +703,11 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                         { key: "totalListings" as SortKey, label: t("colListings") },
                         { key: "investmentScore" as SortKey, label: t("colScore") },
                       ]).map((col) => (
-                        <th key={col.key} onClick={() => handleSort(col.key)}
-                          className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none">
+                        <th
+                          key={col.key}
+                          onClick={() => handleSort(col.key)}
+                          className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground cursor-pointer hover:text-foreground transition-colors select-none"
+                        >
                           <div className="flex items-center gap-1.5">{col.label}<SortIcon k={col.key} /></div>
                         </th>
                       ))}
@@ -428,8 +715,11 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                   </thead>
                   <tbody>
                     {sorted.map((c, i) => (
-                      <tr key={c.area} onClick={() => setSelectedArea(selectedArea === c.area ? null : c.area)}
-                        className={`border-b border-border/30 last:border-0 cursor-pointer transition-colors ${selectedArea === c.area ? "bg-accent/5" : "hover:bg-muted/30"}`}>
+                      <tr
+                        key={c.area}
+                        onClick={() => setSelectedArea(selectedArea === c.area ? null : c.area)}
+                        className={`border-b border-border/30 last:border-0 cursor-pointer transition-colors ${selectedArea === c.area ? "bg-accent/5" : "hover:bg-muted/30"}`}
+                      >
                         <td className="px-4 py-3 font-medium text-foreground">
                           <div className="flex items-center gap-2"><span className="text-xs text-muted-foreground w-4">{i + 1}</span>{c.area}</div>
                         </td>
@@ -455,7 +745,12 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
       {/* ── Currency Converter ───────────────────────────────────── */}
       {rates && Object.keys(rates).length > 0 && (
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.25 }}
+        >
           <SectionHeader label={t("exchangeRates")} title={t("currencyTitle")} titleItalic={t("currencyItalic")} />
           <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -504,7 +799,12 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
       {/* ── Economic Indicators ──────────────────────────────────── */}
       {Object.keys(indicators).length > 0 && (
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
           <SectionHeader label={t("worldBankData")} title={t("uaeEconomic")} titleItalic={t("indicatorsItalic")} />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {Object.entries(indicators).map(([label, data]) => {
@@ -516,9 +816,13 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                 : data.unit === "people"
                 ? `${(data.value / 1_000_000).toFixed(1)}M`
                 : data.value.toLocaleString();
+              const IconComp = INDICATOR_ICONS[label] ?? Activity;
               return (
-                <div key={label} className="bg-card border border-border/50 rounded-xl p-3 sm:p-4">
-                  <p className="text-[10px] text-muted-foreground mb-1 leading-tight">{label}</p>
+                <div key={label} className="bg-card border border-border/50 rounded-xl p-3 sm:p-4 hover:border-accent/30 hover:shadow-sm transition-all">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <IconComp className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+                    <p className="text-[10px] text-muted-foreground leading-tight">{label}</p>
+                  </div>
                   <p className="text-lg sm:text-xl font-bold text-foreground">{displayVal}</p>
                   <p className="text-[10px] text-muted-foreground/60 mt-0.5">{data.year}</p>
                 </div>
@@ -533,23 +837,43 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
       {/* ── News Feed ────────────────────────────────────────────── */}
       {news.length > 0 && (
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.35 }}
+        >
           <SectionHeader label={t("marketNews")} title={t("realEstate")} titleItalic={t("newsItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {news.slice(0, 9).map((item) => (
-              <a key={item.url} href={item.url} target="_blank" rel="noopener noreferrer"
-                className="group bg-card border border-border/50 rounded-xl p-4 hover:border-accent/40 hover:shadow-md transition-all flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{item.source}</span>
-                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-accent transition-colors" />
-                </div>
-                <p className="text-sm font-semibold text-foreground leading-snug line-clamp-3 group-hover:text-accent transition-colors">{item.title}</p>
-                {item.summary && <p className="text-xs text-muted-foreground line-clamp-2">{item.summary}</p>}
-                <p className="text-[10px] text-muted-foreground/60 mt-auto">
-                  {new Date(item.publishedAt).toLocaleDateString("en-AE", { day: "numeric", month: "short", year: "numeric" })}
-                </p>
-              </a>
-            ))}
+            {news.slice(0, 9).map((item) => {
+              const daysAgo = Math.floor((Date.now() - new Date(item.publishedAt).getTime()) / (1000 * 60 * 60 * 24));
+              const timeLabel = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : `${daysAgo}d ago`;
+              return (
+                <a
+                  key={item.url}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-card border border-border/50 rounded-xl p-4 hover:border-accent/40 hover:shadow-md transition-all flex flex-col gap-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{item.source}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] text-muted-foreground/60">{timeLabel}</span>
+                      <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-accent transition-colors" />
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground leading-snug line-clamp-3 group-hover:text-accent transition-colors">{item.title}</p>
+                  {item.summary && <p className="text-xs text-muted-foreground line-clamp-2">{item.summary.slice(0, 100)}{item.summary.length > 100 ? "…" : ""}</p>}
+                  <div className="flex items-center gap-1.5 mt-auto">
+                    <Newspaper className="h-3 w-3 text-muted-foreground/40" />
+                    <p className="text-[10px] text-muted-foreground/60">
+                      {new Date(item.publishedAt).toLocaleDateString("en-AE", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </motion.section>
       )}
@@ -565,14 +889,23 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 // ── Shared Sub-components ──────────────────────────────────────────────────
 
 function SectionHeader({ label, title, titleItalic }: { label: string; title: string; titleItalic: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-30px" });
   return (
-    <div className="flex items-center gap-3 mb-5">
+    <div ref={ref} className="flex items-center gap-3 mb-5">
       <div className="h-[2px] w-10 bg-accent flex-shrink-0" />
       <div>
         <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-accent">{label}</p>
         <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
           {title} <span className="italic font-light">{titleItalic}</span>
         </h2>
+        <motion.div
+          className="h-[1.5px] rounded-full mt-1"
+          style={{ background: "hsl(43, 60%, 55%)" }}
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        />
       </div>
     </div>
   );

@@ -1077,7 +1077,18 @@
     "dataAttribution": "Listing data from Binayah database · Transaction data from Dubai Land Department via Dubai Data Portal · Exchange rates via Frankfurter/ECB · Economic data via World Bank Open Data ·",
     "notEnoughData": "Not enough data for this view",
     "contactUs": "Contact us",
-    "forFullReports": "for full reports."
+    "forFullReports": "for full reports.",
+    "fxTickerLabel": "Live FX Rates",
+    "fxTickerTitle": "Live Exchange",
+    "fxTickerItalic": "Rates",
+    "oneAed": "1 AED =",
+    "marketSplitLabel": "Market Composition",
+    "marketSplitTitle": "Off-Plan vs",
+    "marketSplitItalic": "Secondary",
+    "offPlanListings": "Off-Plan Listings",
+    "secondaryListings": "Secondary Listings",
+    "ofTotal": "of total market",
+    "liveDataIndicator": "Live data"
   },
   "services": {
     "heroLabel": "What We Offer",

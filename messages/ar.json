@@ -1077,7 +1077,18 @@
     "dataAttribution": "بيانات الإعلانات من قاعدة بيانات بناية · بيانات الصفقات من دائرة الأراضي والأملاك بدبي عبر بوابة دبي للبيانات · أسعار الصرف عبر Frankfurter / البنك المركزي الأوروبي · البيانات الاقتصادية من البنك الدولي ·",
     "notEnoughData": "لا تتوفر بيانات كافية لهذا العرض",
     "contactUs": "تواصل معنا",
-    "forFullReports": "للحصول على التقارير الكاملة."
+    "forFullReports": "للحصول على التقارير الكاملة.",
+    "fxTickerLabel": "أسعار الصرف الحية",
+    "fxTickerTitle": "أسعار الصرف",
+    "fxTickerItalic": "الحية",
+    "oneAed": "1 درهم =",
+    "marketSplitLabel": "تركيبة السوق",
+    "marketSplitTitle": "على الخارطة مقابل",
+    "marketSplitItalic": "الثانوي",
+    "offPlanListings": "عقارات على الخارطة",
+    "secondaryListings": "عقارات ثانوية",
+    "ofTotal": "من إجمالي السوق",
+    "liveDataIndicator": "بيانات حية"
   },
   "services": {
     "heroLabel": "ما نقدمه",

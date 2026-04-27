@@ -1083,7 +1083,18 @@
     "dataAttribution": "房源数据来自 Binayah 数据库 · 成交数据来自迪拜土地局（通过 Dubai Data Portal）· 汇率来自 Frankfurter / 欧洲央行 · 经济数据来自世界银行 ·",
     "notEnoughData": "当前视图数据不足",
     "contactUs": "联系我们",
-    "forFullReports": "获取完整报告。"
+    "forFullReports": "获取完整报告。",
+    "fxTickerLabel": "实时汇率",
+    "fxTickerTitle": "实时汇率",
+    "fxTickerItalic": "行情",
+    "oneAed": "1 迪拉姆 =",
+    "marketSplitLabel": "市场构成",
+    "marketSplitTitle": "期房与",
+    "marketSplitItalic": "二手房",
+    "offPlanListings": "期房房源",
+    "secondaryListings": "二手房房源",
+    "ofTotal": "占总市场",
+    "liveDataIndicator": "实时数据"
   },
   "services": {
     "heroLabel": "服务领域",

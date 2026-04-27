@@ -1,8 +1,8 @@
 "use client";
 
 import { apiUrl } from "@/lib/api";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { TrendingUp, BarChart3, PieChart as PieIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -23,6 +23,25 @@ interface MarketData {
   yieldByArea: { area: string; yield: number; avgRent: number; avgSale: number }[];
   volumeByArea: { area: string; volume: number }[];
   segments: { name: string; value: number; count: number; color: string }[];
+}
+
+// ── Count-up stat number ────────────────────────────────────────────────────
+
+function AnimatedStat({ value, prefix = "", suffix = "", decimals = 0 }: {
+  value: number; prefix?: string; suffix?: string; decimals?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionVal = useMotionValue(0);
+  const display = useTransform(motionVal, (latest) => `${prefix}${latest.toFixed(decimals)}${suffix}`);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+  useEffect(() => {
+    if (isInView) {
+      animate(motionVal, value, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
+    }
+  }, [isInView, motionVal, value]);
+
+  return <motion.span ref={ref}>{display}</motion.span>;
 }
 
 const MarketDashboard = () => {
@@ -65,17 +84,43 @@ const MarketDashboard = () => {
           </div>
         ) : (
           <>
-            {/* Key stats row */}
+            {/* Key stats row — animated count-up */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-10">
               {[
-                { label: t("avgPrice"), value: `AED ${formatNum(data.summary.avgPricePerSqft)}` },
-                { label: t("transactions"), value: formatNum(data.summary.totalListings) },
-                { label: t("rentalYield"), value: `${data.summary.avgYield}%` },
-                { label: t("offPlan"), value: `${data.summary.offPlanShare}%` },
+                {
+                  label: t("avgPrice"),
+                  value: data.summary.avgPricePerSqft,
+                  prefix: "AED ",
+                  suffix: "",
+                  decimals: 0,
+                },
+                {
+                  label: t("transactions"),
+                  value: data.summary.totalListings,
+                  prefix: "",
+                  suffix: "",
+                  decimals: 0,
+                },
+                {
+                  label: t("rentalYield"),
+                  value: data.summary.avgYield,
+                  prefix: "",
+                  suffix: "%",
+                  decimals: 1,
+                },
+                {
+                  label: t("offPlan"),
+                  value: data.summary.offPlanShare,
+                  prefix: "",
+                  suffix: "%",
+                  decimals: 0,
+                },
               ].map((s) => (
-                <div key={s.label} className="bg-background rounded-lg sm:rounded-xl p-2 sm:p-5 border border-border/50 text-center sm:text-left">
+                <div key={s.label} className="bg-background rounded-lg sm:rounded-xl p-2 sm:p-5 border border-border/50 text-center sm:text-left hover:border-accent/30 hover:shadow-sm transition-all">
                   <p className="text-[8px] sm:text-xs text-muted-foreground font-medium mb-0.5 sm:mb-1 truncate">{s.label}</p>
-                  <p className="text-sm sm:text-2xl font-bold text-foreground">{s.value}</p>
+                  <p className="text-sm sm:text-2xl font-bold text-foreground">
+                    <AnimatedStat value={s.value} prefix={s.prefix} suffix={s.suffix} decimals={s.decimals} />
+                  </p>
                   <p className="text-[8px] sm:text-xs font-semibold text-primary flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1 mt-0.5 sm:mt-1">
                     <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3" /> {t("liveData")}
                   </p>

@@ -1077,7 +1077,18 @@
     "dataAttribution": "Объявления — из базы Binayah · Сделки — Департамент земельных ресурсов Дубая через Dubai Data Portal · Курсы — Frankfurter/ЕЦБ · Экономические показатели — World Bank Open Data ·",
     "notEnoughData": "Недостаточно данных для отображения",
     "contactUs": "Свяжитесь с нами",
-    "forFullReports": "для получения полных отчётов."
+    "forFullReports": "для получения полных отчётов.",
+    "fxTickerLabel": "Курсы валют",
+    "fxTickerTitle": "Курсы валют",
+    "fxTickerItalic": "в реальном времени",
+    "oneAed": "1 AED =",
+    "marketSplitLabel": "Состав рынка",
+    "marketSplitTitle": "Строящееся vs",
+    "marketSplitItalic": "Вторичное",
+    "offPlanListings": "Строящееся жильё",
+    "secondaryListings": "Вторичное жильё",
+    "ofTotal": "от общего рынка",
+    "liveDataIndicator": "Данные в реальном времени"
   },
   "services": {
     "heroLabel": "Что мы предлагаем",
