@@ -243,12 +243,21 @@ function MarketSplitPanel({
 
 // ── Main Component ─────────────────────────────────────────────────────────
 
-type MainTab = "binayah" | "opendata";
+// ── AED compact formatter ──────────────────────────────────────────────────
+
+const AEDCompact = (n: number): string => {
+  if (n >= 1_000_000_000) return `AED ${(n / 1_000_000_000).toFixed(1)}B`;
+  if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `AED ${(n / 1_000).toFixed(0)}K`;
+  return `AED ${n.toLocaleString()}`;
+};
+
+type MainTab = "market" | "binayah";
 
 export default function PulsePageClient({ marketStats, marketData }: { marketStats: MarketStats | null; marketData: MarketData | null }) {
   const t = useTranslations("pulse");
   const locale = useLocale();
-  const [activeTab, setActiveTab] = useState<MainTab>("binayah");
+  const [activeTab, setActiveTab] = useState<MainTab>("market");
   const [sortKey, setSortKey] = useState<SortKey>("totalListings");
   const [sortAsc, setSortAsc] = useState(false);
   const [chartView, setChartView] = useState<ChartView>("price");
@@ -303,8 +312,8 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
   };
 
   const MAIN_TABS: { id: MainTab; label: string }[] = [
-    { id: "binayah", label: t("tabBinayah") },
-    { id: "opendata", label: t("tabOpenData") },
+    { id: "market", label: t("tabMarket") },
+    { id: "binayah", label: t("tabBinayahShort") },
   ];
 
   return (
@@ -319,7 +328,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       )}
 
       {/* ── Tab Pills ─────────────────────────────────────────────── */}
-      <div className="flex gap-2 sm:gap-3" role="tablist" aria-label={t("tabBinayah")}>
+      <div className="flex gap-2 sm:gap-3" role="tablist" aria-label={t("tabMarket")}>
         {MAIN_TABS.map((tab) => (
           <button
             key={tab.id}
@@ -685,113 +694,279 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           </motion.div>
         )}
 
-        {activeTab === "opendata" && (
+        {activeTab === "market" && (
           <motion.div
-            key="opendata"
+            key="market"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-12 sm:space-y-16"
           >
-            {/* ── DLD Transaction Analytics ────────────────────────── */}
+            {/* ── Hero Stat Strip ────────────────────────────────────── */}
             {txData?.hasData ? (
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.05 }}
-              >
-                <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <Kpi
+                    label={t("totalTxYtd")}
+                    valueNum={txData.summary.totalTransactions}
+                    sub={t("ytdLabel")}
+                    icon={BarChart3}
+                    accent
+                  />
+                  <Kpi
+                    label={t("totalValueAed")}
+                    value={AEDCompact(txData.summary.totalValue)}
+                    sub={t("salesVolume")}
+                    icon={TrendingUp}
+                  />
+                  <Kpi
+                    label={t("avgDealSize")}
+                    value={AEDCompact(txData.summary.avgTransactionValue)}
+                    sub={t("perSale")}
+                    icon={DollarSign}
+                  />
+                  <Kpi
+                    label={t("avgPpsfLabel")}
+                    valueNum={txData.summary.avgPpsf > 0 ? txData.summary.avgPpsf : 0}
+                    prefix="AED "
+                    sub={t("actualSold")}
+                    icon={Activity}
+                  />
+                </motion.div>
 
-                <div className="grid sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                  {[
-                    { label: t("totalTransactions"), value: txData.summary.totalTransactions.toLocaleString(), sub: t("last12Months") },
-                    { label: t("totalValue"), value: AED(txData.summary.totalValue, true), sub: t("salesVolume") },
-                    { label: t("avgTransaction"), value: AED(txData.summary.avgTransactionValue, true), sub: t("perSale") },
-                    { label: t("avgSoldPriceSqft"), value: txData.summary.avgPpsf > 0 ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—", sub: t("actualSold") },
-                  ].map((s) => (
-                    <div key={s.label} className="bg-card border border-border/50 rounded-xl p-4">
-                      <p className="text-xs text-muted-foreground mb-1">{s.label}</p>
-                      <p className="text-xl font-bold text-foreground">{s.value}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{s.sub}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-                  {txData.monthly.length > 0 && (
+                {/* ── Transaction Volume Timeline (BarChart) ──────────── */}
+                {txData.monthly.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.05 }}
+                  >
+                    <SectionHeader
+                      label={t("dldTransactions")}
+                      title={t("volumeTimelineTitle")}
+                      titleItalic={t("volumeTimelineItalic")}
+                    />
                     <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
-                      <div className="h-[220px]">
+                      <div className="h-[260px]">
                         <ResponsiveContainer width="100%" height="100%">
-                          <AreaChart data={txData.monthly}>
-                            <defs>
-                              <linearGradient id="txGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor={C.primary} stopOpacity={0.15} />
-                                <stop offset="95%" stopColor={C.primary} stopOpacity={0} />
-                              </linearGradient>
-                            </defs>
+                          <BarChart data={txData.monthly} barSize={32}>
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                            <Tooltip formatter={(v: number) => [v.toLocaleString(), "Transactions"]} contentStyle={TOOLTIP_STYLE} />
-                            <Area dataKey="count" stroke={C.primary} strokeWidth={2} fill="url(#txGrad)" dot={false} />
-                          </AreaChart>
+                            <XAxis dataKey="label" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => v.toLocaleString()} />
+                            <Tooltip
+                              contentStyle={TOOLTIP_STYLE}
+                              formatter={(v: number, name: string) => {
+                                if (name === "count") return [v.toLocaleString(), t("tooltipCount")];
+                                return [v.toLocaleString(), name];
+                              }}
+                              labelFormatter={(label) => label}
+                            />
+                            <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                              {txData.monthly.map((_, i) => (
+                                <Cell key={i} fill={i === txData.monthly.length - 1 ? C.accent : C.primary} />
+                              ))}
+                            </Bar>
+                          </BarChart>
                         </ResponsiveContainer>
                       </div>
                     </div>
-                  )}
+                  </motion.section>
+                )}
 
-                  {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
+                {/* ── Avg Price/sqft Trend (LineChart) ───────────────── */}
+                {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.08 }}
+                  >
+                    <SectionHeader
+                      label={t("dldTransactions")}
+                      title={t("ppsfTrendTitle")}
+                      titleItalic={t("ppsfTrendItalic")}
+                    />
                     <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
-                      <div className="h-[220px]">
+                      <div className="h-[240px]">
                         <ResponsiveContainer width="100%" height="100%">
                           <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                            <Tooltip formatter={(v: number) => [`AED ${v.toLocaleString()}`, "Avg Price/sqft"]} contentStyle={TOOLTIP_STYLE} />
-                            <Line dataKey="avgPpsf" stroke={C.accent} strokeWidth={2.5} dot={{ fill: C.accent, r: 3 }} />
+                            <XAxis dataKey="label" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                            <YAxis
+                              tick={{ fontSize: 10 }}
+                              axisLine={false}
+                              tickLine={false}
+                              tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`}
+                            />
+                            <Tooltip
+                              contentStyle={TOOLTIP_STYLE}
+                              formatter={(v: number) => [`AED ${v.toLocaleString()}`, t("tooltipAvgPpsf")]}
+                            />
+                            <Line
+                              dataKey="avgPpsf"
+                              stroke={C.accent}
+                              strokeWidth={2.5}
+                              dot={{ fill: C.accent, r: 4, strokeWidth: 0 }}
+                              activeDot={{ r: 6 }}
+                            />
                           </LineChart>
                         </ResponsiveContainer>
                       </div>
                     </div>
-                  )}
-                </div>
-
-                {txData.byArea.length > 0 && (
-                  <div className="mt-4 bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                    <h4 className="font-semibold text-sm text-foreground mb-4">{t("topAreas")}</h4>
-                    <div className="h-[200px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={txData.byArea.slice(0, 8)} barSize={22}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                          <XAxis dataKey="area" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                          <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                          <Tooltip formatter={(v: number, name: string) => [name === "count" ? v.toLocaleString() : AED(v, true), name === "count" ? "Transactions" : "Avg Price"]} contentStyle={TOOLTIP_STYLE} />
-                          <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                            {txData.byArea.slice(0, 8).map((_, i) => (
-                              <Cell key={i} fill={i === 0 ? C.accent : C.primary} />
-                            ))}
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
+                  </motion.section>
                 )}
-              </motion.section>
+
+                {/* ── Top Communities Leaderboard ─────────────────────── */}
+                {txData.byArea.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <SectionHeader
+                      label={t("leaderboardLabel")}
+                      title={t("leaderboardTitle")}
+                      titleItalic={t("leaderboardItalic")}
+                    />
+                    <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/30">
+                              {[
+                                t("colRank"),
+                                t("colCommunity"),
+                                t("colTxCount"),
+                                t("colTotalValue"),
+                                t("colAvgPrice"),
+                                t("colAvgPpsf"),
+                              ].map((col, i) => (
+                                <th
+                                  key={i}
+                                  className={`px-4 py-3 text-xs font-semibold text-muted-foreground ${i === 0 ? "w-12 text-center" : "text-left"}`}
+                                >
+                                  {col}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {txData.byArea.map((row, i) => (
+                              <tr
+                                key={row.area}
+                                className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
+                              >
+                                <td className="px-4 py-3 text-center">
+                                  {i === 0 ? (
+                                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-accent text-white text-xs font-bold">1</span>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground font-medium">{i + 1}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 font-medium text-foreground">{row.area}</td>
+                                <td className="px-4 py-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full rounded-full bg-primary"
+                                        style={{ width: `${Math.min((row.count / (txData.byArea[0]?.count || 1)) * 100, 100)}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-foreground font-semibold text-xs">{row.count.toLocaleString()}</span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">
+                                  {row.totalValue > 0 ? AEDCompact(row.totalValue) : <span className="text-muted-foreground/40">—</span>}
+                                </td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">
+                                  {row.avgPrice > 0 ? AEDCompact(row.avgPrice) : <span className="text-muted-foreground/40">—</span>}
+                                </td>
+                                <td className="px-4 py-3">
+                                  {row.avgPpsf > 0 ? (
+                                    <span className="font-semibold text-foreground text-xs">{row.avgPpsf.toLocaleString()}</span>
+                                  ) : (
+                                    <span className="text-muted-foreground/40">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* ── DLD Transaction Detail (existing section) ──────── */}
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.05 }}
+                >
+                  <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
+
+                  <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+                    {txData.monthly.length > 0 && (
+                      <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
+                        <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
+                        <div className="h-[220px]">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={txData.monthly}>
+                              <defs>
+                                <linearGradient id="txGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor={C.primary} stopOpacity={0.15} />
+                                  <stop offset="95%" stopColor={C.primary} stopOpacity={0} />
+                                </linearGradient>
+                              </defs>
+                              <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
+                              <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                              <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                              <Tooltip formatter={(v: number) => [v.toLocaleString(), t("tooltipCount")]} contentStyle={TOOLTIP_STYLE} />
+                              <Area dataKey="count" stroke={C.primary} strokeWidth={2} fill="url(#txGrad)" dot={false} />
+                            </AreaChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
+                    )}
+
+                    {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
+                      <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
+                        <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
+                        <div className="h-[220px]">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
+                              <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                              <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                              <Tooltip formatter={(v: number) => [`AED ${v.toLocaleString()}`, t("tooltipAvgPpsf")]} contentStyle={TOOLTIP_STYLE} />
+                              <Line dataKey="avgPpsf" stroke={C.accent} strokeWidth={2.5} dot={{ fill: C.accent, r: 3 }} />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.section>
+              </>
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center"
+                className="bg-muted/30 border border-border/30 rounded-2xl p-8 text-center"
               >
-                <RefreshCw className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="text-sm font-medium text-muted-foreground">{t("dldFetching")}</p>
-                <p className="text-xs text-muted-foreground/60 mt-1">{t("dldFetchingSub")}</p>
+                <RefreshCw className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-base font-semibold text-muted-foreground">{t("dldPipelineTitle")}</p>
+                <p className="text-sm text-muted-foreground/60 mt-1 max-w-sm mx-auto">{t("dldPipelineSub")}</p>
               </motion.div>
             )}
 
