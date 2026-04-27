@@ -173,6 +173,19 @@
   }
 }
 
+/* Marquee ticker animation */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Hide floating action buttons when mobile nav is open */
 body.mobile-nav-open .fixed.bottom-4,
 body.mobile-nav-open .fixed.bottom-6,

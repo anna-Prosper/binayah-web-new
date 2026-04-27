@@ -347,9 +347,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
         <MarqueeTicker
           priceByArea={marketStats.priceByArea}
           yieldByArea={marketStats.yieldByArea}
-          tickerLabel={t("tickerLabel")}
-          tickerPricePerSqft={t("tickerPricePerSqft")}
-          tickerYield={t("tickerYield")}
         />
       )}
 
@@ -909,20 +906,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
 // ── Marquee Ticker ─────────────────────────────────────────────────────────
 
-const MARQUEE_STYLE = `
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.animate-marquee {
-  animation: marquee 38s linear infinite;
-  will-change: transform;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-`;
-
 interface TickerItem {
   key: string;
   text: string;
@@ -932,21 +915,15 @@ interface TickerItem {
 function MarqueeTicker({
   priceByArea,
   yieldByArea,
-  tickerLabel,
-  tickerPricePerSqft,
-  tickerYield,
 }: {
   priceByArea: { area: string; price: number }[];
   yieldByArea: { area: string; yield: number }[];
-  tickerLabel: string;
-  tickerPricePerSqft: string;
-  tickerYield: string;
 }) {
+  const t = useTranslations("pulse");
+
   const priceItems: TickerItem[] = priceByArea.slice(0, 4).map((p) => ({
     key: `price-${p.area}`,
-    text: tickerPricePerSqft
-      .replace("{area}", p.area)
-      .replace("{price}", p.price.toLocaleString()),
+    text: t("tickerPricePerSqft", { area: p.area, price: p.price.toLocaleString() }),
     type: "price",
   }));
 
@@ -955,9 +932,7 @@ function MarqueeTicker({
     .slice(0, 4)
     .map((y) => ({
       key: `yield-${y.area}`,
-      text: tickerYield
-        .replace("{area}", y.area)
-        .replace("{yield}", y.yield.toFixed(1)),
+      text: t("tickerYield", { area: y.area, yield: y.yield.toFixed(1) }),
       type: "yield",
     }));
 
@@ -968,38 +943,35 @@ function MarqueeTicker({
   const doubled = [...items, ...items];
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: MARQUEE_STYLE }} />
-      <div className="relative overflow-hidden bg-primary/8 border border-accent/20 rounded-xl py-2.5 px-4 flex items-center gap-3">
-        {/* Label badge */}
-        <span className="flex-shrink-0 flex items-center gap-1.5 text-[10px] font-bold tracking-[0.2em] uppercase text-accent border border-accent/40 rounded-md px-2 py-1 bg-accent/10">
-          <Zap className="h-2.5 w-2.5" />
-          {tickerLabel}
-        </span>
-        {/* Scrolling track */}
-        <div className="overflow-hidden flex-1 min-w-0">
-          <div className="animate-marquee flex gap-6 whitespace-nowrap w-max">
-            {doubled.map((item, idx) => (
-              <span
-                key={`${item.key}-${idx}`}
-                className="inline-flex items-center gap-1.5 text-xs font-medium"
-              >
-                {item.type === "price" ? (
-                  <TrendingUp className="h-3 w-3 text-accent flex-shrink-0" />
-                ) : (
-                  <Percent className="h-3 w-3 text-emerald-500 flex-shrink-0" />
-                )}
-                <span className="text-foreground">{item.text}</span>
-                <span className="text-border/60 select-none mx-1">·</span>
-              </span>
-            ))}
-          </div>
+    <div className="relative overflow-hidden bg-primary/8 border border-accent/20 rounded-xl py-2.5 px-4 flex items-center gap-3">
+      {/* Label badge */}
+      <span className="flex-shrink-0 flex items-center gap-1.5 text-[10px] font-bold tracking-[0.2em] uppercase text-accent border border-accent/40 rounded-md px-2 py-1 bg-accent/10">
+        <Zap className="h-2.5 w-2.5" />
+        {t("tickerLabel")}
+      </span>
+      {/* Scrolling track */}
+      <div className="overflow-hidden flex-1 min-w-0">
+        <div className="animate-marquee flex gap-6 whitespace-nowrap w-max">
+          {doubled.map((item, idx) => (
+            <span
+              key={`${item.key}-${idx}`}
+              className="inline-flex items-center gap-1.5 text-xs font-medium"
+            >
+              {item.type === "price" ? (
+                <TrendingUp className="h-3 w-3 text-accent flex-shrink-0" />
+              ) : (
+                <Percent className="h-3 w-3 text-emerald-500 flex-shrink-0" />
+              )}
+              <span className="text-foreground">{item.text}</span>
+              <span className="text-border/60 select-none mx-1">·</span>
+            </span>
+          ))}
         </div>
-        {/* Fade edges */}
-        <div className="pointer-events-none absolute inset-y-0 left-[7.5rem] w-6 bg-gradient-to-r from-background/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background/80 to-transparent" />
       </div>
-    </>
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-[7.5rem] w-6 bg-gradient-to-r from-background/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background/80 to-transparent" />
+    </div>
   );
 }
 
