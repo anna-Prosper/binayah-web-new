@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import {
@@ -79,6 +79,15 @@ const CURRENCIES = [
   { code: "INR", flag: "🇮🇳", label: "Indian Rupee" },
   { code: "KZT", flag: "🇰🇿", label: "Kazakhstani Tenge" },
   { code: "CNY", flag: "🇨🇳", label: "Chinese Yuan" },
+];
+
+// ── Chart tabs (no closure refs — module scope) ────────────────────────────
+
+const CHART_TABS: { id: ChartView; label: string }[] = [
+  { id: "price", label: "Price / sqft" },
+  { id: "yield", label: "Rental Yield" },
+  { id: "volume", label: "Volume" },
+  { id: "bedroom", label: "By Bedrooms" },
 ];
 
 const INDICATOR_ICONS: Record<string, React.ElementType> = {
@@ -236,6 +245,7 @@ function MarketSplitPanel({
 
 export default function PulsePageClient({ marketStats, marketData }: { marketStats: MarketStats | null; marketData: MarketData | null }) {
   const t = useTranslations("pulse");
+  const locale = useLocale();
   const [sortKey, setSortKey] = useState<SortKey>("totalListings");
   const [sortAsc, setSortAsc] = useState(false);
   const [chartView, setChartView] = useState<ChartView>("price");
@@ -281,12 +291,13 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
 
   const aedNum = parseFloat(aedAmount.replace(/,/g, "")) || 0;
 
-  const CHART_TABS: { id: ChartView; label: string }[] = [
-    { id: "price", label: "Price / sqft" },
-    { id: "yield", label: "Rental Yield" },
-    { id: "volume", label: "Volume" },
-    { id: "bedroom", label: "By Bedrooms" },
-  ];
+  const relativeTime = (dateStr: string): string => {
+    const diffDays = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86_400_000);
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+    if (diffDays === 0) return rtf.format(0, "day");
+    if (diffDays === 1) return rtf.format(-1, "day");
+    return rtf.format(-diffDays, "day");
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
@@ -329,6 +340,17 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             icon={TrendingUp}
           />
         </motion.div>
+      )}
+
+      {/* ── Market Marquee Ticker ────────────────────────────────── */}
+      {marketStats && (marketStats.priceByArea.length > 0 || marketStats.yieldByArea.length > 0) && (
+        <MarqueeTicker
+          priceByArea={marketStats.priceByArea}
+          yieldByArea={marketStats.yieldByArea}
+          tickerLabel={t("tickerLabel")}
+          tickerPricePerSqft={t("tickerPricePerSqft")}
+          tickerYield={t("tickerYield")}
+        />
       )}
 
       {/* ── FX Rate Ticker ────────────────────────────────────────── */}
@@ -846,8 +868,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           <SectionHeader label={t("marketNews")} title={t("realEstate")} titleItalic={t("newsItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {news.slice(0, 9).map((item) => {
-              const daysAgo = Math.floor((Date.now() - new Date(item.publishedAt).getTime()) / (1000 * 60 * 60 * 24));
-              const timeLabel = daysAgo === 0 ? "Today" : daysAgo === 1 ? "Yesterday" : `${daysAgo}d ago`;
+              const timeLabel = relativeTime(item.publishedAt);
               return (
                 <a
                   key={item.url}
@@ -883,6 +904,102 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
         <Link href="/contact" className="underline hover:text-foreground">{t("contactUs")}</Link>{" "}{t("forFullReports")}
       </p>
     </div>
+  );
+}
+
+// ── Marquee Ticker ─────────────────────────────────────────────────────────
+
+const MARQUEE_STYLE = `
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+`;
+
+interface TickerItem {
+  key: string;
+  text: string;
+  type: "price" | "yield";
+}
+
+function MarqueeTicker({
+  priceByArea,
+  yieldByArea,
+  tickerLabel,
+  tickerPricePerSqft,
+  tickerYield,
+}: {
+  priceByArea: { area: string; price: number }[];
+  yieldByArea: { area: string; yield: number }[];
+  tickerLabel: string;
+  tickerPricePerSqft: string;
+  tickerYield: string;
+}) {
+  const priceItems: TickerItem[] = priceByArea.slice(0, 4).map((p) => ({
+    key: `price-${p.area}`,
+    text: tickerPricePerSqft
+      .replace("{area}", p.area)
+      .replace("{price}", p.price.toLocaleString()),
+    type: "price",
+  }));
+
+  const yieldItems: TickerItem[] = yieldByArea
+    .filter((y) => y.yield > 0)
+    .slice(0, 4)
+    .map((y) => ({
+      key: `yield-${y.area}`,
+      text: tickerYield
+        .replace("{area}", y.area)
+        .replace("{yield}", y.yield.toFixed(1)),
+      type: "yield",
+    }));
+
+  const items = [...priceItems, ...yieldItems].slice(0, 8);
+  if (items.length === 0) return null;
+
+  // Duplicate for seamless looping
+  const doubled = [...items, ...items];
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: MARQUEE_STYLE }} />
+      <div className="relative overflow-hidden bg-primary/8 border border-accent/20 rounded-xl py-2.5 px-4 flex items-center gap-3">
+        {/* Label badge */}
+        <span className="flex-shrink-0 flex items-center gap-1.5 text-[10px] font-bold tracking-[0.2em] uppercase text-accent border border-accent/40 rounded-md px-2 py-1 bg-accent/10">
+          <Zap className="h-2.5 w-2.5" />
+          {tickerLabel}
+        </span>
+        {/* Scrolling track */}
+        <div className="overflow-hidden flex-1 min-w-0">
+          <div className="animate-marquee flex gap-6 whitespace-nowrap w-max">
+            {doubled.map((item, idx) => (
+              <span
+                key={`${item.key}-${idx}`}
+                className="inline-flex items-center gap-1.5 text-xs font-medium"
+              >
+                {item.type === "price" ? (
+                  <TrendingUp className="h-3 w-3 text-accent flex-shrink-0" />
+                ) : (
+                  <Percent className="h-3 w-3 text-emerald-500 flex-shrink-0" />
+                )}
+                <span className="text-foreground">{item.text}</span>
+                <span className="text-border/60 select-none mx-1">·</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        {/* Fade edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-[7.5rem] w-6 bg-gradient-to-r from-background/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background/80 to-transparent" />
+      </div>
+    </>
   );
 }
 

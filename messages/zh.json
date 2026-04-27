@@ -1094,7 +1094,9 @@
     "offPlanListings": "期房房源",
     "secondaryListings": "二手房房源",
     "ofTotal": "占总市场",
-    "liveDataIndicator": "实时数据"
+    "tickerLabel": "实时市场",
+    "tickerPricePerSqft": "{area} AED {price}/平方英尺",
+    "tickerYield": "{area} {yield}% 租金回报率"
   },
   "services": {
     "heroLabel": "服务领域",

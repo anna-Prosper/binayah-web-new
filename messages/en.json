@@ -1088,7 +1088,9 @@
     "offPlanListings": "Off-Plan Listings",
     "secondaryListings": "Secondary Listings",
     "ofTotal": "of total market",
-    "liveDataIndicator": "Live data"
+    "tickerLabel": "LIVE MARKET",
+    "tickerPricePerSqft": "{area} AED {price}/sqft",
+    "tickerYield": "{area} {yield}% yield"
   },
   "services": {
     "heroLabel": "What We Offer",

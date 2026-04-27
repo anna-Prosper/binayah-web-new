@@ -1088,7 +1088,9 @@
     "offPlanListings": "عقارات على الخارطة",
     "secondaryListings": "عقارات ثانوية",
     "ofTotal": "من إجمالي السوق",
-    "liveDataIndicator": "بيانات حية"
+    "tickerLabel": "السوق المباشر",
+    "tickerPricePerSqft": "{area} {price} درهم/قدم²",
+    "tickerYield": "{area} عائد {yield}٪"
   },
   "services": {
     "heroLabel": "ما نقدمه",

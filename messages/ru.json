@@ -1088,7 +1088,9 @@
     "offPlanListings": "Строящееся жильё",
     "secondaryListings": "Вторичное жильё",
     "ofTotal": "от общего рынка",
-    "liveDataIndicator": "Данные в реальном времени"
+    "tickerLabel": "РЫНОК В РЕАЛЬНОМ ВРЕМЕНИ",
+    "tickerPricePerSqft": "{area} AED {price}/кв.фут",
+    "tickerYield": "{area} доходность {yield}%"
   },
   "services": {
     "heroLabel": "Что мы предлагаем",
