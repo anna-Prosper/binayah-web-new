@@ -310,7 +310,7 @@ function SearchContent() {
                       </div>
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="flex items-center gap-1.5 text-white/70 text-xs mb-1">
-                          <MapPin className="h-3 w-3" /> Dubai, UAE
+                          <MapPin className="h-3 w-3" /> {t("dubaiUAE")}
                         </p>
                         <h3 className="text-white font-bold text-xl leading-tight">{communityInfo.name}</h3>
                       </div>
