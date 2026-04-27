@@ -10,3 +10,4 @@
 {"ts":"2026-04-22T10:31:55Z","stage":1,"iter":1,"fromPhase":"planner","toPhase":"awaiting_planner","role":"planner","passed":null}
 {"ts":"2026-04-22T10:32:36Z","stage":1,"iter":1,"fromPhase":"awaiting_planner","toPhase":"pm","role":"planner","passed":null}
 {"ts":"2026-04-22T12:38:35Z","stage":1,"iter":1,"fromPhase":"planner","toPhase":"awaiting_planner","role":"planner","passed":null}
+{"ts":"2026-04-27T13:05:09Z","stage":1,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
