@@ -23,48 +23,59 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ exists: false });
   }
 
-  // Ensure slug index once per cold-start
+  // Ensure slug index once per cold-start (best-effort — don't block on failure)
   if (!indexEnsured) {
-    await ensureIndex();
+    try {
+      await ensureIndex();
+    } catch {
+      // Non-fatal
+    }
     indexEnsured = true;
   }
 
   try {
-    const client = await clientPromise;
-    const db = client.db("binayah_web_new_dev");
-    const collection = db.collection<CommunityInfoPage>("community_info_pages");
-
     const slug = toSlug(q);
+    let cached: CommunityInfoPage | null = null;
 
-    // 1. Check cache first
-    const cached = await collection.findOne({ slug });
+    // 1. Try MongoDB cache — isolated so a DB outage doesn't block scraping
+    try {
+      const client = await clientPromise;
+      const db = client.db("binayah_web_new_dev");
+      const collection = db.collection<CommunityInfoPage>("community_info_pages");
+      cached = await collection.findOne({ slug });
+    } catch (dbErr) {
+      console.warn("[community-info] MongoDB cache lookup failed (will scrape anyway):", dbErr);
+    }
+
     if (cached) {
       return NextResponse.json({ exists: true, data: cached });
     }
 
-    // 2. Scrape from external sources
+    // 2. Always attempt scraping, even if MongoDB was unavailable
     const scraped = await scrapeCommunityInfo(q);
 
     if (!scraped) {
       return NextResponse.json({ exists: false });
     }
 
-    // 3. Store in MongoDB (insertOne; on duplicate slug from race condition, upsert)
+    // 3. Try to persist — best-effort; don't fail the request if writing fails
     try {
+      const client = await clientPromise;
+      const db = client.db("binayah_web_new_dev");
+      const collection = db.collection<CommunityInfoPage>("community_info_pages");
       await collection.updateOne(
         { slug: scraped.slug },
         { $setOnInsert: scraped },
         { upsert: true }
       );
-    } catch (err) {
-      // Log but don't fail the request — return the scraped data anyway
-      console.error("[community-info] MongoDB write error:", err);
+      // Re-fetch to get the _id assigned by MongoDB
+      const stored = await collection.findOne({ slug: scraped.slug });
+      return NextResponse.json({ exists: true, data: stored ?? scraped });
+    } catch (writeErr) {
+      console.error("[community-info] MongoDB write failed:", writeErr);
+      // Still return the scraped data — persistence is best-effort
       return NextResponse.json({ exists: true, data: scraped });
     }
-
-    // Re-fetch to get the _id assigned by MongoDB
-    const stored = await collection.findOne({ slug: scraped.slug });
-    return NextResponse.json({ exists: true, data: stored ?? scraped });
   } catch (err) {
     // Never return 500 — log and return exists: false
     console.error("[community-info] Unhandled error:", err);

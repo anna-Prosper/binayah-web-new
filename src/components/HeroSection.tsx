@@ -226,7 +226,7 @@ const HeroSection = () => {
 
       // When zero project/listing results come back for a meaningful query,
       // check community_info_pages for a matching informational page.
-      if (countSuggestionItems(nextSuggestions) === 0 && trimmed.length >= 3) {
+      if (countProjectSuggestions(nextSuggestions) === 0 && trimmed.length >= 3) {
         try {
           const ciRes = await fetch(`/api/community-info?q=${encodeURIComponent(trimmed)}`, { cache: "no-store" });
           if (smartRequestRef.current !== requestId) return; // stale
@@ -890,6 +890,15 @@ function countSuggestionItems(suggestions: HomeSearchSuggestionGroups) {
     + suggestions.developers.length
     + suggestions.places.length
     + suggestions.askAi.length;
+}
+
+// Counts only real project/listing results — excludes smart fallbacks and askAi prompts.
+// Used to decide whether to fall back to community-info lookup.
+function countProjectSuggestions(suggestions: HomeSearchSuggestionGroups) {
+  return suggestions.communities.length
+    + suggestions.projects.length
+    + suggestions.developers.length
+    + suggestions.places.length;
 }
 
 export default HeroSection;
