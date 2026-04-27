@@ -298,7 +298,9 @@
     "tabAll": "Все",
     "tabOffPlan": "Новостройки",
     "tabSecondary": "Вторичка",
-    "tabAnySecondary": "Любая вторичка"
+    "tabAnySecondary": "Любая вторичка",
+    "communityInfoFound": "Мы нашли информацию о сообществе {name}",
+    "viewCommunityGuide": "Посмотреть руководство по сообществу {name}"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",

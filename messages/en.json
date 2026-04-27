@@ -298,7 +298,9 @@
     "tabAll": "All",
     "tabOffPlan": "Off-Plan",
     "tabSecondary": "Secondary",
-    "tabAnySecondary": "Any Secondary"
+    "tabAnySecondary": "Any Secondary",
+    "communityInfoFound": "We found community information for {name}",
+    "viewCommunityGuide": "View {name} Community Guide"
   },
   "offPlan": {
     "title": "Off-Plan Properties",

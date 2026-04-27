@@ -290,7 +290,7 @@ function SearchContent() {
               {communityInfo ? (
                 <div className="mt-6 mb-4">
                   <p className="text-sm text-muted-foreground mb-3">
-                    We found community information for <span className="font-semibold text-foreground">{communityInfo.name}</span>
+                    {t("communityInfoFound", { name: communityInfo.name })}
                   </p>
                   <Link
                     href={`/community/${communityInfo.slug}`}
@@ -298,7 +298,7 @@ function SearchContent() {
                     style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                   >
                     <MapPin className="h-4 w-4" />
-                    View {communityInfo.name} Community Guide
+                    {t("viewCommunityGuide", { name: communityInfo.name })}
                   </Link>
                 </div>
               ) : (

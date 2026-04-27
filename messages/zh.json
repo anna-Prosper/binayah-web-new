@@ -304,7 +304,9 @@
     "tabAll": "全部",
     "tabOffPlan": "期房",
     "tabSecondary": "现房",
-    "tabAnySecondary": "不限现房"
+    "tabAnySecondary": "不限现房",
+    "communityInfoFound": "我们找到了 {name} 的社区信息",
+    "viewCommunityGuide": "查看 {name} 社区指南"
   },
   "offPlan": {
     "title": "迪拜期房",
