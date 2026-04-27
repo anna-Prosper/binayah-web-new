@@ -574,7 +574,7 @@ const HeroSection = () => {
                       {/* Community Information row — shown when project search returns zero results */}
                       {communityInfoResult && (
                         <div className="border-t border-border/30">
-                          <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Community Guide</p>
+                          <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("communityGuide")}</p>
                           <Link
                             href={`/communities/${communityInfoResult.slug}`}
                             onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
@@ -586,10 +586,10 @@ const HeroSection = () => {
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-medium truncate text-foreground">{communityInfoResult.name}</p>
-                              <p className="text-xs text-muted-foreground truncate">Community information</p>
+                              <p className="text-xs text-muted-foreground truncate">{t("communityInformation")}</p>
                             </div>
                             <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full bg-accent/10 text-accent">
-                              Guide
+                              {t("communityGuideLabel")}
                             </span>
                           </Link>
                         </div>

@@ -106,7 +106,10 @@
         "Умный ИИ-поиск в"
       ],
       "searchCta": "Поиск",
-      "askAiCta": "Спросить ИИ"
+      "askAiCta": "Спросить ИИ",
+      "communityGuide": "Путеводитель по сообществу",
+      "communityInformation": "Информация о сообществе",
+      "communityGuideLabel": "Гид"
     },
     "featured": "Избранные объекты",
     "offPlan": "Новостройки",
@@ -1554,5 +1557,20 @@
     "retailOutlets": "Магазины на территории",
     "landscapedGardens": "Ландшафтные сады",
     "smartHomeFeatures": "Умный дом"
+  },
+  "communityInfo": {
+    "badge": "Информация о сообществе",
+    "sectionAboutEyebrow": "О сообществе",
+    "sectionLocationEyebrow": "Расположение",
+    "sectionDeveloperEyebrow": "Застройщик",
+    "sectionPriceRangeEyebrow": "Диапазон цен",
+    "sectionAmenitiesEyebrow": "Что рядом",
+    "sectionAmenitiesTitle": "Удобства и особенности",
+    "ctaEyebrow": "Ищете жильё здесь?",
+    "ctaHeadline": "Интересуют похожие объекты?",
+    "ctaSubline": "Просматривайте проверенные объявления Binayah поблизости.",
+    "ctaButton": "Смотреть объекты",
+    "breadcrumbHome": "Главная",
+    "breadcrumbCommunities": "Сообщества"
   }
 }

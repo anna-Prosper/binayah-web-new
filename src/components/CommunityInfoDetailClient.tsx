@@ -8,6 +8,7 @@ import { formatProjectPrice } from "@/lib/formatPrice";
 import { motion } from "framer-motion";
 import { Building2, CheckCircle2, ChevronRight, MapPin, Building, Wallet } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function CommunityInfoDetailClient({ community, locale }: Props) {
+  const t = useTranslations("communityInfo");
   const {
     name,
     location,
@@ -64,11 +66,11 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
           {/* Breadcrumbs */}
           <div className="flex items-center gap-2 text-sm text-white/60 mb-5">
             <Link href={`/${locale}`} className="hover:text-white transition-colors">
-              Home
+              {t("breadcrumbHome")}
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <Link href={`/${locale}/communities`} className="hover:text-white transition-colors">
-              Communities
+              {t("breadcrumbCommunities")}
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{name}</span>
@@ -77,7 +79,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             {/* Badge — the ONE signal that reframes this page as reference */}
             <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-4 bg-accent text-accent-foreground">
-              Community Information
+              {t("badge")}
             </span>
 
             {/* Community name */}
@@ -116,7 +118,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                     {/* Eyebrow rule */}
                     <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
                     <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
-                      About
+                      {t("sectionAboutEyebrow")}
                     </p>
                     <h2 className="text-2xl font-bold text-foreground mb-4">
                       {name}
@@ -143,7 +145,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                     {location && (
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
-                          Location
+                          {t("sectionLocationEyebrow")}
                         </p>
                         <p className="flex items-center gap-2 text-foreground font-medium">
                           <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -155,7 +157,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                     {developerName && (
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
-                          Developer
+                          {t("sectionDeveloperEyebrow")}
                         </p>
                         <p className="flex items-center gap-2 text-foreground font-medium">
                           <Building className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -167,7 +169,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                     {priceRange && (
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
-                          Price Range
+                          {t("sectionPriceRangeEyebrow")}
                         </p>
                         <p className="flex items-center gap-2 text-foreground font-medium">
                           <Wallet className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -199,10 +201,10 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
               <div className="bg-card rounded-2xl p-6 sm:p-8 border border-border/50">
                 <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
                 <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-2">
-                  What&apos;s nearby
+                  {t("sectionAmenitiesEyebrow")}
                 </p>
                 <h2 className="text-2xl font-bold text-foreground mb-6">
-                  Amenities &amp; Features
+                  {t("sectionAmenitiesTitle")}
                 </h2>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {amenities!.map((amenity, i) => (
@@ -234,13 +236,13 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-4">
-            Looking for a home here?
+            {t("ctaEyebrow")}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            Interested in similar properties?
+            {t("ctaHeadline")}
           </h2>
           <p className="text-white/70 mb-8 text-base">
-            Browse Binayah&apos;s verified listings nearby.
+            {t("ctaSubline")}
           </p>
           <Link
             href={location ? `/search?location=${encodeURIComponent(location)}` : "/search"}
@@ -250,7 +252,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
               boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
             }}
           >
-            Browse Properties
+            {t("ctaButton")}
           </Link>
         </div>
       </section>

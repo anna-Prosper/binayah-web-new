@@ -106,7 +106,10 @@
         "AI-Powered Search For"
       ],
       "searchCta": "Search",
-      "askAiCta": "Ask AI"
+      "askAiCta": "Ask AI",
+      "communityGuide": "Community Guide",
+      "communityInformation": "Community information",
+      "communityGuideLabel": "Guide"
     },
     "featured": "Handpicked Properties",
     "offPlan": "Off-Plan Projects",
@@ -1554,5 +1557,20 @@
     "retailOutlets": "Retail Outlets",
     "landscapedGardens": "Landscaped Gardens",
     "smartHomeFeatures": "Smart Home Features"
+  },
+  "communityInfo": {
+    "badge": "Community Information",
+    "sectionAboutEyebrow": "About",
+    "sectionLocationEyebrow": "Location",
+    "sectionDeveloperEyebrow": "Developer",
+    "sectionPriceRangeEyebrow": "Price Range",
+    "sectionAmenitiesEyebrow": "What's nearby",
+    "sectionAmenitiesTitle": "Amenities & Features",
+    "ctaEyebrow": "Looking for a home here?",
+    "ctaHeadline": "Interested in similar properties?",
+    "ctaSubline": "Browse Binayah's verified listings nearby.",
+    "ctaButton": "Browse Properties",
+    "breadcrumbHome": "Home",
+    "breadcrumbCommunities": "Communities"
   }
 }

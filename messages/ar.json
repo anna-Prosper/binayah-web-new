@@ -106,7 +106,10 @@
         "بحث ذكي في"
       ],
       "searchCta": "بحث",
-      "askAiCta": "اسأل المساعد الذكي"
+      "askAiCta": "اسأل المساعد الذكي",
+      "communityGuide": "دليل المجتمع",
+      "communityInformation": "معلومات المجتمع",
+      "communityGuideLabel": "دليل"
     },
     "featured": "عقارات منتقاة بعناية",
     "offPlan": "مشاريع على الخارطة",
@@ -1554,5 +1557,20 @@
     "retailOutlets": "منافذ تجارية",
     "landscapedGardens": "حدائق منسّقة",
     "smartHomeFeatures": "تقنيات المنزل الذكي"
+  },
+  "communityInfo": {
+    "badge": "معلومات المجتمع",
+    "sectionAboutEyebrow": "حول",
+    "sectionLocationEyebrow": "الموقع",
+    "sectionDeveloperEyebrow": "المطور",
+    "sectionPriceRangeEyebrow": "نطاق السعر",
+    "sectionAmenitiesEyebrow": "ما الموجود بالقرب",
+    "sectionAmenitiesTitle": "المرافق والميزات",
+    "ctaEyebrow": "تبحث عن منزل هنا؟",
+    "ctaHeadline": "مهتم بعقارات مماثلة؟",
+    "ctaSubline": "تصفح قوائم بنايا الموثقة بالقرب.",
+    "ctaButton": "تصفح العقارات",
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbCommunities": "المناطق"
   }
 }

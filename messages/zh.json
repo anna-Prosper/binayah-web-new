@@ -112,7 +112,10 @@
         "AI 智选房源"
       ],
       "searchCta": "搜索",
-      "askAiCta": "问 AI"
+      "askAiCta": "问 AI",
+      "communityGuide": "社区指南",
+      "communityInformation": "社区信息",
+      "communityGuideLabel": "指南"
     },
     "featured": "臻选房源",
     "offPlan": "期房项目",
@@ -1560,5 +1563,20 @@
     "retailOutlets": "商业配套",
     "landscapedGardens": "景观花园",
     "smartHomeFeatures": "智能家居"
+  },
+  "communityInfo": {
+    "badge": "社区信息",
+    "sectionAboutEyebrow": "关于",
+    "sectionLocationEyebrow": "位置",
+    "sectionDeveloperEyebrow": "开发商",
+    "sectionPriceRangeEyebrow": "价格范围",
+    "sectionAmenitiesEyebrow": "附近设施",
+    "sectionAmenitiesTitle": "设施与特色",
+    "ctaEyebrow": "在这里找家了吗？",
+    "ctaHeadline": "对类似房产感兴趣？",
+    "ctaSubline": "浏览附近Binayah的认证房源。",
+    "ctaButton": "浏览房产",
+    "breadcrumbHome": "首页",
+    "breadcrumbCommunities": "社区"
   }
 }
