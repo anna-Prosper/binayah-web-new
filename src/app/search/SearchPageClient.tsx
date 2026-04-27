@@ -293,7 +293,7 @@ function SearchContent() {
                     {t("communityInfoFound", { name: communityInfo.name })}
                   </p>
                   <Link
-                    href={`/community/${communityInfo.slug}`}
+                    href={`/communities/${communityInfo.slug}`}
                     className="inline-flex items-center gap-2 px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg"
                     style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                   >
