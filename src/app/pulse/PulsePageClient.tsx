@@ -462,107 +462,6 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
               </motion.section>
             )}
 
-            {/* ── DLD Transaction Analytics ────────────────────────── */}
-            {txData?.hasData ? (
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.05 }}
-              >
-                <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
-
-                <div className="grid sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
-                  {[
-                    { label: t("totalTransactions"), value: txData.summary.totalTransactions.toLocaleString(), sub: t("last12Months") },
-                    { label: t("totalValue"), value: AED(txData.summary.totalValue, true), sub: t("salesVolume") },
-                    { label: t("avgTransaction"), value: AED(txData.summary.avgTransactionValue, true), sub: t("perSale") },
-                    { label: t("avgSoldPriceSqft"), value: txData.summary.avgPpsf > 0 ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—", sub: t("actualSold") },
-                  ].map((s) => (
-                    <div key={s.label} className="bg-card border border-border/50 rounded-xl p-4">
-                      <p className="text-xs text-muted-foreground mb-1">{s.label}</p>
-                      <p className="text-xl font-bold text-foreground">{s.value}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{s.sub}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-                  {txData.monthly.length > 0 && (
-                    <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
-                      <div className="h-[220px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <AreaChart data={txData.monthly}>
-                            <defs>
-                              <linearGradient id="txGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor={C.primary} stopOpacity={0.15} />
-                                <stop offset="95%" stopColor={C.primary} stopOpacity={0} />
-                              </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                            <Tooltip formatter={(v: number) => [v.toLocaleString(), "Transactions"]} contentStyle={TOOLTIP_STYLE} />
-                            <Area dataKey="count" stroke={C.primary} strokeWidth={2} fill="url(#txGrad)" dot={false} />
-                          </AreaChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </div>
-                  )}
-
-                  {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
-                    <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
-                      <div className="h-[220px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                            <Tooltip formatter={(v: number) => [`AED ${v.toLocaleString()}`, "Avg Price/sqft"]} contentStyle={TOOLTIP_STYLE} />
-                            <Line dataKey="avgPpsf" stroke={C.accent} strokeWidth={2.5} dot={{ fill: C.accent, r: 3 }} />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {txData.byArea.length > 0 && (
-                  <div className="mt-4 bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
-                    <h4 className="font-semibold text-sm text-foreground mb-4">{t("topAreas")}</h4>
-                    <div className="h-[200px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={txData.byArea.slice(0, 8)} barSize={22}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
-                          <XAxis dataKey="area" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                          <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                          <Tooltip formatter={(v: number, name: string) => [name === "count" ? v.toLocaleString() : AED(v, true), name === "count" ? "Transactions" : "Avg Price"]} contentStyle={TOOLTIP_STYLE} />
-                          <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                            {txData.byArea.slice(0, 8).map((_, i) => (
-                              <Cell key={i} fill={i === 0 ? C.accent : C.primary} />
-                            ))}
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                )}
-              </motion.section>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center"
-              >
-                <RefreshCw className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="text-sm font-medium text-muted-foreground">{t("dldFetching")}</p>
-                <p className="text-xs text-muted-foreground/60 mt-1">{t("dldFetchingSub")}</p>
-              </motion.div>
-            )}
-
             {/* ── Top investment picks + charts ────────────────────── */}
             {marketStats && (
               <>
@@ -795,6 +694,107 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-12 sm:space-y-16"
           >
+            {/* ── DLD Transaction Analytics ────────────────────────── */}
+            {txData?.hasData ? (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.05 }}
+              >
+                <SectionHeader label={t("dldTransactions")} title={t("officialTransaction")} titleItalic={t("dataItalic")} />
+
+                <div className="grid sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                  {[
+                    { label: t("totalTransactions"), value: txData.summary.totalTransactions.toLocaleString(), sub: t("last12Months") },
+                    { label: t("totalValue"), value: AED(txData.summary.totalValue, true), sub: t("salesVolume") },
+                    { label: t("avgTransaction"), value: AED(txData.summary.avgTransactionValue, true), sub: t("perSale") },
+                    { label: t("avgSoldPriceSqft"), value: txData.summary.avgPpsf > 0 ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—", sub: t("actualSold") },
+                  ].map((s) => (
+                    <div key={s.label} className="bg-card border border-border/50 rounded-xl p-4">
+                      <p className="text-xs text-muted-foreground mb-1">{s.label}</p>
+                      <p className="text-xl font-bold text-foreground">{s.value}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{s.sub}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+                  {txData.monthly.length > 0 && (
+                    <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
+                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("monthlyVolume")}</h4>
+                      <div className="h-[220px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={txData.monthly}>
+                            <defs>
+                              <linearGradient id="txGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor={C.primary} stopOpacity={0.15} />
+                                <stop offset="95%" stopColor={C.primary} stopOpacity={0} />
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
+                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                            <Tooltip formatter={(v: number) => [v.toLocaleString(), "Transactions"]} contentStyle={TOOLTIP_STYLE} />
+                            <Area dataKey="count" stroke={C.primary} strokeWidth={2} fill="url(#txGrad)" dot={false} />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  )}
+
+                  {txData.monthly.filter((m) => m.avgPpsf > 0).length > 0 && (
+                    <div className="bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
+                      <h4 className="font-semibold text-sm text-foreground mb-4">{t("avgPriceSqft")}</h4>
+                      <div className="h-[220px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={txData.monthly.filter((m) => m.avgPpsf > 0)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
+                            <XAxis dataKey="label" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                            <Tooltip formatter={(v: number) => [`AED ${v.toLocaleString()}`, "Avg Price/sqft"]} contentStyle={TOOLTIP_STYLE} />
+                            <Line dataKey="avgPpsf" stroke={C.accent} strokeWidth={2.5} dot={{ fill: C.accent, r: 3 }} />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {txData.byArea.length > 0 && (
+                  <div className="mt-4 bg-card border border-border/50 rounded-2xl p-4 sm:p-6">
+                    <h4 className="font-semibold text-sm text-foreground mb-4">{t("topAreas")}</h4>
+                    <div className="h-[200px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={txData.byArea.slice(0, 8)} barSize={22}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
+                          <XAxis dataKey="area" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                          <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                          <Tooltip formatter={(v: number, name: string) => [name === "count" ? v.toLocaleString() : AED(v, true), name === "count" ? "Transactions" : "Avg Price"]} contentStyle={TOOLTIP_STYLE} />
+                          <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                            {txData.byArea.slice(0, 8).map((_, i) => (
+                              <Cell key={i} fill={i === 0 ? C.accent : C.primary} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              </motion.section>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="bg-muted/30 border border-border/30 rounded-2xl p-6 text-center"
+              >
+                <RefreshCw className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+                <p className="text-sm font-medium text-muted-foreground">{t("dldFetching")}</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">{t("dldFetchingSub")}</p>
+              </motion.div>
+            )}
+
             {/* ── FX Rate Ticker ─────────────────────────────────────── */}
             {rates && Object.keys(rates).length > 0 && (
               <motion.section
