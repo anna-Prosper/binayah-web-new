@@ -300,7 +300,9 @@
     "tabSecondary": "Вторичка",
     "tabAnySecondary": "Любая вторичка",
     "communityInfoFound": "Мы нашли информацию о сообществе {name}",
-    "viewCommunityGuide": "Посмотреть руководство по сообществу {name}"
+    "viewCommunityGuide": "Посмотреть руководство по сообществу {name}",
+    "communityGuide": "Путеводитель по сообществу",
+    "explore": "Подробнее"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",

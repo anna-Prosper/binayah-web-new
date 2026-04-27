@@ -112,7 +112,7 @@ function SearchContent() {
   const [listingCount, setListingCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string } | null>(null);
+  const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
 
   const budgetOptions = intent === "rent" ? rentBudgets : buyBudgets;
 
@@ -203,7 +203,7 @@ function SearchContent() {
         .then((r) => r.ok ? r.json() : null)
         .then((data) => {
           if (data?.exists && data?.data?.name && data?.data?.slug) {
-            setCommunityInfo({ name: data.data.name, slug: data.data.slug });
+            setCommunityInfo({ name: data.data.name, slug: data.data.slug, heroImage: data.data.heroImage, description: data.data.description });
           } else {
             setCommunityInfo(null);
           }
@@ -283,29 +283,54 @@ function SearchContent() {
           {loading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("noResults")}</span></div>
           ) : totalResults === 0 ? (
-            <div className="text-center py-20">
-              <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">{t("noResults")}</h3>
-              <p className="text-muted-foreground mb-6">{t("clearFilters")}</p>
+            <div className="flex flex-col items-center py-16">
+              <Search className="h-10 w-10 text-muted-foreground/25 mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-1">{t("noResults")}</h3>
+              <button onClick={clearFilters} className="text-sm text-muted-foreground hover:text-primary transition-colors mb-10">{t("clearFilters")}</button>
+
               {communityInfo ? (
-                <div className="mt-6 mb-4">
-                  <p className="text-sm text-muted-foreground mb-3">
+                <div className="w-full max-w-sm">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 text-center">
                     {t("communityInfoFound", { name: communityInfo.name })}
                   </p>
-                  <Link
-                    href={`/communities/${communityInfo.slug}`}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg"
-                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                  >
-                    <MapPin className="h-4 w-4" />
-                    {t("viewCommunityGuide", { name: communityInfo.name })}
+                  <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                    <div className="relative overflow-hidden aspect-[4/3]">
+                      <Image
+                        src={communityInfo.heroImage || "/assets/amenities-placeholder.webp"}
+                        alt={communityInfo.name}
+                        fill
+                        sizes="384px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      <div className="absolute top-3 left-3">
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-white/15 backdrop-blur-sm text-white uppercase tracking-wider border border-white/20">
+                          {t("communityGuide")}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <p className="flex items-center gap-1.5 text-white/70 text-xs mb-1">
+                          <MapPin className="h-3 w-3" /> Dubai, UAE
+                        </p>
+                        <h3 className="text-white font-bold text-xl leading-tight">{communityInfo.name}</h3>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      {communityInfo.description && (
+                        <p className="text-sm text-muted-foreground line-clamp-3 mb-4 leading-relaxed">
+                          {communityInfo.description}
+                        </p>
+                      )}
+                      <div className="flex items-center justify-between border-t border-border pt-3">
+                        <span className="text-xs text-muted-foreground">{t("viewCommunityGuide", { name: communityInfo.name })}</span>
+                        <span className="text-xs font-semibold text-primary group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
+                          {t("explore")} →
+                        </span>
+                      </div>
+                    </div>
                   </Link>
                 </div>
-              ) : (
-                <button onClick={clearFilters} className="px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                  {t("clearFilters")}
-                </button>
-              )}
+              ) : null}
             </div>
           ) : (
             <>

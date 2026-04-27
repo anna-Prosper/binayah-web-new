@@ -300,7 +300,9 @@
     "tabSecondary": "جاهزة",
     "tabAnySecondary": "كل العقارات الجاهزة",
     "communityInfoFound": "وجدنا معلومات عن مجتمع {name}",
-    "viewCommunityGuide": "عرض دليل مجتمع {name}"
+    "viewCommunityGuide": "عرض دليل مجتمع {name}",
+    "communityGuide": "دليل المجتمع",
+    "explore": "استكشف"
   },
   "offPlan": {
     "title": "مشاريع على الخارطة",

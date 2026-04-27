@@ -300,7 +300,9 @@
     "tabSecondary": "Secondary",
     "tabAnySecondary": "Any Secondary",
     "communityInfoFound": "We found community information for {name}",
-    "viewCommunityGuide": "View {name} Community Guide"
+    "viewCommunityGuide": "View {name} Community Guide",
+    "communityGuide": "Community Guide",
+    "explore": "Explore"
   },
   "offPlan": {
     "title": "Off-Plan Properties",
