@@ -112,6 +112,7 @@ function SearchContent() {
   const [listingCount, setListingCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string } | null>(null);
 
   const budgetOptions = intent === "rent" ? rentBudgets : buyBudgets;
 
@@ -196,6 +197,23 @@ function SearchContent() {
   ].filter(Boolean);
   const totalResults = projectCount + listingCount;
 
+  useEffect(() => {
+    if (!loading && totalResults === 0 && q.trim().length >= 3) {
+      fetch(`/api/community-info?q=${encodeURIComponent(q.trim())}`)
+        .then((r) => r.ok ? r.json() : null)
+        .then((data) => {
+          if (data?.exists && data?.data?.name && data?.data?.slug) {
+            setCommunityInfo({ name: data.data.name, slug: data.data.slug });
+          } else {
+            setCommunityInfo(null);
+          }
+        })
+        .catch(() => setCommunityInfo(null));
+    } else {
+      setCommunityInfo(null);
+    }
+  }, [loading, totalResults, q]);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -269,9 +287,25 @@ function SearchContent() {
               <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-foreground mb-2">{t("noResults")}</h3>
               <p className="text-muted-foreground mb-6">{t("clearFilters")}</p>
-              <button onClick={clearFilters} className="px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                {t("clearFilters")}
-              </button>
+              {communityInfo ? (
+                <div className="mt-6 mb-4">
+                  <p className="text-sm text-muted-foreground mb-3">
+                    We found community information for <span className="font-semibold text-foreground">{communityInfo.name}</span>
+                  </p>
+                  <Link
+                    href={`/community/${communityInfo.slug}`}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg"
+                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                  >
+                    <MapPin className="h-4 w-4" />
+                    View {communityInfo.name} Community Guide
+                  </Link>
+                </div>
+              ) : (
+                <button onClick={clearFilters} className="px-6 py-2.5 text-white rounded-xl font-semibold text-sm transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                  {t("clearFilters")}
+                </button>
+              )}
             </div>
           ) : (
             <>
