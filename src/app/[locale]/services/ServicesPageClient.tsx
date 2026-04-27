@@ -46,7 +46,7 @@ const processSteps = [
 const faqs = [
   { q: "What is included in your property management service?", a: "Our comprehensive service covers tenant sourcing, rent collection, maintenance coordination, financial reporting, legal compliance, and 24/7 emergency support. We handle everything so you can enjoy passive income." },
   { q: "How much do you charge for property management?", a: "Our management fees are competitive and transparent — typically 5-8% of annual rental income depending on the property type and service tier. No hidden fees, no surprises." },
-  { q: "Can you help with off-plan properties I haven't received yet?", a: "Absolutely. We offer pre-handover snagging inspections, coordinate the DLD transfer process, and can have your property market-ready for tenants immediately after handover." },
+  { q: "Can you help with off-plan properties I haven't received yet?", a: "Absolutely. We offer pre-handover snagging inspections, coordinate the property transfer process, and can have your property market-ready for tenants immediately after handover." },
   { q: "Do you assist international investors?", a: "Yes, over 60% of our clients are international. We handle everything remotely — from purchase to management — with multi-language support in English, Arabic, Russian, and Chinese." },
   { q: "What areas do you cover?", a: "We operate across all major Dubai communities including Marina, Downtown, Palm Jumeirah, JBR, Business Bay, JVC, Dubai Hills, and many more. Contact us for coverage in Abu Dhabi and other emirates." },
   { q: "How quickly can you find a tenant?", a: "On average, we secure quality tenants within 2-3 weeks thanks to our multi-platform marketing, professional photography, and extensive database of pre-qualified tenants." },
@@ -258,7 +258,7 @@ export default function ServicesPage() {
               { icon: MapPin, title: "50+ Communities", desc: "Coverage across all major Dubai areas", color: "#D4A847" },
               { icon: Users, title: "Dedicated Manager", desc: "Single point of contact for your portfolio", color: "#D4A847" },
               { icon: BarChart3, title: "Monthly Reporting", desc: "Detailed financials and performance insights", color: "#D4A847" },
-              { icon: Award, title: "Award Winning", desc: "Recognized by Dubai Land Department", color: "#D4A847" },
+              { icon: Award, title: "Award Winning", desc: "Recognized for Real Estate Excellence", color: "#D4A847" },
             ].map((item, i) => (
               <motion.div key={item.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}
                 className="bg-white/[0.06] backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:bg-white/[0.1] hover:border-white/20 transition-all duration-300 group">

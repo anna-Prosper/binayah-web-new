@@ -16,7 +16,7 @@ const steps = [
   {
     icon: BarChart3,
     title: "AI searches the market",
-    desc: "Live comps, active listings, and recent DLD transactions.",
+    desc: "Live comps, active listings, and recent market transactions.",
   },
   {
     icon: Sparkles,

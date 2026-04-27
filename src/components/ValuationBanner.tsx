@@ -112,7 +112,7 @@ export default function ValuationBanner() {
               {
                 icon: TrendingUp,
                 title: "Live market data",
-                desc: "Pulls from DLD transactions, current listings on Property Finder and Bayut, updated in real-time.",
+                desc: "Pulls from market transactions, current listings on Property Finder and Bayut, updated in real-time.",
                 color: "#D4A847",
               },
               {
