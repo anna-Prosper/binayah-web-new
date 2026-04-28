@@ -267,6 +267,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [aedAmount, setAedAmount] = useState("1000000");
   const [topBuildings, setTopBuildings] = useState<DldBuilding[]>([]);
+  const [topBuildingsLoading, setTopBuildingsLoading] = useState(true);
 
   useEffect(() => {
     fetch(apiUrl("/api/dld/buildings?sortBy=sales&order=desc&limit=10"))
@@ -274,7 +275,8 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
       .then((data: { results?: DldBuilding[] }) => {
         setTopBuildings(Array.isArray(data.results) ? data.results : []);
       })
-      .catch(() => setTopBuildings([]));
+      .catch(() => setTopBuildings([]))
+      .finally(() => setTopBuildingsLoading(false));
   }, []);
 
   const matrix = marketStats?.communityMatrix ?? [];
@@ -1009,7 +1011,7 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                   </motion.section>
                 )}
 
-                {topBuildings.length === 0 && (
+                {!topBuildingsLoading && topBuildings.length === 0 && (
                   <motion.section
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
