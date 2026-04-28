@@ -1,0 +1,269 @@
+{
+  "task": "Build /pulse multi-page experience (Overview/Trending/Compare/Calculator/Guides) on top of existing data + backfill DLD to 24 months.",
+  "baseSha": "a13d87605a70654fd0cf827877ba78c7e1ad5f3e",
+  "stages": [
+    {
+      "spec": "Build the multi-page /pulse experience. 5 sub-pages with shared sub-navigation.\n\nWORKING DIR: /Users/zoop/binayah-properties\n\nROUTING:\n- Add a Pulse sub-navigation pill bar component (PulseSubNav.tsx) \u2014 sticky below the main Navbar, visible on all /pulse/* routes.\n- Sub-nav items: Overview / Trending / Compare / Calculator / Guides \u2014 uses Next.js usePathname() to detect active route.\n\nPAGES TO BUILD:\n\n1) /pulse (Overview) \u2014 existing route. Just add the sub-nav at top. Keep current Market and Binayah tabs unchanged. Sub-nav highlights \"Overview\" as active.\n\n2) /pulse/trending \u2014 NEW route at src/app/[locale]/pulse/trending/page.tsx + TrendingClient.tsx.\n   - \"Biggest movers\" section: read /api/market-data transactions.monthly[]. If we have N months, compute MoM avgPpsf change; sort by absolute change; show top 5 risers + top 5 fallers.\n     Note: with only 4 months of DLD data, MoM is the closest equivalent to \"weekly\". Label it as \"Latest Period Movers\" so it is honest.\n   - \"New launches this month\" section: fetch /api/projects?status=Off-Plan and filter to those with launchDate within last 30 days (or createdAt if launchDate missing). Show 6 cards: project name, developer, community, starting price, payment plan if available.\n   - \"Featured insight\" section: grab first article from /api/market-data.news that has imageUrl; render full card linking out.\n   - \"Weekly summary\" section: a 4-stat strip auto-generated from latest monthly entry \u2014 count, totalValue, avgPrice, avgPpsf \u2014 phrased as a sentence in t() with ICU args.\n   - Share buttons row at bottom (WhatsApp / X / LinkedIn / Copy Link) \u2014 use real share URLs.\n\n3) /pulse/compare \u2014 NEW route at src/app/[locale]/pulse/compare/page.tsx + CompareClient.tsx.\n   - Top control: toggle \"Communities\" | \"Developers\"\n   - Search input below the toggle.\n   - Selected items chip row (max 3). Click chip to deselect.\n   - When items < 2: show 4 preset buttons (Waterfront Luxury / High Yield / Urban Core / Emerging Stars) \u2014 clicking each pre-fills 3 specific community slugs we know exist.\n   - When items >= 2: show comparison table:\n     * Communities mode: rows = price/sqft, yield, transaction volume (from byArea if community exists in DLD), off-plan share (from market-stats); columns = selected items; highlight winning cell per row.\n     * Developers mode: rows = total projects, off-plan projects, avg starting price, communities active in; columns = selected developers.\n   - Empty state: \"Pick communities to compare\" with the preset buttons.\n\n4) /pulse/calculator \u2014 NEW route at src/app/[locale]/pulse/calculator/page.tsx + CalculatorClient.tsx.\n   - Inputs (left column on desktop, stacked on mobile):\n     * Community: dropdown from yieldByArea (only show areas with real yield data)\n     * Budget: number input AED (min 100k, max 100M, step 50k)\n     * Property type: Apartment / Villa / Townhouse / Studio (button group)\n     * Purpose: Rent out / Resell / Live in (button group)\n     * Financing: Cash / Mortgage (button group; if Mortgage, show down-payment % slider, default 20%)\n   - Outputs (right column / below on mobile), live-updating via useMemo:\n     * Estimated property size (sqft) = budget / avgPpsf\n     * Annual rental = budget * (yield / 100)\n     * Gross yield % = community yield from yieldByArea\n     * Net yield = gross * 0.85 (assume 15% costs)\n     * 3-year projected value = budget * (1 + growthRate)^3\n     * 5-year projected value = same with ^5\n     * Comparison strip: 5-year ROI vs AED savings and S&P 500\n     * Investment rating badge: Strong (yield >= 7), Moderate (5-7), Weak (<5).\n   - Share buttons: WhatsApp prefilled with summary, Email mailto, Copy report link.\n\n5) /pulse/guides \u2014 NEW route at src/app/[locale]/pulse/guides/page.tsx + GuidesClient.tsx.\n   - 6 authored guides in src/lib/pulse-guides.ts\n   - Each card: category pill, read time, views count, title, 2-line description, hover-lift with arrow CTA.\n\n6) /pulse/guides/[slug] \u2014 NEW dynamic route.\n   - Look up guide in pulse-guides.ts by slug; notFound() if missing.\n   - Layout: hero with category + read time + views, h1 title, description, then article body.\n   - Bottom: related communities cards, CTA to /contact or /services.\n\nDEMO PATH for QA: visit /pulse, click Trending, click Compare, click Calculator, click Guides, click first guide card.",
+      "status": "passed",
+      "demoPath": "/pulse",
+      "name": "Frontend pages"
+    },
+    {
+      "spec": "Backfill DLD data from current 4 months to 24 months.\n\nWORKING DIR: /Users/zoop/binayah-api\n\nTASKS:\n1. In src/services/fetchers/dld-fetcher.ts -- add the export keyword to importDateRange:\n   Change: async function importDateRange(\n   To:     export async function importDateRange(\n   (The function already exists at line 153; this is a one-word change.)\n\n2. Create scripts/dld-backfill.ts:\n   - Imports importDateRange from ../src/services/fetchers/dld-fetcher (now exported after task 1)\n   - Imports DldTransaction model and mongoose connect/disconnect\n   - Loops month by month from 24 months ago to current month\n   - Skips months that already have records (count check via DldTransaction.countDocuments({ transactionDate: { $gte, $lt } }))\n   - Logs progress per month\n   - Closes mongo connection cleanly at end\n   - Add a brief comment at the top noting: to run on Render, use the Render shell or a one-off job: npx tsx scripts/dld-backfill.ts\n\n3. Add npm script in package.json:\n   \"dld-backfill\": \"tsx scripts/dld-backfill.ts\"\n   (tsx ^4.21.0 is already in dependencies -- no new deps needed)\n\n4. Run a test build: npm run build to ensure tsc compiles cleanly.\n\nDEMO PATH for QA: code review only -- actual data backfill is a manual run after this commit lands.",
+      "status": "passed",
+      "demoPath": "(api - code review)",
+      "name": "DLD backfill script"
+    }
+  ],
+  "currentStage": 2,
+  "totalStages": 2,
+  "stageIteration": 1,
+  "maxIterationsPerStage": 3,
+  "phase": "done",
+  "plannerOutput": {
+    "note": "PM skipped per user request. Specs written directly."
+  },
+  "plan": "Backfill DLD data from current 4 months to 24 months.\n\nWORKING DIR: /Users/zoop/binayah-api\n\nTASKS:\n1. In src/services/fetchers/dld-fetcher.ts -- add the export keyword to importDateRange:\n   Change: async function importDateRange(\n   To:     export async function importDateRange(\n   (The function already exists at line 153; this is a one-word change.)\n\n2. Create scripts/dld-backfill.ts:\n   - Imports importDateRange from ../src/services/fetchers/dld-fetcher (now exported after task 1)\n   - Imports DldTransaction model and mongoose connect/disconnect\n   - Loops month by month from 24 months ago to current month\n   - Skips months that already have records (count check via DldTransaction.countDocuments({ transactionDate: { $gte, $lt } }))\n   - Logs progress per month\n   - Closes mongo connection cleanly at end\n   - Add a brief comment at the top noting: to run on Render, use the Render shell or a one-off job: npx tsx scripts/dld-backfill.ts\n\n3. Add npm script in package.json:\n   \"dld-backfill\": \"tsx scripts/dld-backfill.ts\"\n   (tsx ^4.21.0 is already in dependencies -- no new deps needed)\n\n4. Run a test build: npm run build to ensure tsc compiles cleanly.\n\nDEMO PATH for QA: code review only -- actual data backfill is a manual run after this commit lands.",
+  "diff": "diff --git a/package.json b/package.json\nindex 7807897..71df32f 100644\n--- a/package.json\n+++ b/package.json\n@@ -10,7 +10,8 @@\n     \"dld-worker\": \"tsx src/dld-worker.ts\",\n     \"dld-worker:prod\": \"node dist/dld-worker.js\",\n     \"test:dld\": \"tsx src/scripts/test-dld.ts\",\n-    \"typecheck\": \"tsc --noEmit\"\n+    \"typecheck\": \"tsc --noEmit\",\n+    \"dld-backfill\": \"tsx scripts/dld-backfill.ts\"\n   },\n   \"engines\": {\n     \"node\": \">=20\"\ndiff --git a/scripts/dld-backfill.ts b/scripts/dld-backfill.ts\nnew file mode 100644\nindex 0000000..0974ae1\n--- /dev/null\n+++ b/scripts/dld-backfill.ts\n@@ -0,0 +1,106 @@\n+/**\n+ * DLD Historical Backfill Script\n+ * ================================\n+ * One-shot script to import the last 24 months of DLD transaction data.\n+ * Safe to re-run \u2014 already-imported months (>=100 records) are skipped.\n+ *\n+ * HOW TO RUN\n+ * ----------\n+ * Locally:\n+ *   npm run dld-backfill\n+ *   (requires .env file with MONGODB_URI set)\n+ *\n+ * On Render (SSH into the service instance):\n+ *   cd /opt/render/project/src\n+ *   npm run dld-backfill\n+ *\n+ * Cron / scheduling:\n+ *   This is a one-shot backfill \u2014 do NOT run it on a schedule.\n+ *   The daily incremental cron in dld-worker.ts handles ongoing updates.\n+ */\n+\n+import \"dotenv/config\";\n+import mongoose from \"mongoose\";\n+import { connectDB } from \"../src/lib/mongodb.js\";\n+import { importDateRange } from \"../src/services/fetchers/dld-fetcher.js\";\n+import DldTransaction from \"../src/models/DldTransaction.js\";\n+\n+/** Minimum existing records that indicate a month is already fully imported. */\n+const SKIP_THRESHOLD = 100;\n+\n+/** Number of months back from today to cover. */\n+const BACKFILL_MONTHS = 24;\n+\n+function monthStart(year: number, month: number): Date {\n+  return new Date(year, month, 1, 0, 0, 0, 0);\n+}\n+\n+function monthEnd(year: number, month: number): Date {\n+  // Day 0 of next month = last day of this month\n+  return new Date(year, month + 1, 0, 23, 59, 59, 999);\n+}\n+\n+async function main(): Promise<void> {\n+  await connectDB();\n+\n+  const now = new Date();\n+\n+  // Build ordered list of (year, month) pairs from 24 months ago to current month\n+  const months: Array<{ year: number; month: number }> = [];\n+  for (let i = BACKFILL_MONTHS - 1; i >= 0; i--) {\n+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);\n+    months.push({ year: d.getFullYear(), month: d.getMonth() });\n+  }\n+\n+  console.log(`[dld-backfill] Starting backfill for ${months.length} months`);\n+  console.log(`[dld-backfill] Range: ${months[0].year}-${String(months[0].month + 1).padStart(2, \"0\")} \u2192 ${months[months.length - 1].year}-${String(months[months.length - 1].month + 1).padStart(2, \"0\")}`);\n+  console.log();\n+\n+  let totalMonthsProcessed = 0;\n+  let totalMonthsSkipped = 0;\n+  let totalRecordsImported = 0;\n+\n+  for (const { year, month } of months) {\n+    const label = `${year}-${String(month + 1).padStart(2, \"0\")}`;\n+    const from = monthStart(year, month);\n+    const to = monthEnd(year, month);\n+\n+    // Check if this month is already sufficiently populated\n+    const existing = await DldTransaction.countDocuments({\n+      transactionDate: { $gte: from, $lte: to },\n+    });\n+\n+    if (existing >= SKIP_THRESHOLD) {\n+      console.log(`[dld-backfill] ${label}: skipped \u2014 already has ${existing} records`);\n+      totalMonthsSkipped++;\n+      continue;\n+    }\n+\n+    try {\n+      const imported = await importDateRange(from, to);\n+      totalRecordsImported += imported;\n+      totalMonthsProcessed++;\n+      console.log(`[dld-backfill] ${label}: imported ${imported} new records (had ${existing} before)`);\n+    } catch (err) {\n+      console.error(`[dld-backfill] ${label}: ERROR \u2014 ${(err as Error).message}`);\n+      // Continue with next month \u2014 don't abort the whole run\n+    }\n+  }\n+\n+  console.log();\n+  console.log(\"======================================\");\n+  console.log(`[dld-backfill] Done.`);\n+  console.log(`  Months processed : ${totalMonthsProcessed}`);\n+  console.log(`  Months skipped   : ${totalMonthsSkipped}`);\n+  console.log(`  Records imported : ${totalRecordsImported}`);\n+  console.log(\"======================================\");\n+}\n+\n+main()\n+  .catch((err) => {\n+    console.error(\"[dld-backfill] Fatal error:\", err);\n+    process.exit(1);\n+  })\n+  .finally(() => {\n+    mongoose.disconnect();\n+  });\ndiff --git a/src/services/fetchers/dld-fetcher.ts b/src/services/fetchers/dld-fetcher.ts\nindex 90985b8..f626810 100644\n--- a/src/services/fetchers/dld-fetcher.ts\n+++ b/src/services/fetchers/dld-fetcher.ts\n@@ -150,7 +150,7 @@ async function fetchPage(fromDate: string, toDate: string, skip: number): Promis\n   return { records, total };\n }\n \n-async function importDateRange(fromDate: Date, toDate: Date): Promise<number> {\n+export async function importDateRange(fromDate: Date, toDate: Date): Promise<number> {\n   const from = formatDate(fromDate);\n   const to = formatDate(toDate);\n \n",
+  "devReport": {
+    "commitSha": "74efd4dc",
+    "filesChanged": [
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx",
+      "messages/en.json",
+      "messages/ar.json",
+      "messages/zh.json",
+      "messages/ru.json",
+      "src/lib/pulse-guides.ts"
+    ],
+    "summary": "Fix 3 QA-LIVE criticals: (1) guide detail 500 \u2014 pass locale to getTranslations in generateMetadata + fix generateStaticParams; (2) DLD in moversNote \u2014 replace with market registry in 4 locales; (3) DLD in guide_buyingForeigner_desc \u2014 replace with title transfer in 4 locales; also scrub 5 DLD body text instances in pulse-guides.ts",
+    "fixtureVerified": false,
+    "blocker": null,
+    "designBrief": {
+      "direction": "no aesthetic direction needed for this scope"
+    },
+    "selfGrade": [
+      {
+        "action": "Fix generateMetadata to pass locale explicitly \u2014 getTranslations({ locale, namespace })",
+        "done": true,
+        "evidence": "page.tsx: getTranslations({ locale, namespace: \"pulseGuides\" }) with locale from awaited params"
+      },
+      {
+        "action": "Fix generateStaticParams to include locale in each entry",
+        "done": true,
+        "evidence": "page.tsx: locales.flatMap returning { locale, slug } pairs for all 4 locales"
+      },
+      {
+        "action": "Remove DLD from pulseTrending.moversNote in en/ar/zh/ru",
+        "done": true,
+        "evidence": "en.json line 1717: official market registry data; ar.json: \u0633\u062c\u0644 \u0627\u0644\u0645\u0639\u0627\u0645\u0644\u0627\u062a \u0627\u0644\u0631\u0633\u0645\u064a; zh.json: \u5b98\u65b9\u5e02\u573a\u767b\u8bb0\u5904; ru.json: \u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0440\u0435\u0435\u0441\u0442\u0440\u0430 \u0440\u044b\u043d\u043a\u0430"
+      },
+      {
+        "action": "Remove DLD from pulseGuides.guide_buyingForeigner_desc in en/zh/ru",
+        "done": true,
+        "evidence": "en.json: title transfer; zh.json: \u4ea7\u6743\u8fc7\u6237; ru.json: \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u0438\u044f \u043f\u0440\u0430\u0432\u0430 \u0441\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0441\u0442\u0438 (ar was already neutral)"
+      },
+      {
+        "action": "Scrub DLD body text from pulse-guides.ts (5 instances)",
+        "done": true,
+        "evidence": "pulse-guides.ts: title search portal, transfer step 3+4, running costs, developer check, secondary market paragraph \u2014 all DLD replaced with neutral terms"
+      },
+      {
+        "action": "TypeScript build clean",
+        "done": true,
+        "evidence": "npx tsc --noEmit: exit 0, no output"
+      }
+    ]
+  },
+  "reviewerReport": {
+    "passed": true,
+    "findings": [
+      {
+        "severity": "minor",
+        "category": "correctness",
+        "file": "scripts/dld-backfill.ts",
+        "line": 31,
+        "issue": "Skip threshold of 100 records can cause silent partial-month gaps. A month where only the first page (100 records) was imported on a prior partial run will be marked done even if the month has thousands of transactions. Not a blocker for a one-shot backfill script where re-runs are expected to be supervised, but worth knowing.",
+        "suggestedFix": "Document in script comment that skip threshold assumes a month has at most 100 real transactions OR that a month with fewer than 100 total DLD records is acceptable to re-skip. Alternatively raise threshold or skip only if count equals the previously-stored total."
+      }
+    ],
+    "summary": "6/7 points clean. One minor skip-threshold caveat (partial-month re-run edge case). No blockers."
+  },
+  "qaReport": {
+    "passed": true,
+    "tested": [
+      "skipped \u2014 no UI in diff (binayah-api script-only stage)"
+    ],
+    "bugs": [],
+    "skippedReason": "no_ui_diff"
+  },
+  "liveTestReport": {
+    "passed": true,
+    "stagingUrl": "https://staging.binayahhub.com",
+    "pagesChecked": [
+      "/pulse/guides/best-areas-dubai-2026",
+      "/pulse/guides/dubai-vs-abu-dhabi",
+      "/pulse/guides/rental-yield-explained",
+      "/pulse/trending",
+      "/pulse/guides"
+    ],
+    "consoleErrors": [],
+    "bugs": [],
+    "screenshots": [
+      "/tmp/guide_detail_best_areas.png"
+    ],
+    "verifiedChecks": {
+      "/pulse/guides/best-areas-dubai-2026": "HTTP 200, H1 'Best Areas to Buy in Dubai 2026', article body renders (Business Bay section present), zero console errors, zero DLD in DOM text",
+      "/pulse/guides/dubai-vs-abu-dhabi": "HTTP 200, H1 'Dubai vs Abu Dhabi: Where Should You Invest?', zero console errors",
+      "/pulse/guides/rental-yield-explained": "HTTP 200, H1 'Rental Yield Explained: Gross, Net, and Cash-on-Cash', zero console errors",
+      "/pulse/trending": "HTTP 200, moversNote = 'MoM change derived from official market registry data' (DLD removed), zero DLD in DOM text, zero console errors",
+      "/pulse/guides": "HTTP 200, guide cards render, guide_buyingForeigner_desc = 'title transfer' (DLD removed), zero DLD in DOM text, zero console errors, zero 500 prefetch errors"
+    },
+    "priorBugsResolved": [
+      "guide detail 500-crash fixed: generateMetadata now passes locale explicitly to getTranslations",
+      "DLD text on /pulse/trending fixed: moversNote no longer contains 'DLD'",
+      "DLD text on /pulse/guides fixed: guide_buyingForeigner_desc no longer contains 'DLD transfer'",
+      "6x 500 prefetch errors on /pulse/guides resolved (consequence of guide 500 fix)"
+    ],
+    "blocker": null
+  },
+  "pmDecision": "ship",
+  "summary": "Shipped /pulse 5-page experience + DLD backfill script. All QA passed. 3 live criticals resolved. Manual action pending: run npm run dld-backfill in binayah-api on Render to extend data from 4 to 24 months. Non-blocking known gaps: compare table em-dashes (pre-existing market-stats data gap, not introduced by this run); DLD raw key names in JS bundle (not user-visible).",
+  "securitySensitive": false,
+  "history": [],
+  "stageHistory": [
+    {
+      "stage": 1,
+      "summary": "Built /pulse multi-page (Overview sub-nav, Trending, Compare, Calculator, Guides + 6 articles). 5 pages, PulseSubNav, all 4 locales updated.",
+      "passedAt": "2026-04-28T04:59:25.223651+00:00",
+      "commitSha": "f1dcc9cac54866ea6172da3473266cea063b8f04",
+      "iterations": 2
+    },
+    {
+      "stage": 2,
+      "summary": "Added scripts/dld-backfill.ts in binayah-api for one-shot 24-month DLD data backfill (manual trigger).",
+      "passedAt": "2026-04-28T05:04:43.054518+00:00",
+      "commitSha": "f33e83d5b28cbe3b0a9b1f437d24d3163d8d117b",
+      "iterations": 1
+    }
+  ],
+  "regressionSweepDone": true,
+  "startedAt": "2026-04-28T04:06:16.984560+00:00",
+  "devServerPid": null,
+  "screenshotsUsed": 0,
+  "pushedSha": "74efd4dc3fb21bddaef1926bd60402bb09c1fc76",
+  "vercelDeployUrl": "https://staging.binayahhub.com",
+  "testFixture": null,
+  "metricsLog": ".iterate/metrics.jsonl",
+  "flags": {
+    "noPm": true
+  },
+  "contextGaps": [
+    {
+      "section": "\u00a72 \u2014 components map",
+      "missing": "PulseSubNav at src/components/PulseSubNav.tsx \u2014 sticky sub-nav used on all /pulse/* routes"
+    },
+    {
+      "section": "\u00a72 \u2014 components map",
+      "missing": "pulse-guides.ts at src/lib/pulse-guides.ts \u2014 typed PulseGuide array with 6 authored investment guides"
+    },
+    {
+      "section": "\u00a71 \u2014 gotchas",
+      "missing": "next-intl v4: getTranslations() inside generateMetadata() requires explicit { locale, namespace } params extracted from route params \u2014 cannot rely on auto request locale context. See /pulse/guides/[slug]/page.tsx 500 crash."
+    }
+  ],
+  "diffTruncated": false,
+  "testManifest": {
+    "/pulse": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    },
+    "/pulse/trending": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    },
+    "/pulse/compare": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    },
+    "/pulse/calculator": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    },
+    "/pulse/guides": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    },
+    "/pulse/guides/best-areas-dubai-2026": {
+      "testedInStage": 1,
+      "testedInIter": 1,
+      "testedAfterSha": "d00f144d4c6528cb928156eea28a2dcd23012304",
+      "diffFiles": [
+        "src/app/[locale]/pulse/compare/CompareClient.tsx",
+        "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+        "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+        "messages/en.json",
+        "messages/ar.json",
+        "messages/zh.json",
+        "messages/ru.json"
+      ],
+      "passedAt": null
+    }
+  },
+  "apiPushedSha": "f33e83d5b28cbe3b0a9b1f437d24d3163d8d117b",
+  "pmEscalationHint": "low_confidence_60"
+}

@@ -1,0 +1,1338 @@
+{
+  "forwardEdges": {
+    "src/middleware.ts": [
+      "src/i18n/routing.ts"
+    ],
+    "src/navigation.ts": [
+      "src/i18n/routing.ts"
+    ],
+    "src/context/SubscriptionsContext.tsx": [
+      "src/hooks/use-toast.ts"
+    ],
+    "src/context/FavoritesContext.tsx": [
+      "src/hooks/use-toast.ts"
+    ],
+    "src/app/sitemap.ts": [
+      "src/lib/api.ts"
+    ],
+    "src/app/providers.tsx": [
+      "src/components/ui/tooltip.tsx",
+      "src/components/ui/toaster.tsx",
+      "src/components/ui/sonner.tsx"
+    ],
+    "src/components/Navbar.tsx": [
+      "src/navigation.ts",
+      "src/components/UserMenu.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/components/NotificationsBell.tsx"
+    ],
+    "src/components/NewsSection.tsx": [
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/components/NewsletterStrip.tsx": [
+      "src/hooks/use-toast.ts"
+    ],
+    "src/components/HomePageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/HeroSection.tsx",
+      "src/components/AIPulseBanner.tsx"
+    ],
+    "src/components/SavedPropertiesSection.tsx": [
+      "src/components/PropertyActions.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/components/MarketDashboard.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/components/FeaturedPropertiesServer.tsx": [
+      "src/lib/property-types.ts"
+    ],
+    "src/components/FeaturedProperties.tsx": [
+      "src/lib/api.ts",
+      "src/lib/formatPrice.ts"
+    ],
+    "src/components/SubscribeButton.tsx": [
+      "src/hooks/useProjectSubscriptions.ts"
+    ],
+    "src/components/OffPlanSection.tsx": [
+      "src/lib/api.ts",
+      "src/lib/formatPrice.ts"
+    ],
+    "src/components/PropertyMatcher.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/components/OffPlanSectionClient.tsx": [
+      "src/components/PropertyActions.tsx",
+      "src/lib/formatPrice.ts"
+    ],
+    "src/components/Breadcrumbs.tsx": [
+      "src/components/JsonLd.tsx"
+    ],
+    "src/components/FAQSection.tsx": [
+      "src/components/JsonLd.tsx"
+    ],
+    "src/components/FavoritesDrawer.tsx": [
+      "src/navigation.ts",
+      "src/components/PropertyActions.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/components/AIChatWidget.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/components/NotificationsBell.tsx": [
+      "src/navigation.ts",
+      "src/hooks/useProjectSubscriptions.ts",
+      "src/hooks/use-toast.ts"
+    ],
+    "src/components/TestimonialsSection.tsx": [
+      "src/components/JsonLd.tsx"
+    ],
+    "src/components/ProjectSubscribeSection.tsx": [
+      "src/hooks/useProjectSubscriptions.ts"
+    ],
+    "src/components/OffPlanSectionServer.tsx": [
+      "src/components/ImageWithFallback.tsx",
+      "src/lib/formatPrice.ts"
+    ],
+    "src/components/HeroSection.tsx": [
+      "src/lib/api.ts",
+      "src/components/ParticleConstellation.tsx",
+      "src/components/TypewriterHeadline.tsx",
+      "src/lib/property-types.ts",
+      "src/lib/home-smart-search.ts"
+    ],
+    "src/components/InquirySection.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/components/PropertyComparison.tsx": [
+      "src/components/PropertyActions.tsx",
+      "src/lib/api.ts",
+      "src/lib/property-types.ts"
+    ],
+    "src/components/PropertyActions.tsx": [
+      "src/context/FavoritesContext.tsx",
+      "src/context/CompareContext.tsx",
+      "src/context/FavoritesContext.tsx",
+      "src/context/CompareContext.tsx"
+    ],
+    "src/components/CommunityInfoDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/ImageWithFallback.tsx",
+      "src/lib/formatPrice.ts",
+      "src/lib/communityScraper.ts"
+    ],
+    "src/components/FeaturedPropertiesClient.tsx": [
+      "src/lib/formatPrice.ts",
+      "src/components/ImageWithFallback.tsx",
+      "src/components/PropertyActions.tsx"
+    ],
+    "src/hooks/use-toast.ts": [
+      "src/components/ui/toast.tsx"
+    ],
+    "src/hooks/useProjectSubscriptions.ts": [
+      "src/context/SubscriptionsContext.tsx",
+      "src/context/SubscriptionsContext.tsx"
+    ],
+    "src/lib/email.ts": [
+      "src/lib/mailer.ts",
+      "src/lib/mailer.ts"
+    ],
+    "src/lib/rateLimit.ts": [
+      "src/lib/mongodb.ts"
+    ],
+    "src/lib/admin-auth.ts": [
+      "src/lib/auth.ts"
+    ],
+    "src/lib/home-smart-search.ts": [
+      "src/lib/property-types.ts"
+    ],
+    "src/lib/auth.ts": [
+      "src/lib/mongodb.ts",
+      "src/lib/rateLimit.ts"
+    ],
+    "src/i18n/request.ts": [
+      "src/i18n/routing.ts"
+    ],
+    "src/components/ui/toaster.tsx": [
+      "src/hooks/use-toast.ts",
+      "src/components/ui/toast.tsx"
+    ],
+    "src/components/ui/tooltip.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/ui/use-toast.ts": [
+      "src/hooks/use-toast.ts"
+    ],
+    "src/components/ui/toast.tsx": [
+      "src/lib/utils.ts"
+    ],
+    "src/components/valuation/ValuationPage.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/lib/api.ts",
+      "src/components/valuation/shared/SharedValuationPage.jsx"
+    ],
+    "src/components/valuation/index.ts": [
+      "src/components/valuation/ValuationPage.tsx"
+    ],
+    "src/components/valuation/shared/SharedValuationPage.jsx": [
+      "src/lib/property-types.ts",
+      "src/data/buildings.json"
+    ],
+    "src/app/[locale]/layout.tsx": [
+      "src/i18n/routing.ts",
+      "src/components/JsonLd.tsx",
+      "src/components/FavoritesDrawer.tsx",
+      "src/context/FavoritesContext.tsx",
+      "src/context/CompareContext.tsx",
+      "src/context/SubscriptionsContext.tsx",
+      "src/app/globals.css",
+      "src/app/providers.tsx"
+    ],
+    "src/app/[locale]/page.tsx": [
+      "src/components/HomePageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/construction-updates/ConstructionUpdatesClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx"
+    ],
+    "src/app/rent/ListingsPageClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/components/PropertyComparison.tsx",
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/app/communities/CommunitiesPageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx",
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/app/pulse/PulsePageClient.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/app/search/SearchPageClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/lib/formatPrice.ts",
+      "src/components/PropertyComparison.tsx",
+      "src/lib/property-types.ts"
+    ],
+    "src/app/news/NewsPageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx",
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/app/off-plan/OffPlanPageClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/lib/formatPrice.ts"
+    ],
+    "src/app/developers/DevelopersPageClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx"
+    ],
+    "src/app/developers/[slug]/DeveloperDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/lib/formatPrice.ts",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx"
+    ],
+    "src/app/developers/[slug]/page.tsx": [
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/valuation/stream/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/list-your-property/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts",
+      "src/lib/mailer.ts"
+    ],
+    "src/app/api/favorites/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/api/profile/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/api/project-subscriptions/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts",
+      "src/lib/email.ts",
+      "src/lib/rateLimit.ts"
+    ],
+    "src/app/api/community-info/route.ts": [
+      "src/lib/mongodb.ts",
+      "src/lib/communityScraper.ts"
+    ],
+    "src/app/api/notifications/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/api/project-subscriptions/unsubscribe/route.ts": [
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/api/valuation/config/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/valuation/stream/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/valuation/parse/route.ts": [
+      "src/lib/property-types.ts"
+    ],
+    "src/app/api/valuation/document/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/valuation/report/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/valuation/unlock/route.ts": [
+      "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/favorites/hydrate/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/mongodb.ts",
+      "src/lib/api.ts"
+    ],
+    "src/app/api/auth/signup/route.ts": [
+      "src/lib/mongodb.ts",
+      "src/lib/mailer.ts",
+      "src/lib/rateLimit.ts"
+    ],
+    "src/app/api/auth/verify-email/route.ts": [
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/api/auth/[...nextauth]/route.ts": [
+      "src/lib/auth.ts"
+    ],
+    "src/app/api/auth/forgot-password/route.ts": [
+      "src/lib/mongodb.ts",
+      "src/lib/mailer.ts",
+      "src/lib/rateLimit.ts"
+    ],
+    "src/app/api/auth/reset-password/route.ts": [
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/news/[slug]/NewsDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/app/project/[slug]/ProjectDetailClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/AIChatWidget.tsx",
+      "src/components/FloorPlanPlaceholder.tsx",
+      "src/components/ImageWithFallback.tsx",
+      "src/lib/property-types.ts",
+      "src/components/PropertyActions.tsx",
+      "src/components/SubscribeButton.tsx",
+      "src/components/ProjectSubscribeSection.tsx",
+      "src/components/UnitImagePlaceholder.tsx"
+    ],
+    "src/app/admin/project-import/page.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/app/admin/projects/page.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/app/communities/[slug]/CommunityDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/lib/formatPrice.ts",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/ImageWithFallback.tsx"
+    ],
+    "src/app/communities/[slug]/CommunityMergedDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/ImageWithFallback.tsx",
+      "src/lib/formatPrice.ts",
+      "src/lib/communityScraper.ts"
+    ],
+    "src/app/property/[slug]/PropertyDetailClient.tsx": [
+      "src/lib/api.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/lib/property-types.ts",
+      "src/components/PropertyActions.tsx",
+      "src/components/PropertyComparison.tsx",
+      "src/hooks/use-toast.ts"
+    ],
+    "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx"
+    ],
+    "src/app/[locale]/contact/ContactPageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/contact/page.tsx": [
+      "src/app/[locale]/contact/ContactPageClient.tsx"
+    ],
+    "src/app/[locale]/construction-updates/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/construction-updates/page.tsx": [
+      "src/app/construction-updates/ConstructionUpdatesClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/rent/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/rent/page.tsx": [
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx"
+    ],
+    "src/app/[locale]/privacy-policy/page.tsx": [
+      "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx"
+    ],
+    "src/app/[locale]/communities/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/communities/page.tsx": [
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/lib/api.ts",
+      "src/lib/mongodb.ts"
+    ],
+    "src/app/[locale]/list-your-property/page.tsx": [
+      "src/lib/auth.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/ListPropertyForm.tsx"
+    ],
+    "src/app/[locale]/admin/page.tsx": [
+      "src/lib/auth.ts",
+      "src/lib/admin-auth.ts",
+      "src/lib/mongodb.ts",
+      "src/app/[locale]/admin/AdminHeader.tsx"
+    ],
+    "src/app/[locale]/pulse/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/about/AboutPageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx"
+    ],
+    "src/app/[locale]/about/page.tsx": [
+      "src/app/[locale]/about/AboutPageClient.tsx"
+    ],
+    "src/app/[locale]/search/page.tsx": [
+      "src/app/search/SearchPageClient.tsx"
+    ],
+    "src/app/[locale]/signin/page.tsx": [
+      "src/app/[locale]/signin/SignInClient.tsx"
+    ],
+    "src/app/[locale]/profile/page.tsx": [
+      "src/lib/auth.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/app/[locale]/profile/ProfileClient.tsx": [
+      "src/navigation.ts",
+      "src/components/PropertyActions.tsx",
+      "src/hooks/useProjectSubscriptions.ts",
+      "src/components/SavedPropertiesSection.tsx",
+      "src/lib/api.ts",
+      "src/hooks/use-toast.ts"
+    ],
+    "src/app/[locale]/news/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/news/page.tsx": [
+      "src/app/news/NewsPageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/off-plan/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/off-plan/page.tsx": [
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/forgot-password/page.tsx": [
+      "src/app/[locale]/forgot-password/ForgotPasswordClient.tsx"
+    ],
+    "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/Breadcrumbs.tsx"
+    ],
+    "src/app/[locale]/terms-of-service/page.tsx": [
+      "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx"
+    ],
+    "src/app/[locale]/reset-password/page.tsx": [
+      "src/app/[locale]/reset-password/ResetPasswordClient.tsx"
+    ],
+    "src/app/[locale]/valuation/page.tsx": [
+      "src/components/valuation/index.ts"
+    ],
+    "src/app/[locale]/buy/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/buy/page.tsx": [
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/services/ServicesPageClient.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/AIChatWidget.tsx",
+      "src/components/Breadcrumbs.tsx"
+    ],
+    "src/app/[locale]/services/page.tsx": [
+      "src/app/[locale]/services/ServicesPageClient.tsx"
+    ],
+    "src/app/[locale]/developers/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/developers/page.tsx": [
+      "src/app/developers/DevelopersPageClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/developers/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/developers/[slug]/page.tsx": [
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/news/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/news/[slug]/page.tsx": [
+      "src/app/news/[slug]/NewsDetailClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/project/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/project/[slug]/page.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/lib/api.ts",
+      "src/lib/applyTranslation.ts"
+    ],
+    "src/app/[locale]/pulse/calculator/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/pulse/guides/GuidesClient.tsx": [
+      "src/lib/pulse-guides.ts"
+    ],
+    "src/app/[locale]/pulse/guides/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/[locale]/pulse/guides/GuidesClient.tsx"
+    ],
+    "src/app/[locale]/pulse/compare/CompareClient.tsx": [
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/pulse/compare/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/[locale]/pulse/compare/CompareClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/pulse/trending/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/[locale]/pulse/trending/TrendingClient.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx": [
+      "src/lib/pulse-guides.ts"
+    ],
+    "src/app/[locale]/pulse/guides/[slug]/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseSubNav.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx",
+      "src/lib/pulse-guides.ts"
+    ],
+    "src/app/[locale]/admin/inquiries/page.tsx": [
+      "src/lib/mongodb.ts",
+      "src/lib/admin-auth.ts",
+      "src/lib/auth.ts",
+      "src/app/[locale]/admin/AdminHeader.tsx",
+      "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx"
+    ],
+    "src/app/[locale]/admin/subscriptions/page.tsx": [
+      "src/lib/mongodb.ts",
+      "src/lib/admin-auth.ts",
+      "src/lib/auth.ts",
+      "src/app/[locale]/admin/AdminHeader.tsx",
+      "src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx"
+    ],
+    "src/app/[locale]/admin/[token]/page.tsx": [
+      "src/lib/admin-auth.ts"
+    ],
+    "src/app/[locale]/admin/submissions/page.tsx": [
+      "src/lib/mongodb.ts",
+      "src/lib/admin-auth.ts",
+      "src/lib/auth.ts",
+      "src/app/[locale]/admin/AdminHeader.tsx",
+      "src/app/[locale]/admin/submissions/SubmissionsMobileList.tsx"
+    ],
+    "src/app/[locale]/communities/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/communities/[slug]/page.tsx": [
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx",
+      "src/lib/api.ts",
+      "src/lib/mongodb.ts",
+      "src/lib/communityScraper.ts"
+    ],
+    "src/app/[locale]/property/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/property/[slug]/page.tsx": [
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/lib/api.ts",
+      "src/lib/property-types.ts"
+    ],
+    "src/app/[locale]/construction-updates/[slug]/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/construction-updates/[slug]/page.tsx": [
+      "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx",
+      "src/lib/api.ts"
+    ]
+  },
+  "reverseEdges": {
+    "src/i18n/routing.ts": [
+      "src/middleware.ts",
+      "src/navigation.ts",
+      "src/i18n/request.ts",
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/hooks/use-toast.ts": [
+      "src/context/SubscriptionsContext.tsx",
+      "src/context/FavoritesContext.tsx",
+      "src/components/NewsletterStrip.tsx",
+      "src/components/NotificationsBell.tsx",
+      "src/components/ui/toaster.tsx",
+      "src/components/ui/use-toast.ts",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/lib/api.ts": [
+      "src/app/sitemap.ts",
+      "src/components/SavedPropertiesSection.tsx",
+      "src/components/MarketDashboard.tsx",
+      "src/components/FeaturedProperties.tsx",
+      "src/components/OffPlanSection.tsx",
+      "src/components/PropertyMatcher.tsx",
+      "src/components/FavoritesDrawer.tsx",
+      "src/components/AIChatWidget.tsx",
+      "src/components/HeroSection.tsx",
+      "src/components/InquirySection.tsx",
+      "src/components/PropertyComparison.tsx",
+      "src/components/valuation/ValuationPage.tsx",
+      "src/app/[locale]/page.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/developers/DevelopersPageClient.tsx",
+      "src/app/developers/[slug]/page.tsx",
+      "src/app/api/favorites/hydrate/route.ts",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/admin/project-import/page.tsx",
+      "src/app/admin/projects/page.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/[locale]/contact/ContactPageClient.tsx",
+      "src/app/[locale]/construction-updates/page.tsx",
+      "src/app/[locale]/rent/page.tsx",
+      "src/app/[locale]/communities/page.tsx",
+      "src/app/[locale]/pulse/page.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx",
+      "src/app/[locale]/news/page.tsx",
+      "src/app/[locale]/off-plan/page.tsx",
+      "src/app/[locale]/buy/page.tsx",
+      "src/app/[locale]/developers/page.tsx",
+      "src/app/[locale]/developers/[slug]/page.tsx",
+      "src/app/[locale]/news/[slug]/page.tsx",
+      "src/app/[locale]/project/[slug]/page.tsx",
+      "src/app/[locale]/pulse/calculator/page.tsx",
+      "src/app/[locale]/pulse/compare/CompareClient.tsx",
+      "src/app/[locale]/pulse/compare/page.tsx",
+      "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/communities/[slug]/page.tsx",
+      "src/app/[locale]/property/[slug]/page.tsx",
+      "src/app/[locale]/construction-updates/[slug]/page.tsx"
+    ],
+    "src/components/ui/tooltip.tsx": [
+      "src/app/providers.tsx"
+    ],
+    "src/components/ui/toaster.tsx": [
+      "src/app/providers.tsx"
+    ],
+    "src/components/ui/sonner.tsx": [
+      "src/app/providers.tsx"
+    ],
+    "src/navigation.ts": [
+      "src/components/Navbar.tsx",
+      "src/components/FavoritesDrawer.tsx",
+      "src/components/NotificationsBell.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/components/UserMenu.tsx": [
+      "src/components/Navbar.tsx"
+    ],
+    "src/components/PropertyActions.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/SavedPropertiesSection.tsx",
+      "src/components/OffPlanSectionClient.tsx",
+      "src/components/FavoritesDrawer.tsx",
+      "src/components/PropertyComparison.tsx",
+      "src/components/FeaturedPropertiesClient.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/components/NotificationsBell.tsx": [
+      "src/components/Navbar.tsx"
+    ],
+    "src/components/ImageWithFallback.tsx": [
+      "src/components/NewsSection.tsx",
+      "src/components/OffPlanSectionServer.tsx",
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/components/FeaturedPropertiesClient.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/news/NewsPageClient.tsx",
+      "src/app/news/[slug]/NewsDetailClient.tsx",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx"
+    ],
+    "src/components/Navbar.tsx": [
+      "src/components/HomePageClient.tsx",
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/components/valuation/ValuationPage.tsx",
+      "src/app/construction-updates/ConstructionUpdatesClient.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/news/NewsPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/developers/DevelopersPageClient.tsx",
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/app/news/[slug]/NewsDetailClient.tsx",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx",
+      "src/app/[locale]/contact/ContactPageClient.tsx",
+      "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx",
+      "src/app/[locale]/list-your-property/page.tsx",
+      "src/app/[locale]/pulse/page.tsx",
+      "src/app/[locale]/about/AboutPageClient.tsx",
+      "src/app/[locale]/profile/page.tsx",
+      "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
+      "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/pulse/calculator/page.tsx",
+      "src/app/[locale]/pulse/guides/page.tsx",
+      "src/app/[locale]/pulse/compare/page.tsx",
+      "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/components/HeroSection.tsx": [
+      "src/components/HomePageClient.tsx"
+    ],
+    "src/components/AIPulseBanner.tsx": [
+      "src/components/HomePageClient.tsx"
+    ],
+    "src/lib/property-types.ts": [
+      "src/components/FeaturedPropertiesServer.tsx",
+      "src/components/HeroSection.tsx",
+      "src/components/PropertyComparison.tsx",
+      "src/lib/home-smart-search.ts",
+      "src/components/valuation/shared/SharedValuationPage.jsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/api/valuation/parse/route.ts",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/[locale]/property/[slug]/page.tsx"
+    ],
+    "src/lib/formatPrice.ts": [
+      "src/components/FeaturedProperties.tsx",
+      "src/components/OffPlanSection.tsx",
+      "src/components/OffPlanSectionClient.tsx",
+      "src/components/OffPlanSectionServer.tsx",
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/components/FeaturedPropertiesClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx"
+    ],
+    "src/hooks/useProjectSubscriptions.ts": [
+      "src/components/SubscribeButton.tsx",
+      "src/components/NotificationsBell.tsx",
+      "src/components/ProjectSubscribeSection.tsx",
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/components/JsonLd.tsx": [
+      "src/components/Breadcrumbs.tsx",
+      "src/components/FAQSection.tsx",
+      "src/components/TestimonialsSection.tsx",
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/components/ParticleConstellation.tsx": [
+      "src/components/HeroSection.tsx"
+    ],
+    "src/components/TypewriterHeadline.tsx": [
+      "src/components/HeroSection.tsx"
+    ],
+    "src/lib/home-smart-search.ts": [
+      "src/components/HeroSection.tsx"
+    ],
+    "src/context/FavoritesContext.tsx": [
+      "src/components/PropertyActions.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/context/CompareContext.tsx": [
+      "src/components/PropertyActions.tsx",
+      "src/components/PropertyActions.tsx",
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/components/Footer.tsx": [
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/components/valuation/ValuationPage.tsx",
+      "src/app/construction-updates/ConstructionUpdatesClient.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/news/NewsPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/developers/DevelopersPageClient.tsx",
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/app/news/[slug]/NewsDetailClient.tsx",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx",
+      "src/app/[locale]/contact/ContactPageClient.tsx",
+      "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx",
+      "src/app/[locale]/list-your-property/page.tsx",
+      "src/app/[locale]/pulse/page.tsx",
+      "src/app/[locale]/about/AboutPageClient.tsx",
+      "src/app/[locale]/profile/page.tsx",
+      "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
+      "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/pulse/calculator/page.tsx",
+      "src/app/[locale]/pulse/guides/page.tsx",
+      "src/app/[locale]/pulse/compare/page.tsx",
+      "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/components/WhatsAppButton.tsx": [
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/app/construction-updates/ConstructionUpdatesClient.tsx",
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/news/NewsPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/developers/DevelopersPageClient.tsx",
+      "src/app/developers/[slug]/DeveloperDetailClient.tsx",
+      "src/app/news/[slug]/NewsDetailClient.tsx",
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityDetailClient.tsx",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx",
+      "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx",
+      "src/app/[locale]/contact/ContactPageClient.tsx",
+      "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx",
+      "src/app/[locale]/list-your-property/page.tsx",
+      "src/app/[locale]/pulse/page.tsx",
+      "src/app/[locale]/about/AboutPageClient.tsx",
+      "src/app/[locale]/profile/page.tsx",
+      "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
+      "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/pulse/calculator/page.tsx",
+      "src/app/[locale]/pulse/guides/page.tsx",
+      "src/app/[locale]/pulse/compare/page.tsx",
+      "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/lib/communityScraper.ts": [
+      "src/components/CommunityInfoDetailClient.tsx",
+      "src/app/api/community-info/route.ts",
+      "src/app/communities/[slug]/CommunityMergedDetailClient.tsx",
+      "src/app/[locale]/communities/[slug]/page.tsx"
+    ],
+    "src/components/ui/toast.tsx": [
+      "src/hooks/use-toast.ts",
+      "src/components/ui/toaster.tsx"
+    ],
+    "src/context/SubscriptionsContext.tsx": [
+      "src/hooks/useProjectSubscriptions.ts",
+      "src/hooks/useProjectSubscriptions.ts",
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/lib/mailer.ts": [
+      "src/lib/email.ts",
+      "src/lib/email.ts",
+      "src/app/api/list-your-property/route.ts",
+      "src/app/api/auth/signup/route.ts",
+      "src/app/api/auth/forgot-password/route.ts"
+    ],
+    "src/lib/mongodb.ts": [
+      "src/lib/rateLimit.ts",
+      "src/lib/auth.ts",
+      "src/app/api/list-your-property/route.ts",
+      "src/app/api/favorites/route.ts",
+      "src/app/api/profile/route.ts",
+      "src/app/api/project-subscriptions/route.ts",
+      "src/app/api/community-info/route.ts",
+      "src/app/api/notifications/route.ts",
+      "src/app/api/project-subscriptions/unsubscribe/route.ts",
+      "src/app/api/favorites/hydrate/route.ts",
+      "src/app/api/auth/signup/route.ts",
+      "src/app/api/auth/verify-email/route.ts",
+      "src/app/api/auth/forgot-password/route.ts",
+      "src/app/api/auth/reset-password/route.ts",
+      "src/app/[locale]/communities/page.tsx",
+      "src/app/[locale]/admin/page.tsx",
+      "src/app/[locale]/admin/inquiries/page.tsx",
+      "src/app/[locale]/admin/subscriptions/page.tsx",
+      "src/app/[locale]/admin/submissions/page.tsx",
+      "src/app/[locale]/communities/[slug]/page.tsx"
+    ],
+    "src/lib/auth.ts": [
+      "src/lib/admin-auth.ts",
+      "src/app/api/list-your-property/route.ts",
+      "src/app/api/favorites/route.ts",
+      "src/app/api/profile/route.ts",
+      "src/app/api/project-subscriptions/route.ts",
+      "src/app/api/notifications/route.ts",
+      "src/app/api/favorites/hydrate/route.ts",
+      "src/app/api/auth/[...nextauth]/route.ts",
+      "src/app/[locale]/list-your-property/page.tsx",
+      "src/app/[locale]/admin/page.tsx",
+      "src/app/[locale]/profile/page.tsx",
+      "src/app/[locale]/admin/inquiries/page.tsx",
+      "src/app/[locale]/admin/subscriptions/page.tsx",
+      "src/app/[locale]/admin/submissions/page.tsx"
+    ],
+    "src/lib/rateLimit.ts": [
+      "src/lib/auth.ts",
+      "src/app/api/project-subscriptions/route.ts",
+      "src/app/api/auth/signup/route.ts",
+      "src/app/api/auth/forgot-password/route.ts"
+    ],
+    "src/lib/utils.ts": [
+      "src/components/ui/tooltip.tsx",
+      "src/components/ui/toast.tsx"
+    ],
+    "src/components/valuation/shared/SharedValuationPage.jsx": [
+      "src/components/valuation/ValuationPage.tsx"
+    ],
+    "src/components/valuation/ValuationPage.tsx": [
+      "src/components/valuation/index.ts"
+    ],
+    "src/data/buildings.json": [
+      "src/components/valuation/shared/SharedValuationPage.jsx"
+    ],
+    "src/components/FavoritesDrawer.tsx": [
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/app/globals.css": [
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/app/providers.tsx": [
+      "src/app/[locale]/layout.tsx"
+    ],
+    "src/components/HomePageClient.tsx": [
+      "src/app/[locale]/page.tsx"
+    ],
+    "src/components/PropertyComparison.tsx": [
+      "src/app/rent/ListingsPageClient.tsx",
+      "src/app/search/SearchPageClient.tsx",
+      "src/app/property/[slug]/PropertyDetailClient.tsx"
+    ],
+    "src/components/Breadcrumbs.tsx": [
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/news/NewsPageClient.tsx",
+      "src/app/off-plan/OffPlanPageClient.tsx",
+      "src/app/[locale]/contact/ContactPageClient.tsx",
+      "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx",
+      "src/app/[locale]/about/AboutPageClient.tsx",
+      "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
+      "src/app/[locale]/services/ServicesPageClient.tsx"
+    ],
+    "src/app/developers/[slug]/DeveloperDetailClient.tsx": [
+      "src/app/developers/[slug]/page.tsx",
+      "src/app/[locale]/developers/[slug]/page.tsx"
+    ],
+    "src/lib/valuation-api.ts": [
+      "src/app/valuation/stream/route.ts",
+      "src/app/api/valuation/config/route.ts",
+      "src/app/api/valuation/stream/route.ts",
+      "src/app/api/valuation/document/route.ts",
+      "src/app/api/valuation/report/route.ts",
+      "src/app/api/valuation/unlock/route.ts"
+    ],
+    "src/lib/email.ts": [
+      "src/app/api/project-subscriptions/route.ts"
+    ],
+    "src/components/AIChatWidget.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx",
+      "src/app/[locale]/services/ServicesPageClient.tsx"
+    ],
+    "src/components/FloorPlanPlaceholder.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx"
+    ],
+    "src/components/SubscribeButton.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx"
+    ],
+    "src/components/ProjectSubscribeSection.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx"
+    ],
+    "src/components/UnitImagePlaceholder.tsx": [
+      "src/app/project/[slug]/ProjectDetailClient.tsx"
+    ],
+    "src/app/[locale]/contact/ContactPageClient.tsx": [
+      "src/app/[locale]/contact/page.tsx"
+    ],
+    "src/components/SkeletonCard.tsx": [
+      "src/app/[locale]/construction-updates/loading.tsx",
+      "src/app/[locale]/rent/loading.tsx",
+      "src/app/[locale]/communities/loading.tsx",
+      "src/app/[locale]/news/loading.tsx",
+      "src/app/[locale]/off-plan/loading.tsx",
+      "src/app/[locale]/buy/loading.tsx",
+      "src/app/[locale]/developers/loading.tsx",
+      "src/app/[locale]/developers/[slug]/loading.tsx",
+      "src/app/[locale]/news/[slug]/loading.tsx",
+      "src/app/[locale]/project/[slug]/loading.tsx",
+      "src/app/[locale]/communities/[slug]/loading.tsx",
+      "src/app/[locale]/property/[slug]/loading.tsx",
+      "src/app/[locale]/construction-updates/[slug]/loading.tsx"
+    ],
+    "src/app/construction-updates/ConstructionUpdatesClient.tsx": [
+      "src/app/[locale]/construction-updates/page.tsx"
+    ],
+    "src/app/rent/ListingsPageClient.tsx": [
+      "src/app/[locale]/rent/page.tsx",
+      "src/app/[locale]/buy/page.tsx"
+    ],
+    "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx": [
+      "src/app/[locale]/privacy-policy/page.tsx"
+    ],
+    "src/app/communities/CommunitiesPageClient.tsx": [
+      "src/app/[locale]/communities/page.tsx"
+    ],
+    "src/components/ListPropertyForm.tsx": [
+      "src/app/[locale]/list-your-property/page.tsx"
+    ],
+    "src/lib/admin-auth.ts": [
+      "src/app/[locale]/admin/page.tsx",
+      "src/app/[locale]/admin/inquiries/page.tsx",
+      "src/app/[locale]/admin/subscriptions/page.tsx",
+      "src/app/[locale]/admin/[token]/page.tsx",
+      "src/app/[locale]/admin/submissions/page.tsx"
+    ],
+    "src/app/[locale]/admin/AdminHeader.tsx": [
+      "src/app/[locale]/admin/page.tsx",
+      "src/app/[locale]/admin/inquiries/page.tsx",
+      "src/app/[locale]/admin/subscriptions/page.tsx",
+      "src/app/[locale]/admin/submissions/page.tsx"
+    ],
+    "src/components/PulseSubNav.tsx": [
+      "src/app/[locale]/pulse/page.tsx",
+      "src/app/[locale]/pulse/calculator/page.tsx",
+      "src/app/[locale]/pulse/guides/page.tsx",
+      "src/app/[locale]/pulse/compare/page.tsx",
+      "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/app/pulse/PulsePageClient.tsx": [
+      "src/app/[locale]/pulse/page.tsx"
+    ],
+    "src/app/[locale]/about/AboutPageClient.tsx": [
+      "src/app/[locale]/about/page.tsx"
+    ],
+    "src/app/search/SearchPageClient.tsx": [
+      "src/app/[locale]/search/page.tsx"
+    ],
+    "src/app/[locale]/signin/SignInClient.tsx": [
+      "src/app/[locale]/signin/page.tsx"
+    ],
+    "src/app/[locale]/profile/ProfileClient.tsx": [
+      "src/app/[locale]/profile/page.tsx"
+    ],
+    "src/components/SavedPropertiesSection.tsx": [
+      "src/app/[locale]/profile/ProfileClient.tsx"
+    ],
+    "src/app/news/NewsPageClient.tsx": [
+      "src/app/[locale]/news/page.tsx"
+    ],
+    "src/app/off-plan/OffPlanPageClient.tsx": [
+      "src/app/[locale]/off-plan/page.tsx"
+    ],
+    "src/app/[locale]/forgot-password/ForgotPasswordClient.tsx": [
+      "src/app/[locale]/forgot-password/page.tsx"
+    ],
+    "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx": [
+      "src/app/[locale]/terms-of-service/page.tsx"
+    ],
+    "src/app/[locale]/reset-password/ResetPasswordClient.tsx": [
+      "src/app/[locale]/reset-password/page.tsx"
+    ],
+    "src/components/valuation/index.ts": [
+      "src/app/[locale]/valuation/page.tsx"
+    ],
+    "src/app/[locale]/services/ServicesPageClient.tsx": [
+      "src/app/[locale]/services/page.tsx"
+    ],
+    "src/app/developers/DevelopersPageClient.tsx": [
+      "src/app/[locale]/developers/page.tsx"
+    ],
+    "src/app/news/[slug]/NewsDetailClient.tsx": [
+      "src/app/[locale]/news/[slug]/page.tsx"
+    ],
+    "src/app/project/[slug]/ProjectDetailClient.tsx": [
+      "src/app/[locale]/project/[slug]/page.tsx"
+    ],
+    "src/lib/applyTranslation.ts": [
+      "src/app/[locale]/project/[slug]/page.tsx"
+    ],
+    "src/app/[locale]/pulse/calculator/CalculatorClient.tsx": [
+      "src/app/[locale]/pulse/calculator/page.tsx"
+    ],
+    "src/lib/pulse-guides.ts": [
+      "src/app/[locale]/pulse/guides/GuidesClient.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx",
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/app/[locale]/pulse/guides/GuidesClient.tsx": [
+      "src/app/[locale]/pulse/guides/page.tsx"
+    ],
+    "src/app/[locale]/pulse/compare/CompareClient.tsx": [
+      "src/app/[locale]/pulse/compare/page.tsx"
+    ],
+    "src/app/[locale]/pulse/trending/TrendingClient.tsx": [
+      "src/app/[locale]/pulse/trending/page.tsx"
+    ],
+    "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx": [
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": [
+      "src/app/[locale]/admin/inquiries/page.tsx"
+    ],
+    "src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx": [
+      "src/app/[locale]/admin/subscriptions/page.tsx"
+    ],
+    "src/app/[locale]/admin/submissions/SubmissionsMobileList.tsx": [
+      "src/app/[locale]/admin/submissions/page.tsx"
+    ],
+    "src/app/communities/[slug]/CommunityDetailClient.tsx": [
+      "src/app/[locale]/communities/[slug]/page.tsx"
+    ],
+    "src/components/CommunityInfoDetailClient.tsx": [
+      "src/app/[locale]/communities/[slug]/page.tsx"
+    ],
+    "src/app/communities/[slug]/CommunityMergedDetailClient.tsx": [
+      "src/app/[locale]/communities/[slug]/page.tsx"
+    ],
+    "src/app/property/[slug]/PropertyDetailClient.tsx": [
+      "src/app/[locale]/property/[slug]/page.tsx"
+    ],
+    "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx": [
+      "src/app/[locale]/construction-updates/[slug]/page.tsx"
+    ]
+  },
+  "surfaceMap": {
+    "src/app/robots.ts": "/robots.ts",
+    "src/app/sitemap.ts": "/sitemap.ts",
+    "src/app/layout.tsx": "/layout.tsx",
+    "src/app/not-found.tsx": "/not-found.tsx",
+    "src/app/providers.tsx": "/providers.tsx",
+    "src/app/[locale]/layout.tsx": "/layout.tsx",
+    "src/app/[locale]/error.tsx": "/error.tsx",
+    "src/app/[locale]/page.tsx": "/page.tsx",
+    "src/app/construction-updates/ConstructionUpdatesClient.tsx": "/construction-updates/ConstructionUpdatesClient.tsx",
+    "src/app/rent/ListingsPageClient.tsx": "/rent/ListingsPageClient.tsx",
+    "src/app/communities/CommunitiesPageClient.tsx": "/communities/CommunitiesPageClient.tsx",
+    "src/app/pulse/PulsePageClient.tsx": "/pulse/PulsePageClient.tsx",
+    "src/app/search/SearchPageClient.tsx": "/search/SearchPageClient.tsx",
+    "src/app/news/NewsPageClient.tsx": "/news/NewsPageClient.tsx",
+    "src/app/off-plan/OffPlanPageClient.tsx": "/off-plan/OffPlanPageClient.tsx",
+    "src/app/developers/DevelopersPageClient.tsx": "/developers/DevelopersPageClient.tsx",
+    "src/app/developers/[slug]/DeveloperDetailClient.tsx": "/developers/[slug]/DeveloperDetailClient.tsx",
+    "src/app/developers/[slug]/page.tsx": "/developers/[slug]",
+    "src/app/valuation/stream/route.ts": "/valuation/stream",
+    "src/app/api/list-your-property/route.ts": "/api/list-your-property",
+    "src/app/api/favorites/route.ts": "/api/favorites",
+    "src/app/api/profile/route.ts": "/api/profile",
+    "src/app/api/project-subscriptions/route.ts": "/api/project-subscriptions",
+    "src/app/api/community-info/route.ts": "/api/community-info",
+    "src/app/api/notifications/route.ts": "/api/notifications",
+    "src/app/api/project-subscriptions/unsubscribe/route.ts": "/api/project-subscriptions/unsubscribe",
+    "src/app/api/valuation/config/route.ts": "/api/valuation/config",
+    "src/app/api/valuation/stream/route.ts": "/api/valuation/stream",
+    "src/app/api/valuation/parse/route.ts": "/api/valuation/parse",
+    "src/app/api/valuation/document/route.ts": "/api/valuation/document",
+    "src/app/api/valuation/report/route.ts": "/api/valuation/report",
+    "src/app/api/valuation/unlock/route.ts": "/api/valuation/unlock",
+    "src/app/api/admin/signout/route.ts": "/api/admin/signout",
+    "src/app/api/admin/session/route.ts": "/api/admin/session",
+    "src/app/api/favorites/hydrate/route.ts": "/api/favorites/hydrate",
+    "src/app/api/auth/signup/route.ts": "/api/auth/signup",
+    "src/app/api/auth/verify-email/route.ts": "/api/auth/verify-email",
+    "src/app/api/auth/[...nextauth]/route.ts": "/api/auth/[...nextauth]",
+    "src/app/api/auth/forgot-password/route.ts": "/api/auth/forgot-password",
+    "src/app/api/auth/reset-password/route.ts": "/api/auth/reset-password",
+    "src/app/api/test/auth-seed/route.ts": "/api/test/auth-seed",
+    "src/app/news/[slug]/NewsDetailClient.tsx": "/news/[slug]/NewsDetailClient.tsx",
+    "src/app/project/[slug]/ProjectDetailClient.tsx": "/project/[slug]/ProjectDetailClient.tsx",
+    "src/app/admin/project-import/page.tsx": "/admin/project-import",
+    "src/app/admin/projects/page.tsx": "/admin/projects",
+    "src/app/communities/[slug]/CommunityDetailClient.tsx": "/communities/[slug]/CommunityDetailClient.tsx",
+    "src/app/communities/[slug]/CommunityMergedDetailClient.tsx": "/communities/[slug]/CommunityMergedDetailClient.tsx",
+    "src/app/property/[slug]/PropertyDetailClient.tsx": "/property/[slug]/PropertyDetailClient.tsx",
+    "src/app/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx": "/construction-updates/[slug]/ConstructionUpdateDetailClient.tsx",
+    "src/app/[locale]/contact/ContactPageClient.tsx": "/contact/ContactPageClient.tsx",
+    "src/app/[locale]/contact/page.tsx": "/contact",
+    "src/app/[locale]/construction-updates/loading.tsx": "/construction-updates/loading.tsx",
+    "src/app/[locale]/construction-updates/page.tsx": "/construction-updates",
+    "src/app/[locale]/rent/loading.tsx": "/rent/loading.tsx",
+    "src/app/[locale]/rent/page.tsx": "/rent",
+    "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx": "/privacy-policy/PrivacyPolicyClient.tsx",
+    "src/app/[locale]/privacy-policy/page.tsx": "/privacy-policy",
+    "src/app/[locale]/communities/loading.tsx": "/communities/loading.tsx",
+    "src/app/[locale]/communities/page.tsx": "/communities",
+    "src/app/[locale]/list-your-property/page.tsx": "/list-your-property",
+    "src/app/[locale]/admin/AdminHeader.tsx": "/admin/AdminHeader.tsx",
+    "src/app/[locale]/admin/page.tsx": "/admin",
+    "src/app/[locale]/pulse/page.tsx": "/pulse",
+    "src/app/[locale]/about/AboutPageClient.tsx": "/about/AboutPageClient.tsx",
+    "src/app/[locale]/about/page.tsx": "/about",
+    "src/app/[locale]/search/page.tsx": "/search",
+    "src/app/[locale]/signin/SignInClient.tsx": "/signin/SignInClient.tsx",
+    "src/app/[locale]/signin/page.tsx": "/signin",
+    "src/app/[locale]/profile/page.tsx": "/profile",
+    "src/app/[locale]/profile/ProfileClient.tsx": "/profile/ProfileClient.tsx",
+    "src/app/[locale]/news/loading.tsx": "/news/loading.tsx",
+    "src/app/[locale]/news/page.tsx": "/news",
+    "src/app/[locale]/off-plan/loading.tsx": "/off-plan/loading.tsx",
+    "src/app/[locale]/off-plan/page.tsx": "/off-plan",
+    "src/app/[locale]/forgot-password/ForgotPasswordClient.tsx": "/forgot-password/ForgotPasswordClient.tsx",
+    "src/app/[locale]/forgot-password/page.tsx": "/forgot-password",
+    "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx": "/terms-of-service/TermsOfServiceClient.tsx",
+    "src/app/[locale]/terms-of-service/page.tsx": "/terms-of-service",
+    "src/app/[locale]/reset-password/ResetPasswordClient.tsx": "/reset-password/ResetPasswordClient.tsx",
+    "src/app/[locale]/reset-password/page.tsx": "/reset-password",
+    "src/app/[locale]/valuation/page.tsx": "/valuation",
+    "src/app/[locale]/buy/loading.tsx": "/buy/loading.tsx",
+    "src/app/[locale]/buy/page.tsx": "/buy",
+    "src/app/[locale]/services/ServicesPageClient.tsx": "/services/ServicesPageClient.tsx",
+    "src/app/[locale]/services/page.tsx": "/services",
+    "src/app/[locale]/developers/loading.tsx": "/developers/loading.tsx",
+    "src/app/[locale]/developers/page.tsx": "/developers",
+    "src/app/[locale]/developers/[slug]/loading.tsx": "/developers/[slug]/loading.tsx",
+    "src/app/[locale]/developers/[slug]/page.tsx": "/developers/[slug]",
+    "src/app/[locale]/news/[slug]/loading.tsx": "/news/[slug]/loading.tsx",
+    "src/app/[locale]/news/[slug]/page.tsx": "/news/[slug]",
+    "src/app/[locale]/project/[slug]/loading.tsx": "/project/[slug]/loading.tsx",
+    "src/app/[locale]/project/[slug]/page.tsx": "/project/[slug]",
+    "src/app/[locale]/pulse/calculator/CalculatorClient.tsx": "/pulse/calculator/CalculatorClient.tsx",
+    "src/app/[locale]/pulse/calculator/page.tsx": "/pulse/calculator",
+    "src/app/[locale]/pulse/guides/GuidesClient.tsx": "/pulse/guides/GuidesClient.tsx",
+    "src/app/[locale]/pulse/guides/page.tsx": "/pulse/guides",
+    "src/app/[locale]/pulse/compare/CompareClient.tsx": "/pulse/compare/CompareClient.tsx",
+    "src/app/[locale]/pulse/compare/page.tsx": "/pulse/compare",
+    "src/app/[locale]/pulse/trending/TrendingClient.tsx": "/pulse/trending/TrendingClient.tsx",
+    "src/app/[locale]/pulse/trending/page.tsx": "/pulse/trending",
+    "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx": "/pulse/guides/[slug]/GuideDetailClient.tsx",
+    "src/app/[locale]/pulse/guides/[slug]/page.tsx": "/pulse/guides/[slug]",
+    "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": "/admin/inquiries/InquiriesMobileList.tsx",
+    "src/app/[locale]/admin/inquiries/page.tsx": "/admin/inquiries",
+    "src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx": "/admin/subscriptions/SubscriptionsMobileList.tsx",
+    "src/app/[locale]/admin/subscriptions/page.tsx": "/admin/subscriptions",
+    "src/app/[locale]/admin/[token]/page.tsx": "/admin/[token]",
+    "src/app/[locale]/admin/submissions/SubmissionsMobileList.tsx": "/admin/submissions/SubmissionsMobileList.tsx",
+    "src/app/[locale]/admin/submissions/page.tsx": "/admin/submissions",
+    "src/app/[locale]/communities/[slug]/loading.tsx": "/communities/[slug]/loading.tsx",
+    "src/app/[locale]/communities/[slug]/page.tsx": "/communities/[slug]",
+    "src/app/[locale]/property/[slug]/loading.tsx": "/property/[slug]/loading.tsx",
+    "src/app/[locale]/property/[slug]/page.tsx": "/property/[slug]",
+    "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
+    "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
+  },
+  "builtAt": "2026-04-28T08:17:39.764452+00:00",
+  "fileCount": 237
+}
