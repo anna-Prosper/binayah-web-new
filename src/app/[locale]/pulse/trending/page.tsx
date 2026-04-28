@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import PulseSubNav from "@/components/PulseSubNav";
+import PulseEmirateNav from "@/components/PulseEmirateNav";
 import TrendingClient from "./TrendingClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
@@ -31,7 +31,7 @@ export default async function TrendingPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <PulseSubNav />
+      <PulseEmirateNav />
       <TrendingClient marketData={marketData} projects={projects} />
       <Footer />
       <WhatsAppButton />

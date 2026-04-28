@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import PulseSubNav from "@/components/PulseSubNav";
+import PulseEmirateNav from "@/components/PulseEmirateNav";
 import PulsePageClient from "@/app/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
@@ -34,7 +34,7 @@ export default async function PulsePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <PulseSubNav />
+      <PulseEmirateNav />
 
       {/* Hero */}
       <section

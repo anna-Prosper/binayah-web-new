@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import PulseSubNav from "@/components/PulseSubNav";
+import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
 import { PULSE_GUIDES, findGuide } from "@/lib/pulse-guides";
 import { getTranslations } from "next-intl/server";
@@ -39,7 +39,7 @@ export default async function GuideDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <PulseSubNav />
+      <PulseEmirateNav />
       <GuideDetailClient guide={guide} />
       <Footer />
       <WhatsAppButton />

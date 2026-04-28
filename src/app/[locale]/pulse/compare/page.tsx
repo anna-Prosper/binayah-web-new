@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import PulseSubNav from "@/components/PulseSubNav";
+import PulseEmirateNav from "@/components/PulseEmirateNav";
 import CompareClient from "./CompareClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
@@ -33,7 +33,7 @@ export default async function ComparePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <PulseSubNav />
+      <PulseEmirateNav />
       <CompareClient
         marketStats={marketStats}
         marketData={marketData}

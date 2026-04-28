@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import PulseSubNav from "@/components/PulseSubNav";
+import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuidesClient from "./GuidesClient";
 
 export const revalidate = 86400; // guides are static content
@@ -15,7 +15,7 @@ export default function GuidesPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <PulseSubNav />
+      <PulseEmirateNav />
       <GuidesClient />
       <Footer />
       <WhatsAppButton />
