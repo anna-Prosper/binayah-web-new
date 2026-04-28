@@ -75,3 +75,11 @@
 {"ts":"2026-04-28T08:17:53Z","stage":2,"iter":1,"fromPhase":"qa","toPhase":"qa_regression","role":"qa","passed":true}
 {"ts":"2026-04-28T08:33:48Z","stage":2,"iter":1,"fromPhase":"qa_live","toPhase":"pm","role":"qa_live","passed":true}
 {"ts":"2026-04-28T08:34:44Z","stage":2,"iter":1,"fromPhase":"pm","toPhase":"done","role":"pm_lite","passed":true}
+{"ts":"2026-04-28T09:37:03Z","stage":1,"iter":1,"fromPhase":"pm","toPhase":"dev","role":"pm","passed":null}
+{"ts":"2026-04-28T09:42:12Z","stage":1,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-04-28T09:43:41Z","stage":1,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
+{"ts":"2026-04-28T09:47:58Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"done","role":"qa","passed":true}
+{"ts":"2026-04-28T09:59:36Z","stage":2,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-04-28T10:01:24Z","stage":2,"iter":1,"fromPhase":"review","toPhase":"dev_review_fix","role":"reviewer","passed":false}
+{"ts":"2026-04-28T10:03:12Z","stage":2,"iter":1,"fromPhase":"dev_review_fix","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-04-28T10:04:09Z","stage":2,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
