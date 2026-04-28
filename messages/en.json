@@ -307,7 +307,11 @@
     "explore": "Explore",
     "dubaiUAE": "Dubai, UAE",
     "bathrooms": "Bathrooms",
-    "developer": "Developer"
+    "developer": "Developer",
+    "buildingInfoFound": "We found a building: {name}",
+    "buildingMarketData": "Building Data",
+    "buildingAreaDescription": "{building} is located in {area}. Explore area guides, pricing, and available properties.",
+    "viewAreaGuide": "View {area} guide"
   },
   "offPlan": {
     "title": "Off-Plan Properties",
@@ -1116,7 +1120,17 @@
     "tooltipTotalValue": "Total Value",
     "tooltipAvgPrice": "Avg Price",
     "tooltipAvgPpsf": "AED/sqft",
-    "ytdLabel": "YTD 2026"
+    "ytdLabel": "YTD 2026",
+    "buildingsLabel": "DLD Data",
+    "topBuildingsTitle": "Top Buildings",
+    "topBuildingsItalic": "by Transaction Volume",
+    "colBuilding": "Building",
+    "colArea": "Area",
+    "colSales12mo": "Sales (12mo)",
+    "colUnitsRera": "Units (RERA)",
+    "colAedSqftBuilding": "AED/sqft",
+    "buildingsUpdatingTitle": "Building data is updating",
+    "buildingsUpdatingSub": "Data will be available shortly — please check back soon."
   },
   "services": {
     "heroLabel": "What We Offer",
@@ -1762,7 +1776,21 @@
     "investScore": "Investment Score",
     "totalProjects": "Total Projects",
     "offPlanProjects": "Off-Plan Projects",
-    "communitiesActive": "Communities Active"
+    "communitiesActive": "Communities Active",
+    "modeBuildings": "Buildings",
+    "searchBuildings": "Search buildings...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "selectOneMoreBuilding": "Select one more building to start comparing.",
+    "buildingEmptyTitle": "Pick buildings to compare",
+    "buildingEmptySub": "Search for a building name above to begin.",
+    "bldSales12mo": "Sales (12mo)",
+    "bldRents": "Rents (lease contracts)",
+    "bldUnits": "Units (RERA inventory)",
+    "bldAvgPpsf": "Avg AED/sqft",
+    "bldAvgDeal": "Avg deal size",
+    "bldMasterProject": "Master project",
+    "bldArea": "Area"
   },
   "pulseCalculator": {
     "label": "Investment Tool",

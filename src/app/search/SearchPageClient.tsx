@@ -114,6 +114,7 @@ function SearchContent() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
   const [communityLoading, setCommunityLoading] = useState(false);
+  const [dldBuilding, setDldBuilding] = useState<{ name: string; area: string; areaSlug: string } | null>(null);
 
   const budgetOptions = intent === "rent" ? rentBudgets : buyBudgets;
 
@@ -201,20 +202,45 @@ function SearchContent() {
   useEffect(() => {
     if (!loading && totalResults === 0 && q.trim().length >= 3) {
       setCommunityInfo(null);
+      setDldBuilding(null);
       setCommunityLoading(true);
       fetch(`/api/community-info?q=${encodeURIComponent(q.trim())}`)
         .then((r) => r.ok ? r.json() : null)
-        .then((data) => {
+        .then(async (data) => {
           if (data?.exists && data?.data?.name && data?.data?.slug) {
             setCommunityInfo({ name: data.data.name, slug: data.data.slug, heroImage: data.data.heroImage, description: data.data.description });
+            setDldBuilding(null);
           } else {
             setCommunityInfo(null);
+            // Fallback: try DLD buildings search
+            try {
+              const bRes = await fetch(apiUrl(`/api/dld/buildings?q=${encodeURIComponent(q.trim())}&limit=1`));
+              if (bRes.ok) {
+                const bData = await bRes.json() as { results?: Array<{ name: string; area: string; slug: string }> };
+                const hit = bData.results?.[0];
+                if (hit?.name && hit?.area) {
+                  // Convert area name to slug: lowercase, spaces to dashes
+                  const areaSlug = hit.area.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                  setDldBuilding({ name: hit.name, area: hit.area, areaSlug });
+                } else {
+                  setDldBuilding(null);
+                }
+              } else {
+                setDldBuilding(null);
+              }
+            } catch {
+              setDldBuilding(null);
+            }
           }
         })
-        .catch(() => setCommunityInfo(null))
+        .catch(() => {
+          setCommunityInfo(null);
+          setDldBuilding(null);
+        })
         .finally(() => setCommunityLoading(false));
     } else {
       setCommunityInfo(null);
+      setDldBuilding(null);
       setCommunityLoading(false);
     }
   }, [loading, totalResults, q]);
@@ -349,6 +375,52 @@ function SearchContent() {
                       <div className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-semibold transition-all group-hover:shadow-lg group-hover:brightness-110" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <MapPin className="h-4 w-4" />
                         {t("viewCommunityGuide", { name: communityInfo.name })}
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
+
+              {!communityLoading && !communityInfo && dldBuilding && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-full max-w-sm"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-4 text-center">
+                    {t("buildingInfoFound", { name: dldBuilding.name })}
+                  </p>
+                  <Link href={`/communities/${dldBuilding.areaSlug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
+                    <div className="relative overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
+                      <Image
+                        src="/assets/amenities-placeholder.webp"
+                        alt={dldBuilding.name}
+                        fill
+                        sizes="384px"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 25%, rgba(11,61,46,0.55) 65%, rgba(11,61,46,0.97) 100%)" }} />
+                      <div className="absolute top-3 left-3">
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-primary/90 backdrop-blur-sm text-white uppercase tracking-wider shadow-sm">
+                          {t("buildingMarketData")}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-5 left-5 right-5">
+                        <p className="flex items-center gap-1.5 text-white/60 text-xs mb-1.5">
+                          <MapPin className="h-3 w-3" /> {dldBuilding.area}
+                        </p>
+                        <h3 className="text-white font-extrabold text-2xl leading-tight tracking-tight">{dldBuilding.name}</h3>
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                        {t("buildingAreaDescription", { building: dldBuilding.name, area: dldBuilding.area })}
+                      </p>
+                      <div className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-white text-sm font-semibold transition-all group-hover:shadow-lg group-hover:brightness-110" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <MapPin className="h-4 w-4" />
+                        {t("viewAreaGuide", { area: dldBuilding.area })}
                         <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>

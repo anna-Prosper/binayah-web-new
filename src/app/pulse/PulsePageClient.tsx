@@ -12,9 +12,10 @@ import {
 import {
   TrendingUp, BarChart3, Building2, ArrowUpDown, ChevronUp,
   ChevronDown, DollarSign, Percent, Activity, Star, Newspaper,
-  Globe, RefreshCw, ExternalLink, Zap, BarChart2, Users,
+  Globe, RefreshCw, ExternalLink, Zap, BarChart2, Users, Landmark,
 } from "lucide-react";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -56,6 +57,17 @@ interface MarketData {
 
 type SortKey = keyof Pick<CommunityStats, "area" | "avgPricePerSqft" | "rentalYield" | "totalListings" | "investmentScore" | "avgSalePrice">;
 type ChartView = "price" | "yield" | "volume" | "bedroom";
+
+interface DldBuilding {
+  _id: string;
+  slug: string;
+  name: string;
+  area: string;
+  masterProject?: string;
+  sales: number;
+  units: number;
+  avgPpsf: number;
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -254,6 +266,16 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
   const [chartView, setChartView] = useState<ChartView>("price");
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [aedAmount, setAedAmount] = useState("1000000");
+  const [topBuildings, setTopBuildings] = useState<DldBuilding[]>([]);
+
+  useEffect(() => {
+    fetch(apiUrl("/api/dld/buildings?sortBy=sales&order=desc&limit=10"))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: DldBuilding[] }) => {
+        setTopBuildings(Array.isArray(data.results) ? data.results : []);
+      })
+      .catch(() => setTopBuildings([]));
+  }, []);
 
   const matrix = marketStats?.communityMatrix ?? [];
 
@@ -900,6 +922,109 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
                           </tbody>
                         </table>
                       </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* ── Top Buildings ──────────────────────────────────── */}
+                {topBuildings.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.12 }}
+                  >
+                    <SectionHeader
+                      label={t("buildingsLabel")}
+                      title={t("topBuildingsTitle")}
+                      titleItalic={t("topBuildingsItalic")}
+                    />
+                    <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/30">
+                              {[
+                                t("colRank"),
+                                t("colBuilding"),
+                                t("colArea"),
+                                t("colSales12mo"),
+                                t("colUnitsRera"),
+                                t("colAedSqftBuilding"),
+                              ].map((col, i) => (
+                                <th
+                                  key={i}
+                                  className={`px-4 py-3 text-xs font-semibold text-muted-foreground ${i === 0 ? "w-12 text-center" : "text-left"}`}
+                                >
+                                  {col}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {topBuildings.map((b, i) => (
+                              <tr
+                                key={b.slug}
+                                className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
+                              >
+                                <td className="px-4 py-3 text-center">
+                                  {i === 0 ? (
+                                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-accent text-white text-xs font-bold">1</span>
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground font-medium">{i + 1}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 font-medium text-foreground">
+                                  <div className="flex items-center gap-2">
+                                    <Landmark className="h-3.5 w-3.5 text-muted-foreground/40 flex-shrink-0" />
+                                    {b.name}
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">{b.area ?? "—"}</td>
+                                <td className="px-4 py-3">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full rounded-full bg-primary"
+                                        style={{ width: `${Math.min((b.sales / (topBuildings[0]?.sales || 1)) * 100, 100)}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-foreground font-semibold text-xs">{(b.sales ?? 0).toLocaleString()}</span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">{(b.units ?? 0) > 0 ? (b.units).toLocaleString() : <span className="text-muted-foreground/40">—</span>}</td>
+                                <td className="px-4 py-3">
+                                  {(b.avgPpsf ?? 0) > 0 ? (
+                                    <span className="font-semibold text-foreground text-xs">{b.avgPpsf.toLocaleString()}</span>
+                                  ) : (
+                                    <span className="text-muted-foreground/40">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {topBuildings.length === 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.12 }}
+                  >
+                    <SectionHeader
+                      label={t("buildingsLabel")}
+                      title={t("topBuildingsTitle")}
+                      titleItalic={t("topBuildingsItalic")}
+                    />
+                    <div className="bg-muted/20 border border-border/30 rounded-2xl p-8 text-center">
+                      <Landmark className="h-10 w-10 text-muted-foreground/25 mx-auto mb-3" />
+                      <p className="text-base font-semibold text-muted-foreground">{t("buildingsUpdatingTitle")}</p>
+                      <p className="text-sm text-muted-foreground/60 mt-1 max-w-sm mx-auto">{t("buildingsUpdatingSub")}</p>
                     </div>
                   </motion.section>
                 )}

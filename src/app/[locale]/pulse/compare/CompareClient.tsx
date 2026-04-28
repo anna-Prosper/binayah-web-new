@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, BarChart2, Building2, TrendingUp, Star } from "lucide-react";
+import { Search, X, BarChart2, Building2, TrendingUp, Star, Landmark } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -49,7 +50,21 @@ interface Developer {
   communities?: string[];
 }
 
-type Mode = "communities" | "developers";
+interface DldBuilding {
+  _id: string;
+  slug: string;
+  name: string;
+  area: string;
+  masterProject?: string;
+  city?: string;
+  sales: number;
+  rents: number;
+  units: number;
+  avgPpsf: number;
+  avgPrice: number;
+}
+
+type Mode = "communities" | "developers" | "buildings";
 
 // ── Preset slugs — canonical area labels from the market-stats endpoint
 // (verified from /binayah-api/src/routes/market-stats.ts).
@@ -93,6 +108,17 @@ function highlight(vals: (number | null)[], i: number): boolean {
   return vals[i] === max && max > 0;
 }
 
+// ── Debounce hook ──────────────────────────────────────────────────────────
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
 // ── Main Component ─────────────────────────────────────────────────────────
 
 export default function CompareClient({
@@ -112,7 +138,32 @@ export default function CompareClient({
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string[]>([]);
 
-  // ── Search results ────────────────────────────────────────────────────────
+  // ── Buildings mode state ──────────────────────────────────────────────────
+  const [buildingSearchResults, setBuildingSearchResults] = useState<DldBuilding[]>([]);
+  const [buildingSearchLoading, setBuildingSearchLoading] = useState(false);
+  // selectedBuildings stores full building objects for the comparison table
+  const [selectedBuildings, setSelectedBuildings] = useState<DldBuilding[]>([]);
+
+  const debouncedQuery = useDebounce(query, 300);
+
+  // ── Fetch buildings when query changes in buildings mode ──────────────────
+  useEffect(() => {
+    if (mode !== "buildings") return;
+    if (!debouncedQuery.trim()) {
+      setBuildingSearchResults([]);
+      return;
+    }
+    setBuildingSearchLoading(true);
+    fetch(apiUrl(`/api/dld/buildings?q=${encodeURIComponent(debouncedQuery.trim())}&limit=10`))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: DldBuilding[] }) => {
+        setBuildingSearchResults(Array.isArray(data.results) ? data.results : []);
+      })
+      .catch(() => setBuildingSearchResults([]))
+      .finally(() => setBuildingSearchLoading(false));
+  }, [debouncedQuery, mode]);
+
+  // ── Search results (communities/developers) ───────────────────────────────
   const communityList: Community[] = useMemo(() => {
     const raw = Array.isArray(communities) ? communities : [];
     return raw;
@@ -126,10 +177,11 @@ export default function CompareClient({
   const items = mode === "communities" ? communityList : developerList;
 
   const filtered = useMemo(() => {
+    if (mode === "buildings") return [];
     if (!query.trim()) return items.slice(0, 12);
     const q = query.toLowerCase();
     return items.filter((item) => item.name.toLowerCase().includes(q)).slice(0, 12);
-  }, [items, query]);
+  }, [items, query, mode]);
 
   const addItem = (name: string) => {
     if (selected.length >= 3) return;
@@ -141,9 +193,30 @@ export default function CompareClient({
     setSelected(selected.filter((s) => s !== name));
   };
 
+  const addBuilding = (building: DldBuilding) => {
+    if (selectedBuildings.length >= 3) return;
+    if (!selectedBuildings.find((b) => b.slug === building.slug)) {
+      setSelectedBuildings([...selectedBuildings, building]);
+    }
+    setQuery("");
+    setBuildingSearchResults([]);
+  };
+
+  const removeBuilding = (slug: string) => {
+    setSelectedBuildings(selectedBuildings.filter((b) => b.slug !== slug));
+  };
+
   const applyPreset = (preset: typeof PRESETS[0]) => {
     if (mode !== "communities") setMode("communities");
     setSelected(preset.slugs.slice(0, 3));
+  };
+
+  const handleModeChange = (m: Mode) => {
+    setMode(m);
+    setSelected([]);
+    setQuery("");
+    setBuildingSearchResults([]);
+    if (m !== "buildings") setSelectedBuildings([]);
   };
 
   // ── Community comparison data ─────────────────────────────────────────────
@@ -173,6 +246,10 @@ export default function CompareClient({
   };
 
   const showTable = selected.length >= 2;
+  const showBuildingsTable = selectedBuildings.length >= 2;
+
+  const selectedCount = mode === "buildings" ? selectedBuildings.length : selected.length;
+  const maxReached = selectedCount >= 3;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
@@ -194,11 +271,11 @@ export default function CompareClient({
       </motion.div>
 
       {/* ── Mode Toggle ─────────────────────────────────────────── */}
-      <div className="flex gap-2 mb-6">
-        {(["communities", "developers"] as Mode[]).map((m) => (
+      <div className="flex gap-2 mb-6 flex-wrap">
+        {(["communities", "developers", "buildings"] as Mode[]).map((m) => (
           <button
             key={m}
-            onClick={() => { setMode(m); setSelected([]); setQuery(""); }}
+            onClick={() => handleModeChange(m)}
             className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all min-h-[40px] ${
               mode === m
                 ? "text-white shadow-sm"
@@ -208,8 +285,10 @@ export default function CompareClient({
           >
             {m === "communities" ? (
               <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" />{t("modeCommunities")}</span>
-            ) : (
+            ) : m === "developers" ? (
               <span className="flex items-center gap-1.5"><Star className="h-3.5 w-3.5" />{t("modeDevelopers")}</span>
+            ) : (
+              <span className="flex items-center gap-1.5"><Landmark className="h-3.5 w-3.5" />{t("modeBuildings")}</span>
             )}
           </button>
         ))}
@@ -222,18 +301,24 @@ export default function CompareClient({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={mode === "communities" ? t("searchCommunities") : t("searchDevelopers")}
+          placeholder={
+            mode === "communities"
+              ? t("searchCommunities")
+              : mode === "developers"
+              ? t("searchDevelopers")
+              : t("searchBuildings")
+          }
           className="w-full pl-10 pr-4 py-3 rounded-xl bg-background border border-input text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          disabled={selected.length >= 3}
+          disabled={maxReached}
         />
-        {selected.length >= 3 && (
+        {maxReached && (
           <p className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">{t("maxReached")}</p>
         )}
       </div>
 
-      {/* ── Search dropdown ─────────────────────────────────────── */}
+      {/* ── Search dropdown (communities / developers) ───────────── */}
       <AnimatePresence>
-        {query.trim() && filtered.length > 0 && (
+        {mode !== "buildings" && query.trim() && filtered.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -254,8 +339,40 @@ export default function CompareClient({
         )}
       </AnimatePresence>
 
-      {/* ── Selected chips ──────────────────────────────────────── */}
-      {selected.length > 0 && (
+      {/* ── Buildings search dropdown ─────────────────────────────── */}
+      <AnimatePresence>
+        {mode === "buildings" && query.trim() && (buildingSearchResults.length > 0 || buildingSearchLoading) && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="mb-4 bg-card border border-border/50 rounded-xl shadow-lg overflow-hidden"
+          >
+            {buildingSearchLoading && (
+              <div className="px-4 py-3 text-sm text-muted-foreground">{t("searching")}</div>
+            )}
+            {!buildingSearchLoading && buildingSearchResults.map((building) => (
+              <button
+                key={building._id}
+                onClick={() => addBuilding(building)}
+                disabled={selectedBuildings.some((b) => b.slug === building.slug)}
+                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/30 last:border-0 disabled:opacity-40"
+              >
+                <span className="font-medium">{building.name}</span>
+                {building.area && (
+                  <span className="ml-2 text-xs text-muted-foreground">{building.area}</span>
+                )}
+              </button>
+            ))}
+            {!buildingSearchLoading && buildingSearchResults.length === 0 && query.trim() && (
+              <div className="px-4 py-3 text-sm text-muted-foreground">{t("noResults")}</div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Selected chips (communities / developers) ────────────── */}
+      {mode !== "buildings" && selected.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-6">
           {selected.map((name) => (
             <span
@@ -267,6 +384,27 @@ export default function CompareClient({
                 onClick={() => removeItem(name)}
                 className="hover:text-white/60 transition-colors"
                 aria-label={`Remove ${name}`}
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* ── Selected chips (buildings) ───────────────────────────── */}
+      {mode === "buildings" && selectedBuildings.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {selectedBuildings.map((b) => (
+            <span
+              key={b.slug}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-white text-sm font-medium"
+            >
+              {b.name}
+              <button
+                onClick={() => removeBuilding(b.slug)}
+                className="hover:text-white/60 transition-colors"
+                aria-label={`Remove ${b.name}`}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -316,6 +454,29 @@ export default function CompareClient({
         </motion.div>
       )}
 
+      {/* ── Buildings mode empty / hint states ──────────────────── */}
+      {mode === "buildings" && !showBuildingsTable && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8"
+        >
+          {selectedBuildings.length === 1 && (
+            <div className="mt-0 p-4 bg-muted/30 rounded-xl border border-border/30 text-center text-sm text-muted-foreground">
+              {t("selectOneMoreBuilding")}
+            </div>
+          )}
+
+          {selectedBuildings.length === 0 && (
+            <div className="mt-0 p-8 bg-muted/20 rounded-xl border border-border/30 text-center">
+              <Landmark className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+              <p className="text-base font-semibold text-muted-foreground">{t("buildingEmptyTitle")}</p>
+              <p className="text-sm text-muted-foreground/60 mt-1">{t("buildingEmptySub")}</p>
+            </div>
+          )}
+        </motion.div>
+      )}
+
       {/* ── Comparison table ─────────────────────────────────────── */}
       <AnimatePresence>
         {showTable && mode === "communities" && (
@@ -340,6 +501,18 @@ export default function CompareClient({
             <DeveloperTable
               selected={selected}
               getData={getDeveloperData}
+              t={t}
+            />
+          </motion.div>
+        )}
+        {showBuildingsTable && mode === "buildings" && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+          >
+            <BuildingTable
+              buildings={selectedBuildings}
               t={t}
             />
           </motion.div>
@@ -457,6 +630,78 @@ function DeveloperTable({
                 const vals = rows.map((x) => x?.communities?.length ?? 0);
                 return highlight(vals, i);
               })}
+            />
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ── Building Comparison Table ──────────────────────────────────────────────
+
+function BuildingTable({
+  buildings,
+  t,
+}: {
+  buildings: DldBuilding[];
+  t: ReturnType<typeof useTranslations<"pulseCompare">>;
+}) {
+  const salesVals = buildings.map((b) => b.sales ?? 0);
+  const rentsVals = buildings.map((b) => b.rents ?? 0);
+  const unitsVals = buildings.map((b) => b.units ?? 0);
+  const ppsfVals = buildings.map((b) => b.avgPpsf ?? 0);
+  const priceVals = buildings.map((b) => b.avgPrice ?? 0);
+
+  return (
+    <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border/50 bg-muted/30">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground w-40">{t("metric")}</th>
+              {buildings.map((b) => (
+                <th key={b.slug} className="px-4 py-3 text-right text-xs font-bold text-foreground">
+                  {b.name}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <TableRow
+              label={t("bldSales12mo")}
+              values={salesVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={salesVals.map((v, i) => highlight(salesVals, i))}
+            />
+            <TableRow
+              label={t("bldRents")}
+              values={rentsVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={rentsVals.map((v, i) => highlight(rentsVals, i))}
+            />
+            <TableRow
+              label={t("bldUnits")}
+              values={unitsVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={unitsVals.map((v, i) => highlight(unitsVals, i))}
+            />
+            <TableRow
+              label={t("bldAvgPpsf")}
+              values={ppsfVals.map((v) => v > 0 ? `AED ${v.toLocaleString()}` : "—")}
+              highlights={ppsfVals.map((v, i) => highlight(ppsfVals, i))}
+            />
+            <TableRow
+              label={t("bldAvgDeal")}
+              values={priceVals.map((v) => AED(v))}
+              highlights={priceVals.map((v, i) => highlight(priceVals, i))}
+            />
+            <TableRow
+              label={t("bldMasterProject")}
+              values={buildings.map((b) => b.masterProject ?? "—")}
+              highlights={buildings.map(() => false)}
+            />
+            <TableRow
+              label={t("bldArea")}
+              values={buildings.map((b) => b.area ?? "—")}
+              highlights={buildings.map(() => false)}
             />
           </tbody>
         </table>

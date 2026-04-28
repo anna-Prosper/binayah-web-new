@@ -313,7 +313,11 @@
     "explore": "探索",
     "dubaiUAE": "迪拜，阿联酋",
     "bathrooms": "浴室",
-    "developer": "开发商"
+    "developer": "开发商",
+    "buildingInfoFound": "找到楼宇：{name}",
+    "buildingMarketData": "楼宇数据",
+    "buildingAreaDescription": "{building} 位于 {area}。浏览区域指南、价格及可售物业。",
+    "viewAreaGuide": "查看 {area} 指南"
   },
   "offPlan": {
     "title": "迪拜期房",
@@ -1122,7 +1126,17 @@
     "tooltipTotalValue": "总价值",
     "tooltipAvgPrice": "平均价格",
     "tooltipAvgPpsf": "迪拉姆/平方英尺",
-    "ytdLabel": "2026年初至今"
+    "ytdLabel": "2026年初至今",
+    "buildingsLabel": "DLD 数据",
+    "topBuildingsTitle": "热门楼宇",
+    "topBuildingsItalic": "按交易量排名",
+    "colBuilding": "楼宇",
+    "colArea": "区域",
+    "colSales12mo": "销售量（12个月）",
+    "colUnitsRera": "单元数（RERA）",
+    "colAedSqftBuilding": "迪拉姆/平方英尺",
+    "buildingsUpdatingTitle": "楼宇数据更新中",
+    "buildingsUpdatingSub": "数据即将更新，请稍后查看。"
   },
   "services": {
     "heroLabel": "服务领域",
@@ -1768,7 +1782,21 @@
     "investScore": "投资评分",
     "totalProjects": "项目总数",
     "offPlanProjects": "期房项目",
-    "communitiesActive": "活跃社区"
+    "communitiesActive": "活跃社区",
+    "modeBuildings": "楼宇",
+    "searchBuildings": "搜索楼宇...",
+    "searching": "搜索中...",
+    "noResults": "未找到结果",
+    "selectOneMoreBuilding": "再选择一栋楼宇即可开始比较。",
+    "buildingEmptyTitle": "选择楼宇进行比较",
+    "buildingEmptySub": "在上方搜索楼宇名称即可开始。",
+    "bldSales12mo": "销售量（12个月）",
+    "bldRents": "租赁合同数",
+    "bldUnits": "单元数（RERA库存）",
+    "bldAvgPpsf": "平均迪拉姆/平方英尺",
+    "bldAvgDeal": "平均成交金额",
+    "bldMasterProject": "主要项目",
+    "bldArea": "区域"
   },
   "pulseCalculator": {
     "label": "投资工具",

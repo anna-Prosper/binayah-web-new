@@ -307,7 +307,11 @@
     "explore": "استكشف",
     "dubaiUAE": "دبي، الإمارات",
     "bathrooms": "الحمامات",
-    "developer": "المطوّر"
+    "developer": "المطوّر",
+    "buildingInfoFound": "وجدنا مبنى: {name}",
+    "buildingMarketData": "بيانات المبنى",
+    "buildingAreaDescription": "{building} يقع في {area}. استكشف أدلة المناطق والأسعار والعقارات المتاحة.",
+    "viewAreaGuide": "عرض دليل {area}"
   },
   "offPlan": {
     "title": "مشاريع على الخارطة",
@@ -1116,7 +1120,17 @@
     "tooltipTotalValue": "القيمة الإجمالية",
     "tooltipAvgPrice": "متوسط السعر",
     "tooltipAvgPpsf": "درهم/قدم مربع",
-    "ytdLabel": "من بداية 2026"
+    "ytdLabel": "من بداية 2026",
+    "buildingsLabel": "بيانات دائرة الأراضي",
+    "topBuildingsTitle": "أبرز المباني",
+    "topBuildingsItalic": "حسب حجم المعاملات",
+    "colBuilding": "المبنى",
+    "colArea": "المنطقة",
+    "colSales12mo": "المبيعات (12 شهرًا)",
+    "colUnitsRera": "الوحدات (ريرا)",
+    "colAedSqftBuilding": "درهم/قدم²",
+    "buildingsUpdatingTitle": "بيانات المباني قيد التحديث",
+    "buildingsUpdatingSub": "ستتوفر البيانات قريبًا — يرجى المراجعة لاحقًا."
   },
   "services": {
     "heroLabel": "ما نقدمه",
@@ -1762,7 +1776,21 @@
     "investScore": "درجة الاستثمار",
     "totalProjects": "إجمالي المشاريع",
     "offPlanProjects": "مشاريع خارج الخطة",
-    "communitiesActive": "المجتمعات النشطة"
+    "communitiesActive": "المجتمعات النشطة",
+    "modeBuildings": "المباني",
+    "searchBuildings": "ابحث عن المباني...",
+    "searching": "جارٍ البحث...",
+    "noResults": "لا توجد نتائج",
+    "selectOneMoreBuilding": "حدد مبنى آخر لبدء المقارنة.",
+    "buildingEmptyTitle": "اختر مبانٍ للمقارنة",
+    "buildingEmptySub": "ابحث عن اسم مبنى أعلاه للبدء.",
+    "bldSales12mo": "المبيعات (12 شهرًا)",
+    "bldRents": "الإيجارات (عقود الإيجار)",
+    "bldUnits": "الوحدات (مخزون ريرا)",
+    "bldAvgPpsf": "متوسط درهم/قدم مربع",
+    "bldAvgDeal": "متوسط حجم الصفقة",
+    "bldMasterProject": "المشروع الرئيسي",
+    "bldArea": "المنطقة"
   },
   "pulseCalculator": {
     "label": "أداة الاستثمار",

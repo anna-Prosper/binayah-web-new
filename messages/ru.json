@@ -307,7 +307,11 @@
     "explore": "Подробнее",
     "dubaiUAE": "Дубай, ОАЭ",
     "bathrooms": "Ванные",
-    "developer": "Застройщик"
+    "developer": "Застройщик",
+    "buildingInfoFound": "Найдено здание: {name}",
+    "buildingMarketData": "Данные о здании",
+    "buildingAreaDescription": "{building} расположено в районе {area}. Изучите руководства по районам, цены и доступные объекты.",
+    "viewAreaGuide": "Гид по {area}"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",
@@ -1116,7 +1120,17 @@
     "tooltipTotalValue": "Общая стоимость",
     "tooltipAvgPrice": "Средняя цена",
     "tooltipAvgPpsf": "Дирхем/кв. фут",
-    "ytdLabel": "YTD 2026"
+    "ytdLabel": "YTD 2026",
+    "buildingsLabel": "Данные DLD",
+    "topBuildingsTitle": "Топ зданий",
+    "topBuildingsItalic": "по объёму сделок",
+    "colBuilding": "Здание",
+    "colArea": "Район",
+    "colSales12mo": "Продажи (12 мес.)",
+    "colUnitsRera": "Квартиры (RERA)",
+    "colAedSqftBuilding": "AED/кв.фут",
+    "buildingsUpdatingTitle": "Данные о зданиях обновляются",
+    "buildingsUpdatingSub": "Данные скоро появятся — проверьте позже."
   },
   "services": {
     "heroLabel": "Что мы предлагаем",
@@ -1762,7 +1776,21 @@
     "investScore": "Инвестиционный рейтинг",
     "totalProjects": "Всего проектов",
     "offPlanProjects": "Off-Plan проекты",
-    "communitiesActive": "Активных районов"
+    "communitiesActive": "Активных районов",
+    "modeBuildings": "Здания",
+    "searchBuildings": "Поиск зданий...",
+    "searching": "Поиск...",
+    "noResults": "Ничего не найдено",
+    "selectOneMoreBuilding": "Выберите ещё одно здание для сравнения.",
+    "buildingEmptyTitle": "Выберите здания для сравнения",
+    "buildingEmptySub": "Введите название здания выше, чтобы начать.",
+    "bldSales12mo": "Продажи (12 мес.)",
+    "bldRents": "Аренда (договоры)",
+    "bldUnits": "Квартиры (реестр RERA)",
+    "bldAvgPpsf": "Средняя цена AED/кв.фут",
+    "bldAvgDeal": "Средняя сумма сделки",
+    "bldMasterProject": "Генеральный проект",
+    "bldArea": "Район"
   },
   "pulseCalculator": {
     "label": "Инвестиционный инструмент",
