@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import FeedbackChips from "./FeedbackChips";
 
 interface Props {
   params: Promise<{ token: string; locale: string }>;
@@ -55,23 +56,19 @@ export default async function PulseUnsubscribePage({ params }: Props) {
                 </p>
               </div>
 
-              {/* Optional feedback — non-blocking */}
+              {/* Optional feedback — non-blocking, interactive chips */}
               <div className="border border-border/50 rounded-xl p-4 space-y-3">
                 <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-muted-foreground">
                   {t("unsub.feedbackLabel")}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {(["tooFrequent", "notRelevant", "foundWhatNeeded", "other"] as const).map(
-                    (key) => (
-                      <span
-                        key={key}
-                        className="px-3 py-1.5 rounded-full text-xs border border-border text-muted-foreground"
-                      >
-                        {t(`unsub.feedbackOptions.${key}`)}
-                      </span>
-                    )
-                  )}
-                </div>
+                <FeedbackChips
+                  options={[
+                    { key: "tooFrequent", label: t("unsub.feedbackOptions.tooFrequent") },
+                    { key: "notRelevant", label: t("unsub.feedbackOptions.notRelevant") },
+                    { key: "foundWhatNeeded", label: t("unsub.feedbackOptions.foundWhatNeeded") },
+                    { key: "other", label: t("unsub.feedbackOptions.other") },
+                  ]}
+                />
                 <p className="text-xs text-muted-foreground">
                   {t("unsub.feedbackNote")}
                 </p>

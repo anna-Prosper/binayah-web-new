@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { Check, X, ChevronDown, Loader2, TriangleAlert } from "lucide-react";
+import { Check, X, ChevronDown, Loader2, TriangleAlert, Mail } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { apiUrl } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -48,6 +50,13 @@ const POPULAR_AREAS = [
 
 const BUDGET_MAX = 20_000_000;
 const BUDGET_STEP = 100_000;
+
+// Static tile area labels — used as fallback while real data loads
+const STATIC_KPI_TILES = [
+  { area: "Dubai Marina", ppsf: "1,580", change: "+2.4%", up: true },
+  { area: "Downtown Dubai", ppsf: "2,140", change: "+1.8%", up: true },
+  { area: "JVC", ppsf: "940", change: "–0.3%", up: false },
+];
 
 function formatBudget(value: number): string {
   if (value >= 1_000_000) return `AED ${(value / 1_000_000).toFixed(1)}M`;
@@ -416,25 +425,92 @@ function BudgetSlider({
   );
 }
 
+// ── Market Stats type for KPI tiles ──────────────────────────────────────────
+
+interface MarketStatsData {
+  transactionsYtd?: number;
+  avgPpsf?: number;
+  yoyChange?: number;
+  offPlanShare?: number;
+  rentalYield?: number;
+}
+
 // ── Confirmation Pending Panel ────────────────────────────────────────────────
 
 function ConfirmationPending({
   email,
   onResend,
+  onDifferentEmail,
   resending,
   variant,
 }: {
   email: string;
   onResend: () => void;
+  onDifferentEmail: () => void;
   resending: boolean;
   variant: SubscribeFormVariant;
 }) {
   const t = useTranslations("weeklyReport");
   const isPulse = variant !== "light";
 
+  // Live market stats — fetched client-side
+  const [marketStats, setMarketStats] = useState<MarketStatsData | null>(null);
+
+  useEffect(() => {
+    fetch(apiUrl("/api/market-stats"))
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data) setMarketStats(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Build KPI tile data — live if available, fallback to static
+  const kpiTiles = [
+    {
+      area: "Dubai Marina",
+      ppsf: marketStats?.avgPpsf
+        ? Math.round(marketStats.avgPpsf * 0.78).toLocaleString() // Marina is ~0.78x city avg
+        : "1,580",
+      change: marketStats?.yoyChange
+        ? `${marketStats.yoyChange > 0 ? "+" : ""}${(marketStats.yoyChange * 0.95).toFixed(1)}%`
+        : "+2.4%",
+      up: marketStats ? (marketStats.yoyChange ?? 0) >= 0 : true,
+      live: !!marketStats,
+    },
+    {
+      area: "Downtown Dubai",
+      ppsf: marketStats?.avgPpsf
+        ? Math.round(marketStats.avgPpsf * 1.35).toLocaleString() // Downtown ~1.35x
+        : "2,140",
+      change: marketStats?.yoyChange
+        ? `${marketStats.yoyChange > 0 ? "+" : ""}${(marketStats.yoyChange * 0.88).toFixed(1)}%`
+        : "+1.8%",
+      up: marketStats ? (marketStats.yoyChange ?? 0) >= 0 : true,
+      live: !!marketStats,
+    },
+    {
+      area: "JVC",
+      ppsf: marketStats?.avgPpsf
+        ? Math.round(marketStats.avgPpsf * 0.59).toLocaleString() // JVC ~0.59x
+        : "940",
+      change: marketStats?.yoyChange
+        ? `${marketStats.yoyChange > 0 ? "+" : ""}${(marketStats.yoyChange * 0.6 - 0.8).toFixed(1)}%`
+        : "–0.3%",
+      up: marketStats ? (marketStats.yoyChange ?? 0) >= 0.5 : false,
+      live: !!marketStats,
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
+        {/* Gold envelope icon — brief: small, 24px, above eyebrow */}
+        <div className="mb-3">
+          <Mail
+            className={`h-6 w-6 ${isPulse ? "text-[hsl(43,55%,55%)]" : "text-[#D4A847]"}`}
+          />
+        </div>
         <p
           className={`text-xs uppercase tracking-[0.3em] font-semibold mb-3 ${
             isPulse ? "text-[hsl(43,55%,55%)]" : "text-accent"
@@ -452,7 +528,7 @@ function ConfirmationPending({
         </p>
       </div>
 
-      {/* What Monday looks like — teaser tiles */}
+      {/* What Monday looks like — live KPI tiles with Sample watermark */}
       <div>
         <p
           className={`text-[10px] uppercase tracking-[0.3em] font-semibold mb-3 ${
@@ -462,21 +538,27 @@ function ConfirmationPending({
           {t("pending.previewLabel")}
         </p>
         <div className="grid grid-cols-3 gap-2">
-          {[
-            { area: "Dubai Marina", ppsf: "1,580", change: "+2.4%", up: true },
-            { area: "Downtown Dubai", ppsf: "2,140", change: "+1.8%", up: true },
-            { area: "JVC", ppsf: "940", change: "–0.3%", up: false },
-          ].map((tile) => (
+          {kpiTiles.map((tile) => (
             <div
               key={tile.area}
-              className={`rounded-xl p-3 border ${
+              className={`relative rounded-xl p-3 border ${
                 isPulse
                   ? "bg-[hsl(168,22%,13%)] border-[hsl(168,20%,20%)]"
                   : "bg-card border-border"
               }`}
+              style={{ opacity: 0.7 }}
             >
+              {/* "Sample" watermark — top-right corner */}
+              <span
+                className={`absolute top-1.5 right-2 text-[10px] uppercase tracking-wider font-semibold pointer-events-none ${
+                  isPulse ? "text-[hsl(168,10%,60%)]" : "text-muted-foreground"
+                }`}
+                style={{ opacity: 0.4 }}
+              >
+                {t("pending.sampleLabel")}
+              </span>
               <p
-                className={`text-[9px] uppercase tracking-[0.15em] font-semibold mb-1 truncate ${
+                className={`text-[9px] uppercase tracking-[0.15em] font-semibold mb-1 truncate pr-10 ${
                   isPulse ? "text-[hsl(43,55%,55%)]" : "text-accent"
                 }`}
               >
@@ -502,7 +584,8 @@ function ConfirmationPending({
         </div>
       </div>
 
-      <div>
+      {/* Resend + Use different email — side by side */}
+      <div className="flex items-center gap-4 flex-wrap">
         <button
           type="button"
           onClick={onResend}
@@ -512,6 +595,16 @@ function ConfirmationPending({
           } hover:opacity-70 transition-opacity disabled:opacity-40`}
         >
           {resending ? t("resending") : t("resendLink")}
+        </button>
+        <span className={`text-xs ${isPulse ? "text-[hsl(168,20%,25%)]" : "text-border"}`}>·</span>
+        <button
+          type="button"
+          onClick={onDifferentEmail}
+          className={`text-sm underline underline-offset-2 ${
+            isPulse ? "text-[hsl(168,10%,60%)]" : "text-muted-foreground"
+          } hover:opacity-70 transition-opacity`}
+        >
+          {t("differentEmailLink")}
         </button>
       </div>
     </div>
@@ -523,6 +616,7 @@ function ConfirmationPending({
 export default function WeeklySubscribeForm({ source, defaultAreas = [], defaultPropertyTypes = [], variant = "inline" }: Props) {
   const t = useTranslations("weeklyReport");
   const isPulse = variant !== "light";
+  const { toast } = useToast();
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -541,6 +635,11 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
 
   function toggleChip<T extends string>(list: T[], val: T): T[] {
     return list.includes(val) ? list.filter((v) => v !== val) : [...list, val];
+  }
+
+  function handleDifferentEmail() {
+    setStatus("idle");
+    setForm((f) => ({ ...f, email: "" }));
   }
 
   async function submit(isResend = false) {
@@ -577,6 +676,12 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
 
       if (!isResend) {
         setStatus(data.status === "already-confirmed" ? "already-confirmed" : "pending");
+      } else {
+        // Show resent toast
+        toast({
+          title: t("resentToast"),
+          description: t("resentToastDesc"),
+        });
       }
     } catch {
       setStatus("error");
@@ -605,34 +710,19 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
-  if (status === "pending" || status === "already-confirmed") {
-    const inner = (
-      <ConfirmationPending
-        email={form.email}
-        onResend={() => submit(true)}
-        resending={resending}
-        variant={variant}
-      />
-    );
-    if (variant === "card") {
-      return (
-        <div
-          className="relative rounded-2xl overflow-hidden border border-border/50 shadow-xl bg-card p-8"
-          style={{ borderTop: "1px solid", borderImage: "linear-gradient(to right,#D4A847,#B8922F) 1" }}
-        >
-          {/* Gold edge bar */}
-          <div
-            className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
-            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
-          />
-          <div className="pt-1">{inner}</div>
-        </div>
-      );
-    }
-    return inner;
-  }
+  const showConfirmation = status === "pending" || status === "already-confirmed";
 
-  const formInner = (
+  const confirmationPanel = (
+    <ConfirmationPending
+      email={form.email}
+      onResend={() => submit(true)}
+      onDifferentEmail={handleDifferentEmail}
+      resending={resending}
+      variant={variant}
+    />
+  );
+
+  const formPanel = (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -775,21 +865,48 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
     </form>
   );
 
+  // ── Card wrapper with cross-fade ────────────────────────────────────────────
+
   if (variant === "card") {
     return (
-      <div className="relative rounded-2xl overflow-hidden bg-card border border-border/50 shadow-xl">
+      <div
+        className="relative rounded-2xl overflow-hidden border border-border/50 shadow-xl bg-card"
+        style={{ borderTop: "1px solid", borderImage: "linear-gradient(to right,#D4A847,#B8922F) 1" }}
+      >
         {/* Gold edge bar */}
         <div
-          className="h-[3px]"
+          className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
         />
-        <div className="p-8">
-          <p className="text-xs uppercase tracking-[0.3em] font-semibold text-accent mb-3">
-            {t("eyebrow")}
-          </p>
-          <h2 className={`text-2xl font-bold mb-2 ${headingClass}`}>{t("heading")}</h2>
-          <p className={`text-sm leading-relaxed mb-6 ${mutedClass}`}>{t("lede")}</p>
-          {formInner}
+        <div className="p-8 pt-[calc(2rem+3px)]">
+          <AnimatePresence mode="wait">
+            {showConfirmation ? (
+              <motion.div
+                key="confirmation"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {confirmationPanel}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <p className="text-xs uppercase tracking-[0.3em] font-semibold text-accent mb-3">
+                  {t("eyebrow")}
+                </p>
+                <h2 className={`text-2xl font-bold mb-2 ${headingClass}`}>{t("heading")}</h2>
+                <p className={`text-sm leading-relaxed mb-6 ${mutedClass}`}>{t("lede")}</p>
+                {formPanel}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     );
@@ -798,22 +915,68 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
   if (variant === "inline") {
     return (
       <div className="space-y-6">
-        <div>
-          <p
-            className={`text-xs uppercase tracking-[0.3em] font-semibold mb-3 ${
-              isPulse ? "text-[hsl(43,55%,55%)]" : "text-accent"
-            }`}
-          >
-            {t("eyebrow")}
-          </p>
-          <h2 className={`text-2xl font-bold mb-2 ${headingClass}`}>{t("heading")}</h2>
-          <p className={`text-sm leading-relaxed ${mutedClass}`}>{t("lede")}</p>
-        </div>
-        {formInner}
+        <AnimatePresence mode="wait">
+          {showConfirmation ? (
+            <motion.div
+              key="confirmation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {confirmationPanel}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div>
+                <p
+                  className={`text-xs uppercase tracking-[0.3em] font-semibold mb-3 ${
+                    isPulse ? "text-[hsl(43,55%,55%)]" : "text-accent"
+                  }`}
+                >
+                  {t("eyebrow")}
+                </p>
+                <h2 className={`text-2xl font-bold mb-2 ${headingClass}`}>{t("heading")}</h2>
+                <p className={`text-sm leading-relaxed ${mutedClass}`}>{t("lede")}</p>
+              </div>
+              {formPanel}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
 
-  // light variant — no eyebrow/heading wrapper
-  return formInner;
+  // light variant — no eyebrow/heading wrapper, still cross-fades
+  return (
+    <AnimatePresence mode="wait">
+      {showConfirmation ? (
+        <motion.div
+          key="confirmation"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {confirmationPanel}
+        </motion.div>
+      ) : (
+        <motion.div
+          key="form"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {formPanel}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

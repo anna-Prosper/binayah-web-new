@@ -1933,7 +1933,8 @@
       "eyebrow": "CHECK YOUR INBOX",
       "heading": "We sent a confirmation link to {email}",
       "body": "Click it within 24 hours to start receiving Monday's report.",
-      "previewLabel": "WHAT MONDAY LOOKS LIKE"
+      "previewLabel": "WHAT MONDAY LOOKS LIKE",
+      "sampleLabel": "Sample"
     },
     "confirm": {
       "eyebrow": "YOU'RE ON THE LIST",
@@ -1945,7 +1946,8 @@
       "expiredEyebrow": "LINK EXPIRED",
       "expiredHeading": "This link's older than 24 hours",
       "expiredBody": "Tokens expire to keep your subscription secure. Resubscribe and we'll send a fresh one.",
-      "expiredCta": "Resubscribe"
+      "expiredCta": "Resubscribe",
+      "managePrefs": "Manage preferences"
     },
     "unsub": {
       "eyebrow": "YOU'RE UNSUBSCRIBED",
@@ -1967,7 +1969,7 @@
     },
     "account": {
       "pageTitle": "Market reports",
-      "eyebrow": "YOUR DISPATCH",
+      "eyebrow": "ACCOUNT",
       "heading": "Market reports",
       "lede": "Your weekly Dubai dispatch — tailor it any time.",
       "editLabel": "EDIT PREFERENCES",
@@ -1991,8 +1993,14 @@
       "unsubModalBody": "You'll receive no further emails. You can resubscribe any time.",
       "cancelButton": "Keep my subscription",
       "unsubConfirm": "Unsubscribe",
-      "unsubLoading": "Unsubscribing..."
+      "unsubLoading": "Unsubscribing...",
+      "confirmedSince": "Confirmed {date}",
+      "saveButton": "Save",
+      "areasEditHint": "Remove areas you no longer need. Re-subscribe to add new ones."
     },
-    "perSqft": "/sqft"
+    "perSqft": "/sqft",
+    "differentEmailLink": "Use a different email",
+    "resentToast": "Resent",
+    "resentToastDesc": "Check spam if it still doesn’t show."
   }
 }

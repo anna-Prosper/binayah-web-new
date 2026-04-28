@@ -1,8 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import PDFDocument from "pdfkit";
 import { serverApiUrl } from "@/lib/api";
+import * as fs from "fs";
+import * as path from "path";
 
 export const runtime = "nodejs";
+
+/**
+ * Pre-register all PDFKit standard fonts from the real node_modules path.
+ * Next.js webpack rewrites __dirname to "/ROOT" which breaks pdfkit's internal
+ * font resolution. Reading the .afm files directly from process.cwd() sidesteps
+ * that entirely. Vercel ships node_modules so this works in prod.
+ */
+function registerStandardFonts(doc: InstanceType<typeof PDFDocument>) {
+  const dataDir = path.join(process.cwd(), "node_modules", "pdfkit", "js", "data");
+  const fonts: Record<string, string> = {
+    Helvetica: "Helvetica.afm",
+    "Helvetica-Bold": "Helvetica-Bold.afm",
+    "Helvetica-Oblique": "Helvetica-Oblique.afm",
+    "Helvetica-BoldOblique": "Helvetica-BoldOblique.afm",
+  };
+  for (const [name, file] of Object.entries(fonts)) {
+    try {
+      const afmPath = path.join(dataDir, file);
+      if (fs.existsSync(afmPath)) {
+        doc.registerFont(name, afmPath);
+      }
+    } catch {
+      // If registration fails, pdfkit falls back to its own resolution — non-fatal
+    }
+  }
+}
 
 interface MarketStats {
   transactionsYtd?: number;
@@ -60,7 +88,12 @@ export async function GET(req: NextRequest) {
     const doc = new PDFDocument({
       size: "A4",
       margins: { top: 60, bottom: 60, left: 56, right: 56 },
+      // Suppress pdfkit's own font-path resolution so our registerFont calls take precedence
+      font: "Helvetica",
     });
+
+    // Register fonts before any drawing
+    registerStandardFonts(doc);
 
     doc.on("data", (chunk: Buffer) => chunks.push(chunk));
     doc.on("end", resolve);

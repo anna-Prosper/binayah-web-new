@@ -103,14 +103,22 @@ export default async function PulseConfirmPage({ params }: Props) {
                   {t("confirm.footer")}
                 </p>
 
-                <Link
-                  href="/pulse"
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                >
-                  <Calendar className="h-4 w-4" />
-                  {t("confirm.cta")}
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href="/pulse"
+                    className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                  >
+                    <Calendar className="h-4 w-4" />
+                    {t("confirm.cta")}
+                  </Link>
+                  <Link
+                    href="/account/market-reports"
+                    className="flex items-center justify-center gap-2 flex-1 py-3 rounded-xl text-sm font-semibold border border-[#D4A847] text-[#D4A847] hover:bg-[#D4A847]/10 transition-colors"
+                  >
+                    {t("confirm.managePrefs")}
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (

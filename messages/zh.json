@@ -1939,7 +1939,8 @@
       "eyebrow": "请查收邮件",
       "heading": "我们已向 {email} 发送确认链接",
       "body": "请在24小时内点击链接，开始接收周一报告。",
-      "previewLabel": "周一报告预览"
+      "previewLabel": "周一报告预览",
+      "sampleLabel": "示例"
     },
     "confirm": {
       "eyebrow": "您已成功订阅",
@@ -1951,7 +1952,8 @@
       "expiredEyebrow": "链接已过期",
       "expiredHeading": "此链接已超过24小时",
       "expiredBody": "确认令牌过期是为了保护您的订阅安全。请重新订阅，我们将发送新链接。",
-      "expiredCta": "重新订阅"
+      "expiredCta": "重新订阅",
+      "managePrefs": "管理偶好设置"
     },
     "unsub": {
       "eyebrow": "已成功退订",
@@ -1973,7 +1975,7 @@
     },
     "account": {
       "pageTitle": "市场报告",
-      "eyebrow": "您的快讯",
+      "eyebrow": "账户",
       "heading": "市场报告",
       "lede": "您的每周迪拜快讯 — 随时可调整。",
       "editLabel": "编辑偏好设置",
@@ -1997,8 +1999,14 @@
       "unsubModalBody": "我们将不再向您发送邮件。您可以随时重新订阅。",
       "cancelButton": "保留订阅",
       "unsubConfirm": "取消订阅",
-      "unsubLoading": "取消中..."
+      "unsubLoading": "取消中...",
+      "confirmedSince": "确认于 {date}",
+      "saveButton": "保存",
+      "areasEditHint": "删除不再需要的区域。"
     },
-    "perSqft": "/平方英尺"
+    "perSqft": "/平方英尺",
+    "differentEmailLink": "使用其他邮筱",
+    "resentToast": "已重新发送",
+    "resentToastDesc": "如果仍未收到，请检查垃圾邮件夹。"
   }
 }
