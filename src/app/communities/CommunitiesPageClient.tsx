@@ -23,14 +23,23 @@ const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 
 export default function CommunitiesPageClient({
   communities,
+  kind = "community",
 }: {
   communities: CommunityCard[];
+  kind?: "community" | "area";
 }) {
-  const t = useTranslations("communities");
+  const t = useTranslations(kind === "area" ? "areas" : "communities");
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Breadcrumbs items={[{ label: t("heroLabel"), href: "/communities" }]} />
+      <Breadcrumbs
+        items={[
+          {
+            label: t("heroLabel"),
+            href: kind === "area" ? "/areas" : "/communities",
+          },
+        ]}
+      />
       <section
         className="relative pt-32 pb-20 text-white overflow-hidden"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}

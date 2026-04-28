@@ -409,6 +409,13 @@
       "src/app/construction-updates/ConstructionUpdatesClient.tsx",
       "src/lib/api.ts"
     ],
+    "src/app/[locale]/areas/loading.tsx": [
+      "src/components/SkeletonCard.tsx"
+    ],
+    "src/app/[locale]/areas/page.tsx": [
+      "src/app/communities/CommunitiesPageClient.tsx",
+      "src/app/[locale]/communities/fetchPlaces.ts"
+    ],
     "src/app/[locale]/rent/loading.tsx": [
       "src/components/SkeletonCard.tsx"
     ],
@@ -425,13 +432,16 @@
     "src/app/[locale]/privacy-policy/page.tsx": [
       "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx"
     ],
+    "src/app/[locale]/communities/fetchPlaces.ts": [
+      "src/lib/api.ts",
+      "src/lib/mongodb.ts"
+    ],
     "src/app/[locale]/communities/loading.tsx": [
       "src/components/SkeletonCard.tsx"
     ],
     "src/app/[locale]/communities/page.tsx": [
       "src/app/communities/CommunitiesPageClient.tsx",
-      "src/lib/api.ts",
-      "src/lib/mongodb.ts"
+      "src/app/[locale]/communities/fetchPlaces.ts"
     ],
     "src/app/[locale]/list-your-property/page.tsx": [
       "src/lib/auth.ts",
@@ -706,7 +716,7 @@
       "src/app/[locale]/contact/ContactPageClient.tsx",
       "src/app/[locale]/construction-updates/page.tsx",
       "src/app/[locale]/rent/page.tsx",
-      "src/app/[locale]/communities/page.tsx",
+      "src/app/[locale]/communities/fetchPlaces.ts",
       "src/app/[locale]/pulse/page.tsx",
       "src/app/[locale]/profile/ProfileClient.tsx",
       "src/app/[locale]/news/page.tsx",
@@ -964,7 +974,7 @@
       "src/app/api/auth/verify-email/route.ts",
       "src/app/api/auth/forgot-password/route.ts",
       "src/app/api/auth/reset-password/route.ts",
-      "src/app/[locale]/communities/page.tsx",
+      "src/app/[locale]/communities/fetchPlaces.ts",
       "src/app/[locale]/admin/page.tsx",
       "src/app/[locale]/admin/inquiries/page.tsx",
       "src/app/[locale]/admin/subscriptions/page.tsx",
@@ -1069,6 +1079,7 @@
     ],
     "src/components/SkeletonCard.tsx": [
       "src/app/[locale]/construction-updates/loading.tsx",
+      "src/app/[locale]/areas/loading.tsx",
       "src/app/[locale]/rent/loading.tsx",
       "src/app/[locale]/communities/loading.tsx",
       "src/app/[locale]/news/loading.tsx",
@@ -1085,15 +1096,20 @@
     "src/app/construction-updates/ConstructionUpdatesClient.tsx": [
       "src/app/[locale]/construction-updates/page.tsx"
     ],
+    "src/app/communities/CommunitiesPageClient.tsx": [
+      "src/app/[locale]/areas/page.tsx",
+      "src/app/[locale]/communities/page.tsx"
+    ],
+    "src/app/[locale]/communities/fetchPlaces.ts": [
+      "src/app/[locale]/areas/page.tsx",
+      "src/app/[locale]/communities/page.tsx"
+    ],
     "src/app/rent/ListingsPageClient.tsx": [
       "src/app/[locale]/rent/page.tsx",
       "src/app/[locale]/buy/page.tsx"
     ],
     "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx": [
       "src/app/[locale]/privacy-policy/page.tsx"
-    ],
-    "src/app/communities/CommunitiesPageClient.tsx": [
-      "src/app/[locale]/communities/page.tsx"
     ],
     "src/components/ListPropertyForm.tsx": [
       "src/app/[locale]/list-your-property/page.tsx"
@@ -1269,10 +1285,13 @@
     "src/app/[locale]/contact/page.tsx": "/contact",
     "src/app/[locale]/construction-updates/loading.tsx": "/construction-updates/loading.tsx",
     "src/app/[locale]/construction-updates/page.tsx": "/construction-updates",
+    "src/app/[locale]/areas/loading.tsx": "/areas/loading.tsx",
+    "src/app/[locale]/areas/page.tsx": "/areas",
     "src/app/[locale]/rent/loading.tsx": "/rent/loading.tsx",
     "src/app/[locale]/rent/page.tsx": "/rent",
     "src/app/[locale]/privacy-policy/PrivacyPolicyClient.tsx": "/privacy-policy/PrivacyPolicyClient.tsx",
     "src/app/[locale]/privacy-policy/page.tsx": "/privacy-policy",
+    "src/app/[locale]/communities/fetchPlaces.ts": "/communities/fetchPlaces.ts",
     "src/app/[locale]/communities/loading.tsx": "/communities/loading.tsx",
     "src/app/[locale]/communities/page.tsx": "/communities",
     "src/app/[locale]/list-your-property/page.tsx": "/list-your-property",
@@ -1330,9 +1349,10 @@
     "src/app/[locale]/communities/[slug]/page.tsx": "/communities/[slug]",
     "src/app/[locale]/property/[slug]/loading.tsx": "/property/[slug]/loading.tsx",
     "src/app/[locale]/property/[slug]/page.tsx": "/property/[slug]",
+    "src/app/[locale]/areas/[slug]/page.tsx": "/areas/[slug]",
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-04-28T09:46:14.944901+00:00",
-  "fileCount": 237
+  "builtAt": "2026-04-28T10:07:05.212731+00:00",
+  "fileCount": 241
 }

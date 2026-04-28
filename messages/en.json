@@ -1875,5 +1875,18 @@
     "guide_rentalYield_desc": "Why the 7% yield in the brochure is rarely the 7% you actually earn — and how to calculate the number that matters.",
     "guide_offPlanSecondary_title": "Off-Plan vs Secondary Market: Which Is Right for You?",
     "guide_offPlanSecondary_desc": "A practical decision framework covering payment plans, developer risk, exit flexibility, and the price discovery problem."
+  },
+  "areas": {
+    "heroLabel": "Explore Dubai",
+    "heroTitle": "Premier",
+    "heroTitleItalic": "Areas",
+    "heroSubtitle": "Explore Dubai's most established districts and neighbourhoods",
+    "searchPlaceholder": "Search areas...",
+    "properties": "properties",
+    "viewCommunity": "View Area",
+    "noResults": "No areas found",
+    "badgeGuide": "Area Guide",
+    "emptyTitle": "No areas found",
+    "emptyBody": "Check back soon — we are continuously adding new area guides."
   }
 }

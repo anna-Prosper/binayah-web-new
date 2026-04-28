@@ -1881,5 +1881,18 @@
     "guide_rentalYield_desc": "为什么宣传册上的7%收益率往往不是您实际获得的7%——以及如何计算真正重要的数字。",
     "guide_offPlanSecondary_title": "期房 vs 二手市场：哪个适合您？",
     "guide_offPlanSecondary_desc": "覆盖付款计划、开发商风险、退出灵活性和价格发现问题的实用决策框架。"
+  },
+  "areas": {
+    "heroLabel": "探索迪拜",
+    "heroTitle": "迪拜",
+    "heroTitleItalic": "区域",
+    "heroSubtitle": "探索迪拜最成熟的地区和街区",
+    "searchPlaceholder": "搜索区域...",
+    "properties": "房产",
+    "viewCommunity": "查看区域",
+    "noResults": "未找到区域",
+    "badgeGuide": "区域指南",
+    "emptyTitle": "未找到区域",
+    "emptyBody": "请稍后回来查看——我们正在持续添加新的区域指南。"
   }
 }
