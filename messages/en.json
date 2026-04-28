@@ -1710,6 +1710,7 @@
     "totalValue": "Total Value",
     "avgPrice": "Avg Price",
     "avgPpsf": "Avg AED/sqft",
+    "sqftUnit": "sqft",
     "moversLabel": "Market Movers",
     "moversTitle": "Latest Period",
     "moversItalic": "Movers",
@@ -1813,7 +1814,8 @@
     "budgetMin": "AED 100K",
     "budgetMax": "AED 20M",
     "shareWhatsApp": "WhatsApp",
-    "emailSubject": "Dubai Investment Calculator"
+    "emailSubject": "Dubai Investment Calculator",
+    "sqftUnit": "sqft"
   },
   "pulseGuides": {
     "label": "Knowledge Base",

@@ -1710,6 +1710,7 @@
     "totalValue": "Общий объём",
     "avgPrice": "Средняя цена",
     "avgPpsf": "Ср. AED/кв.фут",
+    "sqftUnit": "кв.фут",
     "moversLabel": "Движение рынка",
     "moversTitle": "Движение",
     "moversItalic": "последнего периода",
@@ -1813,7 +1814,8 @@
     "budgetMin": "AED 100K",
     "budgetMax": "AED 20M",
     "shareWhatsApp": "WhatsApp",
-    "emailSubject": "Калькулятор инвестиций в Дубай"
+    "emailSubject": "Калькулятор инвестиций в Дубай",
+    "sqftUnit": "кв.фут"
   },
   "pulseGuides": {
     "label": "База знаний",

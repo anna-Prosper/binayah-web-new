@@ -1716,6 +1716,7 @@
     "totalValue": "总价值",
     "avgPrice": "均价",
     "avgPpsf": "均价/平方英尺",
+    "sqftUnit": "平方英尺",
     "moversLabel": "市场动态",
     "moversTitle": "最新期间",
     "moversItalic": "涨跌榜",
@@ -1819,7 +1820,8 @@
     "budgetMin": "AED 10万",
     "budgetMax": "AED 2000万",
     "shareWhatsApp": "WhatsApp",
-    "emailSubject": "迪拜投资计算器"
+    "emailSubject": "迪拜投资计算器",
+    "sqftUnit": "平方英尺"
   },
   "pulseGuides": {
     "label": "知识库",

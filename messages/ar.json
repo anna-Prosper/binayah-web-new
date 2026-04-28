@@ -1710,6 +1710,7 @@
     "totalValue": "القيمة الإجمالية",
     "avgPrice": "متوسط السعر",
     "avgPpsf": "متوسط درهم/قدم مربع",
+    "sqftUnit": "قدم²",
     "moversLabel": "تحركات السوق",
     "moversTitle": "تحركات",
     "moversItalic": "الفترة الأخيرة",
@@ -1813,7 +1814,8 @@
     "budgetMin": "درهم 100K",
     "budgetMax": "درهم 20M",
     "shareWhatsApp": "واتساب",
-    "emailSubject": "حاسبة الاستثمار في دبي"
+    "emailSubject": "حاسبة الاستثمار في دبي",
+    "sqftUnit": "قدم²"
   },
   "pulseGuides": {
     "label": "قاعدة المعرفة",

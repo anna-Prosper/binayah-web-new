@@ -8,7 +8,6 @@ import {
   Share2, Copy, MessageCircle, Check, ExternalLink,
   BarChart3, RefreshCw,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -44,9 +43,11 @@ interface Project {
   _id: string;
   name: string;
   developer?: string | { name?: string };
+  developerName?: string;
   community?: string | { name?: string };
   startingPrice?: number;
   paymentPlan?: string;
+  status?: string;
   launchDate?: string;
   createdAt?: string;
   slug?: string;
@@ -243,6 +244,7 @@ export default function TrendingClient({
                       ppsf={r.curr}
                       changePct={r.changePct}
                       isRiser
+                      t={t}
                     />
                   ))}
                 </div>
@@ -263,6 +265,7 @@ export default function TrendingClient({
                       ppsf={r.curr}
                       changePct={r.changePct}
                       isRiser={false}
+                      t={t}
                     />
                   ))}
                 </div>
@@ -313,13 +316,12 @@ export default function TrendingClient({
           >
             <div className="grid sm:grid-cols-5 gap-0">
               {featuredNews.imageUrl && (
-                <div className="sm:col-span-2 relative h-48 sm:h-full min-h-[180px]">
-                  <Image
+                <div className="sm:col-span-2 relative h-48 sm:h-full min-h-[180px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={featuredNews.imageUrl}
                     alt={featuredNews.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 40vw"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               )}
@@ -424,15 +426,16 @@ function StatCard({ icon: Icon, label, value, accent = false }: {
   );
 }
 
-function MoverRow({ label, ppsf, changePct, isRiser }: {
+function MoverRow({ label, ppsf, changePct, isRiser, t }: {
   label: string; ppsf: number; changePct: number; isRiser: boolean;
+  t: ReturnType<typeof useTranslations<"pulseTrending">>;
 }) {
   return (
     <div className="flex items-center justify-between bg-card border border-border/50 rounded-xl px-4 py-3 hover:border-accent/30 transition-all">
       <div>
         <p className="text-sm font-semibold text-foreground">{label}</p>
         <p className="text-[10px] text-muted-foreground">
-          {`AED ${ppsf.toLocaleString()} / sqft`}
+          {`AED ${ppsf.toLocaleString()} / ${t("sqftUnit")}`}
         </p>
       </div>
       <span className={`text-sm font-bold flex items-center gap-1 ${isRiser ? "text-emerald-600" : "text-red-500"}`}>
@@ -447,13 +450,18 @@ function LaunchCard({ project, t }: {
   project: Project;
   t: ReturnType<typeof useTranslations<"pulseTrending">>;
 }) {
-  const devName = extractName(project.developer);
+  const devName = project.developerName ?? extractName(project.developer);
   const commName = extractName(project.community);
+  const showOffPlan = !project.status || project.status === "Off-Plan";
 
   return (
     <div className="bg-card border border-border/50 rounded-xl p-4 hover:border-accent/30 hover:shadow-sm transition-all flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{t("offPlan")}</span>
+        {showOffPlan ? (
+          <span className="text-[10px] font-bold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{t("offPlan")}</span>
+        ) : (
+          <span />
+        )}
         {project.paymentPlan && (
           <span className="text-[10px] font-medium text-muted-foreground">{project.paymentPlan}</span>
         )}

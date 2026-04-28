@@ -328,7 +328,7 @@ export default function CalculatorClient({
               <MetricCard
                 icon={DollarSign}
                 label={t("estSize")}
-                value={outputs.estimatedSqft > 0 ? `${outputs.estimatedSqft.toLocaleString()} sqft` : "—"}
+                value={outputs.estimatedSqft > 0 ? `${outputs.estimatedSqft.toLocaleString()} ${t("sqftUnit")}` : "—"}
                 sub={t("estSizeSub")}
                 accent
               />

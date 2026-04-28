@@ -51,28 +51,28 @@ interface Developer {
 
 type Mode = "communities" | "developers";
 
-// ── Preset slugs — curated based on known community names in the DB.
-// These are display names; we match them case-insensitively against the communities API.
+// ── Preset slugs — canonical area labels from the market-stats endpoint
+// (verified from /binayah-api/src/routes/market-stats.ts).
 const PRESETS: { id: string; nameKey: string; slugs: string[] }[] = [
   {
     id: "waterfront",
     nameKey: "presetWaterfront",
-    slugs: ["Dubai Marina", "Palm Jumeirah", "Jumeirah Bay Island"],
+    slugs: ["Dubai Marina", "Palm Jumeirah", "Dubai Hills"],
   },
   {
     id: "highyield",
     nameKey: "presetHighYield",
-    slugs: ["Jumeirah Village Circle", "Dubai South", "International City"],
+    slugs: ["JVC", "Dubai Hills", "JBR"],
   },
   {
     id: "urban",
     nameKey: "presetUrban",
-    slugs: ["Downtown Dubai", "Business Bay", "DIFC"],
+    slugs: ["Downtown Dubai", "Business Bay", "MBR City"],
   },
   {
     id: "emerging",
     nameKey: "presetEmerging",
-    slugs: ["Dubai Creek Harbour", "Mohammed Bin Rashid City", "Sobha Hartland"],
+    slugs: ["Creek Harbour", "MBR City", "DAMAC Hills"],
   },
 ];
 
