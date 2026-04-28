@@ -124,6 +124,28 @@ export function NotificationsBell() {
     };
   }, [open]);
 
+  // Mark all unread as read when drawer opens (clears the badge)
+  useEffect(() => {
+    if (!open) return;
+    const unreadIds = items.filter((n) => !n.read).map((n) => n.id);
+    if (unreadIds.length === 0) return;
+
+    setItems((prev) => prev.map((n) => (n.read ? n : { ...n, read: true })));
+
+    if (isAuthed) {
+      fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: unreadIds }),
+      }).catch(() => {});
+    } else {
+      const updated = readLocalNotifs().map((n) =>
+        unreadIds.includes(n.id) ? { ...n, read: true } : n
+      );
+      writeLocalNotifs(updated);
+    }
+  }, [open, items, isAuthed]);
+
   // ── Mark as read (Area 2: rollback + toast on failure) ─────────────────
   const markRead = useCallback(
     async (item: NotificationItem) => {
@@ -170,7 +192,7 @@ export function NotificationsBell() {
       <button
         onClick={() => setOpen((prev) => !prev)}
         aria-label={unreadCount > 0 ? t("ariaLabelUnread", { count: unreadCount }) : t("ariaLabel")}
-        className="relative w-9 h-9 min-w-[44px] min-h-[44px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+        className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
