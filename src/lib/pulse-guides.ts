@@ -156,7 +156,7 @@ For off-plan, most developers require 10–20% on booking, then a milestone-link
 **Step 3: Legal Checks**
 
 Engage a UAE-registered real estate attorney (not a broker). The key checks:
-- **Title search**: Confirm the seller holds a valid title deed with no encumbrances via the DLD's online portal.
+- **Title search**: Confirm the seller holds a valid title deed with no encumbrances via the official property registry portal.
 - **Service charge arrears**: Arrears travel with the title, not the seller. Get a NOC from the developer confirming zero outstanding service charges.
 - **Strata documents**: Review the building's service charge history. Chronic underfunding of reserves is a red flag.
 
@@ -164,8 +164,8 @@ Engage a UAE-registered real estate attorney (not a broker). The key checks:
 
 1. Sign MOU (Memorandum of Understanding) with a 10% deposit cheque held in escrow or by the broker.
 2. Obtain NOC from developer (2–7 business days, fee AED 500–5,000 depending on developer).
-3. Meet at DLD for transfer (or use a certified trustee office for same-day transfer). Bring: passport, NOC, bank manager's cheque or bank transfer.
-4. Pay DLD transfer fee: 4% of purchase price (buyer pays).
+3. Meet at the property registry (or use a certified trustee office for same-day transfer). Bring: passport, NOC, bank manager's cheque or bank transfer.
+4. Pay the property transfer fee: 4% of purchase price (buyer pays).
 5. Collect new title deed in your name.
 
 **Step 5: Running Costs**
@@ -173,7 +173,7 @@ Engage a UAE-registered real estate attorney (not a broker). The key checks:
 Factor these into your returns:
 - Service charges: AED 10–25 per sqft per year depending on building and community
 - Agency fee: 2% of purchase price (paid by buyer in most transactions)
-- DLD transfer fee: 4%
+- Property transfer fee: 4%
 - Mortgage registration (if applicable): 0.25% of loan value
 
 **Step 6: Golden Visa**
@@ -258,7 +258,7 @@ The trade-off: you pay current market price, which already incorporates the appr
 
 The single most important variable in off-plan is the developer's track record. Emaar, DAMAC, Sobha, and Meraas have completed large-scale projects on-time-ish and maintained post-handover quality. Smaller developers have a more variable record. Before committing to off-plan:
 
-1. Check the developer's previous project handover timeline (RERA database or DLD public records)
+1. Check the developer's previous project handover timeline (RERA database or official public records)
 2. Confirm the project has an RERA escrow account (legally required; funds are ring-fenced)
 3. Visit a completed project by the same developer — walk the lobbies, check finish quality, talk to residents
 
@@ -270,7 +270,7 @@ Model the worst case: you need to pay the balance in 24 months and the market ha
 
 **Secondary Market: The Price Discovery Problem**
 
-The secondary market has genuine pricing opacity. Asking prices on portals are not transaction prices. The DLD publishes transaction data, but with a lag. Binayah's transaction data tools close some of this gap — you can see what units in a given building actually traded for in the last quarter. Use it.
+The secondary market has genuine pricing opacity. Asking prices on portals are not transaction prices. The official registry publishes transaction data, but with a lag. Binayah's transaction data tools close some of this gap — you can see what units in a given building actually traded for in the last quarter. Use it.
 
 **Decision Matrix**
 

@@ -14,14 +14,17 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+  const locales = ["en", "ar", "zh", "ru"];
+  return locales.flatMap((locale) =>
+    PULSE_GUIDES.map((g) => ({ locale, slug: g.slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const guide = findGuide(slug);
   if (!guide) return {};
-  const t = await getTranslations("pulseGuides");
+  const t = await getTranslations({ locale, namespace: "pulseGuides" });
   return {
     title: `${t(guide.titleKey as Parameters<typeof t>[0])} | Dubai Pulse | Binayah Properties`,
     description: t(guide.descriptionKey as Parameters<typeof t>[0]),
