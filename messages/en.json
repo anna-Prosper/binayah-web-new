@@ -1888,5 +1888,111 @@
     "badgeGuide": "Area Guide",
     "emptyTitle": "No areas found",
     "emptyBody": "Check back soon — we are continuously adding new area guides."
+  },
+  "weeklyReport": {
+    "eyebrow": "WEEKLY DISPATCH",
+    "heading": "Get Monday's Dubai market read in your inbox",
+    "lede": "A 3-minute briefing — top movers in your areas, new launches matching your budget, one curated insight.",
+    "form": {
+      "name": "Your name",
+      "namePlaceholder": "Alex Morgan",
+      "email": "Email",
+      "emailPlaceholder": "alex@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+971 50 000 0000",
+      "optional": "optional",
+      "optionalLabel": "Optional — helps us tailor your dispatch",
+      "intent": "I am looking to",
+      "intents": {
+        "buy": "Buy",
+        "rent": "Rent",
+        "sell": "Sell",
+        "invest": "Invest"
+      },
+      "propertyType": "Property type",
+      "propertyTypes": {
+        "Apartment": "Apartment",
+        "Villa": "Villa",
+        "Townhouse": "Townhouse",
+        "Penthouse": "Penthouse"
+      },
+      "areas": "Areas of interest",
+      "budget": "Budget range",
+      "cta": "Send me Monday's report"
+    },
+    "areasPlaceholder": "Search communities...",
+    "popularAreas": "Popular",
+    "removeArea": "Remove {area}",
+    "moreAreas": "more",
+    "anyBudget": "Any budget",
+    "errorGeneric": "Something went wrong. Try again in a moment.",
+    "errorNetwork": "We couldn't reach our servers. Try again in a moment.",
+    "resendLink": "Didn't get it? Resend",
+    "resending": "Sending...",
+    "pending": {
+      "eyebrow": "CHECK YOUR INBOX",
+      "heading": "We sent a confirmation link to {email}",
+      "body": "Click it within 24 hours to start receiving Monday's report.",
+      "previewLabel": "WHAT MONDAY LOOKS LIKE"
+    },
+    "confirm": {
+      "eyebrow": "YOU'RE ON THE LIST",
+      "heading": "First dispatch lands Monday morning",
+      "body": "Until then, here's what's moving this week.",
+      "previewLabel": "THIS WEEK'S NUMBERS",
+      "footer": "Dispatched every Monday at 09:00 GST · One email · Always unsubscribable",
+      "cta": "View full market analysis",
+      "expiredEyebrow": "LINK EXPIRED",
+      "expiredHeading": "This link's older than 24 hours",
+      "expiredBody": "Tokens expire to keep your subscription secure. Resubscribe and we'll send a fresh one.",
+      "expiredCta": "Resubscribe"
+    },
+    "unsub": {
+      "eyebrow": "YOU'RE UNSUBSCRIBED",
+      "heading": "Thanks for letting us into your inbox",
+      "body": "You won't hear from us again — unless you want to.",
+      "feedbackLabel": "IF YOU HAVE A MOMENT",
+      "feedbackOptions": {
+        "tooFrequent": "Too frequent",
+        "notRelevant": "Not relevant to my areas",
+        "foundWhatNeeded": "Found what I needed",
+        "other": "Other"
+      },
+      "feedbackNote": "Your reason helps us improve.",
+      "resubscribeCta": "Resubscribe",
+      "notFoundEyebrow": "LINK NOT FOUND",
+      "notFoundHeading": "This unsubscribe link is invalid",
+      "notFoundBody": "It may have already been used. You can manage your subscription from your account.",
+      "backToPulse": "Back to Pulse"
+    },
+    "account": {
+      "pageTitle": "Market reports",
+      "eyebrow": "YOUR DISPATCH",
+      "heading": "Market reports",
+      "lede": "Your weekly Dubai dispatch — tailor it any time.",
+      "editLabel": "EDIT PREFERENCES",
+      "editButton": "Edit",
+      "statusActive": "Active",
+      "statusPending": "Awaiting confirmation",
+      "dispatchLabel": "Monday dispatch",
+      "notSet": "Not set",
+      "fields": {
+        "email": "Email",
+        "areas": "Areas",
+        "propertyTypes": "Property types",
+        "intents": "Looking to",
+        "budget": "Budget",
+        "since": "Subscribed since"
+      },
+      "dangerHeading": "Stop the dispatch",
+      "dangerBody": "You'll receive no further emails until you resubscribe.",
+      "unsubButton": "Unsubscribe",
+      "unsubModalHeading": "Stop receiving the dispatch?",
+      "unsubModalBody": "You'll receive no further emails. You can resubscribe any time.",
+      "cancelButton": "Keep my subscription",
+      "unsubConfirm": "Unsubscribe",
+      "unsubLoading": "Unsubscribing..."
+    },
+    "perSqft": "/sqft"
   }
 }

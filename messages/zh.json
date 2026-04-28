@@ -1894,5 +1894,111 @@
     "badgeGuide": "区域指南",
     "emptyTitle": "未找到区域",
     "emptyBody": "请稍后回来查看——我们正在持续添加新的区域指南。"
+  },
+  "weeklyReport": {
+    "eyebrow": "每周快讯",
+    "heading": "每周一在邮箱中获取迪拜房地产市场报告",
+    "lede": "3分钟简报 — 您关注区域的热门动向、符合预算的新盘，以及一项精选洞察。",
+    "form": {
+      "name": "您的姓名",
+      "namePlaceholder": "张明",
+      "email": "电子邮件",
+      "emailPlaceholder": "zhang@example.com",
+      "phone": "电话",
+      "phonePlaceholder": "+971 50 000 0000",
+      "optional": "可选",
+      "optionalLabel": "可选 — 帮助我们定制您的快讯",
+      "intent": "我正在寻找",
+      "intents": {
+        "buy": "购买",
+        "rent": "租赁",
+        "sell": "出售",
+        "invest": "投资"
+      },
+      "propertyType": "房产类型",
+      "propertyTypes": {
+        "Apartment": "公寓",
+        "Villa": "别墅",
+        "Townhouse": "联排别墅",
+        "Penthouse": "顶层公寓"
+      },
+      "areas": "感兴趣的区域",
+      "budget": "预算范围",
+      "cta": "发送周一报告给我"
+    },
+    "areasPlaceholder": "搜索社区...",
+    "popularAreas": "热门区域",
+    "removeArea": "移除 {area}",
+    "moreAreas": "更多",
+    "anyBudget": "不限预算",
+    "errorGeneric": "出现错误，请稍后重试。",
+    "errorNetwork": "无法连接到服务器，请稍后重试。",
+    "resendLink": "没有收到？重新发送",
+    "resending": "发送中...",
+    "pending": {
+      "eyebrow": "请查收邮件",
+      "heading": "我们已向 {email} 发送确认链接",
+      "body": "请在24小时内点击链接，开始接收周一报告。",
+      "previewLabel": "周一报告预览"
+    },
+    "confirm": {
+      "eyebrow": "您已成功订阅",
+      "heading": "首份快讯将于周一早晨送达",
+      "body": "在此之前，请了解本周市场动态。",
+      "previewLabel": "本周数据",
+      "footer": "每周一09:00（海湾标准时间）发送 · 一封邮件 · 随时可退订",
+      "cta": "查看完整市场分析",
+      "expiredEyebrow": "链接已过期",
+      "expiredHeading": "此链接已超过24小时",
+      "expiredBody": "确认令牌过期是为了保护您的订阅安全。请重新订阅，我们将发送新链接。",
+      "expiredCta": "重新订阅"
+    },
+    "unsub": {
+      "eyebrow": "已成功退订",
+      "heading": "感谢您曾订阅我们的快讯",
+      "body": "我们不会再向您发送邮件 — 除非您希望如此。",
+      "feedbackLabel": "如果方便的话",
+      "feedbackOptions": {
+        "tooFrequent": "频率太高",
+        "notRelevant": "与我的区域无关",
+        "foundWhatNeeded": "已找到所需信息",
+        "other": "其他"
+      },
+      "feedbackNote": "您的反馈有助于我们改进。",
+      "resubscribeCta": "重新订阅",
+      "notFoundEyebrow": "链接无效",
+      "notFoundHeading": "此退订链接无效",
+      "notFoundBody": "该链接可能已被使用。您可以在账户中管理订阅。",
+      "backToPulse": "返回 Pulse"
+    },
+    "account": {
+      "pageTitle": "市场报告",
+      "eyebrow": "您的快讯",
+      "heading": "市场报告",
+      "lede": "您的每周迪拜快讯 — 随时可调整。",
+      "editLabel": "编辑偏好设置",
+      "editButton": "编辑",
+      "statusActive": "已激活",
+      "statusPending": "等待确认",
+      "dispatchLabel": "周一快讯",
+      "notSet": "未设置",
+      "fields": {
+        "email": "电子邮件",
+        "areas": "区域",
+        "propertyTypes": "房产类型",
+        "intents": "寻找目的",
+        "budget": "预算",
+        "since": "订阅时间"
+      },
+      "dangerHeading": "停止快讯",
+      "dangerBody": "在您重新订阅之前，我们不会再向您发送邮件。",
+      "unsubButton": "取消订阅",
+      "unsubModalHeading": "是否停止接收快讯？",
+      "unsubModalBody": "我们将不再向您发送邮件。您可以随时重新订阅。",
+      "cancelButton": "保留订阅",
+      "unsubConfirm": "取消订阅",
+      "unsubLoading": "取消中..."
+    },
+    "perSqft": "/平方英尺"
   }
 }
