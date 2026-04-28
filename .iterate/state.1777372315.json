@@ -1,0 +1,254 @@
+{
+  "task": "Build Obsidian memory sync for the iterate dashboard at /Users/zoop/binayah-iterate-dashboard. This connects ChromaDB memories (accessed via /Users/zoop/.claude/tools/dashboard_query.py sidecar) to a new Obsidian vault at ~/obsidian-vaults/binayah-brain/. MAX 3 STAGES.",
+  "baseSha": "84c115d023297c8189d38f1490daae875368a8b3",
+  "stages": [
+    {
+      "id": "stage-1",
+      "name": "Foundation + Export (ChromaDB → Obsidian)",
+      "status": "passed",
+      "demoPath": "1) Open http://localhost:3001/memory  2) Click new 'Export to Obsidian' button  3) See toast/inline message: 'Exported N memories to ~/obsidian-vaults/binayah-brain'  4) In Finder/terminal, ls ~/obsidian-vaults/binayah-brain/iterate-memory/ — verify subfolders feedback/ reference/ project/ user/ each have .md files with YAML frontmatter and body  5) Open Obsidian, open the binayah-brain vault — confirm files render.",
+      "spec": "## Why this will be good\nMakes ChromaDB memories editable in a real tool (Obsidian) instead of trapped behind a sidecar. Export is one-click, idempotent, overwrites cleanly so re-running does not produce dupes. Production-ready: handles vault-not-exists by creating it, handles missing OBSIDIAN_VAULT_PATH with a clear error, shows count in UI so user sees confirmation. Benchmark: think Logseq/Obsidian sync plugins — minimal config, transparent file layout, no surprises.\n\n## Goal\nStand up the Obsidian vault, add an OBSIDIAN_VAULT_PATH env var, add an `export-obsidian` sidecar command, expose it through a Next.js API route, and add an Export button to the existing /memory page.\n\n## Pre-flight (one-time, do these from the terminal before code changes)\n1. `brew install --cask obsidian` — if already installed, brew will say so; that is fine.\n2. `mkdir -p ~/obsidian-vaults/binayah-brain/iterate-memory/{feedback,reference,project,user}` and `mkdir -p ~/obsidian-vaults/binayah-brain/runs`\n3. Create `~/obsidian-vaults/binayah-brain/.obsidian/app.json` with minimal valid JSON (e.g. `{\"alwaysUpdateLinks\": true}`) so Obsidian recognises it as a vault.\n4. Append `OBSIDIAN_VAULT_PATH=/Users/zoop/obsidian-vaults/binayah-brain` to `/Users/zoop/binayah-iterate-dashboard/.env.local` (create the file if missing). Use the absolute expanded path — do not use `~`.\n\n## Sidecar command — add to /Users/zoop/.claude/tools/dashboard_query.py\nAdd a new subcommand `export-obsidian <vault_path>` alongside the existing `count`, `list`, `search`, `delete`, `update`, `growth` commands. Behavior:\n- Iterate every collection in ChromaDB (use the same `client.list_collections()` pattern as existing commands).\n- For each entry, derive:\n  - `id` — ChromaDB id\n  - `content` — prefer `documents[i]`, fall back to `metadata.data` then `metadata.text_lemmatized` (mirror how `app/memory/page.tsx::normalizeEntry` resolves content so we stay consistent).\n  - `name` — from `metadata.name` if present, else first 60 chars of content slugified.\n  - `type` — from `metadata.type` (one of feedback/reference/project/user). If absent, infer from name prefix (`feedback_*` → feedback, `reference_*` → reference, `project_*` → project, `user_*` → user). Default to `reference` if neither present.\n  - `collection` — collection name (e.g. mem0).\n  - `created_at` — from `metadata.created_at` / `createdAt` / `timestamp` if any; else null.\n- Slug rule: lowercase, replace any non `[a-z0-9]+` run with `-`, trim leading/trailing `-`, cap at 80 chars. If slug is empty, fall back to first 8 chars of `id`.\n- Filename: `<vault>/iterate-memory/<type>/<slug>.md`. If a different memory already wrote that filename in this run (collision), append `-<short_id>` to the slug.\n- File body: YAML frontmatter then content:\n  ```\n  ---\n  id: \"<id>\"\n  name: \"<name>\"\n  type: \"<type>\"\n  collection: \"<collection>\"\n  created_at: \"<iso or null>\"\n  ---\n\n  <content>\n  ```\n- Always overwrite existing files (this is a one-way export step — Stage 2 handles bidirectional).\n- Ensure the four type subfolders exist (mkdir -p) before writing.\n- Print `{\"exported\": N, \"vault\": \"<vault_path>\", \"by_type\": {\"feedback\": x, \"reference\": y, ...}}` as JSON on stdout, exit 0.\n- On vault path missing or unwritable: print `{\"error\": \"...\"}` to stderr and exit 1.\n- Update the docstring at top of the file to list the new command.\n\n## Next.js API route — /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/export/route.ts\nCreate the directory `app/api/obsidian/export/` and add `route.ts` (POST handler):\n- Reads `process.env.OBSIDIAN_VAULT_PATH`. If missing, return `{ ok: false, error: \"OBSIDIAN_VAULT_PATH not set in .env.local\" }` with status 400.\n- Spawns the sidecar via `execFile` using `VENV_PYTHON` and `SIDECAR` from `@/lib/iterate-paths` (same pattern as `app/memory/page.tsx`). Args: `[\"export-obsidian\", vaultPath]`. Timeout 60_000ms.\n- On success, parse stdout JSON, return `{ ok: true, ...result }`.\n- On non-zero exit or parse error, return `{ ok: false, error: stderr || message }` status 500.\n- Use Node runtime (`export const runtime = \"nodejs\"`).\n\n## UI — /Users/zoop/binayah-iterate-dashboard/app/memory/page.tsx and components\nAdd an Export button to the header row of `/memory`. Approach:\n- The page is a server component. The button needs to be a client component so it can call the API and show feedback. Create `/Users/zoop/binayah-iterate-dashboard/components/ObsidianExportButton.tsx` (`\"use client\"`). It owns local state `{ status: 'idle'|'running'|'ok'|'error', message: string }` and renders a button labeled \"Export to Obsidian\". On click it POSTs to `/api/obsidian/export` and shows inline result text next to the button: \"Exported 47 memories → ~/obsidian-vaults/binayah-brain\" (success) or the error message in red.\n- Place the button in the existing flex row of the page header (next to the title/description block) — do NOT introduce a new floating element. Style must match the existing aesthetic (white surface, subtle border, hover state). DEV chooses exact classes; reference the existing card/button patterns in `components/GlassCard.tsx`, `components/HealthCard.tsx`, and the Sidebar nav links to stay consistent.\n- Show the resolved vault path subtly under the button (or in tooltip) so user knows where files went.\n\n## Acceptance criteria\n- Running the export produces .md files under `~/obsidian-vaults/binayah-brain/iterate-memory/{feedback,reference,project,user}/` whose YAML frontmatter contains `id`, `name`, `type`, `collection`, `created_at`.\n- File count printed in UI matches `find ~/obsidian-vaults/binayah-brain/iterate-memory -name '*.md' | wc -l`.\n- Re-running export does not duplicate files (overwrite, not append).\n- Opening the vault in Obsidian shows files under their type folders, body renders as markdown.\n- If `OBSIDIAN_VAULT_PATH` is unset, the button shows a clear error — not a silent failure or 500 with a stack.\n- Existing /memory page behavior (browser, search, delete) is unchanged.\n\n## Files to touch\n- /Users/zoop/.claude/tools/dashboard_query.py (add command)\n- /Users/zoop/binayah-iterate-dashboard/.env.local (add var)\n- /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/export/route.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/components/ObsidianExportButton.tsx (new)\n- /Users/zoop/binayah-iterate-dashboard/app/memory/page.tsx (mount the button)\n\n## Out of scope (Stage 2/3)\n- Pull-back from Obsidian to ChromaDB.\n- File watcher / auto-sync.\n- Run summaries or /obsidian dashboard page."
+    },
+    {
+      "id": "stage-2",
+      "name": "Pull back (Obsidian → ChromaDB) + Auto-sync watcher",
+      "status": "passed",
+      "demoPath": "1) Open http://localhost:3001/memory  2) Click 'Export to Obsidian' (Stage 1 button) to seed vault  3) In Obsidian (or any editor) edit one .md file body and save; create a brand-new .md file under iterate-memory/reference/ with frontmatter that has NO `id`; delete one .md file  4) Click new 'Pull from Obsidian' button  5) See result: '{updated:1, added:1, deleted:1, unchanged:N}'  6) Re-open /memory page — the edited memory shows new content, the new memory appears, the deleted one is gone  7) Verify auto-sync: with the dev server running, edit any .md and save — within ~3s the change is visible via the API without clicking Pull. Sync status badge on /memory shows lastSync time advanced.",
+      "spec": "## Why this will be good\nClosing the loop: edits in Obsidian flow back to ChromaDB automatically. User does not have to remember to click Pull. Production-ready: watcher debounces so a flurry of saves becomes one push, status badge shows whether the watcher is alive (so user trusts it), Pull button is the explicit fallback. Benchmark: Obsidian Sync — invisible when working, visible status when you look.\n\n## Goal\nAdd `pull-obsidian` and `sync-watch` sidecar commands; add `/api/obsidian/pull` and `/api/obsidian/status` routes; spawn the watcher from Next.js `instrumentation.ts`; add Pull button + sync status badge to /memory.\n\n## Sidecar additions — /Users/zoop/.claude/tools/dashboard_query.py\n\n### `pull-obsidian <vault_path>`\n- Walk `<vault>/iterate-memory/**/*.md`.\n- For each file:\n  - Parse frontmatter (use a tiny inline parser — do NOT add a dependency; YAML in our files is flat key:value strings between leading `---` lines).\n  - If frontmatter has `id` and that id exists in some ChromaDB collection: compare body (file content after frontmatter, stripped) with current `documents[0]` for that id. If different, call `collection.update(ids=[id], documents=[body])` and increment `updated`. Else `unchanged`.\n  - If frontmatter has `id` but id is not found in any collection: treat as a stale file — do not re-add it (would re-introduce a memory the user deleted via the dashboard). Skip and increment `unchanged`. (We could also delete the file; do not, to be safe.)\n  - If frontmatter has NO `id` (a new file the user authored in Obsidian):\n    - Determine collection: prefer `mem0` if it exists, else first collection. Use the same collection-resolution logic as existing commands.\n    - Determine `type` from subfolder (parent dir name: feedback/reference/project/user). Default `reference`.\n    - Determine `name` from frontmatter `name` if present, else file basename without `.md`.\n    - Generate a new id via `uuid.uuid4().hex` (Python stdlib).\n    - `collection.add(ids=[new_id], documents=[body], metadatas=[{\"name\": name, \"type\": type, \"created_at\": now_iso}])`.\n    - Then rewrite the .md file in place with frontmatter populated (so the next pull treats it as known).\n    - Increment `added`.\n- Detect deletions: list every id currently in any ChromaDB collection. For each id, check whether ANY .md file under `<vault>/iterate-memory/` has that id in frontmatter. If none does AND the id was previously exported (i.e. has metadata.type or name pattern indicating it came from us — to be safe, only delete ids whose collection metadata indicates it was a markdown-tracked memory): delete from ChromaDB and increment `deleted`. SAFETY: only consider an id eligible for deletion if there is at least one .md file in the vault for the SAME collection (otherwise vault may be empty / new and we would wipe everything). If vault has zero .md files, skip deletion entirely and return `deleted: 0`.\n- Print `{\"updated\": N, \"added\": N, \"deleted\": N, \"unchanged\": N, \"vault\": \"<path>\"}`.\n\n### `sync-watch <vault_path>`\n- Use `watchdog` (`pip install watchdog` into `/Users/zoop/binayah-properties/venv` if not already there — the script can `import watchdog` and exit 1 with a clear error if missing; document the install command in the docstring).\n- Watch `<vault>/iterate-memory/` recursively for `.md` file events (created/modified/deleted).\n- Debounce: collect events for 2 seconds of quiet, then run the same pull logic as `pull-obsidian` and print one JSON line per sync to stdout: `{\"event\": \"sync\", \"updated\": N, \"added\": N, \"deleted\": N, \"unchanged\": N, \"at\": iso}`. Also write the same JSON to `<vault>/.sync-status.json` (single object, overwritten each sync, plus a top-level `pid` and `started_at`).\n- Run forever; on SIGTERM/SIGINT exit cleanly.\n- This is a foreground process — the caller (Next.js instrumentation) is responsible for spawning and reaping.\n\n## API routes\n\n### POST /api/obsidian/pull — app/api/obsidian/pull/route.ts\nMirror the export route exactly (read OBSIDIAN_VAULT_PATH, execFile sidecar with `[\"pull-obsidian\", vaultPath]`, timeout 60_000ms). Return parsed JSON.\n\n### GET /api/obsidian/status — app/api/obsidian/status/route.ts\n- Read OBSIDIAN_VAULT_PATH.\n- Read `<vault>/.sync-status.json` if it exists (last sync info + pid).\n- Check whether that pid is alive (`process.kill(pid, 0)` in a try/catch — do this in Node, not via shell).\n- Count .md files under `<vault>/iterate-memory/` (use Node `fs` recursively; small dir, fine).\n- Return `{ vaultPath, lastSync: iso|null, watcherRunning: boolean, watcherPid: number|null, memoryCount: number, lastSyncStats: { updated, added, deleted, unchanged } | null }`.\n- If vault path unset or vault missing: `{ ok: false, error }` with sane defaults so UI does not crash.\n\n## Watcher bootstrap — /Users/zoop/binayah-iterate-dashboard/instrumentation.ts\nCreate `instrumentation.ts` at the app root (Next.js 15 reads this automatically). Implementation:\n- Export `async function register()`.\n- Only run on `process.env.NEXT_RUNTIME === 'nodejs'`.\n- If `process.env.OBSIDIAN_VAULT_PATH` is unset, log a warning and return.\n- Spawn the watcher: `child_process.spawn(VENV_PYTHON, [SIDECAR, 'sync-watch', vaultPath], { detached: false, stdio: ['ignore', 'pipe', 'pipe'] })`.\n- Use a module-level singleton (`globalThis.__obsidianWatcher`) so HMR / repeated `register()` calls do not spawn duplicates — if the singleton exists and the pid is alive, reuse it.\n- Pipe child stdout/stderr to `console.log`/`console.error` prefixed with `[obsidian-watch]` so it shows in the dev server logs.\n- On `process.on('exit')` and `SIGINT`/`SIGTERM`, kill the child.\n- Note: Next.js may need `experimental.instrumentationHook = true` in `next.config.ts` for older minor versions — check what version is in package.json (15.5.x) and add the flag only if required by the docs for that version. If unneeded, do not add.\n\n## UI — /memory page additions\n- Create `/Users/zoop/binayah-iterate-dashboard/components/ObsidianPullButton.tsx` (`\"use client\"`) symmetrical to the export button. POSTs to `/api/obsidian/pull`, shows result text \"Updated: X · Added: Y · Deleted: Z\".\n- Create `/Users/zoop/binayah-iterate-dashboard/components/ObsidianSyncBadge.tsx` (`\"use client\"`). On mount and every 10s, GETs `/api/obsidian/status` and renders a small pill: green dot + \"Watching · last sync 14s ago\" when watcher is up, gray dot + \"Watcher offline\" when not, with the memory count next to it. Tooltip / title attribute shows the resolved vault path. Reuse styling vocabulary from existing badges (look at `KpiCard`, `HealthCard` for inspiration). DEV decides exact classes; intent: tiny, glanceable, matches the calm aesthetic of the rest of the dashboard.\n- Mount Pull button next to Export button in /memory header. Mount sync badge in the header description row (right of the entry-count text).\n\n## Acceptance criteria\n- Editing a .md file body in the vault and saving causes the change to appear on /memory within ~3 seconds (no manual click).\n- Adding a new .md file under iterate-memory/reference/ with no `id` frontmatter results in a new ChromaDB entry AND the file is rewritten with `id` populated.\n- Deleting a .md file removes the corresponding ChromaDB entry on next sync (export-then-delete flow).\n- Clicking Pull explicitly returns a correct `{updated, added, deleted, unchanged}` summary.\n- Sync badge on /memory shows watcher status and last-sync time, refreshed automatically.\n- Killing the dev server kills the watcher (no orphan Python processes — `ps aux | grep sync-watch` returns nothing after Ctrl+C).\n- Empty vault edge case: pull on an empty vault returns `{updated:0, added:0, deleted:0, unchanged:N}` — does NOT delete all ChromaDB entries.\n\n## Files to touch\n- /Users/zoop/.claude/tools/dashboard_query.py (add 2 commands)\n- /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/pull/route.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/status/route.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/instrumentation.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/next.config.ts (only if instrumentation flag needed for this Next version)\n- /Users/zoop/binayah-iterate-dashboard/components/ObsidianPullButton.tsx (new)\n- /Users/zoop/binayah-iterate-dashboard/components/ObsidianSyncBadge.tsx (new)\n- /Users/zoop/binayah-iterate-dashboard/app/memory/page.tsx (mount Pull + Badge)\n\n## Pre-flight\n- Install watchdog: `/Users/zoop/binayah-properties/venv/bin/pip install watchdog` (do this from terminal before running watcher).\n\n## Out of scope (Stage 3)\n- Run summaries, Dataview plugin, /obsidian page."
+    },
+    {
+      "id": "stage-3",
+      "name": "Run summaries + /obsidian dashboard page",
+      "status": "passed",
+      "demoPath": "1) Trigger or simulate a completed iterate run so a state.json with phase=done exists  2) Within ~3s, a new file appears at ~/obsidian-vaults/binayah-brain/runs/YYYY-MM-DD-<task-slug>.md (auto-written by watcher hook)  3) Open http://localhost:3001/obsidian  4) See vault health card (memory count, last sync, watcher dot), 'Open in Obsidian' button, and a list of last 10 run summaries with task titles + outcomes  5) Click 'Open in Obsidian' — Obsidian launches and opens the binayah-brain vault  6) Click a run-summary row — navigates or opens the .md (acceptable: opens via `obsidian://open?vault=binayah-brain&file=runs/...`).",
+      "spec": "## Why this will be good\nGives the vault a purpose beyond raw memory dump — every run leaves a paper trail the user can search later in Obsidian (e.g. \"every time we touched favorites\"). Production-ready: handles 0 runs gracefully, page works even if vault is missing (clear empty state), Dataview install is optional (page does not break without it). Benchmark: Linear's project-history sidebar — dense, scannable, each row tells a story.\n\n## Goal\nAuto-write run summaries on iterate completion, ship a minimal Dataview plugin install + vault README, add a new /obsidian page to the dashboard.\n\n## Sidecar — add `write-run-summary <vault_path> <state_json_path>`\nIn /Users/zoop/.claude/tools/dashboard_query.py:\n- Read the state JSON from path.\n- Build slug from `state.task` (first 60 chars, same slug rule as Stage 1).\n- Date prefix: today's date in `YYYY-MM-DD`. Filename: `<vault>/runs/<date>-<slug>.md`.\n- Body (markdown):\n  ```\n  ---\n  task: \"<task first 200 chars>\"\n  date: \"<iso>\"\n  outcome: \"<pmDecision>\"\n  stages_completed: <n>\n  qa_bugs: <count>\n  ---\n\n  # <task short title>\n\n  **Outcome:** <pmDecision>  \n  **Stages:** <currentStage>/<totalStages>  \n  **Iterations this stage:** <stageIteration>\n\n  ## Stages\n  - For each entry in stageHistory: name, status, summary line if present.\n\n  ## QA findings\n  - Bullet each item from qaReport.bugs (or qaReport.issues), include severity if present.\n\n  ## Reviewer findings\n  - Bullet each from reviewerReport.findings if present.\n\n  ## Lessons / context gaps\n  - From state.contextGaps if present.\n  ```\n- Skip gracefully if state JSON is missing fields — omit empty sections rather than crash.\n- Print `{\"written\": \"<filepath>\", \"task\": \"<task>\"}` JSON.\n- Mkdir -p `<vault>/runs/` first.\n\n## Watcher hook — sync-watch enhancement\nExtend the `sync-watch` command from Stage 2: in addition to watching `iterate-memory/`, also watch `/Users/zoop/binayah-properties/.iterate/state.json` for modifications. On change, read the file, and if `phase == \"done\"` AND we have not already written a summary for this run (track by `task + startedAt` in an in-memory set across the watcher's lifetime), call the same logic as `write-run-summary` for the current state and the same vault path. This means run summaries appear automatically as iterate runs complete while the dashboard dev server is up.\n- Also expose `write-run-summary` as a manual sidecar command for one-off use.\n\n## Vault polish\n- Create `~/obsidian-vaults/binayah-brain/README.md` describing the structure: `iterate-memory/<type>/` for synced memories (auto-managed, edit freely), `runs/` for per-run summaries (auto-written, do not edit), how to use Dataview to query (`LIST FROM \"iterate-memory\" WHERE type = \"feedback\"`).\n- Install Dataview plugin minimally: create `~/obsidian-vaults/binayah-brain/.obsidian/community-plugins.json` with `[\"dataview\"]` and create `~/obsidian-vaults/binayah-brain/.obsidian/plugins/dataview/` directory with a placeholder `manifest.json` so the directory exists. Note in README that user must enable community plugins + install Dataview from Obsidian's plugin browser the first time — we cannot auto-install third-party plugin code from the filesystem alone, but the config primes it. Do this safely: do nothing if the .obsidian directory has user-modified files we would clobber.\n\n## API routes\n\n### GET /api/obsidian/runs — app/api/obsidian/runs/route.ts\n- Read OBSIDIAN_VAULT_PATH.\n- List `<vault>/runs/*.md` (Node `fs.readdir`), parse frontmatter for each (small inline parser, mirror the sidecar's), return `{ runs: [{ filename, task, date, outcome, stages_completed, qa_bugs }] }` sorted by date desc, limit 10.\n- Empty / missing vault: return `{ runs: [] }` with an `empty: true` flag and no error so the UI can show a friendly empty state.\n\n## /obsidian page — app/obsidian/page.tsx\nServer component. Fetches `/api/obsidian/status` and `/api/obsidian/runs` (call them via the same `execFile` pattern, or via `fetch` to localhost — prefer direct sidecar calls for SSR speed, mirroring how `app/memory/page.tsx` does it).\n- Layout (3 sections, top to bottom):\n  1. **Vault health card** — large card showing: memory count, last sync time (relative — reuse `lib/relative-time.ts`), watcher status dot (green = running, gray = offline), vault path in muted small text. \"Open in Obsidian\" button on the right — client component that does `window.location.href = 'obsidian://open?vault=binayah-brain'`.\n  2. **Recent runs** — list of last 10 run summaries. Each row: date, task title (truncated), outcome badge (ship/blocked/etc with appropriate color), stages count, QA bug count. Row clickable: opens `obsidian://open?vault=binayah-brain&file=runs/<filename without .md>`.\n  3. **Empty state** if zero runs: friendly message \"No runs recorded yet — the next completed iterate run will appear here.\"\n- Match aesthetic of existing pages (use `GlassCard`, color/spacing vocabulary from `app/page.tsx`, `app/analytics/page.tsx`). DEV picks classes; intent: calm, dense, scannable.\n\n## Sidebar nav — components/Sidebar.tsx\nInsert a new nav item between Memory and Graph:\n```\n{ href: \"/obsidian\", label: \"Obsidian\", icon: \"◈\" }\n```\nKeep the icon style consistent with existing items.\n\n## Acceptance criteria\n- A completed iterate run (state.json with phase=done) auto-produces a `~/obsidian-vaults/binayah-brain/runs/YYYY-MM-DD-<slug>.md` file within ~3s of state save.\n- Running `write-run-summary` manually on an existing state JSON produces the same file (idempotent: same filename, overwrites).\n- /obsidian page renders without errors when: vault is empty, vault is missing, watcher is off, runs folder has 0 / 1 / 50 entries.\n- Sidebar shows Obsidian item between Memory and Graph; active state highlights when on /obsidian.\n- \"Open in Obsidian\" button launches Obsidian to the correct vault on macOS.\n- README in vault root explains the structure clearly enough that someone opening the vault for the first time understands what is auto-managed vs hand-edited.\n\n## Files to touch\n- /Users/zoop/.claude/tools/dashboard_query.py (add `write-run-summary`, extend `sync-watch` to watch state.json)\n- /Users/zoop/obsidian-vaults/binayah-brain/README.md (new)\n- /Users/zoop/obsidian-vaults/binayah-brain/.obsidian/community-plugins.json (new)\n- /Users/zoop/obsidian-vaults/binayah-brain/.obsidian/plugins/dataview/manifest.json (placeholder)\n- /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/runs/route.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/app/obsidian/page.tsx (new)\n- /Users/zoop/binayah-iterate-dashboard/components/ObsidianOpenButton.tsx (new client component for the open-in-obsidian button)\n- /Users/zoop/binayah-iterate-dashboard/components/Sidebar.tsx (add nav item)\n\n## Out of scope\n- Bidirectional sync of run summary edits (runs/ is auto-write only).\n- Dataview auto-install of plugin code (user enables manually first run).\n- Multi-vault support."
+    }
+  ],
+  "currentStage": 3,
+  "totalStages": 3,
+  "stageIteration": 1,
+  "maxIterationsPerStage": 3,
+  "phase": "done",
+  "plannerOutput": {
+    "taskSummary": "Build Obsidian memory sync for iterate dashboard — ChromaDB memories become editable markdown files in an Obsidian vault",
+    "confirmedScope": "3 stages: (1) Foundation + Export ChromaDB→Obsidian, (2) Pull back + auto-sync Obsidian→ChromaDB, (3) Run summaries + /obsidian dashboard page",
+    "totalStages": 3,
+    "gotchas": [
+      "Obsidian not installed — brew install --cask obsidian first",
+      "dashboard_query.py sidecar at /Users/zoop/.claude/tools/dashboard_query.py — add new commands there",
+      "venv at /Users/zoop/.claude/tools/venv/bin/python3 — install watchdog into it",
+      "Vault path stored in OBSIDIAN_VAULT_PATH env var in dashboard .env.local",
+      "noDeploy=true — local tool only, no Vercel push"
+    ],
+    "skippedPlanner": true
+  },
+  "plan": "## Why this will be good\nMakes ChromaDB memories editable in a real tool (Obsidian) instead of trapped behind a sidecar. Export is one-click, idempotent, overwrites cleanly so re-running does not produce dupes. Production-ready: handles vault-not-exists by creating it, handles missing OBSIDIAN_VAULT_PATH with a clear error, shows count in UI so user sees confirmation. Benchmark: think Logseq/Obsidian sync plugins — minimal config, transparent file layout, no surprises.\n\n## Goal\nStand up the Obsidian vault, add an OBSIDIAN_VAULT_PATH env var, add an `export-obsidian` sidecar command, expose it through a Next.js API route, and add an Export button to the existing /memory page.\n\n## Pre-flight (one-time, do these from the terminal before code changes)\n1. `brew install --cask obsidian` — if already installed, brew will say so; that is fine.\n2. `mkdir -p ~/obsidian-vaults/binayah-brain/iterate-memory/{feedback,reference,project,user}` and `mkdir -p ~/obsidian-vaults/binayah-brain/runs`\n3. Create `~/obsidian-vaults/binayah-brain/.obsidian/app.json` with minimal valid JSON (e.g. `{\"alwaysUpdateLinks\": true}`) so Obsidian recognises it as a vault.\n4. Append `OBSIDIAN_VAULT_PATH=/Users/zoop/obsidian-vaults/binayah-brain` to `/Users/zoop/binayah-iterate-dashboard/.env.local` (create the file if missing). Use the absolute expanded path — do not use `~`.\n\n## Sidecar command — add to /Users/zoop/.claude/tools/dashboard_query.py\nAdd a new subcommand `export-obsidian <vault_path>` alongside the existing `count`, `list`, `search`, `delete`, `update`, `growth` commands. Behavior:\n- Iterate every collection in ChromaDB (use the same `client.list_collections()` pattern as existing commands).\n- For each entry, derive:\n  - `id` — ChromaDB id\n  - `content` — prefer `documents[i]`, fall back to `metadata.data` then `metadata.text_lemmatized` (mirror how `app/memory/page.tsx::normalizeEntry` resolves content so we stay consistent).\n  - `name` — from `metadata.name` if present, else first 60 chars of content slugified.\n  - `type` — from `metadata.type` (one of feedback/reference/project/user). If absent, infer from name prefix (`feedback_*` → feedback, `reference_*` → reference, `project_*` → project, `user_*` → user). Default to `reference` if neither present.\n  - `collection` — collection name (e.g. mem0).\n  - `created_at` — from `metadata.created_at` / `createdAt` / `timestamp` if any; else null.\n- Slug rule: lowercase, replace any non `[a-z0-9]+` run with `-`, trim leading/trailing `-`, cap at 80 chars. If slug is empty, fall back to first 8 chars of `id`.\n- Filename: `<vault>/iterate-memory/<type>/<slug>.md`. If a different memory already wrote that filename in this run (collision), append `-<short_id>` to the slug.\n- File body: YAML frontmatter then content:\n  ```\n  ---\n  id: \"<id>\"\n  name: \"<name>\"\n  type: \"<type>\"\n  collection: \"<collection>\"\n  created_at: \"<iso or null>\"\n  ---\n\n  <content>\n  ```\n- Always overwrite existing files (this is a one-way export step — Stage 2 handles bidirectional).\n- Ensure the four type subfolders exist (mkdir -p) before writing.\n- Print `{\"exported\": N, \"vault\": \"<vault_path>\", \"by_type\": {\"feedback\": x, \"reference\": y, ...}}` as JSON on stdout, exit 0.\n- On vault path missing or unwritable: print `{\"error\": \"...\"}` to stderr and exit 1.\n- Update the docstring at top of the file to list the new command.\n\n## Next.js API route — /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/export/route.ts\nCreate the directory `app/api/obsidian/export/` and add `route.ts` (POST handler):\n- Reads `process.env.OBSIDIAN_VAULT_PATH`. If missing, return `{ ok: false, error: \"OBSIDIAN_VAULT_PATH not set in .env.local\" }` with status 400.\n- Spawns the sidecar via `execFile` using `VENV_PYTHON` and `SIDECAR` from `@/lib/iterate-paths` (same pattern as `app/memory/page.tsx`). Args: `[\"export-obsidian\", vaultPath]`. Timeout 60_000ms.\n- On success, parse stdout JSON, return `{ ok: true, ...result }`.\n- On non-zero exit or parse error, return `{ ok: false, error: stderr || message }` status 500.\n- Use Node runtime (`export const runtime = \"nodejs\"`).\n\n## UI — /Users/zoop/binayah-iterate-dashboard/app/memory/page.tsx and components\nAdd an Export button to the header row of `/memory`. Approach:\n- The page is a server component. The button needs to be a client component so it can call the API and show feedback. Create `/Users/zoop/binayah-iterate-dashboard/components/ObsidianExportButton.tsx` (`\"use client\"`). It owns local state `{ status: 'idle'|'running'|'ok'|'error', message: string }` and renders a button labeled \"Export to Obsidian\". On click it POSTs to `/api/obsidian/export` and shows inline result text next to the button: \"Exported 47 memories → ~/obsidian-vaults/binayah-brain\" (success) or the error message in red.\n- Place the button in the existing flex row of the page header (next to the title/description block) — do NOT introduce a new floating element. Style must match the existing aesthetic (white surface, subtle border, hover state). DEV chooses exact classes; reference the existing card/button patterns in `components/GlassCard.tsx`, `components/HealthCard.tsx`, and the Sidebar nav links to stay consistent.\n- Show the resolved vault path subtly under the button (or in tooltip) so user knows where files went.\n\n## Acceptance criteria\n- Running the export produces .md files under `~/obsidian-vaults/binayah-brain/iterate-memory/{feedback,reference,project,user}/` whose YAML frontmatter contains `id`, `name`, `type`, `collection`, `created_at`.\n- File count printed in UI matches `find ~/obsidian-vaults/binayah-brain/iterate-memory -name '*.md' | wc -l`.\n- Re-running export does not duplicate files (overwrite, not append).\n- Opening the vault in Obsidian shows files under their type folders, body renders as markdown.\n- If `OBSIDIAN_VAULT_PATH` is unset, the button shows a clear error — not a silent failure or 500 with a stack.\n- Existing /memory page behavior (browser, search, delete) is unchanged.\n\n## Files to touch\n- /Users/zoop/.claude/tools/dashboard_query.py (add command)\n- /Users/zoop/binayah-iterate-dashboard/.env.local (add var)\n- /Users/zoop/binayah-iterate-dashboard/app/api/obsidian/export/route.ts (new)\n- /Users/zoop/binayah-iterate-dashboard/components/ObsidianExportButton.tsx (new)\n- /Users/zoop/binayah-iterate-dashboard/app/memory/page.tsx (mount the button)\n\n## Out of scope (Stage 2/3)\n- Pull-back from Obsidian to ChromaDB.\n- File watcher / auto-sync.\n- Run summaries or /obsidian dashboard page.",
+  "diff": "",
+  "devReport": {
+    "commitSha": "7507ee6",
+    "filesChanged": [
+      "app/api/obsidian/runs/route.ts",
+      "app/obsidian/page.tsx",
+      "components/ObsidianOpenButton.tsx",
+      "components/Sidebar.tsx",
+      "/Users/zoop/.claude/tools/dashboard_query.py",
+      "/Users/zoop/obsidian-vaults/binayah-brain/README.md",
+      "/Users/zoop/obsidian-vaults/binayah-brain/.obsidian/community-plugins.json",
+      "/Users/zoop/obsidian-vaults/binayah-brain/.obsidian/plugins/dataview/manifest.json",
+      "/Users/zoop/obsidian-vaults/binayah-brain/.obsidian/plugins/dataview/data.json"
+    ],
+    "summary": "Stage 3: run summaries, /obsidian page, Dataview scaffold, state.json watcher hook in sync-watch",
+    "fixtureVerified": false,
+    "blocker": null,
+    "designBrief": {
+      "direction": "no aesthetic direction needed for this scope",
+      "hero": "Vault health card reuses GlassCard pattern — 4-column stat grid matching existing KpiCard vocabulary",
+      "cards": "GlassCard with divide-y row list for runs; each row: date + truncated task + outcome badge + stage count",
+      "interactions": "Rows are <a href=obsidian://...> links; hover bg-gray-50/80 matches existing list-hover pattern",
+      "copy": "Direct labels — 'Watching', 'Offline', 'No runs recorded yet'; outcome chips say Shipped/Aborted",
+      "benchmark": "Linear project-history sidebar — dense, scannable, each row tells a story"
+    },
+    "selfGrade": [
+      {
+        "action": "Add write-run-summary sidecar command",
+        "done": true,
+        "evidence": "dashboard_query.py cmd_write_run_summary() at line 662, dispatched in main() at line 1079"
+      },
+      {
+        "action": "Extend sync-watch to watch state.json for phase=done",
+        "done": true,
+        "evidence": "dashboard_query.py StateJsonHandler + check_state_json_for_done() wired into Observer at line 993"
+      },
+      {
+        "action": "Dataview plugin scaffold in vault .obsidian/",
+        "done": true,
+        "evidence": "community-plugins.json, plugins/dataview/manifest.json + data.json created on disk"
+      },
+      {
+        "action": "Vault README.md",
+        "done": true,
+        "evidence": "obsidian-vaults/binayah-brain/README.md created with structure + Dataview query examples"
+      },
+      {
+        "action": "GET /api/obsidian/runs route",
+        "done": true,
+        "evidence": "app/api/obsidian/runs/route.ts — reads runs/*.md, parses frontmatter, sorts desc, limit 20"
+      },
+      {
+        "action": "/obsidian page with vault health + recent runs",
+        "done": true,
+        "evidence": "app/obsidian/page.tsx — server component, direct fs reads, GlassCard layout"
+      },
+      {
+        "action": "ObsidianOpenButton component",
+        "done": true,
+        "evidence": "components/ObsidianOpenButton.tsx — obsidian://open?vault= link"
+      },
+      {
+        "action": "Sidebar Obsidian nav item between Memory and Graph",
+        "done": true,
+        "evidence": "components/Sidebar.tsx NAV_ITEMS — /obsidian between /memory and /graph"
+      },
+      {
+        "action": "tsc --noEmit passes",
+        "done": true,
+        "evidence": "no output = clean"
+      }
+    ]
+  },
+  "reviewerReport": {
+    "passed": true,
+    "findings": [
+      {
+        "severity": "minor",
+        "category": "pattern",
+        "file": "app/api/obsidian/runs/route.ts",
+        "line": 24,
+        "issue": "parseFrontmatter is duplicated identically in runs/route.ts and app/obsidian/page.tsx — consider extracting to lib/parse-frontmatter.ts",
+        "suggestedFix": "Move to a shared lib file; both callers import from there"
+      }
+    ],
+    "summary": "All clear: no path traversal, malformed-frontmatter guarded, tsc clean, scope fully delivered. Minor: duplicated parseFrontmatter helper."
+  },
+  "qaReport": {
+    "passed": true,
+    "tested": [
+      "sidebar nav item: Obsidian between Memory and Graph",
+      "/obsidian page: vault health card, Open in Obsidian button, recent runs list",
+      "vault README.md: structure docs + Dataview examples",
+      "Dataview scaffold: community-plugins.json + plugins/dataview/manifest.json + data.json",
+      "write-run-summary sidecar: creates .md in runs/ with frontmatter + sections",
+      "/api/obsidian/runs: returns the created run file with correct shape",
+      "/memory page regression: Export + Pull buttons present, sync badge present",
+      "/ overview regression: loads 200",
+      "mobile viewport 390x844: /obsidian renders cleanly, no overflow"
+    ],
+    "bugs": [
+      {
+        "severity": "minor",
+        "category": "functional",
+        "principle": null,
+        "description": "Backslash-escaped quotes in YAML frontmatter are not unescaped by the parseFrontmatter helper, so task titles containing \\\"quoted words\\\" render literally with backslashes in the UI (e.g. '\\\"Marina Gate 1\\\"' instead of '\"Marina Gate 1\"')",
+        "reproSteps": "1. Navigate to http://localhost:3001/obsidian  2. Look at the run row task text  3. See '\\\"Marina Gate 1\\\"' with visible backslashes",
+        "expected": "Quotes render as plain double-quote characters: \"Marina Gate 1\"",
+        "actual": "Backslash-escaped quotes are visible: \\\"Marina Gate 1\\\"",
+        "file": "app/obsidian/page.tsx (parseFrontmatter) + app/api/obsidian/runs/route.ts (parseFrontmatter)"
+      }
+    ],
+    "designChecked": true,
+    "designSkipReason": null,
+    "benchmarkScores": [
+      {
+        "surface": "/obsidian",
+        "rating": "AT BAR",
+        "comparedTo": "Linear project-history sidebar — dense, scannable, each row tells a story"
+      }
+    ],
+    "consoleErrors": [],
+    "screenshots": [
+      "/tmp/qa-sidebar.png",
+      "/tmp/qa-obsidian-page.png",
+      "/tmp/qa-obsidian-mobile.png"
+    ],
+    "regressions": [],
+    "viewportsTested": [
+      "desktop",
+      "mobile"
+    ],
+    "blocker": null,
+    "testManifest": {
+      "/": {
+        "testedInStage": 3,
+        "testedInIter": 1,
+        "testedAfterSha": "7507ee69d203901dc0194d5164a845fe7f27ee58",
+        "diffFiles": [
+          "components/Sidebar.tsx"
+        ],
+        "passedAt": "2026-04-28T15:30:00Z"
+      },
+      "/memory": {
+        "testedInStage": 3,
+        "testedInIter": 1,
+        "testedAfterSha": "7507ee69d203901dc0194d5164a845fe7f27ee58",
+        "diffFiles": [
+          "components/Sidebar.tsx"
+        ],
+        "passedAt": "2026-04-28T15:30:00Z"
+      },
+      "/obsidian": {
+        "testedInStage": 3,
+        "testedInIter": 1,
+        "testedAfterSha": "7507ee69d203901dc0194d5164a845fe7f27ee58",
+        "diffFiles": [
+          "app/obsidian/page.tsx",
+          "app/api/obsidian/runs/route.ts",
+          "components/ObsidianOpenButton.tsx",
+          "components/Sidebar.tsx"
+        ],
+        "passedAt": "2026-04-28T15:30:00Z"
+      }
+    }
+  },
+  "liveTestReport": null,
+  "pmDecision": "ship",
+  "summary": "Obsidian memory sync built in 3 stages. 309 memories exported to ~/obsidian-vaults/binayah-brain/. Live watcher syncs edits back to ChromaDB. Run summaries auto-written on iterate completion. /obsidian dashboard page live at http://localhost:3001/obsidian",
+  "securitySensitive": false,
+  "history": [],
+  "stageHistory": [
+    {
+      "stage": 1,
+      "summary": "Obsidian vault created, export-obsidian sidecar, /api/obsidian/export route, Export button on /memory — 309 memories exported",
+      "passedAt": "2026-04-28T09:47:58Z",
+      "commitSha": "8b75ba7"
+    },
+    {
+      "stage": 2,
+      "summary": "pull-obsidian + sync-watch sidecar, instrumentation.ts watcher auto-start, Pull button + sync badge on /memory",
+      "passedAt": "2026-04-28T10:17:37Z",
+      "commitSha": "ae61cbd"
+    },
+    {
+      "stage": 3,
+      "summary": "/obsidian page (vault health + run summaries + Open in Obsidian), write-run-summary sidecar, state.json watcher auto-writes on done, Dataview scaffold, vault README",
+      "passedAt": "2026-04-28T10:29:33Z",
+      "commitSha": "7507ee6"
+    }
+  ],
+  "regressionSweepDone": true,
+  "startedAt": "2026-04-28T15:00:00Z",
+  "devServerPid": null,
+  "screenshotsUsed": 0,
+  "pushedSha": null,
+  "vercelDeployUrl": null,
+  "testFixture": null,
+  "metricsLog": ".iterate/metrics.jsonl",
+  "flags": {
+    "stages": 3,
+    "noDeploy": true,
+    "designRoute": "dev"
+  },
+  "loopContext": {
+    "designRoute": "dev",
+    "designRouteReason": "Internal dev tool, no end-user UX surface beyond admin dashboard pages — DEV can match the existing GlassCard/Sidebar aesthetic from reference."
+  }
+}

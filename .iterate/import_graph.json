@@ -68,6 +68,10 @@
     "src/components/Breadcrumbs.tsx": [
       "src/components/JsonLd.tsx"
     ],
+    "src/components/WeeklySubscribeForm.tsx": [
+      "src/lib/api.ts",
+      "src/hooks/use-toast.ts"
+    ],
     "src/components/FAQSection.tsx": [
       "src/components/JsonLd.tsx"
     ],
@@ -311,6 +315,13 @@
     ],
     "src/app/api/valuation/unlock/route.ts": [
       "src/lib/valuation-api.ts"
+    ],
+    "src/app/api/account/market-reports/route.ts": [
+      "src/lib/auth.ts",
+      "src/lib/api.ts"
+    ],
+    "src/app/api/pdf/pulse/route.ts": [
+      "src/lib/api.ts"
     ],
     "src/app/api/favorites/hydrate/route.ts": [
       "src/lib/auth.ts",
@@ -557,6 +568,17 @@
       "src/app/developers/[slug]/DeveloperDetailClient.tsx",
       "src/lib/api.ts"
     ],
+    "src/app/[locale]/account/market-reports/MarketReportsClient.tsx": [
+      "src/components/WeeklySubscribeForm.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/account/market-reports/page.tsx": [
+      "src/lib/auth.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/app/[locale]/account/market-reports/MarketReportsClient.tsx"
+    ],
     "src/app/[locale]/news/[slug]/loading.tsx": [
       "src/components/SkeletonCard.tsx"
     ],
@@ -620,6 +642,21 @@
       "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx",
       "src/lib/pulse-guides.ts"
     ],
+    "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx": [
+      "src/navigation.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/lib/api.ts",
+      "src/app/[locale]/pulse/unsubscribe/[token]/FeedbackChips.tsx"
+    ],
+    "src/app/[locale]/pulse/confirm/[token]/page.tsx": [
+      "src/navigation.ts",
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/lib/api.ts"
+    ],
     "src/app/[locale]/admin/inquiries/page.tsx": [
       "src/lib/mongodb.ts",
       "src/lib/admin-auth.ts",
@@ -682,6 +719,7 @@
       "src/context/SubscriptionsContext.tsx",
       "src/context/FavoritesContext.tsx",
       "src/components/NewsletterStrip.tsx",
+      "src/components/WeeklySubscribeForm.tsx",
       "src/components/NotificationsBell.tsx",
       "src/components/ui/toaster.tsx",
       "src/components/ui/use-toast.ts",
@@ -695,6 +733,7 @@
       "src/components/FeaturedProperties.tsx",
       "src/components/OffPlanSection.tsx",
       "src/components/PropertyMatcher.tsx",
+      "src/components/WeeklySubscribeForm.tsx",
       "src/components/FavoritesDrawer.tsx",
       "src/components/AIChatWidget.tsx",
       "src/components/HeroSection.tsx",
@@ -708,6 +747,8 @@
       "src/app/off-plan/OffPlanPageClient.tsx",
       "src/app/developers/DevelopersPageClient.tsx",
       "src/app/developers/[slug]/page.tsx",
+      "src/app/api/account/market-reports/route.ts",
+      "src/app/api/pdf/pulse/route.ts",
       "src/app/api/favorites/hydrate/route.ts",
       "src/app/project/[slug]/ProjectDetailClient.tsx",
       "src/app/admin/project-import/page.tsx",
@@ -724,12 +765,15 @@
       "src/app/[locale]/buy/page.tsx",
       "src/app/[locale]/developers/page.tsx",
       "src/app/[locale]/developers/[slug]/page.tsx",
+      "src/app/[locale]/account/market-reports/MarketReportsClient.tsx",
       "src/app/[locale]/news/[slug]/page.tsx",
       "src/app/[locale]/project/[slug]/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/compare/CompareClient.tsx",
       "src/app/[locale]/pulse/compare/page.tsx",
       "src/app/[locale]/pulse/trending/page.tsx",
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx",
       "src/app/[locale]/communities/[slug]/page.tsx",
       "src/app/[locale]/property/[slug]/page.tsx",
       "src/app/[locale]/construction-updates/[slug]/page.tsx"
@@ -747,7 +791,9 @@
       "src/components/Navbar.tsx",
       "src/components/FavoritesDrawer.tsx",
       "src/components/NotificationsBell.tsx",
-      "src/app/[locale]/profile/ProfileClient.tsx"
+      "src/app/[locale]/profile/ProfileClient.tsx",
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
     ],
     "src/components/UserMenu.tsx": [
       "src/components/Navbar.tsx"
@@ -808,11 +854,14 @@
       "src/app/[locale]/profile/page.tsx",
       "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
       "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/account/market-reports/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/guides/page.tsx",
       "src/app/[locale]/pulse/compare/page.tsx",
       "src/app/[locale]/pulse/trending/page.tsx",
-      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx",
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
     ],
     "src/components/HeroSection.tsx": [
       "src/components/HomePageClient.tsx"
@@ -901,11 +950,14 @@
       "src/app/[locale]/profile/page.tsx",
       "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
       "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/account/market-reports/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/guides/page.tsx",
       "src/app/[locale]/pulse/compare/page.tsx",
       "src/app/[locale]/pulse/trending/page.tsx",
-      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx",
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
     ],
     "src/components/WhatsAppButton.tsx": [
       "src/components/CommunityInfoDetailClient.tsx",
@@ -931,11 +983,14 @@
       "src/app/[locale]/profile/page.tsx",
       "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
       "src/app/[locale]/services/ServicesPageClient.tsx",
+      "src/app/[locale]/account/market-reports/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/guides/page.tsx",
       "src/app/[locale]/pulse/compare/page.tsx",
       "src/app/[locale]/pulse/trending/page.tsx",
-      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx",
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
     ],
     "src/lib/communityScraper.ts": [
       "src/components/CommunityInfoDetailClient.tsx",
@@ -988,11 +1043,13 @@
       "src/app/api/profile/route.ts",
       "src/app/api/project-subscriptions/route.ts",
       "src/app/api/notifications/route.ts",
+      "src/app/api/account/market-reports/route.ts",
       "src/app/api/favorites/hydrate/route.ts",
       "src/app/api/auth/[...nextauth]/route.ts",
       "src/app/[locale]/list-your-property/page.tsx",
       "src/app/[locale]/admin/page.tsx",
       "src/app/[locale]/profile/page.tsx",
+      "src/app/[locale]/account/market-reports/page.tsx",
       "src/app/[locale]/admin/inquiries/page.tsx",
       "src/app/[locale]/admin/subscriptions/page.tsx",
       "src/app/[locale]/admin/submissions/page.tsx"
@@ -1177,6 +1234,12 @@
     "src/app/developers/DevelopersPageClient.tsx": [
       "src/app/[locale]/developers/page.tsx"
     ],
+    "src/components/WeeklySubscribeForm.tsx": [
+      "src/app/[locale]/account/market-reports/MarketReportsClient.tsx"
+    ],
+    "src/app/[locale]/account/market-reports/MarketReportsClient.tsx": [
+      "src/app/[locale]/account/market-reports/page.tsx"
+    ],
     "src/app/news/[slug]/NewsDetailClient.tsx": [
       "src/app/[locale]/news/[slug]/page.tsx"
     ],
@@ -1205,6 +1268,9 @@
     ],
     "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx": [
       "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+    ],
+    "src/app/[locale]/pulse/unsubscribe/[token]/FeedbackChips.tsx": [
+      "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx"
     ],
     "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": [
       "src/app/[locale]/admin/inquiries/page.tsx"
@@ -1264,6 +1330,9 @@
     "src/app/api/valuation/document/route.ts": "/api/valuation/document",
     "src/app/api/valuation/report/route.ts": "/api/valuation/report",
     "src/app/api/valuation/unlock/route.ts": "/api/valuation/unlock",
+    "src/app/api/og/pulse/route.tsx": "/api/og/pulse",
+    "src/app/api/account/market-reports/route.ts": "/api/account/market-reports",
+    "src/app/api/pdf/pulse/route.ts": "/api/pdf/pulse",
     "src/app/api/admin/signout/route.ts": "/api/admin/signout",
     "src/app/api/admin/session/route.ts": "/api/admin/session",
     "src/app/api/favorites/hydrate/route.ts": "/api/favorites/hydrate",
@@ -1324,6 +1393,8 @@
     "src/app/[locale]/developers/page.tsx": "/developers",
     "src/app/[locale]/developers/[slug]/loading.tsx": "/developers/[slug]/loading.tsx",
     "src/app/[locale]/developers/[slug]/page.tsx": "/developers/[slug]",
+    "src/app/[locale]/account/market-reports/MarketReportsClient.tsx": "/account/market-reports/MarketReportsClient.tsx",
+    "src/app/[locale]/account/market-reports/page.tsx": "/account/market-reports",
     "src/app/[locale]/news/[slug]/loading.tsx": "/news/[slug]/loading.tsx",
     "src/app/[locale]/news/[slug]/page.tsx": "/news/[slug]",
     "src/app/[locale]/project/[slug]/loading.tsx": "/project/[slug]/loading.tsx",
@@ -1338,6 +1409,9 @@
     "src/app/[locale]/pulse/trending/page.tsx": "/pulse/trending",
     "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx": "/pulse/guides/[slug]/GuideDetailClient.tsx",
     "src/app/[locale]/pulse/guides/[slug]/page.tsx": "/pulse/guides/[slug]",
+    "src/app/[locale]/pulse/unsubscribe/[token]/FeedbackChips.tsx": "/pulse/unsubscribe/[token]/FeedbackChips.tsx",
+    "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx": "/pulse/unsubscribe/[token]",
+    "src/app/[locale]/pulse/confirm/[token]/page.tsx": "/pulse/confirm/[token]",
     "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": "/admin/inquiries/InquiriesMobileList.tsx",
     "src/app/[locale]/admin/inquiries/page.tsx": "/admin/inquiries",
     "src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx": "/admin/subscriptions/SubscriptionsMobileList.tsx",
@@ -1353,6 +1427,6 @@
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-04-28T10:07:05.212731+00:00",
-  "fileCount": 241
+  "builtAt": "2026-04-28T11:33:02.547876+00:00",
+  "fileCount": 250
 }

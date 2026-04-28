@@ -85,3 +85,14 @@
 {"ts":"2026-04-28T10:04:09Z","stage":2,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
 {"ts":"2026-04-28T10:14:10Z","stage":2,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false}
 {"ts":"2026-04-28T10:14:39Z","stage":2,"iter":2,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-04-28T10:17:37Z","stage":2,"iter":2,"fromPhase":"qa","toPhase":"done","role":"qa","passed":true}
+{"ts":"2026-04-28T10:24:47Z","stage":3,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-04-28T10:26:10Z","stage":3,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
+{"ts":"2026-04-28T10:29:11Z","stage":3,"iter":1,"fromPhase":"qa","toPhase":"done","role":"qa","passed":true}
+{"ts":"2026-04-28T10:29:33Z","stage":3,"iter":1,"fromPhase":"qa","toPhase":"done","role":"orchestrator","passed":true}
+{"ts":"2026-04-28T10:32:58Z","stage":1,"iter":1,"fromPhase":"planner","toPhase":"pm","role":"orchestrator","passed":null,"note":"planner-skipped, plannerOutput pre-populated from conversation"}
+{"ts":"2026-04-28T10:43:11Z","stage":1,"iter":1,"fromPhase":"design","toPhase":"dev","role":"designer","passed":true}
+{"ts":"2026-04-28T11:08:00Z","stage":1,"iter":1,"fromPhase":"review","toPhase":"dev_review_fix","role":"reviewer","passed":false,"note":"2 fixed inline; 1 blocking (token expiry)"}
+{"ts":"2026-04-28T11:09:46Z","stage":1,"iter":1,"fromPhase":"dev_review_fix","toPhase":"qa","role":"orchestrator","passed":true,"note":"re-review skipped — 17-line surgical fix"}
+{"ts":"2026-04-28T11:24:16Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false,"note":"1 critical (pdfkit Helvetica path) + 5 major (design fidelity) + 4 minor"}
+{"ts":"2026-04-28T11:35:31Z","stage":1,"iter":2,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
