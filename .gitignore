@@ -78,3 +78,8 @@ src 3/
 .claude/iterate-state*.json
 .claude/iterate-devserver.pid
 .claude/iterate-abort
+
+# Playwright
+tests/e2e/screenshots/
+test-results/
+playwright-report/
