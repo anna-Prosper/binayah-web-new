@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
           height: "630px",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 60%, #0d4a34 100%)",
+          background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)",
           fontFamily: "Arial, sans-serif",
           position: "relative",
           overflow: "hidden",
