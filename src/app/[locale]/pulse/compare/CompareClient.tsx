@@ -275,8 +275,8 @@ export default function CompareClient({
         </div>
       )}
 
-      {/* ── Presets (shown when < 2 selected) ───────────────────── */}
-      {!showTable && (
+      {/* ── Presets (communities mode only, shown when < 2 selected) ─── */}
+      {!showTable && mode === "communities" && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

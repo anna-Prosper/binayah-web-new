@@ -38,7 +38,7 @@ export default function PulseSubNav() {
 
   return (
     <nav
-      className="sticky top-0 z-30 w-full bg-background/95 backdrop-blur-sm border-b border-border/50"
+      className="sticky top-[80px] z-30 w-full bg-background/95 backdrop-blur-sm border-b border-border/50"
       aria-label={t("navLabel")}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -49,7 +49,7 @@ export default function PulseSubNav() {
               <Link
                 key={id}
                 href={`/${locale}${href}`}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all min-h-[36px] flex-shrink-0 ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all min-h-[44px] flex-shrink-0 ${
                   active
                     ? "text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"

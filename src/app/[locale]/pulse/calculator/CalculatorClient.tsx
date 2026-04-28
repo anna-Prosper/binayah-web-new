@@ -233,7 +233,7 @@ export default function CalculatorClient({
                       onClick={() => setPropType(pt)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                         propType === pt
-                          ? "text-white shadow-sm"
+                          ? "text-white shadow-sm hover:brightness-110 hover:shadow-md"
                           : "border border-border/60 bg-card text-muted-foreground hover:border-accent/40 hover:text-foreground"
                       }`}
                       style={propType === pt ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
@@ -254,7 +254,7 @@ export default function CalculatorClient({
                       onClick={() => setPurpose(p)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                         purpose === p
-                          ? "text-white shadow-sm"
+                          ? "text-white shadow-sm hover:brightness-110 hover:shadow-md"
                           : "border border-border/60 bg-card text-muted-foreground hover:border-accent/40 hover:text-foreground"
                       }`}
                       style={purpose === p ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
@@ -275,7 +275,7 @@ export default function CalculatorClient({
                       onClick={() => setFinancing(f)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                         financing === f
-                          ? "text-white shadow-sm"
+                          ? "text-white shadow-sm hover:brightness-110 hover:shadow-md"
                           : "border border-border/60 bg-card text-muted-foreground hover:border-accent/40 hover:text-foreground"
                       }`}
                       style={financing === f ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
