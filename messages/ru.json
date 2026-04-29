@@ -1591,7 +1591,10 @@
     "email": "Email",
     "save": "Сохранить",
     "saved": "Сохранено",
-    "share": "Поделиться"
+    "share": "Поделиться",
+    "compare": "Сравнить",
+    "comparing": "Сравнивается",
+    "loading": "Загрузка…"
   },
   "featuredPropertiesServer": {
     "viewAll": "Все объекты"

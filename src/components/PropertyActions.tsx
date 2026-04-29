@@ -257,7 +257,7 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
           className={`${base} ${cmpClasses}`}
         >
           <ArrowLeftRight className="h-3.5 w-3.5" />
-          {isCmp ? "Comparing" : "Compare"}
+          {isCmp ? t("comparing") : t("compare")}
         </button>
       )}
 

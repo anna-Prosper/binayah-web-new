@@ -1591,7 +1591,10 @@
     "email": "البريد الإلكتروني",
     "save": "حفظ",
     "saved": "محفوظ",
-    "share": "مشاركة"
+    "share": "مشاركة",
+    "compare": "مقارنة",
+    "comparing": "جارٍ المقارنة",
+    "loading": "جارٍ التحميل…"
   },
   "featuredPropertiesServer": {
     "viewAll": "عرض جميع العقارات"

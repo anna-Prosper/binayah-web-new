@@ -52,7 +52,9 @@ export default function PropertyComparison() {
         try {
           const res = await fetch(apiUrl(`/api/listings/${id}`));
           if (res.ok) {
-            results.push(await res.json());
+            const data = await res.json();
+            // API returns { listing, similarListings } — unwrap
+            results.push(data?.listing ?? data);
           }
         } catch {
           /* skip */
@@ -87,16 +89,16 @@ export default function PropertyComparison() {
 
   return (
     <>
-      {/* Floating bar */}
+      {/* Floating bar — sits above sticky mobile CTA (which is ~60px tall) */}
       {!open && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom">
+        <div className="fixed bottom-[72px] sm:bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom">
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 px-5 py-3 rounded-full text-white text-sm font-medium shadow-xl"
+            className="flex items-center gap-2 px-5 py-3 rounded-full text-white text-sm font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all"
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             <ArrowLeftRight className="h-4 w-4" />
-            {`${t("compareCount")} (${ids.length})`}
+            {t("compareCount")} ({ids.length})
           </button>
         </div>
       )}
@@ -134,7 +136,7 @@ export default function PropertyComparison() {
               {properties.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
                   <ArrowLeftRight className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                  <p className="text-sm">Loading properties...</p>
+                  <p className="text-sm">{t("loading")}</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">

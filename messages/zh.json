@@ -1597,7 +1597,10 @@
     "email": "邮箱",
     "save": "收藏",
     "saved": "已收藏",
-    "share": "分享"
+    "share": "分享",
+    "compare": "对比",
+    "comparing": "对比中",
+    "loading": "加载中…"
   },
   "featuredPropertiesServer": {
     "viewAll": "查看全部房源"

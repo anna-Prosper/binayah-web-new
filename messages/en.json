@@ -1591,7 +1591,10 @@
     "email": "Email",
     "save": "Save",
     "saved": "Saved",
-    "share": "Share"
+    "share": "Share",
+    "compare": "Compare",
+    "comparing": "Comparing",
+    "loading": "Loading…"
   },
   "featuredPropertiesServer": {
     "viewAll": "View All Properties"
