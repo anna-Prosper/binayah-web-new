@@ -3,9 +3,18 @@
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink } from "lucide-react";
+import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2 } from "lucide-react";
 import Link from "next/link";
 import { PulseGuide } from "@/lib/pulse-guides";
+
+// ── Static curated related areas (Dubai focus) ─────────────────────────────
+// TODO: Replace with dynamic DLD data from /api/dld/areas?limit=3 when embedded
+// stats blocks are added in a future iteration (deferred per diff-cap constraint).
+const CURATED_AREAS = [
+  { name: "Dubai Marina", slug: "dubai-marina" },
+  { name: "Downtown Dubai", slug: "downtown-dubai" },
+  { name: "Jumeirah Village Circle", slug: "jvc" },
+];
 
 // ── Simple markdown-lite renderer ─────────────────────────────────────────
 // Only supports: **bold**, paragraphs, # headings (lines starting with #),
@@ -25,19 +34,28 @@ function renderBody(text: string): React.ReactNode[] {
       continue;
     }
 
-    // Heading
+    // Heading — h1 > h2 > h3 hierarchy: explicit size overrides
+    if (line.startsWith("### ")) {
+      nodes.push(
+        <h3 key={i} className="text-base font-bold text-foreground mt-6 mb-2">
+          {line.slice(4)}
+        </h3>
+      );
+      i++;
+      continue;
+    }
     if (line.startsWith("## ")) {
       nodes.push(
-        <h3 key={i} className="text-lg font-bold text-foreground mt-7 mb-3">
+        <h2 key={i} className="text-xl font-bold text-foreground mt-8 mb-3 leading-snug">
           {line.slice(3)}
-        </h3>
+        </h2>
       );
       i++;
       continue;
     }
     if (line.startsWith("# ")) {
       nodes.push(
-        <h2 key={i} className="text-xl font-bold text-foreground mt-8 mb-3">
+        <h2 key={i} className="text-2xl sm:text-3xl font-bold text-foreground mt-10 mb-4 leading-tight">
           {line.slice(2)}
         </h2>
       );
@@ -228,6 +246,31 @@ export default function GuideDetailClient({ guide }: { guide: PulseGuide }) {
           </div>
         </motion.div>
       )}
+
+      {/* ── Related Areas footer ─────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-12 pt-8 border-t border-border/40"
+      >
+        <h2 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+          <Building2 className="h-4 w-4 text-accent" />
+          {t("relatedAreas")}
+        </h2>
+        <div className="grid grid-cols-3 gap-3">
+          {CURATED_AREAS.map((area) => (
+            <Link
+              key={area.slug}
+              href={`/${locale}/communities/${area.slug}`}
+              className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
+            >
+              <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{area.name}</p>
+              <ExternalLink className="h-3 w-3 text-muted-foreground/40 mt-1.5 group-hover:text-accent transition-colors" />
+            </Link>
+          ))}
+        </div>
+      </motion.div>
 
       {/* ── CTA ──────────────────────────────────────────────── */}
       <motion.div

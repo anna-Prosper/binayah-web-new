@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, Newspaper, Building2,
   Share2, Copy, MessageCircle, Check, ExternalLink,
-  BarChart3, RefreshCw,
+  BarChart3, RefreshCw, FileDown,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -143,11 +143,17 @@ export default function TrendingClient({
   const latest = monthly[monthly.length - 1] ?? null;
 
   // ── Share ─────────────────────────────────────────────────────────────
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "https://staging.binayahhub.com/pulse/trending";
-  const shareText = `Dubai Real Estate Trending\nLatest data: ${latest ? `${latest.count} transactions, ${AED(latest.avgPrice)} avg price` : "See full report"}\nvia Binayah Properties`;
+  const baseUrl = typeof window !== "undefined"
+    ? window.location.origin + "/pulse/trending"
+    : "https://staging.binayahhub.com/pulse/trending";
+  const waUrl   = `${baseUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=pulse-trending`;
+  const xUrl    = `${baseUrl}?utm_source=twitter&utm_medium=share&utm_campaign=pulse-trending`;
+  const liUrl   = `${baseUrl}?utm_source=linkedin&utm_medium=share&utm_campaign=pulse-trending`;
+  const copyUrlTrending = `${baseUrl}?utm_source=copy&utm_medium=share&utm_campaign=pulse-trending`;
+  const shareText = `Dubai Real Estate Trending\nLatest data: ${latest ? `${latest.count} transactions, ${AED(latest.avgPrice)} avg price` : "See full report"}\nvia Binayah Properties\n${waUrl}`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentUrl).then(() => {
+    navigator.clipboard.writeText(copyUrlTrending).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -366,7 +372,7 @@ export default function TrendingClient({
             {t("shareWhatsApp")}
           </a>
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(xUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 transition-colors border border-sky-200"
@@ -374,7 +380,7 @@ export default function TrendingClient({
             {t("shareX")}
           </a>
           <a
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(liUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-200"
@@ -388,6 +394,14 @@ export default function TrendingClient({
             {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
             {copied ? t("copied") : t("copyLink")}
           </button>
+          <a
+            href="/api/pdf/pulse"
+            download
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-muted text-foreground hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200 transition-colors border border-border"
+          >
+            <FileDown className="h-3.5 w-3.5" />
+            {t("savePdf")}
+          </a>
         </div>
       </motion.div>
     </div>

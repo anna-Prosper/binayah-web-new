@@ -1,13 +1,28 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Calculator, TrendingUp, DollarSign, Percent,
   Share2, Copy, MessageCircle, Mail, Check,
+  Info, FileDown,
 } from "lucide-react";
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  CartesianGrid, ReferenceLine, Legend,
+} from "recharts";
 import Link from "next/link";
+import CalculatorVerdict from "@/components/pulse/CalculatorVerdict";
+import { BENCHMARKS, benchmarkRoi5yr } from "@/lib/calculatorBenchmarks";
+import dynamic from "next/dynamic";
+import type { CalcSnapshot } from "@/components/pulse/CalculatorEmailModal";
+
+const CalculatorEmailModal = dynamic(
+  () => import("@/components/pulse/CalculatorEmailModal"),
+  { ssr: false }
+);
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -29,7 +44,6 @@ interface MarketData {
 type PropertyType = "apartment" | "villa" | "townhouse" | "studio";
 type Purpose = "rent" | "resell" | "live";
 type Financing = "cash" | "mortgage";
-type Rating = "strong" | "moderate" | "weak";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -41,15 +55,9 @@ const AED = (n: number) => {
 
 const pct = (n: number, decimals = 1) => `${n.toFixed(decimals)}%`;
 
-function getRating(yield_pct: number): Rating {
-  if (yield_pct >= 7) return "strong";
-  if (yield_pct >= 5) return "moderate";
-  return "weak";
-}
+// ── Inner component (needs useSearchParams) ────────────────────────────────
 
-// ── Main Component ─────────────────────────────────────────────────────────
-
-export default function CalculatorClient({
+function CalculatorInner({
   marketStats,
   marketData,
 }: {
@@ -57,38 +65,63 @@ export default function CalculatorClient({
   marketData: MarketData | null;
 }) {
   const t = useTranslations("pulseCalculator");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const yieldByArea = marketStats?.yieldByArea ?? [];
   const monthly = marketData?.transactions?.monthly ?? [];
 
-  // ── Inputs ──────────────────────────────────────────────────────────────
-  const [community, setCommunity] = useState(yieldByArea[0]?.area ?? "");
-  const [budget, setBudget] = useState(1_500_000);
+  // ── Initialise from URL params ─────────────────────────────────────────
+  const defaultCommunity = searchParams.get("community") ?? (yieldByArea[0]?.area ?? "");
+  const defaultBudget = Number(searchParams.get("price") ?? 1_500_000);
+  const defaultDown = Number(searchParams.get("downpct") ?? 20);
+
+  const [community, setCommunity] = useState(defaultCommunity);
+  const [budget, setBudget] = useState(defaultBudget);
   const [propType, setPropType] = useState<PropertyType>("apartment");
   const [purpose, setPurpose] = useState<Purpose>("rent");
   const [financing, setFinancing] = useState<Financing>("cash");
-  const [downPaymentPct, setDownPaymentPct] = useState(20);
+  const [downPaymentPct, setDownPaymentPct] = useState(defaultDown);
   const [copied, setCopied] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
-  // ── Derived data ─────────────────────────────────────────────────────────
+  // ── Sync URL state on input changes ───────────────────────────────────
+  const syncUrl = useCallback((
+    comm: string, budg: number, down: number
+  ) => {
+    const params = new URLSearchParams({
+      community: comm,
+      price: String(budg),
+      downpct: String(down),
+    });
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pathname, router]);
+
+  useEffect(() => {
+    syncUrl(community, budget, downPaymentPct);
+  }, [community, budget, downPaymentPct, syncUrl]);
+
+  // ── Derived data ───────────────────────────────────────────────────────
   const selectedArea = yieldByArea.find((a) => a.area === community);
   const grossYield = selectedArea?.yield ?? 0;
   const avgPpsf = marketStats?.priceByArea?.find((p) => p.area === community)?.price ?? 0;
 
-  // Growth rate: from first vs last monthly avgPpsf, annualised
   const growthRate = useMemo(() => {
     const validMonthly = monthly.filter((m) => m.avgPpsf > 0);
-    if (validMonthly.length < 2) return 0.04;
+    if (validMonthly.length < 2) return BENCHMARKS.dubaiProperty.annualRate;
     const first = validMonthly[0].avgPpsf;
     const last = validMonthly[validMonthly.length - 1].avgPpsf;
-    if (first <= 0) return 0.04;
+    if (first <= 0) return BENCHMARKS.dubaiProperty.annualRate;
     const totalGrowth = (last - first) / first;
     const numYears = validMonthly.length / 12;
     const annualised = totalGrowth / Math.max(numYears, 1 / 12);
-    return Math.max(0.04, annualised);
+    return Math.max(0.03, annualised);
   }, [monthly]);
 
-  // ── Outputs ──────────────────────────────────────────────────────────────
+  const hasLimitedData = monthly.filter((m) => m.avgPpsf > 0).length < 12;
+
+  // ── Outputs ────────────────────────────────────────────────────────────
   const outputs = useMemo(() => {
     const estimatedSqft = avgPpsf > 0 ? Math.round(budget / avgPpsf) : 0;
     const annualRental = grossYield > 0 ? budget * (grossYield / 100) : 0;
@@ -96,11 +129,14 @@ export default function CalculatorClient({
     const value3yr = budget * Math.pow(1 + growthRate, 3);
     const value5yr = budget * Math.pow(1 + growthRate, 5);
     const roi5yr = ((value5yr - budget) / budget) * 100;
-    const savingsRoi = (Math.pow(1.03, 5) - 1) * 100; // 3% APY savings
-    const sp500Roi = (Math.pow(1.08, 5) - 1) * 100;   // 8% APY S&P estimate
-    const rating = getRating(grossYield);
 
-    // If mortgage, effective invested capital is just the down payment
+    // Benchmark ROIs
+    const savingsRoi5yr = benchmarkRoi5yr(BENCHMARKS.uaeSavings.annualRate);
+    const sp500Roi5yr   = benchmarkRoi5yr(BENCHMARKS.sp500.annualRate);
+    const dubaiPropRoi5yr = benchmarkRoi5yr(
+      hasLimitedData ? BENCHMARKS.dubaiProperty.annualRate : growthRate
+    );
+
     const investedCapital = financing === "mortgage"
       ? budget * (downPaymentPct / 100)
       : budget;
@@ -113,35 +149,90 @@ export default function CalculatorClient({
       value3yr,
       value5yr,
       roi5yr,
-      savingsRoi,
-      sp500Roi,
-      rating,
+      // Benchmarks
+      savingsRoi5yr,
+      sp500Roi5yr,
+      dubaiPropRoi5yr,
       investedCapital,
     };
-  }, [budget, grossYield, growthRate, avgPpsf, financing, downPaymentPct]);
+  }, [budget, grossYield, growthRate, avgPpsf, financing, downPaymentPct, hasLimitedData]);
 
   const hasData = yieldByArea.length > 0;
 
-  // ── Share ─────────────────────────────────────────────────────────────────
-  const shareText = `Dubai Property Investment Calculator\nCommunity: ${community}\nBudget: ${AED(budget)}\nGross Yield: ${pct(outputs.grossYield)}\n5-Year Value: ${AED(outputs.value5yr)}\nvia Binayah Properties`;
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "https://staging.binayahhub.com/pulse/calculator";
+  // ── Projection chart data ─────────────────────────────────────────────
+  const projectionData = useMemo(() => {
+    const years = [0, 1, 2, 3, 4, 5, 7, 10];
+    return years.map((yr) => ({
+      year: `Yr ${yr}`,
+      property: Math.round(budget * Math.pow(1 + growthRate, yr)),
+      sp500: Math.round(budget * Math.pow(1 + BENCHMARKS.sp500.annualRate, yr)),
+      uaeSavings: Math.round(budget * Math.pow(1 + BENCHMARKS.uaeSavings.annualRate, yr)),
+      dubaiAvg: Math.round(budget * Math.pow(1 + BENCHMARKS.dubaiProperty.annualRate, yr)),
+    }));
+  }, [budget, growthRate]);
+
+  // ── Share helpers ──────────────────────────────────────────────────────
+  const baseUrl = typeof window !== "undefined"
+    ? `${window.location.origin}${pathname}`
+    : "https://staging.binayahhub.com/pulse/calculator";
+
+  const shareUrl = `${baseUrl}?community=${encodeURIComponent(community)}&price=${budget}&downpct=${downPaymentPct}&utm_source=whatsapp&utm_medium=share&utm_campaign=pulse-calculator`;
+  const copyUrl  = `${baseUrl}?community=${encodeURIComponent(community)}&price=${budget}&downpct=${downPaymentPct}&utm_source=copy&utm_medium=share&utm_campaign=pulse-calculator`;
+
+  const whatsAppText = [
+    `Looking at AED ${(budget / 1_000_000).toFixed(1)}M in ${community}.`,
+    `Calc says ${grossYield.toFixed(1)}% yield, +${outputs.roi5yr.toFixed(0)}% 5-yr appreciation.`,
+    shareUrl,
+  ].join("\n");
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentUrl).then(() => {
+    navigator.clipboard.writeText(copyUrl).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  const ratingColor = {
-    strong: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    moderate: "bg-amber-100 text-amber-700 border-amber-200",
-    weak: "bg-slate-100 text-slate-500 border-slate-200",
-  }[outputs.rating];
+  // ── Email snapshot ─────────────────────────────────────────────────────
+  const calcSnapshot: CalcSnapshot = {
+    community,
+    budget,
+    propType,
+    purpose,
+    financing,
+    downPaymentPct,
+    grossYield: outputs.grossYield,
+    netYield: outputs.netYield,
+    annualRental: outputs.annualRental,
+    value5yr: outputs.value5yr,
+    roi5yr: outputs.roi5yr,
+  };
+
+  // ── Legend chip (with tooltip) ─────────────────────────────────────────
+  function BenchmarkLegend({
+    label, color, source, dashed,
+  }: { label: string; color: string; source: string; dashed?: boolean }) {
+    return (
+      <div className="flex items-center gap-1.5 group relative cursor-default">
+        <div
+          className="w-7 h-0.5 flex-shrink-0"
+          style={{
+            background: color,
+            borderStyle: dashed ? "dashed" : "solid",
+            borderWidth: dashed ? "1px 0 0 0" : "2px 0 0 0",
+            borderColor: color,
+          }}
+        />
+        <span className="text-[11px] text-muted-foreground font-medium">{label}</span>
+        <div title={source} className="flex-shrink-0">
+          <Info className="h-3 w-3 text-muted-foreground/50 group-hover:text-muted-foreground transition-colors" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      {/* ── Hero ───────────────────────────────────────────────────── */}
+      {/* ── Hero ─────────────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -166,7 +257,7 @@ export default function CalculatorClient({
         </div>
       ) : (
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* ── Left: Inputs ─────────────────────────────────────────── */}
+          {/* ── Left: Inputs ──────────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -309,20 +400,13 @@ export default function CalculatorClient({
             </div>
           </motion.div>
 
-          {/* ── Right: Outputs ──────────────────────────────────────── */}
+          {/* ── Right: Outputs ────────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.15 }}
             className="space-y-4"
           >
-            {/* Rating badge */}
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-bold ${ratingColor}`}>
-              <TrendingUp className="h-3.5 w-3.5" />
-              {t(`rating_${outputs.rating}` as "rating_strong" | "rating_moderate" | "rating_weak")}
-              {" — "}{t("investmentRating")}
-            </div>
-
             {/* Main metrics */}
             <div className="grid grid-cols-2 gap-3">
               <MetricCard
@@ -352,6 +436,13 @@ export default function CalculatorClient({
               />
             </div>
 
+            {/* Verdict explainer */}
+            <CalculatorVerdict
+              rentalYield={outputs.grossYield}
+              fiveYrForecast={outputs.roi5yr}
+              sp500Roi={outputs.sp500Roi5yr}
+            />
+
             {/* Projected values */}
             <div className="bg-card border border-border/50 rounded-2xl p-5">
               <h3 className="font-bold text-sm text-foreground mb-4">{t("projectedValue")}</h3>
@@ -361,7 +452,122 @@ export default function CalculatorClient({
               </div>
             </div>
 
-            {/* Comparison strip */}
+            {/* Benchmark comparison chart */}
+            <div className="bg-card border border-border/50 rounded-2xl p-5">
+              <h3 className="font-bold text-sm text-foreground mb-3">{t("benchmarkChartTitle")}</h3>
+
+              {/* Legend */}
+              <div className="flex flex-wrap gap-3 mb-4">
+                <BenchmarkLegend
+                  label={t("benchmarkProperty")}
+                  color="#10B981"
+                  source={hasLimitedData ? t("benchmarkPropertyLimitedSrc") : t("benchmarkPropertySrc")}
+                  dashed={false}
+                />
+                <BenchmarkLegend
+                  label={BENCHMARKS.dubaiProperty.label}
+                  color={BENCHMARKS.dubaiProperty.color}
+                  source={BENCHMARKS.dubaiProperty.source}
+                  dashed={false}
+                />
+                <BenchmarkLegend
+                  label={BENCHMARKS.sp500.label}
+                  color={BENCHMARKS.sp500.color}
+                  source={BENCHMARKS.sp500.source}
+                  dashed
+                />
+                <BenchmarkLegend
+                  label={BENCHMARKS.uaeSavings.label}
+                  color={BENCHMARKS.uaeSavings.color}
+                  source={BENCHMARKS.uaeSavings.source}
+                  dashed
+                />
+              </div>
+
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={projectionData} margin={{ top: 4, right: 8, left: 8, bottom: 4 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.4} />
+                  <XAxis dataKey="year" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                  <YAxis
+                    tickFormatter={(v: number) => `${(v / 1_000_000).toFixed(1)}M`}
+                    tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                    width={48}
+                  />
+                  <Tooltip
+                    formatter={(value: number, name: string) => [AED(value), name]}
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
+                  />
+                  {/* Your property */}
+                  <Line
+                    type="monotone"
+                    dataKey="property"
+                    stroke="#10B981"
+                    strokeWidth={2.5}
+                    dot={false}
+                    name={t("benchmarkProperty")}
+                  />
+                  {/* Dubai property avg benchmark */}
+                  <Line
+                    type="monotone"
+                    dataKey="dubaiAvg"
+                    stroke={BENCHMARKS.dubaiProperty.color}
+                    strokeWidth={1.5}
+                    dot={false}
+                    name={BENCHMARKS.dubaiProperty.label}
+                  />
+                  {/* S&P 500 benchmark — dashed */}
+                  <Line
+                    type="monotone"
+                    dataKey="sp500"
+                    stroke={BENCHMARKS.sp500.color}
+                    strokeWidth={1.5}
+                    strokeDasharray="8 4"
+                    dot={false}
+                    name={BENCHMARKS.sp500.label}
+                  />
+                  {/* UAE Savings benchmark — dotted */}
+                  <Line
+                    type="monotone"
+                    dataKey="uaeSavings"
+                    stroke={BENCHMARKS.uaeSavings.color}
+                    strokeWidth={1.5}
+                    strokeDasharray="3 3"
+                    dot={false}
+                    name={BENCHMARKS.uaeSavings.label}
+                  />
+                  {/* 3-yr and 5-yr projection markers */}
+                  <ReferenceLine
+                    x="Yr 3"
+                    stroke="hsl(var(--muted-foreground))"
+                    strokeDasharray="4 4"
+                    strokeOpacity={0.5}
+                    label={{ value: t("refLine3yr"), position: "top", fontSize: 9, fill: "hsl(var(--muted-foreground))" }}
+                  />
+                  <ReferenceLine
+                    x="Yr 5"
+                    stroke="#C9A84C"
+                    strokeDasharray="4 4"
+                    strokeOpacity={0.7}
+                    label={{ value: t("refLine5yr"), position: "top", fontSize: 9, fill: "#C9A84C" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+
+              {hasLimitedData && (
+                <p className="text-[10px] text-amber-600 mt-2 flex items-center gap-1">
+                  <Info className="h-3 w-3 flex-shrink-0" />
+                  {t("limitedDataNote")}
+                </p>
+              )}
+              <p className="text-[10px] text-muted-foreground mt-1">{t("projectionDisclaimer")}</p>
+            </div>
+
+            {/* 5-yr comparison strip */}
             <div className="bg-card border border-border/50 rounded-2xl p-5">
               <h3 className="font-bold text-sm text-foreground mb-4">{t("fiveYearComparison")}</h3>
               <div className="space-y-2">
@@ -369,18 +575,18 @@ export default function CalculatorClient({
                   label={t("realEstate5yr")}
                   value={pct(outputs.roi5yr)}
                   color="emerald"
-                  best={outputs.roi5yr >= outputs.sp500Roi}
+                  best={outputs.roi5yr >= outputs.sp500Roi5yr}
                 />
                 <CompareRow
-                  label={t("savings5yr")}
-                  value={pct(outputs.savingsRoi)}
+                  label={`${BENCHMARKS.uaeSavings.label} (5yr)`}
+                  value={pct(outputs.savingsRoi5yr)}
                   color="blue"
                 />
                 <CompareRow
-                  label={t("sp5005yr")}
-                  value={pct(outputs.sp500Roi)}
+                  label={`${BENCHMARKS.sp500.label} (5yr)`}
+                  value={pct(outputs.sp500Roi5yr)}
                   color="purple"
-                  best={outputs.sp500Roi > outputs.roi5yr}
+                  best={outputs.sp500Roi5yr > outputs.roi5yr}
                 />
               </div>
               <p className="text-[10px] text-muted-foreground mt-3">{t("comparisonDisclaimer")}</p>
@@ -394,7 +600,7 @@ export default function CalculatorClient({
               </h3>
               <div className="flex flex-wrap gap-2">
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(whatsAppText)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-green-50 text-green-700 hover:bg-green-100 transition-colors border border-green-200"
@@ -402,19 +608,27 @@ export default function CalculatorClient({
                   <MessageCircle className="h-3.5 w-3.5" />
                   {t("shareWhatsApp")}
                 </a>
-                <a
-                  href={`mailto:?subject=${encodeURIComponent(t("emailSubject"))}&body=${encodeURIComponent(shareText)}`}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-200"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  {t("shareEmail")}
-                </a>
                 <button
                   onClick={handleCopy}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-muted text-foreground hover:bg-muted/70 transition-colors border border-border"
                 >
                   {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
                   {copied ? t("copied") : t("copyLink")}
+                </button>
+                <a
+                  href="/api/pdf/pulse"
+                  download
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-muted text-foreground hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200 transition-colors border border-border"
+                >
+                  <FileDown className="h-3.5 w-3.5" />
+                  {t("savePdf")}
+                </a>
+                <button
+                  onClick={() => setShowEmailModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-200"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  {t("emailMeReport")}
                 </button>
               </div>
             </div>
@@ -432,7 +646,31 @@ export default function CalculatorClient({
           </motion.div>
         </div>
       )}
+
+      {/* Email modal */}
+      {showEmailModal && (
+        <CalculatorEmailModal
+          calcSnapshot={calcSnapshot}
+          onClose={() => setShowEmailModal(false)}
+        />
+      )}
     </div>
+  );
+}
+
+// ── Exported wrapper (Suspense boundary for useSearchParams) ───────────────
+
+export default function CalculatorClient({
+  marketStats,
+  marketData,
+}: {
+  marketStats: MarketStats | null;
+  marketData: MarketData | null;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <CalculatorInner marketStats={marketStats} marketData={marketData} />
+    </Suspense>
   );
 }
 

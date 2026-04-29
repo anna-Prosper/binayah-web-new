@@ -233,17 +233,27 @@ function FeaturedCommunityCard({ community }: { community: typeof FEATURED_COMMU
   );
 }
 
-// ── Share button (PDF disabled) ───────────────────────────────────────────────
-function PdfDisabledButton({ t }: { t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
+// ── Save as PDF button ────────────────────────────────────────────────────────
+function PdfButton({ t }: { t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
   return (
-    <span
+    <a
+      href="/api/pdf/pulse"
+      download
       title={t("pdfTooltip")}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-not-allowed select-none"
-      style={{ border: `1px solid ${PULSE_BORDER}`, color: `${PULSE_TEXT_MUTED}60` }}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+      style={{ border: `1px solid ${PULSE_BORDER}`, color: PULSE_TEXT_MUTED }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.color = "hsl(43, 55%, 55%)";
+        e.currentTarget.style.borderColor = "hsl(43, 55%, 55%, 0.5)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.color = PULSE_TEXT_MUTED;
+        e.currentTarget.style.borderColor = PULSE_BORDER;
+      }}
     >
       <FileDown className="h-3.5 w-3.5" />
       {t("pdfButton")}
-    </span>
+    </a>
   );
 }
 
@@ -326,7 +336,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const handleCopy = async () => {
     try {
       const params = new URLSearchParams({
-        utm_source: "clipboard", utm_medium: "share", utm_campaign: "pulse-2026-04",
+        utm_source: "clipboard", utm_medium: "share", utm_campaign: "pulse-emirate-dubai",
         metric: "Dubai+Avg+PPSF", value: String(marketData?.transactions?.summary?.avgPpsf ?? 0), trend: "up",
       });
       await navigator.clipboard.writeText(`${shareUrl}?${params}`);
@@ -336,7 +346,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   };
 
   const handleWhatsApp = () => {
-    const params = new URLSearchParams({ utm_source: "whatsapp", utm_medium: "share", utm_campaign: "pulse-2026-04" });
+    const params = new URLSearchParams({ utm_source: "whatsapp", utm_medium: "share", utm_campaign: "pulse-emirate-dubai" });
     window.open(`https://wa.me/?text=${encodeURIComponent(`Dubai Market Report — ${shareUrl}?${params}`)}`, "_blank", "noopener");
   };
 
@@ -412,7 +422,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
         {/* ── Share row + PDF button ─────────────────────────────────── */}
         <div className="flex flex-wrap items-center gap-2 -mt-4">
-          <PdfDisabledButton t={t} />
+          <PdfButton t={t} />
           <button
             onClick={handleWhatsApp}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
