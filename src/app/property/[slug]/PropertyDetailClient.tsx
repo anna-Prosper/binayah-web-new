@@ -5,9 +5,10 @@ import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, BedDouble, Bath, Maximize, Phone, Mail, MessageCircle,
-  ChevronLeft, ChevronRight, X, Home, Check, Send, Image as ImageIcon,
+  ChevronLeft, ChevronRight, X, Home, Check, Image as ImageIcon,
   Waves, Dumbbell, Car, Shield, Baby, Flame, TreePine, Store, Smartphone,
   Building2, Star, ChevronDown, Globe, ArrowRight, Zap, Wind,
+  Calendar, CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -18,6 +19,8 @@ import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+const USD_RATE = 0.2723;
 
 interface Listing {
   _id: string;
@@ -67,6 +70,7 @@ interface SimilarListing {
 function formatPrice(price?: number, currency = "AED", fallback = "Price on request") {
   if (!price) return fallback;
   if (price >= 1_000_000) return `${currency} ${(price / 1_000_000).toFixed(1)}M`;
+  if (price >= 1_000) return `${currency} ${(price / 1_000).toFixed(0)}K`;
   return `${currency} ${price.toLocaleString()}`;
 }
 
@@ -153,7 +157,6 @@ function buildNearby(community?: string): NearbyItem[] {
     { name: "GEMS Schools Network", type: "school", distance: "5 min drive" },
     { name: "Dubai International Airport", type: "airport", distance: "25 min drive" },
   ];
-  // Generic Dubai fallback
   return [
     { name: "Nearest Metro Station", type: "metro", distance: "10 min drive" },
     { name: "Shopping Mall", type: "mall", distance: "10 min drive" },
@@ -255,19 +258,6 @@ function buildFaqs(isRent: boolean): FaqItem[] {
   ];
 }
 
-// ── Section heading ───────────────────────────────────────────────────────────
-function SectionHeading({ label, title }: { label: string; title: string }) {
-  return (
-    <div className="mb-5">
-      <div className="flex items-center gap-2 mb-1">
-        <div className="w-4 h-px bg-accent" />
-        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{label}</p>
-      </div>
-      <h2 className="text-xl font-bold text-foreground">{title}</h2>
-    </div>
-  );
-}
-
 // ── Stat card ─────────────────────────────────────────────────────────────────
 function StatCard({
   icon: Icon, label, value, sub, delay = 0,
@@ -288,48 +278,6 @@ function StatCard({
       <p className="text-lg font-bold text-foreground leading-tight">{value}</p>
       {sub && <p className="text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
     </motion.div>
-  );
-}
-
-// ── Amenity card — icon-matched ───────────────────────────────────────────────
-function AmenityCard({ label }: { label: string }) {
-  const Icon = amenityIcon(label);
-  return (
-    <div className="flex items-center gap-3 bg-card rounded-xl px-4 py-3 border border-border/50 hover:border-accent/40 hover:bg-accent/5 transition-colors group">
-      <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/15 transition-colors">
-        <Icon className="h-4 w-4 text-accent" />
-      </div>
-      <span className="text-sm text-foreground">{label}</span>
-    </div>
-  );
-}
-
-// ── Highlight card ────────────────────────────────────────────────────────────
-function HighlightCard({ text }: { text: string }) {
-  return (
-    <div className="flex items-start gap-3 bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-sm transition-all group">
-      <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/15 transition-colors">
-        <Star className="h-3.5 w-3.5 text-accent" />
-      </div>
-      <p className="text-sm font-medium text-foreground leading-snug">{text}</p>
-    </div>
-  );
-}
-
-// ── Nearby item ───────────────────────────────────────────────────────────────
-function NearbyItem({ item }: { item: { name: string; type: string; distance: string } }) {
-  const Icon = nearbyIcon(item.type);
-  return (
-    <div className="flex items-center gap-3 py-3 border-b border-border/40 last:border-0">
-      <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-        <Icon className="h-4 w-4 text-accent" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground">{item.name}</p>
-        <p className="text-xs text-muted-foreground capitalize">{item.type}</p>
-      </div>
-      <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{item.distance}</span>
-    </div>
   );
 }
 
@@ -383,11 +331,17 @@ export default function PropertyDetailClient({
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [form, setForm] = useState({
+  const [activeTab, setActiveTab] = useState<"overview" | "location" | "faq">("overview");
+  const [currency, setCurrency] = useState<"AED" | "USD">("AED");
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
+  const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
+  const [enquiryForm, setEnquiryForm] = useState({
     name: "",
-    email: "",
     phone: "",
-    message: t("inquiryDefaultMessage", { title: listing.title }),
+    countryCode: "+971",
+    message: "",
+    email: "",
   });
 
   const allImages = [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[];
@@ -396,22 +350,36 @@ export default function PropertyDetailClient({
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
   const prevImage = () => setCurrentImage((p) => (p - 1 + allImages.length) % allImages.length);
 
-  const handleInquiry = async (e: React.FormEvent) => {
+  const formattedPrice = (() => {
+    if (!listing.price) return t("priceOnRequest");
+    if (currency === "USD") {
+      const usd = listing.price * USD_RATE;
+      if (usd >= 1_000_000) return `USD ${(usd / 1_000_000).toFixed(1)}M`;
+      if (usd >= 1_000) return `USD ${(usd / 1_000).toFixed(0)}K`;
+      return `USD ${usd.toLocaleString()}`;
+    }
+    return formatPrice(listing.price, "AED", t("priceOnRequest"));
+  })();
+
+  const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form,
+          name: enquiryForm.name,
+          phone: `${enquiryForm.countryCode}${enquiryForm.phone}`,
+          email: enquiryForm.email,
+          message: enquiryForm.message || t("enquireInterestedIn", { title: listing.title }),
           propertySlug: listing.slug,
           propertyTitle: listing.title,
           type: "property-inquiry",
         }),
       });
     } catch {}
+    setEnquirySubmitted(true);
     toast({ title: t("inquirySent"), description: t("teamReply") });
-    setForm((f) => ({ ...f, name: "", email: "", phone: "" }));
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "97154998811";
@@ -519,64 +487,6 @@ export default function PropertyDetailClient({
         </div>
       </section>
 
-      {/* ── PHOTO GALLERY GRID ───────────────────────────────────────────── */}
-      {allImages.length > 1 && (
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 pb-1">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
-              {allImages.length} {t("gallery")}
-            </p>
-            <button onClick={() => setLightboxOpen(true)} className="flex items-center gap-1.5 text-xs font-semibold text-accent hover:text-accent/80 transition-colors">
-              <ImageIcon className="h-3 w-3" />
-              {t("gallery")} ({allImages.length})
-            </button>
-          </div>
-
-          {/* Desktop — asymmetric 5-photo grid */}
-          {allImages.length >= 3 ? (
-            <div className="hidden sm:grid grid-cols-4 grid-rows-2 gap-2 h-[340px] rounded-2xl overflow-hidden">
-              <button onClick={() => { setCurrentImage(0); setLightboxOpen(true); }} className="col-span-2 row-span-2 relative overflow-hidden group">
-                <img src={allImages[0]} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-              </button>
-              {allImages.slice(1, 5).map((img, i) => (
-                <button key={i} onClick={() => { setCurrentImage(i + 1); setLightboxOpen(true); }} className="relative overflow-hidden group border-l border-t border-background/20">
-                  <img src={img} alt={`${listing.title} ${i + 2}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                  {i === 3 && allImages.length > 5 && (
-                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">+{allImages.length - 5}</span>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div className="hidden sm:grid grid-cols-2 gap-2 h-[240px] rounded-2xl overflow-hidden">
-              {allImages.slice(0, 2).map((img, i) => (
-                <button key={i} onClick={() => { setCurrentImage(i); setLightboxOpen(true); }} className="relative overflow-hidden group">
-                  <img src={img} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Mobile — horizontal scroll strip */}
-          <div className="sm:hidden flex gap-2 overflow-x-auto pb-1 snap-x snap-mandatory scrollbar-hide">
-            {allImages.map((img, i) => (
-              <button key={i} onClick={() => { setCurrentImage(i); setLightboxOpen(true); }} className={`relative flex-shrink-0 w-28 h-20 rounded-xl overflow-hidden snap-start ${i === currentImage ? "ring-2 ring-accent" : ""}`}>
-                <img src={img} alt="" className="w-full h-full object-cover" loading={i > 0 ? "lazy" : undefined} />
-              </button>
-            ))}
-            {allImages.length > 5 && (
-              <button onClick={() => setLightboxOpen(true)} className="flex-shrink-0 w-28 h-20 rounded-xl bg-muted flex items-center justify-center snap-start">
-                <span className="text-xs font-bold text-muted-foreground">+{allImages.length - 5}</span>
-              </button>
-            )}
-          </div>
-        </section>
-      )}
-
       {/* ── QUICK STATS STRIP ────────────────────────────────────────────── */}
       <section className="py-4 sm:py-5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -585,6 +495,22 @@ export default function PropertyDetailClient({
             {listing.bathrooms != null && <StatCard icon={Bath} label={t("bathrooms")} value={listing.bathrooms} delay={0.15} />}
             {listing.size != null && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.2} />}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.25} />}
+          </div>
+
+          {/* Tab bar */}
+          <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1">
+            {(["overview", "location", "faq"] as const).map((tab) => (
+              <button
+                key={tab}
+                className={activeTab === tab
+                  ? "flex-1 py-2.5 rounded-xl text-sm font-bold text-white shadow-sm"
+                  : "flex-1 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"}
+                style={activeTab === tab ? { background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" } : {}}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab === "overview" ? t("overviewTab") : tab === "location" ? t("locationTab") : t("faqTab")}
+              </button>
+            ))}
           </div>
         </div>
       </section>
@@ -596,164 +522,408 @@ export default function PropertyDetailClient({
 
             {/* ── Left column ─────────────────────────────────────────── */}
             <div>
+              {/* ═══ OVERVIEW TAB ═══ */}
+              {activeTab === "overview" && (
+                <>
+                  {/* Description */}
+                  {listing.cleanDescription && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
+                      <div className="mb-5">
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="w-4 h-px bg-accent" />
+                          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("overviewLabel")}</p>
+                        </div>
+                        <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
+                      </div>
+                      <div className="text-muted-foreground leading-relaxed space-y-3 text-sm">
+                        {listing.cleanDescription.split(/\n\n|\. (?=[A-Z])/).filter(Boolean).map((para, i) => (
+                          <p key={i}>{para.trim().endsWith(".") ? para.trim() : `${para.trim()}.`}</p>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
 
-              {/* Description */}
-              {listing.cleanDescription && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
-                  <SectionHeading label={t("overviewLabel")} title={t("description")} />
-                  <div className="text-muted-foreground leading-relaxed space-y-3 text-sm">
-                    {listing.cleanDescription.split(/\n\n|\. (?=[A-Z])/).filter(Boolean).map((para, i) => (
-                      <p key={i}>{para.trim().endsWith(".") ? para.trim() : `${para.trim()}.`}</p>
+                  {/* Key Highlights */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mb-10">
+                    <div className="mb-5">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-4 h-px bg-accent" />
+                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("highlightsLabel")}</p>
+                      </div>
+                      <h2 className="text-xl font-bold text-foreground">{t("highlightsTitle")}</h2>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {highlights.map((h, i) => (
+                        <div key={i} className="flex items-start gap-3 bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-sm transition-all group">
+                          <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-accent/15 transition-colors">
+                            <Star className="h-3.5 w-3.5 text-accent" />
+                          </div>
+                          <p className="text-sm font-medium text-foreground leading-snug">{h}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Gallery — 4-card horizontal strip */}
+                  {allImages.length > 1 && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }} className="mb-10">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                            <ImageIcon className="h-4 w-4 text-accent" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("mediaLabel")}</p>
+                            <h2 className="text-base font-bold text-foreground">{t("gallery")}</h2>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setLightboxOpen(true)}
+                          className="text-sm font-semibold text-accent hover:text-accent/80 transition-colors"
+                        >
+                          {t("viewAllArrow", { count: allImages.length })}
+                        </button>
+                      </div>
+                      <div className="flex gap-3 overflow-x-auto snap-x scrollbar-hide pb-1">
+                        {allImages.slice(0, 4).map((img, i) => (
+                          <button
+                            key={i}
+                            onClick={() => { setCurrentImage(i); setLightboxOpen(true); }}
+                            className="w-[220px] h-[145px] flex-shrink-0 rounded-xl overflow-hidden snap-start group relative"
+                          >
+                            <img src={img} alt={`${listing.title} ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading={i > 0 ? "lazy" : undefined} />
+                            {i === 3 && allImages.length > 4 && (
+                              <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                                <span className="text-white text-lg font-bold">+{allImages.length - 4}</span>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Amenities & Facilities */}
+                  {listing.features && listing.features.length > 0 && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mb-10">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                          <Star className="h-4 w-4 text-accent" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("lifestyleLabel")}</p>
+                          <h2 className="text-base font-bold text-foreground">{t("amenitiesTitle")}</h2>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-card border border-border/30 p-5">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                          {listing.features.map((feat, i) => {
+                            const AIcon = amenityIcon(feat);
+                            return (
+                              <div key={i} className="flex flex-col items-center gap-2 text-center">
+                                <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
+                                  <AIcon className="h-5 w-5 text-accent" />
+                                </div>
+                                <span className="text-xs text-foreground font-medium leading-snug">{feat}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </>
+              )}
+
+              {/* ═══ LOCATION TAB ═══ */}
+              {activeTab === "location" && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="space-y-8">
+                  <div>
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                        <MapPin className="h-4 w-4 text-accent" />
+                      </div>
+                      <h2 className="text-xl font-bold text-foreground">{t("locationNearby")}</h2>
+                    </div>
+                    {hasMap && (
+                      <div className="rounded-2xl overflow-hidden border border-border/50 aspect-video mb-6">
+                        <iframe
+                          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`}
+                          width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {nearbyItems.map((item, i) => {
+                        const NIcon = nearbyIcon(item.type);
+                        return (
+                          <div key={i} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50">
+                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                              <NIcon className="h-4 w-4 text-accent" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-foreground truncate">{item.name}</p>
+                              <p className="text-xs text-muted-foreground">{item.distance}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ═══ FAQ TAB ═══ */}
+              {activeTab === "faq" && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+                  <div className="mb-5">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-4 h-px bg-accent" />
+                      <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("faqLabel")}</p>
+                    </div>
+                    <h2 className="text-xl font-bold text-foreground">{t("faqTitle")}</h2>
+                  </div>
+                  <div className="bg-card rounded-2xl border border-border/50 px-5">
+                    {faqs.map((faq, i) => (
+                      <FaqAccordionItem
+                        key={i}
+                        faq={faq}
+                        index={i}
+                        open={openFaq === i}
+                        onToggle={(idx) => setOpenFaq((prev) => prev === idx ? null : idx)}
+                      />
                     ))}
                   </div>
                 </motion.div>
               )}
-
-              {/* ── KEY HIGHLIGHTS ──────────────────────────────────────── */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mb-10">
-                <SectionHeading label={t("highlightsLabel")} title={t("highlightsTitle")} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {highlights.map((h, i) => <HighlightCard key={i} text={h} />)}
-                </div>
-              </motion.div>
-
-              {/* Property details — divider list style */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mb-10">
-                <SectionHeading label={t("quickFactsLabel")} title={t("propertyDetails")} />
-                <div className="bg-card rounded-2xl border border-border/50 divide-y divide-border/50 overflow-hidden">
-                  <div className="flex justify-between items-center px-5 py-3.5">
-                    <span className="text-sm text-muted-foreground">{t("type")}</span>
-                    <span className="text-sm font-semibold text-foreground">{isRent ? t("forRent") : t("forSale")}</span>
-                  </div>
-                  {listing.propertyType && (
-                    <div className="flex justify-between items-center px-5 py-3.5">
-                      <span className="text-sm text-muted-foreground">{t("property")}</span>
-                      <span className="text-sm font-semibold text-foreground">{formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}</span>
-                    </div>
-                  )}
-                  {listing.community && (
-                    <div className="flex justify-between items-center px-5 py-3.5">
-                      <span className="text-sm text-muted-foreground">{t("community")}</span>
-                      <span className="text-sm font-semibold text-foreground">{listing.community}</span>
-                    </div>
-                  )}
-                  {listing.areas?.[0] && (
-                    <div className="flex justify-between items-center px-5 py-3.5">
-                      <span className="text-sm text-muted-foreground">{t("area")}</span>
-                      <span className="text-sm font-semibold text-foreground">{listing.areas[0]}</span>
-                    </div>
-                  )}
-                  {listing.city && (
-                    <div className="flex justify-between items-center px-5 py-3.5">
-                      <span className="text-sm text-muted-foreground">{t("city")}</span>
-                      <span className="text-sm font-semibold text-foreground">{listing.city}</span>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-
-              {/* ── AMENITIES with icon mapping ─────────────────────────── */}
-              {listing.features && listing.features.length > 0 && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-10">
-                  <SectionHeading label={t("amenitiesLabel")} title={t("features")} />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {listing.features.map((feat, i) => <AmenityCard key={i} label={feat} />)}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* ── LOCATION + MAP ──────────────────────────────────────── */}
-              {hasMap && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mb-10">
-                  <SectionHeading label={t("locationLabel")} title={t("location")} />
-                  <div className="rounded-2xl overflow-hidden border border-border/50 aspect-[16/9]">
-                    <iframe
-                      src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`}
-                      width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                </motion.div>
-              )}
-
-              {/* ── NEARBY ATTRACTIONS ──────────────────────────────────── */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }} className="mb-10">
-                <SectionHeading label={t("nearbyLabel")} title={t("nearbyTitle")} />
-                <div className="bg-card rounded-2xl border border-border/50 px-5 grid sm:grid-cols-2 sm:divide-x sm:divide-border/40">
-                  <div className="sm:pr-6">
-                    {nearbyItems.slice(0, 3).map((item, i) => <NearbyItem key={i} item={item} />)}
-                  </div>
-                  <div className="sm:pl-6">
-                    {nearbyItems.slice(3, 6).map((item, i) => <NearbyItem key={i} item={item} />)}
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* ── FAQ ACCORDION ───────────────────────────────────────── */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-10">
-                <SectionHeading label={t("faqLabel")} title={t("faqTitle")} />
-                <div className="bg-card rounded-2xl border border-border/50 px-5">
-                  {faqs.map((faq, i) => (
-                    <FaqAccordionItem
-                      key={i}
-                      faq={faq}
-                      index={i}
-                      open={openFaq === i}
-                      onToggle={(idx) => setOpenFaq((prev) => prev === idx ? null : idx)}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-
             </div>
 
             {/* ── Right sidebar ────────────────────────────────────────── */}
             <div className="lg:sticky lg:top-24 space-y-4 self-start">
 
-              {/* Price card — green gradient header */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-sm">
-                <div className="p-5 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 100%)" }}>
-                  <p className="text-white/60 text-[10px] uppercase tracking-widest font-semibold mb-0.5">{isRent ? t("perYear") : t("listedAt")}</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-white leading-tight">{formatPrice(listing.price, listing.currency, t("priceOnRequest"))}</p>
-                  <div className="flex items-center gap-2 mt-2.5 flex-wrap">
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-white">{isRent ? t("forRent") : t("forSale")}</span>
-                    {listing.propertyType && (
-                      <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white/80">{formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}</span>
-                    )}
-                    {listing.community && (
-                      <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white/70 flex items-center gap-1">
-                        <MapPin className="h-2.5 w-2.5" />{listing.community}
-                      </span>
-                    )}
-                  </div>
+              {/* CTA Card */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                className="bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg">
+                <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" }}>
+                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
+                  <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
+                    {t("bookConsultation")}
+                  </p>
+                  <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
+                  {currency === "AED" && listing.price && (
+                    <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
+                  )}
+                  {listing.price && (
+                    <p className="text-white/50 text-sm mt-1.5 relative z-10">{listing.price.toLocaleString()} {"AED"}</p>
+                  )}
                 </div>
-                <div className="p-5 space-y-2.5">
-                  <p className="text-base font-bold text-foreground mb-0.5">{t("interestedTitle")}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{t("interestedSubtitle")}</p>
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] hover:bg-[#22c55e] text-white rounded-xl font-semibold text-sm transition-colors">
-                    <MessageCircle className="h-4 w-4" />{t("whatsapp")}
+                <div className="p-5 space-y-3">
+                  <p className="text-sm text-muted-foreground mb-1">{t("speakToExperts")}</p>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
+                    <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
-                  <a href="tel:+97154998811" className="flex items-center justify-center gap-2 w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-colors">
-                    <Phone className="h-4 w-4" />{t("callUs")}
+                  <a href="tel:+97154998811"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
+                    <Phone className="h-4 w-4" /> {t("callNow")}
                   </a>
-                  <a href="mailto:info@binayah.com" className="flex items-center justify-center gap-2 w-full py-3 bg-card hover:bg-muted text-foreground border border-border rounded-xl font-semibold text-sm transition-colors">
-                    <Mail className="h-4 w-4" />{t("emailUs")}
+                  <a href="#live-chat"
+                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white hover:border-transparent transition-all">
+                    <MessageCircle className="h-4 w-4" /> {t("liveChat")}
                   </a>
                 </div>
               </motion.div>
 
-              {/* Inquiry form */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-card rounded-2xl p-6 border border-border/50 shadow-sm">
-                <SectionHeading label={t("inquiryLabel")} title={t("sendInquiry")} />
-                <form onSubmit={handleInquiry} className="space-y-3">
-                  <input type="text" required placeholder="Your Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                  <input type="email" required placeholder="Email Address" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                  <input type="tel" placeholder="Phone Number" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                  <textarea rows={3} value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" />
-                  <button type="submit" className="w-full py-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                    <Send className="h-4 w-4" />{t("sendInquiryBtn")}
-                  </button>
-                </form>
+              {/* Property Details card */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                className="bg-card rounded-2xl border border-border/50 p-5">
+                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">
+                  {t("propertyDetailsLabel")}
+                </h3>
+                <div className="divide-y divide-border/40">
+                  {[
+                    { label: t("community"), value: listing.community },
+                    { label: t("city"), value: listing.city },
+                    { label: t("property"), value: listing.propertyType ? formatPropertyTypeLabel(listing.propertyType, listing.propertyType) : null },
+                    { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
+                    { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
+                    { label: t("ownershipLabel"), value: t("allNationalities") },
+                  ].filter((f): f is { label: string; value: string } => !!f.value).map(({ label, value }) => (
+                    <div key={label} className="flex justify-between items-center py-3 text-sm">
+                      <span className="text-muted-foreground">{label}</span>
+                      <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
+
+              {/* Enquiry form card */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                    <Mail className="h-4 w-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("getInTouch")}</p>
+                    <h2 className="text-base font-bold text-foreground">{t("enquireLabel")}</h2>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{t("enquireDesc")}</p>
+                  </div>
+                </div>
+
+                {enquirySubmitted ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="py-6 text-center space-y-4">
+                    <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto">
+                      <CheckCircle2 className="h-7 w-7 text-emerald-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-foreground mb-1">{t("thankYouTitle")}</h3>
+                      <p className="text-sm text-muted-foreground">{t("thankYouDesc")}</p>
+                    </div>
+                    <button
+                      onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", phone: "", countryCode: "+971", message: "", email: "" }); }}
+                      className="text-xs font-semibold text-primary hover:underline"
+                    >
+                      {t("submitAnotherEnquiry")}
+                    </button>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleEnquirySubmit} className="space-y-3 sm:space-y-4">
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("fullName")} *</label>
+                      <input
+                        type="text"
+                        required
+                        value={enquiryForm.name}
+                        onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
+                        className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("phoneNumber")} *</label>
+                      <div className="flex gap-2">
+                        <select
+                          value={enquiryForm.countryCode}
+                          onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
+                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
+                        >
+                          <option value="+971">+971</option>
+                          <option value="+44">+44</option>
+                          <option value="+1">+1</option>
+                          <option value="+91">+91</option>
+                          <option value="+86">+86</option>
+                          <option value="+7">+7</option>
+                        </select>
+                        <input
+                          type="tel"
+                          required
+                          value={enquiryForm.phone}
+                          onChange={(e) => setEnquiryForm(f => ({ ...f, phone: e.target.value }))}
+                          className="flex-1 h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                          placeholder="50 123 4567"
+                        />
+                      </div>
+                    </div>
+                    <div className="bg-muted/20 rounded-xl px-3.5 py-2.5 border border-border/30">
+                      <p className="text-xs text-muted-foreground">
+                        <span className="font-semibold text-foreground/70">{t("messageLabel")}:</span>{" "}
+                        {t("enquireInterestedIn", { title: listing.title })}
+                      </p>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setShowMoreEnquiry(!showMoreEnquiry)}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                      >
+                        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreEnquiry ? "rotate-180" : ""}`} />
+                        {showMoreEnquiry ? t("hideDetails") : t("addMoreDetails")}
+                      </button>
+                      {showMoreEnquiry && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          className="space-y-3 mt-3 overflow-hidden"
+                        >
+                          <div>
+                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("messageLabel")}</label>
+                            <textarea
+                              rows={2}
+                              value={enquiryForm.message}
+                              onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
+                              className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
+                              placeholder="Any specific requirements..."
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("emailLabel")}</label>
+                            <input
+                              type="email"
+                              value={enquiryForm.email}
+                              onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
+                              className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                              placeholder="your@email.com"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("preferredContact")}</label>
+                            <div className="flex gap-2">
+                              {([
+                                { key: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle },
+                                { key: "email" as const, label: "Email", icon: Mail },
+                                { key: "phone" as const, label: "Phone", icon: Phone },
+                              ]).map((method) => {
+                                const MIcon = method.icon;
+                                return (
+                                  <button
+                                    key={method.key}
+                                    type="button"
+                                    className="flex-1 h-10 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 bg-muted/50 text-muted-foreground hover:bg-muted border border-border/50 transition-all"
+                                  >
+                                    <MIcon className="h-3.5 w-3.5" />
+                                    {method.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+                      style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
+                    >
+                      {t("sendQuickEnquiry")}
+                    </button>
+                    <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
+                  </form>
+                )}
+              </motion.div>
+
+              {/* Schedule Video Consultation */}
+              <a
+                href="#schedule-call"
+                className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all group hover:shadow-lg hover:scale-[1.01]"
+              >
+                <div className="rounded-[14px] bg-card/95 p-4 sm:p-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/15 flex items-center justify-center flex-shrink-0">
+                      <Calendar className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-bold text-primary">{t("scheduleCall")}</h3>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">{t("scheduleCallDesc")}</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-primary/50 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              </a>
+
             </div>
           </div>
         </div>
@@ -831,11 +1001,11 @@ export default function PropertyDetailClient({
 
       {/* ── STICKY MOBILE CTA ────────────────────────────────────────────── */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 flex gap-3">
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] hover:bg-[#22c55e] text-white rounded-xl font-semibold text-sm transition-colors">
-          <MessageCircle className="h-4 w-4" />{t("whatsapp")}
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 text-white rounded-xl font-semibold text-sm transition-colors" style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
+          <MessageCircle className="h-4 w-4" />{t("whatsappInquiry")}
         </a>
         <a href="tel:+97154998811" className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-colors">
-          <Phone className="h-4 w-4" />{t("callUs")}
+          <Phone className="h-4 w-4" />{t("callNow")}
         </a>
       </div>
 

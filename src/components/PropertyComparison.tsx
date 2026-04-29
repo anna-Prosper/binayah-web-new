@@ -5,6 +5,7 @@ import { X, Plus, ArrowLeftRight, BedDouble, Bath, Maximize, MapPin, Building2 }
 import Image from "next/image";
 import Link from "next/link";
 import { useCompare } from "./PropertyActions";
+import { useFavorites } from "@/context/FavoritesContext";
 import { apiUrl } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { useTranslations } from "next-intl";
@@ -36,9 +37,12 @@ function formatPrice(price?: number, currency = "AED") {
 
 export default function PropertyComparison() {
   const t = useTranslations("propertyComparison");
+  const tProp = useTranslations("propertyDetail");
   const { ids, toggle, clear } = useCompare();
+  const { ids: favIds } = useFavorites();
   const [properties, setProperties] = useState<Property[]>([]);
   const [open, setOpen] = useState(false);
+  const [favProperties, setFavProperties] = useState<Property[]>([]);
 
   useEffect(() => {
     if (ids.length === 0) {
@@ -53,7 +57,6 @@ export default function PropertyComparison() {
           const res = await fetch(apiUrl(`/api/listings/${id}`));
           if (res.ok) {
             const data = await res.json();
-            // API returns { listing, similarListings } — unwrap
             results.push(data?.listing ?? data);
           }
         } catch {
@@ -64,6 +67,31 @@ export default function PropertyComparison() {
     };
     fetchProperties();
   }, [ids]);
+
+  // Fetch favorites not already in compare
+  useEffect(() => {
+    const favNotInCompare = favIds.filter(id => !ids.includes(id));
+    if (favNotInCompare.length === 0) {
+      setFavProperties([]);
+      return;
+    }
+    const fetchFavs = async () => {
+      const results: Property[] = [];
+      for (const id of favNotInCompare.slice(0, 6)) {
+        try {
+          const res = await fetch(apiUrl(`/api/listings/${id}`));
+          if (res.ok) {
+            const data = await res.json();
+            results.push(data?.listing ?? data);
+          }
+        } catch {
+          /* skip */
+        }
+      }
+      setFavProperties(results);
+    };
+    fetchFavs();
+  }, [favIds, ids]);
 
   if (ids.length === 0) return null;
 
@@ -86,6 +114,9 @@ export default function PropertyComparison() {
     if (val == null) return "-";
     return String(val);
   };
+
+  const canAddMore = properties.length < 3;
+  const favNotInCompare = favIds.filter(id => !ids.includes(id));
 
   return (
     <>
@@ -166,12 +197,50 @@ export default function PropertyComparison() {
                             </button>
                           </th>
                         ))}
-                        {properties.length < 3 && (
-                          <th className="p-2 text-center">
-                            <div className="aspect-[4/3] rounded-xl border-2 border-dashed border-border flex items-center justify-center mb-3">
-                              <Plus className="h-6 w-6 text-muted-foreground/30" />
-                            </div>
-                            <p className="text-xs text-muted-foreground">{t("addProperty")}</p>
+                        {canAddMore && (
+                          <th className="p-2 text-center align-top">
+                            {favNotInCompare.length === 0 ? (
+                              <div className="flex flex-col items-center gap-2">
+                                <div className="aspect-[4/3] w-full rounded-xl border-2 border-dashed border-border flex items-center justify-center mb-1 min-h-[80px]">
+                                  <Plus className="h-6 w-6 text-muted-foreground/30" />
+                                </div>
+                                <p className="text-xs text-muted-foreground">{tProp("saveFirstToCompare")}</p>
+                                <Link href="/buy" className="text-xs font-semibold text-primary hover:underline">
+                                  {tProp("browseProperties")} →
+                                </Link>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col gap-2">
+                                <p className="text-xs text-muted-foreground mb-1">{t("addProperty")}</p>
+                                <div className="flex flex-col gap-1.5 max-h-[180px] overflow-y-auto">
+                                  {favProperties.map((fp) => (
+                                    <button
+                                      key={fp._id}
+                                      onClick={() => toggle(fp._id)}
+                                      className="flex items-center gap-2 p-2 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-muted/30 transition-all text-left"
+                                    >
+                                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                                        {fp.featuredImage ? (
+                                          <img src={fp.featuredImage} alt={fp.title} className="w-full h-full object-cover" />
+                                        ) : (
+                                          <div className="w-full h-full flex items-center justify-center">
+                                            <Building2 className="h-4 w-4 text-muted-foreground/30" />
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <p className="text-xs font-medium text-foreground line-clamp-2 leading-snug">{fp.title}</p>
+                                        {fp.price && (
+                                          <p className="text-[10px] text-primary font-semibold mt-0.5">
+                                            {fp.currency || "AED"} {new Intl.NumberFormat("en-AE").format(fp.price)}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </th>
                         )}
                       </tr>
@@ -190,7 +259,7 @@ export default function PropertyComparison() {
                               {getValue(p, row.key)}
                             </td>
                           ))}
-                          {properties.length < 3 && <td className="p-3" />}
+                          {canAddMore && <td className="p-3" />}
                         </tr>
                       ))}
                     </tbody>
