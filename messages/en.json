@@ -941,7 +941,17 @@
     "priceOnRequest": "Price on request",
     "inquiryDefaultMessage": "Hi, I'm interested in \"{title}\". Please share more details.",
     "inquirySent": "Enquiry Sent!",
-    "teamReply": "Our team will get back to you shortly."
+    "teamReply": "Our team will get back to you shortly.",
+    "breadcrumbHome": "Home",
+    "gallery": "Gallery",
+    "size": "Size",
+    "overviewLabel": "OVERVIEW",
+    "quickFactsLabel": "DETAILS",
+    "amenitiesLabel": "AMENITIES",
+    "locationLabel": "LOCATION",
+    "listedAt": "Listed at",
+    "inquiryLabel": "GET IN TOUCH",
+    "similarLabel": "MORE LIKE THIS"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

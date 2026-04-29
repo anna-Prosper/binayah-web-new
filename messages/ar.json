@@ -941,7 +941,17 @@
     "priceOnRequest": "السعر عند الطلب",
     "inquiryDefaultMessage": "مرحباً، أنا مهتم بعقار \"{title}\". أرجو تزويدي بمزيد من التفاصيل.",
     "inquirySent": "تم إرسال استفسارك!",
-    "teamReply": "سيتواصل معك فريقنا قريباً."
+    "teamReply": "سيتواصل معك فريقنا قريباً.",
+    "breadcrumbHome": "الرئيسية",
+    "gallery": "معرض الصور",
+    "size": "المساحة",
+    "overviewLabel": "نظرة عامة",
+    "quickFactsLabel": "التفاصيل",
+    "amenitiesLabel": "المرافق",
+    "locationLabel": "الموقع",
+    "listedAt": "السعر المُدرج",
+    "inquiryLabel": "تواصل معنا",
+    "similarLabel": "عقارات مشابهة"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

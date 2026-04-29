@@ -947,7 +947,17 @@
     "priceOnRequest": "价格面议",
     "inquiryDefaultMessage": "您好，我对「{title}」这套房源很感兴趣，烦请提供更多详情。",
     "inquirySent": "咨询已发送！",
-    "teamReply": "我们的团队将尽快与您联系。"
+    "teamReply": "我们的团队将尽快与您联系。",
+    "breadcrumbHome": "首页",
+    "gallery": "图库",
+    "size": "面积",
+    "overviewLabel": "概览",
+    "quickFactsLabel": "详情",
+    "amenitiesLabel": "设施",
+    "locationLabel": "位置",
+    "listedAt": "挂牌价格",
+    "inquiryLabel": "联系我们",
+    "similarLabel": "类似房源"
   },
   "communities": {
     "heroLabel": "探索迪拜",

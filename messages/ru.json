@@ -941,7 +941,17 @@
     "priceOnRequest": "Цена по запросу",
     "inquiryDefaultMessage": "Здравствуйте, интересует объект «{title}». Пришлите, пожалуйста, подробности.",
     "inquirySent": "Запрос отправлен!",
-    "teamReply": "Наша команда скоро свяжется с вами."
+    "teamReply": "Наша команда скоро свяжется с вами.",
+    "breadcrumbHome": "Главная",
+    "gallery": "Галерея",
+    "size": "Площадь",
+    "overviewLabel": "ОБЗОР",
+    "quickFactsLabel": "ДЕТАЛИ",
+    "amenitiesLabel": "УДОБСТВА",
+    "locationLabel": "РАСПОЛОЖЕНИЕ",
+    "listedAt": "Цена",
+    "inquiryLabel": "СВЯЗАТЬСЯ",
+    "similarLabel": "ПОХОЖИЕ ОБЪЕКТЫ"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",
