@@ -3,6 +3,54 @@ import { sendMail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
+// ── HTML escaping ─────────────────────────────────────────────────────────────
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// ── Rate limiting (in-memory sliding window: max 3 sends/IP/hour) ─────────────
+
+type RateBucket = { count: number; resetAt: number };
+const rateLimitMap = new Map<string, RateBucket>();
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function getClientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  const real = request.headers.get("x-real-ip");
+  if (real) return real;
+  return "unknown";
+}
+
+function checkRateLimit(ip: string): { ok: boolean; resetAt?: number } {
+  const now = Date.now();
+  const bucket = rateLimitMap.get(ip);
+  if (!bucket || bucket.resetAt < now) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { ok: true };
+  }
+  if (bucket.count >= RATE_LIMIT_MAX) {
+    return { ok: false, resetAt: bucket.resetAt };
+  }
+  bucket.count += 1;
+  return { ok: true };
+}
+
+// Periodic cleanup so the Map doesn't grow unbounded under attack
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, bucket] of rateLimitMap.entries()) {
+    if (bucket.resetAt < now) rateLimitMap.delete(ip);
+  }
+}, 5 * 60 * 1000); // every 5 min
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface CalcSnapshot {
@@ -58,9 +106,9 @@ function buildEmailHtml(name: string, calc: CalcSnapshot): string {
 
     <!-- Body -->
     <div style="padding:32px;">
-      <p style="font-size:16px;color:#1A1A2E;margin:0 0 8px;">Hi ${name},</p>
+      <p style="font-size:16px;color:#1A1A2E;margin:0 0 8px;">Hi ${escapeHtml(name)},</p>
       <p style="font-size:14px;color:#6B7280;margin:0 0 24px;line-height:1.6;">
-        Here is your personalised Dubai investment analysis for <strong style="color:#1A1A2E;">${calc.community}</strong>.
+        Here is your personalised Dubai investment analysis for <strong style="color:#1A1A2E;">${escapeHtml(calc.community)}</strong>.
       </p>
 
       <!-- KPI Grid -->
@@ -106,15 +154,15 @@ function buildEmailHtml(name: string, calc: CalcSnapshot): string {
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:13px;margin-bottom:24px;">
         <tr style="border-bottom:1px solid #F3F4F6;">
           <td style="padding:8px 0;color:#6B7280;">Property type</td>
-          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${calc.propType}</td>
+          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${escapeHtml(calc.propType)}</td>
         </tr>
         <tr style="border-bottom:1px solid #F3F4F6;">
           <td style="padding:8px 0;color:#6B7280;">Purpose</td>
-          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${calc.purpose}</td>
+          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${escapeHtml(calc.purpose)}</td>
         </tr>
         <tr style="border-bottom:1px solid #F3F4F6;">
           <td style="padding:8px 0;color:#6B7280;">Financing</td>
-          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${calc.financing}${calc.financing === "mortgage" ? ` (${calc.downPaymentPct}% down)` : ""}</td>
+          <td style="padding:8px 0;text-align:right;color:#1A1A2E;font-weight:600;">${escapeHtml(calc.financing)}${calc.financing === "mortgage" ? ` (${calc.downPaymentPct}% down)` : ""}</td>
         </tr>
       </table>
 
@@ -141,6 +189,17 @@ function buildEmailHtml(name: string, calc: CalcSnapshot): string {
 // ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  // Rate limit check — before any work
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(ip);
+  if (!rl.ok) {
+    const retryAfterSec = Math.ceil((rl.resetAt! - Date.now()) / 1000);
+    return NextResponse.json(
+      { error: "Too many requests. Try again later." },
+      { status: 429, headers: { "Retry-After": retryAfterSec.toString() } }
+    );
+  }
+
   let body: RequestBody;
   try {
     body = await req.json();
@@ -150,11 +209,18 @@ export async function POST(req: NextRequest) {
 
   const { name, email, phone, calc } = body;
 
+  // Input validation
   if (!name?.trim() || !email?.trim()) {
     return NextResponse.json({ message: "Name and email are required" }, { status: 400 });
   }
+  if (name.length > 200) {
+    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ message: "Invalid email address" }, { status: 400 });
+  }
+  if (!calc || typeof calc !== "object" || Array.isArray(calc)) {
+    return NextResponse.json({ message: "Invalid input" }, { status: 400 });
   }
 
   // Send the HTML email to the user
