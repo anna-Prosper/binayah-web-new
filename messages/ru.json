@@ -951,7 +951,13 @@
     "locationLabel": "РАСПОЛОЖЕНИЕ",
     "listedAt": "Цена",
     "inquiryLabel": "СВЯЗАТЬСЯ",
-    "similarLabel": "ПОХОЖИЕ ОБЪЕКТЫ"
+    "similarLabel": "ПОХОЖИЕ ОБЪЕКТЫ",
+    "highlightsLabel": "ОСОБЕННОСТИ",
+    "highlightsTitle": "Преимущества объекта",
+    "nearbyLabel": "РЯДОМ",
+    "nearbyTitle": "Что поблизости",
+    "faqLabel": "FAQ",
+    "faqTitle": "Частые вопросы"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",

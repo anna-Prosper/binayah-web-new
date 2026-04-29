@@ -951,7 +951,13 @@
     "locationLabel": "الموقع",
     "listedAt": "السعر المُدرج",
     "inquiryLabel": "تواصل معنا",
-    "similarLabel": "عقارات مشابهة"
+    "similarLabel": "عقارات مشابهة",
+    "highlightsLabel": "أبرز المميزات",
+    "highlightsTitle": "مميزات العقار",
+    "nearbyLabel": "المناطق المجاورة",
+    "nearbyTitle": "ما الذي بالقرب منك",
+    "faqLabel": "الأسئلة الشائعة",
+    "faqTitle": "أسئلة شائعة"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

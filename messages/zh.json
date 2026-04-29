@@ -957,7 +957,13 @@
     "locationLabel": "位置",
     "listedAt": "挂牌价格",
     "inquiryLabel": "联系我们",
-    "similarLabel": "类似房源"
+    "similarLabel": "类似房源",
+    "highlightsLabel": "亮点",
+    "highlightsTitle": "房产亮点",
+    "nearbyLabel": "周边设施",
+    "nearbyTitle": "周边配套",
+    "faqLabel": "常见问题",
+    "faqTitle": "常见问题解答"
   },
   "communities": {
     "heroLabel": "探索迪拜",

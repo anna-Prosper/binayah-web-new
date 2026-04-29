@@ -951,7 +951,13 @@
     "locationLabel": "LOCATION",
     "listedAt": "Listed at",
     "inquiryLabel": "GET IN TOUCH",
-    "similarLabel": "MORE LIKE THIS"
+    "similarLabel": "MORE LIKE THIS",
+    "highlightsLabel": "HIGHLIGHTS",
+    "highlightsTitle": "Property Highlights",
+    "nearbyLabel": "NEARBY",
+    "nearbyTitle": "What's Nearby",
+    "faqLabel": "FAQ",
+    "faqTitle": "Common Questions"
   },
   "communities": {
     "heroLabel": "Explore Dubai",
