@@ -351,12 +351,14 @@
     "rentalsLabel": "租赁",
     "secondaryMarketLabel": "现房市场",
     "forRent": "出租",
-    "forSale": "出售"
+    "forSale": "出售",
+    "bath": "卫"
   },
   "buy": {
     "title": "迪拜在售房产",
     "subtitle": "精选迪拜现房（二手）市场优质房源",
-    "noProperties": "暂无在售房源"
+    "noProperties": "暂无在售房源",
+    "bath": "卫"
   },
   "valuation": {
     "ownerReadyValuation": "业主专属估值",

@@ -345,12 +345,14 @@
     "rentalsLabel": "Аренда",
     "secondaryMarketLabel": "Вторичный рынок",
     "forRent": "В аренду",
-    "forSale": "На продажу"
+    "forSale": "На продажу",
+    "bath": "Ванна"
   },
   "buy": {
     "title": "Недвижимость на продажу",
     "subtitle": "Вторичный рынок Дубая — готовые объекты на любой вкус",
-    "noProperties": "Объектов на продажу не найдено"
+    "noProperties": "Объектов на продажу не найдено",
+    "bath": "Ванна"
   },
   "valuation": {
     "ownerReadyValuation": "Оценка для собственника",

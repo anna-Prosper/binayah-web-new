@@ -345,12 +345,14 @@
     "rentalsLabel": "عقارات للإيجار",
     "secondaryMarketLabel": "السوق الثانوية",
     "forRent": "للإيجار",
-    "forSale": "للبيع"
+    "forSale": "للبيع",
+    "bath": "حمام"
   },
   "buy": {
     "title": "عقارات للبيع",
     "subtitle": "تصفح عقارات السوق الثانوية الجاهزة في دبي",
-    "noProperties": "لا توجد عقارات للبيع حالياً"
+    "noProperties": "لا توجد عقارات للبيع حالياً",
+    "bath": "حمام"
   },
   "valuation": {
     "ownerReadyValuation": "تقييم للمالكين",

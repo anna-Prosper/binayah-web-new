@@ -7,7 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
-import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
+import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useCallback, useMemo, useState } from "react";
@@ -21,6 +21,7 @@ interface Listing {
   slug: string;
   listingType?: string;
   propertyType?: string;
+  propertyId?: string;
   bedrooms?: string | number;
   bathrooms?: string | number;
   size?: number;
@@ -166,40 +167,77 @@ export default function ListingsPageClient({
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
                         {l.listingType === "Rent" ? t("forRent") : t("forSale")}
                       </span>
+                      {l.propertyType && (
+                        <span className="absolute top-3 right-12 text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur text-foreground uppercase tracking-wider">
+                          {l.propertyType}
+                        </span>
+                      )}
                       <CardActions propertyId={l.slug} slug={l.slug} title={l.name} />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
+                      {/* Top metadata row — propertyType + community, mirroring developer+community on /off-plan */}
                       <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-                        {l.community && (
+                        {l.propertyType && (
                           <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" /> {l.community}
+                            <Building className="h-3 w-3" /> {l.propertyType}
+                          </span>
+                        )}
+                        {l.community && (
+                          <span className="flex items-center gap-1 truncate">
+                            <MapPin className="h-3 w-3 flex-shrink-0" /> <span className="truncate">{l.community}</span>
                           </span>
                         )}
                       </div>
                       <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2">
                         {l.name}
                       </h3>
-                      <div className="flex gap-3 text-xs text-muted-foreground mb-3">
-                        {l.bedrooms && (
+                      {/* Synthesized description line — gives the card the same visual weight as the off-plan card's shortOverview */}
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                        {[
+                          l.bedrooms != null && Number(l.bedrooms) > 0 ? `${l.bedrooms} bedroom` : null,
+                          l.propertyType ? l.propertyType.toLowerCase() : "property",
+                          l.listingType === "Rent" ? "for rent" : "for sale",
+                          l.community ? `in ${l.community}` : null,
+                        ].filter(Boolean).join(" ")}
+                      </p>
+                      {/* Attributes row — bed · bath · sqft */}
+                      <div className="flex gap-3 text-xs text-muted-foreground mb-3 flex-wrap">
+                        {l.bedrooms != null && Number(l.bedrooms) > 0 && (
                           <span className="flex items-center gap-1">
                             <BedDouble className="h-3 w-3" /> {`${l.bedrooms} ${t("bed")}`}
                           </span>
                         )}
+                        {l.bathrooms != null && Number(l.bathrooms) > 0 && (
+                          <span className="flex items-center gap-1">
+                            <Bath className="h-3 w-3" /> {`${l.bathrooms} ${t("bath")}`}
+                          </span>
+                        )}
                         {l.size && (
                           <span className="flex items-center gap-1">
-                            <Tag className="h-3 w-3" /> {l.size.toLocaleString()} {l.sizeUnit || "sqft"}
+                            <Maximize2 className="h-3 w-3" /> {l.size.toLocaleString()} {l.sizeUnit || "sqft"}
                           </span>
                         )}
                       </div>
-                      <div className="mt-auto border-t border-border pt-3">
-                        <p className="text-sm font-bold text-primary">
+                      {/* Footer — price (left) + propertyId (right) for the same justify-between balance the off-plan card has with completionDate */}
+                      <div className="mt-auto flex items-center justify-between border-t border-border pt-3 gap-3">
+                        <p className="text-sm font-bold text-primary truncate">
                           {formatPrice(l)}
                           {l.listingType === "Rent" && <span className="text-xs font-normal text-muted-foreground">{" "}{t("perYear")}</span>}
+                          {l.size && l.price && l.price > 0 && (
+                            <span className="block text-[10px] font-normal text-muted-foreground mt-0.5">
+                              AED {Math.round(l.price / l.size).toLocaleString()}/{l.sizeUnit || "sqft"}
+                            </span>
+                          )}
                         </p>
+                        {l.propertyId && (
+                          <span className="text-[10px] font-mono text-muted-foreground/60 flex items-center gap-1 flex-shrink-0">
+                            <Hash className="h-3 w-3" />{l.propertyId}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>

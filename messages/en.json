@@ -345,12 +345,14 @@
     "rentalsLabel": "Rentals",
     "secondaryMarketLabel": "Secondary Market",
     "forRent": "For Rent",
-    "forSale": "For Sale"
+    "forSale": "For Sale",
+    "bath": "Bath"
   },
   "buy": {
     "title": "Properties for Sale",
     "subtitle": "Explore secondary market properties across Dubai",
-    "noProperties": "No properties for sale found"
+    "noProperties": "No properties for sale found",
+    "bath": "Bath"
   },
   "valuation": {
     "ownerReadyValuation": "Owner-Ready Valuation",
