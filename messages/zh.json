@@ -2029,7 +2029,10 @@
     "dubai": "Dubai",
     "abuDhabi": "Abu Dhabi",
     "sharjah": "Sharjah",
-    "comingSoonTooltip": "Available next quarter"
+    "comingSoonTooltip": "Available next quarter",
+    "rak": "哈伊马角",
+    "ajman": "阿治曼",
+    "comingSoon": "即将推出"
   },
   "pulseSentimentChip": {
     "bullish": "Bullish",
@@ -2157,6 +2160,7 @@
     "devColProjects": "Projects",
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
-    "devColLatestLaunch": "Latest Launch"
+    "devColLatestLaunch": "Latest Launch",
+    "developerEmptyState": "开发商数据每周一上午更新，请届时查看。"
   }
 }

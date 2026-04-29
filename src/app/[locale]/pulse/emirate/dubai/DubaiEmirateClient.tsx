@@ -584,7 +584,21 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
         )}
 
         {/* ── Developer highlights — 4-up editorial cards (spec items 17–18) ── */}
-        {developerStats.length > 0 && (
+        <section>
+        {developerStats.length === 0 ? (
+          /* Empty-state: projects data is loading or unavailable */
+          <div
+            className="rounded-xl px-6 py-8 text-center"
+            style={{ background: PULSE_SURFACE, border: `1px solid ${PULSE_BORDER}` }}
+          >
+            <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-2" style={{ color: GOLD_HEX }}>
+              {t("developerHighlightsLabel")}
+            </p>
+            <p className="text-sm" style={{ color: PULSE_TEXT_MUTED }}>
+              {t("developerEmptyState")}
+            </p>
+          </div>
+        ) : (
           <section>
             <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>
               {t("developerHighlightsLabel")}
@@ -693,6 +707,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
             )}
           </section>
         )}
+        </section>
 
         {/* ── Top communities leaderboard ───────────────────────────── */}
         {leaderboardRows.length > 0 && (

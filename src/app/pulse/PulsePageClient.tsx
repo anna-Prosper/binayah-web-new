@@ -415,9 +415,11 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
       )}
 
       {/* ── Overview enrichment: Sentiment + extra KPIs ───────────── */}
-      {txData?.hasData && (
+      {(txData?.hasData || mostActiveArea || overviewOffPlanPct > 0) && (
         <div className="flex flex-wrap items-center gap-3">
-          <PulseSentimentChip monthly={txData.monthly} metric="ppsf" />
+          {txData?.hasData && txData.monthly.length >= 2 && (
+            <PulseSentimentChip monthly={txData.monthly} metric="ppsf" />
+          )}
           {mostActiveArea && (
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-border/40 text-[11px] font-medium text-muted-foreground bg-card">
               <Activity className="h-3 w-3 text-accent" />

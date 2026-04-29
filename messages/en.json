@@ -2023,7 +2023,10 @@
     "dubai": "Dubai",
     "abuDhabi": "Abu Dhabi",
     "sharjah": "Sharjah",
-    "comingSoonTooltip": "Available next quarter"
+    "comingSoonTooltip": "Available next quarter",
+    "rak": "Ras Al Khaimah",
+    "ajman": "Ajman",
+    "comingSoon": "Coming soon"
   },
   "pulseSentimentChip": {
     "bullish": "Bullish",
@@ -2151,6 +2154,7 @@
     "devColProjects": "Projects",
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
-    "devColLatestLaunch": "Latest Launch"
+    "devColLatestLaunch": "Latest Launch",
+    "developerEmptyState": "Developer aggregates refresh Monday morning — check back then."
   }
 }
