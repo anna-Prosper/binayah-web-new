@@ -9,14 +9,24 @@ export const metadata = {
   description: "Browse apartments, villas and townhouses for rent in Dubai. Find your perfect rental with Binayah Properties.",
 };
 
-export default async function RentPage() {
+const BATCH_SIZE = 9;
+
+export default async function RentPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const t = await getTranslations("rent");
+  const sp = await searchParams;
+  const page = Math.max(1, Math.min(50, parseInt(sp.page ?? "1") || 1));
+  const limit = page * BATCH_SIZE;
+
   let initialListings: any[] = [];
   let totalCount = 0;
 
   try {
     const [listingsRes, countRes] = await Promise.all([
-      serverFetch(serverApiUrl("/api/listings?listingType=Rent&limit=9")),
+      serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=${limit}`)),
       serverFetch(serverApiUrl("/api/listings?listingType=Rent&countOnly=1")),
     ]);
 
@@ -33,6 +43,8 @@ export default async function RentPage() {
       listingType="Rent"
       title={t("title")}
       subtitle={t("subtitle")}
+      initialPage={page}
+      batchSize={BATCH_SIZE}
     />
   );
 }

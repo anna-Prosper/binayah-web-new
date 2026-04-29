@@ -9,14 +9,24 @@ export const metadata = {
   description: "Browse apartments, villas and townhouses for sale in Dubai. Find secondary market properties with Binayah Properties.",
 };
 
-export default async function BuyPage() {
+const BATCH_SIZE = 9;
+
+export default async function BuyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const t = await getTranslations("buy");
+  const sp = await searchParams;
+  const page = Math.max(1, Math.min(50, parseInt(sp.page ?? "1") || 1));
+  const limit = page * BATCH_SIZE;
+
   let initialListings: any[] = [];
   let totalCount = 0;
 
   try {
     const [listingsRes, countRes] = await Promise.all([
-      serverFetch(serverApiUrl("/api/listings?listingType=Sale&limit=9")),
+      serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=${limit}`)),
       serverFetch(serverApiUrl("/api/listings?listingType=Sale&countOnly=1")),
     ]);
 
@@ -33,6 +43,8 @@ export default async function BuyPage() {
       listingType="Sale"
       title={t("title")}
       subtitle={t("subtitle")}
+      initialPage={page}
+      batchSize={BATCH_SIZE}
     />
   );
 }

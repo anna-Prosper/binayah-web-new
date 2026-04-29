@@ -10,7 +10,8 @@ import { motion } from "framer-motion";
 import { BedDouble, MapPin, Loader2, Tag } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { useEffect, useRef, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -32,59 +33,72 @@ interface Listing {
   imageGallery?: string[];
 }
 
-const BATCH_SIZE = 9;
-
 export default function ListingsPageClient({
   initialListings,
   totalCount,
   listingType,
   title,
   subtitle,
+  initialPage = 1,
+  batchSize = 9,
 }: {
   initialListings: Listing[];
   totalCount: number;
   listingType: "Rent" | "Sale";
   title: string;
   subtitle: string;
+  initialPage?: number;
+  batchSize?: number;
 }) {
   const t = useTranslations("rent");
-  const loaderRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [page, setPage] = useState(initialPage);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["listings", listingType],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryKey: ["listings", listingType, initialPage],
+    queryFn: async ({ pageParam = initialListings.length }) => {
       const res = await fetch(
-        apiUrl(`/api/listings?listingType=${listingType}&limit=${BATCH_SIZE}&skip=${pageParam}`)
+        apiUrl(`/api/listings?listingType=${listingType}&limit=${batchSize}&skip=${pageParam}`)
       );
       if (!res.ok) throw new Error("fetch failed");
       return res.json() as Promise<Listing[]>;
     },
-    initialPageParam: 0,
+    initialPageParam: initialListings.length,
     getNextPageParam: (lastPage, allPages) => {
-      const loaded = allPages.flat().length;
+      const loaded = allPages.flat().length + initialListings.length;
       if (loaded >= totalCount) return undefined;
       if (lastPage.length === 0) return undefined;
       return loaded;
     },
-    initialData: { pages: [initialListings], pageParams: [0] },
+    // Page 0 = SSR-rendered initial batch (covers ?page=N on initial load).
+    // Subsequent pages append on load-more click.
+    initialData: { pages: [], pageParams: [] },
     staleTime: 60 * 1000,
   });
 
-  const listings = useMemo(() => data?.pages.flat() ?? initialListings, [data, initialListings]);
+  const listings = useMemo(() => {
+    const fetched = data?.pages.flat() ?? [];
+    return [...initialListings, ...fetched];
+  }, [data, initialListings]);
 
-  // Stable observer — fires fetchNextPage when sentinel enters viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: "400px" }
-    );
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  // Sync ?page=N into URL on load-more without scroll-jumping
+  const writePageToUrl = useCallback((n: number) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    if (n <= 1) params.delete("page");
+    else params.set("page", String(n));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [router, pathname, searchParams]);
+
+  const handleLoadMore = useCallback(async () => {
+    if (!hasNextPage || isFetchingNextPage) return;
+    await fetchNextPage();
+    const next = page + 1;
+    setPage(next);
+    writePageToUrl(next);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, page, writePageToUrl]);
 
   const formatPrice = (listing: Listing) => {
     if (!listing.price) return "Price on request";
@@ -194,7 +208,7 @@ export default function ListingsPageClient({
             </div>
           )}
 
-          <div ref={loaderRef} className="mt-12 text-center">
+          <div className="mt-12 text-center">
             {isFetchingNextPage && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -203,14 +217,14 @@ export default function ListingsPageClient({
             )}
             {hasNextPage && !isFetchingNextPage && (
               <button
-                onClick={() => fetchNextPage()}
+                onClick={handleLoadMore}
                 className="px-8 py-3 text-white rounded-xl font-semibold transition-all hover:shadow-lg"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 {t("loadMore")}
               </button>
             )}
-            {!hasNextPage && listings.length > BATCH_SIZE && (
+            {!hasNextPage && listings.length > batchSize && (
               <p className="text-sm text-muted-foreground">
                 {t("showingAll", { count: listings.length })}
               </p>

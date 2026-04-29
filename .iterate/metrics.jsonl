@@ -113,3 +113,5 @@
 {"ts":"2026-04-29T07:26:24Z","stage":3,"iter":2,"fromPhase":"qa","toPhase":"qa_live","role":"orchestrator","passed":true,"note":"all 3 stages passed; pushed c7942116; awaiting Vercel deploy"}
 {"ts":"2026-04-29T07:38:01Z","stage":3,"iter":2,"fromPhase":"qa_live","toPhase":"dev_live_fix","role":"qa_live","passed":false}
 {"ts":"2026-04-29T07:38:01Z","stage":3,"iter":2,"fromPhase":"dev_live_fix","toPhase":"qa_live","role":"orchestrator","passed":null,"note":"pushed 7a65fa86; waiting for Vercel"}
+{"ts":"2026-04-29T07:58:14Z","stage":3,"iter":2,"fromPhase":"qa_live","toPhase":"pm","role":"orchestrator","passed":true,"note":"confidence 65/100; routing to pm-lite for ship decision per skill"}
+{"ts":"2026-04-29T07:59:27Z","stage":3,"iter":2,"fromPhase":"pm","toPhase":"done","role":"pm-lite","passed":true,"note":"SHIP"}

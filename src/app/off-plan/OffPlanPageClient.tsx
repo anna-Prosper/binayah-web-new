@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 interface Project {
@@ -28,31 +29,46 @@ interface Project {
   imageGallery?: string[];
 }
 
-const BATCH_SIZE = 6; // 2 rows of 3
-
 export default function OffPlanPageClient({
   initialProjects,
   totalCount,
+  initialPage = 1,
+  batchSize = 12,
 }: {
   initialProjects: Project[];
   totalCount: number;
+  initialPage?: number;
+  batchSize?: number;
 }) {
   const t = useTranslations("offPlan");
   const tSearch = useTranslations("search");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialProjects.length < totalCount);
-  const loaderRef = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
   const hasMoreRef = useRef(initialProjects.length < totalCount);
   const projectsLengthRef = useRef(initialProjects.length);
+
+  // Sync ?page=N into the URL without scroll-jumping. router.replace keeps
+  // the URL in lock-step with state so back-button returns to the right page.
+  const writePageToUrl = useCallback((n: number) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    if (n <= 1) params.delete("page");
+    else params.set("page", String(n));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [router, pathname, searchParams]);
 
   const loadMore = useCallback(async () => {
     if (loadingRef.current || !hasMoreRef.current) return;
     loadingRef.current = true;
     setLoading(true);
     try {
-      const res = await fetch(apiUrl(`/api/projects?limit=${BATCH_SIZE}&skip=${projectsLengthRef.current}`));
+      const res = await fetch(apiUrl(`/api/projects?limit=${batchSize}&skip=${projectsLengthRef.current}`));
       const newProjects: Project[] = await res.json();
       if (newProjects.length === 0) {
         hasMoreRef.current = false;
@@ -67,6 +83,9 @@ export default function OffPlanPageClient({
           }
           return next;
         });
+        const nextPage = page + 1;
+        setPage(nextPage);
+        writePageToUrl(nextPage);
       }
     } catch (err) {
       console.error("Failed to load more projects:", err);
@@ -74,17 +93,7 @@ export default function OffPlanPageClient({
       loadingRef.current = false;
       setLoading(false);
     }
-  }, [totalCount]);
-
-  // Stable observer — created once, reads latest state via refs
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => { if (entries[0].isIntersecting) loadMore(); },
-      { rootMargin: "400px" }
-    );
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
-  }, [loadMore]);
+  }, [totalCount, page, writePageToUrl, batchSize]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,7 +163,7 @@ export default function OffPlanPageClient({
           </div>
 
           {/* Scroll sentinel + Load More */}
-          <div ref={loaderRef} className="mt-12 text-center">
+          <div className="mt-12 text-center">
             {loading && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />

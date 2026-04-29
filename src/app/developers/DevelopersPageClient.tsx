@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useCallback } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 interface Developer {
@@ -19,29 +20,45 @@ interface Developer {
   projectCount?: number;
 }
 
-const BATCH_SIZE = 24;
-
 export default function DevelopersPageClient({
   initialDevelopers,
   totalCount,
+  initialPage = 1,
+  batchSize = 24,
 }: {
   initialDevelopers: Developer[];
   totalCount: number;
+  initialPage?: number;
+  batchSize?: number;
 }) {
   const t = useTranslations("developers");
   const tSearch = useTranslations("search");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialDevelopers.length < totalCount);
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
   const searchTimeout = useRef<NodeJS.Timeout>(null);
 
+  // Sync ?page=N into URL without scroll-jumping. Drops the param when
+  // searching so back-button after a search returns to page 1.
+  const writePageToUrl = useCallback((n: number) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    if (n <= 1) params.delete("page");
+    else params.set("page", String(n));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [router, pathname, searchParams]);
+
   const loadMore = useCallback(async () => {
     if (loading || !hasMore || search) return;
     setLoading(true);
     try {
-      const res = await fetch(apiUrl(`/api/developers?limit=${BATCH_SIZE}&skip=${developers.length}`));
+      const res = await fetch(apiUrl(`/api/developers?limit=${batchSize}&skip=${developers.length}`));
       if (!res.ok) throw new Error("Failed to fetch");
       const newDevs: Developer[] = await res.json();
       if (!Array.isArray(newDevs) || newDevs.length === 0) {
@@ -51,6 +68,9 @@ export default function DevelopersPageClient({
         if (developers.length + newDevs.length >= totalCount) {
           setHasMore(false);
         }
+        const nextPage = page + 1;
+        setPage(nextPage);
+        writePageToUrl(nextPage);
       }
     } catch (err) {
       console.error("Failed to load more developers:", err);
@@ -58,7 +78,7 @@ export default function DevelopersPageClient({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, developers.length, totalCount, search]);
+  }, [loading, hasMore, developers.length, totalCount, search, page, writePageToUrl, batchSize]);
 
   // Debounced search
   const handleSearch = (value: string) => {
@@ -68,9 +88,13 @@ export default function DevelopersPageClient({
       setDevelopers(initialDevelopers);
       setHasMore(initialDevelopers.length < totalCount);
       setSearching(false);
+      setPage(initialPage);
+      writePageToUrl(initialPage);
       return;
     }
+    // Drop ?page from URL while searching — pagination doesn't apply to search results.
     setSearching(true);
+    writePageToUrl(1);
     searchTimeout.current = setTimeout(async () => {
       try {
         const res = await fetch(apiUrl(`/api/developers?q=${encodeURIComponent(value)}&limit=100`));
