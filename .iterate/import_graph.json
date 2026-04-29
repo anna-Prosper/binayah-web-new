@@ -105,6 +105,12 @@
       "src/lib/property-types.ts",
       "src/lib/home-smart-search.ts"
     ],
+    "src/components/CommunityLeaderboard.tsx": [
+      "src/navigation.ts"
+    ],
+    "src/components/PulseEmirateNav.tsx": [
+      "src/navigation.ts"
+    ],
     "src/components/InquirySection.tsx": [
       "src/lib/api.ts"
     ],
@@ -221,7 +227,12 @@
       "src/components/ImageWithFallback.tsx"
     ],
     "src/app/pulse/PulsePageClient.tsx": [
-      "src/lib/api.ts"
+      "src/lib/api.ts",
+      "src/components/PulseQuickTicker.tsx",
+      "src/components/PulseSentimentChip.tsx",
+      "src/components/CommunityLeaderboard.tsx",
+      "src/components/FeaturedInsightPanel.tsx",
+      "src/components/WeeklySubscribeForm.tsx"
     ],
     "src/app/search/SearchPageClient.tsx": [
       "src/lib/api.ts",
@@ -273,6 +284,9 @@
       "src/lib/mongodb.ts",
       "src/lib/mailer.ts"
     ],
+    "src/app/api/projects/route.ts": [
+      "src/lib/api.ts"
+    ],
     "src/app/api/favorites/route.ts": [
       "src/lib/auth.ts",
       "src/lib/mongodb.ts"
@@ -318,9 +332,6 @@
     ],
     "src/app/api/account/market-reports/route.ts": [
       "src/lib/auth.ts",
-      "src/lib/api.ts"
-    ],
-    "src/app/api/pdf/pulse/route.ts": [
       "src/lib/api.ts"
     ],
     "src/app/api/favorites/hydrate/route.ts": [
@@ -471,7 +482,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/pulse/PulsePageClient.tsx",
       "src/lib/api.ts"
     ],
@@ -598,7 +609,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/pulse/calculator/CalculatorClient.tsx",
       "src/lib/api.ts"
     ],
@@ -609,7 +620,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/pulse/guides/GuidesClient.tsx"
     ],
     "src/app/[locale]/pulse/compare/CompareClient.tsx": [
@@ -619,7 +630,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/pulse/compare/CompareClient.tsx",
       "src/lib/api.ts"
     ],
@@ -627,7 +638,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/pulse/trending/TrendingClient.tsx",
       "src/lib/api.ts"
     ],
@@ -638,7 +649,7 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
-      "src/components/PulseSubNav.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx",
       "src/lib/pulse-guides.ts"
     ],
@@ -655,6 +666,22 @@
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
       "src/components/WhatsAppButton.tsx",
+      "src/lib/api.ts"
+    ],
+    "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx": [
+      "src/components/PulseSentimentChip.tsx",
+      "src/components/CommunityLeaderboard.tsx",
+      "src/components/FeaturedInsightPanel.tsx",
+      "src/components/WeeklySubscribeForm.tsx",
+      "src/lib/api.ts",
+      "src/navigation.ts"
+    ],
+    "src/app/[locale]/pulse/emirate/dubai/page.tsx": [
+      "src/components/Navbar.tsx",
+      "src/components/Footer.tsx",
+      "src/components/WhatsAppButton.tsx",
+      "src/components/PulseEmirateNav.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx",
       "src/lib/api.ts"
     ],
     "src/app/[locale]/admin/inquiries/page.tsx": [
@@ -747,8 +774,8 @@
       "src/app/off-plan/OffPlanPageClient.tsx",
       "src/app/developers/DevelopersPageClient.tsx",
       "src/app/developers/[slug]/page.tsx",
+      "src/app/api/projects/route.ts",
       "src/app/api/account/market-reports/route.ts",
-      "src/app/api/pdf/pulse/route.ts",
       "src/app/api/favorites/hydrate/route.ts",
       "src/app/project/[slug]/ProjectDetailClient.tsx",
       "src/app/admin/project-import/page.tsx",
@@ -774,6 +801,8 @@
       "src/app/[locale]/pulse/trending/page.tsx",
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
       "src/app/[locale]/pulse/confirm/[token]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx",
       "src/app/[locale]/communities/[slug]/page.tsx",
       "src/app/[locale]/property/[slug]/page.tsx",
       "src/app/[locale]/construction-updates/[slug]/page.tsx"
@@ -791,9 +820,12 @@
       "src/components/Navbar.tsx",
       "src/components/FavoritesDrawer.tsx",
       "src/components/NotificationsBell.tsx",
+      "src/components/CommunityLeaderboard.tsx",
+      "src/components/PulseEmirateNav.tsx",
       "src/app/[locale]/profile/ProfileClient.tsx",
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
-      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
     ],
     "src/components/UserMenu.tsx": [
       "src/components/Navbar.tsx"
@@ -861,7 +893,8 @@
       "src/app/[locale]/pulse/trending/page.tsx",
       "src/app/[locale]/pulse/guides/[slug]/page.tsx",
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
-      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx"
     ],
     "src/components/HeroSection.tsx": [
       "src/components/HomePageClient.tsx"
@@ -957,7 +990,8 @@
       "src/app/[locale]/pulse/trending/page.tsx",
       "src/app/[locale]/pulse/guides/[slug]/page.tsx",
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
-      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx"
     ],
     "src/components/WhatsAppButton.tsx": [
       "src/components/CommunityInfoDetailClient.tsx",
@@ -990,7 +1024,8 @@
       "src/app/[locale]/pulse/trending/page.tsx",
       "src/app/[locale]/pulse/guides/[slug]/page.tsx",
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx",
-      "src/app/[locale]/pulse/confirm/[token]/page.tsx"
+      "src/app/[locale]/pulse/confirm/[token]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx"
     ],
     "src/lib/communityScraper.ts": [
       "src/components/CommunityInfoDetailClient.tsx",
@@ -1100,6 +1135,26 @@
       "src/app/[locale]/terms-of-service/TermsOfServiceClient.tsx",
       "src/app/[locale]/services/ServicesPageClient.tsx"
     ],
+    "src/components/PulseQuickTicker.tsx": [
+      "src/app/pulse/PulsePageClient.tsx"
+    ],
+    "src/components/PulseSentimentChip.tsx": [
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
+    ],
+    "src/components/CommunityLeaderboard.tsx": [
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
+    ],
+    "src/components/FeaturedInsightPanel.tsx": [
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
+    ],
+    "src/components/WeeklySubscribeForm.tsx": [
+      "src/app/pulse/PulsePageClient.tsx",
+      "src/app/[locale]/account/market-reports/MarketReportsClient.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
+    ],
     "src/app/developers/[slug]/DeveloperDetailClient.tsx": [
       "src/app/developers/[slug]/page.tsx",
       "src/app/[locale]/developers/[slug]/page.tsx"
@@ -1184,13 +1239,14 @@
       "src/app/[locale]/admin/subscriptions/page.tsx",
       "src/app/[locale]/admin/submissions/page.tsx"
     ],
-    "src/components/PulseSubNav.tsx": [
+    "src/components/PulseEmirateNav.tsx": [
       "src/app/[locale]/pulse/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/guides/page.tsx",
       "src/app/[locale]/pulse/compare/page.tsx",
       "src/app/[locale]/pulse/trending/page.tsx",
-      "src/app/[locale]/pulse/guides/[slug]/page.tsx"
+      "src/app/[locale]/pulse/guides/[slug]/page.tsx",
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx"
     ],
     "src/app/pulse/PulsePageClient.tsx": [
       "src/app/[locale]/pulse/page.tsx"
@@ -1234,9 +1290,6 @@
     "src/app/developers/DevelopersPageClient.tsx": [
       "src/app/[locale]/developers/page.tsx"
     ],
-    "src/components/WeeklySubscribeForm.tsx": [
-      "src/app/[locale]/account/market-reports/MarketReportsClient.tsx"
-    ],
     "src/app/[locale]/account/market-reports/MarketReportsClient.tsx": [
       "src/app/[locale]/account/market-reports/page.tsx"
     ],
@@ -1271,6 +1324,9 @@
     ],
     "src/app/[locale]/pulse/unsubscribe/[token]/FeedbackChips.tsx": [
       "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx"
+    ],
+    "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx": [
+      "src/app/[locale]/pulse/emirate/dubai/page.tsx"
     ],
     "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": [
       "src/app/[locale]/admin/inquiries/page.tsx"
@@ -1318,6 +1374,7 @@
     "src/app/developers/[slug]/page.tsx": "/developers/[slug]",
     "src/app/valuation/stream/route.ts": "/valuation/stream",
     "src/app/api/list-your-property/route.ts": "/api/list-your-property",
+    "src/app/api/projects/route.ts": "/api/projects",
     "src/app/api/favorites/route.ts": "/api/favorites",
     "src/app/api/profile/route.ts": "/api/profile",
     "src/app/api/project-subscriptions/route.ts": "/api/project-subscriptions",
@@ -1332,7 +1389,6 @@
     "src/app/api/valuation/unlock/route.ts": "/api/valuation/unlock",
     "src/app/api/og/pulse/route.tsx": "/api/og/pulse",
     "src/app/api/account/market-reports/route.ts": "/api/account/market-reports",
-    "src/app/api/pdf/pulse/route.ts": "/api/pdf/pulse",
     "src/app/api/admin/signout/route.ts": "/api/admin/signout",
     "src/app/api/admin/session/route.ts": "/api/admin/session",
     "src/app/api/favorites/hydrate/route.ts": "/api/favorites/hydrate",
@@ -1412,6 +1468,8 @@
     "src/app/[locale]/pulse/unsubscribe/[token]/FeedbackChips.tsx": "/pulse/unsubscribe/[token]/FeedbackChips.tsx",
     "src/app/[locale]/pulse/unsubscribe/[token]/page.tsx": "/pulse/unsubscribe/[token]",
     "src/app/[locale]/pulse/confirm/[token]/page.tsx": "/pulse/confirm/[token]",
+    "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx": "/pulse/emirate/dubai/DubaiEmirateClient.tsx",
+    "src/app/[locale]/pulse/emirate/dubai/page.tsx": "/pulse/emirate/dubai",
     "src/app/[locale]/admin/inquiries/InquiriesMobileList.tsx": "/admin/inquiries/InquiriesMobileList.tsx",
     "src/app/[locale]/admin/inquiries/page.tsx": "/admin/inquiries",
     "src/app/[locale]/admin/subscriptions/SubscriptionsMobileList.tsx": "/admin/subscriptions/SubscriptionsMobileList.tsx",
@@ -1427,6 +1485,6 @@
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-04-28T11:33:02.547876+00:00",
-  "fileCount": 250
+  "builtAt": "2026-04-29T06:28:09.852103+00:00",
+  "fileCount": 258
 }

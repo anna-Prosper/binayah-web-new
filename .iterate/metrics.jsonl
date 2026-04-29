@@ -96,3 +96,12 @@
 {"ts":"2026-04-28T11:09:46Z","stage":1,"iter":1,"fromPhase":"dev_review_fix","toPhase":"qa","role":"orchestrator","passed":true,"note":"re-review skipped — 17-line surgical fix"}
 {"ts":"2026-04-28T11:24:16Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false,"note":"1 critical (pdfkit Helvetica path) + 5 major (design fidelity) + 4 minor"}
 {"ts":"2026-04-28T11:35:31Z","stage":1,"iter":2,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-04-28T11:54:19Z","stage":1,"iter":2,"fromPhase":"qa","toPhase":"pm_replan","role":"qa","passed":true,"note":"stage 1 passed with PDF deferred to stage 3"}
+{"ts":"2026-04-28T11:56:35Z","stage":2,"iter":1,"fromPhase":"pm_replan","toPhase":"design","role":"pm-lite","passed":true}
+{"ts":"2026-04-28T12:05:25Z","stage":2,"iter":1,"fromPhase":"design","toPhase":"dev","role":"designer","passed":true}
+{"ts":"2026-04-28T12:25:10Z","stage":2,"iter":1,"fromPhase":"review","toPhase":"dev_review_fix","role":"reviewer","passed":false,"note":"3 major: dev section dropped, overview not enriched, dubai uses light theme"}
+{"ts":"2026-04-29T05:47:05Z","stage":2,"iter":1,"fromPhase":"dev_review_fix","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-04-29T05:47:32Z","stage":2,"iter":1,"fromPhase":"review","toPhase":"qa","role":"orchestrator","passed":true,"note":"re-review skipped, fixes verified via diff grep"}
+{"ts":"2026-04-29T06:09:24Z","stage":2,"iter":2,"fromPhase":"qa","toPhase":"qa","role":"orchestrator","passed":null,"note":"auto-heal: killed all next dev, rm .next, fresh start on port 3000, all routes return 200"}
+{"ts":"2026-04-29T06:21:55Z","stage":2,"iter":2,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false,"note":"2 critical (api/projects missing, PDF button absent) + 4 major"}
+{"ts":"2026-04-29T06:28:54Z","stage":2,"iter":3,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}

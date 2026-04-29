@@ -85,7 +85,7 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
               src={article.imageUrl}
               alt={article.title}
               fill
-              className="object-cover transition-transform duration-600 hover:scale-[1.02]"
+              className="object-cover transition-transform duration-[600ms] hover:scale-[1.02]"
               sizes="(max-width: 1024px) 100vw, 60vw"
               unoptimized
             />

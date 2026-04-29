@@ -84,7 +84,7 @@
   "totalStages": 3,
   "stageIteration": 3,
   "maxIterationsPerStage": 3,
-  "phase": "qa",
+  "phase": "pm",
   "plannerOutput": {
     "taskSummary": "Pulse Property roadmap — 17 deliverables across 4 batches reorganized into 3 stages: backend foundation + subscription, Pulse Overview + Emirate Dubai, Calculator + polish.",
     "confirmedScope": "Build out Pulse Property roadmap — 17 deliverables across 3 stages (single iterate, --stages=3 --max=3).\n\nSTAGE 1 — Backend foundation + Subscription system (binayah-api + binayah-properties)\n1. New MarketReportSubscription Mongoose model on binayah-api: email, name, phone (opt), intents[] (buy/rent/sell/invest), areas[], propertyTypes[], budgetMin, budgetMax, confirmedAt, unsubscribedAt, lastSentAt, unsubToken (random), createdAt\n2. Endpoints on binayah-api:\n   - POST /api/market-report/subscribe — store sub, fire confirmation email (double opt-in)\n   - GET  /api/market-report/confirm/:token — set confirmedAt\n   - GET  /api/market-report/unsubscribe/:token — set unsubscribedAt\n   - POST /api/admin/market-report/send-weekly — admin trigger to send digest now (also wired to a Render cron job at Mon 09:00 UTC)\n3. Email service helper (binayah-api): uses existing SMTP_* env vars; sends confirmation + weekly digest with personalized content (top movers in user's areas, new launches matching property/budget, 1 featured guide). Plain HTML, unsub link in footer.\n4. Yield-by-area aggregation endpoint on binayah-api: GET /api/dld/areas/:slug/yield — computes avg rent / avg sale per area; flag samples <50 with `lowConfidence:true`.\n5. OG image route on binayah-properties: /api/og/pulse — Next.js route returning a PNG card with Pulse headline metric, used for share unfurls.\n6. PDF render route on binayah-properties: /api/pdf/pulse — server-renders a Pulse summary PDF (uses puppeteer-core or pdfkit; pick whichever is lighter).\n7. WeeklySubscribeForm component on binayah-properties: 1-step form with name+email required + optional phone + intent chips + areas multiselect (autocomplete from /api/communities) + property type chips + budget range; replaces every existing \"Get a free market report\" form (currently on /pulse, /pulse/trending, /pulse/emirate, etc.). Confirmation-pending screen after submit.\n8. /account/market-reports page (logged-in users) to manage their subscription preferences.\n\nSTAGE 2 — Pulse Overview enrichment + Emirate Dubai detail page\n9. Sub-nav with Emirate tabs on every Pulse page: Dubai active, AUH/SHJ/RAK/Ajman with \"Coming soon\" badges + disabled links.\n10. Sentiment indicator (Bullish / Neutral / Bearish) — derive from 3-month MoM avgPpsf trend; appears on Overview top + Emirate page.\n11. Most-active-community KPI on Overview — read DldArea sorted by totalSales desc, take top.\n12. Top-communities leaderboard on Overview + Emirate (price/sqft, yield, YoY, volume) — uses existing /api/dld/areas with new yield endpoint from stage 1.\n13. Quick ticker on Overview (top 3 movers, horizontal scroll, links to communities) — reuses Trending movers logic.\n14. Off-plan share KPI on Overview + Emirate — compute % of Project where status is off-plan.\n15. /pulse/emirate/dubai page — sentiment, KPI strip (transactions YTD, avg ppsf, avg yield, YoY growth, off-plan share, communities tracked), 24-mo price trend chart, monthly transaction volume chart, community highlights (highest price / best yield / fastest growth / best value), developer highlights (most active / fastest growing / most off-plan / best yield), developer comparison table, \"why invest in Dubai\" section, community leaderboard, featured community cards, lead form using new WeeklySubscribeForm.\n16. Yield-by-community leaderboard on Compare + Emirate — uses stage 1 endpoint; shows lowConfidence flag for thin samples.\n17. Featured insight panel + share buttons on Trending + Overview — pulls latest News article; share buttons (WhatsApp, X, LinkedIn, Copy Link) wire OG image; UTM tags on every share URL.\n\nSTAGE 3 — Calculator overhaul + Compare presets + Polish\n18. Calculator benchmarks — replace hardcoded S&P/Savings with three labeled lines: \"S&P 500 5-yr avg\" (10.2%), \"UAE Savings 5-yr avg\" (3.5%), \"Dubai property 5-yr avg\" (real, derived from DLD MoM trend); each gets a tooltip with source.\n19. Calculator verdict — replace single \"Strong Investment\" badge with explainer block: \"Rental yield: X% (vs Dubai avg Y%)\", \"5-yr appreciation forecast: Z%\", \"vs S&P 500 5-yr: ±W%\". Verdict pill (Strong/Moderate/Weak) driven by explicit scoring rule documented in code.\n20. Calculator share — Share button copies URL with calc state encoded in querystring; recipient lands on filled-in calc. WhatsApp share includes 3-line preview text.\n21. Calculator email — POST /api/calculator/email on binayah-properties → server-side HTML email with full calc result; lead logged to MarketReportSubscription as a \"calculator-lead\" intent.\n22. Calculator projection lines — add 3-yr and 5-yr projection lines on the results chart, linear extrapolation from DLD trend with disclaimer.\n23. Compare presets — 4 curated arrays: \"Waterfront Luxury\" (Palm Jumeirah, Dubai Marina, Bluewaters Island), \"High Yield\" (JVC, Dubai Sports City, Dubai South), \"Urban Core\" (Downtown Dubai, Business Bay, DIFC), \"Emerging Stars\" (Dubai Hills Estate, Tilal Al Ghaf, Town Square). Click loads them into the comparison.\n24. New project launches list on Trending — Project.find({}).sort({launchDate: -1}).limit(6) with developer, area, starting price, payment plan.\n25. Share buttons cleanup site-wide — replace \"Embed\" with \"Save as PDF\" (calls /api/pdf/pulse from stage 1); add UTM tagging on every share URL across Pulse pages.\n26. Guide detail layout polish — heading hierarchy, embedded stats blocks pulling from DLD API by mentioned area, related-areas footer with placeKind links.\n\nCONSTRAINTS\n- No multi-emirate data exists yet — only Dubai pipelines work. Other emirate tabs MUST be visible-but-disabled with \"Coming soon\" badges. Don't fake numbers.\n- All new UI strings must be in en/ar/zh/ru locale files (eslint i18next/no-literal-string blocks Vercel build otherwise).\n- New env vars (none expected — SMTP_* + AWS_* + MONGODB_URI already on Render) — flag if any new ones are needed.\n- Render cron for weekly send: register in render.yaml as a cronJob service (existing pattern: dld-refresh runs daily 03:00 UTC).\n- Email service uses existing SMTP_HOST/PORT/USER/PASS already configured for inquiries.\n- Existing \"Get a free market report\" form must be REPLACED, not duplicated, so we don't end up with two competing forms on /pulse.\n- All routes must be locale-aware (use @/navigation, not next/link directly).\n- The /pulse/emirate/dubai page should be the marquee piece — match the design quality bar from .claude/DESIGN_PRINCIPLES.md if it exists.",
@@ -248,146 +248,87 @@
   "qaReport": {
     "passed": false,
     "tested": [
-      "GET /en/pulse/emirate/dubai — dark theme (FIX 3)",
-      "GET /en/pulse/emirate/dubai — developer section (FIX 1)",
-      "GET /en/pulse — Overview enrichment (FIX 2)",
-      "PulseEmirateNav sub-nav active/disabled states (FIX 4)",
-      "Sentiment chip animation (FIX 5)",
-      "PDF button disabled state",
-      "Locale-aware links /zh/ prefix",
-      "Mobile viewport 375x667",
-      "Regression: /en, /en/areas, /en/communities, /en/pulse/trending, /en/pulse/calculator, /en/pulse/guides",
-      "pre-flight Playwright: 3 of 6 specs passed (3 failed due to URL redirect expectations)"
+      "GET /en/pulse/emirate/dubai — developer section (CRITICAL 1)",
+      "GET /en/pulse/emirate/dubai — PDF disabled button (CRITICAL 2)",
+      "PulseEmirateNav active underline gold #D4A847 (MAJOR 3)",
+      "PulseEmirateNav coming-soon badges on Abu Dhabi / Sharjah / RAK / Ajman (MAJOR 4)",
+      "GET /en/pulse — Most Active Community KPI chip (MAJOR 5)",
+      "GET /en/pulse — U+2212 minus glyph in MoM% values (MAJOR 6 — moot, all values positive)",
+      "Dark theme hero text readable on /en/pulse/emirate/dubai",
+      "Sub-nav present on /en/pulse, /en/pulse/trending, /en/pulse/calculator, /en/pulse/guides, /en/pulse/compare",
+      "Locale-aware links /zh/communities/<slug> on Dubai page",
+      "Mobile 375x667 — no horizontal overflow on Dubai page",
+      "pre-flight: 6 pulse-pages.spec.ts tests passed"
     ],
     "bugs": [
       {
-        "severity": "critical",
-        "category": "functional",
-        "principle": null,
-        "description": "/api/projects route does not exist — developer section on Dubai page never renders",
-        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Scroll past community highlights. 3. No developer section (4-card row + comparison table) appears.",
-        "expected": "4-card developer highlight row (MOST ACTIVE / FASTEST GROWING / MOST OFF-PLAN / BEST YIELD ENTRY) and 8-row developer comparison table below community highlights",
-        "actual": "Section hidden because developerStats.length === 0. Root cause: page.tsx fetches /api/projects?status=active&limit=100 but that API route does not exist in src/app/api/ — returns HTTP 404, so projectsData is null, projects array is empty, aggregateDevelopers() returns [].",
-        "file": "src/app/[locale]/pulse/emirate/dubai/page.tsx (calls /api/projects), no route exists at src/app/api/projects/"
-      },
-      {
-        "severity": "critical",
-        "category": "functional",
-        "principle": null,
-        "description": "PDF 'Save as PDF' share button is completely missing from Dubai page",
-        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Look for any PDF or Save button in the hero or share bar. 3. No such button exists.",
-        "expected": "Disabled 'Save as PDF' button with tooltip 'PDF export is coming next week — Stage 3'",
-        "actual": "Share bar shows only WhatsApp and Copy link buttons. No PDF button at all.",
-        "file": "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
-      },
-      {
-        "severity": "major",
-        "category": "design",
-        "principle": "benchmark against the best",
-        "description": "PulseEmirateNav disabled emirate items lack the required 'Coming soon' editorial footnote badges",
-        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Inspect Abu Dhabi and Sharjah in the sub-nav. 3. No 'Coming soon' or 'Available next quarter' text badge appears beside them.",
-        "expected": "Design brief: 'tiny Coming soon badge to the right: text-[10px] uppercase tracking-[0.2em] in --pulse-gold-dark, no background, just letter-spacing — reads like an editorial footnote, not a disabled button'",
-        "actual": "Abu Dhabi and Sharjah are rendered as plain <span> with text-[11px] and no badge. No 'Coming soon' text anywhere on the page.",
-        "file": "src/components/PulseEmirateNav.tsx"
-      },
-      {
-        "severity": "major",
-        "category": "design",
-        "principle": "the copy is the UI",
-        "description": "PulseEmirateNav active underline uses border-accent (brand green) instead of gold (--pulse-gold) as specified in design brief",
-        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Inspect Dubai tab in sub-nav. 3. Underline color is brand-green (accent), not gold.",
-        "expected": "Design brief: 'Active = Dubai = --pulse-text + 2px gold underline (--pulse-gold), animating from 0 to full width on mount with ease-out 220ms'",
-        "actual": "CSS class is 'border-accent' which resolves to brand green, not --pulse-gold. No animation on mount.",
-        "file": "src/components/PulseEmirateNav.tsx"
-      },
-      {
-        "severity": "major",
-        "category": "design",
-        "principle": "show the data, not a symbol of it",
-        "description": "PulseQuickTicker MoM change values use standard ASCII hyphen (-) instead of true minus sign (U+2212 −) as specified",
-        "reproSteps": "1. Navigate to /en/pulse. 2. View TOP MOVERS ticker cards. 3. Negative values use '-' not '−'.",
-        "expected": "Design brief and task spec: 'true U+2212 minus' in MoM change values for negative movers",
-        "actual": "Values show '+5.1%', '+5.4%', '+4.9%' (all positive in current data). The component does not enforce U+2212 replacement. hasTrueMinus = false confirmed.",
-        "file": "src/components/PulseQuickTicker.tsx (or wherever MoM formatting occurs)"
-      },
-      {
         "severity": "major",
         "category": "functional",
         "principle": null,
-        "description": "Most Active Community KPI missing from Pulse Overview despite devReport claiming it was added",
-        "reproSteps": "1. Navigate to /en/pulse. 2. Look for a 'most active community' KPI chip near the Bullish sentiment chip. 3. Only 'Bullish' and 'Off-Plan Share: 97%' chips appear.",
-        "expected": "Sentiment chip + most-active-community KPI + off-plan share KPI (3 items)",
-        "actual": "Only 2 items: Bullish chip and Off-Plan Share. 'Most active' community label not found in DOM.",
+        "description": "Most Active Community KPI chip missing from Overview — wrong field name in areasData lookup",
+        "reproSteps": "1. Navigate to /en/pulse. 2. Look at the chip strip below the MarqueeTicker (should show Bullish + Most Active Community + Off-Plan Share). 3. Only 'Bullish' and 'Off-Plan Share: 97%' chips appear. 'Most Active Community' is absent.",
+        "expected": "Chip displaying 'Most Active: <community name>' (e.g. 'Most Active: Jumeirah Village Circle')",
+        "actual": "Chip is absent. Root cause: PulsePageClient.tsx line 344 reads `areasData?.results?.[0]?.area` but the DLD API returns `name` field (not `area`). So `mostActiveArea` is always null even when areasData resolves.",
         "file": "src/app/pulse/PulsePageClient.tsx"
       },
       {
-        "severity": "minor",
-        "category": "design",
-        "principle": "interactivity is life",
-        "description": "Sentiment chip 'Bullish' animation class is animate-[pulse_3s_ease-in-out_infinite] but not visible on the outermost chip element; animation is applied to the inner wrapper only and may not be perceivable",
-        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Observe Bullish chip. Animation is present in classes but the chip's parent container has animation:none.",
-        "expected": "Bullish state has subtle pulse animation (CSS) on the chip container",
-        "actual": "animate class is on inner element; outer container has animation:none. Functionally present but not matching the described 'subtle pulse' visual.",
-        "file": "src/components/PulseSentimentChip.tsx"
+        "severity": "env",
+        "category": "functional",
+        "principle": null,
+        "description": "Hydration mismatch on /en/pulse/trending — client renders localhost:3000 share URLs vs server's staging.binayahhub.com URLs",
+        "reproSteps": "1. Navigate to /en/pulse/trending. 2. Check browser console for hydration errors.",
+        "expected": "No hydration mismatch",
+        "actual": "typeof window !== 'undefined' pattern in TrendingClient.tsx line 146 causes mismatch between SSR URL (staging.binayahhub.com) and client URL (localhost:3000). Pre-existing issue not introduced in iter-3.",
+        "file": "src/app/[locale]/pulse/trending/TrendingClient.tsx"
       },
       {
         "severity": "env",
         "category": "functional",
         "principle": null,
-        "description": "Atlas DNS: /api/projects returns 404 (missing route) AND MongoDB-dependent API calls return env errors",
-        "reproSteps": "curl http://localhost:3000/api/projects?status=active&limit=100",
-        "expected": "JSON response with project data",
-        "actual": "HTTP 404 - route does not exist. Secondary: binayah-api.onrender.com /api/dld/areas/*/yield returning 404 (pre-existing external API issue)",
-        "file": "src/app/api/ (no projects route)"
+        "description": "Community image 404s on Dubai page — /images/communities/*.jpg not in local repo",
+        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. Browser console shows 5× 404 for palm-jumeirah.jpg, dubai-marina.jpg, etc.",
+        "expected": "Community thumbnails load",
+        "actual": "Images not committed to repo — pre-existing; will work in production with S3 URLs",
+        "file": "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
       },
       {
         "severity": "env",
         "category": "functional",
         "principle": null,
-        "description": "Community image assets return 404 (/images/communities/*.jpg not present in public/)",
-        "reproSteps": "Load /en/pulse/emirate/dubai — browser console shows 5x 404 for /images/communities/palm-jumeirah.jpg etc.",
-        "expected": "Images load",
-        "actual": "HTTP 404 for all community images",
-        "file": "public/images/communities/ (missing assets)"
+        "description": "Yield API 404 for slug-mismatched community names (jvc, creek-harbour, mbr-city, jbr)",
+        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai. 2. DubaiEmirateClient fetches /api/dld/areas/{slug}/yield using computed slugs from market stats communityMatrix area names (e.g. 'JVC' → 'jvc'). 3. Fastify returns 404 for those slugs.",
+        "expected": "Yield data loads for top communities",
+        "actual": "Community shorthand names (JVC, MBR City) produce invalid slugs. Pre-existing data issue — DLD area slugs in DB differ from shorthand names.",
+        "file": "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx"
       }
     ],
-    "designChecked": true,
-    "designSkipReason": null,
-    "benchmarkScores": [
-      {
-        "surface": "/en/pulse/emirate/dubai hero",
-        "rating": "AT BAR",
-        "comparedTo": "FT.com Big Read — dark editorial surface, good typographic hierarchy. Deducted from ABOVE BAR because: no gold underline on active sub-nav, developer section absent, PDF button missing."
-      },
-      {
-        "surface": "/en/pulse Overview",
-        "rating": "AT BAR",
-        "comparedTo": "Stripe Atlas dashboard — KPI strip, ticker, leaderboard all present. Deducted for missing most-active KPI and ASCII minus sign."
-      },
-      {
-        "surface": "PulseEmirateNav",
-        "rating": "BELOW BAR",
-        "comparedTo": "Linear Insights tab nav — Active state uses wrong color (brand green vs gold), disabled items missing editorial 'Coming soon' footnote. Below bar on design spec compliance."
-      }
-    ],
+    "designChecked": false,
+    "designSkipReason": "iter-3 diff is surgical correctness patches — no new UI surfaces introduced. Design cohesion already checked in iter-2.",
+    "benchmarkScores": [],
     "consoleErrors": [
-      "Failed to load resource: /images/communities/*.jpg (5x 404)",
-      "Invalid src prop (strapiallsopp.s3.eu-west-1.amazonaws.com) on next/image — on /en/search (pre-existing)"
+      "Dubai page: 10× 404 (5 community images, 5 yield API slug mismatches — all env/pre-existing)",
+      "Trending page: hydration mismatch (typeof window !== undefined pattern — env/pre-existing)"
     ],
     "screenshots": [
-      "/tmp/dubai-hero-full.png",
-      "/tmp/dubai-after-community.png",
-      "/tmp/pulse-overview-full.png"
+      "/tmp/screenshot-dubai-hero.png",
+      "/tmp/screenshot-share-row.png",
+      "/tmp/screenshot-overview-kpi.png",
+      "/tmp/screenshot-dev-cards.png"
     ],
-    "regressions": [
-      "/en/search shows 'Something Went Wrong' h1 — pre-existing, not introduced by this diff"
-    ],
+    "regressions": [],
     "viewportsTested": [
-      "desktop 1440x900",
-      "mobile 375x667"
+      "desktop (1280x900)",
+      "mobile (375x667)"
     ],
     "blocker": null,
-    "preflight": "pre-flight Playwright: 3/6 specs passed. 3 failures are spec authoring issues (expect URL /en/pulse/calculator but server canonically redirects to /pulse/calculator for default locale) — not functional regressions. Sub-nav navigation works correctly."
+    "iterFindings": {
+      "CRITICAL_1_developer_section": "PASS — empty state renders ('Developer aggregates refresh Monday morning') because all 100 projects have developer:null. Section is NOT silently hidden.",
+      "CRITICAL_2_pdf_button": "PASS — 'Save as PDF' span is first in share row, cursor-not-allowed, color muted (#A8873560), tooltip 'PDF export is coming next week — Stage 3'",
+      "MAJOR_3_gold_underline": "PASS — Dubai tab borderBottomColor: rgb(212, 168, 71) = #D4A847. Confirmed.",
+      "MAJOR_4_coming_soon_badges": "PASS — 4 badges on Abu Dhabi, Sharjah, Ras Al Khaimah, Ajman. Color rgb(168,135,53)=#A88735, font-size 9px, tracking-[0.2em], uppercase.",
+      "MAJOR_5_most_active_kpi": "FAIL — chip missing. areasData?.results?.[0]?.area is undefined; DLD API field is 'name' not 'area'. Fix: change .area to .name on line 344 of PulsePageClient.tsx.",
+      "MAJOR_6_unicode_minus": "MOOT — all 3 MoM% values are positive (+5.1%, +5.4%, +4.9%). No negative values rendered. formatMom() with U+2212 not exercised."
+    }
   },
   "liveTestReport": null,
   "pmDecision": "continue",
@@ -775,5 +716,6 @@
       "section": "Dubai emirate page",
       "missing": "DubaiEmirateClient uses --pulse-* CSS variable tokens (PULSE_BG/PULSE_SURFACE/PULSE_BORDER/PULSE_TEXT/PULSE_TEXT_MUTED) throughout for dark theme. No text-foreground/bg-card/border-border allowed on this page."
     }
-  ]
+  ],
+  "pmEscalationHint": "stage2_three_iters_failed"
 }

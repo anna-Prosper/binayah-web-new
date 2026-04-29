@@ -265,7 +265,7 @@ type MainTab = "market" | "binayah";
 interface PulsePageClientProps {
   marketStats: MarketStats | null;
   marketData: MarketData | null;
-  areasData?: { results?: { area: string; totalSales: number; avgPpsf: number }[] } | null;
+  areasData?: { results?: { name: string; slug?: string; totalSales: number; avgPpsf?: number; avgPrice?: number }[] } | null;
   projectsData?: { results?: { slug: string; status?: string }[] } | null;
 }
 
@@ -340,8 +340,12 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
 
   // ── Overview enrichment derived values ─────────────────────────────────────
 
-  // Most-active community from areasData (sorted by totalSales server-side)
-  const mostActiveArea = areasData?.results?.[0]?.area ?? null;
+  // Most-active community from areasData (sorted by totalSales server-side).
+  // Fastify /api/dld/areas returns `name` not `area` — keep the fallback in case shape ever drifts.
+  const mostActiveArea =
+    areasData?.results?.[0]?.name ??
+    (areasData?.results?.[0] as { area?: string } | undefined)?.area ??
+    null;
 
   // Off-plan share from projectsData
   const projects = projectsData?.results ?? [];
