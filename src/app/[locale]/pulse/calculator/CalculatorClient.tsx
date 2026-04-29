@@ -172,9 +172,15 @@ function CalculatorInner({
   }, [budget, growthRate]);
 
   // ── Share helpers ──────────────────────────────────────────────────────
-  const baseUrl = typeof window !== "undefined"
-    ? `${window.location.origin}${pathname}`
-    : "https://staging.binayahhub.com/pulse/calculator";
+  // Defer window-derived baseUrl to post-mount so SSR + first client render
+  // produce the same DOM (no hydration mismatch). The fallback shape matches
+  // what staging would emit for SSR.
+  const [baseUrl, setBaseUrl] = useState(`https://staging.binayahhub.com${pathname}`);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(`${window.location.origin}${pathname}`);
+    }
+  }, [pathname]);
 
   const shareUrl = `${baseUrl}?community=${encodeURIComponent(community)}&price=${budget}&downpct=${downPaymentPct}&utm_source=whatsapp&utm_medium=share&utm_campaign=pulse-calculator`;
   const copyUrl  = `${baseUrl}?community=${encodeURIComponent(community)}&price=${budget}&downpct=${downPaymentPct}&utm_source=copy&utm_medium=share&utm_campaign=pulse-calculator`;

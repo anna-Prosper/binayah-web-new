@@ -104,9 +104,9 @@
   ],
   "currentStage": 3,
   "totalStages": 3,
-  "stageIteration": 1,
+  "stageIteration": 2,
   "maxIterationsPerStage": 3,
-  "phase": "qa",
+  "phase": "dev_fix",
   "plannerOutput": {
     "taskSummary": "Pulse Property roadmap \u2014 17 deliverables across 4 batches reorganized into 3 stages: backend foundation + subscription, Pulse Overview + Emirate Dubai, Calculator + polish.",
     "confirmedScope": "Build out Pulse Property roadmap \u2014 17 deliverables across 3 stages (single iterate, --stages=3 --max=3).\n\nSTAGE 1 \u2014 Backend foundation + Subscription system (binayah-api + binayah-properties)\n1. New MarketReportSubscription Mongoose model on binayah-api: email, name, phone (opt), intents[] (buy/rent/sell/invest), areas[], propertyTypes[], budgetMin, budgetMax, confirmedAt, unsubscribedAt, lastSentAt, unsubToken (random), createdAt\n2. Endpoints on binayah-api:\n   - POST /api/market-report/subscribe \u2014 store sub, fire confirmation email (double opt-in)\n   - GET  /api/market-report/confirm/:token \u2014 set confirmedAt\n   - GET  /api/market-report/unsubscribe/:token \u2014 set unsubscribedAt\n   - POST /api/admin/market-report/send-weekly \u2014 admin trigger to send digest now (also wired to a Render cron job at Mon 09:00 UTC)\n3. Email service helper (binayah-api): uses existing SMTP_* env vars; sends confirmation + weekly digest with personalized content (top movers in user's areas, new launches matching property/budget, 1 featured guide). Plain HTML, unsub link in footer.\n4. Yield-by-area aggregation endpoint on binayah-api: GET /api/dld/areas/:slug/yield \u2014 computes avg rent / avg sale per area; flag samples <50 with `lowConfidence:true`.\n5. OG image route on binayah-properties: /api/og/pulse \u2014 Next.js route returning a PNG card with Pulse headline metric, used for share unfurls.\n6. PDF render route on binayah-properties: /api/pdf/pulse \u2014 server-renders a Pulse summary PDF (uses puppeteer-core or pdfkit; pick whichever is lighter).\n7. WeeklySubscribeForm component on binayah-properties: 1-step form with name+email required + optional phone + intent chips + areas multiselect (autocomplete from /api/communities) + property type chips + budget range; replaces every existing \"Get a free market report\" form (currently on /pulse, /pulse/trending, /pulse/emirate, etc.). Confirmation-pending screen after submit.\n8. /account/market-reports page (logged-in users) to manage their subscription preferences.\n\nSTAGE 2 \u2014 Pulse Overview enrichment + Emirate Dubai detail page\n9. Sub-nav with Emirate tabs on every Pulse page: Dubai active, AUH/SHJ/RAK/Ajman with \"Coming soon\" badges + disabled links.\n10. Sentiment indicator (Bullish / Neutral / Bearish) \u2014 derive from 3-month MoM avgPpsf trend; appears on Overview top + Emirate page.\n11. Most-active-community KPI on Overview \u2014 read DldArea sorted by totalSales desc, take top.\n12. Top-communities leaderboard on Overview + Emirate (price/sqft, yield, YoY, volume) \u2014 uses existing /api/dld/areas with new yield endpoint from stage 1.\n13. Quick ticker on Overview (top 3 movers, horizontal scroll, links to communities) \u2014 reuses Trending movers logic.\n14. Off-plan share KPI on Overview + Emirate \u2014 compute % of Project where status is off-plan.\n15. /pulse/emirate/dubai page \u2014 sentiment, KPI strip (transactions YTD, avg ppsf, avg yield, YoY growth, off-plan share, communities tracked), 24-mo price trend chart, monthly transaction volume chart, community highlights (highest price / best yield / fastest growth / best value), developer highlights (most active / fastest growing / most off-plan / best yield), developer comparison table, \"why invest in Dubai\" section, community leaderboard, featured community cards, lead form using new WeeklySubscribeForm.\n16. Yield-by-community leaderboard on Compare + Emirate \u2014 uses stage 1 endpoint; shows lowConfidence flag for thin samples.\n17. Featured insight panel + share buttons on Trending + Overview \u2014 pulls latest News article; share buttons (WhatsApp, X, LinkedIn, Copy Link) wire OG image; UTM tags on every share URL.\n\nSTAGE 3 \u2014 Calculator overhaul + Compare presets + Polish\n18. Calculator benchmarks \u2014 replace hardcoded S&P/Savings with three labeled lines: \"S&P 500 5-yr avg\" (10.2%), \"UAE Savings 5-yr avg\" (3.5%), \"Dubai property 5-yr avg\" (real, derived from DLD MoM trend); each gets a tooltip with source.\n19. Calculator verdict \u2014 replace single \"Strong Investment\" badge with explainer block: \"Rental yield: X% (vs Dubai avg Y%)\", \"5-yr appreciation forecast: Z%\", \"vs S&P 500 5-yr: \u00b1W%\". Verdict pill (Strong/Moderate/Weak) driven by explicit scoring rule documented in code.\n20. Calculator share \u2014 Share button copies URL with calc state encoded in querystring; recipient lands on filled-in calc. WhatsApp share includes 3-line preview text.\n21. Calculator email \u2014 POST /api/calculator/email on binayah-properties \u2192 server-side HTML email with full calc result; lead logged to MarketReportSubscription as a \"calculator-lead\" intent.\n22. Calculator projection lines \u2014 add 3-yr and 5-yr projection lines on the results chart, linear extrapolation from DLD trend with disclaimer.\n23. Compare presets \u2014 4 curated arrays: \"Waterfront Luxury\" (Palm Jumeirah, Dubai Marina, Bluewaters Island), \"High Yield\" (JVC, Dubai Sports City, Dubai South), \"Urban Core\" (Downtown Dubai, Business Bay, DIFC), \"Emerging Stars\" (Dubai Hills Estate, Tilal Al Ghaf, Town Square). Click loads them into the comparison.\n24. New project launches list on Trending \u2014 Project.find({}).sort({launchDate: -1}).limit(6) with developer, area, starting price, payment plan.\n25. Share buttons cleanup site-wide \u2014 replace \"Embed\" with \"Save as PDF\" (calls /api/pdf/pulse from stage 1); add UTM tagging on every share URL across Pulse pages.\n26. Guide detail layout polish \u2014 heading hierarchy, embedded stats blocks pulling from DLD API by mentioned area, related-areas footer with placeKind links.\n\nCONSTRAINTS\n- No multi-emirate data exists yet \u2014 only Dubai pipelines work. Other emirate tabs MUST be visible-but-disabled with \"Coming soon\" badges. Don't fake numbers.\n- All new UI strings must be in en/ar/zh/ru locale files (eslint i18next/no-literal-string blocks Vercel build otherwise).\n- New env vars (none expected \u2014 SMTP_* + AWS_* + MONGODB_URI already on Render) \u2014 flag if any new ones are needed.\n- Render cron for weekly send: register in render.yaml as a cronJob service (existing pattern: dld-refresh runs daily 03:00 UTC).\n- Email service uses existing SMTP_HOST/PORT/USER/PASS already configured for inquiries.\n- Existing \"Get a free market report\" form must be REPLACED, not duplicated, so we don't end up with two competing forms on /pulse.\n- All routes must be locale-aware (use @/navigation, not next/link directly).\n- The /pulse/emirate/dubai page should be the marquee piece \u2014 match the design quality bar from .claude/DESIGN_PRINCIPLES.md if it exists.",
@@ -204,7 +204,105 @@
     ],
     "summary": "2 major security findings: HTML injection in email template (unescaped user strings interpolated into HTML) + no rate limiting on public email-send endpoint. Both must be fixed before QA."
   },
-  "qaReport": null,
+  "qaReport": {
+    "passed": false,
+    "tested": [
+      "Calculator benchmarks (3 lines: SP500/UAE Savings/Dubai Avg) + tooltips",
+      "Calculator verdict block (3-row explainer + Strong/Moderate/Weak pill)",
+      "Calculator computeVerdict named export",
+      "Calculator 3-yr/5-yr ReferenceLine projection markers + disclaimer",
+      "Calculator URL state round-trip (querystring read + write)",
+      "Calculator Share (WhatsApp 3-line preview, Copy URL)",
+      "Calculator Email modal \u2192 /api/calculator/email",
+      "PDF route /api/pdf/pulse (pre-verified 200 + valid PDF)",
+      "Trending: Embed removed, Save as PDF present with FileDown icon + UTM tags",
+      "Dubai page: Save as PDF button (not disabled placeholder) + UTM campaign",
+      "escapeHtml XSS injection fix (no 500 on <img> payload)",
+      "Rate limit 3 sends/hr/IP (pre-verified by orchestrator)",
+      "Guide detail /en/pulse/guides/<slug>: h2/h3/h4 hierarchy + related areas footer",
+      "Compare: 4 presets (Waterfront Luxury / High Yield / Urban Core / Emerging Stars)",
+      "New launches on Trending (Stage 2 regression)",
+      "Compare presets (Stage 2 regression)",
+      "Regression: /en, /en/search, /en/areas, /en/communities, /en/pulse, /en/pulse/emirate/dubai",
+      "WeeklySubscribeForm present on /en/pulse and /en/pulse/emirate/dubai",
+      "Mobile viewport 390x844 (no horizontal scroll)",
+      "Pre-flight Playwright suite: 6/6 pass"
+    ],
+    "bugs": [
+      {
+        "severity": "major",
+        "category": "functional",
+        "principle": null,
+        "description": "React hydration mismatch on CalculatorClient and TrendingClient \u2014 baseUrl computed with typeof window check at render level causes SSR/client URL divergence",
+        "reproSteps": "1. Navigate to /en/pulse/calculator?community=Dubai%20Marina&price=2000000&downpct=20 2. Open browser DevTools console 3. See React hydration mismatch error for WhatsApp href attribute (server: staging.binayahhub.com, client: localhost:3000)",
+        "expected": "No hydration mismatch console errors",
+        "actual": "React reports hydration mismatch on <a href> for WhatsApp and LinkedIn share buttons in CalculatorClient and TrendingClient \u2014 typeof window check at component body level is not safe for SSR",
+        "file": "src/app/[locale]/pulse/calculator/CalculatorClient.tsx (line 175) and src/app/[locale]/pulse/trending/TrendingClient.tsx (line 146)"
+      },
+      {
+        "severity": "major",
+        "category": "functional",
+        "principle": "show the data, not a symbol of it",
+        "description": "Community images on Dubai emirate page 404 \u2014 /images/communities/*.jpg hardcoded paths do not exist in /public directory, producing broken images with no fallback",
+        "reproSteps": "1. Navigate to /en/pulse/emirate/dubai 2. Open DevTools Network tab 3. Observe 5x 404 for /images/communities/palm-jumeirah.jpg, dubai-marina.jpg, jvc.jpg, dubai-hills.jpg, downtown.jpg",
+        "expected": "Community highlight cards show images",
+        "actual": "5 broken image slots (no onError fallback) \u2014 /public/images/communities/ directory does not exist",
+        "file": "src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx (lines 192-196)"
+      },
+      {
+        "severity": "minor",
+        "category": "functional",
+        "principle": null,
+        "description": "Compare presets use different community slugs than task spec (Bluewaters Island \u2192 Dubai Hills for Waterfront; JVC/Dubai Sports City/Dubai South \u2192 JVC/Dubai Hills/JBR for High Yield; DIFC \u2192 MBR City for Urban Core; Tilal Al Ghaf/Town Square \u2192 Creek Harbour/DAMAC Hills for Emerging Stars)",
+        "reproSteps": "1. Navigate to /en/pulse/compare 2. Click any preset 3. Note communities loaded vs task spec",
+        "expected": "Waterfront: Palm Jumeirah, Dubai Marina, Bluewaters Island; High Yield: JVC, Dubai Sports City, Dubai South; Urban Core: Downtown Dubai, Business Bay, DIFC; Emerging Stars: Dubai Hills Estate, Tilal Al Ghaf, Town Square",
+        "actual": "Communities differ from spec; likely substituted due to DB availability constraints",
+        "file": "src/app/[locale]/pulse/compare/CompareClient.tsx (lines 71-94)"
+      },
+      {
+        "severity": "env",
+        "category": "functional",
+        "principle": null,
+        "description": "binayah-api.onrender.com/api/dld/areas/:slug/yield returns 404 for downtown-dubai, jbr, mbr-city, creek-harbour area slugs \u2014 areas not present in Render DB",
+        "reproSteps": "Open DevTools Network on /en/pulse/emirate/dubai \u2014 observe 404 responses from binayah-api.onrender.com/api/dld/areas/*/yield",
+        "expected": "Yield endpoint returns yield data for each area",
+        "actual": "HTTP 404 {\"error\":\"Area not found\"} \u2014 area slugs not in Render sandbox DB",
+        "file": null
+      }
+    ],
+    "designChecked": true,
+    "designSkipReason": null,
+    "benchmarkScores": [
+      {
+        "surface": "/en/pulse/calculator",
+        "rating": "AT BAR",
+        "comparedTo": "Stripe metrics dashboard / Vercel analytics"
+      },
+      {
+        "surface": "/en/pulse/trending share row",
+        "rating": "AT BAR",
+        "comparedTo": "Linear share panel"
+      }
+    ],
+    "consoleErrors": [
+      "React hydration mismatch on WhatsApp href in CalculatorClient (typeof window check at render level)",
+      "React hydration mismatch on WhatsApp/LinkedIn href in TrendingClient (typeof window check at render level)",
+      "Failed to load resource (404): /images/communities/palm-jumeirah.jpg, dubai-marina.jpg, jvc.jpg, dubai-hills.jpg, downtown.jpg"
+    ],
+    "screenshots": [
+      "/tmp/qa-calc-results.png",
+      "/tmp/qa-calc-verdict.png",
+      "/tmp/qa-calc-benchmark.png",
+      "/tmp/qa-trending-share.png",
+      "/tmp/qa-mobile-calc.png"
+    ],
+    "regressions": [],
+    "viewportsTested": [
+      "desktop (1440x900)",
+      "mobile (390x844)"
+    ],
+    "blocker": null
+  },
   "liveTestReport": null,
   "pmDecision": "continue",
   "summary": "trimmed stage 3 spec: Compare presets + new launches already shipped in Stage 2 (removed); PDF reimpl locked to @react-pdf/renderer; calculator overhaul + PDF wiring + share cleanup are non-negotiable core",

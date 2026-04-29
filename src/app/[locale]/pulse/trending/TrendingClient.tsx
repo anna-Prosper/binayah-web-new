@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import {
@@ -143,9 +143,14 @@ export default function TrendingClient({
   const latest = monthly[monthly.length - 1] ?? null;
 
   // ── Share ─────────────────────────────────────────────────────────────
-  const baseUrl = typeof window !== "undefined"
-    ? window.location.origin + "/pulse/trending"
-    : "https://staging.binayahhub.com/pulse/trending";
+  // Defer window-derived baseUrl to post-mount so SSR + first client render
+  // produce the same DOM (no hydration mismatch).
+  const [baseUrl, setBaseUrl] = useState("https://staging.binayahhub.com/pulse/trending");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(`${window.location.origin}/pulse/trending`);
+    }
+  }, []);
   const waUrl   = `${baseUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=pulse-trending`;
   const xUrl    = `${baseUrl}?utm_source=twitter&utm_medium=share&utm_campaign=pulse-trending`;
   const liUrl   = `${baseUrl}?utm_source=linkedin&utm_medium=share&utm_campaign=pulse-trending`;

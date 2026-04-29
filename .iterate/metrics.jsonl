@@ -107,3 +107,6 @@
 {"ts":"2026-04-29T06:28:54Z","stage":2,"iter":3,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
 {"ts":"2026-04-29T06:45:05Z","stage":2,"iter":3,"fromPhase":"qa","toPhase":"pm_replan","role":"qa","passed":true,"note":"orchestrator patched 1-char .area->.name; bypassed PM escalation"}
 {"ts":"2026-04-29T06:49:36Z","stage":3,"iter":1,"fromPhase":"pm_replan","toPhase":"dev","role":"pm-lite","passed":true}
+{"ts":"2026-04-29T07:09:23Z","stage":3,"iter":1,"fromPhase":"review","toPhase":"dev_review_fix","role":"reviewer","passed":false,"note":"2 major security: html injection + no rate limit on public email endpoint"}
+{"ts":"2026-04-29T07:11:50Z","stage":3,"iter":1,"fromPhase":"dev_review_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-04-29T07:24:02Z","stage":3,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false,"note":"2 major: hydration mismatch baseUrl, broken community images"}

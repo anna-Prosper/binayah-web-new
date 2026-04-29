@@ -188,12 +188,17 @@ function HighlightCard({
 }
 
 // ── Featured community card ───────────────────────────────────────────────────
+// Use the bundled dubai-hero asset as a uniform fallback. Per-community photos
+// can be wired later from the community_info_pages collection (heroImage field)
+// once we build a server-side fetch — for now we ship visually-consistent cards
+// rather than five 404s.
+const FEATURED_HERO = "/assets/dubai-hero.webp";
 const FEATURED_COMMUNITIES = [
-  { slug: "palm-jumeirah", name: "Palm Jumeirah", imageUrl: "/images/communities/palm-jumeirah.jpg", tagline: "Ultra-luxury waterfront icon" },
-  { slug: "dubai-marina", name: "Dubai Marina", imageUrl: "/images/communities/dubai-marina.jpg", tagline: "Vibrant urban waterfront" },
-  { slug: "jumeirah-village-circle", name: "JVC", imageUrl: "/images/communities/jvc.jpg", tagline: "Highest-yield community" },
-  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", imageUrl: "/images/communities/dubai-hills.jpg", tagline: "Green master-plan living" },
-  { slug: "downtown-dubai", name: "Downtown Dubai", imageUrl: "/images/communities/downtown.jpg", tagline: "The city's epicentre" },
+  { slug: "palm-jumeirah", name: "Palm Jumeirah", imageUrl: FEATURED_HERO, tagline: "Ultra-luxury waterfront icon" },
+  { slug: "dubai-marina", name: "Dubai Marina", imageUrl: FEATURED_HERO, tagline: "Vibrant urban waterfront" },
+  { slug: "jumeirah-village-circle", name: "JVC", imageUrl: FEATURED_HERO, tagline: "Highest-yield community" },
+  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", imageUrl: FEATURED_HERO, tagline: "Green master-plan living" },
+  { slug: "downtown-dubai", name: "Downtown Dubai", imageUrl: FEATURED_HERO, tagline: "The city's epicentre" },
 ];
 
 function FeaturedCommunityCard({ community }: { community: typeof FEATURED_COMMUNITIES[0] }) {
