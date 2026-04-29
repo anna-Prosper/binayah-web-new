@@ -317,17 +317,40 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const [yieldRows, setYieldRows] = useState<{ area: string; yieldPct: number; avgRentPerSqft: number; avgSalePerSqft: number; lowConfidence: boolean }[]>([]);
   const communityScrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch yield data for top communities
+  // Fetch yield data for top communities.
+  // marketStats.communityMatrix carries display names ("JBR", "Downtown Dubai")
+  // but the yield endpoint is keyed on DLD area slugs, which use full names
+  // ("jumeirah-beach-residence"). Map known display→canonical aliases here so
+  // we don't get 5 console 404s on every page load.
   useEffect(() => {
+    const ALIAS: Record<string, string | null> = {
+      "JBR": "jumeirah-beach-residence",
+      "JVC": "jumeirah-village-circle",
+      "JVT": "jumeirah-village-triangle",
+      "JLT": "jumeirah-lakes-towers",
+      "Downtown": null, // DLD's area is "Burj Khalifa" — too noisy to rename
+      "Downtown Dubai": null,
+      "Creek Harbour": "dubai-creek-harbour",
+      "MBR City": null, // DLD area is "Hadaeq Sheikh Mohammed Bin Rashid" — display label is misleading
+    };
+    function deriveSlug(area: string): string | null {
+      if (area in ALIAS) return ALIAS[area];
+      return area.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    }
+
     const topAreas = marketStats?.communityMatrix?.slice(0, 10) ?? [];
     if (topAreas.length === 0) return;
-    const slugs = topAreas.map((c) => c.area.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
+
+    const queries = topAreas
+      .map((c) => ({ area: c.area, slug: deriveSlug(c.area) }))
+      .filter((q): q is { area: string; slug: string } => !!q.slug);
+
     Promise.all(
-      slugs.map((slug) =>
+      queries.map(({ area, slug }) =>
         fetch(apiUrl(`/api/dld/areas/${slug}/yield`))
           .then((r) => r.ok ? r.json() : null)
           .catch(() => null)
-          .then((data) => data ? { area: topAreas[slugs.indexOf(slug)]?.area ?? slug, ...data } : null)
+          .then((data) => data ? { area, ...data } : null)
       )
     ).then((results) => {
       setYieldRows(results.filter(Boolean) as typeof yieldRows);

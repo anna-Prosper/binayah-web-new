@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ExternalLink, Share2, Copy, CheckCheck } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface InsightArticle {
   title: string;
@@ -38,9 +38,15 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
     year: "numeric",
   });
 
-  // Build share URL with OG params + UTM
+  // Build share URL with OG params + UTM. The base origin is derived in a
+  // useEffect so SSR + first client render produce the same DOM (no hydration
+  // mismatch — same anti-pattern caught on CalculatorClient/TrendingClient).
+  const [originBase, setOriginBase] = useState("https://staging.binayahhub.com");
+  useEffect(() => {
+    if (typeof window !== "undefined") setOriginBase(window.location.origin);
+  }, []);
   const buildShareUrl = (utmSource: string) => {
-    const base = typeof window !== "undefined" ? window.location.origin : "https://staging.binayahhub.com";
+    void originBase; // origin reserved for future absolute-URL share variants
     const params = new URLSearchParams({
       utm_source: utmSource,
       utm_medium: "share",

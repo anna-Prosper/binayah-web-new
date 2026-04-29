@@ -76,7 +76,7 @@
     {
       "id": 3,
       "name": "Calculator overhaul + Compare presets + sitewide polish",
-      "status": "implemented",
+      "status": "passed",
       "devModel": "opus",
       "spec": "STAGE 3 \u2014 Calculator overhaul + PDF reimpl + Save-as-PDF wiring + sitewide polish. binayah-properties primary; one small binayah-api addition (calculator-lead funnel).\n\n## Context from prior stages (read before coding)\n- Compare presets: ALREADY SHIPPED in Stage 2 (CompareClient.tsx has PRESETS const + applyPreset). Stage 3 must only verify preset slugs match what the compare API actually accepts, and update if wrong. No new preset code needed.\n- New launches on Trending: ALREADY SHIPPED in Stage 2 (TrendingClient.tsx has newLaunches + LaunchCard). No new launches code needed.\n- PDF route: NOT shipped. /api/pdf/pulse does not exist. The DubaiEmirateClient has a disabled PdfDisabledButton placeholder (DubaiEmirateClient.tsx line ~237) with tooltip 'PDF export is coming next week \u2014 Stage 3'. Stage 3 must ship the route AND enable the button.\n- Calculator: has hardcoded S&P 8%/savings 3% benchmarks, WhatsApp share text (no URL state encoding), no verdict explainer block, no projection lines. All calculator work is new.\n- SharePulseButtons: not a standalone component \u2014 share logic is inline in each page. Dubai page has WhatsApp + clipboard share inline in DubaiEmirateClient.\n\n## What DEV must build\n\n### A. PDF route \u2014 src/app/api/pdf/pulse/route.ts\nUse @react-pdf/renderer (NOT pdfkit \u2014 incompatible with Next.js 15 Turbopack). Install: npm install @react-pdf/renderer.\n- Returns a PDF download: Content-Disposition: attachment; filename=\"binayah-pulse-<yyyy-mm-dd>.pdf\"\n- Content: 2 pages. Page 1 \u2014 brand header (Binayah Pulse wordmark, date), Dubai KPI strip (transactions YTD, avg ppsf, avg yield, YoY, off-plan share \u2014 static/hardcoded fallbacks are fine if live DLD fetch is too slow; use a 60s timeout), top 5 communities table. Page 2 \u2014 brief methodology note + binayahhub.com footer.\n- Use @react-pdf/renderer Document/Page/Text/View/StyleSheet primitives only. No image fetching over network (avoids timeout issues).\n- Cache: Cache-Control: public, max-age=3600 header.\n- QA: GET /api/pdf/pulse -> Content-Type: application/pdf, file downloads and opens.\n\n### B. Wire Save-as-PDF button on Dubai page\nIn src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx:\n- Replace the PdfDisabledButton component (currently cursor-not-allowed, disabled) with a real clickable button.\n- onClick: window.open('/api/pdf/pulse', '_blank') (simplest \u2014 triggers browser download).\n- Update the i18n key dubaiEmirate.pdfTooltip from 'PDF export is coming next week \u2014 Stage 3' to 'Download Dubai market report as PDF'.\n- Button must match existing share-row styling (same rounded-lg ghost style as the WhatsApp button next to it).\n- Also check the Overview page (/pulse page) and any other pulse page that has a 'Save as PDF' placeholder \u2014 wire the same /api/pdf/pulse call.\n\n### C. Calculator overhaul \u2014 src/app/[locale]/pulse/calculator/CalculatorClient.tsx\n\n1. Three labeled benchmark lines on results chart:\n   - Replace hardcoded sp500Roi and savingsRoi with constants from a new src/lib/calculatorBenchmarks.ts module:\n     export const BENCHMARKS = {\n       sp500: { label: 'S&P 500 5-yr avg', annualRate: 0.102, source: 'S&P 500 historical total return, 2020-2025' },\n       uaeSavings: { label: 'UAE Savings 5-yr avg', annualRate: 0.035, source: 'UAE Central Bank average savings rate, 2020-2025' },\n       dubaiProperty: { label: 'Dubai property 5-yr avg', annualRate: 0.074, source: 'DLD transaction data, annualized 5-yr avg' },\n     } as const;\n   - The Dubai property rate 7.4%/yr is a reasonable hardcoded approximation (avoid async fetch inside the chart component).\n   - Each legend chip shows the label + a (i) icon. Hover tooltip shows the source string.\n   - On the results chart (Recharts), render 3 reference lines for S&P, UAE Savings, Dubai property using different dash patterns (gray dashed, gray dotted, gold solid).\n\n2. Verdict explainer block \u2014 extract to src/components/pulse/CalculatorVerdict.tsx:\n   - Export a pure computeVerdict function at module scope:\n     export function computeVerdict(rentalYield: number, dubaiAvgYield: number, fiveYrForecast: number, vsSp500Delta: number): 'strong' | 'moderate' | 'weak' {\n       // 1pt: yield > dubaiAvgYield, 1pt: fiveYrForecast > 5%, 1pt: vsSp500Delta > 0\n       const score = (rentalYield > dubaiAvgYield ? 1 : 0) + (fiveYrForecast > 5 ? 1 : 0) + (vsSp500Delta > 0 ? 1 : 0);\n       return score >= 3 ? 'strong' : score >= 2 ? 'moderate' : 'weak';\n     }\n   - Use dubaiAvgYield = 6.8 as the hardcoded Dubai avg.\n   - Render 3-row block below chart: 'Rental yield: X% (vs Dubai avg 6.8%)', '5-yr appreciation forecast: Z%', 'vs S&P 500 5-yr: +-W%'. Color-coded.\n   - Replace existing single verdict badge with this block + Verdict pill (Strong=green, Moderate=gold, Weak=red).\n\n3. 3-yr and 5-yr projection lines \u2014 extend the Recharts chart:\n   - Add two dotted reference lines extending beyond the user's selected horizon.\n   - Small footnote below chart: 'Projected: linear extrapolation based on DLD historical trend. Not a guarantee.' (i18n key calculator.projectionDisclaimer)\n\n4. Calculator share \u2014 URL state encoding:\n   - On calc inputs change, update window.history.replaceState with querystring: ?price=<n>&downpct=<n>&years=<n>&community=<slug>&monthlyRent=<n>.\n   - On page mount, read useSearchParams() and seed initial state from querystring if present.\n   - Existing WhatsApp share button: update share text to 3-line format: 'Looking at AED <price> in <community>. Calc says <yield>% yield, +<appreciation>% 5-yr appreciation. <url>'.\n   - Add a 'Copy link' icon button next to WhatsApp (clipboard.writeText with toast). Reuse lucide Copy icon + existing toast pattern.\n\n5. Calculator email \u2014 new src/components/pulse/CalculatorEmailModal.tsx + src/app/api/calculator/email/route.ts:\n   - 'Email me this report' button below verdict block.\n   - Modal: name (required) + email (required) + phone (optional). Submit button 'Send report'.\n   - /api/calculator/email route: (a) sends HTML email with calc summary, (b) POSTs to ${API_BASE_URL}/api/market-report/subscribe with { email, name, phone, intents: ['calculator-lead'], source: 'calculator', areas: [community] }.\n   - Note: Fastify endpoint already accepts intents: ['calculator-lead'] (open enum from Stage 1). No binayah-api change needed.\n   - On success: close modal, show toast 'Sent to <email> \u2014 check your inbox'.\n\n### D. Compare presets \u2014 verify only\nIn src/app/[locale]/pulse/compare/CompareClient.tsx:\n- Stage 2 shipped PRESETS with display-name slugs ('Dubai Marina', 'Palm Jumeirah', etc). The compare table sources data from /api/dld/areas which uses these same display-name keys.\n- Verify the 4 presets work end-to-end (click -> table populates). If any preset slug returns empty (silent failure), update the slug.\n- Update preset slugs to match original spec intent where possible: Waterfront Luxury -> ['Palm Jumeirah', 'Dubai Marina', 'Bluewaters Island'] if Bluewaters Island exists in DLD data, else keep current. High Yield -> ['JVC', 'Dubai Sports City', 'Dubai South'] if those exist, else keep current. This is a verification + minor slug-correction task, not a rewrite.\n\n### E. Share buttons UTM audit\n- DubaiEmirateClient.tsx share URLs already have utm_source but use hardcoded utm_campaign=pulse-2026-04. Update to: utm_campaign=pulse-emirate-dubai.\n- Check the Overview page (/pulse) and Trending page for share buttons. Ensure all have utm_source, utm_medium=share, utm_campaign=pulse-<page-slug>.\n- Calculator share URLs (new from section C.4) must also include UTM params.\n\n### F. Guide detail layout polish \u2014 bounded scope\nIn src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx:\n- Add CSS heading hierarchy to guide content render: h1 renders larger than h2 renders larger than h3. Use Tailwind prose classes or explicit heading size overrides.\n- Related-areas footer: 3-card grid of top 3 communities from /api/dld/areas?limit=3 (or static curated list: Dubai Marina, Downtown Dubai, JVC). Cards show community name + link to /communities/<slug>.\n- Explicitly SKIP embedded stats blocks (too much scope for diff cap). Add a TODO comment in the file.\n\n## Out of scope (do not add)\n- Embed widget feature.\n- New launches on Trending (already shipped in Stage 2).\n- Other emirate pages.\n- Search analytics.\n- Embedded stats blocks in guides (deferred with TODO comment).\n\n## demoPath (QA verification)\n1. GET /api/pdf/pulse -> Content-Type: application/pdf, file downloads, 2-page Binayah Pulse PDF.\n2. Visit /pulse/emirate/dubai hero share row -> 'Save as PDF' button is now clickable (not disabled). Click -> PDF downloads.\n3. Visit /pulse/calculator -> enter AED 2M, 25% down, 25 yrs, Dubai Marina. Results chart shows 3 labeled benchmark lines (S&P dashed gray, UAE Savings dotted gray, Dubai property gold solid). Each legend chip shows (i) icon.\n4. Hover S&P legend chip -> tooltip shows 'S&P 500 historical total return, 2020-2025'.\n5. Chart shows 3-yr and 5-yr projection dotted lines with disclaimer below.\n6. Verdict block shows 3 rows (rental yield vs avg, 5-yr appreciation, vs S&P delta) + Strong/Moderate/Weak pill.\n7. Click Share (copy link) -> URL updates with ?price=2000000&downpct=25&years=25&community=... Paste URL in new tab -> calc loads with same values.\n8. Click WhatsApp share -> text includes 3-line preview with yield + appreciation + URL.\n9. Click 'Email me this report' -> modal opens with name/email/phone. Submit with QA email -> toast confirms.\n10. Visit /pulse/compare -> click 'Waterfront Luxury' chip -> comparison table loads. Click each of 4 presets -> all populate.\n11. Visit /pulse/guides/<any-slug> -> headings have visual hierarchy (h1>h2>h3). Related-areas footer shows 3 community cards.\n12. All Pulse share URLs contain utm_source, utm_medium=share, utm_campaign=pulse-<page>.\n\n## filesTouched (expected)\n- src/app/api/pdf/pulse/route.ts (NEW)\n- src/app/[locale]/pulse/emirate/dubai/DubaiEmirateClient.tsx (edit \u2014 enable PDF button + UTM fix)\n- src/app/[locale]/pulse/calculator/CalculatorClient.tsx (heavy edit \u2014 benchmarks, verdict, projection, share URL, email modal trigger)\n- src/lib/calculatorBenchmarks.ts (NEW)\n- src/components/pulse/CalculatorVerdict.tsx (NEW \u2014 computeVerdict + verdict UI)\n- src/components/pulse/CalculatorEmailModal.tsx (NEW)\n- src/app/api/calculator/email/route.ts (NEW)\n- src/app/[locale]/pulse/compare/CompareClient.tsx (light edit \u2014 slug verification only)\n- src/app/[locale]/pulse/guides/[slug]/GuideDetailClient.tsx (edit \u2014 heading hierarchy + related footer)\n- messages/{en,ar,zh,ru}.json (extend \u2014 pdfTooltip update + new calculator keys)\n- package.json (add @react-pdf/renderer)\n\n## Constraints\n- @react-pdf/renderer NOT pdfkit. pdfkit breaks Turbopack.\n- All strings i18n. All routes use @/navigation.\n- Don't introduce a new chart lib \u2014 reuse whatever Recharts version is already installed.\n- Don't add a new floating element.\n- computeVerdict must be a named export in CalculatorVerdict.tsx.\n- Diff cap ~1800 lines. If approaching cap, skip guide layout polish entirely (it's the lowest priority item).\n",
       "commitSha": "434f5090",
@@ -98,7 +98,8 @@
         "package.json"
       ],
       "fixCommits": [
-        "55c1c24e"
+        "55c1c24e",
+        "c7942116"
       ]
     }
   ],
@@ -106,7 +107,7 @@
   "totalStages": 3,
   "stageIteration": 2,
   "maxIterationsPerStage": 3,
-  "phase": "dev_fix",
+  "phase": "dev_live_fix",
   "plannerOutput": {
     "taskSummary": "Pulse Property roadmap \u2014 17 deliverables across 4 batches reorganized into 3 stages: backend foundation + subscription, Pulse Overview + Emirate Dubai, Calculator + polish.",
     "confirmedScope": "Build out Pulse Property roadmap \u2014 17 deliverables across 3 stages (single iterate, --stages=3 --max=3).\n\nSTAGE 1 \u2014 Backend foundation + Subscription system (binayah-api + binayah-properties)\n1. New MarketReportSubscription Mongoose model on binayah-api: email, name, phone (opt), intents[] (buy/rent/sell/invest), areas[], propertyTypes[], budgetMin, budgetMax, confirmedAt, unsubscribedAt, lastSentAt, unsubToken (random), createdAt\n2. Endpoints on binayah-api:\n   - POST /api/market-report/subscribe \u2014 store sub, fire confirmation email (double opt-in)\n   - GET  /api/market-report/confirm/:token \u2014 set confirmedAt\n   - GET  /api/market-report/unsubscribe/:token \u2014 set unsubscribedAt\n   - POST /api/admin/market-report/send-weekly \u2014 admin trigger to send digest now (also wired to a Render cron job at Mon 09:00 UTC)\n3. Email service helper (binayah-api): uses existing SMTP_* env vars; sends confirmation + weekly digest with personalized content (top movers in user's areas, new launches matching property/budget, 1 featured guide). Plain HTML, unsub link in footer.\n4. Yield-by-area aggregation endpoint on binayah-api: GET /api/dld/areas/:slug/yield \u2014 computes avg rent / avg sale per area; flag samples <50 with `lowConfidence:true`.\n5. OG image route on binayah-properties: /api/og/pulse \u2014 Next.js route returning a PNG card with Pulse headline metric, used for share unfurls.\n6. PDF render route on binayah-properties: /api/pdf/pulse \u2014 server-renders a Pulse summary PDF (uses puppeteer-core or pdfkit; pick whichever is lighter).\n7. WeeklySubscribeForm component on binayah-properties: 1-step form with name+email required + optional phone + intent chips + areas multiselect (autocomplete from /api/communities) + property type chips + budget range; replaces every existing \"Get a free market report\" form (currently on /pulse, /pulse/trending, /pulse/emirate, etc.). Confirmation-pending screen after submit.\n8. /account/market-reports page (logged-in users) to manage their subscription preferences.\n\nSTAGE 2 \u2014 Pulse Overview enrichment + Emirate Dubai detail page\n9. Sub-nav with Emirate tabs on every Pulse page: Dubai active, AUH/SHJ/RAK/Ajman with \"Coming soon\" badges + disabled links.\n10. Sentiment indicator (Bullish / Neutral / Bearish) \u2014 derive from 3-month MoM avgPpsf trend; appears on Overview top + Emirate page.\n11. Most-active-community KPI on Overview \u2014 read DldArea sorted by totalSales desc, take top.\n12. Top-communities leaderboard on Overview + Emirate (price/sqft, yield, YoY, volume) \u2014 uses existing /api/dld/areas with new yield endpoint from stage 1.\n13. Quick ticker on Overview (top 3 movers, horizontal scroll, links to communities) \u2014 reuses Trending movers logic.\n14. Off-plan share KPI on Overview + Emirate \u2014 compute % of Project where status is off-plan.\n15. /pulse/emirate/dubai page \u2014 sentiment, KPI strip (transactions YTD, avg ppsf, avg yield, YoY growth, off-plan share, communities tracked), 24-mo price trend chart, monthly transaction volume chart, community highlights (highest price / best yield / fastest growth / best value), developer highlights (most active / fastest growing / most off-plan / best yield), developer comparison table, \"why invest in Dubai\" section, community leaderboard, featured community cards, lead form using new WeeklySubscribeForm.\n16. Yield-by-community leaderboard on Compare + Emirate \u2014 uses stage 1 endpoint; shows lowConfidence flag for thin samples.\n17. Featured insight panel + share buttons on Trending + Overview \u2014 pulls latest News article; share buttons (WhatsApp, X, LinkedIn, Copy Link) wire OG image; UTM tags on every share URL.\n\nSTAGE 3 \u2014 Calculator overhaul + Compare presets + Polish\n18. Calculator benchmarks \u2014 replace hardcoded S&P/Savings with three labeled lines: \"S&P 500 5-yr avg\" (10.2%), \"UAE Savings 5-yr avg\" (3.5%), \"Dubai property 5-yr avg\" (real, derived from DLD MoM trend); each gets a tooltip with source.\n19. Calculator verdict \u2014 replace single \"Strong Investment\" badge with explainer block: \"Rental yield: X% (vs Dubai avg Y%)\", \"5-yr appreciation forecast: Z%\", \"vs S&P 500 5-yr: \u00b1W%\". Verdict pill (Strong/Moderate/Weak) driven by explicit scoring rule documented in code.\n20. Calculator share \u2014 Share button copies URL with calc state encoded in querystring; recipient lands on filled-in calc. WhatsApp share includes 3-line preview text.\n21. Calculator email \u2014 POST /api/calculator/email on binayah-properties \u2192 server-side HTML email with full calc result; lead logged to MarketReportSubscription as a \"calculator-lead\" intent.\n22. Calculator projection lines \u2014 add 3-yr and 5-yr projection lines on the results chart, linear extrapolation from DLD trend with disclaimer.\n23. Compare presets \u2014 4 curated arrays: \"Waterfront Luxury\" (Palm Jumeirah, Dubai Marina, Bluewaters Island), \"High Yield\" (JVC, Dubai Sports City, Dubai South), \"Urban Core\" (Downtown Dubai, Business Bay, DIFC), \"Emerging Stars\" (Dubai Hills Estate, Tilal Al Ghaf, Town Square). Click loads them into the comparison.\n24. New project launches list on Trending \u2014 Project.find({}).sort({launchDate: -1}).limit(6) with developer, area, starting price, payment plan.\n25. Share buttons cleanup site-wide \u2014 replace \"Embed\" with \"Save as PDF\" (calls /api/pdf/pulse from stage 1); add UTM tagging on every share URL across Pulse pages.\n26. Guide detail layout polish \u2014 heading hierarchy, embedded stats blocks pulling from DLD API by mentioned area, related-areas footer with placeKind links.\n\nCONSTRAINTS\n- No multi-emirate data exists yet \u2014 only Dubai pipelines work. Other emirate tabs MUST be visible-but-disabled with \"Coming soon\" badges. Don't fake numbers.\n- All new UI strings must be in en/ar/zh/ru locale files (eslint i18next/no-literal-string blocks Vercel build otherwise).\n- New env vars (none expected \u2014 SMTP_* + AWS_* + MONGODB_URI already on Render) \u2014 flag if any new ones are needed.\n- Render cron for weekly send: register in render.yaml as a cronJob service (existing pattern: dld-refresh runs daily 03:00 UTC).\n- Email service uses existing SMTP_HOST/PORT/USER/PASS already configured for inquiries.\n- Existing \"Get a free market report\" form must be REPLACED, not duplicated, so we don't end up with two competing forms on /pulse.\n- All routes must be locale-aware (use @/navigation, not next/link directly).\n- The /pulse/emirate/dubai page should be the marquee piece \u2014 match the design quality bar from .claude/DESIGN_PRINCIPLES.md if it exists.",
@@ -205,7 +206,7 @@
     "summary": "2 major security findings: HTML injection in email template (unescaped user strings interpolated into HTML) + no rate limiting on public email-send endpoint. Both must be fixed before QA."
   },
   "qaReport": {
-    "passed": false,
+    "passed": true,
     "tested": [
       "Calculator benchmarks (3 lines: SP500/UAE Savings/Dubai Avg) + tooltips",
       "Calculator verdict block (3-row explainer + Strong/Moderate/Weak pill)",
@@ -301,9 +302,92 @@
       "desktop (1440x900)",
       "mobile (390x844)"
     ],
-    "blocker": null
+    "blocker": null,
+    "summary": "Stage 3 final QA: hydration baseUrl deferred to useEffect (SSR + client first render now match); 5 community image 404s replaced with /assets/dubai-hero.webp fallback. tsc clean. Calculator + verdict + benchmarks + URL state + projection lines + email rate-limit + escapeHtml + Save-as-PDF wiring all verified visible. Compare presets pre-existed (substituted slugs is a minor not-blocking)."
   },
-  "liveTestReport": null,
+  "liveTestReport": {
+    "passed": false,
+    "stagingUrl": "https://staging.binayahhub.com",
+    "pagesChecked": [
+      "/",
+      "/en/pulse",
+      "/en/pulse/emirate/dubai",
+      "/en/pulse/calculator",
+      "/en/pulse/trending",
+      "/en/pulse/compare",
+      "/en/pulse/guides",
+      "/en/communities",
+      "/en/areas"
+    ],
+    "consoleErrors": [
+      "/pulse \u2014 PAGEERROR: Minified React error #418 (hydration mismatch: server text vs empty client node)",
+      "/pulse/emirate/dubai \u2014 Failed to load resource: 404 https://binayah-api.onrender.com/api/dld/areas/jbr/yield",
+      "/pulse/emirate/dubai \u2014 Failed to load resource: 404 https://binayah-api.onrender.com/api/dld/areas/downtown-dubai/yield",
+      "/pulse/emirate/dubai \u2014 Failed to load resource: 404 https://binayah-api.onrender.com/api/dld/areas/jvc/yield",
+      "/pulse/emirate/dubai \u2014 Failed to load resource: 404 https://binayah-api.onrender.com/api/dld/areas/creek-harbour/yield",
+      "/pulse/emirate/dubai \u2014 Failed to load resource: 404 https://binayah-api.onrender.com/api/dld/areas/mbr-city/yield",
+      "/communities \u2014 Failed to load resource: 400 /_next/image (S3 bucket binayah-media-456051253184-us-east-1-an not in remotePatterns)"
+    ],
+    "bugs": [
+      {
+        "severity": "major",
+        "description": "DubaiEmirateClient fetches yield endpoint with wrong area slugs (jbr, jvc, downtown-dubai, creek-harbour, mbr-city) that do not exist in DLD areas collection \u2014 returns 404 from Render API, causing community highlights to show no yield data",
+        "page": "/en/pulse/emirate/dubai",
+        "type": "404",
+        "consoleOutput": "Failed to load resource: the server responded with a status of 404 () \u2014 https://binayah-api.onrender.com/api/dld/areas/jbr/yield (\u00d75 slugs affected)",
+        "detail": "DLD areas API uses slugs like jumeirah-village-circle (not jvc), jumeirah-beach-residence (not jbr). The yield endpoint returns {\"error\":\"Area not found\"} for these slugs. The endpoint itself is deployed and working \u2014 dubai-marina returns valid lowConfidence response."
+      },
+      {
+        "severity": "minor",
+        "description": "React hydration mismatch error #418 on /pulse overview page (server text node vs empty client node \u2014 likely a date/time rendered server-side)",
+        "page": "/en/pulse",
+        "type": "crash",
+        "consoleOutput": "PAGEERROR: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= \u2014 page renders fully despite the error, all sections present",
+        "detail": "React error #418 = hydration text mismatch. Page is functional (7408 chars body text, all sections render). Likely a date formatted server-side that differs on client hydration. Non-blocking visually but React logs it as an uncaught pageerror."
+      },
+      {
+        "severity": "minor",
+        "description": "X (Twitter) share button on /pulse/trending uses utm_source=whatsapp in the embedded URL text instead of utm_source=twitter",
+        "page": "/en/pulse/trending",
+        "type": "visual",
+        "consoleOutput": null,
+        "detail": "Twitter intent URL contains: utm_source=whatsapp&utm_medium=share&utm_campaign=pulse-trending in the embedded page URL. Should be utm_source=twitter. WhatsApp and LinkedIn UTM tags are correct."
+      },
+      {
+        "severity": "minor",
+        "description": "Pre-existing: /communities page has broken images from binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com \u2014 bucket not in next/image remotePatterns",
+        "page": "/en/communities",
+        "type": "visual",
+        "consoleOutput": "Failed to load resource: the server responded with a status of 400 () \u2014 /_next/image?url=https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/...",
+        "detail": "Pre-existing issue \u2014 not introduced by this iterate. /communities and /areas not touched in this diff. binayah-api.onrender.com CORS is fine (no CORS errors observed)."
+      },
+      {
+        "severity": "minor",
+        "description": "Calculator email rate limiter uses in-memory Map \u2014 no-op on Vercel serverless (each lambda gets fresh isolate). Rate limiting fires within a single lambda invocation but resets across cold starts.",
+        "page": "/api/calculator/email",
+        "type": "404",
+        "consoleOutput": null,
+        "detail": "Known architectural issue per \u00a71 gotcha #5. 429 fires correctly within a single lambda instance. MongoDB-backed rate limiting would be needed for true per-IP enforcement across Vercel lambdas. SMTP also returns 500 for test emails (a@b.com invalid)."
+      }
+    ],
+    "infraChecks": {
+      "pdfRoute": "PASS \u2014 GET /api/pdf/pulse returns PDF document version 1.3, 2 pages",
+      "ogRoute": "PASS \u2014 GET /api/og/pulse returns PNG image 1200x630",
+      "marketReportSubscribeEndpoint": "PASS \u2014 POST https://binayah-api.onrender.com/api/market-report/subscribe returns 200",
+      "rateLimit429": "PASS \u2014 429 fires with Retry-After header (tested: first 3 requests 500 SMTP fail, 4th request 429; Retry-After: 3561)",
+      "accountRedirect": "PASS \u2014 /en/account/market-reports redirects to /signin?callbackUrl=/en/account/market-reports",
+      "allPagesHttp200": "PASS \u2014 all 9 pages return 200 following redirects",
+      "mobileOverflow": "PASS \u2014 /pulse/emirate/dubai mobile 375x667 scrollWidth==clientWidth==375, no horizontal overflow",
+      "embedButtonGone": "PASS \u2014 /pulse/trending Embed button count: 0",
+      "savePdfPresent": "PASS \u2014 /pulse/trending Save as PDF present",
+      "utmTagsPresent": "PASS \u2014 utm_source + utm_medium=share + utm_campaign=pulse-trending present on share URLs"
+    },
+    "screenshots": [
+      "/tmp/pulse_emirate_dubai.png",
+      "/tmp/pulse_calculator.png"
+    ],
+    "blocker": "DubaiEmirateClient community highlight yield cards show 404s for 5 slugs (jbr, jvc, downtown-dubai, creek-harbour, mbr-city) \u2014 yield data missing from community highlights section on the marquee page"
+  },
   "pmDecision": "continue",
   "summary": "trimmed stage 3 spec: Compare presets + new launches already shipped in Stage 2 (removed); PDF reimpl locked to @react-pdf/renderer; calculator overhaul + PDF wiring + share cleanup are non-negotiable core",
   "securitySensitive": true,
@@ -332,6 +416,18 @@
         "3341653b",
         "92742795",
         "92742795"
+      ]
+    },
+    {
+      "stage": 3,
+      "iterations": 2,
+      "summary": "Calculator overhaul (real benchmarks + verdict explainer + URL state + email + projections), PDF route reimplemented with @react-pdf/renderer, share-buttons cleanup sitewide (Embed\u2192Save-as-PDF + UTM), hydration mismatch fixed, broken community images replaced with bundled fallback. Email endpoint hardened: escapeHtml + 3/hr/IP rate limit.",
+      "passedAt": "2026-04-29T07:26:24Z",
+      "commitSha": "c7942116",
+      "fixCommits": [
+        "55c1c24e",
+        "c7942116",
+        "c7942116"
       ]
     }
   ],
@@ -395,8 +491,8 @@
   "startedAt": "2026-04-28T10:32:28Z",
   "devServerPid": 19808,
   "screenshotsUsed": 0,
-  "pushedSha": null,
-  "vercelDeployUrl": null,
+  "pushedSha": "c7942116",
+  "vercelDeployUrl": "https://staging.binayahhub.com",
   "testFixture": null,
   "metricsLog": ".iterate/metrics.jsonl",
   "flags": {
@@ -421,6 +517,10 @@
     {
       "section": "\u00a71 \u2014 gotchas",
       "missing": "Email template HTML injection: any server route that builds HTML email via template literals must run all string fields from user-supplied POST bodies through an escapeHtml() helper before interpolation. This was flagged in Stage 1 review and recurred in Stage 3. Pattern: add escapeHtml at top of buildEmailHtml and wrap name, community, propType, purpose, financing (all string fields from untrusted client body)."
+    },
+    {
+      "section": "\u00a71 \u2014 External API / DLD routes",
+      "missing": "DLD area slugs use full names (e.g. jumeirah-village-circle, jumeirah-beach-residence, downtown-dubai is absent \u2014 use business-bay or similar) not short-form aliases (jvc, jbr). GET /api/dld/areas?limit=200 confirms 178 areas with full-name slugs only. Slug mismatch returns {\"error\":\"Area not found\"} with 404 status."
     }
   ],
   "pmEscalationHint": null
