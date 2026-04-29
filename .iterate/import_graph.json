@@ -334,6 +334,9 @@
       "src/lib/auth.ts",
       "src/lib/api.ts"
     ],
+    "src/app/api/pdf/pulse/route.ts": [
+      "src/lib/api.ts"
+    ],
     "src/app/api/favorites/hydrate/route.ts": [
       "src/lib/auth.ts",
       "src/lib/mongodb.ts",
@@ -357,6 +360,9 @@
     ],
     "src/app/api/auth/reset-password/route.ts": [
       "src/lib/mongodb.ts"
+    ],
+    "src/app/api/calculator/email/route.ts": [
+      "src/lib/email.ts"
     ],
     "src/app/news/[slug]/NewsDetailClient.tsx": [
       "src/components/Navbar.tsx",
@@ -605,6 +611,11 @@
       "src/lib/api.ts",
       "src/lib/applyTranslation.ts"
     ],
+    "src/app/[locale]/pulse/calculator/CalculatorClient.tsx": [
+      "src/components/pulse/CalculatorVerdict.tsx",
+      "src/lib/calculatorBenchmarks.ts",
+      "src/components/pulse/CalculatorEmailModal.tsx"
+    ],
     "src/app/[locale]/pulse/calculator/page.tsx": [
       "src/components/Navbar.tsx",
       "src/components/Footer.tsx",
@@ -776,6 +787,7 @@
       "src/app/developers/[slug]/page.tsx",
       "src/app/api/projects/route.ts",
       "src/app/api/account/market-reports/route.ts",
+      "src/app/api/pdf/pulse/route.ts",
       "src/app/api/favorites/hydrate/route.ts",
       "src/app/project/[slug]/ProjectDetailClient.tsx",
       "src/app/admin/project-import/page.tsx",
@@ -1168,7 +1180,8 @@
       "src/app/api/valuation/unlock/route.ts"
     ],
     "src/lib/email.ts": [
-      "src/app/api/project-subscriptions/route.ts"
+      "src/app/api/project-subscriptions/route.ts",
+      "src/app/api/calculator/email/route.ts"
     ],
     "src/components/AIChatWidget.tsx": [
       "src/app/project/[slug]/ProjectDetailClient.tsx",
@@ -1302,6 +1315,15 @@
     "src/lib/applyTranslation.ts": [
       "src/app/[locale]/project/[slug]/page.tsx"
     ],
+    "src/components/pulse/CalculatorVerdict.tsx": [
+      "src/app/[locale]/pulse/calculator/CalculatorClient.tsx"
+    ],
+    "src/lib/calculatorBenchmarks.ts": [
+      "src/app/[locale]/pulse/calculator/CalculatorClient.tsx"
+    ],
+    "src/components/pulse/CalculatorEmailModal.tsx": [
+      "src/app/[locale]/pulse/calculator/CalculatorClient.tsx"
+    ],
     "src/app/[locale]/pulse/calculator/CalculatorClient.tsx": [
       "src/app/[locale]/pulse/calculator/page.tsx"
     ],
@@ -1389,6 +1411,7 @@
     "src/app/api/valuation/unlock/route.ts": "/api/valuation/unlock",
     "src/app/api/og/pulse/route.tsx": "/api/og/pulse",
     "src/app/api/account/market-reports/route.ts": "/api/account/market-reports",
+    "src/app/api/pdf/pulse/route.ts": "/api/pdf/pulse",
     "src/app/api/admin/signout/route.ts": "/api/admin/signout",
     "src/app/api/admin/session/route.ts": "/api/admin/session",
     "src/app/api/favorites/hydrate/route.ts": "/api/favorites/hydrate",
@@ -1398,6 +1421,7 @@
     "src/app/api/auth/forgot-password/route.ts": "/api/auth/forgot-password",
     "src/app/api/auth/reset-password/route.ts": "/api/auth/reset-password",
     "src/app/api/test/auth-seed/route.ts": "/api/test/auth-seed",
+    "src/app/api/calculator/email/route.ts": "/api/calculator/email",
     "src/app/news/[slug]/NewsDetailClient.tsx": "/news/[slug]/NewsDetailClient.tsx",
     "src/app/project/[slug]/ProjectDetailClient.tsx": "/project/[slug]/ProjectDetailClient.tsx",
     "src/app/admin/project-import/page.tsx": "/admin/project-import",
@@ -1485,6 +1509,6 @@
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-04-29T06:28:09.852103+00:00",
-  "fileCount": 258
+  "builtAt": "2026-04-29T07:04:27.851224+00:00",
+  "fileCount": 263
 }
