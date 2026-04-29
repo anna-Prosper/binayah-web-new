@@ -2198,6 +2198,14 @@
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
     "devColLatestLaunch": "Latest Launch",
-    "developerEmptyState": "开发商数据每周一上午更新，请届时查看。"
+    "developerEmptyState": "开发商数据每周一上午更新，请届时查看。",
+    "ctaEyebrow": "Binayah房产",
+    "ctaTitle": "准备好在迪拜投资了吗？",
+    "ctaLede": "浏览经过核实的房源 · 期房与现房 · 专业顾问指导",
+    "ctaBrowse": "浏览房产",
+    "ctaOffPlan": "期房项目",
+    "communityViewLabel": "查看社区",
+    "heroTxYtd": "年初至今交易量",
+    "heroAvgPpsf": "平均每平方英尺价格"
   }
 }

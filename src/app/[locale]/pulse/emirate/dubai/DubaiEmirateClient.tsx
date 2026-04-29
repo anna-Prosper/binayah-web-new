@@ -86,6 +86,16 @@ const TOOLTIP_STYLE = {
   color: PULSE_TEXT,
 };
 
+// ── Framer Motion variants ────────────────────────────────────────────────────
+const fadeUp = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
+};
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const AED = (n: number) => {
   if (n >= 1_000_000_000) return `AED ${(n / 1_000_000_000).toFixed(1)}B`;
@@ -106,7 +116,7 @@ function KpiCard({
       style={{
         background: PULSE_SURFACE,
         border: `1px solid ${gold ? GOLD_HEX : PULSE_BORDER}`,
-        boxShadow: gold ? `0 0 20px -8px ${GOLD_HEX}33` : undefined,
+        boxShadow: gold ? `0 0 24px -8px ${GOLD_HEX}44` : undefined,
       }}
     >
       <div className="flex items-center justify-between mb-2">
@@ -123,7 +133,7 @@ function KpiCard({
           <Icon className="h-3.5 w-3.5" style={{ color: gold ? GOLD_HEX : PULSE_TEXT_MUTED }} />
         </div>
       </div>
-      <p className="text-2xl font-bold tabular-nums" style={{ color: PULSE_TEXT, fontVariantNumeric: "tabular-nums" }}>
+      <p className="text-2xl font-bold tabular-nums" style={{ color: gold ? GOLD_HEX : PULSE_TEXT, fontVariantNumeric: "tabular-nums" }}>
         {value}
       </p>
       {sub && <p className="text-[10px] mt-1" style={{ color: PULSE_TEXT_MUTED }}>{sub}</p>}
@@ -131,10 +141,84 @@ function KpiCard({
   );
 }
 
+// ── Section heading helper ────────────────────────────────────────────────────
+function SectionHeading({
+  eyebrow, title, italic,
+}: { eyebrow: string; title: string; italic?: string }) {
+  return (
+    <div className="mb-5">
+      <div className="flex items-center gap-2 mb-1">
+        <div className="w-5 h-px" style={{ background: GOLD_HEX }} />
+        <p className="text-[10px] font-bold tracking-[0.3em] uppercase" style={{ color: GOLD_HEX }}>
+          {eyebrow}
+        </p>
+      </div>
+      <h2 className="text-2xl font-bold" style={{ color: PULSE_TEXT }}>
+        {title}{italic && <span className="italic font-light"> {italic}</span>}
+      </h2>
+    </div>
+  );
+}
+
+// ── Lead CTA strip ────────────────────────────────────────────────────────────
+function LeadCTAStrip({ t }: { t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6"
+      style={{
+        background: "linear-gradient(135deg, #0B3D2E 0%, #1A5A3E 100%)",
+        border: "1px solid rgba(212, 168, 71, 0.35)",
+      }}
+    >
+      {/* Subtle dot pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, #D4A847 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="relative">
+        <p
+          className="text-[10px] font-bold tracking-[0.4em] uppercase mb-2"
+          style={{ color: "#D4A847" }}
+        >
+          {t("ctaEyebrow")}
+        </p>
+        <p className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+          {t("ctaTitle")}
+        </p>
+        <p className="text-white/65 text-sm mt-2 max-w-sm">
+          {t("ctaLede")}
+        </p>
+      </div>
+      <div className="relative flex flex-col sm:flex-row gap-3 flex-shrink-0">
+        <Link
+          href="/buy"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
+          style={{ background: "#D4A847", color: "#0B3D2E" }}
+        >
+          {t("ctaBrowse")} <ArrowUpRight className="h-4 w-4" />
+        </Link>
+        <Link
+          href="/off-plan"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:bg-white/10 border"
+          style={{ borderColor: "rgba(212, 168, 71, 0.4)", color: "rgba(255,255,255,0.85)" }}
+        >
+          {t("ctaOffPlan")}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 // ── Why Dubai typography entry ────────────────────────────────────────────────
 function WhyEntry({ num, headline, sub, source }: { num: string; headline: string; sub: string; source: string }) {
   return (
-    <div className="flex gap-5">
+    <div
+      className="flex gap-5 pl-5"
+      style={{ borderLeft: `2px solid ${GOLD_HEX}33` }}
+    >
       <span
         className="text-3xl font-bold flex-shrink-0 mt-1 tabular-nums font-mono"
         style={{ color: GOLD_HEX, fontVariantNumeric: "tabular-nums" }}
@@ -162,7 +246,6 @@ function HighlightCard({
       style={{
         background: PULSE_SURFACE,
         border: `1px solid ${PULSE_BORDER}`,
-        boxShadow: undefined,
       }}
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${GOLD_HEX}88`)}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = PULSE_BORDER)}
@@ -188,20 +271,16 @@ function HighlightCard({
 }
 
 // ── Featured community card ───────────────────────────────────────────────────
-// Use the bundled dubai-hero asset as a uniform fallback. Per-community photos
-// can be wired later from the community_info_pages collection (heroImage field)
-// once we build a server-side fetch — for now we ship visually-consistent cards
-// rather than five 404s.
 const FEATURED_HERO = "/assets/dubai-hero.webp";
 const FEATURED_COMMUNITIES = [
-  { slug: "palm-jumeirah", name: "Palm Jumeirah", imageUrl: FEATURED_HERO, tagline: "Ultra-luxury waterfront icon" },
-  { slug: "dubai-marina", name: "Dubai Marina", imageUrl: FEATURED_HERO, tagline: "Vibrant urban waterfront" },
-  { slug: "jumeirah-village-circle", name: "JVC", imageUrl: FEATURED_HERO, tagline: "Highest-yield community" },
-  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", imageUrl: FEATURED_HERO, tagline: "Green master-plan living" },
-  { slug: "downtown-dubai", name: "Downtown Dubai", imageUrl: FEATURED_HERO, tagline: "The city's epicentre" },
+  { slug: "palm-jumeirah", name: "Palm Jumeirah", imageUrl: FEATURED_HERO, tagline: "Ultra-luxury waterfront icon", tint: "rgba(10, 30, 80, 0.45)" },
+  { slug: "dubai-marina", name: "Dubai Marina", imageUrl: FEATURED_HERO, tagline: "Vibrant urban waterfront", tint: "rgba(11, 50, 40, 0.35)" },
+  { slug: "jumeirah-village-circle", name: "JVC", imageUrl: FEATURED_HERO, tagline: "Highest-yield community", tint: "rgba(80, 40, 10, 0.45)" },
+  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", imageUrl: FEATURED_HERO, tagline: "Green master-plan living", tint: "rgba(10, 60, 20, 0.45)" },
+  { slug: "downtown-dubai", name: "Downtown Dubai", imageUrl: FEATURED_HERO, tagline: "The city's epicentre", tint: "rgba(60, 20, 80, 0.45)" },
 ];
 
-function FeaturedCommunityCard({ community }: { community: typeof FEATURED_COMMUNITIES[0] }) {
+function FeaturedCommunityCard({ community, t }: { community: typeof FEATURED_COMMUNITIES[0]; t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
   return (
     <Link
       href={`/communities/${community.slug}`}
@@ -219,10 +298,20 @@ function FeaturedCommunityCard({ community }: { community: typeof FEATURED_COMMU
           unoptimized
         />
       </div>
-      {/* Dark gradient overlay */}
+      {/* Community color tint (differentiates cards visually) */}
+      <div
+        className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-60"
+        style={{ background: community.tint }}
+      />
+      {/* Dark gradient overlay for legible text */}
       <div
         className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)" }}
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.15) 55%, transparent 100%)" }}
+      />
+      {/* Gold top rule that appears on hover */}
+      <div
+        className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+        style={{ background: "#D4A847" }}
       />
       {/* Text */}
       <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -233,6 +322,9 @@ function FeaturedCommunityCard({ community }: { community: typeof FEATURED_COMMU
           {community.tagline}
         </p>
         <p className="text-lg font-bold text-white">{community.name}</p>
+        <p className="text-xs text-white/50 mt-0.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          {t("communityViewLabel")} <ArrowUpRight className="h-3 w-3" />
+        </p>
       </div>
     </Link>
   );
@@ -317,21 +409,16 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const [yieldRows, setYieldRows] = useState<{ area: string; yieldPct: number; avgRentPerSqft: number; avgSalePerSqft: number; lowConfidence: boolean }[]>([]);
   const communityScrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch yield data for top communities.
-  // marketStats.communityMatrix carries display names ("JBR", "Downtown Dubai")
-  // but the yield endpoint is keyed on DLD area slugs, which use full names
-  // ("jumeirah-beach-residence"). Map known display→canonical aliases here so
-  // we don't get 5 console 404s on every page load.
   useEffect(() => {
     const ALIAS: Record<string, string | null> = {
       "JBR": "jumeirah-beach-residence",
       "JVC": "jumeirah-village-circle",
       "JVT": "jumeirah-village-triangle",
       "JLT": "jumeirah-lakes-towers",
-      "Downtown": null, // DLD's area is "Burj Khalifa" — too noisy to rename
+      "Downtown": null,
       "Downtown Dubai": null,
       "Creek Harbour": "dubai-creek-harbour",
-      "MBR City": null, // DLD area is "Hadaeq Sheikh Mohammed Bin Rashid" — display label is misleading
+      "MBR City": null,
     };
     function deriveSlug(area: string): string | null {
       if (area in ALIAS) return ALIAS[area];
@@ -382,15 +469,12 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const monthly = txData?.monthly ?? [];
   const matrix = marketStats?.communityMatrix ?? [];
 
-  // Off-plan share from projects
   const projects = projectsData?.results ?? [];
   const offPlanCount = projects.filter((p) => (p.status ?? "").toLowerCase().includes("launch") || (p.status ?? "").toLowerCase().includes("off")).length;
   const offPlanSharePct = projects.length > 0 ? Math.round((offPlanCount / projects.length) * 100) : marketStats?.summary.offPlanShare ?? 0;
 
-  // Most active community
   const mostActive = txData?.byArea?.[0]?.area ?? matrix.sort((a, b) => b.totalListings - a.totalListings)[0]?.area ?? "—";
 
-  // Community highlights — 4 cards
   const sortedByPpsf = [...matrix].sort((a, b) => b.avgPricePerSqft - a.avgPricePerSqft);
   const sortedByYield = [...matrix].sort((a, b) => b.rentalYield - a.rentalYield);
   const sortedByScore = [...matrix].sort((a, b) => b.investmentScore - a.investmentScore);
@@ -401,17 +485,13 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const fastestGrowth = sortedByScore[0];
   const bestValue = sortedByAfford[0];
 
-  // Developer aggregations
   const developerStats = useMemo(() => aggregateDevelopers(projects), [projects]);
   const topDevelopers = developerStats.slice(0, 8);
-  // Developer highlight cards: most active, fastest growing (most projects), most off-plan, best yield (most units)
   const devMostActive = developerStats[0] ?? null;
   const devFastestGrowing = [...developerStats].sort((a, b) => b.totalCount - a.totalCount)[1] ?? developerStats[0] ?? null;
   const devMostOffPlan = [...developerStats].sort((a, b) => b.offPlanShare - a.offPlanShare)[0] ?? null;
-  // "Best yield" proxy: developer with lowest avg price (more accessible entry)
   const devBestYield = [...developerStats].filter((d) => d.avgStartingPrice > 0).sort((a, b) => a.avgStartingPrice - b.avgStartingPrice)[0] ?? null;
 
-  // Leaderboard rows from byArea (DLD data) merged with matrix
   const leaderboardRows: LeaderboardRow[] = useMemo(() => {
     const byArea = txData?.byArea ?? [];
     return byArea.slice(0, 20).map((row, i) => {
@@ -422,7 +502,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
         totalSales: row.count,
         ppsf: row.avgPpsf,
         yieldPct: matrixRow?.rentalYield ?? 0,
-        yoyPct: 0, // not available in current API
+        yoyPct: 0,
         volume: row.totalValue,
         avgDealSize: row.avgPrice,
         offPlanShare: matrixRow ? Math.round((matrixRow.offPlanCount / (matrixRow.totalListings || 1)) * 100) : undefined,
@@ -433,19 +513,14 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
   const featuredArticle = marketData?.news?.[0] ?? null;
 
-  // Chart data
   const priceChartData = monthly.filter((m) => m.avgPpsf > 0);
   const volumeChartData = monthly.filter((m) => m.count > 0);
 
-  // suppress void warning for mostActive — used in KpiCard
   void mostActive;
   void yieldRows;
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: PULSE_BG }}
-    >
+    <div className="min-h-screen" style={{ background: PULSE_BG }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16 py-10 sm:py-14">
 
         {/* ── Share row + PDF button ─────────────────────────────────── */}
@@ -481,46 +556,64 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           </div>
         )}
 
-        {/* ── 6-KPI strip ────────────────────────────────────────────── */}
-        <div className="-mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <KpiCard
-            label={t("kpiTxYtd")}
-            value={txData?.summary.totalTransactions ? txData.summary.totalTransactions.toLocaleString() : "—"}
-            sub={t("kpiYtd")}
-            icon={BarChart3}
-            gold
-          />
-          <KpiCard
-            label={t("kpiAvgPpsf")}
-            value={txData?.summary.avgPpsf ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—"}
-            sub={t("kpiActualSold")}
-            icon={Activity}
-          />
-          <KpiCard
-            label={t("kpiAvgYield")}
-            value={marketStats?.summary.avgYield ? `${marketStats.summary.avgYield.toFixed(1)}%` : "—"}
-            sub={t("kpiGross")}
-            icon={Percent}
-          />
-          <KpiCard
-            label={t("kpiYoy")}
-            value="—"
-            sub={t("kpiYoyNote")}
-            icon={TrendingUp}
-          />
-          <KpiCard
-            label={t("kpiOffPlan")}
-            value={`${offPlanSharePct}%`}
-            sub={t("kpiOfTotalMarket")}
-            icon={Building2}
-          />
-          <KpiCard
-            label={t("kpiCommunities")}
-            value={matrix.length > 0 ? matrix.length.toLocaleString() : "—"}
-            sub={t("kpiTracked")}
-            icon={Globe}
-          />
-        </div>
+        {/* ── 6-KPI strip (staggered entrance) ───────────────────────── */}
+        <motion.div
+          className="-mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={stagger}
+        >
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiTxYtd")}
+              value={txData?.summary.totalTransactions ? txData.summary.totalTransactions.toLocaleString() : "—"}
+              sub={t("kpiYtd")}
+              icon={BarChart3}
+              gold
+            />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiAvgPpsf")}
+              value={txData?.summary.avgPpsf ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—"}
+              sub={t("kpiActualSold")}
+              icon={Activity}
+            />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiAvgYield")}
+              value={marketStats?.summary.avgYield ? `${marketStats.summary.avgYield.toFixed(1)}%` : "—"}
+              sub={t("kpiGross")}
+              icon={Percent}
+            />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiYoy")}
+              value="—"
+              sub={t("kpiYoyNote")}
+              icon={TrendingUp}
+            />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiOffPlan")}
+              value={`${offPlanSharePct}%`}
+              sub={t("kpiOfTotalMarket")}
+              icon={Building2}
+            />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <KpiCard
+              label={t("kpiCommunities")}
+              value={matrix.length > 0 ? matrix.length.toLocaleString() : "—"}
+              sub={t("kpiTracked")}
+              icon={Globe}
+            />
+          </motion.div>
+        </motion.div>
 
         {/* ── Charts dyad (24-mo price + monthly volume) ────────────── */}
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
@@ -529,7 +622,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
             <p className="text-[10px] font-bold tracking-[0.25em] uppercase mb-1" style={{ color: PULSE_TEXT_MUTED }}>{t("chartPriceLabel")}</p>
             <p className="text-base font-bold mb-4" style={{ color: PULSE_TEXT }}>{t("chartPriceTitle")}</p>
             {priceChartData.length > 1 ? (
-              <div className="h-[200px]">
+              <div className="h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={priceChartData}>
                     <defs>
@@ -547,7 +640,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-sm" style={{ color: PULSE_TEXT_MUTED }}>{t("chartEmpty")}</div>
+              <div className="h-[240px] flex items-center justify-center text-sm" style={{ color: PULSE_TEXT_MUTED }}>{t("chartEmpty")}</div>
             )}
           </div>
 
@@ -556,7 +649,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
             <p className="text-[10px] font-bold tracking-[0.25em] uppercase mb-1" style={{ color: PULSE_TEXT_MUTED }}>{t("chartVolumeLabel")}</p>
             <p className="text-base font-bold mb-4" style={{ color: PULSE_TEXT }}>{t("chartVolumeTitle")}</p>
             {volumeChartData.length > 1 ? (
-              <div className="h-[200px]">
+              <div className="h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={volumeChartData} barSize={20}>
                     <CartesianGrid strokeDasharray="3 3" stroke={PULSE_BORDER} vertical={false} />
@@ -572,18 +665,22 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-sm" style={{ color: PULSE_TEXT_MUTED }}>{t("chartEmpty")}</div>
+              <div className="h-[240px] flex items-center justify-center text-sm" style={{ color: PULSE_TEXT_MUTED }}>{t("chartEmpty")}</div>
             )}
           </div>
         </div>
 
+        {/* ── Lead CTA — connects market intel to Binayah listings ─── */}
+        <LeadCTAStrip t={t} />
+
         {/* ── Community highlights — 4-up editorial cards ───────────── */}
         {(highestPrice || bestYield || fastestGrowth || bestValue) && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>{t("highlightsLabel")}</p>
-            <h2 className="text-2xl font-bold mb-5" style={{ color: PULSE_TEXT }}>
-              {t("highlightsTitle")} <span className="italic font-light">{t("highlightsTitleItalic")}</span>
-            </h2>
+            <SectionHeading
+              eyebrow={t("highlightsLabel")}
+              title={t("highlightsTitle")}
+              italic={t("highlightsTitleItalic")}
+            />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {highestPrice && (
                 <HighlightCard
@@ -621,10 +718,9 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           </section>
         )}
 
-        {/* ── Developer highlights — 4-up editorial cards (spec items 17–18) ── */}
+        {/* ── Developer highlights ───────────────────────────────────── */}
         <section>
         {developerStats.length === 0 ? (
-          /* Empty-state: projects data is loading or unavailable */
           <div
             className="rounded-xl px-6 py-8 text-center"
             style={{ background: PULSE_SURFACE, border: `1px solid ${PULSE_BORDER}` }}
@@ -638,12 +734,11 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           </div>
         ) : (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>
-              {t("developerHighlightsLabel")}
-            </p>
-            <h2 className="text-2xl font-bold mb-5" style={{ color: PULSE_TEXT }}>
-              {t("developerHighlightsTitle")} <span className="italic font-light">{t("developerHighlightsTitleItalic")}</span>
-            </h2>
+            <SectionHeading
+              eyebrow={t("developerHighlightsLabel")}
+              title={t("developerHighlightsTitle")}
+              italic={t("developerHighlightsTitleItalic")}
+            />
 
             {/* 4-card developer highlight row */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
@@ -687,7 +782,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr style={{ borderBottom: `1px solid ${PULSE_BORDER}`, background: `${PULSE_SURFACE}` }}>
+                      <tr style={{ borderBottom: `1px solid ${PULSE_BORDER}`, background: PULSE_SURFACE }}>
                         {[
                           t("devColDeveloper"),
                           t("devColProjects"),
@@ -714,7 +809,15 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                           whileHover={{ backgroundColor: `hsl(var(--pulse-surface-hover))` }}
                         >
                           <td className="px-4 py-3 font-medium" style={{ color: PULSE_TEXT }}>
-                            {dev.developer}
+                            <span className="flex items-center gap-2">
+                              <span
+                                className="text-[10px] font-bold tabular-nums w-5 text-right flex-shrink-0"
+                                style={{ color: PULSE_TEXT_MUTED }}
+                              >
+                                {i + 1}
+                              </span>
+                              {dev.developer}
+                            </span>
                           </td>
                           <td className="px-4 py-3 font-semibold tabular-nums" style={{ color: PULSE_TEXT }}>
                             {dev.totalCount.toLocaleString()}
@@ -750,10 +853,11 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
         {/* ── Top communities leaderboard ───────────────────────────── */}
         {leaderboardRows.length > 0 && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>{t("leaderboardLabel")}</p>
-            <h2 className="text-2xl font-bold mb-5" style={{ color: PULSE_TEXT }}>
-              {t("leaderboardTitle")} <span className="italic font-light">{t("leaderboardTitleItalic")}</span>
-            </h2>
+            <SectionHeading
+              eyebrow={t("leaderboardLabel")}
+              title={t("leaderboardTitle")}
+              italic={t("leaderboardTitleItalic")}
+            />
             <CommunityLeaderboard rows={leaderboardRows} />
           </section>
         )}
@@ -761,10 +865,11 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
         {/* ── Featured insight (magazine 60/40) ─────────────────────── */}
         {featuredArticle && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>{t("insightLabel")}</p>
-            <h2 className="text-2xl font-bold mb-5" style={{ color: PULSE_TEXT }}>
-              {t("insightTitle")} <span className="italic font-light">{t("insightTitleItalic")}</span>
-            </h2>
+            <SectionHeading
+              eyebrow={t("insightLabel")}
+              title={t("insightTitle")}
+              italic={t("insightTitleItalic")}
+            />
             <FeaturedInsightPanel
               article={featuredArticle}
               ogParams={{
@@ -778,10 +883,11 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
         {/* ── "Why Dubai" pure typography ───────────────────────────── */}
         <section className="max-w-3xl">
-          <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>{t("whyLabel")}</p>
-          <h2 className="text-2xl font-bold mb-8" style={{ color: PULSE_TEXT }}>
-            {t("whyTitle")} <span className="italic font-light">{t("whyTitleItalic")}</span>
-          </h2>
+          <SectionHeading
+            eyebrow={t("whyLabel")}
+            title={t("whyTitle")}
+            italic={t("whyTitleItalic")}
+          />
           <div className="space-y-8">
             <WhyEntry num="01." headline={t("why1Headline")} sub={t("why1Sub")} source={t("why1Source")} />
             <WhyEntry num="02." headline={t("why2Headline")} sub={t("why2Sub")} source={t("why2Source")} />
@@ -792,17 +898,18 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
         {/* ── Featured community cards carousel ────────────────────── */}
         <section>
-          <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-1" style={{ color: GOLD_HEX }}>{t("communitiesLabel")}</p>
-          <h2 className="text-2xl font-bold mb-5" style={{ color: PULSE_TEXT }}>
-            {t("communitiesTitle")} <span className="italic font-light">{t("communitiesTitleItalic")}</span>
-          </h2>
+          <SectionHeading
+            eyebrow={t("communitiesLabel")}
+            title={t("communitiesTitle")}
+            italic={t("communitiesTitleItalic")}
+          />
           <div
             ref={communityScrollRef}
             className="flex gap-4 overflow-x-auto scrollbar-hide pb-2"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURED_COMMUNITIES.map((c) => (
-              <FeaturedCommunityCard key={c.slug} community={c} />
+              <FeaturedCommunityCard key={c.slug} community={c} t={t} />
             ))}
           </div>
         </section>

@@ -2192,6 +2192,14 @@
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
     "devColLatestLaunch": "Latest Launch",
-    "developerEmptyState": "يتم تحديث إحصائيات المطورين صباح الاثنين — يرجى المراجعة لاحقاً."
+    "developerEmptyState": "يتم تحديث إحصائيات المطورين صباح الاثنين — يرجى المراجعة لاحقاً.",
+    "ctaEyebrow": "بنايه للعقارات",
+    "ctaTitle": "هل أنت مستعد للاستثمار في دبي؟",
+    "ctaLede": "تصفح قوائم موثقة · وحدات على الخارطة وجاهزة · إرشاد من خبراء",
+    "ctaBrowse": "تصفح العقارات",
+    "ctaOffPlan": "مشاريع على الخارطة",
+    "communityViewLabel": "عرض المجتمع",
+    "heroTxYtd": "صفقة حتى الآن",
+    "heroAvgPpsf": "متوسط السعر لكل قدم"
   }
 }

@@ -2192,6 +2192,14 @@
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
     "devColLatestLaunch": "Latest Launch",
-    "developerEmptyState": "Developer aggregates refresh Monday morning — check back then."
+    "developerEmptyState": "Developer aggregates refresh Monday morning — check back then.",
+    "ctaEyebrow": "Binayah Properties",
+    "ctaTitle": "Ready to invest in Dubai?",
+    "ctaLede": "Browse verified listings · Off-plan & ready homes · Expert agent guidance",
+    "ctaBrowse": "Browse Properties",
+    "ctaOffPlan": "Off-Plan Projects",
+    "communityViewLabel": "View community",
+    "heroTxYtd": "transactions YTD",
+    "heroAvgPpsf": "avg PPSF"
   }
 }

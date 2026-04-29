@@ -2192,6 +2192,14 @@
     "devColOffPlanShare": "Off-Plan %",
     "devColAvgPrice": "Avg Starting Price",
     "devColLatestLaunch": "Latest Launch",
-    "developerEmptyState": "Данные по застройщикам обновляются в понедельник утром — проверьте позже."
+    "developerEmptyState": "Данные по застройщикам обновляются в понедельник утром — проверьте позже.",
+    "ctaEyebrow": "Binayah Properties",
+    "ctaTitle": "Готовы инвестировать в Дубай?",
+    "ctaLede": "Проверенные объявления · Строящееся и готовое жильё · Экспертное сопровождение",
+    "ctaBrowse": "Смотреть объекты",
+    "ctaOffPlan": "Проекты off-plan",
+    "communityViewLabel": "Посмотреть район",
+    "heroTxYtd": "сделок с начала года",
+    "heroAvgPpsf": "средняя цена за кв. фут"
   }
 }
