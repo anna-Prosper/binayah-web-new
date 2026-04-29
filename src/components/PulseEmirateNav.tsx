@@ -96,17 +96,21 @@ export default function PulseEmirateNav() {
             <span
               key={id}
               title={t("comingSoonTooltip")}
-              className="relative flex items-center gap-1 px-4 py-3.5 text-[11px] font-medium whitespace-nowrap min-h-[44px] flex-shrink-0 cursor-not-allowed select-none border-b-2 border-transparent opacity-60"
+              className="relative flex items-center gap-1.5 px-4 py-3.5 text-[12px] font-semibold whitespace-nowrap min-h-[44px] flex-shrink-0 cursor-not-allowed select-none border-b-2 border-transparent"
               style={{
-                color: "hsl(43, 55%, 55%)",
-                letterSpacing: "0.08em",
+                color: "hsl(168, 35%, 22%)",
+                letterSpacing: "0.06em",
               }}
               aria-label={`${t(id as "abuDhabi" | "sharjah" | "rak" | "ajman")} — ${t("comingSoonTooltip")}`}
             >
               {t(id as "abuDhabi" | "sharjah" | "rak" | "ajman")}
               <span
-                className="ml-1.5 text-[9px] uppercase tracking-[0.2em] font-semibold"
-                style={{ color: "#A88735" }}
+                className="ml-0.5 text-[9px] uppercase tracking-[0.18em] font-bold rounded-full px-2 py-0.5"
+                style={{
+                  color: "#7A6320",
+                  background: "rgba(212, 168, 71, 0.18)",
+                  border: "1px solid rgba(212, 168, 71, 0.4)",
+                }}
               >
                 {t("comingSoon")}
               </span>

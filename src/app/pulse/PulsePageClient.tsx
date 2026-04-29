@@ -1344,7 +1344,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
         className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8"
       >
         <p className="text-[9px] font-bold tracking-[0.3em] uppercase mb-1 text-accent">{t("subscribeEyebrow")}</p>
-        <WeeklySubscribeForm source="pulse-overview" variant="card" />
+        <WeeklySubscribeForm source="pulse-overview" variant="light" />
       </motion.section>
 
       <p className="text-[10px] text-muted-foreground text-center pb-4">
