@@ -31,14 +31,35 @@ async function fetchJson(path: string, ms = 12_000) {
   }
 }
 
+// Slugs must match FEATURED_COMMUNITIES order in DubaiEmirateClient
+const COMMUNITY_SLUGS = [
+  "palm-jumeirah",
+  "dubai-marina",
+  "jumeirah-village-circle",
+  "dubai-hills-estate",
+  "downtown-dubai",
+];
+
+async function fetchCommunityImage(slug: string): Promise<string | null> {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/community-info?q=${slug}`), 6_000);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return (data?.data?.heroImage as string) || null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function DubaiEmiratePage() {
   const t = await getTranslations("dubaiEmirate");
 
-  const [marketStats, marketData, areasData, projectsData] = await Promise.all([
+  const [marketStats, marketData, areasData, projectsData, communityImages] = await Promise.all([
     fetchJson("/api/market-stats"),
     fetchJson("/api/market-data"),
     fetchJson("/api/dld/areas?sort=totalSales&limit=50"),
     fetchJson("/api/projects?status=active&limit=100"),
+    Promise.all(COMMUNITY_SLUGS.map(fetchCommunityImage)),
   ]);
 
   const txSummary = marketData?.transactions?.summary;
@@ -138,6 +159,7 @@ export default async function DubaiEmiratePage() {
         marketData={marketData}
         areasData={areasData}
         projectsData={projectsData}
+        communityImages={communityImages as (string | null)[]}
       />
 
       <Footer />

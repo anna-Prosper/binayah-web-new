@@ -65,6 +65,7 @@ interface Props {
   marketData: MarketData | null;
   areasData: { results?: { area: string; totalSales: number; avgPpsf: number }[] } | null;
   projectsData: { results?: Project[] } | null;
+  communityImages?: (string | null)[];
 }
 
 // ── Design tokens (pulse dark theme) ─────────────────────────────────────────
@@ -272,15 +273,18 @@ function HighlightCard({
 
 // ── Featured community card ───────────────────────────────────────────────────
 const FEATURED_HERO = "/assets/dubai-hero.webp";
-const FEATURED_COMMUNITIES = [
-  { slug: "palm-jumeirah", name: "Palm Jumeirah", imageUrl: FEATURED_HERO, tagline: "Ultra-luxury waterfront icon", tint: "rgba(10, 30, 80, 0.45)" },
-  { slug: "dubai-marina", name: "Dubai Marina", imageUrl: FEATURED_HERO, tagline: "Vibrant urban waterfront", tint: "rgba(11, 50, 40, 0.35)" },
-  { slug: "jumeirah-village-circle", name: "JVC", imageUrl: FEATURED_HERO, tagline: "Highest-yield community", tint: "rgba(80, 40, 10, 0.45)" },
-  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", imageUrl: FEATURED_HERO, tagline: "Green master-plan living", tint: "rgba(10, 60, 20, 0.45)" },
-  { slug: "downtown-dubai", name: "Downtown Dubai", imageUrl: FEATURED_HERO, tagline: "The city's epicentre", tint: "rgba(60, 20, 80, 0.45)" },
-];
+// Base community data — imageUrl is filled in from server-fetched heroImages
+const COMMUNITY_BASE = [
+  { slug: "palm-jumeirah", name: "Palm Jumeirah", tagline: "Ultra-luxury waterfront icon", tint: "rgba(10, 30, 80, 0.45)" },
+  { slug: "dubai-marina", name: "Dubai Marina", tagline: "Vibrant urban waterfront", tint: "rgba(11, 50, 40, 0.35)" },
+  { slug: "jumeirah-village-circle", name: "JVC", tagline: "Highest-yield community", tint: "rgba(80, 40, 10, 0.45)" },
+  { slug: "dubai-hills-estate", name: "Dubai Hills Estate", tagline: "Green master-plan living", tint: "rgba(10, 60, 20, 0.45)" },
+  { slug: "downtown-dubai", name: "Downtown Dubai", tagline: "The city's epicentre", tint: "rgba(60, 20, 80, 0.45)" },
+] as const;
 
-function FeaturedCommunityCard({ community, t }: { community: typeof FEATURED_COMMUNITIES[0]; t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
+type CommunityCard = typeof COMMUNITY_BASE[number] & { imageUrl: string };
+
+function FeaturedCommunityCard({ community, t }: { community: CommunityCard; t: ReturnType<typeof useTranslations<"dubaiEmirate">> }) {
   return (
     <Link
       href={`/communities/${community.slug}`}
@@ -402,8 +406,15 @@ function formatLatestLaunch(dateStr: string | null): string {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function DubaiEmirateClient({ marketStats, marketData, areasData, projectsData }: Props) {
+export default function DubaiEmirateClient({ marketStats, marketData, areasData, projectsData, communityImages }: Props) {
   const t = useTranslations("dubaiEmirate");
+
+  // Hydrate community cards with server-fetched heroImages; fall back to local asset
+  const featuredCommunities: CommunityCard[] = COMMUNITY_BASE.map((c, i) => ({
+    ...c,
+    imageUrl: communityImages?.[i] || FEATURED_HERO,
+  }));
+
   const [shareUrl, setShareUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [yieldRows, setYieldRows] = useState<{ area: string; yieldPct: number; avgRentPerSqft: number; avgSalePerSqft: number; lowConfidence: boolean }[]>([]);
@@ -908,7 +919,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
             className="flex gap-4 overflow-x-auto scrollbar-hide pb-2"
             style={{ scrollSnapType: "x mandatory" }}
           >
-            {FEATURED_COMMUNITIES.map((c) => (
+            {featuredCommunities.map((c) => (
               <FeaturedCommunityCard key={c.slug} community={c} t={t} />
             ))}
           </div>

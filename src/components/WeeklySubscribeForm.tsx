@@ -77,7 +77,7 @@ function Chip({
   onToggle: () => void;
   variant: SubscribeFormVariant;
 }) {
-  const isPulse = variant !== "light";
+  const isPulse = variant === "inline";
   const base =
     "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer select-none transition-all min-h-[32px] border";
 
@@ -187,7 +187,7 @@ function AreasAutocomplete({
     return found ? found.name : slug;
   }
 
-  const isPulse = variant !== "light";
+  const isPulse = variant === "inline";
   const inputClass = isPulse
     ? "w-full px-3 py-2 rounded-lg border text-sm bg-transparent text-[hsl(40,20%,95%)] placeholder:text-[hsl(168,10%,42%)] focus:outline-none focus:ring-1 focus:ring-[hsl(43,55%,55%)] border-[hsl(168,20%,20%)] focus:border-[hsl(43,55%,55%)] transition"
     : "w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A7A5A]/30 focus:border-[#1A7A5A] transition text-sm";
@@ -340,7 +340,7 @@ function BudgetSlider({
   variant: SubscribeFormVariant;
 }) {
   const t = useTranslations("weeklyReport");
-  const isPulse = variant !== "light";
+  const isPulse = variant === "inline";
   const currentMin = min ?? 0;
   const currentMax = max ?? BUDGET_MAX;
   const isDefault = min === null && max === null;
@@ -451,7 +451,7 @@ function ConfirmationPending({
   variant: SubscribeFormVariant;
 }) {
   const t = useTranslations("weeklyReport");
-  const isPulse = variant !== "light";
+  const isPulse = variant === "inline";
 
   // Live market stats — fetched client-side
   const [marketStats, setMarketStats] = useState<MarketStatsData | null>(null);
@@ -615,7 +615,7 @@ function ConfirmationPending({
 
 export default function WeeklySubscribeForm({ source, defaultAreas = [], defaultPropertyTypes = [], variant = "inline" }: Props) {
   const t = useTranslations("weeklyReport");
-  const isPulse = variant !== "light";
+  const isPulse = variant === "inline";
   const { toast } = useToast();
 
   const [form, setForm] = useState<FormState>({
