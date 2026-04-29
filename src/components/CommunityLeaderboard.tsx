@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronRight } from "lucide-react";
+import { Link } from "@/navigation";
 
 export interface LeaderboardRow {
   rank: number;
@@ -225,12 +226,12 @@ export default function CommunityLeaderboard({ rows, viewAllHref }: Props) {
 
       {viewAllHref && (
         <div className="text-center pt-1">
-          <a
+          <Link
             href={viewAllHref}
             className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             {t("viewAll")} →
-          </a>
+          </Link>
         </div>
       )}
     </div>

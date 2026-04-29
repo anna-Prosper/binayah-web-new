@@ -41,19 +41,22 @@ export default async function DubaiEmiratePage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: "hsl(var(--pulse-bg))" }}>
       <Navbar />
       <PulseEmirateNav />
 
-      {/* Hero */}
+      {/* Hero — pulse-surface with thin border-bottom; no brand-green gradient */}
       <section
-        className="relative pt-32 pb-20 text-white overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        className="relative pt-32 pb-16 overflow-hidden"
+        style={{
+          background: "hsl(var(--pulse-surface))",
+          borderBottom: "1px solid hsl(var(--pulse-border))",
+        }}
       >
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.025]"
           style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+            backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--pulse-gold)) 1px, transparent 0)",
             backgroundSize: "48px 48px",
           }}
         />
@@ -61,29 +64,32 @@ export default async function DubaiEmiratePage() {
           {/* Eyebrow */}
           <p
             className="text-[10px] font-bold tracking-[0.4em] uppercase mb-3"
-            style={{ color: "hsl(43, 55%, 65%)" }}
+            style={{ color: "hsl(var(--pulse-gold))" }}
           >
             {t("eyebrow")}
           </p>
 
-          {/* Emirate name + sentiment inline */}
+          {/* Emirate name */}
           <div className="flex flex-wrap items-center gap-4 mb-3">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
+            <h1
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold"
+              style={{ color: "hsl(var(--pulse-text))" }}
+            >
               {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
             </h1>
           </div>
 
-          <p className="text-white/70 max-w-2xl text-base sm:text-lg mb-6">
+          <p className="max-w-2xl text-base sm:text-lg mb-6" style={{ color: "hsl(var(--pulse-text-muted))" }}>
             {t("lede")}
           </p>
 
-          {/* Share row */}
-          <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
+          {/* Status row */}
+          <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: "hsl(var(--pulse-text-dim))" }}>
             <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               {t("liveData")}
             </div>
-            <span className="text-white/30">·</span>
+            <span style={{ color: "hsl(var(--pulse-border))" }}>·</span>
             <span>{t("dldSource")}</span>
           </div>
         </div>

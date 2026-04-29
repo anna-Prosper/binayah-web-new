@@ -1132,7 +1132,16 @@
     "colUnitsRera": "Units (RERA)",
     "colAedSqftBuilding": "AED/sqft",
     "buildingsUpdatingTitle": "Building data is updating",
-    "buildingsUpdatingSub": "Data will be available shortly — please check back soon."
+    "buildingsUpdatingSub": "Data will be available shortly — please check back soon.",
+    "mostActiveLabel": "Most Active",
+    "offPlanShareLabel": "Off-Plan Share",
+    "overviewLeaderboardLabel": "COMMUNITY RANKINGS",
+    "overviewLeaderboardTitle": "Top Communities",
+    "overviewLeaderboardItalic": "by DLD Data",
+    "overviewInsightLabel": "FEATURED INSIGHT",
+    "overviewInsightTitle": "Market",
+    "overviewInsightItalic": "Insight",
+    "subscribeEyebrow": "STAY INFORMED"
   },
   "services": {
     "heroLabel": "What We Offer",
@@ -2126,6 +2135,22 @@
     "pdfButton": "Save as PDF",
     "pdfTooltip": "PDF export is coming next week — Stage 3",
     "sentimentNote": "3-month MoM price trend",
-    "attribution": "Transaction data from Dubai Land Department · Market data from Binayah database · Yields computed from DLD rent & sale registries"
+    "attribution": "Transaction data from Dubai Land Department · Market data from Binayah database · Yields computed from DLD rent & sale registries",
+    "developerHighlightsLabel": "DEVELOPER HIGHLIGHTS",
+    "developerHighlightsTitle": "Developer",
+    "developerHighlightsTitleItalic": "Highlights",
+    "devMostActive": "MOST ACTIVE",
+    "devFastestGrowing": "FASTEST GROWING",
+    "devMostOffPlan": "MOST OFF-PLAN",
+    "devBestYield": "BEST YIELD ENTRY",
+    "devTotalProjects": "Total projects in DB",
+    "devProjectCount": "Projects in portfolio",
+    "devOffPlanShare": "Off-plan share",
+    "devAvgStartingPrice": "Avg starting price",
+    "devColDeveloper": "Developer",
+    "devColProjects": "Projects",
+    "devColOffPlanShare": "Off-Plan %",
+    "devColAvgPrice": "Avg Starting Price",
+    "devColLatestLaunch": "Latest Launch"
   }
 }

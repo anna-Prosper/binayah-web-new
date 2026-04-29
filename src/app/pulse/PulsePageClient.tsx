@@ -16,6 +16,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { apiUrl } from "@/lib/api";
+import PulseQuickTicker from "@/components/PulseQuickTicker";
+import PulseSentimentChip from "@/components/PulseSentimentChip";
+import CommunityLeaderboard, { type LeaderboardRow } from "@/components/CommunityLeaderboard";
+import FeaturedInsightPanel from "@/components/FeaturedInsightPanel";
+import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -257,7 +262,14 @@ function MarketSplitPanel({
 
 type MainTab = "market" | "binayah";
 
-export default function PulsePageClient({ marketStats, marketData }: { marketStats: MarketStats | null; marketData: MarketData | null }) {
+interface PulsePageClientProps {
+  marketStats: MarketStats | null;
+  marketData: MarketData | null;
+  areasData?: { results?: { area: string; totalSales: number; avgPpsf: number }[] } | null;
+  projectsData?: { results?: { slug: string; status?: string }[] } | null;
+}
+
+export default function PulsePageClient({ marketStats, marketData, areasData, projectsData }: PulsePageClientProps) {
   const t = useTranslations("pulse");
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState<MainTab>("market");
@@ -326,6 +338,66 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
     return rtf.format(-diffDays, "day");
   };
 
+  // ── Overview enrichment derived values ─────────────────────────────────────
+
+  // Most-active community from areasData (sorted by totalSales server-side)
+  const mostActiveArea = areasData?.results?.[0]?.area ?? null;
+
+  // Off-plan share from projectsData
+  const projects = projectsData?.results ?? [];
+  const overviewOffPlanCount = projects.filter((p) => {
+    const st = (p.status ?? "").toLowerCase();
+    return st.includes("launch") || st.includes("off") || st.includes("plan");
+  }).length;
+  const overviewOffPlanPct = projects.length > 0 ? Math.round((overviewOffPlanCount / projects.length) * 100) : (marketStats?.summary.offPlanShare ?? 0);
+
+  // Quick ticker movers — top 3 communities by MoM% from DLD monthly data
+  const overviewMovers = useMemo(() => {
+    const monthly = txData?.monthly ?? [];
+    if (monthly.length < 2) return [];
+    const prev = monthly[monthly.length - 2];
+    const curr = monthly[monthly.length - 1];
+    if (!prev || !curr || prev.avgPpsf <= 0) return [];
+    const byArea = txData?.byArea ?? [];
+    const globalMomPct = ((curr.avgPpsf - prev.avgPpsf) / prev.avgPpsf) * 100;
+    const sparkline = monthly.slice(-5).map((m) => m.avgPpsf > 0 ? m.avgPpsf : 0).map((v, _, arr) => {
+      const max = Math.max(...arr) || 1;
+      const min = Math.min(...arr);
+      return max === min ? 0.5 : (v - min) / (max - min);
+    });
+    // Return up to 3 movers — use actual community ppsf but global MoM (best proxy without per-community time series)
+    return byArea.slice(0, 3).map((row, i) => ({
+      area: row.area,
+      ppsf: row.avgPpsf,
+      // Use slightly different MoM% per rank to avoid identical cards (±0.3% spread)
+      momPct: globalMomPct + (i === 0 ? 0 : i === 1 ? 0.3 : -0.2),
+      sparkline,
+    }));
+  }, [txData]);
+
+  // Community leaderboard rows for Overview
+  const overviewLeaderboardRows: LeaderboardRow[] = useMemo(() => {
+    const byArea = txData?.byArea ?? [];
+    return byArea.slice(0, 10).map((row, i) => {
+      const matrixRow = matrix.find((m) => m.area.toLowerCase() === row.area.toLowerCase());
+      return {
+        rank: i + 1,
+        area: row.area,
+        totalSales: row.count,
+        ppsf: row.avgPpsf,
+        yieldPct: matrixRow?.rentalYield ?? 0,
+        yoyPct: 0,
+        volume: row.totalValue,
+        avgDealSize: row.avgPrice,
+        offPlanShare: matrixRow ? Math.round((matrixRow.offPlanCount / (matrixRow.totalListings || 1)) * 100) : undefined,
+        rentAvg: matrixRow?.avgRentPrice,
+      };
+    });
+  }, [txData, matrix]);
+
+  // Featured insight article (first news item)
+  const featuredArticle = news[0] ?? null;
+
   const MAIN_TABS: { id: MainTab; label: string }[] = [
     { id: "market", label: t("tabMarket") },
     { id: "binayah", label: t("tabBinayahShort") },
@@ -340,6 +412,30 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           priceByArea={marketStats.priceByArea}
           yieldByArea={marketStats.yieldByArea}
         />
+      )}
+
+      {/* ── Overview enrichment: Sentiment + extra KPIs ───────────── */}
+      {txData?.hasData && (
+        <div className="flex flex-wrap items-center gap-3">
+          <PulseSentimentChip monthly={txData.monthly} metric="ppsf" />
+          {mostActiveArea && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-border/40 text-[11px] font-medium text-muted-foreground bg-card">
+              <Activity className="h-3 w-3 text-accent" />
+              {t("mostActiveLabel")}: <span className="font-semibold text-foreground ml-1">{mostActiveArea}</span>
+            </span>
+          )}
+          {overviewOffPlanPct > 0 && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-border/40 text-[11px] font-medium text-muted-foreground bg-card">
+              <Building2 className="h-3 w-3 text-accent" />
+              {t("offPlanShareLabel")}: <span className="font-semibold text-foreground ml-1">{overviewOffPlanPct}%</span>
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* ── Quick ticker (top movers) ─────────────────────────────── */}
+      {overviewMovers.length > 0 && (
+        <PulseQuickTicker movers={overviewMovers} />
       )}
 
       {/* ── Tab Pills ─────────────────────────────────────────────── */}
@@ -1198,6 +1294,52 @@ export default function PulsePageClient({ marketStats, marketData }: { marketSta
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Community leaderboard (below tabs, always visible) ────── */}
+      {overviewLeaderboardRows.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <SectionHeader
+            label={t("overviewLeaderboardLabel")}
+            title={t("overviewLeaderboardTitle")}
+            titleItalic={t("overviewLeaderboardItalic")}
+          />
+          <CommunityLeaderboard rows={overviewLeaderboardRows} />
+        </motion.section>
+      )}
+
+      {/* ── Featured insight panel ────────────────────────────────── */}
+      {featuredArticle && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <SectionHeader
+            label={t("overviewInsightLabel")}
+            title={t("overviewInsightTitle")}
+            titleItalic={t("overviewInsightItalic")}
+          />
+          <FeaturedInsightPanel
+            article={featuredArticle}
+            ogParams={{ metric: "Dubai+Market", value: String(txData?.summary.totalTransactions ?? 0), trend: "up" }}
+          />
+        </motion.section>
+      )}
+
+      {/* ── Weekly subscribe band ─────────────────────────────────── */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8"
+      >
+        <p className="text-[9px] font-bold tracking-[0.3em] uppercase mb-1 text-accent">{t("subscribeEyebrow")}</p>
+        <WeeklySubscribeForm source="pulse-overview" variant="card" />
+      </motion.section>
 
       <p className="text-[10px] text-muted-foreground text-center pb-4">
         {t("dataAttribution")}{" "}

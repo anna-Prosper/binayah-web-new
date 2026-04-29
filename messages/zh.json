@@ -1138,7 +1138,16 @@
     "colUnitsRera": "单元数（RERA）",
     "colAedSqftBuilding": "迪拉姆/平方英尺",
     "buildingsUpdatingTitle": "楼宇数据更新中",
-    "buildingsUpdatingSub": "数据即将更新，请稍后查看。"
+    "buildingsUpdatingSub": "数据即将更新，请稍后查看。",
+    "mostActiveLabel": "Most Active",
+    "offPlanShareLabel": "Off-Plan Share",
+    "overviewLeaderboardLabel": "COMMUNITY RANKINGS",
+    "overviewLeaderboardTitle": "Top Communities",
+    "overviewLeaderboardItalic": "by DLD Data",
+    "overviewInsightLabel": "FEATURED INSIGHT",
+    "overviewInsightTitle": "Market",
+    "overviewInsightItalic": "Insight",
+    "subscribeEyebrow": "STAY INFORMED"
   },
   "services": {
     "heroLabel": "服务领域",
@@ -2132,6 +2141,22 @@
     "pdfButton": "Save as PDF",
     "pdfTooltip": "PDF export is coming next week — Stage 3",
     "sentimentNote": "3-month MoM price trend",
-    "attribution": "Transaction data from Dubai Land Department · Market data from Binayah database · Yields computed from DLD rent & sale registries"
+    "attribution": "Transaction data from Dubai Land Department · Market data from Binayah database · Yields computed from DLD rent & sale registries",
+    "developerHighlightsLabel": "DEVELOPER HIGHLIGHTS",
+    "developerHighlightsTitle": "Developer",
+    "developerHighlightsTitleItalic": "Highlights",
+    "devMostActive": "MOST ACTIVE",
+    "devFastestGrowing": "FASTEST GROWING",
+    "devMostOffPlan": "MOST OFF-PLAN",
+    "devBestYield": "BEST YIELD ENTRY",
+    "devTotalProjects": "Total projects",
+    "devProjectCount": "Projects",
+    "devOffPlanShare": "Off-plan share",
+    "devAvgStartingPrice": "Avg starting price",
+    "devColDeveloper": "Developer",
+    "devColProjects": "Projects",
+    "devColOffPlanShare": "Off-Plan %",
+    "devColAvgPrice": "Avg Starting Price",
+    "devColLatestLaunch": "Latest Launch"
   }
 }

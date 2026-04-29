@@ -1,9 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import { useLocale } from "next-intl";
-import { Link } from "@/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { usePathname, Link } from "@/navigation";
 import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, Globe } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -29,21 +27,11 @@ export default function PulseEmirateNav() {
   const locale = useLocale();
   const pathname = usePathname();
 
-  // Normalise pathname — strip locale prefix e.g. /en/pulse/trending → /pulse/trending
-  const localePrefixes = ["/en", "/ar", "/zh", "/ru"];
-  let normPath = pathname;
-  for (const prefix of localePrefixes) {
-    if (normPath.startsWith(prefix + "/") || normPath === prefix) {
-      normPath = normPath.slice(prefix.length) || "/";
-      break;
-    }
-  }
-
   const isActive = (href: string) => {
     if (href === "/pulse") {
-      return normPath === "/pulse" || normPath === "/pulse/";
+      return pathname === "/pulse" || pathname === "/pulse/";
     }
-    return normPath.startsWith(href);
+    return pathname.startsWith(href);
   };
 
   return (
