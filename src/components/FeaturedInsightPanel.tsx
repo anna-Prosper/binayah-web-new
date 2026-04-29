@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ExternalLink, Share2, Copy, CheckCheck } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export interface InsightArticle {
   title: string;
@@ -38,15 +38,13 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
     year: "numeric",
   });
 
-  // Build share URL with OG params + UTM. The base origin is derived in a
-  // useEffect so SSR + first client render produce the same DOM (no hydration
-  // mismatch — same anti-pattern caught on CalculatorClient/TrendingClient).
-  const [originBase, setOriginBase] = useState("https://staging.binayahhub.com");
-  useEffect(() => {
-    if (typeof window !== "undefined") setOriginBase(window.location.origin);
-  }, []);
+  // Build share URL with OG params + UTM. article.url comes from the server
+  // (next-intl SSR) so it's hydration-safe — no need to read window.location
+  // at all. Earlier `typeof window !== 'undefined'` guard caused both a
+  // hydration mismatch AND, after a hot-fix attempt, a conditional-hook lint
+  // error (hooks placed after the !article early return). Resolved by removing
+  // the window read entirely.
   const buildShareUrl = (utmSource: string) => {
-    void originBase; // origin reserved for future absolute-URL share variants
     const params = new URLSearchParams({
       utm_source: utmSource,
       utm_medium: "share",
