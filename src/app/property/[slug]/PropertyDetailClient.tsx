@@ -649,9 +649,9 @@ export default function PropertyDetailClient({
               transition={{ delay: 0.4 }}
               className="mt-3 flex items-center gap-2"
             >
-              <div className="inline-flex items-center gap-2 bg-accent/8 border border-accent/25 text-accent rounded-full px-3.5 py-1.5">
-                <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
-                <span className="text-[11px] font-semibold">
+              <div className="inline-flex items-center gap-2.5 bg-accent/15 border border-accent/50 text-accent rounded-full px-4 py-2">
+                <Calendar className="h-4 w-4 flex-shrink-0" />
+                <span className="text-xs font-bold tracking-wide">
                   {isRent ? t("availableFrom") : t("moveInFrom")} {availableFrom}
                 </span>
               </div>
