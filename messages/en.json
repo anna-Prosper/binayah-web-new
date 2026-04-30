@@ -908,7 +908,9 @@
     "reasonGoldenVisa": "Golden Visa eligible",
     "reasonTaxFree": "Tax-free returns",
     "reasonCapitalAppreciation": "Strong capital appreciation",
-    "reasonWorldClassAmenities": "World-class amenities"
+    "reasonWorldClassAmenities": "World-class amenities",
+    "readMore": "Read more",
+    "readLess": "Show less"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",
@@ -999,7 +1001,12 @@
     "viewAllArrow": "View All ({count}) →",
     "emailLabel": "Email",
     "preferredContact": "Preferred Contact",
-    "approxUsd": "~USD {amount}K"
+    "approxUsd": "~USD {amount}K",
+    "testimonialsLabel": "TESTIMONIALS",
+    "whatClientsSay": "What Our Clients Say",
+    "propertyGuides": "Property Guides",
+    "propertyGuidesDesc": "Everything you need to know about renting or buying in Dubai",
+    "viewAllGuides": "View All Guides"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

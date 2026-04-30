@@ -908,7 +908,9 @@
     "reasonGoldenVisa": "مؤهل للإقامة الذهبية",
     "reasonTaxFree": "عوائد معفاة من الضرائب",
     "reasonCapitalAppreciation": "ارتفاع قوي في قيمة رأس المال",
-    "reasonWorldClassAmenities": "مرافق بمستوى عالمي"
+    "reasonWorldClassAmenities": "مرافق بمستوى عالمي",
+    "readMore": "اقرأ المزيد",
+    "readLess": "عرض أقل"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -999,7 +1001,12 @@
     "viewAllArrow": "عرض الكل ({count}) →",
     "emailLabel": "البريد الإلكتروني",
     "preferredContact": "طريقة التواصل المفضلة",
-    "approxUsd": "~USD {amount}K"
+    "approxUsd": "~USD {amount}K",
+    "testimonialsLabel": "آراء العملاء",
+    "whatClientsSay": "ماذا يقول عملاؤنا",
+    "propertyGuides": "أدلة العقارات",
+    "propertyGuidesDesc": "كل ما تحتاج معرفته عن الإيجار أو الشراء في دبي",
+    "viewAllGuides": "عرض جميع الأدلة"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

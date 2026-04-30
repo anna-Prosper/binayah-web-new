@@ -914,7 +914,9 @@
     "reasonGoldenVisa": "满足黄金签证条件",
     "reasonTaxFree": "收益免税",
     "reasonCapitalAppreciation": "资本增值潜力强劲",
-    "reasonWorldClassAmenities": "世界级配套"
+    "reasonWorldClassAmenities": "世界级配套",
+    "readMore": "阅读更多",
+    "readLess": "收起"
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",
@@ -1005,7 +1007,12 @@
     "viewAllArrow": "查看全部 ({count}) →",
     "emailLabel": "邮箱",
     "preferredContact": "偏好联系方式",
-    "approxUsd": "~USD {amount}K"
+    "approxUsd": "~USD {amount}K",
+    "testimonialsLabel": "客户评价",
+    "whatClientsSay": "客户怎么说",
+    "propertyGuides": "购房租房指南",
+    "propertyGuidesDesc": "在迪拜租房或买房需要了解的一切",
+    "viewAllGuides": "查看所有指南"
   },
   "communities": {
     "heroLabel": "探索迪拜",

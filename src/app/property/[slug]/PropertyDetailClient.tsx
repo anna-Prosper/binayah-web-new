@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight, X, Home, Check, Image as ImageIcon,
   Waves, Dumbbell, Car, Shield, Baby, Flame, TreePine, Store, Smartphone,
   Building2, Star, ChevronDown, Globe, ArrowRight, Zap, Wind,
-  Calendar, CheckCircle2,
+  Calendar, CheckCircle2, Compass, FileText, TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -464,8 +464,44 @@ export default function PropertyDetailClient({
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2.5 pointer-events-auto flex-shrink-0">
                   <div className="lg:text-right">
-                    <p className="text-white/60 text-[10px] uppercase tracking-widest font-semibold mb-0.5">{isRent ? t("perYear") : t("listedAt")}</p>
-                    <p className="text-3xl lg:text-4xl font-bold text-white">{formatPrice(listing.price, listing.currency, t("priceOnRequest"))}</p>
+                    <div className="flex items-center gap-2 lg:justify-end">
+                      <p className="text-white/60 text-[10px] uppercase tracking-widest font-semibold">
+                        {isRent ? t("perYear") : t("listedAt")}
+                      </p>
+                      {listing.price && (
+                        <div className="relative">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                            className="flex items-center gap-1 text-[10px] font-bold text-white/90 border border-white/30 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-md hover:bg-white/20 transition-colors"
+                          >
+                            {currency}
+                            <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                          </button>
+                          <AnimatePresence>
+                            {showCurrencyDropdown && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                                transition={{ duration: 0.15 }}
+                                className="absolute right-0 top-full mt-1.5 bg-card border border-border rounded-xl shadow-lg z-50 min-w-[80px] overflow-hidden"
+                              >
+                                {(["AED", "USD"] as const).map((c) => (
+                                  <button
+                                    key={c}
+                                    onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                                    className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
+                                  >
+                                    {c}
+                                  </button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</p>
                   </div>
                   {allImages.length > 1 && (
                     <div className="hidden lg:flex gap-2">
@@ -706,9 +742,43 @@ export default function PropertyDetailClient({
                 className="bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg">
                 <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
-                  <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {t("bookConsultation")}
-                  </p>
+                  <div className="flex items-center gap-2 mb-1 relative z-10">
+                    <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold">
+                      {t("bookConsultation")}
+                    </p>
+                    {listing.price && (
+                      <div className="relative">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                          className="flex items-center gap-1 text-[10px] font-bold text-white/90 border border-white/30 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-md hover:bg-white/20 transition-colors"
+                        >
+                          {currency}
+                          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                        </button>
+                        <AnimatePresence>
+                          {showCurrencyDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute right-0 top-full mt-1.5 bg-card border border-border rounded-xl shadow-lg z-50 min-w-[80px] overflow-hidden"
+                            >
+                              {(["AED", "USD"] as const).map((c) => (
+                                <button
+                                  key={c}
+                                  onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                                  className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
+                                >
+                                  {c}
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                  </div>
                   <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
                   {currency === "AED" && listing.price && (
                     <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
@@ -940,9 +1010,18 @@ export default function PropertyDetailClient({
               </div>
               <h2 className="text-2xl font-bold text-foreground">{t("similarProperties")}</h2>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <motion.div
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+            >
               {similarListings.map((l, i) => (
-                <motion.div key={l._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
+                <motion.div
+                  key={l._id}
+                  variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } } }}
+                >
                   <Link href={`/property/${l.slug}`} className="group block bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-accent/25">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <img src={l.featuredImage || l.images?.[0] || "/assets/amenities-placeholder.webp"} alt={l.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
@@ -971,10 +1050,137 @@ export default function PropertyDetailClient({
                   </Link>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
+
+      {/* ── WHAT BUYERS/RENTERS SAY ──────────────────────────────────────── */}
+      {(() => {
+        const testimonials = isRent
+          ? [
+              { name: "Aisha M.", role: "Tenant in Dubai Marina", rating: 5, text: "The whole rental process took less than a week — viewing, paperwork, Ejari registration. Binayah's team made what could have been stressful incredibly smooth." },
+              { name: "Ravi K.", role: "Tenant in JVC", rating: 5, text: "I was relocating from London and Binayah arranged a virtual tour, then handled everything before I even arrived. Walked into a fully furnished apartment ready to move in." },
+              { name: "Sophie L.", role: "Tenant in Downtown", rating: 4, text: "Honest about the building's strengths and quirks. No hidden fees, no surprises. The post-move-in support has been excellent — they actually pick up when I call." },
+            ]
+          : [
+              { name: "Ahmed R.", role: "Buyer · 2 BR Apartment", rating: 5, text: "Exceptional knowledge of the Dubai market and the legal process. Binayah handled DLD registration, mortgage coordination, and snagging — I just signed the papers." },
+              { name: "Sarah L.", role: "Buyer · 3 BR Villa", rating: 5, text: "We saw twelve properties before settling on this one. Our agent never pushed, never rushed — just gave us honest assessments and let us decide. That trust is rare." },
+              { name: "James K.", role: "Investor · 1 BR Studio", rating: 4, text: "Strong rental yield analysis and realistic ROI projections — none of the inflated numbers other agencies threw at me. Bought sight-unseen based on their report." },
+            ];
+        return (
+          <section className="py-12 sm:py-16 border-t border-border/50">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="flex items-center gap-2.5 mb-6">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(212,168,71,0.12)" }}>
+                  <MessageCircle className="h-4 w-4" style={{ color: "#D4A847" }} />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>
+                    {t("testimonialsLabel")}
+                  </p>
+                  <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatClientsSay")}</h2>
+                </div>
+              </div>
+              <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
+                {testimonials.map((review, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 }}
+                    className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
+                  >
+                    <div className="flex items-center gap-0.5 mb-3">
+                      {Array.from({ length: 5 }).map((_, si) => (
+                        <Star key={si} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${si < review.rating ? "fill-[#D4A847] text-[#D4A847]" : "text-border"}`} />
+                      ))}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
+                    <div className="flex items-center gap-3 pt-3 border-t border-border/50">
+                      <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center" style={{ border: "2px solid rgba(212,168,71,0.2)" }}>
+                        <span className="text-xs font-bold text-accent">{review.name.charAt(0)}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-foreground">{review.name}</p>
+                        <p className="text-[11px] text-muted-foreground">{review.role}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ── PROPERTY GUIDES ──────────────────────────────────────────────── */}
+      {(() => {
+        const guides = isRent
+          ? [
+              { title: t("guideRentTenantRightsTitle"), desc: t("guideRentTenantRightsDesc"), icon: Shield, href: "/guides" },
+              { title: t("guideRentEjariTitle"), desc: t("guideRentEjariDesc"), icon: FileText, href: "/guides" },
+              { title: t("guideRentDewaTitle"), desc: t("guideRentDewaDesc"), icon: Zap, href: "/guides" },
+              { title: t("guideRentRentIncreaseTitle"), desc: t("guideRentRentIncreaseDesc"), icon: TrendingUp, href: "/guides" },
+              { title: t("guideRentMovingTitle"), desc: t("guideRentMovingDesc"), icon: Home, href: "/guides" },
+              { title: t("guideRentCommunityTitle"), desc: t("guideRentCommunityDesc"), icon: Compass, href: "/guides" },
+            ]
+          : [
+              { title: t("guideSaleHowToBuyTitle"), desc: t("guideSaleHowToBuyDesc"), icon: Home, href: "/guides" },
+              { title: t("guideSaleGoldenVisaTitle"), desc: t("guideSaleGoldenVisaDesc"), icon: Shield, href: "/guides" },
+              { title: t("guideSaleDldTitle"), desc: t("guideSaleDldDesc"), icon: FileText, href: "/guides" },
+              { title: t("guideSaleMortgageTitle"), desc: t("guideSaleMortgageDesc"), icon: TrendingUp, href: "/guides" },
+              { title: t("guideSaleOffPlanTitle"), desc: t("guideSaleOffPlanDesc"), icon: Compass, href: "/guides" },
+              { title: t("guideSaleFirstTimerTitle"), desc: t("guideSaleFirstTimerDesc"), icon: Star, href: "/guides" },
+            ];
+        return (
+          <section className="py-12 sm:py-16 border-t border-border/50">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                    <FileText className="h-4 w-4 text-accent" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("propertyGuides")}</h2>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{t("propertyGuidesDesc")}</p>
+                  </div>
+                </div>
+                <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
+                  {t("viewAll")} <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 items-stretch">
+                {guides.map((guide, i) => (
+                  <motion.a
+                    key={i}
+                    href={guide.href}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/[0.02] transition-all group h-full"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
+                      <guide.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{guide.title}</p>
+                      <p className="hidden sm:block text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{guide.desc}</p>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+              <div className="sm:hidden text-center mt-3">
+                <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
+                  {t("viewAllGuides")} <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ── LIGHTBOX ─────────────────────────────────────────────────────── */}
       <AnimatePresence>

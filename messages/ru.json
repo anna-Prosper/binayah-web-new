@@ -908,7 +908,9 @@
     "reasonGoldenVisa": "Право на Golden Visa",
     "reasonTaxFree": "Доход без налогов",
     "reasonCapitalAppreciation": "Высокий потенциал роста стоимости",
-    "reasonWorldClassAmenities": "Инфраструктура мирового класса"
+    "reasonWorldClassAmenities": "Инфраструктура мирового класса",
+    "readMore": "Читать далее",
+    "readLess": "Свернуть"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
@@ -999,7 +1001,12 @@
     "viewAllArrow": "Все фото ({count}) →",
     "emailLabel": "Email",
     "preferredContact": "Способ связи",
-    "approxUsd": "~USD {amount}K"
+    "approxUsd": "~USD {amount}K",
+    "testimonialsLabel": "ОТЗЫВЫ",
+    "whatClientsSay": "Что говорят наши клиенты",
+    "propertyGuides": "Руководства",
+    "propertyGuidesDesc": "Всё, что нужно знать об аренде и покупке недвижимости в Дубае",
+    "viewAllGuides": "Все руководства"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",
