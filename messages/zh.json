@@ -1225,7 +1225,13 @@
     "overviewInsightLabel": "FEATURED INSIGHT",
     "overviewInsightTitle": "Market",
     "overviewInsightItalic": "Insight",
-    "subscribeEyebrow": "STAY INFORMED"
+    "subscribeEyebrow": "STAY INFORMED",
+    "officialSource": "Official source",
+    "dldRegistry": "DLD Registry",
+    "dldRegistrySub": "Dubai Land Department transactions",
+    "latestMonth": "Latest month",
+    "ppsfMomentum": "PPSF momentum",
+    "leadingArea": "Leading area"
   },
   "services": {
     "heroLabel": "服务领域",
@@ -1873,6 +1879,12 @@
     "grossYield": "毛收益率",
     "txVolume": "交易量",
     "investScore": "投资评分",
+    "avgDealSize": "平均成交金额",
+    "rentContracts": "租赁合同",
+    "buildingCount": "楼宇数量",
+    "registeredUnits": "登记单元",
+    "dldCommunitySource": "Community metrics use DLD area aggregates",
+    "dldYieldNote": "* Yield is calculated from DLD sale and rent contracts; low-sample areas are marked.",
     "totalProjects": "项目总数",
     "offPlanProjects": "期房项目",
     "communitiesActive": "活跃社区",

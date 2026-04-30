@@ -1219,7 +1219,13 @@
     "overviewInsightLabel": "FEATURED INSIGHT",
     "overviewInsightTitle": "Market",
     "overviewInsightItalic": "Insight",
-    "subscribeEyebrow": "STAY INFORMED"
+    "subscribeEyebrow": "STAY INFORMED",
+    "officialSource": "Official source",
+    "dldRegistry": "DLD Registry",
+    "dldRegistrySub": "Dubai Land Department transactions",
+    "latestMonth": "Latest month",
+    "ppsfMomentum": "PPSF momentum",
+    "leadingArea": "Leading area"
   },
   "services": {
     "heroLabel": "What We Offer",
@@ -1867,6 +1873,12 @@
     "grossYield": "Gross Yield",
     "txVolume": "Transaction Volume",
     "investScore": "Investment Score",
+    "avgDealSize": "Avg Deal Size",
+    "rentContracts": "Rent Contracts",
+    "buildingCount": "Buildings",
+    "registeredUnits": "Registered Units",
+    "dldCommunitySource": "Community metrics use DLD area aggregates",
+    "dldYieldNote": "* Yield is calculated from DLD sale and rent contracts; low-sample areas are marked.",
     "totalProjects": "Total Projects",
     "offPlanProjects": "Off-Plan Projects",
     "communitiesActive": "Communities Active",
