@@ -932,8 +932,58 @@ export default function PropertyDetailClient({
               )}
 
               {/* ── Enquiry form — below tab content (like project template) ── */}
+              {/* Mobile-only compact enquiry */}
+              <div className="sm:hidden mt-6 space-y-0">
+                <div className="rounded-2xl rounded-b-none overflow-hidden shadow-lg">
+                  <div className="relative p-5 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                    <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
+                    <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">{t("bookConsultation")}</p>
+                    <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
+                    {currency === "AED" && listing.price && (
+                      <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
+                    )}
+                  </div>
+                  <div className="px-4 pb-2 pt-2 bg-card border-x border-border/50">
+                    <p className="text-[11px] text-muted-foreground text-center">
+                      {t("speakToExperts")} ↓
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-card rounded-2xl rounded-t-none border border-border/50 border-t-0 p-4">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{t("enquireLabel")}</p>
+                  {enquirySubmitted ? (
+                    <div className="py-4 text-center space-y-2">
+                      <CheckCircle2 className="h-6 w-6 text-emerald-500 mx-auto" />
+                      <p className="text-sm font-bold text-foreground">{t("thankYouTitle")}</p>
+                      <p className="text-xs text-muted-foreground">{t("teamReply")}</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleEnquirySubmit} className="space-y-3">
+                      <input type="text" required value={enquiryForm.name} onChange={e => setEnquiryForm(f => ({...f, name: e.target.value}))}
+                        className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
+                        placeholder={t("fullName")} />
+                      <div className="flex gap-2">
+                        <select value={enquiryForm.countryCode} onChange={e => setEnquiryForm(f => ({...f, countryCode: e.target.value}))}
+                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground outline-none appearance-none">
+                          <option value="+971">+971</option><option value="+44">+44</option><option value="+1">+1</option><option value="+91">+91</option>
+                        </select>
+                        <input type="tel" required value={enquiryForm.phone} onChange={e => setEnquiryForm(f => ({...f, phone: e.target.value}))}
+                          className="flex-1 h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
+                          placeholder="50 123 4567" />
+                      </div>
+                      <button type="submit" className="w-full h-12 rounded-full text-white font-bold text-sm"
+                        style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                        {t("sendQuickEnquiry")}
+                      </button>
+                      <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
+                    </form>
+                  )}
+                </div>
+              </div>
+
+              {/* Desktop enquiry form */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                className="mt-8 bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                className="hidden sm:block mt-8 bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
                 <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-accent/15 flex items-center justify-center">
                     <Mail className="h-4 w-4 text-accent" />
@@ -1384,8 +1434,26 @@ export default function PropertyDetailClient({
         </a>
       </div>
 
+      {/* ── STICKY MOBILE CTA BAR ─────────────────────────────────────── */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all">
+            <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
+          </a>
+          <a href="tel:+97154998811"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all"
+            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+            <Phone className="h-4 w-4" /> {t("callNow")}
+          </a>
+        </div>
+      </div>
+      <div className="h-20 lg:hidden" />
+
       <Footer />
-      <WhatsAppButton />
+      <div className="hidden lg:block">
+        <WhatsAppButton />
+      </div>
       <PropertyComparison />
     </div>
   );
