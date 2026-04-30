@@ -275,14 +275,14 @@ function StatCard({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="bg-card rounded-2xl p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 flex flex-col justify-center min-h-[80px]"
+      className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 flex flex-col justify-center min-h-[80px] sm:min-h-[92px]"
     >
-      <div className="flex items-center gap-2 mb-1.5">
+      <div className="flex items-center gap-2 mb-2">
         <Icon className="h-4 w-4 text-accent" />
         <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{label}</p>
       </div>
-      <p className="text-lg font-bold text-foreground leading-tight">{value}</p>
-      {sub && <p className="text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
+      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
+      {sub && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
     </motion.div>
   );
 }
@@ -549,50 +549,52 @@ export default function PropertyDetailClient({
           </div>
           {listing.price && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="mt-2.5 bg-card rounded-2xl p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{isRent ? t("perYear") : t("listedAt")}</p>
+              className="mt-2.5 bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow min-h-[80px] sm:min-h-[92px] flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-2">
+                <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{isRent ? t("perYear") : t("listedAt")}</p>
+                <div className="ml-auto relative">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                    className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
+                  >
+                    {currency} <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {showCurrencyDropdown && (
+                      <motion.div initial={{ opacity: 0, y: -4, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.95 }} transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl">
+                        {(["AED", "USD"] as const).map((c) => (
+                          <button key={c} onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                            className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}>
+                            {c}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <p className="text-2xl font-bold text-foreground">{formattedPrice}</p>
-                {currency === "AED" && <p className="text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
               </div>
-              <div className="relative">
-                <button
-                  onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
-                  className="flex items-center gap-1.5 text-sm font-bold text-foreground border border-border bg-muted/50 px-3 py-1.5 rounded-xl hover:bg-muted transition-colors"
-                >
-                  {currency} <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showCurrencyDropdown ? "rotate-180" : ""}`} />
-                </button>
-                <AnimatePresence>
-                  {showCurrencyDropdown && (
-                    <motion.div initial={{ opacity: 0, y: -4, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.95 }} transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-1.5 bg-card border border-border rounded-xl shadow-lg z-50 min-w-[80px] overflow-hidden">
-                      {(["AED", "USD"] as const).map((c) => (
-                        <button key={c} onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
-                          className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}>
-                          {c}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{formattedPrice}</p>
+              {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
             </motion.div>
           )}
 
           {/* Tab bar */}
-          <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1">
+          <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1 sm:gap-1.5 border border-border/50">
             {(["overview", "location", "faq"] as const).map((tab) => (
               <button
                 key={tab}
-                className={activeTab === tab
-                  ? "flex-1 py-2.5 rounded-xl text-sm font-bold text-white shadow-sm"
-                  : "flex-1 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"}
-                style={activeTab === tab ? { background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" } : {}}
                 onClick={() => setActiveTab(tab)}
+                className={`flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                  activeTab === tab
+                    ? "text-white shadow-md"
+                    : "text-muted-foreground hover:text-foreground hover:bg-card/50"
+                }`}
+                style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
               >
-                {tab === "overview" ? t("overviewTab") : tab === "location" ? t("locationTab") : t("faqTab")}
+                <span className="relative z-10 uppercase">
+                  {tab === "overview" ? t("overviewTab") : tab === "location" ? t("locationTab") : t("faqTab")}
+                </span>
               </button>
             ))}
           </div>
