@@ -336,6 +336,7 @@ export default function PropertyDetailClient({
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
+  const [descExpanded, setDescExpanded] = useState(false);
   const [enquiryForm, setEnquiryForm] = useState({
     name: "",
     phone: "",
@@ -502,9 +503,12 @@ export default function PropertyDetailClient({
                       )}
                     </div>
                     <p className="text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</p>
+                    {currency === "AED" && listing.price && (
+                      <p className="text-white/60 text-xs lg:text-right">~USD {Math.round(listing.price * USD_RATE / 1000)}K</p>
+                    )}
                   </div>
                   {allImages.length > 1 && (
-                    <div className="hidden lg:flex gap-2">
+                    <div className="hidden lg:flex gap-2 items-end">
                       {allImages.slice(0, 4).map((img, i) => (
                         <button key={i} onClick={() => setCurrentImage(i)} className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${i === currentImage ? "border-accent shadow-lg shadow-accent/20 scale-110" : "border-white/20 opacity-70 hover:opacity-100 hover:border-white/50"}`}>
                           <img src={img} alt="" className="w-full h-full object-cover" />
@@ -522,6 +526,19 @@ export default function PropertyDetailClient({
           </div>
         </div>
       </section>
+
+      {/* ── MOBILE GALLERY STRIP ─────────────────────────────────────────── */}
+      {allImages.length > 1 && (
+        <div className="sm:hidden px-4 py-3 flex gap-2 items-center">
+          <button
+            onClick={() => setLightboxOpen(true)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+          >
+            <ImageIcon className="h-3.5 w-3.5" /> {t("gallery")} ({allImages.length})
+          </button>
+        </div>
+      )}
 
       {/* ── QUICK STATS STRIP ────────────────────────────────────────────── */}
       <section className="py-4 sm:py-5">
@@ -562,22 +579,40 @@ export default function PropertyDetailClient({
               {activeTab === "overview" && (
                 <>
                   {/* Description */}
-                  {listing.cleanDescription && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
-                      <div className="mb-5">
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className="w-4 h-px bg-accent" />
-                          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("overviewLabel")}</p>
+                  {listing.cleanDescription && (() => {
+                    const sentences = listing.cleanDescription.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+                    const paragraphs: string[] = [];
+                    for (let i = 0; i < sentences.length; i += 3) paragraphs.push(sentences.slice(i, i + 3).join(" "));
+                    if (paragraphs.length === 0) return null;
+                    const hasMore = paragraphs.length > 1;
+                    return (
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
+                        <div className="mb-5">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-4 h-px bg-accent" />
+                            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("overviewLabel")}</p>
+                          </div>
+                          <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
                         </div>
-                        <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
-                      </div>
-                      <div className="text-muted-foreground leading-relaxed space-y-3 text-sm">
-                        {listing.cleanDescription.split(/\n\n|\. (?=[A-Z])/).filter(Boolean).map((para, i) => (
-                          <p key={i}>{para.trim().endsWith(".") ? para.trim() : `${para.trim()}.`}</p>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
+                        <div className="space-y-3">
+                          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
+                          {hasMore && descExpanded && paragraphs.slice(1).map((para, i) => (
+                            <p key={i} className="text-sm sm:text-base text-muted-foreground leading-relaxed">{para}</p>
+                          ))}
+                          {hasMore && (
+                            <button
+                              type="button"
+                              onClick={() => setDescExpanded(v => !v)}
+                              className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors mt-1"
+                            >
+                              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${descExpanded ? "rotate-180" : ""}`} />
+                              {descExpanded ? t("readLess") : t("readMore")}
+                            </button>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
 
                   {/* Key Highlights */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mb-10">
@@ -673,188 +708,161 @@ export default function PropertyDetailClient({
 
               {/* ═══ LOCATION TAB ═══ */}
               {activeTab === "location" && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="space-y-8">
-                  <div>
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                        <MapPin className="h-4 w-4 text-accent" />
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="space-y-6">
+                  {/* Location info card */}
+                  <div className="bg-card rounded-2xl border border-border/50 p-5 sm:p-6">
+                    <div className="flex items-center gap-2.5 mb-4">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <MapPin className="h-4 w-4 text-primary" />
                       </div>
-                      <h2 className="text-xl font-bold text-foreground">{t("locationNearby")}</h2>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
                     </div>
-                    {hasMap && (
-                      <div className="rounded-2xl overflow-hidden border border-border/50 aspect-video mb-6">
-                        <iframe
-                          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`}
-                          width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                        />
+                    {/* Community / City / Country cards */}
+                    <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("communityLabel")}</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">{listing.community || "—"}</p>
                       </div>
-                    )}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {nearbyItems.map((item, i) => {
-                        const NIcon = nearbyIcon(item.type);
-                        return (
-                          <div key={i} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50">
-                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                              <NIcon className="h-4 w-4 text-accent" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-foreground truncate">{item.name}</p>
-                              <p className="text-xs text-muted-foreground">{item.distance}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("cityLabel")}</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">{listing.city || "Dubai"}</p>
+                      </div>
+                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
+                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("countryLabel")}</p>
+                        <p className="text-xs sm:text-base font-bold text-foreground">UAE</p>
+                      </div>
+                    </div>
+                    {/* Map */}
+                    <div className="rounded-xl overflow-hidden mb-4 border border-border/30" style={{ aspectRatio: "16/9" }}>
+                      <iframe
+                        src={hasMap
+                          ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`
+                          : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`}
+                        className="w-full h-full border-0"
+                        allowFullScreen
+                        loading="lazy"
+                        title="Location Map"
+                      />
                     </div>
                   </div>
+
+                  {/* Nearby attractions */}
+                  {nearbyItems.length > 0 && (
+                    <div className="bg-card rounded-2xl border border-border/50 p-5 sm:p-6">
+                      <div className="flex items-center gap-2.5 mb-4">
+                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                          <Compass className="h-4 w-4 text-accent" />
+                        </div>
+                        <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("nearbyAttractions")}</h2>
+                      </div>
+                      <div className="space-y-2 sm:space-y-3">
+                        {nearbyItems.map((item, i) => {
+                          const NIcon = nearbyIcon(item.type);
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -8 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.06 }}
+                              className="flex items-center justify-between p-3 sm:p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
+                            >
+                              <div className="flex items-center gap-2.5 sm:gap-3.5">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
+                                  <NIcon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
+                                </div>
+                                <div>
+                                  <p className="text-xs sm:text-sm font-semibold text-foreground">{item.name}</p>
+                                  <p className="text-[10px] sm:text-xs text-muted-foreground">{item.type}</p>
+                                </div>
+                              </div>
+                              {item.distance && (
+                                <span className="text-[10px] sm:text-xs font-bold text-primary bg-primary/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg">{item.distance}</span>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
               {/* ═══ FAQ TAB ═══ */}
               {activeTab === "faq" && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-                  <div className="mb-5">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-4 h-px bg-accent" />
-                      <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("faqLabel")}</p>
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="space-y-4 sm:space-y-8">
+                  <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                    <div className="flex items-center gap-2.5 p-4 sm:p-6 pb-0 mb-3 sm:mb-4">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
+                      </div>
+                      <h2 className="text-base sm:text-xl font-bold text-foreground">{t("faqTitle")}</h2>
                     </div>
-                    <h2 className="text-xl font-bold text-foreground">{t("faqTitle")}</h2>
-                  </div>
-                  <div className="bg-card rounded-2xl border border-border/50 px-5">
-                    {faqs.map((faq, i) => (
-                      <FaqAccordionItem
-                        key={i}
-                        faq={faq}
-                        index={i}
-                        open={openFaq === i}
-                        onToggle={(idx) => setOpenFaq((prev) => prev === idx ? null : idx)}
-                      />
-                    ))}
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
+                      {faqs.map((faq, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.05 }}
+                          className={`rounded-xl overflow-hidden transition-colors ${openFaq === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
+                        >
+                          <button
+                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                            className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
+                          >
+                            <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
+                            <ChevronDown className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
+                          </button>
+                          <AnimatePresence>
+                            {openFaq === i && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25, ease: "easeOut" as const }}
+                              >
+                                <div className="px-3 sm:px-5 pb-3 sm:pb-5">
+                                  <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
+                                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               )}
-            </div>
 
-            {/* ── Right sidebar ────────────────────────────────────────── */}
-            <div className="lg:sticky lg:top-24 space-y-4 self-start">
-
-              {/* CTA Card */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                className="bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg">
-                <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" }}>
-                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
-                  <div className="flex items-center gap-2 mb-1 relative z-10">
-                    <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold">
-                      {t("bookConsultation")}
-                    </p>
-                    {listing.price && (
-                      <div className="relative">
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
-                          className="flex items-center gap-1 text-[10px] font-bold text-white/90 border border-white/30 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-md hover:bg-white/20 transition-colors"
-                        >
-                          {currency}
-                          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
-                        </button>
-                        <AnimatePresence>
-                          {showCurrencyDropdown && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -4, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: -4, scale: 0.95 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute right-0 top-full mt-1.5 bg-card border border-border rounded-xl shadow-lg z-50 min-w-[80px] overflow-hidden"
-                            >
-                              {(["AED", "USD"] as const).map((c) => (
-                                <button
-                                  key={c}
-                                  onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
-                                  className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
-                                >
-                                  {c}
-                                </button>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
-                  {currency === "AED" && listing.price && (
-                    <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
-                  )}
-                  {listing.price && (
-                    <p className="text-white/50 text-sm mt-1.5 relative z-10">{listing.price.toLocaleString()} {"AED"}</p>
-                  )}
-                </div>
-                <div className="p-5 space-y-3">
-                  <p className="text-sm text-muted-foreground mb-1">{t("speakToExperts")}</p>
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
-                    style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
-                    <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
-                  </a>
-                  <a href="tel:+97154998811"
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
-                    style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
-                    <Phone className="h-4 w-4" /> {t("callNow")}
-                  </a>
-                  <a href="#live-chat"
-                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white hover:border-transparent transition-all">
-                    <MessageCircle className="h-4 w-4" /> {t("liveChat")}
-                  </a>
-                </div>
-              </motion.div>
-
-              {/* Property Details card */}
+              {/* ── Enquiry form — below tab content (like project template) ── */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                className="bg-card rounded-2xl border border-border/50 p-5">
-                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">
-                  {t("propertyDetailsLabel")}
-                </h3>
-                <div className="divide-y divide-border/40">
-                  {[
-                    { label: t("community"), value: listing.community },
-                    { label: t("city"), value: listing.city },
-                    { label: t("property"), value: listing.propertyType ? formatPropertyTypeLabel(listing.propertyType, listing.propertyType) : null },
-                    { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
-                    { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
-                    { label: t("ownershipLabel"), value: t("allNationalities") },
-                  ].filter((f): f is { label: string; value: string } => !!f.value).map(({ label, value }) => (
-                    <div key={label} className="flex justify-between items-center py-3 text-sm">
-                      <span className="text-muted-foreground">{label}</span>
-                      <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Enquiry form card */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6">
-                <div className="flex items-center gap-2.5 mb-5">
-                  <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                className="mt-8 bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
+                <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-accent/15 flex items-center justify-center">
                     <Mail className="h-4 w-4 text-accent" />
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("getInTouch")}</p>
-                    <h2 className="text-base font-bold text-foreground">{t("enquireLabel")}</h2>
+                    <h2 className="text-base sm:text-xl font-bold text-foreground">{t("enquireLabel")}</h2>
                     <p className="text-[11px] text-muted-foreground mt-0.5">{t("enquireDesc")}</p>
                   </div>
                 </div>
 
                 {enquirySubmitted ? (
-                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="py-6 text-center space-y-4">
-                    <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="h-7 w-7 text-emerald-500" />
-                    </div>
-                    <div>
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="py-8 space-y-6">
+                    <div className="text-center">
+                      <div className="w-14 h-14 rounded-full bg-emerald-500/15 flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle2 className="h-7 w-7 text-emerald-500" />
+                      </div>
                       <h3 className="text-lg font-bold text-foreground mb-1">{t("thankYouTitle")}</h3>
                       <p className="text-sm text-muted-foreground">{t("thankYouDesc")}</p>
                     </div>
                     <button
                       onClick={() => { setEnquirySubmitted(false); setEnquiryForm({ name: "", phone: "", countryCode: "+971", message: "", email: "" }); }}
-                      className="text-xs font-semibold text-primary hover:underline"
+                      className="text-xs font-semibold text-primary hover:underline block mx-auto"
                     >
                       {t("submitAnotherEnquiry")}
                     </button>
@@ -921,7 +929,7 @@ export default function PropertyDetailClient({
                           <div>
                             <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("messageLabel")}</label>
                             <textarea
-                              rows={2}
+                              rows={3}
                               value={enquiryForm.message}
                               onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
                               className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
@@ -975,25 +983,123 @@ export default function PropertyDetailClient({
                 )}
               </motion.div>
 
-              {/* Schedule Video Consultation */}
+              {/* Schedule Video Consultation — below enquiry form */}
               <a
                 href="#schedule-call"
-                className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all group hover:shadow-lg hover:scale-[1.01]"
+                className="mt-4 block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-lg hover:shadow-primary/15 hover:scale-[1.01]"
               >
-                <div className="rounded-[14px] bg-card/95 p-4 sm:p-5">
+                <div className="rounded-[14px] bg-card/95 backdrop-blur-xl p-4 sm:p-5">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/15 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/15 flex items-center justify-center flex-shrink-0 group-hover:from-primary/20 transition-all">
                       <Calendar className="h-4 w-4 text-primary" />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-bold text-primary">{t("scheduleCall")}</h3>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{t("scheduleCallDesc")}</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{t("scheduleCallDesc")}</p>
                     </div>
-                    <ArrowRight className="h-4 w-4 text-primary/50 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="h-4 w-4 text-primary/40 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                   </div>
                 </div>
               </a>
+            </div>
 
+            {/* ── Right sidebar — sticky CTA + property details only ──────── */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-6 space-y-5">
+
+              {/* CTA Card */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }}
+                className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden shadow-lg shadow-foreground/5">
+                <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg,#0B3D2E,#1A7A5A)" }}>
+                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
+                  <div className="flex items-center gap-2 mb-1 relative z-10">
+                    <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold">
+                      {t("bookConsultation")}
+                    </p>
+                    {listing.price && (
+                      <div className="relative">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                          className="flex items-center gap-1 text-[10px] font-bold text-white/90 border border-white/30 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-md hover:bg-white/20 transition-colors"
+                        >
+                          {currency}
+                          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                        </button>
+                        <AnimatePresence>
+                          {showCurrencyDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute right-0 top-full mt-1.5 bg-card border border-border rounded-xl shadow-lg z-50 min-w-[80px] overflow-hidden"
+                            >
+                              {(["AED", "USD"] as const).map((c) => (
+                                <button
+                                  key={c}
+                                  onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                                  className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
+                                >
+                                  {c}
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
+                  {currency === "AED" && listing.price && (
+                    <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
+                  )}
+                  {listing.price && (
+                    <p className="text-white/50 text-sm mt-1.5 relative z-10">{listing.price.toLocaleString()} AED</p>
+                  )}
+                </div>
+                <div className="hidden sm:block p-5 space-y-3">
+                  <p className="text-sm text-muted-foreground mb-1">{t("speakToExperts")}</p>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
+                    <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
+                  </a>
+                  <a href="tel:+97154998811"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
+                    <Phone className="h-4 w-4" /> {t("callNow")}
+                  </a>
+                  <a href="#live-chat"
+                    className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white hover:border-transparent transition-all">
+                    <MessageCircle className="h-4 w-4" /> {t("liveChat")}
+                  </a>
+                </div>
+              </motion.div>
+
+              {/* Property Details card */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }}
+                className="hidden sm:block bg-card rounded-2xl border border-border/50 p-5">
+                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">
+                  {t("propertyDetailsLabel")}
+                </h3>
+                <div className="divide-y divide-border/40">
+                  {[
+                    { label: t("community"), value: listing.community },
+                    { label: t("city"), value: listing.city },
+                    { label: t("property"), value: listing.propertyType ? formatPropertyTypeLabel(listing.propertyType, listing.propertyType) : null },
+                    { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
+                    { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
+                    { label: t("ownershipLabel"), value: t("allNationalities") },
+                  ].filter((f): f is { label: string; value: string } => !!f.value).map(({ label, value }) => (
+                    <div key={label} className="flex justify-between items-center py-3 text-sm">
+                      <span className="text-muted-foreground">{label}</span>
+                      <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              </div>
             </div>
           </div>
         </div>

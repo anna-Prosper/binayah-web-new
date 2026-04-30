@@ -1006,7 +1006,9 @@
     "whatClientsSay": "What Our Clients Say",
     "propertyGuides": "Property Guides",
     "propertyGuidesDesc": "Everything you need to know about renting or buying in Dubai",
-    "viewAllGuides": "View All Guides"
+    "viewAllGuides": "View All Guides",
+    "readMore": "Read more",
+    "readLess": "Show less"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

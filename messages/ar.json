@@ -1006,7 +1006,9 @@
     "whatClientsSay": "ماذا يقول عملاؤنا",
     "propertyGuides": "أدلة العقارات",
     "propertyGuidesDesc": "كل ما تحتاج معرفته عن الإيجار أو الشراء في دبي",
-    "viewAllGuides": "عرض جميع الأدلة"
+    "viewAllGuides": "عرض جميع الأدلة",
+    "readMore": "اقرأ المزيد",
+    "readLess": "عرض أقل"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

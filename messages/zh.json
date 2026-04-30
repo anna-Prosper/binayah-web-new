@@ -1012,7 +1012,9 @@
     "whatClientsSay": "客户怎么说",
     "propertyGuides": "购房租房指南",
     "propertyGuidesDesc": "在迪拜租房或买房需要了解的一切",
-    "viewAllGuides": "查看所有指南"
+    "viewAllGuides": "查看所有指南",
+    "readMore": "阅读更多",
+    "readLess": "收起"
   },
   "communities": {
     "heroLabel": "探索迪拜",

@@ -1006,7 +1006,9 @@
     "whatClientsSay": "Что говорят наши клиенты",
     "propertyGuides": "Руководства",
     "propertyGuidesDesc": "Всё, что нужно знать об аренде и покупке недвижимости в Дубае",
-    "viewAllGuides": "Все руководства"
+    "viewAllGuides": "Все руководства",
+    "readMore": "Читать далее",
+    "readLess": "Свернуть"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",
