@@ -1022,7 +1022,8 @@
     "nearbyAttractions": "周边设施",
     "availableFrom": "可入住日期",
     "moveInFrom": "入住日期",
-    "bedsBaths": "卧室/浴室"
+    "bedsBaths": "卧室/浴室",
+    "refNumber": "参考编号"
   },
   "communities": {
     "heroLabel": "探索迪拜",

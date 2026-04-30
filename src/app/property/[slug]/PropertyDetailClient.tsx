@@ -533,11 +533,6 @@ export default function PropertyDetailClient({
                       {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                     </p>
                   )}
-                  {listing.sourceId && (
-                    <p className="text-white/30 text-[10px] font-mono mb-2 tracking-wide select-all">
-                      {listing.sourceId}
-                    </p>
-                  )}
                   <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
                 </motion.div>
 
@@ -1307,6 +1302,12 @@ export default function PropertyDetailClient({
                       <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
                     </div>
                   ))}
+                  {listing.sourceId && (
+                    <div className="flex justify-between items-center py-3 text-sm">
+                      <span className="text-muted-foreground/60 text-xs">{t("refNumber")}</span>
+                      <span className="text-muted-foreground/60 font-mono text-xs select-all">{listing.sourceId}</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
 

@@ -1016,7 +1016,8 @@
     "nearbyAttractions": "Рядом",
     "availableFrom": "Доступно с",
     "moveInFrom": "Въезд с",
-    "bedsBaths": "Спальни / Ванные"
+    "bedsBaths": "Спальни / Ванные",
+    "refNumber": "Реф. №"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",

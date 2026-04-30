@@ -1016,7 +1016,8 @@
     "nearbyAttractions": "المعالم القريبة",
     "availableFrom": "متاح من",
     "moveInFrom": "الانتقال من",
-    "bedsBaths": "غرف / حمامات"
+    "bedsBaths": "غرف / حمامات",
+    "refNumber": "رقم المرجع"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

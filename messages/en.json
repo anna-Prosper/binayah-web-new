@@ -1016,7 +1016,8 @@
     "nearbyAttractions": "Nearby Attractions",
     "availableFrom": "Available from",
     "moveInFrom": "Move in from",
-    "bedsBaths": "Beds / Baths"
+    "bedsBaths": "Beds / Baths",
+    "refNumber": "Ref. No."
   },
   "communities": {
     "heroLabel": "Explore Dubai",
