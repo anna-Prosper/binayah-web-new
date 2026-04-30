@@ -492,7 +492,7 @@ export default function PropertyDetailClient({
                       {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                     </p>
                   )}
-                  <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} />
+                  <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2.5 pointer-events-auto flex-shrink-0">
@@ -541,43 +541,43 @@ export default function PropertyDetailClient({
       {/* ── QUICK STATS STRIP ────────────────────────────────────────────── */}
       <section className="py-4 sm:py-5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
             {listing.bedrooms != null && <StatCard icon={BedDouble} label={t("bedrooms")} value={listing.bedrooms} delay={0.1} />}
             {listing.bathrooms != null && <StatCard icon={Bath} label={t("bathrooms")} value={listing.bathrooms} delay={0.15} />}
             {listing.size != null && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.2} />}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.25} />}
-          </div>
-          {listing.price && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="mt-2.5 bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow min-h-[80px] sm:min-h-[92px] flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-2">
-                <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{isRent ? t("perYear") : t("listedAt")}</p>
-                <div className="ml-auto relative">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
-                    className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
-                  >
-                    {currency} <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
-                  </button>
-                  <AnimatePresence>
-                    {showCurrencyDropdown && (
-                      <motion.div initial={{ opacity: 0, y: -4, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.95 }} transition={{ duration: 0.15 }}
-                        className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl">
-                        {(["AED", "USD"] as const).map((c) => (
-                          <button key={c} onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
-                            className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}>
-                            {c}
-                          </button>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+            {listing.price && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow min-h-[80px] sm:min-h-[92px] flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-2">
+                  <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{isRent ? t("perYear") : t("listedAt")}</p>
+                  <div className="ml-auto relative">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                      className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
+                    >
+                      {currency} <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                    </button>
+                    <AnimatePresence>
+                      {showCurrencyDropdown && (
+                        <motion.div initial={{ opacity: 0, y: -4, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.95 }} transition={{ duration: 0.15 }}
+                          className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl">
+                          {(["AED", "USD"] as const).map((c) => (
+                            <button key={c} onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                              className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}>
+                              {c}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
-              </div>
-              <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{formattedPrice}</p>
-              {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
-            </motion.div>
-          )}
+                <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{formattedPrice}</p>
+                {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
+              </motion.div>
+            )}
+          </div>
 
           {/* Tab bar */}
           <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1 sm:gap-1.5 border border-border/50">
