@@ -11,6 +11,7 @@ import {
   Calendar, CheckCircle2, Compass, FileText, TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -401,10 +402,13 @@ export default function PropertyDetailClient({
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative">
         <div className="relative h-[55vh] sm:h-[65vh] min-h-[380px] overflow-hidden">
-          <img
+          <NextImage
             src={allImages[currentImage]}
             alt={listing.title}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+            fill
+            className="object-cover transition-opacity duration-500"
+            sizes="100vw"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent pointer-events-none" />
@@ -504,14 +508,14 @@ export default function PropertyDetailClient({
                     </div>
                     <p className="text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</p>
                     {currency === "AED" && listing.price && (
-                      <p className="text-white/60 text-xs lg:text-right">~USD {Math.round(listing.price * USD_RATE / 1000)}K</p>
+                      <p className="text-white/60 text-xs lg:text-right">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
                     )}
                   </div>
                   {allImages.length > 1 && (
                     <div className="hidden lg:flex gap-2 items-end">
                       {allImages.slice(0, 4).map((img, i) => (
                         <button key={i} onClick={() => setCurrentImage(i)} className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${i === currentImage ? "border-accent shadow-lg shadow-accent/20 scale-110" : "border-white/20 opacity-70 hover:opacity-100 hover:border-white/50"}`}>
-                          <img src={img} alt="" className="w-full h-full object-cover" />
+                          <NextImage src={img} alt="" fill className="object-cover" sizes="64px" />
                         </button>
                       ))}
                     </div>
@@ -662,7 +666,7 @@ export default function PropertyDetailClient({
                             onClick={() => { setCurrentImage(i); setLightboxOpen(true); }}
                             className="w-[220px] h-[145px] flex-shrink-0 rounded-xl overflow-hidden snap-start group relative"
                           >
-                            <img src={img} alt={`${listing.title} ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading={i > 0 ? "lazy" : undefined} />
+                            <NextImage src={img} alt={`${listing.title} ${i + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="220px" />
                             {i === 3 && allImages.length > 4 && (
                               <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
                                 <span className="text-white text-lg font-bold">+{allImages.length - 4}</span>
@@ -1130,7 +1134,7 @@ export default function PropertyDetailClient({
                 >
                   <Link href={`/property/${l.slug}`} className="group block bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-accent/25">
                     <div className="relative overflow-hidden aspect-[4/3]">
-                      <img src={l.featuredImage || l.images?.[0] || "/assets/amenities-placeholder.webp"} alt={l.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                      <NextImage src={l.featuredImage || l.images?.[0] || "/assets/amenities-placeholder.webp"} alt={l.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:768px) 100vw, 33vw" />
                       <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {l.listingType === "Rent" ? t("forRent") : t("forSale")}
                       </span>
@@ -1305,6 +1309,7 @@ export default function PropertyDetailClient({
                 </button>
               </>
             )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={allImages[currentImage]} alt={listing.title} className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
             <div className="absolute bottom-6 text-white/60 text-sm">{currentImage + 1} / {allImages.length}</div>
           </motion.div>
