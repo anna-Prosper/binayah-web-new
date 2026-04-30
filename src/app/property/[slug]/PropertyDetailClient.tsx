@@ -495,16 +495,17 @@ export default function PropertyDetailClient({
                   <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2.5 pointer-events-auto flex-shrink-0">
-                  <div className="lg:text-right">
-                    <p className="text-white/60 text-[10px] uppercase tracking-widest font-semibold">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0">
+                  <div className="flex flex-col gap-0.5 lg:items-end">
+                    <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">
                       {isRent ? t("perYear") : t("listedAt")}
-                    </p>
-                    <p className="text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</p>
+                    </span>
+                    <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</span>
                     {currency === "AED" && listing.price && (
-                      <p className="text-white/60 text-xs lg:text-right">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
+                      <span className="text-white/60 text-xs sm:text-sm lg:text-right">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</span>
                     )}
                   </div>
+
                   {allImages.length > 1 && (
                     <div className="hidden lg:flex gap-2 items-end">
                       {allImages.slice(0, 4).map((img, i) => (
@@ -514,10 +515,14 @@ export default function PropertyDetailClient({
                       ))}
                     </div>
                   )}
-                  <button onClick={() => setLightboxOpen(true)} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                    <ImageIcon className="h-3.5 w-3.5" />
-                    {t("gallery")} ({allImages.length})
-                  </button>
+
+                  <div className="hidden sm:flex items-center gap-2 flex-wrap">
+                    <button onClick={() => setLightboxOpen(true)}
+                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                      <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("gallery")} ({allImages.length})
+                    </button>
+                  </div>
                 </motion.div>
               </div>
             </div>
