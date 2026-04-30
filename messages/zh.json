@@ -861,6 +861,7 @@
     "viewAllGuides": "查看全部指南",
     "forUnit": "关于户型",
     "developerDesc": "{name} 是阿联酋领先的房地产开发商，以在迪拜核心地段打造标志性住宅与商业项目而闻名。",
+    "developerBlurb": "是迪拜领先的房地产开发商之一，以在核心地段打造标志性项目而闻名。",
     "viewDeveloperProfile": "查看开发商详情",
     "submitAnotherEnquiry": "再次咨询",
     "wantUpdates": "想掌握 {name} 的最新动态？",
@@ -1014,7 +1015,11 @@
     "propertyGuidesDesc": "在迪拜租房或买房需要了解的一切",
     "viewAllGuides": "查看所有指南",
     "readMore": "阅读更多",
-    "readLess": "收起"
+    "readLess": "收起",
+    "communityLabel": "社区",
+    "cityLabel": "城市",
+    "countryLabel": "国家",
+    "nearbyAttractions": "周边设施"
   },
   "communities": {
     "heroLabel": "探索迪拜",

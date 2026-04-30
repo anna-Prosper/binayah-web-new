@@ -855,6 +855,7 @@
     "viewAllGuides": "Все гиды",
     "forUnit": "По",
     "developerDesc": "{name} — ведущий застройщик ОАЭ, известный знаковыми жилыми и коммерческими проектами в лучших локациях Дубая.",
+    "developerBlurb": "— один из ведущих застройщиков Дубая, известный знаковыми проектами в лучших локациях.",
     "viewDeveloperProfile": "Перейти к профилю застройщика",
     "submitAnotherEnquiry": "Отправить ещё один запрос",
     "wantUpdates": "Следить за проектом {name}?",
@@ -1008,7 +1009,11 @@
     "propertyGuidesDesc": "Всё, что нужно знать об аренде и покупке недвижимости в Дубае",
     "viewAllGuides": "Все руководства",
     "readMore": "Читать далее",
-    "readLess": "Свернуть"
+    "readLess": "Свернуть",
+    "communityLabel": "Район",
+    "cityLabel": "Город",
+    "countryLabel": "Страна",
+    "nearbyAttractions": "Рядом"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",

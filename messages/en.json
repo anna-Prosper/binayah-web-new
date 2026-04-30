@@ -855,6 +855,7 @@
     "viewAllGuides": "View All Guides",
     "forUnit": "For",
     "developerDesc": "{name} is a leading real estate developer in the UAE, known for delivering iconic residential and commercial projects across prime locations in Dubai.",
+    "developerBlurb": "is one of Dubai's leading real estate developers, known for delivering iconic projects across prime locations.",
     "viewDeveloperProfile": "View Developer Profile",
     "submitAnotherEnquiry": "Submit another enquiry",
     "wantUpdates": "Want updates on {name}?",
@@ -1008,7 +1009,11 @@
     "propertyGuidesDesc": "Everything you need to know about renting or buying in Dubai",
     "viewAllGuides": "View All Guides",
     "readMore": "Read more",
-    "readLess": "Show less"
+    "readLess": "Show less",
+    "communityLabel": "Community",
+    "cityLabel": "City",
+    "countryLabel": "Country",
+    "nearbyAttractions": "Nearby Attractions"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

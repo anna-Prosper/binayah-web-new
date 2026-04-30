@@ -855,6 +855,7 @@
     "viewAllGuides": "جميع الأدلة",
     "forUnit": "لـ",
     "developerDesc": "{name} من أبرز المطوّرين العقاريين في دولة الإمارات، اشتُهر بتسليم مشاريع سكنية وتجارية مميزة في أكثر المواقع تميّزاً في دبي.",
+    "developerBlurb": "أحد أبرز المطوّرين العقاريين في دبي، معروف بتسليم مشاريع مميزة في مواقع رائدة.",
     "viewDeveloperProfile": "عرض ملف المطوّر",
     "submitAnotherEnquiry": "إرسال استفسار آخر",
     "wantUpdates": "تريد آخر مستجدات {name}؟",
@@ -1008,7 +1009,11 @@
     "propertyGuidesDesc": "كل ما تحتاج معرفته عن الإيجار أو الشراء في دبي",
     "viewAllGuides": "عرض جميع الأدلة",
     "readMore": "اقرأ المزيد",
-    "readLess": "عرض أقل"
+    "readLess": "عرض أقل",
+    "communityLabel": "المجتمع",
+    "cityLabel": "المدينة",
+    "countryLabel": "الدولة",
+    "nearbyAttractions": "المعالم القريبة"
   },
   "communities": {
     "heroLabel": "استكشف دبي",
