@@ -1304,8 +1304,8 @@ export default function PropertyDetailClient({
                   ))}
                   {listing.sourceId && (
                     <div className="flex justify-between items-center py-3 text-sm">
-                      <span className="text-muted-foreground/60 text-xs">{t("refNumber")}</span>
-                      <span className="text-muted-foreground/60 font-mono text-xs select-all">{listing.sourceId}</span>
+                      <span className="text-muted-foreground">{t("refNumber")}</span>
+                      <span className="text-foreground font-semibold text-right select-all">{listing.sourceId}</span>
                     </div>
                   )}
                 </div>
