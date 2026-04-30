@@ -1225,13 +1225,7 @@
     "dldRegistrySub": "Dubai Land Department transactions",
     "latestMonth": "Latest month",
     "ppsfMomentum": "PPSF momentum",
-    "leadingArea": "Leading area",
-    "commandEyebrow": "Live DLD command center",
-    "commandTitle": "Dubai market signal, without the spreadsheet fog.",
-    "commandSubtitle": "A fast read on transaction velocity, price momentum, and the communities pulling liquidity right now.",
-    "commandVelocity": "Velocity leader",
-    "commandLiquidity": "Liquidity",
-    "commandHeat": "Area heat"
+    "leadingArea": "Leading area"
   },
   "services": {
     "heroLabel": "What We Offer",
