@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, BarChart2, Building2, TrendingUp, Star, Landmark } from "lucide-react";
@@ -79,6 +79,28 @@ const PRESETS: { id: string; nameKey: string; slugs: string[] }[] = [
   },
 ];
 
+const AREA_ALIASES: Record<string, string> = {
+  jlt: "Jumeirah Lakes Towers",
+  "jumeirah lake towers": "Jumeirah Lakes Towers",
+  "deira dubai": "Deira",
+  deira: "Deira",
+  marina: "Dubai Marina",
+  "dubai marina": "Dubai Marina",
+  jvc: "Jumeirah Village Circle",
+  "dubai hills": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "dubai hills estate": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "creek harbour": "Al Khairan First",
+  "dubai creek harbour": "Al Khairan First",
+};
+
+function normalizeAreaName(value: string) {
+  return value.trim().toLowerCase();
+}
+
+function resolveAreaQuery(value: string) {
+  return AREA_ALIASES[normalizeAreaName(value)] ?? value;
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const AED = (n: number) => {
@@ -152,6 +174,15 @@ export default function CompareClient({
     return Array.from(bySlug.values());
   }, [dldAreaList, areaSearchResults]);
 
+  const findKnownArea = useCallback((name: string) => {
+    const normalizedName = normalizeAreaName(name);
+    const resolvedName = normalizeAreaName(resolveAreaQuery(name));
+    return knownDldAreas.find((area) => {
+      const areaName = normalizeAreaName(area.name);
+      return areaName === normalizedName || areaName === resolvedName;
+    });
+  }, [knownDldAreas]);
+
   // ── Fetch buildings when query changes in buildings mode ──────────────────
   useEffect(() => {
     if (mode !== "buildings") return;
@@ -177,7 +208,8 @@ export default function CompareClient({
       return;
     }
     setAreaSearchLoading(true);
-    fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(debouncedQuery.trim())}&sortBy=totalSales&limit=12`))
+    const areaQuery = resolveAreaQuery(debouncedQuery.trim());
+    fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(areaQuery)}&sortBy=totalSales&limit=12`))
       .then((r) => r.ok ? r.json() : { results: [] })
       .then((data: { results?: DldArea[] }) => {
         setAreaSearchResults(Array.isArray(data.results) ? data.results : []);
@@ -190,7 +222,7 @@ export default function CompareClient({
   useEffect(() => {
     if (mode !== "communities" || selected.length === 0) return;
     const selectedAreas = selected
-      .map((name) => knownDldAreas.find((area) => area.name.toLowerCase() === name.toLowerCase()))
+      .map((name) => findKnownArea(name))
       .filter((area): area is DldArea => Boolean(area));
 
     selectedAreas.forEach((area) => {
@@ -204,7 +236,26 @@ export default function CompareClient({
           setAreaYields((prev) => ({ ...prev, [area.slug]: null }));
         });
     });
-  }, [selected, mode, areaYields, knownDldAreas]);
+  }, [selected, mode, areaYields, findKnownArea]);
+
+  useEffect(() => {
+    if (mode !== "communities" || selected.length === 0) return;
+    const missing = selected.find((name) => !findKnownArea(name));
+    if (!missing) return;
+
+    fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(resolveAreaQuery(missing))}&sortBy=totalSales&limit=3`))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: DldArea[] }) => {
+        const results = Array.isArray(data.results) ? data.results : [];
+        if (results.length > 0) {
+          setAreaSearchResults((prev) => {
+            const seen = new Set(prev.map((area) => area.slug));
+            return [...prev, ...results.filter((area) => !seen.has(area.slug))];
+          });
+        }
+      })
+      .catch(() => {});
+  }, [selected, mode, findKnownArea]);
 
   const items = mode === "communities" ? dldAreaList : developerList;
 
@@ -256,7 +307,7 @@ export default function CompareClient({
   };
 
   const getCommunityData = (name: string) => {
-    const area = knownDldAreas.find((a) => a.name.toLowerCase() === name.toLowerCase());
+    const area = findKnownArea(name);
     const yld = area ? areaYields[area.slug] : null;
     return {
       ppsf: area?.avgPpsf ?? 0,
@@ -267,6 +318,7 @@ export default function CompareClient({
       buildings: area?.buildingCount ?? 0,
       units: area?.totalUnits ?? 0,
       lowConfidence: yld?.lowConfidence ?? false,
+      hasData: Boolean(area),
     };
   };
 
@@ -578,6 +630,7 @@ function CommunityTable({
     buildings: number;
     units: number;
     lowConfidence: boolean;
+    hasData: boolean;
   };
   t: ReturnType<typeof useTranslations<"pulseCompare">>;
 }) {
@@ -596,6 +649,31 @@ function CommunityTable({
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 bg-muted/20 px-4 py-3">
         <p className="text-xs font-semibold text-foreground">{t("dldCommunitySource")}</p>
         <p className="text-[11px] text-muted-foreground">{t("dldYieldNote")}</p>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-3 p-4 border-b border-border/40 bg-gradient-to-br from-emerald-950/[0.03] via-transparent to-amber-500/[0.06]">
+        {rows.map((row, i) => (
+          <div key={selected[i]} className="rounded-2xl border border-border/40 bg-background/80 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-foreground">{selected[i]}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {row.hasData ? t("dldMatched") : t("dldMissing")}
+                </p>
+              </div>
+              <span className={`h-2.5 w-2.5 rounded-full mt-1 ${row.hasData ? "bg-emerald-500" : "bg-amber-500"}`} />
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("priceSqft")}</p>
+                <p className="text-lg font-bold text-foreground mt-1">{row.ppsf > 0 ? `AED ${Math.round(row.ppsf).toLocaleString()}` : "—"}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("txVolume")}</p>
+                <p className="text-lg font-bold text-foreground mt-1">{row.volume > 0 ? row.volume.toLocaleString() : "—"}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

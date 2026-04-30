@@ -1231,7 +1231,13 @@
     "dldRegistrySub": "Dubai Land Department transactions",
     "latestMonth": "Latest month",
     "ppsfMomentum": "PPSF momentum",
-    "leadingArea": "Leading area"
+    "leadingArea": "Leading area",
+    "commandEyebrow": "Live DLD command center",
+    "commandTitle": "Dubai market signal, without the spreadsheet fog.",
+    "commandSubtitle": "A fast read on transaction velocity, price momentum, and the communities pulling liquidity right now.",
+    "commandVelocity": "Velocity leader",
+    "commandLiquidity": "Liquidity",
+    "commandHeat": "Area heat"
   },
   "services": {
     "heroLabel": "服务领域",
@@ -1885,6 +1891,8 @@
     "registeredUnits": "登记单元",
     "dldCommunitySource": "Community metrics use DLD area aggregates",
     "dldYieldNote": "* Yield is calculated from DLD sale and rent contracts; low-sample areas are marked.",
+    "dldMatched": "Matched to official DLD area",
+    "dldMissing": "Searching DLD aliases",
     "totalProjects": "项目总数",
     "offPlanProjects": "期房项目",
     "communitiesActive": "活跃社区",
