@@ -1013,7 +1013,10 @@
     "communityLabel": "Район",
     "cityLabel": "Город",
     "countryLabel": "Страна",
-    "nearbyAttractions": "Рядом"
+    "nearbyAttractions": "Рядом",
+    "availableFrom": "Доступно с",
+    "moveInFrom": "Въезд с",
+    "bedsBaths": "Спальни / Ванные"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",

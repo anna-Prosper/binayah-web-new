@@ -1013,7 +1013,10 @@
     "communityLabel": "المجتمع",
     "cityLabel": "المدينة",
     "countryLabel": "الدولة",
-    "nearbyAttractions": "المعالم القريبة"
+    "nearbyAttractions": "المعالم القريبة",
+    "availableFrom": "متاح من",
+    "moveInFrom": "الانتقال من",
+    "bedsBaths": "غرف / حمامات"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

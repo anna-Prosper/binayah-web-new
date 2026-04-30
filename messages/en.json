@@ -1013,7 +1013,10 @@
     "communityLabel": "Community",
     "cityLabel": "City",
     "countryLabel": "Country",
-    "nearbyAttractions": "Nearby Attractions"
+    "nearbyAttractions": "Nearby Attractions",
+    "availableFrom": "Available from",
+    "moveInFrom": "Move in from",
+    "bedsBaths": "Beds / Baths"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

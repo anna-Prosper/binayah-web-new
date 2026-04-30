@@ -1019,7 +1019,10 @@
     "communityLabel": "社区",
     "cityLabel": "城市",
     "countryLabel": "国家",
-    "nearbyAttractions": "周边设施"
+    "nearbyAttractions": "周边设施",
+    "availableFrom": "可入住日期",
+    "moveInFrom": "入住日期",
+    "bedsBaths": "卧室/浴室"
   },
   "communities": {
     "heroLabel": "探索迪拜",

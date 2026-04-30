@@ -63,6 +63,7 @@ interface Listing {
   building?: string;
   propertySubtype?: string;
   sourceId?: string;
+  availableFrom?: string;
 }
 
 interface SimilarListing {
@@ -443,6 +444,14 @@ export default function PropertyDetailClient({
 
   const isRent = listing.listingType === "Rent";
   const developerName = listing.developerName || listing.developer || fetchedDeveloper?.name || null;
+
+  const availableFrom = (() => {
+    const raw = listing.availableFrom;
+    if (!raw || raw === "0000-00-00" || raw === "") return null;
+    const d = new Date(raw);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  })();
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
   const highlights = buildHighlights(listing);
@@ -578,7 +587,7 @@ export default function PropertyDetailClient({
       {/* ── QUICK STATS STRIP ────────────────────────────────────────────── */}
       <section className="py-4 sm:py-5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className={`grid grid-cols-2 sm:grid-cols-3 ${developerName ? "lg:grid-cols-6" : "lg:grid-cols-5"} gap-2.5 sm:gap-3`}>
+          <div className={`grid grid-cols-2 sm:grid-cols-3 ${developerName ? "lg:grid-cols-5" : "lg:grid-cols-4"} gap-2.5 sm:gap-3`}>
             {listing.price && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
                 className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow min-h-[80px] sm:min-h-[92px] flex flex-col justify-center">
@@ -620,10 +629,34 @@ export default function PropertyDetailClient({
                 delay={0.2}
               />
             )}
-            {listing.bedrooms != null && <StatCard icon={BedDouble} label={t("bedrooms")} value={listing.bedrooms} delay={0.25} />}
-            {listing.bathrooms != null && <StatCard icon={Bath} label={t("bathrooms")} value={listing.bathrooms} delay={0.3} />}
+            {(listing.bedrooms != null || listing.bathrooms != null) && (
+              <StatCard
+                icon={BedDouble}
+                label={t("bedsBaths")}
+                value={`${listing.bedrooms ?? "—"} / ${listing.bathrooms ?? "—"}`}
+                sub={`${listing.bedrooms ?? "—"} ${t("bedrooms")} · ${listing.bathrooms ?? "—"} ${t("bathrooms")}`}
+                delay={0.25}
+              />
+            )}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
           </div>
+
+          {/* Available from pill */}
+          {availableFrom && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mt-3 flex items-center gap-2"
+            >
+              <div className="inline-flex items-center gap-2 bg-accent/8 border border-accent/25 text-accent rounded-full px-3.5 py-1.5">
+                <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
+                <span className="text-[11px] font-semibold">
+                  {isRent ? t("availableFrom") : t("moveInFrom")} {availableFrom}
+                </span>
+              </div>
+            </motion.div>
+          )}
 
           {/* Tab bar */}
           <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1 sm:gap-1.5 border border-border/50">
