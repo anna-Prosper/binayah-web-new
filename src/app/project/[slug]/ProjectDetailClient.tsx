@@ -141,6 +141,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   };
   const [activeImage, setActiveImage] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [descExpanded, setDescExpanded] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
   const [currency, setCurrency] = useState("AED");
@@ -577,7 +578,42 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     )}
                     {project.fullDescription && (() => {
                       const clean = project.fullDescription.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
-                      return clean ? <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{clean}</p> : null;
+                      if (!clean) return null;
+
+                      // Split into sentence-grouped paragraphs
+                      const sentences = clean.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+                      const paragraphs: string[] = [];
+                      for (let i = 0; i < sentences.length; i += 3) {
+                        paragraphs.push(sentences.slice(i, i + 3).join(" "));
+                      }
+                      if (paragraphs.length === 0) return null;
+
+                      const hasMore = paragraphs.length > 1;
+
+                      return (
+                        <div className="space-y-3">
+                          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
+
+                          {hasMore && descExpanded && (
+                            <>
+                              {paragraphs.slice(1).map((para, i) => (
+                                <p key={i} className="text-sm sm:text-base text-muted-foreground leading-relaxed">{para}</p>
+                              ))}
+                            </>
+                          )}
+
+                          {hasMore && (
+                            <button
+                              type="button"
+                              onClick={() => setDescExpanded((v) => !v)}
+                              className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors mt-1"
+                            >
+                              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${descExpanded ? "rotate-180" : ""}`} />
+                              {descExpanded ? t("readLess") : t("readMore")}
+                            </button>
+                          )}
+                        </div>
+                      );
                     })()}
                   </div>
 
