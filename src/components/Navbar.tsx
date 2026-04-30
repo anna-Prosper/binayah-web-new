@@ -339,7 +339,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               {/* Heart / Favorites */}
               <button
                 onClick={openFavoritesDrawer}
-                className="relative w-9 h-9 min-w-[44px] min-h-[44px] rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+                className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
                 aria-label="Saved properties"
               >
                 <Heart className="h-4 w-4" />

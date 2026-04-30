@@ -70,7 +70,7 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
     return (
       <Link
         href="/profile"
-        className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:opacity-85 transition-opacity"
+        className="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-85 transition-opacity"
         aria-label={t("myProfileAriaLabel")}
       >
         {avatar}

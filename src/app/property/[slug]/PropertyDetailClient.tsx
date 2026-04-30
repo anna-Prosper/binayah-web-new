@@ -611,7 +611,12 @@ export default function PropertyDetailClient({
                 <>
                   {/* Description */}
                   {listing.cleanDescription && (() => {
-                    const sentences = listing.cleanDescription.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+                    const decoded = listing.cleanDescription
+                      .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
+                      .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
+                      .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
+                      .replace(/&[a-z]+;/gi, " ");
+                    const sentences = decoded.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
                     const paragraphs: string[] = [];
                     for (let i = 0; i < sentences.length; i += 3) paragraphs.push(sentences.slice(i, i + 3).join(" "));
                     if (paragraphs.length === 0) return null;
@@ -885,7 +890,7 @@ export default function PropertyDetailClient({
                       <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary/10 flex items-center justify-center">
                         <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                       </div>
-                      <h2 className="text-base sm:text-xl font-bold text-foreground">{t("faqTitle")}</h2>
+                      <h2 className="text-base sm:text-xl font-bold text-foreground">{tProject("faqLabel")}</h2>
                     </div>
                     <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
                       {faqs.map((faq, i) => (

@@ -249,18 +249,6 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
         {isFav ? t("saved") : t("save")}
       </button>
 
-      {type === "property" && (
-        <button
-          onClick={() => { if (!cmpFull) toggleCmp(propertyId); }}
-          disabled={cmpFull}
-          aria-label={isCmp ? "Remove from comparison" : "Add to comparison"}
-          className={`${base} ${cmpClasses}`}
-        >
-          <ArrowLeftRight className="h-3.5 w-3.5" />
-          {isCmp ? t("comparing") : t("compare")}
-        </button>
-      )}
-
       <div className="relative" ref={sharePopoverRef}>
         <button
           onClick={handleShare}
