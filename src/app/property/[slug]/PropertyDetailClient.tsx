@@ -533,6 +533,11 @@ export default function PropertyDetailClient({
                       {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                     </p>
                   )}
+                  {listing.sourceId && (
+                    <p className="text-white/30 text-[10px] font-mono mb-2 tracking-wide select-all">
+                      {listing.sourceId}
+                    </p>
+                  )}
                   <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
                 </motion.div>
 
