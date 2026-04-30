@@ -483,7 +483,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
                 { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
                 { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
-                { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || project.downPayment ? `${project.downPayment || "20%"} Down` : t("flexiblePlan"), sub: project.paymentPlanSummary || t("easyInstallments"), isPaymentPlan: true },
+                ...(project.paymentPlanSummary || project.downPayment ? [
+                  { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
+                ] : []),
               ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
                 <motion.div
                   key={label}
