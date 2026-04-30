@@ -49,10 +49,20 @@ interface Listing {
   features?: string[];
   agent?: string;
   developer?: string;
+  developerName?: string;
   developerSlug?: string;
   country?: string;
   parkingSpaces?: number;
   furnishing?: string;
+  isFurnished?: string;
+  completionStatus?: string;
+  tenure?: string;
+  view?: string;
+  parking?: string;
+  yearBuilt?: number;
+  building?: string;
+  propertySubtype?: string;
+  sourceId?: string;
 }
 
 interface SimilarListing {
@@ -345,6 +355,11 @@ export default function PropertyDetailClient({
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
   const [fetchedDeveloper, setFetchedDeveloper] = useState<{name: string; slug: string} | null>(null);
+  const [developerStats, setDeveloperStats] = useState<{
+    projectsDelivered: number | null;
+    foundedYear: number | null;
+    totalUnits: number | null;
+  }>({ projectsDelivered: null, foundedYear: null, totalUnits: null });
   const [enquiryForm, setEnquiryForm] = useState({
     name: "",
     phone: "",
@@ -354,7 +369,7 @@ export default function PropertyDetailClient({
   });
 
   useEffect(() => {
-    if (!listing.community) return;
+    if (listing.developer || !listing.community) return;
     fetch(apiUrl(`/api/projects?q=${encodeURIComponent(listing.community)}&limit=1`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
@@ -364,7 +379,24 @@ export default function PropertyDetailClient({
         }
       })
       .catch(() => {});
-  }, [listing.community]);
+  }, [listing.community, listing.developer]);
+
+  // Pull live developer stats (project count, founded year, total units) from API.
+  const developerSlugForStats = listing.developerSlug || fetchedDeveloper?.slug || null;
+  useEffect(() => {
+    if (!developerSlugForStats) return;
+    fetch(apiUrl(`/api/developers/${developerSlugForStats}`))
+      .then(r => r.ok ? r.json() : null)
+      .then((data: any) => {
+        if (!data?.developer) return;
+        setDeveloperStats({
+          projectsDelivered: Array.isArray(data.projects) ? data.projects.length : null,
+          foundedYear: data.developer.foundedYear ?? null,
+          totalUnits: data.developer.totalUnits ?? null,
+        });
+      })
+      .catch(() => {});
+  }, [developerSlugForStats]);
 
   const allImages = [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[];
   if (allImages.length === 0) allImages.push("/assets/amenities-placeholder.webp");
@@ -410,7 +442,7 @@ export default function PropertyDetailClient({
   )}`;
 
   const isRent = listing.listingType === "Rent";
-  const developerName = listing.developer || fetchedDeveloper?.name || null;
+  const developerName = listing.developerName || listing.developer || fetchedDeveloper?.name || null;
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
   const highlights = buildHighlights(listing);
@@ -546,13 +578,9 @@ export default function PropertyDetailClient({
       {/* ── QUICK STATS STRIP ────────────────────────────────────────────── */}
       <section className="py-4 sm:py-5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
-            {listing.bedrooms != null && <StatCard icon={BedDouble} label={t("bedrooms")} value={listing.bedrooms} delay={0.1} />}
-            {listing.bathrooms != null && <StatCard icon={Bath} label={t("bathrooms")} value={listing.bathrooms} delay={0.15} />}
-            {listing.size != null && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.2} />}
-            {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.25} />}
+          <div className={`grid grid-cols-2 sm:grid-cols-3 ${developerName ? "lg:grid-cols-6" : "lg:grid-cols-5"} gap-2.5 sm:gap-3`}>
             {listing.price && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
                 className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow min-h-[80px] sm:min-h-[92px] flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-2">
                   <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{isRent ? t("perYear") : t("listedAt")}</p>
@@ -582,6 +610,19 @@ export default function PropertyDetailClient({
                 {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
               </motion.div>
             )}
+            {listing.size != null && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.15} />}
+            {developerName && (
+              <StatCard
+                icon={Building2}
+                label={tProject("developer")}
+                value={developerName}
+                sub={developerStats.projectsDelivered ? `${developerStats.projectsDelivered}+ ${tProject("projectsDelivered")}` : undefined}
+                delay={0.2}
+              />
+            )}
+            {listing.bedrooms != null && <StatCard icon={BedDouble} label={t("bedrooms")} value={listing.bedrooms} delay={0.25} />}
+            {listing.bathrooms != null && <StatCard icon={Bath} label={t("bathrooms")} value={listing.bathrooms} delay={0.3} />}
+            {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
           </div>
 
           {/* Tab bar */}
@@ -705,20 +746,33 @@ export default function PropertyDetailClient({
                             </p>
                           </div>
                         </div>
-                        {/* Stat cards */}
-                        <div className="grid grid-cols-3 gap-3 mb-5">
-                          {[
-                            { icon: Building2, value: "50+", label: tProject("projectsDelivered") },
-                            { icon: Calendar, value: "20+", label: tProject("yearsExperience") },
-                            { icon: Home, value: "10K+", label: tProject("unitsCompleted") },
-                          ].map(({ icon: Icon, value, label }) => (
-                            <div key={label} className="p-3 sm:p-4 bg-muted/40 rounded-xl text-center">
-                              <Icon className="h-4 w-4 text-muted-foreground mx-auto mb-1.5" />
-                              <p className="text-lg sm:text-xl font-bold text-foreground">{value}</p>
-                              <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{label}</p>
+                        {/* Stat cards — pulled live from /api/developers/:slug; render only what we have */}
+                        {(() => {
+                          const currentYear = new Date().getFullYear();
+                          const cards = [
+                            developerStats.projectsDelivered != null
+                              ? { icon: Building2, value: `${developerStats.projectsDelivered}+`, label: tProject("projectsDelivered") }
+                              : null,
+                            developerStats.foundedYear
+                              ? { icon: Calendar, value: `${currentYear - developerStats.foundedYear}+`, label: tProject("yearsExperience") }
+                              : null,
+                            developerStats.totalUnits
+                              ? { icon: Home, value: developerStats.totalUnits >= 1000 ? `${Math.floor(developerStats.totalUnits / 1000)}K+` : `${developerStats.totalUnits}+`, label: tProject("unitsCompleted") }
+                              : null,
+                          ].filter(Boolean) as { icon: React.ElementType; value: string; label: string }[];
+                          if (cards.length === 0) return null;
+                          return (
+                            <div className={`grid gap-3 mb-5 ${cards.length === 1 ? "grid-cols-1" : cards.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                              {cards.map(({ icon: Icon, value, label }) => (
+                                <div key={label} className="p-3 sm:p-4 bg-muted/40 rounded-xl text-center">
+                                  <Icon className="h-4 w-4 text-muted-foreground mx-auto mb-1.5" />
+                                  <p className="text-lg sm:text-xl font-bold text-foreground">{value}</p>
+                                  <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{label}</p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          );
+                        })()}
                         {developerSlug && (
                           <Link href={`/developers/${developerSlug}`}
                             className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all group">

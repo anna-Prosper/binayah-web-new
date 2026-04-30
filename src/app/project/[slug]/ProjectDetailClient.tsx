@@ -154,6 +154,27 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const [origin, setOrigin] = useState("");
+  const [developerStats, setDeveloperStats] = useState<{
+    projectsDelivered: number | null;
+    foundedYear: number | null;
+    totalUnits: number | null;
+  }>({ projectsDelivered: null, foundedYear: null, totalUnits: null });
+
+  useEffect(() => {
+    const slug = project.developerSlug || (project.developerName ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "");
+    if (!slug) return;
+    fetch(apiUrl(`/api/developers/${slug}`))
+      .then(r => r.ok ? r.json() : null)
+      .then((data: any) => {
+        if (!data?.developer) return;
+        setDeveloperStats({
+          projectsDelivered: Array.isArray(data.projects) ? data.projects.length : null,
+          foundedYear: data.developer.foundedYear ?? null,
+          totalUnits: data.developer.totalUnits ?? null,
+        });
+      })
+      .catch(() => {});
+  }, [project.developerSlug, project.developerName]);
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -1598,30 +1619,43 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           </div>
                         </div>
 
-                        {/* Stats row */}
-                        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
-                          {[
-                            { value: "50+", label: t("projectsDelivered"), icon: Building2 },
-                            { value: "20+", label: t("yearsExperience"), icon: Clock },
-                            { value: "10K+", label: t("unitsCompleted"), icon: Home },
-                          ].map((stat, i) => {
-                            const StatIcon = stat.icon;
-                            return (
-                              <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 10 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="flex flex-col items-center text-center rounded-xl border border-border/50 bg-muted/20 py-3 sm:py-4 px-2 hover:border-primary/20 hover:shadow-sm transition-all duration-300"
-                              >
-                                <StatIcon className="h-4 w-4 text-primary/60 mb-1.5" />
-                                <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
-                                <p className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 leading-tight">{stat.label}</p>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
+                        {/* Stats row — pulled live from /api/developers/:slug; render only what we have */}
+                        {(() => {
+                          const currentYear = new Date().getFullYear();
+                          const stats = [
+                            developerStats.projectsDelivered != null
+                              ? { value: `${developerStats.projectsDelivered}+`, label: t("projectsDelivered"), icon: Building2 }
+                              : null,
+                            developerStats.foundedYear
+                              ? { value: `${currentYear - developerStats.foundedYear}+`, label: t("yearsExperience"), icon: Clock }
+                              : null,
+                            developerStats.totalUnits
+                              ? { value: developerStats.totalUnits >= 1000 ? `${Math.floor(developerStats.totalUnits / 1000)}K+` : `${developerStats.totalUnits}+`, label: t("unitsCompleted"), icon: Home }
+                              : null,
+                          ].filter(Boolean) as { value: string; label: string; icon: React.ElementType }[];
+                          if (stats.length === 0) return null;
+                          return (
+                            <div className={`grid gap-2 sm:gap-3 mb-5 sm:mb-6 ${stats.length === 1 ? "grid-cols-1" : stats.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+                              {stats.map((stat, i) => {
+                                const StatIcon = stat.icon;
+                                return (
+                                  <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="flex flex-col items-center text-center rounded-xl border border-border/50 bg-muted/20 py-3 sm:py-4 px-2 hover:border-primary/20 hover:shadow-sm transition-all duration-300"
+                                  >
+                                    <StatIcon className="h-4 w-4 text-primary/60 mb-1.5" />
+                                    <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
+                                    <p className="text-[9px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 leading-tight">{stat.label}</p>
+                                  </motion.div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
 
                         {/* CTA */}
                         <Link href={`/developers/${project.developerSlug || (project.developerName ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "")}`} className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
