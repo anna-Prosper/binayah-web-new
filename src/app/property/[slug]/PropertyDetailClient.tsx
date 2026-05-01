@@ -108,6 +108,53 @@ function getNumericText(value: unknown) {
   return text;
 }
 
+function decodeDescriptionText(value: string) {
+  return value
+    .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
+    .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
+    .replace(/&[a-z]+;/gi, " ");
+}
+
+function getDescriptionParagraphs(description?: string) {
+  if (!description) return [];
+
+  const decoded = decodeDescriptionText(description);
+  const withBreaks = decoded
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h[1-6])>/gi, "\n")
+    .replace(/<[^>]*>/g, " ");
+
+  const cleaned = withBreaks
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s+/g, "\n")
+    .trim();
+
+  const boilerplateStart = cleaned.search(
+    /\b(Property Details|Features and Amenities|About the community|About the Community)\b/
+  );
+  const mainText = boilerplateStart > 80 ? cleaned.slice(0, boilerplateStart).trim() : cleaned;
+
+  const paragraphs = mainText
+    .split(/\n{1,}/)
+    .map((para) => para.replace(/\s{2,}/g, " ").trim())
+    .filter((para) => para.length > 0)
+    .filter((para) => !/^(Property Details|Features and Amenities|About the community|About the Community)$/i.test(para));
+
+  if (paragraphs.length > 1) return paragraphs;
+
+  const sentences = (paragraphs[0] || mainText)
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-Z])/)
+    .filter(Boolean);
+
+  const grouped: string[] = [];
+  for (let i = 0; i < sentences.length; i += 3) grouped.push(sentences.slice(i, i + 3).join(" "));
+  return grouped;
+}
+
 // ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
 function amenityIcon(label: string): React.ElementType {
   const l = label.toLowerCase();
@@ -739,15 +786,8 @@ export default function PropertyDetailClient({
               {activeTab === "overview" && (
                 <>
                   {/* Description */}
-                  {listing.cleanDescription && (() => {
-                    const decoded = listing.cleanDescription
-                      .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
-                      .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
-                      .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
-                      .replace(/&[a-z]+;/gi, " ");
-                    const sentences = decoded.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
-                    const paragraphs: string[] = [];
-                    for (let i = 0; i < sentences.length; i += 3) paragraphs.push(sentences.slice(i, i + 3).join(" "));
+                  {(listing.cleanDescription || listing.description) && (() => {
+                    const paragraphs = getDescriptionParagraphs(listing.cleanDescription || listing.description);
                     if (paragraphs.length === 0) return null;
                     const hasMore = paragraphs.length > 1;
                     return (
