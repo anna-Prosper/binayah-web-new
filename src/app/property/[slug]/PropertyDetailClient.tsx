@@ -569,6 +569,15 @@ export default function PropertyDetailClient({
   })();
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
+  const DEFAULT_AMENITIES = [
+    "24/7 Security", "Swimming Pool", "Gymnasium", "Covered Parking",
+    "Children's Play Area", "Landscaped Gardens", "BBQ Area",
+  ];
+  const realAmenities = (listing.features || []).filter(f => !NON_AMENITY.test(f.trim()));
+  const mergedAmenities = [
+    ...realAmenities,
+    ...DEFAULT_AMENITIES.filter(d => !realAmenities.some(r => r.toLowerCase() === d.toLowerCase())),
+  ];
   const highlights = buildHighlights(listing, parkingText);
   const nearbyItems = buildNearby(listing.community);
   const faqs = buildFaqs(isRent);
@@ -970,34 +979,32 @@ export default function PropertyDetailClient({
                   )}
 
                   {/* Amenities & Facilities */}
-                  {listing.features && listing.features.filter(f => !NON_AMENITY.test(f.trim())).length > 0 && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mb-10">
-                      <div className="flex items-center gap-3 mb-5">
-                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                          <Star className="h-4 w-4 text-accent" />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("lifestyleLabel")}</p>
-                          <h2 className="text-base font-bold text-foreground">{t("amenitiesTitle")}</h2>
-                        </div>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mb-10">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
+                        <Star className="h-4 w-4 text-accent" />
                       </div>
-                      <div className="rounded-2xl bg-card border border-border/30 p-5">
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                          {listing.features.filter(f => !NON_AMENITY.test(f.trim())).map((feat, i) => {
-                            const AIcon = amenityIcon(feat);
-                            return (
-                              <div key={i} className="flex flex-col items-center gap-2 text-center">
-                                <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-                                  <AIcon className="h-5 w-5 text-accent" />
-                                </div>
-                                <span className="text-xs text-foreground font-medium leading-snug">{feat}</span>
+                      <div>
+                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("lifestyleLabel")}</p>
+                        <h2 className="text-base font-bold text-foreground">{t("amenitiesTitle")}</h2>
+                      </div>
+                    </div>
+                    <div className="rounded-2xl bg-card border border-border/30 p-5">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {mergedAmenities.map((feat, i) => {
+                          const AIcon = amenityIcon(feat);
+                          return (
+                            <div key={i} className="flex flex-col items-center gap-2 text-center">
+                              <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
+                                <AIcon className="h-5 w-5 text-accent" />
                               </div>
-                            );
-                          })}
-                        </div>
+                              <span className="text-xs text-foreground font-medium leading-snug">{feat}</span>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </motion.div>
-                  )}
+                    </div>
+                  </motion.div>
                   {/* Mortgage Calculator */}
                   <MortgageCalculator initialPrice={listing.price} embedded />
                 </>
