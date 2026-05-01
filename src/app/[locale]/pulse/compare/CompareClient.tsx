@@ -95,15 +95,17 @@ const PRESETS: { id: string; nameKey: string; slugs: string[] }[] = [
 // DLD stores area names in ALLCAPS raw format; community names use mixed-case
 // abbreviations. Normalize both sides to a canonical token for matching.
 
+// Maps canonical abbreviation/label → partial search term for /api/dld/areas?q=
+// Values are partial strings so the API regex matches both singular/plural variants.
 const AREA_EXPANSIONS: Record<string, string> = {
-  jlt: "jumeirah lake towers",
-  "jumeirah lakes towers": "jumeirah lake towers",
+  jlt: "jumeirah lake",                                // matches "Jumeirah Lake Towers" and "Jumeirah Lakes Towers"
+  "jumeirah lakes towers": "jumeirah lake",
   jvc: "jumeirah village circle",
   jvt: "jumeirah village triangle",
   jbr: "jumeirah beach residence",
-  "mbr city": "mohammed bin rashid city",
-  "meydan": "mohammed bin rashid city",
-  "dlrc": "dubai land residence complex",
+  "mbr city": "mohammed bin rashid",
+  meydan: "mohammed bin rashid",
+  dlrc: "dubai land residence complex",
   "dubai land residence complex (dlrc)": "dubai land residence complex",
 };
 
@@ -211,8 +213,15 @@ export default function CompareClient({
   const filtered = useMemo(() => {
     if (mode === "buildings") return [];
     if (!query.trim()) return items.slice(0, 12);
-    const q = query.toLowerCase();
-    return items.filter((item) => item.name.toLowerCase().includes(q)).slice(0, 12);
+    const q = query.toLowerCase().trim();
+    return items.filter((item) => {
+      const nameLow = item.name.toLowerCase();
+      if (nameLow.includes(q)) return true;
+      // Check if the query matches an expansion of this community name
+      const expansion = AREA_EXPANSIONS[nameLow];
+      if (expansion && expansion.includes(q)) return true;
+      return false;
+    }).slice(0, 12);
   }, [items, query, mode]);
 
   const addItem = (name: string) => {
