@@ -749,14 +749,6 @@ export default function PropertyDetailClient({
                 delay={0.25}
               />
             )}
-            {parkingText && (
-              <StatCard
-                icon={Car}
-                label={t("parking")}
-                value={parkingText}
-                delay={0.3}
-              />
-            )}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
           </div>
 
