@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, BarChart2, Building2, TrendingUp, Star, Landmark } from "lucide-react";
@@ -8,37 +8,25 @@ import { apiUrl } from "@/lib/api";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-interface YieldArea { area: string; yield: number; avgRent: number; avgSale: number }
-interface ByArea { area: string; count: number; totalValue: number; avgPrice: number; avgPpsf: number }
-
-interface MarketStats {
-  yieldByArea: YieldArea[];
-  priceByArea: { area: string; price: number; count: number }[];
-  volumeByArea: { area: string; volume: number }[];
-  summary: { offPlanShare: number };
-  communityMatrix: {
-    area: string;
-    avgPricePerSqft: number;
-    rentalYield: number;
-    totalListings: number;
-    offPlanCount: number;
-    investmentScore: number;
-    avgSalePrice: number;
-  }[];
-}
-
-interface MarketData {
-  transactions: {
-    hasData: boolean;
-    byArea: ByArea[];
-  } | null;
-}
-
-interface Community {
+interface DldArea {
   _id: string;
-  name: string;
   slug: string;
-  totalListings?: number;
+  name: string;
+  city?: string;
+  totalUnits: number;
+  totalSales: number;
+  totalRents: number;
+  buildingCount: number;
+  avgPpsf: number | null;
+  avgPrice: number | null;
+  lastAggregatedAt?: string | null;
+}
+
+interface DldAreaYield {
+  grossYieldPct: number | null;
+  salesSampleSize: number;
+  rentSampleSize: number;
+  lowConfidence: boolean;
 }
 
 interface Developer {
@@ -67,29 +55,51 @@ interface DldBuilding {
 type Mode = "communities" | "developers" | "buildings";
 
 // ── Preset slugs — canonical area labels from the market-stats endpoint
-// (verified from /binayah-api/src/routes/market-stats.ts).
+// DLD area names come from /api/dld/areas, not local community aliases.
 const PRESETS: { id: string; nameKey: string; slugs: string[] }[] = [
   {
     id: "waterfront",
     nameKey: "presetWaterfront",
-    slugs: ["Dubai Marina", "Palm Jumeirah", "Dubai Hills"],
+    slugs: ["Dubai Marina", "Palm Jumeirah", "Dubai Maritime City"],
   },
   {
     id: "highyield",
     nameKey: "presetHighYield",
-    slugs: ["JVC", "Dubai Hills", "JBR"],
+    slugs: ["Jumeirah Village Circle", "Dubai Land Residence Complex", "International City Ph 1"],
   },
   {
     id: "urban",
     nameKey: "presetUrban",
-    slugs: ["Downtown Dubai", "Business Bay", "MBR City"],
+    slugs: ["Business Bay", "Zaabeel Second", "Al Wasl"],
   },
   {
     id: "emerging",
     nameKey: "presetEmerging",
-    slugs: ["Creek Harbour", "MBR City", "DAMAC Hills"],
+    slugs: ["Al Yelayiss 1", "Al Hebiah Fifth", "Madinat Al Mataar"],
   },
 ];
+
+const AREA_ALIASES: Record<string, string> = {
+  jlt: "Jumeirah Lakes Towers",
+  "jumeirah lake towers": "Jumeirah Lakes Towers",
+  "deira dubai": "Deira",
+  deira: "Deira",
+  marina: "Dubai Marina",
+  "dubai marina": "Dubai Marina",
+  jvc: "Jumeirah Village Circle",
+  "dubai hills": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "dubai hills estate": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "creek harbour": "Al Khairan First",
+  "dubai creek harbour": "Al Khairan First",
+};
+
+function normalizeAreaName(value: string) {
+  return value.trim().toLowerCase();
+}
+
+function resolveAreaQuery(value: string) {
+  return AREA_ALIASES[normalizeAreaName(value)] ?? value;
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -122,14 +132,10 @@ function useDebounce<T>(value: T, delay: number): T {
 // ── Main Component ─────────────────────────────────────────────────────────
 
 export default function CompareClient({
-  marketStats,
-  marketData,
-  communities,
+  dldAreas,
   developers,
 }: {
-  marketStats: MarketStats | null;
-  marketData: MarketData | null;
-  communities: Community[] | null;
+  dldAreas: { results?: DldArea[] } | DldArea[] | null;
   developers: Developer[] | null;
 }) {
   const t = useTranslations("pulseCompare");
@@ -143,8 +149,39 @@ export default function CompareClient({
   const [buildingSearchLoading, setBuildingSearchLoading] = useState(false);
   // selectedBuildings stores full building objects for the comparison table
   const [selectedBuildings, setSelectedBuildings] = useState<DldBuilding[]>([]);
+  const [areaSearchResults, setAreaSearchResults] = useState<DldArea[]>([]);
+  const [areaSearchLoading, setAreaSearchLoading] = useState(false);
+  const [areaYields, setAreaYields] = useState<Record<string, DldAreaYield | null>>({});
 
   const debouncedQuery = useDebounce(query, 300);
+
+  // ── Search base lists ────────────────────────────────────────────────────
+  const dldAreaList: DldArea[] = useMemo(() => {
+    const raw = Array.isArray(dldAreas) ? dldAreas : dldAreas?.results ?? [];
+    return raw;
+  }, [dldAreas]);
+
+  const developerList: Developer[] = useMemo(() => {
+    const raw = Array.isArray(developers) ? developers : [];
+    return raw;
+  }, [developers]);
+
+  const knownDldAreas = useMemo(() => {
+    const bySlug = new Map<string, DldArea>();
+    [...dldAreaList, ...areaSearchResults].forEach((area) => {
+      bySlug.set(area.slug, area);
+    });
+    return Array.from(bySlug.values());
+  }, [dldAreaList, areaSearchResults]);
+
+  const findKnownArea = useCallback((name: string) => {
+    const normalizedName = normalizeAreaName(name);
+    const resolvedName = normalizeAreaName(resolveAreaQuery(name));
+    return knownDldAreas.find((area) => {
+      const areaName = normalizeAreaName(area.name);
+      return areaName === normalizedName || areaName === resolvedName;
+    });
+  }, [knownDldAreas]);
 
   // ── Fetch buildings when query changes in buildings mode ──────────────────
   useEffect(() => {
@@ -163,25 +200,72 @@ export default function CompareClient({
       .finally(() => setBuildingSearchLoading(false));
   }, [debouncedQuery, mode]);
 
-  // ── Search results (communities/developers) ───────────────────────────────
-  const communityList: Community[] = useMemo(() => {
-    const raw = Array.isArray(communities) ? communities : [];
-    return raw;
-  }, [communities]);
+  // ── Fetch DLD areas when query changes in communities mode ────────────────
+  useEffect(() => {
+    if (mode !== "communities") return;
+    if (!debouncedQuery.trim()) {
+      setAreaSearchResults([]);
+      return;
+    }
+    setAreaSearchLoading(true);
+    const areaQuery = resolveAreaQuery(debouncedQuery.trim());
+    fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(areaQuery)}&sortBy=totalSales&limit=12`))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: DldArea[] }) => {
+        setAreaSearchResults(Array.isArray(data.results) ? data.results : []);
+      })
+      .catch(() => setAreaSearchResults([]))
+      .finally(() => setAreaSearchLoading(false));
+  }, [debouncedQuery, mode]);
 
-  const developerList: Developer[] = useMemo(() => {
-    const raw = Array.isArray(developers) ? developers : [];
-    return raw;
-  }, [developers]);
+  // ── Fetch DLD rent/sale yield for selected areas only ────────────────────
+  useEffect(() => {
+    if (mode !== "communities" || selected.length === 0) return;
+    const selectedAreas = selected
+      .map((name) => findKnownArea(name))
+      .filter((area): area is DldArea => Boolean(area));
 
-  const items = mode === "communities" ? communityList : developerList;
+    selectedAreas.forEach((area) => {
+      if (areaYields[area.slug] !== undefined) return;
+      fetch(apiUrl(`/api/dld/areas/${area.slug}/yield`))
+        .then((r) => r.ok ? r.json() : null)
+        .then((data: DldAreaYield | null) => {
+          setAreaYields((prev) => ({ ...prev, [area.slug]: data }));
+        })
+        .catch(() => {
+          setAreaYields((prev) => ({ ...prev, [area.slug]: null }));
+        });
+    });
+  }, [selected, mode, areaYields, findKnownArea]);
+
+  useEffect(() => {
+    if (mode !== "communities" || selected.length === 0) return;
+    const missing = selected.find((name) => !findKnownArea(name));
+    if (!missing) return;
+
+    fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(resolveAreaQuery(missing))}&sortBy=totalSales&limit=3`))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: DldArea[] }) => {
+        const results = Array.isArray(data.results) ? data.results : [];
+        if (results.length > 0) {
+          setAreaSearchResults((prev) => {
+            const seen = new Set(prev.map((area) => area.slug));
+            return [...prev, ...results.filter((area) => !seen.has(area.slug))];
+          });
+        }
+      })
+      .catch(() => {});
+  }, [selected, mode, findKnownArea]);
+
+  const items = mode === "communities" ? dldAreaList : developerList;
 
   const filtered = useMemo(() => {
     if (mode === "buildings") return [];
+    if (mode === "communities" && query.trim()) return areaSearchResults;
     if (!query.trim()) return items.slice(0, 12);
     const q = query.toLowerCase();
     return items.filter((item) => item.name.toLowerCase().includes(q)).slice(0, 12);
-  }, [items, query, mode]);
+  }, [items, query, mode, areaSearchResults]);
 
   const addItem = (name: string) => {
     if (selected.length >= 3) return;
@@ -208,7 +292,9 @@ export default function CompareClient({
 
   const applyPreset = (preset: typeof PRESETS[0]) => {
     if (mode !== "communities") setMode("communities");
-    setSelected(preset.slugs.slice(0, 3));
+    const availableNames = new Set(dldAreaList.map((area) => area.name.toLowerCase()));
+    const resolved = preset.slugs.filter((name) => availableNames.has(name.toLowerCase()));
+    setSelected((resolved.length >= 2 ? resolved : preset.slugs).slice(0, 3));
   };
 
   const handleModeChange = (m: Mode) => {
@@ -216,26 +302,23 @@ export default function CompareClient({
     setSelected([]);
     setQuery("");
     setBuildingSearchResults([]);
+    setAreaSearchResults([]);
     if (m !== "buildings") setSelectedBuildings([]);
   };
 
-  // ── Community comparison data ─────────────────────────────────────────────
-  const matrix = marketStats?.communityMatrix ?? [];
-  const yieldByArea = marketStats?.yieldByArea ?? [];
-  const priceByArea = marketStats?.priceByArea ?? [];
-  const txByArea = marketData?.transactions?.byArea ?? [];
-
   const getCommunityData = (name: string) => {
-    const mat = matrix.find((m) => m.area.toLowerCase() === name.toLowerCase());
-    const yld = yieldByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
-    const pr = priceByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
-    const tx = txByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
+    const area = findKnownArea(name);
+    const yld = area ? areaYields[area.slug] : null;
     return {
-      ppsf: mat?.avgPricePerSqft ?? pr?.price ?? 0,
-      yield: mat?.rentalYield ?? yld?.yield ?? 0,
-      volume: tx?.count ?? 0,
-      offPlanShare: mat ? (mat.totalListings > 0 ? Math.round((mat.offPlanCount / mat.totalListings) * 100) : 0) : null,
-      score: mat?.investmentScore ?? 0,
+      ppsf: area?.avgPpsf ?? 0,
+      yield: yld?.grossYieldPct ?? 0,
+      volume: area?.totalSales ?? 0,
+      avgDeal: area?.avgPrice ?? 0,
+      rents: area?.totalRents ?? 0,
+      buildings: area?.buildingCount ?? 0,
+      units: area?.totalUnits ?? 0,
+      lowConfidence: yld?.lowConfidence ?? false,
+      hasData: Boolean(area),
     };
   };
 
@@ -318,13 +401,16 @@ export default function CompareClient({
 
       {/* ── Search dropdown (communities / developers) ───────────── */}
       <AnimatePresence>
-        {mode !== "buildings" && query.trim() && filtered.length > 0 && (
+        {mode !== "buildings" && query.trim() && (filtered.length > 0 || (mode === "communities" && areaSearchLoading)) && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             className="mb-4 bg-card border border-border/50 rounded-xl shadow-lg overflow-hidden"
           >
+            {mode === "communities" && areaSearchLoading && (
+              <div className="px-4 py-3 text-sm text-muted-foreground">{t("searching")}</div>
+            )}
             {filtered.map((item) => (
               <button
                 key={item._id}
@@ -332,7 +418,12 @@ export default function CompareClient({
                 disabled={selected.includes(item.name)}
                 className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/30 last:border-0 disabled:opacity-40"
               >
-                {item.name}
+                <span className="font-medium">{item.name}</span>
+                {mode === "communities" && "totalSales" in item && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    {(item.totalSales ?? 0).toLocaleString()} {t("txVolume").toLowerCase()}
+                  </span>
+                )}
               </button>
             ))}
           </motion.div>
@@ -530,7 +621,17 @@ function CommunityTable({
   t,
 }: {
   selected: string[];
-  getData: (name: string) => { ppsf: number; yield: number; volume: number; offPlanShare: number | null; score: number };
+  getData: (name: string) => {
+    ppsf: number;
+    yield: number;
+    volume: number;
+    avgDeal: number;
+    rents: number;
+    buildings: number;
+    units: number;
+    lowConfidence: boolean;
+    hasData: boolean;
+  };
   t: ReturnType<typeof useTranslations<"pulseCompare">>;
 }) {
   const rows = selected.map(getData);
@@ -538,10 +639,42 @@ function CommunityTable({
   const ppsfVals = rows.map((r) => r.ppsf);
   const yieldVals = rows.map((r) => r.yield);
   const volVals = rows.map((r) => r.volume);
-  const scoreVals = rows.map((r) => r.score);
+  const dealVals = rows.map((r) => r.avgDeal);
+  const rentVals = rows.map((r) => r.rents);
+  const buildingVals = rows.map((r) => r.buildings);
+  const unitVals = rows.map((r) => r.units);
 
   return (
     <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 bg-muted/20 px-4 py-3">
+        <p className="text-xs font-semibold text-foreground">{t("dldCommunitySource")}</p>
+        <p className="text-[11px] text-muted-foreground">{t("dldYieldNote")}</p>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-3 p-4 border-b border-border/40 bg-gradient-to-br from-emerald-950/[0.03] via-transparent to-amber-500/[0.06]">
+        {rows.map((row, i) => (
+          <div key={selected[i]} className="rounded-2xl border border-border/40 bg-background/80 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-foreground">{selected[i]}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {row.hasData ? t("dldMatched") : t("dldMissing")}
+                </p>
+              </div>
+              <span className={`h-2.5 w-2.5 rounded-full mt-1 ${row.hasData ? "bg-emerald-500" : "bg-amber-500"}`} />
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("priceSqft")}</p>
+                <p className="text-lg font-bold text-foreground mt-1">{row.ppsf > 0 ? `AED ${Math.round(row.ppsf).toLocaleString()}` : "—"}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{t("txVolume")}</p>
+                <p className="text-lg font-bold text-foreground mt-1">{row.volume > 0 ? row.volume.toLocaleString() : "—"}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -562,7 +695,10 @@ function CommunityTable({
             />
             <TableRow
               label={t("grossYield")}
-              values={yieldVals.map((v) => pct(v))}
+              values={rows.map((r) => {
+                const value = pct(r.yield);
+                return r.lowConfidence && value !== "—" ? `${value}*` : value;
+              })}
               highlights={yieldVals.map((v, i) => highlight(yieldVals, i))}
             />
             <TableRow
@@ -571,9 +707,24 @@ function CommunityTable({
               highlights={volVals.map((v, i) => highlight(volVals, i))}
             />
             <TableRow
-              label={t("investScore")}
-              values={scoreVals.map((v) => v > 0 ? `${v}/100` : "—")}
-              highlights={scoreVals.map((v, i) => highlight(scoreVals, i))}
+              label={t("avgDealSize")}
+              values={dealVals.map((v) => AED(v))}
+              highlights={dealVals.map((v, i) => highlight(dealVals, i))}
+            />
+            <TableRow
+              label={t("rentContracts")}
+              values={rentVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={rentVals.map((v, i) => highlight(rentVals, i))}
+            />
+            <TableRow
+              label={t("buildingCount")}
+              values={buildingVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={buildingVals.map((v, i) => highlight(buildingVals, i))}
+            />
+            <TableRow
+              label={t("registeredUnits")}
+              values={unitVals.map((v) => v > 0 ? v.toLocaleString() : "—")}
+              highlights={unitVals.map((v, i) => highlight(unitVals, i))}
             />
           </tbody>
         </table>

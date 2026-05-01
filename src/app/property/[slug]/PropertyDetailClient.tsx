@@ -93,6 +93,89 @@ function formatPrice(price?: number, currency = "AED", fallback = "Price on requ
 
 const sqftToSqm = (sqft: number) => `${Math.round(sqft * 0.0929).toLocaleString()} sqm`;
 
+function hasPositiveNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function hasNonNegativeNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function getNumericText(value: unknown) {
+  if (value == null) return null;
+  const text = String(value).trim();
+  if (!text || text === "0") return null;
+  return text;
+}
+
+function decodeDescriptionText(value: string) {
+  return value
+    .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
+    .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
+    .replace(/&[a-z]+;/gi, " ");
+}
+
+function getDescriptionParagraphs(description?: string) {
+  if (!description) return [];
+
+  const decoded = decodeDescriptionText(description);
+  const withBreaks = decoded
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h[1-6])>/gi, "\n")
+    .replace(/<[^>]*>/g, " ");
+
+  const cleaned = withBreaks
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s+/g, "\n")
+    .trim();
+
+  const boilerplateStart = cleaned.search(
+    /\b(Property Details|Features and Amenities|About the community|About the Community)\b/
+  );
+  const mainText = boilerplateStart > 80 ? cleaned.slice(0, boilerplateStart).trim() : cleaned;
+
+  const paragraphs = mainText
+    .split(/\n{1,}/)
+    .map((para) => para.replace(/\s{2,}/g, " ").trim())
+    .filter((para) => para.length > 0)
+    .filter((para) => !/^(Property Details|Features and Amenities|About the community|About the Community)$/i.test(para));
+
+  if (paragraphs.length > 1) return paragraphs;
+
+  const sentences = (paragraphs[0] || mainText)
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-Z])/)
+    .filter(Boolean);
+
+  const grouped: string[] = [];
+  for (let i = 0; i < sentences.length; i += 3) grouped.push(sentences.slice(i, i + 3).join(" "));
+  return grouped;
+}
+
+function extractParkingFromDescription(description?: string) {
+  if (!description) return null;
+
+  const text = decodeDescriptionText(description).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+  const digitMatch = text.match(/\b(\d+)\s+(?:private\s+)?(?:parking|car\s+park|garage)(?:\s+(?:space|spaces|bay|bays))?\b/i);
+  if (digitMatch) return Number(digitMatch[1]);
+
+  const wordNumbers: Record<string, number> = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+  };
+  const wordMatch = text.match(/\b(one|two|three|four|five|six)\s+(?:private\s+)?(?:parking|car\s+park|garage)(?:\s+(?:space|spaces|bay|bays))?\b/i);
+  if (wordMatch) return wordNumbers[wordMatch[1].toLowerCase()];
+
+  return /\bsecure parking\b/i.test(text) ? "Secure Parking" : null;
+}
+
 // ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
 function amenityIcon(label: string): React.ElementType {
   const l = label.toLowerCase();
@@ -185,7 +268,7 @@ function buildNearby(community?: string): NearbyItem[] {
 }
 
 // ── Context-aware key highlights ──────────────────────────────────────────────
-function buildHighlights(listing: Listing): string[] {
+function buildHighlights(listing: Listing, parkingHighlight?: string | null): string[] {
   const highlights: string[] = [];
   const isRent = listing.listingType === "Rent";
 
@@ -196,8 +279,8 @@ function buildHighlights(listing: Listing): string[] {
   if (listing.size) {
     highlights.push(`${listing.size.toLocaleString()} sqft (${sqftToSqm(listing.size)})`);
   }
-  if (listing.community) {
-    highlights.push(`${listing.community} Community`);
+  if (parkingHighlight) {
+    highlights.push(parkingHighlight);
   }
   if (isRent) {
     highlights.push("Flexible Lease Terms");
@@ -279,7 +362,7 @@ function buildFaqs(isRent: boolean): FaqItem[] {
 function StatCard({
   icon: Icon, label, value, sub, delay = 0,
 }: {
-  icon: React.ElementType; label: string; value: string | number; sub?: string; delay?: number;
+  icon: React.ElementType; label: string; value: React.ReactNode; sub?: string; delay?: number;
 }) {
   return (
     <motion.div
@@ -444,6 +527,35 @@ export default function PropertyDetailClient({
 
   const isRent = listing.listingType === "Rent";
   const developerName = listing.developerName || listing.developer || fetchedDeveloper?.name || null;
+  const bedsBathsText = [
+    hasNonNegativeNumber(listing.bedrooms)
+      ? listing.bedrooms === 0
+        ? t("bedroomCount", { count: 0 })
+        : `${listing.bedrooms} ${t("bedsShort")}`
+      : null,
+    hasPositiveNumber(listing.bathrooms) ? `${listing.bathrooms} ${t("bathsShort")}` : null,
+  ].filter(Boolean).join(" • ");
+  const parkingText = (() => {
+    if (hasPositiveNumber(listing.parkingSpaces)) {
+      return t("parkingCount", { count: listing.parkingSpaces });
+    }
+
+    const rawParking = getNumericText(listing.parking);
+    if (rawParking && !/^(none|no|n\/a)$/i.test(rawParking)) {
+      const numericParking = Number(rawParking);
+      if (Number.isFinite(numericParking) && numericParking > 0) {
+        return t("parkingCount", { count: numericParking });
+      }
+
+      return rawParking;
+    }
+
+    const inferredParking = extractParkingFromDescription(listing.cleanDescription || listing.description);
+    if (typeof inferredParking === "number") {
+      return t("parkingCount", { count: inferredParking });
+    }
+    return inferredParking || null;
+  })();
 
   const availableFrom = (() => {
     const raw = listing.availableFrom;
@@ -454,7 +566,7 @@ export default function PropertyDetailClient({
   })();
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
-  const highlights = buildHighlights(listing);
+  const highlights = buildHighlights(listing, parkingText);
   const nearbyItems = buildNearby(listing.community);
   const faqs = buildFaqs(isRent);
   const hasMap = !!(listing.latitude && listing.longitude && listing.latitude !== 0 && listing.longitude !== 0);
@@ -629,13 +741,20 @@ export default function PropertyDetailClient({
                 delay={0.2}
               />
             )}
-            {(listing.bedrooms != null || listing.bathrooms != null) && (
+            {bedsBathsText && (
               <StatCard
                 icon={BedDouble}
                 label={t("bedsBaths")}
-                value={`${listing.bedrooms ?? "—"} / ${listing.bathrooms ?? "—"}`}
-                sub={`${listing.bedrooms ?? "—"} ${t("bedrooms")} · ${listing.bathrooms ?? "—"} ${t("bathrooms")}`}
+                value={bedsBathsText}
                 delay={0.25}
+              />
+            )}
+            {parkingText && (
+              <StatCard
+                icon={Car}
+                label={t("parking")}
+                value={parkingText}
+                delay={0.3}
               />
             )}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
@@ -691,15 +810,8 @@ export default function PropertyDetailClient({
               {activeTab === "overview" && (
                 <>
                   {/* Description */}
-                  {listing.cleanDescription && (() => {
-                    const decoded = listing.cleanDescription
-                      .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
-                      .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
-                      .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
-                      .replace(/&[a-z]+;/gi, " ");
-                    const sentences = decoded.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim().split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
-                    const paragraphs: string[] = [];
-                    for (let i = 0; i < sentences.length; i += 3) paragraphs.push(sentences.slice(i, i + 3).join(" "));
+                  {(listing.cleanDescription || listing.description) && (() => {
+                    const paragraphs = getDescriptionParagraphs(listing.cleanDescription || listing.description);
                     if (paragraphs.length === 0) return null;
                     const hasMore = paragraphs.length > 1;
                     return (
@@ -1296,16 +1408,19 @@ export default function PropertyDetailClient({
                     { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
                     { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
                     { label: t("ownershipLabel"), value: t("allNationalities") },
-                  ].filter((f): f is { label: string; value: string } => !!f.value).map(({ label, value }) => (
+                    parkingText
+                      ? { label: t("parking"), value: parkingText }
+                      : null,
+                  ].filter((f): f is { label: string; value: string } => !!f && !!f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>
                       <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
                     </div>
                   ))}
-                  {listing.sourceId && (
+                  {(listing.sourceId || listing.propertyId) && (
                     <div className="flex justify-between items-center py-3 text-sm">
                       <span className="text-muted-foreground">{t("refNumber")}</span>
-                      <span className="text-foreground font-semibold text-right select-all">{listing.sourceId}</span>
+                      <span className="text-foreground font-semibold text-right select-all">{listing.sourceId || listing.propertyId}</span>
                     </div>
                   )}
                 </div>

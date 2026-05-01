@@ -162,6 +162,32 @@ function Kpi({ label, value, valueNum, decimals, prefix, suffix, sub, icon: Icon
   );
 }
 
+function SignalCard({
+  label,
+  value,
+  sub,
+  tone = "neutral",
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  tone?: "neutral" | "up" | "down";
+}) {
+  const toneClass = tone === "up"
+    ? "text-emerald-600"
+    : tone === "down"
+    ? "text-red-600"
+    : "text-foreground";
+
+  return (
+    <div className="rounded-2xl border border-border/50 bg-card p-4 sm:p-5">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
+      <p className={`mt-2 text-xl sm:text-2xl font-bold ${toneClass}`}>{value}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
+    </div>
+  );
+}
+
 // ── FX Rate Ticker ─────────────────────────────────────────────────────────
 
 function FxRateTicker({ rates, oneAedLabel }: { rates: Record<string, number>; oneAedLabel: string }) {
@@ -327,6 +353,14 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
   const rates = marketData?.rates;
   const indicators = marketData?.indicators ?? {};
   const news = marketData?.news ?? [];
+  const latestTxMonth = txData?.monthly?.[txData.monthly.length - 1] ?? null;
+  const previousTxMonth = txData?.monthly && txData.monthly.length >= 2
+    ? txData.monthly[txData.monthly.length - 2]
+    : null;
+  const ppsfMomPct = latestTxMonth && previousTxMonth && previousTxMonth.avgPpsf > 0
+    ? ((latestTxMonth.avgPpsf - previousTxMonth.avgPpsf) / previousTxMonth.avgPpsf) * 100
+    : null;
+  const leadingArea = txData?.byArea?.[0] ?? null;
 
   const aedNum = parseFloat(aedAmount.replace(/,/g, "")) || 0;
 
@@ -369,12 +403,11 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
       const min = Math.min(...arr);
       return max === min ? 0.5 : (v - min) / (max - min);
     });
-    // Return up to 3 movers — use actual community ppsf but global MoM (best proxy without per-community time series)
+    // Return up to 3 communities using actual DLD ppsf and the latest market-wide MoM.
     return byArea.slice(0, 3).map((row, i) => ({
       area: row.area,
       ppsf: row.avgPpsf,
-      // Use slightly different MoM% per rank to avoid identical cards (±0.3% spread)
-      momPct: globalMomPct + (i === 0 ? 0 : i === 1 ? 0.3 : -0.2),
+      momPct: globalMomPct,
       sparkline,
     }));
   }, [txData]);
@@ -828,6 +861,36 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0 }}
+                  className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
+                >
+                  <SignalCard
+                    label={t("officialSource")}
+                    value={t("dldRegistry")}
+                    sub={t("dldRegistrySub")}
+                  />
+                  <SignalCard
+                    label={t("latestMonth")}
+                    value={latestTxMonth?.label ?? "—"}
+                    sub={latestTxMonth ? `${latestTxMonth.count.toLocaleString()} ${t("transactions").toLowerCase()}` : t("notEnoughData")}
+                  />
+                  <SignalCard
+                    label={t("ppsfMomentum")}
+                    value={ppsfMomPct == null ? "—" : `${ppsfMomPct >= 0 ? "+" : ""}${ppsfMomPct.toFixed(1)}%`}
+                    sub={latestTxMonth?.avgPpsf ? `AED ${latestTxMonth.avgPpsf.toLocaleString()} / sqft` : t("notEnoughData")}
+                    tone={ppsfMomPct == null ? "neutral" : ppsfMomPct >= 0 ? "up" : "down"}
+                  />
+                  <SignalCard
+                    label={t("leadingArea")}
+                    value={leadingArea?.area ?? "—"}
+                    sub={leadingArea ? `${leadingArea.count.toLocaleString()} ${t("transactions").toLowerCase()}` : t("notEnoughData")}
+                  />
+                </motion.section>
+
+                <motion.section
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.03 }}
                 >
                   <SectionHeader label={t("dldHeroLabel")} title={t("totalTxYtd")} titleItalic={t("ytdLabel")} />
                   <motion.div

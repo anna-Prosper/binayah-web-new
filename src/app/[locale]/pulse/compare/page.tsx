@@ -23,10 +23,8 @@ async function fetchJson(path: string) {
 }
 
 export default async function ComparePage() {
-  const [marketStats, marketData, communities, developers] = await Promise.all([
-    fetchJson("/api/market-stats"),
-    fetchJson("/api/market-data"),
-    fetchJson("/api/communities"),
+  const [dldAreas, developers] = await Promise.all([
+    fetchJson("/api/dld/areas?sortBy=totalSales&limit=100"),
     fetchJson("/api/developers"),
   ]);
 
@@ -35,9 +33,7 @@ export default async function ComparePage() {
       <Navbar />
       <PulseEmirateNav />
       <CompareClient
-        marketStats={marketStats}
-        marketData={marketData}
-        communities={communities}
+        dldAreas={dldAreas}
         developers={developers}
       />
       <Footer />
