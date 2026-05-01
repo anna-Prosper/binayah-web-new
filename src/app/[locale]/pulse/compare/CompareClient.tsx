@@ -91,6 +91,35 @@ const PRESETS: { id: string; nameKey: string; slugs: string[] }[] = [
   },
 ];
 
+// ── Area name normalization ────────────────────────────────────────────────
+// DLD stores area names in ALLCAPS raw format; community names use mixed-case
+// abbreviations. Normalize both sides to a canonical token for matching.
+
+const AREA_EXPANSIONS: Record<string, string> = {
+  jlt: "jumeirah lake towers",
+  "jumeirah lakes towers": "jumeirah lake towers",
+  jvc: "jumeirah village circle",
+  jvt: "jumeirah village triangle",
+  jbr: "jumeirah beach residence",
+  "mbr city": "mohammed bin rashid city",
+  "meydan": "mohammed bin rashid city",
+  "dlrc": "dubai land residence complex",
+  "dubai land residence complex (dlrc)": "dubai land residence complex",
+};
+
+function normalizeAreaName(s: string): string {
+  const lower = s.toLowerCase().replace(/\s+/g, " ").trim();
+  return AREA_EXPANSIONS[lower] ?? lower;
+}
+
+// For DLD area search: expand abbreviations so /api/dld/areas?q=X returns results.
+// E.g. "JLT" → "Jumeirah Lake Towers", "Business Bay" stays as-is.
+function dldSearchTerm(name: string): string {
+  const expanded = AREA_EXPANSIONS[name.toLowerCase().trim()];
+  if (expanded) return expanded.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  return name;
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const AED = (n: number) => {
@@ -228,15 +257,15 @@ export default function CompareClient({
   const priceByArea = marketStats?.priceByArea ?? [];
   const txByArea = marketData?.transactions?.byArea ?? [];
 
-  // Fetch DLD area data for selected communities not in the matrix or txByArea
+  // Fetch DLD area data for selected communities not resolved via txByArea
   useEffect(() => {
     if (mode !== "communities") return;
     for (const name of selected) {
-      const inMatrix = matrix.some((m) => m.area.toLowerCase() === name.toLowerCase());
-      const inTx = txByArea.some((a) => a.area.toLowerCase() === name.toLowerCase());
-      if (inMatrix && inTx) continue;
+      const inTx = txByArea.some((a) => normalizeAreaName(a.area) === normalizeAreaName(name));
+      if (inTx) continue; // tx already has data, skip DLD area fetch
       if (dldAreaCache[name] !== undefined) continue; // already fetched (null = not found)
-      fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(name)}&limit=1`))
+      const searchQ = dldSearchTerm(name);
+      fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(searchQ)}&limit=1`))
         .then((r) => r.ok ? r.json() : { results: [] })
         .then((data: { results?: { avgPpsf?: number; totalSales?: number }[] }) => {
           const area = data.results?.[0];
@@ -247,13 +276,14 @@ export default function CompareClient({
         })
         .catch(() => setDldAreaCache((prev) => ({ ...prev, [name]: null })));
     }
-  }, [selected, matrix, txByArea, dldAreaCache, mode]);
+  }, [selected, txByArea, dldAreaCache, mode]);
 
   const getCommunityData = (name: string) => {
-    const mat = matrix.find((m) => m.area.toLowerCase() === name.toLowerCase());
-    const yld = yieldByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
-    const pr = priceByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
-    const tx = txByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
+    const normName = normalizeAreaName(name);
+    const mat = matrix.find((m) => normalizeAreaName(m.area) === normName);
+    const yld = yieldByArea.find((a) => normalizeAreaName(a.area) === normName);
+    const pr = priceByArea.find((a) => normalizeAreaName(a.area) === normName);
+    const tx = txByArea.find((a) => normalizeAreaName(a.area) === normName);
     const dld = dldAreaCache[name];
     return {
       ppsf: mat?.avgPricePerSqft ?? pr?.price ?? tx?.avgPpsf ?? dld?.avgPpsf ?? 0,
