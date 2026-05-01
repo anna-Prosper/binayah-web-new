@@ -1937,7 +1937,8 @@
     "bldAvgPpsf": "平均迪拉姆/平方英尺",
     "bldAvgDeal": "平均成交金额",
     "bldMasterProject": "主要项目",
-    "bldArea": "区域"
+    "bldArea": "区域",
+    "noDataAvailable": "No data in our system yet"
   },
   "pulseCalculator": {
     "label": "投资工具",

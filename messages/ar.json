@@ -1931,7 +1931,8 @@
     "bldAvgPpsf": "متوسط درهم/قدم مربع",
     "bldAvgDeal": "متوسط حجم الصفقة",
     "bldMasterProject": "المشروع الرئيسي",
-    "bldArea": "المنطقة"
+    "bldArea": "المنطقة",
+    "noDataAvailable": "No data in our system yet"
   },
   "pulseCalculator": {
     "label": "أداة الاستثمار",

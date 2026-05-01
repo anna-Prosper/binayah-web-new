@@ -1931,7 +1931,8 @@
     "bldAvgPpsf": "Средняя цена AED/кв.фут",
     "bldAvgDeal": "Средняя сумма сделки",
     "bldMasterProject": "Генеральный проект",
-    "bldArea": "Район"
+    "bldArea": "Район",
+    "noDataAvailable": "No data in our system yet"
   },
   "pulseCalculator": {
     "label": "Инвестиционный инструмент",

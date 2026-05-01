@@ -683,6 +683,8 @@ function CommunityTable({
   t: ReturnType<typeof useTranslations<"pulseCompare">>;
 }) {
   const rows = selected.map(getData);
+  // A community has no data if every metric is 0/null
+  const hasData = rows.map((r) => r.ppsf > 0 || r.yield > 0 || r.volume > 0 || r.score > 0);
 
   const ppsfVals = rows.map((r) => r.ppsf);
   const yieldVals = rows.map((r) => r.yield);
@@ -696,9 +698,16 @@ function CommunityTable({
           <thead>
             <tr className="border-b border-border/50 bg-muted/30">
               <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground w-40">{t("metric")}</th>
-              {selected.map((name) => (
+              {selected.map((name, i) => (
                 <th key={name} className="px-4 py-3 text-right text-xs font-bold text-foreground">
-                  {name}
+                  <div className="flex flex-col items-end gap-0.5">
+                    <span>{name}</span>
+                    {!hasData[i] && (
+                      <span className="text-[9px] font-normal text-muted-foreground/60 bg-muted/40 px-1.5 py-0.5 rounded">
+                        {t("noDataAvailable")}
+                      </span>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>

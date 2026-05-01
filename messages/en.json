@@ -1931,7 +1931,8 @@
     "bldAvgPpsf": "Avg AED/sqft",
     "bldAvgDeal": "Avg deal size",
     "bldMasterProject": "Master project",
-    "bldArea": "Area"
+    "bldArea": "Area",
+    "noDataAvailable": "No data in our system yet"
   },
   "pulseCalculator": {
     "label": "Investment Tool",
