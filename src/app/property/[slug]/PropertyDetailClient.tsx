@@ -575,7 +575,7 @@ export default function PropertyDetailClient({
   // Only truly universal Dubai default; type-specific extras added contextually
   const defaultAmenities = [
     "24/7 Security",
-    ...(isVillaType ? ["Swimming Pool", "Children's Play Area", "Landscaped Gardens", "BBQ Area"] : []),
+    ...(isVillaType ? ["Swimming Pool", "Parking", "BBQ Area"] : []),
     ...(isApartmentType ? ["Swimming Pool", "Gymnasium", "Covered Parking"] : []),
   ];
   const realAmenities = (listing.features || []).filter(f => !NON_AMENITY.test(f.trim()));
