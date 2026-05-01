@@ -46,6 +46,7 @@ interface Developer {
   name: string;
   slug: string;
   totalProjects?: number;
+  projectCount?: number;    // API alias — use totalProjects ?? projectCount
   offPlanCount?: number;
   communities?: string[];
 }
@@ -107,6 +108,8 @@ const AREA_EXPANSIONS: Record<string, string> = {
   meydan: "mohammed bin rashid",
   dlrc: "dubai land residence complex",
   "dubai land residence complex (dlrc)": "dubai land residence complex",
+  "downtown dubai": "downtown",  // DLD may index this area differently
+  "creek harbour": "creek",
 };
 
 function normalizeAreaName(s: string): string {
@@ -659,7 +662,8 @@ function DeveloperTable({
 }) {
   const rows = selected.map(getData);
 
-  const totalProjects = rows.map((r) => r?.totalProjects ?? 0);
+  // Use totalProjects ?? projectCount as fallback for API field name change
+  const totalProjects = rows.map((r) => r?.totalProjects ?? r?.projectCount ?? 0);
   const offPlanCounts = rows.map((r) => r?.offPlanCount ?? 0);
 
   return (
