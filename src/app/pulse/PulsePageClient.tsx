@@ -57,7 +57,9 @@ interface MarketData {
     monthly: { label: string; count: number; totalValue: number; avgPrice: number; avgPpsf: number }[];
     byArea: { area: string; count: number; totalValue: number; avgPrice: number; avgPpsf: number }[];
     byType: { type: string; count: number; totalValue: number }[];
+    byOffPlan?: { isOffPlan: boolean; count: number; totalValue: number }[];
   } | null;
+  dldOffPlanSplit?: { offPlan: number; ready: number; offPlanPct: number } | null;
 }
 
 type SortKey = keyof Pick<CommunityStats, "area" | "avgPricePerSqft" | "rentalYield" | "totalListings" | "investmentScore" | "avgSalePrice">;
@@ -373,8 +375,20 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
     (areasData?.results?.[0] as { area?: string } | undefined)?.area ??
     null;
 
-  // Off-plan share from DLD byType data (falls back to marketStats listing-based share)
+  // Off-plan share — priority: live DLD API split → byOffPlan from stored transactions → byType → listing share
   const overviewOffPlanPct = useMemo(() => {
+    // 1. Live DLD API off-plan split (most accurate — previous full month)
+    if (marketData?.dldOffPlanSplit?.offPlanPct != null && marketData.dldOffPlanSplit.offPlanPct > 0) {
+      return marketData.dldOffPlanSplit.offPlanPct;
+    }
+    // 2. Stored DldTransaction.isOffPlan field (populated when import re-runs)
+    const byOffPlan = txData?.byOffPlan ?? [];
+    if (byOffPlan.length > 0) {
+      const total = byOffPlan.reduce((s, b) => s + b.count, 0);
+      const offPlanCount = byOffPlan.filter(b => b.isOffPlan).reduce((s, b) => s + b.count, 0);
+      if (total > 0) return Math.round((offPlanCount / total) * 100);
+    }
+    // 3. byType names (rarely has off-plan label but worth checking)
     const byType = txData?.byType ?? [];
     if (byType.length > 0) {
       const total = byType.reduce((s, bt) => s + bt.count, 0);
@@ -382,12 +396,12 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
         const offPlanCount = byType
           .filter(bt => /off.?plan/i.test(bt.type))
           .reduce((s, bt) => s + bt.count, 0);
-        return Math.round((offPlanCount / total) * 100);
+        if (offPlanCount > 0) return Math.round((offPlanCount / total) * 100);
       }
     }
-    // Fallback: use marketStats listing-based share
-    return marketStats?.summary.offPlanShare ?? 0;
-  }, [txData, marketStats]);
+    // 4. Fallback: listing-based (97% from Binayah's off-plan focused inventory — not a market metric)
+    return 0; // return 0 so we don't show the misleading 97% chip
+  }, [marketData, txData, marketStats]);
 
   // Quick ticker movers — top 3 communities by MoM% from DLD monthly data
   const overviewMovers = useMemo(() => {
@@ -568,9 +582,9 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                 />
                 <Kpi
                   label={t("kpiOffPlanShare")}
-                  valueNum={marketStats.summary.offPlanShare}
+                  valueNum={marketData?.dldOffPlanSplit?.offPlanPct ?? marketStats.summary.offPlanShare}
                   suffix="%"
-                  sub={t("kpiOfTotalInventory")}
+                  sub={marketData?.dldOffPlanSplit ? t("kpiDldTransactions") : t("kpiOfTotalInventory")}
                   icon={TrendingUp}
                 />
               </motion.div>

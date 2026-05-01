@@ -1259,7 +1259,8 @@
     "latestMonth": "Latest month",
     "ppsfMomentum": "PPSF momentum",
     "leadingArea": "Leading area",
-    "indicatorsLoading": "UAE economic indicators are being refreshed. Check back shortly."
+    "indicatorsLoading": "UAE economic indicators are being refreshed. Check back shortly.",
+    "kpiDldTransactions": "DLD transaction data"
   },
   "services": {
     "heroLabel": "ما نقدمه",
