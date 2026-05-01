@@ -53,6 +53,30 @@ interface Project {
   slug?: string;
 }
 
+interface CommunityStats {
+  area: string;
+  avgPricePerSqft: number;
+  rentalYield: number;
+  investmentScore: number;
+  totalListings: number;
+  offPlanCount: number;
+  avgSalePrice: number;
+}
+
+interface MarketStats {
+  communityMatrix: CommunityStats[];
+  summary: { avgPricePerSqft: number; avgYield: number; offPlanShare: number };
+  yieldByArea: { area: string; yield: number; avgRent: number; avgSale: number }[];
+}
+
+interface BinayahArticle {
+  title: string;
+  slug: string;
+  excerpt: string;
+  featuredImage: string;
+  publishedAt: string;
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const AED = (n: number) => {
@@ -66,9 +90,13 @@ const AED = (n: number) => {
 export default function TrendingClient({
   marketData,
   projects,
+  marketStats,
+  binayahNews,
 }: {
   marketData: MarketData | null;
   projects: Project[] | null;
+  marketStats: MarketStats | null;
+  binayahNews: BinayahArticle[] | null;
 }) {
   const t = useTranslations("pulseTrending");
   const [copied, setCopied] = useState(false);
@@ -82,13 +110,9 @@ export default function TrendingClient({
   const movers = useMemo(() => {
     if (monthly.length < 2) return { risers: [], fallers: [] };
 
-    // Compute per-area MoM from byArea: compare most recent two data points
-    // We only have monthly totals — use monthly avgPpsf as the "market" mover
-    // and byArea deltas where possible. For now: derive from monthly entries.
     const valid = monthly.filter((m) => m.avgPpsf > 0);
     if (valid.length < 2) return { risers: [], fallers: [] };
 
-    // Build changes between consecutive months
     const changes: { label: string; prev: number; curr: number; changePct: number }[] = [];
     for (let i = 1; i < valid.length; i++) {
       const prev = valid[i - 1];
@@ -103,19 +127,11 @@ export default function TrendingClient({
       }
     }
 
-    // Also compute byArea changes if available (last vs second-last monthly)
-    const byAreaRisers: { label: string; prev: number; curr: number; changePct: number }[] = [];
-    const byAreaFallers: { label: string; prev: number; curr: number; changePct: number }[] = [];
-
-    // Take most recent monthly change and attach area-level context
     const byArea = txData?.byArea ?? [];
     byArea.forEach((area) => {
-      // We don't have time-series by area, so we can't compute MoM per area.
-      // Instead, show areas sorted by avgPpsf as "leaders" in a separate section.
       void area;
     });
 
-    // Sort by absolute change
     const sorted = [...changes].sort((a, b) => Math.abs(b.changePct) - Math.abs(a.changePct));
     const risers = sorted.filter((c) => c.changePct > 0).slice(0, 5);
     const fallers = sorted.filter((c) => c.changePct < 0).slice(0, 5);
@@ -130,21 +146,66 @@ export default function TrendingClient({
     return allProjects
       .filter((p) => {
         const dateStr = p.launchDate ?? p.createdAt;
-        if (!dateStr) return true; // include if no date — can't filter
+        if (!dateStr) return true;
         return now - new Date(dateStr).getTime() <= thirty;
       })
       .slice(0, 6);
   }, [allProjects]);
 
-  // ── Featured insight: first news item with imageUrl ───────────────────
-  const featuredNews = news.find((n) => n.imageUrl) ?? news[0] ?? null;
+  // ── Market stats derived data ──────────────────────────────────────────
+  const matrix = marketStats?.communityMatrix ?? [];
+
+  // Yield champions — top 5 communities by rental yield (>0)
+  const yieldChampions = useMemo(() =>
+    [...matrix]
+      .filter((c) => c.rentalYield > 0 && c.avgSalePrice > 0)
+      .sort((a, b) => b.rentalYield - a.rentalYield)
+      .slice(0, 5),
+  [matrix]);
+
+  // Best value — high investment score relative to price
+  const bestValue = useMemo(() =>
+    [...matrix]
+      .filter((c) => c.investmentScore > 0 && c.avgPricePerSqft > 0)
+      .sort((a, b) => {
+        const maxPpsf = Math.max(...matrix.map(x => x.avgPricePerSqft), 1);
+        const aVal = a.investmentScore * (1 - a.avgPricePerSqft / maxPpsf);
+        const bVal = b.investmentScore * (1 - b.avgPricePerSqft / maxPpsf);
+        return bVal - aVal;
+      })
+      .slice(0, 5),
+  [matrix]);
+
+  // Off-plan hotspots — most active off-plan areas
+  const offPlanHotspots = useMemo(() =>
+    [...matrix]
+      .filter((c) => c.offPlanCount > 0)
+      .sort((a, b) => b.offPlanCount - a.offPlanCount)
+      .slice(0, 6),
+  [matrix]);
+
+  // DLD activity leaders — top areas by transaction count from byArea
+  const activityLeaders = txData?.byArea?.slice(0, 6) ?? [];
+
+  // Featured Binayah article
+  const featuredBinayah = binayahNews?.[0] ?? null;
+
+  // ── Featured insight: use Binayah article if available ──────────────
+  const featuredNews = featuredBinayah
+    ? {
+        title: featuredBinayah.title,
+        url: `/news/${featuredBinayah.slug}`,
+        source: "Binayah",
+        summary: featuredBinayah.excerpt ?? "",
+        imageUrl: featuredBinayah.featuredImage ?? "",
+        publishedAt: featuredBinayah.publishedAt ?? new Date().toISOString(),
+      }
+    : (news.find((n) => n.imageUrl) ?? news[0] ?? null);
 
   // ── Weekly summary: latest monthly entry ─────────────────────────────
   const latest = monthly[monthly.length - 1] ?? null;
 
   // ── Share ─────────────────────────────────────────────────────────────
-  // Defer window-derived baseUrl to post-mount so SSR + first client render
-  // produce the same DOM (no hydration mismatch).
   const [baseUrl, setBaseUrl] = useState("https://staging.binayahhub.com/pulse/trending");
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -229,7 +290,7 @@ export default function TrendingClient({
         <SectionHeader label={t("moversLabel")} title={t("moversTitle")} titleItalic={t("moversItalic")} />
 
         {!txData?.hasData || monthly.length < 2 || (movers.risers.length === 0 && movers.fallers.length === 0) ? (
-          null // hide entire movers block when no meaningful data
+          null
         ) : (
           <>
             <div className="grid sm:grid-cols-2 gap-6">
@@ -300,13 +361,136 @@ export default function TrendingClient({
         )}
       </motion.section>
 
+      {/* ── Yield Champions ───────────────────────────────────────── */}
+      {yieldChampions.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.09 }}
+        >
+          <SectionHeader label="RENTAL YIELD" title="Yield" titleItalic="Champions" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {yieldChampions.map((c, i) => (
+              <div key={c.area} className="bg-card border border-border/50 rounded-xl p-4 hover:border-accent/30 hover:shadow-sm transition-all">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold flex items-center justify-center">{i + 1}</div>
+                    <p className="font-semibold text-sm text-foreground">{c.area}</p>
+                  </div>
+                  <span className="text-lg font-bold text-emerald-600">{c.rentalYield}%</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs mt-3">
+                  <div><p className="text-muted-foreground">{"Avg Sale"}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice) : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{"Price/sqft"}</p><p className="font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* ── Best Value Areas ──────────────────────────────────────── */}
+      {bestValue.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+        >
+          <SectionHeader label="INVESTMENT" title="Best Value" titleItalic="Areas" />
+          <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/50 bg-muted/30">
+                  {["Community", "Score", "Price/sqft", "Yield"].map((col, i) => (
+                    <th key={i} className={`px-4 py-3 text-xs font-semibold text-muted-foreground ${i === 0 ? "text-left" : "text-right"}`}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bestValue.map((c, i) => (
+                  <tr key={c.area} className="border-b border-border/30 last:border-0 hover:bg-muted/20 transition-colors">
+                    <td className="px-4 py-3 font-medium text-foreground">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground w-4">{i + 1}</span>
+                        {c.area}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${c.investmentScore >= 70 ? "bg-emerald-100 text-emerald-700" : c.investmentScore >= 45 ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500"}`}>{c.investmentScore}/100</span>
+                    </td>
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</td>
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.section>
+      )}
+
+      {/* ── DLD Activity Leaders ──────────────────────────────────── */}
+      {activityLeaders.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.11 }}
+        >
+          <SectionHeader label="DLD DATA" title="Transaction" titleItalic="Hotspots" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {activityLeaders.map((area, i) => (
+              <div key={area.area} className="bg-card border border-border/50 rounded-xl p-4 hover:border-accent/30 transition-all">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground w-4">{i + 1}</span>
+                    <p className="font-semibold text-sm text-foreground leading-tight">{area.area}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-xs mt-3">
+                  <div><p className="text-muted-foreground">{"Sales"}</p><p className="font-bold text-foreground">{area.count.toLocaleString()}</p></div>
+                  <div><p className="text-muted-foreground">{"Avg Price"}</p><p className="font-semibold text-foreground">{area.avgPrice > 0 ? AED(area.avgPrice) : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{"AED/sqft"}</p><p className="font-semibold text-foreground">{area.avgPpsf > 0 ? area.avgPpsf.toLocaleString() : "—"}</p></div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-2">{"Source: Dubai Land Department transaction data"}</p>
+        </motion.section>
+      )}
+
+      {/* ── Off-Plan Hotspots ─────────────────────────────────────── */}
+      {offPlanHotspots.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.12 }}
+        >
+          <SectionHeader label="DEVELOPMENT" title="Off-Plan" titleItalic="Hotspots" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {offPlanHotspots.map((c, i) => (
+              <div key={c.area} className="bg-card border border-border/50 rounded-xl p-3 text-center hover:border-accent/30 transition-all">
+                <div className="text-xl font-bold text-primary mb-0.5">{c.offPlanCount}</div>
+                <div className="text-[10px] text-muted-foreground font-medium mb-1">{"projects"}</div>
+                <div className="text-xs font-semibold text-foreground leading-tight">{c.area}</div>
+                {c.avgPricePerSqft > 0 && (
+                  <div className="text-[10px] text-accent mt-1">{`AED ${c.avgPricePerSqft.toLocaleString()}/sqft`}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
       {/* ── Featured Insight ─────────────────────────────────────── */}
       {featuredNews && (
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.13 }}
         >
           <SectionHeader label={t("insightLabel")} title={t("insightTitle")} titleItalic={t("insightItalic")} />
           <a

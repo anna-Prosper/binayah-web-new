@@ -23,16 +23,18 @@ async function fetchJson(path: string) {
 }
 
 export default async function TrendingPage() {
-  const [marketData, projects] = await Promise.all([
+  const [marketData, projects, marketStats, binayahNews] = await Promise.all([
     fetchJson("/api/market-data"),
     fetchJson("/api/projects?status=Off-Plan&limit=20"),
+    fetchJson("/api/market-stats"),
+    fetchJson("/api/news?limit=6"),
   ]);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <PulseEmirateNav />
-      <TrendingClient marketData={marketData} projects={projects} />
+      <TrendingClient marketData={marketData} projects={projects} marketStats={marketStats} binayahNews={binayahNews} />
       <Footer />
       <WhatsAppButton />
     </div>

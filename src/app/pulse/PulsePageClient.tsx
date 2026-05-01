@@ -290,6 +290,9 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
   const [aedAmount, setAedAmount] = useState("1000000");
   const [topBuildings, setTopBuildings] = useState<DldBuilding[]>([]);
   const [topBuildingsLoading, setTopBuildingsLoading] = useState(true);
+  const [drawerCommunity, setDrawerCommunity] = useState<string | null>(null);
+  const [drawerBuildings, setDrawerBuildings] = useState<{ name: string; area: string; sales: number; avgPpsf: number; units: number }[]>([]);
+  const [drawerLoading, setDrawerLoading] = useState(false);
 
   useEffect(() => {
     fetch(apiUrl("/api/dld/buildings?sortBy=sales&order=desc&limit=10"))
@@ -300,6 +303,19 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
       .catch(() => setTopBuildings([]))
       .finally(() => setTopBuildingsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!drawerCommunity) return;
+    setDrawerLoading(true);
+    setDrawerBuildings([]);
+    fetch(apiUrl(`/api/dld/buildings?area=${encodeURIComponent(drawerCommunity)}&sortBy=sales&order=desc&limit=5`))
+      .then((r) => r.ok ? r.json() : { results: [] })
+      .then((data: { results?: { name: string; area: string; sales: number; avgPpsf: number; units: number }[] }) => {
+        setDrawerBuildings(Array.isArray(data.results) ? data.results : []);
+      })
+      .catch(() => setDrawerBuildings([]))
+      .finally(() => setDrawerLoading(false));
+  }, [drawerCommunity]);
 
   const matrix = marketStats?.communityMatrix ?? [];
 
@@ -822,6 +838,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                 <div className="flex items-center gap-1.5">{col.label}<SortIcon k={col.key} /></div>
                               </th>
                             ))}
+                            <th className="px-4 py-3 text-xs font-semibold text-muted-foreground text-left"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -844,6 +861,14 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                 </div>
                               </td>
                               <td className="px-4 py-3"><ScoreBadge score={c.investmentScore} /></td>
+                              <td className="px-4 py-3">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setDrawerCommunity(c.area); }}
+                                  className="text-[10px] font-medium text-accent hover:underline"
+                                >
+                                  {"Details →"}
+                                </button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1409,6 +1434,89 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
         {t("dataAttribution")}{" "}
         <Link href="/contact" className="underline hover:text-foreground">{t("contactUs")}</Link>{" "}{t("forFullReports")}
       </p>
+
+      {/* ── Community Deep-Dive Drawer ─────────────────────────────────── */}
+      {drawerCommunity && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+          onClick={() => setDrawerCommunity(null)}
+        >
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            className="relative bg-card rounded-t-3xl sm:rounded-2xl w-full sm:max-w-lg max-h-[80vh] overflow-y-auto p-6 shadow-2xl border border-border/50"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mb-0.5">{"Community"}</p>
+                <h2 className="text-xl font-bold text-foreground">{drawerCommunity}</h2>
+              </div>
+              <button onClick={() => setDrawerCommunity(null)} className="text-muted-foreground hover:text-foreground text-lg leading-none">×</button>
+            </div>
+
+            {/* Stats from matrix */}
+            {(() => {
+              const comm = matrix.find((c) => c.area === drawerCommunity);
+              if (!comm) return null;
+              return (
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  {[
+                    { label: "Price / sqft", value: comm.avgPricePerSqft > 0 ? `AED ${comm.avgPricePerSqft.toLocaleString()}` : "—" },
+                    { label: "Rental Yield", value: comm.rentalYield > 0 ? `${comm.rentalYield}%` : "—" },
+                    { label: "Investment Score", value: comm.investmentScore > 0 ? `${comm.investmentScore}/100` : "—" },
+                    { label: "Off-Plan", value: `${comm.offPlanCount} of ${comm.totalListings}` },
+                  ].map((item) => (
+                    <div key={item.label} className="bg-muted/30 rounded-xl p-3">
+                      <p className="text-[10px] text-muted-foreground mb-0.5">{item.label}</p>
+                      <p className="text-base font-bold text-foreground">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+
+            {/* Top Buildings from DLD */}
+            <div>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{"Top Buildings (DLD)"}</p>
+              {drawerLoading ? (
+                <div className="space-y-2">
+                  {[1,2,3].map((i) => <div key={i} className="h-12 bg-muted/30 rounded-xl animate-pulse" />)}
+                </div>
+              ) : drawerBuildings.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{"No DLD building data for this area."}</p>
+              ) : (
+                <div className="space-y-2">
+                  {drawerBuildings.map((b, i) => (
+                    <div key={b.name} className="flex items-center justify-between bg-muted/20 rounded-xl px-3 py-2.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-xs text-muted-foreground w-4 flex-shrink-0">{i + 1}</span>
+                        <span className="text-sm font-medium text-foreground truncate">{b.name}</span>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2">
+                        <p className="text-xs font-semibold text-foreground">{`${b.sales} sales`}</p>
+                        {b.avgPpsf > 0 && <p className="text-[10px] text-muted-foreground">{`AED ${Math.round(b.avgPpsf / 10.764).toLocaleString()}/sqft`}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-5 pt-4 border-t border-border/30">
+              <Link
+                href={`/pulse/compare?community=${encodeURIComponent(drawerCommunity)}`}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+              >
+                {"Compare with other communities →"}
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

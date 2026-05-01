@@ -319,7 +319,7 @@ export default function CompareClient({
           const area = data.results?.[0];
           setDldAreaCache((prev) => ({
             ...prev,
-            [name]: area ? { avgPpsf: area.avgPpsf ?? 0, totalSales: area.totalSales ?? 0 } : null,
+            [name]: area ? { avgPpsf: area.avgPpsf ? Math.round(area.avgPpsf / 10.764) : 0, totalSales: area.totalSales ?? 0 } : null,
           }));
         })
         .catch(() => setDldAreaCache((prev) => ({ ...prev, [name]: null })));
