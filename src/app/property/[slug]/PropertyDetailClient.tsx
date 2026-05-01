@@ -155,6 +155,27 @@ function getDescriptionParagraphs(description?: string) {
   return grouped;
 }
 
+function extractParkingFromDescription(description?: string) {
+  if (!description) return null;
+
+  const text = decodeDescriptionText(description).replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
+  const digitMatch = text.match(/\b(\d+)\s+(?:private\s+)?(?:parking|car\s+park|garage)(?:\s+(?:space|spaces|bay|bays))?\b/i);
+  if (digitMatch) return Number(digitMatch[1]);
+
+  const wordNumbers: Record<string, number> = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+  };
+  const wordMatch = text.match(/\b(one|two|three|four|five|six)\s+(?:private\s+)?(?:parking|car\s+park|garage)(?:\s+(?:space|spaces|bay|bays))?\b/i);
+  if (wordMatch) return wordNumbers[wordMatch[1].toLowerCase()];
+
+  return /\bsecure parking\b/i.test(text) ? "Secure Parking" : null;
+}
+
 // ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
 function amenityIcon(label: string): React.ElementType {
   const l = label.toLowerCase();
@@ -247,7 +268,7 @@ function buildNearby(community?: string): NearbyItem[] {
 }
 
 // ── Context-aware key highlights ──────────────────────────────────────────────
-function buildHighlights(listing: Listing): string[] {
+function buildHighlights(listing: Listing, parkingHighlight?: string | null): string[] {
   const highlights: string[] = [];
   const isRent = listing.listingType === "Rent";
 
@@ -258,8 +279,8 @@ function buildHighlights(listing: Listing): string[] {
   if (listing.size) {
     highlights.push(`${listing.size.toLocaleString()} sqft (${sqftToSqm(listing.size)})`);
   }
-  if (listing.community) {
-    highlights.push(`${listing.community} Community`);
+  if (parkingHighlight) {
+    highlights.push(parkingHighlight);
   }
   if (isRent) {
     highlights.push("Flexible Lease Terms");
@@ -506,26 +527,34 @@ export default function PropertyDetailClient({
 
   const isRent = listing.listingType === "Rent";
   const developerName = listing.developerName || listing.developer || fetchedDeveloper?.name || null;
-  const bedroomText = hasNonNegativeNumber(listing.bedrooms)
-    ? t("bedroomCount", { count: listing.bedrooms })
-    : null;
-  const bathroomText = hasPositiveNumber(listing.bathrooms)
-    ? t("bathroomCount", { count: listing.bathrooms })
-    : null;
+  const bedsBathsText = [
+    hasNonNegativeNumber(listing.bedrooms)
+      ? listing.bedrooms === 0
+        ? t("bedroomCount", { count: 0 })
+        : `${listing.bedrooms} ${t("bedsShort")}`
+      : null,
+    hasPositiveNumber(listing.bathrooms) ? `${listing.bathrooms} ${t("bathsShort")}` : null,
+  ].filter(Boolean).join(" • ");
   const parkingText = (() => {
     if (hasPositiveNumber(listing.parkingSpaces)) {
       return t("parkingCount", { count: listing.parkingSpaces });
     }
 
     const rawParking = getNumericText(listing.parking);
-    if (!rawParking || /^(none|no|n\/a)$/i.test(rawParking)) return null;
+    if (rawParking && !/^(none|no|n\/a)$/i.test(rawParking)) {
+      const numericParking = Number(rawParking);
+      if (Number.isFinite(numericParking) && numericParking > 0) {
+        return t("parkingCount", { count: numericParking });
+      }
 
-    const numericParking = Number(rawParking);
-    if (Number.isFinite(numericParking) && numericParking > 0) {
-      return t("parkingCount", { count: numericParking });
+      return rawParking;
     }
 
-    return rawParking;
+    const inferredParking = extractParkingFromDescription(listing.cleanDescription || listing.description);
+    if (typeof inferredParking === "number") {
+      return t("parkingCount", { count: inferredParking });
+    }
+    return inferredParking || null;
   })();
 
   const availableFrom = (() => {
@@ -537,7 +566,7 @@ export default function PropertyDetailClient({
   })();
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
-  const highlights = buildHighlights(listing);
+  const highlights = buildHighlights(listing, parkingText);
   const nearbyItems = buildNearby(listing.community);
   const faqs = buildFaqs(isRent);
   const hasMap = !!(listing.latitude && listing.longitude && listing.latitude !== 0 && listing.longitude !== 0);
@@ -712,16 +741,11 @@ export default function PropertyDetailClient({
                 delay={0.2}
               />
             )}
-            {(bedroomText || bathroomText) && (
+            {bedsBathsText && (
               <StatCard
                 icon={BedDouble}
-                label={t("bedroomsBathrooms")}
-                value={
-                  <span className="flex flex-col gap-0.5">
-                    {bedroomText && <span>{bedroomText}</span>}
-                    {bathroomText && <span>{bathroomText}</span>}
-                  </span>
-                }
+                label={t("bedsBaths")}
+                value={bedsBathsText}
                 delay={0.25}
               />
             )}
