@@ -228,63 +228,53 @@ export default function TrendingClient({
       >
         <SectionHeader label={t("moversLabel")} title={t("moversTitle")} titleItalic={t("moversItalic")} />
 
-        {!txData?.hasData ? (
-          <div className="bg-muted/30 border border-border/30 rounded-2xl p-8 text-center">
-            <RefreshCw className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-muted-foreground">{t("buildingData")}</p>
-          </div>
-        ) : monthly.length < 2 ? (
-          <div className="bg-muted/30 border border-border/30 rounded-2xl p-8 text-center">
-            <BarChart3 className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-muted-foreground">{t("notEnoughMonths")}</p>
-          </div>
+        {!txData?.hasData || monthly.length < 2 || (movers.risers.length === 0 && movers.fallers.length === 0) ? (
+          null // hide entire movers block when no meaningful data
         ) : (
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-sm font-bold text-emerald-700 flex items-center gap-2 mb-3">
-                <TrendingUp className="h-4 w-4" /> {t("risers")}
-              </h3>
-              {movers.risers.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("noMovers")}</p>
-              ) : (
-                <div className="space-y-2">
-                  {movers.risers.map((r, i) => (
-                    <MoverRow
-                      key={i}
-                      label={r.label}
-                      ppsf={r.curr}
-                      changePct={r.changePct}
-                      isRiser
-                      t={t}
-                    />
-                  ))}
+          <>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {movers.risers.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-bold text-emerald-700 flex items-center gap-2 mb-3">
+                    <TrendingUp className="h-4 w-4" /> {t("risers")}
+                  </h3>
+                  <div className="space-y-2">
+                    {movers.risers.map((r, i) => (
+                      <MoverRow
+                        key={i}
+                        label={r.label}
+                        ppsf={r.curr}
+                        changePct={r.changePct}
+                        isRiser
+                        t={t}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {movers.fallers.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-bold text-red-600 flex items-center gap-2 mb-3">
+                    <TrendingDown className="h-4 w-4" /> {t("fallers")}
+                  </h3>
+                  <div className="space-y-2">
+                    {movers.fallers.map((r, i) => (
+                      <MoverRow
+                        key={i}
+                        label={r.label}
+                        ppsf={r.curr}
+                        changePct={r.changePct}
+                        isRiser={false}
+                        t={t}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-red-600 flex items-center gap-2 mb-3">
-                <TrendingDown className="h-4 w-4" /> {t("fallers")}
-              </h3>
-              {movers.fallers.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("noMovers")}</p>
-              ) : (
-                <div className="space-y-2">
-                  {movers.fallers.map((r, i) => (
-                    <MoverRow
-                      key={i}
-                      label={r.label}
-                      ppsf={r.curr}
-                      changePct={r.changePct}
-                      isRiser={false}
-                      t={t}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+            <p className="text-[10px] text-muted-foreground mt-3">{t("moversNote")}</p>
+          </>
         )}
-        <p className="text-[10px] text-muted-foreground mt-3">{t("moversNote")}</p>
       </motion.section>
 
       {/* ── New Launches ─────────────────────────────────────────── */}

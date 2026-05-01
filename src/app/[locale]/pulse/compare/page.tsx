@@ -27,7 +27,7 @@ export default async function ComparePage() {
     fetchJson("/api/market-stats"),
     fetchJson("/api/market-data"),
     fetchJson("/api/communities"),
-    fetchJson("/api/developers"),
+    fetchJson("/api/developers?limit=200"),
   ]);
 
   return (

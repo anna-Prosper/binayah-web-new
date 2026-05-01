@@ -434,6 +434,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
   }, [binayahNews, news]);
 
   // Mixed news: Binayah articles first (skip first, used as featured), then external
+  // News section: always from Binayah only (skip external news)
   const mixedNews = useMemo(() => {
     const binayahAsNews = (binayahNews ?? []).slice(1).map(ba => ({
       title: ba.title,
@@ -443,8 +444,8 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
       imageUrl: ba.featuredImage ?? "",
       publishedAt: ba.publishedAt ?? "",
     }));
-    return [...binayahAsNews, ...news].slice(0, 9) as InsightArticle[];
-  }, [binayahNews, news]);
+    return binayahAsNews.slice(0, 9) as InsightArticle[];
+  }, [binayahNews]);
 
   const MAIN_TABS: { id: MainTab; label: string }[] = [
     { id: "market", label: t("tabMarket") },

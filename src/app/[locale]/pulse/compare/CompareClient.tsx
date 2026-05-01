@@ -108,8 +108,10 @@ const AREA_EXPANSIONS: Record<string, string> = {
   meydan: "mohammed bin rashid",
   dlrc: "dubai land residence complex",
   "dubai land residence complex (dlrc)": "dubai land residence complex",
-  "downtown dubai": "downtown",  // DLD may index this area differently
+  "downtown dubai": "downtown",
   "creek harbour": "creek",
+  "dubai hills estate": "dubai hills",
+  "dubai hills": "dubai hills",
 };
 
 function normalizeAreaName(s: string): string {
