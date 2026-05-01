@@ -185,6 +185,10 @@ export default function CompareClient({
 
   const debouncedQuery = useDebounce(query, 300);
 
+  // ── Live search state (communities → DLD areas, developers → API) ──────────
+  const [liveResults, setLiveResults] = useState<{ name: string; sub?: string }[]>([]);
+  const [liveLoading, setLiveLoading] = useState(false);
+
   // ── Fetch buildings when query changes in buildings mode ──────────────────
   useEffect(() => {
     if (mode !== "buildings") return;
@@ -202,19 +206,39 @@ export default function CompareClient({
       .finally(() => setBuildingSearchLoading(false));
   }, [debouncedQuery, mode]);
 
-  // ── Search results (communities/developers) ───────────────────────────────
-  const communityList: Community[] = useMemo(() => {
-    const raw = Array.isArray(communities) ? communities : [];
-    return raw;
-  }, [communities]);
+  // ── Live search: DLD areas (communities) or developers API ────────────────
+  useEffect(() => {
+    const q = debouncedQuery.trim();
+    if (mode === "buildings") return;
+    if (!q) { setLiveResults([]); return; }
 
-  const developerList: Developer[] = useMemo(() => {
-    const raw = Array.isArray(developers) ? developers : [];
-    return raw;
-  }, [developers]);
+    setLiveLoading(true);
+    const url = mode === "communities"
+      ? apiUrl(`/api/dld/areas?q=${encodeURIComponent(q)}&limit=10&sortBy=totalSales`)
+      : apiUrl(`/api/developers?q=${encodeURIComponent(q)}&limit=20`);
+
+    fetch(url)
+      .then((r) => r.ok ? r.json() : (mode === "communities" ? { results: [] } : []))
+      .then((data) => {
+        if (mode === "communities") {
+          const areas = (data as { results?: { name: string; totalSales?: number }[] }).results ?? [];
+          setLiveResults(areas.map((a) => ({ name: a.name, sub: a.totalSales ? `${a.totalSales.toLocaleString()} sales` : "DLD" })));
+        } else {
+          const devs = Array.isArray(data) ? data : [];
+          setLiveResults(devs.map((d: Developer) => ({ name: d.name, sub: d.totalProjects ? `${d.totalProjects} projects` : undefined })));
+        }
+      })
+      .catch(() => setLiveResults([]))
+      .finally(() => setLiveLoading(false));
+  }, [debouncedQuery, mode]);
+
+  // ── Search results (communities/developers) ───────────────────────────────
+  const communityList: Community[] = useMemo(() => Array.isArray(communities) ? communities : [], [communities]);
+  const developerList: Developer[] = useMemo(() => Array.isArray(developers) ? developers : [], [developers]);
 
   const items = mode === "communities" ? communityList : developerList;
 
+  // Static filtered list (from pre-loaded data)
   const filtered = useMemo(() => {
     if (mode === "buildings") return [];
     if (!query.trim()) return items.slice(0, 12);
@@ -222,12 +246,21 @@ export default function CompareClient({
     return items.filter((item) => {
       const nameLow = item.name.toLowerCase();
       if (nameLow.includes(q)) return true;
-      // Check if the query matches an expansion of this community name
       const expansion = AREA_EXPANSIONS[nameLow];
       if (expansion && expansion.includes(q)) return true;
       return false;
-    }).slice(0, 12);
+    }).slice(0, 8);
   }, [items, query, mode]);
+
+  // Merged results: static first, then live API results not already in static
+  const mergedResults = useMemo(() => {
+    const staticNames = new Set(filtered.map((i) => i.name.toLowerCase()));
+    const selectedSet = new Set(selected.map((s) => s.toLowerCase()));
+    const extra = liveResults
+      .filter((r) => !staticNames.has(r.name.toLowerCase()) && !selectedSet.has(r.name.toLowerCase()))
+      .slice(0, 12 - filtered.length);
+    return { static: filtered, live: extra };
+  }, [filtered, liveResults, selected]);
 
   const addItem = (name: string) => {
     if (selected.length >= 3) return;
@@ -261,6 +294,7 @@ export default function CompareClient({
     setMode(m);
     setSelected([]);
     setQuery("");
+    setLiveResults([]);
     setBuildingSearchResults([]);
     if (m !== "buildings") setSelectedBuildings([]);
   };
@@ -308,9 +342,30 @@ export default function CompareClient({
     };
   };
 
+  // Cache for developer details fetched via live search (not in pre-loaded list)
+  const [liveDevCache, setLiveDevCache] = useState<Record<string, Developer | null>>({});
+
+  // Fetch full developer data for selected devs not in pre-loaded list
+  useEffect(() => {
+    if (mode !== "developers") return;
+    for (const name of selected) {
+      const inList = developerList.some((d) => d.name.toLowerCase() === name.toLowerCase());
+      if (inList) continue;
+      if (liveDevCache[name] !== undefined) continue;
+      fetch(apiUrl(`/api/developers?q=${encodeURIComponent(name)}&limit=5`))
+        .then((r) => r.ok ? r.json() : [])
+        .then((data: Developer[]) => {
+          const match = Array.isArray(data) ? data.find((d) => d.name.toLowerCase() === name.toLowerCase()) : null;
+          setLiveDevCache((prev) => ({ ...prev, [name]: match ?? null }));
+        })
+        .catch(() => setLiveDevCache((prev) => ({ ...prev, [name]: null })));
+    }
+  }, [selected, developerList, liveDevCache, mode]);
+
   const getDeveloperData = (name: string) => {
-    const dev = developerList.find((d) => d.name.toLowerCase() === name.toLowerCase());
-    if (!dev) return null;
+    const dev = developerList.find((d) => d.name.toLowerCase() === name.toLowerCase())
+      ?? liveDevCache[name]
+      ?? null;
     return dev;
   };
 
@@ -387,23 +442,48 @@ export default function CompareClient({
 
       {/* ── Search dropdown (communities / developers) ───────────── */}
       <AnimatePresence>
-        {mode !== "buildings" && query.trim() && filtered.length > 0 && (
+        {mode !== "buildings" && query.trim() && (mergedResults.static.length > 0 || mergedResults.live.length > 0 || liveLoading) && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             className="mb-4 bg-card border border-border/50 rounded-xl shadow-lg overflow-hidden"
           >
-            {filtered.map((item) => (
+            {liveLoading && mergedResults.static.length === 0 && mergedResults.live.length === 0 && (
+              <div className="px-4 py-3 text-sm text-muted-foreground">{t("searching")}</div>
+            )}
+            {/* Static results (Binayah DB — full data) */}
+            {mergedResults.static.map((item) => (
               <button
                 key={item._id}
                 onClick={() => addItem(item.name)}
                 disabled={selected.includes(item.name)}
-                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/30 last:border-0 disabled:opacity-40"
+                className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/30 last:border-0 disabled:opacity-40 flex items-center justify-between"
               >
-                {item.name}
+                <span>{item.name}</span>
               </button>
             ))}
+            {/* Live results (DLD areas / full dev list — may have partial data) */}
+            {mergedResults.live.length > 0 && (
+              <>
+                {mergedResults.static.length > 0 && (
+                  <div className="px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/50 bg-muted/20 border-b border-border/30">
+                    {mode === "communities" ? "DLD Areas" : "More Developers"}
+                  </div>
+                )}
+                {mergedResults.live.map((item) => (
+                  <button
+                    key={item.name}
+                    onClick={() => addItem(item.name)}
+                    disabled={selected.includes(item.name)}
+                    className="w-full text-left px-4 py-3 text-sm hover:bg-muted/50 transition-colors border-b border-border/30 last:border-0 disabled:opacity-40 flex items-center justify-between"
+                  >
+                    <span>{item.name}</span>
+                    {item.sub && <span className="text-[10px] text-muted-foreground/60">{item.sub}</span>}
+                  </button>
+                ))}
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
