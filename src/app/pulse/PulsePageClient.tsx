@@ -1220,7 +1220,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                 <td className="px-4 py-3 text-muted-foreground text-xs">{(b.units ?? 0) > 0 ? (b.units).toLocaleString() : <span className="text-muted-foreground/40">—</span>}</td>
                                 <td className="px-4 py-3">
                                   {(b.avgPpsf ?? 0) > 0 ? (
-                                    <span className="font-semibold text-foreground text-xs">{b.avgPpsf.toLocaleString()}</span>
+                                    <span className="font-semibold text-foreground text-xs">{Math.round(b.avgPpsf / 10.764).toLocaleString()}</span>
                                   ) : (
                                     <span className="text-muted-foreground/40">—</span>
                                   )}
