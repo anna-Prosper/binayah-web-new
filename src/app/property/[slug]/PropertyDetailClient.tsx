@@ -18,8 +18,11 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+const MortgageCalculator = dynamic(() => import("@/components/MortgageCalculator"));
 
 const USD_RATE = 0.2723;
 
@@ -1423,6 +1426,11 @@ export default function PropertyDetailClient({
           </div>
         </div>
       </section>
+
+      {/* ── MORTGAGE CALCULATOR ──────────────────────────────────────────── */}
+      {!isRent && (
+        <MortgageCalculator initialPrice={listing.price} />
+      )}
 
       {/* ── SIMILAR LISTINGS ─────────────────────────────────────────────── */}
       {similarListings.length > 0 && (

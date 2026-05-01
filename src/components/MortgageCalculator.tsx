@@ -9,9 +9,16 @@ function formatNumber(n: number) {
   return new Intl.NumberFormat("en-AE").format(Math.round(n));
 }
 
-export default function MortgageCalculator() {
+interface MortgageCalculatorProps {
+  initialPrice?: number;
+}
+
+export default function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
   const t = useTranslations("mortgageCalculator");
-  const [price, setPrice] = useState(2000000);
+  const clampedInitial = initialPrice
+    ? Math.min(50000000, Math.max(300000, initialPrice))
+    : 2000000;
+  const [price, setPrice] = useState(clampedInitial);
   const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [rate, setRate] = useState(4.5);
   const [years, setYears] = useState(25);
