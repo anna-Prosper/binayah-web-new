@@ -1017,6 +1017,11 @@
     "availableFrom": "Available from",
     "moveInFrom": "Move in from",
     "bedsBaths": "Beds / Baths",
+    "bedsShort": "Bed",
+    "bathsShort": "Bath",
+    "parking": "Parking",
+    "parkingSpace": "Space",
+    "parkingSpaces": "Spaces",
     "refNumber": "Ref. No."
   },
   "communities": {

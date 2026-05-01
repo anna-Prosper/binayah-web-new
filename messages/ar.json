@@ -1017,6 +1017,11 @@
     "availableFrom": "متاح من",
     "moveInFrom": "الانتقال من",
     "bedsBaths": "غرف / حمامات",
+    "bedsShort": "غرفة",
+    "bathsShort": "حمام",
+    "parking": "موقف السيارات",
+    "parkingSpace": "موقف",
+    "parkingSpaces": "مواقف",
     "refNumber": "رقم المرجع"
   },
   "communities": {

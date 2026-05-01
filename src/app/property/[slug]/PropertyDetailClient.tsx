@@ -633,9 +633,16 @@ export default function PropertyDetailClient({
               <StatCard
                 icon={BedDouble}
                 label={t("bedsBaths")}
-                value={`${listing.bedrooms ?? "—"} / ${listing.bathrooms ?? "—"}`}
-                sub={`${listing.bedrooms ?? "—"} ${t("bedrooms")} · ${listing.bathrooms ?? "—"} ${t("bathrooms")}`}
+                value={`${listing.bedrooms ?? "—"} ${t("bedsShort")} · ${listing.bathrooms ?? "—"} ${t("bathsShort")}`}
                 delay={0.25}
+              />
+            )}
+            {listing.parking && String(listing.parking).trim() !== "" && String(listing.parking).trim() !== "0" && (
+              <StatCard
+                icon={Car}
+                label={t("parking")}
+                value={`${listing.parking} ${Number(listing.parking) === 1 ? t("parkingSpace") : t("parkingSpaces")}`}
+                delay={0.3}
               />
             )}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
@@ -1296,16 +1303,19 @@ export default function PropertyDetailClient({
                     { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
                     { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
                     { label: t("ownershipLabel"), value: t("allNationalities") },
-                  ].filter((f): f is { label: string; value: string } => !!f.value).map(({ label, value }) => (
+                    listing.parking && String(listing.parking).trim() !== "" && String(listing.parking).trim() !== "0"
+                      ? { label: t("parking"), value: `${listing.parking} ${Number(listing.parking) === 1 ? t("parkingSpace") : t("parkingSpaces")}` }
+                      : null,
+                  ].filter((f): f is { label: string; value: string } => !!f && !!f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>
                       <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
                     </div>
                   ))}
-                  {listing.sourceId && (
+                  {(listing.sourceId || listing.propertyId) && (
                     <div className="flex justify-between items-center py-3 text-sm">
                       <span className="text-muted-foreground">{t("refNumber")}</span>
-                      <span className="text-foreground font-semibold text-right select-all">{listing.sourceId}</span>
+                      <span className="text-foreground font-semibold text-right select-all">{listing.sourceId || listing.propertyId}</span>
                     </div>
                   )}
                 </div>
