@@ -569,14 +569,19 @@ export default function PropertyDetailClient({
   })();
   const developerSlug = listing.developerSlug || fetchedDeveloper?.slug || null;
   const NON_AMENITY = /^(vacant|furnished|semi.furnished|unfurnished|tenanted|rented|investment|new|occupied|ready)$/i;
-  const DEFAULT_AMENITIES = [
-    "24/7 Security", "Swimming Pool", "Gymnasium", "Covered Parking",
-    "Children's Play Area", "Landscaped Gardens", "BBQ Area",
+  const pType = (listing.propertyType || "").toLowerCase();
+  const isVillaType = /villa|townhouse|duplex/.test(pType);
+  const isApartmentType = /apartment|flat|studio|penthouse|loft/.test(pType);
+  // Only truly universal Dubai default; type-specific extras added contextually
+  const defaultAmenities = [
+    "24/7 Security",
+    ...(isVillaType ? ["Swimming Pool", "Children's Play Area", "Landscaped Gardens", "BBQ Area"] : []),
+    ...(isApartmentType ? ["Swimming Pool", "Gymnasium", "Covered Parking"] : []),
   ];
   const realAmenities = (listing.features || []).filter(f => !NON_AMENITY.test(f.trim()));
   const mergedAmenities = [
     ...realAmenities,
-    ...DEFAULT_AMENITIES.filter(d => !realAmenities.some(r => r.toLowerCase() === d.toLowerCase())),
+    ...defaultAmenities.filter(d => !realAmenities.some(r => r.toLowerCase() === d.toLowerCase())),
   ];
   const highlights = buildHighlights(listing, parkingText);
   const nearbyItems = buildNearby(listing.community);
