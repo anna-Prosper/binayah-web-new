@@ -144,6 +144,9 @@ export default function CompareClient({
   // selectedBuildings stores full building objects for the comparison table
   const [selectedBuildings, setSelectedBuildings] = useState<DldBuilding[]>([]);
 
+  // ── DLD area cache — fetched on demand for communities not in matrix ───────
+  const [dldAreaCache, setDldAreaCache] = useState<Record<string, { avgPpsf: number; totalSales: number } | null>>({});
+
   const debouncedQuery = useDebounce(query, 300);
 
   // ── Fetch buildings when query changes in buildings mode ──────────────────
@@ -225,15 +228,37 @@ export default function CompareClient({
   const priceByArea = marketStats?.priceByArea ?? [];
   const txByArea = marketData?.transactions?.byArea ?? [];
 
+  // Fetch DLD area data for selected communities not in the matrix or txByArea
+  useEffect(() => {
+    if (mode !== "communities") return;
+    for (const name of selected) {
+      const inMatrix = matrix.some((m) => m.area.toLowerCase() === name.toLowerCase());
+      const inTx = txByArea.some((a) => a.area.toLowerCase() === name.toLowerCase());
+      if (inMatrix && inTx) continue;
+      if (dldAreaCache[name] !== undefined) continue; // already fetched (null = not found)
+      fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(name)}&limit=1`))
+        .then((r) => r.ok ? r.json() : { results: [] })
+        .then((data: { results?: { avgPpsf?: number; totalSales?: number }[] }) => {
+          const area = data.results?.[0];
+          setDldAreaCache((prev) => ({
+            ...prev,
+            [name]: area ? { avgPpsf: area.avgPpsf ?? 0, totalSales: area.totalSales ?? 0 } : null,
+          }));
+        })
+        .catch(() => setDldAreaCache((prev) => ({ ...prev, [name]: null })));
+    }
+  }, [selected, matrix, txByArea, dldAreaCache, mode]);
+
   const getCommunityData = (name: string) => {
     const mat = matrix.find((m) => m.area.toLowerCase() === name.toLowerCase());
     const yld = yieldByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
     const pr = priceByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
     const tx = txByArea.find((a) => a.area.toLowerCase() === name.toLowerCase());
+    const dld = dldAreaCache[name];
     return {
-      ppsf: mat?.avgPricePerSqft ?? pr?.price ?? 0,
+      ppsf: mat?.avgPricePerSqft ?? pr?.price ?? tx?.avgPpsf ?? dld?.avgPpsf ?? 0,
       yield: mat?.rentalYield ?? yld?.yield ?? 0,
-      volume: tx?.count ?? 0,
+      volume: tx?.count ?? dld?.totalSales ?? 0,
       offPlanShare: mat ? (mat.totalListings > 0 ? Math.round((mat.offPlanCount / mat.totalListings) * 100) : 0) : null,
       score: mat?.investmentScore ?? 0,
     };
