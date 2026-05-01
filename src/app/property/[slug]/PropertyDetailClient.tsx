@@ -998,6 +998,8 @@ export default function PropertyDetailClient({
                       </div>
                     </motion.div>
                   )}
+                  {/* Mortgage Calculator */}
+                  <MortgageCalculator initialPrice={listing.price} embedded />
                 </>
               )}
 
@@ -1426,11 +1428,6 @@ export default function PropertyDetailClient({
           </div>
         </div>
       </section>
-
-      {/* ── MORTGAGE CALCULATOR ──────────────────────────────────────────── */}
-      {!isRent && (
-        <MortgageCalculator initialPrice={listing.price} />
-      )}
 
       {/* ── SIMILAR LISTINGS ─────────────────────────────────────────────── */}
       {similarListings.length > 0 && (
