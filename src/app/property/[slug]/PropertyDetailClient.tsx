@@ -93,6 +93,21 @@ function formatPrice(price?: number, currency = "AED", fallback = "Price on requ
 
 const sqftToSqm = (sqft: number) => `${Math.round(sqft * 0.0929).toLocaleString()} sqm`;
 
+function hasPositiveNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function hasNonNegativeNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+function getNumericText(value: unknown) {
+  if (value == null) return null;
+  const text = String(value).trim();
+  if (!text || text === "0") return null;
+  return text;
+}
+
 // ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
 function amenityIcon(label: string): React.ElementType {
   const l = label.toLowerCase();
@@ -279,7 +294,7 @@ function buildFaqs(isRent: boolean): FaqItem[] {
 function StatCard({
   icon: Icon, label, value, sub, delay = 0,
 }: {
-  icon: React.ElementType; label: string; value: string | number; sub?: string; delay?: number;
+  icon: React.ElementType; label: string; value: React.ReactNode; sub?: string; delay?: number;
 }) {
   return (
     <motion.div
@@ -444,6 +459,27 @@ export default function PropertyDetailClient({
 
   const isRent = listing.listingType === "Rent";
   const developerName = listing.developerName || listing.developer || fetchedDeveloper?.name || null;
+  const bedroomText = hasNonNegativeNumber(listing.bedrooms)
+    ? t("bedroomCount", { count: listing.bedrooms })
+    : null;
+  const bathroomText = hasPositiveNumber(listing.bathrooms)
+    ? t("bathroomCount", { count: listing.bathrooms })
+    : null;
+  const parkingText = (() => {
+    if (hasPositiveNumber(listing.parkingSpaces)) {
+      return t("parkingCount", { count: listing.parkingSpaces });
+    }
+
+    const rawParking = getNumericText(listing.parking);
+    if (!rawParking || /^(none|no|n\/a)$/i.test(rawParking)) return null;
+
+    const numericParking = Number(rawParking);
+    if (Number.isFinite(numericParking) && numericParking > 0) {
+      return t("parkingCount", { count: numericParking });
+    }
+
+    return rawParking;
+  })();
 
   const availableFrom = (() => {
     const raw = listing.availableFrom;
@@ -629,19 +665,24 @@ export default function PropertyDetailClient({
                 delay={0.2}
               />
             )}
-            {(listing.bedrooms != null || listing.bathrooms != null) && (
+            {(bedroomText || bathroomText) && (
               <StatCard
                 icon={BedDouble}
-                label={t("bedsBaths")}
-                value={`${listing.bedrooms ?? "—"} ${t("bedsShort")} · ${listing.bathrooms ?? "—"} ${t("bathsShort")}`}
+                label={t("bedroomsBathrooms")}
+                value={
+                  <span className="flex flex-col gap-0.5">
+                    {bedroomText && <span>{bedroomText}</span>}
+                    {bathroomText && <span>{bathroomText}</span>}
+                  </span>
+                }
                 delay={0.25}
               />
             )}
-            {listing.parking && String(listing.parking).trim() !== "" && String(listing.parking).trim() !== "0" && (
+            {parkingText && (
               <StatCard
                 icon={Car}
                 label={t("parking")}
-                value={`${listing.parking} ${Number(listing.parking) === 1 ? t("parkingSpace") : t("parkingSpaces")}`}
+                value={parkingText}
                 delay={0.3}
               />
             )}
@@ -1303,8 +1344,8 @@ export default function PropertyDetailClient({
                     { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
                     { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
                     { label: t("ownershipLabel"), value: t("allNationalities") },
-                    listing.parking && String(listing.parking).trim() !== "" && String(listing.parking).trim() !== "0"
-                      ? { label: t("parking"), value: `${listing.parking} ${Number(listing.parking) === 1 ? t("parkingSpace") : t("parkingSpaces")}` }
+                    parkingText
+                      ? { label: t("parking"), value: parkingText }
                       : null,
                   ].filter((f): f is { label: string; value: string } => !!f && !!f.value).map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-center py-3 text-sm">

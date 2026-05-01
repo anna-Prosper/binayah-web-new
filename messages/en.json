@@ -1017,9 +1017,13 @@
     "availableFrom": "Available from",
     "moveInFrom": "Move in from",
     "bedsBaths": "Beds / Baths",
+    "bedroomsBathrooms": "Bedrooms & Bathrooms",
+    "bedroomCount": "{count, plural, =0 {Studio} =1 {1 Bedroom} other {# Bedrooms}}",
+    "bathroomCount": "{count, plural, =1 {1 Bathroom} other {# Bathrooms}}",
     "bedsShort": "Bed",
     "bathsShort": "Bath",
     "parking": "Parking",
+    "parkingCount": "{count, plural, =1 {1 Parking Space} other {# Parking Spaces}}",
     "parkingSpace": "Space",
     "parkingSpaces": "Spaces",
     "refNumber": "Ref. No."

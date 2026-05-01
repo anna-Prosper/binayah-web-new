@@ -1017,6 +1017,15 @@
     "availableFrom": "Доступно с",
     "moveInFrom": "Въезд с",
     "bedsBaths": "Спальни / Ванные",
+    "bedroomsBathrooms": "Спальни и ванные",
+    "bedroomCount": "{count, plural, =0 {Студия} one {# спальня} few {# спальни} other {# спален}}",
+    "bathroomCount": "{count, plural, one {# ванная} few {# ванные} other {# ванных}}",
+    "bedsShort": "Сп.",
+    "bathsShort": "Ван.",
+    "parking": "Парковка",
+    "parkingCount": "{count, plural, one {# парковочное место} few {# парковочных места} other {# парковочных мест}}",
+    "parkingSpace": "место",
+    "parkingSpaces": "места",
     "refNumber": "Реф. №"
   },
   "communities": {

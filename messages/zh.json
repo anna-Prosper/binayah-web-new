@@ -1023,6 +1023,15 @@
     "availableFrom": "可入住日期",
     "moveInFrom": "入住日期",
     "bedsBaths": "卧室/浴室",
+    "bedroomsBathrooms": "卧室和浴室",
+    "bedroomCount": "{count, plural, =0 {开间} other {# 间卧室}}",
+    "bathroomCount": "{count} 间浴室",
+    "bedsShort": "卧",
+    "bathsShort": "卫",
+    "parking": "车位",
+    "parkingCount": "{count} 个车位",
+    "parkingSpace": "车位",
+    "parkingSpaces": "车位",
     "refNumber": "参考编号"
   },
   "communities": {
