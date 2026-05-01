@@ -116,6 +116,7 @@
     ],
     "src/components/PropertyComparison.tsx": [
       "src/components/PropertyActions.tsx",
+      "src/context/FavoritesContext.tsx",
       "src/lib/api.ts",
       "src/lib/property-types.ts"
     ],
@@ -290,6 +291,9 @@
     "src/app/api/favorites/route.ts": [
       "src/lib/auth.ts",
       "src/lib/mongodb.ts"
+    ],
+    "src/app/api/search/route.ts": [
+      "src/lib/api.ts"
     ],
     "src/app/api/profile/route.ts": [
       "src/lib/auth.ts",
@@ -786,6 +790,7 @@
       "src/app/developers/DevelopersPageClient.tsx",
       "src/app/developers/[slug]/page.tsx",
       "src/app/api/projects/route.ts",
+      "src/app/api/search/route.ts",
       "src/app/api/account/market-reports/route.ts",
       "src/app/api/pdf/pulse/route.ts",
       "src/app/api/favorites/hydrate/route.ts",
@@ -961,6 +966,7 @@
       "src/components/HeroSection.tsx"
     ],
     "src/context/FavoritesContext.tsx": [
+      "src/components/PropertyComparison.tsx",
       "src/components/PropertyActions.tsx",
       "src/components/PropertyActions.tsx",
       "src/app/[locale]/layout.tsx"
@@ -1398,6 +1404,7 @@
     "src/app/api/list-your-property/route.ts": "/api/list-your-property",
     "src/app/api/projects/route.ts": "/api/projects",
     "src/app/api/favorites/route.ts": "/api/favorites",
+    "src/app/api/search/route.ts": "/api/search",
     "src/app/api/profile/route.ts": "/api/profile",
     "src/app/api/project-subscriptions/route.ts": "/api/project-subscriptions",
     "src/app/api/community-info/route.ts": "/api/community-info",
@@ -1509,6 +1516,6 @@
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-04-29T08:09:34.878896+00:00",
-  "fileCount": 263
+  "builtAt": "2026-05-01T07:15:46.834929+00:00",
+  "fileCount": 264
 }

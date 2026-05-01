@@ -26,11 +26,12 @@ async function fetchJson(path: string) {
 
 export default async function PulsePage() {
   const t = await getTranslations("pulse");
-  const [marketStats, marketData, areasData, projectsData] = await Promise.all([
+  const [marketStats, marketData, areasData, projectsData, binayahNews] = await Promise.all([
     fetchJson("/api/market-stats"),
     fetchJson("/api/market-data"),
     fetchJson("/api/dld/areas?sort=totalSales&limit=20"),
     fetchJson("/api/projects?status=active&limit=200"),
+    fetchJson("/api/news?limit=8"),
   ]);
 
   return (
@@ -83,6 +84,7 @@ export default async function PulsePage() {
         marketData={marketData}
         areasData={areasData}
         projectsData={projectsData}
+        binayahNews={binayahNews}
       />
 
       <Footer />

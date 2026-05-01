@@ -83,6 +83,9 @@ function CalculatorInner({
   const [purpose, setPurpose] = useState<Purpose>("rent");
   const [financing, setFinancing] = useState<Financing>("cash");
   const [downPaymentPct, setDownPaymentPct] = useState(defaultDown);
+  const [mortgageRate, setMortgageRate] = useState(5.5); // %
+  const [mortgageTerm, setMortgageTerm] = useState(20); // years
+  const [serviceChargePerSqft, setServiceChargePerSqft] = useState(15); // AED/sqft/yr
   const [copied, setCopied] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
 
@@ -125,37 +128,62 @@ function CalculatorInner({
   const outputs = useMemo(() => {
     const estimatedSqft = avgPpsf > 0 ? Math.round(budget / avgPpsf) : 0;
     const annualRental = grossYield > 0 ? budget * (grossYield / 100) : 0;
-    const netYield = grossYield * 0.85;
     const value3yr = budget * Math.pow(1 + growthRate, 3);
     const value5yr = budget * Math.pow(1 + growthRate, 5);
     const roi5yr = ((value5yr - budget) / budget) * 100;
 
-    // Benchmark ROIs
+    // Entry costs
+    const dldFee = budget * 0.04;
+    const registrationFee = 4200; // AED standard fee
+    const agentFee = budget * 0.02;
+    const totalEntryCost = budget + dldFee + registrationFee + agentFee;
+
+    // Service charge & net income
+    const annualServiceCharge = estimatedSqft > 0
+      ? estimatedSqft * serviceChargePerSqft
+      : budget * 0.005;
+    const annualMgmtFee = annualRental > 0 ? annualRental * 0.10 : 0;
+    const netAnnualIncome = Math.max(0, annualRental - annualServiceCharge - annualMgmtFee);
+    const netYield = budget > 0 && netAnnualIncome > 0
+      ? (netAnnualIncome / budget) * 100
+      : grossYield * 0.85;
+
+    // Mortgage
+    const loanAmount = financing === "mortgage" ? budget * (1 - downPaymentPct / 100) : 0;
+    const mRate = mortgageRate / 100 / 12;
+    const nPay = mortgageTerm * 12;
+    const monthlyPayment = financing === "mortgage" && loanAmount > 0 && mRate > 0
+      ? loanAmount * (mRate * Math.pow(1 + mRate, nPay)) / (Math.pow(1 + mRate, nPay) - 1)
+      : 0;
+    const totalInterestPaid = monthlyPayment > 0 ? monthlyPayment * nPay - loanAmount : 0;
+    const annualMortgageCost = monthlyPayment * 12;
+
+    // Capital deployed
+    const investedCapital = financing === "mortgage"
+      ? budget * (downPaymentPct / 100) + dldFee + registrationFee + agentFee
+      : totalEntryCost;
+
+    // Net cashflow & cash-on-cash
+    const netCashflow = netAnnualIncome - (financing === "mortgage" ? annualMortgageCost : 0);
+    const cashOnCash = investedCapital > 0 ? (netCashflow / investedCapital) * 100 : 0;
+
+    // Benchmarks
     const savingsRoi5yr = benchmarkRoi5yr(BENCHMARKS.uaeSavings.annualRate);
-    const sp500Roi5yr   = benchmarkRoi5yr(BENCHMARKS.sp500.annualRate);
+    const sp500Roi5yr = benchmarkRoi5yr(BENCHMARKS.sp500.annualRate);
     const dubaiPropRoi5yr = benchmarkRoi5yr(
       hasLimitedData ? BENCHMARKS.dubaiProperty.annualRate : growthRate
     );
 
-    const investedCapital = financing === "mortgage"
-      ? budget * (downPaymentPct / 100)
-      : budget;
-
     return {
-      estimatedSqft,
-      annualRental,
-      grossYield,
-      netYield,
-      value3yr,
-      value5yr,
-      roi5yr,
-      // Benchmarks
-      savingsRoi5yr,
-      sp500Roi5yr,
-      dubaiPropRoi5yr,
-      investedCapital,
+      estimatedSqft, annualRental, grossYield, netYield,
+      value3yr, value5yr, roi5yr,
+      annualServiceCharge, annualMgmtFee, netAnnualIncome,
+      dldFee, registrationFee, agentFee, totalEntryCost,
+      loanAmount, monthlyPayment, totalInterestPaid, annualMortgageCost,
+      investedCapital, netCashflow, cashOnCash,
+      savingsRoi5yr, sp500Roi5yr, dubaiPropRoi5yr,
     };
-  }, [budget, grossYield, growthRate, avgPpsf, financing, downPaymentPct, hasLimitedData]);
+  }, [budget, grossYield, growthRate, avgPpsf, financing, downPaymentPct, mortgageRate, mortgageTerm, serviceChargePerSqft, hasLimitedData]);
 
   const hasData = yieldByArea.length > 0;
 
@@ -382,26 +410,70 @@ function CalculatorInner({
                   ))}
                 </div>
                 {financing === "mortgage" && (
-                  <div className="mt-4">
-                    <label className="text-xs text-muted-foreground mb-1.5 block">
-                      {t("downPayment")}: <span className="font-bold text-foreground">{downPaymentPct}%</span>
-                    </label>
-                    <input
-                      type="range"
-                      min={5}
-                      max={80}
-                      step={5}
-                      value={downPaymentPct}
-                      onChange={(e) => setDownPaymentPct(Number(e.target.value))}
-                      className="w-full accent-primary"
-                    />
-                    <div className="flex justify-between text-[10px] text-muted-foreground mt-0.5">
-                      <span>5%</span>
-                      <span className="font-semibold text-accent">{AED(budget * downPaymentPct / 100)}</span>
-                      <span>80%</span>
+                  <div className="mt-4 space-y-0">
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1.5 block">
+                        {t("downPayment")}: <span className="font-bold text-foreground">{downPaymentPct}%</span>
+                      </label>
+                      <input
+                        type="range"
+                        min={5}
+                        max={80}
+                        step={5}
+                        value={downPaymentPct}
+                        onChange={(e) => setDownPaymentPct(Number(e.target.value))}
+                        className="w-full accent-primary"
+                      />
+                      <div className="flex justify-between text-[10px] text-muted-foreground mt-0.5">
+                        <span>5%</span>
+                        <span className="font-semibold text-accent">{AED(budget * downPaymentPct / 100)}</span>
+                        <span>80%</span>
+                      </div>
+                    </div>
+
+                    {/* Mortgage rate */}
+                    <div className="mt-3">
+                      <label className="text-xs text-muted-foreground mb-1.5 block">
+                        {t("mortgageRate")}: <span className="font-bold text-foreground">{mortgageRate.toFixed(1)}%</span>
+                      </label>
+                      <input type="range" min={2} max={9} step={0.25} value={mortgageRate}
+                        onChange={e => setMortgageRate(Number(e.target.value))}
+                        className="w-full accent-primary" />
+                      <div className="flex justify-between text-[10px] text-muted-foreground mt-0.5">
+                        <span>2%</span><span>9%</span>
+                      </div>
+                    </div>
+
+                    {/* Mortgage term */}
+                    <div className="mt-3">
+                      <label className="text-xs text-muted-foreground mb-1.5 block">{t("mortgageTerm")}</label>
+                      <div className="flex gap-2">
+                        {[5, 10, 15, 20, 25].map(yr => (
+                          <button key={yr} onClick={() => setMortgageTerm(yr)}
+                            className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all ${mortgageTerm === yr ? "text-white" : "border border-border/60 bg-card text-muted-foreground hover:border-accent/40"}`}
+                            style={mortgageTerm === yr ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
+                            {`${yr}yr`}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
+              </div>
+              {/* Service Charge */}
+              <div>
+                <label className="text-sm font-semibold text-foreground mb-2 block">
+                  {t("serviceCharge")} <span className="font-normal text-muted-foreground text-xs ml-1">{"AED/sqft/yr"}</span>
+                </label>
+                <input type="range" min={5} max={40} step={1} value={serviceChargePerSqft}
+                  onChange={e => setServiceChargePerSqft(Number(e.target.value))}
+                  className="w-full accent-primary" />
+                <div className="flex justify-between text-[10px] text-muted-foreground mt-0.5">
+                  <span>{"AED 5"}</span>
+                  <span className="font-semibold text-accent">{`AED ${serviceChargePerSqft}/sqft`}</span>
+                  <span>{"AED 40"}</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">{t("serviceChargeSub")}</p>
               </div>
             </div>
           </motion.div>
@@ -413,6 +485,24 @@ function CalculatorInner({
             transition={{ duration: 0.4, delay: 0.15 }}
             className="space-y-4"
           >
+            {/* Entry costs */}
+            <div className="bg-card border border-border/50 rounded-2xl p-5">
+              <h3 className="font-bold text-sm text-foreground mb-3 flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-accent" />
+                {t("entryCostsTitle")}
+              </h3>
+              <div className="space-y-2">
+                <EntryCostRow label={t("propertyPrice")} value={AED(budget)} />
+                <EntryCostRow label={`${t("dldFee")} (4%)`} value={AED(outputs.dldFee)} sub />
+                <EntryCostRow label={`${t("agentFee")} (2%)`} value={AED(outputs.agentFee)} sub />
+                <EntryCostRow label={t("registrationFee")} value={`AED ${outputs.registrationFee.toLocaleString()}`} sub />
+                <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                  <span className="text-sm font-bold text-foreground">{t("totalEntryCost")}</span>
+                  <span className="text-sm font-bold text-foreground">{AED(outputs.totalEntryCost)}</span>
+                </div>
+              </div>
+            </div>
+
             {/* Main metrics */}
             <div className="grid grid-cols-2 gap-3">
               <MetricCard
@@ -430,9 +520,9 @@ function CalculatorInner({
               />
               <MetricCard
                 icon={TrendingUp}
-                label={t("annualRental")}
-                value={outputs.annualRental > 0 ? AED(outputs.annualRental) : "—"}
-                sub={t("annualRentalSub")}
+                label={t("netAnnualIncome")}
+                value={outputs.netAnnualIncome > 0 ? AED(outputs.netAnnualIncome) : "—"}
+                sub={t("netAnnualIncomeSub")}
               />
               <MetricCard
                 icon={Percent}
@@ -457,6 +547,22 @@ function CalculatorInner({
                 <ProjectionRow label={t("year5")} value={AED(outputs.value5yr)} baseline={AED(budget)} highlight />
               </div>
             </div>
+
+            {/* Mortgage details card */}
+            {financing === "mortgage" && outputs.monthlyPayment > 0 && (
+              <div className="bg-card border border-border/50 rounded-2xl p-5">
+                <h3 className="font-bold text-sm text-foreground mb-3">{t("mortgageDetailsTitle")}</h3>
+                <div className="space-y-2">
+                  <EntryCostRow label={t("loanAmount")} value={AED(outputs.loanAmount)} />
+                  <EntryCostRow label={t("monthlyPayment")} value={AED(outputs.monthlyPayment)} sub />
+                  <EntryCostRow label={t("totalInterest")} value={AED(outputs.totalInterestPaid)} sub />
+                  <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                    <span className="text-sm text-muted-foreground">{t("annualMortgageCost")}</span>
+                    <span className="text-sm font-semibold text-foreground">{AED(outputs.annualMortgageCost)}</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Benchmark comparison chart */}
             <div className="bg-card border border-border/50 rounded-2xl p-5">
@@ -594,6 +700,11 @@ function CalculatorInner({
                   color="purple"
                   best={outputs.sp500Roi5yr > outputs.roi5yr}
                 />
+                <CompareRow
+                  label={t("cashOnCash")}
+                  value={outputs.cashOnCash > 0 ? pct(outputs.cashOnCash) : "—"}
+                  color="emerald"
+                />
               </div>
               <p className="text-[10px] text-muted-foreground mt-3">{t("comparisonDisclaimer")}</p>
             </div>
@@ -711,6 +822,15 @@ function ProjectionRow({ label, value, baseline, highlight = false }: {
         <span className={`text-sm font-bold ${highlight ? "text-primary" : "text-foreground"}`}>{value}</span>
         <span className="text-[10px] text-muted-foreground ml-2">{baseline}</span>
       </div>
+    </div>
+  );
+}
+
+function EntryCostRow({ label, value, sub = false }: { label: string; value: string; sub?: boolean }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className={`text-sm ${sub ? "text-muted-foreground" : "text-foreground"}`}>{label}</span>
+      <span className={`text-sm font-semibold ${sub ? "text-muted-foreground" : "text-foreground"}`}>{value}</span>
     </div>
   );
 }

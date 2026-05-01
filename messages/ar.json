@@ -1234,7 +1234,8 @@
     "dldRegistrySub": "Dubai Land Department transactions",
     "latestMonth": "Latest month",
     "ppsfMomentum": "PPSF momentum",
-    "leadingArea": "Leading area"
+    "leadingArea": "Leading area",
+    "indicatorsLoading": "UAE economic indicators are being refreshed. Check back shortly."
   },
   "services": {
     "heroLabel": "ما نقدمه",
@@ -1992,7 +1993,25 @@
     "emailSuccessTitle": "تم إرسال التقرير",
     "emailSuccessSub": "تم الإرسال إلى {email} — تحقق من بريدك",
     "emailSuccessClose": "تم",
-    "emailErrorGeneric": "حدث خطأ ما — يرجى المحاولة مرة أخرى"
+    "emailErrorGeneric": "حدث خطأ ما — يرجى المحاولة مرة أخرى",
+    "mortgageRate": "Mortgage Rate",
+    "mortgageTerm": "Mortgage Term",
+    "serviceCharge": "Service Charge",
+    "serviceChargeSub": "Dubai avg: AED 12–20/sqft/yr. Check your community's RERA statement.",
+    "entryCostsTitle": "Total Entry Cost",
+    "propertyPrice": "Property Price",
+    "dldFee": "DLD Transfer Fee",
+    "agentFee": "Agent Commission",
+    "registrationFee": "Registration & Title Deed",
+    "totalEntryCost": "Total to Budget",
+    "mortgageDetailsTitle": "Mortgage Breakdown",
+    "loanAmount": "Loan Amount",
+    "monthlyPayment": "Monthly Payment (P&I)",
+    "totalInterest": "Total Interest Paid",
+    "annualMortgageCost": "Annual Mortgage Cost",
+    "netAnnualIncome": "Net Annual Income",
+    "netAnnualIncomeSub": "After service charge & mgmt fee",
+    "cashOnCash": "Cash-on-Cash Return (Yr 1)"
   },
   "pulseGuides": {
     "label": "قاعدة المعرفة",

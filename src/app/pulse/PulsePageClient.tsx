@@ -19,7 +19,7 @@ import { apiUrl } from "@/lib/api";
 import PulseQuickTicker from "@/components/PulseQuickTicker";
 import PulseSentimentChip from "@/components/PulseSentimentChip";
 import CommunityLeaderboard, { type LeaderboardRow } from "@/components/CommunityLeaderboard";
-import FeaturedInsightPanel from "@/components/FeaturedInsightPanel";
+import FeaturedInsightPanel, { type InsightArticle } from "@/components/FeaturedInsightPanel";
 import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -72,6 +72,15 @@ interface DldBuilding {
   sales: number;
   units: number;
   avgPpsf: number;
+}
+
+interface BinayahArticle {
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string;
+  featuredImage: string;
+  publishedAt: string;
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -267,9 +276,10 @@ interface PulsePageClientProps {
   marketData: MarketData | null;
   areasData?: { results?: { name: string; slug?: string; totalSales: number; avgPpsf?: number; avgPrice?: number }[] } | null;
   projectsData?: { results?: { slug: string; status?: string }[] } | null;
+  binayahNews?: BinayahArticle[] | null;
 }
 
-export default function PulsePageClient({ marketStats, marketData, areasData, projectsData }: PulsePageClientProps) {
+export default function PulsePageClient({ marketStats, marketData, areasData, projectsData, binayahNews }: PulsePageClientProps) {
   const t = useTranslations("pulse");
   const locale = useLocale();
   const [activeTab, setActiveTab] = useState<MainTab>("market");
@@ -347,13 +357,21 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
     (areasData?.results?.[0] as { area?: string } | undefined)?.area ??
     null;
 
-  // Off-plan share from projectsData
-  const projects = projectsData?.results ?? [];
-  const overviewOffPlanCount = projects.filter((p) => {
-    const st = (p.status ?? "").toLowerCase();
-    return st.includes("launch") || st.includes("off") || st.includes("plan");
-  }).length;
-  const overviewOffPlanPct = projects.length > 0 ? Math.round((overviewOffPlanCount / projects.length) * 100) : (marketStats?.summary.offPlanShare ?? 0);
+  // Off-plan share from DLD byType data (falls back to marketStats listing-based share)
+  const overviewOffPlanPct = useMemo(() => {
+    const byType = txData?.byType ?? [];
+    if (byType.length > 0) {
+      const total = byType.reduce((s, bt) => s + bt.count, 0);
+      if (total > 0) {
+        const offPlanCount = byType
+          .filter(bt => /off.?plan/i.test(bt.type))
+          .reduce((s, bt) => s + bt.count, 0);
+        return Math.round((offPlanCount / total) * 100);
+      }
+    }
+    // Fallback: use marketStats listing-based share
+    return marketStats?.summary.offPlanShare ?? 0;
+  }, [txData, marketStats]);
 
   // Quick ticker movers — top 3 communities by MoM% from DLD monthly data
   const overviewMovers = useMemo(() => {
@@ -399,8 +417,34 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
     });
   }, [txData, matrix]);
 
-  // Featured insight article (first news item)
-  const featuredArticle = news[0] ?? null;
+  // Featured insight article — prefer Binayah articles, fall back to external news
+  const featuredArticle = useMemo((): InsightArticle | null => {
+    const ba = binayahNews?.[0];
+    if (ba?.title && ba?.slug) {
+      return {
+        title: ba.title,
+        url: `/news/${ba.slug}`,
+        source: "Binayah",
+        summary: ba.excerpt ?? "",
+        imageUrl: ba.featuredImage ?? "",
+        publishedAt: ba.publishedAt ?? new Date().toISOString(),
+      };
+    }
+    return (news[0] as InsightArticle | undefined) ?? null;
+  }, [binayahNews, news]);
+
+  // Mixed news: Binayah articles first (skip first, used as featured), then external
+  const mixedNews = useMemo(() => {
+    const binayahAsNews = (binayahNews ?? []).slice(1).map(ba => ({
+      title: ba.title,
+      url: `/news/${ba.slug}`,
+      source: "Binayah",
+      summary: ba.excerpt ?? "",
+      imageUrl: ba.featuredImage ?? "",
+      publishedAt: ba.publishedAt ?? "",
+    }));
+    return [...binayahAsNews, ...news].slice(0, 9) as InsightArticle[];
+  }, [binayahNews, news]);
 
   const MAIN_TABS: { id: MainTab; label: string }[] = [
     { id: "market", label: t("tabMarket") },
@@ -820,6 +864,57 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-12 sm:space-y-16"
           >
+            {/* ── UAE Economic Indicators (always first) ──────────── */}
+            {Object.keys(indicators).length > 0 ? (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0 }}
+              >
+                <SectionHeader label={t("worldBankData")} title={t("uaeEconomic")} titleItalic={t("indicatorsItalic")} />
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                  {Object.entries(indicators).map(([label, data]) => {
+                    const isLarge = data.value >= 1_000_000_000;
+                    const displayVal = isLarge
+                      ? `$${(data.value / 1_000_000_000).toFixed(0)}B`
+                      : data.unit === "percent"
+                      ? `${data.value.toFixed(1)}%`
+                      : data.unit === "people"
+                      ? `${(data.value / 1_000_000).toFixed(1)}M`
+                      : data.value.toLocaleString();
+                    const IconComp = INDICATOR_ICONS[label] ?? Activity;
+                    return (
+                      <div key={label} className="bg-card border border-border/50 rounded-xl p-3 sm:p-4 hover:border-accent/30 hover:shadow-sm transition-all">
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <IconComp className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+                          <p className="text-[10px] text-muted-foreground leading-tight">{label}</p>
+                        </div>
+                        <p className="text-lg sm:text-xl font-bold text-foreground">{displayVal}</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5">{data.year}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
+                  <Globe className="h-3 w-3" /> {t("worldBankSource")}
+                </p>
+              </motion.section>
+            ) : (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0 }}
+              >
+                <SectionHeader label={t("worldBankData")} title={t("uaeEconomic")} titleItalic={t("indicatorsItalic")} />
+                <div className="bg-muted/20 border border-border/30 rounded-2xl p-6 text-center">
+                  <Globe className="h-8 w-8 text-muted-foreground/25 mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">{t("indicatorsLoading")}</p>
+                </div>
+              </motion.section>
+            )}
+
             {/* ── Hero Stat Strip ────────────────────────────────────── */}
             {txData?.hasData ? (
               <>
@@ -1218,46 +1313,8 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
               </motion.section>
             )}
 
-            {/* ── Economic Indicators ───────────────────────────────── */}
-            {Object.keys(indicators).length > 0 && (
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.15 }}
-              >
-                <SectionHeader label={t("worldBankData")} title={t("uaeEconomic")} titleItalic={t("indicatorsItalic")} />
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                  {Object.entries(indicators).map(([label, data]) => {
-                    const isLarge = data.value >= 1_000_000_000;
-                    const displayVal = isLarge
-                      ? `$${(data.value / 1_000_000_000).toFixed(0)}B`
-                      : data.unit === "percent"
-                      ? `${data.value.toFixed(1)}%`
-                      : data.unit === "people"
-                      ? `${(data.value / 1_000_000).toFixed(1)}M`
-                      : data.value.toLocaleString();
-                    const IconComp = INDICATOR_ICONS[label] ?? Activity;
-                    return (
-                      <div key={label} className="bg-card border border-border/50 rounded-xl p-3 sm:p-4 hover:border-accent/30 hover:shadow-sm transition-all">
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <IconComp className="h-3.5 w-3.5 text-accent flex-shrink-0" />
-                          <p className="text-[10px] text-muted-foreground leading-tight">{label}</p>
-                        </div>
-                        <p className="text-lg sm:text-xl font-bold text-foreground">{displayVal}</p>
-                        <p className="text-[10px] text-muted-foreground/60 mt-0.5">{data.year}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-                <p className="text-[10px] text-muted-foreground mt-2 flex items-center gap-1">
-                  <Globe className="h-3 w-3" /> {t("worldBankSource")}
-                </p>
-              </motion.section>
-            )}
-
             {/* ── News Feed ─────────────────────────────────────────── */}
-            {news.length > 0 && (
+            {mixedNews.length > 0 && (
               <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1266,7 +1323,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
               >
                 <SectionHeader label={t("marketNews")} title={t("realEstate")} titleItalic={t("newsItalic")} />
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {news.slice(0, 9).map((item) => {
+                  {mixedNews.map((item) => {
                     const timeLabel = relativeTime(item.publishedAt);
                     return (
                       <a
