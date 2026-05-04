@@ -84,7 +84,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
                       {p.name}
                     </h3>
                     <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-                      <p className="text-sm font-bold text-primary">{t("from")} {price}</p>
+                      <p className="text-sm font-bold text-primary">{p.startingPrice ? `${t("from")} ${price}` : price}</p>
                       {p.completionDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <CalendarDays className="h-3 w-3" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}

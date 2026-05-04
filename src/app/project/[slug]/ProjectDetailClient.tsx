@@ -374,7 +374,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0"
                 >
                   <div className="flex flex-col gap-0.5 lg:items-end">
-                    <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">{t("startingFrom")}</span>
+                    {project.startingPrice ? <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">{t("startingFrom")}</span> : null}
                     <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
                     {currency === "AED" && project.startingPrice && (
                       <span className="text-white/60 text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
