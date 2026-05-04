@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, ChevronRight, Clock } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
+import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
 
 interface Article {
   _id: string;
@@ -15,6 +16,7 @@ interface Article {
   slug: string;
   content?: string;
   excerpt?: string;
+  body?: ArticleBlock[];
   category?: string;
   tags?: string[];
   featuredImage?: string;
@@ -76,7 +78,9 @@ export default function NewsDetailClient({ article }: { article: Article }) {
       {/* Content */}
       <section className="py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          {article.content ? (
+          {article.body && article.body.length > 0 ? (
+            <ArticleBody body={article.body} />
+          ) : article.content ? (
             <div
               className="prose prose-lg max-w-none
                 prose-headings:text-foreground prose-headings:font-bold
