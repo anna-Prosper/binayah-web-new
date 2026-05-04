@@ -222,31 +222,23 @@ function BulletList({ items }: { items: string[] }) {
 function FAQBlock({ items }: { items: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <div className="mt-8 pt-6 border-t border-border">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
-          <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+    <div className="space-y-2 mt-4">
+      {items.map((faq, i) => (
+        <div key={i} className="border border-border rounded-xl overflow-hidden">
+          <button
+            onClick={() => setOpen(open === i ? null : i)}
+            className="w-full text-left px-4 py-4 text-sm sm:text-base font-semibold text-foreground hover:text-[#0B3D2E] flex items-center justify-between gap-3 transition-colors"
+          >
+            {faq.q}
+            <span className="text-muted-foreground flex-shrink-0 text-lg leading-none">{open === i ? "−" : "+"}</span>
+          </button>
+          {open === i && (
+            <div className="px-4 pb-4 text-sm text-foreground/80 leading-relaxed border-t border-border pt-3">
+              {faq.a}
+            </div>
+          )}
         </div>
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">Frequently Asked Questions</h2>
-      </div>
-      <div className="space-y-2">
-        {items.map((faq, i) => (
-          <div key={i} className="border border-border rounded-xl overflow-hidden">
-            <button
-              onClick={() => setOpen(open === i ? null : i)}
-              className="w-full text-left px-4 py-4 text-sm sm:text-base font-semibold text-foreground hover:text-[#0B3D2E] flex items-center justify-between gap-3 transition-colors"
-            >
-              {faq.q}
-              <span className="text-muted-foreground flex-shrink-0 text-lg leading-none">{open === i ? "−" : "+"}</span>
-            </button>
-            {open === i && (
-              <div className="px-4 pb-4 text-sm text-foreground/80 leading-relaxed border-t border-border pt-3">
-                {faq.a}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      ))}
     </div>
   );
 }
