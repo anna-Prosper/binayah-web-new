@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight, X, Home, Check, Image as ImageIcon,
   Waves, Dumbbell, Car, Shield, Baby, Flame, TreePine, Store, Smartphone,
   Building2, Star, ChevronDown, Globe, ArrowRight, Zap, Wind,
-  Calendar, CheckCircle2, Compass, FileText, TrendingUp,
+  Calendar, CheckCircle2, Compass, FileText, TrendingUp, Sofa,
 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
@@ -60,6 +60,8 @@ interface Listing {
   isFurnished?: string;
   completionStatus?: string;
   tenure?: string;
+  titleType?: string;
+  ownership?: string;
   view?: string;
   parking?: string;
   yearBuilt?: number;
@@ -767,6 +769,7 @@ export default function PropertyDetailClient({
               />
             )}
             {listing.propertyType && <StatCard icon={Home} label={t("type")} value={formatPropertyTypeLabel(listing.propertyType, listing.propertyType)} delay={0.35} />}
+            {(listing.isFurnished || listing.furnishing) && <StatCard icon={Sofa} label={t("furnishingLabel")} value={listing.isFurnished || listing.furnishing || ""} delay={0.4} />}
           </div>
 
           {/* Available from pill */}
@@ -1415,8 +1418,12 @@ export default function PropertyDetailClient({
                     { label: t("city"), value: listing.city },
                     { label: t("property"), value: listing.propertyType ? formatPropertyTypeLabel(listing.propertyType, listing.propertyType) : null },
                     { label: t("type"), value: isRent ? t("forRent") : t("forSale") },
-                    { label: t("titleTypeLabel"), value: isRent ? t("leaseholdTitle") : t("freeholdTitle") },
-                    { label: t("ownershipLabel"), value: t("allNationalities") },
+                    { label: t("titleTypeLabel"), value: listing.titleType || (isRent ? t("leaseholdTitle") : t("freeholdTitle")) },
+                    { label: t("ownershipLabel"), value: listing.ownership || t("allNationalities") },
+                    { label: t("furnishingLabel"), value: listing.isFurnished || listing.furnishing || null },
+                    { label: t("viewLabel"), value: listing.view || null },
+                    { label: t("tenureLabel"), value: listing.tenure || null },
+                    { label: t("yearBuiltLabel"), value: listing.yearBuilt ? String(listing.yearBuilt) : null },
                     parkingText
                       ? { label: t("parking"), value: parkingText }
                       : null,
