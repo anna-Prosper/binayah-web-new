@@ -1299,12 +1299,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                       </div>
                                       <div className="flex items-baseline gap-1.5 sm:gap-2 flex-shrink-0">
                                         <span className="text-sm sm:text-lg font-bold text-foreground">{m.pct}%</span>
-                                        <div className="flex flex-col items-end">
-                                          <span className="text-[11px] sm:text-sm font-semibold text-foreground">{formatPrice(amount, "AED", currency)}</span>
-                                          {currency === "AED" && (
-                                            <span className="text-[9px] sm:text-[10px] text-muted-foreground">~{formatPrice(amount, "AED", "USD")}</span>
-                                          )}
-                                        </div>
+                                        {unitPrice > 0 && (
+                                          <div className="flex flex-col items-end">
+                                            <span className="text-[11px] sm:text-sm font-semibold text-foreground">{formatPrice(amount, "AED", currency)}</span>
+                                            {currency === "AED" && (
+                                              <span className="text-[9px] sm:text-[10px] text-muted-foreground">~{formatPrice(amount, "AED", "USD")}</span>
+                                            )}
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
                                   </motion.div>
@@ -1317,14 +1319,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <div className="pt-3 sm:pt-4 border-t border-border/50 flex items-center justify-between">
                             <p className="text-xs sm:text-sm font-semibold text-muted-foreground">{t("totalLabel")}</p>
                             <div className="text-right">
-                              <p className="text-base sm:text-lg font-bold text-foreground">{formatPrice(unitPrice, "AED", currency)}</p>
-                              {currency === "AED" && (
+                              <p className="text-base sm:text-lg font-bold text-foreground">{unitPrice > 0 ? formatPrice(unitPrice, "AED", currency) : t("priceOnRequest")}</p>
+                              {unitPrice > 0 && currency === "AED" && (
                                 <p className="text-[10px] sm:text-[11px] text-muted-foreground">~{formatPrice(unitPrice, "AED", "USD")}</p>
                               )}
                             </div>
                           </div>
 
-                          {project.paymentPlanDetails && (
+                          {project.paymentPlanDetails && !/^Q\d+\./i.test(project.paymentPlanDetails.trim()) && (
                             <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed bg-muted/30 rounded-xl p-2.5 sm:p-3 border border-border/30">{project.paymentPlanDetails}</p>
                           )}
                         </div>
@@ -2106,7 +2108,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           </div>
 
                           {/* Payment details */}
-                          {project.paymentPlanDetails && (
+                          {project.paymentPlanDetails && !/^Q\d+\./i.test(project.paymentPlanDetails.trim()) && (
                             <div className="p-3 sm:p-4 bg-muted/30 rounded-xl border border-border/30">
                               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{project.paymentPlanDetails}</p>
                             </div>
