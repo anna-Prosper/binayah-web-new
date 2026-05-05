@@ -135,7 +135,14 @@ function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: s
   );
 }
 
+const STATS_GRID: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
+
 function StatsBlock({ title, stats }: { title: string; stats: { label: string; value: string; change: string }[] }) {
+  const gridClass = STATS_GRID[stats.length] ?? "grid-cols-2 md:grid-cols-4";
   return (
     <div className="rounded-2xl border border-[#0B3D2E]/15 overflow-hidden my-5 sm:my-6">
       <div className="px-4 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-[#0B3D2E] to-[#1A7A5A]">
@@ -143,7 +150,7 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
           <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {title}
         </h3>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border">
+      <div className={`grid ${gridClass} gap-px bg-border`}>
         {stats.map((stat, i) => (
           <div key={i} className="bg-card p-3 sm:p-5 text-center">
             <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{stat.label}</p>
