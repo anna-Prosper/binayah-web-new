@@ -5,7 +5,8 @@ import {
   CheckCircle2, TrendingUp, BarChart3, AlertCircle, Quote,
   Info, Star, MapPin, Building2, DollarSign, Home, FileText,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useInView } from "framer-motion";
 
 /* ─── ICON MAP (used by section_title blocks) ─── */
 const ICONS: Record<string, React.ElementType> = {
@@ -106,18 +107,18 @@ function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?:
 }
 
 function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: string; pct: number }[]; caption: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   return (
-    <div className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 md:p-8 my-5 sm:my-6">
+    <div ref={ref} className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 md:p-8 my-5 sm:my-6">
       {title && <p className="text-xs sm:text-sm font-semibold text-foreground mb-3 sm:mb-4">{title}</p>}
       <div className="w-full max-w-lg mx-auto">
         <div className="flex items-end justify-between gap-1.5 sm:gap-3 h-[130px] sm:h-[180px]">
           {bars.map((bar, i) => (
             <div key={i} className="flex flex-col items-center flex-1 gap-1">
               <motion.div
-                initial={{ height: 0 }}
-                whileInView={{ height: `${bar.pct}%` }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
+                animate={{ height: isInView ? `${bar.pct}%` : 0 }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
                 className="w-full rounded-t-lg"
                 style={{
                   background: i === bars.length - 1
