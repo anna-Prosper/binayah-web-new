@@ -106,26 +106,31 @@ function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?:
   );
 }
 
+const CHART_MAX_PX = 160;
+
 function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: string; pct: number }[]; caption: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -40px 0px" });
   return (
     <div ref={ref} className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 md:p-8 my-5 sm:my-6">
       {title && <p className="text-xs sm:text-sm font-semibold text-foreground mb-3 sm:mb-4">{title}</p>}
       <div className="w-full max-w-lg mx-auto">
-        <div className="flex items-end justify-between gap-1.5 sm:gap-3 h-[130px] sm:h-[180px]">
+        <div className="flex items-end justify-between gap-1.5 sm:gap-3" style={{ height: CHART_MAX_PX + 24 }}>
           {bars.map((bar, i) => (
-            <div key={i} className="flex flex-col items-center flex-1 gap-1">
-              <motion.div
-                animate={{ height: isInView ? `${bar.pct}%` : 0 }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
-                className="w-full rounded-t-lg"
-                style={{
-                  background: i === bars.length - 1
-                    ? "linear-gradient(180deg, #D4A847, #B8922F)"
-                    : "linear-gradient(180deg, #0B3D2E, #1A7A5A)",
-                }}
-              />
+            <div key={i} className="flex flex-col items-center flex-1 gap-1" style={{ height: "100%" }}>
+              <div className="flex items-end w-full" style={{ flex: 1 }}>
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: isInView ? Math.round((bar.pct / 100) * CHART_MAX_PX) : 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
+                  className="w-full rounded-t-lg"
+                  style={{
+                    background: i === bars.length - 1
+                      ? "linear-gradient(180deg, #D4A847, #B8922F)"
+                      : "linear-gradient(180deg, #0B3D2E, #1A7A5A)",
+                  }}
+                />
+              </div>
               <span className="text-[9px] sm:text-xs text-muted-foreground font-medium">{bar.label}</span>
             </div>
           ))}
