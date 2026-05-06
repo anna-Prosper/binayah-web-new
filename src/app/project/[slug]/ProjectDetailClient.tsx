@@ -213,7 +213,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
     "/assets/amenities-placeholder.webp",
   ];
   const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
-  const dbFaqs = (project.faqs as FAQ[] | null) || [];
+  const dbFaqs = ((project.faqs as FAQ[] | null) || []).filter(f => f.question?.trim());
   const faqs = dbFaqs.length > 0 ? dbFaqs : [
     { question: "What is the payment plan?", answer: `${project.name} offers a flexible payment plan designed to suit both end-users and investors. Typically this includes a down payment on booking, installments during construction, and the remaining balance on handover. Contact us for the detailed payment schedule.` },
     { question: "Is this eligible for Golden Visa?", answer: "Yes, purchasing a property valued at AED 2 million or above qualifies for the UAE Golden Visa, granting a 10-year renewable residency. Our team can guide you through the application process." },
