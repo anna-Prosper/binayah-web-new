@@ -18,11 +18,14 @@ interface Listing {
   size?: number;
   sizeUnit?: string;
   price?: number;
+  priceUsd?: number;
   currency?: string;
   community?: string;
   city?: string;
   featuredImage?: string;
   images?: string[];
+  flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean };
+  _source?: string;
 }
 
 function formatPrice(price?: number, currency = "AED") {

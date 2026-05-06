@@ -40,20 +40,27 @@ interface Project {
 
 interface Listing {
   _id: string;
-  bathrooms?: number;
-  bedrooms?: number;
-  city?: string;
-  community?: string;
-  currency?: string;
-  featuredImage?: string;
-  images?: string[];
+  title: string;
+  slug: string;
   listingType?: string;
-  price?: number;
   propertyType?: string;
+  bedrooms?: number;
+  bathrooms?: number;
   size?: number;
   sizeUnit?: string;
-  slug: string;
-  title: string;
+  plotArea?: number;
+  price?: number;
+  priceUsd?: number;
+  currency?: string;
+  community?: string;
+  city?: string;
+  country?: string;
+  featuredImage?: string;
+  images?: string[];
+  flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean };
+  agentName?: string;
+  whatsappNumber?: string;
+  _source?: string;
 }
 
 const statusTabs: SearchStatus[] = ["All", "Off-Plan", "Secondary"];
