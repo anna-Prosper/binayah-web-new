@@ -75,26 +75,26 @@ const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency 
 // Collapse consecutive bedroom types with count ≥ 4 that appear 3+ in a row into "X–Y Bedrooms"
 const formatUnitTypes = (types: string[], sep = " · ") => {
   if (!types?.length) return "—";
-  const parsed = types.map(t => {
-    const m = t.match(/(\d+)/);
-    return { label: t, bed: m ? parseInt(m[1]) : -1 };
-  });
-  const out: string[] = [];
-  let i = 0;
-  while (i < parsed.length) {
-    const cur = parsed[i];
-    if (cur.bed >= 4) {
-      let j = i + 1;
-      while (j < parsed.length && parsed[j].bed === cur.bed + (j - i) && parsed[j].bed >= 4) j++;
-      if (j - i >= 3) {
-        out.push(`${cur.bed}–${parsed[j - 1].bed} Bedrooms`);
-        i = j;
-        continue;
-      }
+  const groups = new Map<string, number[]>();
+  const standalone: string[] = [];
+  for (const t of types) {
+    const m = t.match(/^(\d+)\s+(.*)/);
+    if (m) {
+      const bed = parseInt(m[1]);
+      const suffix = m[2].trim();
+      if (!groups.has(suffix)) groups.set(suffix, []);
+      groups.get(suffix)!.push(bed);
+    } else {
+      standalone.push(t);
     }
-    out.push(cur.label);
-    i++;
   }
+  const out: string[] = [];
+  for (const [suffix, beds] of groups) {
+    beds.sort((a, b) => a - b);
+    const min = beds[0], max = beds[beds.length - 1];
+    out.push(min === max ? `${min} ${suffix}` : `${min}–${max} ${suffix}`);
+  }
+  out.push(...standalone);
   return out.join(sep);
 };
 
