@@ -42,12 +42,12 @@ export default function NewsDetailClient({ article }: { article: Article }) {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
+      <section className="relative aspect-[16/9] min-h-[420px] max-h-[80vh] w-full overflow-hidden flex items-end">
         <div className="absolute inset-0">
           <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/70 to-foreground/40" />
         </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative pt-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
           <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
             <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
             <ChevronRight className="h-3.5 w-3.5" />
