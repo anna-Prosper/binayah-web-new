@@ -1413,15 +1413,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.05 }}
-                                className="rounded-xl border border-border/50 p-3 bg-muted/20 hover:bg-muted/40 transition-colors"
+                                className="h-full flex flex-col rounded-xl border border-border/50 p-3 bg-muted/20 hover:bg-muted/40 transition-colors"
                               >
-                                <div className="flex items-center gap-2 mb-1.5">
+                                <div className="flex items-start gap-2 mb-1.5 flex-1">
                                   <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                                     <AIcon className="h-3.5 w-3.5 text-primary" />
                                   </div>
-                                  <span className="text-xs font-bold text-foreground truncate">{item.name}</span>
+                                  <span className="text-xs font-bold text-foreground leading-snug">{item.name}</span>
                                 </div>
-                                <p className="text-[11px] text-muted-foreground ml-9">{item.distance}</p>
+                                <p className="text-[11px] text-muted-foreground ml-9 mt-auto">{item.distance}</p>
                               </motion.div>
                             );
                           })}
