@@ -67,6 +67,23 @@ export const getListing = cache(async (slug: string) =>
 export const getNewsArticle = cache(async (slug: string) =>
   fetchJsonOr404(`/api/news/${slug}`)
 );
+export const getRelatedNews = cache(
+  async (currentSlug: string, category?: string, limit = 3) => {
+    const list = await fetchJsonOr404<any[]>(`/api/news?limit=20`);
+    if (!Array.isArray(list)) return [];
+    const sameCategory = category
+      ? list.filter(
+          (a) =>
+            a?.slug !== currentSlug &&
+            (a?.category || "").toLowerCase() === category.toLowerCase()
+        )
+      : [];
+    const others = list.filter(
+      (a) => a?.slug !== currentSlug && !sameCategory.includes(a)
+    );
+    return [...sameCategory, ...others].slice(0, limit);
+  }
+);
 export const getDeveloper = cache(async (slug: string) =>
   fetchJsonOr404(`/api/developers/${slug}`)
 );
