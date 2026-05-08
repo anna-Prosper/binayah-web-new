@@ -347,8 +347,8 @@ export default function NewsDetailClient({
       </section>
 
       {/* Bottom CTA banner */}
-      <section className="px-4 sm:px-6 pb-12">
-        <div className="max-w-5xl mx-auto rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 sm:p-8 lg:p-10">
+      <section className="bg-gradient-to-br from-primary to-primary/85 py-10 sm:py-14">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
             <div className="flex items-start gap-4 lg:flex-1">
               <div className="w-12 h-12 rounded-xl bg-accent/90 flex items-center justify-center flex-shrink-0">
@@ -384,6 +384,7 @@ export default function NewsDetailClient({
       </section>
 
       {/* Related Articles */}
+
       {related.length > 0 && (
         <section className="px-4 sm:px-6 pb-20">
           <div className="max-w-5xl mx-auto">
