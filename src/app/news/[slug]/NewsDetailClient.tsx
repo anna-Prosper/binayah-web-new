@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
-import ArticleBody, { type ArticleBlock, extractTOC } from "@/components/ArticleBody";
+import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
 import { useState, useEffect, useRef } from "react";
 
 interface Article {
@@ -82,11 +82,8 @@ export default function NewsDetailClient({
   const [copied, setCopied] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
   const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const articleRef = useRef<HTMLElement>(null);
-
-  const toc = article.body ? extractTOC(article.body) : [];
 
   useEffect(() => {
     const onScroll = () => {
@@ -101,24 +98,6 @@ export default function NewsDetailClient({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    if (toc.length < 2) return;
-    const headings = toc.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length > 0) {
-          const top = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
-          setActiveSection((top.target as HTMLElement).id);
-        }
-      },
-      { rootMargin: '0px 0px -60% 0px', threshold: 0 }
-    );
-    headings.forEach((h) => observer.observe(h));
-    return () => observer.disconnect();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toc.length]);
 
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : `https://binayahhub.com/news/${article.slug}`;
@@ -257,25 +236,6 @@ export default function NewsDetailClient({
 
             {/* Sidebar */}
             <aside className="lg:sticky lg:top-24 self-start space-y-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-              {/* Table of Contents */}
-              {toc.length >= 2 && (
-                <div className="rounded-2xl border border-border bg-card p-5">
-                  <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-3">{t("tocLabel")}</p>
-                  <ul className="space-y-1.5">
-                    {toc.map(({ id, text }) => (
-                      <li key={id}>
-                        <a
-                          href={`#${id}`}
-                          onClick={(e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }}
-                          className={activeSection === id ? "text-sm text-primary font-semibold block" : "text-sm text-muted-foreground hover:text-foreground block transition-colors"}
-                        >
-                          {text}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
               {/* Investment Advice CTA */}
               <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 text-primary-foreground">
                 <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
