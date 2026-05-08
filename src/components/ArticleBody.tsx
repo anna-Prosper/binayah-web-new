@@ -53,7 +53,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
   if (block.style === "numbered") {
     return (
       <div className="flex items-center gap-3 mb-4 mt-10">
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shadow-md flex-shrink-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
           <span className="text-white text-xs sm:text-sm font-bold">{block.number ?? ""}</span>
         </div>
         <h2 id={slugify(block.text)} className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
@@ -63,7 +63,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
   const Icon = (block.icon && ICONS[block.icon]) ? ICONS[block.icon] : CheckCircle2;
   return (
     <div className="flex items-center gap-3 mb-4 mt-10">
-      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
+      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shadow-md flex-shrink-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
       </div>
       <h2 id={slugify(block.text)} className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
@@ -155,7 +155,7 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
   const gridClass = STATS_GRID[stats.length] ?? "grid-cols-2 md:grid-cols-4";
   return (
     <div className="rounded-2xl border border-primary/15 overflow-hidden my-5 sm:my-6">
-      <div className="px-4 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-primary to-primary/60">
+      <div className="px-4 py-2.5 sm:px-6 sm:py-4" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <h3 className="text-xs sm:text-base font-bold text-white flex items-center gap-2">
           <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {title}
         </h3>
@@ -213,7 +213,7 @@ function NumberedList({ items }: { items: string[] }) {
     <ol className="space-y-3 my-5 sm:my-6 pl-1">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-3 text-foreground/80 text-sm leading-relaxed">
-          <span className="mt-0.5 w-6 h-6 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm">
+          <span className="mt-0.5 w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
             {i + 1}
           </span>
           <span>{item}</span>

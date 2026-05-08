@@ -10,8 +10,9 @@
     --card-foreground: 200 25% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 200 25% 10%;
-    --primary: 168 100% 15%;
+    --primary: 162 70% 14%;
     --primary-foreground: 0 0% 100%;
+    --brand-gradient: linear-gradient(135deg, #0B3D2E, #1A7A5A);
     --secondary: 43 55% 93%;
     --secondary-foreground: 200 25% 10%;
     --muted: 40 15% 94%;
@@ -41,8 +42,9 @@
     --card-foreground: 40 20% 95%;
     --popover: 200 20% 10%;
     --popover-foreground: 40 20% 95%;
-    --primary: 168 100% 20%;
+    --primary: 162 70% 18%;
     --primary-foreground: 0 0% 100%;
+    --brand-gradient: linear-gradient(135deg, #0B3D2E, #1A7A5A);
     --secondary: 200 15% 15%;
     --secondary-foreground: 40 20% 95%;
     --muted: 200 15% 15%;

@@ -237,7 +237,7 @@ export default function NewsDetailClient({
             {/* Sidebar */}
             <aside className="lg:sticky lg:top-24 self-start space-y-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
               {/* Investment Advice CTA */}
-              <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 text-primary-foreground">
+              <div className="rounded-2xl p-6 text-primary-foreground" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                 <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
                   <TrendingUp className="h-5 w-5 text-accent-foreground" />
                 </div>
@@ -337,7 +337,7 @@ export default function NewsDetailClient({
                     <button
                       type="submit"
                       disabled={subState === 'loading'}
-                      className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-br from-primary to-primary/85 text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+                      className="w-full px-4 py-2.5 rounded-xl text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
                       {subState === 'loading' ? '...' : t("newsletterSubscribe")}
                     </button>
@@ -378,7 +378,7 @@ export default function NewsDetailClient({
       </section>
 
       {/* Bottom CTA banner */}
-      <section className="bg-gradient-to-br from-primary to-primary/85 py-10 sm:py-14">
+      <section className="py-10 sm:py-14" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
             <div className="flex items-start gap-4 lg:flex-1">
