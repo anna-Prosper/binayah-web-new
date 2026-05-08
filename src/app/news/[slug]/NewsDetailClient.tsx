@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   Bookmark,
   Calendar,
   CalendarCheck,
@@ -23,7 +24,7 @@ import {
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Article {
   _id: string;
@@ -77,6 +78,23 @@ export default function NewsDetailClient({
   const t = useTranslations("newsDetail");
   const tBreadcrumbs = useTranslations("breadcrumbs");
   const [copied, setCopied] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showTop, setShowTop] = useState(false);
+  const articleRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = articleRef.current;
+      if (!el) return;
+      const { top, height } = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const read = Math.min(1, Math.max(0, (vh - top) / (height + vh)));
+      setProgress(read * 100);
+      setShowTop(window.scrollY > vh * 0.5);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : `https://binayahhub.com/news/${article.slug}`;
@@ -98,6 +116,9 @@ export default function NewsDetailClient({
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Reading progress bar */}
+      <div className="fixed top-0 left-0 z-[60] h-[3px] bg-accent transition-all duration-75 ease-linear" style={{ width: `${progress}%` }} />
+
       <Navbar />
 
       {/* Hero */}
@@ -134,61 +155,25 @@ export default function NewsDetailClient({
         </div>
       </section>
 
-      {/* Share strip */}
-      <section className="border-b border-border/60">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{t("shareLabel")}</span>
-          <div className="flex items-center gap-2">
-            <a
-              href={shareLinks.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on Facebook"
-              className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Facebook className="h-4 w-4" />
-            </a>
-            <a
-              href={shareLinks.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on Twitter"
-              className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Twitter className="h-4 w-4" />
-            </a>
-            <a
-              href={shareLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on LinkedIn"
-              className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Linkedin className="h-4 w-4" />
-            </a>
-            <button
-              type="button"
-              onClick={handleCopy}
-              aria-label="Copy link"
-              className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative"
-            >
-              <LinkIcon className="h-4 w-4" />
-              {copied && (
-                <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded">
-                  {t("shareCopied")}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Content + Sidebar */}
-      <section className="py-12 sm:py-16">
+      <section ref={articleRef} className="py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12">
             {/* Article body */}
             <div className="min-w-0">
+              {/* Share strip — inline with article column */}
+              <div className="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-border/60">
+                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{t("shareLabel")}</span>
+                <div className="flex items-center gap-2">
+                  <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Facebook className="h-4 w-4" /></a>
+                  <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Twitter className="h-4 w-4" /></a>
+                  <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Linkedin className="h-4 w-4" /></a>
+                  <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
+                    <LinkIcon className="h-4 w-4" />
+                    {copied && <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded">{t("shareCopied")}</span>}
+                  </button>
+                </div>
+              </div>
               {article.body && article.body.length > 0 ? (
                 <ArticleBody body={article.body} />
               ) : article.content ? (
@@ -449,6 +434,18 @@ export default function NewsDetailClient({
 
       <Footer />
       <WhatsAppButton />
+
+      {/* Back to top */}
+      {showTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-24 right-5 z-50 w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all"
+          aria-label="Back to top"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 }
