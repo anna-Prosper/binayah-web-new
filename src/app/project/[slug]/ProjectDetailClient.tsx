@@ -608,26 +608,42 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">{t("aboutTheProject")}</p>
                       <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("projectOverview")}</h2>
                     </div>
-                    {project.shortOverview && (
-                      <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">{project.shortOverview}</p>
-                    )}
-                    {project.fullDescription && (() => {
-                      const clean = project.fullDescription.replace(/<[^>]*>/g, " ").replace(/\s{2,}/g, " ").trim();
-                      if (!clean) return null;
+                    {(() => {
+                      const isPlaceholder = (s?: string) =>
+                        !s || /^update\s+soon\b/i.test(s.trim()) || s.trim().length < 12;
+                      const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+                      const shortClean = (project.shortOverview || "").trim();
+                      const fullClean = (project.fullDescription || "")
+                        .replace(/<[^>]*>/g, " ")
+                        .replace(/\s{2,}/g, " ")
+                        .trim();
+                      const showShort = !isPlaceholder(shortClean);
+                      // If full duplicates short, drop full.
+                      const fullIsDup =
+                        showShort && fullClean && norm(fullClean).startsWith(norm(shortClean));
+                      const showFull = !isPlaceholder(fullClean) && !fullIsDup;
+                      if (!showShort && !showFull) return null;
 
-                      // Split into sentence-grouped paragraphs
-                      const sentences = clean.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+                      const sentences = showFull
+                        ? fullClean.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean)
+                        : [];
                       const paragraphs: string[] = [];
                       for (let i = 0; i < sentences.length; i += 3) {
                         paragraphs.push(sentences.slice(i, i + 3).join(" "));
                       }
-                      if (paragraphs.length === 0) return null;
 
                       const hasMore = paragraphs.length > 1;
 
                       return (
                         <div className="space-y-3">
-                          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
+                          {showShort && (
+                            <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">
+                              {shortClean}
+                            </p>
+                          )}
+                          {paragraphs.length > 0 && (
+                            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
+                          )}
 
                           {hasMore && descExpanded && (
                             <>
