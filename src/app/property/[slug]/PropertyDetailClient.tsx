@@ -143,7 +143,12 @@ function decodeDescriptionText(value: string) {
     .replace(/&[a-z]+;/gi, " ");
 }
 
-function getDescriptionParagraphs(description?: string) {
+type DescBlock =
+  | { type: "p"; text: string }
+  | { type: "h"; text: string }
+  | { type: "ul"; items: string[] };
+
+function getDescriptionBlocks(description?: string): DescBlock[] {
   if (!description) return [];
 
   const decoded = decodeDescriptionText(description);
@@ -159,27 +164,61 @@ function getDescriptionParagraphs(description?: string) {
     .trim();
 
   const boilerplateStart = cleaned.search(
-    /\b(Property Details|Features and Amenities|About the community|About the Community)\b/
+    /\b(Property Details|Features and Amenities)\b/
   );
   const mainText = boilerplateStart > 80 ? cleaned.slice(0, boilerplateStart).trim() : cleaned;
 
-  const paragraphs = mainText
-    .split(/\n{1,}/)
-    .map((para) => para.replace(/\s{2,}/g, " ").trim())
-    .filter((para) => para.length > 0)
-    .filter((para) => !/^(Property Details|Features and Amenities|About the community|About the Community)$/i.test(para));
+  // Normalize bullet markers — split each bullet onto its own line.
+  const normalized = mainText.replace(/\s*[•●◦▪■]\s*/g, "\n• ");
 
-  if (paragraphs.length > 1) return paragraphs;
+  // Section headers like "Key Features:" — push them onto their own line.
+  const withHeaders = normalized.replace(
+    /(^|\s)([A-Z][A-Za-z][^.•:\n]{2,60}:)\s+/g,
+    (_m, lead, header) => `${lead}\n${header}\n`
+  );
 
-  const sentences = (paragraphs[0] || mainText)
-    .replace(/\s{2,}/g, " ")
-    .trim()
-    .split(/(?<=[.!?])\s+(?=[A-Z])/)
-    .filter(Boolean);
+  const lines = withHeaders
+    .split(/\n+/)
+    .map((l) => l.replace(/\s{2,}/g, " ").trim())
+    .filter(Boolean)
+    .filter((l) => !/^(Property Details|Features and Amenities)$/i.test(l));
 
-  const grouped: string[] = [];
-  for (let i = 0; i < sentences.length; i += 3) grouped.push(sentences.slice(i, i + 3).join(" "));
-  return grouped;
+  const blocks: DescBlock[] = [];
+  let bulletBuffer: string[] = [];
+  const flushBullets = () => {
+    if (bulletBuffer.length) {
+      blocks.push({ type: "ul", items: bulletBuffer });
+      bulletBuffer = [];
+    }
+  };
+
+  for (const line of lines) {
+    if (line.startsWith("•")) {
+      const item = line.replace(/^•\s*/, "").trim();
+      if (item) bulletBuffer.push(item);
+    } else if (/^[A-Z][^.•]{2,60}:$/.test(line)) {
+      flushBullets();
+      blocks.push({ type: "h", text: line.replace(/:$/, "") });
+    } else {
+      flushBullets();
+      blocks.push({ type: "p", text: line });
+    }
+  }
+  flushBullets();
+
+  // If we ended up with a single giant paragraph, split into 3-sentence chunks.
+  if (blocks.length === 1 && blocks[0].type === "p") {
+    const sentences = blocks[0].text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+    if (sentences.length > 3) {
+      const chunked: DescBlock[] = [];
+      for (let i = 0; i < sentences.length; i += 3) {
+        chunked.push({ type: "p", text: sentences.slice(i, i + 3).join(" ") });
+      }
+      return chunked;
+    }
+  }
+
+  return blocks;
 }
 
 function extractParkingFromDescription(description?: string) {
@@ -772,7 +811,7 @@ export default function PropertyDetailClient({
                 {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
               </motion.div>
             )}
-            {listing.size != null && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.15} />}
+            {!!listing.size && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.15} />}
             {developerName && (
               <StatCard
                 icon={Building2}
@@ -844,9 +883,36 @@ export default function PropertyDetailClient({
                 <>
                   {/* Description */}
                   {(listing.cleanDescription || listing.description) && (() => {
-                    const paragraphs = getDescriptionParagraphs(listing.cleanDescription || listing.description);
-                    if (paragraphs.length === 0) return null;
-                    const hasMore = paragraphs.length > 1;
+                    const blocks = getDescriptionBlocks(listing.cleanDescription || listing.description);
+                    if (blocks.length === 0) return null;
+                    const hasMore = blocks.length > 1;
+                    const visible = descExpanded ? blocks : blocks.slice(0, 1);
+                    const renderBlock = (b: DescBlock, key: number) => {
+                      if (b.type === "h") {
+                        return (
+                          <h3 key={key} className="text-sm sm:text-base font-semibold text-foreground mt-4 first:mt-0">
+                            {b.text}
+                          </h3>
+                        );
+                      }
+                      if (b.type === "ul") {
+                        return (
+                          <ul key={key} className="space-y-1.5 pl-1">
+                            {b.items.map((item, i) => (
+                              <li key={i} className="flex gap-2.5 text-sm sm:text-base text-muted-foreground leading-relaxed">
+                                <span className="text-accent mt-1.5 flex-none h-1 w-1 rounded-full bg-accent" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        );
+                      }
+                      return (
+                        <p key={key} className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                          {b.text}
+                        </p>
+                      );
+                    };
                     return (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
                         <div className="mb-5">
@@ -857,10 +923,7 @@ export default function PropertyDetailClient({
                           <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
                         </div>
                         <div className="space-y-3">
-                          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
-                          {hasMore && descExpanded && paragraphs.slice(1).map((para, i) => (
-                            <p key={i} className="text-sm sm:text-base text-muted-foreground leading-relaxed">{para}</p>
-                          ))}
+                          {visible.map(renderBlock)}
                           {hasMore && (
                             <button
                               type="button"
@@ -1509,7 +1572,7 @@ export default function PropertyDetailClient({
                       <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                         {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} {t("bed")}</span>}
                         {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} {t("bath")}</span>}
-                        {l.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
+                        {!!l.size && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                       </div>
                       <div className="flex items-center justify-between border-t border-border pt-3">
                         <p className="text-sm font-bold text-primary">{formatPrice(l.price, l.currency, t("priceOnRequest"))}</p>
