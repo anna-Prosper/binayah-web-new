@@ -40,7 +40,7 @@ function Paragraph({ text }: { text: string }) {
 function IntroBlock({ text }: { text: string }) {
   if (!text) return null;
   return (
-    <p className="text-lg font-medium text-foreground/90 leading-[1.7] mb-4 border-l-4 border-[#0B3D2E] pl-4">
+    <p className="text-lg font-medium text-foreground/90 leading-[1.7] mb-4 border-l-4 border-primary pl-4">
       {text}
     </p>
   );
@@ -50,7 +50,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
   if (block.style === "numbered") {
     return (
       <div className="flex items-center gap-3 mb-4 mt-10">
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
           <span className="text-white text-xs sm:text-sm font-bold">{block.number ?? ""}</span>
         </div>
         <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
@@ -60,7 +60,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
   const Icon = (block.icon && ICONS[block.icon]) ? ICONS[block.icon] : CheckCircle2;
   return (
     <div className="flex items-center gap-3 mb-4 mt-10">
-      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center shadow-md flex-shrink-0">
+      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
         <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
       </div>
       <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
@@ -84,7 +84,7 @@ function TableBlock({ headers, rows }: { headers: string[]; rows: string[][] }) 
             {rows.map((row, i) => (
               <tr key={i} className="border-t border-border">
                 {row.map((cell, j) => (
-                  <td key={j} className={`px-4 py-3 text-xs sm:text-sm whitespace-nowrap ${j === 0 ? "font-medium text-foreground" : j >= 2 ? "text-[#0B3D2E] font-semibold" : "text-muted-foreground"}`}>
+                  <td key={j} className={`px-4 py-3 text-xs sm:text-sm whitespace-nowrap ${j === 0 ? "font-medium text-foreground" : j >= 2 ? "text-primary font-semibold" : "text-muted-foreground"}`}>
                     {cell}
                   </td>
                 ))}
@@ -127,8 +127,8 @@ function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: s
                   className="w-full rounded-t-lg"
                   style={{
                     background: i === bars.length - 1
-                      ? "linear-gradient(180deg, #D4A847, #B8922F)"
-                      : "linear-gradient(180deg, #0B3D2E, #1A7A5A)",
+                      ? "linear-gradient(180deg, hsl(var(--accent)), hsl(var(--accent)/.75))"
+                      : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary)/.6))",
                   }}
                 />
               </div>
@@ -151,8 +151,8 @@ const STATS_GRID: Record<number, string> = {
 function StatsBlock({ title, stats }: { title: string; stats: { label: string; value: string; change: string }[] }) {
   const gridClass = STATS_GRID[stats.length] ?? "grid-cols-2 md:grid-cols-4";
   return (
-    <div className="rounded-2xl border border-[#0B3D2E]/15 overflow-hidden my-5 sm:my-6">
-      <div className="px-4 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-[#0B3D2E] to-[#1A7A5A]">
+    <div className="rounded-2xl border border-primary/15 overflow-hidden my-5 sm:my-6">
+      <div className="px-4 py-2.5 sm:px-6 sm:py-4 bg-gradient-to-r from-primary to-primary/60">
         <h3 className="text-xs sm:text-base font-bold text-white flex items-center gap-2">
           <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {title}
         </h3>
@@ -162,7 +162,7 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
           <div key={i} className="bg-card p-3 sm:p-5 text-center">
             <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{stat.label}</p>
             <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
-            <span className="text-[10px] sm:text-xs font-semibold text-[#0B3D2E]">{stat.change}</span>
+            <span className="text-[10px] sm:text-xs font-semibold text-primary">{stat.change}</span>
           </div>
         ))}
       </div>
@@ -173,10 +173,10 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
 function QuoteBlock({ text, author }: { text: string; author: string }) {
   return (
     <div className="relative my-5 sm:my-6 rounded-2xl overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B3D2E]/[0.04] via-card to-[#D4A847]/[0.04]" />
-      <div className="relative flex gap-3 sm:gap-4 p-4 sm:p-6 border border-[#0B3D2E]/15 rounded-2xl">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-card to-[hsl(var(--accent))]/[0.04]" />
+      <div className="relative flex gap-3 sm:gap-4 p-4 sm:p-6 border border-primary/15 rounded-2xl">
         <div className="flex-shrink-0">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#D4A847] to-[#B8922F] flex items-center justify-center shadow-lg shadow-[#D4A847]/20">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[hsl(var(--accent))] to-[hsl(var(--accent)/.75)] flex items-center justify-center shadow-lg shadow-[hsl(var(--accent))]/20">
             <Quote className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
           </div>
         </div>
@@ -191,9 +191,9 @@ function QuoteBlock({ text, author }: { text: string; author: string }) {
 
 function CalloutBlock({ title, text }: { title: string; text: string }) {
   return (
-    <div className="rounded-2xl border border-[#D4A847]/30 bg-gradient-to-br from-[#D4A847]/[0.06] to-[#B8922F]/[0.03] p-5 sm:p-6 my-5 sm:my-6">
+    <div className="rounded-2xl border border-[hsl(var(--accent))]/30 bg-gradient-to-br from-[hsl(var(--accent))]/[0.06] to-[hsl(var(--accent)/.75)]/[0.03] p-5 sm:p-6 my-5 sm:my-6">
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#D4A847] to-[#B8922F] flex items-center justify-center shadow-lg shadow-[#D4A847]/20 flex-shrink-0">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[hsl(var(--accent))] to-[hsl(var(--accent)/.75)] flex items-center justify-center shadow-lg shadow-[hsl(var(--accent))]/20 flex-shrink-0">
           <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
         </div>
         <div>
@@ -210,7 +210,7 @@ function NumberedList({ items }: { items: string[] }) {
     <ol className="space-y-3 my-5 sm:my-6 pl-1">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-3 text-foreground/80 text-sm leading-relaxed">
-          <span className="mt-0.5 w-6 h-6 rounded-lg bg-gradient-to-br from-[#0B3D2E] to-[#1A7A5A] flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm">
+          <span className="mt-0.5 w-6 h-6 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm">
             {i + 1}
           </span>
           <span>{item}</span>
@@ -225,7 +225,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-2 sm:space-y-2.5 my-5 sm:my-6 pl-1">
       {items.map((item, i) => (
         <li key={i} className="flex items-start gap-3 text-foreground/80 text-sm leading-relaxed">
-          <div className="mt-1.5 w-2 h-2 rounded-full bg-gradient-to-br from-[#D4A847] to-[#B8922F] flex-shrink-0 shadow-sm shadow-[#D4A847]/30" />
+          <div className="mt-1.5 w-2 h-2 rounded-full bg-gradient-to-br from-[hsl(var(--accent))] to-[hsl(var(--accent)/.75)] flex-shrink-0 shadow-sm shadow-[hsl(var(--accent))]/30" />
           {item}
         </li>
       ))}
@@ -241,7 +241,7 @@ function FAQBlock({ items }: { items: { q: string; a: string }[] }) {
         <div key={i} className="border border-border rounded-xl overflow-hidden">
           <button
             onClick={() => setOpen(open === i ? null : i)}
-            className="w-full text-left px-4 py-4 text-sm sm:text-base font-semibold text-foreground hover:text-[#0B3D2E] flex items-center justify-between gap-3 transition-colors"
+            className="w-full text-left px-4 py-4 text-sm sm:text-base font-semibold text-foreground hover:text-primary flex items-center justify-between gap-3 transition-colors"
           >
             {faq.q}
             <span className="text-muted-foreground flex-shrink-0 text-lg leading-none">{open === i ? "−" : "+"}</span>

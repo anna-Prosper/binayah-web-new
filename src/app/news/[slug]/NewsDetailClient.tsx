@@ -163,16 +163,16 @@ export default function NewsDetailClient({
             <div className="min-w-0">
               {/* Share strip — inline with article column */}
               <div className="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-border/60">
-                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{t("shareLabel")}</span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{t("shareLabel")}</span>
                   <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Facebook className="h-4 w-4" /></a>
                   <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Twitter className="h-4 w-4" /></a>
                   <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Linkedin className="h-4 w-4" /></a>
-                  <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
-                    <LinkIcon className="h-4 w-4" />
-                    {copied && <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded">{t("shareCopied")}</span>}
-                  </button>
                 </div>
+                <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
+                  <LinkIcon className="h-4 w-4" />
+                  {copied && <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded">{t("shareCopied")}</span>}
+                </button>
               </div>
               {article.body && article.body.length > 0 ? (
                 <ArticleBody body={article.body} />
