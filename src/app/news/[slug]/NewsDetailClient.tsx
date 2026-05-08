@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
+  Bookmark,
   Calendar,
   CalendarCheck,
   ChevronRight,
@@ -182,45 +183,165 @@ export default function NewsDetailClient({
         </div>
       </section>
 
-      {/* Content */}
+      {/* Content + Sidebar */}
       <section className="py-12 sm:py-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          {article.body && article.body.length > 0 ? (
-            <ArticleBody body={article.body} />
-          ) : article.content ? (
-            <div
-              className="prose prose-lg max-w-none
-                prose-headings:text-foreground prose-headings:font-bold
-                prose-p:text-muted-foreground prose-p:leading-relaxed
-                prose-li:text-muted-foreground
-                prose-strong:text-foreground
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                prose-img:rounded-xl prose-img:shadow-lg"
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
-          ) : article.excerpt ? (
-            <p className="text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
-          ) : (
-            <p className="text-muted-foreground">{t("noContent")}</p>
-          )}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12">
+            {/* Article body */}
+            <div className="min-w-0">
+              {article.body && article.body.length > 0 ? (
+                <ArticleBody body={article.body} />
+              ) : article.content ? (
+                <div
+                  className="prose prose-lg max-w-none
+                    prose-headings:text-foreground prose-headings:font-bold
+                    prose-p:text-muted-foreground prose-p:leading-relaxed
+                    prose-li:text-muted-foreground
+                    prose-strong:text-foreground
+                    prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                    prose-img:rounded-xl prose-img:shadow-lg"
+                  dangerouslySetInnerHTML={{ __html: article.content }}
+                />
+              ) : article.excerpt ? (
+                <p className="text-lg text-muted-foreground leading-relaxed">{article.excerpt}</p>
+              ) : (
+                <p className="text-muted-foreground">{t("noContent")}</p>
+              )}
 
-          {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">{t("tags")}</h3>
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) => (
-                  <span key={tag} className="text-xs px-3 py-1.5 rounded-lg bg-muted text-muted-foreground">{tag}</span>
-                ))}
+              {/* Tags */}
+              {article.tags && article.tags.length > 0 && (
+                <div className="mt-12 pt-8 border-t border-border">
+                  <h3 className="text-sm font-semibold text-foreground mb-3">{t("tags")}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {article.tags.map((tag) => (
+                      <span key={tag} className="text-xs px-3 py-1.5 rounded-lg bg-muted text-muted-foreground">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Back link */}
+              <div className="mt-12">
+                <Link href="/news" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+                  <ArrowLeft className="h-4 w-4" /> {t("backToNews")}
+                </Link>
               </div>
             </div>
-          )}
 
-          {/* Back link */}
-          <div className="mt-12">
-            <Link href="/news" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
-              <ArrowLeft className="h-4 w-4" /> {t("backToNews")}
-            </Link>
+            {/* Sidebar */}
+            <aside className="lg:sticky lg:top-24 self-start space-y-5">
+              {/* Investment Advice CTA */}
+              <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 text-primary-foreground">
+                <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
+                  <TrendingUp className="h-5 w-5 text-accent-foreground" />
+                </div>
+                <h3 className="text-lg font-bold mb-1.5">Get Investment Advice</h3>
+                <p className="text-sm text-primary-foreground/75 leading-relaxed mb-4">
+                  Speak with our analysts about the best opportunities in Dubai's market.
+                </p>
+                <Link
+                  href="/contact"
+                  className="block w-full text-center px-4 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors"
+                >
+                  Book Consultation
+                </Link>
+              </div>
+
+              {/* Related Articles compact list */}
+              {related.length > 0 && (
+                <div>
+                  <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
+                    Related Articles
+                  </p>
+                  <div className="space-y-4">
+                    {related.map((r) => (
+                      <Link
+                        key={r._id}
+                        href={`/news/${r.slug}`}
+                        className="group flex items-start gap-3"
+                      >
+                        <div className="relative w-20 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                          <ImageWithFallback
+                            src={r.featuredImage || FALLBACK_IMAGE}
+                            alt={r.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          {r.publishedAt && (
+                            <p className="text-[11px] text-muted-foreground mb-1">{formatShortDate(r.publishedAt)}</p>
+                          )}
+                          <p className="text-sm font-semibold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                            {r.title}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Newsletter */}
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Bookmark className="h-4 w-4 text-accent" />
+                  <h3 className="text-base font-bold text-foreground">Weekly Market Report</h3>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+                  Get exclusive insights delivered to your inbox every week.
+                </p>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget);
+                    const email = fd.get("email");
+                    if (!email) return;
+                    window.location.href = `/contact?subscribe=${encodeURIComponent(String(email))}`;
+                  }}
+                  className="space-y-2.5"
+                >
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="Your email"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-br from-primary to-primary/85 text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+
+              {/* Market Snapshot */}
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
+                  Market Snapshot
+                </p>
+                <dl className="space-y-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">Avg. Yield</dt>
+                    <dd className="font-bold text-foreground">6.2%</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">YoY Growth</dt>
+                    <dd className="font-bold text-foreground">+11.4%</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">Transactions (2025)</dt>
+                    <dd className="font-bold text-foreground">180K+</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">New Supply (2026)</dt>
+                    <dd className="font-bold text-foreground">70K units</dd>
+                  </div>
+                </dl>
+              </div>
+            </aside>
           </div>
         </div>
       </section>

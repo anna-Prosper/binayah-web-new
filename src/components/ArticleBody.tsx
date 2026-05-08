@@ -38,9 +38,19 @@ function Paragraph({ text }: { text: string }) {
 }
 
 function IntroBlock({ text }: { text: string }) {
+  if (!text) return null;
+  const first = text.charAt(0);
+  const rest = text.slice(1);
   return (
-    <p className="text-lg font-medium text-foreground/90 leading-[1.85] mb-4 sm:first-letter:text-5xl sm:first-letter:font-bold sm:first-letter:text-[#0B3D2E] sm:first-letter:float-left sm:first-letter:mr-3 sm:first-letter:mt-1 sm:first-letter:leading-none">
-      {text}
+    <p className="text-lg font-medium text-foreground/90 leading-[1.7] mb-4">
+      <span
+        aria-hidden="true"
+        className="hidden sm:block float-left mr-3 font-bold text-[#0B3D2E] text-[3.6em] leading-[0.9] mt-[0.05em]"
+      >
+        {first}
+      </span>
+      <span className="sm:hidden">{first}</span>
+      {rest}
     </p>
   );
 }
