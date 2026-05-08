@@ -229,7 +229,7 @@ export default function NewsDetailClient({
             </div>
 
             {/* Sidebar */}
-            <aside className="lg:sticky lg:top-24 self-start space-y-5">
+            <aside className="lg:sticky lg:top-24 self-start space-y-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
               {/* Investment Advice CTA */}
               <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 text-primary-foreground">
                 <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
