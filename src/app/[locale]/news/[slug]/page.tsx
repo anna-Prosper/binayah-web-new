@@ -18,6 +18,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const { slug } = await params;
   const article = await getNewsArticle(slug);
   if (!article) return notFound();
-  const related = await getRelatedNews(slug, article.category, 3);
+  let related: any[] = [];
+  try {
+    related = await getRelatedNews(slug, article.category, 3);
+  } catch {
+    related = [];
+  }
   return <NewsDetailClient article={article} related={related} />;
 }

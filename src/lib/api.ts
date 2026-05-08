@@ -68,20 +68,27 @@ export const getNewsArticle = cache(async (slug: string) =>
   fetchJsonOr404(`/api/news/${slug}`)
 );
 export const getRelatedNews = cache(
-  async (currentSlug: string, category?: string, limit = 3) => {
-    const list = await fetchJsonOr404<any[]>(`/api/news?limit=20`);
-    if (!Array.isArray(list)) return [];
-    const sameCategory = category
-      ? list.filter(
-          (a) =>
-            a?.slug !== currentSlug &&
-            (a?.category || "").toLowerCase() === category.toLowerCase()
-        )
-      : [];
-    const others = list.filter(
-      (a) => a?.slug !== currentSlug && !sameCategory.includes(a)
-    );
-    return [...sameCategory, ...others].slice(0, limit);
+  async (currentSlug: string, category?: string, limit = 3): Promise<any[]> => {
+    try {
+      const raw = await fetchJsonOr404<any>(`/api/news?limit=20`);
+      const list: any[] = Array.isArray(raw)
+        ? raw
+        : Array.isArray(raw?.articles)
+        ? raw.articles
+        : Array.isArray(raw?.data)
+        ? raw.data
+        : [];
+      if (list.length === 0) return [];
+      const cat = (category || "").toString().toLowerCase();
+      const filtered = list.filter((a) => a?.slug && a.slug !== currentSlug);
+      const sameCategory = cat
+        ? filtered.filter((a) => (a?.category || "").toString().toLowerCase() === cat)
+        : [];
+      const others = filtered.filter((a) => !sameCategory.includes(a));
+      return [...sameCategory, ...others].slice(0, limit);
+    } catch {
+      return [];
+    }
   }
 );
 export const getDeveloper = cache(async (slug: string) =>

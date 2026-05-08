@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 "use client";
 
 import Link from "next/link";
@@ -138,7 +137,7 @@ export default function NewsDetailClient({
       {/* Share strip */}
       <section className="border-b border-border/60">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">SHARE</span>
+          <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{t("shareLabel")}</span>
           <div className="flex items-center gap-2">
             <a
               href={shareLinks.facebook}
@@ -176,7 +175,7 @@ export default function NewsDetailClient({
               <LinkIcon className="h-4 w-4" />
               {copied && (
                 <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded">
-                  Copied
+                  {t("shareCopied")}
                 </span>
               )}
             </button>
@@ -236,15 +235,15 @@ export default function NewsDetailClient({
                 <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
                   <TrendingUp className="h-5 w-5 text-accent-foreground" />
                 </div>
-                <h3 className="text-lg font-bold mb-1.5">Get Investment Advice</h3>
+                <h3 className="text-lg font-bold mb-1.5">{t("investmentAdviceTitle")}</h3>
                 <p className="text-sm text-primary-foreground/75 leading-relaxed mb-4">
-                  Speak with our analysts about the best opportunities in Dubai's market.
+                  {t("investmentAdviceDesc")}
                 </p>
                 <Link
                   href="/contact"
                   className="block w-full text-center px-4 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors"
                 >
-                  Book Consultation
+                  {t("bookConsultation")}
                 </Link>
               </div>
 
@@ -252,7 +251,7 @@ export default function NewsDetailClient({
               {related.length > 0 && (
                 <div>
                   <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
-                    Related Articles
+                    {t("relatedArticles")}
                   </p>
                   <div className="space-y-4">
                     {related.map((r) => (
@@ -287,10 +286,10 @@ export default function NewsDetailClient({
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-center gap-2 mb-1.5">
                   <Bookmark className="h-4 w-4 text-accent" />
-                  <h3 className="text-base font-bold text-foreground">Weekly Market Report</h3>
+                  <h3 className="text-base font-bold text-foreground">{t("newsletterTitle")}</h3>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                  Get exclusive insights delivered to your inbox every week.
+                  {t("newsletterDesc")}
                 </p>
                 <form
                   onSubmit={(e) => {
@@ -306,14 +305,14 @@ export default function NewsDetailClient({
                     type="email"
                     name="email"
                     required
-                    placeholder="Your email"
+                    placeholder={t("newsletterEmail")}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
                   />
                   <button
                     type="submit"
                     className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-br from-primary to-primary/85 text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
                   >
-                    Subscribe
+                    {t("newsletterSubscribe")}
                   </button>
                 </form>
               </div>
@@ -321,24 +320,24 @@ export default function NewsDetailClient({
               {/* Market Snapshot */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
-                  Market Snapshot
+                  {t("marketSnapshot")}
                 </p>
                 <dl className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Avg. Yield</dt>
-                    <dd className="font-bold text-foreground">6.2%</dd>
+                    <dt className="text-muted-foreground">{t("marketAvgYield")}</dt>
+                    <dd className="font-bold text-foreground">{"6.2%"}</dd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">YoY Growth</dt>
-                    <dd className="font-bold text-foreground">+11.4%</dd>
+                    <dt className="text-muted-foreground">{t("marketYoyGrowth")}</dt>
+                    <dd className="font-bold text-foreground">{"+11.4%"}</dd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Transactions (2025)</dt>
-                    <dd className="font-bold text-foreground">180K+</dd>
+                    <dt className="text-muted-foreground">{t("marketTransactions")}</dt>
+                    <dd className="font-bold text-foreground">{"180K+"}</dd>
                   </div>
                   <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">New Supply (2026)</dt>
-                    <dd className="font-bold text-foreground">70K units</dd>
+                    <dt className="text-muted-foreground">{t("marketNewSupply")}</dt>
+                    <dd className="font-bold text-foreground">{"70K units"}</dd>
                   </div>
                 </dl>
               </div>
@@ -357,27 +356,27 @@ export default function NewsDetailClient({
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-bold text-primary-foreground mb-1.5">
-                  Ready to Invest in Dubai?
+                  {t("ctaReadyTitle")}
                 </h3>
                 <p className="text-sm text-primary-foreground/80 leading-relaxed">
-                  Speak with our analysts about the best opportunities in today's market — free consultation.
+                  {t("ctaReadyDesc")}
                 </p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 lg:flex-shrink-0">
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`I read "${article.title}" and would like more info.`)}`}
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t("ctaWhatsAppPrefill", { title: article.title }))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1fbf58] transition-colors"
               >
-                <MessageCircle className="h-4 w-4" /> WhatsApp Us
+                <MessageCircle className="h-4 w-4" /> {t("ctaWhatsApp")}
               </a>
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors"
               >
-                <CalendarCheck className="h-4 w-4" /> Book Consultation
+                <CalendarCheck className="h-4 w-4" /> {t("bookConsultation")}
               </Link>
             </div>
           </div>
@@ -392,14 +391,17 @@ export default function NewsDetailClient({
               <div className="flex items-center gap-3">
                 <div className="h-px w-8 bg-accent" />
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                  Related <span className="italic font-medium text-muted-foreground">Articles</span>
+                  {t("relatedArticles").split(" ")[0]}{" "}
+                  <span className="italic font-medium text-muted-foreground">
+                    {t("relatedArticlesItalic")}
+                  </span>
                 </h2>
               </div>
               <Link
                 href="/news"
                 className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-foreground border border-border rounded-full px-4 py-2 hover:bg-muted/50 transition-colors"
               >
-                View all <ArrowRight className="h-3.5 w-3.5" />
+                {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
