@@ -1144,7 +1144,12 @@
     "ctaReadyTitle": "准备好投资迪拜了吗?",
     "ctaReadyDesc": "与我们的分析师交流,了解当前市场最佳机会 — 免费咨询。",
     "ctaWhatsApp": "WhatsApp 联系",
-    "ctaWhatsAppPrefill": "我读了《{title}》,想了解更多信息。"
+    "ctaWhatsAppPrefill": "我读了《{title}》,想了解更多信息。",
+    "authorRole": "房产市场分析师",
+    "authorBio": "我们的编辑团队深入研究迪拜房地产市场，追踪DLD数据、开发商动态和投资趋势。",
+    "tocLabel": "本文内容",
+    "subscribedSuccess": "订阅成功！",
+    "subscribeError": "出现错误，请重试。"
   },
   "pulse": {
     "heroLabel": "市场情报",

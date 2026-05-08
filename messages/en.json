@@ -1142,7 +1142,12 @@
     "ctaReadyTitle": "Ready to Invest in Dubai?",
     "ctaReadyDesc": "Speak with our analysts about the best opportunities in today's market — free consultation.",
     "ctaWhatsApp": "WhatsApp Us",
-    "ctaWhatsAppPrefill": "I read \"{title}\" and would like more info."
+    "ctaWhatsAppPrefill": "I read \"{title}\" and would like more info.",
+    "authorRole": "Property Market Analyst",
+    "authorBio": "Our editorial team researches Dubai's real estate market, tracking DLD data, developer launches, and investment trends to keep buyers and investors informed.",
+    "tocLabel": "IN THIS ARTICLE",
+    "subscribedSuccess": "You're subscribed!",
+    "subscribeError": "Something went wrong. Please try again."
   },
   "pulse": {
     "heroLabel": "Market Intelligence",

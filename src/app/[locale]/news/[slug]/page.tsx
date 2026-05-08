@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/news/[slug]/NewsDetailClient";
-import { getNewsArticle, getRelatedNews } from "@/lib/api";
+import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 3600;
 
@@ -24,5 +24,29 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   } catch {
     related = [];
   }
-  return <NewsDetailClient article={article} related={related} />;
+  let marketStats: any = null;
+  try {
+    const r = await serverFetch(serverApiUrl('/api/market-stats'));
+    if (r.ok) marketStats = await r.json();
+  } catch {}
+  return (
+    <>
+      <NewsDetailClient article={article} related={related} marketStats={marketStats} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            headline: article.title,
+            image: article.featuredImage || "https://staging.binayahhub.com/assets/dubai-hero.webp",
+            datePublished: article.publishedAt,
+            author: { "@type": "Person", name: article.author || "Binayah Editorial" },
+            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: "https://staging.binayahhub.com/assets/binayah-logo.webp" } },
+            url: `https://staging.binayahhub.com/news/${slug}`,
+          }),
+        }}
+      />
+    </>
+  );
 }

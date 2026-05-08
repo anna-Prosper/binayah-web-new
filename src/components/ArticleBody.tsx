@@ -8,6 +8,9 @@ import {
 import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
 
+/* ─── HELPERS ─── */
+const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
 /* ─── ICON MAP (used by section_title blocks) ─── */
 const ICONS: Record<string, React.ElementType> = {
   CheckCircle2, TrendingUp, BarChart3, AlertCircle, Info,
@@ -53,7 +56,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
         <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
           <span className="text-white text-xs sm:text-sm font-bold">{block.number ?? ""}</span>
         </div>
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
+        <h2 id={slugify(block.text)} className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
       </div>
     );
   }
@@ -63,7 +66,7 @@ function SectionTitle({ block }: { block: Extract<ArticleBlock, { type: "section
       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md flex-shrink-0">
         <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
       </div>
-      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
+      <h2 id={slugify(block.text)} className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">{block.text}</h2>
     </div>
   );
 }
@@ -283,4 +286,10 @@ export default function ArticleBody({ body }: { body: ArticleBlock[] }) {
       {body.map((block, i) => renderBlock(block, i))}
     </div>
   );
+}
+
+export function extractTOC(body: ArticleBlock[]): { id: string; text: string }[] {
+  return body
+    .filter((b) => b.type === 'section_title')
+    .map((b) => ({ id: slugify((b as any).text), text: (b as any).text }));
 }

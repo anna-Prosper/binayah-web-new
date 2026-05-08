@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
-import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
+import ArticleBody, { type ArticleBlock, extractTOC } from "@/components/ArticleBody";
 import { useState, useEffect, useRef } from "react";
 
 interface Article {
@@ -71,16 +71,22 @@ function formatShortDate(dateStr?: string) {
 export default function NewsDetailClient({
   article,
   related = [],
+  marketStats,
 }: {
   article: Article;
   related?: RelatedArticle[];
+  marketStats?: any;
 }) {
   const t = useTranslations("newsDetail");
   const tBreadcrumbs = useTranslations("breadcrumbs");
   const [copied, setCopied] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const [subState, setSubState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const articleRef = useRef<HTMLElement>(null);
+
+  const toc = article.body ? extractTOC(article.body) : [];
 
   useEffect(() => {
     const onScroll = () => {
@@ -95,6 +101,24 @@ export default function NewsDetailClient({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (toc.length < 2) return;
+    const headings = toc.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length > 0) {
+          const top = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+          setActiveSection((top.target as HTMLElement).id);
+        }
+      },
+      { rootMargin: '0px 0px -60% 0px', threshold: 0 }
+    );
+    headings.forEach((h) => observer.observe(h));
+    return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toc.length]);
 
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : `https://binayahhub.com/news/${article.slug}`;
@@ -199,11 +223,29 @@ export default function NewsDetailClient({
                   <h3 className="text-sm font-semibold text-foreground mb-3">{t("tags")}</h3>
                   <div className="flex flex-wrap gap-2">
                     {article.tags.map((tag) => (
-                      <span key={tag} className="text-xs px-3 py-1.5 rounded-lg bg-muted text-muted-foreground">{tag}</span>
+                      <Link key={tag} href={"/news?tag=" + encodeURIComponent(tag)} className="text-xs px-3 py-1.5 rounded-lg bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">{tag}</Link>
                     ))}
                   </div>
                 </div>
               )}
+
+              {/* Author bio card */}
+              {(() => {
+                const authorName = article.author || 'Binayah Editorial';
+                const initials = authorName.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase();
+                return (
+                  <div className="mt-10 p-5 rounded-2xl border border-border bg-card flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm flex-shrink-0">
+                      {initials}
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">{authorName}</p>
+                      <p className="text-xs text-muted-foreground mb-1">{t("authorRole")}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{t("authorBio")}</p>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Back link */}
               <div className="mt-12">
@@ -215,6 +257,25 @@ export default function NewsDetailClient({
 
             {/* Sidebar */}
             <aside className="lg:sticky lg:top-24 self-start space-y-5 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+              {/* Table of Contents */}
+              {toc.length >= 2 && (
+                <div className="rounded-2xl border border-border bg-card p-5">
+                  <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-3">{t("tocLabel")}</p>
+                  <ul className="space-y-1.5">
+                    {toc.map(({ id, text }) => (
+                      <li key={id}>
+                        <a
+                          href={`#${id}`}
+                          onClick={(e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }}
+                          className={activeSection === id ? "text-sm text-primary font-semibold block" : "text-sm text-muted-foreground hover:text-foreground block transition-colors"}
+                        >
+                          {text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Investment Advice CTA */}
               <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/85 p-6 text-primary-foreground">
                 <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
@@ -276,30 +337,55 @@ export default function NewsDetailClient({
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">
                   {t("newsletterDesc")}
                 </p>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const fd = new FormData(e.currentTarget);
-                    const email = fd.get("email");
-                    if (!email) return;
-                    window.location.href = `/contact?subscribe=${encodeURIComponent(String(email))}`;
-                  }}
-                  className="space-y-2.5"
-                >
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    placeholder={t("newsletterEmail")}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-br from-primary to-primary/85 text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
+                {subState === 'done' ? (
+                  <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                    {t("subscribedSuccess")}
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      const fd = new FormData(e.currentTarget);
+                      const email = fd.get("email");
+                      if (!email) return;
+                      setSubState('loading');
+                      try {
+                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/market-report/subscribe`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email: String(email), source: 'news-article' }),
+                        });
+                        if (res.ok) {
+                          setSubState('done');
+                        } else {
+                          setSubState('error');
+                        }
+                      } catch {
+                        setSubState('error');
+                      }
+                    }}
+                    className="space-y-2.5"
                   >
-                    {t("newsletterSubscribe")}
-                  </button>
-                </form>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      placeholder={t("newsletterEmail")}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                    />
+                    <button
+                      type="submit"
+                      disabled={subState === 'loading'}
+                      className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-br from-primary to-primary/85 text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+                    >
+                      {subState === 'loading' ? '...' : t("newsletterSubscribe")}
+                    </button>
+                    {subState === 'error' && (
+                      <p className="text-xs text-red-500">{t("subscribeError")}</p>
+                    )}
+                  </form>
+                )}
               </div>
 
               {/* Market Snapshot */}
@@ -310,11 +396,11 @@ export default function NewsDetailClient({
                 <dl className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
                     <dt className="text-muted-foreground">{t("marketAvgYield")}</dt>
-                    <dd className="font-bold text-foreground">{"6.2%"}</dd>
+                    <dd className="font-bold text-foreground">{marketStats?.summary?.avgYield != null ? marketStats.summary.avgYield.toFixed(1) + '%' : '6.2%'}</dd>
                   </div>
                   <div className="flex items-center justify-between">
                     <dt className="text-muted-foreground">{t("marketYoyGrowth")}</dt>
-                    <dd className="font-bold text-foreground">{"+11.4%"}</dd>
+                    <dd className="font-bold text-foreground">{marketStats?.yoyGrowth != null ? '+' + marketStats.yoyGrowth + '%' : '+11.4%'}</dd>
                   </div>
                   <div className="flex items-center justify-between">
                     <dt className="text-muted-foreground">{t("marketTransactions")}</dt>
