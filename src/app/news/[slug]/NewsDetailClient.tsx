@@ -146,8 +146,8 @@ function NewsDetailInner({
                 <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
               </Link>
             </div>
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
-              <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
+            <div className="w-full px-6 sm:px-8 pb-8 sm:pb-12 relative">
+              <div className="flex items-center gap-2 text-sm text-white/60 mb-5">
                 <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href="/news" className="hover:text-white transition-colors">{t("breadcrumbNews")}</Link>
