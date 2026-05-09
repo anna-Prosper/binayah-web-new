@@ -124,21 +124,20 @@ export default function NewsDetailClient({
 
       <Navbar />
 
-      {/* Green strip behind navbar + back button */}
-      <div className="h-14 sm:h-20 flex items-center px-4 sm:px-6" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
-          <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 border border-white/20 group-hover:bg-white/25 transition-colors">
-            <ArrowLeft className="h-4 w-4" />
-          </span>
-          <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
-        </Link>
-      </div>
-
-      {/* Hero image — starts flush below navbar */}
-      <section className="relative w-full h-[60vw] min-h-[280px] max-h-[560px] overflow-hidden flex items-end">
+      {/* Hero — full bleed behind navbar, 21:9 */}
+      <section className="relative w-full overflow-hidden flex items-end" style={{ aspectRatio: "21/9" }}>
         <div className="absolute inset-0">
           <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/70 to-foreground/40" />
+        </div>
+        {/* Back button at navbar level */}
+        <div className="absolute top-0 left-0 right-0 h-14 sm:h-20 flex items-center px-4 sm:px-6 z-10">
+          <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
+            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-colors">
+              <ArrowLeft className="h-4 w-4" />
+            </span>
+            <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
+          </Link>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
           <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
