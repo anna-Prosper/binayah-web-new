@@ -137,7 +137,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         style={{ background: isSolid ? "linear-gradient(135deg, #0B3D2E, #1A7A5A)" : "transparent" }}
       >
         <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
-          <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-12 sm:h-16" : "h-14 sm:h-20"}`}>
+          <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-10 sm:h-12" : "h-12 sm:h-16"}`}>
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
               <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-8 sm:h-10 w-auto brightness-0 invert" />
             </Link>

@@ -128,10 +128,10 @@ export default function NewsDetailClient({
       <section className="relative w-full h-[440px] md:h-[580px] overflow-hidden flex items-end">
         <div className="absolute inset-0">
           <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/40 to-foreground/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
         </div>
         {/* Back button at navbar level */}
-        <div className="absolute top-0 left-0 right-0 h-14 sm:h-20 flex items-center px-4 sm:px-6 z-10">
+        <div className="absolute top-0 left-0 right-0 h-12 sm:h-16 flex items-center px-4 sm:px-6 z-10">
           <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
             <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-colors">
               <ArrowLeft className="h-4 w-4" />
@@ -168,7 +168,7 @@ export default function NewsDetailClient({
       </section>
 
       {/* Content + Sidebar */}
-      <section ref={articleRef} className="py-12 sm:py-16">
+      <section ref={articleRef} className="py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12">
             {/* Article body */}
