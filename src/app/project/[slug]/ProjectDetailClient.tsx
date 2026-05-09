@@ -1381,10 +1381,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {(() => {
                       let embedSrc = "";
                       if (project.mapUrl) {
-                        // If it's already an embed URL, use directly; otherwise convert
-                        embedSrc = project.mapUrl.includes("/embed/")
-                          ? project.mapUrl
-                          : project.mapUrl.replace("/maps/", "/maps/embed/");
+                        // Some import pipelines store the full iframe HTML in this field;
+                        // strip any trailing attributes (e.g. ' width="600" height="450"...')
+                        const rawUrl = project.mapUrl.split(/\s+/)[0];
+                        // Detect embed URLs — covers /maps/embed? and /maps/embed/ formats
+                        embedSrc = rawUrl.includes("/maps/embed")
+                          ? rawUrl
+                          : rawUrl.replace(/\/maps\//, "/maps/embed/");
                       } else if (project.latitude && project.longitude) {
                         embedSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.latitude},${project.longitude}&zoom=15`;
                       } else {
@@ -2293,10 +2296,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {(() => {
                       let mapSrc = "";
                       if (project.mapUrl) {
-                        // Try to convert standard Google Maps link to embed
-                        const placeMatch = project.mapUrl.match(/place\/([^/]+)/);
-                        if (placeMatch) {
-                          mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(placeMatch[1].replace(/\+/g, ' '))}`;
+                        // Strip trailing HTML attributes stored by some import pipelines
+                        const rawUrl = project.mapUrl.split(/\s+/)[0];
+                        if (rawUrl.includes("/maps/embed")) {
+                          mapSrc = rawUrl;
+                        } else {
+                          const placeMatch = rawUrl.match(/place\/([^/]+)/);
+                          if (placeMatch) {
+                            mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(placeMatch[1].replace(/\+/g, ' '))}`;
+                          }
                         }
                       }
                       if (!mapSrc && project.latitude && project.longitude) {
@@ -2318,7 +2326,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       );
                     })()}
                     {project.mapUrl && (
-                      <a href={project.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors">
+                      <a href={project.googleMapsUrl || project.mapUrl.split(/\s+/)[0]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors">
                         <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t("viewOnGoogleMaps")}
                       </a>
                     )}
