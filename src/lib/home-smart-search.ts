@@ -345,9 +345,14 @@ export function buildHomeSearchUrl(args: {
   if (intent === "off-plan") {
     params.set("status", "Off-Plan");
     params.set("intent", "off-plan");
-  } else {
+  } else if (intent === "rent") {
+    // Rent-only → Secondary tab
     params.set("status", "Secondary");
-    params.set("intent", intent === "rent" ? "rent" : "buy");
+    params.set("intent", "rent");
+  } else {
+    // Buy intent stays on All tab so off-plan projects are also shown
+    params.set("status", "All");
+    params.set("intent", "buy");
   }
 
   const propertyType = args.manual?.propertyType || args.draft?.propertyType;

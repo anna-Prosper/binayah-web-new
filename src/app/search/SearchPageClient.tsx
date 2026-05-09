@@ -84,7 +84,8 @@ function formatPrice(price?: number, currency = "AED", fallback = "Price on requ
 
 function normalizeStatus(status: string | null, intent: SearchIntent): SearchStatus {
   if (status === "Off-Plan" || intent === "off-plan") return "Off-Plan";
-  if (status === "Secondary" || intent === "buy" || intent === "rent") return "Secondary";
+  if (status === "Secondary") return "Secondary";
+  // All tab is authoritative — intent (buy/rent) only filters secondary sub-mode
   return "All";
 }
 
@@ -279,7 +280,7 @@ function SearchContent() {
           {status !== "Off-Plan" && (
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
               {secondaryModes.map((mode) => (
-                <button key={mode.value || "any"} onClick={() => { setStatus(mode.value ? "Secondary" : "All"); setIntent(mode.value); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value && (status === "Secondary" || mode.value === "") ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
+                <button key={mode.value || "any"} onClick={() => { setIntent(mode.value); if (!mode.value) setStatus(status === "Off-Plan" ? "All" : status); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
                   {mode.value === "" ? t("tabAnySecondary") : mode.value === "buy" ? t("buy") : t("rent")}
                 </button>
               ))}
