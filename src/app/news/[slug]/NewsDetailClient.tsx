@@ -125,7 +125,7 @@ export default function NewsDetailClient({
       <Navbar />
 
       {/* Hero — full bleed behind navbar, 21:9 */}
-      <section className="relative w-full h-[320px] md:h-[480px] overflow-hidden flex items-end">
+      <section className="relative w-full h-[440px] md:h-[580px] overflow-hidden flex items-end">
         <div className="absolute inset-0">
           <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/40 to-foreground/10" />
