@@ -1,30 +1,20 @@
 import { notFound } from "next/navigation";
 import { getNewsArticle } from "@/lib/api";
-import Image from "next/image";
+import { applyTranslation } from "@/lib/applyTranslation";
+import NewsDetailClient from "@/app/news/[slug]/NewsDetailClient";
 
-export const revalidate = 1800;
+export const revalidate = 0;
 
-const FALLBACK = "/assets/dubai-hero.webp";
+const OVERRIDE_IMAGE = "https://sm-automation-5464.s3.amazonaws.com/nanobanana-inputs/00317cd9e39a46b382824a469fb76dd7.png";
 
-export default async function NewsRawHeroPage({
+export default async function NewsRawPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const article = await getNewsArticle(slug);
+  const { locale, slug } = await params;
+  const article = applyTranslation(await getNewsArticle(slug), locale);
   if (!article) return notFound();
 
-  return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      <Image
-        src={article.featuredImage || FALLBACK}
-        alt={article.title}
-        fill
-        className="object-cover"
-        priority
-        unoptimized
-      />
-    </div>
-  );
+  return <NewsDetailClient article={{ ...article, featuredImage: OVERRIDE_IMAGE }} />;
 }
