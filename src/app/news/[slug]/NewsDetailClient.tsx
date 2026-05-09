@@ -120,6 +120,7 @@ function NewsDetailInner({
 
   const searchParams = useSearchParams();
   const containedHero = searchParams?.get("hero") === "contained";
+  const boxedHero = searchParams?.get("hero") === "boxed";
 
   return (
     <div className="min-h-screen bg-background">
@@ -128,7 +129,52 @@ function NewsDetailInner({
 
       <Navbar />
 
-      {containedHero ? (
+      {boxedHero ? (
+        /* ── BOXED HERO: full-bleed look but constrained to content width ── */
+        <div className="mt-12 sm:mt-16 px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto relative h-[480px] md:h-[620px] overflow-hidden rounded-2xl flex items-end">
+            <div className="absolute inset-0">
+              <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
+              <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
+            </div>
+            {/* Back button at navbar level */}
+            <div className="absolute top-0 left-0 right-0 h-12 sm:h-16 flex items-center px-4 sm:px-6 z-10">
+              <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-colors">
+                  <ArrowLeft className="h-4 w-4" />
+                </span>
+                <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
+              </Link>
+            </div>
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
+              <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
+                <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
+                <ChevronRight className="h-3.5 w-3.5" />
+                <Link href="/news" className="hover:text-white transition-colors">{t("breadcrumbNews")}</Link>
+                <ChevronRight className="h-3.5 w-3.5" />
+                <span className="text-white/80 truncate max-w-[200px]">{article.title}</span>
+              </div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                {article.category && (
+                  <span className="inline-block text-[10px] font-bold px-3 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider mb-4">
+                    {article.category}
+                  </span>
+                )}
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
+                <div className="flex items-center gap-4 text-white/60 text-sm">
+                  {article.publishedAt && (
+                    <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {formatDate(article.publishedAt)}</span>
+                  )}
+                  {article.readTime && (
+                    <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {article.readTime}</span>
+                  )}
+                  {article.author && <span>{t("publishedOn")} {article.author}</span>}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      ) : containedHero ? (
         /* ── CONTAINED HERO: image in article column, title below ── */
         <div className="mt-12 sm:mt-16 max-w-4xl mx-auto px-4 sm:px-6 pt-8">
           <Link href="/news" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-medium transition-colors group mb-6">
