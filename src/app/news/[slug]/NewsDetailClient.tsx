@@ -128,7 +128,7 @@ export default function NewsDetailClient({
       <section className="relative w-full overflow-hidden flex items-end" style={{ aspectRatio: "3/1" }}>
         <div className="absolute inset-0">
           <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/70 to-foreground/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/95 via-foreground/40 to-foreground/10" />
         </div>
         {/* Back button at navbar level */}
         <div className="absolute top-0 left-0 right-0 h-14 sm:h-20 flex items-center px-4 sm:px-6 z-10">
