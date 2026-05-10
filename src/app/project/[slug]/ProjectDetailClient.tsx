@@ -221,9 +221,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
 
 
-  const images = project.imageGallery?.length ? project.imageGallery : [
-    "/assets/amenities-placeholder.webp",
-  ];
+  const galleryUrls = (project.imageGallery || [])
+    .map((item: any) => (typeof item === "object" && item.url ? item.url : item))
+    .filter(Boolean);
+  const images: string[] = galleryUrls.length
+    ? galleryUrls
+    : project.featuredImage
+      ? [project.featuredImage]
+      : ["/assets/amenities-placeholder.webp"];
   const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
   const dbFaqs = ((project.faqs as FAQ[] | null) || []).filter(f => f.question?.trim());
   const faqs = dbFaqs.length > 0 ? dbFaqs : [
