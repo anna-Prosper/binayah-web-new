@@ -86,7 +86,7 @@ export default function FilterSheet({ open, onClose, title, applyLabel, clearLab
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             {applyLabel}
-            {resultsLabel && <span className="ml-1 opacity-80">· {resultsLabel}</span>}
+            {resultsLabel && <span className="ml-1 opacity-80">{" · "}{resultsLabel}</span>}
           </button>
         </div>
       </div>

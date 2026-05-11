@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     if (!res.ok) {
       return NextResponse.json(
         { ...EMPTY, error: `Upstream ${res.status}` },
-        { status: 200 }
+        { status: 502 }
       );
     }
 
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     console.error("[/api/search] proxy failed:", err);
     return NextResponse.json(
       { ...EMPTY, error: (err as Error).message },
-      { status: 200 }
+      { status: 502 }
     );
   }
 }

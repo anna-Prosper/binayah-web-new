@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   min: number;
   max: number;
   step?: number;
-  /** Committed value `[low, high]`, both in absolute units. Use `null` for unset. */
   value: [number | null, number | null];
   onChange: (next: [number | null, number | null]) => void;
   currency?: string;
@@ -16,42 +15,60 @@ function clamp(n: number, lo: number, hi: number) {
   return Math.max(lo, Math.min(hi, n));
 }
 
+// Use numeric comparison rather than referential equality to avoid
+// the sync effect firing on every parent re-render when value is an
+// inline array literal.
+function valuesEqual(
+  a: [number | null, number | null],
+  b: [number | null, number | null]
+) {
+  return a[0] === b[0] && a[1] === b[1];
+}
+
 export default function PriceRangeFilter({ min, max, step = 50_000, value, onChange, currency = "AED" }: Props) {
   const [low, setLow] = useState<number>(value[0] ?? min);
   const [high, setHigh] = useState<number>(value[1] ?? max);
 
-  // Keep internal state in sync when the parent resets values (e.g. clearFilters).
+  // Track the last committed external value to avoid snapping the slider
+  // back during mid-drag if the parent re-renders for unrelated reasons.
+  const lastCommittedRef = useRef<[number | null, number | null]>(value);
+
   useEffect(() => {
-    setLow(value[0] ?? min);
-    setHigh(value[1] ?? max);
+    if (!valuesEqual(value, lastCommittedRef.current)) {
+      lastCommittedRef.current = value;
+      setLow(value[0] ?? min);
+      setHigh(value[1] ?? max);
+    }
   }, [value, min, max]);
 
   const commit = (nextLow: number, nextHigh: number) => {
     const lo = nextLow <= min ? null : nextLow;
     const hi = nextHigh >= max ? null : nextHigh;
-    onChange([lo, hi]);
+    const next: [number | null, number | null] = [lo, hi];
+    lastCommittedRef.current = next;
+    onChange(next);
   };
 
   const onLowSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const next = clamp(Number(event.target.value), min, high - step);
-    setLow(next);
+    setLow(clamp(Number(event.target.value), min, high - step));
   };
   const onHighSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const next = clamp(Number(event.target.value), low + step, max);
-    setHigh(next);
+    setHigh(clamp(Number(event.target.value), low + step, max));
   };
 
-  const onLowInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = event.target.value.replace(/[^0-9]/g, "");
-    const parsed = raw === "" ? min : Number(raw);
-    const next = clamp(parsed, min, high - step);
+  // Text inputs commit on blur or Enter, not on every keystroke, to avoid
+  // spamming the search API with a request per digit typed.
+  const onLowInputCommit = (raw: string) => {
+    const parsed = raw.replace(/[^0-9]/g, "");
+    const n = parsed === "" ? min : Number(parsed);
+    const next = clamp(n, min, high - step);
     setLow(next);
     commit(next, high);
   };
-  const onHighInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = event.target.value.replace(/[^0-9]/g, "");
-    const parsed = raw === "" ? max : Number(raw);
-    const next = clamp(parsed, low + step, max);
+  const onHighInputCommit = (raw: string) => {
+    const parsed = raw.replace(/[^0-9]/g, "");
+    const n = parsed === "" ? max : Number(parsed);
+    const next = clamp(n, low + step, max);
     setHigh(next);
     commit(low, next);
   };
@@ -98,8 +115,10 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
           <input
             type="text"
             inputMode="numeric"
-            value={low.toLocaleString()}
-            onChange={onLowInput}
+            defaultValue={low.toLocaleString()}
+            key={`low-${low}`}
+            onBlur={(event) => onLowInputCommit(event.target.value)}
+            onKeyDown={(event) => event.key === "Enter" && onLowInputCommit(event.currentTarget.value)}
             aria-label="Minimum price (typed)"
             className="w-full bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
@@ -110,8 +129,10 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
           <input
             type="text"
             inputMode="numeric"
-            value={high.toLocaleString()}
-            onChange={onHighInput}
+            defaultValue={high.toLocaleString()}
+            key={`high-${high}`}
+            onBlur={(event) => onHighInputCommit(event.target.value)}
+            onKeyDown={(event) => event.key === "Enter" && onHighInputCommit(event.currentTarget.value)}
             aria-label="Maximum price (typed)"
             className="w-full bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />

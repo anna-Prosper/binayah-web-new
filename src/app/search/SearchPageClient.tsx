@@ -71,16 +71,25 @@ interface Listing {
 }
 
 const statusTabs: SearchStatus[] = ["All", "Off-Plan", "Secondary"];
-const secondaryModes: Array<{ label: string; value: SearchIntent }> = [
-  { label: "Any Secondary", value: "" },
-  { label: "Buy", value: "buy" },
-  { label: "Rent", value: "rent" },
+const secondaryModes: Array<{ value: SearchIntent }> = [
+  { value: "" },
+  { value: "buy" },
+  { value: "rent" },
 ];
 const PAGE_SIZE = 24;
 const propertyTypes = homeSearchPropertyTypeOptions;
-const locationOptions = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City", "Arabian Ranches", "Dubai South", "MBR City", "Al Barari", "Jumeirah"];
+const locationOptions = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City", "Arabian Ranches", "Dubai South", "Al Barari", "Jumeirah"];
 const bedrooms = ["Studio", "1", "2", "3", "4", "5", "6", "7+"];
 const bathrooms = ["1", "2", "3", "4", "5", "6", "7+"];
+
+function toFacetMap(rows: unknown): Record<string, number> {
+  if (!Array.isArray(rows)) return {};
+  const out: Record<string, number> = {};
+  for (const row of rows as Array<{ value?: unknown; count?: unknown }>) {
+    if (row && row.value != null) out[String(row.value)] = Number(row.count) || 0;
+  }
+  return out;
+}
 
 const PRICE_BOUNDS = {
   buy: { min: 0, max: 100_000_000, step: 50_000 },
@@ -178,11 +187,14 @@ function SearchContent() {
     return map;
   })();
 
+  // Coerce intent to be compatible with the selected status tab.
+  // Run only when status changes so we don't loop (intent change → effect → intent change).
   useEffect(() => {
-    if (status === "Off-Plan" && intent !== "off-plan") setIntent("off-plan");
-    if (status === "Secondary" && intent === "off-plan") setIntent("buy");
-    if (status === "All" && intent === "off-plan") setIntent("");
-  }, [intent, status]);
+    if (status === "Off-Plan") { if (intent !== "off-plan") setIntent("off-plan"); }
+    else if (status === "Secondary") { if (intent === "off-plan") setIntent("buy"); }
+    else if (status === "All") { if (intent === "off-plan") setIntent(""); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   // Reset pagination whenever a filter changes (skip first render so URL-seeded pages survive).
   const isInitialMount = useRef(true);
@@ -224,25 +236,17 @@ function SearchContent() {
       setProjectTotalPages(Math.max(1, Number(data.projectTotalPages) || 1));
       setListingTotalPages(Math.max(1, Number(data.listingTotalPages) || 1));
       const incoming = data.facets || {};
-      const toMap = (rows: any): Record<string, number> => {
-        if (!Array.isArray(rows)) return {};
-        const out: Record<string, number> = {};
-        for (const row of rows) {
-          if (row && row.value != null) out[String(row.value)] = Number(row.count) || 0;
-        }
-        return out;
-      };
       setFacets({
-        community: toMap(incoming.community),
-        propertyType: toMap(incoming.propertyType),
-        bedrooms: toMap(incoming.bedrooms),
+        community: toFacetMap(incoming.community),
+        propertyType: toFacetMap(incoming.propertyType),
+        bedrooms: toFacetMap(incoming.bedrooms),
       });
     } catch (error) {
       console.error("Search error:", error);
     } finally {
       setLoading(false);
     }
-  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, selectedLocations, sort, status, type]);
+  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
     fetchResults();
@@ -464,7 +468,7 @@ function SearchContent() {
           </FilterSheet>
 
           <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-muted-foreground">{loading ? t("noResults") : t("results", { count: totalResults })}</p>
+            <p className="text-sm text-muted-foreground">{loading ? t("searching") : t("results", { count: totalResults })}</p>
             <div className="flex items-center gap-4">
               <div className="relative">
                 <label htmlFor="search-sort" className="text-xs text-muted-foreground mr-2">{t("sortBy")}</label>
@@ -504,7 +508,7 @@ function SearchContent() {
       <section className="py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {loading ? (
-            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("noResults")}</span></div>
+            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("searching")}</span></div>
           ) : totalResults === 0 ? (
             <div className="flex flex-col items-center py-16">
               <Search className="h-10 w-10 text-muted-foreground/25 mb-4" />
@@ -694,7 +698,7 @@ function SearchContent() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
-                              <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? "For Rent" : "For Sale"}</span>
+                              <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? t("forRent") : t("forSale")}</span>
                             </div>
                             <CardActions propertyId={listing.slug} slug={listing.slug} title={listing.title} />
                           </div>
