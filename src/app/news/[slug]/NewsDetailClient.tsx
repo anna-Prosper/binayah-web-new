@@ -138,23 +138,17 @@ function NewsDetailInner({
               <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
               <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
             </div>
-            {/* Back button at navbar level */}
+            {/* Breadcrumb at top */}
             <div className="absolute top-0 left-0 right-0 h-12 sm:h-16 flex items-center px-4 sm:px-6 z-10">
-              <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-colors">
-                  <ArrowLeft className="h-4 w-4" />
-                </span>
-                <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
-              </Link>
+              <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70">
+                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">{tBreadcrumbs("home")}</Link>
+                <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+                <Link href="/news" className="hover:text-white transition-colors whitespace-nowrap">{t("breadcrumbNews")}</Link>
+                <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+                <span className="text-white/90 truncate">{article.title}</span>
+              </nav>
             </div>
             <div className="w-full px-6 sm:px-8 pb-8 sm:pb-12 relative">
-              <div className="flex items-center gap-2 text-sm text-white/60 mb-5">
-                <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
-                <ChevronRight className="h-3.5 w-3.5" />
-                <Link href="/news" className="hover:text-white transition-colors">{t("breadcrumbNews")}</Link>
-                <ChevronRight className="h-3.5 w-3.5" />
-                <span className="text-white/80 truncate max-w-[200px]">{article.title}</span>
-              </div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 {article.category && (
                   <span className="inline-block text-[10px] font-bold px-3 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider mb-4">
@@ -210,23 +204,17 @@ function NewsDetailInner({
             <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
             <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
           </div>
-          {/* Back button at navbar level */}
+          {/* Breadcrumb at top */}
           <div className="absolute top-0 left-0 right-0 h-12 sm:h-16 flex items-center px-4 sm:px-6 z-10">
-            <Link href="/news" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors group">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-colors">
-                <ArrowLeft className="h-4 w-4" />
-              </span>
-              <span className="hidden sm:inline">{t("breadcrumbNews")}</span>
-            </Link>
+            <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70">
+              <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">{tBreadcrumbs("home")}</Link>
+              <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+              <Link href="/news" className="hover:text-white transition-colors whitespace-nowrap">{t("breadcrumbNews")}</Link>
+              <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+              <span className="text-white/90 truncate">{article.title}</span>
+            </nav>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
-            <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
-              <Link href="/" className="hover:text-white transition-colors">{tBreadcrumbs("home")}</Link>
-              <ChevronRight className="h-3.5 w-3.5" />
-              <Link href="/news" className="hover:text-white transition-colors">{t("breadcrumbNews")}</Link>
-              <ChevronRight className="h-3.5 w-3.5" />
-              <span className="text-white/80 truncate max-w-[200px]">{article.title}</span>
-            </div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               {article.category && (
                 <span className="inline-block text-[10px] font-bold px-3 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider mb-4">
