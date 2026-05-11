@@ -30,7 +30,7 @@ const ValuationStrip = () => {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 py-4 sm:py-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 py-3 sm:py-8">
         {/* Feature pills - desktop only */}
         <div className="hidden sm:flex gap-2 mb-4 justify-start lg:justify-start">
           {pills.map(({ icon: Icon, label }) => (
@@ -44,30 +44,74 @@ const ValuationStrip = () => {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 lg:gap-10">
+        {/* Mobile: single compact row */}
+        <div className="flex sm:hidden items-center gap-2">
+          {/* Icon */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex shrink-0 w-8 h-8 rounded-lg items-center justify-center border border-white/10"
+            style={{ background: "rgba(212,168,71,0.12)" }}
+          >
+            <Sparkles className="h-4 w-4" style={{ color: "#D4A847" }} />
+          </motion.div>
+
+          {/* Title + subtitle stacked */}
+          <div className="flex-1 min-w-0">
+            <h3 className="text-white text-sm font-bold leading-none line-clamp-1">
+              {t("headlineStart")}{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(90deg, #D4A847, #C49B35)" }}
+              >
+                {t("headlineGold")}
+              </span>
+            </h3>
+            <p className="text-white/50 text-[10px] leading-none mt-0.5 line-clamp-1">
+              {t("stripSubtitle")}
+            </p>
+          </div>
+
+          {/* Compact CTA */}
+          <motion.button
+            onClick={() => router.push("/valuation")}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            className="group inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0 min-h-[44px]"
+            style={{
+              background: "linear-gradient(135deg, #D4A847 0%, #B8922F 100%)",
+              color: "#0B3D2E",
+              boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
+            }}
+          >
+            Get Value
+            <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </motion.button>
+        </div>
+
+        {/* Desktop: original layout */}
+        <div className="hidden sm:flex sm:flex-row items-start sm:items-center gap-3 sm:gap-6 lg:gap-10">
           {/* Icon + Copy */}
           <div className="flex items-start gap-2.5 sm:gap-4 flex-1 min-w-0">
-            {/* Sparkle icon - desktop only */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
-              className="flex shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl items-center justify-center border border-white/10"
+              className="flex shrink-0 w-11 h-11 rounded-xl items-center justify-center border border-white/10"
               style={{ background: "rgba(212,168,71,0.12)" }}
             >
               <Sparkles className="h-5 w-5" style={{ color: "#D4A847" }} />
             </motion.div>
 
             <div className="min-w-0">
-              {/* Desktop label */}
               <p
-                className="hidden sm:block text-[10px] font-semibold tracking-[0.25em] uppercase mb-0.5"
+                className="text-[10px] font-semibold tracking-[0.25em] uppercase mb-0.5"
                 style={{ color: "#D4A847" }}
               >
                 {t("marketYear")}
               </p>
-              {/* Desktop headline */}
-              <h3 className="hidden sm:block text-white text-lg font-bold leading-snug">
+              <h3 className="text-white text-lg font-bold leading-snug">
                 {t("headlineStart")}{" "}
                 <span
                   className="bg-clip-text text-transparent"
@@ -76,14 +120,7 @@ const ValuationStrip = () => {
                   {t("headlineGold")}
                 </span>
               </h3>
-              {/* Mobile headline - no label, compact */}
-              <h3 className="sm:hidden text-white text-base font-bold leading-snug tracking-tight">
-                {t("headlineStart")}
-              </h3>
-              <p className="sm:hidden text-sm font-semibold mt-1 bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg, #D4A847, #C49B35)" }}>
-                {t("headlineGold")}
-              </p>
-              <p className="text-white/45 text-xs sm:text-sm leading-relaxed mt-1 hidden sm:block">
+              <p className="text-white/45 text-sm leading-relaxed mt-1">
                 {t("stripSubtitle")}
               </p>
             </div>
@@ -94,7 +131,7 @@ const ValuationStrip = () => {
             onClick={() => router.push("/valuation")}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0"
+            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0"
             style={{
               background: "linear-gradient(135deg, #D4A847 0%, #B8922F 100%)",
               color: "#0B3D2E",
@@ -102,14 +139,9 @@ const ValuationStrip = () => {
             }}
           >
             {t("cta")}
-            <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </motion.button>
         </div>
-
-        {/* Mobile proof line - below CTA */}
-        <p className="sm:hidden text-white/40 text-[9px] mt-2 tracking-wide">
-          {t("mobileProof")}
-        </p>
       </div>
     </section>
   );

@@ -26,13 +26,13 @@ interface Project {
 const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
   const t = useTranslations("home.sections.offPlan");
   return (
-    <section id="offplan" className="py-14 sm:py-24 bg-background scroll-mt-20">
+    <section id="offplan" className="py-10 sm:py-20 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4"
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-5 sm:mb-10 gap-4"
         >
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />

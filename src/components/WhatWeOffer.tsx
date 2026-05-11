@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { Home, Key, TrendingUp, Wrench, Building2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 const serviceBuy = "/assets/service-buy.webp";
 const serviceRent = "/assets/service-rent.webp";
@@ -13,11 +14,11 @@ const serviceManagement = "/assets/service-management.webp";
 const WhatWeOffer = () => {
   const t = useTranslations("home.sections.whatWeOffer");
   const offerings = [
-    { image: serviceSell, title: t("sellProperty"), desc: t("sellDesc"), link: "/valuation" },
-    { image: serviceBuy, title: t("buyProperty"), desc: t("buyDesc"), link: "/search?intent=buy" },
-    { image: serviceRent, title: t("rentProperty"), desc: t("rentDesc"), link: "/search?intent=rent" },
-    { image: serviceOffplan, title: t("offPlanInvestment"), desc: t("offPlanDesc"), link: "/off-plan" },
-    { image: serviceManagement, title: t("propertyManagement"), desc: t("managementDesc"), link: "/services" },
+    { image: serviceSell, icon: Home, title: t("sellProperty"), desc: t("sellDesc"), link: "/valuation" },
+    { image: serviceBuy, icon: Building2, title: t("buyProperty"), desc: t("buyDesc"), link: "/search?intent=buy" },
+    { image: serviceRent, icon: Key, title: t("rentProperty"), desc: t("rentDesc"), link: "/search?intent=rent" },
+    { image: serviceOffplan, icon: TrendingUp, title: t("offPlanInvestment"), desc: t("offPlanDesc"), link: "/off-plan" },
+    { image: serviceManagement, icon: Wrench, title: t("propertyManagement"), desc: t("managementDesc"), link: "/services" },
   ];
   return (
   <section className="py-12 sm:py-24 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
@@ -36,21 +37,22 @@ const WhatWeOffer = () => {
         </p>
       </motion.div>
 
-      {/* Mobile: horizontal swipable row */}
-      <div className="sm:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 no-scrollbar">
-        {offerings.map((item, i) => (
-          <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="snap-start flex-shrink-0 w-[62%]">
-            <Link href={item.link} className="group block rounded-xl overflow-hidden bg-white/[0.06] border border-white/10">
-              <div className="relative h-[130px]">
-                <Image src={item.image} alt={item.title} fill sizes="62vw" className="object-cover transition-transform duration-500 group-active:scale-105" />
-              </div>
-              <div className="p-3">
-                <h3 className="font-bold text-sm text-white mb-0.5">{item.title}</h3>
-                <p className="text-white/50 text-[11px] leading-snug line-clamp-2">{item.desc}</p>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+      {/* Mobile: 2-column icon-card grid */}
+      <div className="sm:hidden grid grid-cols-2 gap-2.5">
+        {offerings.map((item, i) => {
+          const Icon = item.icon;
+          return (
+            <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
+              <Link href={item.link} className="group block bg-white/5 border border-white/10 rounded-xl p-4 min-h-[44px]">
+                <div className="bg-white/10 rounded-lg p-2 w-fit mb-2.5">
+                  <Icon className="h-5 w-5 text-white" style={{ color: "#D4A847" }} />
+                </div>
+                <h3 className="text-sm font-semibold text-white mb-1 leading-snug">{item.title}</h3>
+                <p className="text-xs text-white/60 line-clamp-2 leading-snug">{item.desc}</p>
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Desktop: 5-column grid */}

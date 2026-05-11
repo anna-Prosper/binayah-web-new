@@ -16,11 +16,14 @@ const communities = [
 const CommunitiesSection = () => {
   const t = useTranslations("home.sections.communities");
   return (
-  <section id="communities" className="py-12 sm:py-24 bg-card scroll-mt-20">
+  <section id="communities" className="py-8 sm:py-20 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
       {/* Mobile: compact inline header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
-        <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
+        <div>
+          <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#D4A847" }}>COMMUNITIES</p>
+          <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
+        </div>
         <Link href="/communities" className="group flex items-center gap-1 text-primary font-semibold text-xs">
           {t("viewAll")} <ArrowUpRight className="h-3 w-3" />
         </Link>
@@ -60,14 +63,17 @@ const CommunitiesSection = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
-            className="flex-shrink-0 w-[60%] snap-center"
+            className="flex-shrink-0 w-[72%] snap-center"
           >
-            <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
+            <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[4/3]">
               <Image src={c.image} alt={c.name} fill sizes="100vw" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>
                 <p className="text-white/70 text-xs">{c.properties} {t("properties")}</p>
+                <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-white/90 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+                  Explore <ArrowUpRight className="h-2.5 w-2.5" />
+                </span>
               </div>
             </Link>
           </motion.div>
