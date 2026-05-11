@@ -13,6 +13,8 @@ import Link from "next/link";
 import Image from "next/image";
 import CardImageCarousel from "@/components/CardImageCarousel";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
+import MultiSelectFilter from "@/components/MultiSelectFilter";
+import PriceRangeFilter from "@/components/PriceRangeFilter";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -75,11 +77,14 @@ const secondaryModes: Array<{ label: string; value: SearchIntent }> = [
 ];
 const PAGE_SIZE = 24;
 const propertyTypes = homeSearchPropertyTypeOptions;
-const locations = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City"];
+const locationOptions = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City", "Arabian Ranches", "Dubai South", "MBR City", "Al Barari", "Jumeirah"];
 const bedrooms = ["Studio", "1", "2", "3", "4", "5", "6", "7+"];
 const bathrooms = ["1", "2", "3", "4", "5", "6", "7+"];
-const buyBudgets = ["Up to 500K", "500K - 1M", "1M - 2M", "2M - 5M", "5M - 10M", "10M+"];
-const rentBudgets = ["Up to 100K", "100K - 200K", "200K - 350K", "350K - 500K", "500K+"];
+
+const PRICE_BOUNDS = {
+  buy: { min: 0, max: 100_000_000, step: 50_000 },
+  rent: { min: 0, max: 1_000_000, step: 5_000 },
+} as const;
 
 function formatPrice(price?: number, currency = "AED", fallback = "Price on request") {
   if (!price) return fallback;
@@ -111,10 +116,23 @@ function SearchContent() {
     setStatus(normalizeStatus(urlStatus, urlIntent));
   }, [searchParams]);
   const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || "", "")));
-  const [location, setLocation] = useState(params.get("location") || "");
+  const initialLocations = (() => {
+    const raw = params.get("locations") || params.get("location") || "";
+    return raw.split(",").map((s) => s.trim()).filter(Boolean);
+  })();
+  const [selectedLocations, setSelectedLocations] = useState<string[]>(initialLocations);
   const [beds, setBeds] = useState(params.get("bedrooms") || "");
   const [baths, setBaths] = useState(params.get("bathrooms") || "");
-  const [budget, setBudget] = useState(params.get("budget") || "");
+  const [priceMin, setPriceMin] = useState<number | null>(() => {
+    const raw = params.get("budgetMin");
+    const n = raw ? Number(raw) : NaN;
+    return Number.isFinite(n) ? n : null;
+  });
+  const [priceMax, setPriceMax] = useState<number | null>(() => {
+    const raw = params.get("budgetMax");
+    const n = raw ? Number(raw) : NaN;
+    return Number.isFinite(n) ? n : null;
+  });
   const [developer, setDeveloper] = useState(params.get("developer") || "");
   const [q, setQ] = useState(params.get("q") || "");
   const initialSort = (params.get("sort") as SortKey) || "newest";
@@ -139,17 +157,14 @@ function SearchContent() {
   const [communityLoading, setCommunityLoading] = useState(false);
   const [dldBuilding, setDldBuilding] = useState<{ name: string; area: string; areaSlug: string } | null>(null);
 
-  const budgetOptions = intent === "rent" ? rentBudgets : buyBudgets;
+  const priceBounds = intent === "rent" ? PRICE_BOUNDS.rent : PRICE_BOUNDS.buy;
+  const locationsKey = selectedLocations.join("|");
 
   useEffect(() => {
     if (status === "Off-Plan" && intent !== "off-plan") setIntent("off-plan");
     if (status === "Secondary" && intent === "off-plan") setIntent("buy");
     if (status === "All" && intent === "off-plan") setIntent("");
   }, [intent, status]);
-
-  useEffect(() => {
-    if (budget && !budgetOptions.includes(budget)) setBudget("");
-  }, [budget, budgetOptions]);
 
   // Reset pagination whenever a filter changes (skip first render so URL-seeded pages survive).
   const isInitialMount = useRef(true);
@@ -160,7 +175,7 @@ function SearchContent() {
     }
     setProjectsPage(1);
     setListingsPage(1);
-  }, [status, intent, type, location, beds, baths, budget, developer, q, sort]);
+  }, [status, intent, type, locationsKey, beds, baths, priceMin, priceMax, developer, q, sort]);
 
   const fetchResults = useCallback(async () => {
     setLoading(true);
@@ -168,10 +183,11 @@ function SearchContent() {
     if (status !== "All") params.set("status", status);
     if (intent) params.set("intent", intent);
     if (type) params.set("type", String(normalizePropertyType(type, type)));
-    if (location) params.set("location", location);
+    if (selectedLocations.length > 0) params.set("locations", selectedLocations.join(","));
     if (beds) params.set("bedrooms", beds);
     if (baths) params.set("bathrooms", baths);
-    if (budget) params.set("budget", budget);
+    if (priceMin != null) params.set("budgetMin", String(priceMin));
+    if (priceMax != null) params.set("budgetMax", String(priceMax));
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
     if (sort && sort !== "newest") params.set("sort", sort);
@@ -194,7 +210,7 @@ function SearchContent() {
     } finally {
       setLoading(false);
     }
-  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, sort, status, type]);
+  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, selectedLocations, sort, status, type]);
 
   useEffect(() => {
     fetchResults();
@@ -205,10 +221,11 @@ function SearchContent() {
     if (status !== "All") params.set("status", status);
     if (intent) params.set("intent", intent);
     if (type) params.set("type", String(normalizePropertyType(type, type)));
-    if (location) params.set("location", location);
+    if (selectedLocations.length > 0) params.set("locations", selectedLocations.join(","));
     if (beds) params.set("bedrooms", beds);
     if (baths) params.set("bathrooms", baths);
-    if (budget) params.set("budget", budget);
+    if (priceMin != null) params.set("budgetMin", String(priceMin));
+    if (priceMax != null) params.set("budgetMax", String(priceMax));
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
     if (sort && sort !== "newest") params.set("sort", sort);
@@ -216,16 +233,17 @@ function SearchContent() {
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
     const query = params.toString();
     router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
-  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, router, sort, status, type]);
+  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, router, selectedLocations, sort, status, type]);
 
   const clearFilters = () => {
     setStatus("All");
     setIntent("");
     setType("");
-    setLocation("");
+    setSelectedLocations([]);
     setBeds("");
     setBaths("");
-    setBudget("");
+    setPriceMin(null);
+    setPriceMax(null);
     setDeveloper("");
     setQ("");
     setSort("newest");
@@ -244,14 +262,21 @@ function SearchContent() {
     listingsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const priceChip = (() => {
+    if (priceMin == null && priceMax == null) return "";
+    const fmt = (n: number) => n >= 1_000_000 ? `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M` : n >= 1_000 ? `${Math.round(n / 1_000)}K` : n.toLocaleString();
+    if (priceMin != null && priceMax != null) return `AED ${fmt(priceMin)}–${fmt(priceMax)}`;
+    if (priceMin != null) return `AED ${fmt(priceMin)}+`;
+    return `Up to AED ${fmt(priceMax!)}`;
+  })();
   const activeFilters = [
     status !== "All" ? status : "",
     intent === "buy" ? "Buy" : intent === "rent" ? "Rent" : "",
     type ? formatPropertyTypeLabel(type, type) : "",
-    location,
+    ...selectedLocations,
     beds ? `${beds} bed` : "",
     baths ? `${baths} bath` : "",
-    budget ? `AED ${budget}` : "",
+    priceChip,
     developer,
   ].filter(Boolean);
   const totalResults = projectCount + listingCount;
@@ -341,10 +366,18 @@ function SearchContent() {
 
           <div className={`grid grid-cols-2 lg:grid-cols-6 gap-3 ${filtersOpen ? "block" : "hidden lg:grid"}`}>
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} />
-            <FilterSelect placeholder={t("community")} value={location} onChange={setLocation} options={locations} />
+            <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-            <FilterSelect placeholder={t("minPrice")} value={budget} onChange={setBudget} options={budgetOptions} />
+            <div className="col-span-2 lg:col-span-1 px-1">
+              <PriceRangeFilter
+                min={priceBounds.min}
+                max={priceBounds.max}
+                step={priceBounds.step}
+                value={[priceMin, priceMax]}
+                onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
+              />
+            </div>
             <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
           </div>
 

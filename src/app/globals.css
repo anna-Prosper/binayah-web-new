@@ -139,6 +139,38 @@
     display: none;
   }
 
+  /* Dual-handle price range slider. Two stacked native ranges share the
+     track and pass pointer events through the bar to the thumbs. */
+  .price-range-thumb::-webkit-slider-thumb {
+    appearance: none;
+    pointer-events: auto;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+  }
+  .price-range-thumb::-moz-range-thumb {
+    pointer-events: auto;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+  }
+  .price-range-thumb::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 16px;
+  }
+  .price-range-thumb::-moz-range-track {
+    background: transparent;
+    height: 16px;
+  }
+
   .pulse-glass {
     @apply relative overflow-hidden backdrop-blur-md rounded-xl;
     background: hsl(var(--pulse-surface) / 0.7);
