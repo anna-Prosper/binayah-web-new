@@ -131,6 +131,14 @@
 }
 
 @layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .pulse-glass {
     @apply relative overflow-hidden backdrop-blur-md rounded-xl;
     background: hsl(var(--pulse-surface) / 0.7);
