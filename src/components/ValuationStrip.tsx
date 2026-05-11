@@ -85,7 +85,7 @@ const ValuationStrip = () => {
               boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
             }}
           >
-            Get Value
+            {t("ctaMobile")}
             <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
           </motion.button>
         </div>
