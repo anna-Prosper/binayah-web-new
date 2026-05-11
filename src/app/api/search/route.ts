@@ -3,6 +3,19 @@ import { serverApiUrl } from "@/lib/api";
 
 export const runtime = "nodejs";
 
+const EMPTY = {
+  projects: [],
+  listings: [],
+  projectCount: 0,
+  listingCount: 0,
+  totalCount: 0,
+  pageSize: 24,
+  projectsPage: 1,
+  listingsPage: 1,
+  projectTotalPages: 1,
+  listingTotalPages: 1,
+};
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const query = url.searchParams.toString();
@@ -10,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   if (upstream.startsWith("/")) {
     return NextResponse.json(
-      { projects: [], listings: [], projectCount: 0, listingCount: 0, error: "API base URL is not configured" },
+      { ...EMPTY, error: "API base URL is not configured" },
       { status: 200 }
     );
   }
@@ -19,22 +32,31 @@ export async function GET(request: NextRequest) {
     const res = await fetch(upstream, { next: { revalidate: 60 } });
     if (!res.ok) {
       return NextResponse.json(
-        { projects: [], listings: [], projectCount: 0, listingCount: 0, error: `Upstream ${res.status}` },
+        { ...EMPTY, error: `Upstream ${res.status}` },
         { status: 200 }
       );
     }
 
     const data = await res.json();
+    const pageSize = Number(data.pageSize) || EMPTY.pageSize;
+    const projectCount = Number(data.projectCount ?? data.projects?.length ?? 0);
+    const listingCount = Number(data.listingCount ?? data.listings?.length ?? 0);
     return NextResponse.json({
       projects: Array.isArray(data.projects) ? data.projects : [],
       listings: Array.isArray(data.listings) ? data.listings : [],
-      projectCount: Number(data.projectCount ?? data.projects?.length ?? 0),
-      listingCount: Number(data.listingCount ?? data.listings?.length ?? 0),
+      projectCount,
+      listingCount,
+      totalCount: Number(data.totalCount ?? projectCount + listingCount),
+      pageSize,
+      projectsPage: Number(data.projectsPage) || 1,
+      listingsPage: Number(data.listingsPage) || 1,
+      projectTotalPages: Number(data.projectTotalPages) || Math.max(1, Math.ceil(projectCount / pageSize)),
+      listingTotalPages: Number(data.listingTotalPages) || Math.max(1, Math.ceil(listingCount / pageSize)),
     });
   } catch (err) {
     console.error("[/api/search] proxy failed:", err);
     return NextResponse.json(
-      { projects: [], listings: [], projectCount: 0, listingCount: 0, error: (err as Error).message },
+      { ...EMPTY, error: (err as Error).message },
       { status: 200 }
     );
   }

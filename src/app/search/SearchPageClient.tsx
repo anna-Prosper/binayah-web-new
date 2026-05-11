@@ -8,11 +8,11 @@ import { CardActions } from "@/components/PropertyActions";
 import { formatProjectPrice } from "@/lib/formatPrice";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
-import { ArrowRight, Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
+import { ArrowRight, Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   formatPropertyTypeLabel,
@@ -69,6 +69,7 @@ const secondaryModes: Array<{ label: string; value: SearchIntent }> = [
   { label: "Buy", value: "buy" },
   { label: "Rent", value: "rent" },
 ];
+const PAGE_SIZE = 24;
 const propertyTypes = homeSearchPropertyTypeOptions;
 const locations = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR", "Business Bay", "DIFC", "JVC / JVT", "Dubai Hills Estate", "Creek Harbour", "MBR City"];
 const bedrooms = ["Studio", "1", "2", "3", "4", "5", "6", "7+"];
@@ -114,11 +115,19 @@ function SearchContent() {
   const [q, setQ] = useState(params.get("q") || "");
 
   const t = useTranslations("search");
+  const initialProjectsPage = (() => { const n = parseInt(params.get("projectsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
+  const initialListingsPage = (() => { const n = parseInt(params.get("listingsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
+  const [projectsPage, setProjectsPage] = useState(initialProjectsPage);
+  const [listingsPage, setListingsPage] = useState(initialListingsPage);
+  const [projectTotalPages, setProjectTotalPages] = useState(1);
+  const [listingTotalPages, setListingTotalPages] = useState(1);
   const [projects, setProjects] = useState<Project[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [projectCount, setProjectCount] = useState(0);
   const [listingCount, setListingCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const projectsSectionRef = useRef<HTMLDivElement | null>(null);
+  const listingsSectionRef = useRef<HTMLDivElement | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
   const [communityLoading, setCommunityLoading] = useState(false);
@@ -136,6 +145,17 @@ function SearchContent() {
     if (budget && !budgetOptions.includes(budget)) setBudget("");
   }, [budget, budgetOptions]);
 
+  // Reset pagination whenever a filter changes (skip first render so URL-seeded pages survive).
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    setProjectsPage(1);
+    setListingsPage(1);
+  }, [status, intent, type, location, beds, baths, budget, developer, q]);
+
   const fetchResults = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
@@ -148,6 +168,9 @@ function SearchContent() {
     if (budget) params.set("budget", budget);
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
+    params.set("pageSize", String(PAGE_SIZE));
+    if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
+    if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
 
     try {
       const response = await fetch(apiUrl(`/api/search?${params.toString()}`));
@@ -157,12 +180,14 @@ function SearchContent() {
       setListings(data.listings || []);
       setProjectCount(data.projectCount || 0);
       setListingCount(data.listingCount || 0);
+      setProjectTotalPages(Math.max(1, Number(data.projectTotalPages) || 1));
+      setListingTotalPages(Math.max(1, Number(data.listingTotalPages) || 1));
     } catch (error) {
       console.error("Search error:", error);
     } finally {
       setLoading(false);
     }
-  }, [baths, beds, budget, developer, intent, location, q, status, type]);
+  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, status, type]);
 
   useEffect(() => {
     fetchResults();
@@ -179,9 +204,11 @@ function SearchContent() {
     if (budget) params.set("budget", budget);
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
+    if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
+    if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
     const query = params.toString();
     router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
-  }, [baths, beds, budget, developer, intent, location, q, router, status, type]);
+  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, router, status, type]);
 
   const clearFilters = () => {
     setStatus("All");
@@ -193,6 +220,19 @@ function SearchContent() {
     setBudget("");
     setDeveloper("");
     setQ("");
+    setProjectsPage(1);
+    setListingsPage(1);
+  };
+
+  const goToProjectsPage = (next: number) => {
+    const clamped = Math.max(1, Math.min(projectTotalPages, next));
+    setProjectsPage(clamped);
+    projectsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const goToListingsPage = (next: number) => {
+    const clamped = Math.max(1, Math.min(listingTotalPages, next));
+    setListingsPage(clamped);
+    listingsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const activeFilters = [
@@ -439,8 +479,13 @@ function SearchContent() {
           ) : (
             <>
               {projects.length > 0 && (
-                <div className="mb-12">
-                  <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
+                <div ref={projectsSectionRef} className="mb-12 scroll-mt-24">
+                  <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
+                  {projectCount > PAGE_SIZE && (
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Showing {(projectsPage - 1) * PAGE_SIZE + 1}–{Math.min(projectsPage * PAGE_SIZE, projectCount)} of {projectCount}
+                    </p>
+                  )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {projects.map((project, index) => (
                       <motion.div key={project._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
@@ -468,13 +513,26 @@ function SearchContent() {
                       </motion.div>
                     ))}
                   </div>
+                  <Pagination page={projectsPage} totalPages={projectTotalPages} onChange={goToProjectsPage} />
                 </div>
               )}
 
               {listings.length > 0 && (
-                <div>
+                <div ref={listingsSectionRef} className="scroll-mt-24">
                   {(status === "All" || status === "Off-Plan") && projects.length > 0 && (
-                    <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
+                    <>
+                      <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
+                      {listingCount > PAGE_SIZE && (
+                        <p className="text-xs text-muted-foreground mb-4">
+                          Showing {(listingsPage - 1) * PAGE_SIZE + 1}–{Math.min(listingsPage * PAGE_SIZE, listingCount)} of {listingCount}
+                        </p>
+                      )}
+                    </>
+                  )}
+                  {!((status === "All" || status === "Off-Plan") && projects.length > 0) && listingCount > PAGE_SIZE && (
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Showing {(listingsPage - 1) * PAGE_SIZE + 1}–{Math.min(listingsPage * PAGE_SIZE, listingCount)} of {listingCount}
+                    </p>
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {listings.map((listing, index) => (
@@ -502,6 +560,7 @@ function SearchContent() {
                       </motion.div>
                     ))}
                   </div>
+                  <Pagination page={listingsPage} totalPages={listingTotalPages} onChange={goToListingsPage} />
                 </div>
               )}
             </>
@@ -513,6 +572,75 @@ function SearchContent() {
       <WhatsAppButton />
       <PropertyComparison />
     </div>
+  );
+}
+
+function Pagination({
+  page,
+  totalPages,
+  onChange,
+}: {
+  page: number;
+  totalPages: number;
+  onChange: (next: number) => void;
+}) {
+  if (totalPages <= 1) return null;
+
+  const set = new Set<number>();
+  for (const p of [1, totalPages, page - 1, page, page + 1]) {
+    if (p >= 1 && p <= totalPages) set.add(p);
+  }
+  const sorted = Array.from(set).sort((a, b) => a - b);
+  const items: Array<number | "ellipsis"> = [];
+  sorted.forEach((p, i) => {
+    if (i > 0 && p - sorted[i - 1] > 1) items.push("ellipsis");
+    items.push(p);
+  });
+
+  const baseBtn = "inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 rounded-lg text-sm font-medium transition-all border";
+
+  return (
+    <nav aria-label="Pagination" className="flex items-center justify-center gap-1.5 mt-8 flex-wrap">
+      <button
+        type="button"
+        onClick={() => onChange(page - 1)}
+        disabled={page <= 1}
+        className={`${baseBtn} bg-background border-border text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-background`}
+        aria-label="Previous page"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      {items.map((item, idx) =>
+        item === "ellipsis" ? (
+          <span key={`e-${idx}`} className="px-1 text-muted-foreground select-none">…</span>
+        ) : (
+          <button
+            key={item}
+            type="button"
+            onClick={() => onChange(item)}
+            aria-current={item === page ? "page" : undefined}
+            disabled={item === page}
+            className={
+              item === page
+                ? `${baseBtn} border-transparent text-white shadow-sm cursor-default`
+                : `${baseBtn} bg-background border-border text-foreground hover:bg-muted`
+            }
+            style={item === page ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+          >
+            {item}
+          </button>
+        )
+      )}
+      <button
+        type="button"
+        onClick={() => onChange(page + 1)}
+        disabled={page >= totalPages}
+        className={`${baseBtn} bg-background border-border text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-background`}
+        aria-label="Next page"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </nav>
   );
 }
 
