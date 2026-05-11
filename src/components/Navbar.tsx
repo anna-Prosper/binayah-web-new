@@ -12,7 +12,7 @@ import UserMenu from "@/components/UserMenu";
 import { useFavorites } from "@/components/PropertyActions";
 import { NotificationsBell } from "@/components/NotificationsBell";
 
-const binayahLogo = "/assets/binayah-logo.png";
+const binayahLogo = "/assets/binayah-logo.svg";
 
 const CURRENCIES = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"];
 const LANGUAGES_LIST = [
@@ -139,7 +139,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
           <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "h-10 sm:h-12" : "h-12 sm:h-16"}`}>
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-8 sm:h-10 w-auto brightness-0 invert" />
+              <Image src={binayahLogo} alt="Binayah Properties" height={40} width={120} className="h-8 sm:h-10 w-auto" />
             </Link>
 
             {/* Desktop nav */}
@@ -380,7 +380,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             {/* Menu header bar */}
             <div className="flex items-center justify-between px-4 h-14 flex-shrink-0">
               <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
-                <Image src={binayahLogo} alt="Binayah Properties" height={32} width={100} className="h-8 w-auto brightness-0 invert" />
+                <Image src={binayahLogo} alt="Binayah Properties" height={32} width={100} className="h-8 w-auto" />
               </Link>
               <button onClick={() => setMobileOpen(false)} className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white">
                 <X className="h-7 w-7" />

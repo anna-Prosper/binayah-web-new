@@ -41,7 +41,10 @@ export const metadata: Metadata = {
   description: "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
   metadataBase: new URL(siteUrl),
   icons: {
-    icon: "/icon.png",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.png" },
+    ],
     apple: "/icon.png",
   },
   openGraph: {
