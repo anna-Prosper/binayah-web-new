@@ -24,6 +24,25 @@ import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
+
+const MAPS_KEY = "AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8";
+
+/** Convert any Google Maps URL to a valid Maps Embed API v1 src. */
+function toMapEmbedSrc(rawUrl: string): string {
+  if (!rawUrl) return "";
+  const url = rawUrl.split(/\s+/)[0]; // strip trailing HTML attributes
+  if (url.includes("/maps/embed/v1/")) return url; // already a valid embed URL
+  try {
+    const parsed = new URL(url);
+    // /maps/search/?api=1&query=lat,lng  or  /maps?q=lat,lng
+    const q = parsed.searchParams.get("query") || parsed.searchParams.get("q");
+    if (q) return `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${encodeURIComponent(q)}&zoom=15`;
+    // /maps/place/PlaceName/@lat,lng/...
+    const placeMatch = url.match(/\/place\/([^/@?]+)/);
+    if (placeMatch) return `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${encodeURIComponent(decodeURIComponent(placeMatch[1].replace(/\+/g, " ")))}&zoom=15`;
+  } catch { /* invalid URL — fall through */ }
+  return "";
+}
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
@@ -1384,21 +1403,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                     {/* Map embed */}
                     {(() => {
-                      let embedSrc = "";
-                      if (project.mapUrl) {
-                        // Some import pipelines store the full iframe HTML in this field;
-                        // strip any trailing attributes (e.g. ' width="600" height="450"...')
-                        const rawUrl = project.mapUrl.split(/\s+/)[0];
-                        // Detect embed URLs — covers /maps/embed? and /maps/embed/ formats
-                        embedSrc = rawUrl.includes("/maps/embed")
-                          ? rawUrl
-                          : rawUrl.replace(/\/maps\//, "/maps/embed/");
-                      } else if (project.latitude && project.longitude) {
-                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.latitude},${project.longitude}&zoom=15`;
-                      } else {
-                        // Fallback: search by project name + community
-                        const query = encodeURIComponent(`${project.name}, ${project.community || project.city}, ${project.country}`);
-                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${query}`;
+                      let embedSrc = toMapEmbedSrc(project.mapUrl || "");
+                      if (!embedSrc && project.latitude && project.longitude) {
+                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
+                      }
+                      if (!embedSrc) {
+                        const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
+                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
                       }
                       return (
                         <div className="rounded-xl overflow-hidden border border-border/50 mb-6 aspect-[16/9]">
@@ -2299,24 +2310,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     )}
                     {/* Google Maps Embed */}
                     {(() => {
-                      let mapSrc = "";
-                      if (project.mapUrl) {
-                        // Strip trailing HTML attributes stored by some import pipelines
-                        const rawUrl = project.mapUrl.split(/\s+/)[0];
-                        if (rawUrl.includes("/maps/embed")) {
-                          mapSrc = rawUrl;
-                        } else {
-                          const placeMatch = rawUrl.match(/place\/([^/]+)/);
-                          if (placeMatch) {
-                            mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(placeMatch[1].replace(/\+/g, ' '))}`;
-                          }
-                        }
-                      }
+                      let mapSrc = toMapEmbedSrc(project.mapUrl || "");
                       if (!mapSrc && project.latitude && project.longitude) {
-                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${project.latitude},${project.longitude}`;
+                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
                       }
                       if (!mapSrc) {
-                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((project.community || '') + ', ' + project.city + ', ' + project.country)}`;
+                        const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
+                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
                       }
                       return (
                         <div className="rounded-xl overflow-hidden mb-4 sm:mb-5 border border-border/30" style={{ aspectRatio: "16/9" }}>
