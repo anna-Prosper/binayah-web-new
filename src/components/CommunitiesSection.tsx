@@ -21,7 +21,7 @@ const CommunitiesSection = () => {
       {/* Mobile: compact inline header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#D4A847" }}>COMMUNITIES</p>
+          <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#D4A847" }}>{t("label")}</p>
           <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
         </div>
         <Link href="/communities" className="group flex items-center gap-1 text-primary font-semibold text-xs">
@@ -72,7 +72,7 @@ const CommunitiesSection = () => {
                 <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>
                 <p className="text-white/70 text-xs">{c.properties} {t("properties")}</p>
                 <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-white/90 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                  Explore <ArrowUpRight className="h-2.5 w-2.5" />
+                  {t("explore")} <ArrowUpRight className="h-2.5 w-2.5" />
                 </span>
               </div>
             </Link>

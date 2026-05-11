@@ -130,20 +130,25 @@
     },
     "sections": {
       "featured": {
-        "label": "精选房源",
+        "label": "二手市场",
         "title": "臻选",
         "titleItalic": "房源",
         "viewAll": "查看全部房源",
         "details": "详情",
         "bed": "卧",
-        "bath": "卫"
+        "bath": "卫",
+        "forSale": "出售",
+        "forRent": "出租",
+        "rentEmptyText": "正在寻找租赁房源？浏览我们的完整租赁目录。",
+        "rentEmptyCta": "浏览租赁"
       },
       "communities": {
         "label": "探索迪拜",
         "title": "臻选",
         "titleItalic": "社区",
         "viewAll": "查看全部社区",
-        "properties": "套房源"
+        "properties": "套房源",
+        "explore": "探索"
       },
       "news": {
         "title": "最新资讯",

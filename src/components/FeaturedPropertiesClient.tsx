@@ -41,7 +41,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4 sm:mb-10 gap-3">
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
-            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>SECONDARY MARKET</p>
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
             </h2>
@@ -56,7 +56,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
                     : "border border-border text-muted-foreground bg-background hover:bg-muted"
                 }`}
               >
-                For Sale
+                {t("forSale")}
               </button>
               <button
                 onClick={() => setTab("rent")}
@@ -66,7 +66,7 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
                     : "border border-border text-muted-foreground bg-background hover:bg-muted"
                 }`}
               >
-                For Rent
+                {t("forRent")}
               </button>
             </div>
           </div>
@@ -78,12 +78,12 @@ const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) =
         {/* For Rent empty state */}
         {tab === "rent" && (
           <div className="text-center py-10">
-            <p className="text-muted-foreground text-sm mb-4">Looking for a rental? Browse our full rentals catalog.</p>
+            <p className="text-muted-foreground text-sm mb-4">{t("rentEmptyText")}</p>
             <Link
               href="/rent"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-semibold text-foreground hover:bg-muted transition-colors min-h-[44px]"
             >
-              Browse Rentals <ArrowUpRight className="h-4 w-4" />
+              {t("rentEmptyCta")} <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
         )}

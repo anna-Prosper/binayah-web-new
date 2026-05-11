@@ -124,20 +124,25 @@
     },
     "sections": {
       "featured": {
-        "label": "Избранные предложения",
+        "label": "Вторичный рынок",
         "title": "Избранные",
         "titleItalic": "объекты",
         "viewAll": "Все объекты",
         "details": "Подробнее",
         "bed": "сп.",
-        "bath": "ван."
+        "bath": "ван.",
+        "forSale": "Продажа",
+        "forRent": "Аренда",
+        "rentEmptyText": "Ищете аренду? Просмотрите полный каталог аренды.",
+        "rentEmptyCta": "Просмотр аренды"
       },
       "communities": {
         "label": "Исследуйте Дубай",
         "title": "Лучшие",
         "titleItalic": "Районы",
         "viewAll": "Все районы",
-        "properties": "объектов"
+        "properties": "объектов",
+        "explore": "Исследовать"
       },
       "news": {
         "title": "Последние новости",

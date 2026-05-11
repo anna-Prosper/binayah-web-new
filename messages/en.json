@@ -124,20 +124,25 @@
     },
     "sections": {
       "featured": {
-        "label": "Featured Listings",
+        "label": "Secondary Market",
         "title": "Handpicked",
         "titleItalic": "Properties",
         "viewAll": "View All Properties",
         "details": "Details",
         "bed": "Bed",
-        "bath": "Bath"
+        "bath": "Bath",
+        "forSale": "For Sale",
+        "forRent": "For Rent",
+        "rentEmptyText": "Looking for a rental? Browse our full rentals catalog.",
+        "rentEmptyCta": "Browse Rentals"
       },
       "communities": {
         "label": "Explore Dubai",
         "title": "Premier",
         "titleItalic": "Communities",
         "viewAll": "View All Communities",
-        "properties": "properties"
+        "properties": "properties",
+        "explore": "Explore"
       },
       "news": {
         "title": "Latest News",

@@ -124,20 +124,25 @@
     },
     "sections": {
       "featured": {
-        "label": "عقارات مميزة",
+        "label": "السوق الثانوي",
         "title": "عقارات",
         "titleItalic": "منتقاة بعناية",
         "viewAll": "عرض جميع العقارات",
         "details": "التفاصيل",
         "bed": "غرفة",
-        "bath": "حمام"
+        "bath": "حمام",
+        "forSale": "للبيع",
+        "forRent": "للإيجار",
+        "rentEmptyText": "تبحث عن إيجار؟ تصفح كتالوج الإيجارات الكامل.",
+        "rentEmptyCta": "تصفح الإيجارات"
       },
       "communities": {
         "label": "استكشف دبي",
         "title": "أبرز",
         "titleItalic": "المناطق السكنية",
         "viewAll": "عرض جميع المناطق",
-        "properties": "عقار"
+        "properties": "عقار",
+        "explore": "استكشاف"
       },
       "news": {
         "title": "آخر الأخبار",
