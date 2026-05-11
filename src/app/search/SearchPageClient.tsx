@@ -167,6 +167,7 @@ function SearchContent() {
   const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
   const [communityLoading, setCommunityLoading] = useState(false);
   const [dldBuilding, setDldBuilding] = useState<{ name: string; area: string; areaSlug: string } | null>(null);
+  const [relaxed, setRelaxed] = useState<{ field: string; from: string; to: string } | null>(null);
 
   const priceBounds = intent === "rent" ? PRICE_BOUNDS.rent : PRICE_BOUNDS.buy;
   const locationsKey = selectedLocations.join("|");
@@ -233,6 +234,7 @@ function SearchContent() {
       setListings(data.listings || []);
       setProjectCount(data.projectCount || 0);
       setListingCount(data.listingCount || 0);
+      setRelaxed(data.relaxed ?? null);
       setProjectTotalPages(Math.max(1, Number(data.projectTotalPages) || 1));
       setListingTotalPages(Math.max(1, Number(data.listingTotalPages) || 1));
       const incoming = data.facets || {};
@@ -626,6 +628,20 @@ function SearchContent() {
             </div>
           ) : (
             <>
+              {!loading && relaxed && (
+                <div className="mx-4 lg:mx-0 mb-4 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-sm text-amber-800 dark:text-amber-200 flex items-center gap-2">
+                  <span className="text-amber-500">~</span>
+                  <span>No exact {relaxed.from}-bedroom matches — showing {relaxed.to}-bedroom results nearby</span>
+                  <button
+                    type="button"
+                    onClick={() => setRelaxed(null)}
+                    className="ml-auto text-amber-500 hover:text-amber-700 transition-colors"
+                    aria-label="Dismiss"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
               {projects.length > 0 && (
                 <div ref={projectsSectionRef} className="mb-12 scroll-mt-24">
                   <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>

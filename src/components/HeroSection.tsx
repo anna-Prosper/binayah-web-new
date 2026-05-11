@@ -224,6 +224,17 @@ const HeroSection = () => {
         setShowSuggestions(true);
       }
 
+      // Auto-navigate for high-confidence parses (≥80%) so the user doesn't
+      // need to click a suggestion after a clearly structured query.
+      if (nextDraft.confidence >= 0.80 && nextDraft.location && nextDraft.intent && !nextDraft.isQuestion) {
+        router.push(buildHomeSearchUrl({
+          activeTab,
+          draft: nextDraft,
+          query: undefined,  // don't pass raw q — structured filters cover the intent
+        }));
+        return;
+      }
+
       // When zero project/listing results come back for a meaningful query,
       // check community_info_pages for a matching informational page.
       if (countProjectSuggestions(nextSuggestions) === 0 && trimmed.length >= 3) {
