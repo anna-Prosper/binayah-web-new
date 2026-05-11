@@ -145,6 +145,7 @@ function SearchContent() {
   const [listingsPage, setListingsPage] = useState(initialListingsPage);
   const [projectTotalPages, setProjectTotalPages] = useState(1);
   const [listingTotalPages, setListingTotalPages] = useState(1);
+  const [facets, setFacets] = useState<{ community: Record<string, number>; propertyType: Record<string, number>; bedrooms: Record<string, number> }>({ community: {}, propertyType: {}, bedrooms: {} });
   const [projects, setProjects] = useState<Project[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [projectCount, setProjectCount] = useState(0);
@@ -159,6 +160,22 @@ function SearchContent() {
 
   const priceBounds = intent === "rent" ? PRICE_BOUNDS.rent : PRICE_BOUNDS.buy;
   const locationsKey = selectedLocations.join("|");
+
+  // The DB's bedroom value for "Studio" is 0; our UI option string is "Studio".
+  // The "7+" UI bucket aggregates everything >= 7.
+  const bedroomCounts: Record<string, number> = (() => {
+    const map: Record<string, number> = {};
+    let sevenPlus = 0;
+    for (const [k, v] of Object.entries(facets.bedrooms)) {
+      const n = Number(k);
+      if (!Number.isFinite(n)) continue;
+      if (n === 0) map["Studio"] = v;
+      else if (n >= 7) sevenPlus += v;
+      else map[String(n)] = v;
+    }
+    if (sevenPlus > 0) map["7+"] = sevenPlus;
+    return map;
+  })();
 
   useEffect(() => {
     if (status === "Off-Plan" && intent !== "off-plan") setIntent("off-plan");
@@ -205,6 +222,20 @@ function SearchContent() {
       setListingCount(data.listingCount || 0);
       setProjectTotalPages(Math.max(1, Number(data.projectTotalPages) || 1));
       setListingTotalPages(Math.max(1, Number(data.listingTotalPages) || 1));
+      const incoming = data.facets || {};
+      const toMap = (rows: any): Record<string, number> => {
+        if (!Array.isArray(rows)) return {};
+        const out: Record<string, number> = {};
+        for (const row of rows) {
+          if (row && row.value != null) out[String(row.value)] = Number(row.count) || 0;
+        }
+        return out;
+      };
+      setFacets({
+        community: toMap(incoming.community),
+        propertyType: toMap(incoming.propertyType),
+        bedrooms: toMap(incoming.bedrooms),
+      });
     } catch (error) {
       console.error("Search error:", error);
     } finally {
@@ -365,9 +396,9 @@ function SearchContent() {
           )}
 
           <div className={`grid grid-cols-2 lg:grid-cols-6 gap-3 ${filtersOpen ? "block" : "hidden lg:grid"}`}>
-            <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} />
-            <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} />
-            <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} />
+            <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
+            <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
+            <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
             <div className="col-span-2 lg:col-span-1 px-1">
               <PriceRangeFilter
@@ -719,11 +750,13 @@ function FilterSelect({
   options,
   value,
   onChange,
+  counts,
 }: {
   placeholder: string;
   options: Array<string | { label: string; value: string }>;
   value: string;
   onChange: (value: string) => void;
+  counts?: Record<string, number>;
 }) {
   return (
     <div className="relative">
@@ -732,7 +765,9 @@ function FilterSelect({
         {options.map((option) => {
           const optionValue = typeof option === "string" ? option : option.value;
           const optionLabel = typeof option === "string" ? option : option.label;
-          return <option key={optionValue} value={optionValue}>{optionLabel}</option>;
+          const count = counts?.[optionValue];
+          const labelWithCount = typeof count === "number" ? `${optionLabel} (${count})` : optionLabel;
+          return <option key={optionValue} value={optionValue}>{labelWithCount}</option>;
         })}
       </select>
       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />

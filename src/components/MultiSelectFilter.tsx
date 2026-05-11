@@ -8,9 +8,11 @@ interface Props {
   options: string[];
   value: string[];
   onChange: (next: string[]) => void;
+  /** Optional count per option label — when supplied, shown as "(n)" next to each row. */
+  counts?: Record<string, number>;
 }
 
-export default function MultiSelectFilter({ placeholder, options, value, onChange }: Props) {
+export default function MultiSelectFilter({ placeholder, options, value, onChange, counts }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -57,6 +59,7 @@ export default function MultiSelectFilter({ placeholder, options, value, onChang
           <div className="max-h-64 overflow-y-auto py-1">
             {options.map((option) => {
               const selected = value.includes(option);
+              const count = counts?.[option];
               return (
                 <button
                   key={option}
@@ -64,7 +67,10 @@ export default function MultiSelectFilter({ placeholder, options, value, onChang
                   onClick={() => toggle(option)}
                   className={`w-full text-left px-3.5 py-2 text-sm flex items-center justify-between gap-2 transition-colors ${selected ? "text-primary bg-primary/8" : "text-foreground hover:bg-muted/60"}`}
                 >
-                  <span className="truncate">{option}</span>
+                  <span className="truncate flex-1">{option}</span>
+                  {typeof count === "number" && (
+                    <span className="text-xs text-muted-foreground tabular-nums">({count})</span>
+                  )}
                   {selected && <Check className="h-4 w-4 flex-shrink-0" />}
                 </button>
               );

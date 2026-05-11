@@ -52,6 +52,7 @@ export async function GET(request: NextRequest) {
       listingsPage: Number(data.listingsPage) || 1,
       projectTotalPages: Number(data.projectTotalPages) || Math.max(1, Math.ceil(projectCount / pageSize)),
       listingTotalPages: Number(data.listingTotalPages) || Math.max(1, Math.ceil(listingCount / pageSize)),
+      facets: data.facets && typeof data.facets === "object" ? data.facets : {},
     });
   } catch (err) {
     console.error("[/api/search] proxy failed:", err);
