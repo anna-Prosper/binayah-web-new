@@ -120,14 +120,16 @@ const FALLBACK_ARTICLES = [
 ];
 
 export default async function HomePage() {
-  let listings = FALLBACK_LISTINGS as any[];
+  let saleListings = FALLBACK_LISTINGS as any[];
+  let rentalListings: any[] = [];
   let projects = FALLBACK_PROJECTS as any[];
   let articles = FALLBACK_ARTICLES as any[];
 
   try {
-    const [projectsRes, listingsRes, articlesRes] = await Promise.all([
+    const [projectsRes, saleRes, rentalRes, articlesRes] = await Promise.all([
       serverFetch(serverApiUrl("/api/projects?limit=4")),
-      serverFetch(serverApiUrl("/api/listings?limit=3")),
+      serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Sale")),
+      serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Rent")),
       serverFetch(serverApiUrl("/api/news?limit=3")),
     ]);
 
@@ -135,9 +137,13 @@ export default async function HomePage() {
       const dbProjects = await projectsRes.json();
       if (dbProjects.length > 0) projects = dbProjects;
     }
-    if (listingsRes.ok) {
-      const dbListings = await listingsRes.json();
-      if (dbListings.length > 0) listings = dbListings;
+    if (saleRes.ok) {
+      const dbSales = await saleRes.json();
+      if (dbSales.length > 0) saleListings = dbSales;
+    }
+    if (rentalRes.ok) {
+      const dbRentals = await rentalRes.json();
+      if (dbRentals.length > 0) rentalListings = dbRentals;
     }
     if (articlesRes.ok) {
       const dbArticles = await articlesRes.json();
@@ -149,7 +155,8 @@ export default async function HomePage() {
 
   return (
     <HomePageClient
-      featuredListings={listings.filter(Boolean)}
+      saleListings={saleListings.filter(Boolean)}
+      rentalListings={rentalListings.filter(Boolean)}
       offPlanProjects={projects.filter(Boolean)}
       latestArticles={articles.filter(Boolean)}
     />

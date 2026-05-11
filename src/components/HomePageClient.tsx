@@ -33,7 +33,26 @@ const WhatsAppButton       = dynamic(() => import("@/components/WhatsAppButton")
 const AIChatWidget         = dynamic(() => import("@/components/AIChatWidget"));
 const ScrollToTop          = dynamic(() => import("@/components/ScrollToTop"));
 
-interface Listing {
+interface SecondaryListing {
+  _id: string;
+  title?: string;
+  name?: string;
+  slug: string;
+  listingType?: string;
+  propertyType?: string;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  size?: number | null;
+  sizeUnit?: string;
+  price?: number | null;
+  currency?: string;
+  community?: string;
+  city?: string;
+  featuredImage?: string;
+  imageGallery?: string[];
+}
+
+interface OffPlanListing {
   _id: string;
   name: string;
   slug: string;
@@ -62,12 +81,13 @@ interface Article {
 }
 
 interface HomePageClientProps {
-  featuredListings?: Listing[];
-  offPlanProjects?: Listing[];
+  saleListings?: SecondaryListing[];
+  rentalListings?: SecondaryListing[];
+  offPlanProjects?: OffPlanListing[];
   latestArticles?: Article[];
 }
 
-export default function HomePageClient({ featuredListings = [], offPlanProjects = [], latestArticles = [] }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [] }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -76,7 +96,7 @@ export default function HomePageClient({ featuredListings = [], offPlanProjects 
       <ValuationStrip />
       <StatsSection />
       <WhatWeOffer />
-      <FeaturedPropertiesClient listings={featuredListings} />
+      <FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} />
       <CryptoBanner />
       <OffPlanSectionClient projects={offPlanProjects} />
       <CommunitiesSection />
