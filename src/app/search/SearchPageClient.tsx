@@ -22,6 +22,8 @@ import {
 
 type SearchIntent = "" | "buy" | "rent" | "off-plan";
 type SearchStatus = "All" | "Off-Plan" | "Secondary";
+type SortKey = "newest" | "price_asc" | "price_desc" | "featured";
+const VALID_SORTS: ReadonlySet<SortKey> = new Set(["newest", "price_asc", "price_desc", "featured"]);
 
 interface Project {
   _id: string;
@@ -113,6 +115,8 @@ function SearchContent() {
   const [budget, setBudget] = useState(params.get("budget") || "");
   const [developer, setDeveloper] = useState(params.get("developer") || "");
   const [q, setQ] = useState(params.get("q") || "");
+  const initialSort = (params.get("sort") as SortKey) || "newest";
+  const [sort, setSort] = useState<SortKey>(VALID_SORTS.has(initialSort) ? initialSort : "newest");
 
   const t = useTranslations("search");
   const initialProjectsPage = (() => { const n = parseInt(params.get("projectsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
@@ -154,7 +158,7 @@ function SearchContent() {
     }
     setProjectsPage(1);
     setListingsPage(1);
-  }, [status, intent, type, location, beds, baths, budget, developer, q]);
+  }, [status, intent, type, location, beds, baths, budget, developer, q, sort]);
 
   const fetchResults = useCallback(async () => {
     setLoading(true);
@@ -168,6 +172,7 @@ function SearchContent() {
     if (budget) params.set("budget", budget);
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
+    if (sort && sort !== "newest") params.set("sort", sort);
     params.set("pageSize", String(PAGE_SIZE));
     if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
@@ -187,7 +192,7 @@ function SearchContent() {
     } finally {
       setLoading(false);
     }
-  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, status, type]);
+  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
     fetchResults();
@@ -204,11 +209,12 @@ function SearchContent() {
     if (budget) params.set("budget", budget);
     if (developer) params.set("developer", developer);
     if (q) params.set("q", q);
+    if (sort && sort !== "newest") params.set("sort", sort);
     if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
     const query = params.toString();
     router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
-  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, router, status, type]);
+  }, [baths, beds, budget, developer, intent, listingsPage, location, projectsPage, q, router, sort, status, type]);
 
   const clearFilters = () => {
     setStatus("All");
@@ -220,6 +226,7 @@ function SearchContent() {
     setBudget("");
     setDeveloper("");
     setQ("");
+    setSort("newest");
     setProjectsPage(1);
     setListingsPage(1);
   };
@@ -338,11 +345,28 @@ function SearchContent() {
 
           <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">{loading ? t("noResults") : t("results", { count: totalResults })}</p>
-            {activeFilters.length > 0 && (
-              <button onClick={clearFilters} className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
-                <X className="h-3 w-3" /> {t("clearFilters")}
-              </button>
-            )}
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <label htmlFor="search-sort" className="text-xs text-muted-foreground mr-2">{t("sortBy")}</label>
+                <select
+                  id="search-sort"
+                  value={sort}
+                  onChange={(event) => setSort(event.target.value as SortKey)}
+                  className="bg-background border border-border rounded-lg pl-3 pr-8 py-1.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                >
+                  <option value="newest">{t("newest")}</option>
+                  <option value="price_asc">{t("priceAsc")}</option>
+                  <option value="price_desc">{t("priceDesc")}</option>
+                  <option value="featured">{t("sortFeatured")}</option>
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              </div>
+              {activeFilters.length > 0 && (
+                <button onClick={clearFilters} className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
+                  <X className="h-3 w-3" /> {t("clearFilters")}
+                </button>
+              )}
+            </div>
           </div>
 
           {activeFilters.length > 0 && (
