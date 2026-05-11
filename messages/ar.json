@@ -303,6 +303,7 @@
     "anyCommunity": "كل المناطق",
     "clearFilters": "مسح الفلاتر",
     "showing": "عرض {count} عقار",
+    "showingRange": "عرض {from}–{to} من {count}",
     "loadMore": "عرض المزيد",
     "offPlanProjects": "مشاريع على الخارطة",
     "secondaryProperties": "عقارات جاهزة",

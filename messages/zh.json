@@ -309,6 +309,7 @@
     "anyCommunity": "不限社区",
     "clearFilters": "清除筛选",
     "showing": "正在显示 {count} 套房源",
+    "showingRange": "显示 {from}–{to} / 共 {count}",
     "loadMore": "加载更多",
     "offPlanProjects": "期房项目",
     "secondaryProperties": "现房（二手）",

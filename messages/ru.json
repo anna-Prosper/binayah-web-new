@@ -303,6 +303,7 @@
     "anyCommunity": "Любой район",
     "clearFilters": "Сбросить фильтры",
     "showing": "Показано объектов: {count}",
+    "showingRange": "Показано {from}–{to} из {count}",
     "loadMore": "Загрузить ещё",
     "offPlanProjects": "Новостройки",
     "secondaryProperties": "Вторичная недвижимость",

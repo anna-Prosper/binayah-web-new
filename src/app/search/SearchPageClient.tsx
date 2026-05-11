@@ -483,7 +483,7 @@ function SearchContent() {
                   <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
                   {projectCount > PAGE_SIZE && (
                     <p className="text-xs text-muted-foreground mb-4">
-                      Showing {(projectsPage - 1) * PAGE_SIZE + 1}–{Math.min(projectsPage * PAGE_SIZE, projectCount)} of {projectCount}
+                      {t("showingRange", { from: (projectsPage - 1) * PAGE_SIZE + 1, to: Math.min(projectsPage * PAGE_SIZE, projectCount), count: projectCount })}
                     </p>
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -524,14 +524,14 @@ function SearchContent() {
                       <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
                       {listingCount > PAGE_SIZE && (
                         <p className="text-xs text-muted-foreground mb-4">
-                          Showing {(listingsPage - 1) * PAGE_SIZE + 1}–{Math.min(listingsPage * PAGE_SIZE, listingCount)} of {listingCount}
+                          {t("showingRange", { from: (listingsPage - 1) * PAGE_SIZE + 1, to: Math.min(listingsPage * PAGE_SIZE, listingCount), count: listingCount })}
                         </p>
                       )}
                     </>
                   )}
                   {!((status === "All" || status === "Off-Plan") && projects.length > 0) && listingCount > PAGE_SIZE && (
                     <p className="text-xs text-muted-foreground mb-4">
-                      Showing {(listingsPage - 1) * PAGE_SIZE + 1}–{Math.min(listingsPage * PAGE_SIZE, listingCount)} of {listingCount}
+                      {t("showingRange", { from: (listingsPage - 1) * PAGE_SIZE + 1, to: Math.min(listingsPage * PAGE_SIZE, listingCount), count: listingCount })}
                     </p>
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">

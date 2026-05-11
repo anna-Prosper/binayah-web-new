@@ -303,6 +303,7 @@
     "anyCommunity": "Any Community",
     "clearFilters": "Clear Filters",
     "showing": "Showing {count} properties",
+    "showingRange": "Showing {from}–{to} of {count}",
     "loadMore": "Load More",
     "offPlanProjects": "Off-Plan Projects",
     "secondaryProperties": "Secondary Properties",
