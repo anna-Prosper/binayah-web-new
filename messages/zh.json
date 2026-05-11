@@ -183,7 +183,9 @@
         "offPlanDesc": "甄选期房项目，投资回报潜力可期。",
         "propertyManagement": "物业管理",
         "managementDesc": "全程托管，守护您的投资价值。",
-        "viewAllServices": "查看全部服务"
+        "viewAllServices": "查看全部服务",
+        "valuation": "即时估值",
+        "valuationDesc": "免费获取由AI驱动的房产市场价值估算。"
       },
       "services": {
         "label": "物业管理",

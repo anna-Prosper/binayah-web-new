@@ -177,7 +177,9 @@
         "offPlanDesc": "Exclusive off-plan projects with high ROI potential.",
         "propertyManagement": "Property Management",
         "managementDesc": "Complete management solutions to protect your investment.",
-        "viewAllServices": "View All Services"
+        "viewAllServices": "View All Services",
+        "valuation": "Instant Valuation",
+        "valuationDesc": "Get a free AI-powered estimate of your property's market value."
       },
       "services": {
         "label": "Property Management",

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Home, Key, TrendingUp, Wrench, Building2 } from "lucide-react";
+import { Home, Key, TrendingUp, Wrench, Building2, Calculator } from "lucide-react";
 import { useTranslations } from "next-intl";
 const serviceBuy = "/assets/service-buy.webp";
 const serviceRent = "/assets/service-rent.webp";
@@ -19,6 +19,7 @@ const WhatWeOffer = () => {
     { image: serviceRent, icon: Key, title: t("rentProperty"), desc: t("rentDesc"), link: "/search?intent=rent" },
     { image: serviceOffplan, icon: TrendingUp, title: t("offPlanInvestment"), desc: t("offPlanDesc"), link: "/off-plan" },
     { image: serviceManagement, icon: Wrench, title: t("propertyManagement"), desc: t("managementDesc"), link: "/services" },
+    { image: serviceSell, icon: Calculator, title: t("valuation"), desc: t("valuationDesc"), link: "/valuation" },
   ];
   return (
   <section className="py-12 sm:py-24 text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
