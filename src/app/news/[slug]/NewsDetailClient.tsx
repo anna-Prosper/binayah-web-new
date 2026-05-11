@@ -20,6 +20,7 @@ import {
   MessageCircle,
   Twitter,
   TrendingUp,
+  User,
 } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
@@ -160,15 +161,15 @@ function NewsDetailInner({
                     {article.category}
                   </span>
                 )}
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
-                <div className="flex items-center gap-4 text-white/60 text-sm">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-white/60 text-xs sm:text-sm">
                   {article.publishedAt && (
-                    <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {formatDate(article.publishedAt)}</span>
+                    <span className="flex items-center gap-1.5 whitespace-nowrap"><Calendar className="h-3.5 w-3.5 flex-shrink-0" /> {formatShortDate(article.publishedAt)}</span>
                   )}
                   {article.readTime && (
-                    <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {article.readTime}</span>
+                    <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
                   )}
-                  {article.author && <span>{t("publishedOn")} {article.author}</span>}
+                  {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
                 </div>
               </motion.div>
             </div>
@@ -188,15 +189,15 @@ function NewsDetailInner({
               {article.category}
             </span>
           )}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">{article.title}</h1>
-          <div className="flex items-center gap-4 text-muted-foreground text-sm mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 leading-tight">{article.title}</h1>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-muted-foreground text-xs sm:text-sm mb-6">
             {article.publishedAt && (
-              <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {formatDate(article.publishedAt)}</span>
+              <span className="flex items-center gap-1.5 whitespace-nowrap"><Calendar className="h-3.5 w-3.5 flex-shrink-0" /> {formatShortDate(article.publishedAt)}</span>
             )}
             {article.readTime && (
-              <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {article.readTime}</span>
+              <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
             )}
-            {article.author && <span>{t("publishedOn")} {article.author}</span>}
+            {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
           </div>
           <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-2">
             <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
@@ -232,15 +233,15 @@ function NewsDetailInner({
                   {article.category}
                 </span>
               )}
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
-              <div className="flex items-center gap-4 text-white/60 text-sm">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-white/60 text-xs sm:text-sm">
                 {article.publishedAt && (
-                  <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> {formatDate(article.publishedAt)}</span>
+                  <span className="flex items-center gap-1.5 whitespace-nowrap"><Calendar className="h-3.5 w-3.5 flex-shrink-0" /> {formatShortDate(article.publishedAt)}</span>
                 )}
                 {article.readTime && (
-                  <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {article.readTime}</span>
+                  <span className="flex items-center gap-1.5 whitespace-nowrap"><Clock className="h-3.5 w-3.5 flex-shrink-0" /> {article.readTime}</span>
                 )}
-                {article.author && <span>{t("publishedOn")} {article.author}</span>}
+                {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
               </div>
             </motion.div>
           </div>
