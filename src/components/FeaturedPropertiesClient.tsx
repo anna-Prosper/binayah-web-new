@@ -52,7 +52,7 @@ const FeaturedPropertiesClient = ({
   const t = useTranslations("home.sections.featured");
   const [tab, setTab] = useState<"sale" | "rent">("sale");
 
-  const listings = tab === "sale" ? saleListings : rentalListings;
+  const listings = (tab === "sale" ? saleListings : rentalListings).slice(0, 3);
   const viewAllHref = tab === "sale" ? "/buy" : "/rent";
 
   return (
@@ -148,7 +148,7 @@ const FeaturedPropertiesClient = ({
                     <h3 className="text-xs font-bold text-foreground mb-1 leading-snug line-clamp-1">{getLabel(p)}</h3>
                     {(p.bedrooms != null || p.size) && (
                       <div className="flex items-center gap-2 text-[9px] text-muted-foreground mb-1">
-                        {p.bedrooms != null && <span className="flex items-center gap-0.5"><Bed className="h-2.5 w-2.5" />{p.bedrooms} BR</span>}
+                        {p.bedrooms != null && <span className="flex items-center gap-0.5"><Bed className="h-2.5 w-2.5" />{p.bedrooms === 0 ? "Studio" : `${p.bedrooms} BR`}</span>}
                         {p.size && <span className="flex items-center gap-0.5"><Maximize className="h-2.5 w-2.5" />{p.size} {p.sizeUnit || "sqft"}</span>}
                       </div>
                     )}
@@ -191,7 +191,7 @@ const FeaturedPropertiesClient = ({
                     </div>
                     <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">{getLabel(p)}</h3>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 flex-wrap">
-                      {p.bedrooms != null && <span className="flex items-center gap-1.5"><Bed className="h-4 w-4" />{p.bedrooms} {t("bed")}</span>}
+                      {p.bedrooms != null && <span className="flex items-center gap-1.5"><Bed className="h-4 w-4" />{p.bedrooms === 0 ? "Studio" : `${p.bedrooms} ${t("bed")}`}</span>}
                       {p.bathrooms != null && <span className="flex items-center gap-1.5"><Bath className="h-4 w-4" />{p.bathrooms} {t("bath")}</span>}
                       {p.size && <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4" />{p.size} {p.sizeUnit || "sqft"}</span>}
                     </div>
