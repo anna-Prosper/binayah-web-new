@@ -14,9 +14,9 @@ const serviceManagement = "/assets/service-management.webp";
 const WhatWeOffer = () => {
   const t = useTranslations("home.sections.whatWeOffer");
   const offerings = [
-    { image: serviceSell, icon: Home, title: t("sellProperty"), desc: t("sellDesc"), link: "/valuation" },
-    { image: serviceBuy, icon: Building2, title: t("buyProperty"), desc: t("buyDesc"), link: "/search?intent=buy" },
-    { image: serviceRent, icon: Key, title: t("rentProperty"), desc: t("rentDesc"), link: "/search?intent=rent" },
+    { image: serviceSell, icon: Home, title: t("sellProperty"), desc: t("sellDesc"), link: "/list-your-property" },
+    { image: serviceBuy, icon: Building2, title: t("buyProperty"), desc: t("buyDesc"), link: "/buy" },
+    { image: serviceRent, icon: Key, title: t("rentProperty"), desc: t("rentDesc"), link: "/rent" },
     { image: serviceOffplan, icon: TrendingUp, title: t("offPlanInvestment"), desc: t("offPlanDesc"), link: "/off-plan" },
     { image: serviceManagement, icon: Wrench, title: t("propertyManagement"), desc: t("managementDesc"), link: "/services" },
     { image: serviceSell, icon: Calculator, title: t("valuation"), desc: t("valuationDesc"), link: "/valuation" },
