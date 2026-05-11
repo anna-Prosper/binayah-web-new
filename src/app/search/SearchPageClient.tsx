@@ -15,6 +15,7 @@ import CardImageCarousel from "@/components/CardImageCarousel";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 import MultiSelectFilter from "@/components/MultiSelectFilter";
 import PriceRangeFilter from "@/components/PriceRangeFilter";
+import FilterSheet from "@/components/FilterSheet";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -372,8 +373,13 @@ function SearchContent() {
               placeholder={t("title")}
               tab={status === "Off-Plan" ? "Off-Plan" : intent === "rent" ? "Rent" : intent === "buy" ? "Buy" : "All"}
             />
-            <button onClick={() => setFiltersOpen(!filtersOpen)} className="px-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2 lg:hidden">
+            <button onClick={() => setFiltersOpen(true)} className="relative px-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2 lg:hidden">
               <SlidersHorizontal className="h-4 w-4" />
+              {activeFilters.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-[10px] font-bold text-white flex items-center justify-center">
+                  {activeFilters.length}
+                </span>
+              )}
             </button>
           </div>
 
@@ -395,12 +401,12 @@ function SearchContent() {
             </div>
           )}
 
-          <div className={`grid grid-cols-2 lg:grid-cols-6 gap-3 ${filtersOpen ? "block" : "hidden lg:grid"}`}>
+          <div className="hidden lg:grid grid-cols-6 gap-3">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-            <div className="col-span-2 lg:col-span-1 px-1">
+            <div className="px-1">
               <PriceRangeFilter
                 min={priceBounds.min}
                 max={priceBounds.max}
@@ -411,6 +417,51 @@ function SearchContent() {
             </div>
             <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
           </div>
+
+          <FilterSheet
+            open={filtersOpen}
+            onClose={() => setFiltersOpen(false)}
+            title={t("filters")}
+            applyLabel={t("applyFilters")}
+            clearLabel={activeFilters.length > 0 ? t("clearFilters") : undefined}
+            onClear={activeFilters.length > 0 ? clearFilters : undefined}
+            resultsLabel={loading ? undefined : t("results", { count: totalResults })}
+          >
+            <div className="space-y-4">
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("propertyType")}</p>
+                <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("community")}</p>
+                <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bedrooms")}</p>
+                  <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bathrooms")}</p>
+                  <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
+                </div>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("minPrice")}</p>
+                <PriceRangeFilter
+                  min={priceBounds.min}
+                  max={priceBounds.max}
+                  step={priceBounds.step}
+                  value={[priceMin, priceMax]}
+                  onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
+                />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("developer")}</p>
+                <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+              </div>
+            </div>
+          </FilterSheet>
 
           <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">{loading ? t("noResults") : t("results", { count: totalResults })}</p>

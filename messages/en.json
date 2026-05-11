@@ -287,6 +287,8 @@
     "buy": "Buy",
     "rent": "Rent",
     "filters": "Filters",
+    "applyFilters": "Show results",
+    "filtersActive": "{count} active",
     "sortBy": "Sort by",
     "propertyType": "Property Type",
     "community": "Community",

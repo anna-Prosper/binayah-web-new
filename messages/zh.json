@@ -293,6 +293,8 @@
     "buy": "买房",
     "rent": "租房",
     "filters": "筛选",
+    "applyFilters": "显示结果",
+    "filtersActive": "{count} 已启用",
     "sortBy": "排序",
     "propertyType": "房产类型",
     "community": "社区",

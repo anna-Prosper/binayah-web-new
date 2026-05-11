@@ -287,6 +287,8 @@
     "buy": "شراء",
     "rent": "إيجار",
     "filters": "الفلاتر",
+    "applyFilters": "عرض النتائج",
+    "filtersActive": "{count} نشطة",
     "sortBy": "ترتيب حسب",
     "propertyType": "نوع العقار",
     "community": "المنطقة",

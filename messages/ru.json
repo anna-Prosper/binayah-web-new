@@ -287,6 +287,8 @@
     "buy": "Купить",
     "rent": "Арендовать",
     "filters": "Фильтры",
+    "applyFilters": "Показать результаты",
+    "filtersActive": "активно: {count}",
     "sortBy": "Сортировка",
     "propertyType": "Тип недвижимости",
     "community": "Район",
