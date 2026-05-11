@@ -27,6 +27,17 @@ interface Props {
   projects: any[];
 }
 
+function getHeroExcerpt(html: string, maxLen = 180): string {
+  const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const sentences = text.split(/(?<=[.!?])\s+/);
+  const clean = sentences
+    .filter((s) => !/CONTACT US|CALL\s+\+|\+971|payment plan/i.test(s))
+    .join(" ")
+    .trim();
+  if (!clean) return text.slice(0, maxLen).replace(/\s+\S*$/, "…");
+  return clean.length > maxLen ? clean.slice(0, maxLen).replace(/\s+\S*$/, "…") : clean;
+}
+
 export default function CommunityDetailPage({ slug, communityName, communityDescription, communityImage, projects }: Props) {
   const t = useTranslations("communityDetail");
   const tBreadcrumbs = useTranslations("breadcrumbs");
@@ -51,7 +62,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
           </div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">{communityName}</h1>
-            {desc && <p className="text-white/70 max-w-2xl text-lg">{desc.slice(0, 200)}</p>}
+            {desc && <p className="text-white/70 max-w-2xl text-lg leading-relaxed">{getHeroExcerpt(desc)}</p>}
           </motion.div>
         </div>
       </section>
