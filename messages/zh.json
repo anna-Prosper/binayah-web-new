@@ -305,6 +305,7 @@
     "results": "共找到 {count} 套房源",
     "noResults": "未找到符合条件的房源",
     "searching": "搜索中…",
+    "relaxedResults": "无精确 {from} 卧室匹配 — 显示 {to} 卧室附近结果",
     "forSale": "出售",
     "forRent": "出租",
     "priceAsc": "价格由低到高",

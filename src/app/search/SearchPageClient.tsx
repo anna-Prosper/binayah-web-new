@@ -631,12 +631,12 @@ function SearchContent() {
               {!loading && relaxed && (
                 <div className="mx-4 lg:mx-0 mb-4 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-sm text-amber-800 dark:text-amber-200 flex items-center gap-2">
                   <span className="text-amber-500">~</span>
-                  <span>No exact {relaxed.from}-bedroom matches — showing {relaxed.to}-bedroom results nearby</span>
+                  <span>{t("relaxedResults", { from: relaxed.from, to: relaxed.to })}</span>
                   <button
                     type="button"
                     onClick={() => setRelaxed(null)}
                     className="ml-auto text-amber-500 hover:text-amber-700 transition-colors"
-                    aria-label="Dismiss"
+                    aria-label={t("clearFilters")}
                   >
                     ×
                   </button>

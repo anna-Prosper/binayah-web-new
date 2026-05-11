@@ -299,6 +299,7 @@
     "results": "{count} properties found",
     "noResults": "No properties match your search",
     "searching": "Searching…",
+    "relaxedResults": "No exact {from}-bed matches — showing {to}-bed results nearby",
     "forSale": "For Sale",
     "forRent": "For Rent",
     "priceAsc": "Price: Low to High",
