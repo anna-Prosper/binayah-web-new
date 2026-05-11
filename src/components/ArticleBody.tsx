@@ -111,6 +111,7 @@ function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?:
 }
 
 const CHART_MAX_PX = 160;
+const CHART_MIN_PX = 3;
 
 function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: string; pct: number }[]; caption: string }) {
   const ref = useRef(null);
@@ -119,23 +120,31 @@ function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: s
     <div ref={ref} className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 md:p-8 my-5 sm:my-6">
       {title && <p className="text-xs sm:text-sm font-semibold text-foreground mb-3 sm:mb-4">{title}</p>}
       <div className="w-full max-w-lg mx-auto">
-        <div className="flex items-end justify-between gap-1.5 sm:gap-3" style={{ height: CHART_MAX_PX + 24 }}>
+        {/* Bars row — fixed height, labels kept out so they can't compress bars */}
+        <div className="flex items-end justify-between gap-1.5 sm:gap-3" style={{ height: CHART_MAX_PX }}>
+          {bars.map((bar, i) => {
+            const targetPx = Math.max(Math.round((bar.pct / 100) * CHART_MAX_PX), CHART_MIN_PX);
+            return (
+              <motion.div
+                key={i}
+                initial={{ height: 0 }}
+                animate={{ height: isInView ? targetPx : 0 }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
+                className="flex-1 rounded-t-lg"
+                style={{
+                  background: i === bars.length - 1
+                    ? "linear-gradient(180deg, hsl(var(--accent)), hsl(var(--accent)/.75))"
+                    : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary)/.6))",
+                }}
+              />
+            );
+          })}
+        </div>
+        {/* Labels row — separate so multi-line labels never affect bar heights */}
+        <div className="flex justify-between gap-1.5 sm:gap-3 mt-2">
           {bars.map((bar, i) => (
-            <div key={i} className="flex flex-col items-center flex-1 gap-1" style={{ height: "100%" }}>
-              <div className="flex items-end w-full" style={{ flex: 1 }}>
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height: isInView ? Math.round((bar.pct / 100) * CHART_MAX_PX) : 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
-                  className="w-full rounded-t-lg"
-                  style={{
-                    background: i === bars.length - 1
-                      ? "linear-gradient(180deg, hsl(var(--accent)), hsl(var(--accent)/.75))"
-                      : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary)/.6))",
-                  }}
-                />
-              </div>
-              <span className="text-[9px] sm:text-xs text-muted-foreground font-medium">{bar.label}</span>
+            <div key={i} className="flex-1 text-center">
+              <span className="text-[9px] sm:text-[11px] text-muted-foreground font-medium leading-tight break-words">{bar.label}</span>
             </div>
           ))}
         </div>
