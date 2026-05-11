@@ -3,17 +3,18 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { Home, Key, TrendingUp, Wrench, Building2, Calculator } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const WhatWeOffer = () => {
   const t = useTranslations("home.sections.whatWeOffer");
   const offerings = [
-    { icon: "/assets/service-icon-sell.png",       title: t("sellProperty"),       desc: t("sellDesc"),       link: "/list-your-property", image: "/assets/service-sell.webp" },
-    { icon: "/assets/service-icon-buy.png",        title: t("buyProperty"),        desc: t("buyDesc"),        link: "/buy",                image: "/assets/service-buy.webp" },
-    { icon: "/assets/service-icon-rent.png",       title: t("rentProperty"),       desc: t("rentDesc"),       link: "/rent",               image: "/assets/service-rent.webp" },
-    { icon: "/assets/service-icon-offplan.png",    title: t("offPlanInvestment"),  desc: t("offPlanDesc"),    link: "/off-plan",            image: "/assets/service-offplan.webp" },
-    { icon: "/assets/service-icon-management.png", title: t("propertyManagement"), desc: t("managementDesc"), link: "/services",            image: "/assets/service-management.webp" },
-    { icon: "/assets/service-icon-valuation.png",  title: t("valuation"),          desc: t("valuationDesc"),  link: "/valuation",           image: "/assets/service-sell.webp" },
+    { icon: Home,        title: t("sellProperty"),       desc: t("sellDesc"),       link: "/list-your-property", image: "/assets/service-sell.webp" },
+    { icon: Building2,   title: t("buyProperty"),        desc: t("buyDesc"),        link: "/buy",                image: "/assets/service-buy.webp" },
+    { icon: Key,         title: t("rentProperty"),       desc: t("rentDesc"),       link: "/rent",               image: "/assets/service-rent.webp" },
+    { icon: TrendingUp,  title: t("offPlanInvestment"),  desc: t("offPlanDesc"),    link: "/off-plan",            image: "/assets/service-offplan.webp" },
+    { icon: Wrench,      title: t("propertyManagement"), desc: t("managementDesc"), link: "/services",            image: "/assets/service-management.webp" },
+    { icon: Calculator,  title: t("valuation"),          desc: t("valuationDesc"),  link: "/valuation",           image: "/assets/service-sell.webp" },
   ];
 
   return (
@@ -33,26 +34,22 @@ const WhatWeOffer = () => {
           </p>
         </motion.div>
 
-        {/* Mobile: 2-column AI icon card grid */}
+        {/* Mobile: 2-column icon card grid */}
         <div className="sm:hidden grid grid-cols-2 gap-2.5">
-          {offerings.map((item, i) => (
-            <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
-              <Link href={item.link} className="group block bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-200 active:scale-95">
-                {/* AI-generated icon image */}
-                <div className="w-12 h-12 rounded-xl overflow-hidden mb-2.5 relative ring-1 ring-white/10">
-                  <Image
-                    src={item.icon}
-                    alt={item.title}
-                    fill
-                    sizes="48px"
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-                <h3 className="text-sm font-bold text-white mb-1 leading-snug">{item.title}</h3>
-                <p className="text-[11px] text-white/55 line-clamp-2 leading-snug">{item.desc}</p>
-              </Link>
-            </motion.div>
-          ))}
+          {offerings.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
+                <Link href={item.link} className="group block bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-200 active:scale-95">
+                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-2.5">
+                    <Icon className="h-5 w-5" style={{ color: "#D4A847" }} />
+                  </div>
+                  <h3 className="text-sm font-bold text-white mb-1 leading-snug">{item.title}</h3>
+                  <p className="text-[11px] text-white/55 line-clamp-2 leading-snug">{item.desc}</p>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Desktop: 6-column image card grid */}
