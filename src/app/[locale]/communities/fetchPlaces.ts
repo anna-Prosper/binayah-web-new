@@ -89,7 +89,7 @@ export async function fetchPlaceCards(kind: PlaceKind): Promise<PlaceCard[]> {
         ? c.description.replace(/<[^>]*>/g, "").slice(0, 200)
         : undefined,
       thumbnail:
-        c.imageGallery?.[0] || c.featuredImage || wiki?.heroImage || undefined,
+        c.featuredImage || wiki?.heroImage || c.imageGallery?.[0] || undefined,
       hasListings: true,
       hasGuide: !!wiki,
     });
