@@ -21,10 +21,9 @@ import PropertyComparison from "@/components/PropertyComparison";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useCurrency, SUPPORTED_CURRENCIES } from "@/context/CurrencyContext";
 
 const MortgageCalculator = dynamic(() => import("@/components/MortgageCalculator"));
-
-const USD_RATE = 0.2723;
 
 interface Listing {
   _id: string;
@@ -499,7 +498,7 @@ export default function PropertyDetailClient({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "location" | "faq">("overview");
-  const [currency, setCurrency] = useState<"AED" | "USD">("AED");
+  const { currency, setCurrency, format: fmtPrice } = useCurrency();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
@@ -554,16 +553,7 @@ export default function PropertyDetailClient({
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
   const prevImage = () => setCurrentImage((p) => (p - 1 + allImages.length) % allImages.length);
 
-  const formattedPrice = (() => {
-    if (!listing.price) return t("priceOnRequest");
-    if (currency === "USD") {
-      const usd = listing.price * USD_RATE;
-      if (usd >= 1_000_000) return `USD ${(usd / 1_000_000).toFixed(1)}M`;
-      if (usd >= 1_000) return `USD ${(usd / 1_000).toFixed(0)}K`;
-      return `USD ${usd.toLocaleString()}`;
-    }
-    return formatPrice(listing.price, "AED", t("priceOnRequest"));
-  })();
+  const formattedPrice = fmtPrice(listing.price, { fallback: t("priceOnRequest") });
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -734,9 +724,6 @@ export default function PropertyDetailClient({
                       {isRent ? t("perYear") : t("listedAt")}
                     </span>
                     <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formattedPrice}</span>
-                    {currency === "AED" && listing.price && (
-                      <span className="text-white/60 text-xs sm:text-sm lg:text-right">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</span>
-                    )}
                   </div>
 
                   {allImages.length > 1 && (
@@ -796,7 +783,7 @@ export default function PropertyDetailClient({
                       {showCurrencyDropdown && (
                         <motion.div initial={{ opacity: 0, y: -4, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.95 }} transition={{ duration: 0.15 }}
                           className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl">
-                          {(["AED", "USD"] as const).map((c) => (
+                          {SUPPORTED_CURRENCIES.map((c) => (
                             <button key={c} onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
                               className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}>
                               {c}
@@ -808,7 +795,6 @@ export default function PropertyDetailClient({
                   </div>
                 </div>
                 <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{formattedPrice}</p>
-                {currency === "AED" && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>}
               </motion.div>
             )}
             {!!listing.size && <StatCard icon={Maximize} label={t("size")} value={`${listing.size.toLocaleString()} ${listing.sizeUnit || "sqft"}`} sub={sqftToSqm(listing.size)} delay={0.15} />}
@@ -1241,9 +1227,6 @@ export default function PropertyDetailClient({
                     <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                     <p className="text-white/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">{t("bookConsultation")}</p>
                     <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
-                    {currency === "AED" && listing.price && (
-                      <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
-                    )}
                   </div>
                   <div className="px-4 pb-2 pt-2 bg-card border-x border-border/50">
                     <p className="text-[11px] text-muted-foreground text-center">
@@ -1464,9 +1447,6 @@ export default function PropertyDetailClient({
                     </p>
                   </div>
                   <p className="text-3xl font-bold text-white relative z-10">{formattedPrice}</p>
-                  {currency === "AED" && listing.price && (
-                    <p className="text-white/40 text-sm mt-0.5 relative z-10">{t("approxUsd", { amount: Math.round(listing.price * USD_RATE / 1000) })}</p>
-                  )}
                   {listing.price && (
                     <p className="text-white/50 text-sm mt-1.5 relative z-10">{listing.price.toLocaleString()} AED</p>
                   )}
@@ -1575,7 +1555,7 @@ export default function PropertyDetailClient({
                         {!!l.size && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                       </div>
                       <div className="flex items-center justify-between border-t border-border pt-3">
-                        <p className="text-sm font-bold text-primary">{formatPrice(l.price, l.currency, t("priceOnRequest"))}</p>
+                        <p className="text-sm font-bold text-primary">{fmtPrice(l.price, { fallback: t("priceOnRequest") })}</p>
                         <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                       </div>
                     </div>

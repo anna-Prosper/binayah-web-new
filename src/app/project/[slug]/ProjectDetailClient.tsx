@@ -22,6 +22,7 @@ import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions } from "@/components/PropertyActions";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
+import { useCurrency } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 
@@ -54,42 +55,12 @@ interface ProjectDetailClientProps {
   serverProject: any;
 }
 
-const CURRENCY_RATES: Record<string, number> = {
-  AED: 1,
-  USD: 0.2723,
-  EUR: 0.2512,
-  GBP: 0.2155,
-  CNY: 1.9788,
-  RUB: 24.89,
-};
-
-const CURRENCY_SYMBOLS: Record<string, string> = {
-  AED: "AED",
-  USD: "USD",
-  EUR: "EUR",
-  GBP: "GBP",
-  CNY: "CNY",
-  RUB: "RUB",
-};
-
 const LANGUAGES = [
   { code: "en", label: "English", flag: "🇬🇧" },
   { code: "ar", label: "العربية", flag: "🇦🇪" },
   { code: "ru", label: "Русский", flag: "🇷🇺" },
   { code: "zh", label: "中文", flag: "🇨🇳" },
 ];
-
-const formatPrice = (price: number | null, baseCurrency = "AED", targetCurrency = "AED", fallback = "Price on Request") => {
-  if (!price) return fallback;
-  // Normalize: prices stored as decimal millions (e.g. 1.5 = AED 1.5M)
-  const normalized = price < 1_000 ? price * 1_000_000 : price;
-  const rate = CURRENCY_RATES[targetCurrency] || 1;
-  const converted = normalized * rate;
-  const symbol = CURRENCY_SYMBOLS[targetCurrency] || targetCurrency;
-  if (converted >= 1_000_000) return `${symbol} ${(converted / 1_000_000).toFixed(1)}M`;
-  if (converted >= 1_000) return `${symbol} ${(converted / 1_000).toFixed(0)}K`;
-  return `${symbol} ${converted.toLocaleString()}`;
-};
 
 // Collapse consecutive bedroom types with count ≥ 4 that appear 3+ in a row into "X–Y Bedrooms"
 const normalizeBedSuffix = (suffix: string) => {
@@ -175,7 +146,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [descExpanded, setDescExpanded] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
-  const [currency, setCurrency] = useState("AED");
+  const { currency, setCurrency, format: formatPrice, rates: CURRENCY_RATES } = useCurrency();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
@@ -411,10 +382,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 >
                   <div className="flex flex-col gap-0.5 lg:items-end">
                     {project.startingPrice ? <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">{t("startingFrom")}</span> : null}
-                    <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, project.currency, currency)}</span>
-                    {currency === "AED" && project.startingPrice && (
-                      <span className="text-white/60 text-xs sm:text-sm lg:text-right">~{formatPrice(project.startingPrice, "AED", "USD")}</span>
-                    )}
+                    <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, { isProject: true })}</span>
                   </div>
 
                   {images.length > 1 && (
@@ -515,7 +483,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
               return [
                 { icon: Building2, label: t("developer"), value: project.developerName || "—", sub: null },
-                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, project.currency, currency), sub: currency === "AED" && project.startingPrice ? `~${formatPrice(project.startingPrice, "AED", "USD")}` : null, isCurrency: true },
+                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
                 { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
                 { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
                 { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
@@ -1032,23 +1000,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
                                     <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("startingFromLabel")}</p>
                                     <p className="text-xl sm:text-3xl font-bold mt-1">
-                                      {formatPrice(activeUnit?.minPrice, "AED", currency)}
+                                      {formatPrice(activeUnit?.minPrice)}
                                     </p>
-                                    {currency === "AED" && activeUnit?.minPrice && (
-                                      <p className="text-sm text-white/60 mt-1">~{formatPrice(activeUnit?.minPrice, "AED", "USD")}</p>
-                                    )}
                                   </div>
                                 ) : (
                                   <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
                                     <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("priceRangeLabel")}</p>
                                     <p className="text-xl sm:text-3xl font-bold mt-1">
-                                      {formatPrice(activeUnit?.minPrice, "AED", currency)} – {formatPrice(activeUnit?.maxPrice, "AED", currency)}
-                                    </p>
-                                    {currency === "AED" && (
-                                      <p className="text-sm text-white/60 mt-1">
-                                        ~{formatPrice(activeUnit?.minPrice, "AED", "USD")} – {formatPrice(activeUnit?.maxPrice, "AED", "USD")}
-                                      </p>
-                                    )}
+                                      {formatPrice(activeUnit?.minPrice)} – {formatPrice(activeUnit?.maxPrice)}</p>
                                   </div>
                                 )}
 
@@ -1290,7 +1249,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             <div>
                               <h2 className="text-base sm:text-xl font-bold text-white">{t("paymentPlanLabel")}</h2>
                               <p className="text-[10px] sm:text-xs text-white/60">
-                                {t("forUnit")} {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice, "AED", currency)}
+                                {t("forUnit")} {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice)}
                               </p>
                             </div>
                           </div>
@@ -1353,10 +1312,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                         <span className="text-sm sm:text-lg font-bold text-foreground">{m.pct}%</span>
                                         {unitPrice > 0 && (
                                           <div className="flex flex-col items-end">
-                                            <span className="text-[11px] sm:text-sm font-semibold text-foreground">{formatPrice(amount, "AED", currency)}</span>
-                                            {currency === "AED" && (
-                                              <span className="text-[9px] sm:text-[10px] text-muted-foreground">~{formatPrice(amount, "AED", "USD")}</span>
-                                            )}
+                                            <span className="text-[11px] sm:text-sm font-semibold text-foreground">{formatPrice(amount)}</span>
                                           </div>
                                         )}
                                       </div>
@@ -1371,10 +1327,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           <div className="pt-3 sm:pt-4 border-t border-border/50 flex items-center justify-between">
                             <p className="text-xs sm:text-sm font-semibold text-muted-foreground">{t("totalLabel")}</p>
                             <div className="text-right">
-                              <p className="text-base sm:text-lg font-bold text-foreground">{unitPrice > 0 ? formatPrice(unitPrice, "AED", currency) : t("priceOnRequest")}</p>
-                              {unitPrice > 0 && currency === "AED" && (
-                                <p className="text-[10px] sm:text-[11px] text-muted-foreground">~{formatPrice(unitPrice, "AED", "USD")}</p>
-                              )}
+                              <p className="text-base sm:text-lg font-bold text-foreground">{unitPrice > 0 ? formatPrice(unitPrice) : t("priceOnRequest")}</p>
                             </div>
                           </div>
 
@@ -2053,10 +2006,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <div className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden">
                     <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
-                      <p className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, project.currency, currency)}</p>
-                      {currency === "AED" && project.startingPrice && (
-                        <p className="text-primary-foreground/40 text-xs sm:text-sm mt-1">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
-                      )}
+                      <p className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, { isProject: true })}</p>
                       {project.priceRange && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{project.priceRange}</p>}
                     </div>
                     <div className="p-3.5 sm:p-6 md:p-8">
@@ -2146,7 +2096,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   <p className="text-xs text-muted-foreground mt-1">{m.desc}</p>
                                   {project.startingPrice && (
                                     <p className="text-sm font-semibold text-accent mt-2">
-                                      {formatPrice(Math.round((project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice) * m.pct / 100), "AED", currency)}
+                                      {formatPrice(Math.round((project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice) * m.pct / 100))}
                                     </p>
                                   )}
                                 </motion.div>
@@ -2388,10 +2338,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
                     {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
-                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
-                  {currency === "AED" && project.startingPrice && (
-                    <p className="text-primary-foreground/40 text-sm mt-0.5 relative z-10">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
-                  )}
+                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, { isProject: true })}</p>
                   {project.priceRange && (
                     <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
                   )}
@@ -2490,10 +2437,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
                     {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
-                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, project.currency, currency)}</p>
-                  {currency === "AED" && project.startingPrice && (
-                    <p className="text-primary-foreground/40 text-sm mt-0.5 relative z-10">~{formatPrice(project.startingPrice, "AED", "USD")}</p>
-                  )}
+                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, { isProject: true })}</p>
                   {project.priceRange && (
                     <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
                   )}
@@ -2662,7 +2606,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs text-muted-foreground">{t("startingFrom")}</p>
-                    <p className="text-sm font-bold text-accent">{formatPrice(p.price, "AED", currency)}</p>
+                    <p className="text-sm font-bold text-accent">{formatPrice(p.price, { isProject: true })}</p>
                   </div>
                   <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center cursor-pointer">
                     <ArrowRight className="h-3.5 w-3.5 text-primary" />

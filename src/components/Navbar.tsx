@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import UserMenu from "@/components/UserMenu";
 import { useFavorites } from "@/components/PropertyActions";
 import { NotificationsBell } from "@/components/NotificationsBell";
+import { useCurrency } from "@/context/CurrencyContext";
 
 const binayahLogo = "/assets/binayah-logo.svg";
 
@@ -56,7 +57,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [mobileInsightsOpen, setMobileInsightsOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
-  const [mobileCurrency, setMobileCurrency] = useState("AED");
+  const { currency: mobileCurrency, setCurrency: setMobileCurrency } = useCurrency();
   const [phoneHover, setPhoneHover] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [showLangDropdown, setShowLangDropdown] = useState(false);

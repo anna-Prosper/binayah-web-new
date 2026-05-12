@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { useCurrency } from "@/context/CurrencyContext";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
 import { ArrowRight, Bath, BedDouble, Building, Building2, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Loader2, MapPin, Maximize, Search, SlidersHorizontal, X } from "lucide-react";
@@ -149,6 +149,7 @@ function SearchContent() {
   const [sort, setSort] = useState<SortKey>(VALID_SORTS.has(initialSort) ? initialSort : "newest");
 
   const t = useTranslations("search");
+  const { format: fmtCurrency } = useCurrency();
   const initialProjectsPage = (() => { const n = parseInt(params.get("projectsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
   const initialListingsPage = (() => { const n = parseInt(params.get("listingsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
   const [projectsPage, setProjectsPage] = useState(initialProjectsPage);
@@ -673,7 +674,7 @@ function SearchContent() {
                             </div>
                             <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{project.name}</h3>
                             <div className="flex items-center justify-between border-t border-border pt-2.5">
-                              <p className="text-xs font-bold text-primary">{formatProjectPrice(project.startingPrice, project.currency)}</p>
+                              <p className="text-xs font-bold text-primary">{fmtCurrency(project.startingPrice, { isProject: true })}</p>
                               {project.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const date = new Date(project.completionDate || ""); return Number.isNaN(date.getTime()) ? project.completionDate : date.getFullYear(); } catch { return project.completionDate; } })()}</p>}
                             </div>
                           </div>
@@ -726,7 +727,7 @@ function SearchContent() {
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
                             </div>
-                            <div className="border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{formatPrice(listing.price, listing.currency, t("priceOnRequest"))}</p></div>
+                            <div className="border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{fmtCurrency(listing.price, { fallback: t("priceOnRequest") })}</p></div>
                           </div>
                         </Link>
                       </motion.div>

@@ -14,6 +14,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface Listing {
   _id: string;
@@ -52,6 +53,7 @@ export default function ListingsPageClient({
   batchSize?: number;
 }) {
   const t = useTranslations("rent");
+  const { format: fmtCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -100,14 +102,6 @@ export default function ListingsPageClient({
     setPage(next);
     writePageToUrl(next);
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, page, writePageToUrl]);
-
-  const formatPrice = (listing: Listing) => {
-    if (!listing.price) return "Price on request";
-    const p = listing.price;
-    if (p >= 1_000_000) return `AED ${(p / 1_000_000).toFixed(1)}M`;
-    if (p >= 1_000) return `AED ${(p / 1_000).toFixed(0)}K`;
-    return `AED ${p.toLocaleString()}`;
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -225,7 +219,7 @@ export default function ListingsPageClient({
                       {/* Footer — price (left) + propertyId (right) for the same justify-between balance the off-plan card has with completionDate */}
                       <div className="mt-auto flex items-center justify-between border-t border-border pt-3 gap-3">
                         <p className="text-sm font-bold text-primary truncate">
-                          {formatPrice(l)}
+                          {fmtCurrency(l.price, { fallback: "Price on request" })}
                           {l.listingType === "Rent" && <span className="text-xs font-normal text-muted-foreground">{" "}{t("perYear")}</span>}
                           {l.size && l.price && l.price > 0 && (
                             <span className="block text-[10px] font-normal text-muted-foreground mt-0.5">
