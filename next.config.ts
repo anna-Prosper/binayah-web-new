@@ -36,6 +36,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.binayah.ae" },
       { protocol: "https", hostname: "wp.binayah.com" },
       { protocol: "https", hostname: "binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com" },
+      { protocol: "https", hostname: "binayah-media-456051253184-us-east-1-an.s3.amazonaws.com" },
       { protocol: "https", hostname: "binayah-images.s3.ap-south-1.amazonaws.com" },
       { protocol: "https", hostname: "sm-automation-5464.s3.ap-south-1.amazonaws.com" },
       { protocol: "https", hostname: "sm-automation-5464.s3.amazonaws.com" },
