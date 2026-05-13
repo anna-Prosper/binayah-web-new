@@ -331,6 +331,7 @@ const HeroSection = () => {
       case "intent": updated.intent = null; break;
       case "location": updated.location = null; updated.city = null; break;
       case "project": updated.project = null; break;
+      case "building": updated.building = null; break;
       case "developer": updated.developer = null; break;
       case "type": updated.propertyType = null; break;
       case "beds": updated.bedrooms = null; break;

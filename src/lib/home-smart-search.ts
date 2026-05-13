@@ -49,6 +49,7 @@ export interface HomeSearchDraft {
   location: string | null;
   project: string | null;
   propertyType: string | null;
+  building: string | null;
   summary: string;
   tags: HomeSearchTag[];
 }
@@ -189,6 +190,7 @@ export function createEmptyHomeSearchDraft(defaultIntent?: HomeSearchIntent | nu
     location: null,
     project: null,
     propertyType: null,
+    building: null,
     summary: defaultIntent ? `${formatIntentLabel(defaultIntent)} properties` : "Search properties",
     tags: [],
   };
@@ -262,6 +264,25 @@ export function parseHomeSearchQuery(
   const matchedDeveloper = findBestCandidateMatch(normalizedQuery, developers);
   const matchedLocation = findBestCandidateMatch(normalizedQuery, communities);
 
+  // Detect residual building/project words: query tokens not explained by location,
+  // property type, bedroom count, or budget — likely a building/tower name.
+  const locationWords = new Set(
+    (matchedLocation?.candidate.name || "").toLowerCase().split(/\s+/).filter(Boolean)
+  );
+  const structuredWords = new Set([
+    ...locationWords,
+    ...(propertyType ?? "").toLowerCase().split(/\s+/),
+    "studio", "bed", "bedroom", "br", "bhk", "bath", "bathroom",
+    "buy", "sale", "rent", "off", "plan", "furnished", "unfurnished",
+    "for", "in", "at", "near", "by", "dubai",
+    "aed", "k", "m", "million", "thousand", "budget",
+  ]);
+  const queryTokens = normalizedQuery.toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  const residualTokens = queryTokens.filter(w => !structuredWords.has(w) && !/^\d+$/.test(w));
+  const detectedBuilding = residualTokens.length > 0 && matchedLocation
+    ? residualTokens.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
+    : null;
+
   const draft: HomeSearchDraft = {
     bathrooms,
     bedrooms,
@@ -277,6 +298,7 @@ export function parseHomeSearchQuery(
     location: matchedLocation?.candidate.name || matchedProject?.candidate.community || null,
     project: matchedProject?.candidate.name || null,
     propertyType: matchedProject?.candidate.propertyType || propertyType,
+    building: detectedBuilding,
     summary: "Search properties",
     tags: [],
   };
@@ -298,6 +320,7 @@ export function buildHomeSearchTags(draft: HomeSearchDraft) {
   if (draft.intent) tags.push({ key: "intent", label: "Mode", value: formatIntentLabel(draft.intent) });
   if (draft.project) tags.push({ key: "project", label: "Project", value: draft.project });
   if (draft.location) tags.push({ key: "location", label: "Location", value: draft.location });
+  if (draft.building) tags.push({ key: "building", label: "Building", value: draft.building });
   if (draft.developer) tags.push({ key: "developer", label: "Developer", value: draft.developer });
   if (draft.propertyType) tags.push({ key: "type", label: "Type", value: formatPropertyTypeLabel(draft.propertyType, draft.propertyType) });
   if (draft.bedrooms) tags.push({ key: "beds", label: "Beds", value: draft.bedrooms === "Studio" ? "Studio" : `${draft.bedrooms} BR` });
@@ -361,6 +384,7 @@ export function buildHomeSearchUrl(args: {
   const bedrooms = args.manual?.bedrooms || args.draft?.bedrooms;
   const bathrooms = args.manual?.bathrooms || args.draft?.bathrooms;
   const developer = args.manual?.developer || args.draft?.developer;
+  const building = args.manual?.building || args.draft?.building;
   const budgetLabel = args.manual?.budgetLabel || args.draft?.budgetLabel;
   const budgetMin = args.manual?.budgetMin ?? args.draft?.budgetMin ?? null;
   const budgetMax = args.manual?.budgetMax ?? args.draft?.budgetMax ?? null;
@@ -375,14 +399,12 @@ export function buildHomeSearchUrl(args: {
   if (budgetMin != null) params.set("budgetMin", String(budgetMin));
   if (budgetMax != null) params.set("budgetMax", String(budgetMax));
 
-  const q = String(args.query ?? "").trim();
-  // Suppress free-text q only when property type / bedrooms / budget are set.
-  // These cause title-only regex matching in the API (hasStructuredFilters=true),
-  // so "1 bedroom apartment" alongside bedrooms=1 finds near-zero title matches → false relaxation.
-  // Location-only queries (e.g. "marina gate 1" → location=Dubai Marina) must still send q
-  // so the building name reaches the API's name-matching logic.
+  // Use the explicit building chip value as q if set; otherwise fall back to raw query
+  // when there are no structured signals that would conflict with free-text matching.
+  const rawQ = String(args.query ?? "").trim();
   const hasStructuredSignals = !!(propertyType || bedrooms || budgetMin != null || budgetMax != null);
-  if (q && !hasStructuredSignals) params.set("q", q);
+  const qToSend = building || (!hasStructuredSignals ? rawQ : "");
+  if (qToSend) params.set("q", qToSend);
 
   return `/search?${params.toString()}`;
 }
