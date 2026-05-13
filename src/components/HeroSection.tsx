@@ -266,7 +266,7 @@ const HeroSection = () => {
             const ciData = await ciRes.json() as { exists: boolean; data?: { name: string; slug: string } };
             if (ciData.exists && ciData.data?.slug) {
               setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug });
-              setShowSuggestions(true);
+              if (!chipsActive) setShowSuggestions(true);
             } else {
               setCommunityInfoResult(null);
             }
@@ -593,7 +593,7 @@ const HeroSection = () => {
                   </div>
                 </div>
 
-                {showSuggestions && !chipsMode && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
+                {showSuggestions && !chipsMode && parsedTags.length === 0 && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-card/95 backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
                     <div className="max-h-[26rem] overflow-y-auto">
                       {suggestionSections.map((section) => (
@@ -664,7 +664,7 @@ const HeroSection = () => {
                 )}
               </div>
 
-              {smartSearch.trim() && (
+              {smartSearch.trim() && !chipsMode && (
                 <div className="mt-2 flex items-center justify-between gap-3">
                   <p className="text-xs text-white/70">
                     {isQuestion ? "This looks conversational. Search will open Binayah AI instead of listing results." : smartDraft.summary}
