@@ -28,14 +28,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: seo.ogDescription || seo.metaDescription || descFallback,
-      images: seo.ogImage ? [{ url: seo.ogImage }] : project.featuredImage ? [{ url: project.featuredImage, width: 1200, height: 630, alt: project.name }] : [],
+      // opengraph-image.tsx serves the dynamic branded OG image; only override from CMS.
+      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
       title: seo.twitterTitle || seo.metaTitle || titleFallback,
       description: seo.twitterDescription || seo.metaDescription || descFallback,
-      ...(project.featuredImage ? { images: [project.featuredImage] } : {}),
     },
   };
 }

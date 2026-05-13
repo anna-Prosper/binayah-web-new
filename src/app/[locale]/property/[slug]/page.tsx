@@ -36,18 +36,15 @@ export async function generateMetadata({
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: descFallback,
-      images: seo.ogImage
-        ? [{ url: seo.ogImage }]
-        : listing.featuredImage
-        ? [{ url: listing.featuredImage, width: 1200, height: 630, alt: listing.name || listing.title }]
-        : [],
+      // opengraph-image.tsx in this route segment serves the dynamic branded OG image.
+      // Only override with a static image when the CMS explicitly sets seo.ogImage.
+      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: descFallback,
-      ...(listing.featuredImage ? { images: [listing.featuredImage] } : {}),
     },
   };
 }
