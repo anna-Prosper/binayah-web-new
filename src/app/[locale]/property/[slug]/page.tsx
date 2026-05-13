@@ -8,26 +8,46 @@ export const revalidate = 1800;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const data = await getListing(slug);
   if (!data) return { title: "Not Found" };
   const { listing } = data;
   const seo = listing.seo || {};
+
+  const priceStr = listing.price
+    ? ` | ${listing.currency || "AED"} ${listing.price >= 1_000_000 ? (listing.price / 1_000_000).toFixed(1) + "M" : Math.round(listing.price / 1000) + "K"}`
+    : "";
+  const bedsStr = listing.bedrooms != null
+    ? ` | ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} BR`}`
+    : "";
+  const titleFallback = `${listing.name || listing.title}${bedsStr}${priceStr} | ${listing.community || "Dubai"} | Binayah`;
+
+  const descFallback = seo.metaDescription ||
+    `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "sale"} in ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} bedroom`}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. Listed at ${listing.currency || "AED"} ${listing.price >= 1_000_000 ? (listing.price / 1_000_000).toFixed(1) + "M" : Math.round(listing.price / 1000) + "K"}` : ""}. View photos, floor plans and contact agent.`;
+
   return {
-    title: seo.metaTitle || `${listing.name} | Binayah Properties`,
-    description:
-      seo.metaDescription ||
-      `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "Sale"} in ${listing.community || "Dubai"}`,
+    title: seo.metaTitle || titleFallback,
+    description: descFallback,
+    alternates: {
+      canonical: seo.canonicalUrl || `/${locale}/property/${slug}`,
+    },
     openGraph: {
-      title: seo.ogTitle || seo.metaTitle || listing.name,
-      description: seo.ogDescription || seo.metaDescription || "",
+      title: seo.ogTitle || seo.metaTitle || titleFallback,
+      description: descFallback,
       images: seo.ogImage
         ? [{ url: seo.ogImage }]
         : listing.featuredImage
-        ? [{ url: listing.featuredImage }]
+        ? [{ url: listing.featuredImage, width: 1200, height: 630, alt: listing.name || listing.title }]
         : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.ogTitle || seo.metaTitle || titleFallback,
+      description: descFallback,
+      ...(listing.featuredImage ? { images: [listing.featuredImage] } : {}),
     },
   };
 }

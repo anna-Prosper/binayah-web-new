@@ -5,8 +5,67 @@ import { notFound } from "next/navigation";
 import { getCommunity } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}): Promise<Metadata> {
+  const { slug, locale } = await params;
+
+  const [wikiResult, dbResult] = await Promise.allSettled([
+    (async () => {
+      const client = await clientPromise;
+      const db = client.db("binayah_web_new_dev");
+      return db.collection("community_info_pages").findOne({ slug });
+    })(),
+    getCommunity(slug),
+  ]);
+
+  const wiki = wikiResult.status === "fulfilled" ? wikiResult.value : null;
+  const db = dbResult.status === "fulfilled" ? dbResult.value : null;
+
+  const name =
+    (wiki as any)?.name ||
+    db?.community?.name ||
+    slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+  const rawDesc =
+    (wiki as any)?.description ||
+    db?.community?.description ||
+    "";
+  const description = rawDesc
+    ? rawDesc.replace(/<[^>]*>/g, "").slice(0, 160).trim()
+    : `Explore properties for sale and rent in ${name}, Dubai. Browse off-plan projects and secondary listings with Binayah Properties.`;
+
+  const image =
+    (wiki as any)?.heroImage || db?.community?.featuredImage || undefined;
+
+  const title = `${name} Properties | Real Estate For Sale & Rent | Binayah`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/${locale}/communities/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      ...(image ? { images: [{ url: image, width: 1200, height: 630, alt: `${name} Dubai` }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(image ? { images: [image] } : {}),
+    },
+  };
+}
 
 export default async function CommunityPage({
   params,
