@@ -94,6 +94,9 @@ const HeroSection = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const smartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const smartRequestRef = useRef(0);
+  // Tracks chip keys the user explicitly removed so the async API callback
+  // doesn't re-add them when it resolves after the removal click.
+  const userRemovedKeys = useRef<Set<string>>(new Set());
   const ref = useRef<HTMLDivElement>(null);
 
   const chipsMode = parsedTags.length > 0 && !isQuestion && (smartDraft.confidence ?? 0) >= 0.65;
@@ -217,6 +220,25 @@ const HeroSection = () => {
         }
       }
 
+      // Honour chips the user explicitly removed — don't let the API response re-add them.
+      if (userRemovedKeys.current.size > 0) {
+        for (const key of userRemovedKeys.current) {
+          switch (key) {
+            case "intent": nextDraft.intent = null; break;
+            case "location": nextDraft.location = null; nextDraft.city = null; break;
+            case "project": nextDraft.project = null; break;
+            case "developer": nextDraft.developer = null; break;
+            case "type": nextDraft.propertyType = null; break;
+            case "beds": nextDraft.bedrooms = null; break;
+            case "baths": nextDraft.bathrooms = null; break;
+            case "furnishing": nextDraft.furnishing = null; break;
+            case "budget": nextDraft.budgetLabel = null; nextDraft.budgetMin = null; nextDraft.budgetMax = null; break;
+          }
+        }
+        nextDraft.tags = buildHomeSearchTags(nextDraft);
+        nextDraft.confidence = Math.max(0, (nextDraft.confidence ?? 0) - 0.12 * userRemovedKeys.current.size);
+      }
+
       setSmartDraft(nextDraft);
       setParsedTags(nextDraft.tags);
       setIsQuestion(nextDraft.isQuestion);
@@ -260,6 +282,7 @@ const HeroSection = () => {
   };
 
   const handleSmartInput = (value: string) => {
+    userRemovedKeys.current.clear(); // new text → fresh parse
     setSmartSearch(value);
     runSmartSearch(value);
   };
@@ -302,6 +325,7 @@ const HeroSection = () => {
   };
 
   const removeTag = (tagKey: string) => {
+    userRemovedKeys.current.add(tagKey);
     const updated: HomeSearchDraft = { ...smartDraft };
     switch (tagKey) {
       case "intent": updated.intent = null; break;
@@ -668,7 +692,7 @@ const HeroSection = () => {
                       style={{ background: "rgba(212,168,71,0.13)" }}
                     >
                       <Zap className="h-3 w-3 flex-shrink-0" />
-                      <span className="opacity-60 text-[10px] uppercase tracking-wide">{tag.label}:</span>
+                      <span className="opacity-60 text-[10px] uppercase tracking-wide">{tag.label}{": "}</span>
                       <span>{tag.value}</span>
                       <button
                         type="button"
