@@ -62,7 +62,7 @@ export default async function PropertyPage({
     "@type": "RealEstateListing",
     name: listing.name || listing.title,
     description: listing.cleanDescription || listing.description || undefined,
-    url: `https://binayah.ae/${locale}/property/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/property/${slug}`,
     ...(listing.featuredImage ? { image: [listing.featuredImage] } : {}),
     ...(listing.price ? {
       offers: {

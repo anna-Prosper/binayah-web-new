@@ -49,7 +49,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     "@type": "RealEstateListing",
     name: project.name,
     description: project.shortOverview || project.overview || undefined,
-    url: `https://binayah.ae/${locale}/project/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}`,
     ...(project.featuredImage ? { image: [project.featuredImage] } : {}),
     ...(project.startingPrice ? {
       offers: {
