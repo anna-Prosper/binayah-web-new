@@ -5,12 +5,8 @@ type ValuationEndpoint = "config" | "document" | "report" | "stream" | "unlock";
 const endpointPattern = /\/(config|document|report|stream|unlock)$/;
 
 export function resolveValuationUpstreamUrl(endpoint: ValuationEndpoint): string {
-  const explicitBaseUrl = cleanText(
-    process.env.VALUATION_API_BASE_URL ?? process.env.NEXT_PUBLIC_VALUATION_API_BASE_URL,
-  );
-  const fallbackUrl = cleanText(
-    process.env.VALUATION_API_URL ?? process.env.NEXT_PUBLIC_VALUATION_API_URL,
-  );
+  const explicitBaseUrl = cleanText(process.env.VALUATION_API_BASE_URL);
+  const fallbackUrl = cleanText(process.env.VALUATION_API_URL);
   const candidate = explicitBaseUrl || fallbackUrl;
 
   if (!candidate) {
@@ -66,7 +62,7 @@ async function proxyValuationRequest(
 
   if (!upstreamUrl) {
     console.error(
-      `[valuation-api] Missing upstream URL for "${endpoint}". Set VALUATION_API_BASE_URL or NEXT_PUBLIC_VALUATION_API_BASE_URL in the deployment environment.`,
+      `[valuation-api] Missing upstream URL for "${endpoint}". Set VALUATION_API_BASE_URL in the deployment environment.`,
     );
     return NextResponse.json(
       {

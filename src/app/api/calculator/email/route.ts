@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/lib/email";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -14,12 +15,7 @@ function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-// ── Rate limiting (in-memory sliding window: max 3 sends/IP/hour) ─────────────
-
-type RateBucket = { count: number; resetAt: number };
-const rateLimitMap = new Map<string, RateBucket>();
-const RATE_LIMIT_MAX = 3;
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+// ── Client IP helper ─────────────────────────────────────────────────────────
 
 function getClientIp(request: Request): string {
   const fwd = request.headers.get("x-forwarded-for");
@@ -28,28 +24,6 @@ function getClientIp(request: Request): string {
   if (real) return real;
   return "unknown";
 }
-
-function checkRateLimit(ip: string): { ok: boolean; resetAt?: number } {
-  const now = Date.now();
-  const bucket = rateLimitMap.get(ip);
-  if (!bucket || bucket.resetAt < now) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { ok: true };
-  }
-  if (bucket.count >= RATE_LIMIT_MAX) {
-    return { ok: false, resetAt: bucket.resetAt };
-  }
-  bucket.count += 1;
-  return { ok: true };
-}
-
-// Periodic cleanup so the Map doesn't grow unbounded under attack
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, bucket] of rateLimitMap.entries()) {
-    if (bucket.resetAt < now) rateLimitMap.delete(ip);
-  }
-}, 5 * 60 * 1000); // every 5 min
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -189,14 +163,14 @@ function buildEmailHtml(name: string, calc: CalcSnapshot): string {
 // ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-  // Rate limit check — before any work
+  // Rate limit: max 3 calculator emails per IP per hour — MongoDB-backed so it
+  // survives Vercel cold starts / multiple serverless instances.
   const ip = getClientIp(req);
-  const rl = checkRateLimit(ip);
-  if (!rl.ok) {
-    const retryAfterSec = Math.ceil((rl.resetAt! - Date.now()) / 1000);
+  const allowed = await checkRateLimit("calc-email", ip, 3, 60 * 60 * 1000);
+  if (!allowed) {
     return NextResponse.json(
       { error: "Too many requests. Try again later." },
-      { status: 429, headers: { "Retry-After": retryAfterSec.toString() } }
+      { status: 429, headers: { "Retry-After": "3600" } }
     );
   }
 
