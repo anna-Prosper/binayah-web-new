@@ -40,7 +40,10 @@ async function streamChat({
     return;
   }
   if (!resp.ok || !resp.body) {
-    onError("Something went wrong. Please try again.");
+    let errMsg = "Something went wrong. Please try again.";
+    try { const d = await resp.json(); if (d?.error) errMsg = d.error; } catch { /* ignore */ }
+    console.error("[chat]", resp.status, errMsg);
+    onError(errMsg);
     return;
   }
 
@@ -84,30 +87,30 @@ const AIChatWidget = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
+
+  // Keep sendRef pointing to the latest send closure so external triggers work
+  useEffect(() => { sendRef.current = send; });
 
   // Listen for external trigger (e.g., hero search "Ask AI")
   useEffect(() => {
     const handler = (e: CustomEvent) => {
       setOpen(true);
       if (e.detail?.question) {
-        setInput(e.detail.question);
-        // Auto-send after opening
-        setTimeout(() => {
-          const btn = document.getElementById("chat-send-btn");
-          if (btn) btn.click();
-        }, 300);
+        // Use ref-based call so we always get the current send function
+        setTimeout(() => sendRef.current?.(e.detail.question), 100);
       }
     };
     window.addEventListener("open-ai-chat" as any, handler);
     return () => window.removeEventListener("open-ai-chat" as any, handler);
   }, []);
 
-  const send = async () => {
-    const text = input.trim();
+  const send = async (directText?: string) => {
+    const text = (directText ?? input).trim();
     if (!text || isLoading) return;
 
     const userMsg: Msg = { role: "user", content: text };
