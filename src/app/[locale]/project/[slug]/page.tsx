@@ -28,8 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: seo.ogDescription || seo.metaDescription || descFallback,
-      // opengraph-image.tsx serves the dynamic branded OG image; only override from CMS.
-      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
+      // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
     },
     twitter: {

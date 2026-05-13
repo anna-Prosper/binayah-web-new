@@ -36,9 +36,7 @@ export async function generateMetadata({
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: descFallback,
-      // opengraph-image.tsx in this route segment serves the dynamic branded OG image.
-      // Only override with a static image when the CMS explicitly sets seo.ogImage.
-      ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
+      // opengraph-image.tsx serves the dynamic branded OG image (price/beds/photo overlay).
       type: "website",
     },
     twitter: {
