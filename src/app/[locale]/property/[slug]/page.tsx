@@ -55,11 +55,58 @@ export async function generateMetadata({
 export default async function PropertyPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const data = await getListing(slug);
   if (!data) return notFound();
   const { listing, similarListings } = data;
-  return <PropertyDetailClient listing={listing} similarListings={similarListings} />;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: listing.name || listing.title,
+    description: listing.cleanDescription || listing.description || undefined,
+    url: `https://binayah.ae/${locale}/property/${slug}`,
+    ...(listing.featuredImage ? { image: [listing.featuredImage] } : {}),
+    ...(listing.price ? {
+      offers: {
+        "@type": "Offer",
+        price: listing.price,
+        priceCurrency: listing.currency || "AED",
+        availability: "https://schema.org/InStock",
+      },
+    } : {}),
+    ...(listing.bedrooms != null ? { numberOfRooms: listing.bedrooms } : {}),
+    ...(listing.size ? {
+      floorSize: {
+        "@type": "QuantitativeValue",
+        value: listing.size,
+        unitCode: listing.sizeUnit === "sqm" ? "MTK" : "FTK",
+      },
+    } : {}),
+    address: {
+      "@type": "PostalAddress",
+      ...(listing.community ? { addressLocality: listing.community } : {}),
+      addressRegion: listing.city || "Dubai",
+      addressCountry: "AE",
+    },
+    ...(listing.latitude && listing.longitude ? {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: listing.latitude,
+        longitude: listing.longitude,
+      },
+    } : {}),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PropertyDetailClient listing={listing} similarListings={similarListings} />
+    </>
+  );
 }
