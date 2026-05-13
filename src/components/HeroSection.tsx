@@ -12,6 +12,7 @@ import TypewriterHeadline from "./TypewriterHeadline";
 import { useTranslations } from "next-intl";
 import { formatPropertyTypeLabel, normalizePropertyType } from "@/lib/property-types";
 import {
+  buildHomeSearchTags,
   buildHomeSearchUrl,
   createEmptyHomeSearchDraft,
   formatIntentLabel,
@@ -94,6 +95,8 @@ const HeroSection = () => {
   const smartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const smartRequestRef = useRef(0);
   const ref = useRef<HTMLDivElement>(null);
+
+  const chipsMode = parsedTags.length > 0 && !isQuestion && (smartDraft.confidence ?? 0) >= 0.65;
 
   const activeIntent = normalizeTabToIntent(activeTab);
   const budgetOptions = getBudgetOptionsForIntent(activeIntent);
@@ -224,15 +227,11 @@ const HeroSection = () => {
         setShowSuggestions(true);
       }
 
-      // Auto-navigate for high-confidence parses (≥80%) so the user doesn't
-      // need to click a suggestion after a clearly structured query.
-      if (nextDraft.confidence >= 0.80 && nextDraft.location && nextDraft.intent && !nextDraft.isQuestion) {
-        router.push(buildHomeSearchUrl({
-          activeTab,
-          draft: nextDraft,
-          query: undefined,  // don't pass raw q — structured filters cover the intent
-        }));
-        return;
+      // Chips mode: suppress dropdown when AI has a confident structured parse.
+      // User sees removable chips and presses Enter/Search to execute.
+      const chipsActive = nextDraft.tags.length > 0 && (nextDraft.confidence ?? 0) >= 0.65 && !nextDraft.isQuestion;
+      if (chipsActive) {
+        setShowSuggestions(false);
       }
 
       // When zero project/listing results come back for a meaningful query,
@@ -300,6 +299,25 @@ const HeroSection = () => {
     if (draft.bedrooms) setSelBedroom(draft.bedrooms);
     if (draft.bathrooms) setSelBathroom(draft.bathrooms);
     if (draft.budgetLabel) setSelBudget(draft.budgetLabel);
+  };
+
+  const removeTag = (tagKey: string) => {
+    const updated: HomeSearchDraft = { ...smartDraft };
+    switch (tagKey) {
+      case "intent": updated.intent = null; break;
+      case "location": updated.location = null; updated.city = null; break;
+      case "project": updated.project = null; break;
+      case "developer": updated.developer = null; break;
+      case "type": updated.propertyType = null; break;
+      case "beds": updated.bedrooms = null; break;
+      case "baths": updated.bathrooms = null; break;
+      case "furnishing": updated.furnishing = null; break;
+      case "budget": updated.budgetLabel = null; updated.budgetMin = null; updated.budgetMax = null; break;
+    }
+    updated.confidence = Math.max(0, (updated.confidence ?? 0) - 0.15);
+    updated.tags = buildHomeSearchTags(updated);
+    setSmartDraft(updated);
+    setParsedTags(updated.tags);
   };
 
   const shouldOpenAi = (query: string, draft: Partial<HomeSearchDraft>, forceAskAi = false) => {
@@ -460,7 +478,7 @@ const HeroSection = () => {
                 value={smartSearch}
                 onChange={(event) => handleSmartInput(event.target.value)}
                 onKeyDown={handleInputKeyDown}
-                onFocus={() => setShowSuggestions(smartSearch.trim().length >= 2)}
+                onFocus={() => { if (!chipsMode) setShowSuggestions(smartSearch.trim().length >= 2); }}
                 placeholder={`Try: ${searchPlaceholders[placeholderIndex]}`}
                 className="w-full pl-10 pr-11 py-3.5 bg-white border border-white/30 rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-all shadow-sm"
               />
@@ -482,9 +500,17 @@ const HeroSection = () => {
             {parsedTags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {parsedTags.slice(0, 4).map((tag) => (
-                  <span key={tag.key} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-medium text-accent border border-accent/20" style={{ background: "rgba(212,168,71,0.1)" }}>
-                    <Zap className="h-2.5 w-2.5" />
-                    <span className="opacity-60">{tag.label}:</span> {tag.value}
+                  <span key={tag.key} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] font-semibold text-accent border border-accent/30" style={{ background: "rgba(212,168,71,0.13)" }}>
+                    <Zap className="h-2.5 w-2.5 flex-shrink-0" />
+                    <span className="opacity-60">{tag.label}:</span>
+                    <span>{tag.value}</span>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => { e.preventDefault(); removeTag(tag.key); }}
+                      className="ml-0.5 rounded-full p-0.5 hover:bg-accent/20 transition-colors"
+                    >
+                      <X className="h-2 w-2 text-accent/70" />
+                    </button>
                   </span>
                 ))}
               </div>
@@ -526,7 +552,7 @@ const HeroSection = () => {
                   <input
                     value={smartSearch}
                     onChange={(event) => handleSmartInput(event.target.value)}
-                    onFocus={() => setShowSuggestions(smartSearch.trim().length >= 2)}
+                    onFocus={() => { if (!chipsMode) setShowSuggestions(smartSearch.trim().length >= 2); }}
                     onKeyDown={handleInputKeyDown}
                     placeholder={`Try: ${searchPlaceholders[placeholderIndex]}`}
                     className="w-full pl-32 sm:pl-36 pr-14 py-4 bg-white border border-white/30 rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-all shadow-sm"
@@ -543,7 +569,7 @@ const HeroSection = () => {
                   </div>
                 </div>
 
-                {showSuggestions && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
+                {showSuggestions && !chipsMode && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-card/95 backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
                     <div className="max-h-[26rem] overflow-y-auto">
                       {suggestionSections.map((section) => (
@@ -634,13 +660,37 @@ const HeroSection = () => {
                   </span>
                 </div>
               ) : parsedTags.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5 mt-2">
+                <div className="flex flex-wrap items-center gap-2 mt-3">
                   {parsedTags.map((tag) => (
-                    <span key={tag.key} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium text-accent border border-accent/20" style={{ background: "rgba(212,168,71,0.1)" }}>
-                      <Zap className="h-2.5 w-2.5" />
-                      <span className="opacity-60">{tag.label}:</span> {tag.value}
+                    <span
+                      key={tag.key}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-accent border border-accent/30 transition-all"
+                      style={{ background: "rgba(212,168,71,0.13)" }}
+                    >
+                      <Zap className="h-3 w-3 flex-shrink-0" />
+                      <span className="opacity-60 text-[10px] uppercase tracking-wide">{tag.label}:</span>
+                      <span>{tag.value}</span>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => { e.preventDefault(); removeTag(tag.key); }}
+                        className="ml-0.5 rounded-full p-0.5 hover:bg-accent/25 transition-colors"
+                        aria-label={`Remove ${tag.label} filter`}
+                      >
+                        <X className="h-2.5 w-2.5 text-accent/70" />
+                      </button>
                     </span>
                   ))}
+                  {chipsMode && (
+                    <button
+                      type="button"
+                      onMouseDown={(e) => { e.preventDefault(); handleSearch(); }}
+                      className="ml-auto inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white transition-all hover:brightness-110 active:scale-95"
+                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                    >
+                      <Search className="h-3 w-3" />
+                      {t("searchCta")}
+                    </button>
+                  )}
                 </div>
               ) : null}
             </div>
