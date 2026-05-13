@@ -376,11 +376,11 @@ export function buildHomeSearchUrl(args: {
   if (budgetMax != null) params.set("budgetMax", String(budgetMax));
 
   const q = String(args.query ?? "").trim();
-  // When structured filters capture the semantic content (location + at least one
-  // of type/bedrooms/budget), passing the full query as free-text would AND an
-  // exact-phrase regex with those filters and produce zero results.
-  // Only send residual q when there are no structured signals.
-  const hasStructuredSignals = !!(location && (propertyType || bedrooms || budgetMin != null));
+  // Suppress free-text q when structured filters already capture the semantic content.
+  // Sending q alongside bedrooms/type causes title-only regex matching (hasStructuredFilters=true
+  // in the API), which finds almost nothing → triggers false relaxation.
+  // Keep q only when there are NO structured signals at all (pure text search).
+  const hasStructuredSignals = !!(propertyType || bedrooms || budgetMin != null || budgetMax != null || location);
   if (q && !hasStructuredSignals) params.set("q", q);
 
   return `/search?${params.toString()}`;
