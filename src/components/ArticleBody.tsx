@@ -102,9 +102,9 @@ function TableBlock({ headers, rows }: { headers: string[]; rows: string[][] }) 
 
 function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?: string }) {
   return (
-    <div className="rounded-2xl overflow-hidden my-5 sm:my-6">
+    <div className="rounded-2xl overflow-hidden my-5 sm:my-6 aspect-[16/9] bg-muted">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
+      <img src={src} alt={alt} className="w-full h-full object-cover block" loading="lazy" />
       {caption && <p className="text-xs text-muted-foreground mt-2 italic text-center">{caption}</p>}
     </div>
   );
