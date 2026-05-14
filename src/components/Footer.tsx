@@ -80,7 +80,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Mail className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="mailto:info@binayah.com" className="hover:text-accent transition-colors">{t("email")}</a>
+              <Link href="/contact" className="hover:text-accent transition-colors">{t("email")}</Link>
             </li>
             <li className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">

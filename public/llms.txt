@@ -1,0 +1,45 @@
+# Binayah Properties
+
+> Dubai's trusted real estate agency. Find luxury homes, off-plan investments, secondary sales and rentals, and full property management. Active in Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC, JLT, Dubai Hills, and 30+ other communities.
+
+Binayah Properties is a UAE real estate agency headquartered at Marasi Drive, Business Bay, Dubai. We help buyers, investors, and tenants find apartments, villas, townhouses and penthouses across Dubai's primary and secondary markets. We also publish weekly market reports (Pulse) covering DLD transaction data, price-per-sqft trends, and area-level yields.
+
+## Core pages
+
+- [Home](https://binayah.com/en): Overview, featured listings, off-plan projects, communities, valuation entry point
+- [Buy properties](https://binayah.com/en/buy): Sale listings — apartments, villas, townhouses across Dubai
+- [Rent properties](https://binayah.com/en/rent): Rental listings — short and long-term
+- [Off-plan projects](https://binayah.com/en/off-plan): New developments by Emaar, Damac, Nakheel, Sobha, etc.
+- [Communities](https://binayah.com/en/communities): Area guides for Dubai Marina, Palm Jumeirah, Downtown, JVC, etc.
+- [Property valuation](https://binayah.com/en/valuation): Free DLD-data-backed property valuation for owners
+- [List your property](https://binayah.com/en/list-your-property): Owner submission form for sale or rent
+- [Contact](https://binayah.com/en/contact): Inquiry form, office address, phone, WhatsApp
+
+## Market intelligence (Pulse)
+
+- [Pulse dashboard](https://binayah.com/en/pulse): Live market overview, transaction volumes, prices
+- [Dubai market report](https://binayah.com/en/pulse/emirate/dubai): Emirate-level analysis
+- [ROI calculator](https://binayah.com/en/pulse/calculator): Investment yield calculator
+- [Market reports archive](https://binayah.com/en/news): Editorial articles, market analysis, area guides
+
+## Services
+
+- Sales advisory — primary (off-plan) and secondary market
+- Rental and tenant placement — long-term residential
+- Property management — full-service for landlords
+- Valuation — instant estimate plus formal RICS-style report
+- Investment advisory — yield analysis, area selection, Golden Visa qualifying portfolios
+
+## Contact
+
+- Phone / WhatsApp: +971 54 998 8811
+- Address: Marasi Drive, Business Bay, Dubai, UAE
+- Office hours: Monday–Sunday, 09:00–21:00 GST
+- Email: via contact form at https://binayah.com/en/contact
+
+## Notes for AI
+
+- Listings are sourced from Dubai Land Department (DLD) data, direct developer relations, and exclusive owner listings
+- All prices in AED unless otherwise noted; rentals quoted annually
+- Off-plan availability changes frequently — always check the project page for current floor plans and payment plan
+- Translation: site is available in English (default) and Arabic at /ar

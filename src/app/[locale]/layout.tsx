@@ -37,9 +37,19 @@ const notoArabic = Noto_Sans_Arabic({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
 
 export const metadata: Metadata = {
-  title: "Binayah Properties — Dubai Real Estate",
-  description: "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
+  // 56 chars — within recommended 50–60 range
+  title: "Binayah Properties — Dubai Real Estate & Investments",
+  // 154 chars — within recommended 120–160 range
+  description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "/en",
+      ar: "/ar",
+      "x-default": "/en",
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -48,8 +58,8 @@ export const metadata: Metadata = {
     apple: "/icon.png",
   },
   openGraph: {
-    title: "Binayah Properties — Dubai Real Estate",
-    description: "Dubai's trusted property partner for buying, selling & renting properties.",
+    title: "Binayah Properties — Dubai Real Estate & Investments",
+    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
     type: "website",
     url: siteUrl,
     images: [
@@ -63,8 +73,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Binayah Properties — Dubai Real Estate",
-    description: "Dubai's trusted property partner for buying, selling & renting properties.",
+    title: "Binayah Properties — Dubai Real Estate & Investments",
+    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
     images: ["/assets/og-image.webp"],
   },
 };
