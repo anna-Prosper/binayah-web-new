@@ -4,13 +4,21 @@ import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib
 
 export const revalidate = 3600;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale } = await params;
   const article = await getNewsArticle(slug);
   if (!article) return { title: "Not Found" };
   return {
     title: article.metaTitle || `${article.title} | Binayah Properties`,
     description: article.metaDescription || article.excerpt,
+    alternates: { canonical: `/${locale}/news/${slug}` },
+    openGraph: {
+      title: article.metaTitle || article.title,
+      description: article.metaDescription || article.excerpt,
+      type: "article",
+      url: `/${locale}/news/${slug}`,
+      ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
+    },
   };
 }
 

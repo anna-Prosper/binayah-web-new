@@ -38,6 +38,7 @@ export async function generateMetadata({
       description: descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/beds/photo overlay).
       type: "website",
+      url: `/${locale}/property/${slug}`,
     },
     twitter: {
       card: "summary_large_image",

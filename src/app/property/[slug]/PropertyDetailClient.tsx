@@ -1248,8 +1248,13 @@ export default function PropertyDetailClient({
                       <input type="text" required value={enquiryForm.name} onChange={e => setEnquiryForm(f => ({...f, name: e.target.value}))}
                         className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
                         placeholder={t("fullName")} />
+                      <input type="email" value={enquiryForm.email} onChange={e => setEnquiryForm(f => ({...f, email: e.target.value}))}
+                        aria-label={t("emailLabel")}
+                        className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
+                        placeholder="your@email.com" />
                       <div className="flex gap-2">
                         <select value={enquiryForm.countryCode} onChange={e => setEnquiryForm(f => ({...f, countryCode: e.target.value}))}
+                          aria-label="Country code"
                           className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground outline-none appearance-none">
                           <option value="+971">+971</option><option value="+44">+44</option><option value="+1">+1</option><option value="+91">+91</option>
                         </select>

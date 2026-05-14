@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: seo.ogDescription || seo.metaDescription || descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
+      url: `/${locale}/project/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
