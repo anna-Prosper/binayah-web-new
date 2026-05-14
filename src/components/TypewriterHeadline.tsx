@@ -35,7 +35,7 @@ const TypewriterHeadline = () => {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [charIndex, isDeleting, currentPhrase, phraseIndex]);
+  }, [charIndex, isDeleting, currentPhrase, phraseIndex, phrases.length]);
 
   return (
     <span>

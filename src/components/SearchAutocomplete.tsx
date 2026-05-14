@@ -211,6 +211,7 @@ export default function SearchAutocomplete({ value, onChange, onSubmit, placehol
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         aria-autocomplete="list"
+        role="combobox"
         aria-expanded={showDropdown}
         className="w-full pl-11 pr-10 py-3 rounded-xl bg-background border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
       />

@@ -1404,6 +1404,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             rejectPendingTurnstileRequest("Security verification was interrupted.");
             removeTurnstileWidget();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const applyLoadedReport = useCallback((data) => {
         var _a;
@@ -1444,7 +1445,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         navigator.clipboard.writeText(shareUrl);
         setLinkCopied(true);
         setTimeout(() => setLinkCopied(false), 2000);
-    }, [result === null || result === void 0 ? void 0 : result.leadId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [result?.leadId]);
     const resetForNewSearch = useCallback(() => {
         var _a;
         setStep("form");

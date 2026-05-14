@@ -151,7 +151,7 @@ export function SubscribeButton({
     } finally {
       setLoading(false);
     }
-  }, [slug, projectName, projectImage, showToast, t]);
+  }, [slug, projectName, projectImage, showToast, t, refreshSubs]);
 
   // ── Unsubscribe (authed) ────────────────────────────────────────────────
   const unsubscribeAuthed = useCallback(async () => {
@@ -211,7 +211,7 @@ export function SubscribeButton({
         setLoading(false);
       }
     },
-    [slug, projectName, projectImage, showToast, t]
+    [slug, projectName, projectImage, showToast, t, refreshSubs]
   );
 
   const handleClick = () => {

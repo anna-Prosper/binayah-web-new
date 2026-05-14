@@ -110,7 +110,7 @@ export function ProjectSubscribeSection({ slug, projectName, projectImage }: Pro
       }
     } catch { setError(t("errors.networkError")); }
     finally { setLoading(false); }
-  }, [subscribed, loading, isAuthed, slug, projectName, projectImage, router, t]);
+  }, [subscribed, loading, isAuthed, slug, projectName, projectImage, router, t, refreshSubs]);
 
   return (
     <div

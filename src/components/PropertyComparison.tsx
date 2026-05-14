@@ -219,9 +219,9 @@ export default function PropertyComparison() {
                                       onClick={() => toggle(fp._id)}
                                       className="flex items-center gap-2 p-2 rounded-xl border border-border/50 hover:border-primary/40 hover:bg-muted/30 transition-all text-left"
                                     >
-                                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-muted flex-shrink-0 relative">
                                         {fp.featuredImage ? (
-                                          <img src={fp.featuredImage} alt={fp.title} className="w-full h-full object-cover" />
+                                          <Image src={fp.featuredImage} alt={fp.title} fill sizes="40px" className="object-cover" />
                                         ) : (
                                           <div className="w-full h-full flex items-center justify-center">
                                             <Building2 className="h-4 w-4 text-muted-foreground/30" />
