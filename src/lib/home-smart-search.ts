@@ -266,6 +266,15 @@ export function parseHomeSearchQuery(
 
   // Detect residual building/project words: query tokens not explained by location,
   // property type, bedroom count, or budget — likely a building/tower name.
+  // Suppressed entirely when the query contains question words (how, what, where…)
+  // to avoid tagging "How to buy property in Dubai" as BUILDING: How Property.
+  const QUESTION_WORDS = new Set([
+    "how", "what", "when", "where", "why", "who", "which",
+    "can", "could", "should", "would", "will", "shall",
+    "is", "are", "was", "were", "do", "does", "did",
+    "property", "properties", "apartment", "apartments", "villa", "villas",
+    "house", "houses", "invest", "investment", "buy", "purchase",
+  ]);
   const locationWords = new Set(
     (matchedLocation?.candidate.name || "").toLowerCase().split(/\s+/).filter(Boolean)
   );
@@ -273,13 +282,16 @@ export function parseHomeSearchQuery(
     ...locationWords,
     ...(propertyType ?? "").toLowerCase().split(/\s+/),
     "studio", "bed", "bedroom", "br", "bhk", "bath", "bathroom",
-    "buy", "sale", "rent", "off", "plan", "furnished", "unfurnished",
+    "sale", "rent", "off", "plan", "furnished", "unfurnished",
     "for", "in", "at", "near", "by", "dubai",
     "aed", "k", "m", "million", "thousand", "budget",
   ]);
   const queryTokens = normalizedQuery.toLowerCase().split(/\s+/).filter(w => w.length > 1);
-  const residualTokens = queryTokens.filter(w => !structuredWords.has(w) && !/^\d+$/.test(w));
-  const detectedBuilding = residualTokens.length > 0 && matchedLocation
+  const hasQuestionWord = queryTokens.some(w => QUESTION_WORDS.has(w));
+  const residualTokens = queryTokens.filter(w => !structuredWords.has(w) && !QUESTION_WORDS.has(w) && !/^\d+$/.test(w));
+  // Only show building chip when: location matched, no question words, residual ≤ 4 tokens
+  // (more than 4 residual words = natural language sentence, not a building name)
+  const detectedBuilding = !hasQuestionWord && residualTokens.length > 0 && residualTokens.length <= 4 && matchedLocation
     ? residualTokens.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
     : null;
 
