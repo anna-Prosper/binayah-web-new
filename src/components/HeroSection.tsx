@@ -454,7 +454,7 @@ const HeroSection = () => {
   return (
     <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0" style={{ overflow: "visible" }}>
       <motion.div className="absolute inset-0 overflow-hidden" style={{ y: imageY }}>
-        <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority />
+        <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority fetchPriority="high" sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
 

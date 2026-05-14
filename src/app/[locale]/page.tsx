@@ -154,16 +154,11 @@ export default async function HomePage() {
   }
 
   return (
-    <>
-      {/* Preload LCP hero image — ensures fetchpriority=high from initial HTML,
-          bypassing the client-component rendering delay in HeroSection */}
-      <link rel="preload" as="image" href="/assets/dubai-hero.webp" fetchPriority="high" />
-      <HomePageClient
-        saleListings={saleListings.filter(Boolean)}
-        rentalListings={rentalListings.filter(Boolean)}
-        offPlanProjects={projects.filter(Boolean)}
-        latestArticles={articles.filter(Boolean)}
-      />
-    </>
+    <HomePageClient
+      saleListings={saleListings.filter(Boolean)}
+      rentalListings={rentalListings.filter(Boolean)}
+      offPlanProjects={projects.filter(Boolean)}
+      latestArticles={articles.filter(Boolean)}
+    />
   );
 }
