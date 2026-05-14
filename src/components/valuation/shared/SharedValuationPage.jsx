@@ -4,7 +4,20 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
 import { normalizePropertyType, requiresPropertyNameForPropertyType, valuationPropertyTypeOptions, } from "@/lib/property-types";
-import buildingsIndex from "@/data/buildings.json";
+// buildings.json is 678 KB — dynamically imported on first use to keep it
+// out of the initial valuation page bundle. Cached after first load.
+let buildingsIndexCache = null;
+let buildingsIndexPromise = null;
+async function getBuildingsIndex() {
+    if (buildingsIndexCache) return buildingsIndexCache;
+    if (!buildingsIndexPromise) {
+        buildingsIndexPromise = import("@/data/buildings.json").then((m) => {
+            buildingsIndexCache = m.default || m;
+            return buildingsIndexCache;
+        });
+    }
+    return buildingsIndexPromise;
+}
 const LOCATION_DATA = {
     Dubai: [
         { area: "Downtown Dubai", buildings: [
@@ -3060,9 +3073,15 @@ function normalizeSmartComparableValue(value) {
 function searchBuildingsIndex(query, limit = 6) {
     const q = query.trim().toLowerCase();
     if (q.length < 2) return [];
+    // Index is loaded asynchronously — if not yet available, return empty.
+    // Caller already triggers preload via getBuildingsIndex() on mount.
+    if (!buildingsIndexCache) {
+        getBuildingsIndex();
+        return [];
+    }
     const tokens = q.split(/\s+/).filter((t) => t.length >= 2);
     const scored = [];
-    for (const b of buildingsIndex.buildings) {
+    for (const b of buildingsIndexCache.buildings) {
         const bName = b.building.toLowerCase();
         const bArea = b.area.toLowerCase();
         let score = 0;
@@ -3096,6 +3115,18 @@ function usePlacesSearch(query, enabled) {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const timerRef = useRef(null);
+    // Preload buildings.json as soon as the hook mounts so it's ready before
+    // the user finishes typing (it's ~120KB gzip + parse time).
+    useEffect(() => {
+        if (!enabled) return;
+        let cancelled = false;
+        getBuildingsIndex().then(() => {
+            if (!cancelled && query.trim().length >= 2) {
+                setResults(searchBuildingsIndex(query, 6));
+            }
+        });
+        return () => { cancelled = true; };
+    }, [enabled]); // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(() => {
         if (!enabled || query.trim().length < 2) {
             setResults([]);
@@ -3106,7 +3137,7 @@ function usePlacesSearch(query, enabled) {
         timerRef.current = setTimeout(() => {
             setResults(searchBuildingsIndex(query, 6));
             setLoading(false);
-        }, 50); // tiny debounce — no network round-trip
+        }, 50);
         return () => { if (timerRef.current) clearTimeout(timerRef.current); };
     }, [query, enabled]);
     return { results, loading };

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AIPulseBanner from "@/components/AIPulseBanner";
+import LazyMount from "@/components/LazyMount";
 
 // Below-the-fold: code-split and lazy-loaded
 const FAQSection           = dynamic(() => import("@/components/FAQSection"));
@@ -101,16 +102,16 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
       <OffPlanSectionClient projects={offPlanProjects} />
       <CommunitiesSection />
       <PropertyMatcher />
-      <MarketDashboard />
-      <ROICalculator />
+      <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
+      <LazyMount minHeight={420}><ROICalculator /></LazyMount>
       <ValuationCTA />
       <ListYourPropertySection />
       <ServicesSection />
       <TestimonialsSection />
       <InquirySection />
       <NewsSection articles={latestArticles} />
-      <MortgageCalculator />
-      <FAQSection />
+      <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
+      <LazyMount minHeight={400}><FAQSection /></LazyMount>
       <NewsletterStrip />
       <Footer />
       <WhatsAppButton />
