@@ -1340,6 +1340,16 @@ export default function PropertyDetailClient({
                         />
                       </div>
                     </div>
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("emailLabel")}</label>
+                      <input
+                        type="email"
+                        value={enquiryForm.email}
+                        onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
+                        className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
+                        placeholder="your@email.com"
+                      />
+                    </div>
                     <div className="bg-muted/20 rounded-xl px-3.5 py-2.5 border border-border/30">
                       <p className="text-xs text-muted-foreground">
                         <span className="font-semibold text-foreground/70">{t("messageLabel")}:</span>{" "}
@@ -1369,16 +1379,6 @@ export default function PropertyDetailClient({
                               onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
                               className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
                               placeholder="Any specific requirements..."
-                            />
-                          </div>
-                          <div>
-                            <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("emailLabel")}</label>
-                            <input
-                              type="email"
-                              value={enquiryForm.email}
-                              onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
-                              className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                              placeholder="your@email.com"
                             />
                           </div>
                           <div>
