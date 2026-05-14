@@ -157,8 +157,6 @@ export default async function HomePage() {
     <>
       {/* Preload LCP hero image — ensures fetchpriority=high from initial HTML,
           bypassing the client-component rendering delay in HeroSection */}
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore fetchPriority is valid HTML but missing from React types */}
       <link rel="preload" as="image" href="/assets/dubai-hero.webp" fetchPriority="high" />
       <HomePageClient
         saleListings={saleListings.filter(Boolean)}
