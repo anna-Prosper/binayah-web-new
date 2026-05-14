@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 const cryptoBg = "/assets/crypto-banner.webp";
 
 const CryptoBanner = () => {
@@ -11,14 +12,15 @@ const CryptoBanner = () => {
   return (
   <section className="relative overflow-hidden my-2 sm:my-0">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">
-      {/* Background image */}
-      <img
+      {/* Background image — next/image serves correctly-sized WebP, saving ~400KB */}
+      <Image
         src={cryptoBg}
         alt="Buy property with cryptocurrency"
+        fill
+        sizes="100vw"
+        quality={75}
+        className="object-cover object-[center_25%]"
         loading="lazy"
-        width={1920}
-        height={512}
-        className="absolute inset-0 w-full h-full object-cover object-[center_25%]"
       />
       {/* Rich dual overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#3a2206]/80 via-[#5a3a10]/40 to-transparent" />

@@ -66,7 +66,7 @@ const CommunitiesSection = () => {
             className="flex-shrink-0 w-[72%] snap-center"
           >
             <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <Image src={c.image} alt={c.name} fill sizes="100vw" className="object-cover" />
+              <Image src={c.image} alt={c.name} fill sizes="72vw" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h3 className="text-white font-bold text-base mb-0.5">{c.name}</h3>

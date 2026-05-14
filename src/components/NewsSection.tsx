@@ -74,7 +74,7 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
           >
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-xl overflow-hidden border border-border/50">
               <div className="relative overflow-hidden aspect-[16/10]">
-                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="100vw" className="object-cover" />
+                <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="260px" className="object-cover" />
                 <span className="absolute top-2 left-2 text-[8px] font-bold px-1.5 py-0.5 rounded text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>{a.category}</span>
               </div>
               <div className="p-3">
