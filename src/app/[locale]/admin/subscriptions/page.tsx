@@ -46,33 +46,25 @@ export default async function AdminSubscriptionsPage() {
   const db = client.db("binayah_web_new_dev");
   const subs = await db.collection("project_subscriptions").find({}).sort({ createdAt: -1 }).limit(500).toArray();
 
-  // Collect all unique slugs, then resolve project names in one query
-  const slugs = [...new Set(subs.map((s) => (s.projectSlug as string) || "").filter(Boolean))];
-  const projectDocs = slugs.length
-    ? await db.collection("projects").find({ slug: { $in: slugs } }, { projection: { slug: 1, name: 1 } }).toArray()
-    : [];
-  const slugToName: Record<string, string> = {};
-  for (const p of projectDocs) {
-    if (p.slug) slugToName[p.slug as string] = (p.name as string) || (p.slug as string);
-  }
-
   // Group by project slug, deduplicate emails (keep latest per email per project)
-  const byProject: Record<string, Map<string, { email: string; createdAt: unknown; dupeCount: number }>> = {};
+  // The subscription document stores `slug` and `projectName` directly.
+  const byProject: Record<string, { name: string; map: Map<string, { email: string; createdAt: unknown; dupeCount: number }> }> = {};
   for (const s of subs) {
-    const slug = (s.projectSlug as string) || "unknown";
-    if (!byProject[slug]) byProject[slug] = new Map();
+    const slug = (s.slug as string) || "unknown";
+    const projectName = (s.projectName as string) || slug;
+    if (!byProject[slug]) byProject[slug] = { name: projectName, map: new Map() };
     const emailKey = ((s.email as string) || "").toLowerCase();
-    if (!byProject[slug].has(emailKey)) {
-      byProject[slug].set(emailKey, { email: (s.email as string) || "", createdAt: s.createdAt, dupeCount: 1 });
+    if (!byProject[slug].map.has(emailKey)) {
+      byProject[slug].map.set(emailKey, { email: (s.email as string) || "", createdAt: s.createdAt, dupeCount: 1 });
     } else {
-      byProject[slug].get(emailKey)!.dupeCount++;
+      byProject[slug].map.get(emailKey)!.dupeCount++;
     }
   }
 
   const projects = Object.entries(byProject)
-    .map(([slug, emailMap]) => ({
+    .map(([slug, { name, map: emailMap }]) => ({
       slug,
-      name: slugToName[slug] || slug,
+      name,
       list: [...emailMap.values()],
     }))
     .sort((a, b) => b.list.length - a.list.length);
