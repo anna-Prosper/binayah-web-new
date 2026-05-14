@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import AdminHeader from "../AdminHeader";
 import SubscriptionsMobileList from "./SubscriptionsMobileList";
+import CopyEmailsButton from "./CopyEmailsButton";
 
 function formatDate(d: unknown): string {
   if (!d) return "";
@@ -42,24 +43,51 @@ export default async function AdminSubscriptionsPage() {
   const avatar = session?.user?.image;
 
   const client = await clientPromise;
-  const col = client.db("binayah_web_new_dev").collection("project_subscriptions");
-  const subs = await col.find({}).sort({ createdAt: -1 }).limit(500).toArray();
+  const db = client.db("binayah_web_new_dev");
+  const subs = await db.collection("project_subscriptions").find({}).sort({ createdAt: -1 }).limit(500).toArray();
 
-  // Group by project slug
-  const byProject: Record<string, { email: string; createdAt: unknown }[]> = {};
+  // Collect all unique slugs, then resolve project names in one query
+  const slugs = [...new Set(subs.map((s) => (s.projectSlug as string) || "").filter(Boolean))];
+  const projectDocs = slugs.length
+    ? await db.collection("projects").find({ slug: { $in: slugs } }, { projection: { slug: 1, name: 1 } }).toArray()
+    : [];
+  const slugToName: Record<string, string> = {};
+  for (const p of projectDocs) {
+    if (p.slug) slugToName[p.slug as string] = (p.name as string) || (p.slug as string);
+  }
+
+  // Group by project slug, deduplicate emails (keep latest per email per project)
+  const byProject: Record<string, Map<string, { email: string; createdAt: unknown; dupeCount: number }>> = {};
   for (const s of subs) {
     const slug = (s.projectSlug as string) || "unknown";
-    if (!byProject[slug]) byProject[slug] = [];
-    byProject[slug].push({ email: (s.email as string) || "", createdAt: s.createdAt });
+    if (!byProject[slug]) byProject[slug] = new Map();
+    const emailKey = ((s.email as string) || "").toLowerCase();
+    if (!byProject[slug].has(emailKey)) {
+      byProject[slug].set(emailKey, { email: (s.email as string) || "", createdAt: s.createdAt, dupeCount: 1 });
+    } else {
+      byProject[slug].get(emailKey)!.dupeCount++;
+    }
   }
-  const projects = Object.entries(byProject).sort((a, b) => b[1].length - a[1].length);
 
-  // Serialize for client components
-  const serializedProjects = projects.map(([slug, list]) => ({
-    slug,
-    subscribers: list.map((item) => ({
+  const projects = Object.entries(byProject)
+    .map(([slug, emailMap]) => ({
+      slug,
+      name: slugToName[slug] || slug,
+      list: [...emailMap.values()],
+    }))
+    .sort((a, b) => b.list.length - a.list.length);
+
+  const totalRaw = subs.length;
+  const totalUnique = projects.reduce((acc, p) => acc + p.list.length, 0);
+
+  // Serialize for mobile client component
+  const serializedProjects = projects.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    subscribers: p.list.map((item) => ({
       email: item.email,
       date: formatDate(item.createdAt),
+      dupeCount: item.dupeCount,
     })),
   }));
 
@@ -74,11 +102,17 @@ export default async function AdminSubscriptionsPage() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div className="mb-6">
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Project Subscribers</h1>
-          <p className="text-gray-500 text-sm mt-0.5">
-            {subs.length} {subs.length === 1 ? "subscriber" : "subscribers"} across {projects.length} {projects.length === 1 ? "project" : "projects"}
-          </p>
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Project Subscribers</h1>
+            <p className="text-gray-500 text-sm mt-0.5">
+              {totalUnique} unique subscriber{totalUnique !== 1 ? "s" : ""}
+              {totalRaw > totalUnique && (
+                <span className="text-gray-400"> ({totalRaw} total sign-ups)</span>
+              )}
+              {" "}across {projects.length} project{projects.length !== 1 ? "s" : ""}
+            </p>
+          </div>
         </div>
 
         {projects.length === 0 && (
@@ -87,43 +121,62 @@ export default async function AdminSubscriptionsPage() {
           </div>
         )}
 
-        {/* Mobile card list — visible below md */}
+        {/* Mobile card list */}
         {projects.length > 0 && (
           <div className="md:hidden">
             <SubscriptionsMobileList projects={serializedProjects} />
           </div>
         )}
 
-        {/* Desktop table view — hidden below md */}
+        {/* Desktop table view */}
         <div className="hidden md:flex flex-col gap-6">
-          {projects.map(([slug, list]) => (
-            <div key={slug} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                <div>
-                  <span className="font-semibold text-gray-900 text-sm">{slug}</span>
-                  <span className="ml-2 text-xs text-gray-400">/{slug}</span>
+          {projects.map((project) => {
+            const uniqueEmails = project.list.map((i) => i.email).filter(Boolean);
+            const hasDupes = project.list.some((i) => i.dupeCount > 1);
+            return (
+              <div key={project.slug} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-4 bg-gray-50/60">
+                  <div className="min-w-0">
+                    <span className="font-semibold text-gray-900 text-sm">
+                      {project.name === project.slug ? project.slug : project.name}
+                    </span>
+                    {project.name !== project.slug && (
+                      <span className="ml-2 text-xs text-gray-400">/{project.slug}</span>
+                    )}
+                    {hasDupes && (
+                      <span className="ml-2 text-[10px] font-medium text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
+                        has duplicates
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <CopyEmailsButton emails={uniqueEmails} />
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                      {project.list.length} {project.list.length === 1 ? "subscriber" : "subscribers"}
+                    </span>
+                  </div>
                 </div>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                  {list.length} {list.length === 1 ? "subscriber" : "subscribers"}
-                </span>
-              </div>
-              <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-100">
-                      <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wide px-5 py-2.5">Email</th>
-                      <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wide px-5 py-2.5 whitespace-nowrap">Subscribed (Dubai)</th>
+                      <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wide px-5 py-2.5">Email</th>
+                      <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wide px-5 py-2.5 whitespace-nowrap">Subscribed</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {list.map((item, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3">
+                  <tbody className="divide-y divide-gray-50">
+                    {project.list.map((item, i) => (
+                      <tr key={i} className="hover:bg-gray-50/60 transition-colors">
+                        <td className="px-5 py-3 flex items-center gap-2">
                           <a href={`mailto:${item.email}`} className="text-emerald-700 hover:underline">
-                            {item.email || <span className="text-gray-300">anonymous</span>}
+                            {item.email || <span className="text-gray-300 italic">anonymous</span>}
                           </a>
+                          {item.dupeCount > 1 && (
+                            <span className="text-[10px] font-medium text-amber-500 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded-full">
+                              ×{item.dupeCount}
+                            </span>
+                          )}
                         </td>
-                        <td className="px-5 py-3 text-gray-500 text-xs whitespace-nowrap">
+                        <td className="px-5 py-3 text-gray-400 text-xs whitespace-nowrap">
                           {formatDate(item.createdAt)}
                         </td>
                       </tr>
@@ -131,8 +184,8 @@ export default async function AdminSubscriptionsPage() {
                   </tbody>
                 </table>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
     </div>
