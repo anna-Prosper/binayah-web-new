@@ -101,7 +101,7 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
       <CryptoBanner />
       <OffPlanSectionClient projects={offPlanProjects} />
       <CommunitiesSection />
-      <PropertyMatcher />
+      <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
       <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
       <LazyMount minHeight={420}><ROICalculator /></LazyMount>
       <ValuationCTA />

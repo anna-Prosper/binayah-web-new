@@ -7,8 +7,11 @@ import {
   Sparkles, ArrowLeft, Home, MapPin, Wallet, Bed, Loader2, RotateCcw,
   Building2, CheckSquare, ArrowRight,
 } from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
 import { apiUrl } from "@/lib/api";
+
+// Lazy-load react-markdown (~110KB) — only fetched when results render.
+const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 import { useTranslations } from "next-intl";
 
 const MATCHER_URL = apiUrl("/api/property-matcher");

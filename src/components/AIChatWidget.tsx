@@ -3,8 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+// Lazy-load react-markdown (~110KB) — only fetched when first message renders.
+const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
