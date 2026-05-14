@@ -1,3 +1,9 @@
+// JSON.stringify does not escape </script> sequences, which can break out of the
+// script tag if a DB field contains that string. Replace < to be safe.
+function safeJsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
 export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
@@ -47,7 +53,7 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     <script
       type="application/ld+json"
       nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
@@ -68,7 +74,7 @@ export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href
     <script
       type="application/ld+json"
       nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
@@ -91,7 +97,7 @@ export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: s
     <script
       type="application/ld+json"
       nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
@@ -132,7 +138,7 @@ export function ReviewJsonLd({
     <script
       type="application/ld+json"
       nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
@@ -197,7 +203,7 @@ export function RealEstateListingJsonLd({
     <script
       type="application/ld+json"
       nonce={nonce}
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }

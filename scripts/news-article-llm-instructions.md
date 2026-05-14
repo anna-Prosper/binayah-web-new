@@ -132,6 +132,8 @@ Available icon names: `CheckCircle2`, `TrendingUp`, `BarChart3`, `AlertCircle`, 
 }
 ```
 - `pct` is a percentage (0–100) representing bar height relative to the tallest bar.
+- **NEVER set `pct` to 0** — a zero-height bar is invisible and looks broken. Use a minimum of 5 even for the smallest data point, then scale all other values proportionally. The tallest bar should always be 100.
+- If you don't have exact data, use indicative/illustrative values that reflect the shape of the trend (e.g. a ramp-up should increase across bars, not stay flat).
 - Use the last bar for the most recent / highlight data point (renders in gold).
 - Keep to 5–9 bars for best visual balance.
 

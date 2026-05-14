@@ -608,6 +608,11 @@
       "src/app/news/[slug]/NewsDetailClient.tsx",
       "src/lib/api.ts"
     ],
+    "src/app/[locale]/news/[slug]/raw/page.tsx": [
+      "src/lib/api.ts",
+      "src/lib/applyTranslation.ts",
+      "src/app/news/[slug]/NewsDetailClient.tsx"
+    ],
     "src/app/[locale]/project/[slug]/loading.tsx": [
       "src/components/SkeletonCard.tsx"
     ],
@@ -812,6 +817,7 @@
       "src/app/[locale]/developers/[slug]/page.tsx",
       "src/app/[locale]/account/market-reports/MarketReportsClient.tsx",
       "src/app/[locale]/news/[slug]/page.tsx",
+      "src/app/[locale]/news/[slug]/raw/page.tsx",
       "src/app/[locale]/project/[slug]/page.tsx",
       "src/app/[locale]/pulse/calculator/page.tsx",
       "src/app/[locale]/pulse/compare/CompareClient.tsx",
@@ -1317,12 +1323,14 @@
       "src/app/[locale]/account/market-reports/page.tsx"
     ],
     "src/app/news/[slug]/NewsDetailClient.tsx": [
-      "src/app/[locale]/news/[slug]/page.tsx"
-    ],
-    "src/app/project/[slug]/ProjectDetailClient.tsx": [
-      "src/app/[locale]/project/[slug]/page.tsx"
+      "src/app/[locale]/news/[slug]/page.tsx",
+      "src/app/[locale]/news/[slug]/raw/page.tsx"
     ],
     "src/lib/applyTranslation.ts": [
+      "src/app/[locale]/news/[slug]/raw/page.tsx",
+      "src/app/[locale]/project/[slug]/page.tsx"
+    ],
+    "src/app/project/[slug]/ProjectDetailClient.tsx": [
       "src/app/[locale]/project/[slug]/page.tsx"
     ],
     "src/components/pulse/CalculatorVerdict.tsx": [
@@ -1488,6 +1496,7 @@
     "src/app/[locale]/account/market-reports/page.tsx": "/account/market-reports",
     "src/app/[locale]/news/[slug]/loading.tsx": "/news/[slug]/loading.tsx",
     "src/app/[locale]/news/[slug]/page.tsx": "/news/[slug]",
+    "src/app/[locale]/news/[slug]/raw/page.tsx": "/news/[slug]/raw",
     "src/app/[locale]/project/[slug]/loading.tsx": "/project/[slug]/loading.tsx",
     "src/app/[locale]/project/[slug]/page.tsx": "/project/[slug]",
     "src/app/[locale]/pulse/calculator/CalculatorClient.tsx": "/pulse/calculator/CalculatorClient.tsx",
@@ -1520,6 +1529,6 @@
     "src/app/[locale]/construction-updates/[slug]/loading.tsx": "/construction-updates/[slug]/loading.tsx",
     "src/app/[locale]/construction-updates/[slug]/page.tsx": "/construction-updates/[slug]"
   },
-  "builtAt": "2026-05-08T15:39:39.779561+00:00",
-  "fileCount": 265
+  "builtAt": "2026-05-10T03:57:19.145567+00:00",
+  "fileCount": 266
 }

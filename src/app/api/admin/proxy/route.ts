@@ -34,5 +34,6 @@ async function proxyAdmin(req: NextRequest, method: string) {
 }
 
 export async function GET(req: NextRequest) { return proxyAdmin(req, "GET"); }
+export async function POST(req: NextRequest) { return proxyAdmin(req, "POST"); }
 export async function PATCH(req: NextRequest) { return proxyAdmin(req, "PATCH"); }
 export async function DELETE(req: NextRequest) { return proxyAdmin(req, "DELETE"); }

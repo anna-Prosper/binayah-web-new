@@ -2,10 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 
 const ADMIN_EMAILS = new Set(
-  (
-    process.env.ADMIN_EMAILS ||
-    "anna@prosper-fi.com,aakarshit@prosper-fi.com,mamr@binayah.com,pm@binayah.com,uk@prosper-fi.com"
-  )
+  (process.env.ADMIN_EMAILS || "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean)

@@ -44,7 +44,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
             author: { "@type": "Person", name: article.author || "Binayah Editorial" },
             publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: "https://staging.binayahhub.com/assets/binayah-logo.webp" } },
             url: `https://staging.binayahhub.com/news/${slug}`,
-          }),
+          }).replace(/</g, "\\u003c"),
         }}
       />
     </>
