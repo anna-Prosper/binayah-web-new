@@ -92,27 +92,29 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
-      <HeroSection />
-      <AIPulseBanner />
-      <ValuationStrip />
-      <StatsSection />
-      <WhatWeOffer />
-      <FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} />
-      <CryptoBanner />
-      <OffPlanSectionClient projects={offPlanProjects} />
-      <CommunitiesSection />
-      <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
-      <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
-      <LazyMount minHeight={420}><ROICalculator /></LazyMount>
-      <ValuationCTA />
-      <ListYourPropertySection />
-      <ServicesSection />
-      <TestimonialsSection />
-      <InquirySection />
-      <NewsSection articles={latestArticles} />
-      <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
-      <LazyMount minHeight={400}><FAQSection /></LazyMount>
-      <NewsletterStrip />
+      <main>
+        <HeroSection />
+        <AIPulseBanner />
+        <ValuationStrip />
+        <StatsSection />
+        <WhatWeOffer />
+        <FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} />
+        <CryptoBanner />
+        <OffPlanSectionClient projects={offPlanProjects} />
+        <CommunitiesSection />
+        <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
+        <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
+        <LazyMount minHeight={420}><ROICalculator /></LazyMount>
+        <ValuationCTA />
+        <ListYourPropertySection />
+        <ServicesSection />
+        <TestimonialsSection />
+        <InquirySection />
+        <NewsSection articles={latestArticles} />
+        <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
+        <LazyMount minHeight={400}><FAQSection /></LazyMount>
+        <NewsletterStrip />
+      </main>
       <Footer />
       <WhatsAppButton />
       <AIChatWidget />

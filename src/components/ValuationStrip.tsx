@@ -59,7 +59,7 @@ const ValuationStrip = () => {
 
           {/* Title + subtitle stacked */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-white text-sm font-bold leading-none line-clamp-1">
+            <h2 className="text-white text-sm font-bold leading-none line-clamp-1">
               {t("headlineStart")}{" "}
               <span
                 className="bg-clip-text text-transparent"
@@ -67,7 +67,7 @@ const ValuationStrip = () => {
               >
                 {t("headlineGold")}
               </span>
-            </h3>
+            </h2>
             <p className="text-white/50 text-[10px] leading-none mt-0.5 line-clamp-1">
               {t("stripSubtitle")}
             </p>
@@ -111,7 +111,7 @@ const ValuationStrip = () => {
               >
                 {t("marketYear")}
               </p>
-              <h3 className="text-white text-lg font-bold leading-snug">
+              <h2 className="text-white text-lg font-bold leading-snug">
                 {t("headlineStart")}{" "}
                 <span
                   className="bg-clip-text text-transparent"
@@ -119,7 +119,7 @@ const ValuationStrip = () => {
                 >
                   {t("headlineGold")}
                 </span>
-              </h3>
+              </h2>
               <p className="text-white/45 text-sm leading-relaxed mt-1">
                 {t("stripSubtitle")}
               </p>

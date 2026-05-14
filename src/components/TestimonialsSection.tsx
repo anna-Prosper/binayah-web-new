@@ -74,7 +74,7 @@ const TestimonialsSection = () => {
         {/* Mobile: compact inline header */}
         <div className="sm:hidden flex items-center justify-between mb-4">
           <h2 className="text-sm font-bold text-background">{t("label")}</h2>
-          <span className="text-[10px] text-background/40">{active + 1} / {testimonials.length}</span>
+          <span className="text-[10px] text-background/70">{active + 1} / {testimonials.length}</span>
         </div>
 
         <div className="relative">
@@ -132,6 +132,8 @@ const TestimonialsSection = () => {
                 <button
                   key={i}
                   onClick={() => setActive(i)}
+                  aria-label={`Show testimonial ${i + 1}`}
+                  aria-current={i === active ? "true" : undefined}
                   className={`transition-all duration-300 rounded-full ${
                     i === active ? "w-7 sm:w-10 h-2 sm:h-2.5" : "w-2 sm:w-2.5 h-2 sm:h-2.5 bg-background/20 hover:bg-background/40"
                   }`}

@@ -21,7 +21,7 @@ const CommunitiesSection = () => {
       {/* Mobile: compact inline header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
         <div>
-          <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#D4A847" }}>{t("label")}</p>
+          <p className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1" style={{ color: "#A07924" }}>{t("label")}</p>
           <h2 className="text-sm font-bold text-foreground">{t("title")}</h2>
         </div>
         <Link href="/communities" className="group flex items-center gap-1 text-primary font-semibold text-xs">

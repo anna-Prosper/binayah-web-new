@@ -4,6 +4,7 @@ import { apiUrl } from "@/lib/api";
 import { motion } from "framer-motion";
 import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { formatProjectPrice } from "@/lib/formatPrice";
 import { useTranslations } from "next-intl";
@@ -59,11 +60,12 @@ const FeaturedProperties = () => {
               >
                 <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
-                    <img
+                    <Image
                       src={p.featuredImage || p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"}
                       alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white"

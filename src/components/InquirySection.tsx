@@ -155,7 +155,7 @@ const InquirySection = () => {
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                 <div className="flex gap-2">
-                  <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
+                  <select aria-label={t("phone") + " country code"} value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                     className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
                     {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
                   </select>
@@ -164,7 +164,7 @@ const InquirySection = () => {
               </div>
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("inquiryType")}</label>
-                <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
+                <select aria-label={t("inquiryType")} value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                   className={`${inputClasses} appearance-none cursor-pointer [&>option]:text-foreground [&>option]:bg-background`}>
                   <option value="">{t("selectType")}</option>
                   <option value="buy">{t("typeOptions.buy")}</option>
@@ -200,7 +200,7 @@ const InquirySection = () => {
                 <div>
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                   <div className="flex gap-2">
-                    <select value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
+                    <select aria-label={t("phone") + " country code"} value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                       className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
                       {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
                     </select>
@@ -209,7 +209,7 @@ const InquirySection = () => {
                 </div>
                 <div>
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("inquiryType")}</label>
-                  <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
+                  <select aria-label={t("inquiryType")} value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                     className={`${inputClasses} appearance-none cursor-pointer [&>option]:text-foreground [&>option]:bg-background`}>
                     <option value="">{t("selectType")}</option>
                     <option value="buy">{t("typeOptions.buy")}</option>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const TOP_DEVELOPERS = [
@@ -71,9 +72,11 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
                 >
                   <div className="w-14 h-14 sm:w-16 sm:h-16 mb-4 rounded-xl bg-primary/[0.06] flex items-center justify-center overflow-hidden border border-primary/10 group-hover:border-primary/25 group-hover:bg-primary/[0.10] transition-all">
                     {logoUrl ? (
-                      <img
+                      <Image
                         src={logoUrl}
                         alt={dev.name}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-contain p-2 developer-logo-green opacity-80 group-hover:opacity-100 transition-opacity"
                       />
                     ) : (
