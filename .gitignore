@@ -83,3 +83,10 @@ src 3/
 tests/e2e/screenshots/
 test-results/
 playwright-report/
+
+# tooling state (.iterate/ devserver runtime)
+.iterate/devserver.pid
+.iterate/*.pid
+
+# stray data dumps
+binayah_website_new.*.json
