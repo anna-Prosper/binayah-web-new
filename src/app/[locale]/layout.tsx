@@ -12,6 +12,7 @@ import { CompareProvider } from "@/context/CompareContext";
 import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
 import "../globals.css";
 import Providers from "../providers";
+import { Analytics } from "@vercel/analytics/next";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "cyrillic-ext"],
@@ -118,6 +119,7 @@ export default async function LocaleLayout({
                 <SubscriptionsProvider>
                   {children}
                   <FavoritesDrawer />
+                  <Analytics />
                 </SubscriptionsProvider>
               </CompareProvider>
             </FavoritesProvider>
