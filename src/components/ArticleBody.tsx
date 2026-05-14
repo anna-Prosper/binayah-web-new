@@ -104,7 +104,7 @@ function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?:
   return (
     <div className="rounded-2xl overflow-hidden my-5 sm:my-6">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className="w-full h-auto object-cover" loading="lazy" />
+      <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
       {caption && <p className="text-xs text-muted-foreground mt-2 italic text-center">{caption}</p>}
     </div>
   );

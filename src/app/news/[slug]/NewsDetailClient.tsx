@@ -265,7 +265,7 @@ function NewsDetailInner({
                     prose-li:text-muted-foreground
                     prose-strong:text-foreground
                     prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                    prose-img:rounded-xl prose-img:shadow-lg"
+                    prose-img:rounded-xl prose-img:shadow-lg prose-img:w-full prose-img:h-auto"
                   dangerouslySetInnerHTML={{ __html: article.content }}
                 />
               ) : article.excerpt ? (
