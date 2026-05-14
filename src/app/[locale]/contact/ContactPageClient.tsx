@@ -7,12 +7,13 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [sending, setSending] = useState(false);
 
@@ -26,10 +27,10 @@ export default function ContactPage() {
         body: JSON.stringify({ ...form, inquiryType: "General", source: "contact-page" }),
       });
       if (!res.ok) throw new Error("Request failed");
-      toast.success(t("successToast"));
+      toast({ title: t("successToast") });
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch {
-      toast.error(t("errorToast"));
+      toast({ title: t("errorToast"), variant: "destructive" });
     } finally {
       setSending(false);
     }
