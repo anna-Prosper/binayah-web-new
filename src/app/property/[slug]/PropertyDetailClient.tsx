@@ -569,6 +569,7 @@ export default function PropertyDetailClient({
           propertySlug: listing.slug,
           propertyTitle: listing.title,
           type: "property-inquiry",
+          source: `property-detail:${listing.slug}`,
         }),
       });
     } catch {}
@@ -1454,6 +1455,7 @@ export default function PropertyDetailClient({
                 <div className="hidden sm:block p-5 space-y-3">
                   <p className="text-sm text-muted-foreground mb-1">{t("speakToExperts")}</p>
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                    onClick={() => fetch(apiUrl("/api/track"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "whatsapp", entityType: "property", entitySlug: listing.slug, entityTitle: listing.title }) }).catch(() => {})}
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
                     style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
                     <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}

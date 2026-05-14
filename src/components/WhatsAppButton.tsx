@@ -3,6 +3,15 @@
 import { motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { apiUrl } from "@/lib/api";
+
+function trackClick(action: "whatsapp" | "phone" | "chat-open") {
+  fetch(apiUrl("/api/track"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, source: window.location.pathname }),
+  }).catch(() => {});
+}
 
 const WhatsAppButton = () => {
   const t = useTranslations("whatsapp");
@@ -13,6 +22,7 @@ const WhatsAppButton = () => {
       href="https://wa.me/971549988811"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackClick("whatsapp")}
       className="hidden sm:flex fixed bottom-24 right-6 z-40 w-14 h-14 bg-[#25D366] hover:bg-[#20bd5a] rounded-full items-center justify-center shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-1 transition-all"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
@@ -31,6 +41,7 @@ const WhatsAppButton = () => {
           href="https://wa.me/971549988811?text=Hi, I'm interested in your property services"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackClick("whatsapp")}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] shadow-md shadow-[#25D366]/20 active:scale-[0.97] transition-all"
         >
           <MessageCircle className="h-4 w-4" />
@@ -38,6 +49,7 @@ const WhatsAppButton = () => {
         </a>
         <a
           href="tel:+971549988811"
+          onClick={() => trackClick("phone")}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] shadow-md shadow-accent/20 active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
         >
@@ -46,6 +58,7 @@ const WhatsAppButton = () => {
         </a>
         <button
           onClick={() => {
+            trackClick("chat-open");
             const chatBtn = document.querySelector<HTMLButtonElement>('[data-chat-trigger]');
             if (chatBtn) chatBtn.click();
           }}
