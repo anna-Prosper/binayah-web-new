@@ -12,7 +12,7 @@ const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 
-const binayahLogo = "/assets/binayah-logo.png";
+const binayahLogo = "/assets/binayah-logo.webp";
 
 type Msg = { role: "user" | "assistant"; content: string };
 

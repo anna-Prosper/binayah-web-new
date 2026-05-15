@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
+import Image from "next/image";
 
 /* ─── HELPERS ─── */
 const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -102,11 +103,12 @@ function TableBlock({ headers, rows }: { headers: string[]; rows: string[][] }) 
 
 function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?: string }) {
   return (
-    <div className="rounded-2xl overflow-hidden my-5 sm:my-6 aspect-[16/9] bg-muted">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className="w-full h-full object-cover block" loading="lazy" />
-      {caption && <p className="text-xs text-muted-foreground mt-2 italic text-center">{caption}</p>}
-    </div>
+    <figure className="my-5 sm:my-6">
+      <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-muted relative">
+        <Image src={src} alt={alt} fill sizes="(max-width: 768px) 100vw, 720px" className="object-cover" loading="lazy" />
+      </div>
+      {caption && <figcaption className="text-xs text-muted-foreground mt-2 italic text-center">{caption}</figcaption>}
+    </figure>
   );
 }
 

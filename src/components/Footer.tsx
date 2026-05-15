@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-const binayahLogo = "/assets/binayah-logo.png";
+const binayahLogo = "/assets/binayah-logo.webp";
 
 const Footer = () => {
   const t = useTranslations("footer");
