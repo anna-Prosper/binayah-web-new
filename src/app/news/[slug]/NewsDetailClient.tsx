@@ -426,30 +426,53 @@ function NewsDetailInner({
                 )}
               </div>
 
-              {/* Market Snapshot */}
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
-                  {t("marketSnapshot")}
-                </p>
-                <dl className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">{t("marketAvgYield")}</dt>
-                    <dd className="font-bold text-foreground">{marketStats?.summary?.avgYield != null ? marketStats.summary.avgYield.toFixed(1) + '%' : '6.2%'}</dd>
+              {/* Market Snapshot — all values from /api/market-stats summary.
+                  Rows that don't have data are hidden rather than showing fake numbers. */}
+              {(() => {
+                const s = marketStats?.summary ?? {};
+                const yield_ = typeof s.avgYield === "number" ? s.avgYield : null;
+                const yoy = typeof s.yoyGrowth === "number" ? s.yoyGrowth : null;
+                const txns = typeof s.transactions === "number" ? s.transactions : null;
+                const txnsYear = typeof s.transactionsYear === "number" ? s.transactionsYear : null;
+                const coverageMo = typeof s.transactionsCoverageMonths === "number" ? s.transactionsCoverageMonths : null;
+                const supply = typeof s.newSupplyUnits === "number" ? s.newSupplyUnits : null;
+                const supplyYear = typeof s.newSupplyYear === "number" ? s.newSupplyYear : null;
+                const formatK = (n: number): string => {
+                  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M+";
+                  if (n >= 1_000) return Math.round(n / 1_000) + "K+";
+                  return String(n);
+                };
+                const txnsLabel = coverageMo != null && coverageMo < 12
+                  ? `${t("marketTransactions")} (last ${coverageMo}mo)`
+                  : txnsYear
+                  ? `${t("marketTransactions")} (${txnsYear})`
+                  : t("marketTransactions");
+                const supplyLabel = supplyYear
+                  ? `${t("marketNewSupply")} (${supplyYear})`
+                  : t("marketNewSupply");
+                const rows = [
+                  yield_ != null && { dt: t("marketAvgYield"), dd: yield_.toFixed(1) + "%" },
+                  yoy != null && { dt: t("marketYoyGrowth"), dd: (yoy >= 0 ? "+" : "") + yoy.toFixed(1) + "%" },
+                  txns != null && { dt: txnsLabel, dd: formatK(txns) },
+                  supply != null && { dt: supplyLabel, dd: formatK(supply) + " units" },
+                ].filter(Boolean) as { dt: string; dd: string }[];
+                if (rows.length === 0) return null;
+                return (
+                  <div className="rounded-2xl border border-border bg-card p-5">
+                    <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">
+                      {t("marketSnapshot")}
+                    </p>
+                    <dl className="space-y-3 text-sm">
+                      {rows.map((r) => (
+                        <div key={r.dt} className="flex items-center justify-between gap-3">
+                          <dt className="text-muted-foreground">{r.dt}</dt>
+                          <dd className="font-bold text-foreground text-right">{r.dd}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">{t("marketYoyGrowth")}</dt>
-                    <dd className="font-bold text-foreground">{marketStats?.yoyGrowth != null ? '+' + marketStats.yoyGrowth + '%' : '+11.4%'}</dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">{t("marketTransactions")}</dt>
-                    <dd className="font-bold text-foreground">{"180K+"}</dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">{t("marketNewSupply")}</dt>
-                    <dd className="font-bold text-foreground">{"70K units"}</dd>
-                  </div>
-                </dl>
-              </div>
+                );
+              })()}
             </aside>
           </div>
         </div>
