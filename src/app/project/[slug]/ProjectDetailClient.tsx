@@ -184,6 +184,18 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
   // QR code: use permitUrl from DB if available, otherwise project page URL
   const qrUrl = project.permitUrl || (origin ? `${origin}/project/${project.slug}` : `/project/${project.slug}`);
+  // If permitUrl points to a real document (PDF or external regulator page),
+  // we open it directly on click instead of showing the larger-QR modal —
+  // saves the user from having to scan the QR with another device.
+  const hasDirectPermit = Boolean(project.permitUrl);
+  // QR image: prefer the stored Trakheesi/regulator QR image from MongoDB
+  // (project.qrCode). Only fall back to a generated qrserver.com QR if no
+  // image is stored — generated QRs encode an arbitrary URL, not the
+  // official regulatory permit, so the stored image is always preferred.
+  const qrImageSrc = (size: number): string =>
+    project.qrCode && project.qrCode.startsWith("http")
+      ? project.qrCode
+      : `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`;
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -335,21 +347,42 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <h1 className="text-[22px] sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]">
                     {project.name}
                   </h1>
-                  {/* Location with QR */}
+                  {/* Location with QR — if permitUrl exists, click opens the PDF/page directly; otherwise show QR modal */}
                   <div className="flex items-center gap-2 sm:gap-3 mt-1.5 sm:mt-3">
-                    <button
-                      onClick={() => setShowQrModal(true)}
-                      className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
-                      title="Regulatory Permit"
-                    >
-                      <NextImage
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
-                        alt="Regulatory Permit QR"
-                        width={80}
-                        height={80}
-                        className="w-full h-full rounded-sm"
-                      />
-                    </button>
+                    {hasDirectPermit ? (
+                      <a
+                        href={qrUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all flex-shrink-0"
+                        title={t("regulatoryPermit")}
+                        aria-label={t("regulatoryPermit")}
+                      >
+                        <NextImage
+                          src={qrImageSrc(80)}
+                          alt="Regulatory Permit QR"
+                          width={80}
+                          height={80}
+                          unoptimized
+                          className="w-full h-full rounded-sm"
+                        />
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => setShowQrModal(true)}
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                        title="Regulatory Permit"
+                      >
+                        <NextImage
+                          src={qrImageSrc(80)}
+                          alt="Regulatory Permit QR"
+                          width={80}
+                          height={80}
+                          unoptimized
+                          className="w-full h-full rounded-sm"
+                        />
+                      </button>
+                    )}
                     <p className="text-white/80 flex items-center gap-1.5 text-[12px] sm:text-base">
                       <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
                       <span>{project.community}, {project.city}, {project.country}</span>
@@ -2505,25 +2538,46 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   ))}
                 </div>
-                {/* QR Code row */}
-                <div className="mt-4 pt-4 border-t border-border/40 flex items-center gap-3">
-                  <button
-                    onClick={() => setShowQrModal(true)}
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white border border-border/50 p-1 shadow-sm hover:shadow-md hover:border-primary/30 active:scale-95 transition-all cursor-pointer flex-shrink-0"
-                    title="Scan QR Code"
-                  >
+                {/* QR Code row — clickable: opens the permit PDF/page directly if available */}
+                {(() => {
+                  const QrInner = (
                     <NextImage
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`}
-                      alt="QR Code"
+                      src={qrImageSrc(100)}
+                      alt="Regulatory Permit QR"
                       width={100}
                       height={100}
+                      unoptimized
                       className="w-full h-full rounded-sm"
                     />
-                  </button>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-foreground">{t("regulatoryPermit")}</p>
-                  </div>
-                </div>
+                  );
+                  const wrapperClass = "w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-white border border-border/50 p-1 shadow-sm hover:shadow-md hover:border-primary/30 active:scale-95 transition-all cursor-pointer flex-shrink-0 inline-flex items-center justify-center";
+                  return (
+                    <div className="mt-4 pt-4 border-t border-border/40 flex items-center gap-3">
+                      {hasDirectPermit ? (
+                        <a
+                          href={qrUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={wrapperClass}
+                          title={t("regulatoryPermit")}
+                          aria-label={t("regulatoryPermit")}
+                        >
+                          {QrInner}
+                        </a>
+                      ) : (
+                        <button onClick={() => setShowQrModal(true)} className={wrapperClass} title="Scan QR Code">
+                          {QrInner}
+                        </button>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-foreground">{t("regulatoryPermit")}</p>
+                        {hasDirectPermit && (
+                          <p className="text-[10px] text-muted-foreground mt-0.5">{t("openPermit") || "Open document →"}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
               </motion.div>
 
               {/* Target Buyers */}
@@ -2874,10 +2928,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
             >
               <div className="w-48 h-48 sm:w-56 sm:h-56">
                 <NextImage
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=2`}
-                  alt="QR Code"
+                  src={qrImageSrc(400)}
+                  alt="Regulatory Permit QR"
                   width={400}
                   height={400}
+                  unoptimized
                   className="w-full h-full"
                 />
               </div>
