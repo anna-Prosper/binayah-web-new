@@ -162,6 +162,15 @@ const STATS_GRID: Record<number, string> = {
   3: "grid-cols-3",
 };
 
+// A "numeric-ish" value is short (≤8 chars) and starts with a digit, $, sign, etc.
+// Long text values (e.g. "Check developer disclosure") get smaller/lighter
+// styling so they don't fight the clean numbers next to them.
+function isNumericish(v: string): boolean {
+  const s = (v || "").trim();
+  if (s.length === 0 || s.length > 10) return false;
+  return /^[+\-$£€]?\s*\d/.test(s);
+}
+
 function StatsBlock({ title, stats }: { title: string; stats: { label: string; value: string; change: string }[] }) {
   const gridClass = STATS_GRID[stats.length] ?? "grid-cols-2 md:grid-cols-4";
   return (
@@ -171,14 +180,23 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
           <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {title}
         </h3>
       </div>
-      <div className={`grid ${gridClass} gap-px bg-border`}>
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-card p-3 sm:p-5 text-center">
-            <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{stat.label}</p>
-            <p className="text-base sm:text-xl font-bold text-foreground">{stat.value}</p>
-            <span className="text-[10px] sm:text-xs font-semibold text-primary">{stat.change}</span>
-          </div>
-        ))}
+      <div className={`grid ${gridClass} gap-px bg-border items-stretch`}>
+        {stats.map((stat, i) => {
+          const numeric = isNumericish(stat.value);
+          return (
+            <div key={i} className="bg-card p-3 sm:p-5 text-center flex flex-col items-center justify-center min-h-[80px] sm:min-h-[96px]">
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground mb-1 sm:mb-1.5 leading-tight">{stat.label}</p>
+              {numeric ? (
+                <p className="text-sm sm:text-base font-semibold text-foreground leading-tight tracking-tight">{stat.value}</p>
+              ) : (
+                <p className="text-[11px] sm:text-[12px] font-medium text-foreground/80 leading-snug max-w-[160px] mx-auto">{stat.value}</p>
+              )}
+              {stat.change && (
+                <span className="text-[10px] sm:text-[11px] font-medium text-primary mt-1">{stat.change}</span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
