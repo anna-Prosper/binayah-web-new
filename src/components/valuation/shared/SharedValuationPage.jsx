@@ -1215,6 +1215,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     var _a, _b, _c, _d, _e, _f;
     const tv = useTranslations("valuation");
     const [step, setStep] = useState("form");
+    // PF-only engine: when PropertyFinder autocomplete returns multiple
+    // plausible matches and the user query didn't exactly name one, we ask
+    // the user to pick. `disambiguationCandidates` is the list of options
+    // and `disambiguationContext` carries the inquiry / leadId from the
+    // ambiguous turn so a follow-up POST can reference it.
+    const [disambiguationCandidates, setDisambiguationCandidates] = useState(null);
+    const [disambiguationContext, setDisambiguationContext] = useState(null);
     const [form, setForm] = useState(INITIAL_FORM_STATE);
     const [result, setResult] = useState(null);
     const [activeProcessStep, setActiveProcessStep] = useState(0);
@@ -1421,6 +1428,32 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     }, []);
     const applyLoadedReport = useCallback((data) => {
         var _a;
+        // PF-only engine disambiguation: server signals that PropertyFinder
+        // autocomplete returned multiple plausible matches. Show a picker
+        // instead of routing to results.
+        if (
+            data &&
+            data.decision === "needs_more_details" &&
+            Array.isArray(data.disambiguationCandidates) &&
+            data.disambiguationCandidates.length >= 2
+        ) {
+            const nextForm = buildFormFromInquiry(data.inquiry, INITIAL_FORM_STATE);
+            setForm(nextForm);
+            setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
+            setFieldErrors({});
+            setGlobalError(null);
+            setDisambiguationCandidates(data.disambiguationCandidates);
+            setDisambiguationContext({
+                leadId: data.leadId || null,
+                inquiry: data.inquiry || nextForm,
+            });
+            if (data.leadId) {
+                replaceValuationIdInCurrentUrl(data.leadId);
+            }
+            setStep("disambiguation");
+            (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
         const nextForm = buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE);
         setForm(nextForm);
         setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
@@ -1436,6 +1469,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setDeedParsing(false);
         setDeedParsed(false);
         setLoadingSavedReport(false);
+        setDisambiguationCandidates(null);
+        setDisambiguationContext(null);
         if ((data === null || data === void 0 ? void 0 : data.accessState) === "preview") {
             setResult(mapPreviewApiToResult(data, nextForm));
             setUnlocked(false);
@@ -1764,6 +1799,46 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         finally {
             clearTimeout(timeout);
             resetTurnstileWidget();
+        }
+    };
+    // PF disambiguation: user picked a candidate from the surfaced list.
+    // Lock the candidate's canonical name as the building/unit and re-run.
+    const selectDisambiguationCandidate = async (candidate) => {
+        var _a;
+        if (!candidate || !candidate.name) return;
+        const ctxInquiry = (disambiguationContext && disambiguationContext.inquiry) || {};
+        const updatedForm = Object.assign({}, form, { unit: candidate.name });
+        setForm(updatedForm);
+        setDisambiguationCandidates(null);
+        setDisambiguationContext(null);
+        setStep("processing");
+        setActiveProcessStep(0);
+        setGlobalError(null);
+        setRetryCount(0);
+        (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+        try {
+            const { turnstileConfig } = await loadValuationConfig();
+            const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+            const apiPayload = Object.assign(
+                {
+                    countryCode: updatedForm.countryCode || ctxInquiry.countryCode || "AE",
+                    transactionType: updatedForm.transactionType || ctxInquiry.transactionType,
+                    propertyName: candidate.name,
+                    community: updatedForm.area || ctxInquiry.community || ctxInquiry.location || "",
+                    location: updatedForm.area || ctxInquiry.location || ctxInquiry.community || "",
+                    city: updatedForm.city || ctxInquiry.city,
+                    propertyType: updatedForm.type || ctxInquiry.propertyType,
+                    bedrooms: updatedForm.beds || ctxInquiry.bedrooms,
+                    maids: updatedForm.maids || ctxInquiry.maids,
+                    size: updatedForm.size || ctxInquiry.size,
+                },
+                turnstileToken ? { turnstileToken } : {},
+            );
+            await runValuationWithPhases(apiPayload, 1);
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : "Something went wrong.";
+            setGlobalError(msg);
+            setStep("form");
         }
     };
     const loadValuationConfig = useCallback(async () => {
@@ -2366,6 +2441,68 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               </div>
             </section>
           </motion.div>)}
+
+        {/* ── Disambiguation ── PropertyFinder returned multiple plausible matches */}
+        {step === "disambiguation" && Array.isArray(disambiguationCandidates) && (
+          <motion.div
+            key="disambiguation"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14"
+          >
+            <div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
+              <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>
+                Pick your property
+              </p>
+              <h2 className="mb-2 text-2xl font-bold sm:text-3xl text-[#0B3D2E]">
+                Which one of these is your property?
+              </h2>
+              <p className="text-[#66706d] mb-6">
+                We found a few possible matches for &ldquo;{form.unit || form.area || "this location"}&rdquo;.
+                Pick the right one and we&rsquo;ll value it.
+              </p>
+              <div className="grid gap-3">
+                {disambiguationCandidates.map((candidate, idx) => (
+                  <button
+                    key={candidate.id != null ? String(candidate.id) : `cand-${idx}`}
+                    type="button"
+                    onClick={() => selectDisambiguationCandidate(candidate)}
+                    className="group flex items-center gap-4 rounded-2xl border border-[#0B3D2E]/12 bg-white px-5 py-4 text-left transition-all hover:border-[#0B3D2E]/40 hover:bg-[#FCFBF7] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/30"
+                  >
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
+                      {idx + 1}
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="text-base font-semibold text-[#0B3D2E]">{candidate.name}</span>
+                      <span className="text-xs text-[#66706d]">
+                        PropertyFinder location ID: {candidate.id}
+                      </span>
+                    </span>
+                    <span className="ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
+                      Select →
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setDisambiguationCandidates(null);
+                  setDisambiguationContext(null);
+                  setStep("form");
+                }}
+                className="mt-6 text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline"
+              >
+                None of these — let me edit my search
+              </button>
+            </div>
+          </motion.div>
+        )}
 
         {/* ── Processing ── */}
         {step === "processing" && (<motion.div key="processing" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
