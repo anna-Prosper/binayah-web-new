@@ -188,14 +188,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   // we open it directly on click instead of showing the larger-QR modal —
   // saves the user from having to scan the QR with another device.
   const hasDirectPermit = Boolean(project.permitUrl);
-  // QR image: prefer the stored Trakheesi/regulator QR image from MongoDB
-  // (project.qrCode). Only fall back to a generated qrserver.com QR if no
-  // image is stored — generated QRs encode an arbitrary URL, not the
-  // official regulatory permit, so the stored image is always preferred.
-  const qrImageSrc = (size: number): string =>
-    project.qrCode && project.qrCode.startsWith("http")
-      ? project.qrCode
-      : `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(qrUrl)}&bgcolor=ffffff&color=0B3D2E&margin=1`;
+  // Only show the QR when MongoDB has a stored regulator-issued image
+  // (project.qrCode). If absent, hide entirely — don't synthesize a QR
+  // that just encodes the project page URL (misleading; not the real permit).
+  const hasStoredQr = Boolean(project.qrCode && project.qrCode.startsWith("http"));
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -347,41 +343,43 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <h1 className="text-[22px] sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]">
                     {project.name}
                   </h1>
-                  {/* Location with QR — if permitUrl exists, click opens the PDF/page directly; otherwise show QR modal */}
+                  {/* Location with QR — only render if a regulator-issued QR image is stored in MongoDB */}
                   <div className="flex items-center gap-2 sm:gap-3 mt-1.5 sm:mt-3">
-                    {hasDirectPermit ? (
-                      <a
-                        href={qrUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all flex-shrink-0"
-                        title={t("regulatoryPermit")}
-                        aria-label={t("regulatoryPermit")}
-                      >
-                        <NextImage
-                          src={qrImageSrc(80)}
-                          alt="Regulatory Permit QR"
-                          width={80}
-                          height={80}
-                          unoptimized
-                          className="w-full h-full rounded-sm"
-                        />
-                      </a>
-                    ) : (
-                      <button
-                        onClick={() => setShowQrModal(true)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
-                        title="Regulatory Permit"
-                      >
-                        <NextImage
-                          src={qrImageSrc(80)}
-                          alt="Regulatory Permit QR"
-                          width={80}
-                          height={80}
-                          unoptimized
-                          className="w-full h-full rounded-sm"
-                        />
-                      </button>
+                    {hasStoredQr && (
+                      hasDirectPermit ? (
+                        <a
+                          href={qrUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all flex-shrink-0"
+                          title={t("regulatoryPermit")}
+                          aria-label={t("regulatoryPermit")}
+                        >
+                          <NextImage
+                            src={project.qrCode}
+                            alt="Regulatory Permit QR"
+                            width={80}
+                            height={80}
+                            unoptimized
+                            className="w-full h-full rounded-sm"
+                          />
+                        </a>
+                      ) : (
+                        <button
+                          onClick={() => setShowQrModal(true)}
+                          className="w-5 h-5 sm:w-6 sm:h-6 rounded-md bg-white/90 p-0.5 shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer flex-shrink-0"
+                          title="Regulatory Permit"
+                        >
+                          <NextImage
+                            src={project.qrCode}
+                            alt="Regulatory Permit QR"
+                            width={80}
+                            height={80}
+                            unoptimized
+                            className="w-full h-full rounded-sm"
+                          />
+                        </button>
+                      )
                     )}
                     <p className="text-white/80 flex items-center gap-1.5 text-[12px] sm:text-base">
                       <MapPin className="h-3.5 w-3.5 text-accent flex-shrink-0" />
@@ -2538,11 +2536,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   ))}
                 </div>
-                {/* QR Code row — clickable: opens the permit PDF/page directly if available */}
-                {(() => {
+                {/* QR Code row — only shown when a regulator-issued QR image is stored in MongoDB */}
+                {hasStoredQr && (() => {
                   const QrInner = (
                     <NextImage
-                      src={qrImageSrc(100)}
+                      src={project.qrCode}
                       alt="Regulatory Permit QR"
                       width={100}
                       height={100}
@@ -2927,14 +2925,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="w-48 h-48 sm:w-56 sm:h-56">
-                <NextImage
-                  src={qrImageSrc(400)}
-                  alt="Regulatory Permit QR"
-                  width={400}
-                  height={400}
-                  unoptimized
-                  className="w-full h-full"
-                />
+                {hasStoredQr && (
+                  <NextImage
+                    src={project.qrCode}
+                    alt="Regulatory Permit QR"
+                    width={400}
+                    height={400}
+                    unoptimized
+                    className="w-full h-full"
+                  />
+                )}
               </div>
               <p className="text-sm font-semibold text-foreground text-center">{project.name}</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t("regulatoryPermit")}</p>
