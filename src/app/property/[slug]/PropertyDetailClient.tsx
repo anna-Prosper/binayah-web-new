@@ -595,15 +595,27 @@ export default function PropertyDetailClient({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent pointer-events-none" />
 
+          {/* Desktop-only prev/next arrows; mobile relies on the count pill + gallery modal */}
           {allImages.length > 1 && (
             <>
-              <button onClick={prevImage} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors z-10">
+              <button onClick={prevImage} aria-label="Previous image" className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white items-center justify-center hover:bg-black/60 transition-colors z-10">
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <button onClick={nextImage} className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors z-10">
+              <button onClick={nextImage} aria-label="Next image" className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white items-center justify-center hover:bg-black/60 transition-colors z-10">
                 <ChevronRight className="h-5 w-5" />
               </button>
             </>
+          )}
+
+          {/* Count pill (matches off-plan style) — tap-target opens the gallery modal */}
+          {allImages.length > 1 && (
+            <button
+              onClick={() => setLightboxOpen(true)}
+              aria-label={`${t("gallery")} (${allImages.length})`}
+              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 hover:bg-black/80 transition-colors"
+            >
+              {currentImage + 1}/{allImages.length}
+            </button>
           )}
 
           <div className="absolute bottom-0 left-0 right-0 z-20">
