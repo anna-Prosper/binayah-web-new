@@ -646,6 +646,21 @@ export default function PropertyDetailClient({
     <div className="min-h-screen bg-background">
       <Navbar />
 
+      {/* ── BREADCRUMB (sits below navbar, above hero) ───────────────────── */}
+      <nav aria-label="Breadcrumb" className="border-b border-border/50 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3">
+          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground flex-wrap">
+            <Link href="/" className="hover:text-foreground transition-colors">{t("breadcrumbHome")}</Link>
+            <ChevronRight className="h-3 w-3 opacity-50" />
+            <Link href={isRent ? "/rent" : "/buy"} className="hover:text-foreground transition-colors">
+              {isRent ? t("forRent") : t("forSale")}
+            </Link>
+            <ChevronRight className="h-3 w-3 opacity-50" />
+            <span className="text-foreground font-medium truncate max-w-[220px]">{listing.title}</span>
+          </div>
+        </div>
+      </nav>
+
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative">
         <div className="relative h-[55vh] sm:h-[65vh] min-h-[380px] overflow-hidden">
@@ -659,25 +674,6 @@ export default function PropertyDetailClient({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent pointer-events-none" />
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="absolute top-20 sm:top-24 left-0 right-0 z-20"
-          >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-white/50 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors">{t("breadcrumbHome")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <Link href={isRent ? "/rent" : "/buy"} className="hover:text-white transition-colors">
-                  {isRent ? t("forRent") : t("forSale")}
-                </Link>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-white/80 truncate max-w-[200px]">{listing.title}</span>
-              </div>
-            </div>
-          </motion.div>
 
           {allImages.length > 1 && (
             <>
