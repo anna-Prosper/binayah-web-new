@@ -19,6 +19,7 @@ import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { AmenitiesSection } from "@/components/AmenitiesSection";
+import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -625,20 +626,14 @@ export default function PropertyDetailClient({
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* ── BREADCRUMB (sits below the fixed navbar; mt clears navbar height) ─── */}
-      <nav aria-label="Breadcrumb" className="mt-12 sm:mt-16 border-b border-border/50 bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3">
-          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground flex-wrap">
-            <Link href="/" className="hover:text-foreground transition-colors">{t("breadcrumbHome")}</Link>
-            <ChevronRight className="h-3 w-3 opacity-50" />
-            <Link href={isRent ? "/rent" : "/buy"} className="hover:text-foreground transition-colors">
-              {isRent ? t("forRent") : t("forSale")}
-            </Link>
-            <ChevronRight className="h-3 w-3 opacity-50" />
-            <span className="text-foreground font-medium truncate max-w-[220px]">{listing.title}</span>
-          </div>
-        </div>
-      </nav>
+      {/* ── BREADCRUMB (below navbar, above hero) ───────────────────────── */}
+      <DetailBreadcrumb
+        items={[
+          { label: t("breadcrumbHome"), href: "/" },
+          { label: isRent ? t("forRent") : t("forSale"), href: isRent ? "/rent" : "/buy" },
+          { label: listing.title },
+        ]}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative">

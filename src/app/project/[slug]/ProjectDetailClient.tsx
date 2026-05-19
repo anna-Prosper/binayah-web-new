@@ -23,6 +23,7 @@ import { DetailActions } from "@/components/PropertyActions";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
 import { AmenitiesSection } from "@/components/AmenitiesSection";
+import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { useCurrency } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
@@ -247,6 +248,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
+      {/* ── BREADCRUMB (below navbar, above hero) ───────────────────────── */}
+      <DetailBreadcrumb
+        items={[
+          { label: t("breadcrumbHome"), href: "/" },
+          { label: t("breadcrumbProjects"), href: "/off-plan" },
+          { label: project.name },
+        ]}
+      />
+
       {/* ───── HERO SECTION ───── */}
       <section className="relative">
         {/* Full-width hero image */}
@@ -294,24 +304,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           {/* Gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 to-transparent pointer-events-none" />
-
-          {/* Breadcrumb - top left below navbar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="absolute top-14 sm:top-24 left-0 right-0 z-20"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/50 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors">{t("breadcrumbHome")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <Link href="/off-plan" className="hover:text-white transition-colors">{t("breadcrumbProjects")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-white/80 truncate max-w-[180px]">{project.name}</span>
-              </div>
-            </div>
-          </motion.div>
 
           {/* Hero content at bottom */}
           <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
@@ -513,16 +505,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 : null;
               const currencyKeys = Object.keys(CURRENCY_RATES);
 
-              return [
-                { icon: Building2, label: t("developer"), value: project.developerName || "—", sub: null },
-                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
-                { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
-                { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
-                { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
-                ...(project.paymentPlanSummary || project.downPayment ? [
-                  { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
-                ] : []),
-              ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
+              // Skip cards with no real data so the grid doesn't show "—" placeholders.
+              const unitTypesValue = formatUnitTypes(project.unitTypes, " · ");
+              const hasSizeRange = project.unitSizeMin && project.unitSizeMax;
+              const stats = [
+                project.developerName && { icon: Building2, label: t("developer"), value: project.developerName, sub: null },
+                project.startingPrice && { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
+                unitTypesValue && unitTypesValue !== "—" && { icon: Bed, label: t("unitTypes"), value: unitTypesValue, sub: null },
+                hasSizeRange && { icon: Ruler, label: t("sizeRange"), value: sizeValue, sub: sizeSub },
+                (isReady || project.completionDate) && { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
+                (project.paymentPlanSummary || project.downPayment) && { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
+              ].filter(Boolean) as Array<{ icon: React.ElementType; label: string; value: string; sub: string | null; isCurrency?: boolean; isPaymentPlan?: boolean }>;
+
+              return stats.map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
                 <motion.div
                   key={label}
                   initial={{ opacity: 0, y: 10 }}

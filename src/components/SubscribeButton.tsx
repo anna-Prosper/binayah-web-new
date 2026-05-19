@@ -235,8 +235,9 @@ export function SubscribeButton({
   };
 
   // ── Style variants ──────────────────────────────────────────────────────
+  // Compact on mobile so this fits one row beside Save + Share with long localized labels.
   const base =
-    "flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all";
+    "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
 
   const heroClasses = subscribed
     ? "bg-accent/90 text-white border-accent/60 backdrop-blur-sm shadow-lg"

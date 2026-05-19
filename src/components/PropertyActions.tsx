@@ -215,7 +215,8 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
   };
 
   const isHero = variant === "hero";
-  const base = "flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl border transition-all";
+  // Compact on mobile so long localized labels (RU/AR/ZH) keep buttons in one row alongside Subscribe.
+  const base = "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
   const favClasses = isHero
     ? (isFav
         ? "bg-red-500/90 text-white border-red-400 backdrop-blur-sm shadow-lg"
