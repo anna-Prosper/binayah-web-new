@@ -23,7 +23,7 @@ import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { StickyMobileCta } from "@/components/StickyMobileCta";
+import { DetailStickyCta } from "@/components/DetailStickyCta";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
@@ -1456,13 +1456,11 @@ export default function PropertyDetailClient({
         title={listing.title}
       />
 
-      {/* ── STICKY MOBILE CTA (shared component) ────────────────────────── */}
-      <StickyMobileCta
-        actions={[
-          { type: "whatsapp", href: whatsappUrl, label: t("whatsappInquiry") },
-          { type: "call", href: "tel:+97154998811", label: t("callNow") },
-          { type: "live-chat", href: "#live-chat", label: t("liveChat") },
-        ]}
+      {/* ── STICKY MOBILE CTA (shared 3-button component) ────────────────── */}
+      <DetailStickyCta
+        whatsappUrl={whatsappUrl}
+        phone="+97154998811"
+        labels={{ whatsapp: t("whatsappInquiry"), call: t("callNow"), liveChat: t("liveChat") }}
       />
 
       <Footer />

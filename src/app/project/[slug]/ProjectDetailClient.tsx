@@ -27,7 +27,7 @@ import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { StickyMobileCta } from "@/components/StickyMobileCta";
+import { DetailStickyCta } from "@/components/DetailStickyCta";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
@@ -2507,17 +2507,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         title={project.name}
       />
 
-      {/* ───── STICKY MOBILE CTA BAR (shared component) ───── */}
-      <StickyMobileCta
-        actions={[
-          {
-            type: "whatsapp",
-            href: `https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971500000000").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`,
-            label: t("whatsapp"),
-          },
-          { type: "call", href: `tel:${project.contactPhone || "+971500000000"}`, label: t("call") },
-          { type: "live-chat", href: "#live-chat", label: t("liveChat") },
-        ]}
+      {/* ───── STICKY MOBILE CTA BAR (shared 3-button component) ───── */}
+      <DetailStickyCta
+        whatsappUrl={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971500000000").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+        phone={project.contactPhone || "+971500000000"}
+        labels={{ whatsapp: t("whatsapp"), call: t("call"), liveChat: t("liveChat") }}
       />
 
       {/* QR Code Modal */}
