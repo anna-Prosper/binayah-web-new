@@ -625,8 +625,8 @@ export default function PropertyDetailClient({
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* ── BREADCRUMB (sits below navbar, above hero) ───────────────────── */}
-      <nav aria-label="Breadcrumb" className="border-b border-border/50 bg-background">
+      {/* ── BREADCRUMB (sits below the fixed navbar; mt clears navbar height) ─── */}
+      <nav aria-label="Breadcrumb" className="mt-12 sm:mt-16 border-b border-border/50 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3">
           <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-muted-foreground flex-wrap">
             <Link href="/" className="hover:text-foreground transition-colors">{t("breadcrumbHome")}</Link>
