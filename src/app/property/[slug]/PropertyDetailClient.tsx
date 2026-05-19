@@ -18,6 +18,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
+import { AmenitiesSection } from "@/components/AmenitiesSection";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -239,28 +240,6 @@ function extractParkingFromDescription(description?: string) {
   if (wordMatch) return wordNumbers[wordMatch[1].toLowerCase()];
 
   return /\bsecure parking\b/i.test(text) ? "Secure Parking" : null;
-}
-
-// ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
-function amenityIcon(label: string): React.ElementType {
-  const l = label.toLowerCase();
-  if (/pool|swim|jacuzzi/.test(l)) return Waves;
-  if (/gym|fitness|workout/.test(l)) return Dumbbell;
-  if (/parking|garage|car park/.test(l)) return Car;
-  if (/security|guard|cctv|gated/.test(l)) return Shield;
-  if (/kids|children|play|nursery/.test(l)) return Baby;
-  if (/spa|sauna|steam/.test(l)) return Flame;
-  if (/bbq|barbecue|grill/.test(l)) return Flame;
-  if (/garden|park|green|landscap/.test(l)) return TreePine;
-  if (/retail|shop|store|concierge/.test(l)) return Store;
-  if (/smart|automation|iot/.test(l)) return Smartphone;
-  if (/lobby|reception|building/.test(l)) return Building2;
-  if (/beach|marina|waterfront/.test(l)) return Waves;
-  if (/metro|transport|bus|tram/.test(l)) return ArrowRight;
-  if (/air con|a\/c|hvac|cool/.test(l)) return Wind;
-  if (/power|electric|generator/.test(l)) return Zap;
-  if (/balcon|terrace|rooftop/.test(l)) return Home;
-  return Check;
 }
 
 // ── Nearby attraction icon ────────────────────────────────────────────────────
@@ -1053,33 +1032,14 @@ export default function PropertyDetailClient({
                     </motion.div>
                   )}
 
-                  {/* Amenities & Facilities */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mb-10">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                        <Star className="h-4 w-4 text-accent" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("lifestyleLabel")}</p>
-                        <h2 className="text-base font-bold text-foreground">{t("amenitiesTitle")}</h2>
-                      </div>
-                    </div>
-                    <div className="rounded-2xl bg-card border border-border/30 p-5">
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {mergedAmenities.map((feat, i) => {
-                          const AIcon = amenityIcon(feat);
-                          return (
-                            <div key={i} className="flex flex-col items-center gap-2 text-center">
-                              <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-                                <AIcon className="h-5 w-5 text-accent" />
-                              </div>
-                              <span className="text-xs text-foreground font-medium leading-snug">{feat}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </motion.div>
+                  {/* Amenities & Facilities (shared component) */}
+                  <div className="mb-10">
+                    <AmenitiesSection
+                      amenities={mergedAmenities}
+                      eyebrow={t("lifestyleLabel")}
+                      title={t("amenitiesTitle")}
+                    />
+                  </div>
                   {/* Mortgage Calculator */}
                   <MortgageCalculator initialPrice={listing.price} embedded />
                 </>
@@ -1697,28 +1657,123 @@ export default function PropertyDetailClient({
         );
       })()}
 
-      {/* ── LIGHTBOX ─────────────────────────────────────────────────────── */}
+      {/* ── GALLERY MODAL (matches off-plan project gallery UX) ─────────── */}
       <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-            <button onClick={() => setLightboxOpen(false)} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10">
-              <X className="h-5 w-5" />
-            </button>
-            {allImages.length > 1 && (
-              <>
-                <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <ChevronLeft className="h-6 w-6" />
+        {lightboxOpen && (() => {
+          const handleSwipe = (dir: number) => {
+            if (dir < 0) setCurrentImage(currentImage < allImages.length - 1 ? currentImage + 1 : 0);
+            else setCurrentImage(currentImage > 0 ? currentImage - 1 : allImages.length - 1);
+          };
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[200] bg-black flex flex-col"
+            >
+              {/* Top bar */}
+              <div className="flex items-center justify-between px-4 py-3 sm:py-4 flex-shrink-0 bg-black/80 backdrop-blur-sm relative z-10">
+                <span className="text-white/70 text-sm font-semibold">{currentImage + 1} / {allImages.length}</span>
+                <p className="text-white text-sm font-bold truncate max-w-[50%] hidden sm:block">{listing.title}</p>
+                <button
+                  onClick={() => setLightboxOpen(false)}
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                >
+                  <X className="h-5 w-5 text-white" />
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </>
-            )}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={allImages[currentImage]} alt={listing.title} className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
-            <div className="absolute bottom-6 text-white/60 text-sm">{currentImage + 1} / {allImages.length}</div>
-          </motion.div>
-        )}
+              </div>
+
+              {/* Main image area — swipeable on mobile */}
+              <div
+                className="flex-1 flex items-center justify-center relative min-h-0 touch-pan-y"
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  (e.currentTarget as any)._touchStartX = touch.clientX;
+                  (e.currentTarget as any)._touchStartY = touch.clientY;
+                }}
+                onTouchEnd={(e) => {
+                  const startX = (e.currentTarget as any)._touchStartX;
+                  const startY = (e.currentTarget as any)._touchStartY;
+                  if (startX == null) return;
+                  const endX = e.changedTouches[0].clientX;
+                  const endY = e.changedTouches[0].clientY;
+                  const diffX = endX - startX;
+                  const diffY = endY - startY;
+                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    handleSwipe(diffX > 0 ? 1 : -1);
+                  }
+                }}
+              >
+                {allImages.length > 1 && (
+                  <button
+                    onClick={() => handleSwipe(1)}
+                    className="hidden sm:flex absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="h-6 w-6 text-white" />
+                  </button>
+                )}
+
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImage}
+                    src={allImages[currentImage]}
+                    alt={`${listing.title} ${currentImage + 1}`}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.2 }}
+                    className="max-h-[85vh] w-auto max-w-[90vw] sm:max-w-[85vw] object-contain select-none"
+                    draggable={false}
+                  />
+                </AnimatePresence>
+
+                {allImages.length > 1 && (
+                  <button
+                    onClick={() => handleSwipe(-1)}
+                    className="hidden sm:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="h-6 w-6 text-white" />
+                  </button>
+                )}
+
+                {/* Mobile pagination dots */}
+                {allImages.length > 1 && (
+                  <div className="sm:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
+                    {allImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentImage(i)}
+                        aria-label={`Go to image ${i + 1}`}
+                        className={`rounded-full transition-all ${i === currentImage ? "w-6 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Desktop thumbnail strip */}
+              {allImages.length > 1 && (
+                <div className="hidden sm:flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide bg-black/80">
+                  {allImages.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentImage(i)}
+                      className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
+                        i === currentImage
+                          ? "border-accent shadow-lg shadow-accent/30 scale-105"
+                          : "border-transparent opacity-50 hover:opacity-80"
+                      }`}
+                    >
+                      <NextImage src={img} alt="" fill sizes="80px" className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
 
       {/* ── STICKY MOBILE CTA ────────────────────────────────────────────── */}

@@ -22,6 +22,7 @@ import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions } from "@/components/PropertyActions";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
+import { AmenitiesSection } from "@/components/AmenitiesSection";
 import { useCurrency } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
@@ -1514,67 +1515,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
-                  {/* Amenities & Facilities */}
-                  {(() => {
-                    const amenityIcons: Record<string, React.ElementType> = {
-                      "swimming pool": Waves, "pool": Waves,
-                      "gymnasium": Dumbbell, "gym": Dumbbell, "fitness": Dumbbell,
-                      "kids": Baby, "children": Baby, "play area": Baby,
-                      "concierge": Star, "lobby": Star,
-                      "parking": Car, "valet": Car,
-                      "security": Lock, "cctv": Lock,
-                      "spa": HeartPulse, "sauna": HeartPulse,
-                      "bbq": Flame, "barbeque": Flame,
-                      "jogging": TrendingUp, "running": TrendingUp, "track": TrendingUp,
-                      "retail": Store, "shop": Store,
-                      "garden": TreePine, "landscape": TreePine, "park": TreePine,
-                      "smart": Smartphone, "home automation": Smartphone,
-                    };
-                    const getIcon = (name: string) => {
-                      const lower = name.toLowerCase();
-                      for (const [key, icon] of Object.entries(amenityIcons)) {
-                        if (lower.includes(key)) return icon;
-                      }
-                      return Shield;
-                    };
-                    const amenities = project.amenities && project.amenities.length > 0
-                      ? project.amenities
-                      : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")];
-
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="flex items-center gap-2.5 mb-6">
-                          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                            <Star className="h-4.5 w-4.5 text-accent" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("lifestyleLabel")}</p>
-                            <h2 className="text-xl font-bold text-foreground">{t("amenitiesFacilities")}</h2>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
-                          {amenities.map((amenity, i) => {
-                            const AIcon = getIcon(amenity);
-                            return (
-                              <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.03 }}
-                                className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
-                              >
-                                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
-                                  <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                                </div>
-                                <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })()}
+                  {/* Amenities & Facilities (shared component) */}
+                  <AmenitiesSection
+                    amenities={
+                      project.amenities && project.amenities.length > 0
+                        ? project.amenities
+                        : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")]
+                    }
+                    eyebrow={t("lifestyleLabel")}
+                    title={t("amenitiesFacilities")}
+                  />
 
                   {/* FAQ Section */}
                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
