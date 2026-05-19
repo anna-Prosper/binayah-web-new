@@ -461,27 +461,23 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </section>
 
-      {/* Mobile Gallery + Brochure buttons — icon-only on small screens */}
+      {/* Mobile Gallery + Brochure buttons — moved out of hero */}
       <div className="sm:hidden px-4 py-3 flex gap-2 items-center">
         <button
           onClick={() => setShowGallery(true)}
-          aria-label={`${t("galleryButton")} (${images.length})`}
-          title={`${t("galleryButton")} (${images.length})`}
-          className="flex-1 flex items-center justify-center py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
-          <ImageIcon className="h-5 w-5" />
+          <ImageIcon className="h-3.5 w-3.5" /> {t("galleryButton")} ({images.length})
         </button>
         <a
           href={project.brochureUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={t("brochureButton")}
-          title={t("brochureButton")}
-          className="flex-1 flex items-center justify-center py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
         >
-          <Download className="h-5 w-5" />
+          <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
         </a>
       </div>
 
