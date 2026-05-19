@@ -235,9 +235,12 @@ export function SubscribeButton({
   };
 
   // ── Style variants ──────────────────────────────────────────────────────
-  // Compact on mobile so this fits one row beside Save + Share with long localized labels.
+  // Hero on mobile = icon-only 40x40 circle (matches Save/Share); sm+ shows the pill with label.
+  // Non-hero variants keep the original padded pill at all sizes.
   const base =
-    "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
+    variant === "hero"
+      ? "flex items-center justify-center sm:gap-1.5 h-10 w-10 sm:h-auto sm:w-auto sm:px-4 sm:py-2 text-[11px] sm:text-xs font-medium rounded-full sm:rounded-xl border transition-all"
+      : "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
 
   const heroClasses = subscribed
     ? "bg-accent/90 text-white border-accent/60 backdrop-blur-sm shadow-lg"
@@ -284,16 +287,19 @@ export function SubscribeButton({
       <button
         onClick={handleClick}
         aria-label={subscribed ? t("unsubscribeAria") : t("subscribeAria")}
+        title={subscribed ? t("subscribedLabel") : t("subscribe")}
         disabled={loading || isPending(slug)}
         className={variant === "cta" ? ctaBaseClass : buttonClass}
         style={ctaStyle}
       >
         {loading || isPending(slug) ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <Loader2 className={variant === "hero" ? "h-4 w-4 sm:h-3.5 sm:w-3.5 animate-spin" : "h-3.5 w-3.5 animate-spin"} />
         ) : (
-          <Icon className={`h-3.5 w-3.5 ${subscribed ? "fill-current" : ""}`} />
+          <Icon className={`${variant === "hero" ? "h-4 w-4 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5"} ${subscribed ? "fill-current" : ""}`} />
         )}
-        {subscribed ? t("subscribedLabel") : t("subscribe")}
+        <span className={variant === "hero" ? "hidden sm:inline" : ""}>
+          {subscribed ? t("subscribedLabel") : t("subscribe")}
+        </span>
       </button>
 
       {/* Anon email-capture popover */}

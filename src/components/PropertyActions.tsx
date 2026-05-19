@@ -215,8 +215,11 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
   };
 
   const isHero = variant === "hero";
-  // Compact on mobile so long localized labels (RU/AR/ZH) keep buttons in one row alongside Subscribe.
-  const base = "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
+  // Hero on mobile = icon-only 40x40 circle; sm+ falls back to the pill with text.
+  // Light variant keeps the original pill at all sizes.
+  const base = isHero
+    ? "flex items-center justify-center sm:gap-1.5 h-10 w-10 sm:h-auto sm:w-auto sm:px-4 sm:py-2 text-[11px] sm:text-xs font-medium rounded-full sm:rounded-xl border transition-all"
+    : "flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium rounded-xl border transition-all";
   const favClasses = isHero
     ? (isFav
         ? "bg-red-500/90 text-white border-red-400 backdrop-blur-sm shadow-lg"
@@ -244,20 +247,24 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
       <button
         onClick={() => toggleFav(propertyId)}
         aria-label={isFav ? "Remove from favorites" : "Save to favorites"}
+        title={isFav ? t("saved") : t("save")}
         className={`${base} ${favClasses}`}
       >
-        <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
-        {isFav ? t("saved") : t("save")}
+        <Heart className={`${isHero ? "h-4 w-4 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5"} ${isFav ? "fill-current" : ""}`} />
+        <span className={isHero ? "hidden sm:inline" : ""}>{isFav ? t("saved") : t("save")}</span>
       </button>
 
       <div className="relative" ref={sharePopoverRef}>
         <button
           onClick={handleShare}
           aria-label="Share this property"
+          title={copied ? t("copied") : t("share")}
           className={`${base} ${shareClasses}`}
         >
-          {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Share2 className="h-3.5 w-3.5" />}
-          {copied ? t("copied") : t("share")}
+          {copied
+            ? <Check className={`${isHero ? "h-4 w-4 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5"} text-green-500`} />
+            : <Share2 className={isHero ? "h-4 w-4 sm:h-3.5 sm:w-3.5" : "h-3.5 w-3.5"} />}
+          <span className={isHero ? "hidden sm:inline" : ""}>{copied ? t("copied") : t("share")}</span>
         </button>
         {shareOpen && (
           <SharePopover url={url} title={title} onClose={() => setShareOpen(false)} />
