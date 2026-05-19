@@ -569,7 +569,7 @@ export default function PropertyDetailClient({
   const hasMap = !!(listing.latitude && listing.longitude && listing.latitude !== 0 && listing.longitude !== 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
 
       {/* ── BREADCRUMB (below navbar, above hero) ───────────────────────── */}
@@ -667,15 +667,17 @@ export default function PropertyDetailClient({
         </div>
       </section>
 
-      {/* ── MOBILE GALLERY STRIP ─────────────────────────────────────────── */}
+      {/* ── MOBILE GALLERY STRIP (icon-only on small screens) ──────────────── */}
       {allImages.length > 1 && (
         <div className="sm:hidden px-4 py-3 flex gap-2 items-center">
           <button
             onClick={() => setLightboxOpen(true)}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+            aria-label={`${t("gallery")} (${allImages.length})`}
+            title={`${t("gallery")} (${allImages.length})`}
+            className="flex-1 flex items-center justify-center py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
-            <ImageIcon className="h-3.5 w-3.5" /> {t("gallery")} ({allImages.length})
+            <ImageIcon className="h-5 w-5" />
           </button>
         </div>
       )}
