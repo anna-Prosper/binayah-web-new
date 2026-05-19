@@ -20,6 +20,11 @@ import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { AmenitiesSection } from "@/components/AmenitiesSection";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
+import { GalleryModal } from "@/components/GalleryModal";
+import { StatCard } from "@/components/StatCard";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { StickyMobileCta } from "@/components/StickyMobileCta";
+import { HeroActionRow } from "@/components/HeroActionRow";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -403,65 +408,6 @@ function buildFaqs(isRent: boolean): FaqItem[] {
   ];
 }
 
-// ── Stat card ─────────────────────────────────────────────────────────────────
-function StatCard({
-  icon: Icon, label, value, sub, delay = 0,
-}: {
-  icon: React.ElementType; label: string; value: React.ReactNode; sub?: string; delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 flex flex-col justify-center min-h-[80px] sm:min-h-[92px]"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <Icon className="h-4 w-4 text-accent" />
-        <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{label}</p>
-      </div>
-      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
-      {sub && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
-    </motion.div>
-  );
-}
-
-// ── FAQ accordion item ────────────────────────────────────────────────────────
-function FaqAccordionItem({
-  faq, index, open, onToggle,
-}: {
-  faq: FaqItem; index: number; open: boolean; onToggle: (i: number) => void;
-}) {
-  return (
-    <div className="border-b border-border/50 last:border-0">
-      <button
-        type="button"
-        onClick={() => onToggle(index)}
-        className="w-full flex items-center justify-between gap-4 py-4 text-left group"
-      >
-        <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-          {faq.question}
-        </span>
-        <ChevronDown
-          className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="text-sm text-muted-foreground leading-relaxed pb-4 pr-8">{faq.answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function PropertyDetailClient({
@@ -476,7 +422,6 @@ export default function PropertyDetailClient({
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "location" | "faq">("overview");
   const { currency, setCurrency, format: fmtPrice } = useCurrency();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
@@ -686,7 +631,7 @@ export default function PropertyDetailClient({
                       {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                     </p>
                   )}
-                  <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
+                  <HeroActionRow slug={listing.slug} title={listing.title} />
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0">
@@ -1132,40 +1077,8 @@ export default function PropertyDetailClient({
                       </div>
                       <h2 className="text-base sm:text-xl font-bold text-foreground">{tProject("faqLabel")}</h2>
                     </div>
-                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
-                      {faqs.map((faq, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.05 }}
-                          className={`rounded-xl overflow-hidden transition-colors ${openFaq === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
-                        >
-                          <button
-                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                            className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
-                          >
-                            <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
-                            <ChevronDown className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
-                          </button>
-                          <AnimatePresence>
-                            {openFaq === i && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25, ease: "easeOut" as const }}
-                              >
-                                <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                                  <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
-                                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      ))}
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                      <FaqAccordion faqs={faqs} />
                     </div>
                   </div>
                 </motion.div>
@@ -1652,150 +1565,23 @@ export default function PropertyDetailClient({
         );
       })()}
 
-      {/* ── GALLERY MODAL (matches off-plan project gallery UX) ─────────── */}
-      <AnimatePresence>
-        {lightboxOpen && (() => {
-          const handleSwipe = (dir: number) => {
-            if (dir < 0) setCurrentImage(currentImage < allImages.length - 1 ? currentImage + 1 : 0);
-            else setCurrentImage(currentImage > 0 ? currentImage - 1 : allImages.length - 1);
-          };
-          return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[200] bg-black flex flex-col"
-            >
-              {/* Top bar */}
-              <div className="flex items-center justify-between px-4 py-3 sm:py-4 flex-shrink-0 bg-black/80 backdrop-blur-sm relative z-10">
-                <span className="text-white/70 text-sm font-semibold">{currentImage + 1} / {allImages.length}</span>
-                <p className="text-white text-sm font-bold truncate max-w-[50%] hidden sm:block">{listing.title}</p>
-                <button
-                  onClick={() => setLightboxOpen(false)}
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                >
-                  <X className="h-5 w-5 text-white" />
-                </button>
-              </div>
+      {/* ── GALLERY MODAL (shared component) ─────────── */}
+      <GalleryModal
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        images={allImages}
+        activeIndex={currentImage}
+        onChange={setCurrentImage}
+        title={listing.title}
+      />
 
-              {/* Main image area — swipeable on mobile */}
-              <div
-                className="flex-1 flex items-center justify-center relative min-h-0 touch-pan-y"
-                onTouchStart={(e) => {
-                  const touch = e.touches[0];
-                  (e.currentTarget as any)._touchStartX = touch.clientX;
-                  (e.currentTarget as any)._touchStartY = touch.clientY;
-                }}
-                onTouchEnd={(e) => {
-                  const startX = (e.currentTarget as any)._touchStartX;
-                  const startY = (e.currentTarget as any)._touchStartY;
-                  if (startX == null) return;
-                  const endX = e.changedTouches[0].clientX;
-                  const endY = e.changedTouches[0].clientY;
-                  const diffX = endX - startX;
-                  const diffY = endY - startY;
-                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-                    handleSwipe(diffX > 0 ? 1 : -1);
-                  }
-                }}
-              >
-                {allImages.length > 1 && (
-                  <button
-                    onClick={() => handleSwipe(1)}
-                    className="hidden sm:flex absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="h-6 w-6 text-white" />
-                  </button>
-                )}
-
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={currentImage}
-                    src={allImages[currentImage]}
-                    alt={`${listing.title} ${currentImage + 1}`}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -40 }}
-                    transition={{ duration: 0.2 }}
-                    className="max-h-[85vh] w-auto max-w-[90vw] sm:max-w-[85vw] object-contain select-none"
-                    draggable={false}
-                  />
-                </AnimatePresence>
-
-                {allImages.length > 1 && (
-                  <button
-                    onClick={() => handleSwipe(-1)}
-                    className="hidden sm:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="h-6 w-6 text-white" />
-                  </button>
-                )}
-
-                {/* Mobile pagination dots */}
-                {allImages.length > 1 && (
-                  <div className="sm:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
-                    {allImages.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrentImage(i)}
-                        aria-label={`Go to image ${i + 1}`}
-                        className={`rounded-full transition-all ${i === currentImage ? "w-6 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Desktop thumbnail strip */}
-              {allImages.length > 1 && (
-                <div className="hidden sm:flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide bg-black/80">
-                  {allImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentImage(i)}
-                      className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                        i === currentImage
-                          ? "border-accent shadow-lg shadow-accent/30 scale-105"
-                          : "border-transparent opacity-50 hover:opacity-80"
-                      }`}
-                    >
-                      <NextImage src={img} alt="" fill sizes="80px" className="object-cover" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
-
-      {/* ── STICKY MOBILE CTA ────────────────────────────────────────────── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 flex gap-3">
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 text-white rounded-xl font-semibold text-sm transition-colors" style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
-          <MessageCircle className="h-4 w-4" />{t("whatsappInquiry")}
-        </a>
-        <a href="tel:+97154998811" className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-colors">
-          <Phone className="h-4 w-4" />{t("callNow")}
-        </a>
-      </div>
-
-      {/* ── STICKY MOBILE CTA BAR ─────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all">
-            <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
-          </a>
-          <a href="tel:+97154998811"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all"
-            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-            <Phone className="h-4 w-4" /> {t("callNow")}
-          </a>
-        </div>
-      </div>
-      <div className="h-20 lg:hidden" />
+      {/* ── STICKY MOBILE CTA (shared component) ────────────────────────── */}
+      <StickyMobileCta
+        actions={[
+          { type: "whatsapp", href: whatsappUrl, label: t("whatsappInquiry") },
+          { type: "call", href: "tel:+97154998811", label: t("callNow") },
+        ]}
+      />
 
       <Footer />
       <div className="hidden lg:block">
