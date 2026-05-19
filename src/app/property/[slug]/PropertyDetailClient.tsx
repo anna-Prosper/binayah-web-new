@@ -5,9 +5,9 @@ import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, BedDouble, Bath, Maximize, Phone, Mail, MessageCircle,
-  ChevronLeft, ChevronRight, X, Home, Check, Image as ImageIcon,
-  Waves, Dumbbell, Car, Shield, Baby, Flame, TreePine, Store, Smartphone,
-  Building2, Star, ChevronDown, Globe, ArrowRight, Zap, Wind,
+  ChevronLeft, ChevronRight, Home, Image as ImageIcon,
+  Waves, Shield, TreePine, Store,
+  Building2, Star, ChevronDown, Globe, ArrowRight, Zap,
   Calendar, CheckCircle2, Compass, FileText, TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
@@ -409,7 +409,6 @@ function buildFaqs(isRent: boolean): FaqItem[] {
     },
   ];
 }
-
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function PropertyDetailClient({

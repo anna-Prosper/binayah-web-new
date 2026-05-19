@@ -8,8 +8,8 @@ import {
   Phone, MessageCircle, Mail, ChevronRight, ChevronDown, Play, CheckCircle2,
   Star, Clock, Users, FileText, ExternalLink, Download, Image as ImageIcon,
   Home, Landmark, TrendingUp, CreditCard, Globe, Compass, Waves, X,
-  Sparkles, Eye, ArrowRight, Dumbbell, Baby, Car, Lock, Flame,
-  TreePine, Store, Smartphone, HeartPulse, Tag, Percent,
+  Sparkles, Eye, ArrowRight, HeartPulse,
+  TreePine, Store, Tag, Percent,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
