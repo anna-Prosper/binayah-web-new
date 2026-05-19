@@ -162,22 +162,8 @@ const STATS_GRID: Record<number, string> = {
   3: "grid-cols-3",
 };
 
-// Three rendering tiers based on value length and shape:
-//   1. Numeric/short (≤10 chars, digit-leading)  →  prominent (text-lg/xl bold)
-//   2. Short text    (≤24 chars, not numeric)    →  prominent-ish (text-base semibold)
-//   3. Long text     (>24 chars)                 →  compact (text-sm medium, wraps)
-// This way "200", "CARF", "Palazzo Versace Dubai" all read as headline values,
-// while "neuro-rehab, addiction, child psychiatry" gets the smaller treatment.
-type Tier = "numeric" | "shortText" | "longText";
-function classifyValue(v: string): Tier {
-  const s = (v || "").trim();
-  if (s.length === 0) return "shortText";
-  const startsWithDigit = /^[+\-$£€]?\s*\d/.test(s);
-  if (startsWithDigit && s.length <= 10) return "numeric";
-  if (s.length <= 24) return "shortText";
-  return "longText";
-}
-
+// All values render at the same comfortable middle weight. Long values
+// wrap to multiple lines; short values just take one line. No tier logic.
 function StatsBlock({ title, stats }: { title: string; stats: { label: string; value: string; change: string }[] }) {
   const gridClass = STATS_GRID[stats.length] ?? "grid-cols-2 md:grid-cols-4";
   return (
@@ -188,26 +174,15 @@ function StatsBlock({ title, stats }: { title: string; stats: { label: string; v
         </h3>
       </div>
       <div className={`grid ${gridClass} gap-px bg-border items-stretch`}>
-        {stats.map((stat, i) => {
-          const tier = classifyValue(stat.value);
-          return (
-            <div key={i} className="bg-card p-3 sm:p-5 text-center flex flex-col items-center justify-center min-h-[80px] sm:min-h-[100px]">
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground mb-1.5 leading-tight uppercase tracking-wide">{stat.label}</p>
-              {tier === "numeric" && (
-                <p className="text-lg sm:text-2xl font-bold text-foreground leading-tight tracking-tight">{stat.value}</p>
-              )}
-              {tier === "shortText" && (
-                <p className="text-base sm:text-lg font-semibold text-foreground leading-tight tracking-tight">{stat.value}</p>
-              )}
-              {tier === "longText" && (
-                <p className="text-[13px] sm:text-sm font-medium text-foreground/85 leading-snug max-w-[200px] mx-auto">{stat.value}</p>
-              )}
-              {stat.change && (
-                <span className="text-[10px] sm:text-[11px] font-semibold text-primary mt-1">{stat.change}</span>
-              )}
-            </div>
-          );
-        })}
+        {stats.map((stat, i) => (
+          <div key={i} className="bg-card p-3 sm:p-5 text-center flex flex-col items-center justify-center min-h-[80px] sm:min-h-[100px]">
+            <p className="text-[10px] sm:text-[11px] text-muted-foreground mb-1.5 leading-tight uppercase tracking-wide">{stat.label}</p>
+            <p className="text-sm sm:text-base font-semibold text-foreground leading-snug max-w-[200px] mx-auto">{stat.value}</p>
+            {stat.change && (
+              <span className="text-[10px] sm:text-[11px] font-semibold text-primary mt-1">{stat.change}</span>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
