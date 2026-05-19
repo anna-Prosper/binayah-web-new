@@ -27,6 +27,8 @@ import { StickyMobileCta } from "@/components/StickyMobileCta";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
+import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -1330,63 +1332,28 @@ export default function PropertyDetailClient({
         </div>
       </section>
 
-      {/* ── SIMILAR LISTINGS ─────────────────────────────────────────────── */}
+      {/* ── SIMILAR LISTINGS (shared component, compact off-plan style) ──── */}
       {similarListings.length > 0 && (
-        <section className="py-16 bg-muted/30 border-t border-border/50">
+        <section className="py-10 sm:py-14 bg-muted/30 border-t border-border/50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-4 h-px bg-accent" />
-                <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("similarLabel")}</p>
-              </div>
-              <h2 className="text-2xl font-bold text-foreground">{t("similarProperties")}</h2>
-            </div>
-            <motion.div
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-            >
-              {similarListings.map((l, i) => (
-                <motion.div
-                  key={l._id}
-                  variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } } }}
-                >
-                  <Link href={`/property/${l.slug}`} className="group block bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-accent/25">
-                    <div className="relative overflow-hidden aspect-[4/3]">
-                      <NextImage src={l.featuredImage || l.images?.[0] || "/assets/amenities-placeholder.webp"} alt={l.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:768px) 100vw, 33vw" />
-                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        {l.listingType === "Rent" ? t("forRent") : t("forSale")}
-                      </span>
-                      <CardActions propertyId={l.slug} slug={l.slug} title={l.title} />
-                    </div>
-                    <div className="p-5">
-                      {l.community && (
-                        <p className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
-                          <MapPin className="h-3 w-3 text-accent" /> {l.community}{l.city ? `, ${l.city}` : ""}
-                        </p>
-                      )}
-                      <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2 text-sm">{l.title}</h3>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                        {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} {t("bed")}</span>}
-                        {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} {t("bath")}</span>}
-                        {!!l.size && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
-                      </div>
-                      <div className="flex items-center justify-between border-t border-border pt-3">
-                        <p className="text-sm font-bold text-primary">{fmtPrice(l.price, { fallback: t("priceOnRequest") })}</p>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
+            <SimilarItemsCarousel
+              eyebrow={t("similarLabel")}
+              title={t("similarProperties")}
+              items={similarListings.map((l) => ({
+                key: l._id,
+                title: l.title,
+                location: l.community ? `${l.community}${l.city ? `, ${l.city}` : ""}` : undefined,
+                statusLabel: l.listingType === "Rent" ? t("forRent") : t("forSale"),
+                imageUrl: l.featuredImage || l.images?.[0] || undefined,
+                priceLabel: fmtPrice(l.price, { fallback: t("priceOnRequest") }),
+                href: `/property/${l.slug}`,
+              }))}
+            />
           </div>
         </section>
       )}
 
-      {/* ── WHAT BUYERS/RENTERS SAY ──────────────────────────────────────── */}
+      {/* ── WHAT BUYERS/RENTERS SAY (shared component) ─────────────────── */}
       {(() => {
         const testimonials = isRent
           ? [
@@ -1400,47 +1367,13 @@ export default function PropertyDetailClient({
               { name: "James K.", role: "Investor · 1 BR Studio", rating: 4, text: "Strong rental yield analysis and realistic ROI projections — none of the inflated numbers other agencies threw at me. Bought sight-unseen based on their report." },
             ];
         return (
-          <section className="py-12 sm:py-16 border-t border-border/50">
+          <section className="py-10 sm:py-14 border-t border-border/50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(212,168,71,0.12)" }}>
-                  <MessageCircle className="h-4 w-4" style={{ color: "#D4A847" }} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>
-                    {t("testimonialsLabel")}
-                  </p>
-                  <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatClientsSay")}</h2>
-                </div>
-              </div>
-              <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
-                {testimonials.map((review, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.12 }}
-                    className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
-                  >
-                    <div className="flex items-center gap-0.5 mb-3">
-                      {Array.from({ length: 5 }).map((_, si) => (
-                        <Star key={si} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${si < review.rating ? "fill-[#D4A847] text-[#D4A847]" : "text-border"}`} />
-                      ))}
-                    </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
-                    <div className="flex items-center gap-3 pt-3 border-t border-border/50">
-                      <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center" style={{ border: "2px solid rgba(212,168,71,0.2)" }}>
-                        <span className="text-xs font-bold text-accent">{review.name.charAt(0)}</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground">{review.name}</p>
-                        <p className="text-[11px] text-muted-foreground">{review.role}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              <TestimonialsCarousel
+                eyebrow={t("testimonialsLabel")}
+                title={t("whatClientsSay")}
+                items={testimonials}
+              />
             </div>
           </section>
         );

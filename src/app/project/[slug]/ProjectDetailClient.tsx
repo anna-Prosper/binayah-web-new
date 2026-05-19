@@ -31,6 +31,8 @@ import { StickyMobileCta } from "@/components/StickyMobileCta";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
+import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { useCurrency } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
@@ -2416,98 +2418,30 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
-      {/* ───── SIMILAR PROJECTS ───── */}
+      {/* ───── SIMILAR PROJECTS (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-        <div className="flex items-center gap-2.5 mb-6">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Building2 className="h-4.5 w-4.5 text-primary" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground">{t("similarProjects")}</h2>
-        </div>
-        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
-          {[
-            { name: "Marina Vista by Emaar", price: 2100000, location: "Dubai Marina", status: "Off-Plan" },
-            { name: "Bluewaters Residences", price: 2500000, location: "Bluewaters Island", status: "Ready" },
-            { name: "Palm Beach Towers", price: 3200000, location: "Palm Jumeirah", status: "Off-Plan" },
-            { name: "Dubai Creek Harbour", price: 1500000, location: "Creek Harbour", status: "Off-Plan" },
-          ].map((p, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="min-w-[260px] sm:min-w-[280px] flex-shrink-0 snap-start rounded-2xl border border-border/50 bg-card overflow-hidden group hover:border-primary/30 transition-colors"
-            >
-              <div className="h-36 bg-muted/30 flex items-center justify-center relative">
-                <Building2 className="h-10 w-10 text-muted-foreground/20" />
-                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold text-white"
-                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                  {p.status}
-                </span>
-              </div>
-              <div className="p-4">
-                <h3 className="text-sm font-bold text-foreground mb-1 group-hover:text-primary transition-colors">{p.name}</h3>
-                <div className="flex items-center gap-1 text-[11px] text-muted-foreground mb-3">
-                  <MapPin className="h-3 w-3" /> {p.location}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("startingFrom")}</p>
-                    <p className="text-sm font-bold text-accent">{formatPrice(p.price, { isProject: true })}</p>
-                  </div>
-                  <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center cursor-pointer">
-                    <ArrowRight className="h-3.5 w-3.5 text-primary" />
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <SimilarItemsCarousel
+          title={t("similarProjects")}
+          items={[
+            { key: "marina-vista", title: "Marina Vista by Emaar", location: "Dubai Marina", statusLabel: "Off-Plan", priceLabel: formatPrice(2100000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "bluewaters", title: "Bluewaters Residences", location: "Bluewaters Island", statusLabel: "Ready", priceLabel: formatPrice(2500000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "palm-beach", title: "Palm Beach Towers", location: "Palm Jumeirah", statusLabel: "Off-Plan", priceLabel: formatPrice(3200000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "dubai-creek", title: "Dubai Creek Harbour", location: "Creek Harbour", statusLabel: "Off-Plan", priceLabel: formatPrice(1500000, { isProject: true }), priceEyebrow: t("startingFrom") },
+          ]}
+        />
       </div>
 
-      {/* ───── WHAT BUYERS SAY ───── */}
+      {/* ───── WHAT BUYERS SAY (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
-        <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(212,168,71,0.12)" }}>
-            <MessageCircle className="h-4.5 w-4.5" style={{ color: "#D4A847" }} />
-          </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>{t("testimonialsLabel")}</p>
-            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatBuyersSay")}</h2>
-          </div>
-        </div>
-
-        <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
-          {[
-            { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
-            { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
-            { name: "James K.", unit: "1 Bedroom", rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatar: "https://i.pravatar.cc/80?img=53" },
-          ].map((review, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12 }}
-              className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
-            >
-              <div className="flex items-center gap-0.5 mb-3">
-                {Array.from({ length: 5 }).map((_, si) => (
-                  <Star key={si} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${si < review.rating ? "fill-[#D4A847] text-[#D4A847]" : "text-border"}`} />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
-              <div className="flex items-center gap-3 pt-3 border-t border-border/50">
-                <NextImage src={review.avatar} alt={review.name} width={36} height={36} className="rounded-full object-cover" style={{ border: "2px solid rgba(212,168,71,0.2)" }} />
-                <div>
-                  <p className="text-sm font-bold text-foreground">{review.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{review.unit} {t("buyerSuffix")}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <TestimonialsCarousel
+          eyebrow={t("testimonialsLabel")}
+          title={t("whatBuyersSay")}
+          items={[
+            { name: "Ahmed R.", role: `2 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatarUrl: "https://i.pravatar.cc/80?img=12" },
+            { name: "Sarah L.", role: `3 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatarUrl: "https://i.pravatar.cc/80?img=32" },
+            { name: "James K.", role: `1 Bedroom ${t("buyerSuffix")}`, rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatarUrl: "https://i.pravatar.cc/80?img=53" },
+          ]}
+        />
       </div>
 
 
