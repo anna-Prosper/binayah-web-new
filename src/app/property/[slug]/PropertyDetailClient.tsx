@@ -1461,6 +1461,7 @@ export default function PropertyDetailClient({
         actions={[
           { type: "whatsapp", href: whatsappUrl, label: t("whatsappInquiry") },
           { type: "call", href: "tel:+97154998811", label: t("callNow") },
+          { type: "live-chat", href: "#live-chat", label: t("liveChat") },
         ]}
       />
 
