@@ -185,6 +185,30 @@ function extractCommunity(unit) {
         return "Your Property";
     return ((_a = unit.split(",")[0]) === null || _a === void 0 ? void 0 : _a.trim()) || "Your Property";
 }
+// Replace internal/HTTP error wording with copy a non-technical user can act
+// on. Falls through unchanged for messages that are already user-friendly,
+// so server-authored asks (e.g., "Need bedrooms before we can value this.")
+// still reach the UI verbatim.
+function humanizeErrorMessage(message) {
+    const text = String(message ?? "").trim();
+    if (!text) return "Something went wrong. Please try again.";
+    if (/^request failed \(\d+\)\.?$/i.test(text)) {
+        return "Something went wrong on our end. Please try again in a moment.";
+    }
+    if (/stream ended before/i.test(text)) {
+        return "The valuation didn’t finish. Please try again.";
+    }
+    if (/streaming not supported/i.test(text)) {
+        return "Your browser doesn’t support streaming valuations. Try Chrome, Edge, Firefox, or Safari.";
+    }
+    if (/^valuation failed\.?$/i.test(text)) {
+        return "The valuation couldn’t be completed. Please try again.";
+    }
+    if (/failed to fetch|network error|networkerror/i.test(text)) {
+        return "Network error. Check your connection and try again.";
+    }
+    return text;
+}
 // Strip the WhatsApp-style sign-off ("Thank you," / "Binayah team") from a
 // server reply so it doesn't look out of place on the web form. The web
 // alert has its own dismiss UI; the courtesy lines are noise here.
@@ -890,14 +914,20 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setStep("results");
         (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
     }, [form]);
-    const copyShareLink = useCallback(() => {
+    const copyShareLink = useCallback(async () => {
         const shareUrl = buildShareUrlForValuationId(result === null || result === void 0 ? void 0 : result.leadId);
-        if (!shareUrl || !navigator.clipboard) {
-            return;
+        if (!shareUrl) return;
+        // navigator.clipboard requires a secure context AND user-granted
+        // permission; either can fail. Show a brief inline error if the
+        // copy itself rejects so the user knows to manually select the URL.
+        try {
+            if (!navigator.clipboard) throw new Error("Clipboard not available");
+            await navigator.clipboard.writeText(shareUrl);
+            setLinkCopied(true);
+            setTimeout(() => setLinkCopied(false), 2000);
+        } catch {
+            setGlobalError("Could not copy the link automatically. Long-press the address bar or select the URL manually.");
         }
-        navigator.clipboard.writeText(shareUrl);
-        setLinkCopied(true);
-        setTimeout(() => setLinkCopied(false), 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result?.leadId]);
     const resetForNewSearch = useCallback(() => {
@@ -960,14 +990,18 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 // so is correct; everywhere else we keep user-typed values).
                 applyLoadedReport(data, { resetForm: true });
             }
-            catch (err) {
-                const msg = err instanceof Error ? err.message : "Could not load the saved valuation report.";
+            catch {
                 if (cancelled) {
                     return;
                 }
                 replaceValuationIdInCurrentUrl("");
                 setLoadingSavedReport(false);
-                setGlobalError(msg);
+                // Hydration-specific copy: a generic "request failed" doesn't
+                // tell the user what to do. The form is below the banner, so
+                // direct them to start fresh.
+                setGlobalError(
+                    `That saved valuation could not be loaded — it may have expired or been removed. Start a fresh search below.`
+                );
                 setStep("form");
             }
         })();
@@ -1050,7 +1084,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
         catch (err) {
             const msg = err instanceof Error ? err.message : "Could not read the deed.";
-            setGlobalError(msg);
+            setGlobalError(humanizeErrorMessage(msg));
             setDeedFile(null);
             setDeedParsed(false);
         }
@@ -1135,7 +1169,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
         catch (err) {
             const msg = err instanceof Error ? err.message : "Security verification failed.";
-            setGlobalError(msg);
+            setGlobalError(humanizeErrorMessage(msg));
             setStep("form");
             setSubmitting(false);
         }
@@ -1224,7 +1258,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             });
         } catch (err) {
             const msg = err instanceof Error ? err.message : "Could not process your message.";
-            setGlobalError(msg);
+            setGlobalError(humanizeErrorMessage(msg));
             setStep("form");
         }
     };
@@ -1310,7 +1344,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             else {
                 setGlobalError(isTimeout
                     ? "The valuation timed out. Please try again."
-                    : msg);
+                    : humanizeErrorMessage(msg));
                 setStep("form");
                 (_f = topRef.current) === null || _f === void 0 ? void 0 : _f.scrollIntoView({ behavior: "smooth" });
             }
@@ -1381,7 +1415,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             await runValuationWithPhases(apiPayload, 1);
         } catch (err) {
             const msg = err instanceof Error ? err.message : "Something went wrong.";
-            setGlobalError(msg);
+            setGlobalError(humanizeErrorMessage(msg));
             setStep("form");
             setSubmitting(false);
             setSubmittingCandidateId(null);
@@ -1535,9 +1569,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setTurnstileState("error");
         pending.reject(new Error(message));
     }, []);
-    const copySummary = () => {
-        if (!result)
-            return;
+    const copySummary = async () => {
+        if (!result) return;
         const c = result.currency;
         const text = [
             `Valuation for ${result.community}, ${result.city}`,
@@ -1545,9 +1578,14 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             `Suggested List: ${fmt(result.suggestedListLow, c)} – ${fmt(result.suggestedListHigh, c)}`,
             `Quick Sale: ${fmt(result.quickSaleLow, c)} – ${fmt(result.quickSaleHigh, c)}`,
         ].join("\n");
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        try {
+            if (!navigator.clipboard) throw new Error("Clipboard not available");
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            setGlobalError("Could not copy the summary automatically. Select the values manually instead.");
+        }
     };
     const showLockedFairValuePreview = !unlocked && (result === null || result === void 0 ? void 0 : result.accessState) === "preview";
     const priceComparisonBounds = getPriceComparisonBounds(result);
@@ -1626,7 +1664,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             {globalError && (<div className="max-w-7xl mx-auto px-4 sm:px-6 mb-4">
                 <div className="rounded-2xl border border-[rgba(180,35,24,0.3)] bg-[rgba(180,35,24,0.1)] px-6 py-4 text-sm text-[#b42318] font-medium flex items-start gap-3">
                   <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5"/>
-                  <span>{globalError}</span>
+                  <span className="flex-1">{globalError}</span>
+                  <button
+                    type="button"
+                    aria-label="Dismiss error"
+                    onClick={() => setGlobalError(null)}
+                    className="flex-shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-full text-[#b42318]/70 transition-colors hover:bg-[#b42318]/10 hover:text-[#b42318]"
+                  >
+                    <X className="h-4 w-4"/>
+                  </button>
                 </div>
               </div>)}
 
@@ -2203,13 +2249,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       >
                         {isThisOneSubmitting ? <RefreshCw className="h-4 w-4 animate-spin"/> : idx + 1}
                       </span>
-                      <span className="flex flex-col">
-                        <span className="text-base font-semibold text-[#0B3D2E]">{candidate.name}</span>
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="text-base font-semibold text-[#0B3D2E] break-words">{candidate.name}</span>
                         {candidate.community ? (
-                          <span className="text-xs text-[#66706d]">{candidate.community}</span>
+                          <span className="text-xs text-[#66706d] break-words">{candidate.community}</span>
                         ) : null}
                       </span>
-                      <span className="ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
+                      <span className="shrink-0 ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
                         {isThisOneSubmitting ? tv("disambigSelecting") : tv("disambigSelect")}
                       </span>
                     </button>
@@ -2222,6 +2268,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 onClick={() => {
                   setDisambiguationCandidates(null);
                   setDisambiguationContext(null);
+                  // Clear the smart-search text so the user isn't sent back
+                  // into the same disambiguation loop on the next submit.
+                  // The form's structured fields (city/area/building) keep
+                  // whatever the LLM already populated so they can edit.
+                  setSmartQuery("");
+                  setSmartIntakeAlert(null);
+                  setFieldErrors({});
                   setStep("form");
                 }}
                 className="mt-6 text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline disabled:cursor-wait disabled:opacity-60 disabled:hover:no-underline"
@@ -2244,7 +2297,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 </div>
               </div>) : (<div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-12">
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>{tv("valuationSnapshot")}</p>
-              <h2 className="mb-2 text-2xl font-bold sm:text-3xl">{extractCommunity(form.unit)}</h2>
+              <h2 className="mb-2 text-2xl font-bold sm:text-3xl break-words">{extractCommunity(form.unit)}</h2>
               <p className="text-[#66706d] mb-3">{tv("processingSubtitle")}</p>
               <span className="inline-block px-3 py-1 rounded-full border border-[#e3ddcf] text-sm font-medium">{form.city}</span>
 
@@ -2341,7 +2394,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   </button>
                 </div>
               </div>
-              <h2 className="mb-2 text-2xl font-bold sm:text-4xl">
+              <h2 className="mb-2 text-2xl font-bold sm:text-4xl break-words">
                 {[result.propertyName, result.community, result.city, result.country].filter(Boolean).join(", ")}
               </h2>
               <p className="text-[#66706d] mb-4">{tv("processingSubtitle")}</p>
@@ -2491,6 +2544,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 {!unlocked && <Lock className="h-3.5 w-3.5 text-[#66706d] ml-auto"/>}
               </div>
               <p className="mb-6 text-sm text-[#66706d] sm:ml-[46px]">{tv("comparableDesc")}</p>
+              {result.comparables.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-[rgba(227,221,207,0.8)] bg-[rgba(250,247,242,0.5)] px-5 py-8 text-center">
+                  <Building2 className="mx-auto h-6 w-6 text-[rgba(102,112,109,0.5)]" />
+                  <p className="mt-3 text-sm font-semibold text-[#10231e]">No directly comparable evidence in our index yet</p>
+                  <p className="mt-1.5 text-xs text-[#66706d] max-w-md mx-auto leading-relaxed">
+                    The estimate above is anchored on broader market signal. A RERA-certified appraiser can collect on-site data and ground the figure further.
+                  </p>
+                </div>
+              ) : null}
               <div className="grid gap-3 md:hidden">
                 {result.comparables.map((c, i) => {
                 const isLockedPreviewRow = !unlocked && c.visibility === "locked";
@@ -2619,7 +2681,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     }
                     catch (err) {
                         const msg = err instanceof Error ? err.message : "Could not unlock the full report.";
-                        setGateErrors({ contact: msg });
+                        setGateErrors({ contact: humanizeErrorMessage(msg) });
                     }
                     finally {
                         setGateSubmitting(false);
