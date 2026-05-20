@@ -24,97 +24,23 @@ async function getBuildingsIndex() {
     return buildingsIndexPromise;
 }
 // The supported emirates the page can value. Drives the City dropdown and
-// the "is this city allowed?" validation. Dubai's areas/buildings come from
-// the DLD-derived buildings.json index (5,781 buildings, refreshed via the
-// admin DLD Data page). The other emirates have no equivalent open-data
-// source yet, so they fall back to STATIC_AREAS_BY_CITY below.
+// the "is this city allowed?" validation. All area + building suggestions
+// are powered live by the DLD-derived buildings.json index (5,781 buildings,
+// refreshed via the admin DLD Data page) via usePlacesSearch. Emirates
+// outside Dubai have no equivalent open-data source yet — those fields fall
+// back to free-text input with no autocomplete dropdown, which is still
+// fully functional (validation only requires city + area to be non-empty).
 const SUPPORTED_CITIES = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "RAK"];
 
-// Static area + building data for emirates NOT covered by the DLD index
-// (Dubai-only). Used only as the Area + Building dropdown fallback when
-// usePlacesSearch returns nothing. Dubai is intentionally absent — its
-// dropdowns are powered live by the DLD buildings.json index, which is much
-// more complete and stays fresh via the API refresh flow.
-const STATIC_AREAS_BY_CITY = {
-    "Abu Dhabi": [
-        { area: "Al Reem Island", buildings: [
-                "The Gate Tower 1", "The Gate Tower 2", "The Gate Tower 3", "Sun Tower", "Sky Tower",
-                "Shams Abu Dhabi", "Marina Square", "Arc Tower", "Mangrove Place", "Meera Tower",
-                "SOHO Square", "Reem Five", "Sigma Tower", "Le Grand Chateau", "Leaf Tower",
-                "Hydra Avenue", "Al Maha Tower", "Najmat Abu Dhabi", "Pacific Ocean", "Tamouh Tower",
-            ] },
-        { area: "Saadiyat Island", buildings: [
-                "Saadiyat Beach Residences", "Mamsha Al Saadiyat", "Hidd Al Saadiyat",
-                "Louvre Abu Dhabi Residences", "Park View", "The Collection", "Soho Square Residences",
-                "Villa Saadiyat", "Saadiyat Beach Villas", "Sea Shore Apartments",
-            ] },
-        { area: "Yas Island", buildings: [
-                "Yas Acres", "Ansam", "Waters Edge", "Lea", "Noya", "Mayan", "West Yas", "Reflection",
-                "Yas Golf Collection", "The Nook", "Perla", "Noya Luma", "Yas Park Views",
-            ] },
-        { area: "Al Raha Beach", buildings: [
-                "Al Raha Lofts", "Al Muneera", "Al Nada", "Al Zeina", "Al Bateen Residences",
-                "Al Rahba", "Lamar Residences", "Al Raha Beach Hotel",
-            ] },
-        { area: "Corniche Road", buildings: [
-                "Corniche Residence", "Marina Square", "Etihad Towers", "The Corniche Towers",
-                "Nation Towers", "Al Nahyan Villas", "Al Markaziyah",
-            ] },
-        { area: "Al Khalidiyah", buildings: [
-                "Al Khalidiyah Villas", "Khalidiyah Palace Rayhaan", "Elite Tower",
-            ] },
-        { area: "Al Reef", buildings: [
-                "Al Reef Downtown", "Al Reef Villas", "Desert Cluster", "Arabian Cluster",
-                "Contemporary Cluster", "Mediterranean Cluster",
-            ] },
-    ],
-    Sharjah: [
-        { area: "Al Majaz", buildings: [
-                "Al Majaz 1", "Al Majaz 2", "Al Majaz 3", "Corniche Tower", "Al Ghuwair",
-            ] },
-        { area: "Al Nahda", buildings: [
-                "Sahara Complex", "Al Nahda Residences", "Pearl Tower Sharjah",
-            ] },
-        { area: "Al Khan", buildings: [
-                "Al Khan Beach Residences", "Naseej Tower",
-            ] },
-        { area: "Aljada", buildings: [
-                "Madar", "Naseej", "Hayyan", "Noor", "Tiraz", "Dhow", "Sarab",
-            ] },
-        { area: "Muwaileh", buildings: [
-                "Muwaileh Villas", "Nasma Residences", "Al Zahia",
-            ] },
-    ],
-    Ajman: [
-        { area: "Al Nuaimia", buildings: [
-                "Al Nuaimia Towers", "City Towers Ajman", "Horizon Towers Ajman",
-            ] },
-        { area: "Emirates City", buildings: [
-                "Lavender Tower", "Jasmine Tower", "Lilies Tower", "Magnolia Tower",
-            ] },
-        { area: "Ajman Corniche", buildings: [
-                "Ajman Pearl Towers", "Conqueror Tower",
-            ] },
-    ],
-    RAK: [
-        { area: "Al Hamra Village", buildings: [
-                "Al Hamra Village Villas", "Royal Breeze Residences", "Bayti Homes", "Falcon Island",
-            ] },
-        { area: "Mina Al Arab", buildings: [
-                "Gateway Residences", "Lagoon Views", "Mina Al Arab Townhouses",
-            ] },
-        { area: "Al Marjan Island", buildings: [
-                "Pacific Polynesia", "Bab Al Bahr", "Rixos Residences", "Wynn Al Marjan Island Residences",
-            ] },
-    ],
-};
-// Derived helpers. `getAreas` returns the static fallback list (empty for
-// Dubai — usePlacesSearch covers Dubai via the DLD index instead).
-function getAreas(city) {
-    return STATIC_AREAS_BY_CITY[city] ?? [];
+// Empty stubs — kept so existing call sites (Area / Building dropdown
+// fallback, smart-search building pool, resolveCity) compile and degrade
+// gracefully to no-suggestions. If we add another emirate's data source
+// later, this is the obvious place to wire it in.
+function getAreas(_city) {
+    return [];
 }
-function getBuildings(city, area) {
-    return (STATIC_AREAS_BY_CITY[city] ?? []).find((a) => a.area === area)?.buildings ?? [];
+function getBuildings(_city, _area) {
+    return [];
 }
 function isSupportedCity(value) {
     return typeof value === "string" && SUPPORTED_CITIES.includes(value);
@@ -356,14 +282,10 @@ function inferTypeFromContext(buildingName, areaName) {
         return "Villa";
     return undefined;
 }
-function resolveCity(area) {
-    // Search the static area lists for which city contains this area. Dubai
-    // areas resolve through AREA_KEYWORDS at the call site (and default to
-    // "Dubai" anyway), so missing Dubai static data here is fine.
-    for (const [city, areas] of Object.entries(STATIC_AREAS_BY_CITY)) {
-        if (areas.some((a) => a.area === area))
-            return city;
-    }
+function resolveCity(_area) {
+    // No static area→city map any more. Smart-search callers default to
+    // "Dubai" when this returns undefined, which is correct for our market
+    // (and AREA_KEYWORDS already routes any obviously non-Dubai keywords).
     return undefined;
 }
 function parseValuationSearch(input) {
