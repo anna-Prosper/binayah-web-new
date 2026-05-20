@@ -232,6 +232,15 @@ function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const defaultMovingFactors = DEED_DUMMY_RESULT.movingFactors;
     const community = ((_a = api === null || api === void 0 ? void 0 : api.property_identity) === null || _a === void 0 ? void 0 : _a.normalizedLocation) || form.area || extractCommunity(form.unit);
+    // Building/project name — prefer what the engine resolved (PF canonical
+    // name from autocomplete), fall back to the user-typed `form.unit`.
+    // Without this, the header collapses to "<community>, Dubai, UAE" and
+    // hides which building we actually valued.
+    const propertyName = (
+        ((api === null || api === void 0 ? void 0 : api.property_identity) || {}).propertyName
+        || (form.unit ? String(form.unit).split(",")[0].trim() : "")
+        || ""
+    );
     const propType = ((_a = form.type) === null || _a === void 0 ? void 0 : _a.toLowerCase()) || "property";
     const comparables = [
         ...((_b = api.transactions) !== null && _b !== void 0 ? _b : []).map((c) => ({
@@ -258,6 +267,7 @@ function mapApiToResult(api, form) {
         createdAt: api.createdAt,
         accessState: api.accessState || "unlocked",
         currency: api.currency || "AED",
+        propertyName,
         community,
         city: form.city || "Dubai",
         country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
@@ -305,6 +315,14 @@ function mapApiToResult(api, form) {
 function mapPreviewApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
     const community = ((_a = api === null || api === void 0 ? void 0 : api.property_identity) === null || _a === void 0 ? void 0 : _a.normalizedLocation) || form.area || extractCommunity(form.unit);
+    // Mirror the unlocked path — surface the building name in the result so
+    // the header reads "<Building>, <Community>, Dubai, UAE" instead of just
+    // "<Community>, Dubai, UAE".
+    const propertyName = (
+        ((api === null || api === void 0 ? void 0 : api.property_identity) || {}).propertyName
+        || (form.unit ? String(form.unit).split(",")[0].trim() : "")
+        || ""
+    );
     const previewRows = ((_b = (_a = api.preview) === null || _a === void 0 ? void 0 : _a.comparableRows) !== null && _b !== void 0 ? _b : []).map((row) => {
         var _a;
         return ({
@@ -323,6 +341,7 @@ function mapPreviewApiToResult(api, form) {
         previewRanges: ((_c = api.preview) === null || _c === void 0 ? void 0 : _c.rangePreview) || [],
         sourceCount: Number(((_d = api.preview) === null || _d === void 0 ? void 0 : _d.sourceCount) || 0),
         currency: "AED",
+        propertyName,
         community,
         city: form.city || "Dubai",
         country: (((_e = api === null || api === void 0 ? void 0 : api.market) === null || _e === void 0 ? void 0 : _e.countryCode) || "AE") === "AE" ? "UAE" : ((_f = api === null || api === void 0 ? void 0 : api.market) === null || _f === void 0 ? void 0 : _f.countryCode) || "UAE",
@@ -2190,7 +2209,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   </button>
                 </div>
               </div>
-              <h2 className="mb-2 text-2xl font-bold sm:text-4xl">{result.community}, {result.city}, {result.country}</h2>
+              <h2 className="mb-2 text-2xl font-bold sm:text-4xl">
+                {[result.propertyName, result.community, result.city, result.country].filter(Boolean).join(", ")}
+              </h2>
               <p className="text-[#66706d] mb-4">{tv("processingSubtitle")}</p>
               {deliveryNotice && (<div className={`mb-4 flex items-start gap-3 rounded-2xl border px-4 py-3.5 sm:px-5 ${deliveryNotice.tone === "success"
                     ? "border-[#0B3D2E]/18 bg-[#0B3D2E]/[0.045] text-[#0B3D2E]"
