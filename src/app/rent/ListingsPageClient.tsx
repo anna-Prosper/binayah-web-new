@@ -192,7 +192,9 @@ export default function ListingsPageClient({
                       {/* Synthesized description line — gives the card the same visual weight as the off-plan card's shortOverview */}
                       <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
                         {[
-                          l.bedrooms != null && Number(l.bedrooms) > 0 ? `${l.bedrooms} bedroom` : null,
+                          l.bedrooms != null
+                            ? (Number(l.bedrooms) === 0 ? "studio" : `${l.bedrooms} bedroom`)
+                            : null,
                           l.propertyType ? l.propertyType.toLowerCase() : "property",
                           l.listingType === "Rent" ? "for rent" : "for sale",
                           l.community ? `in ${l.community}` : null,
@@ -200,9 +202,9 @@ export default function ListingsPageClient({
                       </p>
                       {/* Attributes row — bed · bath · sqft */}
                       <div className="flex gap-3 text-xs text-muted-foreground mb-3 flex-wrap">
-                        {l.bedrooms != null && Number(l.bedrooms) > 0 && (
+                        {l.bedrooms != null && (
                           <span className="flex items-center gap-1">
-                            <BedDouble className="h-3 w-3" /> {`${l.bedrooms} ${t("bed")}`}
+                            <BedDouble className="h-3 w-3" /> {Number(l.bedrooms) === 0 ? "Studio" : `${l.bedrooms} ${t("bed")}`}
                           </span>
                         )}
                         {l.bathrooms != null && Number(l.bathrooms) > 0 && (

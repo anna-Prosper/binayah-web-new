@@ -15,15 +15,22 @@ const intlMiddleware = createMiddleware(routing);
 const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar)(\/|$)/;
 
 const isDev = process.env.NODE_ENV === "development";
+// Vercel Live ships the preview-feedback widget from vercel.live (loaded on
+// preview deployments only). It opens a websocket back to vercel.live and
+// embeds an iframe. Whitelist all three or the widget breaks with a CSP error.
+const VERCEL_LIVE = "https://vercel.live";
+const VERCEL_LIVE_WSS = "wss://*.pusher.com";
 const CSP = [
   "default-src 'self'",
-  isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'",
+  isDev
+    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE}`
+    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' https:",
-  "connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com",
-  "frame-src https://www.google.com https://maps.google.com",
+  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS}`,
+  `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE}`,
   "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",

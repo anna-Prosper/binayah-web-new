@@ -402,7 +402,7 @@ function SearchContent() {
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
               {secondaryModes.map((mode) => (
                 <button key={mode.value || "any"} onClick={() => { setIntent(mode.value); if (!mode.value) setStatus(status); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
-                  {mode.value === "" ? t("tabAnySecondary") : mode.value === "buy" ? t("buy") : t("rent")}
+                  {mode.value === "" ? t("tabAll") : mode.value === "buy" ? t("forSale") : t("forRent")}
                 </button>
               ))}
             </div>
@@ -723,7 +723,7 @@ function SearchContent() {
                             {listing.community && <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5"><MapPin className="h-3 w-3" />{listing.community}{listing.city ? `, ${listing.city}` : ""}</p>}
                             <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{listing.title}</h3>
                             <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-                              {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms}</span>}
+                              {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms === 0 ? "Studio" : listing.bedrooms}</span>}
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
                             </div>

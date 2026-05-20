@@ -8,8 +8,8 @@ import {
   Phone, MessageCircle, Mail, ChevronRight, ChevronDown, Play, CheckCircle2,
   Star, Clock, Users, FileText, ExternalLink, Download, Image as ImageIcon,
   Home, Landmark, TrendingUp, CreditCard, Globe, Compass, Waves, X,
-  Sparkles, Eye, ArrowRight, Dumbbell, Baby, Car, Lock, Flame,
-  TreePine, Store, Smartphone, HeartPulse, Tag, Percent,
+  Sparkles, Eye, ArrowRight, HeartPulse,
+  TreePine, Store, Tag, Percent,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,18 @@ import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions } from "@/components/PropertyActions";
 import { SubscribeButton } from "@/components/SubscribeButton";
 import { ProjectSubscribeSection } from "@/components/ProjectSubscribeSection";
+import { AmenitiesSection } from "@/components/AmenitiesSection";
+import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
+import { GalleryModal } from "@/components/GalleryModal";
+import { StatCard } from "@/components/StatCard";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
+import { HeroActionRow } from "@/components/HeroActionRow";
+import { DetailTabs } from "@/components/DetailTabs";
+import { LocationSection } from "@/components/LocationSection";
+import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { useCurrency } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
@@ -142,7 +154,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           : [],
   };
   const [activeImage, setActiveImage] = useState(0);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [descExpanded, setDescExpanded] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
@@ -243,8 +254,17 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
+
+      {/* ── BREADCRUMB (below navbar, above hero) ───────────────────────── */}
+      <DetailBreadcrumb
+        items={[
+          { label: t("breadcrumbHome"), href: "/" },
+          { label: t("breadcrumbProjects"), href: "/off-plan" },
+          { label: project.name },
+        ]}
+      />
 
       {/* ───── HERO SECTION ───── */}
       <section className="relative">
@@ -293,24 +313,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           {/* Gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/15 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 to-transparent pointer-events-none" />
-
-          {/* Breadcrumb - top left below navbar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="absolute top-14 sm:top-24 left-0 right-0 z-20"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-sm text-white/50 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors">{t("breadcrumbHome")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <Link href="/off-plan" className="hover:text-white transition-colors">{t("breadcrumbProjects")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-white/80 truncate max-w-[180px]">{project.name}</span>
-              </div>
-            </div>
-          </motion.div>
 
           {/* Hero content at bottom */}
           <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
@@ -386,22 +388,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <span>{project.community}, {project.city}, {project.country}</span>
                     </p>
                   </div>
-                  {/* Save / Subscribe / Share actions */}
-                  <div className="mt-3 flex items-center gap-2 flex-wrap">
-                    <DetailActions
-                      propertyId={project.slug}
-                      slug={project.slug}
-                      title={project.name}
-                      type="project"
-                      variant="hero"
-                    />
-                    <SubscribeButton
-                      slug={project.slug}
-                      projectName={project.name}
-                      projectImage={project.featuredImage || project.images?.[0] || null}
-                      variant="hero"
-                    />
-                  </div>
+                  {/* Save / Share / Subscribe (shared component) */}
+                  <HeroActionRow
+                    slug={project.slug}
+                    title={project.name}
+                    type="project"
+                    subscribable
+                    projectImage={project.featuredImage || project.images?.[0] || null}
+                  />
                 </motion.div>
 
                 {/* Right: Price above thumbnails (desktop only) */}
@@ -512,72 +506,64 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 : null;
               const currencyKeys = Object.keys(CURRENCY_RATES);
 
-              return [
-                { icon: Building2, label: t("developer"), value: project.developerName || "—", sub: null },
-                { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
-                { icon: Bed, label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, " · "), sub: null },
-                { icon: Ruler, label: "Size Range", value: sizeValue, sub: sizeSub },
-                { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
-                ...(project.paymentPlanSummary || project.downPayment ? [
-                  { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
-                ] : []),
-              ].map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * idx + 0.2 }}
-                  className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 min-h-[80px] sm:min-h-[92px] flex flex-col justify-center"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <StatIcon className="h-4 w-4 text-accent" />
-                    <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{label}</p>
-                    {isCurrency && (
-                      <div className="ml-auto relative">
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
-                          className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
+              // Skip cards with no real data so the grid doesn't show "—" placeholders.
+              const unitTypesValue = formatUnitTypes(project.unitTypes, " · ");
+              const hasSizeRange = project.unitSizeMin && project.unitSizeMax;
+              const stats = [
+                project.developerName && { icon: Building2, label: t("developer"), value: project.developerName, sub: null },
+                project.startingPrice && { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
+                unitTypesValue && unitTypesValue !== "—" && { icon: Bed, label: t("unitTypes"), value: unitTypesValue, sub: null },
+                hasSizeRange && { icon: Ruler, label: t("sizeRange"), value: sizeValue, sub: sizeSub },
+                (isReady || project.completionDate) && { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
+                (project.paymentPlanSummary || project.downPayment) && { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
+              ].filter(Boolean) as Array<{ icon: React.ElementType; label: string; value: string; sub: string | null; isCurrency?: boolean; isPaymentPlan?: boolean }>;
+
+              return stats.map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => {
+                const rightSlot = isCurrency ? (
+                  <div className="relative">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setShowCurrencyDropdown(!showCurrencyDropdown); }}
+                      className="flex items-center gap-1 text-[10px] font-bold text-accent border border-accent/30 bg-accent/5 px-2 py-1 rounded-lg shadow-sm hover:bg-accent/10 transition-colors"
+                    >
+                      {currency}
+                      <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
+                    </button>
+                    <AnimatePresence>
+                      {showCurrencyDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl"
                         >
-                          {currency}
-                          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showCurrencyDropdown ? "rotate-180" : ""}`} />
-                        </button>
-                        <AnimatePresence>
-                          {showCurrencyDropdown && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -4, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: -4, scale: 0.95 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute right-0 top-full mt-1.5 bg-card border border-border/60 rounded-xl shadow-lg z-50 min-w-[100px] overflow-hidden backdrop-blur-xl"
+                          {currencyKeys.map((c) => (
+                            <button
+                              key={c}
+                              onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
+                              className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
                             >
-                              {currencyKeys.map((c) => (
-                                <button
-                                  key={c}
-                                  onClick={(e) => { e.stopPropagation(); setCurrency(c); setShowCurrencyDropdown(false); }}
-                                  className={`w-full text-left px-3 py-2 text-[11px] font-semibold transition-colors ${c === currency ? "bg-accent/10 text-accent" : "text-foreground/70 hover:bg-muted/60 hover:text-foreground"}`}
-                                >
-                                  {c}
-                                </button>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )}
+                              {c}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                  {isPaymentPlan ? (
-                  <div>
-                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{t("paymentPlanDefault")}</p>
-                      <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{t("paymentPlanDefaultDesc")}</p>
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
-                      {sub && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
-                    </>
-                  )}
-                </motion.div>
-              ));
+                ) : undefined;
+
+                return (
+                  <StatCard
+                    key={label}
+                    icon={StatIcon}
+                    label={label}
+                    value={isPaymentPlan ? t("paymentPlanDefault") : value}
+                    sub={isPaymentPlan ? t("paymentPlanDefaultDesc") : sub ?? undefined}
+                    rightSlot={rightSlot}
+                    delay={0.05 * idx + 0.2}
+                  />
+                );
+              });
             })()}
           </div>
         </div>
@@ -590,28 +576,18 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           {/* ═══ LEFT COLUMN ═══ */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-8">
 
-            {/* Tab Navigation */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex gap-1 sm:gap-1.5 bg-muted/50 p-1 sm:p-1.5 rounded-2xl border border-border/50"
-            >
-              {(["overview", "location", "payment", "faq"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-                    activeTab === tab
-                      ? "text-white shadow-md"
-                      : "text-muted-foreground hover:text-foreground hover:bg-card/50"
-                  }`}
-                  style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
-                >
-                  <span className="relative z-10 uppercase">{t(({ overview: "tabOverview", location: "tabLocation", payment: "tabPayment", faq: "tabFaq" } as const)[tab])}</span>
-                </button>
-              ))}
-            </motion.div>
+            {/* Tab Navigation (shared component) */}
+            <DetailTabs<typeof activeTab>
+              animate
+              active={activeTab}
+              onChange={setActiveTab}
+              tabs={[
+                { id: "overview", label: t("tabOverview") },
+                { id: "location", label: t("tabLocation") },
+                { id: "payment", label: t("tabPayment") },
+                { id: "faq", label: t("tabFaq") },
+              ]}
+            />
 
             {/* ─── OVERVIEW TAB ─── */}
             <AnimatePresence mode="wait">
@@ -626,11 +602,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 >
                   {/* Overview */}
                   <div className="space-y-4">
-                    <div>
-                      <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
-                      <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">{t("aboutTheProject")}</p>
-                      <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("projectOverview")}</h2>
-                    </div>
+                    <SectionEyebrow
+                      eyebrow={t("aboutTheProject")}
+                      title={t("projectOverview")}
+                      className=""
+                    />
                     {(() => {
                       const isPlaceholder = (s?: string) =>
                         !s || /^update\s+soon\b/i.test(s.trim()) || s.trim().length < 12;
@@ -1514,67 +1490,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
-                  {/* Amenities & Facilities */}
-                  {(() => {
-                    const amenityIcons: Record<string, React.ElementType> = {
-                      "swimming pool": Waves, "pool": Waves,
-                      "gymnasium": Dumbbell, "gym": Dumbbell, "fitness": Dumbbell,
-                      "kids": Baby, "children": Baby, "play area": Baby,
-                      "concierge": Star, "lobby": Star,
-                      "parking": Car, "valet": Car,
-                      "security": Lock, "cctv": Lock,
-                      "spa": HeartPulse, "sauna": HeartPulse,
-                      "bbq": Flame, "barbeque": Flame,
-                      "jogging": TrendingUp, "running": TrendingUp, "track": TrendingUp,
-                      "retail": Store, "shop": Store,
-                      "garden": TreePine, "landscape": TreePine, "park": TreePine,
-                      "smart": Smartphone, "home automation": Smartphone,
-                    };
-                    const getIcon = (name: string) => {
-                      const lower = name.toLowerCase();
-                      for (const [key, icon] of Object.entries(amenityIcons)) {
-                        if (lower.includes(key)) return icon;
-                      }
-                      return Shield;
-                    };
-                    const amenities = project.amenities && project.amenities.length > 0
-                      ? project.amenities
-                      : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")];
-
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
-                        <div className="flex items-center gap-2.5 mb-6">
-                          <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                            <Star className="h-4.5 w-4.5 text-accent" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("lifestyleLabel")}</p>
-                            <h2 className="text-xl font-bold text-foreground">{t("amenitiesFacilities")}</h2>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">
-                          {amenities.map((amenity, i) => {
-                            const AIcon = getIcon(amenity);
-                            return (
-                              <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.03 }}
-                                className="rounded-lg sm:rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors p-2 sm:p-3 flex flex-col items-center text-center gap-1.5 sm:gap-2"
-                              >
-                                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
-                                  <AIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                                </div>
-                                <span className="text-[10px] sm:text-[11px] font-semibold text-foreground leading-tight">{amenity}</span>
-                              </motion.div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })()}
+                  {/* Amenities & Facilities (shared component) */}
+                  <AmenitiesSection
+                    amenities={
+                      project.amenities && project.amenities.length > 0
+                        ? project.amenities
+                        : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")]
+                    }
+                  />
 
                   {/* FAQ Section */}
                   <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-8">
@@ -1587,41 +1510,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("faqLabel")}</h2>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      {faqs.map((faq, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 8 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.05 }}
-                          className="border border-border/50 rounded-xl overflow-hidden"
-                        >
-                          <button
-                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                            className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/30 transition-colors"
-                          >
-                            <span className="text-sm font-semibold text-foreground pr-4">{faq.question}</span>
-                            <ChevronDown className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
-                          </button>
-                          <AnimatePresence>
-                            {openFaq === i && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.3 }}
-                              >
-                                <div className="px-4 pb-4">
-                                  <div className="w-12 h-px bg-accent/30 mb-3" />
-                                  <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      ))}
-                    </div>
+                    <FaqAccordion faqs={faqs} />
+
                   </div>
 
 
@@ -2209,40 +2099,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         </div>
                         <h2 className="text-base sm:text-xl font-bold text-foreground">{t("faqLabel")}</h2>
                       </div>
-                      <div className="px-3.5 sm:px-6 pb-3.5 sm:pb-6 space-y-2 sm:space-y-3">
-                        {faqs.map((faq, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.05 }}
-                            className={`rounded-xl overflow-hidden transition-colors ${openFaq === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
-                          >
-                            <button
-                              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                              className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
-                            >
-                              <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
-                              <ChevronDown className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
-                            </button>
-                            <AnimatePresence>
-                              {openFaq === i && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.25, ease: "easeOut" as const }}
-                                >
-                                  <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                                    <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
-                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </motion.div>
-                        ))}
+                      <div className="px-3.5 sm:px-6 pb-3.5 sm:pb-6">
+                        <FaqAccordion faqs={faqs} />
                       </div>
                     </div>
                   ) : (
@@ -2254,7 +2112,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </motion.div>
               )}
 
-              {/* ─── LOCATION TAB ─── */}
+              {/* ─── LOCATION TAB (shared component) ─── */}
               {activeTab === "location" && (
                 <motion.div
                   key="location"
@@ -2262,101 +2120,32 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-4 sm:space-y-8"
                 >
-                  {/* Location Info */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
-                    <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
-                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <MapPin className="h-4.5 w-4.5 text-primary" />
-                      </div>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
-                    </div>
-                    <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-5">
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("communityLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{project.community || "—"}</p>
-                      </div>
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("cityLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{project.city}</p>
-                      </div>
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("countryLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{project.country}</p>
-                      </div>
-                    </div>
-                    {project.locationDescription && (
-                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-5">{project.locationDescription}</p>
-                    )}
-                    {/* Google Maps Embed */}
-                    {(() => {
-                      let mapSrc = toMapEmbedSrc(project.mapUrl || "");
-                      if (!mapSrc && project.latitude && project.longitude) {
-                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
-                      }
-                      if (!mapSrc) {
-                        const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
-                        mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
-                      }
-                      return (
-                        <div className="rounded-xl overflow-hidden mb-4 sm:mb-5 border border-border/30" style={{ aspectRatio: "16/9" }}>
-                          <iframe
-                            src={mapSrc}
-                            className="w-full h-full border-0"
-                            allowFullScreen
-                            loading="lazy"
-                            title="Location Map"
-                          />
-                        </div>
-                      );
-                    })()}
-                    {project.mapUrl && (
-                      <a href={project.googleMapsUrl || project.mapUrl.split(/\s+/)[0]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors">
-                        <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t("viewOnGoogleMaps")}
-                      </a>
-                    )}
-                  </div>
-
-                  {/* Nearby Attractions */}
-                  {nearby.length > 0 && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-4 sm:p-6 md:p-8">
-                      <div className="flex items-center gap-2.5 mb-4 sm:mb-6">
-                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                          <Compass className="h-4.5 w-4.5 text-accent" />
-                        </div>
-                        <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("nearbyAttractions")}</h2>
-                      </div>
-                      <div className="space-y-2 sm:space-y-3">
-                        {nearby.map((a, i) => {
-                          const AttrIcon = attractionIcon(a.type);
-                          return (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: -8 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: i * 0.06 }}
-                              className="flex items-center justify-between p-3 sm:p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
-                            >
-                              <div className="flex items-center gap-2.5 sm:gap-3.5">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
-                                  <AttrIcon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
-                                </div>
-                                <div>
-                                  <p className="text-xs sm:text-sm font-semibold text-foreground">{a.name}</p>
-                                  <p className="text-[10px] sm:text-xs text-muted-foreground">{a.type}</p>
-                                </div>
-                              </div>
-                              {a.distance && (
-                                <span className="text-[10px] sm:text-xs font-bold text-primary bg-primary/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg">{a.distance}</span>
-                              )}
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                  {(() => {
+                    let mapSrc = toMapEmbedSrc(project.mapUrl || "");
+                    if (!mapSrc && project.latitude && project.longitude) {
+                      mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
+                    }
+                    if (!mapSrc) {
+                      const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
+                      mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
+                    }
+                    const externalMapUrl = project.mapUrl
+                      ? (project.googleMapsUrl || project.mapUrl.split(/\s+/)[0])
+                      : undefined;
+                    return (
+                      <LocationSection
+                        community={project.community}
+                        city={project.city}
+                        country={project.country}
+                        mapEmbedSrc={mapSrc}
+                        description={project.locationDescription}
+                        externalMapUrl={externalMapUrl}
+                        nearby={nearby}
+                        iconForType={attractionIcon}
+                      />
+                    );
+                  })()}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -2620,98 +2409,29 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
-      {/* ───── SIMILAR PROJECTS ───── */}
+      {/* ───── SIMILAR PROJECTS (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-        <div className="flex items-center gap-2.5 mb-6">
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Building2 className="h-4.5 w-4.5 text-primary" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground">{t("similarProjects")}</h2>
-        </div>
-        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
-          {[
-            { name: "Marina Vista by Emaar", price: 2100000, location: "Dubai Marina", status: "Off-Plan" },
-            { name: "Bluewaters Residences", price: 2500000, location: "Bluewaters Island", status: "Ready" },
-            { name: "Palm Beach Towers", price: 3200000, location: "Palm Jumeirah", status: "Off-Plan" },
-            { name: "Dubai Creek Harbour", price: 1500000, location: "Creek Harbour", status: "Off-Plan" },
-          ].map((p, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="min-w-[260px] sm:min-w-[280px] flex-shrink-0 snap-start rounded-2xl border border-border/50 bg-card overflow-hidden group hover:border-primary/30 transition-colors"
-            >
-              <div className="h-36 bg-muted/30 flex items-center justify-center relative">
-                <Building2 className="h-10 w-10 text-muted-foreground/20" />
-                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold text-white"
-                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                  {p.status}
-                </span>
-              </div>
-              <div className="p-4">
-                <h3 className="text-sm font-bold text-foreground mb-1 group-hover:text-primary transition-colors">{p.name}</h3>
-                <div className="flex items-center gap-1 text-[11px] text-muted-foreground mb-3">
-                  <MapPin className="h-3 w-3" /> {p.location}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-muted-foreground">{t("startingFrom")}</p>
-                    <p className="text-sm font-bold text-accent">{formatPrice(p.price, { isProject: true })}</p>
-                  </div>
-                  <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center cursor-pointer">
-                    <ArrowRight className="h-3.5 w-3.5 text-primary" />
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <SimilarItemsCarousel
+          title={t("similarProjects")}
+          items={[
+            { key: "marina-vista", title: "Marina Vista by Emaar", location: "Dubai Marina", statusLabel: "Off-Plan", priceLabel: formatPrice(2100000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "bluewaters", title: "Bluewaters Residences", location: "Bluewaters Island", statusLabel: "Ready", priceLabel: formatPrice(2500000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "palm-beach", title: "Palm Beach Towers", location: "Palm Jumeirah", statusLabel: "Off-Plan", priceLabel: formatPrice(3200000, { isProject: true }), priceEyebrow: t("startingFrom") },
+            { key: "dubai-creek", title: "Dubai Creek Harbour", location: "Creek Harbour", statusLabel: "Off-Plan", priceLabel: formatPrice(1500000, { isProject: true }), priceEyebrow: t("startingFrom") },
+          ]}
+        />
       </div>
 
-      {/* ───── WHAT BUYERS SAY ───── */}
+      {/* ───── WHAT BUYERS SAY (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
-        <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(212,168,71,0.12)" }}>
-            <MessageCircle className="h-4.5 w-4.5" style={{ color: "#D4A847" }} />
-          </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>{t("testimonialsLabel")}</p>
-            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatBuyersSay")}</h2>
-          </div>
-        </div>
-
-        <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
-          {[
-            { name: "Ahmed R.", unit: "2 Bedroom", rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatar: "https://i.pravatar.cc/80?img=12" },
-            { name: "Sarah L.", unit: "3 Bedroom", rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatar: "https://i.pravatar.cc/80?img=32" },
-            { name: "James K.", unit: "1 Bedroom", rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatar: "https://i.pravatar.cc/80?img=53" },
-          ].map((review, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12 }}
-              className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
-            >
-              <div className="flex items-center gap-0.5 mb-3">
-                {Array.from({ length: 5 }).map((_, si) => (
-                  <Star key={si} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${si < review.rating ? "fill-[#D4A847] text-[#D4A847]" : "text-border"}`} />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
-              <div className="flex items-center gap-3 pt-3 border-t border-border/50">
-                <NextImage src={review.avatar} alt={review.name} width={36} height={36} className="rounded-full object-cover" style={{ border: "2px solid rgba(212,168,71,0.2)" }} />
-                <div>
-                  <p className="text-sm font-bold text-foreground">{review.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{review.unit} {t("buyerSuffix")}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <TestimonialsCarousel
+          title={t("whatBuyersSay")}
+          items={[
+            { name: "Ahmed R.", role: `2 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatarUrl: "https://i.pravatar.cc/80?img=12" },
+            { name: "Sarah L.", role: `3 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatarUrl: "https://i.pravatar.cc/80?img=32" },
+            { name: "James K.", role: `1 Bedroom ${t("buyerSuffix")}`, rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatarUrl: "https://i.pravatar.cc/80?img=53" },
+          ]}
+        />
       </div>
 
 
@@ -2767,144 +2487,21 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
-      {/* ───── FULL GALLERY MODAL ───── */}
-      <AnimatePresence>
-        {showGallery && (() => {
-          const galleryImages = images;
-          const handleSwipe = (dir: number) => {
-            if (dir < 0) setActiveImage(activeImage < galleryImages.length - 1 ? activeImage + 1 : 0);
-            else setActiveImage(activeImage > 0 ? activeImage - 1 : galleryImages.length - 1);
-          };
-          return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[200] bg-black flex flex-col"
-            >
-              {/* Top bar */}
-              <div className="flex items-center justify-between px-4 py-3 sm:py-4 flex-shrink-0 bg-black/80 backdrop-blur-sm relative z-10">
-                <span className="text-white/70 text-sm font-semibold">{activeImage + 1} / {galleryImages.length}</span>
-                <p className="text-white text-sm font-bold truncate max-w-[50%] hidden sm:block">{project.name}</p>
-                <button
-                  onClick={() => setShowGallery(false)}
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                >
-                  <X className="h-5 w-5 text-white" />
-                </button>
-              </div>
+      {/* ───── FULL GALLERY MODAL (shared component) ───── */}
+      <GalleryModal
+        open={showGallery}
+        onClose={() => setShowGallery(false)}
+        images={images}
+        activeIndex={activeImage}
+        onChange={setActiveImage}
+        title={project.name}
+      />
 
-              {/* Main image area — swipeable on mobile */}
-              <div
-                className="flex-1 flex items-center justify-center relative min-h-0 touch-pan-y"
-                onTouchStart={(e) => {
-                  const touch = e.touches[0];
-                  (e.currentTarget as any)._touchStartX = touch.clientX;
-                  (e.currentTarget as any)._touchStartY = touch.clientY;
-                }}
-                onTouchEnd={(e) => {
-                  const startX = (e.currentTarget as any)._touchStartX;
-                  const startY = (e.currentTarget as any)._touchStartY;
-                  if (startX == null) return;
-                  const endX = e.changedTouches[0].clientX;
-                  const endY = e.changedTouches[0].clientY;
-                  const diffX = endX - startX;
-                  const diffY = endY - startY;
-                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-                    handleSwipe(diffX > 0 ? 1 : -1);
-                  }
-                }}
-              >
-                {/* Desktop nav arrows */}
-                <button
-                  onClick={() => handleSwipe(1)}
-                  className="hidden sm:flex absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
-                >
-                  <ChevronRight className="h-6 w-6 text-white rotate-180" />
-                </button>
-
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeImage}
-                    src={galleryImages[activeImage]}
-                    alt={`${project.name} ${activeImage + 1}`}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -40 }}
-                    transition={{ duration: 0.2 }}
-                    className="max-h-[85vh] w-auto max-w-[90vw] sm:max-w-[85vw] object-contain select-none"
-                    draggable={false}
-                  />
-                </AnimatePresence>
-
-                <button
-                  onClick={() => handleSwipe(-1)}
-                  className="hidden sm:flex absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-all hover:scale-110"
-                >
-                  <ChevronRight className="h-6 w-6 text-white" />
-                </button>
-
-                {/* Mobile swipe hint */}
-                <div className="sm:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
-                  {galleryImages.map((_, i) => (
-                    <button key={i} onClick={() => setActiveImage(i)}
-                      className={`rounded-full transition-all ${i === activeImage ? "w-6 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop thumbnail strip */}
-              <div className="hidden sm:flex justify-center gap-2 px-4 pb-4 flex-shrink-0 overflow-x-auto scrollbar-hide bg-black/80">
-                {galleryImages.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
-                      i === activeImage
-                        ? "border-accent shadow-lg shadow-accent/30 scale-105"
-                        : "border-transparent opacity-50 hover:opacity-80"
-                    }`}
-                  >
-                    <ImageWithFallback src={img} alt="" fill sizes="80px" className="object-cover" />
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
-
-      {/* ───── STICKY MOBILE CTA BAR ───── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
-          <a
-            href={`https://wa.me/${(project.whatsappNumber || project.contactPhone || '+971500000000').replace(/[^0-9]/g, '')}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] transition-all duration-300 shadow-md shadow-[#25D366]/20 active:scale-[0.97]"
-          >
-            <MessageCircle className="h-4 w-4" />
-            {t("whatsapp")}
-          </a>
-          <a
-            href={`tel:${project.contactPhone || '+971500000000'}`}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] transition-all duration-300 shadow-md shadow-accent/20 active:scale-[0.97]"
-            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
-          >
-            <Phone className="h-4 w-4" />
-            {t("call")}
-          </a>
-          <a
-            href="#live-chat"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full border-2 border-primary/30 text-primary font-bold text-[13px] transition-all duration-300 active:scale-[0.97]"
-          >
-            <MessageCircle className="h-4 w-4" />
-            {t("liveChat")}
-          </a>
-        </div>
-      </div>
-      {/* Add bottom padding on mobile so content isn't hidden behind sticky bar */}
-      <div className="h-24 lg:hidden" />
+      {/* ───── STICKY MOBILE CTA BAR (shared 3-button component — labels live inside) ───── */}
+      <DetailStickyCta
+        whatsappUrl={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971500000000").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+        phone={project.contactPhone || "+971500000000"}
+      />
 
       {/* QR Code Modal */}
       <AnimatePresence>

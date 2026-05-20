@@ -5,9 +5,9 @@ import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, BedDouble, Bath, Maximize, Phone, Mail, MessageCircle,
-  ChevronLeft, ChevronRight, X, Home, Check, Image as ImageIcon,
-  Waves, Dumbbell, Car, Shield, Baby, Flame, TreePine, Store, Smartphone,
-  Building2, Star, ChevronDown, Globe, ArrowRight, Zap, Wind,
+  ChevronLeft, ChevronRight, Home, Image as ImageIcon,
+  Waves, Shield, TreePine, Store,
+  Building2, Star, ChevronDown, Globe, ArrowRight, Zap,
   Calendar, CheckCircle2, Compass, FileText, TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
@@ -18,6 +18,18 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
+import { AmenitiesSection } from "@/components/AmenitiesSection";
+import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
+import { GalleryModal } from "@/components/GalleryModal";
+import { StatCard } from "@/components/StatCard";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
+import { HeroActionRow } from "@/components/HeroActionRow";
+import { DetailTabs } from "@/components/DetailTabs";
+import { LocationSection } from "@/components/LocationSection";
+import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -241,28 +253,6 @@ function extractParkingFromDescription(description?: string) {
   return /\bsecure parking\b/i.test(text) ? "Secure Parking" : null;
 }
 
-// ── Amenity icon matching (keyword → Lucide icon) ─────────────────────────────
-function amenityIcon(label: string): React.ElementType {
-  const l = label.toLowerCase();
-  if (/pool|swim|jacuzzi/.test(l)) return Waves;
-  if (/gym|fitness|workout/.test(l)) return Dumbbell;
-  if (/parking|garage|car park/.test(l)) return Car;
-  if (/security|guard|cctv|gated/.test(l)) return Shield;
-  if (/kids|children|play|nursery/.test(l)) return Baby;
-  if (/spa|sauna|steam/.test(l)) return Flame;
-  if (/bbq|barbecue|grill/.test(l)) return Flame;
-  if (/garden|park|green|landscap/.test(l)) return TreePine;
-  if (/retail|shop|store|concierge/.test(l)) return Store;
-  if (/smart|automation|iot/.test(l)) return Smartphone;
-  if (/lobby|reception|building/.test(l)) return Building2;
-  if (/beach|marina|waterfront/.test(l)) return Waves;
-  if (/metro|transport|bus|tram/.test(l)) return ArrowRight;
-  if (/air con|a\/c|hvac|cool/.test(l)) return Wind;
-  if (/power|electric|generator/.test(l)) return Zap;
-  if (/balcon|terrace|rooftop/.test(l)) return Home;
-  return Check;
-}
-
 // ── Nearby attraction icon ────────────────────────────────────────────────────
 function nearbyIcon(type: string): React.ElementType {
   const t = type.toLowerCase();
@@ -423,66 +413,6 @@ function buildFaqs(isRent: boolean): FaqItem[] {
   ];
 }
 
-// ── Stat card ─────────────────────────────────────────────────────────────────
-function StatCard({
-  icon: Icon, label, value, sub, delay = 0,
-}: {
-  icon: React.ElementType; label: string; value: React.ReactNode; sub?: string; delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className="bg-card rounded-2xl p-3 sm:p-4 border-l-[3px] border-l-accent border border-border/50 hover:shadow-md transition-shadow duration-300 flex flex-col justify-center min-h-[80px] sm:min-h-[92px]"
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <Icon className="h-4 w-4 text-accent" />
-        <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-bold">{label}</p>
-      </div>
-      <p className="text-[12px] sm:text-sm font-bold text-foreground leading-snug">{value}</p>
-      {sub && <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{sub}</p>}
-    </motion.div>
-  );
-}
-
-// ── FAQ accordion item ────────────────────────────────────────────────────────
-function FaqAccordionItem({
-  faq, index, open, onToggle,
-}: {
-  faq: FaqItem; index: number; open: boolean; onToggle: (i: number) => void;
-}) {
-  return (
-    <div className="border-b border-border/50 last:border-0">
-      <button
-        type="button"
-        onClick={() => onToggle(index)}
-        className="w-full flex items-center justify-between gap-4 py-4 text-left group"
-      >
-        <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-          {faq.question}
-        </span>
-        <ChevronDown
-          className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="text-sm text-muted-foreground leading-relaxed pb-4 pr-8">{faq.answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────────────────
 export default function PropertyDetailClient({
   listing,
@@ -496,7 +426,6 @@ export default function PropertyDetailClient({
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "location" | "faq">("overview");
   const { currency, setCurrency, format: fmtPrice } = useCurrency();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
@@ -643,51 +572,86 @@ export default function PropertyDetailClient({
   const hasMap = !!(listing.latitude && listing.longitude && listing.latitude !== 0 && listing.longitude !== 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
+
+      {/* ── BREADCRUMB (below navbar, above hero) ───────────────────────── */}
+      <DetailBreadcrumb
+        items={[
+          { label: t("breadcrumbHome"), href: "/" },
+          { label: isRent ? t("forRent") : t("forSale"), href: isRent ? "/rent" : "/buy" },
+          { label: listing.title },
+        ]}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative">
         <div className="relative h-[55vh] sm:h-[65vh] min-h-[380px] overflow-hidden">
-          <NextImage
-            src={allImages[currentImage]}
-            alt={listing.title}
-            fill
-            className="object-cover transition-opacity duration-500"
-            sizes="100vw"
-            priority
-          />
+          {/* Mobile: horizontal snap-scroll carousel (count pill updates on swipe). */}
+          <div
+            className="sm:hidden w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide flex"
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              const idx = Math.round(el.scrollLeft / el.clientWidth);
+              if (idx !== currentImage) setCurrentImage(idx);
+            }}
+          >
+            {allImages.map((img, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => { setCurrentImage(i); setLightboxOpen(true); }}
+                aria-label={`${t("gallery")} (${i + 1}/${allImages.length})`}
+                className="relative w-full h-full flex-shrink-0 snap-center overflow-hidden cursor-zoom-in"
+              >
+                <NextImage
+                  src={img}
+                  alt={`${listing.title} ${i + 1}`}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* Desktop: single static image with click-to-open. Arrows + thumbs handle navigation. */}
+          <div className="hidden sm:block w-full h-full cursor-zoom-in" onClick={() => setLightboxOpen(true)}>
+            <NextImage
+              src={allImages[currentImage]}
+              alt={listing.title}
+              fill
+              className="object-cover transition-opacity duration-500"
+              sizes="100vw"
+              priority
+            />
+          </div>
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent pointer-events-none" />
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="absolute top-20 sm:top-24 left-0 right-0 z-20"
-          >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-white/50 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors">{t("breadcrumbHome")}</Link>
-                <ChevronRight className="h-3 w-3" />
-                <Link href={isRent ? "/rent" : "/buy"} className="hover:text-white transition-colors">
-                  {isRent ? t("forRent") : t("forSale")}
-                </Link>
-                <ChevronRight className="h-3 w-3" />
-                <span className="text-white/80 truncate max-w-[200px]">{listing.title}</span>
-              </div>
-            </div>
-          </motion.div>
-
+          {/* Desktop-only prev/next arrows; mobile relies on the count pill + gallery modal */}
           {allImages.length > 1 && (
             <>
-              <button onClick={prevImage} className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors z-10">
+              <button onClick={prevImage} aria-label="Previous image" className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white items-center justify-center hover:bg-black/60 transition-colors z-10">
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <button onClick={nextImage} className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors z-10">
+              <button onClick={nextImage} aria-label="Next image" className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white items-center justify-center hover:bg-black/60 transition-colors z-10">
                 <ChevronRight className="h-5 w-5" />
               </button>
             </>
+          )}
+
+          {/* Count pill (matches off-plan style) — tap-target opens the gallery modal */}
+          {allImages.length > 1 && (
+            <button
+              onClick={() => setLightboxOpen(true)}
+              aria-label={`${t("gallery")} (${allImages.length})`}
+              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-1.5 hover:bg-black/80 transition-colors"
+            >
+              {currentImage + 1}/{allImages.length}
+            </button>
           )}
 
           <div className="absolute bottom-0 left-0 right-0 z-20">
@@ -716,7 +680,7 @@ export default function PropertyDetailClient({
                       {listing.address || `${listing.community}${listing.areas?.[0] ? `, ${listing.areas[0]}` : ""}${listing.city ? `, ${listing.city}` : ""}`}
                     </p>
                   )}
-                  <DetailActions propertyId={listing.slug} slug={listing.slug} title={listing.title} variant="hero" />
+                  <HeroActionRow slug={listing.slug} title={listing.title} />
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="hidden sm:flex flex-col items-start lg:items-end gap-2 sm:gap-3 pointer-events-auto flex-shrink-0">
@@ -836,30 +800,22 @@ export default function PropertyDetailClient({
             </motion.div>
           )}
 
-          {/* Tab bar */}
-          <div className="mt-4 bg-muted/50 p-1 sm:p-1.5 rounded-2xl flex gap-1 sm:gap-1.5 border border-border/50">
-            {(["overview", "location", "faq"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
-                  activeTab === tab
-                    ? "text-white shadow-md"
-                    : "text-muted-foreground hover:text-foreground hover:bg-card/50"
-                }`}
-                style={activeTab === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
-              >
-                <span className="relative z-10 uppercase">
-                  {tab === "overview" ? t("overviewTab") : tab === "location" ? t("locationTab") : t("faqTab")}
-                </span>
-              </button>
-            ))}
-          </div>
+          {/* Tab bar (shared component) */}
+          <DetailTabs<typeof activeTab>
+            className="mt-4"
+            active={activeTab}
+            onChange={setActiveTab}
+            tabs={[
+              { id: "overview", label: t("overviewTab") },
+              { id: "location", label: t("locationTab") },
+              { id: "faq", label: t("faqTab") },
+            ]}
+          />
         </div>
       </section>
 
       {/* ── CONTENT + SIDEBAR ────────────────────────────────────────────── */}
-      <section className="pb-28 sm:pb-24 pt-2">
+      <section className="pb-10 sm:pb-12 pt-2">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
 
@@ -902,13 +858,7 @@ export default function PropertyDetailClient({
                     };
                     return (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
-                        <div className="mb-5">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="w-4 h-px bg-accent" />
-                            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("overviewLabel")}</p>
-                          </div>
-                          <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
-                        </div>
+                        <SectionEyebrow eyebrow={t("overviewLabel")} title={t("description")} />
                         <div className="space-y-3">
                           {visible.map(renderBlock)}
                           {hasMore && (
@@ -928,13 +878,7 @@ export default function PropertyDetailClient({
 
                   {/* Key Highlights */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mb-10">
-                    <div className="mb-5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-4 h-px bg-accent" />
-                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("highlightsLabel")}</p>
-                      </div>
-                      <h2 className="text-xl font-bold text-foreground">{t("highlightsTitle")}</h2>
-                    </div>
+                    <SectionEyebrow eyebrow={t("highlightsLabel")} title={t("highlightsTitle")} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {highlights.map((h, i) => (
                         <div key={i} className="flex items-start gap-3 bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-sm transition-all group">
@@ -1057,117 +1001,30 @@ export default function PropertyDetailClient({
                     </motion.div>
                   )}
 
-                  {/* Amenities & Facilities */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }} className="mb-10">
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                        <Star className="h-4 w-4 text-accent" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("lifestyleLabel")}</p>
-                        <h2 className="text-base font-bold text-foreground">{t("amenitiesTitle")}</h2>
-                      </div>
-                    </div>
-                    <div className="rounded-2xl bg-card border border-border/30 p-5">
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {mergedAmenities.map((feat, i) => {
-                          const AIcon = amenityIcon(feat);
-                          return (
-                            <div key={i} className="flex flex-col items-center gap-2 text-center">
-                              <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-                                <AIcon className="h-5 w-5 text-accent" />
-                              </div>
-                              <span className="text-xs text-foreground font-medium leading-snug">{feat}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </motion.div>
+                  {/* Amenities & Facilities (shared component) */}
+                  <div className="mb-10">
+                    <AmenitiesSection amenities={mergedAmenities} />
+                  </div>
                   {/* Mortgage Calculator */}
                   <MortgageCalculator initialPrice={listing.price} embedded />
                 </>
               )}
 
-              {/* ═══ LOCATION TAB ═══ */}
+              {/* ═══ LOCATION TAB (shared component) ═══ */}
               {activeTab === "location" && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="space-y-6">
-                  {/* Location info card */}
-                  <div className="bg-card rounded-2xl border border-border/50 p-5 sm:p-6">
-                    <div className="flex items-center gap-2.5 mb-4">
-                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <MapPin className="h-4 w-4 text-primary" />
-                      </div>
-                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
-                    </div>
-                    {/* Community / City / Country cards */}
-                    <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("communityLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{listing.community || "—"}</p>
-                      </div>
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("cityLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{listing.city || "Dubai"}</p>
-                      </div>
-                      <div className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
-                        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">{t("countryLabel")}</p>
-                        <p className="text-xs sm:text-base font-bold text-foreground">{listing.country || "UAE"}</p>
-                      </div>
-                    </div>
-                    {/* Map */}
-                    <div className="rounded-xl overflow-hidden mb-4 border border-border/30" style={{ aspectRatio: "16/9" }}>
-                      <iframe
-                        src={hasMap
-                          ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`
-                          : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`}
-                        className="w-full h-full border-0"
-                        allowFullScreen
-                        loading="lazy"
-                        title="Location Map"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Nearby attractions */}
-                  {nearbyItems.length > 0 && (
-                    <div className="bg-card rounded-2xl border border-border/50 p-5 sm:p-6">
-                      <div className="flex items-center gap-2.5 mb-4">
-                        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
-                          <Compass className="h-4 w-4 text-accent" />
-                        </div>
-                        <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("nearbyAttractions")}</h2>
-                      </div>
-                      <div className="space-y-2 sm:space-y-3">
-                        {nearbyItems.map((item, i) => {
-                          const NIcon = nearbyIcon(item.type);
-                          return (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: -8 }}
-                              whileInView={{ opacity: 1, x: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: i * 0.06 }}
-                              className="flex items-center justify-between p-3 sm:p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors group"
-                            >
-                              <div className="flex items-center gap-2.5 sm:gap-3.5">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/15 transition-colors">
-                                  <NIcon className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-primary" />
-                                </div>
-                                <div>
-                                  <p className="text-xs sm:text-sm font-semibold text-foreground">{item.name}</p>
-                                  <p className="text-[10px] sm:text-xs text-muted-foreground">{item.type}</p>
-                                </div>
-                              </div>
-                              {item.distance && (
-                                <span className="text-[10px] sm:text-xs font-bold text-primary bg-primary/10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg">{item.distance}</span>
-                              )}
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+                  <LocationSection
+                    community={listing.community}
+                    city={listing.city || "Dubai"}
+                    country={listing.country || "UAE"}
+                    mapEmbedSrc={
+                      hasMap
+                        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`
+                        : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
+                    }
+                    nearby={nearbyItems}
+                    iconForType={nearbyIcon}
+                  />
                 </motion.div>
               )}
 
@@ -1181,40 +1038,8 @@ export default function PropertyDetailClient({
                       </div>
                       <h2 className="text-base sm:text-xl font-bold text-foreground">{tProject("faqLabel")}</h2>
                     </div>
-                    <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2 sm:space-y-3">
-                      {faqs.map((faq, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.05 }}
-                          className={`rounded-xl overflow-hidden transition-colors ${openFaq === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
-                        >
-                          <button
-                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                            className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
-                          >
-                            <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
-                            <ChevronDown className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180 text-primary" : ""}`} />
-                          </button>
-                          <AnimatePresence>
-                            {openFaq === i && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25, ease: "easeOut" as const }}
-                              >
-                                <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                                  <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
-                                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      ))}
+                    <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                      <FaqAccordion faqs={faqs} />
                     </div>
                   </div>
                 </motion.div>
@@ -1518,63 +1343,28 @@ export default function PropertyDetailClient({
         </div>
       </section>
 
-      {/* ── SIMILAR LISTINGS ─────────────────────────────────────────────── */}
+      {/* ── SIMILAR LISTINGS (shared component, compact off-plan style) ──── */}
       {similarListings.length > 0 && (
-        <section className="py-16 bg-muted/30 border-t border-border/50">
+        <section className="py-10 sm:py-14 bg-muted/30 border-t border-border/50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-4 h-px bg-accent" />
-                <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("similarLabel")}</p>
-              </div>
-              <h2 className="text-2xl font-bold text-foreground">{t("similarProperties")}</h2>
-            </div>
-            <motion.div
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-            >
-              {similarListings.map((l, i) => (
-                <motion.div
-                  key={l._id}
-                  variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } } }}
-                >
-                  <Link href={`/property/${l.slug}`} className="group block bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-accent/25">
-                    <div className="relative overflow-hidden aspect-[4/3]">
-                      <NextImage src={l.featuredImage || l.images?.[0] || "/assets/amenities-placeholder.webp"} alt={l.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="(max-width:768px) 100vw, 33vw" />
-                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        {l.listingType === "Rent" ? t("forRent") : t("forSale")}
-                      </span>
-                      <CardActions propertyId={l.slug} slug={l.slug} title={l.title} />
-                    </div>
-                    <div className="p-5">
-                      {l.community && (
-                        <p className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
-                          <MapPin className="h-3 w-3 text-accent" /> {l.community}{l.city ? `, ${l.city}` : ""}
-                        </p>
-                      )}
-                      <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2 text-sm">{l.title}</h3>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                        {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} {t("bed")}</span>}
-                        {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} {t("bath")}</span>}
-                        {!!l.size && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
-                      </div>
-                      <div className="flex items-center justify-between border-t border-border pt-3">
-                        <p className="text-sm font-bold text-primary">{fmtPrice(l.price, { fallback: t("priceOnRequest") })}</p>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
+            <SimilarItemsCarousel
+              eyebrow={t("similarLabel")}
+              title={t("similarProperties")}
+              items={similarListings.map((l) => ({
+                key: l._id,
+                title: l.title,
+                location: l.community ? `${l.community}${l.city ? `, ${l.city}` : ""}` : undefined,
+                statusLabel: l.listingType === "Rent" ? t("forRent") : t("forSale"),
+                imageUrl: l.featuredImage || l.images?.[0] || undefined,
+                priceLabel: fmtPrice(l.price, { fallback: t("priceOnRequest") }),
+                href: `/property/${l.slug}`,
+              }))}
+            />
           </div>
         </section>
       )}
 
-      {/* ── WHAT BUYERS/RENTERS SAY ──────────────────────────────────────── */}
+      {/* ── WHAT BUYERS/RENTERS SAY (shared component) ─────────────────── */}
       {(() => {
         const testimonials = isRent
           ? [
@@ -1588,47 +1378,9 @@ export default function PropertyDetailClient({
               { name: "James K.", role: "Investor · 1 BR Studio", rating: 4, text: "Strong rental yield analysis and realistic ROI projections — none of the inflated numbers other agencies threw at me. Bought sight-unseen based on their report." },
             ];
         return (
-          <section className="py-12 sm:py-16 border-t border-border/50">
+          <section className="py-10 sm:py-14 border-t border-border/50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(212,168,71,0.12)" }}>
-                  <MessageCircle className="h-4 w-4" style={{ color: "#D4A847" }} />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>
-                    {t("testimonialsLabel")}
-                  </p>
-                  <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("whatClientsSay")}</h2>
-                </div>
-              </div>
-              <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-5 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-2 sm:pb-0 snap-x snap-mandatory">
-                {testimonials.map((review, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.12 }}
-                    className="flex-shrink-0 w-[75%] sm:w-auto snap-start bg-card rounded-2xl border border-border/50 p-4 sm:p-6 flex flex-col"
-                  >
-                    <div className="flex items-center gap-0.5 mb-3">
-                      {Array.from({ length: 5 }).map((_, si) => (
-                        <Star key={si} className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${si < review.rating ? "fill-[#D4A847] text-[#D4A847]" : "text-border"}`} />
-                      ))}
-                    </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed flex-1 mb-4">&ldquo;{review.text}&rdquo;</p>
-                    <div className="flex items-center gap-3 pt-3 border-t border-border/50">
-                      <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center" style={{ border: "2px solid rgba(212,168,71,0.2)" }}>
-                        <span className="text-xs font-bold text-accent">{review.name.charAt(0)}</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground">{review.name}</p>
-                        <p className="text-[11px] text-muted-foreground">{review.role}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              <TestimonialsCarousel title={t("whatClientsSay")} items={testimonials} />
             </div>
           </section>
         );
@@ -1701,55 +1453,18 @@ export default function PropertyDetailClient({
         );
       })()}
 
-      {/* ── LIGHTBOX ─────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-            <button onClick={() => setLightboxOpen(false)} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-10">
-              <X className="h-5 w-5" />
-            </button>
-            {allImages.length > 1 && (
-              <>
-                <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </>
-            )}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={allImages[currentImage]} alt={listing.title} className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg" onClick={(e) => e.stopPropagation()} />
-            <div className="absolute bottom-6 text-white/60 text-sm">{currentImage + 1} / {allImages.length}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ── GALLERY MODAL (shared component) ─────────── */}
+      <GalleryModal
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        images={allImages}
+        activeIndex={currentImage}
+        onChange={setCurrentImage}
+        title={listing.title}
+      />
 
-      {/* ── STICKY MOBILE CTA ────────────────────────────────────────────── */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border px-4 py-3 flex gap-3">
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 text-white rounded-xl font-semibold text-sm transition-colors" style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
-          <MessageCircle className="h-4 w-4" />{t("whatsappInquiry")}
-        </a>
-        <a href="tel:+97154998811" className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold text-sm transition-colors">
-          <Phone className="h-4 w-4" />{t("callNow")}
-        </a>
-      </div>
-
-      {/* ── STICKY MOBILE CTA BAR ─────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all">
-            <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
-          </a>
-          <a href="tel:+97154998811"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] shadow-md active:scale-[0.97] transition-all"
-            style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-            <Phone className="h-4 w-4" /> {t("callNow")}
-          </a>
-        </div>
-      </div>
-      <div className="h-20 lg:hidden" />
+      {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
+      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+97154998811" />
 
       <Footer />
       <div className="hidden lg:block">

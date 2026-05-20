@@ -71,7 +71,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                   )}
                   <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug line-clamp-2">{l.title}</h3>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                    {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms} {t("bed")}</span>}
+                    {l.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{l.bedrooms === 0 ? "Studio" : `${l.bedrooms} ${t("bed")}`}</span>}
                     {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms} {t("bath")}</span>}
                     {l.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                   </div>

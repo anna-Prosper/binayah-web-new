@@ -781,6 +781,7 @@
     "noFloorPlans": "Планировки скоро появятся",
     "noLocation": "Детали расположения скоро появятся",
     "unitTypes": "Типы юнитов",
+    "sizeRange": "Диапазон площади",
     "completion": "Сдача",
     "inquire": "Узнать подробнее",
     "subscribe": "Подписаться",
@@ -1533,8 +1534,8 @@
   "whatsapp": {
     "ariaLabel": "Написать в WhatsApp",
     "whatsapp": "WhatsApp",
-    "call": "Звонок",
-    "liveChat": "Чат"
+    "call": "Позвонить",
+    "liveChat": "Онлайн-чат"
   },
   "scrollToTop": {
     "ariaLabel": "Наверх"

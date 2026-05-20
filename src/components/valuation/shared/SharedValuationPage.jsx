@@ -3524,7 +3524,10 @@ function stripSizeUnit(value) {
         .trim();
 }
 // ─── GateCard ─────────────────────────────────────────────────────────────────
-const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChange, onUnlock, }) => (<div className="mb-8">
+const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChange, onUnlock, }) => {
+    // Module-scope component — needs its own `tv` hook (see BedroomPicker note).
+    const tv = useTranslations("valuation");
+    return (<div className="mb-8">
     {/* Unlock card */}
     <div className={`relative overflow-hidden rounded-2xl border-2 bg-white p-5 shadow-lg transition-all duration-500 sm:p-8 ${highlight
         ? "border-[#D4A847]/55 shadow-[0_18px_44px_rgba(212,168,71,0.18)] ring-4 ring-[#D4A847]/10"
@@ -3607,6 +3610,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
       </button>
     </div>
   </div>);
+};
 const HiddenRangeValue = ({ currency = "AED" }) => {
     const tv = useTranslations("valuation");
     return (<div className="max-w-full text-white">
