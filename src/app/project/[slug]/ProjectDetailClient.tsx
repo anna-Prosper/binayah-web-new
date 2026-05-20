@@ -1497,8 +1497,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         ? project.amenities
                         : [tE("swimmingPool"), tE("gymnasium"), tE("kidsPlayArea"), tE("conciergeService"), tE("parking"), tE("security24x7"), tE("spaSauna"), tE("bbqArea"), tE("joggingTrack"), tE("retailOutlets"), tE("landscapedGardens"), tE("smartHomeFeatures")]
                     }
-                    eyebrow={t("lifestyleLabel")}
-                    title={t("amenitiesFacilities")}
                   />
 
                   {/* FAQ Section */}
@@ -2137,14 +2135,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       : undefined;
                     return (
                       <LocationSection
-                        labels={{
-                          title: t("locationLabel"),
-                          community: t("communityLabel"),
-                          city: t("cityLabel"),
-                          country: t("countryLabel"),
-                          viewOnMaps: t("viewOnGoogleMaps"),
-                          nearby: t("nearbyAttractions"),
-                        }}
                         community={project.community}
                         city={project.city}
                         country={project.country}
@@ -2435,7 +2425,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
       {/* ───── WHAT BUYERS SAY (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
         <TestimonialsCarousel
-          eyebrow={t("testimonialsLabel")}
           title={t("whatBuyersSay")}
           items={[
             { name: "Ahmed R.", role: `2 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatarUrl: "https://i.pravatar.cc/80?img=12" },

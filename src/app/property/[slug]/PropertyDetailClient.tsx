@@ -1003,11 +1003,7 @@ export default function PropertyDetailClient({
 
                   {/* Amenities & Facilities (shared component) */}
                   <div className="mb-10">
-                    <AmenitiesSection
-                      amenities={mergedAmenities}
-                      eyebrow={t("lifestyleLabel")}
-                      title={t("amenitiesTitle")}
-                    />
+                    <AmenitiesSection amenities={mergedAmenities} />
                   </div>
                   {/* Mortgage Calculator */}
                   <MortgageCalculator initialPrice={listing.price} embedded />
@@ -1018,13 +1014,6 @@ export default function PropertyDetailClient({
               {activeTab === "location" && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
                   <LocationSection
-                    labels={{
-                      title: t("locationLabel"),
-                      community: t("communityLabel"),
-                      city: t("cityLabel"),
-                      country: t("countryLabel"),
-                      nearby: t("nearbyAttractions"),
-                    }}
                     community={listing.community}
                     city={listing.city || "Dubai"}
                     country={listing.country || "UAE"}
@@ -1391,11 +1380,7 @@ export default function PropertyDetailClient({
         return (
           <section className="py-10 sm:py-14 border-t border-border/50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <TestimonialsCarousel
-                eyebrow={t("testimonialsLabel")}
-                title={t("whatClientsSay")}
-                items={testimonials}
-              />
+              <TestimonialsCarousel title={t("whatClientsSay")} items={testimonials} />
             </div>
           </section>
         );

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star, MessageCircle } from "lucide-react";
 import NextImage from "next/image";
+import { useTranslations } from "next-intl";
 
 export interface TestimonialItem {
   name: string;
@@ -15,12 +16,14 @@ export interface TestimonialItem {
 }
 
 export interface TestimonialsCarouselProps {
-  eyebrow: string;
+  /** Section title — varies per page ("What Buyers Say" vs "What Clients Say"). */
   title: string;
   items: TestimonialItem[];
 }
 
-export function TestimonialsCarousel({ eyebrow, title, items }: TestimonialsCarouselProps) {
+export function TestimonialsCarousel({ title, items }: TestimonialsCarouselProps) {
+  // Eyebrow ("Testimonials"/"ОТЗЫВЫ") is the same on both detail pages — read internally.
+  const tp = useTranslations("propertyDetail");
   if (!items || items.length === 0) return null;
 
   return (
@@ -34,7 +37,7 @@ export function TestimonialsCarousel({ eyebrow, title, items }: TestimonialsCaro
         </div>
         <div>
           <p className="text-[10px] uppercase tracking-[0.25em] font-semibold mb-0.5" style={{ color: "#D4A847" }}>
-            {eyebrow}
+            {tp("testimonialsLabel")}
           </p>
           <h2 className="text-lg sm:text-xl font-bold text-foreground">{title}</h2>
         </div>

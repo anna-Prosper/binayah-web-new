@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import {
   Star, Waves, Dumbbell, Baby, Car, Lock, HeartPulse, Flame, TrendingUp,
   Store, TreePine, Smartphone, Shield, Building2, Wind, Zap, Home, ArrowRight, Check,
@@ -35,13 +36,14 @@ function pickIcon(label: string): React.ElementType {
 
 export interface AmenitiesSectionProps {
   amenities: string[];
-  eyebrow: string;
-  title: string;
   /** Optional wrapper className for outer card spacing. */
   className?: string;
 }
 
-export function AmenitiesSection({ amenities, eyebrow, title, className = "" }: AmenitiesSectionProps) {
+export function AmenitiesSection({ amenities, className = "" }: AmenitiesSectionProps) {
+  // Both detail pages have these keys with the same values in their namespaces;
+  // pick propertyDetail as the single source of truth so call sites don't repeat them.
+  const t = useTranslations("propertyDetail");
   if (!amenities || amenities.length === 0) return null;
 
   return (
@@ -51,8 +53,8 @@ export function AmenitiesSection({ amenities, eyebrow, title, className = "" }: 
           <Star className="h-4 w-4 text-accent" />
         </div>
         <div>
-          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-accent">{eyebrow}</p>
-          <h2 className="text-base sm:text-xl font-bold text-foreground">{title}</h2>
+          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-accent">{t("lifestyleLabel")}</p>
+          <h2 className="text-base sm:text-xl font-bold text-foreground">{t("amenitiesTitle")}</h2>
         </div>
       </div>
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-3">

@@ -2,18 +2,8 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Compass, ExternalLink } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type React from "react";
-
-export interface LocationLabels {
-  title: string;
-  community: string;
-  city: string;
-  country: string;
-  /** Used for the "View on Google Maps" button. Optional — if omitted the button is hidden. */
-  viewOnMaps?: string;
-  /** Section title for the nearby attractions card. */
-  nearby: string;
-}
 
 export interface NearbyAttraction {
   name: string;
@@ -22,7 +12,6 @@ export interface NearbyAttraction {
 }
 
 export interface LocationSectionProps {
-  labels: LocationLabels;
   community?: string;
   city?: string;
   country?: string;
@@ -39,7 +28,6 @@ export interface LocationSectionProps {
 }
 
 export function LocationSection({
-  labels,
   community,
   city,
   country,
@@ -49,6 +37,9 @@ export function LocationSection({
   nearby,
   iconForType,
 }: LocationSectionProps) {
+  // Both detail pages have the same keys in their respective namespaces with the same
+  // values — picking propertyDetail keeps a single source of truth for this component.
+  const t = useTranslations("propertyDetail");
   return (
     <div className="space-y-4 sm:space-y-8">
       {/* Location info + map */}
@@ -57,15 +48,15 @@ export function LocationSection({
           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
             <MapPin className="h-4 w-4 text-primary" />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-foreground">{labels.title}</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
         </div>
 
         {/* Community / City / Country cells */}
         <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-5">
           {[
-            { label: labels.community, value: community },
-            { label: labels.city, value: city },
-            { label: labels.country, value: country },
+            { label: t("communityLabel"), value: community },
+            { label: t("cityLabel"), value: city },
+            { label: t("countryLabel"), value: country },
           ].map(({ label, value }) => (
             <div key={label} className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
               <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">
@@ -92,14 +83,14 @@ export function LocationSection({
           />
         </div>
 
-        {externalMapUrl && labels.viewOnMaps && (
+        {externalMapUrl && (
           <a
             href={externalMapUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors"
           >
-            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {labels.viewOnMaps}
+            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t("viewOnGoogleMaps")}
           </a>
         )}
       </div>
@@ -111,7 +102,7 @@ export function LocationSection({
             <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
               <Compass className="h-4 w-4 text-accent" />
             </div>
-            <h2 className="text-lg sm:text-xl font-bold text-foreground">{labels.nearby}</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("nearbyAttractions")}</h2>
           </div>
           <div className="space-y-2 sm:space-y-3">
             {nearby.map((item, i) => {
