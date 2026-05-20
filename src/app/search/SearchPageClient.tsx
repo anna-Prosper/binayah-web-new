@@ -723,7 +723,7 @@ function SearchContent() {
                             {listing.community && <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5"><MapPin className="h-3 w-3" />{listing.community}{listing.city ? `, ${listing.city}` : ""}</p>}
                             <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{listing.title}</h3>
                             <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-                              {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms}</span>}
+                              {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms === 0 ? "Studio" : listing.bedrooms}</span>}
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
                             </div>

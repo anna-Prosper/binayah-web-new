@@ -110,6 +110,7 @@ export default function PropertyComparison() {
     if (key === "priceFormatted") return formatPrice(p.price, p.currency);
     if (key === "size") return p.size ? `${new Intl.NumberFormat("en-AE").format(p.size)} ${p.sizeUnit || "sqft"}` : "-";
     if (key === "propertyType") return p.propertyType ? formatPropertyTypeLabel(p.propertyType, p.propertyType) : "-";
+    if (key === "bedrooms" && p.bedrooms === 0) return "Studio";
     const val = (p as unknown as Record<string, unknown>)[key];
     if (val == null) return "-";
     return String(val);
