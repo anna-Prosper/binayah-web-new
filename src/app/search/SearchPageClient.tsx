@@ -402,7 +402,7 @@ function SearchContent() {
             <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
               {secondaryModes.map((mode) => (
                 <button key={mode.value || "any"} onClick={() => { setIntent(mode.value); if (!mode.value) setStatus(status); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
-                  {mode.value === "" ? t("tabAnySecondary") : mode.value === "buy" ? t("buy") : t("rent")}
+                  {mode.value === "" ? t("tabAll") : mode.value === "buy" ? t("forSale") : t("forRent")}
                 </button>
               ))}
             </div>
