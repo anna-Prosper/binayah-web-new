@@ -587,14 +587,47 @@ export default function PropertyDetailClient({
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative">
         <div className="relative h-[55vh] sm:h-[65vh] min-h-[380px] overflow-hidden">
-          <NextImage
-            src={allImages[currentImage]}
-            alt={listing.title}
-            fill
-            className="object-cover transition-opacity duration-500"
-            sizes="100vw"
-            priority
-          />
+          {/* Mobile: horizontal snap-scroll carousel (count pill updates on swipe). */}
+          <div
+            className="sm:hidden w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide flex"
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              const idx = Math.round(el.scrollLeft / el.clientWidth);
+              if (idx !== currentImage) setCurrentImage(idx);
+            }}
+          >
+            {allImages.map((img, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => { setCurrentImage(i); setLightboxOpen(true); }}
+                aria-label={`${t("gallery")} (${i + 1}/${allImages.length})`}
+                className="relative w-full h-full flex-shrink-0 snap-center overflow-hidden cursor-zoom-in"
+              >
+                <NextImage
+                  src={img}
+                  alt={`${listing.title} ${i + 1}`}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* Desktop: single static image with click-to-open. Arrows + thumbs handle navigation. */}
+          <div className="hidden sm:block w-full h-full cursor-zoom-in" onClick={() => setLightboxOpen(true)}>
+            <NextImage
+              src={allImages[currentImage]}
+              alt={listing.title}
+              fill
+              className="object-cover transition-opacity duration-500"
+              sizes="100vw"
+              priority
+            />
+          </div>
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/25 to-transparent pointer-events-none" />
 
@@ -782,7 +815,7 @@ export default function PropertyDetailClient({
       </section>
 
       {/* ── CONTENT + SIDEBAR ────────────────────────────────────────────── */}
-      <section className="pb-28 sm:pb-24 pt-2">
+      <section className="pb-10 sm:pb-12 pt-2">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
 
