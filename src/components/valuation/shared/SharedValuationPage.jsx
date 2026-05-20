@@ -185,6 +185,24 @@ function extractCommunity(unit) {
         return "Your Property";
     return ((_a = unit.split(",")[0]) === null || _a === void 0 ? void 0 : _a.trim()) || "Your Property";
 }
+// Strip the WhatsApp-style sign-off ("Thank you," / "Binayah team") from a
+// server reply so it doesn't look out of place on the web form. The web
+// alert has its own dismiss UI; the courtesy lines are noise here.
+function stripWhatsappSignature(message) {
+    if (!message) return "";
+    return String(message)
+        .split("\n")
+        .filter((line) => {
+            const t = line.trim();
+            if (!t) return true;
+            if (/^thank\s*you[,!.]?$/i.test(t)) return false;
+            if (/^[—\-•]?\s*binayah\s*team[.!]?$/i.test(t)) return false;
+            return true;
+        })
+        .join("\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+}
 function sanitizeComparableDisplayDate(value) {
     const normalized = String(value || "").trim();
     if (!normalized) {
@@ -1628,37 +1646,114 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6">
 
-                  {/* Inline alert from the server's free-text intake — renders
-                       when the from-text endpoint returns needs_more_details
-                       or guidance. The user reads the ask, fills the
-                       highlighted fields, resubmits. */}
-                  {smartIntakeAlert ? (
+                  {/* Inline alert from the server's free-text intake.
+                       Two branches:
+                       - "guidance": the LLM found no property in the message
+                         (gibberish / chit-chat). We render a web-native tip
+                         card with three actionable suggestions instead of
+                         the raw WhatsApp reply.
+                       - "needs_more_details": real partial extraction. We
+                         keep the server's ask but strip the WhatsApp
+                         signature so it reads cleanly on web. */}
+                  {smartIntakeAlert && smartIntakeAlert.kind === "guidance" ? (
                     <div
                       role="status"
-                      className={`rounded-2xl border px-4 py-3 text-sm ${
-                        smartIntakeAlert.kind === "guidance"
-                          ? "border-[#e4d39a] bg-[#fdf7ec] text-[#7a5b14]"
-                          : "border-[#d4a847]/40 bg-[#fdf7ec] text-[#5a3f0a]"
-                      }`}
+                      className="relative overflow-hidden rounded-2xl border border-[#D4A847]/40 bg-gradient-to-br from-[#fdf7ec] to-white p-5 sm:p-6"
                     >
-                      <p className="whitespace-pre-wrap leading-relaxed">
-                        {smartIntakeAlert.message}
-                      </p>
-                      {Array.isArray(smartIntakeAlert.missingFields) && smartIntakeAlert.missingFields.length > 0 ? (
-                        <p className="mt-2 text-xs text-[#7a5b14]">
-                          Highlighted below:{" "}
-                          {smartIntakeAlert.missingFields
-                            .map((f) => ({ city: "City", community: "Area / Community", location: "Area / Community", propertyName: "Building", bedrooms: "Bedrooms", transactionType: "Transaction type" })[f] || f)
-                            .join(", ")}
-                        </p>
-                      ) : null}
                       <button
                         type="button"
+                        aria-label="Dismiss"
                         onClick={() => setSmartIntakeAlert(null)}
-                        className="mt-2 text-xs font-medium underline-offset-2 hover:underline"
+                        className="absolute top-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded-full text-[#7a5b14]/70 transition-colors hover:bg-[#D4A847]/15 hover:text-[#5a3f0a]"
                       >
-                        Dismiss
+                        <X className="h-4 w-4"/>
                       </button>
+                      <div className="flex items-start gap-3 pr-8">
+                        <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#D4A847] to-[#B8922F] text-white shadow-[0_6px_14px_rgba(212,168,71,0.28)]">
+                          <Sparkles className="h-4 w-4"/>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-base font-bold text-[#5a3f0a]">
+                            We couldn’t spot a property in your message
+                          </h3>
+                          <p className="mt-0.5 text-xs text-[#7a5b14]/80">
+                            Pick one of these and we’ll value it for you.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSmartQuery("Marina Gate 1, Dubai Marina, 2BR");
+                            setSmartIntakeAlert(null);
+                            smartInputRef.current?.focus();
+                          }}
+                          className="group flex items-start gap-2.5 rounded-xl border border-[#D4A847]/25 bg-white px-3 py-3 text-left transition-all hover:border-[#0B3D2E]/30 hover:bg-[#0B3D2E]/[0.025] hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20"
+                        >
+                          <MessageCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-[#10231e]">Type the details</p>
+                            <p className="mt-0.5 text-[11px] text-[#66706d] leading-snug truncate">
+                              “Marina Gate 1, 2BR” →
+                            </p>
+                          </div>
+                        </button>
+                        <div className="flex items-start gap-2.5 rounded-xl border border-[#D4A847]/25 bg-white px-3 py-3 text-left">
+                          <Link2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-[#10231e]">Paste a listing URL</p>
+                            <p className="mt-0.5 text-[11px] text-[#66706d] leading-snug">
+                              From PropertyFinder, Bayut, or Dubizzle.
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSmartIntakeAlert(null);
+                            deedInputRef.current?.click();
+                          }}
+                          className="group flex items-start gap-2.5 rounded-xl border border-[#D4A847]/25 bg-white px-3 py-3 text-left transition-all hover:border-[#0B3D2E]/30 hover:bg-[#0B3D2E]/[0.025] hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20"
+                        >
+                          <FileUp className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0B3D2E]"/>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-[#10231e]">Upload the title deed</p>
+                            <p className="mt-0.5 text-[11px] text-[#66706d] leading-snug">
+                              PDF or image — we’ll extract the rest.
+                            </p>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  ) : smartIntakeAlert ? (
+                    <div
+                      role="status"
+                      className="rounded-2xl border border-[#d4a847]/40 bg-[#fdf7ec] px-4 py-3 text-sm text-[#5a3f0a]"
+                    >
+                      <div className="flex items-start gap-2.5">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#B8922F]"/>
+                        <div className="min-w-0 flex-1">
+                          <p className="whitespace-pre-wrap leading-relaxed">
+                            {stripWhatsappSignature(smartIntakeAlert.message)}
+                          </p>
+                          {Array.isArray(smartIntakeAlert.missingFields) && smartIntakeAlert.missingFields.length > 0 ? (
+                            <p className="mt-2 text-xs text-[#7a5b14]">
+                              Highlighted below:{" "}
+                              {smartIntakeAlert.missingFields
+                                .map((f) => ({ city: "City", community: "Area / Community", location: "Area / Community", propertyName: "Building", bedrooms: "Bedrooms", transactionType: "Transaction type" })[f] || f)
+                                .join(", ")}
+                            </p>
+                          ) : null}
+                          <button
+                            type="button"
+                            onClick={() => setSmartIntakeAlert(null)}
+                            className="mt-2 text-xs font-medium underline-offset-2 hover:underline"
+                          >
+                            Dismiss
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ) : null}
 
