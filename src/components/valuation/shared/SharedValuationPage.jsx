@@ -811,6 +811,7 @@ function mapApiToResult(api, form) {
             price: c.price,
             reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
             visibility: "full",
+            match_scope: c.match_scope || null,
         })),
         ...((_c = api.listings) !== null && _c !== void 0 ? _c : []).map((c) => ({
             type: "Listing",
@@ -819,6 +820,7 @@ function mapApiToResult(api, form) {
             price: c.price,
             reason: [c.headline, c.notes].filter(Boolean).join(". ") || "Relevant comparable.",
             visibility: "full",
+            match_scope: c.match_scope || null,
         })),
     ];
     return {
@@ -856,6 +858,18 @@ function mapApiToResult(api, form) {
         sources: api.sources || [],
         sourceCount: Array.isArray(api.sources) ? api.sources.length : 0,
         delivery: api.delivery || null,
+        // Engine-emitted enrichments. cohortBreakdown is the per-scope
+        // transaction count summary (same_building / sibling / community)
+        // already rendered on the admin page; surfacing it here gives users
+        // grounding for the confidence band. marketReference carries the
+        // "view on Property Finder" deep-link the engine derives from the
+        // resolved location. valuationTier flags community/broader/insufficient
+        // estimates so the UI can show a "limited evidence" banner.
+        cohortBreakdown: api.cohort_breakdown || null,
+        marketReference: api.market_reference || null,
+        valuationTier: api.valuation_tier || null,
+        priceBandTrace: api.price_band_trace || null,
+        valuationMethodology: api.valuation_methodology || null,
     };
 }
 function mapPreviewApiToResult(api, form) {
@@ -920,6 +934,13 @@ function mapPreviewApiToResult(api, form) {
         disclaimer: "AI-assisted market snapshot. Not a formal appraisal.",
         sources: [],
         delivery: null,
+        // Engine enrichments — same fields the unlocked path forwards, so the
+        // preview UI can show cohort counts and a tier banner before unlock.
+        cohortBreakdown: api.cohort_breakdown || null,
+        marketReference: api.market_reference || null,
+        valuationTier: api.valuation_tier || null,
+        priceBandTrace: api.price_band_trace || null,
+        valuationMethodology: api.valuation_methodology || null,
     };
 }
 function getPreviewRange(result, label) {
@@ -1031,65 +1052,8 @@ async function readFileAsBase64(file) {
         reader.readAsDataURL(file);
     });
 }
-// Core streaming fetch — throws on failure, returns ApiResponse on success
-async function fetchValuation(payload, resolveApiUrl = defaultResolveApiUrl) {
-    var _a, _b, _c, _d;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), STREAM_TIMEOUT_MS);
-    try {
-        const res = await fetch(resolveApiUrl("/api/valuation/stream"), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-            signal: controller.signal,
-        });
-        if (!res.ok) {
-            const errData = await res.json().catch(() => null);
-            if (res.status === 429) {
-                const retry = errData === null || errData === void 0 ? void 0 : errData.retryAfterSeconds;
-                throw new Error(retry
-                    ? `Service at capacity. Retrying in ${retry} seconds…`
-                    : ((_a = errData === null || errData === void 0 ? void 0 : errData.error) !== null && _a !== void 0 ? _a : "Too many requests."));
-            }
-            throw new Error((_b = errData === null || errData === void 0 ? void 0 : errData.error) !== null && _b !== void 0 ? _b : `Request failed (${res.status}).`);
-        }
-        if (!res.body)
-            throw new Error("Streaming not supported in this browser.");
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-        let finalData = null;
-        while (true) {
-            const { value, done } = await reader.read();
-            if (done)
-                break;
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-            buffer = (_c = lines.pop()) !== null && _c !== void 0 ? _c : "";
-            for (const line of lines) {
-                if (!line.trim())
-                    continue;
-                let evt;
-                try {
-                    evt = JSON.parse(line);
-                }
-                catch (_e) {
-                    continue;
-                }
-                if (evt.event === "error")
-                    throw new Error((_d = evt.error) !== null && _d !== void 0 ? _d : "Valuation failed.");
-                if (evt.event === "final" && evt.data)
-                    finalData = evt.data;
-            }
-        }
-        if (!finalData)
-            throw new Error("Stream ended before a result was returned.");
-        return finalData;
-    }
-    finally {
-        clearTimeout(timeout);
-    }
-}
+// (Removed) `fetchValuation` was the helper for the deleted `runValuation`
+// path. `runValuationWithPhases` inlines its own streaming reader.
 // ─── Field error component ────────────────────────────────────────────────────
 const FieldError = ({ message }) => message ? (<p className="text-xs text-[#b42318] mt-1 flex items-center gap-1">
       <AlertTriangle className="h-3 w-3 flex-shrink-0"/>
@@ -1134,10 +1098,12 @@ const DEED_DUMMY_RESULT = {
     ],
     movingFactorsLocked: false,
     disclaimer: "This is a simulated demo result. For a live AI-powered estimate using real market data, use the smart search or fill the fields manually.",
+    // Neutral placeholder sources for the demo result. Live valuations get
+    // their `sources` array from the engine response — this list only ever
+    // renders if the dummy branch is shown, and should not name third-party
+    // data vendors in customer-facing copy.
     sources: [
-        { url: "https://www.propertyfinder.ae", title: "Property Finder — Marina Gate listings" },
-        { url: "https://www.bayut.com", title: "Bayut — Dubai Marina transactions" },
-        { url: "https://www.dubailand.gov.ae", title: "DLD — transaction records" },
+        { url: "https://binayah.com", title: "Recent Dubai Marina market activity" },
     ],
 };
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -1254,6 +1220,14 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const turnstilePendingRef = useRef(null);
     const turnstileConfigRef = useRef(defaultTurnstileConfig);
     const documentUploadConfigRef = useRef(defaultDocumentUploadConfig);
+    // Once /api/valuation/config succeeds, cache the response so subsequent
+    // submit/unlock/deed calls reuse it. Without this, a single 5xx blip
+    // from the config endpoint cascades to every action on the page.
+    const cachedConfigRef = useRef(null);
+    // Track the active streaming controller so resubmits / disambig picks
+    // can abort an in-flight request before kicking off the next one — stops
+    // stale stream responses from overwriting newer state via applyLoadedReport.
+    const activeStreamControllerRef = useRef(null);
     const [showPlaces, setShowPlaces] = useState(false);
     const smartInputRef = useRef(null);
     const smartSuggestionsRef = useRef(null);
@@ -1431,7 +1405,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const applyLoadedReport = useCallback((data) => {
+    const applyLoadedReport = useCallback((data, options = {}) => {
         var _a;
         // PF-only engine disambiguation: server signals that PropertyFinder
         // autocomplete returned multiple plausible matches. Show a picker
@@ -1459,14 +1433,23 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
             return;
         }
-        const nextForm = buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE);
-        setForm(nextForm);
-        setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
-        setSmartParsed({});
+        // Only rebuild the form from the server-parsed inquiry on hydration
+        // (page load with ?valuation=) — otherwise we'd overwrite the user's
+        // own typed values whenever a stream resolves or an unlock returns.
+        // `options.resetForm` is passed `true` by the hydration path only.
+        if (options.resetForm) {
+            const nextForm = buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE);
+            setForm(nextForm);
+            setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
+            setSmartParsed({});
+            setFieldSources({ city: "manual", maids: "manual" });
+            setSmartSnapshot({});
+        }
+        const formForMapping = options.resetForm
+            ? buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE)
+            : form;
         setFieldErrors({});
         setGateErrors({});
-        setFieldSources({ city: "manual", maids: "manual" });
-        setSmartSnapshot({});
         setGate({ name: "", phone: "", email: "" });
         setGlobalError(null);
         setUseDeedResult(false);
@@ -1477,11 +1460,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setDisambiguationCandidates(null);
         setDisambiguationContext(null);
         if ((data === null || data === void 0 ? void 0 : data.accessState) === "preview") {
-            setResult(mapPreviewApiToResult(data, nextForm));
+            setResult(mapPreviewApiToResult(data, formForMapping));
             setUnlocked(false);
         }
         else {
-            setResult(mapApiToResult(data, nextForm));
+            setResult(mapApiToResult(data, formForMapping));
             setUnlocked((data === null || data === void 0 ? void 0 : data.accessState) === "unlocked");
         }
         if (data === null || data === void 0 ? void 0 : data.leadId) {
@@ -1489,7 +1472,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
         setStep("results");
         (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, []);
+    }, [form]);
     const copyShareLink = useCallback(() => {
         const shareUrl = buildShareUrlForValuationId(result === null || result === void 0 ? void 0 : result.leadId);
         if (!shareUrl || !navigator.clipboard) {
@@ -1558,7 +1541,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 if (cancelled) {
                     return;
                 }
-                applyLoadedReport(data);
+                // Hydration from URL ?valuation=... — rebuild the form from
+                // the server-side inquiry (this is the one path where doing
+                // so is correct; everywhere else we keep user-typed values).
+                applyLoadedReport(data, { resetForm: true });
             }
             catch (err) {
                 const msg = err instanceof Error ? err.message : "Could not load the saved valuation report.";
@@ -1607,39 +1593,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             tabIndex: 0,
         };
     }, [scrollToUnlockSection]);
-    const runValuation = useCallback(async (payload, attempt) => {
-        var _a, _b;
-        try {
-            const data = await fetchValuation(payload, resolveApiUrl);
-            // Update phase to final on success
-            setActiveProcessStep(3);
-            applyLoadedReport(data);
-        }
-        catch (err) {
-            const msg = err instanceof Error ? err.message : "Something went wrong.";
-            console.error(`[ValuationPage] attempt ${attempt}:`, err);
-            // Detect abort = timeout
-            const isTimeout = err instanceof Error && err.name === "AbortError";
-            const isRetryable = isTimeout || (!msg.includes("Too many requests") &&
-                !msg.includes("capacity") &&
-                attempt < MAX_RETRIES);
-            if (isRetryable) {
-                const nextAttempt = attempt + 1;
-                setRetryCount(nextAttempt);
-                setActiveProcessStep(0); // reset progress
-                await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
-                await runValuation(payload, nextAttempt);
-            }
-            else {
-                setGlobalError(isTimeout
-                    ? "The request timed out after multiple attempts. Please try again."
-                    : msg);
-                setStep("form");
-                (_b = topRef.current) === null || _b === void 0 ? void 0 : _b.scrollIntoView({ behavior: "smooth" });
-            }
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [applyLoadedReport, form, resolveApiUrl]);
+    // `runValuation` (non-streaming, retries via recursion) was the original
+    // submit path. It was replaced by `runValuationWithPhases` (NDJSON stream
+    // with built-in retry) and is no longer called from anywhere. Removed to
+    // eliminate the dead second copy and avoid future confusion about which
+    // path is "live".
     const handleDeedUpload = async (file) => {
         setDeedFile(file);
         setDeedParsing(true);
@@ -1715,7 +1673,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         try {
             const { turnstileConfig } = await loadValuationConfig();
             const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
-            const apiPayload = Object.assign({ countryCode: form.countryCode || "AE", transactionType: form.transactionType, propertyName: form.unit, community: form.area, location: form.area, city: form.city, propertyType: form.type, bedrooms: form.beds, maids: form.maids, size: form.size }, (turnstileToken ? { turnstileToken } : {}));
+            // `community` alone is enough — backend normalizeInquiry reads
+            // either `community` or `location`. Sending both was legacy noise.
+            const apiPayload = Object.assign({ countryCode: form.countryCode || "AE", transactionType: form.transactionType, propertyName: form.unit, community: form.area, city: form.city, propertyType: form.type, bedrooms: form.beds, maids: form.maids, size: form.size }, (turnstileToken ? { turnstileToken } : {}));
             await runValuationWithPhases(apiPayload, 1);
         }
         catch (err) {
@@ -1727,7 +1687,17 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     // Separate function that also tracks phases (keeps runValuation clean for retries)
     const runValuationWithPhases = async (payload, attempt) => {
         var _a, _b, _c, _d, _e, _f;
+        // Abort any in-flight stream before kicking off a new one. Otherwise a
+        // resubmit (or disambig pick) leaves the old stream running — when it
+        // resolves, applyLoadedReport stomps the result of the newer stream.
+        if (attempt === 1 && activeStreamControllerRef.current) {
+            try { activeStreamControllerRef.current.abort(); } catch { /* ignore */ }
+            activeStreamControllerRef.current = null;
+        }
         const controller = new AbortController();
+        if (attempt === 1) {
+            activeStreamControllerRef.current = controller;
+        }
         const timeout = setTimeout(() => controller.abort(), STREAM_TIMEOUT_MS);
         try {
             const res = await fetch(resolveApiUrl("/api/valuation/stream"), {
@@ -1804,6 +1774,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         finally {
             clearTimeout(timeout);
             resetTurnstileWidget();
+            // Only the top-level (attempt===1) call owns the controller ref.
+            // Internal retries (attempt > 1) get their own controller and must
+            // NOT touch the ref or they'd race the top-level abort logic.
+            if (attempt === 1 && activeStreamControllerRef.current === controller) {
+                activeStreamControllerRef.current = null;
+            }
         }
     };
     // PF disambiguation: user picked a candidate from the surfaced list.
@@ -1824,19 +1800,23 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         try {
             const { turnstileConfig } = await loadValuationConfig();
             const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+            // Lock the picked candidate by id — the backend uses `locationId`
+            // to skip its own autocomplete resolution and prevent the user
+            // from being re-disambiguated on the next turn. Mirrors the same
+            // architectural fix already shipped on the WhatsApp pipeline.
             const apiPayload = Object.assign(
                 {
                     countryCode: updatedForm.countryCode || ctxInquiry.countryCode || "AE",
                     transactionType: updatedForm.transactionType || ctxInquiry.transactionType,
                     propertyName: candidate.name,
                     community: updatedForm.area || ctxInquiry.community || ctxInquiry.location || "",
-                    location: updatedForm.area || ctxInquiry.location || ctxInquiry.community || "",
                     city: updatedForm.city || ctxInquiry.city,
                     propertyType: updatedForm.type || ctxInquiry.propertyType,
                     bedrooms: updatedForm.beds || ctxInquiry.bedrooms,
                     maids: updatedForm.maids || ctxInquiry.maids,
                     size: updatedForm.size || ctxInquiry.size,
                 },
+                candidate.id != null ? { locationId: String(candidate.id) } : {},
                 turnstileToken ? { turnstileToken } : {},
             );
             await runValuationWithPhases(apiPayload, 1);
@@ -1847,6 +1827,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
     };
     const loadValuationConfig = useCallback(async () => {
+        // Resilience: once we've successfully loaded the config, reuse it for
+        // subsequent submit/unlock/deed calls. Only re-fetch if the request
+        // explicitly fails — a single 5xx blip from /api/valuation/config
+        // would otherwise block every protected action on the page.
+        if (cachedConfigRef.current) {
+            return cachedConfigRef.current;
+        }
         const response = await fetch(resolveApiUrl("/api/valuation/config"), {
             headers: { Accept: "application/json" },
             cache: "no-store",
@@ -1874,10 +1861,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         const nextDocumentUploadConfig = normalizeDocumentUploadConfig(configData === null || configData === void 0 ? void 0 : configData.documentUpload);
         turnstileConfigRef.current = nextTurnstileConfig;
         documentUploadConfigRef.current = nextDocumentUploadConfig;
-        return {
+        const resolved = {
             turnstileConfig: nextTurnstileConfig,
             documentUploadConfig: nextDocumentUploadConfig,
         };
+        cachedConfigRef.current = resolved;
+        return resolved;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const ensureTurnstileWidget = useCallback(async (config) => {
@@ -2457,27 +2446,32 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             transition={{ duration: 0.4 }}
             className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14"
           >
-            <div className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
-              {/* eslint-disable-next-line i18next/no-literal-string */}
+            <div
+              role="radiogroup"
+              aria-labelledby="disambig-heading"
+              className="rounded-[28px] border border-[#0B3D2E]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10"
+            >
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>
-                Pick your property
+                {tv("disambigKicker")}
               </p>
-              <h2 className="mb-2 text-2xl font-bold sm:text-3xl text-[#0B3D2E]">
-                Which one of these is your property?
+              <h2 id="disambig-heading" className="mb-2 text-2xl font-bold sm:text-3xl text-[#0B3D2E]">
+                {tv("disambigTitle")}
               </h2>
               <p className="text-[#66706d] mb-6">
-                We found a few possible matches for &ldquo;{form.unit || form.area || "this location"}&rdquo;.
-                Pick the right one and we&rsquo;ll value it.
+                {tv("disambigSubtitle", { query: form.unit || form.area || tv("disambigFallbackQuery") })}
               </p>
               <div className="grid gap-3">
                 {disambiguationCandidates.map((candidate, idx) => (
                   <button
                     key={candidate.id != null ? String(candidate.id) : `cand-${idx}`}
                     type="button"
+                    role="radio"
+                    aria-checked="false"
                     onClick={() => selectDisambiguationCandidate(candidate)}
                     className="group flex items-center gap-4 rounded-2xl border border-[#0B3D2E]/12 bg-white px-5 py-4 text-left transition-all hover:border-[#0B3D2E]/40 hover:bg-[#FCFBF7] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/30"
                   >
                     <span
+                      aria-hidden="true"
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
                       style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                     >
@@ -2485,12 +2479,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </span>
                     <span className="flex flex-col">
                       <span className="text-base font-semibold text-[#0B3D2E]">{candidate.name}</span>
-                      <span className="text-xs text-[#66706d]">
-                        PropertyFinder location ID: {candidate.id}
-                      </span>
+                      {candidate.community ? (
+                        <span className="text-xs text-[#66706d]">{candidate.community}</span>
+                      ) : null}
                     </span>
                     <span className="ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
-                      Select →
+                      {tv("disambigSelect")}
                     </span>
                   </button>
                 ))}
@@ -2504,7 +2498,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 }}
                 className="mt-6 text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline"
               >
-                None of these — let me edit my search
+                {tv("disambigNoneOfThese")}
               </button>
             </div>
           </motion.div>
@@ -2877,6 +2871,19 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         const data = await response.json().catch(() => null);
                         if (!response.ok) {
                             throw new Error((data === null || data === void 0 ? void 0 : data.error) || "Could not unlock the full report.");
+                        }
+                        // Guard: if the unlock response would route into the
+                        // disambiguation picker (server returned candidates
+                        // again for some reason), surface as an inline error
+                        // rather than dumping the user into a picker mid-unlock.
+                        if (
+                            data &&
+                            data.decision === "needs_more_details" &&
+                            Array.isArray(data.disambiguationCandidates) &&
+                            data.disambiguationCandidates.length >= 2
+                        ) {
+                            setGateErrors({ contact: "We could not finalize this property. Start a new search and pick the exact building." });
+                            return;
                         }
                         applyLoadedReport(data);
                     }
@@ -3291,6 +3298,11 @@ const SmartTag = ({ label, value }) => (<span className="inline-flex items-cente
     {value}
   </span>);
 const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
+    // `tv` must be created inside the component body — this picker is at module
+    // scope so it doesn't inherit `tv` from the parent SharedValuationPage. The
+    // labels referenced below ({tv("bedrooms")}, {tv("maidsRoom")}) would throw
+    // ReferenceError without this hook.
+    const tv = useTranslations("valuation");
     const [open, setOpen] = useState(false);
     const pickerRef = useRef(null);
     useEffect(() => {
@@ -3381,6 +3393,8 @@ const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
     </div>);
 };
 const SizePicker = ({ onChange, value, }) => {
+    // Module-scope component — needs its own `tv` hook (see BedroomPicker note).
+    const tv = useTranslations("valuation");
     const [open, setOpen] = useState(false);
     const pickerRef = useRef(null);
     const parsedValue = parseSizeValue(value);

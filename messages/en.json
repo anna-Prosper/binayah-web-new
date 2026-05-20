@@ -464,7 +464,13 @@
     "priceAfterUnlock": "price available after unlock",
     "bedrooms": "Bedrooms",
     "maidsRoom": "Maid's room",
-    "presets": "Presets"
+    "presets": "Presets",
+    "disambigKicker": "Pick your property",
+    "disambigTitle": "Which one of these is your property?",
+    "disambigSubtitle": "We found a few possible matches for \"{query}\". Pick the right one and we'll value it.",
+    "disambigFallbackQuery": "this location",
+    "disambigSelect": "Select →",
+    "disambigNoneOfThese": "None of these — let me edit my search"
   },
   "contact": {
     "title": "Contact Us",

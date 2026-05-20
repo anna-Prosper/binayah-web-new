@@ -470,7 +470,13 @@
     "priceAfterUnlock": "解锁后可查看价格",
     "bedrooms": "卧室",
     "maidsRoom": "佣人房",
-    "presets": "预设"
+    "presets": "预设",
+    "disambigKicker": "选择您的房产",
+    "disambigTitle": "以下哪个是您的房产？",
+    "disambigSubtitle": "我们为「{query}」找到了几个可能的匹配项。请选择正确的，我们将进行估价。",
+    "disambigFallbackQuery": "此位置",
+    "disambigSelect": "选择 →",
+    "disambigNoneOfThese": "都不是 — 让我修改搜索"
   },
   "contact": {
     "title": "联系我们",

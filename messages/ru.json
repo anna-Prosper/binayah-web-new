@@ -464,7 +464,13 @@
     "priceAfterUnlock": "цена откроется после разблокировки",
     "bedrooms": "Спальни",
     "maidsRoom": "Комната прислуги",
-    "presets": "Быстрый выбор"
+    "presets": "Быстрый выбор",
+    "disambigKicker": "Выберите вашу недвижимость",
+    "disambigTitle": "Какой из этих объектов ваш?",
+    "disambigSubtitle": "Мы нашли несколько возможных совпадений для «{query}». Выберите правильный, и мы оценим его.",
+    "disambigFallbackQuery": "этого места",
+    "disambigSelect": "Выбрать →",
+    "disambigNoneOfThese": "Ни один из этих — отредактировать поиск"
   },
   "contact": {
     "title": "Связаться с нами",

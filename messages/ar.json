@@ -464,7 +464,13 @@
     "priceAfterUnlock": "السعر يظهر بعد الفتح",
     "bedrooms": "غرف النوم",
     "maidsRoom": "غرفة خادمة",
-    "presets": "خيارات جاهزة"
+    "presets": "خيارات جاهزة",
+    "disambigKicker": "اختر عقارك",
+    "disambigTitle": "أي من هذه يطابق عقارك؟",
+    "disambigSubtitle": "وجدنا عدة مطابقات محتملة لـ \"{query}\". اختر الصحيح وسنقوم بتقييمه.",
+    "disambigFallbackQuery": "هذا الموقع",
+    "disambigSelect": "اختيار →",
+    "disambigNoneOfThese": "لا شيء من هذه — دعني أعدل البحث"
   },
   "contact": {
     "title": "تواصل معنا",
