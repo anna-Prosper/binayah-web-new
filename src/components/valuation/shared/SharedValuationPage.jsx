@@ -23,162 +23,19 @@ async function getBuildingsIndex() {
     }
     return buildingsIndexPromise;
 }
-const LOCATION_DATA = {
-    Dubai: [
-        { area: "Downtown Dubai", buildings: [
-                "Burj Khalifa", "The Address Downtown", "Fountain Views 1", "Fountain Views 2", "Fountain Views 3",
-                "Opera Grand", "Bellevue Tower 1", "Bellevue Tower 2", "Il Primo", "Vida Residences Downtown",
-                "Act One | Act Two", "29 Boulevard", "Standpoint Tower A", "Standpoint Tower B",
-                "The Lofts West", "The Lofts East", "8 Boulevard Walk", "Boulevard Point", "Claren Tower 1",
-                "Claren Tower 2", "South Ridge 1", "South Ridge 2", "The Address Residence Fountain Views",
-                "Grande", "St Regis Residences",
-            ] },
-        { area: "Dubai Marina", buildings: [
-                "Marina Gate 1", "Marina Gate 2", "Marina Gate 3", "Cayan Tower", "Infinity Tower",
-                "Princess Tower", "Elite Residence", "Marina Crown", "Silverene Tower A", "Silverene Tower B",
-                "The Torch", "Sulafa Tower", "Marina Heights", "Botanica Tower", "Jumeirah Living Marina Gate",
-                "Sparkle Tower 1", "Sparkle Tower 2", "Damac Heights", "LIV Residence", "1/JBR",
-                "Marina Pinnacle", "Horizon Tower", "Paloma Tower", "Al Mesk Tower", "Ocean Heights",
-                "Marina View Tower A", "Marina View Tower B", "Trident Grand Residence",
-            ] },
-        { area: "Jumeirah Beach Residence (JBR)", buildings: [
-                "Murjan 1", "Murjan 2", "Murjan 3", "Murjan 4", "Murjan 5", "Murjan 6",
-                "Sadaf 1", "Sadaf 2", "Sadaf 3", "Sadaf 4", "Sadaf 5", "Sadaf 6", "Sadaf 7", "Sadaf 8",
-                "Rimal 1", "Rimal 2", "Rimal 3", "Rimal 4", "Rimal 5", "Rimal 6",
-                "Bahar 1", "Bahar 2", "Bahar 3", "Bahar 4", "Bahar 5", "Bahar 6",
-                "Shams 1", "Shams 2", "Shams 3", "Shams 4", "1 JBR",
-            ] },
-        { area: "Palm Jumeirah", buildings: [
-                "Shoreline Apartments Block 1", "Shoreline Apartments Block 2", "Shoreline Apartments Block 3",
-                "Shoreline Apartments Block 4", "Shoreline Apartments Block 5", "Shoreline Apartments Block 6",
-                "Shoreline Apartments Block 7", "Shoreline Apartments Block 8", "Shoreline Apartments Block 9",
-                "Shoreline Apartments Block 10", "The 8", "Tiara Residences", "Oceana Atlantic",
-                "Oceana Aegean", "Oceana Baltic", "Oceana Pacific", "Signature Villas", "Garden Homes",
-                "One Palm", "Palme Couture Residences", "The Palm Tower", "Five Palm Jumeirah",
-                "Serenia Residences", "Fairmont Residences North", "Fairmont Residences South",
-                "Balqis Residence", "Kingdom of Sheba", "Al Das", "Al Msool",
-            ] },
-        { area: "Business Bay", buildings: [
-                "Executive Towers Tower A", "Executive Towers Tower B", "Executive Towers Tower C",
-                "Executive Towers Tower D", "Executive Towers Tower E", "Executive Towers Tower F",
-                "Executive Towers Tower G", "Damac Paramount Tower Hotel & Residences",
-                "Churchill Residency", "Bay's Edge", "Merano Tower", "Nobles Tower",
-                "Capital Bay Tower A", "Capital Bay Tower B", "VVIP Residences", "Majestine",
-                "SLS Dubai", "Aykon City Tower A", "Aykon City Tower B", "Peninsula One",
-                "Peninsula Two", "Peninsula Three", "Peninsula Four", "The Opus", "Noura Tower",
-                "Reva Residences", "Sigma Tower 1", "Sigma Tower 2",
-            ] },
-        { area: "DIFC", buildings: [
-                "Index Tower", "Central Park Tower", "Park Towers A", "Park Towers B",
-                "Liberty House", "Currency House", "Burj Daman", "Limestone House", "Gate Village 1",
-                "Gate Village 2", "Gate Village 3", "Gate Village 4", "Gate Village 5",
-                "Gate Village 6", "Gate Village 7", "Gate Village 8", "Gate Village 10", "Gate Village 11",
-            ] },
-        { area: "Jumeirah Village Circle (JVC)", buildings: [
-                "Belgravia 1", "Belgravia 2", "Belgravia Heights 1", "Belgravia Heights 2",
-                "Seasons Community", "Park Lane", "Bloom Heights 1", "Bloom Heights 2",
-                "Ghalia by GGICO", "Quality Star", "Al Jawhara", "Binghatti Terraces",
-                "Oxford Terraces", "Green Diamond", "Plazzo Residence", "The One At Jumeirah Village Circle",
-                "Elite Sports Residence", "Golf Views", "Noor Townhouses",
-            ] },
-        { area: "Jumeirah Lake Towers (JLT)", buildings: [
-                "Goldcrest Views 1", "Goldcrest Views 2", "Platinum Tower", "HDS Tower",
-                "Saba Tower 1", "Saba Tower 2", "Saba Tower 3", "Lake City Tower", "Madina Tower",
-                "V3 Tower", "Cluster A – Lake Almas East", "Jumeirah Bay Tower X2", "Jumeirah Bay Tower X3",
-                "O2 Residence", "MBL Residence", "Indigo Tower", "Bonnington Tower",
-                "Fortune Executive Tower", "Swiss Tower", "Al Shera Tower",
-            ] },
-        { area: "Dubai Hills Estate", buildings: [
-                "Park Heights 1", "Park Heights 2", "Mulberry 1", "Mulberry 2",
-                "Acacia A", "Acacia B", "Acacia C", "Maple 1", "Maple 2", "Maple 3",
-                "Golfville", "Golf Suites", "Executive Residences 1", "Executive Residences 2",
-                "Collective", "Collective 2.0", "Golf Grand", "Vida Residences Dubai Hills",
-                "Address Dubai Hills", "Parkside 1", "Parkside 2", "Parkside 3",
-            ] },
-        { area: "Dubai Creek Harbour", buildings: [
-                "Creekside 18 Tower A", "Creekside 18 Tower B", "Harbour Views 1", "Harbour Views 2",
-                "Island Park 1", "Island Park 2", "Address Harbour Point Tower 1", "Address Harbour Point Tower 2",
-                "Creek Horizon Tower 1", "Creek Horizon Tower 2", "Creek Gate Tower 1", "Creek Gate Tower 2",
-                "Cove Residences", "Surf Residences", "Lotus Residences", "Orchid",
-                "Vida Creek Harbour", "Palace Residences",
-            ] },
-        { area: "Arabian Ranches", buildings: [
-                "Palmera 1", "Palmera 2", "Palmera 3", "Palmera 4",
-                "Mirador", "Mirador La Coleccion", "Saheel 1", "Saheel 2", "Saheel 3",
-                "Al Reem 1", "Al Reem 2", "Al Reem 3", "Alvorada 1", "Alvorada 2",
-                "Alvorada 3", "Alvorada 4", "Alvorada 5", "Rosa", "Terra Nova", "Hattan",
-            ] },
-        { area: "Arabian Ranches 2", buildings: [
-                "Casa", "Palma", "La Nova", "Yasmin", "Rasha", "Lila", "Rosa", "Azalea", "Camelia",
-            ] },
-        { area: "Arabian Ranches 3", buildings: [
-                "Sun", "Joy", "Spring", "Caya", "Ruba", "Bliss", "Elie Saab Villas",
-            ] },
-        { area: "Dubai Sports City", buildings: [
-                "Elite Sports Residence 1", "Elite Sports Residence 2", "Elite Sports Residence 3",
-                "Elite Sports Residence 4", "Elite Sports Residence 5", "Elite Sports Residence 6",
-                "Elite Sports Residence 7", "Elite Sports Residence 8", "Elite Sports Residence 9",
-                "Elite Sports Residence 10", "Golf Tower 1", "Golf Tower 2", "Golf Tower 3",
-                "Champions Tower 1", "Champions Tower 2", "Champions Tower 3", "Panorama at The Views",
-            ] },
-        { area: "Al Barsha", buildings: [
-                "Al Barsha 1 Villas", "Al Barsha 2 Villas", "Al Barsha 3 Villas",
-                "Al Barsha South Villas", "Topaz Residences", "Al Barsha Heights (Tecom)",
-            ] },
-        { area: "Jumeirah Village Triangle (JVT)", buildings: [
-                "District 1", "District 2", "District 3", "District 4", "District 5",
-                "District 6", "District 7", "District 8", "District 9", "District 10",
-            ] },
-        { area: "Meydan / MBR City", buildings: [
-                "The Polo Residence", "The Polo Townhouses", "Sobha Hartland", "Residences at District One",
-                "District One Villas", "Mohammed Bin Rashid City Villas", "Azizi Riviera", "Waves",
-                "Azizi Grand", "Millennium Binghatti Residences",
-            ] },
-        { area: "Motor City", buildings: [
-                "Unity Tower", "Green Lakes Tower 1", "Green Lakes Tower 2", "Green Lakes Tower 3",
-                "Green Community Villas", "Arabian Homes",
-            ] },
-        { area: "International City", buildings: [
-                "England Cluster", "France Cluster", "Greece Cluster", "Italy Cluster", "Morocco Cluster",
-                "Persia Cluster", "Spain Cluster", "China Cluster", "Russia Cluster", "UAE Cluster",
-            ] },
-        { area: "Al Furjan", buildings: [
-                "Azizi Pearl", "Azizi Feirouz", "Azizi Yasmin", "Masakin Al Furjan", "Sumansa Townhouses",
-                "Nakheel Townhouses", "Richmond Villas", "Quortaj",
-            ] },
-        { area: "Dubai South / Expo City", buildings: [
-                "The Pulse Residences", "The Pulse Boulevard", "Emaar South Golf Views",
-                "Greenview", "Parkside", "Pulz by Damac", "Urbana", "Golf Links",
-            ] },
-        { area: "Al Quoz", buildings: [
-                "Al Quoz 1 Villas", "Al Quoz 2 Villas", "Al Quoz 3 Villas", "Al Quoz Industrial",
-            ] },
-        { area: "The Greens & The Views", buildings: [
-                "The Greens Apartments", "The Views – Golf Towers", "The Links", "Golf Towers",
-                "The Fairways", "The Lakes Villas", "Al Ghaf", "Al Alka", "Al Jaz", "Al Arta",
-                "Al Samar", "Al Dhafra", "Al Nakheel", "Al Seef",
-            ] },
-        { area: "City Walk", buildings: [
-                "Central Park at City Walk Tower 1", "Central Park at City Walk Tower 2",
-                "Central Park at City Walk Tower 3", "Central Park at City Walk Tower 4",
-                "Eaton Place", "Canopy by Hilton Dubai Al Seef Residences",
-            ] },
-        { area: "Bluewaters Island", buildings: [
-                "Bluewaters Residences 1", "Bluewaters Residences 2", "Bluewaters Residences 3",
-                "Bluewaters Residences 4", "Bluewaters Residences 5", "Bluewaters Residences 6",
-                "Bluewaters Residences 7", "Bluewaters Residences 8", "Bluewaters Residences 9",
-                "Bluewaters Residences 10", "Ain Dubai Residences",
-            ] },
-        { area: "Damac Hills", buildings: [
-                "Akoya by Damac Villas", "Loreto A", "Loreto B", "Loreto C", "Loreto D",
-                "Golf Horizon A", "Golf Horizon B", "Golf Promenade", "Astoria",
-                "Trump Estates", "Golf Vita", "Millnaire",
-            ] },
-        { area: "Tilal Al Ghaf", buildings: [
-                "Elan", "Serenity Mansions", "Plagette 32", "Harmony Villas", "Aura Gardens",
-                "Lanai Islands", "Lagoon Views", "Iris", "Elysian Mansions",
-            ] },
-    ],
+// The supported emirates the page can value. Drives the City dropdown and
+// the "is this city allowed?" validation. Dubai's areas/buildings come from
+// the DLD-derived buildings.json index (5,781 buildings, refreshed via the
+// admin DLD Data page). The other emirates have no equivalent open-data
+// source yet, so they fall back to STATIC_AREAS_BY_CITY below.
+const SUPPORTED_CITIES = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "RAK"];
+
+// Static area + building data for emirates NOT covered by the DLD index
+// (Dubai-only). Used only as the Area + Building dropdown fallback when
+// usePlacesSearch returns nothing. Dubai is intentionally absent — its
+// dropdowns are powered live by the DLD buildings.json index, which is much
+// more complete and stays fresh via the API refresh flow.
+const STATIC_AREAS_BY_CITY = {
     "Abu Dhabi": [
         { area: "Al Reem Island", buildings: [
                 "The Gate Tower 1", "The Gate Tower 2", "The Gate Tower 3", "Sun Tower", "Sky Tower",
@@ -251,14 +108,16 @@ const LOCATION_DATA = {
             ] },
     ],
 };
-// Derived helpers
+// Derived helpers. `getAreas` returns the static fallback list (empty for
+// Dubai — usePlacesSearch covers Dubai via the DLD index instead).
 function getAreas(city) {
-    var _a;
-    return (_a = LOCATION_DATA[city]) !== null && _a !== void 0 ? _a : [];
+    return STATIC_AREAS_BY_CITY[city] ?? [];
 }
 function getBuildings(city, area) {
-    var _a, _b, _c;
-    return (_c = (_b = (_a = LOCATION_DATA[city]) === null || _a === void 0 ? void 0 : _a.find((a) => a.area === area)) === null || _b === void 0 ? void 0 : _b.buildings) !== null && _c !== void 0 ? _c : [];
+    return (STATIC_AREAS_BY_CITY[city] ?? []).find((a) => a.area === area)?.buildings ?? [];
+}
+function isSupportedCity(value) {
+    return typeof value === "string" && SUPPORTED_CITIES.includes(value);
 }
 // ─── Types ─// ─── Smart search parser (valuation context) ─────────────────────────────────
 const CITY_KEYWORDS = {
@@ -498,8 +357,10 @@ function inferTypeFromContext(buildingName, areaName) {
     return undefined;
 }
 function resolveCity(area) {
-    // Search all cities for which one contains this area
-    for (const [city, areas] of Object.entries(LOCATION_DATA)) {
+    // Search the static area lists for which city contains this area. Dubai
+    // areas resolve through AREA_KEYWORDS at the call site (and default to
+    // "Dubai" anyway), so missing Dubai static data here is fine.
+    for (const [city, areas] of Object.entries(STATIC_AREAS_BY_CITY)) {
         if (areas.some((a) => a.area === area))
             return city;
     }
@@ -556,7 +417,7 @@ function parseValuationSearch(input) {
     }
     // Building — search known buildings across all cities if no city detected yet
     const cityKey = result.city || "Dubai";
-    const searchCities = result.city ? [result.city] : Object.keys(LOCATION_DATA);
+    const searchCities = result.city ? [result.city] : SUPPORTED_CITIES;
     const buildingSearchQuery = extractResidualUnitCandidate(input, [matchedAreaKeyword, matchedCityKeyword]) || input;
     const buildingSearchLower = buildingSearchQuery.toLowerCase();
     const buildAllAreas = (cities) => cities.flatMap((c) => getAreas(c).flatMap((a) => a.buildings.map((b) => ({ b, a: a.area, c }))));
@@ -2271,7 +2132,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         return next;
                     });
             }} className={`h-12 w-full appearance-none rounded-xl border bg-[#faf7f2] pl-10 pr-10 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40 ${fieldErrors.city ? "border-[#b42318]" : "border-[#e3ddcf]"}`}>
-                          {Object.keys(LOCATION_DATA).map((c) => (<option key={c} value={c}>{c}</option>))}
+                          {SUPPORTED_CITIES.map((c) => (<option key={c} value={c}>{c}</option>))}
                         </select>
                         <svg aria-hidden="true" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#66706d]" fill="none" viewBox="0 0 12 8">
                           <path d="M1 1.5 6 6.5l5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75"/>
@@ -2346,7 +2207,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                             {placesResults.map((p) => (<button key={p.placeId} type="button" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
                         var _a;
                         e.preventDefault();
-                        const placeCity = Object.prototype.hasOwnProperty.call(LOCATION_DATA, p.city) ? p.city : form.city;
+                        const placeCity = isSupportedCity(p.city) ? p.city : form.city;
                         setTrackedValues(Object.assign(Object.assign({ unit: p.building || p.description.split(",")[0].trim() }, (p.area ? { area: p.area } : {})), (placeCity ? { city: placeCity } : {})), "places");
                         setShowPlaces(false);
                         setShowBuildingSuggestions(false);
@@ -3014,7 +2875,7 @@ function buildSmartSuggestions(query, parsed, placesResults) {
     }
     for (const place of placesResults) {
         const placeTitle = place.building || place.description.split(",")[0].trim();
-        const placeCity = Object.prototype.hasOwnProperty.call(LOCATION_DATA, place.city) ? place.city : parsed.city;
+        const placeCity = isSupportedCity(place.city) ? place.city : parsed.city;
         const placeParsed = Object.assign(Object.assign({}, parsed), { unit: placeTitle || parsed.unit, area: place.area || parsed.area, city: placeCity, type: parsed.type || inferTypeFromContext(placeTitle, place.area) });
         const subtitle = formatSmartSuggestionSubtitle(placeParsed) || place.description;
         const key = `${placeTitle.toLowerCase()}__${subtitle.toLowerCase()}`;
