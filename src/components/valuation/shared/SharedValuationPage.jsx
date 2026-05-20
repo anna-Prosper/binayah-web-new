@@ -1759,14 +1759,45 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     setShowBuildingSuggestions(false);
                     setShowPlaces(false);
                 }
-            }} placeholder={form.area ? `Search in ${form.area}…` : "Search any building, community, villa…"} autoComplete="off" className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${fieldErrors.unit ? "border-[#b42318]" : "border-[#e3ddcf] focus:border-[#0B3D2E]/40"}`}/>
+            }} placeholder={form.area ? `Search in ${form.area}…` : "Search any building, community, villa…"} autoComplete="off" role="combobox" aria-autocomplete="list" aria-expanded={showPlaces && placesResults.length > 0} className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 ${fieldErrors.unit ? "border-[#b42318]" : "border-[#e3ddcf] focus:border-[#0B3D2E]/40"}`}/>
 
-                        {/* DLD buildings index results — shown when available */}
-                        {showPlaces && placesResults.length > 0 && (<div ref={placesRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-64 overflow-y-auto">
+                        {/* DLD buildings index results — softer header + an
+                             explicit "use as typed" first item so the user
+                             knows the suggestions are optional. They can
+                             always continue with their own free text. */}
+                        {showPlaces && placesResults.length > 0 && (<div ref={placesRef} role="listbox" className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-64 overflow-y-auto">
                             <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[rgba(102,112,109,0.6)] bg-[rgba(244,239,231,0.3)] border-b border-[rgba(227,221,207,0.3)]">
                               {tv("liveResults")}
                             </p>
-                            {placesResults.map((p) => (<button key={p.placeId} type="button" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
+                            {form.unit.trim() ? (
+                              <button
+                                type="button"
+                                role="option"
+                                aria-selected="false"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] bg-[rgba(244,239,231,0.35)]"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  // Commit the user's free text verbatim.
+                                  // form.unit already has the typed value, so
+                                  // we just close the dropdown + blur to
+                                  // signal "you're done picking".
+                                  setShowPlaces(false);
+                                  setShowBuildingSuggestions(false);
+                                  unitInputRef.current?.blur();
+                                }}
+                              >
+                                <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0B3D2E]/10 text-[11px] text-[#0B3D2E] mt-0.5">✏</span>
+                                <div className="min-w-0">
+                                  <p className="font-medium text-[#10231e] truncate">
+                                    {tv("useAsTyped", { value: form.unit.trim() })}
+                                  </p>
+                                  <p className="text-xs text-[#66706d] truncate mt-0.5">
+                                    {tv("useAsTypedSub")}
+                                  </p>
+                                </div>
+                              </button>
+                            ) : null}
+                            {placesResults.map((p) => (<button key={p.placeId} type="button" role="option" aria-selected="false" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
                         var _a;
                         e.preventDefault();
                         const placeCity = isSupportedCity(p.city) ? p.city : form.city;
