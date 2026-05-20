@@ -673,6 +673,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     // switched to server-side LLM extraction via /api/valuation/from-text.
     // The Building input still uses its own usePlacesSearch via `placesResults`.
     const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
+    // DLD-backed area dropdown — derives unique areas from the same
+    // buildings.json index that powers the Building dropdown. Activates as
+    // soon as the field is focused (showAreaSuggestions=true). No loading
+    // indicator needed — the index is cached locally, lookup is instant.
+    const { results: areaSearchResults } = useAreaSearch(form.area, showAreaSuggestions && Boolean(form.city));
     const [unlocked, setUnlocked] = useState(false);
     const [gate, setGate] = useState({ name: "", phone: "", email: "" });
     const [gateErrors, setGateErrors] = useState({});
@@ -1713,28 +1718,76 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </label>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
-                        <input value={form.area} onChange={(e) => {
-                setTrackedValues({ area: e.target.value, unit: "" }, "manual");
-                setShowAreaSuggestions(true);
-            }} onFocus={() => setShowAreaSuggestions(true)} onKeyDown={(e) => { if (e.key === "Escape")
-            setShowAreaSuggestions(false); }} placeholder={form.city ? `Search in ${form.city}…` : "Select city first"} autoComplete="off" disabled={!form.city} className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed ${fieldErrors.area ? "border-[#b42318]" : "border-[#e3ddcf]"}`}/>
-                        {showAreaSuggestions && form.city && (() => {
-                const q = form.area.trim().toLowerCase();
-                const matches = getAreas(form.city)
-                    .filter((a) => !q || a.area.toLowerCase().includes(q))
-                    .slice(0, 8);
-                return matches.length > 0 ? (<div ref={areaSuggestionsRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-56 overflow-y-auto">
-                              {matches.map((a) => (<button key={a.area} type="button" className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-center gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0" onMouseDown={(e) => {
-                            e.preventDefault();
-                            setTrackedValues({ area: a.area, unit: "" }, "manual");
-                            setShowAreaSuggestions(false);
-                        }}>
-                                  <MapPin className="h-3.5 w-3.5 text-[#66706d] flex-shrink-0"/>
-                                  <span>{a.area}</span>
-                                  <span className="ml-auto text-[10px] text-[rgba(102,112,109,0.6)]">{a.buildings.length} {tv("buildings")}</span>
-                                </button>))}
-                            </div>) : null;
-            })()}
+                        <input
+                          value={form.area}
+                          onChange={(e) => {
+                            setTrackedValues({ area: e.target.value, unit: "" }, "manual");
+                            setShowAreaSuggestions(true);
+                          }}
+                          onFocus={() => setShowAreaSuggestions(true)}
+                          onKeyDown={(e) => { if (e.key === "Escape") setShowAreaSuggestions(false); }}
+                          placeholder={form.city ? `Search in ${form.city}…` : "Select city first"}
+                          autoComplete="off"
+                          disabled={!form.city}
+                          role="combobox"
+                          aria-autocomplete="list"
+                          aria-expanded={showAreaSuggestions && areaSearchResults.length > 0}
+                          className={`w-full pl-10 h-12 bg-[#faf7f2] rounded-xl border px-3 text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/20 focus:border-[#0B3D2E]/40 disabled:opacity-50 disabled:cursor-not-allowed ${fieldErrors.area ? "border-[#b42318]" : "border-[#e3ddcf]"}`}
+                        />
+                        {/* DLD-backed area dropdown — softer header + a
+                             "use as typed" first item so the user knows the
+                             suggestions are optional. Mirrors the Building
+                             field's pattern. */}
+                        {showAreaSuggestions && form.city && (areaSearchResults.length > 0 || form.area.trim()) ? (
+                          <div ref={areaSuggestionsRef} role="listbox" className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden max-h-64 overflow-y-auto">
+                            <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[rgba(102,112,109,0.6)] bg-[rgba(244,239,231,0.3)] border-b border-[rgba(227,221,207,0.3)]">
+                              {tv("liveResults")}
+                            </p>
+                            {form.area.trim() ? (
+                              <button
+                                type="button"
+                                role="option"
+                                aria-selected="false"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-start gap-2.5 border-b border-[rgba(227,221,207,0.3)] bg-[rgba(244,239,231,0.35)]"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  // Commit the user's free text verbatim and close the dropdown.
+                                  setShowAreaSuggestions(false);
+                                }}
+                              >
+                                <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0B3D2E]/10 text-[11px] text-[#0B3D2E] mt-0.5">✏</span>
+                                <div className="min-w-0">
+                                  <p className="font-medium text-[#10231e] truncate">
+                                    {tv("useAsTyped", { value: form.area.trim() })}
+                                  </p>
+                                  <p className="text-xs text-[#66706d] truncate mt-0.5">
+                                    {tv("useAsTypedSub")}
+                                  </p>
+                                </div>
+                              </button>
+                            ) : null}
+                            {areaSearchResults.map((a) => (
+                              <button
+                                key={a.area}
+                                type="button"
+                                role="option"
+                                aria-selected="false"
+                                className="w-full text-left px-4 py-3 text-sm hover:bg-[#f4efe7]/50 transition-colors flex items-center gap-2.5 border-b border-[rgba(227,221,207,0.3)] last:border-0"
+                                onMouseDown={(e) => {
+                                  e.preventDefault();
+                                  setTrackedValues({ area: a.area, unit: "" }, "manual");
+                                  setShowAreaSuggestions(false);
+                                }}
+                              >
+                                <MapPin className="h-3.5 w-3.5 text-[#66706d] flex-shrink-0"/>
+                                <span className="flex-1 truncate">{a.area}</span>
+                                <span className="ml-auto text-[10px] text-[rgba(102,112,109,0.6)]">
+                                  {a.count} {tv("buildings")}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
                       </div>
                       {fieldErrors.area && (<p className="text-xs text-[#b42318] mt-1 flex items-center gap-1">
                           <AlertTriangle className="h-3 w-3 flex-shrink-0"/>{fieldErrors.area}
@@ -2474,6 +2527,84 @@ function searchBuildingsIndex(query, limit = 6) {
         units: b.units,
     }));
 }
+// Search areas (communities) extracted from the DLD buildings index.
+// Returns deduplicated areas ranked by total building count (most active
+// communities first). Used by the Area / Community field's dropdown, mirrors
+// the searchBuildingsIndex pattern for the Building dropdown above.
+//
+// Memoized at module scope — the buildings.json file is loaded once and the
+// area aggregation result is cached so we don't re-scan all 5,781 records
+// on every keystroke.
+let areasIndexCache = null;
+function getAreasFromBuildingsIndex() {
+    if (areasIndexCache) return areasIndexCache;
+    if (!buildingsIndexCache) {
+        getBuildingsIndex();
+        return null;
+    }
+    const counts = new Map();
+    for (const b of buildingsIndexCache.buildings) {
+        if (!b?.area) continue;
+        const existing = counts.get(b.area) || { area: b.area, city: b.city, count: 0, activity: 0 };
+        existing.count += 1;
+        existing.activity += (b.sales || 0) + (b.rents || 0);
+        counts.set(b.area, existing);
+    }
+    areasIndexCache = Array.from(counts.values()).sort((a, b) => b.activity - a.activity);
+    return areasIndexCache;
+}
+
+function searchAreasIndex(query, limit = 8) {
+    const q = query.trim().toLowerCase();
+    const allAreas = getAreasFromBuildingsIndex();
+    if (!allAreas) return [];
+    // Empty query — return the top areas by activity (helps users browse).
+    if (q.length < 1) return allAreas.slice(0, limit);
+    const scored = [];
+    for (const a of allAreas) {
+        const aName = a.area.toLowerCase();
+        let score = 0;
+        if (aName === q) score = 300;
+        else if (aName.startsWith(q)) score = 250;
+        else if (aName.includes(q)) score = 175;
+        if (score === 0) continue;
+        scored.push({ a, score });
+    }
+    scored.sort((x, y) => {
+        if (x.score !== y.score) return y.score - x.score;
+        return y.a.activity - x.a.activity;
+    });
+    return scored.slice(0, limit).map(({ a }) => a);
+}
+
+function useAreaSearch(query, enabled) {
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const timerRef = useRef(null);
+    useEffect(() => {
+        if (!enabled) return;
+        let cancelled = false;
+        getBuildingsIndex().then(() => {
+            if (!cancelled) setResults(searchAreasIndex(query, 8));
+        });
+        return () => { cancelled = true; };
+    }, [enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (!enabled) {
+            setResults([]);
+            return;
+        }
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setLoading(true);
+        timerRef.current = setTimeout(() => {
+            setResults(searchAreasIndex(query, 8));
+            setLoading(false);
+        }, 50);
+        return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    }, [query, enabled]);
+    return { results, loading };
+}
+
 // Autocomplete hook backed by the local DLD buildings index (no network, no Places API).
 // Kept under the `usePlacesSearch` name to avoid churn across the many call sites.
 function usePlacesSearch(query, enabled) {
