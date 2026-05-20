@@ -2508,11 +2508,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         title={project.name}
       />
 
-      {/* ───── STICKY MOBILE CTA BAR (shared 3-button component) ───── */}
+      {/* ───── STICKY MOBILE CTA BAR (shared 3-button component — labels live inside) ───── */}
       <DetailStickyCta
         whatsappUrl={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971500000000").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
         phone={project.contactPhone || "+971500000000"}
-        labels={{ whatsapp: t("whatsapp"), call: t("call"), liveChat: t("liveChat") }}
       />
 
       {/* QR Code Modal */}

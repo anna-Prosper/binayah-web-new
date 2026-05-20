@@ -1528,8 +1528,8 @@
   "whatsapp": {
     "ariaLabel": "Написать в WhatsApp",
     "whatsapp": "WhatsApp",
-    "call": "Звонок",
-    "liveChat": "Чат"
+    "call": "Позвонить",
+    "liveChat": "Онлайн-чат"
   },
   "scrollToTop": {
     "ariaLabel": "Наверх"

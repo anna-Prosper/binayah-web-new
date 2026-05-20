@@ -1478,12 +1478,8 @@ export default function PropertyDetailClient({
         title={listing.title}
       />
 
-      {/* ── STICKY MOBILE CTA (shared 3-button component) ────────────────── */}
-      <DetailStickyCta
-        whatsappUrl={whatsappUrl}
-        phone="+97154998811"
-        labels={{ whatsapp: t("whatsapp"), call: t("callNow"), liveChat: t("liveChat") }}
-      />
+      {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
+      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+97154998811" />
 
       <Footer />
       <div className="hidden lg:block">

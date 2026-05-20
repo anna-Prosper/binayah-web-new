@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { StickyMobileCta } from "./StickyMobileCta";
 
 export interface DetailStickyCtaProps {
@@ -9,25 +10,22 @@ export interface DetailStickyCtaProps {
   phone: string;
   /** Optional override for the Live Chat anchor target. */
   liveChatHref?: string;
-  labels: {
-    whatsapp: string;
-    call: string;
-    liveChat: string;
-  };
 }
 
 /**
  * Standard 3-button sticky CTA used on every detail page (project + property).
- * Locks the order WhatsApp → Call → Live Chat and the action types so the two
- * pages can't drift apart.
+ * Locks the order WhatsApp → Call → Live Chat AND owns its labels via the
+ * shared `whatsapp` translation namespace so call sites don't have to know
+ * which keys to pass.
  */
-export function DetailStickyCta({ whatsappUrl, phone, liveChatHref = "#live-chat", labels }: DetailStickyCtaProps) {
+export function DetailStickyCta({ whatsappUrl, phone, liveChatHref = "#live-chat" }: DetailStickyCtaProps) {
+  const t = useTranslations("whatsapp");
   return (
     <StickyMobileCta
       actions={[
-        { type: "whatsapp", href: whatsappUrl, label: labels.whatsapp },
-        { type: "call", href: `tel:${phone}`, label: labels.call },
-        { type: "live-chat", href: liveChatHref, label: labels.liveChat },
+        { type: "whatsapp", href: whatsappUrl, label: t("whatsapp") },
+        { type: "call", href: `tel:${phone}`, label: t("call") },
+        { type: "live-chat", href: liveChatHref, label: t("liveChat") },
       ]}
     />
   );
