@@ -1687,12 +1687,48 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </div>
                     <div className="relative">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#66706d] pointer-events-none z-10"/>
-                      <input ref={smartInputRef} value={smartQuery} onChange={(e) => handleSmartInputChange(e.target.value)} placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"' className="h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 pr-20 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 sm:pr-16"/>
-                      {smartQuery && (<button type="button" onClick={() => {
-                    setSmartQuery("");
-                }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-medium text-[#66706d] transition-colors hover:text-[#10231e] sm:right-4 sm:text-xs">
-                          {tv("clear")}
-                        </button>)}
+                      {/* Right padding scales with what's visible: just space
+                          for the icons when empty, more room when the inline
+                          submit pill appears so text doesn't slip under it. */}
+                      <input
+                        ref={smartInputRef}
+                        value={smartQuery}
+                        onChange={(e) => handleSmartInputChange(e.target.value)}
+                        placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
+                        className={`h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 ${smartQuery ? "pr-44 sm:pr-52" : "pr-12"}`}
+                      />
+                      {smartQuery && (
+                        <div className="absolute inset-y-0 right-2 flex items-center gap-1.5 sm:right-2.5">
+                          <button
+                            type="button"
+                            aria-label="Clear search"
+                            onClick={() => setSmartQuery("")}
+                            disabled={submitting}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#66706d] transition-colors hover:bg-[#0B3D2E]/5 hover:text-[#10231e] disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <X className="h-4 w-4"/>
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={submitting}
+                            aria-busy={submitting}
+                            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-4 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-[0_8px_18px_rgba(11,61,46,0.22)] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] disabled:cursor-wait disabled:opacity-80 disabled:hover:scale-100 sm:px-5"
+                            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                          >
+                            {submitting ? (
+                              <>
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin"/>
+                                <span className="hidden sm:inline">{tv("gettingValuation")}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="h-3.5 w-3.5"/>
+                                <span>{tv("getValuation")}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
