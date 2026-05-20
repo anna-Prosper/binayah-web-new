@@ -24,6 +24,7 @@ import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
@@ -824,13 +825,7 @@ export default function PropertyDetailClient({
                     };
                     return (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-10">
-                        <div className="mb-5">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="w-4 h-px bg-accent" />
-                            <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("overviewLabel")}</p>
-                          </div>
-                          <h2 className="text-xl font-bold text-foreground">{t("description")}</h2>
-                        </div>
+                        <SectionEyebrow eyebrow={t("overviewLabel")} title={t("description")} />
                         <div className="space-y-3">
                           {visible.map(renderBlock)}
                           {hasMore && (
@@ -850,13 +845,7 @@ export default function PropertyDetailClient({
 
                   {/* Key Highlights */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mb-10">
-                    <div className="mb-5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="w-4 h-px bg-accent" />
-                        <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent">{t("highlightsLabel")}</p>
-                      </div>
-                      <h2 className="text-xl font-bold text-foreground">{t("highlightsTitle")}</h2>
-                    </div>
+                    <SectionEyebrow eyebrow={t("highlightsLabel")} title={t("highlightsTitle")} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {highlights.map((h, i) => (
                         <div key={i} className="flex items-start gap-3 bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-sm transition-all group">

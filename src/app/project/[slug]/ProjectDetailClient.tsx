@@ -28,6 +28,7 @@ import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
@@ -601,11 +602,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 >
                   {/* Overview */}
                   <div className="space-y-4">
-                    <div>
-                      <div className="h-[2px] w-8 rounded-full bg-gradient-to-r from-accent to-accent/60 mb-3" />
-                      <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-1.5">{t("aboutTheProject")}</p>
-                      <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("projectOverview")}</h2>
-                    </div>
+                    <SectionEyebrow
+                      eyebrow={t("aboutTheProject")}
+                      title={t("projectOverview")}
+                      className=""
+                    />
                     {(() => {
                       const isPlaceholder = (s?: string) =>
                         !s || /^update\s+soon\b/i.test(s.trim()) || s.trim().length < 12;
