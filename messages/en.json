@@ -413,6 +413,7 @@
     "beds": "Beds",
     "size": "Size",
     "getValuation": "Get Quick Valuation",
+    "gettingValuation": "Getting valuation…",
     "formDisclaimer": "Views, upgrades, floor, vacancy, furnishings, and condition help refine the estimate.",
     "savedReport": "Saved Report",
     "loadingLink": "Loading valuation link",
@@ -472,6 +473,7 @@
     "disambigSubtitle": "We found a few possible matches for \"{query}\". Pick the right one and we'll value it.",
     "disambigFallbackQuery": "this location",
     "disambigSelect": "Select →",
+    "disambigSelecting": "Loading…",
     "disambigNoneOfThese": "None of these — let me edit my search"
   },
   "contact": {

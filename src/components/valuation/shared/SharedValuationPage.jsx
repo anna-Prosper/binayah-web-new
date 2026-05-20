@@ -685,6 +685,17 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const [unlockHighlight, setUnlockHighlight] = useState(false);
     const [turnstileState, setTurnstileState] = useState("idle");
     const [loadingSavedReport, setLoadingSavedReport] = useState(false);
+    // Single concurrency guard for every submission entry point:
+    // - Get Valuation button (smart-text + manual)
+    // - Disambiguation candidate buttons
+    // - Internal retries inside runValuationWithPhases
+    // The smart-text path doesn't transition to step="processing" until the
+    // server replies (~1-3s of LLM extraction), so the form stays visible and
+    // the button stays clickable without this guard. `submittingCandidateId`
+    // tracks WHICH disambiguation candidate is being processed so we can show
+    // the spinner on just that one card.
+    const [submitting, setSubmitting] = useState(false);
+    const [submittingCandidateId, setSubmittingCandidateId] = useState(null);
     const topRef = useRef(null);
     const unlockSectionRef = useRef(null);
     const unlockHighlightTimeoutRef = useRef(null);
@@ -1034,6 +1045,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const handleSubmit = async (e) => {
         var _a;
         e.preventDefault();
+        // Re-entry guard: ignore rapid double-clicks while a submission is
+        // already in flight (the smart-text branch can take 1-3s before the
+        // form unmounts to "processing", leaving the button clickable).
+        if (submitting) return;
         setSubmitAttempted(true);
         setSmartIntakeAlert(null);
 
@@ -1043,7 +1058,16 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             // The server runs LLM extraction + matchers + validation, then
             // tells us one of: ready (proceed), needs_more_details (ask the
             // user), guidance (example reply), extraction_failed (LLM down).
-            await submitFromText(smartText);
+            setSubmitting(true);
+            try {
+                await submitFromText(smartText);
+            } finally {
+                // submitFromText resets submitting itself on the streaming
+                // path (via runValuationWithPhases). For the early-return
+                // branches (guidance/needs_more_details/error) we must also
+                // make sure the guard releases.
+                setSubmitting(false);
+            }
             return;
         }
 
@@ -1057,6 +1081,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setFieldErrors({});
         setGlobalError(null);
         setRetryCount(0);
+        setSubmitting(true);
         setStep("processing");
         setActiveProcessStep(0);
         (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
@@ -1066,12 +1091,16 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             // `community` alone is enough — backend normalizeInquiry reads
             // either `community` or `location`. Sending both was legacy noise.
             const apiPayload = Object.assign({ countryCode: form.countryCode || "AE", transactionType: form.transactionType, propertyName: form.unit, community: form.area, city: form.city, propertyType: form.type, bedrooms: form.beds, maids: form.maids, size: form.size }, (turnstileToken ? { turnstileToken } : {}));
+            // runValuationWithPhases owns the submitting reset for the
+            // streaming path — it stays true across retries, then flips to
+            // false in its finally block (top-level call only).
             await runValuationWithPhases(apiPayload, 1);
         }
         catch (err) {
             const msg = err instanceof Error ? err.message : "Security verification failed.";
             setGlobalError(msg);
             setStep("form");
+            setSubmitting(false);
         }
     };
 
@@ -1258,6 +1287,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             if (attempt === 1 && activeStreamControllerRef.current === controller) {
                 activeStreamControllerRef.current = null;
             }
+            // Release the submission guard only at the TOP level — internal
+            // retries must keep it true so the form/candidate stays disabled
+            // while we're still trying. The disambiguation candidate id is
+            // cleared here too so the spinner clears on the picker (if the
+            // user lands back on it via "None of these" later).
+            if (attempt === 1) {
+                setSubmitting(false);
+                setSubmittingCandidateId(null);
+            }
         }
     };
     // PF disambiguation: user picked a candidate from the surfaced list.
@@ -1265,9 +1303,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const selectDisambiguationCandidate = async (candidate) => {
         var _a;
         if (!candidate || !candidate.name) return;
+        // Re-entry guard: ignore clicks while a candidate is already being
+        // processed (button stays mounted until setStep("processing")
+        // commits, so two rapid clicks would otherwise double-fire).
+        if (submitting) return;
         const ctxInquiry = (disambiguationContext && disambiguationContext.inquiry) || {};
         const updatedForm = Object.assign({}, form, { unit: candidate.name });
         setForm(updatedForm);
+        setSubmitting(true);
+        setSubmittingCandidateId(candidate.id != null ? String(candidate.id) : candidate.name);
         setDisambiguationCandidates(null);
         setDisambiguationContext(null);
         setStep("processing");
@@ -1302,6 +1346,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             const msg = err instanceof Error ? err.message : "Something went wrong.";
             setGlobalError(msg);
             setStep("form");
+            setSubmitting(false);
+            setSubmittingCandidateId(null);
         }
     };
     const loadValuationConfig = useCallback(async () => {
@@ -1930,9 +1976,24 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
 
                   <div>
-                    <button type="submit" className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] sm:w-auto" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}>
-                      <Sparkles className="h-4 w-4"/>
-                      {tv("getValuation")}
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      aria-busy={submitting}
+                      className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:cursor-wait disabled:opacity-80 disabled:hover:scale-100 disabled:hover:shadow-none sm:w-auto"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 20px rgba(11,61,46,0.3)" }}
+                    >
+                      {submitting ? (
+                        <>
+                          <RefreshCw className="h-4 w-4 animate-spin"/>
+                          {tv("gettingValuation")}
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="h-4 w-4"/>
+                          {tv("getValuation")}
+                        </>
+                      )}
                     </button>
                     <p className="text-xs text-[#66706d] mt-3">
                       {tv("formDisclaimer")}
@@ -1968,42 +2029,51 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 {tv("disambigSubtitle", { query: form.unit || form.area || tv("disambigFallbackQuery") })}
               </p>
               <div className="grid gap-3">
-                {disambiguationCandidates.map((candidate, idx) => (
-                  <button
-                    key={candidate.id != null ? String(candidate.id) : `cand-${idx}`}
-                    type="button"
-                    role="radio"
-                    aria-checked="false"
-                    onClick={() => selectDisambiguationCandidate(candidate)}
-                    className="group flex items-center gap-4 rounded-2xl border border-[#0B3D2E]/12 bg-white px-5 py-4 text-left transition-all hover:border-[#0B3D2E]/40 hover:bg-[#FCFBF7] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/30"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                {disambiguationCandidates.map((candidate, idx) => {
+                  const candidateKey = candidate.id != null ? String(candidate.id) : candidate.name;
+                  const isThisOneSubmitting = submitting && submittingCandidateId === candidateKey;
+                  const otherIsSubmitting = submitting && !isThisOneSubmitting;
+                  return (
+                    <button
+                      key={candidate.id != null ? String(candidate.id) : `cand-${idx}`}
+                      type="button"
+                      role="radio"
+                      aria-checked="false"
+                      aria-busy={isThisOneSubmitting}
+                      disabled={submitting}
+                      onClick={() => selectDisambiguationCandidate(candidate)}
+                      className="group flex items-center gap-4 rounded-2xl border border-[#0B3D2E]/12 bg-white px-5 py-4 text-left transition-all hover:border-[#0B3D2E]/40 hover:bg-[#FCFBF7] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0B3D2E]/30 disabled:cursor-wait disabled:hover:border-[#0B3D2E]/12 disabled:hover:bg-white disabled:hover:shadow-none"
+                      style={otherIsSubmitting ? { opacity: 0.5 } : undefined}
                     >
-                      {idx + 1}
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-base font-semibold text-[#0B3D2E]">{candidate.name}</span>
-                      {candidate.community ? (
-                        <span className="text-xs text-[#66706d]">{candidate.community}</span>
-                      ) : null}
-                    </span>
-                    <span className="ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
-                      {tv("disambigSelect")}
-                    </span>
-                  </button>
-                ))}
+                      <span
+                        aria-hidden="true"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                      >
+                        {isThisOneSubmitting ? <RefreshCw className="h-4 w-4 animate-spin"/> : idx + 1}
+                      </span>
+                      <span className="flex flex-col">
+                        <span className="text-base font-semibold text-[#0B3D2E]">{candidate.name}</span>
+                        {candidate.community ? (
+                          <span className="text-xs text-[#66706d]">{candidate.community}</span>
+                        ) : null}
+                      </span>
+                      <span className="ml-auto text-sm font-medium text-[#0B3D2E]/60 group-hover:text-[#0B3D2E]">
+                        {isThisOneSubmitting ? tv("disambigSelecting") : tv("disambigSelect")}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
               <button
                 type="button"
+                disabled={submitting}
                 onClick={() => {
                   setDisambiguationCandidates(null);
                   setDisambiguationContext(null);
                   setStep("form");
                 }}
-                className="mt-6 text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline"
+                className="mt-6 text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline disabled:cursor-wait disabled:opacity-60 disabled:hover:no-underline"
               >
                 {tv("disambigNoneOfThese")}
               </button>

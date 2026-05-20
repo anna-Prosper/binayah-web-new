@@ -419,6 +419,7 @@
     "beds": "卧室",
     "size": "面积",
     "getValuation": "获取快速估值",
+    "gettingValuation": "正在估值…",
     "formDisclaimer": "景观、装修、楼层、空置状态、家具及房况均可帮助进一步精细化估值。",
     "savedReport": "已保存报告",
     "loadingLink": "正在加载估值链接",
@@ -478,6 +479,7 @@
     "disambigSubtitle": "我们为「{query}」找到了几个可能的匹配项。请选择正确的，我们将进行估价。",
     "disambigFallbackQuery": "此位置",
     "disambigSelect": "选择 →",
+    "disambigSelecting": "加载中…",
     "disambigNoneOfThese": "都不是 — 让我修改搜索"
   },
   "contact": {

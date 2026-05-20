@@ -413,6 +413,7 @@
     "beds": "غرف النوم",
     "size": "المساحة",
     "getValuation": "احصل على تقييم سريع",
+    "gettingValuation": "جارٍ إعداد التقييم…",
     "formDisclaimer": "الإطلالة والتشطيبات والطابق والإشغال والأثاث والحالة — كلها عوامل تُحسّن دقة التقدير.",
     "savedReport": "تقرير محفوظ",
     "loadingLink": "جارٍ تحميل رابط التقييم",
@@ -472,6 +473,7 @@
     "disambigSubtitle": "وجدنا عدة مطابقات محتملة لـ \"{query}\". اختر الصحيح وسنقوم بتقييمه.",
     "disambigFallbackQuery": "هذا الموقع",
     "disambigSelect": "اختيار →",
+    "disambigSelecting": "جارٍ التحميل…",
     "disambigNoneOfThese": "لا شيء من هذه — دعني أعدل البحث"
   },
   "contact": {
