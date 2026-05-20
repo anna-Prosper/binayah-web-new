@@ -33,9 +33,8 @@ async function getBuildingsIndex() {
 const SUPPORTED_CITIES = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "RAK"];
 
 // Empty stubs — kept so existing call sites (Area / Building dropdown
-// fallback, smart-search building pool, resolveCity) compile and degrade
-// gracefully to no-suggestions. If we add another emirate's data source
-// later, this is the obvious place to wire it in.
+// fallback) compile and degrade gracefully to no-suggestions. If we add
+// another emirate's data source later, this is the obvious place to wire it in.
 function getAreas(_city) {
     return [];
 }
@@ -45,259 +44,6 @@ function getBuildings(_city, _area) {
 function isSupportedCity(value) {
     return typeof value === "string" && SUPPORTED_CITIES.includes(value);
 }
-// ─── Types ─// ─── Smart search parser (valuation context) ─────────────────────────────────
-const CITY_KEYWORDS = {
-    dubai: "Dubai", "abu dhabi": "Abu Dhabi", abudhabi: "Abu Dhabi",
-    sharjah: "Sharjah", ajman: "Ajman", rak: "RAK",
-    "ras al khaimah": "RAK",
-};
-const AREA_KEYWORDS = {
-    downtown: "Downtown Dubai", "downtown dubai": "Downtown Dubai",
-    marina: "Dubai Marina", "dubai marina": "Dubai Marina",
-    palm: "Palm Jumeirah", "palm jumeirah": "Palm Jumeirah",
-    jbr: "Jumeirah Beach Residence (JBR)",
-    "business bay": "Business Bay",
-    difc: "DIFC",
-    jvc: "Jumeirah Village Circle (JVC)",
-    jlt: "Jumeirah Lake Towers (JLT)",
-    "dubai hills": "Dubai Hills Estate", hills: "Dubai Hills Estate",
-    creek: "Dubai Creek Harbour", "creek harbour": "Dubai Creek Harbour",
-    bluewaters: "Bluewaters Island",
-    "city walk": "City Walk",
-    "arabian ranches": "Arabian Ranches",
-    "al barsha": "Al Barsha",
-    "al furjan": "Al Furjan",
-    "al reem": "Al Reem Island", "reem island": "Al Reem Island",
-    saadiyat: "Saadiyat Island",
-    yas: "Yas Island",
-    corniche: "Corniche Road",
-    meydan: "Meydan / MBR City", "mbr city": "Meydan / MBR City",
-    "damac hills": "Damac Hills",
-    "damac hills 2": "Damac Hills 2 (Akoya Oxygen)", "akoya oxygen": "Damac Hills 2 (Akoya Oxygen)",
-    villanova: "Villanova (Dubailand)", amaranta: "Villanova (Dubailand)",
-    mudon: "Mudon",
-    serena: "Serena (Dubailand)",
-    "the valley": "The Valley",
-    "emaar south": "Emaar South",
-    "town square": "Town Square",
-    "silicon oasis": "Silicon Oasis",
-    "discovery gardens": "Discovery Gardens",
-    jge: "Jumeirah Golf Estates", "jumeirah golf": "Jumeirah Golf Estates",
-    dubailand: "Dubailand",
-    "nad al sheba": "Nad Al Sheba",
-    "dubai south": "Dubai South / Expo City",
-    "motor city": "Motor City",
-    "sports city": "Dubai Sports City",
-    greens: "The Greens & The Views",
-};
-const VTYPE_KEYWORDS = {
-    apartment: "Apartment", appartment: "Apartment", appartement: "Apartment", apt: "Apartment", flat: "Apartment",
-    penthouse: "Apartment", studio: "Apartment",
-    villa: "Villa", townhouse: "Villa", compound: "Villa",
-};
-const VBED_KEYWORDS = {
-    studio: "Studio",
-    "1 bhk": "1", "1bhk": "1",
-    "1 bed": "1", "1br": "1", "1 bdr": "1", "1bed": "1", "1 bedroom": "1",
-    "2 bhk": "2", "2bhk": "2",
-    "2 bed": "2", "2br": "2", "2 bdr": "2", "2bed": "2", "2 bedroom": "2",
-    "3 bhk": "3", "3bhk": "3",
-    "3 bed": "3", "3br": "3", "3 bdr": "3", "3bed": "3", "3 bedroom": "3",
-    "4 bhk": "4", "4bhk": "4",
-    "4 bed": "4", "4br": "4", "4bed": "4", "4 bedroom": "4",
-    "5 bhk": "5", "5bhk": "5",
-    "5 bed": "5", "5br": "5",
-};
-// Areas that are predominantly villas/townhouses — used for type inference
-const VILLA_AREAS = new Set([
-    "Palm Jumeirah", "Arabian Ranches", "Arabian Ranches 2", "Arabian Ranches 3",
-    "Villanova (Dubailand)", "Mudon", "Serena (Dubailand)", "The Valley",
-    "Damac Hills", "Damac Hills 2 (Akoya Oxygen)", "Tilal Al Ghaf",
-    "Jumeirah Golf Estates", "Emaar South", "Al Furjan", "Al Barsha",
-    "Nad Al Sheba", "Dubailand", "Reem (Arabian Ranches)", "Jumeirah Village Triangle (JVT)",
-    "Saadiyat Island", "Yas Island",
-]);
-// Building name patterns that imply a type
-const BUILDING_TYPE_HINTS = [
-    [/\bvilla(s)?\b/i, "Villa"],
-    [/\btownhouse(s)?\b/i, "Villa"],
-    [/\bpenthouse(s)?\b/i, "Apartment"],
-    [/\bstudio\b/i, "Apartment"],
-    [/\btower\b|\bresidence(s)?\b|\bapartment(s)?\b|\bflat(s)?\b|\bheight(s)?\b|\bgate\b|\bpark\b|\bview(s)?\b/i, "Apartment"],
-];
-const GENERIC_BUILDING_TOKENS = new Set([
-    "the", "tower", "towers", "residence", "residences",
-    "apartment", "apartments", "villa", "villas",
-    "townhouse", "townhouses", "building", "block", "phase",
-]);
-const SEARCH_TOKEN_ALIASES = {
-    appartment: "apartment",
-    appartements: "apartments",
-    appartement: "apartment",
-    appartments: "apartments",
-    khilafa: "khalifa",
-};
-const UNIT_NOISE_TOKENS = new Set([
-    "apartment", "apartments", "villa", "villas", "townhouse", "townhouses", "penthouse", "studio",
-    "bed", "beds", "bedroom", "bedrooms", "br", "bdr", "bhk",
-    "with", "without", "in", "at", "on", "for", "near", "and", "or",
-    "pool", "gym", "parking", "furnished", "unfurnished", "upgraded", "vacant", "tenanted",
-]);
-function escapeRegExp(value) {
-    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-function getSearchTokens(value) {
-    const tokens = value.toLowerCase().match(/[a-z0-9]+/g);
-    return tokens
-        ? tokens
-            .map((token) => { var _a; return (_a = SEARCH_TOKEN_ALIASES[token]) !== null && _a !== void 0 ? _a : token; })
-            .filter((token) => token.length > 1)
-        : [];
-}
-function getMeaningfulSearchTokens(value) {
-    return getSearchTokens(value).filter((token) => !GENERIC_BUILDING_TOKENS.has(token));
-}
-function getNumericTokens(value) {
-    return getSearchTokens(value).filter((token) => /^\d+$/.test(token));
-}
-function normalizeParsedSizeUnit(rawUnit) {
-    return /\b(sqm|sq m|m2)\b/i.test(rawUnit) ? "sqm" : "sq ft";
-}
-function detectMaidsPreference(input) {
-    const lower = input.toLowerCase();
-    if (/\b(?:no|without)\s+(?:maid(?:'s)?(?:\s*room)?|maids?(?:\s*room)?|staff\s*room|service\s*room|helper(?:'s)?\s*room)\b/i.test(lower)) {
-        return "No";
-    }
-    if (/\b(?:with\s+)?maid(?:'s)?(?:\s*room)?\b/i.test(lower) ||
-        /\bmaids?(?:\s*room)?\b/i.test(lower) ||
-        /\bstaff\s*room\b/i.test(lower) ||
-        /\bservice\s*room\b/i.test(lower) ||
-        /\bhelper(?:'s)?\s*room\b/i.test(lower) ||
-        /\+\s*maid(?:'s)?\b/i.test(lower)) {
-        return "Yes";
-    }
-    return undefined;
-}
-function extractResidualUnitCandidate(input, locationKeywords = []) {
-    let residual = ` ${input} `;
-    const removableKeywords = [
-        ...locationKeywords.filter(Boolean),
-        ...Object.keys(VTYPE_KEYWORDS),
-        ...Object.keys(VBED_KEYWORDS),
-    ];
-    for (const keyword of [...new Set(removableKeywords)].sort((a, b) => b.length - a.length)) {
-        residual = residual.replace(new RegExp(`(^|[\\s,\\/()-])${escapeRegExp(keyword)}(?=$|[\\s,\\/()-])`, "ig"), "$1");
-    }
-    residual = residual
-        .replace(/(\d[\d,.]*)\s*(?:sq\.?\s*ft|sqft|sf|m2|sqm|sq m)\b/giu, " ")
-        .replace(/\b(?:no|without)\s+(?:maid(?:'s)?(?:\s*room)?|maids?(?:\s*room)?|staff\s*room|service\s*room|helper(?:'s)?\s*room)\b/giu, " ")
-        .replace(/\b(?:with\s+)?maid(?:'s)?(?:\s*room)?\b/giu, " ")
-        .replace(/\bmaids?(?:\s*room)?\b/giu, " ")
-        .replace(/\bstaff\s*room\b/giu, " ")
-        .replace(/\bservice\s*room\b/giu, " ")
-        .replace(/\bhelper(?:'s)?\s*room\b/giu, " ")
-        .replace(/\+\s*maid(?:'s)?\b/giu, " ")
-        .replace(/\bwith\s+pool\b/giu, " ")
-        .replace(/\b(?:pool|gym|parking|furnished|unfurnished|upgraded|vacant|tenanted)\b/giu, " ")
-        .replace(/\b(?:near|close\s+to|next\s+to)\b/giu, " ")
-        .replace(/\b(?:in|at|on|for|with|without|and|or)\b/giu, " ")
-        .replace(/[\/,]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-        .trim();
-    if (!residual || residual.length < 3) {
-        return undefined;
-    }
-    if (/^(?:\d+|bed|beds|bath|baths|br|bdr|bhk|uae|and|or)$/i.test(residual)) {
-        return undefined;
-    }
-    if (isLikelyNoisyUnitCandidate(residual)) {
-        return undefined;
-    }
-    return residual;
-}
-function isLikelyNoisyUnitCandidate(value) {
-    const tokens = getSearchTokens(value);
-    if (!tokens.length) {
-        return true;
-    }
-    const nonNoiseTokens = tokens.filter((token) => !UNIT_NOISE_TOKENS.has(token));
-    if (!nonNoiseTokens.length) {
-        return true;
-    }
-    const noiseTokens = tokens.length - nonNoiseTokens.length;
-    return noiseTokens >= 3 && nonNoiseTokens.length <= 3;
-}
-function scoreBuildingCandidate(query, building) {
-    const lowerQuery = query.toLowerCase().trim();
-    const lowerBuilding = building.toLowerCase();
-    const queryTokens = getMeaningfulSearchTokens(query);
-    const buildingTokens = new Set(getMeaningfulSearchTokens(building));
-    const matchedTokens = queryTokens.filter((token) => buildingTokens.has(token));
-    const queryNumbers = getNumericTokens(query);
-    const buildingNumbers = new Set(getNumericTokens(building));
-    const numberMatches = queryNumbers.filter((token) => buildingNumbers.has(token));
-    let score = 0;
-    const containsFullName = lowerQuery.includes(lowerBuilding);
-    const startsWithQuery = lowerBuilding.startsWith(lowerQuery);
-    if (containsFullName)
-        score += 120;
-    if (startsWithQuery)
-        score += 50;
-    score += matchedTokens.reduce((total, token) => total + Math.min(24, token.length * 3), 0);
-    score += numberMatches.length * 30;
-    if (queryTokens.length > 0 && matchedTokens.length === queryTokens.length) {
-        score += 20;
-    }
-    return {
-        containsFullName,
-        matchedTokens,
-        numberMatches,
-        score,
-        startsWithQuery,
-    };
-}
-function rankBuildingMatches(buildingPool, query) {
-    return buildingPool
-        .map((candidate) => (Object.assign(Object.assign({}, candidate), scoreBuildingCandidate(query, candidate.b))))
-        .filter((candidate) => candidate.containsFullName ||
-        candidate.startsWithQuery ||
-        candidate.numberMatches.length > 0 ||
-        candidate.matchedTokens.length >= 2)
-        .filter((candidate) => candidate.score >= 30)
-        .sort((left, right) => {
-        if (right.score !== left.score)
-            return right.score - left.score;
-        return right.b.length - left.b.length;
-    });
-}
-function inferTypeFromContext(buildingName, areaName) {
-    // Check explicit type words in building name first
-    for (const [pattern, type] of BUILDING_TYPE_HINTS) {
-        if (pattern.test(buildingName))
-            return type;
-    }
-    // Fall back to area-level inference
-    if (VILLA_AREAS.has(areaName))
-        return "Villa";
-    return undefined;
-}
-function resolveCity(_area) {
-    // No static area→city map any more. Smart-search callers default to
-    // "Dubai" when this returns undefined, which is correct for our market
-    // (and AREA_KEYWORDS already routes any obviously non-Dubai keywords).
-    return undefined;
-}
-// Replaced by server-side LLM extraction via POST /api/valuation/from-text.
-// Kept as a no-op stub so existing call sites (the live-preview chip
-// renderer + DLD-search dropdown) compile without touching them — they'll
-// just render an empty preview, which is fine because the new flow shows
-// the server-side ask inline above the form when more info is needed.
-function parseValuationSearch(_input) {
-    return {};
-}
-
-const SMART_FIELD_KEYS = ["unit", "area", "city", "type", "beds", "maids", "size"];
 // ─── Constants ────────────────────────────────────────────────────────────────
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2500;
@@ -888,11 +634,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const [retryCount, setRetryCount] = useState(0);
     const [showAreaSuggestions, setShowAreaSuggestions] = useState(false);
     const [showBuildingSuggestions, setShowBuildingSuggestions] = useState(false);
-    const [showSmartSuggestions, setShowSmartSuggestions] = useState(false);
+    // (Removed) `showSmartSuggestions` only gated the orphaned
+    // `usePlacesSearch(smartQuery, ...)` call that the smart-suggestion
+    // dropdown used to read from. The dropdown is gone now.
     const [smartQuery, setSmartQuery] = useState("");
-    const [smartParsed, setSmartParsed] = useState({});
     const [fieldSources, setFieldSources] = useState({ city: "manual", maids: "manual" });
-    const [smartSnapshot, setSmartSnapshot] = useState({});
     // Server-driven free-text intake — set by handleSubmit when the user
     // submits with text in the smart-search box. Mirrors the WhatsApp
     // pipeline's response: { decision, replyText, missingFields, ... }.
@@ -920,12 +666,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const activeStreamControllerRef = useRef(null);
     const [showPlaces, setShowPlaces] = useState(false);
     const smartInputRef = useRef(null);
-    const smartSuggestionsRef = useRef(null);
     const placesRef = useRef(null);
-    const smartPlacesQuery = smartParsed.unit && !isLikelyNoisyUnitCandidate(smartParsed.unit)
-        ? smartParsed.unit
-        : smartQuery || smartParsed.area || smartParsed.unit || "";
-    const { results: smartPlacesResults, loading: smartPlacesLoading } = usePlacesSearch(smartPlacesQuery, showSmartSuggestions);
+    // (Removed) `usePlacesSearch(smartQuery, showSmartSuggestions)` and its
+    // `smartPlacesResults` / `smartPlacesLoading` outputs were consumed only
+    // by the smart-suggestion dropdown UI, which was removed when the page
+    // switched to server-side LLM extraction via /api/valuation/from-text.
+    // The Building input still uses its own usePlacesSearch via `placesResults`.
     const { results: placesResults, loading: placesLoading } = usePlacesSearch(form.unit, showPlaces);
     const [unlocked, setUnlocked] = useState(false);
     const [gate, setGate] = useState({ name: "", phone: "", email: "" });
@@ -941,10 +687,6 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const unitInputRef = useRef(null);
     const areaSuggestionsRef = useRef(null);
     const buildingSuggestionsRef = useRef(null);
-    const hasSmartAutofill = SMART_FIELD_KEYS.some((key) => fieldSources[key] === "smart");
-    const localSmartSuggestions = buildSmartSuggestions(smartQuery, smartParsed, smartPlacesResults);
-    const { suggestion: aiSmartParseSuggestion, loading: smartAIParseLoading, } = useValuationAISuggestion(smartQuery, smartParsed, localSmartSuggestions, resolveApiUrl);
-    const smartSuggestions = mergeSmartSuggestions(localSmartSuggestions, aiSmartParseSuggestion);
     const setTrackedValues = useCallback((values, source) => {
         const entries = Object.entries(values)
             .filter((entry) => typeof entry[1] === "string");
@@ -984,81 +726,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const updateField = useCallback((key, val, source = "manual") => {
         setTrackedValues({ [key]: val }, source);
     }, [setTrackedValues]);
-    const applySmartSuggestion = useCallback((parsed) => {
-        const entries = SMART_FIELD_KEYS
-            .map((key) => [key, parsed[key]])
-            .filter((entry) => typeof entry[1] === "string" && entry[1].trim().length > 0);
-        if (!entries.length) {
-            return;
-        }
-        const nextSmartKeys = new Set(entries.map(([key]) => key));
-        const restorePatch = SMART_FIELD_KEYS.reduce((acc, key) => {
-            var _a;
-            if (fieldSources[key] === "smart" && !nextSmartKeys.has(key)) {
-                acc[key] = (_a = smartSnapshot[key]) !== null && _a !== void 0 ? _a : "";
-            }
-            return acc;
-        }, {});
-        setSmartSnapshot((current) => {
-            const next = Object.assign({}, current);
-            for (const [key] of entries) {
-                if (fieldSources[key] !== "smart") {
-                    next[key] = form[key];
-                }
-            }
-            for (const key of SMART_FIELD_KEYS) {
-                if (!nextSmartKeys.has(key)) {
-                    delete next[key];
-                }
-            }
-            return next;
-        });
-        if (Object.keys(restorePatch).length > 0) {
-            setTrackedValues(restorePatch, "manual");
-        }
-        setTrackedValues(Object.fromEntries(entries), "smart");
-        setSmartParsed(parsed);
-        setShowSmartSuggestions(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fieldSources, form, setTrackedValues, smartSnapshot]);
-    const clearSmartAutofill = useCallback(() => {
-        const smartKeys = SMART_FIELD_KEYS.filter((key) => fieldSources[key] === "smart");
-        if (!smartKeys.length) {
-            return;
-        }
-        const restorePatch = smartKeys.reduce((acc, key) => {
-            var _a;
-            acc[key] = (_a = smartSnapshot[key]) !== null && _a !== void 0 ? _a : "";
-            return acc;
-        }, {});
-        setTrackedValues(restorePatch, "manual");
-        setSmartSnapshot((current) => {
-            const next = Object.assign({}, current);
-            for (const key of smartKeys) {
-                delete next[key];
-            }
-            return next;
-        });
-    }, [fieldSources, smartSnapshot, setTrackedValues]);
     const handleSmartInputChange = useCallback((value) => {
         setSmartQuery(value);
-        const trimmed = value.trim();
-        if (trimmed.length < 2) {
-            setSmartParsed({});
-            setShowSmartSuggestions(false);
-            return;
-        }
-        setSmartParsed(parseValuationSearch(value));
-        setShowSmartSuggestions(true);
     }, []);
-    // Close suggestions when clicking outside
+    // Close suggestions when clicking outside (Area + Building dropdowns
+    // only; the smart-search suggestion dropdown was removed when the page
+    // switched to server-side LLM extraction).
     useEffect(() => {
         const handler = (e) => {
             const target = e.target;
-            if (smartSuggestionsRef.current && !smartSuggestionsRef.current.contains(target) &&
-                smartInputRef.current && !smartInputRef.current.contains(target)) {
-                setShowSmartSuggestions(false);
-            }
             if (areaSuggestionsRef.current && !areaSuggestionsRef.current.contains(target)) {
                 setShowAreaSuggestions(false);
             }
@@ -1131,9 +807,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             const nextForm = buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE);
             setForm(nextForm);
             setSmartQuery([nextForm.unit, nextForm.area, nextForm.city].filter(Boolean).join(", "));
-            setSmartParsed({});
             setFieldSources({ city: "manual", maids: "manual" });
-            setSmartSnapshot({});
         }
         const formForMapping = options.resetForm
             ? buildFormFromInquiry(data === null || data === void 0 ? void 0 : data.inquiry, INITIAL_FORM_STATE)
@@ -1192,13 +866,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         setDeedParsing(false);
         setDeedParsed(false);
         setSmartQuery("");
-        setSmartParsed({});
-        setShowSmartSuggestions(false);
         setShowAreaSuggestions(false);
         setShowBuildingSuggestions(false);
         setShowPlaces(false);
         setFieldSources({ city: "manual", maids: "manual" });
-        setSmartSnapshot({});
         setCopied(false);
         setLinkCopied(false);
         setLoadingSavedReport(false);
@@ -1946,97 +1617,13 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </div>
                     <div className="relative">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#66706d] pointer-events-none z-10"/>
-                      <input ref={smartInputRef} value={smartQuery} onChange={(e) => handleSmartInputChange(e.target.value)} onFocus={() => {
-                if (smartQuery.trim().length >= 2) {
-                    setShowSmartSuggestions(true);
-                }
-            }} onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                    setShowSmartSuggestions(false);
-                    return;
-                }
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    if (smartSuggestions.length > 0) {
-                        applySmartSuggestion(smartSuggestions[0].parsed);
-                    }
-                }
-            }} placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"' className="h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 pr-20 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 sm:pr-16"/>
-                      {(smartQuery || hasSmartAutofill) && (<button type="button" onClick={() => {
+                      <input ref={smartInputRef} value={smartQuery} onChange={(e) => handleSmartInputChange(e.target.value)} placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"' className="h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 pr-20 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 sm:pr-16"/>
+                      {smartQuery && (<button type="button" onClick={() => {
                     setSmartQuery("");
-                    setSmartParsed({});
-                    setShowSmartSuggestions(false);
-                    clearSmartAutofill();
                 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-medium text-[#66706d] transition-colors hover:text-[#10231e] sm:right-4 sm:text-xs">
                           {tv("clear")}
                         </button>)}
-
-                      {showSmartSuggestions && smartQuery.trim().length >= 2 && (<div ref={smartSuggestionsRef} className="absolute top-full left-0 right-0 mt-1 z-50 rounded-2xl border border-[#e3ddcf] bg-white shadow-lg overflow-hidden">
-                          <div className="border-b border-[rgba(227,221,207,0.4)] bg-[rgba(244,239,231,0.2)] px-4 py-2">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(102,112,109,0.7)]">
-                              {tv("smartMatches")}
-                            </p>
-                          </div>
-
-                          {smartSuggestions.length > 0 ? (<div className="max-h-72 overflow-y-auto">
-                              {smartSuggestions.map((suggestion) => (<button key={suggestion.id} type="button" className="flex w-full items-start gap-3 border-b border-[rgba(227,221,207,0.3)] px-4 py-3 text-left text-sm transition-colors hover:bg-[#f4efe7]/40 last:border-0" onClick={() => {
-                            applySmartSuggestion(suggestion.parsed);
-                        }} onMouseDown={(event) => {
-                            event.preventDefault();
-                            applySmartSuggestion(suggestion.parsed);
-                        }}>
-                                  <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${suggestion.kind === "ai"
-                            ? "bg-[#1A7A5A]/12"
-                            : suggestion.kind === "detected"
-                                ? "bg-[#0B3D2E]/10"
-                                : "bg-[#D4A847]/12"}`}>
-                                    {suggestion.kind === "places"
-                            ? <MapPin className="h-4 w-4 text-[#B8922F]"/>
-                            : <Sparkles className={`h-4 w-4 ${suggestion.kind === "ai" ? "text-[#1A7A5A]" : "text-[#0B3D2E]"}`}/>}
-                                  </div>
-                                  <div className="min-w-0 flex-1">
-                                    <div className="flex items-center gap-2">
-                                      <p className="truncate font-semibold text-[#10231e]">{suggestion.title}</p>
-                                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] ${suggestion.kind === "ai"
-                            ? "bg-[#1A7A5A]/12 text-[#1A7A5A]"
-                            : suggestion.kind === "detected"
-                                ? "bg-[#0B3D2E]/8 text-[#0B3D2E]"
-                                : "bg-[#D4A847]/14 text-[#B8922F]"}`}>
-                                        {suggestion.kind === "ai" ? "AI" : suggestion.kind === "detected" ? "Detected" : "Live"}
-                                      </span>
-                                      {suggestion.needsConfirmation && (<span className="rounded-full bg-[#f4efe7] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#66706d]">
-                                          {tv("review")}
-                                        </span>)}
-                                      {typeof suggestion.confidence === "number" && suggestion.kind === "ai" && !suggestion.needsConfirmation && (<span className="rounded-full bg-[#0B3D2E]/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0B3D2E]">
-                                          {Math.round(suggestion.confidence * 100)}%
-                                        </span>)}
-                                    </div>
-                                    <p className="mt-1 truncate text-xs text-[#66706d]">
-                                      {suggestion.subtitle}
-                                    </p>
-                                  </div>
-                                  <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-[#66706d]"/>
-                                </button>))}
-                              {smartAIParseLoading && (<div className="flex items-center gap-2 border-t border-[rgba(227,221,207,0.3)] px-4 py-2.5 text-xs text-[#66706d]">
-                                  <RefreshCw className="h-3.5 w-3.5 animate-spin"/>
-                                  {tv("aiRefining")}
-                                </div>)}
-                            </div>) : (<div className="px-4 py-3 text-sm text-[#66706d]">
-                              {smartPlacesLoading || smartAIParseLoading
-                        ? tv("lookingUp")
-                        : tv("noMatch")}
-                            </div>)}
-                        </div>)}
                     </div>
-                    {Object.keys(smartParsed).length > 0 && (<div className="flex flex-wrap gap-2 mt-2.5">
-                        {smartParsed.city && <SmartTag label="City" value={smartParsed.city}/>}
-                        {smartParsed.area && <SmartTag label="Area" value={smartParsed.area}/>}
-                        {smartParsed.unit && <SmartTag label="Building" value={smartParsed.unit}/>}
-                        {smartParsed.type && <SmartTag label="Type" value={smartParsed.type}/>}
-                        {smartParsed.beds && <SmartTag label="Beds" value={smartParsed.beds}/>}
-                        {smartParsed.maids && <SmartTag label="Maid's room" value={smartParsed.maids}/>}
-                        {smartParsed.size && <SmartTag label="Size" value={smartParsed.size}/>}
-                      </div>)}
                   </div>
 
                   {/* Or divider + deed upload */}
@@ -2815,247 +2402,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
       {Footer ? <Footer /> : null}
     </div>);
 };
-function hasSmartParsedValue(parsed) {
-    return SMART_FIELD_KEYS.some((key) => typeof parsed[key] === "string" && parsed[key].trim().length > 0);
-}
-function formatSmartSuggestionSubtitle(parsed) {
-    const location = [parsed.area, parsed.city].filter(Boolean).join(", ");
-    const details = [
-        parsed.type,
-        parsed.beds ? (parsed.beds === "Studio" ? "Studio" : `${parsed.beds} BR`) : "",
-        parsed.maids === "Yes" ? "maid's room" : parsed.maids === "No" ? "no maid's room" : "",
-        parsed.size,
-    ].filter(Boolean).join(" · ");
-    return [location, details].filter(Boolean).join(" · ");
-}
-function buildSmartSuggestions(query, parsed, placesResults) {
-    const trimmedQuery = query.trim();
-    if (trimmedQuery.length < 2) {
-        return [];
-    }
-    const suggestions = [];
-    const seen = new Set();
-    if (hasSmartParsedValue(parsed)) {
-        const title = parsed.unit || parsed.area || parsed.city || trimmedQuery;
-        const subtitle = formatSmartSuggestionSubtitle(parsed) || "Apply the detected property details";
-        const key = `${title.toLowerCase()}__${subtitle.toLowerCase()}`;
-        seen.add(key);
-        suggestions.push({
-            id: `detected:${key}`,
-            kind: "detected",
-            parsed,
-            subtitle,
-            title,
-        });
-    }
-    for (const place of placesResults) {
-        const placeTitle = place.building || place.description.split(",")[0].trim();
-        const placeCity = isSupportedCity(place.city) ? place.city : parsed.city;
-        const placeParsed = Object.assign(Object.assign({}, parsed), { unit: placeTitle || parsed.unit, area: place.area || parsed.area, city: placeCity, type: parsed.type || inferTypeFromContext(placeTitle, place.area) });
-        const subtitle = formatSmartSuggestionSubtitle(placeParsed) || place.description;
-        const key = `${placeTitle.toLowerCase()}__${subtitle.toLowerCase()}`;
-        if (seen.has(key)) {
-            continue;
-        }
-        seen.add(key);
-        suggestions.push({
-            id: `place:${place.placeId}`,
-            kind: "places",
-            parsed: placeParsed,
-            subtitle,
-            title: placeTitle,
-        });
-    }
-    return suggestions.slice(0, 6);
-}
-function countParsedSmartFields(parsed) {
-    return SMART_FIELD_KEYS.filter((key) => typeof parsed[key] === "string" && parsed[key].trim().length > 0).length;
-}
-function areParsedValuationsEquivalent(left, right) {
-    return SMART_FIELD_KEYS.every((key) => normalizeSmartComparableValue(left[key]) === normalizeSmartComparableValue(right[key]));
-}
-function shouldRequestAIValuationParse(query, parsed, candidates) {
-    const trimmedQuery = query.trim();
-    const queryTokens = getSearchTokens(trimmedQuery);
-    if (trimmedQuery.length < 6 || queryTokens.length < 2) {
-        return false;
-    }
-    const firstCandidate = candidates[0];
-    const queryLower = trimmedQuery.toLowerCase();
-    const unitLower = parsed.unit ? parsed.unit.toLowerCase() : "";
-    // Accept substring in either direction so numbered variants like "Marina Gate 1"
-    // still count as an exact detection when the user typed the base name "marina gate".
-    const unitOverlapsQuery = Boolean(unitLower && (queryLower.includes(unitLower) || unitLower.includes(queryLower)));
-    const exactDetectedMatch = Boolean(firstCandidate &&
-        firstCandidate.kind === "detected" &&
-        parsed.unit &&
-        firstCandidate.parsed.unit === parsed.unit &&
-        unitOverlapsQuery &&
-        parsed.area &&
-        parsed.city);
-    // Skip AI when the local parser already nailed unit+area+city from the query.
-    // Type and beds often can't be inferred from a bare building name (e.g., "Burj Khalifa"),
-    // so requiring 4 fields over-triggers AI on trivially exact matches.
-    if (exactDetectedMatch && countParsedSmartFields(parsed) >= 3) {
-        return false;
-    }
-    const missingCoreFields = !parsed.unit || !parsed.area || !parsed.type || !parsed.beds;
-    const hasMultipleCandidates = candidates.length > 1;
-    const hasComplexModifiers = /\b(with|without|near|vacant|tenanted|upgraded|furnished|unfurnished|view|floor|maid|staff|helper|service)\b/i.test(trimmedQuery);
-    return missingCoreFields || hasMultipleCandidates || hasComplexModifiers || countParsedSmartFields(parsed) <= 2;
-}
-function normalizeAIValuationSuggestionPayload(value) {
-    if (!value || typeof value !== "object") {
-        return null;
-    }
-    const parsedValue = value.parsed && typeof value.parsed === "object" ? value.parsed : {};
-    const parsed = {
-        unit: typeof parsedValue.unit === "string" ? parsedValue.unit.trim() : undefined,
-        area: typeof parsedValue.area === "string" ? parsedValue.area.trim() : undefined,
-        city: typeof parsedValue.city === "string" ? parsedValue.city.trim() : undefined,
-        type: typeof parsedValue.type === "string" ? parsedValue.type.trim() : undefined,
-        beds: typeof parsedValue.beds === "string" ? parsedValue.beds.trim() : undefined,
-        maids: typeof parsedValue.maids === "string" ? parsedValue.maids.trim() : undefined,
-        size: typeof parsedValue.size === "string" ? parsedValue.size.trim() : undefined,
-    };
-    if (!hasSmartParsedValue(parsed)) {
-        return null;
-    }
-    const confidence = Number(value.confidence);
-    return {
-        ambiguities: Array.isArray(value.ambiguities)
-            ? value.ambiguities.map((item) => String(item || "").trim()).filter(Boolean).slice(0, 4)
-            : [],
-        confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : 0,
-        needsConfirmation: Boolean(value.needsConfirmation),
-        parsed,
-        reasoning: typeof value.reasoning === "string" ? value.reasoning.trim() : "",
-    };
-}
-function buildAISmartSuggestion(aiSuggestion, query) {
-    if (!aiSuggestion || !hasSmartParsedValue(aiSuggestion.parsed)) {
-        return null;
-    }
-    if (aiSuggestion.confidence < 0.68 && !aiSuggestion.needsConfirmation) {
-        return null;
-    }
-    const title = aiSuggestion.parsed.unit || aiSuggestion.parsed.area || aiSuggestion.parsed.city || query.trim();
-    const confidenceLabel = aiSuggestion.needsConfirmation
-        ? "Review before applying"
-        : aiSuggestion.confidence >= 0.9
-            ? "High confidence"
-            : `${Math.round(aiSuggestion.confidence * 100)}% confidence`;
-    const subtitle = [formatSmartSuggestionSubtitle(aiSuggestion.parsed), confidenceLabel]
-        .filter(Boolean)
-        .join(" · ");
-    return {
-        confidence: aiSuggestion.confidence,
-        id: `ai:${title.toLowerCase()}__${confidenceLabel.toLowerCase()}`,
-        kind: "ai",
-        needsConfirmation: aiSuggestion.needsConfirmation,
-        parsed: aiSuggestion.parsed,
-        reasoning: aiSuggestion.reasoning,
-        subtitle,
-        title,
-    };
-}
-function mergeSmartSuggestions(localSuggestions, aiSuggestion) {
-    if (!aiSuggestion) {
-        return localSuggestions;
-    }
-    const duplicateIndex = localSuggestions.findIndex((candidate) => areParsedValuationsEquivalent(candidate.parsed, aiSuggestion.parsed));
-    if (duplicateIndex >= 0) {
-        const duplicate = localSuggestions[duplicateIndex];
-        const aiFieldCount = countParsedSmartFields(aiSuggestion.parsed);
-        const duplicateFieldCount = countParsedSmartFields(duplicate.parsed);
-        if (aiFieldCount > duplicateFieldCount ||
-            (aiFieldCount === duplicateFieldCount && aiSuggestion.kind === "ai")) {
-            const withoutDuplicate = localSuggestions.filter((_, index) => index !== duplicateIndex);
-            return [aiSuggestion, ...withoutDuplicate].slice(0, 6);
-        }
-        return localSuggestions;
-    }
-    if (aiSuggestion.confidence && aiSuggestion.confidence >= 0.85 && !aiSuggestion.needsConfirmation) {
-        return [aiSuggestion, ...localSuggestions].slice(0, 6);
-    }
-    return [...localSuggestions, aiSuggestion].slice(0, 6);
-}
-function useValuationAISuggestion(query, parserResult, candidates, resolveApiUrl = defaultResolveApiUrl) {
-    const [suggestion, setSuggestion] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const requestCandidates = candidates.slice(0, 5).map((candidate) => ({
-        kind: candidate.kind,
-        parsed: candidate.parsed,
-        subtitle: candidate.subtitle,
-        title: candidate.title,
-    }));
-    const requestKey = JSON.stringify({
-        candidates: requestCandidates,
-        parserResult,
-        query,
-    });
-    useEffect(() => {
-        if (!shouldRequestAIValuationParse(query, parserResult, candidates)) {
-            setSuggestion(null);
-            setLoading(false);
-            return;
-        }
-        setSuggestion(null);
-        setLoading(false);
-        const controller = new AbortController();
-        const timer = setTimeout(async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(resolveApiUrl("/api/valuation/parse"), {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        candidates: requestCandidates,
-                        parserResult,
-                        query,
-                    }),
-                    signal: controller.signal,
-                });
-                const data = await response.json().catch(() => null);
-                if (controller.signal.aborted) {
-                    return;
-                }
-                const nextSuggestion = buildAISmartSuggestion(normalizeAIValuationSuggestionPayload(data === null || data === void 0 ? void 0 : data.suggestion), query);
-                setSuggestion(nextSuggestion);
-            }
-            catch (_a) {
-                if (!controller.signal.aborted) {
-                    setSuggestion(null);
-                }
-            }
-            finally {
-                if (!controller.signal.aborted) {
-                    setLoading(false);
-                }
-            }
-        }, 700);
-        return () => {
-            controller.abort();
-            clearTimeout(timer);
-        };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [requestKey]);
-    return { loading, suggestion };
-}
-function normalizeSmartComparableValue(value) {
-    return String(value !== null && value !== void 0 ? value : "")
-        .toLowerCase()
-        .replace(/&/g, " and ")
-        .replace(/['’]/g, "")
-        .replace(/[^a-z0-9]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-}
 // Search DLD-derived buildings index (data/buildings.json) by building or area name.
-// Returns Google-Places-shaped records so the existing buildSmartSuggestions / dropdown
-// rendering logic works unchanged. Ranked by transaction volume (sales + rents).
+// Ranked by transaction volume (sales + rents).
 function searchBuildingsIndex(query, limit = 6) {
     const q = query.trim().toLowerCase();
     if (q.length < 2) return [];
@@ -3128,11 +2476,6 @@ function usePlacesSearch(query, enabled) {
     }, [query, enabled]);
     return { results, loading };
 }
-// ─── SmartTag ────────────────────────────────────────────────────────────────
-const SmartTag = ({ label, value }) => (<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0B3D2E]/8 text-[#0B3D2E] border border-[#0B3D2E]/15">
-    <span className="opacity-50 font-normal">{label}:</span>
-    {value}
-  </span>);
 const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
     // `tv` must be created inside the component body — this picker is at module
     // scope so it doesn't inherit `tv` from the parent SharedValuationPage. The
