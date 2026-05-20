@@ -3291,6 +3291,7 @@ const SmartTag = ({ label, value }) => (<span className="inline-flex items-cente
     {value}
   </span>);
 const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
+    const tv = useTranslations("valuation");
     const [open, setOpen] = useState(false);
     const pickerRef = useRef(null);
     useEffect(() => {
@@ -3381,6 +3382,7 @@ const BedroomPicker = ({ maids, onChange, onMaidsChange, value, }) => {
     </div>);
 };
 const SizePicker = ({ onChange, value, }) => {
+    const tv = useTranslations("valuation");
     const [open, setOpen] = useState(false);
     const pickerRef = useRef(null);
     const parsedValue = parseSizeValue(value);
@@ -3510,7 +3512,9 @@ function stripSizeUnit(value) {
         .trim();
 }
 // ─── GateCard ─────────────────────────────────────────────────────────────────
-const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChange, onUnlock, }) => (<div className="mb-8">
+const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChange, onUnlock, }) => {
+    const tv = useTranslations("valuation");
+    return (<div className="mb-8">
     {/* Unlock card */}
     <div className={`relative overflow-hidden rounded-2xl border-2 bg-white p-5 shadow-lg transition-all duration-500 sm:p-8 ${highlight
         ? "border-[#D4A847]/55 shadow-[0_18px_44px_rgba(212,168,71,0.18)] ring-4 ring-[#D4A847]/10"
@@ -3593,6 +3597,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
       </button>
     </div>
   </div>);
+};
 const HiddenRangeValue = ({ currency = "AED" }) => {
     const tv = useTranslations("valuation");
     return (<div className="max-w-full text-white">
