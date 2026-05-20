@@ -1482,7 +1482,7 @@ export default function PropertyDetailClient({
       <DetailStickyCta
         whatsappUrl={whatsappUrl}
         phone="+97154998811"
-        labels={{ whatsapp: t("whatsappInquiry"), call: t("callNow"), liveChat: t("liveChat") }}
+        labels={{ whatsapp: t("whatsapp"), call: t("callNow"), liveChat: t("liveChat") }}
       />
 
       <Footer />
