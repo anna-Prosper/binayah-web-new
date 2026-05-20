@@ -1763,7 +1763,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <div className="inline-flex rounded-full border border-[rgba(227,221,207,0.6)] bg-[rgba(244,239,231,0.35)] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]">
                         {TRANSACTION_TYPE_OPTIONS.map((option) => {
                 const active = form.transactionType === option.value;
-                return (<button key={option.value} type="button" onClick={() => updateField("transactionType", option.value)} className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 sm:px-5 ${active
+                return (<button key={option.value} type="button" disabled={submitting} onClick={() => updateField("transactionType", option.value)} className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] transition-all duration-300 disabled:cursor-wait disabled:opacity-60 sm:px-5 ${active
                         ? "text-white shadow-[0_10px_24px_rgba(11,61,46,0.22)]"
                         : "text-[#66706d] hover:text-[#10231e]"}`} style={active
                         ? {
@@ -1789,8 +1789,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         ref={smartInputRef}
                         value={smartQuery}
                         onChange={(e) => handleSmartInputChange(e.target.value)}
+                        disabled={submitting}
                         placeholder='Try "Marina Gate 1, Dubai Marina, 2BR" or "3 bed villa Dubai Hills"'
-                        className={`h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 ${smartQuery ? "pr-44 sm:pr-52" : "pr-12"}`}
+                        className={`h-14 w-full rounded-2xl border-2 border-[#0B3D2E]/20 bg-[#faf7f2] pl-12 text-[15px] transition-all placeholder:text-[rgba(102,112,109,0.5)] focus:outline-none focus:border-[#0B3D2E]/40 focus:ring-2 focus:ring-[#0B3D2E]/10 disabled:cursor-wait disabled:opacity-70 ${smartQuery ? "pr-44 sm:pr-52" : "pr-12"}`}
                       />
                       {smartQuery && (
                         <div className="absolute inset-y-0 right-2 flex items-center gap-1.5 sm:right-2.5">
@@ -1843,7 +1844,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     handleDeedUpload(file);
                 e.target.value = "";
             }}/>
-                    {!deedFile ? (<button type="button" onClick={() => { var _a; return (_a = deedInputRef.current) === null || _a === void 0 ? void 0 : _a.click(); }} className="group flex w-full flex-col items-start gap-3 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 px-5 py-4 text-left text-[#66706d] transition-all duration-200 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 hover:text-[#0B3D2E] sm:flex-row sm:items-center sm:justify-center sm:px-6">
+                    {!deedFile ? (<button type="button" disabled={submitting} onClick={() => { var _a; return (_a = deedInputRef.current) === null || _a === void 0 ? void 0 : _a.click(); }} className="group flex w-full flex-col items-start gap-3 rounded-2xl border-2 border-dashed border-[#0B3D2E]/20 px-5 py-4 text-left text-[#66706d] transition-all duration-200 hover:border-[#0B3D2E]/40 hover:bg-[#0B3D2E]/5 hover:text-[#0B3D2E] disabled:cursor-wait disabled:opacity-60 disabled:hover:border-[#0B3D2E]/20 disabled:hover:bg-transparent disabled:hover:text-[#66706d] sm:flex-row sm:items-center sm:justify-center sm:px-6">
                         <FileUp className="h-5 w-5 group-hover:scale-110 transition-transform"/>
                         <div className="text-left">
                           <p className="text-sm font-semibold">{tv("uploadTitleDeed")}</p>
@@ -1868,7 +1869,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         "Ready to process"}
                           </p>
                         </div>
-                        {!deedParsing && (<button type="button" onClick={() => { setDeedFile(null); setDeedParsed(false); setUseDeedResult(false); }} className="self-end p-1 text-[#66706d] transition-colors hover:text-[#10231e] sm:self-auto">
+                        {!deedParsing && (<button type="button" disabled={submitting} onClick={() => { setDeedFile(null); setDeedParsed(false); setUseDeedResult(false); }} className="self-end p-1 text-[#66706d] transition-colors hover:text-[#10231e] disabled:cursor-wait disabled:opacity-50 disabled:hover:text-[#66706d] sm:self-auto">
                             <X className="h-4 w-4"/>
                           </button>)}
                       </div>)}
