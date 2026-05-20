@@ -288,114 +288,15 @@ function resolveCity(_area) {
     // (and AREA_KEYWORDS already routes any obviously non-Dubai keywords).
     return undefined;
 }
-function parseValuationSearch(input) {
-    var _a, _b, _c, _d;
-    const lower = input.toLowerCase().trim();
-    const result = {};
-    let matchedCityKeyword = "";
-    let matchedAreaKeyword = "";
-    // City — explicit keyword match first (longest first)
-    const cityEntries = Object.entries(CITY_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
-    for (const [kw, val] of cityEntries) {
-        if (lower.includes(kw)) {
-            result.city = val;
-            matchedCityKeyword = kw;
-            break;
-        }
-    }
-    // Area — longest match first
-    const areaEntries = Object.entries(AREA_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
-    for (const [kw, val] of areaEntries) {
-        if (lower.includes(kw)) {
-            result.area = val;
-            matchedAreaKeyword = kw;
-            break;
-        }
-    }
-    // If area found but no city yet, resolve city from area
-    if (result.area && !result.city) {
-        result.city = (_a = resolveCity(result.area)) !== null && _a !== void 0 ? _a : "Dubai";
-    }
-    // Property type — explicit keyword first
-    for (const [kw, val] of Object.entries(VTYPE_KEYWORDS)) {
-        if (lower.includes(kw)) {
-            result.type = val;
-            break;
-        }
-    }
-    // Bedrooms
-    const bedEntries = Object.entries(VBED_KEYWORDS).sort((a, b) => b[0].length - a[0].length);
-    for (const [kw, val] of bedEntries) {
-        if (lower.includes(kw)) {
-            result.beds = val;
-            break;
-        }
-    }
-    result.maids = detectMaidsPreference(input);
-    // Size
-    const sizeMatch = lower.match(/(\d[\d,.]*)\s*(sq\.?\s*ft|sqft|sf|m2|sqm|sq m)/);
-    if (sizeMatch) {
-        result.size = formatSizeValue(sizeMatch[1], normalizeParsedSizeUnit(sizeMatch[2]));
-    }
-    // Building — search known buildings across all cities if no city detected yet
-    const cityKey = result.city || "Dubai";
-    const searchCities = result.city ? [result.city] : SUPPORTED_CITIES;
-    const buildingSearchQuery = extractResidualUnitCandidate(input, [matchedAreaKeyword, matchedCityKeyword]) || input;
-    const buildingSearchLower = buildingSearchQuery.toLowerCase();
-    const buildAllAreas = (cities) => cities.flatMap((c) => getAreas(c).flatMap((a) => a.buildings.map((b) => ({ b, a: a.area, c }))));
-    const buildingPool = result.area
-        ? getBuildings(cityKey, result.area).map((b) => ({ b, a: result.area, c: cityKey }))
-        : buildAllAreas(searchCities);
-    // Full-input ranker first — preserves compound names like "Marina Gate" that the
-    // residual extractor would otherwise split after stripping the area keyword.
-    const fullInputRanked = rankBuildingMatches(buildingPool, input);
-    if (fullInputRanked[0] && fullInputRanked[0].score >= 60) {
-        const top = fullInputRanked[0];
-        result.unit = top.b;
-        if (!result.area)
-            result.area = top.a;
-        if (!result.city)
-            result.city = top.c;
-        if (!result.type)
-            result.type = inferTypeFromContext(top.b, top.a) ?? undefined;
-        return result;
-    }
-    // Exact substring match (longest first)
-    const found = buildingPool
-        .sort((x, y) => y.b.length - x.b.length)
-        .find(({ b }) => buildingSearchLower.includes(b.toLowerCase()));
-    if (found) {
-        result.unit = found.b;
-        if (!result.area)
-            result.area = found.a;
-        if (!result.city)
-            result.city = found.c;
-        // Infer type from building + area if not already set
-        if (!result.type)
-            result.type = (_b = inferTypeFromContext(found.b, found.a)) !== null && _b !== void 0 ? _b : undefined;
-        return result;
-    }
-    const rankedMatches = rankBuildingMatches(buildingPool, buildingSearchQuery);
-    const partial = rankedMatches[0];
-    if (partial) {
-        result.unit = partial.b;
-        if (!result.area)
-            result.area = partial.a;
-        if (!result.city)
-            result.city = partial.c;
-        if (!result.type)
-            result.type = (_c = inferTypeFromContext(partial.b, partial.a)) !== null && _c !== void 0 ? _c : undefined;
-        return result;
-    }
-    // Type inference from area alone (even if no building matched)
-    if (!result.type && result.area) {
-        result.type = (_d = inferTypeFromContext("", result.area)) !== null && _d !== void 0 ? _d : undefined;
-    }
-    const residualUnit = extractResidualUnitCandidate(input, [matchedAreaKeyword, matchedCityKeyword]);
-    if (residualUnit)
-        result.unit = residualUnit;
-    return result;
+// Replaced by server-side LLM extraction via POST /api/valuation/from-text.
+// Kept as a no-op stub so existing call sites (the live-preview chip
+// renderer + DLD-search dropdown) compile without touching them — they'll
+// just render an empty preview, which is fine because the new flow shows
+// the server-side ask inline above the form when more info is needed.
+function parseValuationSearch(_input) {
+    return {};
 }
+
 const SMART_FIELD_KEYS = ["unit", "area", "city", "type", "beds", "maids", "size"];
 // ─── Constants ────────────────────────────────────────────────────────────────
 const MAX_RETRIES = 3;
@@ -992,6 +893,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const [smartParsed, setSmartParsed] = useState({});
     const [fieldSources, setFieldSources] = useState({ city: "manual", maids: "manual" });
     const [smartSnapshot, setSmartSnapshot] = useState({});
+    // Server-driven free-text intake — set by handleSubmit when the user
+    // submits with text in the smart-search box. Mirrors the WhatsApp
+    // pipeline's response: { decision, replyText, missingFields, ... }.
+    // Used to render the inline "we need a bit more info" alert above the
+    // form and to focus the first missing field after a needs_more_details.
+    const [smartIntakeAlert, setSmartIntakeAlert] = useState(null);
     const [deedFile, setDeedFile] = useState(null);
     const [deedParsing, setDeedParsing] = useState(false);
     const [deedParsed, setDeedParsed] = useState(false);
@@ -1437,10 +1344,34 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             return;
         }
     }, []);
+    // Translate a server-side inquiry record (the shape /api/valuation/from-text
+    // and /api/valuation/stream return) into the form-state shape used by
+    // the manual fields. Reuses buildFormFromInquiry which already handles
+    // the field-name remapping (propertyName → unit, community → area, etc.).
+    const fillFormFromServerInquiry = useCallback((serverInquiry) => {
+        if (!serverInquiry) return form;
+        const nextForm = buildFormFromInquiry(serverInquiry, form);
+        setForm(nextForm);
+        return nextForm;
+    }, [form]);
+
     const handleSubmit = async (e) => {
         var _a;
         e.preventDefault();
         setSubmitAttempted(true);
+        setSmartIntakeAlert(null);
+
+        const smartText = smartQuery.trim();
+        if (smartText) {
+            // Free-text path: same intake pipeline WhatsApp users hit.
+            // The server runs LLM extraction + matchers + validation, then
+            // tells us one of: ready (proceed), needs_more_details (ask the
+            // user), guidance (example reply), extraction_failed (LLM down).
+            await submitFromText(smartText);
+            return;
+        }
+
+        // Manual-form path: validate locally + submit directly.
         const errors = validateForm(form);
         if (Object.keys(errors).length > 0) {
             setFieldErrors(errors);
@@ -1463,6 +1394,94 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
         catch (err) {
             const msg = err instanceof Error ? err.message : "Security verification failed.";
+            setGlobalError(msg);
+            setStep("form");
+        }
+    };
+
+    const submitFromText = async (text) => {
+        var _a;
+        setGlobalError(null);
+        setRetryCount(0);
+        setFieldErrors({});
+        try {
+            const response = await fetch(resolveApiUrl("/api/valuation/from-text"), {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text }),
+            });
+            const data = await response.json().catch(() => null);
+            if (!response.ok) {
+                throw new Error((data && data.error) || `Request failed (${response.status}).`);
+            }
+            // Always reflect what the server understood back into the form so
+            // the user can see + tweak the extracted values regardless of
+            // decision branch. Fallback to current form if no inquiry.
+            const filledForm = data.inquiry ? fillFormFromServerInquiry(data.inquiry) : form;
+
+            if (data.decision === "guidance") {
+                setSmartIntakeAlert({ kind: "guidance", message: data.replyText || "Please describe the property in more detail." });
+                return;
+            }
+            if (data.decision === "extraction_failed") {
+                setGlobalError(data.replyText || "Could not read your message. Please try again.");
+                return;
+            }
+            if (data.decision === "needs_more_details") {
+                // Stay on the form, show an inline alert with the server's
+                // ask, scroll the first missing field into view so the user
+                // can complete it inline. Re-submit goes through the manual
+                // path (smartQuery is unchanged but the form has the
+                // extracted values now).
+                setSmartIntakeAlert({
+                    kind: "needs_more_details",
+                    message: data.replyText || data.validationError || "We need a bit more info before we can run the valuation.",
+                    missingFields: Array.isArray(data.missingFields) ? data.missingFields : [],
+                });
+                if (Array.isArray(data.missingFields) && data.missingFields.length) {
+                    const focusable = { city: "city", community: "area", location: "area", propertyName: "unit", bedrooms: "beds" };
+                    const errs = {};
+                    for (const m of data.missingFields) {
+                        const formKey = focusable[m];
+                        if (formKey) errs[formKey] = `Required to run the valuation.`;
+                    }
+                    setFieldErrors(errs);
+                    scrollToFirstFormError(errs);
+                }
+                return;
+            }
+            if (data.decision === "ready") {
+                // Server says we have everything. Stream the valuation.
+                setStep("processing");
+                setActiveProcessStep(0);
+                (_a = topRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+                const { turnstileConfig } = await loadValuationConfig();
+                const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+                const apiPayload = Object.assign({
+                    countryCode: data.inquiry?.countryCode || filledForm.countryCode || "AE",
+                    transactionType: data.inquiry?.transactionType || filledForm.transactionType,
+                    propertyName: data.inquiry?.propertyName || filledForm.unit,
+                    community: data.inquiry?.community || filledForm.area,
+                    city: data.inquiry?.city || filledForm.city,
+                    propertyType: data.inquiry?.propertyType || filledForm.type,
+                    bedrooms: data.inquiry?.bedrooms || filledForm.beds,
+                    maids: data.inquiry?.maids || filledForm.maids,
+                    size: data.inquiry?.size || filledForm.size,
+                    // Carry locationId forward if the LLM resolved one (rare on
+                    // first turn, but the disambig branch sets it).
+                    ...(data.inquiry?.locationId ? { locationId: data.inquiry.locationId } : {}),
+                }, (turnstileToken ? { turnstileToken } : {}));
+                await runValuationWithPhases(apiPayload, 1);
+                return;
+            }
+            // Unknown decision — fall back to a generic prompt.
+            setSmartIntakeAlert({
+                kind: "needs_more_details",
+                message: "Please describe the property in more detail.",
+                missingFields: [],
+            });
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : "Could not process your message.";
             setGlobalError(msg);
             setStep("form");
         }
@@ -1867,6 +1886,40 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <div className="h-px bg-[rgba(227,221,207,0.5)] my-6"/>
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-5 sm:space-y-6">
+
+                  {/* Inline alert from the server's free-text intake — renders
+                       when the from-text endpoint returns needs_more_details
+                       or guidance. The user reads the ask, fills the
+                       highlighted fields, resubmits. */}
+                  {smartIntakeAlert ? (
+                    <div
+                      role="status"
+                      className={`rounded-2xl border px-4 py-3 text-sm ${
+                        smartIntakeAlert.kind === "guidance"
+                          ? "border-[#e4d39a] bg-[#fdf7ec] text-[#7a5b14]"
+                          : "border-[#d4a847]/40 bg-[#fdf7ec] text-[#5a3f0a]"
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap leading-relaxed">
+                        {smartIntakeAlert.message}
+                      </p>
+                      {Array.isArray(smartIntakeAlert.missingFields) && smartIntakeAlert.missingFields.length > 0 ? (
+                        <p className="mt-2 text-xs text-[#7a5b14]">
+                          Highlighted below:{" "}
+                          {smartIntakeAlert.missingFields
+                            .map((f) => ({ city: "City", community: "Area / Community", location: "Area / Community", propertyName: "Building", bedrooms: "Bedrooms", transactionType: "Transaction type" })[f] || f)
+                            .join(", ")}
+                        </p>
+                      ) : null}
+                      <button
+                        type="button"
+                        onClick={() => setSmartIntakeAlert(null)}
+                        className="mt-2 text-xs font-medium underline-offset-2 hover:underline"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  ) : null}
 
                   {/* Smart search bar */}
                   <div>
