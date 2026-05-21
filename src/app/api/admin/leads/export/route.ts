@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminSession } from "@/lib/admin-auth";
+import { isLeadsApiAuthorized } from "@/lib/leads/api-auth";
 import { leadToCsvRow, listLeads } from "@/lib/leads/federation";
 import type { LeadSource, LeadStatus, LeadsListFilters } from "@/lib/leads/types";
 
@@ -41,7 +41,8 @@ function csvCell(v: unknown): string {
 // Hard-capped at 10K rows to keep memory bounded; for larger exports use
 // repeated calls with date-range slicing.
 export async function GET(req: NextRequest) {
-  if (!(await isAdminSession())) {
+  const auth = await isLeadsApiAuthorized(req);
+  if (!auth.ok) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
