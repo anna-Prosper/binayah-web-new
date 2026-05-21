@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, MapPin, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
+import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -47,7 +47,6 @@ const InquirySection = () => {
     { icon: Phone, label: "+971 54 998 8811", href: "tel:+971549988811" },
     { icon: Phone, label: "+971 4 243 8479", href: "tel:+97142438479" },
     { icon: Mail, label: "info@binayah.com", href: "mailto:info@binayah.com" },
-    { icon: MapPin, label: "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Rd, Dubai", href: undefined },
   ];
 
   return (
