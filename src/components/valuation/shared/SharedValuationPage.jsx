@@ -8,7 +8,13 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLeft, Copy, Check, ChevronRight, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, PhoneCall, RefreshCw, Search, Lock, Unlock, FileUp, FileText, X, Link2, } from "lucide-react";
-import { normalizePropertyType, requiresPropertyNameForPropertyType, valuationPropertyTypeOptions, } from "@/lib/property-types";
+import {
+  isBedroomsRequiredForValuation,
+  isCommunityRequiredForValuation,
+  isPropertyNameRequiredForValuation,
+  normalizePropertyType,
+  valuationPropertyTypeOptions,
+} from "@/lib/property-types";
 // buildings.json is 678 KB — dynamically imported on first use to keep it
 // out of the initial valuation page bundle. Cached after first load.
 let buildingsIndexCache = null;
@@ -254,21 +260,39 @@ function sanitizeComparableDisplayDate(value) {
     }
     return normalized;
 }
+// Mirror the backend rules in lib/inquiry.js exactly:
+//   - city: always required
+//   - community OR propertyName: at least one required (server resolves either)
+//   - propertyName: required for residential types when community + bedrooms
+//     don't already produce a usable cohort
+//   - bedrooms: required for everything except Plot
+// The conditional predicates live in @/lib/property-types so frontend +
+// backend never drift apart again.
 function validateForm(form) {
     const errors = {};
     if (!form.city.trim()) {
         errors.city = "Please select the city.";
     }
-    if (!form.area.trim()) {
+    if (
+        isCommunityRequiredForValuation({ propertyName: form.unit }) &&
+        !form.area.trim()
+    ) {
         errors.area = "Please enter the community.";
     }
-    if (requiresUnitFieldForForm(form.type) && (!form.unit.trim() || form.unit.trim().length < 3)) {
+    if (
+        isPropertyNameRequiredForValuation({
+            propertyType: form.type,
+            community: form.area,
+            bedrooms: form.beds,
+        }) &&
+        (!form.unit.trim() || form.unit.trim().length < 3)
+    ) {
         errors.unit = "Please enter the building or project name.";
     }
+    if (isBedroomsRequiredForValuation(form.type) && !form.beds.trim()) {
+        errors.beds = "Please select the number of bedrooms.";
+    }
     return errors;
-}
-function requiresUnitFieldForForm(propertyType) {
-    return requiresPropertyNameForPropertyType(propertyType);
 }
 function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
@@ -787,15 +811,21 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             }
             return next;
         });
-        // Live validation after first submit attempt
-        if (submitAttempted && Object.prototype.hasOwnProperty.call(values, "unit")) {
-            const unitValue = typeof values.unit === "string" ? values.unit : "";
+        // Live validation after the first submit attempt — clear errors as
+        // the user fills the corresponding fields. We don't re-validate
+        // here (that happens on next submit); we just remove the red badge
+        // once the value is non-empty so the form feels responsive.
+        if (submitAttempted) {
             setFieldErrors((prev) => {
                 const next = Object.assign({}, prev);
-                if (unitValue.trim().length >= 5)
-                    delete next.unit;
-                else
-                    next.unit = "Please enter the building or unit name (at least 5 characters).";
+                for (const key of Object.keys(values)) {
+                    const value = typeof values[key] === "string" ? values[key] : "";
+                    if (!value.trim()) continue;
+                    if (key === "unit" && next.unit) delete next.unit;
+                    if (key === "area" && next.area) delete next.area;
+                    if (key === "city" && next.city) delete next.city;
+                    if (key === "beds" && next.beds) delete next.beds;
+                }
                 return next;
             });
         }
@@ -1094,11 +1124,23 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
     };
     const scrollToFirstFormError = useCallback((errors) => {
-        var _a;
-        if (errors.unit) {
-            const target = (_a = smartInputRef.current) !== null && _a !== void 0 ? _a : unitInputRef.current;
-            target === null || target === void 0 ? void 0 : target.scrollIntoView({ behavior: "smooth", block: "center" });
-            target === null || target === void 0 ? void 0 : target.focus();
+        // Priority order matches the visual layout of the form so the user is
+        // always scrolled to the FIRST blocking error rather than a later one.
+        // The smart-search input lives above the manual fields and is the
+        // best target when the user typed there — only fall back to the
+        // building input when smart-search isn't focused yet.
+        if (errors.city || errors.area || errors.unit) {
+            const target = smartInputRef.current ?? unitInputRef.current;
+            target?.scrollIntoView({ behavior: "smooth", block: "center" });
+            target?.focus();
+            return;
+        }
+        if (errors.beds) {
+            // Bedrooms sits below city/area/unit — scroll the smart input
+            // into view; the field error renders inline below the picker so
+            // the user can see what's blocking without further navigation.
+            const target = smartInputRef.current ?? unitInputRef.current;
+            target?.scrollIntoView({ behavior: "smooth", block: "center" });
             return;
         }
     }, []);
@@ -1957,7 +1999,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("areaCommunity")}
-                        <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
+                        {/* Community is only "required" when no building/
+                             unit has been provided — backend accepts either
+                             one as a location anchor. */}
+                        {isCommunityRequiredForValuation({ propertyName: form.unit }) && (
+                          <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
+                        )}
                       </label>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
@@ -2037,11 +2084,19 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </p>)}
                     </div>
 
-                    {/* Building + Unit — DLD buildings index live search */}
+                    {/* Building + Unit — DLD buildings index live search.
+                         Badge is dynamic: matches the backend rule that
+                         propertyName is only required for residential types
+                         when community + bedrooms aren't already enough for a
+                         community-level valuation. */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("buildingUnit")}
-                        {requiresUnitFieldForForm(form.type) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>}
+                        {isPropertyNameRequiredForValuation({
+                          propertyType: form.type,
+                          community: form.area,
+                          bedrooms: form.beds,
+                        }) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>}
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
@@ -2161,8 +2216,18 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">{tv("beds")}</label>
+                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
+                        {tv("beds")}
+                        {/* Bedrooms is required for everything except Plot —
+                             matches backend rule, prevents the engine from
+                             silently picking comps of the wrong bedroom
+                             count for unit-number queries. */}
+                        {isBedroomsRequiredForValuation(form.type) && (
+                          <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
+                        )}
+                      </label>
                       <BedroomPicker maids={form.maids} onChange={(value) => updateField("beds", value)} onMaidsChange={(value) => updateField("maids", value)} value={form.beds}/>
+                      <FieldError message={fieldErrors.beds}/>
                     </div>
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 block">{tv("size")}</label>

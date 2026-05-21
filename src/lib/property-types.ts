@@ -99,6 +99,50 @@ export function requiresPropertyNameForPropertyType(value: unknown) {
   return normalizedValue !== "Plot";
 }
 
+// ───────────────────────────────────────────────────────────────────────────
+// Field-required predicates — these mirror the backend rules in
+// lib/inquiry.js (getMissingRequiredValuationFields + requiresInquiryPropertyName)
+// so the web form doesn't over-require fields the server would happily accept.
+// Keep both copies (this TS file + lib/property-types.js) in sync.
+// ───────────────────────────────────────────────────────────────────────────
+
+function hasFieldValue(value: unknown): boolean {
+  return Boolean(String(value ?? "").trim());
+}
+
+// Community is required only when no propertyName/building has been provided.
+// Backend rule: missingFields.push("community") only when BOTH community AND
+// propertyName are empty.
+export function isCommunityRequiredForValuation(args: {
+  propertyName: unknown;
+}): boolean {
+  return !hasFieldValue(args.propertyName);
+}
+
+// Property name (building/project) is required when the property type calls
+// for one (everything except Plot) AND we don't have an alternative location
+// anchor strong enough for the engine to resolve a cohort. The backend relaxes
+// the requirement when community + bedrooms are both present (allowing a
+// community-level valuation like "Studio JVC" or "2BR Dubai Marina").
+export function isPropertyNameRequiredForValuation(args: {
+  propertyType: unknown;
+  community: unknown;
+  bedrooms: unknown;
+}): boolean {
+  if (!requiresPropertyNameForPropertyType(args.propertyType)) return false;
+  if (!hasFieldValue(args.community)) return true;
+  // Has community: bedrooms turns the inquiry into a community-level
+  // valuation, which the engine handles without a specific building.
+  if (hasFieldValue(args.bedrooms)) return false;
+  return true;
+}
+
+// Bedrooms is required for residential stock (anything except Plot). Studio is
+// represented as bedrooms = "0" and counts as supplied.
+export function isBedroomsRequiredForValuation(propertyType: unknown): boolean {
+  return requiresPropertyNameForPropertyType(propertyType);
+}
+
 function matchesPropertyTypeGroup(normalizedValue: string, allowedTerms: readonly string[]) {
   return allowedTerms.some(
     (term) => normalizedValue === term || normalizedValue.includes(term),
