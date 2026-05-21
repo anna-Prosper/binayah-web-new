@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Heart, X, Trash2, ExternalLink, Building2, MoreHorizontal } from "lucide-react";
+import { Heart, X, Trash2, ExternalLink, Building2, MoreHorizontal, LogIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "@/navigation";
+import { useRouter, usePathname } from "@/navigation";
+import { useSession } from "next-auth/react";
 import { useFavorites } from "./PropertyActions";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -37,7 +38,10 @@ export default function FavoritesDrawer() {
   const [open, setOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const { status: sessionStatus } = useSession();
   const t = useTranslations("favoritesDrawer");
+  const isAnonymous = sessionStatus === "unauthenticated";
 
   // Allow other components to open the drawer via a custom window event
   useEffect(() => {
@@ -183,6 +187,23 @@ export default function FavoritesDrawer() {
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-4">
+              {ids.length > 0 && isAnonymous && (
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    router.push(`/signin?callbackUrl=${encodeURIComponent(pathname)}`);
+                  }}
+                  className="w-full mb-4 flex items-center gap-3 rounded-xl border border-accent/30 bg-accent/5 hover:bg-accent/10 transition-colors p-3 text-left"
+                >
+                  <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                    <LogIn className="h-4 w-4 text-accent" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-foreground">{t("signInTitle")}</p>
+                    <p className="text-[11px] text-muted-foreground">{t("signInHint")}</p>
+                  </div>
+                </button>
+              )}
               {ids.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <Heart className="h-12 w-12 text-muted-foreground/20 mb-4" />

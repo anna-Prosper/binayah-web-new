@@ -1465,7 +1465,9 @@
     "viewDetails": "View details",
     "viewAllProfile": "View all in Profile",
     "inquireWhatsapp": "Enquire About Saved Properties",
-    "moreActions": "More actions"
+    "moreActions": "More actions",
+    "signInTitle": "Sign in to save permanently",
+    "signInHint": "Your favorites are stored on this device only."
   },
   "savedProperties": {
     "empty": "No saved properties",
