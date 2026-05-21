@@ -121,9 +121,14 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
       </main>
       <LazyMount minHeight={0}><Footer /></LazyMount>
 
-      {/* Floating / overlay widgets — defer until after page settles */}
-      <DeferUntilIdle><WhatsAppButton /></DeferUntilIdle>
-      <DeferUntilIdle><AIChatWidget /></DeferUntilIdle>
+      {/* Primary support widgets — always mounted so Live Chat / WhatsApp
+          buttons elsewhere on the page have their handlers attached. JS
+          payload is already lazy-loaded via dynamic() so this doesn't
+          impact LCP. */}
+      <WhatsAppButton />
+      <AIChatWidget />
+
+      {/* Non-essential overlays — defer until after page settles */}
       <DeferUntilIdle><ScrollToTop /></DeferUntilIdle>
       <DeferUntilIdle><CookieConsent /></DeferUntilIdle>
       <DeferUntilIdle><PropertyComparison /></DeferUntilIdle>
