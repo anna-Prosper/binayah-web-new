@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { LeadSource, LeadStatus, LeadsListResponse, UnifiedLead } from "@/lib/leads/types";
 import { LEAD_STATUSES } from "@/lib/leads/types";
 import LeadDetailDrawer from "./LeadDetailDrawer";
+import LeadsStatsStrip from "./LeadsStatsStrip";
 
 const SOURCES: { value: LeadSource; label: string; color: string }[] = [
   { value: "inquiry", label: "Inquiry", color: "bg-emerald-100 text-emerald-700" },
@@ -123,6 +124,9 @@ export default function LeadsClient() {
           </button>
         </div>
       </div>
+
+      {/* Stats summary strip */}
+      <LeadsStatsStrip />
 
       {/* Source counts */}
       {data?.counts && (
