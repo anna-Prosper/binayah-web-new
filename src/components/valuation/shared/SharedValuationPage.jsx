@@ -320,6 +320,14 @@ function mapApiToResult(api, form) {
             match_scope: c.match_scope || null,
         })),
     ];
+    // Insufficient-data path: engine ran but found no usable cohort, so the
+    // estimate bounds + bands are all null. The result page treats this as a
+    // dedicated "we couldn't price this" view instead of rendering empty
+    // price cards and an empty comparable table.
+    const insufficientData =
+        api.estimate_low == null &&
+        api.estimate_high == null &&
+        !Array.isArray(api.disambiguation_candidates);
     return {
         leadId: api.leadId,
         createdAt: api.createdAt,
@@ -330,6 +338,7 @@ function mapApiToResult(api, form) {
         city: form.city || "Dubai",
         country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
         tags: [form.type, community].filter(Boolean),
+        insufficientData,
         fairValueLow: api.estimate_low,
         fairValueHigh: api.estimate_high,
         fairValueExplanation: api.estimate_summary,
@@ -2414,8 +2423,80 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             </div>)}
           </motion.div>)}
 
+        {/* ── Results: insufficient-data branch ── */}
+        {step === "results" && result && result.insufficientData && (
+          <motion.div
+            key="results-insufficient"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12"
+          >
+            <div className="rounded-2xl border border-[rgba(227,221,207,0.5)] bg-white p-6 shadow-sm sm:p-10">
+              <div className="mb-6 flex items-start gap-3">
+                <div className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-[#D4A847]/15 text-[#B8922F]">
+                  <AlertTriangle className="h-5 w-5"/>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[0.78rem] font-bold uppercase tracking-[0.28em] text-[#B8922F]">
+                    {tv("insufficientDataKicker")}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold sm:text-3xl break-words text-[#10231e]">
+                    {tv("insufficientDataTitle", {
+                      subject: [result.propertyName, result.community, result.city]
+                        .filter(Boolean)
+                        .join(", ") || "this property",
+                    })}
+                  </h2>
+                </div>
+              </div>
+              <p className="text-[#66706d] leading-relaxed mb-2">
+                {tv("insufficientDataExplain")}
+              </p>
+              <p className="text-[#66706d] leading-relaxed mb-6">
+                {tv("insufficientDataNextSteps")}
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={resetForNewSearch}
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-[#0B3D2E]/15 bg-[#0B3D2E]/[0.04] px-5 text-sm font-semibold text-[#0B3D2E] transition-all duration-200 hover:border-[#0B3D2E]/30 hover:bg-[#0B3D2E]/[0.08]"
+                >
+                  <ArrowLeft className="h-4 w-4"/>
+                  {tv("insufficientDataTryAnother")}
+                </button>
+                <a
+                  href="https://wa.me/971549988811?text=Hi%2C%20I%20just%20tried%20the%20online%20valuation%20tool%20but%20it%20couldn%27t%20find%20enough%20data.%20Could%20someone%20help%20with%20a%20manual%20valuation%3F"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.25)] transition-transform duration-200 hover:scale-[1.02]"
+                  style={{ background: "linear-gradient(to right, #25D366, #1DA851)" }}
+                >
+                  <MessageCircle className="h-4 w-4"/>
+                  {tv("insufficientDataRequestManual")}
+                </a>
+              </div>
+
+              <div className="mt-6 border-t border-[rgba(227,221,207,0.6)] pt-5 text-xs text-[#66706d]">
+                <p>
+                  {tv("insufficientDataDirectContact")}{" "}
+                  <a href="tel:+971549988811" className="font-semibold text-[#0B3D2E] hover:underline">
+                    +971 54 998 8811
+                  </a>
+                  {" · "}
+                  <a href="mailto:info@binayah.com" className="font-semibold text-[#0B3D2E] hover:underline">
+                    info@binayah.com
+                  </a>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* ── Results ── */}
-        {step === "results" && result && (<motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
+        {step === "results" && result && !result.insufficientData && (<motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
             {/* Demo banner */}
             {useDeedResult && (<div className="mb-4 flex items-start gap-3 rounded-2xl border border-[#D4A847]/30 bg-[#D4A847]/8 px-4 py-3.5 sm:px-6">
                 <FileText className="h-4 w-4 text-[#B8922F] flex-shrink-0"/>

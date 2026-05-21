@@ -476,7 +476,14 @@
     "disambigFallbackQuery": "this location",
     "disambigSelect": "Select →",
     "disambigSelecting": "Loading…",
-    "disambigNoneOfThese": "None of these — let me edit my search"
+    "disambigNoneOfThese": "None of these — let me edit my search",
+    "insufficientDataKicker": "Not enough market data",
+    "insufficientDataTitle": "We couldn't price {subject} confidently",
+    "insufficientDataExplain": "Our index doesn't have enough recent transactions or active listings for this exact property and bedroom configuration to produce a reliable automated estimate.",
+    "insufficientDataNextSteps": "You can try a nearby building or different bedroom count, or ask our RERA-certified team for a manual valuation using off-market comps and recent agency activity.",
+    "insufficientDataTryAnother": "Try a different property",
+    "insufficientDataRequestManual": "Request a manual valuation",
+    "insufficientDataDirectContact": "Or reach us directly:"
   },
   "contact": {
     "title": "Contact Us",

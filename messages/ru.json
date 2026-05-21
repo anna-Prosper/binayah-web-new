@@ -476,7 +476,14 @@
     "disambigFallbackQuery": "этого места",
     "disambigSelect": "Выбрать →",
     "disambigSelecting": "Загрузка…",
-    "disambigNoneOfThese": "Ни один из этих — отредактировать поиск"
+    "disambigNoneOfThese": "Ни один из этих — отредактировать поиск",
+    "insufficientDataKicker": "Недостаточно рыночных данных",
+    "insufficientDataTitle": "Не удалось уверенно оценить {subject}",
+    "insufficientDataExplain": "У нас пока нет достаточного количества недавних сделок или активных объявлений по этому объекту и количеству спален, чтобы сформировать надёжную автоматическую оценку.",
+    "insufficientDataNextSteps": "Попробуйте соседнее здание или другое количество спален — или попросите нашу сертифицированную RERA команду подготовить ручную оценку по непубличным сделкам и недавней агентской активности.",
+    "insufficientDataTryAnother": "Попробовать другой объект",
+    "insufficientDataRequestManual": "Запросить ручную оценку",
+    "insufficientDataDirectContact": "Или свяжитесь напрямую:"
   },
   "contact": {
     "title": "Связаться с нами",

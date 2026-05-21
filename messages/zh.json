@@ -482,7 +482,14 @@
     "disambigFallbackQuery": "此位置",
     "disambigSelect": "选择 →",
     "disambigSelecting": "加载中…",
-    "disambigNoneOfThese": "都不是 — 让我修改搜索"
+    "disambigNoneOfThese": "都不是 — 让我修改搜索",
+    "insufficientDataKicker": "市场数据不足",
+    "insufficientDataTitle": "暂时无法对 {subject} 给出有把握的估价",
+    "insufficientDataExplain": "我们的索引目前没有此房产和卧室数量的足够近期成交记录或在售房源，无法生成可靠的自动估价。",
+    "insufficientDataNextSteps": "您可以尝试附近的楼盘或不同的卧室数量,或请我们的RERA认证团队基于场外成交和近期中介活动进行人工估价。",
+    "insufficientDataTryAnother": "尝试其他房产",
+    "insufficientDataRequestManual": "申请人工估价",
+    "insufficientDataDirectContact": "或直接联系我们:"
   },
   "contact": {
     "title": "联系我们",

@@ -476,7 +476,14 @@
     "disambigFallbackQuery": "هذا الموقع",
     "disambigSelect": "اختيار →",
     "disambigSelecting": "جارٍ التحميل…",
-    "disambigNoneOfThese": "لا شيء من هذه — دعني أعدل البحث"
+    "disambigNoneOfThese": "لا شيء من هذه — دعني أعدل البحث",
+    "insufficientDataKicker": "بيانات السوق غير كافية",
+    "insufficientDataTitle": "لم نتمكن من تقدير قيمة {subject} بثقة",
+    "insufficientDataExplain": "لا تتوفر لدينا حالياً معاملات أو إعلانات حديثة كافية لهذا العقار وعدد الغرف المحدد لإصدار تقدير آلي موثوق.",
+    "insufficientDataNextSteps": "يمكنك تجربة مبنى قريب أو عدد غرف مختلف، أو طلب تقييم يدوي من فريقنا المعتمد لدى RERA باستخدام مقارنات خارج السوق ونشاط الوكلاء الأخير.",
+    "insufficientDataTryAnother": "جرّب عقاراً آخر",
+    "insufficientDataRequestManual": "اطلب تقييماً يدوياً",
+    "insufficientDataDirectContact": "أو تواصل معنا مباشرة:"
   },
   "contact": {
     "title": "تواصل معنا",
