@@ -1955,7 +1955,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </div>)}
                   </div>
 
-                  {/* Row 1 — City → Area → Building (cascading, Property Finder style) */}
+                  {/* Row 1 — City → (Area OR Building). Each of Area /
+                       Building gets a small "or <other>" tag in its label —
+                       same pattern the unlock card uses for Phone / Email.
+                       Clear, unobtrusive, and accurately implies that
+                       either one satisfies the location requirement. */}
                   <div className="grid sm:grid-cols-3 gap-4">
 
                     {/* City */}
@@ -1987,16 +1991,15 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </p>)}
                     </div>
 
-                    {/* Area / Community — searchable */}
+                    {/* Area / Community — searchable. Label carries an
+                         inline "or building" tag (same pattern the unlock
+                         card uses for Phone / Email) so the OR-relationship
+                         with the next field reads naturally without a
+                         badge or a separate connector. */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("areaCommunity")}
-                        {/* Community is only "required" when no building/
-                             unit has been provided — backend accepts either
-                             one as a location anchor. */}
-                        {isCommunityRequiredForValuation({ propertyName: form.unit }) && (
-                          <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>
-                        )}
+                        <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orBuilding")}</span>
                       </label>
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
@@ -2063,9 +2066,6 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                               >
                                 <MapPin className="h-3.5 w-3.5 text-[#66706d] flex-shrink-0"/>
                                 <span className="flex-1 truncate">{a.area}</span>
-                                <span className="ml-auto text-[10px] text-[rgba(102,112,109,0.6)]">
-                                  {a.count} {tv("buildings")}
-                                </span>
                               </button>
                             ))}
                           </div>
@@ -2076,18 +2076,14 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </p>)}
                     </div>
 
-                    {/* Building + Unit — DLD buildings index live search.
-                         Never flagged REQUIRED: the backend accepts area
-                         OR building as the location anchor, so showing
-                         REQUIRED here would imply both are needed. We
-                         treat Area as the primary required field and
-                         present this as an optional precision-booster. */}
+                    {/* Building + Unit — mirrors the Area pattern: inline
+                         "or area" tag in the label, no badge. Both fields
+                         carry the same OR cue so the alternative-relationship
+                         reads identically from either direction. */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("buildingUnit")}
-                        <span className="text-[9px] bg-[rgba(102,112,109,0.1)] text-[rgba(102,112,109,0.85)] px-1.5 py-0.5 rounded-full font-bold">
-                          {tv("optional")}
-                        </span>
+                        <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orArea")}</span>
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>

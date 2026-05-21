@@ -461,6 +461,8 @@
     "email": "Email",
     "orEmail": "or email",
     "orPhone": "or phone",
+    "orBuilding": "or building",
+    "orArea": "or area",
     "unlocking": "Unlocking and sending…",
     "unlockAndSend": "Unlock and send report",
     "rangeAfterUnlock": "range available after unlock",

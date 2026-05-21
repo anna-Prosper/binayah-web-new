@@ -461,6 +461,8 @@
     "email": "Email",
     "orEmail": "или email",
     "orPhone": "или телефон",
+    "orBuilding": "или здание",
+    "orArea": "или район",
     "unlocking": "Открываем и отправляем…",
     "unlockAndSend": "Открыть и получить отчёт",
     "rangeAfterUnlock": "диапазон откроется после разблокировки",

@@ -467,6 +467,8 @@
     "email": "邮箱",
     "orEmail": "或邮箱",
     "orPhone": "或电话",
+    "orBuilding": "或楼盘",
+    "orArea": "或社区",
     "unlocking": "正在解锁并发送…",
     "unlockAndSend": "解锁并发送报告",
     "rangeAfterUnlock": "解锁后可查看区间",
