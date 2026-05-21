@@ -212,11 +212,18 @@ const AIChatWidget = () => {
                       <Bot className="h-3.5 w-3.5" style={{ color: "#1A7A5A" }} />
                     </div>
                   )}
-                  <div className={`max-w-[75%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                    m.role === "user"
-                      ? "rounded-br-md text-white"
-                      : "bg-secondary text-foreground rounded-bl-md"
-                  }`}>
+                  <div
+                    className={`max-w-[75%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                      m.role === "user"
+                        ? "rounded-br-md text-white"
+                        : "bg-secondary text-foreground rounded-bl-md"
+                    }`}
+                    style={
+                      m.role === "user"
+                        ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }
+                        : undefined
+                    }
+                  >
                     {m.role === "assistant" ? (
                       <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0 prose-headings:my-1 prose-headings:text-sm">
                         <ReactMarkdown>{m.content}</ReactMarkdown>
