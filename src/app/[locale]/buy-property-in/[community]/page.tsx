@@ -28,12 +28,12 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/${locale}/buy-property-in-${c.slug}` },
+    alternates: { canonical: `/${locale}/buy-property-in/${c.slug}` },
     openGraph: {
       title,
       description,
       type: "website",
-      url: `/${locale}/buy-property-in-${c.slug}`,
+      url: `/${locale}/buy-property-in/${c.slug}`,
     },
   };
 }
@@ -71,7 +71,7 @@ export default async function BuyInCommunityPage({
   const breadcrumbs = [
     { name: "Home", href: `${localePrefix}/` },
     { name: "Buy", href: `${localePrefix}/buy` },
-    { name: c.name, href: `${localePrefix}/buy-property-in-${c.slug}` },
+    { name: c.name, href: `${localePrefix}/buy-property-in/${c.slug}` },
   ];
 
   const seoBlock = (

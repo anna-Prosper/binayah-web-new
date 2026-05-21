@@ -29,8 +29,8 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/${locale}/buying-property-in-dubai-as-${b.slug}` },
-    openGraph: { title, description, type: "article", url: `/${locale}/buying-property-in-dubai-as-${b.slug}` },
+    alternates: { canonical: `/${locale}/buying-property-in-dubai-as/${b.slug}` },
+    openGraph: { title, description, type: "article", url: `/${locale}/buying-property-in-dubai-as/${b.slug}` },
   };
 }
 
@@ -47,7 +47,7 @@ export default async function ForeignBuyerPage({
   const breadcrumbs = [
     { name: "Home", href: `${localePrefix}/` },
     { name: "Guides", href: `${localePrefix}/pulse/guides` },
-    { name: `${b.citizen} Citizens`, href: `${localePrefix}/buying-property-in-dubai-as-${b.slug}` },
+    { name: `${b.citizen} Citizens`, href: `${localePrefix}/buying-property-in-dubai-as/${b.slug}` },
   ];
 
   const sections: { title: string; body: string }[] = [
@@ -99,7 +99,7 @@ export default async function ForeignBuyerPage({
               return (
                 <li key={area}>
                   <a
-                    href={`${localePrefix}/buy-property-in-${slug}`}
+                    href={`${localePrefix}/buy-property-in/${slug}`}
                     className="text-primary hover:text-primary/80 font-semibold underline"
                   >
                     Buy property in {area} →
