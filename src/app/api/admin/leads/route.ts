@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminSession } from "@/lib/admin-auth";
+import { isLeadsApiAuthorized } from "@/lib/leads/api-auth";
 import { listLeads } from "@/lib/leads/federation";
 import type { LeadSource, LeadStatus, LeadsListFilters } from "@/lib/leads/types";
 
@@ -46,7 +46,8 @@ function parseDate(value: string | null): Date | undefined {
 //   &sort=createdAt:desc       // or createdAt:asc | updatedAt:desc
 //   &page=1&limit=50
 export async function GET(req: NextRequest) {
-  if (!(await isAdminSession())) {
+  const auth = await isLeadsApiAuthorized(req);
+  if (!auth.ok) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { isAdminSession } from "@/lib/admin-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { isLeadsApiAuthorized } from "@/lib/leads/api-auth";
 import { computeLeadStats } from "@/lib/leads/stats";
 
 export const dynamic = "force-dynamic";
@@ -8,8 +8,9 @@ export const dynamic = "force-dynamic";
 // Federated lead analytics: source/status breakdown, 30-day histogram,
 // pipeline funnel + conversion rates, top communities, top properties,
 // avg time-to-first-contact. Auth: NextAuth admin-allowlist.
-export async function GET() {
-  if (!(await isAdminSession())) {
+export async function GET(req: NextRequest) {
+  const auth = await isLeadsApiAuthorized(req);
+  if (!auth.ok) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {

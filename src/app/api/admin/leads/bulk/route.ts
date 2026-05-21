@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { isAdminSession } from "@/lib/admin-auth";
+import { isLeadsApiAuthorized } from "@/lib/leads/api-auth";
 import {
   LeadNotFoundError,
   LeadValidationError,
@@ -40,11 +40,14 @@ interface BulkBody {
 }
 
 export async function POST(req: NextRequest) {
-  if (!(await isAdminSession())) {
+  const auth = await isLeadsApiAuthorized(req);
+  if (!auth.ok) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const session = await getServerSession(authOptions);
-  const author = session?.user?.email ?? "unknown@binayah";
+  const author =
+    session?.user?.email ||
+    (auth.via === "api-key" ? "api-key" : "unknown@binayah");
 
   let body: BulkBody;
   try {
