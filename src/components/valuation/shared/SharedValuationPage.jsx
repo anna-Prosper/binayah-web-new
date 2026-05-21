@@ -390,6 +390,21 @@ function mapPreviewApiToResult(api, form) {
         || (form.unit ? String(form.unit).split(",")[0].trim() : "")
         || ""
     );
+    // Insufficient-data detection for the PREVIEW path. Preview responses
+    // never include estimate_low/high at the top level — those are hidden
+    // behind unlock — so we can't reuse the unlocked-path check. Instead,
+    // probe the engine-visible signals that survive into preview shape:
+    // quickSaleRange is the only price band the preview shows in full, and
+    // the engine emits null/null for it whenever no usable cohort existed.
+    // Pair it with an empty rangePreview as a belt-and-braces guard.
+    const previewBag = (api && api.preview && typeof api.preview === "object") ? api.preview : {};
+    const previewQuick = (previewBag.quickSaleRange && typeof previewBag.quickSaleRange === "object") ? previewBag.quickSaleRange : {};
+    const previewRange = Array.isArray(previewBag.rangePreview) ? previewBag.rangePreview : [];
+    const insufficientData =
+        !Array.isArray(api === null || api === void 0 ? void 0 : api.disambiguation_candidates) &&
+        previewQuick.low == null &&
+        previewQuick.high == null &&
+        previewRange.length === 0;
     const previewRows = ((_b = (_a = api.preview) === null || _a === void 0 ? void 0 : _a.comparableRows) !== null && _b !== void 0 ? _b : []).map((row) => {
         var _a;
         return ({
@@ -405,6 +420,7 @@ function mapPreviewApiToResult(api, form) {
         leadId: api.leadId,
         createdAt: api.createdAt,
         accessState: "preview",
+        insufficientData,
         previewRanges: ((_c = api.preview) === null || _c === void 0 ? void 0 : _c.rangePreview) || [],
         sourceCount: Number(((_d = api.preview) === null || _d === void 0 ? void 0 : _d.sourceCount) || 0),
         currency: "AED",
