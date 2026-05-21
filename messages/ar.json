@@ -1450,7 +1450,9 @@
     "viewDetails": "عرض التفاصيل",
     "viewAllProfile": "عرض الكل في ملفي الشخصي",
     "inquireWhatsapp": "استفسر عن العقارات المحفوظة",
-    "moreActions": "خيارات إضافية"
+    "moreActions": "خيارات إضافية",
+    "signInTitle": "سجّل الدخول لحفظها بشكل دائم",
+    "signInHint": "المفضلة محفوظة على هذا الجهاز فقط."
   },
   "savedProperties": {
     "empty": "لا توجد عقارات محفوظة",

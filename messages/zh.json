@@ -1456,7 +1456,9 @@
     "viewDetails": "查看详情",
     "viewAllProfile": "前往个人中心查看全部",
     "inquireWhatsapp": "咨询已收藏房源",
-    "moreActions": "更多操作"
+    "moreActions": "更多操作",
+    "signInTitle": "登录后永久保存",
+    "signInHint": "收藏目前仅保存在本设备。"
   },
   "savedProperties": {
     "empty": "暂无收藏房源",

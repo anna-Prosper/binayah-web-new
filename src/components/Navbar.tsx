@@ -127,6 +127,15 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   const { ids: favIds } = useFavorites();
   const openFavoritesDrawer = () => window.dispatchEvent(new Event("open-favorites-drawer"));
+  // Anonymous user with no saved favorites yet → bounce to sign-in instead of opening an empty drawer.
+  // Once they have at least one anonymous favorite (localStorage), the drawer opens so they can review it.
+  const handleFavoritesClick = () => {
+    if (status === "unauthenticated" && favIds.length === 0) {
+      router.push(`/signin?callbackUrl=${encodeURIComponent(pathname)}`);
+      return;
+    }
+    openFavoritesDrawer();
+  };
 
   const isSolid = scrolled || !isHome || isMobile;
   const selectedLang = LANGUAGES_LIST.find((l) => l.code === currentLocale) || LANGUAGES_LIST[0];
@@ -310,7 +319,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               <div className="hidden xl:block w-px h-5 bg-white/15" />
               <NotificationsBell />
               <button
-                onClick={openFavoritesDrawer}
+                onClick={handleFavoritesClick}
                 className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
                 aria-label="Saved properties"
               >
@@ -339,7 +348,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               {/* Heart / Favorites */}
               <button
-                onClick={openFavoritesDrawer}
+                onClick={handleFavoritesClick}
                 className="relative w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white"
                 aria-label="Saved properties"
               >
@@ -495,7 +504,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 transition={{ delay: 0.14, duration: 0.3 }}
                 onClick={() => {
                   setMobileOpen(false);
-                  setTimeout(() => openFavoritesDrawer(), 50);
+                  setTimeout(() => handleFavoritesClick(), 50);
                 }}
                 className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
               >
