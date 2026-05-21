@@ -52,6 +52,26 @@ function isStagingHost(host: string | null): boolean {
   return host === "staging.binayahhub.com" || host.endsWith(".vercel.app");
 }
 
+// Pick the highest-q-weighted supported locale from Accept-Language.
+// "en" is the implicit default — returned as-is so caller can short-circuit
+// without an unnecessary redirect.
+const SUPPORTED_LOCALES = new Set<string>(routing.locales);
+function pickAcceptLanguage(header: string | null): string | null {
+  if (!header) return null;
+  const ranked = header
+    .split(",")
+    .map((part) => {
+      const [tag, qPart] = part.trim().split(";");
+      const q = qPart?.startsWith("q=") ? parseFloat(qPart.slice(2)) : 1;
+      return { lang: tag.toLowerCase().slice(0, 2), q: Number.isFinite(q) ? q : 0 };
+    })
+    .sort((a, b) => b.q - a.q);
+  for (const { lang } of ranked) {
+    if (SUPPORTED_LOCALES.has(lang)) return lang;
+  }
+  return null;
+}
+
 function applySecurityHeaders(response: NextResponse, request: NextRequest) {
   for (const [k, v] of Object.entries(SECURITY_HEADERS)) response.headers.set(k, v);
   const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
@@ -108,7 +128,23 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  const country = request.headers.get("x-vercel-ip-country") ?? "";
+  // Browser preference (Accept-Language) takes priority over IP geo:
+  // a Russian traveler in Dubai with a Russian browser should see Russian,
+  // not Arabic. en short-circuits to the default branch (no redirect).
+  const acceptLang = pickAcceptLanguage(request.headers.get("accept-language"));
+  if (acceptLang && acceptLang !== "en") {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${acceptLang}${pathname === "/" ? "" : pathname}`;
+    const response = NextResponse.redirect(url);
+    setLocaleCookie(response, acceptLang);
+    response.headers.set("Content-Security-Policy", CSP);
+    applySecurityHeaders(response, request);
+    return response;
+  }
+
+  // Skip geo lookup if Accept-Language explicitly asked for English —
+  // honor the user's stated preference over country guess.
+  const country = acceptLang === "en" ? "" : (request.headers.get("x-vercel-ip-country") ?? "");
   const geoLocale = GEO_LOCALE_MAP[country.toUpperCase()];
 
   if (geoLocale && geoLocale !== "en") {
