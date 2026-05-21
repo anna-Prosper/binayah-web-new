@@ -506,7 +506,7 @@ export default function PropertyDetailClient({
     toast({ title: t("inquirySent"), description: t("teamReply") });
   };
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "97154998811";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "971549988811";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     `Hi, I'm interested in: ${listing.title}\n${typeof window !== "undefined" ? window.location.href : ""}`
   )}`;
@@ -1290,7 +1290,7 @@ export default function PropertyDetailClient({
                     style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
                     <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
-                  <a href="tel:+97154998811"
+                  <a href="tel:+971549988811"
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
                     style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
                     <Phone className="h-4 w-4" /> {t("callNow")}
@@ -1464,7 +1464,7 @@ export default function PropertyDetailClient({
       />
 
       {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
-      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+97154998811" />
+      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+971549988811" />
 
       <Footer />
       <div className="hidden lg:block">

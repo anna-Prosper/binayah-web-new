@@ -967,7 +967,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                           <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
                                         </div>
                                         <a
-                                          href={`${project.whatsappNumber?.startsWith("http") ? project.whatsappNumber : `https://wa.me/${project.whatsappNumber || "971543048"}`}`.replace(/text=.*/, `text=${encodeURIComponent(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}`)}
+                                          href={`${project.whatsappNumber?.startsWith("http") ? project.whatsappNumber : `https://wa.me/${project.whatsappNumber || "971549988811"}`}`.replace(/text=.*/, `text=${encodeURIComponent(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}`)}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.03]"
@@ -1053,7 +1053,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                                 {/* CTA */}
                                 <a
-                                  href={`https://wa.me/${project.whatsappNumber || "971543048"}?text=I'm interested in ${activeUnit?.name} at ${project.name}`}
+                                  href={`https://wa.me/${project.whatsappNumber || "971549988811"}?text=I'm interested in ${activeUnit?.name} at ${project.name}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-[1.02] transition-all duration-300"
