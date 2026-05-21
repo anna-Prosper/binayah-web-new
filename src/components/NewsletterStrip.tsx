@@ -5,17 +5,35 @@ import { Mail } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
+import { apiUrl } from "@/lib/api";
 
 const NewsletterStrip = () => {
   const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("newsletter");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(apiUrl("/api/market-report/subscribe"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), source: "newsletter-strip" }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        toast({ title: t("errorTitle"), description: data.message || t("errorDesc"), variant: "destructive" });
+        return;
+      }
       toast({ title: t("successTitle"), description: t("successDesc") });
       setEmail("");
+    } catch {
+      toast({ title: t("errorTitle"), description: t("errorDesc"), variant: "destructive" });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -56,10 +74,11 @@ const NewsletterStrip = () => {
             />
             <button
               type="submit"
-              className="font-bold px-5 sm:px-6 py-3 rounded-full text-sm transition-all hover:-translate-y-0.5 flex-shrink-0 whitespace-nowrap shadow-lg"
+              disabled={submitting}
+              className="font-bold px-5 sm:px-6 py-3 rounded-full text-sm transition-all hover:-translate-y-0.5 flex-shrink-0 whitespace-nowrap shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", color: "white" }}
             >
-              {t("button")}
+              {submitting ? "…" : t("button")}
             </button>
           </div>
         </motion.form>
