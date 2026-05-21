@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- SEO landing page, English-only by design (targets English search queries) */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import ListingsPageClient from "@/app/rent/ListingsPageClient";
+import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity } from "@/lib/buy-communities";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";

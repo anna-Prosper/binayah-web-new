@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getNewsArticle } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
-import NewsDetailClient from "@/app/news/[slug]/NewsDetailClient";
+import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 
 export const revalidate = 0;
 

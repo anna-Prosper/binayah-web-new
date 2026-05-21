@@ -1,4 +1,4 @@
-import ListingsPageClient from "@/app/rent/ListingsPageClient";
+import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { getTranslations } from "next-intl/server";
 

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import ProjectDetailClient from "@/app/project/[slug]/ProjectDetailClient";
+import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";

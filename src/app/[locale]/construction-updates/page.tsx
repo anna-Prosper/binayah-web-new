@@ -1,4 +1,4 @@
-import ConstructionUpdatesClient from "@/app/construction-updates/ConstructionUpdatesClient";
+import ConstructionUpdatesClient from "@/app/_clients/construction-updates/ConstructionUpdatesClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 600;

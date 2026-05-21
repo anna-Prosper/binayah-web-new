@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import PropertyDetailClient from "@/app/property/[slug]/PropertyDetailClient";
+import PropertyDetailClient from "@/app/_clients/property/[slug]/PropertyDetailClient";
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";

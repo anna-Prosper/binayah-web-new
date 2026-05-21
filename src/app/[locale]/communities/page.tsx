@@ -1,4 +1,4 @@
-import CommunitiesPageClient from "@/app/communities/CommunitiesPageClient";
+import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageClient";
 import { fetchPlaceCards } from "./fetchPlaces";
 
 export const revalidate = 3600;

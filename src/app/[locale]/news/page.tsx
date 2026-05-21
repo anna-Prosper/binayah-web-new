@@ -1,4 +1,4 @@
-import NewsPageClient from "@/app/news/NewsPageClient";
+import NewsPageClient from "@/app/_clients/news/NewsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 900;

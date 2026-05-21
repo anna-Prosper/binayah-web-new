@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
-import PulsePageClient from "@/app/pulse/PulsePageClient";
+import PulsePageClient from "@/app/_clients/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
 import { getTranslations } from "next-intl/server";
