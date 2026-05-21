@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/project/[slug]/ProjectDetailClient";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 1800;
 
@@ -74,12 +75,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     } : {}),
   };
 
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
+  const breadcrumbs = [
+    { name: "Home", href: `${localePrefix}/` },
+    { name: "Off-Plan", href: `${localePrefix}/off-plan` },
+    { name: project.name, href: `${localePrefix}/project/${slug}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <BreadcrumbJsonLd items={breadcrumbs} />
       <ProjectDetailClient serverProject={project} />
     </>
   );
