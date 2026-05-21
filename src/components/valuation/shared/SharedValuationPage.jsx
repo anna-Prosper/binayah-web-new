@@ -2550,10 +2550,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.25)] transition-transform duration-200 hover:scale-[1.02]"
-                  style={{ background: "linear-gradient(to right, #25D366, #1DA851)" }}
+                  style={{ background: "linear-gradient(to right, #25D366, #1DA851)", color: "#fff" }}
                 >
-                  <MessageCircle className="h-4 w-4"/>
-                  {tv("insufficientDataRequestManual")}
+                  <MessageCircle className="h-4 w-4" style={{ color: "#fff" }}/>
+                  <span style={{ color: "#fff" }}>{tv("insufficientDataRequestManual")}</span>
                 </a>
               </div>
 
