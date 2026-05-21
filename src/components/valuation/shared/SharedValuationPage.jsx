@@ -349,6 +349,31 @@ function validateForm(form) {
     }
     return errors;
 }
+// Build the row of context pills shown under the report headline. Surfaces
+// the inquiry details the user submitted (sale/rent, property type, beds,
+// size, maids) plus the resolved community, so a viewer landing on a shared
+// link instantly knows what was actually priced. Empty values are skipped.
+function buildSubjectChips(form, community) {
+    const chips = [];
+    const txn = String(form?.transactionType || "").toLowerCase();
+    if (txn === "rent") chips.push("For rent");
+    else if (txn === "buy") chips.push("For sale");
+    if (form?.type) chips.push(form.type);
+    const beds = String(form?.beds || "").trim();
+    if (beds) {
+        if (/^studio$/i.test(beds)) chips.push("Studio");
+        else if (/^\d+$/.test(beds)) chips.push(`${beds} BR`);
+        else chips.push(beds);
+    }
+    const size = String(form?.size || "").trim();
+    if (size) {
+        const sizeLabel = /sqft|sq\.?\s*ft|m2|m²/i.test(size) ? size : `${size} sqft`;
+        chips.push(sizeLabel);
+    }
+    if (String(form?.maids || "").toLowerCase() === "yes") chips.push("Maid's room");
+    if (community) chips.push(community);
+    return chips;
+}
 function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const defaultMovingFactors = DEED_DUMMY_RESULT.movingFactors;
@@ -400,7 +425,7 @@ function mapApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
-        tags: [form.type, community].filter(Boolean),
+        tags: buildSubjectChips(form, community),
         insufficientData,
         fairValueLow: api.estimate_low,
         fairValueHigh: api.estimate_high,
@@ -491,7 +516,7 @@ function mapPreviewApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_e = api === null || api === void 0 ? void 0 : api.market) === null || _e === void 0 ? void 0 : _e.countryCode) || "AE") === "AE" ? "UAE" : ((_f = api === null || api === void 0 ? void 0 : api.market) === null || _f === void 0 ? void 0 : _f.countryCode) || "UAE",
-        tags: [form.type, community].filter(Boolean),
+        tags: buildSubjectChips(form, community),
         fairValueLow: null,
         fairValueHigh: null,
         confidence: ((_e = api.preview) === null || _e === void 0 ? void 0 : _e.confidence) || "Low",
