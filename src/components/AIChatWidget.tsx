@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- internal admin/dev-facing labels in chat widget tabs */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -102,15 +103,42 @@ async function streamChat({
   onDone();
 }
 
+const LIVECHAT_LICENSE = "6313921";
+const LIVECHAT_EMBED_URL = `https://secure-lc.livechatinc.com/licence/${LIVECHAT_LICENSE}/v2/open_chat.cgi`;
+
+type ChatMode = "ai" | "human";
+
 const AIChatWidget = () => {
   const t = useTranslations("aiChat");
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<ChatMode>("ai");
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
+
+  // Hide LiveChat's own floating bubble so the user only sees our integrated UI.
+  useEffect(() => {
+    const w = window as Window & {
+      LiveChatWidget?: { call: (cmd: string, arg?: unknown) => void; on?: (e: string, cb: () => void) => void };
+    };
+    const tryHide = () => w.LiveChatWidget?.call?.("hide");
+    tryHide();
+    // LiveChat loads async via lazyOnload — retry until the API attaches.
+    const interval = setInterval(() => {
+      if (w.LiveChatWidget?.call) {
+        tryHide();
+        clearInterval(interval);
+      }
+    }, 500);
+    const timeout = setTimeout(() => clearInterval(interval), 10_000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -163,14 +191,10 @@ const AIChatWidget = () => {
           setIsLoading(false);
         },
         onHandoff: () => {
-          // Keep the AI bubble open in the background so the user can switch
-          // back at any time — clicking the AI floating button reopens this
-          // conversation. Pop LiveChat after a beat so the user reads the
-          // handoff message first.
-          setTimeout(() => {
-            const w = window as Window & { LiveChatWidget?: { call: (cmd: string) => void } };
-            w.LiveChatWidget?.call?.("maximize");
-          }, 1500);
+          // Switch the AI bubble to Live Agent mode after the user reads the
+          // handoff message. The LiveChat iframe loads in place of the AI
+          // conversation; user can switch back via the AI tab anytime.
+          setTimeout(() => setMode("human"), 1500);
         },
       });
     } catch {
@@ -206,17 +230,57 @@ const AIChatWidget = () => {
             style={{ height: "min(520px, calc(100vh - 140px))", boxShadow: "0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(11,61,46,0.12)" }}
           >
             {/* Header */}
-            <div className="px-5 py-4 flex items-center gap-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+            <div className="px-5 py-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
-              <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
-              <div>
-                <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
-                <p className="text-white/60 text-xs">{t("subtitle")}</p>
+              <div className="flex items-center gap-3">
+                <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
+                <div className="flex-1">
+                  <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+                  <p className="text-white/60 text-xs">
+                    {mode === "ai" ? t("subtitle") : "Live agent · powered by LiveChat"}
+                  </p>
+                </div>
+              </div>
+              {/* Mode tabs */}
+              <div className="mt-3 flex gap-1 bg-black/15 rounded-full p-1">
+                <button
+                  type="button"
+                  onClick={() => setMode("ai")}
+                  className={`flex-1 text-xs font-semibold py-1.5 rounded-full transition-all ${
+                    mode === "ai" ? "bg-white text-[#0B3D2E]" : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  AI Assistant
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("human")}
+                  className={`flex-1 text-xs font-semibold py-1.5 rounded-full transition-all flex items-center justify-center gap-1.5 ${
+                    mode === "human" ? "bg-white text-[#0B3D2E]" : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Agent
+                </button>
               </div>
             </div>
 
-            {/* Messages */}
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+            {/* Live Agent (LiveChat embedded iframe) */}
+            {mode === "human" && (
+              <iframe
+                title="Live agent chat"
+                src={LIVECHAT_EMBED_URL}
+                className="flex-1 w-full border-0 bg-white"
+                allow="microphone; camera; clipboard-read; clipboard-write; geolocation"
+              />
+            )}
+
+            {/* AI Messages */}
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto p-4 space-y-3"
+              style={{ display: mode === "ai" ? undefined : "none" }}
+            >
               {messages.length === 0 && (
                 <div className="text-center py-8">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}><Bot className="h-7 w-7" style={{ color: "#1A7A5A" }} /></div>
@@ -283,8 +347,8 @@ const AIChatWidget = () => {
               )}
             </div>
 
-            {/* Input */}
-            <div className="border-t border-border p-3">
+            {/* Input — AI mode only; LiveChat iframe has its own input */}
+            <div className="border-t border-border p-3" style={{ display: mode === "ai" ? undefined : "none" }}>
               <form
                 onSubmit={(e) => { e.preventDefault(); send(); }}
                 className="flex gap-2"
