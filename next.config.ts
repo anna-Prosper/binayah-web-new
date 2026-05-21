@@ -28,6 +28,34 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    // SEO landing pages briefly lived under /buy-property-in-<community>
+    // and /buying-property-in-dubai-as-<citizen> earlier today. The
+    // dynamic segment was greedy-matching unrelated short paths so the
+    // structure was changed to /<prefix>/<dynamic>. 301 the old URLs.
+    return [
+      {
+        source: "/buy-property-in-:community",
+        destination: "/buy-property-in/:community",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|ru|zh)/buy-property-in-:community",
+        destination: "/:locale/buy-property-in/:community",
+        permanent: true,
+      },
+      {
+        source: "/buying-property-in-dubai-as-:citizen",
+        destination: "/buying-property-in-dubai-as/:citizen",
+        permanent: true,
+      },
+      {
+        source: "/:locale(ar|ru|zh)/buying-property-in-dubai-as-:citizen",
+        destination: "/:locale/buying-property-in-dubai-as/:citizen",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "i.pravatar.cc" },
