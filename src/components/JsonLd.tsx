@@ -17,18 +17,6 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
     telephone: "+971549988811",
     email: "info@binayah.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Marasi Drive",
-      addressLocality: "Business Bay",
-      addressRegion: "Dubai",
-      addressCountry: "AE",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 25.1855,
-      longitude: 55.2628,
-    },
     sameAs: [
       "https://www.instagram.com/binayahproperties/",
       "https://www.facebook.com/binayahproperties",
