@@ -192,9 +192,10 @@ function extractCommunity(unit) {
 }
 // Compose a WhatsApp manual-valuation request URL pre-filled with the property
 // details the user typed into the form (plus anything the engine resolved).
-// Sent to the valuation desk (+1 715 519 9219) so the team has full context
-// the moment the user lands in WhatsApp — no back-and-forth to re-collect basics.
-const VALUATION_DESK_WA_NUMBER = "17155199219";
+// Sent to Binayah's main support line (+971 54 998 8811) — the valuation-desk
+// number in the navbar CTA is for self-service automated requests, while this
+// fallback hands the user to the team that handles bespoke manual valuations.
+const MANUAL_VALUATION_WA_NUMBER = "971549988811";
 function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
     const safeForm = form && typeof form === "object" ? form : {};
     const safeResult = result && typeof result === "object" ? result : {};
@@ -250,7 +251,7 @@ function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
     messageLines.push("", "Thanks!");
 
     const message = messageLines.join("\n");
-    return `https://wa.me/${VALUATION_DESK_WA_NUMBER}?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/${MANUAL_VALUATION_WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 // Replace internal/HTTP error wording with copy a non-technical user can act
 // on. Falls through unchanged for messages that are already user-friendly,
