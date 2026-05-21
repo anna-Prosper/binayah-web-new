@@ -227,10 +227,8 @@ function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
     }
     if (city) detailLines.push(`• City: ${city}`);
     if (propertyType) detailLines.push(`• Type: ${propertyType}`);
-    if (bedrooms) {
-        const bedLabel = bedrooms.toLowerCase() === "studio"
-            ? "Studio"
-            : `${bedrooms} bedroom${bedrooms === "1" ? "" : "s"}`;
+    const bedLabel = formatBedroomsLabel(bedrooms);
+    if (bedLabel) {
         detailLines.push(`• Bedrooms: ${bedLabel}`);
     }
     if (maids && maids.toLowerCase() === "yes") {
@@ -349,6 +347,35 @@ function validateForm(form) {
     }
     return errors;
 }
+// Mirror of normalizeInquiryBedrooms + formatBedroomsLabel from
+// lib/inquiry.js. Kept inline here because binayah-web-new is a separate
+// Next.js package and doesn't share lib/inquiry directly — if the server-
+// side helper changes, update both. Goal: convert "one"/"ONE"/"1 bed"/etc.
+// to a single canonical display form "1 BR" (or "Studio").
+const BEDROOM_WORDS = { studio: "Studio", zero: "Studio", one: "1", two: "2", three: "3", four: "4", five: "5", six: "6", seven: "7", eight: "8", nine: "9", ten: "10" };
+function formatBedroomsLabel(value) {
+    if (value === null || value === undefined) return "";
+    if (typeof value === "number") {
+        if (!Number.isFinite(value) || value < 0) return "";
+        if (value === 0) return "Studio";
+        return `${Math.floor(value)} BR`;
+    }
+    const raw = String(value).trim();
+    if (!raw) return "";
+    const lower = raw.toLowerCase();
+    if (/^studio\b/.test(lower)) return "Studio";
+    if (raw === "0") return "Studio";
+    if (/^\s*7\s*\+\s*$/.test(raw) || /seven\s*plus/i.test(raw)) return "7+ BR";
+    if (/^\d{1,2}$/.test(raw)) return `${raw} BR`;
+    const numericMatch = raw.match(/(\d{1,2})\s*(?:\+|br|bdr|bed|bedroom)/i);
+    if (numericMatch) return `${numericMatch[1]} BR`;
+    const leadingDigit = raw.match(/^\s*(\d{1,2})/);
+    if (leadingDigit) return `${leadingDigit[1]} BR`;
+    for (const [word, digit] of Object.entries(BEDROOM_WORDS)) {
+        if (new RegExp(`\\b${word}\\b`, "i").test(lower)) return digit === "Studio" ? "Studio" : `${digit} BR`;
+    }
+    return "";
+}
 // Build the row of context pills shown under the report headline. Surfaces
 // the inquiry details the user submitted (sale/rent, property type, beds,
 // size, maids) plus the resolved community, so a viewer landing on a shared
@@ -359,12 +386,8 @@ function buildSubjectChips(form, community) {
     if (txn === "rent") chips.push("For rent");
     else if (txn === "buy") chips.push("For sale");
     if (form?.type) chips.push(form.type);
-    const beds = String(form?.beds || "").trim();
-    if (beds) {
-        if (/^studio$/i.test(beds)) chips.push("Studio");
-        else if (/^\d+$/.test(beds)) chips.push(`${beds} BR`);
-        else chips.push(beds);
-    }
+    const bedroomsLabel = formatBedroomsLabel(form?.beds);
+    if (bedroomsLabel) chips.push(bedroomsLabel);
     const size = String(form?.size || "").trim();
     if (size) {
         const sizeLabel = /sqft|sq\.?\s*ft|m2|m²/i.test(size) ? size : `${size} sqft`;
