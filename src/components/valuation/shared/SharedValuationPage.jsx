@@ -283,7 +283,6 @@ function validateForm(form) {
         isPropertyNameRequiredForValuation({
             propertyType: form.type,
             community: form.area,
-            bedrooms: form.beds,
         }) &&
         (!form.unit.trim() || form.unit.trim().length < 3)
     ) {
@@ -2095,7 +2094,6 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         {isPropertyNameRequiredForValuation({
                           propertyType: form.type,
                           community: form.area,
-                          bedrooms: form.beds,
                         }) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>}
                       </label>
                       <div className="relative">
