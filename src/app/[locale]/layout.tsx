@@ -46,6 +46,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
 const verificationOther: Record<string, string> = {};
 if (process.env.BING_VERIFICATION_CODE) verificationOther["msvalidate.01"] = process.env.BING_VERIFICATION_CODE;
 if (process.env.YANDEX_VERIFICATION_CODE) verificationOther["yandex-verification"] = process.env.YANDEX_VERIFICATION_CODE;
+const verificationGoogle = process.env.GOOGLE_VERIFICATION_CODE;
+const hasVerification = !!verificationGoogle || Object.keys(verificationOther).length > 0;
 
 export const metadata: Metadata = {
   // 56 chars — within recommended 50–60 range
@@ -88,8 +90,11 @@ export const metadata: Metadata = {
     description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
     images: ["/assets/og-image.webp"],
   },
-  ...(Object.keys(verificationOther).length > 0 && {
-    verification: { other: verificationOther },
+  ...(hasVerification && {
+    verification: {
+      ...(verificationGoogle ? { google: verificationGoogle } : {}),
+      ...(Object.keys(verificationOther).length > 0 ? { other: verificationOther } : {}),
+    },
   }),
 };
 
