@@ -2282,12 +2282,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   >
                     <Phone className="h-4 w-4" /> {t("callNow")}
                   </a>
-                  <a
-                    href="#live-chat"
+                  <button
+                    type="button"
+                    onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
                     className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-primary hover:to-primary/80 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <MessageCircle className="h-4 w-4" /> {t("liveChat")}
-                  </a>
+                  </button>
                 </div>
                 {/* Mobile: compact nudge instead of duplicate buttons */}
                 <div className="sm:hidden px-4 pb-4 pt-2">
