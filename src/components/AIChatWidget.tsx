@@ -163,14 +163,13 @@ const AIChatWidget = () => {
           setIsLoading(false);
         },
         onHandoff: () => {
-          // Close the AI bubble and pop LiveChat after a beat so the user reads
-          // the handoff message first.
+          // Keep the AI bubble open in the background so the user can switch
+          // back at any time — clicking the AI floating button reopens this
+          // conversation. Pop LiveChat after a beat so the user reads the
+          // handoff message first.
           setTimeout(() => {
             const w = window as Window & { LiveChatWidget?: { call: (cmd: string) => void } };
-            if (w.LiveChatWidget?.call) {
-              w.LiveChatWidget.call("maximize");
-              setOpen(false);
-            }
+            w.LiveChatWidget?.call?.("maximize");
           }, 1500);
         },
       });
