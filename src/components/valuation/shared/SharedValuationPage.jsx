@@ -190,6 +190,68 @@ function extractCommunity(unit) {
         return "Your Property";
     return ((_a = unit.split(",")[0]) === null || _a === void 0 ? void 0 : _a.trim()) || "Your Property";
 }
+// Compose a WhatsApp manual-valuation request URL pre-filled with the property
+// details the user typed into the form (plus anything the engine resolved).
+// Sent to the valuation desk (+1 715 519 9219) so the team has full context
+// the moment the user lands in WhatsApp — no back-and-forth to re-collect basics.
+const VALUATION_DESK_WA_NUMBER = "17155199219";
+function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
+    const safeForm = form && typeof form === "object" ? form : {};
+    const safeResult = result && typeof result === "object" ? result : {};
+    const pick = (...candidates) => {
+        for (const value of candidates) {
+            const text = String(value ?? "").trim();
+            if (text) return text;
+        }
+        return "";
+    };
+    const propertyName = pick(safeResult.propertyName, safeForm.unit);
+    const community = pick(safeResult.community, safeForm.area);
+    const city = pick(safeResult.city, safeForm.city);
+    const transactionType = pick(safeForm.transactionType).toLowerCase();
+    const bedrooms = pick(safeForm.beds);
+    const size = pick(safeForm.size);
+    const propertyType = pick(safeForm.type);
+    const maids = pick(safeForm.maids);
+
+    const subjectParts = [propertyName, community, city].filter(Boolean);
+    const subject = subjectParts.length
+        ? subjectParts.join(", ")
+        : "the property I tried to value";
+
+    const detailLines = [];
+    if (propertyName) detailLines.push(`• Property: ${propertyName}`);
+    if (community && community.toLowerCase() !== propertyName.toLowerCase()) {
+        detailLines.push(`• Community: ${community}`);
+    }
+    if (city) detailLines.push(`• City: ${city}`);
+    if (propertyType) detailLines.push(`• Type: ${propertyType}`);
+    if (bedrooms) {
+        const bedLabel = bedrooms.toLowerCase() === "studio"
+            ? "Studio"
+            : `${bedrooms} bedroom${bedrooms === "1" ? "" : "s"}`;
+        detailLines.push(`• Bedrooms: ${bedLabel}`);
+    }
+    if (maids && maids.toLowerCase() === "yes") {
+        detailLines.push(`• Maid's room: Yes`);
+    }
+    if (size) detailLines.push(`• Size: ${size}`);
+    if (transactionType) {
+        detailLines.push(`• Looking to: ${transactionType === "rent" ? "rent" : "sell"}`);
+    }
+
+    const messageLines = [
+        `Hi Binayah, I tried the AI valuation for ${subject} but it couldn't find enough data.`,
+        "Could someone prepare a manual valuation? Details:",
+    ];
+    if (detailLines.length) {
+        messageLines.push("", ...detailLines);
+    }
+    messageLines.push("", "Thanks!");
+
+    const message = messageLines.join("\n");
+    return `https://wa.me/${VALUATION_DESK_WA_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 // Replace internal/HTTP error wording with copy a non-technical user can act
 // on. Falls through unchanged for messages that are already user-friendly,
 // so server-authored asks (e.g., "Need bedrooms before we can value this.")
@@ -2484,7 +2546,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   {tv("insufficientDataTryAnother")}
                 </button>
                 <a
-                  href="https://wa.me/971549988811?text=Hi%2C%20I%20just%20tried%20the%20online%20valuation%20tool%20but%20it%20couldn%27t%20find%20enough%20data.%20Could%20someone%20help%20with%20a%20manual%20valuation%3F"
+                  href={buildManualValuationWhatsAppUrl({ form, result })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.25)] transition-transform duration-200 hover:scale-[1.02]"
