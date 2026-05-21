@@ -5,26 +5,64 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const COOKIE_KEY = "binayah_cookie_consent";
+const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
+
+/**
+ * Cookie storage scoped to the apex domain so www.binayah.ae, binayah.ae,
+ * and any future subdomain share the same consent state. Falls back to
+ * host-only on localhost or when running under a *.vercel.app preview.
+ */
+function getConsentCookie(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(/(?:^|;\s*)binayah_cookie_consent=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setConsentCookie(value: string) {
+  if (typeof document === "undefined") return;
+  // Use apex-scoped Domain on real Binayah hosts so consent persists across
+  // www ⇄ apex redirects. Skip Domain on localhost / vercel previews.
+  const host = window.location.hostname;
+  const apexMatch = host.match(/(?:^|\.)([^.]+\.[a-z]{2,})$/i);
+  const isLocal = host === "localhost" || /^127\./.test(host) || host.endsWith(".local");
+  const domainAttr = !isLocal && apexMatch ? `; Domain=.${apexMatch[1]}` : "";
+  document.cookie =
+    `${COOKIE_KEY}=${encodeURIComponent(value)};` +
+    ` Max-Age=${ONE_YEAR_SECONDS};` +
+    ` Path=/;` +
+    ` SameSite=Lax${domainAttr}${window.location.protocol === "https:" ? "; Secure" : ""}`;
+}
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const t = useTranslations("cookieConsent");
 
   useEffect(() => {
-    const consent = localStorage.getItem(COOKIE_KEY);
-    if (!consent) {
+    // Migration: if a previous localStorage choice exists, promote it to the
+    // cross-subdomain cookie so users who accepted under the old system don't
+    // see the banner again.
+    const cookieConsent = getConsentCookie();
+    if (!cookieConsent) {
+      try {
+        const legacy = localStorage.getItem(COOKIE_KEY);
+        if (legacy) {
+          setConsentCookie(legacy);
+          return;
+        }
+      } catch { /* localStorage disabled — fall through */ }
+
       const timer = setTimeout(() => setVisible(true), 1500);
       return () => clearTimeout(timer);
     }
   }, []);
 
   const accept = () => {
-    localStorage.setItem(COOKIE_KEY, "accepted");
+    setConsentCookie("accepted");
     setVisible(false);
   };
 
   const decline = () => {
-    localStorage.setItem(COOKIE_KEY, "declined");
+    setConsentCookie("declined");
     setVisible(false);
   };
 
