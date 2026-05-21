@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type ValuationEndpoint = "config" | "document" | "report" | "stream" | "unlock";
+type ValuationEndpoint =
+  | "config"
+  | "document"
+  | "from-text"
+  | "report"
+  | "stream"
+  | "unlock";
 
-const endpointPattern = /\/(config|document|report|stream|unlock)$/;
+const endpointPattern = /\/(config|document|from-text|report|stream|unlock)$/;
 
 export function resolveValuationUpstreamUrl(endpoint: ValuationEndpoint): string {
   const explicitBaseUrl = cleanText(process.env.VALUATION_API_BASE_URL);
@@ -58,9 +64,9 @@ async function proxyValuationRequest(
   endpoint: ValuationEndpoint,
   responseMode: "json" | "stream",
 ) {
-  const upstreamUrl = resolveValuationUpstreamUrl(endpoint);
+  const baseUpstreamUrl = resolveValuationUpstreamUrl(endpoint);
 
-  if (!upstreamUrl) {
+  if (!baseUpstreamUrl) {
     console.error(
       `[valuation-api] Missing upstream URL for "${endpoint}". Set VALUATION_API_BASE_URL in the deployment environment.`,
     );
@@ -72,6 +78,11 @@ async function proxyValuationRequest(
       { status: 503, headers: { "Cache-Control": "no-store" } },
     );
   }
+
+  // Forward the incoming request's query string to the upstream. Without this,
+  // GET endpoints like /api/valuation/report?valuation=<id> reach the backend
+  // with no params and 400 out with "Valuation is required."
+  const upstreamUrl = appendIncomingSearchParams(baseUpstreamUrl, request);
 
   const requestHeaders = new Headers();
   const requestContentType = request.headers.get("content-type");
@@ -164,4 +175,23 @@ function normalizePathname(value: string) {
 
 function cleanText(value: string | undefined | null) {
   return String(value ?? "").trim();
+}
+
+// Merge the incoming request's query string into the upstream URL so GET
+// endpoints (e.g. /api/valuation/report?valuation=<id>) reach the backend
+// with the params they need. Falls back to the unmodified base URL if the
+// merge throws (malformed URL etc.) — better to forward something than
+// nothing.
+function appendIncomingSearchParams(baseUrl: string, request: NextRequest): string {
+  try {
+    const incoming = new URL(request.url);
+    if (!incoming.searchParams.size) return baseUrl;
+    const upstream = new URL(baseUrl);
+    incoming.searchParams.forEach((value, key) => {
+      upstream.searchParams.append(key, value);
+    });
+    return upstream.toString();
+  } catch {
+    return baseUrl;
+  }
 }
