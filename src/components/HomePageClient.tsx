@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AIPulseBanner from "@/components/AIPulseBanner";
 import LazyMount from "@/components/LazyMount";
+import DeferUntilIdle from "@/components/DeferUntilIdle";
 
 // Below-the-fold: code-split and lazy-loaded
 const FAQSection           = dynamic(() => import("@/components/FAQSection"));
@@ -93,34 +94,39 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
       <main>
+        {/* Above-the-fold: keep eager so LCP isn't gated on hydration */}
         <HeroSection />
         <AIPulseBanner />
         <ValuationStrip />
         <StatsSection />
-        <WhatWeOffer />
-        <FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} />
-        <CryptoBanner />
-        <OffPlanSectionClient projects={offPlanProjects} />
-        <CommunitiesSection />
+
+        {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
+        <LazyMount minHeight={400}><WhatWeOffer /></LazyMount>
+        <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
+        <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
+        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
+        <LazyMount minHeight={520}><CommunitiesSection /></LazyMount>
         <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
         <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
         <LazyMount minHeight={420}><ROICalculator /></LazyMount>
-        <ValuationCTA />
-        <ListYourPropertySection />
-        <ServicesSection />
-        <TestimonialsSection />
-        <InquirySection />
-        <NewsSection articles={latestArticles} />
+        <LazyMount minHeight={240}><ValuationCTA /></LazyMount>
+        <LazyMount minHeight={320}><ListYourPropertySection /></LazyMount>
+        <LazyMount minHeight={520}><ServicesSection /></LazyMount>
+        <LazyMount minHeight={600}><TestimonialsSection /></LazyMount>
+        <LazyMount minHeight={680}><InquirySection /></LazyMount>
+        <LazyMount minHeight={520}><NewsSection articles={latestArticles} /></LazyMount>
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
         <LazyMount minHeight={400}><FAQSection /></LazyMount>
-        <NewsletterStrip />
+        <LazyMount minHeight={120}><NewsletterStrip /></LazyMount>
       </main>
-      <Footer />
-      <WhatsAppButton />
-      <AIChatWidget />
-      <CookieConsent />
-      <PropertyComparison />
-      <ScrollToTop />
+      <LazyMount minHeight={0}><Footer /></LazyMount>
+
+      {/* Floating / overlay widgets — defer until after page settles */}
+      <DeferUntilIdle><WhatsAppButton /></DeferUntilIdle>
+      <DeferUntilIdle><AIChatWidget /></DeferUntilIdle>
+      <DeferUntilIdle><ScrollToTop /></DeferUntilIdle>
+      <DeferUntilIdle><CookieConsent /></DeferUntilIdle>
+      <DeferUntilIdle><PropertyComparison /></DeferUntilIdle>
     </div>
   );
 }
