@@ -113,7 +113,7 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
 
   const url = typeof window !== "undefined"
     ? `${window.location.origin}/${type === "project" ? "project" : "property"}/${slug}`
-    : `https://binayah.com/${type === "project" ? "project" : "property"}/${slug}`;
+    : `https://www.binayah.ae/${type === "project" ? "project" : "property"}/${slug}`;
 
   return (
     <div
@@ -201,7 +201,7 @@ export function DetailActions({ propertyId, slug, title, type = "property", vari
 
   const url = typeof window !== "undefined"
     ? window.location.href
-    : `https://binayah.com/${type === "project" ? "project" : "property"}/${slug}`;
+    : `https://www.binayah.ae/${type === "project" ? "project" : "property"}/${slug}`;
 
   const sharePopoverRef = useRef<HTMLDivElement>(null);
   useOutsideClick(sharePopoverRef, () => setShareOpen(false));

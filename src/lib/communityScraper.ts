@@ -50,7 +50,7 @@ function scoreMatch(entryName: string, query: string): number {
   return overlap / Math.max(qWords.length, 1);
 }
 
-const UA = "binayah-properties/1.0 (https://binayah.com)";
+const UA = "binayah-properties/1.0 (https://www.binayah.ae)";
 
 // ---------------------------------------------------------------------------
 // Source 1 + 2: Wikipedia REST API

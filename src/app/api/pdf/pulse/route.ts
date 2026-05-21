@@ -372,7 +372,7 @@ function PulseDocument({
       React.createElement(
         View,
         { style: styles.footer },
-        React.createElement(Text, { style: styles.footerText }, `binayah.com/pulse · ${date}`),
+        React.createElement(Text, { style: styles.footerText }, `binayah.ae/pulse · ${date}`),
         React.createElement(Text, { style: styles.footerBrand }, "BINAYAH PROPERTIES")
       )
     ),
@@ -419,7 +419,7 @@ function PulseDocument({
           React.createElement(
             Text,
             { style: styles.disclaimerText },
-            "This report is for informational purposes only and does not constitute financial, investment or legal advice. Past performance is not indicative of future results. All figures are illustrative estimates based on available data at the time of generation. Binayah Properties accepts no liability for decisions made in reliance on this report.\n\nFor full terms, visit: binayahhub.com/terms"
+            "This report is for informational purposes only and does not constitute financial, investment or legal advice. Past performance is not indicative of future results. All figures are illustrative estimates based on available data at the time of generation. Binayah Properties accepts no liability for decisions made in reliance on this report.\n\nFor full terms, visit: binayah.ae/terms"
           )
         )
       ),
@@ -427,7 +427,7 @@ function PulseDocument({
       React.createElement(
         View,
         { style: styles.footer },
-        React.createElement(Text, { style: styles.footerText }, `binayah.com/pulse · ${date}`),
+        React.createElement(Text, { style: styles.footerText }, `binayah.ae/pulse · ${date}`),
         React.createElement(Text, { style: styles.footerBrand }, "BINAYAH PROPERTIES")
       )
     )

@@ -203,7 +203,7 @@ function CalculatorInner({
   // Defer window-derived baseUrl to post-mount so SSR + first client render
   // produce the same DOM (no hydration mismatch). The fallback shape matches
   // what staging would emit for SSR.
-  const [baseUrl, setBaseUrl] = useState(`https://staging.binayahhub.com${pathname}`);
+  const [baseUrl, setBaseUrl] = useState(`https://www.binayah.ae${pathname}`);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setBaseUrl(`${window.location.origin}${pathname}`);
