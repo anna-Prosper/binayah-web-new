@@ -18,10 +18,10 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     telephone: "+971549988811",
     email: "info@binayah.com",
     sameAs: [
-      "https://www.instagram.com/binayahproperties/",
-      "https://www.facebook.com/binayahproperties",
+      "https://www.instagram.com/dubai_realty",
+      "https://www.facebook.com/BinayahRealEstateLLC",
       "https://www.youtube.com/@binayahproperties",
-      "https://www.linkedin.com/company/binayah-properties",
+      "https://www.linkedin.com/company/binayah-real-estate",
     ],
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",

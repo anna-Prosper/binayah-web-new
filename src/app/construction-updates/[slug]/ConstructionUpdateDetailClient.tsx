@@ -224,7 +224,7 @@ export default function ConstructionUpdateDetailClient({
                 <p className="text-sm font-bold text-primary-foreground mb-1">{t("interested")}</p>
                 <p className="text-xs text-primary-foreground/70 mb-4">{t("exclusivePricing")}</p>
                 <a
-                  href={`https://wa.me/971543048?text=I'm interested in ${update.title}. Please share updates.`}
+                  href={`https://wa.me/971549988811?text=I'm interested in ${update.title}. Please share updates.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary rounded-xl text-sm font-semibold hover:bg-white/90 transition-colors"
