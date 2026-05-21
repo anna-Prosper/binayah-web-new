@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
     createdAt: new Date(),
   });
 
-  const baseUrl = process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
+  const baseUrl = process.env.NEXTAUTH_URL || "https://www.binayah.ae";
   const verifyLink = `${baseUrl}/api/auth/verify-email?token=${rawToken}`;
 
   const html = `

@@ -10,9 +10,9 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     "@type": "RealEstateAgent",
     name: "Binayah Properties",
     alternateName: "Binayah Real Estate",
-    url: "https://binayah.com",
-    logo: "https://binayah.com/assets/binayah-logo.png",
-    image: "https://binayah.com/assets/dubai-hero.webp",
+    url: "https://www.binayah.ae",
+    logo: "https://www.binayah.ae/assets/binayah-logo.png",
+    image: "https://www.binayah.ae/assets/dubai-hero.webp",
     description:
       "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
     telephone: "+971549988811",
@@ -66,7 +66,7 @@ export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: `https://binayah.com${item.href}`,
+      item: `https://www.binayah.ae${item.href}`,
     })),
   };
 
@@ -174,7 +174,7 @@ export function RealEstateListingJsonLd({
     name,
     description,
     image,
-    url: `https://binayah.com${url}`,
+    url: `https://www.binayah.ae${url}`,
     offers: {
       "@type": "Offer",
       price,

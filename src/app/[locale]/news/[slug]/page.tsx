@@ -47,11 +47,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
             "@context": "https://schema.org",
             "@type": "NewsArticle",
             headline: article.title,
-            image: article.featuredImage || "https://staging.binayahhub.com/assets/dubai-hero.webp",
+            image: article.featuredImage || "https://www.binayah.ae/assets/dubai-hero.webp",
             datePublished: article.publishedAt,
             author: { "@type": "Person", name: article.author || "Binayah Editorial" },
-            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: "https://staging.binayahhub.com/assets/binayah-logo.webp" } },
-            url: `https://staging.binayahhub.com/news/${slug}`,
+            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: "https://www.binayah.ae/assets/binayah-logo.webp" } },
+            url: `https://www.binayah.ae/news/${slug}`,
           }).replace(/</g, "\\u003c"),
         }}
       />

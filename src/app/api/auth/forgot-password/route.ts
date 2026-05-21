@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         createdAt: now,
       });
 
-      const baseUrl = process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
+      const baseUrl = process.env.NEXTAUTH_URL || "https://www.binayah.ae";
       const resetLink = `${baseUrl}/reset-password?token=${rawToken}`;
 
       const html = `

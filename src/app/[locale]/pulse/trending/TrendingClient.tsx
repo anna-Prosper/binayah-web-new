@@ -206,7 +206,7 @@ export default function TrendingClient({
   const latest = monthly[monthly.length - 1] ?? null;
 
   // ── Share ─────────────────────────────────────────────────────────────
-  const [baseUrl, setBaseUrl] = useState("https://staging.binayahhub.com/pulse/trending");
+  const [baseUrl, setBaseUrl] = useState("https://www.binayah.ae/pulse/trending");
   useEffect(() => {
     if (typeof window !== "undefined") {
       setBaseUrl(`${window.location.origin}/pulse/trending`);

@@ -102,7 +102,7 @@ function NewsDetailInner({
   }, []);
 
   const shareUrl =
-    typeof window !== "undefined" ? window.location.href : `https://binayahhub.com/news/${article.slug}`;
+    typeof window !== "undefined" ? window.location.href : `https://www.binayah.ae/news/${article.slug}`;
   const shareText = encodeURIComponent(article.title);
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,

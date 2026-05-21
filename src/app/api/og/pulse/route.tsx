@@ -157,7 +157,7 @@ export async function GET(req: NextRequest) {
                 letterSpacing: "0.1em",
               }}
             >
-              staging.binayahhub.com/pulse
+              binayah.ae/pulse
             </div>
             <div
               style={{

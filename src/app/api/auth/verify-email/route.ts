@@ -4,7 +4,7 @@ import clientPromise from "@/lib/mongodb";
 
 export async function GET(req: NextRequest) {
   const rawToken = req.nextUrl.searchParams.get("token")?.trim() || "";
-  const base = process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
+  const base = process.env.NEXTAUTH_URL || "https://www.binayah.ae";
 
   if (!rawToken) {
     return NextResponse.redirect(`${base}/signin?error=verify`);

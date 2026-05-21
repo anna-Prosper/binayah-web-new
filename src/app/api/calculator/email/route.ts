@@ -142,17 +142,17 @@ function buildEmailHtml(name: string, calc: CalcSnapshot): string {
 
       <!-- CTA -->
       <div style="text-align:center;margin-top:8px;">
-        <a href="https://staging.binayahhub.com/pulse/calculator?utm_source=email&utm_medium=report&utm_campaign=calculator-lead"
+        <a href="https://www.binayah.ae/pulse/calculator?utm_source=email&utm_medium=report&utm_campaign=calculator-lead"
            style="display:inline-block;background:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#FFFFFF;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:bold;">
           Adjust my calculation
         </a>
-        <p style="margin:16px 0 0;font-size:12px;color:#9CA3AF;">or <a href="https://staging.binayahhub.com/contact" style="color:${BRAND_GREEN};text-decoration:none;">talk to a Binayah agent</a></p>
+        <p style="margin:16px 0 0;font-size:12px;color:#9CA3AF;">or <a href="https://www.binayah.ae/contact" style="color:${BRAND_GREEN};text-decoration:none;">talk to a Binayah agent</a></p>
       </div>
     </div>
 
     <!-- Footer -->
     <div style="background:${BRAND_GREEN};padding:16px 32px;display:flex;justify-content:space-between;align-items:center;">
-      <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.6);">Binayah Properties · binayahhub.com</p>
+      <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.6);">Binayah Properties · binayah.ae</p>
       <p style="margin:0;font-size:10px;color:rgba(255,255,255,0.4);">Projections are illustrative. Past performance does not guarantee future results.</p>
     </div>
   </div>

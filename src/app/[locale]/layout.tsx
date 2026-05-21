@@ -36,7 +36,7 @@ const notoArabic = Noto_Sans_Arabic({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
 
 export const metadata: Metadata = {
   // 56 chars — within recommended 50–60 range
@@ -108,7 +108,7 @@ export default async function LocaleLayout({
         {/* Preconnect to image/API origins — starts TLS handshake during HTML parse */}
         <link rel="preconnect" href="https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://binayah-api.onrender.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.binayah.com" />
+        <link rel="dns-prefetch" href="https://www.binayah.ae" />
         <link rel="dns-prefetch" href="https://sm-automation-5464.s3.ap-south-1.amazonaws.com" />
       </head>
       <body className={jakarta.className}>

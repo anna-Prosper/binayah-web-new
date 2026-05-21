@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
 
     // Send confirmation email (fire-and-forget — never block HTTP response)
     const baseUrl =
-      process.env.NEXTAUTH_URL || "https://staging.binayahhub.com";
+      process.env.NEXTAUTH_URL || "https://www.binayah.ae";
     const unsubscribeUrl = `${baseUrl}/api/project-subscriptions/unsubscribe?token=${unsubscribeToken}`;
 
     const safeProjectName = escHtml(projectName);
