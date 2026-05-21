@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { sendMail } from "@/lib/mailer";
+import { notifyNewLead } from "@/lib/leads/notify";
 
 const VALID_PROPERTY_TYPES = [
   "Apartment",
@@ -118,6 +119,16 @@ export async function POST(req: NextRequest) {
   };
 
   const result = await col.insertOne(doc);
+
+  notifyNewLead({
+    source: "list-property",
+    channel: "list-your-property",
+    name: session.user.name || undefined,
+    email: session.user.email || undefined,
+    phone,
+    community,
+    message: `${listingType} ${propertyType}${bedrooms ? ` · ${bedrooms} BR` : ""}${askingPrice ? ` · asking AED ${Number(askingPrice).toLocaleString()}` : ""}`,
+  });
 
   // Audit trail
   const eventsCol = client.db("binayah_web_new_dev").collection("submission_events");

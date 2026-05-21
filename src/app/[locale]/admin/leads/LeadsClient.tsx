@@ -82,6 +82,48 @@ export default function LeadsClient() {
   });
 
   const [openLeadId, setOpenLeadId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
+
+  // Selection drops whenever the visible page changes — selecting across
+  // pages is confusing and operationally rare.
+  useEffect(() => {
+    setSelected(new Set());
+  }, [params]);
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  async function runBulk(action: "patch" | "delete", patch?: Record<string, unknown>) {
+    if (selected.size === 0) return;
+    if (action === "delete" && !confirm(`Soft-delete ${selected.size} leads?`)) return;
+    setBulkBusy(true);
+    try {
+      const res = await fetch("/api/admin/leads/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: Array.from(selected), action, ...(patch || {}) }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(`Bulk failed: ${data.error || "unknown"}`);
+        return;
+      }
+      if (data.failed?.length > 0) {
+        alert(`${data.succeeded} succeeded, ${data.failed.length} failed.`);
+      }
+      setSelected(new Set());
+      refetch();
+    } finally {
+      setBulkBusy(false);
+    }
+  }
 
   function toggleSource(s: LeadSource) {
     setSourceFilter((prev) =>
@@ -180,11 +222,67 @@ export default function LeadsClient() {
         />
       </div>
 
+      {/* Bulk action bar */}
+      {selected.size > 0 && (
+        <div className="bg-gray-900 text-white rounded-xl px-4 py-3 mb-3 flex items-center gap-3 flex-wrap text-sm">
+          <span className="font-semibold">{selected.size} selected</span>
+          <span className="text-gray-400">|</span>
+          <span className="text-gray-300 text-xs">Set status:</span>
+          {LEAD_STATUSES.map((s) => (
+            <button
+              key={s}
+              disabled={bulkBusy}
+              onClick={() => runBulk("patch", { status: s })}
+              className="px-2.5 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-xs font-medium disabled:opacity-50"
+            >
+              {s}
+            </button>
+          ))}
+          <span className="text-gray-400">|</span>
+          <button
+            disabled={bulkBusy}
+            onClick={() => {
+              const email = prompt("Assign to (email, blank to unassign):", "");
+              if (email === null) return;
+              runBulk("patch", { assignedTo: email.trim() || null });
+            }}
+            className="px-3 py-1 rounded-md bg-gray-800 hover:bg-gray-700 text-xs font-medium disabled:opacity-50"
+          >
+            Assign…
+          </button>
+          <button
+            disabled={bulkBusy}
+            onClick={() => runBulk("delete")}
+            className="px-3 py-1 rounded-md bg-red-700 hover:bg-red-600 text-xs font-medium disabled:opacity-50 ml-auto"
+          >
+            Delete
+          </button>
+          <button
+            disabled={bulkBusy}
+            onClick={() => setSelected(new Set())}
+            className="px-3 py-1 rounded-md border border-gray-600 text-xs disabled:opacity-50"
+          >
+            Clear
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 w-8">
+                <input
+                  type="checkbox"
+                  checked={leads.length > 0 && leads.every((l) => selected.has(l.id))}
+                  onChange={(e) => {
+                    if (e.target.checked) setSelected(new Set(leads.map((l) => l.id)));
+                    else setSelected(new Set());
+                  }}
+                  aria-label="Select all on page"
+                />
+              </th>
               <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Contact</th>
@@ -196,18 +294,26 @@ export default function LeadsClient() {
           <tbody className="divide-y divide-gray-100">
             {isLoading ? (
               <tr>
-                <td colSpan={6} className="text-center text-gray-500 py-12">
+                <td colSpan={7} className="text-center text-gray-500 py-12">
                   Loading leads…
                 </td>
               </tr>
             ) : leads.length === 0 ? (
               <tr>
-                <td colSpan={6} className="text-center text-gray-500 py-12">
+                <td colSpan={7} className="text-center text-gray-500 py-12">
                   No leads match these filters.
                 </td>
               </tr>
             ) : (
-              leads.map((l) => <LeadRow key={l.id} lead={l} onOpen={() => setOpenLeadId(l.id)} />)
+              leads.map((l) => (
+                <LeadRow
+                  key={l.id}
+                  lead={l}
+                  onOpen={() => setOpenLeadId(l.id)}
+                  selected={selected.has(l.id)}
+                  onToggleSelect={() => toggleSelected(l.id)}
+                />
+              ))
             )}
           </tbody>
         </table>
@@ -245,7 +351,17 @@ export default function LeadsClient() {
   );
 }
 
-function LeadRow({ lead, onOpen }: { lead: UnifiedLead; onOpen: () => void }) {
+function LeadRow({
+  lead,
+  onOpen,
+  selected,
+  onToggleSelect,
+}: {
+  lead: UnifiedLead;
+  onOpen: () => void;
+  selected: boolean;
+  onToggleSelect: () => void;
+}) {
   const src = sourceLabel(lead.source);
   const context =
     lead.property?.title ||
@@ -255,7 +371,15 @@ function LeadRow({ lead, onOpen }: { lead: UnifiedLead; onOpen: () => void }) {
     "—";
 
   return (
-    <tr className="hover:bg-gray-50 transition cursor-pointer" onClick={onOpen}>
+    <tr className={`hover:bg-gray-50 transition cursor-pointer ${selected ? "bg-emerald-50/50" : ""}`} onClick={onOpen}>
+      <td className="px-4 py-3 w-8" onClick={(e) => e.stopPropagation()}>
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={onToggleSelect}
+          aria-label={`Select ${lead.name || lead.id}`}
+        />
+      </td>
       <td className="px-4 py-3">
         <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${src.color}`}>
           {src.label}
