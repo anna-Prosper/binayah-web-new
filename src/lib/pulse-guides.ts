@@ -285,6 +285,506 @@ The secondary market has genuine pricing opacity. Asking prices on portals are n
 
 If you are a first-time UAE investor: secondary is the lower-risk introduction. If you have UAE market experience and are buying from a major developer with a clean track record: off-plan in a well-located project is an intelligent capital allocation.`,
   },
+  {
+    slug: "how-to-buy-property-in-dubai",
+    category: "How To",
+    readTime: "8 min",
+    views: 6240,
+    titleKey: "guide_howToBuy_title",
+    descriptionKey: "guide_howToBuy_desc",
+    relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Business Bay"],
+    body: `Buying property in Dubai is straightforward once you understand the sequence. Get the order wrong and you waste weeks; get it right and you can close in 30 days from offer to title deed.
+
+**Step 1: Define the Objective Before You Browse**
+
+Investment for yield, owner-occupation, capital appreciation, or Golden Visa are four different buying briefs. They map to different communities, unit sizes, and price brackets. Yield-seekers should look at JVC, Dubai South, or smaller units in Business Bay. Owner-occupiers care about school catchments and commute (Dubai Hills, Arabian Ranches, Mirdif). Capital-growth buyers concentrate on supply-constrained waterfront (Marina, Palm Jumeirah, Bluewaters). Golden Visa qualifiers need the AED 2M threshold met on a single title.
+
+**Step 2: Engage a RERA-Registered Agent**
+
+Only agents licensed by RERA (Real Estate Regulatory Agency) can legally represent you. Ask for the agent's RERA number — it's verifiable on the DLD app. A good agent saves you weeks of unrepresented viewings and protects you in negotiation. Standard agent commission is 2% of purchase price, paid by the buyer at transfer.
+
+**Step 3: Secure Financing or Confirm Cash**
+
+If you're paying cash, get a Letter of No Objection from your bank confirming funds. If you're financing, get a mortgage pre-approval *before* making offers — UAE banks lend up to 80% for residents and 50% for non-residents on a first property. Approval typically takes 5–10 days. Note: financing on off-plan is restricted to specific developer-partner banks.
+
+**Step 4: Submit Form F (Memorandum of Understanding)**
+
+Once a price is agreed, both parties sign Form F (the standard DLD MOU). Buyer pays a 10% security deposit, usually held by the broker or in escrow. This locks the property and triggers the 30-day clock to close.
+
+**Step 5: Apply for NOC (Resale Only)**
+
+For secondary-market transactions, the developer issues a No Objection Certificate confirming service charges are paid and there's no lien. Fee is AED 500–5,000 depending on developer. Process takes 7–14 days. For off-plan you skip this step.
+
+**Step 6: Final Settlement at the DLD Trustee Office**
+
+Buyer, seller, and both agents meet at a Dubai Land Department-approved trustee office (or via the Dubai REST app for digital transactions). Buyer pays:
+- 4% DLD transfer fee
+- AED 2,000–4,000 trustee office fee
+- AED 540 title-deed issuance fee
+- Mortgage registration: 0.25% of loan + AED 290 (if financed)
+- Agent commission (typically 2% + 5% VAT)
+
+The title deed is issued same-day on cash transactions, 24–48 hours on financed deals. You are now the legal owner.
+
+**Step 7: Move Costs and Annual Obligations**
+
+Plan for: DEWA connection deposit (AED 2,000 for apartments), service charges (AED 10–25/sqft/year depending on building), and Ejari registration if you ever rent it out. Annual property tax does not exist in the UAE.
+
+**Common Mistakes**
+
+- **Skipping the NOC check** — buying a property with unpaid service charges means inheriting the debt
+- **Trusting brochure floor plans** — measure on viewing; reported sqft is often gross including walls and shared corridors
+- **Underestimating service charges** — a luxury tower can run AED 25–35/sqft/year, materially eroding net yield
+- **Buying through unregistered intermediaries** — no legal recourse if it goes wrong
+
+**Timeline Summary**
+
+A clean cash purchase: 14–21 days from offer to title deed. Financed purchase: 30–45 days. Off-plan: contract signed immediately, but title issuance happens at handover (often years later — you hold an Oqood instead, see our title-deed-vs-oqood guide).
+
+Done in this order, with a competent RERA agent and a clear objective, the process is well-defined and protected by mature regulation.`,
+  },
+  {
+    slug: "dld-fees-explained",
+    category: "How To",
+    readTime: "5 min",
+    views: 4870,
+    titleKey: "guide_dldFees_title",
+    descriptionKey: "guide_dldFees_desc",
+    relatedCommunities: ["Business Bay", "Downtown Dubai", "Dubai Marina"],
+    body: `The headline DLD transfer fee is 4%, but the true cost of registering a property is closer to 5–7% all-in. Buyers who only budget the 4% headline get a nasty surprise at the trustee office. Here's the complete breakdown.
+
+**The 4% DLD Transfer Fee**
+
+The largest single charge. 4% of the agreed purchase price, paid to Dubai Land Department on the day of transfer. Splittable in theory between buyer and seller, but in 99% of transactions the buyer pays the full 4%. There is no exemption for first-time buyers, residents, or any other category.
+
+**Trustee Office Fees**
+
+Transactions complete at a DLD-approved trustee office (or digitally via Dubai REST). The trustee charges:
+- AED 4,000 + 5% VAT — for properties priced above AED 500K
+- AED 2,000 + 5% VAT — for properties below AED 500K
+
+This fee is non-negotiable and covers the trustee's role in verifying ID, witnessing transfer, and submitting paperwork to DLD.
+
+**Title Deed Issuance**
+
+AED 540 to issue the new title deed in the buyer's name. Tiny, but compulsory.
+
+**Mortgage Registration Fee (If Financed)**
+
+If you're using a mortgage, DLD charges 0.25% of the loan amount plus AED 290 to register the bank's lien against the property. For an AED 2M loan that's AED 5,290. The bank typically deducts this from the loan disbursement.
+
+**Agent Commission**
+
+Standard practice in Dubai is 2% of the purchase price plus 5% VAT, paid by the buyer to the buyer's agent. On the seller's side, the seller pays their agent the same. For an AED 2M property: 2% = AED 40,000 + AED 2,000 VAT = AED 42,000.
+
+**NOC Fee (Secondary Market Only)**
+
+The seller's developer issues a No Objection Certificate confirming no outstanding service charges. Fee varies by developer:
+- Emaar: AED 5,250
+- Damac: AED 5,000
+- Sobha: AED 3,150
+- Mid-tier developers: AED 500–2,000
+
+The seller typically pays this, but practice varies — negotiate explicitly in Form F.
+
+**Off-Plan Specific Fees**
+
+If you're buying off-plan, you pay DLD's Oqood registration fee (4% of price, same as a finished property — the structure is the same, you're just registering a contract rather than a title). The developer often markets the project as "DLD fees waived" — read the contract; usually it means the *developer* absorbs the 4%, not that it's not charged.
+
+**The Total — Real Example**
+
+Buying a finished AED 2M apartment with a 50% mortgage:
+- DLD transfer fee (4%): AED 80,000
+- Trustee fee: AED 4,200
+- Title deed: AED 540
+- Mortgage registration (0.25% of AED 1M + 290): AED 2,790
+- Agent commission (2% + VAT): AED 42,000
+- NOC (mid-tier): AED 1,500
+
+**Total transaction cost: AED 131,030 — or 6.55% on top of the purchase price.**
+
+Many buyers budget only the 4% DLD fee and underestimate by ~AED 50,000 on a 2M deal. Treat 6.5% as the all-in cost on financed deals and 5.5% on cash deals.
+
+**What There Isn't**
+
+There is no annual property tax in the UAE. There is no stamp duty beyond the 4%. There is no capital-gains tax. The transaction cost is front-loaded, then your annual carrying cost is service charges and utilities only.`,
+  },
+  {
+    slug: "title-deed-vs-oqood",
+    category: "Deep Dive",
+    readTime: "6 min",
+    views: 3120,
+    titleKey: "guide_titleDeedOqood_title",
+    descriptionKey: "guide_titleDeedOqood_desc",
+    relatedCommunities: ["Dubai Creek Harbour", "Business Bay", "MBR City"],
+    body: `Both documents prove you have a legal interest in a Dubai property. They are not the same. Understanding the difference protects you from buying or selling under the wrong assumptions about your rights.
+
+**Title Deed: Ownership of a Completed Property**
+
+A title deed is issued by Dubai Land Department once a property has been physically completed, registered, and handed over to the owner. It is the freehold (or leasehold) ownership document. With a title deed in your name you:
+
+- Own the property outright (subject to mortgage if financed)
+- Can sell, gift, or bequeath it
+- Can rent it out and collect income
+- Can use it to apply for the Golden Visa (if AED 2M threshold met)
+- Can mortgage it independently of any developer
+
+The title deed is the gold standard. If you can choose between a title-deeded unit and an Oqood-registered unit at the same effective price, pick the title.
+
+**Oqood: Registration of an Off-Plan Purchase Contract**
+
+Oqood (Arabic for "contracts") is what you receive when you buy off-plan. It is not an ownership document — it's official registration with DLD that you hold a contractual right to the property once it is completed and handed over. With an Oqood you:
+
+- Have a legal claim against the developer for delivery
+- Can sell the contract to another buyer (subject to developer NOC and SPA terms)
+- Cannot rent the property — it doesn't exist yet
+- Generally cannot use it for Golden Visa until completion (some exceptions for 50%-paid units)
+- Need to convert it to a title deed at handover
+
+**The Conversion**
+
+When the property is delivered, you visit the developer's handover desk, pay any outstanding balance, and the developer files a request with DLD to issue the title deed in your name. The Oqood is retired. Conversion typically takes 1–4 weeks after final payment and possession.
+
+**Why This Matters in Negotiation**
+
+If you're buying an Oqood (assignment of an off-plan contract from the original buyer), you're not buying a property — you're buying a contract. Three implications:
+
+1. **Developer NOC required** — the developer must approve the transfer. Fee typically AED 1,500–5,000. Not all developers permit assignment freely.
+2. **Limited resale market** — fewer buyers are comfortable with Oqood resales than with title deeds. Discount your asking price expectations 5–15% vs equivalent finished stock.
+3. **Construction risk transfers to you** — if the project is delayed or specifications change, you inherit those issues.
+
+If you're selling an Oqood, time it carefully. The closer to handover, the smaller the discount. Selling at 90%-complete is typically much more efficient than selling at 30%.
+
+**The 50% Rule for Golden Visa**
+
+UAE law allows Golden Visa applications on off-plan units (Oqood) only when at least 50% of the purchase price has been paid. Most off-plan payment plans are structured 10% on signing, 20% during construction, 70% on handover — meaning you typically need to be deep into the payment schedule before Golden Visa is achievable on an off-plan unit. Title-deeded units have no such restriction.
+
+**Document Checklist When You Receive Either**
+
+Title deed should show: your name, property location, plot/unit number, area in sqft and sqm, freehold/leasehold status, and a DLD verification QR code. Verify on the Dubai REST app within 24 hours of issuance.
+
+Oqood should show: your name, developer name, project name, unit number, total contract price, and DLD registration number. Cross-check the registration number on the Dubai REST app.
+
+If either document doesn't verify, do not pay anything further until DLD confirms registration.`,
+  },
+  {
+    slug: "ejari-process",
+    category: "How To",
+    readTime: "4 min",
+    views: 5840,
+    titleKey: "guide_ejari_title",
+    descriptionKey: "guide_ejari_desc",
+    relatedCommunities: ["Jumeirah Village Circle", "Business Bay", "Dubai Marina"],
+    body: `Ejari is the mandatory rental-contract registration system run by RERA. Without it your tenancy is technically unenforceable, you can't get DEWA connected as a tenant, and you can't sponsor a family visa or get a UAE driving licence. The process is fast — 10 minutes online if you have the documents ready.
+
+**Who Needs to Register**
+
+Every residential and commercial tenancy in Dubai must be registered, regardless of contract length. The landlord is legally responsible for registering, but in practice it's usually the tenant who initiates it because the tenant needs the certificate for DEWA, visa, and other services.
+
+**Required Documents**
+
+Have these ready before you start:
+
+- Signed tenancy contract (original or scanned copy, all pages)
+- Title deed of the property (provided by landlord)
+- Landlord's Emirates ID
+- Tenant's Emirates ID (or passport with valid visa for non-residents)
+- Landlord's contact details
+- DEWA premise number (from any previous DEWA bill or available from DEWA)
+
+If you don't have the title deed, the landlord must provide it — it's their obligation. Push back firmly; no title deed, no registration.
+
+**How to Register**
+
+Three routes:
+
+**Option 1: Dubai REST app (recommended)** — Download Dubai REST, log in with UAE Pass, select "Ejari Registration." Upload documents, pay, done in 10 minutes. Fee: AED 220 (AED 100 to RERA + AED 100 service + AED 20 innovation fee + tax).
+
+**Option 2: Approved typing centres** — Walk in to any RERA-approved typing centre with documents. Fee usually AED 300–400 (typing centre adds a service fee). Slower than self-service.
+
+**Option 3: Real estate brokerages** — Many agencies will handle Ejari for you, often free if they brokered the rental. Convenient but you wait for them.
+
+**Common Rejections**
+
+- Tenancy contract not on the unified Dubai tenancy form
+- Title deed page count doesn't match RERA records (the title was updated after a sub-division and the landlord hasn't refreshed their copy)
+- Tenant's visa expired (use a passport with a valid visa, or wait for renewal)
+- DEWA premise number mismatch — happens when units were renumbered after handover
+
+**Renewing Ejari**
+
+Ejari must be renewed every year when the tenancy is renewed. Same documents, same fee. If you let it lapse, your DEWA can be cut off and your visa renewal can be blocked. Mark it in your calendar.
+
+**Tenant Rights Under Ejari**
+
+Registration triggers RERA's tenant protections:
+
+- Rent increases capped per the RERA Rent Index (often 0–20% depending on how far below market your rent is)
+- 12-month notice required for non-renewal
+- 90-day notice required for permitted rent increases
+- Tenancy disputes go to the Rental Dispute Settlement Centre (RDSC), which is far cheaper and faster than the courts
+
+Without Ejari, none of these protections apply. The registration is genuinely valuable, not just paperwork.
+
+**For Landlords**
+
+You can also register the contract yourself — and many landlords prefer to, because you control the title-deed disclosure. If you're renting out multiple units, the Dubai REST app's bulk mode handles this efficiently.
+
+Don't register a contract with terms that violate RERA rules (e.g., excessive deposits, prohibited eviction clauses) — the registration creates a legal record of the breach.`,
+  },
+  {
+    slug: "noc-certificate",
+    category: "How To",
+    readTime: "4 min",
+    views: 2980,
+    titleKey: "guide_noc_title",
+    descriptionKey: "guide_noc_desc",
+    relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah"],
+    body: `The No Objection Certificate (NOC) is the developer's confirmation that a property can be transferred to a new owner. Without it, DLD will not process the sale. It is the single most common cause of delay in secondary-market transactions.
+
+**What the NOC Confirms**
+
+The NOC certifies three things to DLD and to the buyer:
+
+1. All service charges on the unit are paid in full up to the transfer date
+2. There are no outstanding fines, violations, or developer-side disputes
+3. The developer has no objection to the sale (relevant for buildings with right-of-first-refusal clauses)
+
+If any of these conditions aren't met, the developer either refuses to issue the NOC or issues a conditional one specifying what must be cleared first.
+
+**When You Need One**
+
+Only for secondary-market transactions — i.e., resale of a finished, title-deeded property. You do NOT need an NOC for:
+
+- Off-plan purchases directly from a developer
+- Inheritance transfers (different process via DLD)
+- Court-ordered transfers
+
+You DO need one for every other resale, including transfers between family members at zero consideration.
+
+**The Process**
+
+The seller initiates. Typical steps:
+
+1. Seller logs in to developer's portal (or visits in person)
+2. Selects "Apply for NOC" or "Transfer Application"
+3. Uploads buyer's passport and Emirates ID, signed Form F (MOU)
+4. Pays the NOC fee — typically AED 500–5,000 depending on developer
+5. Developer audits service charge account, checks for violations
+6. Developer issues NOC valid for 30–60 days (varies)
+
+**Timeline**
+
+- Major developers with digital portals (Emaar, Damac, Nakheel, Sobha, Meraas): 3–7 working days
+- Mid-tier developers: 7–14 working days
+- Smaller / less-digitised developers: 14–21+ working days
+
+The buyer cannot speed this up — it's entirely on the seller and the developer.
+
+**NOC Fees by Developer (Indicative 2026)**
+
+| Developer | NOC Fee | Typical Timeline |
+|---|---|---|
+| Emaar | AED 5,250 | 5 working days |
+| Damac | AED 5,000 | 5–7 working days |
+| Nakheel | AED 3,150 | 5–10 working days |
+| Sobha | AED 3,150 | 7 working days |
+| Meraas | AED 5,000 | 5 working days |
+| Dubai Properties | AED 1,500 | 7–10 working days |
+| Mid-tier (Azizi, Binghatti, etc.) | AED 500–2,000 | 10–21 working days |
+
+Verify before signing Form F — the negotiation point of "who pays NOC" can save AED 5,000.
+
+**What Goes Wrong**
+
+The most common reasons NOC issuance stalls:
+
+- **Outstanding service charges** — the seller had a dispute with the developer, withheld payment, and now needs to settle (sometimes including interest) before NOC is issued. This can derail a sale entirely.
+- **Unit modifications** — the seller put up walls, changed flooring, or did renovations without developer approval. The developer demands restoration or fines before issuing.
+- **Building-wide audits** — some developers freeze NOCs for an entire building during a master-community audit. Nothing to do but wait.
+- **Cheque returned** — if any service charge cheque bounced historically, the developer flags it and requires resolution.
+
+**What Buyers Should Do**
+
+Before signing Form F, ask the seller to obtain a preliminary statement-of-account from the developer showing service charges paid up to date. This is free and confirms there's nothing surprising. If the seller refuses or stalls, treat it as a red flag.
+
+Once Form F is signed, build a 30–45 day window into the closing timeline. NOC delays are the single largest cause of broken deals in Dubai secondary market.`,
+  },
+  {
+    slug: "golden-visa-process",
+    category: "How To",
+    readTime: "9 min",
+    views: 8420,
+    titleKey: "guide_goldenVisa_title",
+    descriptionKey: "guide_goldenVisa_desc",
+    relatedCommunities: ["Palm Jumeirah", "Downtown Dubai", "Dubai Hills Estate"],
+    body: `The UAE Golden Visa is a 10-year, self-sponsored residency that property owners can qualify for at the AED 2 million threshold. Process is straightforward, family is included, and renewal at 10 years requires only that you still own qualifying property. Here's how it works in practice.
+
+**Eligibility: The AED 2 Million Rule**
+
+The headline rule: you need property worth at least AED 2 million. Specifics:
+
+- **Single property or combined** — one property at AED 2M qualifies, or two properties at AED 1M each (combined value on a single application). Most applicants use a single qualifying unit.
+- **Title deed required** — the property must be title-deeded in your name, fully completed and registered with DLD. Off-plan units do *not* qualify unless 50% of the price has been paid AND the developer is on the approved list (currently Emaar, Damac, Nakheel, Sobha, Meraas, Dubai Holding).
+- **Mortgage permitted** — financed purchases qualify, but you must have paid at least 50% of the property price (i.e., your equity must be at least AED 1M). The bank must issue a Letter of No Objection for the visa application.
+- **Joint ownership** — only the primary owner gets the visa. Joint owners need separately-qualifying interests.
+
+**What's Included**
+
+- 10-year residency for the property owner
+- Family sponsorship: spouse, all children (no age limit for unmarried children), parents (with health-insurance proof)
+- Unlimited entries / exits — no 6-month rule like standard residency
+- Eligibility to sponsor domestic workers
+- Eligibility to open bank accounts, register a business, and own multiple properties
+- No physical-presence requirement to maintain the visa
+
+**The Application Process**
+
+The Golden Visa is processed by the General Directorate of Residency and Foreigners Affairs (GDRFA) in Dubai, in partnership with DLD for property-based applications.
+
+**Step 1: Title deed in hand** — complete the property purchase first. You cannot apply during escrow.
+
+**Step 2: Health insurance** — secure a valid UAE health insurance policy for yourself and dependents. AED 2,000–8,000 per person depending on coverage.
+
+**Step 3: Medical fitness test** — at any approved medical centre. AED 300–500. Required for all applicants 18+.
+
+**Step 4: Submit application** — via the GDRFA Dubai website, ICA app, or an approved typing centre. Required documents:
+
+- Title deed
+- Passport (validity 6+ months)
+- Existing UAE visa (if applicable)
+- Health insurance certificate
+- Medical fitness certificate
+- Passport-style photos (white background)
+- Marriage certificate (attested) — if including spouse
+- Birth certificates (attested) — if including children
+
+**Step 5: Pay fees** — main applicant: approximately AED 2,800–4,000 including visa, ID, and processing. Each dependent: approximately AED 2,500.
+
+**Step 6: Biometrics** — visit a GDRFA Smart Channel for fingerprinting and photo.
+
+**Step 7: Issuance** — Golden Visa stamped in passport, Emirates ID issued. Total timeline: typically 7–14 working days for the main applicant, slightly longer for family additions.
+
+**For Foreign Applicants (Not Yet UAE Resident)**
+
+Apply for an entry permit first (the Golden Visa entry permit is separate from a tourist visa — it's specifically for entering UAE to complete a Golden Visa). On arrival, complete the medical and submit to GDRFA. The full process is doable within one 30-day visit.
+
+**Maintaining the Visa**
+
+You must own the qualifying property continuously. If you sell and don't replace it, your visa is revoked (though family residencies sponsored under it continue until expiry). At year 10, renewal is automatic provided you still own qualifying property.
+
+**Common Pitfalls**
+
+- **Off-plan disqualification** — buyers assume off-plan Oqood qualifies; usually it doesn't unless 50%+ paid AND approved-developer.
+- **Joint ownership confusion** — buyers assume both names on title deed = both eligible. Only one gets the visa per qualifying property.
+- **Mortgage threshold** — if your equity drops below AED 1M during the term (e.g., property value falls), you may face renewal issues.
+- **Health insurance gaps** — letting health insurance lapse can complicate dependent renewals.
+
+**Bottom Line**
+
+For property buyers at the AED 2M+ level, the Golden Visa converts a property purchase into a pathway to decade-long, family-inclusive UAE residency. The marginal cost (AED 5,000–10,000 in fees beyond the property itself) is trivial relative to the benefit. Plan it from day one of the property search — the threshold is a useful filter for what you buy.`,
+  },
+  {
+    slug: "buying-as-non-resident",
+    category: "How To",
+    readTime: "7 min",
+    views: 5640,
+    titleKey: "guide_nonResident_title",
+    descriptionKey: "guide_nonResident_desc",
+    relatedCommunities: ["Dubai Marina", "Downtown Dubai", "Palm Jumeirah"],
+    body: `You don't need to live in the UAE — or even visit — to buy property in Dubai. Foreign non-residents can purchase freehold property in designated areas, complete transactions remotely, and own property indefinitely. Here's the practical process.
+
+**Freehold Areas: Where Foreigners Can Buy**
+
+Non-residents can buy in designated freehold zones, which cover the vast majority of investor-relevant Dubai. These include:
+
+- Downtown Dubai
+- Dubai Marina
+- Palm Jumeirah
+- Business Bay
+- JBR
+- Jumeirah Village Circle (JVC) and Triangle (JVT)
+- Dubai Hills Estate
+- Bluewaters Island
+- Dubai Creek Harbour
+- MBR City
+- Damac Hills
+- Arabian Ranches
+- DIFC
+- And many more
+
+Practical answer: if it's a community marketed to international buyers, it's almost certainly freehold. Older areas like Bur Dubai and Deira are mostly leasehold and not open to non-resident freehold purchase.
+
+**Remote Purchase: The Three Routes**
+
+**Route 1: Power of Attorney (POA)**
+
+The most common remote-purchase mechanism. You issue a POA to a UAE-based representative (a lawyer, a trusted person, or a real-estate agent's nominated officer). The POA must be:
+
+1. Drafted in Arabic (or with certified Arabic translation)
+2. Notarised in your home country
+3. Attested by the UAE embassy/consulate in your country
+4. Attested by the UAE Ministry of Foreign Affairs upon arrival
+5. Stamped by the Dubai Notary Public
+
+Total cost AED 1,500–3,000 plus your home-country notary/embassy fees. Plan 2–4 weeks for the full attestation chain. Once issued, your representative can sign Form F, attend the trustee office, and complete transfer on your behalf.
+
+**Route 2: Digital Transfer via Dubai REST**
+
+DLD now permits fully digital transfers between parties who hold UAE Pass. As a non-resident, you can obtain UAE Pass with a valid passport. Both buyer and seller authenticate digitally, sign Form F and the title transfer in-app, and pay via card or wire. No physical attendance, no POA. This works smoothly for cash transactions and developer-direct sales. It does not yet work for mortgaged purchases — banks still require physical presence or POA for loan closing.
+
+**Route 3: Visit and Close in Person**
+
+The simplest path. Tourist visa, 7-day visit, complete everything in person. Most buyers do at least one viewing trip before committing — the AED 1.5–3K airfare is rounding error on a property purchase. Even if you intend a remote close, an in-person trip lets you verify the agent, see the unit, and meet the developer.
+
+**Mortgages for Non-Residents**
+
+UAE banks lend to non-residents on more restrictive terms than to residents:
+
+- Maximum LTV typically 50% (vs 80% for residents)
+- Higher interest rates: 4.5–6.5% currently vs 3.5–5% for residents
+- Required documents: 6 months of bank statements, 6 months of payslips (or equivalent self-employment proof), tax returns from your home country
+- Approval timeline: 14–21 working days
+- Repayment in AED — you take FX risk between your earning currency and AED
+- Most banks require salary > AED 30,000/month equivalent
+
+Banks active in non-resident lending: HSBC, Standard Chartered, Mashreq, Emirates NBD (selective), ADCB (selective). Smaller banks rarely lend to non-residents.
+
+For most non-resident buyers, cash purchase is the path of least friction. Mortgage is viable but adds 30+ days and significant paperwork.
+
+**Tax Considerations**
+
+UAE imposes no personal income tax, no capital gains tax, no inheritance tax on property, and no property tax. Your home country may tax differently — particularly the US (which taxes citizens on worldwide income and may treat rental income as taxable), UK (which taxes rental income for non-domiciled landlords), and India (which treats rental income from foreign property as taxable for residents). Get tax advice in your home jurisdiction before treating Dubai property as a tax-efficient strategy.
+
+**Repatriating Rental Income and Sale Proceeds**
+
+The UAE has no foreign-exchange controls. You can wire rental income or sale proceeds to your home country at any time, in any amount, without permits. Banks may apply standard anti-money-laundering documentation requirements above certain thresholds.
+
+**Setting Up Property Management**
+
+Non-resident owners typically engage a property-management company (Binayah offers this service) for AED 5,000–15,000/year plus 5–8% of collected rent. The manager handles:
+
+- Tenant sourcing and Ejari registration
+- Rent collection and remittance to your overseas account
+- Maintenance coordination
+- Service charge payment from collected rent
+- Annual statements for your tax reporting
+
+Without local management, you'll spend significant time coordinating tenants, contractors, and authorities remotely.
+
+**Realistic Timeline for a Fully-Remote Purchase**
+
+- POA preparation and attestation: 3–4 weeks
+- Property search and offer: 1–4 weeks
+- Form F to title transfer (cash): 14–21 days
+- Mortgage closing if financed: add 30–45 days
+
+A motivated buyer with a clear brief can be a Dubai property owner within 6–10 weeks without setting foot in the UAE. With one viewing trip, the same process compresses to 4–6 weeks.
+
+**The Bottom Line**
+
+Dubai is one of the most foreigner-friendly property markets in the world. The legal infrastructure is mature, the digital tools are functional, and the freehold structure provides genuine ownership equivalent to citizens. The friction is logistical (attestation chains, document collection) — not legal. With a competent local agent or property manager, non-resident ownership is operationally smooth.`,
+  },
 ];
 
 export function findGuide(slug: string): PulseGuide | undefined {

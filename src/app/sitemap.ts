@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import { PULSE_GUIDES } from "@/lib/pulse-guides";
+import { BUY_COMMUNITIES } from "@/lib/buy-communities";
+import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
 const LOCALES = ["en", "ru", "zh", "ar"] as const;
@@ -72,6 +75,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...communities.map((slug) => withAlternates(`/communities/${slug}`, 0.7, "monthly", now)),
     ...updates.map((slug) => withAlternates(`/construction-updates/${slug}`, 0.6, "weekly", now)),
     ...developers.map((slug) => withAlternates(`/developers/${slug}`, 0.6, "monthly", now)),
+    // SEO content routes (compiled, not API-driven)
+    ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
+    ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in-${c.slug}`, 0.8, "weekly", now)),
+    ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as-${b.slug}`, 0.7, "monthly", now)),
   ];
 
   return [...staticPages, ...dynamicPages];
