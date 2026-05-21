@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { LeadSource, LeadStatus, LeadsListResponse, UnifiedLead } from "@/lib/leads/types";
 import { LEAD_STATUSES } from "@/lib/leads/types";
+import LeadDetailDrawer from "./LeadDetailDrawer";
 
 const SOURCES: { value: LeadSource; label: string; color: string }[] = [
   { value: "inquiry", label: "Inquiry", color: "bg-emerald-100 text-emerald-700" },
@@ -78,6 +79,8 @@ export default function LeadsClient() {
     },
     staleTime: 30 * 1000,
   });
+
+  const [openLeadId, setOpenLeadId] = useState<string | null>(null);
 
   function toggleSource(s: LeadSource) {
     setSourceFilter((prev) =>
@@ -200,7 +203,7 @@ export default function LeadsClient() {
                 </td>
               </tr>
             ) : (
-              leads.map((l) => <LeadRow key={l.id} lead={l} />)
+              leads.map((l) => <LeadRow key={l.id} lead={l} onOpen={() => setOpenLeadId(l.id)} />)
             )}
           </tbody>
         </table>
@@ -228,11 +231,17 @@ export default function LeadsClient() {
           </button>
         </div>
       </div>
+
+      <LeadDetailDrawer
+        leadId={openLeadId}
+        onClose={() => setOpenLeadId(null)}
+        onChange={() => refetch()}
+      />
     </div>
   );
 }
 
-function LeadRow({ lead }: { lead: UnifiedLead }) {
+function LeadRow({ lead, onOpen }: { lead: UnifiedLead; onOpen: () => void }) {
   const src = sourceLabel(lead.source);
   const context =
     lead.property?.title ||
@@ -242,7 +251,7 @@ function LeadRow({ lead }: { lead: UnifiedLead }) {
     "—";
 
   return (
-    <tr className="hover:bg-gray-50 transition">
+    <tr className="hover:bg-gray-50 transition cursor-pointer" onClick={onOpen}>
       <td className="px-4 py-3">
         <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${src.color}`}>
           {src.label}
@@ -254,7 +263,7 @@ function LeadRow({ lead }: { lead: UnifiedLead }) {
       <td className="px-4 py-3 text-gray-900 font-medium">
         {lead.name || <span className="text-gray-400 italic">(no name)</span>}
       </td>
-      <td className="px-4 py-3 text-gray-700">
+      <td className="px-4 py-3 text-gray-700" onClick={(e) => e.stopPropagation()}>
         {lead.email && (
           <a href={`mailto:${lead.email}`} className="block hover:underline">
             {lead.email}

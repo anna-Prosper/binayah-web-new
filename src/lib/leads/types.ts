@@ -72,3 +72,9 @@ export interface LeadsListFilters {
   limit?: number;
   sort?: "createdAt:desc" | "createdAt:asc" | "updatedAt:desc";
 }
+
+export interface LeadPatchInput {
+  status?: LeadStatus;
+  assignedTo?: string | null;   // null = unassign
+  note?: { text: string };       // appends a manual note (system: false)
+}
