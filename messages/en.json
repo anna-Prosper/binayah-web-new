@@ -1434,7 +1434,9 @@
     "placeholder": "Your email address",
     "button": "Subscribe",
     "successTitle": "Subscribed!",
-    "successDesc": "We'll send only what matters: new projects, price moves, and market data."
+    "successDesc": "Check your inbox to confirm your subscription.",
+    "errorTitle": "Couldn't subscribe",
+    "errorDesc": "Something went wrong. Please try again."
   },
   "cookieConsent": {
     "title": "We value your privacy",

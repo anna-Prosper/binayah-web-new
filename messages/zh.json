@@ -1435,7 +1435,9 @@
     "placeholder": "请输入您的邮箱地址",
     "button": "订阅",
     "successTitle": "订阅成功！",
-    "successDesc": "我们只推送真正有价值的信息：新盘、价格变动与市场数据。"
+    "successDesc": "请查收邮箱以确认订阅。",
+    "errorTitle": "订阅失败",
+    "errorDesc": "出现问题，请稍后再试。"
   },
   "cookieConsent": {
     "title": "我们重视您的隐私",
