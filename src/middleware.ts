@@ -20,7 +20,7 @@ const isDev = process.env.NODE_ENV === "development";
 // embeds an iframe. Whitelist all three or the widget breaks with a CSP error.
 const VERCEL_LIVE = "https://vercel.live";
 const VERCEL_LIVE_WSS = "wss://*.pusher.com";
-const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com";
+const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com";
 const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const CSP = [
   "default-src 'self'",
