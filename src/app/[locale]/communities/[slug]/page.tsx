@@ -1,6 +1,6 @@
-import CommunityDetailClient from "@/app/communities/[slug]/CommunityDetailClient";
+import CommunityDetailClient from "@/app/_clients/communities/[slug]/CommunityDetailClient";
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
-import CommunityMergedDetailClient from "@/app/communities/[slug]/CommunityMergedDetailClient";
+import CommunityMergedDetailClient from "@/app/_clients/communities/[slug]/CommunityMergedDetailClient";
 import { notFound } from "next/navigation";
 import { getCommunity } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";

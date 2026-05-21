@@ -1,4 +1,4 @@
-import SearchPageClient from "@/app/search/SearchPageClient";
+import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 
 export const metadata = {
   title: "Search Properties in Dubai | Binayah Properties",

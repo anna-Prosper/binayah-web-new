@@ -1,4 +1,4 @@
-import DeveloperDetailClient from "@/app/developers/[slug]/DeveloperDetailClient";
+import DeveloperDetailClient from "@/app/_clients/developers/[slug]/DeveloperDetailClient";
 import { notFound } from "next/navigation";
 import { getDeveloper } from "@/lib/api";
 

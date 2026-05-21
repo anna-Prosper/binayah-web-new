@@ -1,4 +1,4 @@
-import OffPlanPageClient from "@/app/off-plan/OffPlanPageClient";
+import OffPlanPageClient from "@/app/_clients/off-plan/OffPlanPageClient";
 
 export const metadata = {
   title: "Off-Plan Properties in Dubai | Binayah Properties",
