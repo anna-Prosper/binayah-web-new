@@ -43,6 +43,10 @@ const notoArabic = Noto_Sans_Arabic({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
 
+const verificationOther: Record<string, string> = {};
+if (process.env.BING_VERIFICATION_CODE) verificationOther["msvalidate.01"] = process.env.BING_VERIFICATION_CODE;
+if (process.env.YANDEX_VERIFICATION_CODE) verificationOther["yandex-verification"] = process.env.YANDEX_VERIFICATION_CODE;
+
 export const metadata: Metadata = {
   // 56 chars — within recommended 50–60 range
   title: "Binayah Properties — Dubai Real Estate & Investments",
@@ -84,6 +88,9 @@ export const metadata: Metadata = {
     description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
     images: ["/assets/og-image.webp"],
   },
+  ...(Object.keys(verificationOther).length > 0 && {
+    verification: { other: verificationOther },
+  }),
 };
 
 export default async function LocaleLayout({
