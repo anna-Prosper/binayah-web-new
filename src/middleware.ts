@@ -20,16 +20,18 @@ const isDev = process.env.NODE_ENV === "development";
 // embeds an iframe. Whitelist all three or the widget breaks with a CSP error.
 const VERCEL_LIVE = "https://vercel.live";
 const VERCEL_LIVE_WSS = "wss://*.pusher.com";
+const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com";
+const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const CSP = [
   "default-src 'self'",
   isDev
-    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE}`
-    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE}`,
+    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY}`
+    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' https:",
-  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS}`,
+  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY}`,
   `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE}`,
   "frame-ancestors 'self'",
   "object-src 'none'",
@@ -45,8 +47,17 @@ const SECURITY_HEADERS: Record<string, string> = {
   "Permissions-Policy": "camera=(), microphone=(), geolocation=(self), payment=()",
 };
 
-function applySecurityHeaders(response: NextResponse) {
+function isStagingHost(host: string | null): boolean {
+  if (!host) return false;
+  return host === "staging.binayahhub.com" || host.endsWith(".vercel.app");
+}
+
+function applySecurityHeaders(response: NextResponse, request: NextRequest) {
   for (const [k, v] of Object.entries(SECURITY_HEADERS)) response.headers.set(k, v);
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  if (isStagingHost(host)) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
   return response;
 }
 
@@ -74,7 +85,7 @@ export function middleware(request: NextRequest) {
     const response = intlMiddleware(request);
     setLocaleCookie(response, prefixMatch[1]);
     response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response);
+    applySecurityHeaders(response, request);
     return response;
   }
 
@@ -84,7 +95,7 @@ export function middleware(request: NextRequest) {
     const response = intlMiddleware(request);
     setLocaleCookie(response, "en");
     response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response);
+    applySecurityHeaders(response, request);
     return response;
   }
 
@@ -93,7 +104,7 @@ export function middleware(request: NextRequest) {
     url.pathname = `/${savedLocale}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
     response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response);
+    applySecurityHeaders(response, request);
     return response;
   }
 
@@ -106,14 +117,14 @@ export function middleware(request: NextRequest) {
     const response = NextResponse.redirect(url);
     setLocaleCookie(response, geoLocale);
     response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response);
+    applySecurityHeaders(response, request);
     return response;
   }
 
   const response = intlMiddleware(request);
   setLocaleCookie(response, "en");
   response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response);
+    applySecurityHeaders(response, request);
   return response;
 }
 

@@ -10,10 +10,15 @@ import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CompareProvider } from "@/context/CompareContext";
 import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
+import Script from "next/script";
 import "../globals.css";
 import Providers from "../providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const GA_ID = "G-9FZKWX04K3";
+const CLARITY_ID = "wuee1w39pj";
+const PROD_HOSTS = new Set(["www.binayah.ae", "binayah.ae"]);
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "cyrillic-ext"],
@@ -95,7 +100,10 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
-  const nonce = (await headers()).get("x-nonce") ?? "";
+  const requestHeaders = await headers();
+  const nonce = requestHeaders.get("x-nonce") ?? "";
+  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "";
+  const isProdHost = PROD_HOSTS.has(host);
 
   return (
     <html
@@ -122,6 +130,23 @@ export default async function LocaleLayout({
                   <FavoritesDrawer />
                   <Analytics />
                   <SpeedInsights />
+                  {isProdHost && (
+                    <>
+                      <Script
+                        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+                        strategy="afterInteractive"
+                      />
+                      <Script id="ga-init" strategy="afterInteractive">
+                        {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+                      </Script>
+                      <Script id="clarity-init" strategy="afterInteractive">
+                        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${CLARITY_ID}");`}
+                      </Script>
+                    </>
+                  )}
                 </SubscriptionsProvider>
               </CompareProvider>
             </FavoritesProvider>
