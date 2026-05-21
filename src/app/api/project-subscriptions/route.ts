@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { notifyNewLead } from "@/lib/leads/notify";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -132,6 +133,13 @@ export async function POST(req: NextRequest) {
       projectName,
       createdAt: now,
       unsubscribeToken,
+    });
+
+    notifyNewLead({
+      source: "project-subscribe",
+      channel: "project-watch",
+      email,
+      project: { slug, name: projectName },
     });
 
     // Create notification row
