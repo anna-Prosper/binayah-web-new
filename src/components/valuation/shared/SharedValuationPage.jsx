@@ -11,7 +11,6 @@ import { Building2, MapPin, Ruler, Target, User, Phone, Mail, Sparkles, ArrowLef
 import {
   isBedroomsRequiredForValuation,
   isCommunityRequiredForValuation,
-  isPropertyNameRequiredForValuation,
   normalizePropertyType,
   valuationPropertyTypeOptions,
 } from "@/lib/property-types";
@@ -260,14 +259,17 @@ function sanitizeComparableDisplayDate(value) {
     }
     return normalized;
 }
-// Mirror the backend rules in lib/inquiry.js exactly:
+// Mirror the backend rules in lib/inquiry.js:
 //   - city: always required
-//   - community OR propertyName: at least one required (server resolves either)
-//   - propertyName: required for residential types when community + bedrooms
-//     don't already produce a usable cohort
+//   - community OR propertyName: at least one (server accepts either)
 //   - bedrooms: required for everything except Plot
-// The conditional predicates live in @/lib/property-types so frontend +
-// backend never drift apart again.
+//
+// UX framing: Area is treated as the primary location field (most users
+// know their community). Building/Unit is an *optional* alternative. The
+// joint "either one is enough" requirement is enforced by flagging Area
+// only when Building is also empty — once the user fills Building, Area's
+// required marker clears. We never separately flag Building, since that
+// would imply both are required (the rule the screenshot exposed).
 function validateForm(form) {
     const errors = {};
     if (!form.city.trim()) {
@@ -277,16 +279,7 @@ function validateForm(form) {
         isCommunityRequiredForValuation({ propertyName: form.unit }) &&
         !form.area.trim()
     ) {
-        errors.area = "Please enter the community.";
-    }
-    if (
-        isPropertyNameRequiredForValuation({
-            propertyType: form.type,
-            community: form.area,
-        }) &&
-        (!form.unit.trim() || form.unit.trim().length < 3)
-    ) {
-        errors.unit = "Please enter the building or project name.";
+        errors.area = "Please enter the area or community — or fill the building/unit field.";
     }
     if (isBedroomsRequiredForValuation(form.type) && !form.beds.trim()) {
         errors.beds = "Please select the number of bedrooms.";
@@ -2084,17 +2077,17 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </div>
 
                     {/* Building + Unit — DLD buildings index live search.
-                         Badge is dynamic: matches the backend rule that
-                         propertyName is only required for residential types
-                         when community + bedrooms aren't already enough for a
-                         community-level valuation. */}
+                         Never flagged REQUIRED: the backend accepts area
+                         OR building as the location anchor, so showing
+                         REQUIRED here would imply both are needed. We
+                         treat Area as the primary required field and
+                         present this as an optional precision-booster. */}
                     <div>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("buildingUnit")}
-                        {isPropertyNameRequiredForValuation({
-                          propertyType: form.type,
-                          community: form.area,
-                        }) && <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold">{tv("required")}</span>}
+                        <span className="text-[9px] bg-[rgba(102,112,109,0.1)] text-[rgba(102,112,109,0.85)] px-1.5 py-0.5 rounded-full font-bold">
+                          {tv("optional")}
+                        </span>
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
