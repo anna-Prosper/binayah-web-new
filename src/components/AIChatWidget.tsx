@@ -23,11 +23,13 @@ async function streamChat({
   onDelta,
   onDone,
   onError,
+  onHandoff,
 }: {
   messages: Msg[];
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (msg: string) => void;
+  onHandoff?: () => void;
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
@@ -48,6 +50,24 @@ async function streamChat({
     console.error("[chat]", resp.status, errMsg);
     onError(errMsg);
     return;
+  }
+
+  // Human-handoff: backend returns plain JSON (not SSE stream) with
+  // { handoff: true, choices: [{ message: { content } }] }. Parse it once,
+  // surface the message, and fire onHandoff so the UI can open LiveChat.
+  const ct = resp.headers.get("content-type") || "";
+  if (ct.includes("application/json")) {
+    try {
+      const data = await resp.json();
+      const content = data?.choices?.[0]?.message?.content;
+      if (content) onDelta(content);
+      if (data?.handoff) onHandoff?.();
+      onDone();
+      return;
+    } catch {
+      onError("Bad response from chat service.");
+      return;
+    }
   }
 
   const reader = resp.body.getReader();
@@ -141,6 +161,17 @@ const AIChatWidget = () => {
         onError: (msg) => {
           setMessages((prev) => [...prev, { role: "assistant", content: msg || t("errorGeneric") }]);
           setIsLoading(false);
+        },
+        onHandoff: () => {
+          // Close the AI bubble and pop LiveChat after a beat so the user reads
+          // the handoff message first.
+          setTimeout(() => {
+            const w = window as Window & { LiveChatWidget?: { call: (cmd: string) => void } };
+            if (w.LiveChatWidget?.call) {
+              w.LiveChatWidget.call("maximize");
+              setOpen(false);
+            }
+          }, 1500);
         },
       });
     } catch {

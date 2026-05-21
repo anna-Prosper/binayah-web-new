@@ -22,17 +22,19 @@ const VERCEL_LIVE = "https://vercel.live";
 const VERCEL_LIVE_WSS = "wss://*.pusher.com";
 const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com";
 const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
+const LIVECHAT = "https://cdn.livechatinc.com https://*.livechatinc.com";
+const LIVECHAT_WSS = "wss://*.livechatinc.com";
 const CSP = [
   "default-src 'self'",
   isDev
-    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY}`
-    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY}`,
+    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`
+    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' https:",
-  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY}`,
-  `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE}`,
+  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
+  `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
   "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",
