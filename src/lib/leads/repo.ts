@@ -235,13 +235,16 @@ export async function softDeleteLead(
   const client = await clientPromise;
   const col = client.db(DB).collection(SOURCE_COLLECTION[source]);
 
+  // mongodb's PushOperator typing is conservative; cast via unknown to a loose
+  // record type so a single-element push compiles.
+  const updateOps = {
+    $set: { deletedAt: new Date(), updatedAt: new Date() },
+    $push: { notes: buildSystemNote(author, "Soft-deleted from leads admin") },
+  } as unknown as Parameters<typeof col.updateOne>[1];
+
   const result = await col.updateOne(
     { _id: new ObjectId(id), deletedAt: { $exists: false } },
-    {
-      $set: { deletedAt: new Date(), updatedAt: new Date() },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      $push: { notes: buildSystemNote(author, "Soft-deleted from leads admin") } as any,
-    }
+    updateOps
   );
 
   if (result.matchedCount === 0) throw new LeadNotFoundError();

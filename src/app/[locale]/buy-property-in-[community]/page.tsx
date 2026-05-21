@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- SEO landing page, English-only by design (targets English search queries) */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/rent/ListingsPageClient";
