@@ -119,22 +119,23 @@ export function isCommunityRequiredForValuation(args: {
   return !hasFieldValue(args.propertyName);
 }
 
-// Property name (building/project) is required when the property type calls
-// for one (everything except Plot) AND we don't have an alternative location
-// anchor strong enough for the engine to resolve a cohort. The backend relaxes
-// the requirement when community + bedrooms are both present (allowing a
-// community-level valuation like "Studio JVC" or "2BR Dubai Marina").
+// Property name (building/project) is required only when the property type
+// calls for one (everything except Plot) AND no community is supplied.
+//
+// Why this is simpler than it looks: the backend's getMissingRequiredValuationFields
+// check is
+//   requiresInquiryPropertyName(...) && !propertyName && !community
+// — the `!community` clause means a present community always satisfies the
+// requirement, regardless of bedrooms or sub-area. The bedrooms-related
+// nuance lives inside requiresInquiryPropertyName but is gated out here.
+// Villas in a community don't need a building/unit; apartments in a community
+// can submit at the community level (the engine handles community cohorts).
 export function isPropertyNameRequiredForValuation(args: {
   propertyType: unknown;
   community: unknown;
-  bedrooms: unknown;
 }): boolean {
   if (!requiresPropertyNameForPropertyType(args.propertyType)) return false;
-  if (!hasFieldValue(args.community)) return true;
-  // Has community: bedrooms turns the inquiry into a community-level
-  // valuation, which the engine handles without a specific building.
-  if (hasFieldValue(args.bedrooms)) return false;
-  return true;
+  return !hasFieldValue(args.community);
 }
 
 // Bedrooms is required for residential stock (anything except Plot). Studio is
