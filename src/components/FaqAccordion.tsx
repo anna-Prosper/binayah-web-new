@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { FAQJsonLd } from "./JsonLd";
 
 export interface FaqItem {
   question: string;
@@ -13,17 +14,22 @@ export interface FaqAccordionProps {
   faqs: FaqItem[];
   /** Bordered-card style (current secondary look). */
   variant?: "card" | "compact";
+  /** Emit FAQPage JSON-LD. Skip on supplementary inline FAQs to avoid duplicate schema on one page. */
+  emitJsonLd?: boolean;
 }
 
-export function FaqAccordion({ faqs, variant = "card" }: FaqAccordionProps) {
+export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true }: FaqAccordionProps) {
   const [open, setOpen] = useState<number | null>(null);
 
   if (!faqs || faqs.length === 0) return null;
+
+  const jsonLd = emitJsonLd ? <FAQJsonLd faqs={faqs} /> : null;
 
   if (variant === "compact") {
     // Tighter accordion used in inline / sidebar contexts.
     return (
       <div>
+        {jsonLd}
         {faqs.map((faq, i) => (
           <div key={i} className="border-b border-border/50 last:border-0">
             <button
@@ -60,6 +66,7 @@ export function FaqAccordion({ faqs, variant = "card" }: FaqAccordionProps) {
   // "card" variant — bordered tiles with accent highlight when open.
   return (
     <div className="space-y-2 sm:space-y-3">
+      {jsonLd}
       {faqs.map((faq, i) => (
         <motion.div
           key={i}
