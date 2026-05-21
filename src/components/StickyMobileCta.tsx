@@ -45,13 +45,31 @@ export function StickyMobileCta({ actions }: StickyMobileCtaProps) {
           {actions.map((action, i) => {
             const Icon = actionIcon(action);
             const isExternal = action.type === "whatsapp" || action.type === "custom";
+            const baseClass = `flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full font-bold text-[13px] transition-all duration-300 active:scale-[0.97] ${actionClass(action.type)} ${action.type === "custom" ? action.className ?? "" : ""}`;
+
+            // Live chat opens the AI chat widget rather than navigating.
+            if (action.type === "live-chat") {
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
+                  className={baseClass}
+                  style={actionStyle(action.type)}
+                >
+                  <Icon className="h-4 w-4" />
+                  {action.label}
+                </button>
+              );
+            }
+
             return (
               <a
                 key={i}
                 href={action.href}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full font-bold text-[13px] transition-all duration-300 active:scale-[0.97] ${actionClass(action.type)} ${action.type === "custom" ? action.className ?? "" : ""}`}
+                className={baseClass}
                 style={actionStyle(action.type)}
               >
                 <Icon className="h-4 w-4" />

@@ -1295,10 +1295,11 @@ export default function PropertyDetailClient({
                     style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
                     <Phone className="h-4 w-4" /> {t("callNow")}
                   </a>
-                  <a href="#live-chat"
+                  <button type="button"
+                    onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
                     className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white hover:border-transparent transition-all">
                     <MessageCircle className="h-4 w-4" /> {t("liveChat")}
-                  </a>
+                  </button>
                 </div>
               </motion.div>
 
