@@ -1,5 +1,7 @@
 import ContactPageClient from "./ContactPageClient";
 
+export const revalidate = 86400;
+
 export const metadata = {
   title: "Contact Binayah Properties | Dubai Real Estate Experts",
   description: "Get in touch with Binayah Properties for buying, selling, renting or investing in Dubai real estate. Call, WhatsApp or email our team.",
