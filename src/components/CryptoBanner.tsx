@@ -47,7 +47,7 @@ const CryptoBanner = () => {
         </div>
 
         <motion.a
-          href="https://wa.me/971504487540?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
+          href="https://wa.me/971549988811?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
@@ -67,7 +67,7 @@ const CryptoBanner = () => {
 
       {/* Mobile CTA */}
       <motion.a
-        href="https://wa.me/971504487540?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
+        href="https://wa.me/971549988811?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
         target="_blank"
         rel="noopener noreferrer"
         className="sm:hidden absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-bold text-white"
