@@ -43,6 +43,8 @@ export default function ListingsPageClient({
   subtitle,
   initialPage = 1,
   batchSize = 9,
+  community,
+  headerSlot,
 }: {
   initialListings: Listing[];
   totalCount: number;
@@ -51,6 +53,10 @@ export default function ListingsPageClient({
   subtitle: string;
   initialPage?: number;
   batchSize?: number;
+  /** Restrict fetched listings to this community name. */
+  community?: string;
+  /** Server-rendered SEO content slot, inserted between hero and listing grid. */
+  headerSlot?: React.ReactNode;
 }) {
   const t = useTranslations("rent");
   const { format: fmtCurrency } = useCurrency();
@@ -60,10 +66,11 @@ export default function ListingsPageClient({
   const [page, setPage] = useState(initialPage);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["listings", listingType, initialPage],
+    queryKey: ["listings", listingType, community ?? "", initialPage],
     queryFn: async ({ pageParam = initialListings.length }) => {
+      const communityParam = community ? `&community=${encodeURIComponent(community)}` : "";
       const res = await fetch(
-        apiUrl(`/api/listings?listingType=${listingType}&limit=${batchSize}&skip=${pageParam}`)
+        apiUrl(`/api/listings?listingType=${listingType}${communityParam}&limit=${batchSize}&skip=${pageParam}`)
       );
       if (!res.ok) throw new Error("fetch failed");
       return res.json() as Promise<Listing[]>;
@@ -133,6 +140,8 @@ export default function ListingsPageClient({
           </motion.div>
         </div>
       </section>
+
+      {headerSlot}
 
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
