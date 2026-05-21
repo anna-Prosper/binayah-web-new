@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Check, X, ChevronDown, Loader2, TriangleAlert, Mail } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
@@ -117,20 +118,22 @@ function AreasAutocomplete({
   const [results, setResults] = useState<Community[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [allCommunities, setAllCommunities] = useState<Community[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Fetch communities once
-  useEffect(() => {
-    fetch(apiUrl("/api/communities?limit=200"))
-      .then((r) => r.json())
-      .then((data) => {
-        const list = Array.isArray(data) ? data : data.results || [];
-        setAllCommunities(list);
-      })
-      .catch(() => {});
-  }, []);
+  // Communities are tiny + nearly static — cache in tanstack-query so re-mounts
+  // (modal close/open, tab switches) reuse the same parsed list.
+  const { data: allCommunities = [] } = useQuery<Community[]>({
+    queryKey: ["communities", "all"],
+    queryFn: async () => {
+      const r = await fetch(apiUrl("/api/communities?limit=200"));
+      if (!r.ok) return [];
+      const data = await r.json();
+      return Array.isArray(data) ? data : data.results || [];
+    },
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+  });
 
   useEffect(() => {
     if (!query.trim()) {

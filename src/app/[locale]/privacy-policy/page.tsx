@@ -1,5 +1,7 @@
 import PrivacyPolicyClient from "./PrivacyPolicyClient";
 
+export const revalidate = 86400;
+
 export const metadata = {
   title: "Privacy Policy | Binayah Properties",
   description:

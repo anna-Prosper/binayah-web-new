@@ -1,5 +1,7 @@
 import TermsOfServiceClient from "./TermsOfServiceClient";
 
+export const revalidate = 86400;
+
 export const metadata = {
   title: "Terms of Service | Binayah Properties",
   description:

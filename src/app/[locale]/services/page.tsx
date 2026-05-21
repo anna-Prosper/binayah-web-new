@@ -1,5 +1,7 @@
 import ServicesPageClient from "./ServicesPageClient";
 
+export const revalidate = 86400;
+
 export const metadata = {
   title: "Real Estate Services in Dubai | Binayah Properties",
   description: "Full-service Dubai real estate: buying, selling, renting, off-plan investment, property management and valuations. 15+ years of expertise.",
