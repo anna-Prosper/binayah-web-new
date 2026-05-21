@@ -540,7 +540,6 @@
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
-    "address": "迪拜商业湾 Marasi Drive",
     "ornNumber": "ORN: 1040"
   },
   "lang": {
@@ -1856,7 +1855,7 @@
       },
       "contact": {
         "title": "联系我们",
-        "body": "如果您对本隐私政策有任何疑问，请通过privacy@binayah.com联系我们的数据保护官，或致函：Binayah Properties LLC，阿联酋迪拜商业湾Marasi Drive。"
+        "body": "如果您对本隐私政策有任何疑问，请通过privacy@binayah.com联系我们的数据保护官，或致函：Binayah Properties LLC，阿联酋迪拜。"
       }
     }
   },

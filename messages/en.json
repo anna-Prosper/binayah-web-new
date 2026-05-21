@@ -534,7 +534,6 @@
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
-    "address": "Business Bay, Marasi Drive, Dubai, UAE",
     "ornNumber": "ORN: 1040"
   },
   "lang": {
@@ -1855,7 +1854,7 @@
       },
       "contact": {
         "title": "Contact Us",
-        "body": "If you have questions or concerns about this Privacy Policy, please contact our Data Protection Officer at privacy@binayah.com, or write to us at Binayah Properties LLC, Marasi Drive, Business Bay, Dubai, UAE."
+        "body": "If you have questions or concerns about this Privacy Policy, please contact our Data Protection Officer at privacy@binayah.com, or write to us at Binayah Properties LLC, Dubai, UAE."
       }
     }
   },

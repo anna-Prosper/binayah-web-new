@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import { Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
@@ -69,7 +69,6 @@ export default function ContactPage() {
                     { icon: Phone, label: "Phone", value: "+971 54 998 8811", href: "tel:+971549988811" },
                     { icon: Mail, label: t("email"), value: "info@binayah.com", href: "mailto:info@binayah.com" },
                     { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 54 998 8811", href: "https://wa.me/971549988811" },
-                    { icon: MapPin, label: t("officeLabel"), value: "Business Bay, Marasi Drive, Dubai, UAE", href: undefined },
                     { icon: Clock, label: t("office"), value: t("hours"), href: undefined },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">
