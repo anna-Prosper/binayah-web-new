@@ -60,7 +60,33 @@ export const metadata: Metadata = {
     languages: {
       en: "/en",
       ar: "/ar",
+      ru: "/ru",
+      zh: "/zh",
       "x-default": "/en",
+    },
+  },
+  keywords: [
+    "Dubai real estate",
+    "Dubai properties",
+    "buy property Dubai",
+    "Dubai apartments for sale",
+    "Dubai villas for rent",
+    "off-plan Dubai",
+    "Dubai property investment",
+    "Binayah Properties",
+  ],
+  authors: [{ name: "Binayah Properties" }],
+  creator: "Binayah Properties",
+  publisher: "Binayah Properties",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
   icons: {

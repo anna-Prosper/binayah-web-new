@@ -18,7 +18,15 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/valuation/stream"],
+        disallow: [
+          "/admin/",
+          "/valuation/stream",
+          "/signin",
+          "/forgot-password",
+          "/reset-password",
+          "/profile",
+          "/api/",
+        ],
       },
     ],
     sitemap: `${base}/sitemap.xml`,
