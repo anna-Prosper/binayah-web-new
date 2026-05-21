@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import PropertyDetailClient from "@/app/property/[slug]/PropertyDetailClient";
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 1800;
 
@@ -74,6 +75,7 @@ export default async function PropertyPage({
       },
     } : {}),
     ...(listing.bedrooms != null ? { numberOfRooms: listing.bedrooms } : {}),
+    ...(listing.bathrooms != null ? { numberOfBathroomsTotal: listing.bathrooms } : {}),
     ...(listing.size ? {
       floorSize: {
         "@type": "QuantitativeValue",
@@ -96,12 +98,21 @@ export default async function PropertyPage({
     } : {}),
   };
 
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
+  const isRent = listing.listingType === "Rent";
+  const breadcrumbs = [
+    { name: "Home", href: `${localePrefix}/` },
+    { name: isRent ? "Rent" : "Buy", href: `${localePrefix}/${isRent ? "rent" : "buy"}` },
+    { name: listing.name || listing.title, href: `${localePrefix}/property/${slug}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
+      <BreadcrumbJsonLd items={breadcrumbs} />
       <PropertyDetailClient listing={listing} similarListings={similarListings} />
     </>
   );
