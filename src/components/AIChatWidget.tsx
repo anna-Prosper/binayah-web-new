@@ -103,15 +103,24 @@ async function streamChat({
   onDone();
 }
 
-const LIVECHAT_LICENSE = "6313921";
-const LIVECHAT_EMBED_URL = `https://secure-lc.livechatinc.com/licence/${LIVECHAT_LICENSE}/v2/open_chat.cgi`;
-
 type ChatMode = "ai" | "human";
+
+type LiveChatApi = {
+  call: (cmd: string, arg?: unknown) => void;
+  on?: (event: string, handler: (payload?: unknown) => void) => void;
+  off?: (event: string, handler: (payload?: unknown) => void) => void;
+};
+
+function getLiveChat(): LiveChatApi | undefined {
+  if (typeof window === "undefined") return undefined;
+  return (window as Window & { LiveChatWidget?: LiveChatApi }).LiveChatWidget;
+}
 
 const AIChatWidget = () => {
   const t = useTranslations("aiChat");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ChatMode>("ai");
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -119,26 +128,31 @@ const AIChatWidget = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
 
-  // Hide LiveChat's own floating bubble so the user only sees our integrated UI.
+  // Drive LiveChat's standard widget based on our mode. In "human" mode it
+  // appears (maximized) so the user can chat with an agent; in "ai" mode it's
+  // hidden again so our AI bubble owns the screen.
   useEffect(() => {
-    const w = window as Window & {
-      LiveChatWidget?: { call: (cmd: string, arg?: unknown) => void; on?: (e: string, cb: () => void) => void };
+    const apply = () => {
+      const lc = getLiveChat();
+      if (!lc?.call) return false;
+      if (mode === "human") {
+        lc.call("maximize");
+      } else {
+        lc.call("hide");
+      }
+      return true;
     };
-    const tryHide = () => w.LiveChatWidget?.call?.("hide");
-    tryHide();
+    if (apply()) return;
     // LiveChat loads async via lazyOnload — retry until the API attaches.
     const interval = setInterval(() => {
-      if (w.LiveChatWidget?.call) {
-        tryHide();
-        clearInterval(interval);
-      }
+      if (apply()) clearInterval(interval);
     }, 500);
     const timeout = setTimeout(() => clearInterval(interval), 10_000);
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -230,49 +244,63 @@ const AIChatWidget = () => {
             style={{ height: "min(520px, calc(100vh - 140px))", boxShadow: "0 24px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(11,61,46,0.12)" }}
           >
             {/* Header */}
-            <div className="px-5 py-3 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+            <div className="px-5 py-4 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
-              <div className="flex items-center gap-3">
-                <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
-                <div className="flex-1">
-                  <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
-                  <p className="text-white/60 text-xs">
-                    {mode === "ai" ? t("subtitle") : "Live agent · powered by LiveChat"}
-                  </p>
+              {mode === "ai" ? (
+                <div className="flex items-center gap-3">
+                  <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
+                  <div>
+                    <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+                    <p className="text-white/60 text-xs">{t("subtitle")}</p>
+                  </div>
                 </div>
-              </div>
-              {/* Mode tabs */}
-              <div className="mt-3 flex gap-1 bg-black/15 rounded-full p-1">
-                <button
-                  type="button"
-                  onClick={() => setMode("ai")}
-                  className={`flex-1 text-xs font-semibold py-1.5 rounded-full transition-all ${
-                    mode === "ai" ? "bg-white text-[#0B3D2E]" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  AI Assistant
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode("human")}
-                  className={`flex-1 text-xs font-semibold py-1.5 rounded-full transition-all flex items-center justify-center gap-1.5 ${
-                    mode === "human" ? "bg-white text-[#0B3D2E]" : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Agent
-                </button>
-              </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setEndConfirmOpen(true)}
+                    className="flex items-center gap-1.5 text-white/90 hover:text-white text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                    aria-label="Back to AI"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                    Back to AI
+                  </button>
+                  <div className="flex-1 text-right">
+                    <p className="text-white font-bold text-sm tracking-wide flex items-center justify-end gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Live agent
+                    </p>
+                    <p className="text-white/60 text-[11px]">Connected via LiveChat</p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Live Agent (LiveChat embedded iframe) */}
+            {/* Live Agent — LiveChat opens via its own SDK; this panel acts as
+                the "back" control and status display. The actual chat surface
+                is rendered by LiveChat's widget (maximized when mode === "human"). */}
             {mode === "human" && (
-              <iframe
-                title="Live agent chat"
-                src={LIVECHAT_EMBED_URL}
-                className="flex-1 w-full border-0 bg-white"
-                allow="microphone; camera; clipboard-read; clipboard-write; geolocation"
-              />
+              <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center bg-secondary/30">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-foreground mb-1">Chat with a live agent</p>
+                <p className="text-xs text-muted-foreground mb-4 max-w-[260px]">
+                  The Binayah live chat window is open. Continue your conversation there — we&apos;ll respond as soon as an agent is available.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => getLiveChat()?.call?.("maximize")}
+                  className="text-xs font-semibold px-4 py-2 rounded-full text-white"
+                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                >
+                  Open live chat
+                </button>
+              </div>
             )}
 
             {/* AI Messages */}
@@ -372,6 +400,44 @@ const AIChatWidget = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* End-live-chat confirmation modal */}
+      {endConfirmOpen && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center px-4"
+          onClick={() => setEndConfirmOpen(false)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-base font-bold text-gray-900 mb-2">End live chat?</h3>
+            <p className="text-sm text-gray-600 mb-5">
+              You&apos;re currently chatting with a live agent. Going back to the AI assistant will end the live session.
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button
+                type="button"
+                onClick={() => setEndConfirmOpen(false)}
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              >
+                Stay in chat
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEndConfirmOpen(false);
+                  setMode("ai");
+                }}
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
+                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+              >
+                End & return to AI
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
