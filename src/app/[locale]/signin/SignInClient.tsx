@@ -160,7 +160,7 @@ export default function SignInClient() {
               <p className="text-xs text-muted-foreground mt-3">{t("checkEmailNote")}</p>
             </div>
             <button
-              onClick={() => setCheckEmailAddress("")}
+              onClick={() => { setCheckEmailAddress(""); setTab("signin"); }}
               className="text-sm text-primary hover:underline"
             >
               {t("tabs.signIn")}

@@ -159,7 +159,7 @@ const InquirySection = () => {
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
                     className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[160px]`}
                   />
-                  <input required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
+                  <input required type="tel" pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                 </div>
               </div>
               <div>
@@ -206,7 +206,7 @@ const InquirySection = () => {
                       onChange={(dial) => setForm({ ...form, countryCode: dial })}
                       className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[180px]`}
                     />
-                    <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
+                    <input required type="tel" pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                   </div>
                 </div>
                 <div>

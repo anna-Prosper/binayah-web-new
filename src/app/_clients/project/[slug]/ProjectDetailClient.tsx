@@ -1782,6 +1782,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                 <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("emailLabel")}</label>
                                 <input
                                   type="email"
+                                  required
                                   value={enquiryForm.email}
                                   onChange={(e) => setEnquiryForm(f => ({ ...f, email: e.target.value }))}
                                   className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
@@ -1859,9 +1860,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     )}
                   </div>
 
-                  {/* Schedule Video Consultation */}
+                  {/* Schedule Video Consultation → WhatsApp deep link
+                      with a pre-filled request so an agent can confirm a
+                      time slot. The old `#schedule-call` anchor had no
+                      matching target on the page. */}
                   <a
-                    href="#schedule-call"
+                    href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi, I'd like to schedule a video consultation about ${project.name}. When are you available?`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-lg hover:shadow-primary/15 hover:scale-[1.01]"
                   >
                     <div className="rounded-[14px] bg-card/95 backdrop-blur-xl p-4 sm:p-5">
@@ -2323,7 +2329,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline || t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
-                    href={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971549988811").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+                    href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/35 hover:scale-[1.02] active:scale-[0.98]"
@@ -2331,7 +2337,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
                   <a
-                    href={`tel:${project.contactPhone}`}
+                    href={`tel:${(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}`}
                     className="w-full flex items-center justify-center gap-2 py-3.5 text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   >
@@ -2504,7 +2510,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               <p className="text-[11px] text-muted-foreground mt-0.5">{t("buyerGuideDesc")}</p>
             </div>
           </div>
-          <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
+          <Link href="/pulse/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
             {t("viewAll")} <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
@@ -2537,7 +2543,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           ))}
         </div>
         <div className="sm:hidden text-center mt-3">
-          <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
+          <Link href="/pulse/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
             {t("viewAllGuides")} <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
@@ -2555,8 +2561,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
       {/* ───── STICKY MOBILE CTA BAR (shared 3-button component — labels live inside) ───── */}
       <DetailStickyCta
-        whatsappUrl={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971549988811").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
-        phone={project.contactPhone || "+971549988811"}
+        whatsappUrl={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+        phone={(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}
       />
 
       {/* QR Code Modal */}

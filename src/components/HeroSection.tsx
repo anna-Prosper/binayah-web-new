@@ -595,7 +595,7 @@ const HeroSection = () => {
                 </div>
 
                 {showSuggestions && !chipsMode && parsedTags.length === 0 && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-card/95 backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-card backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
                     <div className="max-h-[26rem] overflow-y-auto">
                       {suggestionSections.map((section) => (
                         <div key={section.title} className="border-b border-border/30 last:border-b-0">
@@ -732,7 +732,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "location" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "location" && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-80 bg-card backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
                       <div className="p-3 border-b border-border/50">
                         <input
                           value={locationSearch}
@@ -782,7 +782,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "type" && (
-                    <div className="absolute top-full left-0 mt-2 w-56 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-56 bg-card backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {HOME_SEARCH_PROPERTY_TYPES.map((propertyType) => (
                           <button
@@ -815,7 +815,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "beds" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "beds" && (
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-4">
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-card backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] p-4">
                       <div className="mb-4">
                         <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2.5">{t("bedrooms")}</p>
                         <div className="flex flex-wrap gap-1.5">
@@ -878,7 +878,7 @@ const HeroSection = () => {
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openDropdown === "budget" ? "rotate-180" : ""}`} />
                   </button>
                   {openDropdown === "budget" && (
-                    <div className="absolute top-full left-0 mt-2 w-56 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
+                    <div className="absolute top-full left-0 mt-2 w-56 bg-card backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 z-[9999] overflow-hidden">
                       <div className="p-1.5">
                         {budgetOptions.map((budget) => (
                           <button
