@@ -15,7 +15,11 @@ import { useTranslations } from "next-intl";
 
 const binayahLogo = "/assets/binayah-logo.webp";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: "user" | "assistant" | "system"; content: string };
+
+// Inactivity window for live chat (30 min). After 25 min show a warning, at 30 auto-end.
+const HUMAN_IDLE_MS = 30 * 60 * 1000;
+const HUMAN_WARNING_MS = 25 * 60 * 1000;
 
 const CHAT_URL = apiUrl("/api/chat");
 
@@ -121,9 +125,22 @@ const AIChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<ChatMode>("ai");
   const [endConfirmOpen, setEndConfirmOpen] = useState(false);
+  const [warningVisible, setWarningVisible] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const idleResetRef = useRef(0);
+
+  // Append a system divider message and flip back to AI mode.
+  const endHumanChat = (reason: "manual" | "timeout") => {
+    const text = reason === "timeout"
+      ? "Live chat ended — 30 minutes of inactivity"
+      : "Live chat ended";
+    setMessages((prev) => [...prev, { role: "system", content: text }]);
+    setMode("ai");
+    setEndConfirmOpen(false);
+    setWarningVisible(false);
+  };
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
@@ -163,6 +180,50 @@ const AIChatWidget = () => {
       document.body.classList.remove("livechat-visible");
     }
   }, []);
+
+  // 30-min inactivity timer for human mode. At 25 min show a warning banner,
+  // at 30 min auto-end the session and switch back to AI with a divider line.
+  // Bumping idleResetRef.current resets the clock — user activity (mouse/key)
+  // triggers it via the bound listeners below.
+  useEffect(() => {
+    if (mode !== "human") {
+      setWarningVisible(false);
+      return;
+    }
+    let warnTimer: ReturnType<typeof setTimeout> | null = null;
+    let endTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const schedule = () => {
+      if (warnTimer) clearTimeout(warnTimer);
+      if (endTimer) clearTimeout(endTimer);
+      setWarningVisible(false);
+      const stamp = ++idleResetRef.current;
+      warnTimer = setTimeout(() => {
+        if (idleResetRef.current === stamp) setWarningVisible(true);
+      }, HUMAN_WARNING_MS);
+      endTimer = setTimeout(() => {
+        if (idleResetRef.current === stamp) endHumanChat("timeout");
+      }, HUMAN_IDLE_MS);
+    };
+
+    const bump = () => schedule();
+    schedule();
+
+    window.addEventListener("mousemove", bump);
+    window.addEventListener("keydown", bump);
+    window.addEventListener("touchstart", bump);
+    window.addEventListener("focus", bump);
+
+    return () => {
+      if (warnTimer) clearTimeout(warnTimer);
+      if (endTimer) clearTimeout(endTimer);
+      window.removeEventListener("mousemove", bump);
+      window.removeEventListener("keydown", bump);
+      window.removeEventListener("touchstart", bump);
+      window.removeEventListener("focus", bump);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -337,7 +398,19 @@ const AIChatWidget = () => {
                   </div>
                 </div>
               )}
-              {messages.map((m, i) => (
+              {messages.map((m, i) => {
+                if (m.role === "system") {
+                  return (
+                    <div key={i} className="flex items-center gap-3 py-2 my-1">
+                      <span className="flex-1 h-px bg-border" />
+                      <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium whitespace-nowrap">
+                        {m.content}
+                      </span>
+                      <span className="flex-1 h-px bg-border" />
+                    </div>
+                  );
+                }
+                return (
                 <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                   {m.role === "assistant" && (
                     <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
@@ -368,7 +441,8 @@ const AIChatWidget = () => {
                     </div>
                   )}
                 </div>
-              ))}
+                );
+              })}
               {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
                 <div className="flex gap-2">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
@@ -411,6 +485,52 @@ const AIChatWidget = () => {
         )}
       </AnimatePresence>
 
+      {/* Floating "Back to AI" button — only in human mode. Positioned at
+          top-left with max z-index so it floats above LiveChat's panel. */}
+      {mode === "human" && (
+        <button
+          type="button"
+          onClick={() => setEndConfirmOpen(true)}
+          className="fixed top-4 left-4 flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-xs font-bold shadow-2xl hover:scale-105 transition-transform"
+          style={{
+            background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)",
+            zIndex: 2147483646,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.15)",
+          }}
+          aria-label="Back to AI assistant"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+          Back to AI
+        </button>
+      )}
+
+      {/* Idle-warning banner — appears 5 min before auto-timeout */}
+      {mode === "human" && warningVisible && (
+        <div
+          className="fixed top-16 left-1/2 -translate-x-1/2 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 shadow-2xl flex items-center gap-3 max-w-md"
+          style={{ zIndex: 2147483646 }}
+          role="alert"
+        >
+          <span className="text-amber-600">⚠</span>
+          <p className="text-xs text-amber-900 flex-1">
+            Live chat will end in <strong>5 minutes</strong> due to inactivity.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setWarningVisible(false);
+              // Re-trigger the activity bump so timers reschedule cleanly
+              window.dispatchEvent(new Event("focus"));
+            }}
+            className="text-xs font-semibold text-amber-900 hover:text-amber-950 underline whitespace-nowrap"
+          >
+            Keep chatting
+          </button>
+        </div>
+      )}
+
       {/* End-live-chat confirmation modal */}
       {endConfirmOpen && (
         <div
@@ -435,10 +555,7 @@ const AIChatWidget = () => {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setEndConfirmOpen(false);
-                  setMode("ai");
-                }}
+                onClick={() => endHumanChat("manual")}
                 className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
