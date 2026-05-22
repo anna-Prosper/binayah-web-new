@@ -74,7 +74,7 @@ export default function ConstructionUpdatesClient({ updates }: { updates: Constr
               {t("heroLabel")}
             </p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-              {t("heroTitle")} <em className="font-serif font-normal text-white/90">{t("heroTitleItalic")}</em>
+              {t("heroTitle")} <span className="font-serif font-normal text-white/90">{t("heroTitleItalic")}</span>
             </h1>
             <p className="mt-3 text-sm sm:text-base text-white/70 max-w-xl">
               {t("heroSubtitle")}
