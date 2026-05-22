@@ -499,7 +499,7 @@ const AIChatWidget = () => {
           className="fixed top-0 left-0 right-0 text-white shadow-2xl"
           style={{
             background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)",
-            zIndex: 2147483646,
+            zIndex: 2147483647,
             boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
           }}
           role="region"
