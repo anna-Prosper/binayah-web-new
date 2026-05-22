@@ -195,33 +195,27 @@ const PropertyMatcher = () => {
         setLoading(false);
         return;
       }
-      if (!resp.ok || !resp.body) throw new Error("Failed");
+      if (!resp.ok) throw new Error("Failed");
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let full = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, idx);
-          buffer = buffer.slice(idx + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") break;
-          try {
-            const parsed = JSON.parse(json);
-            const c = parsed.choices?.[0]?.delta?.content;
-            if (c) { full += c; setResult(full); }
-          } catch { buffer = line + "\n" + buffer; break; }
-        }
+      // The matcher endpoint returns plain JSON now (was SSE in a previous
+      // version). Format the match list into the same markdown shape the
+      // ResultContent renderer already understands so we get clickable
+      // project cards via the [VIEW_PROPERTY:slug] sentinel.
+      const data = await resp.json();
+      const matches: Array<{ name?: string; slug?: string; reason?: string }> =
+        Array.isArray(data?.matches) ? data.matches : [];
+      if (matches.length === 0) {
+        setResult("No close matches in our current pipeline — but our team can short-list options for you. Reach us on WhatsApp or +971 54 998 8811.");
+      } else {
+        const md = matches
+          .map((m, i) => {
+            const name = m.name || `Match ${i + 1}`;
+            const reason = m.reason || "";
+            const link = m.slug ? `\n[VIEW_PROPERTY:${m.slug}]` : "";
+            return `### ${i + 1}. ${name}\n${reason}${link}`;
+          })
+          .join("\n\n---\n\n");
+        setResult(md);
       }
     } catch {
       setResult("Sorry, I couldn't generate recommendations right now. Please try again or contact us at +971 54 998 8811.");

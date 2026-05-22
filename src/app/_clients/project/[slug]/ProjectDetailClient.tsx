@@ -168,6 +168,26 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
+  const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>([]);
+
+  // Fetch up to 4 real projects in the same community (or by the same
+  // developer if community is empty), excluding this project. Previously
+  // the carousel rendered hardcoded fake items with no image or link.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (project.community) params.set("q", project.community);
+    else if (project.developerName) params.set("q", project.developerName);
+    params.set("limit", "8");
+    fetch(apiUrl(`/api/projects?${params.toString()}`))
+      .then((r) => r.ok ? r.json() : [])
+      .then((arr: any[]) => {
+        const filtered = (Array.isArray(arr) ? arr : [])
+          .filter((p) => p.slug && p.slug !== project.slug)
+          .slice(0, 4);
+        setSimilarProjects(filtered);
+      })
+      .catch(() => setSimilarProjects([]));
+  }, [project.community, project.developerName, project.slug]);
 
   // Seed the country code from the geo cookie (set by middleware from
   // Vercel's x-vercel-ip-country). Only fires once on mount and only if the
@@ -525,7 +545,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
             {(() => {
-              const isReady = ["Ready", "Completed"].includes(project.status);
+              // Match all ready-state variants used across the data set:
+              // "Ready", "Completed", "Ready to Move", "Ready To Move",
+              // "Ready to Move-in", "Move-in Ready", etc. Treating any of
+              // these as off-plan made the page show a stale "handover
+              // date" instead of the actual ready status.
+              const isReady = /ready|complet/i.test(project.status || "");
               const handoverValue = isReady
                 ? "Ready to Move In"
                 : project.completionDate
@@ -2471,18 +2496,24 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
       </div>
 
-      {/* ───── SIMILAR PROJECTS (shared component) ───── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-        <SimilarItemsCarousel
-          title={t("similarProjects")}
-          items={[
-            { key: "marina-vista", title: "Marina Vista by Emaar", location: "Dubai Marina", statusLabel: "Off-Plan", priceLabel: formatPrice(2100000, { isProject: true }), priceEyebrow: t("startingFrom") },
-            { key: "bluewaters", title: "Bluewaters Residences", location: "Bluewaters Island", statusLabel: "Ready", priceLabel: formatPrice(2500000, { isProject: true }), priceEyebrow: t("startingFrom") },
-            { key: "palm-beach", title: "Palm Beach Towers", location: "Palm Jumeirah", statusLabel: "Off-Plan", priceLabel: formatPrice(3200000, { isProject: true }), priceEyebrow: t("startingFrom") },
-            { key: "dubai-creek", title: "Dubai Creek Harbour", location: "Creek Harbour", statusLabel: "Off-Plan", priceLabel: formatPrice(1500000, { isProject: true }), priceEyebrow: t("startingFrom") },
-          ]}
-        />
-      </div>
+      {/* ───── SIMILAR PROJECTS (real data) ───── */}
+      {similarProjects.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+          <SimilarItemsCarousel
+            title={t("similarProjects")}
+            items={similarProjects.map((p) => ({
+              key: p._id || p.slug,
+              title: p.name,
+              location: p.community || "",
+              statusLabel: p.status || "Off-Plan",
+              priceLabel: p.startingPrice ? formatPrice(p.startingPrice, { isProject: true }) : t("priceOnRequest"),
+              priceEyebrow: t("startingFrom"),
+              imageUrl: p.featuredImage,
+              href: `/project/${p.slug}`,
+            }))}
+          />
+        </div>
+      )}
 
       {/* ───── WHAT BUYERS SAY (shared component) ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
