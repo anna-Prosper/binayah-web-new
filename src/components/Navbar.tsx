@@ -34,7 +34,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const primaryNav = [
     { label: t("buy"), href: "/search?intent=buy" },
     { label: t("rent"), href: "/search?intent=rent" },
-    { label: t("offPlan"), href: "/off-plan" },
+    { label: t("offPlan"), href: "/search?status=Off-Plan" },
   ];
   const insightsNav = [
     { label: t("pulse"), href: "/pulse" },
