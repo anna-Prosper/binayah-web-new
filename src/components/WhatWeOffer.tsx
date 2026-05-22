@@ -14,7 +14,7 @@ const WhatWeOffer = () => {
     { icon: Key,         title: t("rentProperty"),       desc: t("rentDesc"),       link: "/rent",               image: "/assets/service-rent.webp" },
     { icon: TrendingUp,  title: t("offPlanInvestment"),  desc: t("offPlanDesc"),    link: "/off-plan",            image: "/assets/service-offplan.webp" },
     { icon: Wrench,      title: t("propertyManagement"), desc: t("managementDesc"), link: "/services",            image: "/assets/service-management.webp" },
-    { icon: Calculator,  title: t("valuation"),          desc: t("valuationDesc"),  link: "/valuation",           image: "/assets/service-sell.webp" },
+    { icon: Calculator,  title: t("valuation"),          desc: t("valuationDesc"),  link: "/valuation",           image: "/assets/service-valuation.webp" },
   ];
 
   return (

@@ -232,7 +232,7 @@
         "subline": "Бесплатная оценка на базе ИИ меньше чем за 60 секунд.",
         "sampleLabel": "Пример оценки",
         "highConfidence": "Высокая точность",
-        "marketYear": "Недвижимость Дубая · 2025",
+        "marketYear": "Недвижимость Дубая · 2026",
         "headlineGold": "Бесплатная оценка объекта",
         "stripSubtitle": "ИИ-оценка недвижимости меньше чем за 60 секунд",
         "mobileProof": "Бесплатно · Мгновенно · Без регистрации",
@@ -1176,7 +1176,7 @@
     "marketSnapshot": "Обзор рынка",
     "marketAvgYield": "Средняя доходность",
     "marketYoyGrowth": "Рост к прошлому году",
-    "marketTransactions": "Сделок (2025)",
+    "marketTransactions": "Сделок (2026)",
     "marketNewSupply": "Новых объектов (2026)",
     "ctaReadyTitle": "Готовы инвестировать в Дубае?",
     "ctaReadyDesc": "Обсудите с нашими аналитиками лучшие возможности на рынке — бесплатная консультация.",
@@ -1644,7 +1644,7 @@
       "bestAreas": "Лучшие районы для инвестиций?",
       "offPlanROI": "Доходность off-plan в Дубае?",
       "goldenVisa": "Условия получения Golden Visa?",
-      "pricesTrend": "Динамика цен в 2025 году?"
+      "pricesTrend": "Динамика цен в 2026 году?"
     }
   },
   "marketDashboard": {
@@ -2435,5 +2435,21 @@
     "communityViewLabel": "Посмотреть район",
     "heroTxYtd": "сделок с начала года",
     "heroAvgPpsf": "средняя цена за кв. фут"
+  },
+  "brochureRequest": {
+    "eyebrow": "Брошюра по запросу",
+    "title": "Получите брошюру проекта {name}",
+    "subtitle": "Оставьте контактные данные — мы пришлём полную брошюру в течение нескольких минут.",
+    "namePlaceholder": "Ваше полное имя",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "Код страны",
+    "submitButton": "Прислать брошюру",
+    "disclaimer": "Отправляя форму, вы соглашаетесь на связь с агентом Binayah.",
+    "successTitle": "Спасибо!",
+    "successBody": "Мы получили ваш запрос на брошюру проекта {name}. Агент свяжется с вами в ближайшее время.",
+    "closeButton": "Закрыть",
+    "closeAria": "Закрыть",
+    "autoMessage": "Пришлите, пожалуйста, брошюру проекта {name}."
   }
 }

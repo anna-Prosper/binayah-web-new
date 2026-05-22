@@ -232,7 +232,7 @@
         "subline": "احصل على تقييم مدعوم بالذكاء الاصطناعي خلال أقل من 60 ثانية، مجاناً وبلا التزام.",
         "sampleLabel": "نموذج تقييم",
         "highConfidence": "دقة عالية",
-        "marketYear": "سوق عقارات دبي 2025",
+        "marketYear": "سوق عقارات دبي 2026",
         "headlineGold": "احصل على تقييمك المجاني",
         "stripSubtitle": "تقييم عقاري ذكي في أقل من 60 ثانية",
         "mobileProof": "مجاني · فوري · بدون تسجيل",
@@ -1175,7 +1175,7 @@
     "marketSnapshot": "لمحة عن السوق",
     "marketAvgYield": "متوسط العائد",
     "marketYoyGrowth": "النمو السنوي",
-    "marketTransactions": "المعاملات (2025)",
+    "marketTransactions": "المعاملات (2026)",
     "marketNewSupply": "العرض الجديد (2026)",
     "ctaReadyTitle": "هل أنت مستعد للاستثمار في دبي؟",
     "ctaReadyDesc": "تحدث مع محللينا حول أفضل الفرص في السوق اليوم — استشارة مجانية.",
@@ -1643,7 +1643,7 @@
       "bestAreas": "أفضل المناطق للاستثمار؟",
       "offPlanROI": "عوائد الاستثمار على الخارطة؟",
       "goldenVisa": "شروط الإقامة الذهبية؟",
-      "pricesTrend": "اتجاهات الأسعار في 2025؟"
+      "pricesTrend": "اتجاهات الأسعار في 2026؟"
     }
   },
   "marketDashboard": {
@@ -2434,5 +2434,21 @@
     "communityViewLabel": "عرض المجتمع",
     "heroTxYtd": "صفقة حتى الآن",
     "heroAvgPpsf": "متوسط السعر لكل قدم"
+  },
+  "brochureRequest": {
+    "eyebrow": "الكتيب عند الطلب",
+    "title": "احصل على كتيب {name}",
+    "subtitle": "اترك بياناتك وسنرسل لك كتيب المشروع الكامل خلال دقائق.",
+    "namePlaceholder": "الاسم الكامل",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "رمز الدولة",
+    "submitButton": "أرسلوا لي الكتيب",
+    "disclaimer": "بإرسالك للنموذج، فإنك توافق على التواصل من قبل وكيل بناية.",
+    "successTitle": "شكراً لك!",
+    "successBody": "تم استلام طلبك للحصول على كتيب {name}. سيتواصل معك أحد وكلائنا قريباً.",
+    "closeButton": "إغلاق",
+    "closeAria": "إغلاق",
+    "autoMessage": "يرجى إرسال كتيب {name}."
   }
 }

@@ -232,7 +232,7 @@
         "subline": "Get an AI-driven valuation in under 60 seconds, completely free.",
         "sampleLabel": "Sample Valuation",
         "highConfidence": "High Confidence",
-        "marketYear": "Dubai Real Estate 2025",
+        "marketYear": "Dubai Real Estate 2026",
         "headlineGold": "Get a free valuation",
         "stripSubtitle": "AI-powered property estimates in under 60 seconds",
         "mobileProof": "Free · Instant · No Signup Required",
@@ -1180,7 +1180,7 @@
     "marketSnapshot": "Market Snapshot",
     "marketAvgYield": "Avg. Yield",
     "marketYoyGrowth": "YoY Growth",
-    "marketTransactions": "Transactions (2025)",
+    "marketTransactions": "Transactions (2026)",
     "marketNewSupply": "New Supply (2026)",
     "ctaReadyTitle": "Ready to Invest in Dubai?",
     "ctaReadyDesc": "Speak with our analysts about the best opportunities in today's market — free consultation.",
@@ -1648,7 +1648,7 @@
       "bestAreas": "Best areas to invest?",
       "offPlanROI": "Off-plan ROI in Dubai?",
       "goldenVisa": "Golden Visa eligibility?",
-      "pricesTrend": "Price trends in 2025?"
+      "pricesTrend": "Price trends in 2026?"
     }
   },
   "marketDashboard": {
@@ -2439,5 +2439,21 @@
     "communityViewLabel": "View community",
     "heroTxYtd": "transactions YTD",
     "heroAvgPpsf": "avg PPSF"
+  },
+  "brochureRequest": {
+    "eyebrow": "Brochure on request",
+    "title": "Get the {name} brochure",
+    "subtitle": "Leave your contact details and we'll send the full project brochure within minutes.",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "Country code",
+    "submitButton": "Send me the brochure",
+    "disclaimer": "By submitting you agree to be contacted by a Binayah agent.",
+    "successTitle": "Thank you!",
+    "successBody": "We've received your request for the {name} brochure. An agent will share it with you shortly.",
+    "closeButton": "Close",
+    "closeAria": "Close",
+    "autoMessage": "Please send me the brochure for {name}."
   }
 }

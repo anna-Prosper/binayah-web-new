@@ -35,6 +35,8 @@ import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrency, SUPPORTED_CURRENCIES } from "@/context/CurrencyContext";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
+import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 
 const MortgageCalculator = dynamic(() => import("@/components/MortgageCalculator"));
 
@@ -446,6 +448,13 @@ export default function PropertyDetailClient({
     message: "",
     email: "",
   });
+
+  useEffect(() => {
+    const dial = dialFromIso(readGeoCountryCookie());
+    if (dial && dial !== "+971") {
+      setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
+    }
+  }, []);
 
   useEffect(() => {
     if (listing.developer || !listing.community) return;
@@ -1079,11 +1088,11 @@ export default function PropertyDetailClient({
                         className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
                         placeholder="your@email.com" />
                       <div className="flex gap-2">
-                        <select value={enquiryForm.countryCode} onChange={e => setEnquiryForm(f => ({...f, countryCode: e.target.value}))}
-                          aria-label="Country code"
-                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground outline-none appearance-none">
-                          <option value="+971">+971</option><option value="+44">+44</option><option value="+1">+1</option><option value="+91">+91</option>
-                        </select>
+                        <CountryCodeSelect
+                          value={enquiryForm.countryCode}
+                          onChange={(dial) => setEnquiryForm(f => ({...f, countryCode: dial}))}
+                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground outline-none max-w-[160px]"
+                        />
                         <input type="tel" required value={enquiryForm.phone} onChange={e => setEnquiryForm(f => ({...f, phone: e.target.value}))}
                           className="flex-1 h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
                           placeholder="50 123 4567" />
@@ -1144,18 +1153,11 @@ export default function PropertyDetailClient({
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("phoneNumber")} *</label>
                       <div className="flex gap-2">
-                        <select
+                        <CountryCodeSelect
                           value={enquiryForm.countryCode}
-                          onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
-                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
-                        >
-                          <option value="+971">+971</option>
-                          <option value="+44">+44</option>
-                          <option value="+1">+1</option>
-                          <option value="+91">+91</option>
-                          <option value="+86">+86</option>
-                          <option value="+7">+7</option>
-                        </select>
+                          onChange={(dial) => setEnquiryForm(f => ({ ...f, countryCode: dial }))}
+                          className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all max-w-[180px]"
+                        />
                         <input
                           type="tel"
                           required

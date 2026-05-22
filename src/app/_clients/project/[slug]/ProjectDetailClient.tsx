@@ -59,6 +59,9 @@ function toMapEmbedSrc(rawUrl: string): string {
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
+import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
+import BrochureRequestModal from "@/components/BrochureRequestModal";
 
 type NearbyAttraction = { name: string; type: string; distance: string };
 type FAQ = { question: string; answer: string };
@@ -164,6 +167,17 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [brochureModalOpen, setBrochureModalOpen] = useState(false);
+
+  // Seed the country code from the geo cookie (set by middleware from
+  // Vercel's x-vercel-ip-country). Only fires once on mount and only if the
+  // user hasn't already typed a phone — never override an active edit.
+  useEffect(() => {
+    const dial = dialFromIso(readGeoCountryCookie());
+    if (dial && dial !== "+971") {
+      setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
+    }
+  }, []);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const [origin, setOrigin] = useState("");
@@ -447,7 +461,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     >
                       <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("gallery")}
                     </button>
-                    {project.brochureUrl && (
+                    {project.brochureUrl ? (
                       <a
                         href={project.brochureUrl}
                         target="_blank"
@@ -457,6 +471,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       >
                         <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
                       </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setBrochureModalOpen(true)}
+                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                        style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                      >
+                        <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
+                      </button>
                     )}
                   </div>
                 </motion.div>
@@ -475,7 +498,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         >
           <ImageIcon className="h-3.5 w-3.5" /> {t("galleryButton")} ({images.length})
         </button>
-        {project.brochureUrl && (
+        {project.brochureUrl ? (
           <a
             href={project.brochureUrl}
             target="_blank"
@@ -485,6 +508,15 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           >
             <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
           </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setBrochureModalOpen(true)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+          >
+            <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
+          </button>
         )}
       </div>
 
@@ -1073,8 +1105,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
-                  {/* Download Brochure CTA — hidden when no brochure attached */}
-                  {project.brochureUrl && (
+                  {/* Brochure CTA — direct download if a file is attached,
+                      otherwise opens a lead-capture modal so the agent
+                      team can follow up with the brochure. */}
+                  {project.brochureUrl ? (
                     <a
                       href={project.brochureUrl}
                       target="_blank"
@@ -1091,6 +1125,22 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                       <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
                     </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setBrochureModalOpen(true)}
+                      className="w-full text-left flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
+                        <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
+                      </div>
+                      <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
+                    </button>
                   )}
 
                   {/* Key Highlights */}
@@ -1688,18 +1738,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <div>
                           <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("phoneNumber")} *</label>
                           <div className="flex gap-2">
-                            <select
+                            <CountryCodeSelect
                               value={enquiryForm.countryCode}
-                              onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
-                              className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
-                            >
-                              <option value="+971">+971</option>
-                              <option value="+44">+44</option>
-                              <option value="+1">+1</option>
-                              <option value="+91">+91</option>
-                              <option value="+86">+86</option>
-                              <option value="+7">+7</option>
-                            </select>
+                              onChange={(dial) => setEnquiryForm(f => ({ ...f, countryCode: dial }))}
+                              className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all max-w-[180px]"
+                            />
                             <input
                               type="tel"
                               required
@@ -2223,16 +2266,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       placeholder="Your name"
                     />
                     <div className="flex gap-2">
-                      <select
+                      <CountryCodeSelect
                         value={enquiryForm.countryCode}
-                        onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
-                        className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none appearance-none"
-                      >
-                        <option value="+971">+971</option>
-                        <option value="+44">+44</option>
-                        <option value="+1">+1</option>
-                        <option value="+91">+91</option>
-                      </select>
+                        onChange={(dial) => setEnquiryForm(f => ({ ...f, countryCode: dial }))}
+                        className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none max-w-[160px]"
+                      />
                       <input
                         type="tel" required
                         value={enquiryForm.phone}
@@ -2569,6 +2607,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         <WhatsAppButton />
         <AIChatWidget />
       </div>
+
+      <BrochureRequestModal
+        open={brochureModalOpen}
+        onClose={() => setBrochureModalOpen(false)}
+        projectName={project.name}
+        projectSlug={project.slug}
+      />
     </div>
   );
 };

@@ -238,7 +238,7 @@
         "subline": "AI 智能估值，60 秒内完成，完全免费。",
         "sampleLabel": "估值样例",
         "highConfidence": "高置信度",
-        "marketYear": "2025 迪拜房产",
+        "marketYear": "2026 迪拜房产",
         "headlineGold": "免费获取估值",
         "stripSubtitle": "AI 智能估值，60 秒即刻呈现",
         "mobileProof": "免费 · 即时 · 无需注册",
@@ -1181,7 +1181,7 @@
     "marketSnapshot": "市场快照",
     "marketAvgYield": "平均收益率",
     "marketYoyGrowth": "同比增长",
-    "marketTransactions": "成交量(2025)",
+    "marketTransactions": "成交量(2026)",
     "marketNewSupply": "新供应(2026)",
     "ctaReadyTitle": "准备好投资迪拜了吗?",
     "ctaReadyDesc": "与我们的分析师交流,了解当前市场最佳机会 — 免费咨询。",
@@ -1649,7 +1649,7 @@
       "bestAreas": "哪些区域最值得投资？",
       "offPlanROI": "迪拜期房回报率如何？",
       "goldenVisa": "黄金签证申请条件？",
-      "pricesTrend": "2025 年价格走势？"
+      "pricesTrend": "2026 年价格走势？"
     }
   },
   "marketDashboard": {
@@ -2440,5 +2440,21 @@
     "communityViewLabel": "查看社区",
     "heroTxYtd": "年初至今交易量",
     "heroAvgPpsf": "平均每平方英尺价格"
+  },
+  "brochureRequest": {
+    "eyebrow": "申请项目手册",
+    "title": "获取 {name} 项目手册",
+    "subtitle": "请留下您的联系方式，我们将在几分钟内把完整的项目手册发送给您。",
+    "namePlaceholder": "您的全名",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "国家代码",
+    "submitButton": "发送项目手册",
+    "disclaimer": "提交即表示同意 Binayah 顾问与您联系。",
+    "successTitle": "感谢您！",
+    "successBody": "我们已收到您对 {name} 项目手册的申请，顾问将很快与您联系并发送。",
+    "closeButton": "关闭",
+    "closeAria": "关闭",
+    "autoMessage": "请发送 {name} 项目手册给我。"
   }
 }
