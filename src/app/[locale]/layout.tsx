@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -50,6 +50,14 @@ if (process.env.BING_VERIFICATION_CODE) verificationOther["msvalidate.01"] = pro
 if (process.env.YANDEX_VERIFICATION_CODE) verificationOther["yandex-verification"] = process.env.YANDEX_VERIFICATION_CODE;
 const verificationGoogle = process.env.GOOGLE_VERIFICATION_CODE;
 const hasVerification = !!verificationGoogle || Object.keys(verificationOther).length > 0;
+
+// Tells every browser the site is designed for light only — stops mobile
+// browsers (Samsung Internet, Android Chrome with system dark mode, etc.)
+// from forcibly inverting colors via their "force dark mode" feature.
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#0B3D2E",
+};
 
 export const metadata: Metadata = {
   // 56 chars — within recommended 50–60 range
