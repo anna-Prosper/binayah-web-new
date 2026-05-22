@@ -3125,7 +3125,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.98 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              className="relative w-full max-w-lg overflow-hidden rounded-[24px] border border-[#0B3D2E]/15 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] shadow-[0_32px_80px_rgba(15,23,42,0.18)] sm:rounded-[28px]"
+              className="relative flex max-h-[calc(100vh-3rem)] w-full max-w-lg flex-col overflow-hidden rounded-[24px] border border-[#0B3D2E]/15 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] shadow-[0_32px_80px_rgba(15,23,42,0.18)] sm:rounded-[28px]"
             >
               <button
                 type="button"
@@ -3136,7 +3136,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               >
                 <X className="h-4 w-4"/>
               </button>
-              <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8">
+              {/* Three-section layout: header (fixed) / body (scrolls,
+                  overflow-visible so the bedroom-picker absolute dropdown
+                  can extend past the modal edge) / footer (fixed). */}
+              <div className="flex-none px-5 pb-3 pt-6 sm:px-7 sm:pt-8">
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#D4A847]">
                   {tv("refinementKicker")}
                 </p>
@@ -3165,19 +3168,61 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 <p className="mt-3 text-sm leading-relaxed text-[#66706d]">
                   {refinementModal.message}
                 </p>
+              </div>
 
-                <div className="mt-5 space-y-4">
+              <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible px-5 pb-5 pt-2 sm:px-7">
+                <div className="space-y-4">
                   {refinementModal.missingFields?.includes("bedrooms") ? (
-                    <div className="grid gap-2">
+                    <div className="grid gap-3">
                       <label className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
                         {tv("refinementBedroomsLabel")}
                       </label>
-                      <BedroomPicker
-                        maids={refinementMaids}
-                        value={refinementBeds}
-                        onChange={(v) => setRefinementBeds(v)}
-                        onMaidsChange={(v) => setRefinementMaids(v)}
-                      />
+                      {/* Inline button grid — avoids the BedroomPicker's
+                          floating dropdown getting clipped by the modal's
+                          scroll container. */}
+                      <div className="grid grid-cols-4 gap-2">
+                        {["Studio", "1", "2", "3", "4", "5", "6", "7+"].map((opt) => {
+                          const active = refinementBeds === opt;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => setRefinementBeds(opt)}
+                              className={`h-11 rounded-xl border text-sm font-semibold transition-colors ${
+                                active
+                                  ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_4px_12px_rgba(11,61,46,0.18)]"
+                                  : "border-[#e3ddcf] bg-[#faf7f2] text-[#10231e] hover:border-[#0B3D2E]/30 hover:bg-white"
+                              }`}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-1 flex items-center gap-3">
+                        <span className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[#66706d]">
+                          Maid's room
+                        </span>
+                        <div className="flex gap-2">
+                          {["No", "Yes"].map((opt) => {
+                            const active = (refinementMaids || "No") === opt;
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => setRefinementMaids(opt)}
+                                className={`h-8 rounded-full border px-3 text-xs font-semibold transition-colors ${
+                                  active
+                                    ? "border-[#0B3D2E] bg-[#0B3D2E] text-white"
+                                    : "border-[#e3ddcf] bg-[#faf7f2] text-[#66706d] hover:border-[#0B3D2E]/30"
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                   {refinementModal.missingFields?.includes("city") ? (
@@ -3226,28 +3271,48 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     </div>
                   ) : null}
                 </div>
-
-                <div className="mt-6 flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between sm:gap-3">
-                  <button
-                    type="button"
-                    disabled={submitting}
-                    onClick={handleRefinementContinue}
-                    className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0B3D2E] px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(11,61,46,0.25)] transition hover:bg-[#0a3526] disabled:cursor-wait disabled:opacity-60 sm:w-auto"
-                    style={{ color: "#fff" }}
-                  >
-                    <Sparkles className="h-4 w-4" style={{ color: "#fff" }}/>
-                    <span style={{ color: "#fff" }}>{submitting ? tv("refinementWorking") : tv("refinementRunValuation")}</span>
-                  </button>
-                  <button
-                    type="button"
-                    disabled={submitting}
-                    onClick={handleRefinementEditManually}
-                    className="text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline disabled:cursor-wait disabled:opacity-60"
-                  >
-                    {tv("refinementEditManually")}
-                  </button>
-                </div>
               </div>
+
+              {(() => {
+                // Block Run valuation until every missing field is filled.
+                const missing = Array.isArray(refinementModal.missingFields)
+                  ? refinementModal.missingFields
+                  : [];
+                const isFilled = (field, value) =>
+                  !missing.includes(field) || String(value || "").trim() !== "";
+                const allFilled =
+                  isFilled("bedrooms", refinementBeds) &&
+                  isFilled("city", refinementCity) &&
+                  isFilled("community", refinementCommunity) &&
+                  isFilled("location", refinementCommunity) &&
+                  isFilled("propertyName", refinementUnit);
+                const blocked = !allFilled;
+                return (
+                  <div className="flex-none border-t border-[#0B3D2E]/8 bg-white/60 px-5 py-4 sm:px-7 sm:py-5">
+                    <div className="flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between sm:gap-3">
+                      <button
+                        type="button"
+                        disabled={submitting || blocked}
+                        onClick={handleRefinementContinue}
+                        title={blocked ? "Select an option above to continue" : undefined}
+                        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0B3D2E] px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(11,61,46,0.25)] transition hover:bg-[#0a3526] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:hover:bg-[#0B3D2E] sm:w-auto"
+                        style={{ color: "#fff" }}
+                      >
+                        <Sparkles className="h-4 w-4" style={{ color: "#fff" }}/>
+                        <span style={{ color: "#fff" }}>{submitting ? tv("refinementWorking") : tv("refinementRunValuation")}</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={submitting}
+                        onClick={handleRefinementEditManually}
+                        className="text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline disabled:cursor-wait disabled:opacity-60"
+                      >
+                        {tv("refinementEditManually")}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
             </motion.div>
           </motion.div>
         ) : null}
