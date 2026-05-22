@@ -1673,7 +1673,9 @@
       "Apartments": "شقق",
       "Villas": "فلل",
       "Commercial": "تجاري",
-      "Townhouses": "تاون هاوس"
+      "Townhouses": "تاون هاوس",
+      "Penthouses": "بنتهاوس",
+      "Plots": "أراضٍ"
     }
   },
   "propertyComparison": {

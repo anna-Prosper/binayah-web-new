@@ -1678,7 +1678,9 @@
       "Apartments": "Apartments",
       "Villas": "Villas",
       "Commercial": "Commercial",
-      "Townhouses": "Townhouses"
+      "Townhouses": "Townhouses",
+      "Penthouses": "Penthouses",
+      "Plots": "Plots & Land"
     }
   },
   "propertyComparison": {
