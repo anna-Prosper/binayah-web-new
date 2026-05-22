@@ -643,8 +643,15 @@ function SearchContent() {
                   </button>
                 </div>
               )}
+              {/* When the user lands on the Buy nav link (intent=buy on the
+                  All tab), surface actual for-sale listings before off-plan
+                  projects — buyers want move-in-ready stock first. */}
+              <div className="flex flex-col">
               {projects.length > 0 && (
-                <div ref={projectsSectionRef} className="mb-12 scroll-mt-24">
+                <div
+                  ref={projectsSectionRef}
+                  className={`mb-12 scroll-mt-24 ${status === "All" && intent === "buy" ? "order-2" : "order-1"}`}
+                >
                   <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
                   {projectCount > PAGE_SIZE && (
                     <p className="text-xs text-muted-foreground mb-4">
@@ -687,7 +694,10 @@ function SearchContent() {
               )}
 
               {status !== "Off-Plan" && listings.length > 0 && (
-                <div ref={listingsSectionRef} className="scroll-mt-24">
+                <div
+                  ref={listingsSectionRef}
+                  className={`scroll-mt-24 ${status === "All" && intent === "buy" ? "order-1 mb-12" : "order-2"}`}
+                >
                   {status === "All" && projects.length > 0 && (
                     <>
                       <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
@@ -698,7 +708,7 @@ function SearchContent() {
                       )}
                     </>
                   )}
-                  {!((status === "All" || status === "Off-Plan") && projects.length > 0) && listingCount > PAGE_SIZE && (
+                  {!(status === "All" && projects.length > 0) && listingCount > PAGE_SIZE && (
                     <p className="text-xs text-muted-foreground mb-4">
                       {t("showingRange", { from: (listingsPage - 1) * PAGE_SIZE + 1, to: Math.min(listingsPage * PAGE_SIZE, listingCount), count: listingCount })}
                     </p>
@@ -736,6 +746,7 @@ function SearchContent() {
                   <Pagination page={listingsPage} totalPages={listingTotalPages} onChange={goToListingsPage} />
                 </div>
               )}
+              </div>
             </>
           )}
         </div>
