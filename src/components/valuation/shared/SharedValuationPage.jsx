@@ -930,6 +930,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const unlockHighlightTimeoutRef = useRef(null);
     const reportHydrationAttemptedRef = useRef(false);
     const unitInputRef = useRef(null);
+    const citySelectRef = useRef(null);
+    const areaInputRef = useRef(null);
+    const bedsFieldRef = useRef(null);
     const areaSuggestionsRef = useRef(null);
     const buildingSuggestionsRef = useRef(null);
     const setTrackedValues = useCallback((values, source) => {
@@ -1268,24 +1271,27 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
     };
     const scrollToFirstFormError = useCallback((errors) => {
-        // Priority order matches the visual layout of the form so the user is
-        // always scrolled to the FIRST blocking error rather than a later one.
-        // The smart-search input lives above the manual fields and is the
-        // best target when the user typed there — only fall back to the
-        // building input when smart-search isn't focused yet.
-        if (errors.city || errors.area || errors.unit) {
-            const target = smartInputRef.current ?? unitInputRef.current;
-            target?.scrollIntoView({ behavior: "smooth", block: "center" });
-            target?.focus();
-            return;
+        // Scroll to the offending field itself, not the AI search box above
+        // the form (otherwise filling beds at row 2 jumps the page upward).
+        // Priority order matches the visual layout: city → area → unit → beds.
+        let target = null;
+        let shouldFocus = false;
+        if (errors.city) {
+            target = citySelectRef.current;
+            shouldFocus = true;
+        } else if (errors.area) {
+            target = areaInputRef.current;
+            shouldFocus = true;
+        } else if (errors.unit) {
+            target = unitInputRef.current;
+            shouldFocus = true;
+        } else if (errors.beds) {
+            target = bedsFieldRef.current;
         }
-        if (errors.beds) {
-            // Bedrooms sits below city/area/unit — scroll the smart input
-            // into view; the field error renders inline below the picker so
-            // the user can see what's blocking without further navigation.
-            const target = smartInputRef.current ?? unitInputRef.current;
-            target?.scrollIntoView({ behavior: "smooth", block: "center" });
-            return;
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (shouldFocus && typeof target.focus === "function") {
+            target.focus({ preventScroll: true });
         }
     }, []);
     // Translate a server-side inquiry record (the shape /api/valuation/from-text
@@ -2203,7 +2209,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </label>
                       <div className="relative">
                         <MapPin className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#66706d] flex-shrink-0"/>
-                        <select value={form.city} onChange={(event) => {
+                        <select ref={citySelectRef} value={form.city} onChange={(event) => {
                 const v = event.target.value;
                 setTrackedValues({ city: v, area: "", unit: "" }, "manual");
                 if (submitAttempted)
@@ -2237,6 +2243,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
                         <input
+                          ref={areaInputRef}
                           value={form.area}
                           onChange={(e) => {
                             setTrackedValues({ area: e.target.value, unit: "" }, "manual");
@@ -2435,7 +2442,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </svg>
                       </div>
                     </div>
-                    <div>
+                    <div ref={bedsFieldRef}>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("beds")}
                         {/* Bedrooms is required for everything except Plot —
