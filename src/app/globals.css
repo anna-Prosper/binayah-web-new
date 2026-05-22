@@ -188,6 +188,13 @@ html {
   color-scheme: light;
 }
 
+/* No italic anywhere on the site — including markdown <em>/<i> rendered
+   inside news articles, AI chat responses, and any embedded content.
+   Brand decision: keep type styling clean and non-italic site-wide. */
+em, i, .italic {
+  font-style: normal !important;
+}
+
 /* LiveChat widget is hidden by default — its UI only appears when
    AIChatWidget switches into human mode (toggles body.livechat-visible).
    LiveChat's container is injected by tracking.js with these IDs. */
