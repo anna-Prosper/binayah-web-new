@@ -120,7 +120,7 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
             onBlur={(event) => onLowInputCommit(event.target.value)}
             onKeyDown={(event) => event.key === "Enter" && onLowInputCommit(event.currentTarget.value)}
             aria-label="Minimum price (typed)"
-            className="w-full bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full min-w-0 bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-[11px] text-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
         </div>
         <span className="text-xs text-muted-foreground">—</span>
@@ -134,7 +134,7 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
             onBlur={(event) => onHighInputCommit(event.target.value)}
             onKeyDown={(event) => event.key === "Enter" && onHighInputCommit(event.currentTarget.value)}
             aria-label="Maximum price (typed)"
-            className="w-full bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full min-w-0 bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-[11px] text-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
         </div>
       </div>

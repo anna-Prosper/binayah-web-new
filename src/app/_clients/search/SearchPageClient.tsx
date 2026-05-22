@@ -440,12 +440,12 @@ function SearchContent() {
             </div>
           )}
 
-          <div className="hidden lg:grid grid-cols-7 gap-3">
+          <div className="hidden lg:grid grid-cols-8 gap-3">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-            <div className="px-1">
+            <div className="col-span-2 px-1">
               <PriceRangeFilter
                 min={priceBounds.min}
                 max={priceBounds.max}
@@ -930,7 +930,7 @@ function FilterSelect({
 }) {
   return (
     <div className="relative">
-      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all">
+      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-background border border-border rounded-xl pl-3.5 pr-9 py-2.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all">
         <option value="">{placeholder}</option>
         {options.map((option) => {
           const optionValue = typeof option === "string" ? option : option.value;

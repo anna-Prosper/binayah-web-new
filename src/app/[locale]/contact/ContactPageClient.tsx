@@ -106,7 +106,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("phone")}</label>
-                    <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
+                    <input type="tel" required pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("message")}</label>
