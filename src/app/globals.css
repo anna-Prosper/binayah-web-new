@@ -180,6 +180,14 @@ body.mobile-nav-open .fixed.bottom-24 {
   font-family: var(--font-arabic), var(--font-jakarta), system-ui, sans-serif;
 }
 
+/* Force light mode site-wide. Belt-and-suspenders with the Viewport
+   colorScheme="light" meta tag in [locale]/layout.tsx — some browsers
+   honour only one of the two. Stops Samsung Internet / Android Chrome
+   from force-inverting the light UI. */
+html {
+  color-scheme: light;
+}
+
 /* LiveChat widget is hidden by default — its UI only appears when
    AIChatWidget switches into human mode (toggles body.livechat-visible).
    LiveChat's container is injected by tracking.js with these IDs. */
