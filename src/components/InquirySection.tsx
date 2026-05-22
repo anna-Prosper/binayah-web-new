@@ -2,21 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
+import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
-
-const COUNTRY_CODES = [
-  { code: "+971", label: "🇦🇪 +971" },
-  { code: "+44", label: "🇬🇧 +44" },
-  { code: "+1", label: "🇺🇸 +1" },
-  { code: "+91", label: "🇮🇳 +91" },
-  { code: "+86", label: "🇨🇳 +86" },
-  { code: "+7", label: "🇷🇺 +7" },
-];
 
 const InquirySection = () => {
   const t = useTranslations("inquiry");
@@ -24,6 +17,13 @@ const InquirySection = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const dial = dialFromIso(readGeoCountryCookie());
+    if (dial && dial !== "+971") {
+      setForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,10 +153,12 @@ const InquirySection = () => {
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                 <div className="flex gap-2">
-                  <select aria-label={t("phone") + " country code"} value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
-                    className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
-                    {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
-                  </select>
+                  <CountryCodeSelect
+                    ariaLabel={t("phone") + " country code"}
+                    value={form.countryCode}
+                    onChange={(dial) => setForm({ ...form, countryCode: dial })}
+                    className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[160px]`}
+                  />
                   <input required type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                 </div>
               </div>
@@ -198,10 +200,12 @@ const InquirySection = () => {
                 <div>
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                   <div className="flex gap-2">
-                    <select aria-label={t("phone") + " country code"} value={form.countryCode} onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
-                      className={`${inputClasses} !w-auto !px-3 appearance-none cursor-pointer`}>
-                      {COUNTRY_CODES.map((cc) => <option key={cc.code} value={cc.code}>{cc.label}</option>)}
-                    </select>
+                    <CountryCodeSelect
+                      ariaLabel={t("phone") + " country code"}
+                      value={form.countryCode}
+                      onChange={(dial) => setForm({ ...form, countryCode: dial })}
+                      className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[180px]`}
+                    />
                     <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
                   </div>
                 </div>
