@@ -1920,7 +1920,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                           <div className="min-w-0">
                             <p className="text-xs font-semibold text-[#10231e]">Paste a listing URL</p>
                             <p className="mt-0.5 text-[11px] text-[#66706d] leading-snug">
-                              From PropertyFinder, Bayut, or Dubizzle.
+                              From any major UAE listing portal.
                             </p>
                           </div>
                         </div>
