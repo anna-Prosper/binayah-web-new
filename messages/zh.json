@@ -312,6 +312,8 @@
     "forRent": "出租",
     "priceAsc": "价格由低到高",
     "priceDesc": "价格由高到低",
+    "ppsfAsc": "单位面积价格由低到高",
+    "ppsfDesc": "单位面积价格由高到低",
     "newest": "最新上架",
     "sortFeatured": "精选优先",
     "anyType": "不限类型",
