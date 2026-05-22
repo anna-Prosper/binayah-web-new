@@ -1485,6 +1485,12 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     }, [refinementModal, refinementBeds, refinementMaids, refinementCity, refinementCommunity, refinementUnit, submitting, form.transactionType]);
     // Explicit opt-out: fill the form with what the server understood and
     // mark the missing field(s) as errors so the user can correct inline.
+    // Also clear the smart-search text + flip submitAttempted so:
+    //   - the next "Get Quick Valuation" goes through the form, not a
+    //     re-submit of the original AI query (which would just reopen the
+    //     modal in a loop), and
+    //   - the existing live-error-clearing logic removes the red badge
+    //     the moment the user fills the corresponding field.
     const handleRefinementEditManually = useCallback(() => {
         const modal = refinementModal;
         if (!modal) return;
@@ -1501,8 +1507,10 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 if (formKey) errs[formKey] = "Required to run the valuation.";
             }
             setFieldErrors(errs);
+            setSubmitAttempted(true);
             setTimeout(() => scrollToFirstFormError(errs), 50);
         }
+        setSmartQuery("");
         setRefinementModal(null);
     }, [refinementModal, fillFormFromServerInquiry]);
 
