@@ -306,6 +306,8 @@
     "forRent": "For Rent",
     "priceAsc": "Price: Low to High",
     "priceDesc": "Price: High to Low",
+    "ppsfAsc": "Price/sqft: Low to High",
+    "ppsfDesc": "Price/sqft: High to Low",
     "newest": "Newest",
     "sortFeatured": "Featured first",
     "anyType": "Any Type",

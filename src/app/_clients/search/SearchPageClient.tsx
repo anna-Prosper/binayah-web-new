@@ -27,8 +27,8 @@ import {
 
 type SearchIntent = "" | "buy" | "rent" | "off-plan";
 type SearchStatus = "All" | "Off-Plan" | "Secondary";
-type SortKey = "newest" | "price_asc" | "price_desc" | "featured";
-const VALID_SORTS: ReadonlySet<SortKey> = new Set(["newest", "price_asc", "price_desc", "featured"]);
+type SortKey = "newest" | "price_asc" | "price_desc" | "featured" | "ppsf_asc" | "ppsf_desc";
+const VALID_SORTS: ReadonlySet<SortKey> = new Set(["newest", "price_asc", "price_desc", "featured", "ppsf_asc", "ppsf_desc"]);
 
 interface Project {
   _id: string;
@@ -480,15 +480,13 @@ function SearchContent() {
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("community")}</p>
                 <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bedrooms")}</p>
-                  <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bathrooms")}</p>
-                  <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-                </div>
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bedrooms")}</p>
+                <ChipGroup options={bedrooms} value={beds} onChange={setBeds} counts={bedroomCounts} />
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("bathrooms")}</p>
+                <ChipGroup options={bathrooms} value={baths} onChange={setBaths} />
               </div>
               <div>
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("minPrice")}</p>
@@ -532,6 +530,8 @@ function SearchContent() {
                   <option value="newest">{t("newest")}</option>
                   <option value="price_asc">{t("priceAsc")}</option>
                   <option value="price_desc">{t("priceDesc")}</option>
+                  <option value="ppsf_asc">{t("ppsfAsc")}</option>
+                  <option value="ppsf_desc">{t("ppsfDesc")}</option>
                   <option value="featured">{t("sortFeatured")}</option>
                 </select>
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -873,6 +873,45 @@ function Pagination({
         <ChevronRight className="h-4 w-4" />
       </button>
     </nav>
+  );
+}
+
+// Tappable chip row used in the mobile FilterSheet for fast bed/bath
+// selection — fewer taps than opening a dropdown and easier to hit on
+// touch screens. Clicking the active chip clears the filter.
+function ChipGroup({
+  options,
+  value,
+  onChange,
+  counts,
+}: {
+  options: string[];
+  value: string;
+  onChange: (next: string) => void;
+  counts?: Record<string, number>;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {options.map((opt) => {
+        const active = value === opt;
+        const count = counts?.[opt];
+        return (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onChange(active ? "" : opt)}
+            className={`min-w-[44px] px-3 py-2 rounded-xl text-sm font-medium border transition-colors ${
+              active
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-foreground border-border hover:border-primary/30"
+            }`}
+          >
+            {opt}
+            {typeof count === "number" && !active && <span className="ml-1 text-[10px] text-muted-foreground">({count})</span>}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
