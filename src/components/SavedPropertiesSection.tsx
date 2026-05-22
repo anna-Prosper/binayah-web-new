@@ -26,9 +26,7 @@ interface FavProperty {
 
 function formatPrice(price?: number, currency = "AED") {
   if (!price) return "Price on request";
-  if (price >= 1_000_000) return `${currency} ${(price / 1_000_000).toFixed(1)}M`;
-  if (price >= 1_000) return `${currency} ${(price / 1_000).toFixed(0)}K`;
-  return `${currency} ${price.toLocaleString()}`;
+  return `${currency} ${Math.round(price).toLocaleString("en-AE")}`;
 }
 
 function SkeletonCard() {
