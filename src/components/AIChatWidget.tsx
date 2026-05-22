@@ -277,9 +277,15 @@ const AIChatWidget = () => {
         },
         onHandoff: () => {
           // Switch the AI bubble to Live Agent mode after the user reads the
-          // handoff message. The LiveChat iframe loads in place of the AI
-          // conversation; user can switch back via the AI tab anytime.
-          setTimeout(() => setMode("human"), 1500);
+          // handoff message. Insert a system divider so the AI conversation
+          // shows when the live session started AND its 30-min auto-end rule.
+          setTimeout(() => {
+            setMessages((prev) => [
+              ...prev,
+              { role: "system", content: "Live chat started — auto-ends after 30 minutes of inactivity" },
+            ]);
+            setMode("human");
+          }, 1500);
         },
       });
     } catch {
