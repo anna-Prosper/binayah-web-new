@@ -193,3 +193,10 @@ body.livechat-visible #chat-widget-container,
 body.livechat-visible [id^="lc-widget-"] {
   display: block !important;
 }
+
+/* Force our top banner above LiveChat. LiveChat uses max int 2147483647;
+   we tie at the same value but our banner is mounted later in DOM order,
+   so paint order wins. Cap LiveChat one step below to guarantee. */
+body.livechat-visible #chat-widget-container {
+  z-index: 2147483640 !important;
+}
