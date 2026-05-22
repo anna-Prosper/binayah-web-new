@@ -82,6 +82,18 @@ const locationOptions = ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "JBR
 const bedrooms = ["Studio", "1", "2", "3", "4", "5", "6", "7+"];
 const bathrooms = ["1", "2", "3", "4", "5", "6", "7+"];
 
+// Furnishing values must match what the API accepts (case-insensitive
+// regex on listing.furnishing). Labels are localised at render time.
+const FURNISHING_VALUES = ["furnished", "unfurnished", "partial"] as const;
+
+// Handover year — current year through current year + 5. Generated at
+// module load; the dashboard typically loads fresh per nav so a stale
+// generation isn't a concern.
+const completionYears: string[] = (() => {
+  const now = new Date().getUTCFullYear();
+  return Array.from({ length: 6 }, (_, i) => String(now + i));
+})();
+
 function toFacetMap(rows: unknown): Record<string, number> {
   if (!Array.isArray(rows)) return {};
   const out: Record<string, number> = {};
@@ -144,12 +156,20 @@ function SearchContent() {
     return Number.isFinite(n) ? n : null;
   });
   const [developer, setDeveloper] = useState(params.get("developer") || "");
+  const [furnishing, setFurnishing] = useState(params.get("furnishing") || "");
+  const [completionYear, setCompletionYear] = useState(params.get("completionYear") || "");
   const [q, setQ] = useState(params.get("q") || "");
   const initialSort = (params.get("sort") as SortKey) || "newest";
   const [sort, setSort] = useState<SortKey>(VALID_SORTS.has(initialSort) ? initialSort : "newest");
 
   const t = useTranslations("search");
   const { format: fmtCurrency } = useCurrency();
+  const furnishingOptions = FURNISHING_VALUES.map((v) => ({
+    value: v,
+    label: v === "furnished" ? t("furnishingFurnished")
+      : v === "unfurnished" ? t("furnishingUnfurnished")
+      : t("furnishingPartial"),
+  }));
   const initialProjectsPage = (() => { const n = parseInt(params.get("projectsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
   const initialListingsPage = (() => { const n = parseInt(params.get("listingsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
   const [projectsPage, setProjectsPage] = useState(initialProjectsPage);
@@ -207,7 +227,7 @@ function SearchContent() {
     }
     setProjectsPage(1);
     setListingsPage(1);
-  }, [status, intent, type, locationsKey, beds, baths, priceMin, priceMax, developer, q, sort]);
+  }, [status, intent, type, locationsKey, beds, baths, priceMin, priceMax, developer, furnishing, completionYear, q, sort]);
 
   const fetchResults = useCallback(async () => {
     setLoading(true);
@@ -221,6 +241,8 @@ function SearchContent() {
     if (priceMin != null) params.set("budgetMin", String(priceMin));
     if (priceMax != null) params.set("budgetMax", String(priceMax));
     if (developer) params.set("developer", developer);
+    if (furnishing) params.set("furnishing", furnishing);
+    if (completionYear) params.set("completionYear", completionYear);
     if (q) params.set("q", q);
     if (sort && sort !== "newest") params.set("sort", sort);
     params.set("pageSize", String(PAGE_SIZE));
@@ -249,7 +271,7 @@ function SearchContent() {
     } finally {
       setLoading(false);
     }
-  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
+  }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
     fetchResults();
@@ -266,13 +288,15 @@ function SearchContent() {
     if (priceMin != null) params.set("budgetMin", String(priceMin));
     if (priceMax != null) params.set("budgetMax", String(priceMax));
     if (developer) params.set("developer", developer);
+    if (furnishing) params.set("furnishing", furnishing);
+    if (completionYear) params.set("completionYear", completionYear);
     if (q) params.set("q", q);
     if (sort && sort !== "newest") params.set("sort", sort);
     if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
     const query = params.toString();
     router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
-  }, [baths, beds, developer, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, router, selectedLocations, sort, status, type]);
+  }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, router, selectedLocations, sort, status, type]);
 
   const clearFilters = () => {
     setStatus("All");
@@ -284,6 +308,8 @@ function SearchContent() {
     setPriceMin(null);
     setPriceMax(null);
     setDeveloper("");
+    setFurnishing("");
+    setCompletionYear("");
     setQ("");
     setSort("newest");
     setProjectsPage(1);
@@ -308,6 +334,10 @@ function SearchContent() {
     if (priceMin != null) return `AED ${fmt(priceMin)}+`;
     return `Up to AED ${fmt(priceMax!)}`;
   })();
+  const furnishingChip = furnishing === "furnished" ? t("furnishingFurnished")
+    : furnishing === "unfurnished" ? t("furnishingUnfurnished")
+    : furnishing === "partial" ? t("furnishingPartial")
+    : "";
   const activeFilters = [
     status !== "All" ? status : "",
     intent === "buy" ? "Buy" : intent === "rent" ? "Rent" : "",
@@ -317,6 +347,8 @@ function SearchContent() {
     baths ? `${baths} bath` : "",
     priceChip,
     developer,
+    furnishingChip,
+    completionYear ? `${t("handoverYear")}: ${completionYear}` : "",
   ].filter(Boolean);
   const totalResults = projectCount + listingCount;
 
@@ -408,7 +440,7 @@ function SearchContent() {
             </div>
           )}
 
-          <div className="hidden lg:grid grid-cols-6 gap-3">
+          <div className="hidden lg:grid grid-cols-7 gap-3">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
@@ -422,6 +454,11 @@ function SearchContent() {
                 onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
               />
             </div>
+            {status === "Off-Plan" || intent === "off-plan" ? (
+              <FilterSelect placeholder={t("handoverYear")} value={completionYear} onChange={setCompletionYear} options={completionYears} />
+            ) : (
+              <FilterSelect placeholder={t("furnishing")} value={furnishing} onChange={setFurnishing} options={furnishingOptions} />
+            )}
             <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
           </div>
 
@@ -463,6 +500,17 @@ function SearchContent() {
                   onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
                 />
               </div>
+              {status === "Off-Plan" || intent === "off-plan" ? (
+                <div>
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("handoverYear")}</p>
+                  <FilterSelect placeholder={t("handoverYear")} value={completionYear} onChange={setCompletionYear} options={completionYears} />
+                </div>
+              ) : (
+                <div>
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("furnishing")}</p>
+                  <FilterSelect placeholder={t("furnishing")} value={furnishing} onChange={setFurnishing} options={furnishingOptions} />
+                </div>
+              )}
               <div>
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("developer")}</p>
                 <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
