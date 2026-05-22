@@ -447,15 +447,17 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     >
                       <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("gallery")}
                     </button>
-                    <a
-                      href={project.brochureUrl || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
-                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-                    >
-                      <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
-                    </a>
+                    {project.brochureUrl && (
+                      <a
+                        href={project.brochureUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                        style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                      >
+                        <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
+                      </a>
+                    )}
                   </div>
                 </motion.div>
               </div>
@@ -473,15 +475,17 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         >
           <ImageIcon className="h-3.5 w-3.5" /> {t("galleryButton")} ({images.length})
         </button>
-        <a
-          href={project.brochureUrl || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
-          style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-        >
-          <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
-        </a>
+        {project.brochureUrl && (
+          <a
+            href={project.brochureUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+          >
+            <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
+          </a>
+        )}
       </div>
 
       {/* ───── QUICK STATS CARDS ───── */}
@@ -1069,21 +1073,25 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
-                  {/* Download Brochure CTA */}
-                  <a
-                    href={project.brochureUrl || "#download-brochure"}
-                    className="flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
-                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                  >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
-                      <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
-                      <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
-                    </div>
-                    <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
-                  </a>
+                  {/* Download Brochure CTA — hidden when no brochure attached */}
+                  {project.brochureUrl && (
+                    <a
+                      href={project.brochureUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
+                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
+                        <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
+                      </div>
+                      <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
+                    </a>
+                  )}
 
                   {/* Key Highlights */}
                   {project.keyHighlights && project.keyHighlights.length > 0 && (
@@ -1582,10 +1590,19 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                           );
                         })()}
 
-                        {/* CTA */}
-                        <Link href={`/developers/${project.developerSlug || (project.developerName ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "")}`} className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
-                          {t("viewDeveloperProfile")} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        {/* CTA — only render when we have a slug to link to */}
+                        {(() => {
+                          const devSlug = project.developerSlug ||
+                            (project.developerName
+                              ? project.developerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+                              : "");
+                          if (!devSlug) return null;
+                          return (
+                            <Link href={`/developers/${devSlug}`} className="inline-flex items-center gap-2 text-sm font-bold text-foreground border border-border/60 hover:border-primary/30 hover:bg-primary/5 px-5 py-2.5 rounded-full transition-all duration-300 group">
+                              {t("viewDeveloperProfile")} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                          );
+                        })()}
                       </div>
                     </div>
                   )}
@@ -2268,7 +2285,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline || t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
-                    href={`https://wa.me/${project.whatsappNumber?.replace(/\+/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+                    href={`https://wa.me/${(project.whatsappNumber || project.contactPhone || "+971549988811").replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/35 hover:scale-[1.02] active:scale-[0.98]"
@@ -2455,16 +2472,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 items-stretch">
           {[
-            { title: "How to Buy Property in the UAE", desc: "Step-by-step guide to purchasing real estate in the UAE", icon: Home },
-            { title: "Golden Visa Through Property", desc: "Learn how your property investment can qualify you for residency", icon: Shield },
-            { title: "Off-Plan vs Ready Properties", desc: "Compare the pros and cons of each investment type", icon: TrendingUp },
-            { title: "Dubai Marina Living Guide", desc: "Everything you need to know about living in Dubai Marina", icon: Compass },
-            { title: "Understanding Payment Plans", desc: "A breakdown of how developer payment plans work", icon: CreditCard },
-            { title: "First-Time Buyer Tips", desc: "Expert advice for making your first property investment", icon: Star },
+            { title: "How to Buy Property in Dubai", desc: "Step-by-step: from RERA agent to title deed in 30 days", icon: Home, href: "/pulse/guides/how-to-buy-property-in-dubai" },
+            { title: "Golden Visa Through Property", desc: "AED 2M threshold, eligibility and family inclusion", icon: Shield, href: "/pulse/guides/golden-visa-process" },
+            { title: "Off-Plan vs Ready Properties", desc: "Pros, cons and decision matrix for each type", icon: TrendingUp, href: "/pulse/guides/off-plan-vs-secondary" },
+            { title: "DLD Fees Explained", desc: "The real all-in cost beyond the 4% headline", icon: CreditCard, href: "/pulse/guides/dld-fees-explained" },
+            { title: "Title Deed vs Oqood", desc: "Why this difference matters for resale and visa", icon: Compass, href: "/pulse/guides/title-deed-vs-oqood" },
+            { title: "Buying as a Non-Resident", desc: "Power of attorney, financing and timelines explained", icon: Star, href: "/pulse/guides/buying-as-non-resident" },
           ].map((guide, i) => (
             <motion.a
               key={i}
-              href="#"
+              href={guide.href}
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
