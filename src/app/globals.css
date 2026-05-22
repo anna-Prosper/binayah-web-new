@@ -179,3 +179,17 @@ body.mobile-nav-open .fixed.bottom-24 {
 [lang="ar"] {
   font-family: var(--font-arabic), var(--font-jakarta), system-ui, sans-serif;
 }
+
+/* LiveChat widget is hidden by default — its UI only appears when
+   AIChatWidget switches into human mode (toggles body.livechat-visible).
+   LiveChat's container is injected by tracking.js with these IDs. */
+#chat-widget-container,
+#livechat-compact-container,
+#livechat-eye-catcher,
+[id^="lc-widget-"] {
+  display: none !important;
+}
+body.livechat-visible #chat-widget-container,
+body.livechat-visible [id^="lc-widget-"] {
+  display: block !important;
+}

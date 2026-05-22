@@ -128,10 +128,13 @@ const AIChatWidget = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
 
-  // Drive LiveChat's standard widget based on our mode. In "human" mode it
-  // appears (maximized) so the user can chat with an agent; in "ai" mode it's
-  // hidden again so our AI bubble owns the screen.
+  // Drive LiveChat's standard widget based on our mode. CSS (globals.css)
+  // hides LiveChat's container by default; we toggle body.livechat-visible
+  // to show it in human mode AND call its SDK to maximize the chat panel.
   useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.body.classList.toggle("livechat-visible", mode === "human");
+
     const apply = () => {
       const lc = getLiveChat();
       if (!lc?.call) return false;
@@ -153,6 +156,13 @@ const AIChatWidget = () => {
       clearTimeout(timeout);
     };
   }, [mode]);
+
+  // Safety net: ensure body class is removed if the widget unmounts mid-chat.
+  useEffect(() => () => {
+    if (typeof document !== "undefined") {
+      document.body.classList.remove("livechat-visible");
+    }
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
