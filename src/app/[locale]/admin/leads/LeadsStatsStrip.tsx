@@ -143,7 +143,7 @@ export default function LeadsStatsStrip() {
                 Top communities (by lead volume)
               </h4>
               {stats.topCommunities.length === 0 ? (
-                <p className="text-xs text-gray-400 italic">No community data yet.</p>
+                <p className="text-xs text-gray-400">No community data yet.</p>
               ) : (
                 <ul className="space-y-1">
                   {stats.topCommunities.slice(0, 5).map((c) => (
@@ -160,7 +160,7 @@ export default function LeadsStatsStrip() {
                 Most-inquired properties
               </h4>
               {stats.topProperties.length === 0 ? (
-                <p className="text-xs text-gray-400 italic">No property inquiries yet.</p>
+                <p className="text-xs text-gray-400">No property inquiries yet.</p>
               ) : (
                 <ul className="space-y-1">
                   {stats.topProperties.slice(0, 5).map((p) => (

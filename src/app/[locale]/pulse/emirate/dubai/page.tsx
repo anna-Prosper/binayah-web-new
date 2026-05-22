@@ -118,7 +118,7 @@ export default async function DubaiEmiratePage() {
 
           <div className="flex flex-wrap items-center gap-4 mb-3">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+              {t("title")} <span className="font-light">{t("titleItalic")}</span>
             </h1>
           </div>
 

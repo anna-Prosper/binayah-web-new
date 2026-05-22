@@ -43,7 +43,7 @@ export default function PrivacyPolicyClient() {
             </p>
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">
               {t("heroTitle")}{" "}
-              <span className="italic font-light">{t("heroTitleItalic")}</span>
+              <span className="font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-primary-foreground/70 text-lg mb-6">
               {t("heroSubtitle")}

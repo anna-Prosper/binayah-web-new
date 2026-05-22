@@ -1617,7 +1617,7 @@ function SectionHeader({ label, title, titleItalic }: { label: string; title: st
       <div>
         <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-accent">{label}</p>
         <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
-          {title} <span className="italic font-light">{titleItalic}</span>
+          {title} <span className="font-light">{titleItalic}</span>
         </h2>
         <motion.div
           className="h-[1.5px] rounded-full mt-1"

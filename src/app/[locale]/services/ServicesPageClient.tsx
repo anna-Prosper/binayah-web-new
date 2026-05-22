@@ -92,7 +92,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 0.8, delay: 0.3 }} className="h-[2px] mb-5 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-3 sm:mb-4" style={{ color: "#D4A847" }}>{t("heroLabel")}</p>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-[1.1]">
-              {t("heroTitle")}<br /><span className="italic font-light">{t("heroTitleItalic")}</span>
+              {t("heroTitle")}<br /><span className="font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-white/60 max-w-xl text-sm sm:text-lg leading-relaxed">
               {t("heroSubtitle")}
@@ -118,7 +118,7 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-3" style={{ color: "#D4A847" }}>{t("howItWorksLabel")}</p>
-            <h2 className="text-2xl sm:text-4xl font-bold text-foreground">{t("howItWorksTitle")} <span className="italic font-light">{t("howItWorksTitleItalic")}</span></h2>
+            <h2 className="text-2xl sm:text-4xl font-bold text-foreground">{t("howItWorksTitle")} <span className="font-light">{t("howItWorksTitleItalic")}</span></h2>
           </motion.div>
 
           {/* Mobile: vertical timeline */}
@@ -168,7 +168,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("mgmtLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("mgmtTitle")} <span className="italic font-light">{t("mgmtTitleItalic")}</span>
+              {t("mgmtTitle")} <span className="font-light">{t("mgmtTitleItalic")}</span>
             </h2>
             <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
               {t("mgmtSubtitle")}
@@ -206,7 +206,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #0B3D2E, #1A7A5A)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#0B3D2E" }}>{t("addLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("addTitle")} <span className="italic font-light">{t("addTitleItalic")}</span>
+              {t("addTitle")} <span className="font-light">{t("addTitleItalic")}</span>
             </h2>
             <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
               {t("addSubtitle")}
@@ -245,7 +245,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("whyLabel")}</p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold">
-              {t("whyTitle")} <span className="italic font-light">{t("whyTitleItalic")}</span>
+              {t("whyTitle")} <span className="font-light">{t("whyTitleItalic")}</span>
             </h2>
           </motion.div>
 
@@ -278,7 +278,7 @@ export default function ServicesPage() {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>FAQ</p>
             <h2 className="text-2xl sm:text-4xl font-bold text-foreground">
-              {t("faqTitle")} <span className="italic font-light">{t("faqTitleItalic")}</span>
+              {t("faqTitle")} <span className="font-light">{t("faqTitleItalic")}</span>
             </h2>
           </motion.div>
 

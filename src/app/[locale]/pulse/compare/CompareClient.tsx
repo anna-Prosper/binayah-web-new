@@ -389,7 +389,7 @@ export default function CompareClient({
           <p className="text-accent font-semibold tracking-[0.3em] uppercase text-xs">{t("label")}</p>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-          {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+          {t("title")} <span className="font-light">{t("titleItalic")}</span>
         </h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
       </motion.div>

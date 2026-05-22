@@ -33,7 +33,7 @@ export default async function ListYourPropertyPage() {
         />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 relative">
           <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">{t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span></h1>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">{t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span></h1>
           <p className="text-primary-foreground/70 text-lg">
             {t("heroSubtitle")}
           </p>

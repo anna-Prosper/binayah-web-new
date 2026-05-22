@@ -47,7 +47,7 @@ const CommunitiesSection = () => {
           {t("label")}
         </p>
         <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-          {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+          {t("title")} <span className="font-light">{t("titleItalic")}</span>
         </h2>
         <Link href="/communities" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
           {t("viewAll")} <ArrowUpRight className="h-4 w-4" />

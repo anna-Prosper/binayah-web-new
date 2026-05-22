@@ -132,7 +132,7 @@ export default function ListingsPageClient({
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               {title.split(" ").slice(0, -1).join(" ")}{" "}
-              <span className="italic font-light">{title.split(" ").slice(-1)}</span>
+              <span className="font-light">{title.split(" ").slice(-1)}</span>
             </h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("subtitleWithCount", { subtitle, count: totalCount })}

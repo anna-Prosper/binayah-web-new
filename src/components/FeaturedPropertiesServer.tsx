@@ -42,7 +42,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6 mx-auto" />
           <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("label")}</p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+            {t("title")} <span className="font-light">{t("titleItalic")}</span>
           </h2>
         </motion.div>
 

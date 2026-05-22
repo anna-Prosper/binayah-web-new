@@ -30,7 +30,7 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
           <div>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("newLaunches")}</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">{t("offPlan")} <span className="italic font-light">{t("projectsItalic")}</span></h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">{t("offPlan")} <span className="font-light">{t("projectsItalic")}</span></h2>
           </div>
           <Link href="/off-plan" className="group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
             {t("viewAll")} <ArrowUpRight className="h-4 w-4" />

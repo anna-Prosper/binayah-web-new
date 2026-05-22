@@ -266,7 +266,7 @@ export default function LeadDetailDrawer({ leadId, onClose, onChange }: Props) {
                 Timeline ({lead.notes.length})
               </h3>
               {lead.notes.length === 0 ? (
-                <p className="text-sm text-gray-400 italic">No notes yet.</p>
+                <p className="text-sm text-gray-400">No notes yet.</p>
               ) : (
                 <ul className="space-y-2">
                   {[...lead.notes].reverse().map((n, i) => (

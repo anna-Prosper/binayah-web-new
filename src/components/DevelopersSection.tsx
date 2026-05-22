@@ -43,7 +43,7 @@ const DevelopersSection = ({ logos }: { logos?: Record<string, string> }) => {
               {t("heroLabel")}
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
+              {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
             </h2>
           </div>
           <Link

@@ -27,7 +27,7 @@ const WhatWeOffer = () => {
           <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold">
             <span className="sm:hidden">{t("title")}</span>
-            <span className="hidden sm:inline">{t("titleDesktop")} <span className="italic font-light">{t("titleItalic")}</span></span>
+            <span className="hidden sm:inline">{t("titleDesktop")} <span className="font-light">{t("titleItalic")}</span></span>
           </h2>
           <p className="mt-3 sm:mt-5 text-white/60 max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
             {t("subtitle")}

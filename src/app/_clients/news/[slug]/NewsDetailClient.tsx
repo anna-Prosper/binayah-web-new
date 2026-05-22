@@ -525,7 +525,7 @@ function NewsDetailInner({
                 <div className="h-px w-8 bg-accent" />
                 <h2 className="text-xl sm:text-2xl font-bold text-foreground">
                   {t("relatedArticles").split(" ")[0]}{" "}
-                  <span className="italic font-medium text-muted-foreground">
+                  <span className="font-medium text-muted-foreground">
                     {t("relatedArticlesItalic")}
                   </span>
                 </h2>

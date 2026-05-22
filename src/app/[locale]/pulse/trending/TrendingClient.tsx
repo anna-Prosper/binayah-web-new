@@ -238,7 +238,7 @@ export default function TrendingClient({
           <p className="text-accent font-semibold tracking-[0.3em] uppercase text-xs">{t("label")}</p>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-          {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+          {t("title")} <span className="font-light">{t("titleItalic")}</span>
         </h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
       </motion.div>
@@ -596,7 +596,7 @@ function SectionHeader({ label, title, titleItalic }: { label: string; title: st
       <div>
         <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-accent">{label}</p>
         <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight">
-          {title} <span className="italic font-light">{titleItalic}</span>
+          {title} <span className="font-light">{titleItalic}</span>
         </h2>
       </div>
     </div>

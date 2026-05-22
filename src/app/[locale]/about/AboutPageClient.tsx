@@ -39,7 +39,7 @@ export default function AboutPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
+            {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-lg leading-relaxed">
             {t("heroSubtitle")}
@@ -88,7 +88,7 @@ export default function AboutPage() {
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mb-6" />
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-              {t("storyTitle")} <span className="italic font-light">{t("storyTitleItalic")}</span>
+              {t("storyTitle")} <span className="font-light">{t("storyTitleItalic")}</span>
             </h2>
             <div className="space-y-4 text-foreground/70 leading-relaxed">
               <p>{t("storyP1")}</p>
@@ -106,7 +106,7 @@ export default function AboutPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] bg-accent mx-auto mb-6" />
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-            {t("valuesTitle")} <span className="italic font-light">{t("valuesTitleItalic")}</span>
+            {t("valuesTitle")} <span className="font-light">{t("valuesTitleItalic")}</span>
           </h2>
         </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

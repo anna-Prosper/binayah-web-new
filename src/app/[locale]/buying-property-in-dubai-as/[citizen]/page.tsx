@@ -71,7 +71,7 @@ export default async function ForeignBuyerPage({
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             Buying Property in Dubai as a{" "}
-            <span className="italic font-light">{b.citizen} Citizen</span>
+            <span className="font-light">{b.citizen} Citizen</span>
           </h1>
           <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-3xl">{b.intro}</p>
         </div>
