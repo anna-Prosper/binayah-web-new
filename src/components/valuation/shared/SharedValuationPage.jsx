@@ -378,9 +378,11 @@ function formatBedroomsLabel(value) {
 }
 // Build the row of context pills shown under the report headline. Surfaces
 // the inquiry details the user submitted (sale/rent, property type, beds,
-// size, maids) plus the resolved community, so a viewer landing on a shared
-// link instantly knows what was actually priced. Empty values are skipped.
-function buildSubjectChips(form, community) {
+// size, maids) plus the resolved building + community, so a viewer landing
+// on a shared link instantly knows what was actually priced. Empty values
+// are skipped. The propertyName chip prefers the engine-resolved canonical
+// form (passed as the third argument) so the chips match the heading.
+function buildSubjectChips(form, community, propertyName) {
     const chips = [];
     const txn = String(form?.transactionType || "").toLowerCase();
     if (txn === "rent") chips.push("For rent");
@@ -394,6 +396,10 @@ function buildSubjectChips(form, community) {
         chips.push(sizeLabel);
     }
     if (String(form?.maids || "").toLowerCase() === "yes") chips.push("Maid's room");
+    // Building chip — added BEFORE community so the order reads
+    // specific → general, mirroring the heading.
+    const building = String(propertyName || form?.unit || "").trim();
+    if (building) chips.push(building);
     if (community) chips.push(community);
     return chips;
 }
@@ -448,7 +454,7 @@ function mapApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
-        tags: buildSubjectChips(form, community),
+        tags: buildSubjectChips(form, community, propertyName),
         insufficientData,
         fairValueLow: api.estimate_low,
         fairValueHigh: api.estimate_high,
@@ -539,7 +545,7 @@ function mapPreviewApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_e = api === null || api === void 0 ? void 0 : api.market) === null || _e === void 0 ? void 0 : _e.countryCode) || "AE") === "AE" ? "UAE" : ((_f = api === null || api === void 0 ? void 0 : api.market) === null || _f === void 0 ? void 0 : _f.countryCode) || "UAE",
-        tags: buildSubjectChips(form, community),
+        tags: buildSubjectChips(form, community, propertyName),
         fairValueLow: null,
         fairValueHigh: null,
         confidence: ((_e = api.preview) === null || _e === void 0 ? void 0 : _e.confidence) || "Low",
@@ -1466,6 +1472,16 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             size: cleanReportField(partial.size),
             ...(partial.locationId ? { locationId: partial.locationId } : {}),
         };
+        fillFormFromServerInquiry({
+            propertyName: apiPayload.propertyName,
+            community: apiPayload.community,
+            city: apiPayload.city,
+            propertyType: apiPayload.propertyType,
+            bedrooms: apiPayload.bedrooms,
+            maids: apiPayload.maids,
+            size: apiPayload.size,
+            transactionType: apiPayload.transactionType,
+        });
         setRefinementModal(null);
         setSubmitting(true);
         setStep("processing");
@@ -1482,7 +1498,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         } finally {
             setSubmitting(false);
         }
-    }, [refinementModal, refinementBeds, refinementMaids, refinementCity, refinementCommunity, refinementUnit, submitting, form.transactionType]);
+    }, [refinementModal, refinementBeds, refinementMaids, refinementCity, refinementCommunity, refinementUnit, submitting, form.transactionType, fillFormFromServerInquiry]);
     // Explicit opt-out: fill the form with what the server understood and
     // mark the missing field(s) as errors so the user can correct inline.
     // Also clear the smart-search text + flip submitAttempted so:
@@ -2568,7 +2584,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>{tv("valuationSnapshot")}</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl break-words">{extractCommunity(form.unit)}</h2>
               <p className="text-[#66706d] mb-3">{tv("processingSubtitle")}</p>
-              <span className="inline-block px-3 py-1 rounded-full border border-[#e3ddcf] text-sm font-medium">{form.city}</span>
+              <div className="flex flex-wrap gap-2">
+                {buildSubjectChips(form, form.area, form.unit).map((t) => (
+                  <span key={t} className="inline-block rounded-full border border-[#e3ddcf] px-3 py-1 text-sm font-medium">{t}</span>
+                ))}
+              </div>
 
               {/* Retry notice */}
               {retryCount > 0 && (<div className="mt-4 flex items-center gap-2 text-sm text-[#D4A847]">
