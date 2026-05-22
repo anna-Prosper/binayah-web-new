@@ -11,14 +11,14 @@ export const BENCHMARKS = {
   sp500: {
     label: "S&P 500 5-yr avg",
     annualRate: 0.102, // 10.2%
-    source: "S&P 500 historical total return, 2020–2025",
+    source: "S&P 500 historical total return, 2021–2026",
     dashPattern: "8 4",     // dashed (chart reference line)
     color: "#9CA3AF",       // gray-400
   },
   uaeSavings: {
     label: "UAE Savings 5-yr avg",
     annualRate: 0.035, // 3.5%
-    source: "UAE Central Bank average savings rate, 2020–2025",
+    source: "UAE Central Bank average savings rate, 2021–2026",
     dashPattern: "3 3",     // dotted
     color: "#6B7280",       // gray-500
   },
