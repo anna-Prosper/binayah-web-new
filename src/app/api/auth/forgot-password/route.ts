@@ -74,10 +74,21 @@ export async function POST(req: NextRequest) {
             We received a request to reset your Binayah Properties password. Click the button below to choose a new password. This link expires in 1 hour.
           </p>
           <div style="text-align:center;margin-bottom:24px;">
-            <a href="${resetLink}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#fff;text-decoration:none;border-radius:10px;font-weight:600;font-size:15px;">
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${resetLink}" style="height:48px;v-text-anchor:middle;width:200px;" arcsize="22%" stroke="f" fillcolor="#0B3D2E">
+              <w:anchorlock/>
+              <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">Reset Password</center>
+            </v:roundrect>
+            <![endif]-->
+            <!--[if !mso]><!-- -->
+            <a href="${resetLink}" style="display:inline-block;padding:14px 32px;background-color:#0B3D2E;background-image:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:15px;">
               Reset Password
             </a>
+            <!--<![endif]-->
           </div>
+          <p style="color:#6b7280;font-size:13px;line-height:1.5;text-align:center;margin-top:-8px;">
+            Button not showing? <a href="${resetLink}" style="color:#0B3D2E;text-decoration:underline;">Click here to reset</a>.
+          </p>
           <p style="color:#9ca3af;font-size:13px;line-height:1.5;">
             If you didn't request this, you can safely ignore this email. Your password won't change.
           </p>

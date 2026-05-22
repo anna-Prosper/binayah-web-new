@@ -113,10 +113,21 @@ export async function POST(req: NextRequest) {
         Welcome to Binayah Properties, ${name}! Click the button below to verify your email address and activate your account. This link expires in 24 hours.
       </p>
       <div style="text-align:center;margin-bottom:24px;">
-        <a href="${verifyLink}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#fff;text-decoration:none;border-radius:10px;font-weight:600;font-size:15px;">
+        <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${verifyLink}" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="22%" stroke="f" fillcolor="#0B3D2E">
+          <w:anchorlock/>
+          <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:15px;font-weight:600;">Verify Email Address</center>
+        </v:roundrect>
+        <![endif]-->
+        <!--[if !mso]><!-- -->
+        <a href="${verifyLink}" style="display:inline-block;padding:14px 32px;background-color:#0B3D2E;background-image:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:15px;">
           Verify Email Address
         </a>
+        <!--<![endif]-->
       </div>
+      <p style="color:#6b7280;font-size:13px;line-height:1.5;margin-top:-8px;">
+        Button not showing? <a href="${verifyLink}" style="color:#0B3D2E;text-decoration:underline;">Click here to verify</a>.
+      </p>
       <p style="color:#9ca3af;font-size:13px;line-height:1.5;">
         If you didn't create an account, you can safely ignore this email.
       </p>
