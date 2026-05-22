@@ -2439,5 +2439,21 @@
     "communityViewLabel": "View community",
     "heroTxYtd": "transactions YTD",
     "heroAvgPpsf": "avg PPSF"
+  },
+  "brochureRequest": {
+    "eyebrow": "Brochure on request",
+    "title": "Get the {name} brochure",
+    "subtitle": "Leave your contact details and we'll send the full project brochure within minutes.",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "Country code",
+    "submitButton": "Send me the brochure",
+    "disclaimer": "By submitting you agree to be contacted by a Binayah agent.",
+    "successTitle": "Thank you!",
+    "successBody": "We've received your request for the {name} brochure. An agent will share it with you shortly.",
+    "closeButton": "Close",
+    "closeAria": "Close",
+    "autoMessage": "Please send me the brochure for {name}."
   }
 }

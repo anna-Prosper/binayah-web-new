@@ -2440,5 +2440,21 @@
     "communityViewLabel": "查看社区",
     "heroTxYtd": "年初至今交易量",
     "heroAvgPpsf": "平均每平方英尺价格"
+  },
+  "brochureRequest": {
+    "eyebrow": "申请项目手册",
+    "title": "获取 {name} 项目手册",
+    "subtitle": "请留下您的联系方式，我们将在几分钟内把完整的项目手册发送给您。",
+    "namePlaceholder": "您的全名",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "国家代码",
+    "submitButton": "发送项目手册",
+    "disclaimer": "提交即表示同意 Binayah 顾问与您联系。",
+    "successTitle": "感谢您！",
+    "successBody": "我们已收到您对 {name} 项目手册的申请，顾问将很快与您联系并发送。",
+    "closeButton": "关闭",
+    "closeAria": "关闭",
+    "autoMessage": "请发送 {name} 项目手册给我。"
   }
 }

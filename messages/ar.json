@@ -2434,5 +2434,21 @@
     "communityViewLabel": "عرض المجتمع",
     "heroTxYtd": "صفقة حتى الآن",
     "heroAvgPpsf": "متوسط السعر لكل قدم"
+  },
+  "brochureRequest": {
+    "eyebrow": "الكتيب عند الطلب",
+    "title": "احصل على كتيب {name}",
+    "subtitle": "اترك بياناتك وسنرسل لك كتيب المشروع الكامل خلال دقائق.",
+    "namePlaceholder": "الاسم الكامل",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "رمز الدولة",
+    "submitButton": "أرسلوا لي الكتيب",
+    "disclaimer": "بإرسالك للنموذج، فإنك توافق على التواصل من قبل وكيل بناية.",
+    "successTitle": "شكراً لك!",
+    "successBody": "تم استلام طلبك للحصول على كتيب {name}. سيتواصل معك أحد وكلائنا قريباً.",
+    "closeButton": "إغلاق",
+    "closeAria": "إغلاق",
+    "autoMessage": "يرجى إرسال كتيب {name}."
   }
 }

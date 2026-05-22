@@ -2435,5 +2435,21 @@
     "communityViewLabel": "Посмотреть район",
     "heroTxYtd": "сделок с начала года",
     "heroAvgPpsf": "средняя цена за кв. фут"
+  },
+  "brochureRequest": {
+    "eyebrow": "Брошюра по запросу",
+    "title": "Получите брошюру проекта {name}",
+    "subtitle": "Оставьте контактные данные — мы пришлём полную брошюру в течение нескольких минут.",
+    "namePlaceholder": "Ваше полное имя",
+    "emailPlaceholder": "your@email.com",
+    "phonePlaceholder": "50 123 4567",
+    "countryCodeAria": "Код страны",
+    "submitButton": "Прислать брошюру",
+    "disclaimer": "Отправляя форму, вы соглашаетесь на связь с агентом Binayah.",
+    "successTitle": "Спасибо!",
+    "successBody": "Мы получили ваш запрос на брошюру проекта {name}. Агент свяжется с вами в ближайшее время.",
+    "closeButton": "Закрыть",
+    "closeAria": "Закрыть",
+    "autoMessage": "Пришлите, пожалуйста, брошюру проекта {name}."
   }
 }
