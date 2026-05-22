@@ -52,12 +52,24 @@ export async function POST(req: NextRequest) {
 
   const existing = await users.findOne(
     { email },
-    { projection: { _id: 1, passwordHash: 1 } }
+    { projection: { _id: 1, passwordHash: 1, emailVerified: 1 } }
   );
 
   if (existing?.passwordHash) {
+    // If they registered with email/password but never verified, offer to
+    // resend the verification email instead of dead-ending them.
+    if (!existing.emailVerified) {
+      return NextResponse.json(
+        {
+          error: "Account exists but is not verified yet.",
+          code: "needs_verification",
+          canResend: true,
+        },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(
-      { error: "Email already registered." },
+      { error: "Email already registered.", code: "already_registered" },
       { status: 409 }
     );
   }
