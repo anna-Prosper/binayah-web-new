@@ -1674,7 +1674,9 @@
       "Apartments": "Апартаменты",
       "Villas": "Виллы",
       "Commercial": "Коммерческая",
-      "Townhouses": "Таунхаусы"
+      "Townhouses": "Таунхаусы",
+      "Penthouses": "Пентхаусы",
+      "Plots": "Участки"
     }
   },
   "propertyComparison": {

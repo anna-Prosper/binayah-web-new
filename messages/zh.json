@@ -1679,7 +1679,9 @@
       "Apartments": "公寓",
       "Villas": "别墅",
       "Commercial": "商业",
-      "Townhouses": "联排别墅"
+      "Townhouses": "联排别墅",
+      "Penthouses": "顶层公寓",
+      "Plots": "土地"
     }
   },
   "propertyComparison": {
