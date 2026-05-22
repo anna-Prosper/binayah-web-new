@@ -4,9 +4,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
+import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { motion } from "framer-motion";
 import { Phone, Mail, Clock, MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -14,8 +16,16 @@ import { useTranslations } from "next-intl";
 export default function ContactPage() {
   const t = useTranslations("contact");
   const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", message: "" });
   const [sending, setSending] = useState(false);
+
+  // Seed country code from geo cookie (set by middleware from Vercel IP).
+  useEffect(() => {
+    const dial = dialFromIso(readGeoCountryCookie());
+    if (dial && dial !== "+971") {
+      setForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,11 +34,16 @@ export default function ContactPage() {
       const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, inquiryType: "General", source: "contact-page" }),
+        body: JSON.stringify({
+          ...form,
+          phone: form.phone ? `${form.countryCode} ${form.phone}` : "",
+          inquiryType: "General",
+          source: "contact-page",
+        }),
       });
       if (!res.ok) throw new Error("Request failed");
       toast({ title: t("successToast") });
-      setForm({ name: "", email: "", phone: "", message: "" });
+      setForm((f) => ({ name: "", email: "", phone: "", countryCode: f.countryCode, message: "" }));
     } catch {
       toast({ title: t("errorToast"), variant: "destructive" });
     } finally {
@@ -106,7 +121,14 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("phone")}</label>
-                    <input type="tel" required pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
+                    <div className="flex gap-2">
+                      <CountryCodeSelect
+                        value={form.countryCode}
+                        onChange={(dial) => setForm({ ...form, countryCode: dial })}
+                        className="px-3 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-w-[180px]"
+                      />
+                      <input type="tel" required pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
+                    </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("message")}</label>
