@@ -35,6 +35,8 @@ export default function SignInClient() {
   const [suPassword, setSuPassword] = useState("");
   const [suShowPw, setSuShowPw] = useState(false);
   const [suError, setSuError] = useState("");
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [resendState, setResendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [suLoading, setSuLoading] = useState(false);
   const [checkEmailAddress, setCheckEmailAddress] = useState("");
 
@@ -68,6 +70,8 @@ export default function SignInClient() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuError("");
+    setNeedsVerification(false);
+    setResendState("idle");
     if (!suName.trim()) {
       setSuError(t("errors.enterName"));
       return;
@@ -89,7 +93,15 @@ export default function SignInClient() {
       });
       if (res.status === 409) {
         setSuLoading(false);
-        setSuError(t("errors.emailTaken"));
+        const data = (await res.json().catch(() => ({}))) as { code?: string; canResend?: boolean };
+        if (data.code === "needs_verification" && data.canResend) {
+          setNeedsVerification(true);
+          setResendState("idle");
+          setSuError(""); // we render a dedicated banner below the form
+        } else {
+          setNeedsVerification(false);
+          setSuError(t("errors.emailTaken"));
+        }
         return;
       }
       if (!res.ok) {
@@ -390,6 +402,43 @@ export default function SignInClient() {
               </div>
               {suError && (
                 <p className="text-sm text-red-500">{suError}</p>
+              )}
+              {needsVerification && (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs space-y-2">
+                  <p className="text-amber-900">
+                    {t("errors.notVerifiedYet")}
+                  </p>
+                  {resendState === "sent" ? (
+                    <p className="text-emerald-700 font-medium">
+                      {t("errors.verificationResent")}
+                    </p>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={resendState === "sending"}
+                      onClick={async () => {
+                        setResendState("sending");
+                        try {
+                          const res = await fetch("/api/auth/resend-verification", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: suEmail }),
+                          });
+                          setResendState(res.ok ? "sent" : "error");
+                        } catch {
+                          setResendState("error");
+                        }
+                      }}
+                      className="inline-flex items-center gap-1.5 text-amber-900 font-semibold underline disabled:opacity-50"
+                    >
+                      {resendState === "sending"
+                        ? t("errors.sending")
+                        : resendState === "error"
+                        ? t("errors.resendFailed")
+                        : t("errors.resendVerification")}
+                    </button>
+                  )}
+                </div>
               )}
               <button
                 type="submit"
