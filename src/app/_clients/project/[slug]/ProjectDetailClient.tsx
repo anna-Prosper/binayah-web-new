@@ -171,13 +171,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>([]);
 
   // Fetch up to 4 real projects in the same community (or by the same
-  // developer if community is empty), excluding this project. Previously
-  // the carousel rendered hardcoded fake items with no image or link.
+  // developer if community is empty), excluding this project. The
+  // backend honours `community`, `q`, and `exclude` query params; if
+  // none match it falls back to the newest projects which is still
+  // better UX than the old hardcoded fake list.
   useEffect(() => {
     const params = new URLSearchParams();
-    if (project.community) params.set("q", project.community);
+    if (project.community) params.set("community", project.community);
     else if (project.developerName) params.set("q", project.developerName);
-    params.set("limit", "8");
+    if (project.slug) params.set("exclude", project.slug);
+    params.set("limit", "6");
     fetch(apiUrl(`/api/projects?${params.toString()}`))
       .then((r) => r.ok ? r.json() : [])
       .then((arr: any[]) => {
