@@ -45,7 +45,7 @@ const WhatWeOffer = () => {
                     <Icon className="h-5 w-5" style={{ color: "#D4A847" }} />
                   </div>
                   <h3 className="text-sm font-bold text-white mb-1 leading-snug">{item.title}</h3>
-                  <p className="text-[11px] text-white/55 line-clamp-2 leading-snug">{item.desc}</p>
+                  <p className="text-[11px] text-white/55 leading-snug">{item.desc}</p>
                 </Link>
               </motion.div>
             );
@@ -56,12 +56,12 @@ const WhatWeOffer = () => {
         <div className="hidden sm:grid grid-cols-2 lg:grid-cols-6 gap-4">
           {offerings.map((item, i) => (
             <motion.div key={item.title} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-              <Link href={item.link} className="group block relative h-[280px] lg:h-[300px] rounded-2xl overflow-hidden">
+              <Link href={item.link} className="group block relative min-h-[280px] lg:min-h-[300px] rounded-2xl overflow-hidden">
                 <Image src={item.image} alt={item.title} fill sizes="(max-width: 1024px) 50vw, 17vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 className="font-bold text-sm lg:text-base text-white mb-1">{item.title}</h3>
-                  <p className="text-white/70 text-xs leading-relaxed line-clamp-2">{item.desc}</p>
+                  <p className="text-white/70 text-xs leading-relaxed">{item.desc}</p>
                 </div>
               </Link>
             </motion.div>
