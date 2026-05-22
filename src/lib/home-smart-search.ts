@@ -286,7 +286,10 @@ export function parseHomeSearchQuery(
     "for", "in", "at", "near", "by", "dubai",
     "aed", "k", "m", "million", "thousand", "budget",
   ]);
-  const queryTokens = normalizedQuery.toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  // normalizeSearchText() slug-encodes whitespace into underscores, so we
+  // must split on both — otherwise "marina apartment" stays glued as one
+  // token "marina_apartment" and gets misclassified as a building name.
+  const queryTokens = normalizedQuery.toLowerCase().split(/[\s_-]+/).filter(w => w.length > 1);
   const hasQuestionWord = queryTokens.some(w => QUESTION_WORDS.has(w));
   const residualTokens = queryTokens.filter(w => !structuredWords.has(w) && !QUESTION_WORDS.has(w) && !/^\d+$/.test(w));
   // Only show building chip when: location matched, no question words, residual ≤ 4 tokens
