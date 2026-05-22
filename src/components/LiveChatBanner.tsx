@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- internal admin/dev-facing labels in live-chat session banner */
 "use client";
 
 import { useEffect, useState } from "react";
