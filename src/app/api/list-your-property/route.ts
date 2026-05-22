@@ -140,7 +140,9 @@ export async function POST(req: NextRequest) {
     at: new Date(),
   });
 
-  const inquiryEmail = process.env.INQUIRY_EMAIL;
+  // CSV format — nodemailer's `to` accepts comma-separated. Defaults to
+  // both operational inboxes when INQUIRY_EMAIL is unset.
+  const inquiryEmail = process.env.INQUIRY_EMAIL || "info@binayah.com, pm@binayah.com";
   if (inquiryEmail) {
     sendMail({
       to: inquiryEmail,
