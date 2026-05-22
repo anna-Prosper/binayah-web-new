@@ -1,50 +1,25 @@
-import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
-import { serverApiUrl, serverFetch } from "@/lib/api";
-import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
 
-export const revalidate = 300;
-
+// /rent is preserved for SEO and direct/external traffic. The unified
+// filter UX lives on /search?intent=rent — sending visitors straight
+// there means Buy, Rent and Off-Plan all share the same filter bar.
 export const metadata = {
   title: "Properties for Rent in Dubai | Binayah Properties",
-  description: "Browse apartments, villas and townhouses for rent in Dubai. Find your perfect rental with Binayah Properties.",
+  description:
+    "Browse apartments, villas and townhouses for rent in Dubai. Find your perfect rental with Binayah Properties.",
 };
-
-const BATCH_SIZE = 9;
 
 export default async function RentPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const t = await getTranslations("rent");
   const sp = await searchParams;
-  const page = Math.max(1, Math.min(50, parseInt(sp.page ?? "1") || 1));
-  const limit = page * BATCH_SIZE;
-
-  let initialListings: any[] = [];
-  let totalCount = 0;
-
-  try {
-    const [listingsRes, countRes] = await Promise.all([
-      serverFetch(serverApiUrl(`/api/listings?listingType=Rent&limit=${limit}`)),
-      serverFetch(serverApiUrl("/api/listings?listingType=Rent&countOnly=1")),
-    ]);
-
-    if (listingsRes.ok) initialListings = await listingsRes.json();
-    if (countRes.ok) totalCount = (await countRes.json()).total ?? 0;
-  } catch (err) {
-    console.warn("[RentPage] API unavailable:", (err as Error).message);
+  const qs = new URLSearchParams({ intent: "rent" });
+  for (const [k, v] of Object.entries(sp)) {
+    if (k === "intent") continue;
+    if (Array.isArray(v)) v.forEach((vv) => qs.append(k, vv));
+    else if (v != null) qs.set(k, v);
   }
-
-  return (
-    <ListingsPageClient
-      initialListings={initialListings}
-      totalCount={totalCount}
-      listingType="Rent"
-      title={t("title")}
-      subtitle={t("subtitle")}
-      initialPage={page}
-      batchSize={BATCH_SIZE}
-    />
-  );
+  redirect(`/search?${qs.toString()}`);
 }
