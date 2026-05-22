@@ -190,6 +190,67 @@ function extractCommunity(unit) {
         return "Your Property";
     return ((_a = unit.split(",")[0]) === null || _a === void 0 ? void 0 : _a.trim()) || "Your Property";
 }
+// Compose a WhatsApp manual-valuation request URL pre-filled with the property
+// details the user typed into the form (plus anything the engine resolved).
+// Sent to Binayah's main support line (+971 54 998 8811) — the valuation-desk
+// number in the navbar CTA is for self-service automated requests, while this
+// fallback hands the user to the team that handles bespoke manual valuations.
+const MANUAL_VALUATION_WA_NUMBER = "971549988811";
+function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
+    const safeForm = form && typeof form === "object" ? form : {};
+    const safeResult = result && typeof result === "object" ? result : {};
+    const pick = (...candidates) => {
+        for (const value of candidates) {
+            const text = String(value ?? "").trim();
+            if (text) return text;
+        }
+        return "";
+    };
+    const propertyName = pick(safeResult.propertyName, safeForm.unit);
+    const community = pick(safeResult.community, safeForm.area);
+    const city = pick(safeResult.city, safeForm.city);
+    const transactionType = pick(safeForm.transactionType).toLowerCase();
+    const bedrooms = pick(safeForm.beds);
+    const size = pick(safeForm.size);
+    const propertyType = pick(safeForm.type);
+    const maids = pick(safeForm.maids);
+
+    const subjectParts = [propertyName, community, city].filter(Boolean);
+    const subject = subjectParts.length
+        ? subjectParts.join(", ")
+        : "the property I tried to value";
+
+    const detailLines = [];
+    if (propertyName) detailLines.push(`• Property: ${propertyName}`);
+    if (community && community.toLowerCase() !== propertyName.toLowerCase()) {
+        detailLines.push(`• Community: ${community}`);
+    }
+    if (city) detailLines.push(`• City: ${city}`);
+    if (propertyType) detailLines.push(`• Type: ${propertyType}`);
+    const bedLabel = formatBedroomsLabel(bedrooms);
+    if (bedLabel) {
+        detailLines.push(`• Bedrooms: ${bedLabel}`);
+    }
+    if (maids && maids.toLowerCase() === "yes") {
+        detailLines.push(`• Maid's room: Yes`);
+    }
+    if (size) detailLines.push(`• Size: ${size}`);
+    if (transactionType) {
+        detailLines.push(`• Looking to: ${transactionType === "rent" ? "rent" : "sell"}`);
+    }
+
+    const messageLines = [
+        `Hi Binayah, I tried the AI valuation for ${subject} but it couldn't find enough data.`,
+        "Could someone prepare a manual valuation? Details:",
+    ];
+    if (detailLines.length) {
+        messageLines.push("", ...detailLines);
+    }
+    messageLines.push("", "Thanks!");
+
+    const message = messageLines.join("\n");
+    return `https://wa.me/${MANUAL_VALUATION_WA_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 // Replace internal/HTTP error wording with copy a non-technical user can act
 // on. Falls through unchanged for messages that are already user-friendly,
 // so server-authored asks (e.g., "Need bedrooms before we can value this.")
@@ -286,6 +347,62 @@ function validateForm(form) {
     }
     return errors;
 }
+// Mirror of normalizeInquiryBedrooms + formatBedroomsLabel from
+// lib/inquiry.js. Kept inline here because binayah-web-new is a separate
+// Next.js package and doesn't share lib/inquiry directly — if the server-
+// side helper changes, update both. Goal: convert "one"/"ONE"/"1 bed"/etc.
+// to a single canonical display form "1 BR" (or "Studio").
+const BEDROOM_WORDS = { studio: "Studio", zero: "Studio", one: "1", two: "2", three: "3", four: "4", five: "5", six: "6", seven: "7", eight: "8", nine: "9", ten: "10" };
+function formatBedroomsLabel(value) {
+    if (value === null || value === undefined) return "";
+    if (typeof value === "number") {
+        if (!Number.isFinite(value) || value < 0) return "";
+        if (value === 0) return "Studio";
+        return `${Math.floor(value)} BR`;
+    }
+    const raw = String(value).trim();
+    if (!raw) return "";
+    const lower = raw.toLowerCase();
+    if (/^studio\b/.test(lower)) return "Studio";
+    if (raw === "0") return "Studio";
+    if (/^\s*7\s*\+\s*$/.test(raw) || /seven\s*plus/i.test(raw)) return "7+ BR";
+    if (/^\d{1,2}$/.test(raw)) return `${raw} BR`;
+    const numericMatch = raw.match(/(\d{1,2})\s*(?:\+|br|bdr|bed|bedroom)/i);
+    if (numericMatch) return `${numericMatch[1]} BR`;
+    const leadingDigit = raw.match(/^\s*(\d{1,2})/);
+    if (leadingDigit) return `${leadingDigit[1]} BR`;
+    for (const [word, digit] of Object.entries(BEDROOM_WORDS)) {
+        if (new RegExp(`\\b${word}\\b`, "i").test(lower)) return digit === "Studio" ? "Studio" : `${digit} BR`;
+    }
+    return "";
+}
+// Build the row of context pills shown under the report headline. Surfaces
+// the inquiry details the user submitted (sale/rent, property type, beds,
+// size, maids) plus the resolved building + community, so a viewer landing
+// on a shared link instantly knows what was actually priced. Empty values
+// are skipped. The propertyName chip prefers the engine-resolved canonical
+// form (passed as the third argument) so the chips match the heading.
+function buildSubjectChips(form, community, propertyName) {
+    const chips = [];
+    const txn = String(form?.transactionType || "").toLowerCase();
+    if (txn === "rent") chips.push("For rent");
+    else if (txn === "buy") chips.push("For sale");
+    if (form?.type) chips.push(form.type);
+    const bedroomsLabel = formatBedroomsLabel(form?.beds);
+    if (bedroomsLabel) chips.push(bedroomsLabel);
+    const size = String(form?.size || "").trim();
+    if (size) {
+        const sizeLabel = /sqft|sq\.?\s*ft|m2|m²/i.test(size) ? size : `${size} sqft`;
+        chips.push(sizeLabel);
+    }
+    if (String(form?.maids || "").toLowerCase() === "yes") chips.push("Maid's room");
+    // Building chip — added BEFORE community so the order reads
+    // specific → general, mirroring the heading.
+    const building = String(propertyName || form?.unit || "").trim();
+    if (building) chips.push(building);
+    if (community) chips.push(community);
+    return chips;
+}
 function mapApiToResult(api, form) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const defaultMovingFactors = DEED_DUMMY_RESULT.movingFactors;
@@ -337,7 +454,7 @@ function mapApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_b = api === null || api === void 0 ? void 0 : api.market) === null || _b === void 0 ? void 0 : _b.countryCode) || "AE") === "AE" ? "UAE" : ((_c = api === null || api === void 0 ? void 0 : api.market) === null || _c === void 0 ? void 0 : _c.countryCode) || "UAE",
-        tags: [form.type, community].filter(Boolean),
+        tags: buildSubjectChips(form, community, propertyName),
         insufficientData,
         fairValueLow: api.estimate_low,
         fairValueHigh: api.estimate_high,
@@ -390,6 +507,21 @@ function mapPreviewApiToResult(api, form) {
         || (form.unit ? String(form.unit).split(",")[0].trim() : "")
         || ""
     );
+    // Insufficient-data detection for the PREVIEW path. Preview responses
+    // never include estimate_low/high at the top level — those are hidden
+    // behind unlock — so we can't reuse the unlocked-path check. Instead,
+    // probe the engine-visible signals that survive into preview shape:
+    // quickSaleRange is the only price band the preview shows in full, and
+    // the engine emits null/null for it whenever no usable cohort existed.
+    // Pair it with an empty rangePreview as a belt-and-braces guard.
+    const previewBag = (api && api.preview && typeof api.preview === "object") ? api.preview : {};
+    const previewQuick = (previewBag.quickSaleRange && typeof previewBag.quickSaleRange === "object") ? previewBag.quickSaleRange : {};
+    const previewRange = Array.isArray(previewBag.rangePreview) ? previewBag.rangePreview : [];
+    const insufficientData =
+        !Array.isArray(api === null || api === void 0 ? void 0 : api.disambiguation_candidates) &&
+        previewQuick.low == null &&
+        previewQuick.high == null &&
+        previewRange.length === 0;
     const previewRows = ((_b = (_a = api.preview) === null || _a === void 0 ? void 0 : _a.comparableRows) !== null && _b !== void 0 ? _b : []).map((row) => {
         var _a;
         return ({
@@ -405,6 +537,7 @@ function mapPreviewApiToResult(api, form) {
         leadId: api.leadId,
         createdAt: api.createdAt,
         accessState: "preview",
+        insufficientData,
         previewRanges: ((_c = api.preview) === null || _c === void 0 ? void 0 : _c.rangePreview) || [],
         sourceCount: Number(((_d = api.preview) === null || _d === void 0 ? void 0 : _d.sourceCount) || 0),
         currency: "AED",
@@ -412,7 +545,7 @@ function mapPreviewApiToResult(api, form) {
         community,
         city: form.city || "Dubai",
         country: (((_e = api === null || api === void 0 ? void 0 : api.market) === null || _e === void 0 ? void 0 : _e.countryCode) || "AE") === "AE" ? "UAE" : ((_f = api === null || api === void 0 ? void 0 : api.market) === null || _f === void 0 ? void 0 : _f.countryCode) || "UAE",
-        tags: [form.type, community].filter(Boolean),
+        tags: buildSubjectChips(form, community, propertyName),
         fairValueLow: null,
         fairValueHigh: null,
         confidence: ((_e = api.preview) === null || _e === void 0 ? void 0 : _e.confidence) || "Low",
@@ -731,6 +864,16 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     // Used to render the inline "we need a bit more info" alert above the
     // form and to focus the first missing field after a needs_more_details.
     const [smartIntakeAlert, setSmartIntakeAlert] = useState(null);
+    // Refinement modal — opens when the AI search comes back as
+    // needs_more_details. Lets the user answer the missing field(s) in a
+    // focused popup instead of being dumped into the manual form below.
+    // Shape: { partialInquiry, missingFields[], originalText, message }
+    const [refinementModal, setRefinementModal] = useState(null);
+    const [refinementBeds, setRefinementBeds] = useState("");
+    const [refinementMaids, setRefinementMaids] = useState("No");
+    const [refinementCity, setRefinementCity] = useState("");
+    const [refinementCommunity, setRefinementCommunity] = useState("");
+    const [refinementUnit, setRefinementUnit] = useState("");
     const [deedFile, setDeedFile] = useState(null);
     const [deedParsing, setDeedParsing] = useState(false);
     const [deedParsed, setDeedParsed] = useState(false);
@@ -787,6 +930,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
     const unlockHighlightTimeoutRef = useRef(null);
     const reportHydrationAttemptedRef = useRef(false);
     const unitInputRef = useRef(null);
+    const citySelectRef = useRef(null);
+    const areaInputRef = useRef(null);
+    const bedsFieldRef = useRef(null);
     const areaSuggestionsRef = useRef(null);
     const buildingSuggestionsRef = useRef(null);
     const setTrackedValues = useCallback((values, source) => {
@@ -1125,24 +1271,27 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
     };
     const scrollToFirstFormError = useCallback((errors) => {
-        // Priority order matches the visual layout of the form so the user is
-        // always scrolled to the FIRST blocking error rather than a later one.
-        // The smart-search input lives above the manual fields and is the
-        // best target when the user typed there — only fall back to the
-        // building input when smart-search isn't focused yet.
-        if (errors.city || errors.area || errors.unit) {
-            const target = smartInputRef.current ?? unitInputRef.current;
-            target?.scrollIntoView({ behavior: "smooth", block: "center" });
-            target?.focus();
-            return;
+        // Scroll to the offending field itself, not the AI search box above
+        // the form (otherwise filling beds at row 2 jumps the page upward).
+        // Priority order matches the visual layout: city → area → unit → beds.
+        let target = null;
+        let shouldFocus = false;
+        if (errors.city) {
+            target = citySelectRef.current;
+            shouldFocus = true;
+        } else if (errors.area) {
+            target = areaInputRef.current;
+            shouldFocus = true;
+        } else if (errors.unit) {
+            target = unitInputRef.current;
+            shouldFocus = true;
+        } else if (errors.beds) {
+            target = bedsFieldRef.current;
         }
-        if (errors.beds) {
-            // Bedrooms sits below city/area/unit — scroll the smart input
-            // into view; the field error renders inline below the picker so
-            // the user can see what's blocking without further navigation.
-            const target = smartInputRef.current ?? unitInputRef.current;
-            target?.scrollIntoView({ behavior: "smooth", block: "center" });
-            return;
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (shouldFocus && typeof target.focus === "function") {
+            target.focus({ preventScroll: true });
         }
     }, []);
     // Translate a server-side inquiry record (the shape /api/valuation/from-text
@@ -1165,6 +1314,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         if (submitting) return;
         setSubmitAttempted(true);
         setSmartIntakeAlert(null);
+        setRefinementModal(null);
 
         const smartText = smartQuery.trim();
         if (smartText) {
@@ -1233,11 +1383,9 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
             if (!response.ok) {
                 throw new Error((data && data.error) || `Request failed (${response.status}).`);
             }
-            // Always reflect what the server understood back into the form so
-            // the user can see + tweak the extracted values regardless of
-            // decision branch. Fallback to current form if no inquiry.
-            const filledForm = data.inquiry ? fillFormFromServerInquiry(data.inquiry) : form;
-
+            // guidance / extraction_failed → keep the inline alert; both are
+            // cases where the user typed something that wasn't a property at
+            // all, so a modal would feel out of place.
             if (data.decision === "guidance") {
                 setSmartIntakeAlert({ kind: "guidance", message: data.replyText || "Please describe the property in more detail." });
                 return;
@@ -1246,30 +1394,32 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                 setGlobalError(data.replyText || "Could not read your message. Please try again.");
                 return;
             }
+            // needs_more_details → open a focused refinement modal instead
+            // of pre-filling the manual form. The modal lets the user
+            // answer just the missing field(s) (commonly bedrooms) without
+            // the confusing dual-state of "AI did its thing AND the form
+            // is now filled too". "Or edit manually" inside the modal is
+            // the explicit opt-out that does fill the form.
             if (data.decision === "needs_more_details") {
-                // Stay on the form, show an inline alert with the server's
-                // ask, scroll the first missing field into view so the user
-                // can complete it inline. Re-submit goes through the manual
-                // path (smartQuery is unchanged but the form has the
-                // extracted values now).
-                setSmartIntakeAlert({
-                    kind: "needs_more_details",
-                    message: data.replyText || data.validationError || "We need a bit more info before we can run the valuation.",
-                    missingFields: Array.isArray(data.missingFields) ? data.missingFields : [],
+                const partial = data.inquiry || {};
+                const missing = Array.isArray(data.missingFields) ? data.missingFields : [];
+                setRefinementBeds(cleanReportField(partial.bedrooms) || "");
+                setRefinementMaids(cleanReportField(partial.maids) || "No");
+                setRefinementCity(cleanReportField(partial.city) || "");
+                setRefinementCommunity(cleanReportField(partial.community || partial.location) || "");
+                setRefinementUnit(cleanReportField(partial.propertyName) || "");
+                setRefinementModal({
+                    partialInquiry: partial,
+                    missingFields: missing,
+                    originalText: text,
+                    message: stripWhatsappSignature(
+                        data.replyText || data.validationError || "We just need a bit more info before we can run the valuation."
+                    ),
                 });
-                if (Array.isArray(data.missingFields) && data.missingFields.length) {
-                    const focusable = { city: "city", community: "area", location: "area", propertyName: "unit", bedrooms: "beds" };
-                    const errs = {};
-                    for (const m of data.missingFields) {
-                        const formKey = focusable[m];
-                        if (formKey) errs[formKey] = `Required to run the valuation.`;
-                    }
-                    setFieldErrors(errs);
-                    scrollToFirstFormError(errs);
-                }
                 return;
             }
             if (data.decision === "ready") {
+                const filledForm = data.inquiry ? fillFormFromServerInquiry(data.inquiry) : form;
                 // Server says we have everything. Stream the valuation.
                 setStep("processing");
                 setActiveProcessStep(0);
@@ -1306,6 +1456,86 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
         }
     };
     // Separate function that also tracks phases (keeps runValuation clean for retries)
+    // Refinement modal handlers — opened when /api/valuation/from-text
+    // returns needs_more_details. Collects only the missing fields
+    // (commonly bedrooms) without dumping the user into the manual form.
+    const closeRefinementModal = useCallback(() => {
+        setRefinementModal(null);
+    }, []);
+    const handleRefinementContinue = useCallback(async () => {
+        const modal = refinementModal;
+        if (!modal || submitting) return;
+        const partial = modal.partialInquiry || {};
+        const apiPayload = {
+            countryCode: partial.countryCode || "AE",
+            transactionType: partial.transactionType || form.transactionType || "buy",
+            propertyName: cleanReportField(refinementUnit) || cleanReportField(partial.propertyName),
+            community: cleanReportField(refinementCommunity) || cleanReportField(partial.community || partial.location),
+            city: cleanReportField(refinementCity) || cleanReportField(partial.city) || "Dubai",
+            propertyType: cleanReportField(partial.propertyType),
+            bedrooms: cleanReportField(refinementBeds) || cleanReportField(partial.bedrooms),
+            maids: refinementMaids || cleanReportField(partial.maids),
+            size: cleanReportField(partial.size),
+            ...(partial.locationId ? { locationId: partial.locationId } : {}),
+        };
+        fillFormFromServerInquiry({
+            propertyName: apiPayload.propertyName,
+            community: apiPayload.community,
+            city: apiPayload.city,
+            propertyType: apiPayload.propertyType,
+            bedrooms: apiPayload.bedrooms,
+            maids: apiPayload.maids,
+            size: apiPayload.size,
+            transactionType: apiPayload.transactionType,
+        });
+        setRefinementModal(null);
+        setSubmitting(true);
+        setStep("processing");
+        setActiveProcessStep(0);
+        try {
+            const { turnstileConfig } = await loadValuationConfig();
+            const turnstileToken = turnstileConfig.enabled ? await requestTurnstileToken() : "";
+            const finalPayload = turnstileToken ? { ...apiPayload, turnstileToken } : apiPayload;
+            await runValuationWithPhases(finalPayload, 1);
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : "Could not process your request.";
+            setGlobalError(humanizeErrorMessage(msg));
+            setStep("form");
+        } finally {
+            setSubmitting(false);
+        }
+    }, [refinementModal, refinementBeds, refinementMaids, refinementCity, refinementCommunity, refinementUnit, submitting, form.transactionType, fillFormFromServerInquiry]);
+    // Explicit opt-out: fill the form with what the server understood and
+    // mark the missing field(s) as errors so the user can correct inline.
+    // Also clear the smart-search text + flip submitAttempted so:
+    //   - the next "Get Quick Valuation" goes through the form, not a
+    //     re-submit of the original AI query (which would just reopen the
+    //     modal in a loop), and
+    //   - the existing live-error-clearing logic removes the red badge
+    //     the moment the user fills the corresponding field.
+    const handleRefinementEditManually = useCallback(() => {
+        const modal = refinementModal;
+        if (!modal) return;
+        const partial = modal.partialInquiry || {};
+        if (partial && Object.keys(partial).length) {
+            fillFormFromServerInquiry(partial);
+        }
+        const missing = Array.isArray(modal.missingFields) ? modal.missingFields : [];
+        if (missing.length) {
+            const focusable = { city: "city", community: "area", location: "area", propertyName: "unit", bedrooms: "beds" };
+            const errs = {};
+            for (const m of missing) {
+                const formKey = focusable[m];
+                if (formKey) errs[formKey] = "Required to run the valuation.";
+            }
+            setFieldErrors(errs);
+            setSubmitAttempted(true);
+            setTimeout(() => scrollToFirstFormError(errs), 50);
+        }
+        setSmartQuery("");
+        setRefinementModal(null);
+    }, [refinementModal, fillFormFromServerInquiry]);
+
     const runValuationWithPhases = async (payload, attempt) => {
         var _a, _b, _c, _d, _e, _f;
         // Abort any in-flight stream before kicking off a new one. Otherwise a
@@ -1793,7 +2023,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                           <div className="min-w-0">
                             <p className="text-xs font-semibold text-[#10231e]">Paste a listing URL</p>
                             <p className="mt-0.5 text-[11px] text-[#66706d] leading-snug">
-                              From PropertyFinder, Bayut, or Dubizzle.
+                              From any major UAE listing portal.
                             </p>
                           </div>
                         </div>
@@ -1979,7 +2209,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       </label>
                       <div className="relative">
                         <MapPin className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-[#66706d] flex-shrink-0"/>
-                        <select value={form.city} onChange={(event) => {
+                        <select ref={citySelectRef} value={form.city} onChange={(event) => {
                 const v = event.target.value;
                 setTrackedValues({ city: v, area: "", unit: "" }, "manual");
                 if (submitAttempted)
@@ -2013,6 +2243,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d] z-10 pointer-events-none"/>
                         <input
+                          ref={areaInputRef}
                           value={form.area}
                           onChange={(e) => {
                             setTrackedValues({ area: e.target.value, unit: "" }, "manual");
@@ -2211,7 +2442,7 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </svg>
                       </div>
                     </div>
-                    <div>
+                    <div ref={bedsFieldRef}>
                       <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
                         {tv("beds")}
                         {/* Bedrooms is required for everything except Plot —
@@ -2360,7 +2591,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#D4A847" }}>{tv("valuationSnapshot")}</p>
               <h2 className="mb-2 text-2xl font-bold sm:text-3xl break-words">{extractCommunity(form.unit)}</h2>
               <p className="text-[#66706d] mb-3">{tv("processingSubtitle")}</p>
-              <span className="inline-block px-3 py-1 rounded-full border border-[#e3ddcf] text-sm font-medium">{form.city}</span>
+              <div className="flex flex-wrap gap-2">
+                {buildSubjectChips(form, form.area, form.unit).map((t) => (
+                  <span key={t} className="inline-block rounded-full border border-[#e3ddcf] px-3 py-1 text-sm font-medium">{t}</span>
+                ))}
+              </div>
 
               {/* Retry notice */}
               {retryCount > 0 && (<div className="mt-4 flex items-center gap-2 text-sm text-[#D4A847]">
@@ -2468,14 +2703,14 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   {tv("insufficientDataTryAnother")}
                 </button>
                 <a
-                  href="https://wa.me/971549988811?text=Hi%2C%20I%20just%20tried%20the%20online%20valuation%20tool%20but%20it%20couldn%27t%20find%20enough%20data.%20Could%20someone%20help%20with%20a%20manual%20valuation%3F"
+                  href={buildManualValuationWhatsAppUrl({ form, result })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(37,211,102,0.25)] transition-transform duration-200 hover:scale-[1.02]"
-                  style={{ background: "linear-gradient(to right, #25D366, #1DA851)" }}
+                  style={{ background: "linear-gradient(to right, #25D366, #1DA851)", color: "#fff" }}
                 >
-                  <MessageCircle className="h-4 w-4"/>
-                  {tv("insufficientDataRequestManual")}
+                  <MessageCircle className="h-4 w-4" style={{ color: "#fff" }}/>
+                  <span style={{ color: "#fff" }}>{tv("insufficientDataRequestManual")}</span>
                 </a>
               </div>
 
@@ -2898,6 +3133,224 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               </div>
             </div>
           </motion.div>)}
+      </AnimatePresence>
+
+      {/* Refinement modal — opens when the AI search needs one more piece
+          of info (most commonly bedrooms). Keeps the user in a single
+          focused interaction instead of dumping them into the manual form. */}
+      <AnimatePresence>
+        {refinementModal ? (
+          <motion.div
+            key="refinement-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-[100] flex items-end justify-center bg-[rgba(11,35,30,0.55)] px-4 py-6 backdrop-blur-sm sm:items-center sm:py-12"
+            onClick={(event) => {
+              if (event.target === event.currentTarget && !submitting) closeRefinementModal();
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="refinement-modal-title"
+          >
+            <motion.div
+              key="refinement-modal-panel"
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="relative flex max-h-[calc(100vh-3rem)] w-full max-w-lg flex-col overflow-hidden rounded-[24px] border border-[#0B3D2E]/15 bg-[linear-gradient(180deg,#FFFFFF_0%,#FCFBF7_100%)] shadow-[0_32px_80px_rgba(15,23,42,0.18)] sm:rounded-[28px]"
+            >
+              <button
+                type="button"
+                aria-label={tv("refinementClose")}
+                disabled={submitting}
+                onClick={closeRefinementModal}
+                className="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full text-[#0B3D2E]/60 transition hover:bg-[#0B3D2E]/8 hover:text-[#0B3D2E] disabled:cursor-wait disabled:opacity-50"
+              >
+                <X className="h-4 w-4"/>
+              </button>
+              {/* Three-section layout: header (fixed) / body (scrolls,
+                  overflow-visible so the bedroom-picker absolute dropdown
+                  can extend past the modal edge) / footer (fixed). */}
+              <div className="flex-none px-5 pb-3 pt-6 sm:px-7 sm:pt-8">
+                <p className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#D4A847]">
+                  {tv("refinementKicker")}
+                </p>
+                <h2 id="refinement-modal-title" className="mt-2 text-xl font-bold leading-tight text-[#0B3D2E] sm:text-2xl">
+                  {refinementModal.missingFields?.includes("bedrooms")
+                    ? tv("refinementTitleBedrooms")
+                    : tv("refinementTitleGeneric")}
+                </h2>
+                {(() => {
+                  const chips = [];
+                  const p = refinementModal.partialInquiry || {};
+                  if (p.propertyName) chips.push(p.propertyName);
+                  if (p.community || p.location) chips.push(p.community || p.location);
+                  if (p.city) chips.push(p.city);
+                  if (p.propertyType) chips.push(p.propertyType);
+                  return chips.length ? (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {chips.map((c) => (
+                        <span key={c} className="inline-flex items-center rounded-full border border-[#0B3D2E]/15 bg-[#0B3D2E]/[0.04] px-2.5 py-1 text-[11px] font-medium text-[#0B3D2E]">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null;
+                })()}
+                <p className="mt-3 text-sm leading-relaxed text-[#66706d]">
+                  {refinementModal.message}
+                </p>
+              </div>
+
+              <div className="min-h-0 flex-1 overflow-y-auto overflow-x-visible px-5 pb-5 pt-2 sm:px-7">
+                <div className="space-y-4">
+                  {refinementModal.missingFields?.includes("bedrooms") ? (
+                    <div className="grid gap-3">
+                      <label className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
+                        {tv("refinementBedroomsLabel")}
+                      </label>
+                      {/* Inline button grid — avoids the BedroomPicker's
+                          floating dropdown getting clipped by the modal's
+                          scroll container. */}
+                      <div className="grid grid-cols-4 gap-2">
+                        {["Studio", "1", "2", "3", "4", "5", "6", "7+"].map((opt) => {
+                          const active = refinementBeds === opt;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => setRefinementBeds(opt)}
+                              className={`h-11 rounded-xl border text-sm font-semibold transition-colors ${
+                                active
+                                  ? "border-[#0B3D2E] bg-[#0B3D2E] text-white shadow-[0_4px_12px_rgba(11,61,46,0.18)]"
+                                  : "border-[#e3ddcf] bg-[#faf7f2] text-[#10231e] hover:border-[#0B3D2E]/30 hover:bg-white"
+                              }`}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-1 flex items-center gap-3">
+                        <span className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[#66706d]">
+                          Maid's room
+                        </span>
+                        <div className="flex gap-2">
+                          {["No", "Yes"].map((opt) => {
+                            const active = (refinementMaids || "No") === opt;
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => setRefinementMaids(opt)}
+                                className={`h-8 rounded-full border px-3 text-xs font-semibold transition-colors ${
+                                  active
+                                    ? "border-[#0B3D2E] bg-[#0B3D2E] text-white"
+                                    : "border-[#e3ddcf] bg-[#faf7f2] text-[#66706d] hover:border-[#0B3D2E]/30"
+                                }`}
+                              >
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                  {refinementModal.missingFields?.includes("city") ? (
+                    <div className="grid gap-2">
+                      <label className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
+                        {tv("refinementCityLabel")}
+                      </label>
+                      <select
+                        value={refinementCity}
+                        onChange={(e) => setRefinementCity(e.target.value)}
+                        className="h-12 w-full appearance-none rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 pr-10 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40"
+                      >
+                        <option value="">{tv("refinementCitySelectPlaceholder")}</option>
+                        {SUPPORTED_CITIES.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : null}
+                  {refinementModal.missingFields?.some((m) => m === "community" || m === "location") ? (
+                    <div className="grid gap-2">
+                      <label className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
+                        {tv("refinementCommunityLabel")}
+                      </label>
+                      <input
+                        type="text"
+                        value={refinementCommunity}
+                        onChange={(e) => setRefinementCommunity(e.target.value)}
+                        placeholder={tv("refinementCommunityPlaceholder")}
+                        className="h-12 w-full rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40"
+                      />
+                    </div>
+                  ) : null}
+                  {refinementModal.missingFields?.includes("propertyName") ? (
+                    <div className="grid gap-2">
+                      <label className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#66706d]">
+                        {tv("refinementBuildingLabel")}
+                      </label>
+                      <input
+                        type="text"
+                        value={refinementUnit}
+                        onChange={(e) => setRefinementUnit(e.target.value)}
+                        placeholder={tv("refinementBuildingPlaceholder")}
+                        className="h-12 w-full rounded-xl border border-[#e3ddcf] bg-[#faf7f2] px-3 text-sm text-[#10231e] outline-none transition-colors hover:border-[rgba(102,112,109,0.3)] focus:border-[#0B3D2E]/40"
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+
+              {(() => {
+                // Block Run valuation until every missing field is filled.
+                const missing = Array.isArray(refinementModal.missingFields)
+                  ? refinementModal.missingFields
+                  : [];
+                const isFilled = (field, value) =>
+                  !missing.includes(field) || String(value || "").trim() !== "";
+                const allFilled =
+                  isFilled("bedrooms", refinementBeds) &&
+                  isFilled("city", refinementCity) &&
+                  isFilled("community", refinementCommunity) &&
+                  isFilled("location", refinementCommunity) &&
+                  isFilled("propertyName", refinementUnit);
+                const blocked = !allFilled;
+                return (
+                  <div className="flex-none border-t border-[#0B3D2E]/8 bg-white/60 px-5 py-4 sm:px-7 sm:py-5">
+                    <div className="flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between sm:gap-3">
+                      <button
+                        type="button"
+                        disabled={submitting || blocked}
+                        onClick={handleRefinementContinue}
+                        title={blocked ? "Select an option above to continue" : undefined}
+                        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0B3D2E] px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(11,61,46,0.25)] transition hover:bg-[#0a3526] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:hover:bg-[#0B3D2E] sm:w-auto"
+                        style={{ color: "#fff" }}
+                      >
+                        <Sparkles className="h-4 w-4" style={{ color: "#fff" }}/>
+                        <span style={{ color: "#fff" }}>{submitting ? tv("refinementWorking") : tv("refinementRunValuation")}</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={submitting}
+                        onClick={handleRefinementEditManually}
+                        className="text-sm font-medium text-[#0B3D2E]/70 underline-offset-4 hover:text-[#0B3D2E] hover:underline disabled:cursor-wait disabled:opacity-60"
+                      >
+                        {tv("refinementEditManually")}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </motion.div>
+          </motion.div>
+        ) : null}
       </AnimatePresence>
 
       <div ref={turnstileContainerRef} className="h-0 overflow-hidden"/>
