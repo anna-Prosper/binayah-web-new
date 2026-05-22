@@ -155,7 +155,7 @@ function SectionHeading({
         </p>
       </div>
       <h2 className="text-2xl font-bold" style={{ color: PULSE_TEXT }}>
-        {title}{italic && <span className="italic font-light"> {italic}</span>}
+        {title}{italic && <span className="font-light"> {italic}</span>}
       </h2>
     </div>
   );
@@ -229,7 +229,7 @@ function WhyEntry({ num, headline, sub, source }: { num: string; headline: strin
       <div>
         <p className="text-xl font-bold leading-snug mb-1" style={{ color: PULSE_TEXT }}>{headline}</p>
         <p className="text-sm leading-relaxed mb-1.5" style={{ color: PULSE_TEXT_MUTED }}>{sub}</p>
-        <p className="text-[10px] italic" style={{ color: `${PULSE_TEXT_MUTED}80` }}>{source}</p>
+        <p className="text-[10px]" style={{ color: `${PULSE_TEXT_MUTED}80` }}>{source}</p>
       </div>
     </div>
   );

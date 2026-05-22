@@ -41,7 +41,7 @@ const CryptoBanner = () => {
           <h2 className="text-white text-lg sm:text-3xl lg:text-[2.5rem] font-bold leading-[1.15]">
             {t("title")}
           </h2>
-          <p className="text-white/80 text-base sm:text-2xl lg:text-[2rem] italic font-light leading-tight mt-0.5">
+          <p className="text-white/80 text-base sm:text-2xl lg:text-[2rem] font-light leading-tight mt-0.5">
             {t("subtitle")}
           </p>
         </div>

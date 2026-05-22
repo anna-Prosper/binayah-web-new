@@ -39,7 +39,7 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
             <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
             <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+              {t("title")} <span className="font-light">{t("titleItalic")}</span>
             </h2>
             <p className="mt-4 text-muted-foreground max-w-lg">
               {t("subtitle")}

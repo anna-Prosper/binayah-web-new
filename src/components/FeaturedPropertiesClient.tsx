@@ -74,7 +74,7 @@ const FeaturedPropertiesClient = ({
               {t("label")}
             </p>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+              {t("title")} <span className="font-light">{t("titleItalic")}</span>
             </h2>
 
             {/* Tab pills */}

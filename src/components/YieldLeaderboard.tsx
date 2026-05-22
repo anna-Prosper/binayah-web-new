@@ -63,7 +63,7 @@ export default function YieldLeaderboard({ rows }: Props) {
             <div>
               <p className="text-sm font-medium text-foreground truncate">{row.area}</p>
               {row.lowConfidence && (
-                <p className="text-[10px] text-muted-foreground/60 italic">{t("thinSample")}</p>
+                <p className="text-[10px] text-muted-foreground/60">{t("thinSample")}</p>
               )}
             </div>
           </div>

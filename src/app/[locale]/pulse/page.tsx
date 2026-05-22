@@ -57,7 +57,7 @@ export default async function PulsePage() {
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs">{t("heroLabel")}</p>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
+            {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
           </h1>
           <p className="text-primary-foreground/70 max-w-2xl text-base sm:text-lg">
             {t("heroSubtitle")}

@@ -81,7 +81,7 @@ const InquirySection = () => {
               {t("label")}
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-5 leading-[1.15]">
-              {t("title")} <span className="italic font-light text-foreground/80">{t("titleItalic")}</span>
+              {t("title")} <span className="font-light text-foreground/80">{t("titleItalic")}</span>
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md leading-relaxed">
               {t("subtitle")}
@@ -130,7 +130,7 @@ const InquirySection = () => {
           <div className="lg:hidden text-center mb-2">
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-[10px] mb-2">{t("label")}</p>
             <h2 className="text-xl font-bold text-foreground mb-1">
-              {t("title")} <span className="italic font-light text-foreground/80">{t("titleItalic")}</span>
+              {t("title")} <span className="font-light text-foreground/80">{t("titleItalic")}</span>
             </h2>
             <p className="text-muted-foreground text-xs">{t("subtitleMobile")}</p>
           </div>

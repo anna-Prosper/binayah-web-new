@@ -67,7 +67,7 @@ const TestimonialsSection = () => {
             {t("label")}
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold">
-            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+            {t("title")} <span className="font-light">{t("titleItalic")}</span>
           </h2>
         </motion.div>
 

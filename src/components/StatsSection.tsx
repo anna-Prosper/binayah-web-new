@@ -37,7 +37,7 @@ const StatsSection = () => {
         </p>
         <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
           <span className="sm:hidden">{t("titleMobile")}</span>
-          <span className="hidden sm:inline">{t("title")}<br /><span className="italic font-light">{t("titleItalic")}</span></span>
+          <span className="hidden sm:inline">{t("title")}<br /><span className="font-light">{t("titleItalic")}</span></span>
         </h2>
         <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
           {t("subtitle")}

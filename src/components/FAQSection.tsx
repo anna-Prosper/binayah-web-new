@@ -34,7 +34,7 @@ export default function FAQSection() {
             {t("label")}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-            {t("title")} <span className="italic font-light">{t("titleItalic")}</span>
+            {t("title")} <span className="font-light">{t("titleItalic")}</span>
           </h2>
         </div>
 

@@ -389,7 +389,7 @@ function LeadRow({
         )}
       </td>
       <td className="px-4 py-3 text-gray-900 font-medium">
-        {lead.name || <span className="text-gray-400 italic">(no name)</span>}
+        {lead.name || <span className="text-gray-400">(no name)</span>}
       </td>
       <td className="px-4 py-3 text-gray-700" onClick={(e) => e.stopPropagation()}>
         {lead.email && (

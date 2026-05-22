@@ -131,7 +131,7 @@ export default function DevelopersPageClient({
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               {t("heroTitle")}{" "}
-              <span className="italic font-light">{t("heroTitleItalic")}</span>
+              <span className="font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("heroSubtitle")}

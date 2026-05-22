@@ -48,7 +48,7 @@ export default function ContactPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("heroLabel")}</p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              {t("heroTitle")} <span className="italic font-light">{t("heroTitleItalic")}</span>
+              {t("heroTitle")} <span className="font-light">{t("heroTitleItalic")}</span>
             </h1>
             <p className="text-primary-foreground/70 max-w-2xl text-lg">
               {t("heroSubtitle")}

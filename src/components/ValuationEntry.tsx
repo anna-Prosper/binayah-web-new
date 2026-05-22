@@ -54,7 +54,7 @@ const ValuationEntry = () => {
         <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">{t("ownerTool")}</p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
           {t("instantProperty")}{" "}
-          <span className="italic font-light">{t("valuationItalic")}</span>
+          <span className="font-light">{t("valuationItalic")}</span>
         </h2>
         <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
           {t("subtitle")}

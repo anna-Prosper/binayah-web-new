@@ -53,7 +53,7 @@ export default function SubscriptionsMobileList({ projects }: { projects: Projec
                   <div key={i} className="px-4 py-3 flex items-center justify-between gap-3 border-b border-gray-50 last:border-b-0">
                     <div className="flex items-center gap-2 min-w-0">
                       <a href={`mailto:${item.email}`} className="text-emerald-700 text-sm hover:underline truncate">
-                        {item.email || <span className="text-gray-300 italic">anonymous</span>}
+                        {item.email || <span className="text-gray-300">anonymous</span>}
                       </a>
                       {item.dupeCount > 1 && (
                         <span className="text-[10px] font-medium text-amber-500 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded-full shrink-0">

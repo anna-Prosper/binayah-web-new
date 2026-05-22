@@ -107,7 +107,7 @@ function ImageBlock({ src, alt, caption }: { src: string; alt: string; caption?:
       <div className="rounded-2xl overflow-hidden aspect-[16/9] bg-muted relative">
         <Image src={src} alt={alt} fill sizes="(max-width: 768px) 100vw, 720px" className="object-cover" loading="lazy" />
       </div>
-      {caption && <figcaption className="text-xs text-muted-foreground mt-2 italic text-center">{caption}</figcaption>}
+      {caption && <figcaption className="text-xs text-muted-foreground mt-2 text-center">{caption}</figcaption>}
     </figure>
   );
 }
@@ -150,7 +150,7 @@ function ChartBlock({ title, bars, caption }: { title?: string; bars: { label: s
             </div>
           ))}
         </div>
-        <p className="text-[10px] sm:text-xs text-muted-foreground text-center mt-3 sm:mt-4 italic">{caption}</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center mt-3 sm:mt-4">{caption}</p>
       </div>
     </div>
   );
@@ -199,7 +199,7 @@ function QuoteBlock({ text, author }: { text: string; author: string }) {
           </div>
         </div>
         <div>
-          <p className="text-sm sm:text-base text-foreground font-semibold leading-relaxed italic">"{text}"</p>
+          <p className="text-sm sm:text-base text-foreground font-semibold leading-relaxed">"{text}"</p>
           <p className="text-xs text-muted-foreground mt-2">— {author}</p>
         </div>
       </div>

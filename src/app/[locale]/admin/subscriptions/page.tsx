@@ -160,7 +160,7 @@ export default async function AdminSubscriptionsPage() {
                       <tr key={i} className="hover:bg-gray-50/60 transition-colors">
                         <td className="px-5 py-3 flex items-center gap-2">
                           <a href={`mailto:${item.email}`} className="text-emerald-700 hover:underline">
-                            {item.email || <span className="text-gray-300 italic">anonymous</span>}
+                            {item.email || <span className="text-gray-300">anonymous</span>}
                           </a>
                           {item.dupeCount > 1 && (
                             <span className="text-[10px] font-medium text-amber-500 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded-full">
