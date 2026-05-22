@@ -686,9 +686,9 @@ function SearchContent() {
                 </div>
               )}
 
-              {listings.length > 0 && (
+              {status !== "Off-Plan" && listings.length > 0 && (
                 <div ref={listingsSectionRef} className="scroll-mt-24">
-                  {(status === "All" || status === "Off-Plan") && projects.length > 0 && (
+                  {status === "All" && projects.length > 0 && (
                     <>
                       <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building className="h-5 w-5 text-primary" />{t("secondaryProperties")}<span className="text-sm font-normal text-muted-foreground">({listingCount})</span></h2>
                       {listingCount > PAGE_SIZE && (
