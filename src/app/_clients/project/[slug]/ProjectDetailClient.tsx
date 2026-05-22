@@ -59,6 +59,8 @@ function toMapEmbedSrc(rawUrl: string): string {
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
+import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 
 type NearbyAttraction = { name: string; type: string; distance: string };
 type FAQ = { question: string; answer: string };
@@ -164,6 +166,16 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+
+  // Seed the country code from the geo cookie (set by middleware from
+  // Vercel's x-vercel-ip-country). Only fires once on mount and only if the
+  // user hasn't already typed a phone — never override an active edit.
+  useEffect(() => {
+    const dial = dialFromIso(readGeoCountryCookie());
+    if (dial && dial !== "+971") {
+      setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
+    }
+  }, []);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const [origin, setOrigin] = useState("");
@@ -1688,18 +1700,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         <div>
                           <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("phoneNumber")} *</label>
                           <div className="flex gap-2">
-                            <select
+                            <CountryCodeSelect
                               value={enquiryForm.countryCode}
-                              onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
-                              className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
-                            >
-                              <option value="+971">+971</option>
-                              <option value="+44">+44</option>
-                              <option value="+1">+1</option>
-                              <option value="+91">+91</option>
-                              <option value="+86">+86</option>
-                              <option value="+7">+7</option>
-                            </select>
+                              onChange={(dial) => setEnquiryForm(f => ({ ...f, countryCode: dial }))}
+                              className="h-11 rounded-xl bg-muted/30 border border-border/50 px-3 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all max-w-[180px]"
+                            />
                             <input
                               type="tel"
                               required
@@ -2223,16 +2228,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       placeholder="Your name"
                     />
                     <div className="flex gap-2">
-                      <select
+                      <CountryCodeSelect
                         value={enquiryForm.countryCode}
-                        onChange={(e) => setEnquiryForm(f => ({ ...f, countryCode: e.target.value }))}
-                        className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none appearance-none"
-                      >
-                        <option value="+971">+971</option>
-                        <option value="+44">+44</option>
-                        <option value="+1">+1</option>
-                        <option value="+91">+91</option>
-                      </select>
+                        onChange={(dial) => setEnquiryForm(f => ({ ...f, countryCode: dial }))}
+                        className="h-11 rounded-xl bg-muted/30 border border-border/50 px-2.5 text-sm text-foreground outline-none max-w-[160px]"
+                      />
                       <input
                         type="tel" required
                         value={enquiryForm.phone}

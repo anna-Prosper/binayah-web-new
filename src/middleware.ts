@@ -91,6 +91,17 @@ function setLocaleCookie(response: NextResponse, locale: string) {
   });
 }
 
+function setGeoCookie(response: NextResponse, request: NextRequest) {
+  const country = request.headers.get("x-vercel-ip-country");
+  if (country && /^[A-Z]{2}$/.test(country)) {
+    response.cookies.set("BINAYAH_GEO", country, {
+      maxAge: COOKIE_MAX_AGE,
+      path: "/",
+      sameSite: "lax",
+    });
+  }
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -108,6 +119,7 @@ export function middleware(request: NextRequest) {
     setLocaleCookie(response, prefixMatch[1]);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
     return response;
   }
 
@@ -118,6 +130,7 @@ export function middleware(request: NextRequest) {
     setLocaleCookie(response, "en");
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
     return response;
   }
 
@@ -127,6 +140,7 @@ export function middleware(request: NextRequest) {
     const response = NextResponse.redirect(url);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
     return response;
   }
 
@@ -141,6 +155,7 @@ export function middleware(request: NextRequest) {
     setLocaleCookie(response, acceptLang);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
     return response;
   }
 
@@ -156,13 +171,15 @@ export function middleware(request: NextRequest) {
     setLocaleCookie(response, geoLocale);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
     return response;
   }
 
   const response = intlMiddleware(request);
   setLocaleCookie(response, "en");
   response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+  applySecurityHeaders(response, request);
+  setGeoCookie(response, request);
   return response;
 }
 
