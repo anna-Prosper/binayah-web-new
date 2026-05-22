@@ -42,7 +42,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     { label: t("communities"), href: "/communities" },
     { label: t("areas"), href: "/areas" },
     { label: t("valuation"), href: "/valuation" },
-    { label: t("guides"), href: "/news" },
+    { label: t("guides"), href: "/pulse/guides" },
   ];
   const moreNav = [
     { label: t("services"), href: "/services" },

@@ -9,12 +9,14 @@ import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { motion } from "framer-motion";
 import { Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const router = useRouter();
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", message: "" });
   const [sending, setSending] = useState(false);
@@ -42,8 +44,10 @@ export default function ContactPage() {
         }),
       });
       if (!res.ok) throw new Error("Request failed");
-      toast({ title: t("successToast") });
-      setForm((f) => ({ name: "", email: "", phone: "", countryCode: f.countryCode, message: "" }));
+      // Hard navigation to /contact/thank-you so analytics registers a
+      // discrete conversion page view (GA4, Clarity, Vercel Analytics)
+      // rather than a soft in-page toast that's invisible to tracking.
+      router.push("/contact/thank-you");
     } catch {
       toast({ title: t("errorToast"), variant: "destructive" });
     } finally {

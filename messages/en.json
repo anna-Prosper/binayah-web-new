@@ -519,7 +519,18 @@
     "errorToast": "Failed to send. Please try again or call us directly.",
     "hours": "Mon - Sat: 9:00 AM - 6:00 PM",
     "whatsappLabel": "WhatsApp",
-    "officeLabel": "Office"
+    "officeLabel": "Office",
+    "thankYou": {
+      "eyebrow": "Message Received",
+      "title": "Thank you — we'll be in touch",
+      "subtitle": "A Binayah property consultant will respond to your enquiry within 24 hours.",
+      "nextStepsTitle": "What happens next",
+      "step1": "Our team reviews your enquiry and matches you with the right consultant.",
+      "step2": "We'll reach out via your preferred channel — usually within a few hours during business days.",
+      "step3": "Schedule a viewing, video tour, or chat through your options — no obligation.",
+      "browseProperties": "Browse properties",
+      "backHome": "Back to home"
+    }
   },
   "footer": {
     "tagline": "Dubai's trusted real estate partner for buying, selling, and renting since 2007.",

@@ -525,7 +525,18 @@
     "errorToast": "发送失败，请重试，或直接致电我们。",
     "hours": "周一至周六 9:00 – 18:00",
     "whatsappLabel": "WhatsApp",
-    "officeLabel": "办公室"
+    "officeLabel": "办公室",
+    "thankYou": {
+      "eyebrow": "已收到您的留言",
+      "title": "感谢您 — 我们会尽快联系",
+      "subtitle": "Binayah Properties 顾问将在 24 小时内回复您的咨询。",
+      "nextStepsTitle": "接下来",
+      "step1": "团队审核您的咨询并指派合适的顾问。",
+      "step2": "我们将通过您喜欢的方式联系您 — 通常在工作日数小时内。",
+      "step3": "安排看房、视频导览或讨论方案 — 无任何义务。",
+      "browseProperties": "浏览房源",
+      "backHome": "返回首页"
+    }
   },
   "footer": {
     "tagline": "自 2007 年起，深耕迪拜，值得托付的买房、卖房、租房合作伙伴。",
