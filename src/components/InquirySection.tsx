@@ -152,10 +152,10 @@ const InquirySection = () => {
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
                   <CheckCircle2 className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">{t("sentTitle") || "Inquiry received!"}</h3>
-                <p className="text-muted-foreground text-sm max-w-xs mb-6">{t("sentMessage") || "Our team will get back to you within 24 hours."}</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">{t("sentTitle")}</h3>
+                <p className="text-muted-foreground text-sm max-w-xs mb-6">{t("sentMessage")}</p>
                 <button type="button" onClick={() => setSent(false)} className="flex items-center gap-1.5 text-sm text-primary font-medium hover:underline">
-                  <RotateCcw className="h-3.5 w-3.5" /> Send another inquiry
+                  <RotateCcw className="h-3.5 w-3.5" /> {t("sendAnother")}
                 </button>
               </motion.div>
             )}
