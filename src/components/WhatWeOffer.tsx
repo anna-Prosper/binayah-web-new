@@ -39,8 +39,8 @@ const WhatWeOffer = () => {
           {offerings.map((item, i) => {
             const Icon = item.icon;
             return (
-              <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
-                <Link href={item.link} className="group block bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-200 active:scale-95">
+              <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="h-full">
+                <Link href={item.link} className="group flex flex-col h-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-200 active:scale-95">
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-2.5">
                     <Icon className="h-5 w-5" style={{ color: "#D4A847" }} />
                   </div>
