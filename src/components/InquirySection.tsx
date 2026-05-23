@@ -158,22 +158,15 @@ const InquirySection = () => {
               </div>
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
-                <div className="flex gap-1.5">
+                <div className="flex gap-2">
                   <CountryCodeSelect
                     ariaLabel={t("phone") + " country code"}
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
-                    className={`${inputClasses} !px-2 cursor-pointer flex-shrink-0`}
-                    style={{ width: "88px" }}
+                    className="bg-background border border-border/80 rounded-xl px-2 py-3.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all cursor-pointer flex-shrink-0 hover:border-border"
+                    style={{ width: "112px" }}
                   />
-                  <input
-                    value={form.countryCode}
-                    onChange={(e) => { const v = e.target.value.replace(/[^0-9+]/g, ""); setForm({ ...form, countryCode: v.startsWith("+") ? v : "+" + v }); }}
-                    className={`${inputClasses} !w-[64px] flex-shrink-0 text-center !px-2`}
-                    placeholder="+971"
-                    maxLength={5}
-                  />
-                  <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter a valid phone number (digits only)" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
+                  <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                 </div>
               </div>
               <div>
@@ -213,22 +206,15 @@ const InquirySection = () => {
               <div className="grid sm:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-2">
                     <CountryCodeSelect
                       ariaLabel={t("phone") + " country code"}
                       value={form.countryCode}
                       onChange={(dial) => setForm({ ...form, countryCode: dial })}
-                      className={`${inputClasses} !px-2 cursor-pointer flex-shrink-0`}
-                      style={{ width: "88px" }}
+                      className="bg-background border border-border/80 rounded-xl px-2 py-3.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all cursor-pointer flex-shrink-0 hover:border-border"
+                      style={{ width: "112px" }}
                     />
-                    <input
-                      value={form.countryCode}
-                      onChange={(e) => { const v = e.target.value.replace(/[^0-9+]/g, ""); setForm({ ...form, countryCode: v.startsWith("+") ? v : "+" + v }); }}
-                      className={`${inputClasses} !w-[64px] flex-shrink-0 text-center !px-2`}
-                      placeholder="+971"
-                      maxLength={5}
-                    />
-                    <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter a valid phone number (digits only)" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
+                    <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                   </div>
                 </div>
                 <div>
