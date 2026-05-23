@@ -17,8 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     : "";
   const communityStr = project.community ? ` | ${project.community}` : "";
   const titleFallback = `${project.name}${priceStr}${communityStr} | Binayah`;
-  const descFallback = project.shortOverview ||
-    `${project.name} is an off-plan project${project.community ? ` in ${project.community}` : ""} by ${project.developerName || "a leading developer"} in Dubai.${project.startingPrice ? ` Starting from ${project.currency || "AED"} ${(project.startingPrice / 1_000_000).toFixed(1)}M.` : ""} Explore floor plans, payment plans and availability.`;
+  const descFallback = `${project.name} is an off-plan project${project.community ? ` in ${project.community}` : ""} by ${project.developerName || "a leading developer"} in Dubai.${project.startingPrice ? ` Starting from AED ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}.` : ""} Explore floor plans, payment plans and availability.`;
 
   return {
     title: seo.metaTitle || titleFallback,

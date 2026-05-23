@@ -271,7 +271,7 @@ const PropertyMatcher = () => {
             </div>
           )}
 
-          <div className="p-4 sm:p-8 min-h-[300px] sm:min-h-[380px]">
+          <div className="p-4 sm:p-8">
             <AnimatePresence mode="wait">
               {!showResult ? (
                 <motion.div key={step} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.2 }}>
