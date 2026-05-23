@@ -473,7 +473,6 @@ const HeroSection = () => {
               {t("headline")}<br />
               <span className="font-light">{t("headlineSub")}</span>
             </h1>
-            <p className="sm:hidden text-white/50 text-xs font-light">{t("mobileSubtitle")}</p>
           </motion.div>
         </motion.div>
 
