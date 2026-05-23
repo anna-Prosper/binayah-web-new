@@ -27,9 +27,11 @@ interface SecondaryListing {
   imageGallery?: string[];
 }
 
+const DIRHAM = '\u{1ECBC}';
 function formatPrice(price: number | null | undefined, currency = "AED"): string {
   if (!price) return "Price on request";
-  return `${currency} ${Math.round(price).toLocaleString("en-AE")}`;
+  const symbol = currency === "AED" ? DIRHAM : currency;
+  return `${symbol} ${Math.round(price).toLocaleString("en-AE")}`;
 }
 
 function getLabel(p: SecondaryListing): string {
@@ -81,21 +83,23 @@ const FeaturedPropertiesClient = ({
             <div className="flex gap-2 mt-3">
               <button
                 onClick={() => setTab("sale")}
-                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-all ${
                   tab === "sale"
-                    ? "bg-primary text-primary-foreground"
+                    ? "text-white"
                     : "border border-border text-muted-foreground bg-background hover:bg-muted"
                 }`}
+                style={tab === "sale" ? { background: "linear-gradient(135deg, #D4A847, #B8922F)" } : {}}
               >
                 {t("forSale")}
               </button>
               <button
                 onClick={() => setTab("rent")}
-                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-all ${
                   tab === "rent"
-                    ? "bg-primary text-primary-foreground"
+                    ? "text-white"
                     : "border border-border text-muted-foreground bg-background hover:bg-muted"
                 }`}
+                style={tab === "rent" ? { background: "linear-gradient(135deg, #D4A847, #B8922F)" } : {}}
               >
                 {t("forRent")}
               </button>

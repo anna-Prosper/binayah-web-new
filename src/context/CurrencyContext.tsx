@@ -36,10 +36,13 @@ function normalizeAed(price: number, isProject: boolean): number {
   return price;
 }
 
+const CURRENCY_DISPLAY: Record<string, string> = { AED: '\u{1ECBC}' };
+
 function formatAmount(amount: number, symbol: string): string {
-  if (amount >= 1_000_000) return `${symbol} ${(amount / 1_000_000).toFixed(1)}M`;
-  if (amount >= 1_000) return `${symbol} ${Math.round(amount / 1_000).toLocaleString()}K`;
-  return `${symbol} ${Math.round(amount).toLocaleString()}`;
+  const display = CURRENCY_DISPLAY[symbol] ?? symbol;
+  if (amount >= 1_000_000) return `${display} ${(amount / 1_000_000).toFixed(1)}M`;
+  if (amount >= 1_000) return `${display} ${Math.round(amount / 1_000).toLocaleString()}K`;
+  return `${display} ${Math.round(amount).toLocaleString()}`;
 }
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {

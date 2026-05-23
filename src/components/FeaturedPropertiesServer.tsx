@@ -28,9 +28,11 @@ interface Listing {
   _source?: string;
 }
 
+const DIRHAM = '\u{1ECBC}';
 function formatPrice(price?: number, currency = "AED") {
   if (!price) return "Price on request";
-  return `${currency} ${Math.round(price).toLocaleString("en-AE")}`;
+  const symbol = currency === "AED" ? DIRHAM : currency;
+  return `${symbol} ${Math.round(price).toLocaleString("en-AE")}`;
 }
 
 export default function FeaturedPropertiesClient({ listings }: { listings: Listing[] }) {
