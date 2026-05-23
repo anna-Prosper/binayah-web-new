@@ -10,7 +10,7 @@ const CryptoBanner = () => {
   const t = useTranslations("home.crypto");
   const tCommon = useTranslations("common");
   return (
-  <section className="relative overflow-hidden my-2 sm:my-0">
+  <section className="relative overflow-hidden my-2 sm:my-6">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">
       {/* Background image — next/image serves correctly-sized WebP, saving ~400KB */}
       <Image

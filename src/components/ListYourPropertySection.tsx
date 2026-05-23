@@ -18,7 +18,6 @@ const BENEFIT_ICONS = [
   { Icon: HeadphonesIcon, key: "feature3" },
   { Icon: Users, key: "feature4" },
   { Icon: CheckCircle2, key: "feature5" },
-  { Icon: BarChart3, key: "feature6" },
 ];
 
 export default function ListYourPropertySection() {
@@ -149,9 +148,9 @@ export default function ListYourPropertySection() {
               </div>
             </div>
 
-            {/* Floating badge */}
+            {/* Floating badge — desktop only; on mobile it would overflow and cover content */}
             <div
-              className="absolute -bottom-4 -left-4 flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border border-white/10"
+              className="hidden sm:flex absolute -bottom-4 -left-4 items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border border-white/10"
               style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
             >
               <CheckCircle2 className="h-5 w-5 text-white flex-shrink-0" />
