@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown } from "lucide-react";
+import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2, RotateCcw } from "lucide-react";
 import { useState, useEffect } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -39,7 +39,6 @@ const InquirySection = () => {
       setSent(true);
       setSending(false);
       setForm({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
-      setTimeout(() => setSent(false), 4000);
     }, 600);
   };
 
@@ -144,6 +143,23 @@ const InquirySection = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="rounded-2xl p-6 sm:p-9 shadow-lg border border-border/60 bg-card/80 backdrop-blur-xl lg:mt-4 pb-10 sm:pb-9"
           >
+            {sent && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center py-10 sm:py-16 text-center"
+              >
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                  <CheckCircle2 className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">{t("sentTitle") || "Inquiry received!"}</h3>
+                <p className="text-muted-foreground text-sm max-w-xs mb-6">{t("sentMessage") || "Our team will get back to you within 24 hours."}</p>
+                <button type="button" onClick={() => setSent(false)} className="flex items-center gap-1.5 text-sm text-primary font-medium hover:underline">
+                  <RotateCcw className="h-3.5 w-3.5" /> Send another inquiry
+                </button>
+              </motion.div>
+            )}
+            {!sent && (<>
             {/* Mobile: compact layout */}
             <div className="sm:hidden space-y-4 mb-4">
               <div className="grid grid-cols-2 gap-3">
@@ -243,12 +259,11 @@ const InquirySection = () => {
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)", boxShadow: "0 4px 24px rgba(11,61,46,0.35)" }}>
               {sending ? (
                 <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }} className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />
-              ) : sent ? (
-                <>{t("sent")}</>
               ) : (
                 <><Send className="h-4 w-4" /> {t("sendButton")} <ArrowRight className="h-3.5 w-3.5 opacity-60" /></>
               )}
             </motion.button>
+            </>)}
           </motion.form>
         </div>
       </div>
