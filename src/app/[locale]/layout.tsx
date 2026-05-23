@@ -17,6 +17,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import LiveChatBanner from "@/components/LiveChatBanner";
 import GlobalImageFallback from "@/components/GlobalImageFallback";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const GA_ID = "G-9FZKWX04K3";
 const CLARITY_ID = "wuee1w39pj";
@@ -176,6 +177,7 @@ export default async function LocaleLayout({
               <CompareProvider>
                 <SubscriptionsProvider>
                   {children}
+                  <WhatsAppButton />
                   <FavoritesDrawer />
                   <GlobalImageFallback />
                   <Analytics />
