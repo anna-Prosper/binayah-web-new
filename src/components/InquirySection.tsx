@@ -144,22 +144,36 @@ const InquirySection = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="rounded-2xl p-6 sm:p-9 shadow-lg border border-border/60 bg-card/80 backdrop-blur-xl lg:mt-4 pb-10 sm:pb-9"
           >
-            {/* Mobile: compact 3-field layout */}
+            {/* Mobile: compact layout */}
             <div className="sm:hidden space-y-4 mb-4">
-              <div>
-                <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("fullName")}</label>
-                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder={t("namePlaceholder")} />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("fullName")}</label>
+                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClasses} placeholder={t("namePlaceholder")} />
+                </div>
+                <div>
+                  <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("email")}</label>
+                  <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClasses} placeholder={t("emailPlaceholder")} />
+                </div>
               </div>
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
-                <div className="flex gap-2">
+                <div className="flex gap-1.5">
                   <CountryCodeSelect
                     ariaLabel={t("phone") + " country code"}
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
-                    className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[160px]`}
+                    className={`${inputClasses} !px-2 cursor-pointer flex-shrink-0`}
+                    style={{ width: "88px" }}
                   />
-                  <input required type="tel" pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
+                  <input
+                    value={form.countryCode}
+                    onChange={(e) => { const v = e.target.value.replace(/[^0-9+]/g, ""); setForm({ ...form, countryCode: v.startsWith("+") ? v : "+" + v }); }}
+                    className={`${inputClasses} !w-[64px] flex-shrink-0 text-center !px-2`}
+                    placeholder="+971"
+                    maxLength={5}
+                  />
+                  <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter a valid phone number (digits only)" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                 </div>
               </div>
               <div>
@@ -199,14 +213,22 @@ const InquirySection = () => {
               <div className="grid sm:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5">
                     <CountryCodeSelect
                       ariaLabel={t("phone") + " country code"}
                       value={form.countryCode}
                       onChange={(dial) => setForm({ ...form, countryCode: dial })}
-                      className={`${inputClasses} !w-auto !px-3 cursor-pointer max-w-[180px]`}
+                      className={`${inputClasses} !px-2 cursor-pointer flex-shrink-0`}
+                      style={{ width: "88px" }}
                     />
-                    <input required type="tel" pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`${inputClasses} flex-1`} placeholder="50 123 4567" />
+                    <input
+                      value={form.countryCode}
+                      onChange={(e) => { const v = e.target.value.replace(/[^0-9+]/g, ""); setForm({ ...form, countryCode: v.startsWith("+") ? v : "+" + v }); }}
+                      className={`${inputClasses} !w-[64px] flex-shrink-0 text-center !px-2`}
+                      placeholder="+971"
+                      maxLength={5}
+                    />
+                    <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter a valid phone number (digits only)" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                   </div>
                 </div>
                 <div>

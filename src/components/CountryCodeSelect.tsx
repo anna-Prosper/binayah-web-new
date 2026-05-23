@@ -8,6 +8,7 @@ interface Props {
   value: string;
   onChange: (dial: string) => void;
   className?: string;
+  style?: React.CSSProperties;
   ariaLabel?: string;
 }
 
@@ -28,7 +29,7 @@ const PREFERRED_ISO_PER_DIAL: Record<string, string> = {
   "+599": "CW",
 };
 
-export default function CountryCodeSelect({ value, onChange, className, ariaLabel }: Props) {
+export default function CountryCodeSelect({ value, onChange, className, style, ariaLabel }: Props) {
   const id = useId();
 
   const options = useMemo(() => {
@@ -52,10 +53,11 @@ export default function CountryCodeSelect({ value, onChange, className, ariaLabe
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={className}
+      style={style}
     >
       {options.map((c) => (
-        <option key={c.iso} value={c.dial}>
-          {flagEmoji(c.iso)} {c.dial} {c.name}
+        <option key={c.iso} value={c.dial} title={c.name}>
+          {flagEmoji(c.iso)} {c.dial}
         </option>
       ))}
     </select>
