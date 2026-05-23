@@ -56,17 +56,16 @@ const WhatsAppButton = () => {
           <Phone className="h-4 w-4" />
           {t("call")}
         </a>
-        <button
-          onClick={() => {
-            trackClick("chat-open");
-            const chatBtn = document.querySelector<HTMLButtonElement>('[data-chat-trigger]');
-            if (chatBtn) chatBtn.click();
-          }}
+        <a
+          href="https://wa.me/971549988811?text=Hi, I'd like more information"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackClick("whatsapp")}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full border-2 border-primary/30 text-primary font-bold text-[13px] active:scale-[0.97] transition-all"
         >
           <MessageCircle className="h-4 w-4" />
           {t("liveChat")}
-        </button>
+        </a>
       </div>
     </div>
 

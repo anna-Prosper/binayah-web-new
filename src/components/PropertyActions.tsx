@@ -134,24 +134,6 @@ export function CardActions({ propertyId, slug, title, type = "property" }: Card
         <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
       </button>
 
-      {/* Compare */}
-      {type === "property" && (
-        <button
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!cmpFull) toggleCmp(propertyId); }}
-          disabled={cmpFull}
-          title={cmpFull ? "Max 3 properties" : isCmp ? "Remove from comparison" : "Compare"}
-          aria-label={cmpFull ? "Max 3 properties for comparison" : isCmp ? "Remove from comparison" : "Add to comparison"}
-          className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-110 ${
-            isCmp
-              ? "bg-[#1A7A5A] text-white"
-              : cmpFull
-                ? "bg-white/50 text-foreground/30 cursor-not-allowed"
-                : "bg-white/90 text-foreground/70 hover:text-[#1A7A5A]"
-          }`}
-        >
-          <ArrowLeftRight className="h-3.5 w-3.5" />
-        </button>
-      )}
 
       {/* Share */}
       <div className="relative">
