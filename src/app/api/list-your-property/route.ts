@@ -5,6 +5,7 @@ import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { sendMail } from "@/lib/mailer";
 import { notifyNewLead } from "@/lib/leads/notify";
+import { encrypt, fieldHash } from "@/lib/encryption";
 
 const VALID_PROPERTY_TYPES = [
   "Apartment",
@@ -102,18 +103,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const rawEmail = (session.user.email || "").toLowerCase().trim();
+  const rawPhone = (phone || "").replace(/[\s\-.()]/g, "");
   const doc = {
     userId: session.user.id,
-    userEmail: session.user.email,
-    userName: session.user.name,
+    userEmail: encrypt(rawEmail),
+    emailH: fieldHash(rawEmail),
+    userName: encrypt(session.user.name || ""),
     propertyType,
     listingType,
     community,
     bedrooms: bedrooms !== null && bedrooms !== undefined && bedrooms !== "" ? Number(bedrooms) : null,
     areaSqft: areaSqft !== null && areaSqft !== undefined && areaSqft !== "" ? Number(areaSqft) : null,
     askingPrice: askingPrice !== null && askingPrice !== undefined && askingPrice !== "" ? Number(askingPrice) : null,
-    description: description || null,
-    phone,
+    description: description ? encrypt(description) : null,
+    phone: phone ? encrypt(phone) : null,
+    phoneH: rawPhone ? fieldHash(rawPhone) : undefined,
     status: "under_review",
     createdAt: new Date(),
   };

@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { isAdminSession } from "@/lib/admin-auth";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { decrypt } from "@/lib/encryption";
 import AdminHeader from "../AdminHeader";
 import SubmissionsMobileList from "./SubmissionsMobileList";
 
@@ -59,12 +60,12 @@ export default async function AdminSubmissionsPage() {
     const status = STATUS_CONFIG[raw] ?? STATUS_CONFIG.under_review;
     return {
       id: String(s._id),
-      userEmail: (s.userEmail as string) || "",
-      phone: (s.phone as string) || "",
+      userEmail: decrypt(s.userEmail as string) || "",
+      phone: decrypt(s.phone as string) || "",
       propertyType: (s.propertyType as string) || "",
       community: (s.community as string) || "",
       askingPrice: s.askingPrice ? `AED ${Number(s.askingPrice).toLocaleString()}` : "",
-      description: (s.description as string) || "",
+      description: decrypt(s.description as string) || "",
       date: formatDate(s.createdAt),
       statusLabel: status.label,
       statusClassName: status.className,

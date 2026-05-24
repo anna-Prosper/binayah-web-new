@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { isAdminSession } from "@/lib/admin-auth";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { decrypt } from "@/lib/encryption";
 import AdminHeader from "../AdminHeader";
 import SubscriptionsMobileList from "./SubscriptionsMobileList";
 import CopyEmailsButton from "./CopyEmailsButton";
@@ -53,9 +54,10 @@ export default async function AdminSubscriptionsPage() {
     const slug = (s.slug as string) || "unknown";
     const projectName = (s.projectName as string) || slug;
     if (!byProject[slug]) byProject[slug] = { name: projectName, map: new Map() };
-    const emailKey = ((s.email as string) || "").toLowerCase();
+    const emailKey = (s.emailH as string) || ((s.email as string) || "").toLowerCase();
+    const decryptedEmail = decrypt(s.email as string) || "";
     if (!byProject[slug].map.has(emailKey)) {
-      byProject[slug].map.set(emailKey, { email: (s.email as string) || "", createdAt: s.createdAt, dupeCount: 1 });
+      byProject[slug].map.set(emailKey, { email: decryptedEmail, createdAt: s.createdAt, dupeCount: 1 });
     } else {
       byProject[slug].map.get(emailKey)!.dupeCount++;
     }

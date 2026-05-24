@@ -7,6 +7,7 @@
 
 import type { Collection, Document } from "mongodb";
 import clientPromise from "@/lib/mongodb";
+import { decrypt, fieldHash } from "@/lib/encryption";
 import type {
   LeadSource,
   LeadStatus,
@@ -59,10 +60,10 @@ function mapInquiry(doc: Document): UnifiedLead {
     id: `inquiry:${doc._id}`,
     source: "inquiry",
     channel,
-    name: String(doc.name || ""),
-    email: doc.email || undefined,
-    phone: doc.phone || undefined,
-    message: doc.message || undefined,
+    name: decrypt(doc.name as string) || "",
+    email: doc.email ? decrypt(doc.email as string) : undefined,
+    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
+    message: doc.message ? decrypt(doc.message as string) : undefined,
     property: doc.propertySlug
       ? { slug: doc.propertySlug, title: doc.propertyTitle }
       : undefined,
@@ -79,9 +80,9 @@ function mapNewsletter(doc: Document): UnifiedLead {
     id: `newsletter:${doc._id}`,
     source: "newsletter",
     channel: String(doc.source || "newsletter"),
-    name: String(doc.name || ""),
-    email: doc.email,
-    phone: doc.phone || undefined,
+    name: decrypt(doc.name as string) || "",
+    email: doc.email ? decrypt(doc.email as string) : undefined,
+    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
     intent: Array.isArray(doc.intents) ? doc.intents : undefined,
     budget:
       doc.budgetMin != null || doc.budgetMax != null
@@ -97,9 +98,9 @@ function mapNewsletter(doc: Document): UnifiedLead {
 }
 
 function mapListProperty(doc: Document): UnifiedLead {
-  const name = doc.userName || doc.ownerName || doc.name || "";
-  const email = doc.userEmail || doc.ownerEmail || doc.email;
-  const phone = doc.phone || doc.ownerPhone;
+  const name = decrypt(doc.userName as string) || decrypt(doc.ownerName as string) || decrypt(doc.name as string) || "";
+  const email = decrypt((doc.userEmail || doc.ownerEmail || doc.email) as string) || undefined;
+  const phone = decrypt((doc.phone || doc.ownerPhone) as string) || undefined;
   const community = doc.community || doc.location || undefined;
   const message = [
     doc.listingType ? `For: ${doc.listingType}` : null,
@@ -107,7 +108,7 @@ function mapListProperty(doc: Document): UnifiedLead {
     doc.bedrooms != null ? `Beds: ${doc.bedrooms}` : null,
     doc.areaSqft ? `Area: ${doc.areaSqft} sqft` : null,
     doc.askingPrice ? `Asking: AED ${Number(doc.askingPrice).toLocaleString()}` : null,
-    doc.description ? `Notes: ${doc.description}` : null,
+    doc.description ? `Notes: ${decrypt(doc.description as string)}` : null,
   ]
     .filter(Boolean)
     .join(" | ");
@@ -133,9 +134,9 @@ function mapProjectSubscribe(doc: Document): UnifiedLead {
     id: `project-subscribe:${doc._id}`,
     source: "project-subscribe",
     channel: "project-watch",
-    name: String(doc.name || doc.userName || ""),
-    email: doc.email,
-    phone: doc.phone || undefined,
+    name: decrypt(doc.name as string) || decrypt(doc.userName as string) || "",
+    email: doc.email ? decrypt(doc.email as string) : undefined,
+    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
     project: doc.slug ? { slug: doc.slug, name: doc.projectName } : undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
@@ -154,9 +155,10 @@ function mapProjectSubscribe(doc: Document): UnifiedLead {
 interface SourceMeta {
   collection: string;
   mapper: (doc: Document) => UnifiedLead;
+  // Non-PII fields safe for regex search (PII fields are encrypted; use HMAC hashes instead)
   searchFields: string[];
-  // Map a community filter to the right field for this source (some use community,
-  // some use location, newsletter uses areas array).
+  emailHashField?: string;
+  phoneHashField?: string;
   communityFilter?: (community: string) => Document;
 }
 
@@ -164,7 +166,9 @@ const SOURCE_META: Record<LeadSource, SourceMeta> = {
   inquiry: {
     collection: "inquiries",
     mapper: mapInquiry,
-    searchFields: ["name", "email", "phone", "message"],
+    searchFields: ["propertyTitle", "propertySlug"],
+    emailHashField: "emailH",
+    phoneHashField: "phoneH",
     communityFilter: (community) => ({
       $or: [
         { propertyTitle: { $regex: community, $options: "i" } },
@@ -175,13 +179,17 @@ const SOURCE_META: Record<LeadSource, SourceMeta> = {
   newsletter: {
     collection: "marketreportsubscriptions",
     mapper: mapNewsletter,
-    searchFields: ["name", "email", "phone"],
+    searchFields: [],
+    emailHashField: "emailH",
+    phoneHashField: "phoneH",
     communityFilter: (community) => ({ areas: { $regex: community, $options: "i" } }),
   },
   "list-property": {
     collection: "property_submissions",
     mapper: mapListProperty,
-    searchFields: ["userName", "userEmail", "phone", "name", "email"],
+    searchFields: ["community", "propertyType"],
+    emailHashField: "emailH",
+    phoneHashField: "phoneH",
     communityFilter: (community) => ({
       $or: [
         { community: { $regex: community, $options: "i" } },
@@ -192,7 +200,8 @@ const SOURCE_META: Record<LeadSource, SourceMeta> = {
   "project-subscribe": {
     collection: "project_subscriptions",
     mapper: mapProjectSubscribe,
-    searchFields: ["name", "userName", "email", "phone", "projectName"],
+    searchFields: ["projectName", "slug"],
+    emailHashField: "emailH",
   },
 };
 
@@ -216,10 +225,16 @@ function buildSourceFilter(
     conditions.push({ createdAt });
   }
   if (filters.q) {
-    const orFields = meta.searchFields.map((f) => ({
-      [f]: { $regex: filters.q, $options: "i" },
-    }));
-    conditions.push({ $or: orFields });
+    const q = filters.q.trim();
+    const isEmail = q.includes("@") && /^[^\s@]+@[^\s@]+/.test(q);
+    const isPhone = /^\+?[\d\s\-.()]{7,}$/.test(q);
+    if (isEmail && meta.emailHashField) {
+      conditions.push({ [meta.emailHashField]: fieldHash(q) });
+    } else if (isPhone && meta.phoneHashField) {
+      conditions.push({ [meta.phoneHashField]: fieldHash(q.replace(/[\s\-.()]/g, "")) });
+    } else if (meta.searchFields.length > 0) {
+      conditions.push({ $or: meta.searchFields.map((f) => ({ [f]: { $regex: q, $options: "i" } })) });
+    }
   }
   if (filters.community && meta.communityFilter) {
     conditions.push(meta.communityFilter(filters.community));

@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { isAdminSession } from "@/lib/admin-auth";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { decrypt } from "@/lib/encryption";
 import AdminHeader from "../AdminHeader";
 import InquiriesMobileList from "./InquiriesMobileList";
 
@@ -48,12 +49,12 @@ export default async function AdminInquiriesPage() {
   // Serialize for client component (remove ObjectId, convert dates)
   const serialized = inquiries.map((row) => ({
     id: String(row._id),
-    name: (row.name as string) || "",
-    email: (row.email as string) || "",
-    phone: (row.phone as string) || "",
+    name: decrypt(row.name as string) || "",
+    email: decrypt(row.email as string) || "",
+    phone: decrypt(row.phone as string) || "",
     source: (row.source as string) || "",
     type: (row.type as string) || "",
-    message: (row.message as string) || "",
+    message: decrypt(row.message as string) || "",
     date: formatDate(row.createdAt),
   }));
 

@@ -5,6 +5,7 @@
 
 import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
+import { decrypt } from "@/lib/encryption";
 import type {
   LeadNote,
   LeadPatchInput,
@@ -89,10 +90,10 @@ function rawToUnified(source: LeadSource, doc: Record<string, unknown>): Unified
       return {
         ...common,
         channel: String(doc.source ?? doc.inquiryType ?? "contact-form"),
-        name: String(doc.name ?? ""),
-        email: doc.email as string | undefined,
-        phone: doc.phone as string | undefined,
-        message: doc.message as string | undefined,
+        name: decrypt(doc.name as string) || "",
+        email: doc.email ? decrypt(doc.email as string) : undefined,
+        phone: doc.phone ? decrypt(doc.phone as string) : undefined,
+        message: doc.message ? decrypt(doc.message as string) : undefined,
         property: doc.propertySlug
           ? { slug: doc.propertySlug as string, title: doc.propertyTitle as string }
           : undefined,
@@ -103,9 +104,9 @@ function rawToUnified(source: LeadSource, doc: Record<string, unknown>): Unified
       return {
         ...common,
         channel: String(doc.source ?? "newsletter"),
-        name: String(doc.name ?? ""),
-        email: doc.email as string | undefined,
-        phone: doc.phone as string | undefined,
+        name: decrypt(doc.name as string) || "",
+        email: doc.email ? decrypt(doc.email as string) : undefined,
+        phone: doc.phone ? decrypt(doc.phone as string) : undefined,
         intent: intents,
         budget:
           doc.budgetMin != null || doc.budgetMax != null
@@ -118,19 +119,19 @@ function rawToUnified(source: LeadSource, doc: Record<string, unknown>): Unified
       return {
         ...common,
         channel: "list-your-property",
-        name: String(doc.userName ?? doc.ownerName ?? doc.name ?? ""),
-        email: (doc.userEmail ?? doc.ownerEmail ?? doc.email) as string | undefined,
-        phone: (doc.phone ?? doc.ownerPhone) as string | undefined,
-        message: doc.description as string | undefined,
+        name: decrypt(doc.userName as string) || decrypt(doc.ownerName as string) || decrypt(doc.name as string) || "",
+        email: (doc.userEmail || doc.ownerEmail || doc.email) ? decrypt((doc.userEmail || doc.ownerEmail || doc.email) as string) : undefined,
+        phone: (doc.phone || doc.ownerPhone) ? decrypt((doc.phone || doc.ownerPhone) as string) : undefined,
+        message: doc.description ? decrypt(doc.description as string) : undefined,
         community: (doc.community ?? doc.location) as string | undefined,
       };
     case "project-subscribe":
       return {
         ...common,
         channel: "project-watch",
-        name: String(doc.userName ?? doc.name ?? ""),
-        email: doc.email as string | undefined,
-        phone: doc.phone as string | undefined,
+        name: decrypt(doc.userName as string) || decrypt(doc.name as string) || "",
+        email: doc.email ? decrypt(doc.email as string) : undefined,
+        phone: doc.phone ? decrypt(doc.phone as string) : undefined,
         project: doc.slug
           ? { slug: doc.slug as string, name: doc.projectName as string }
           : undefined,

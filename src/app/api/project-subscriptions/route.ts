@@ -6,6 +6,7 @@ import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { notifyNewLead } from "@/lib/leads/notify";
+import { encrypt, fieldHash, decrypt } from "@/lib/encryption";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,7 +34,7 @@ async function getCollections() {
 
   // Ensure indexes (idempotent)
   await Promise.all([
-    subscriptions.createIndex({ email: 1, slug: 1 }, { unique: true }),
+    subscriptions.createIndex({ emailH: 1, slug: 1 }, { unique: true, sparse: true }),
     subscriptions.createIndex({ userId: 1, slug: 1 }),
     subscriptions.createIndex({ unsubscribeToken: 1 }, { unique: true, sparse: true }),
     notifications.createIndex({ userId: 1, createdAt: -1 }),
@@ -117,18 +118,22 @@ export async function POST(req: NextRequest) {
   try {
     const { subscriptions, notifications } = await getCollections();
 
-    // Check for existing subscription
-    const existing = await subscriptions.findOne({ email, slug });
+    // Check for existing subscription (support both new emailH and legacy plaintext email)
+    const emailH = fieldHash(email);
+    const existing = await subscriptions.findOne({
+      $and: [{ slug }, { $or: [{ emailH }, { email }] }],
+    });
     if (existing) {
       return NextResponse.json({ ok: true, alreadySubscribed: true });
     }
 
-    // Create subscription row
+    // Create subscription row — store encrypted email + HMAC hash for lookups
     const unsubscribeToken = crypto.randomBytes(24).toString("hex");
     const now = new Date();
     await subscriptions.insertOne({
       userId,
-      email,
+      email: encrypt(email),
+      emailH,
       slug,
       projectName,
       createdAt: now,
@@ -227,8 +232,9 @@ export async function DELETE(req: NextRequest) {
 
   try {
     const { subscriptions } = await getCollections();
+    // Support both new emailH and legacy plaintext email for deletion
     await subscriptions.deleteOne({
-      $or: [{ userId, slug }, { email, slug }],
+      $and: [{ slug }, { $or: [{ userId }, { emailH: fieldHash(email) }, { email }] }],
     });
     return NextResponse.json({ ok: true });
   } catch (err) {
