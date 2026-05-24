@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { isAdminSession } from "@/lib/admin-auth";
 import clientPromise from "@/lib/mongodb";
 import AdminHeader from "./AdminHeader";
+import UserActionsStrip from "./UserActionsStrip";
 
 export default async function AdminLandingPage() {
   if (!(await isAdminSession())) {
@@ -147,22 +148,13 @@ export default async function AdminLandingPage() {
         {/* User Action Stats — last 30 days */}
         <div className="mt-10">
           <h3 className="text-base font-semibold text-gray-700 mb-4">User Actions — Last 30 Days</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[
-              { key: "whatsapp", label: "WhatsApp Clicks", color: "#25D366" },
-              { key: "phone", label: "Phone Clicks", color: "#D4A847" },
-              { key: "chat-open", label: "Chat Opens", color: "#6366f1" },
-              { key: "inquiry", label: "Inquiries (30d)", color: "#1A7A5A", value: recentInquiries },
-              { key: "view", label: "Property Views", color: "#64748b" },
-            ].map((stat) => (
-              <div key={stat.key} className="bg-white rounded-2xl border border-gray-200 p-4">
-                <div className="text-2xl font-bold tabular-nums" style={{ color: stat.color }}>
-                  {(stat.value ?? trackStats[stat.key] ?? 0).toLocaleString()}
-                </div>
-                <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          <UserActionsStrip stats={[
+            { key: "whatsapp", label: "WhatsApp Clicks", color: "#25D366", value: trackStats["whatsapp"] ?? 0 },
+            { key: "phone", label: "Phone Clicks", color: "#D4A847", value: trackStats["phone"] ?? 0 },
+            { key: "chat-open", label: "Chat Opens", color: "#6366f1", value: trackStats["chat-open"] ?? 0 },
+            { key: "inquiry", label: "Inquiries (30d)", color: "#1A7A5A", value: recentInquiries },
+            { key: "view", label: "Property Views", color: "#64748b", value: trackStats["view"] ?? 0 },
+          ]} />
         </div>
       </main>
     </div>
