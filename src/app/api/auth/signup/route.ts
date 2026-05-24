@@ -4,6 +4,7 @@ import crypto from "crypto";
 import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/mailer";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { encrypt, fieldHash } from "@/lib/encryption";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_RE = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
@@ -50,8 +51,9 @@ export async function POST(req: NextRequest) {
   const db = client.db("binayah_web_new_dev");
   const users = db.collection("users");
 
+  const emailH = fieldHash(email);
   const existing = await users.findOne(
-    { email },
+    { $or: [{ emailH }, { email }] },
     { projection: { _id: 1, passwordHash: 1, emailVerified: 1 } }
   );
 
@@ -81,15 +83,16 @@ export async function POST(req: NextRequest) {
     // Google-only user — attach password, keep emailVerified as-is (already verified via Google)
     await users.updateOne(
       { _id: existing._id },
-      { $set: { passwordHash, name } }
+      { $set: { passwordHash, name: encrypt(name) ?? name, emailH } }
     );
     userId = existing._id;
     // Google users already have emailVerified set — send welcome instead of verify email
     return NextResponse.json({ ok: true, verified: true });
   } else {
     const result = await users.insertOne({
-      email,
-      name,
+      email: encrypt(email) ?? email,
+      emailH,
+      name: encrypt(name) ?? name,
       passwordHash,
       emailVerified: null,
       createdAt: new Date(),

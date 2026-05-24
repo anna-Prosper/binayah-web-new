@@ -3,6 +3,7 @@ import crypto from "crypto";
 import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/mailer";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { decrypt, fieldHash } from "@/lib/encryption";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOKEN_TTL_HOURS = 24;
@@ -42,8 +43,9 @@ export async function POST(req: NextRequest) {
   const users = db.collection("users");
   const tokens = db.collection("email_verification_tokens");
 
+  const emailH = fieldHash(email);
   const user = await users.findOne(
-    { email },
+    { $or: [{ emailH }, { email }] },
     { projection: { _id: 1, name: 1, emailVerified: 1, passwordHash: 1 } }
   );
 
@@ -68,7 +70,7 @@ export async function POST(req: NextRequest) {
 
   const baseUrl = process.env.NEXTAUTH_URL || "https://www.binayah.ae";
   const verifyLink = `${baseUrl}/api/auth/verify-email?token=${rawToken}`;
-  const name = String(user.name || "there");
+  const name = decrypt(user.name as string) || String(user.name || "there");
 
   const html = `
     <div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#fff;">

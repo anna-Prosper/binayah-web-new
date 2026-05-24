@@ -3,6 +3,7 @@ import crypto from "crypto";
 import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/mailer";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { fieldHash } from "@/lib/encryption";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,8 +34,9 @@ export async function POST(req: NextRequest) {
     const users = db.collection("users");
     const tokens = db.collection("password_reset_tokens");
 
+    const emailH = fieldHash(email);
     const user = await users.findOne(
-      { email },
+      { $or: [{ emailH }, { email }] },
       { projection: { _id: 1 } }
     );
 

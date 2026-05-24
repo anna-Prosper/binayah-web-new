@@ -1,14 +1,15 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { ObjectId } from "mongodb";
 import clientPromise from "./mongodb";
 import { checkRateLimit } from "./rateLimit";
+import { decrypt, fieldHash } from "./encryption";
+import { EncryptedMongoDBAdapter } from "./encrypted-adapter";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(clientPromise, { databaseName: "binayah_web_new_dev" }),
+  adapter: EncryptedMongoDBAdapter(clientPromise, { databaseName: "binayah_web_new_dev" }),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -32,8 +33,9 @@ export const authOptions: NextAuthOptions = {
 
           const client = await clientPromise;
           const db = client.db("binayah_web_new_dev");
+          const emailH = fieldHash(email);
           const user = await db.collection("users").findOne(
-            { email },
+            { $or: [{ emailH }, { email }] },
             { projection: { _id: 1, email: 1, name: 1, image: 1, passwordHash: 1, emailVerified: 1 } }
           );
           if (!user || !user.passwordHash) return null;
@@ -42,8 +44,8 @@ export const authOptions: NextAuthOptions = {
           if (!valid) return null;
           return {
             id: String(user._id),
-            email: user.email as string,
-            name: (user.name as string) || null,
+            email: decrypt(user.email as string) || email,
+            name: user.name ? decrypt(user.name as string) || null : null,
             image: (user.image as string) || null,
           };
         } catch (err: any) {
