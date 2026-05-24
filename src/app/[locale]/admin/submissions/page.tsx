@@ -75,7 +75,7 @@ export default async function AdminSubmissionsPage() {
     <div className="min-h-screen bg-gray-50">
       <AdminHeader
         title="Property Submissions"
-        backHref="/en/admin"
+        backHref="/admin"
         name={name ?? "Admin"}
         email={email}
         avatar={avatar ?? null}

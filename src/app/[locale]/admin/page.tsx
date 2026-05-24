@@ -43,7 +43,7 @@ export default async function AdminLandingPage() {
 
   const cards = [
     {
-      href: "/en/admin/leads",
+      href: "/admin/leads",
       label: "All Leads",
       description: "Unified view of every lead across all sources",
       count: inquiryCount + submissionCount + subscriberCount,
@@ -57,7 +57,7 @@ export default async function AdminLandingPage() {
       ),
     },
     {
-      href: "/en/admin/inquiries",
+      href: "/admin/inquiries",
       label: "Inquiries",
       description: "Contact & property inquiries from visitors",
       count: inquiryCount,
@@ -71,7 +71,7 @@ export default async function AdminLandingPage() {
       ),
     },
     {
-      href: "/en/admin/submissions",
+      href: "/admin/submissions",
       label: "Property Submissions",
       description: "List-your-property form submissions",
       count: submissionCount,
@@ -85,7 +85,7 @@ export default async function AdminLandingPage() {
       ),
     },
     {
-      href: "/en/admin/subscriptions",
+      href: "/admin/subscriptions",
       label: "Project Subscribers",
       description: "Users subscribed to project updates",
       count: subscriberCount,

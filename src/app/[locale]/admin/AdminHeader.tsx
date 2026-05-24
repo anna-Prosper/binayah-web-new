@@ -110,7 +110,7 @@ export default function AdminHeader({ title, backHref, name, email, avatar }: Ad
 
               {/* Navigation */}
               <a
-                href="/en/admin"
+                href="/admin"
                 className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
@@ -132,7 +132,7 @@ export default function AdminHeader({ title, backHref, name, email, avatar }: Ad
 
               <div className="border-t border-gray-100 mt-1 pt-1">
                 <a
-                  href="/api/auth/signout?callbackUrl=/en/admin"
+                  href="/api/auth/signout?callbackUrl=/admin"
                   className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

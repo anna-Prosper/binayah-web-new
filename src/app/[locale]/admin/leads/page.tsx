@@ -29,7 +29,7 @@ export default async function AdminLeadsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AdminHeader title="Leads" backHref="/en/admin" name={name} email={email} avatar={avatar} />
+      <AdminHeader title="Leads" backHref="/admin" name={name} email={email} avatar={avatar} />
       <LeadsClient />
     </div>
   );
