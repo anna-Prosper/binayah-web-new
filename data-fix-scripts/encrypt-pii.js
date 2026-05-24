@@ -6,6 +6,8 @@
 // The script is idempotent: values already prefixed with "enc:" are skipped.
 // Run again safely at any time.
 
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const { MongoClient } = require("mongodb");
 const { createCipheriv, createHmac, randomBytes } = require("crypto");
 
@@ -104,6 +106,11 @@ async function main() {
         { raw: "email", hash: "emailH" },
         { raw: "phone", hash: "phoneH" },
       ],
+    },
+    {
+      name: "users",
+      fields: ["email", "name"],
+      hashFields: [{ raw: "email", hash: "emailH" }],
     },
   ];
 
