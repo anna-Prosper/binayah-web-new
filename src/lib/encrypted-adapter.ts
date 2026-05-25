@@ -42,7 +42,6 @@ export function EncryptedMongoDBAdapter(client: ClientPromise, options?: Adapter
     ...base,
 
     async createUser(user) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const created = await base.createUser(encryptUserFields(user as AdapterUser) as any);
       return decryptUserFields(created);
     },
