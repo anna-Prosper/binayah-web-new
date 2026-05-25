@@ -47,11 +47,12 @@ const notoArabic = Noto_Sans_Arabic({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
 
-const verificationOther: Record<string, string> = {};
-if (process.env.BING_VERIFICATION_CODE) verificationOther["msvalidate.01"] = process.env.BING_VERIFICATION_CODE;
-if (process.env.YANDEX_VERIFICATION_CODE) verificationOther["yandex-verification"] = process.env.YANDEX_VERIFICATION_CODE;
-const verificationGoogle = process.env.GOOGLE_VERIFICATION_CODE;
-const hasVerification = !!verificationGoogle || Object.keys(verificationOther).length > 0;
+const OG_LOCALE: Record<string, string> = {
+  en: "en_AE",
+  ar: "ar_AE",
+  ru: "ru_RU",
+  zh: "zh_CN",
+};
 
 // Tells every browser the site is designed for light only — stops mobile
 // browsers (Samsung Internet, Android Chrome with system dark mode, etc.)
@@ -61,80 +62,96 @@ export const viewport: Viewport = {
   themeColor: "#0B3D2E",
 };
 
-export const metadata: Metadata = {
-  // 56 chars — within recommended 50–60 range
-  title: "Binayah Properties — Dubai Real Estate & Investments",
-  // 154 chars — within recommended 120–160 range
-  description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
-  metadataBase: new URL(siteUrl),
-  alternates: {
-    canonical: "/",
-    languages: {
-      en: "/en",
-      ar: "/ar",
-      ru: "/ru",
-      zh: "/zh",
-      "x-default": "/en",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  const verificationOther: Record<string, string> = {};
+  if (process.env.BING_VERIFICATION_CODE) verificationOther["msvalidate.01"] = process.env.BING_VERIFICATION_CODE;
+  if (process.env.YANDEX_VERIFICATION_CODE) verificationOther["yandex-verification"] = process.env.YANDEX_VERIFICATION_CODE;
+  const verificationGoogle = process.env.GOOGLE_VERIFICATION_CODE;
+  const hasVerification = !!verificationGoogle || Object.keys(verificationOther).length > 0;
+
+  return {
+    // 56 chars — within recommended 50–60 range
+    title: "Binayah Properties — Dubai Real Estate & Investments",
+    // 154 chars — within recommended 120–160 range
+    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        en: "/en",
+        ar: "/ar",
+        ru: "/ru",
+        zh: "/zh",
+        "x-default": "/en",
+      },
     },
-  },
-  keywords: [
-    "Dubai real estate",
-    "Dubai properties",
-    "buy property Dubai",
-    "Dubai apartments for sale",
-    "Dubai villas for rent",
-    "off-plan Dubai",
-    "Dubai property investment",
-    "Binayah Properties",
-  ],
-  authors: [{ name: "Binayah Properties" }],
-  creator: "Binayah Properties",
-  publisher: "Binayah Properties",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    keywords: [
+      "Dubai real estate",
+      "Dubai properties",
+      "buy property Dubai",
+      "Dubai apartments for sale",
+      "Dubai villas for rent",
+      "off-plan Dubai",
+      "Dubai property investment",
+      "Binayah Properties",
+    ],
+    authors: [{ name: "Binayah Properties" }],
+    creator: "Binayah Properties",
+    publisher: "Binayah Properties",
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon.png" },
-    ],
-    apple: "/icon.png",
-  },
-  openGraph: {
-    title: "Binayah Properties — Dubai Real Estate & Investments",
-    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
-    type: "website",
-    url: siteUrl,
-    images: [
-      {
-        url: "/assets/og-image.webp",
-        width: 1200,
-        height: 630,
-        alt: "Binayah Properties — Dubai Real Estate",
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Binayah Properties — Dubai Real Estate & Investments",
-    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
-    images: ["/assets/og-image.webp"],
-  },
-  ...(hasVerification && {
-    verification: {
-      ...(verificationGoogle ? { google: verificationGoogle } : {}),
-      ...(Object.keys(verificationOther).length > 0 ? { other: verificationOther } : {}),
     },
-  }),
-};
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/icon.png" },
+      ],
+      apple: "/icon.png",
+    },
+    openGraph: {
+      title: "Binayah Properties — Dubai Real Estate & Investments",
+      description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+      type: "website",
+      siteName: "Binayah Properties",
+      url: `${siteUrl}/${locale}`,
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [
+        {
+          url: "/assets/og-image.webp",
+          width: 1200,
+          height: 630,
+          alt: "Binayah Properties — Dubai Real Estate",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Binayah Properties — Dubai Real Estate & Investments",
+      description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+      images: ["/assets/og-image.webp"],
+    },
+    ...(hasVerification && {
+      verification: {
+        ...(verificationGoogle ? { google: verificationGoogle } : {}),
+        ...(Object.keys(verificationOther).length > 0 ? { other: verificationOther } : {}),
+      },
+    }),
+  };
+}
 
 export default async function LocaleLayout({
   children,
