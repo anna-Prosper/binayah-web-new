@@ -4,7 +4,15 @@ import { computeLeadStats } from "@/lib/leads/stats";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/admin/leads/stats
+function parseDate(value: string | null, endOfDay = false): Date | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return undefined;
+  if (endOfDay && /^\d{4}-\d{2}-\d{2}$/.test(value)) d.setUTCHours(23, 59, 59, 999);
+  return d;
+}
+
+// GET /api/admin/leads/stats?from=2026-01-01&to=2026-05-25
 // Federated lead analytics: source/status breakdown, 30-day histogram,
 // pipeline funnel + conversion rates, top communities, top properties,
 // avg time-to-first-contact. Auth: NextAuth admin-allowlist.
@@ -14,11 +22,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const stats = await computeLeadStats();
+    const sp = req.nextUrl.searchParams;
+    const from = parseDate(sp.get("from"));
+    const to = parseDate(sp.get("to"), true);
+    const stats = await computeLeadStats({ from, to });
     return NextResponse.json(stats, {
       headers: {
-        // Short cache to absorb dashboard polling without thrashing Mongo.
-        "Cache-Control": "private, max-age=60",
+        "Cache-Control": from || to ? "no-store" : "private, max-age=60",
       },
     });
   } catch (err) {

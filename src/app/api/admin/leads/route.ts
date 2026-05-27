@@ -30,10 +30,12 @@ function parseCsv<T extends string>(value: string | null, valid: readonly T[]): 
   return parts.length ? parts : undefined;
 }
 
-function parseDate(value: string | null): Date | undefined {
+function parseDate(value: string | null, endOfDay = false): Date | undefined {
   if (!value) return undefined;
   const d = new Date(value);
-  return isNaN(d.getTime()) ? undefined : d;
+  if (isNaN(d.getTime())) return undefined;
+  if (endOfDay && /^\d{4}-\d{2}-\d{2}$/.test(value)) d.setUTCHours(23, 59, 59, 999);
+  return d;
 }
 
 // GET /api/admin/leads
@@ -64,7 +66,7 @@ export async function GET(req: NextRequest) {
     community: sp.get("community") || undefined,
     assignedTo: sp.get("assignedTo") || undefined,
     from: parseDate(sp.get("from")),
-    to: parseDate(sp.get("to")),
+    to: parseDate(sp.get("to"), true),
     page: Math.max(1, parseInt(sp.get("page") || "1") || 1),
     limit: Math.max(1, Math.min(200, parseInt(sp.get("limit") || "50") || 50)),
     sort,

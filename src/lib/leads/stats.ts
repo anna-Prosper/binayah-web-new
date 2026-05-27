@@ -25,6 +25,14 @@ const ALL_SOURCES: LeadSource[] = [
 
 const ALIVE_FILTER = { deletedAt: { $exists: false } };
 
+function buildDateFilter(from?: Date, to?: Date): Record<string, unknown> {
+  if (!from && !to) return {};
+  const range: Record<string, Date> = {};
+  if (from) range.$gte = from;
+  if (to) range.$lte = to;
+  return { createdAt: range };
+}
+
 export interface FunnelStage {
   status: LeadStatus;
   count: number;
@@ -82,19 +90,19 @@ function emptyStatusMap(): Record<LeadStatus, number> {
 
 // ── Per-source primitive queries ─────────────────────────────────────────────
 
-async function countAlive(collectionName: string, extra: Record<string, unknown> = {}): Promise<number> {
+async function countAlive(collectionName: string, extra: Record<string, unknown> = {}, dateFilter: Record<string, unknown> = {}): Promise<number> {
   const client = await clientPromise;
-  return client.db(DB).collection(collectionName).countDocuments({ ...ALIVE_FILTER, ...extra });
+  return client.db(DB).collection(collectionName).countDocuments({ ...ALIVE_FILTER, ...dateFilter, ...extra });
 }
 
-async function statusBreakdown(collectionName: string): Promise<Partial<Record<LeadStatus, number>>> {
+async function statusBreakdown(collectionName: string, dateFilter: Record<string, unknown> = {}): Promise<Partial<Record<LeadStatus, number>>> {
   const client = await clientPromise;
   try {
     const rows = await client
       .db(DB)
       .collection(collectionName)
       .aggregate<{ _id: string | null; count: number }>([
-        { $match: ALIVE_FILTER },
+        { $match: { ...ALIVE_FILTER, ...dateFilter } },
         { $group: { _id: "$status", count: { $sum: 1 } } },
       ])
       .toArray();
@@ -113,14 +121,16 @@ async function statusBreakdown(collectionName: string): Promise<Partial<Record<L
   }
 }
 
-async function dailyBuckets(collectionName: string, from: Date): Promise<Map<string, number>> {
+async function dailyBuckets(collectionName: string, from: Date, to?: Date): Promise<Map<string, number>> {
   const client = await clientPromise;
+  const rangeFilter: Record<string, Date> = { $gte: from };
+  if (to) rangeFilter.$lte = to;
   try {
     const rows = await client
       .db(DB)
       .collection(collectionName)
       .aggregate<{ _id: string; count: number }>([
-        { $match: { ...ALIVE_FILTER, createdAt: { $gte: from } } },
+        { $match: { ...ALIVE_FILTER, createdAt: rangeFilter } },
         {
           $group: {
             _id: {
@@ -141,7 +151,8 @@ async function topByField(
   collectionName: string,
   field: string,
   limit: number,
-  extra: Record<string, unknown> = {}
+  extra: Record<string, unknown> = {},
+  dateFilter: Record<string, unknown> = {}
 ): Promise<Map<string, number>> {
   const client = await clientPromise;
   try {
@@ -149,7 +160,7 @@ async function topByField(
       .db(DB)
       .collection(collectionName)
       .aggregate<{ _id: string | null; count: number }>([
-        { $match: { ...ALIVE_FILTER, [field]: { $exists: true, $nin: ["", null] }, ...extra } },
+        { $match: { ...ALIVE_FILTER, ...dateFilter, [field]: { $exists: true, $nin: ["", null] }, ...extra } },
         { $group: { _id: `$${field}`, count: { $sum: 1 } } },
         { $sort: { count: -1 } },
         { $limit: limit },
@@ -161,14 +172,14 @@ async function topByField(
   }
 }
 
-async function topInquiredProperties(limit: number): Promise<Map<string, { title: string; count: number }>> {
+async function topInquiredProperties(limit: number, dateFilter: Record<string, unknown> = {}): Promise<Map<string, { title: string; count: number }>> {
   const client = await clientPromise;
   try {
     const rows = await client
       .db(DB)
       .collection("inquiries")
       .aggregate<{ _id: { slug: string; title: string }; count: number }>([
-        { $match: { ...ALIVE_FILTER, propertySlug: { $exists: true, $nin: ["", null] } } },
+        { $match: { ...ALIVE_FILTER, ...dateFilter, propertySlug: { $exists: true, $nin: ["", null] } } },
         {
           $group: {
             _id: { slug: "$propertySlug", title: "$propertyTitle" },
@@ -239,12 +250,14 @@ async function avgTimeToContact(): Promise<number | null> {
 
 // ── Main entry point ─────────────────────────────────────────────────────────
 
-export async function computeLeadStats(): Promise<LeadStats> {
+export async function computeLeadStats(opts: { from?: Date; to?: Date } = {}): Promise<LeadStats> {
   const now = new Date();
   const day7 = daysAgo(7);
   const day30 = daysAgo(30);
   const day90 = daysAgo(90);
-  const bucketStart = startOfDayDubai(daysAgo(29));   // 30 buckets including today
+  const df = buildDateFilter(opts.from, opts.to);
+  // Histogram covers the requested range or defaults to last 30 days
+  const bucketStart = opts.from ?? startOfDayDubai(daysAgo(29));
 
   // Parallel everything.
   const [
@@ -261,10 +274,10 @@ export async function computeLeadStats(): Promise<LeadStats> {
     topProps,
     avgTtc,
   ] = await Promise.all([
-    Promise.all(ALL_SOURCES.map((s) => countAlive(SOURCE_COLLECTION[s]))),
+    Promise.all(ALL_SOURCES.map((s) => countAlive(SOURCE_COLLECTION[s], {}, df))),
     Promise.all(
       ALL_SOURCES.map((s) =>
-        countAlive(SOURCE_COLLECTION[s], { status: { $nin: ["won", "lost"] } })
+        countAlive(SOURCE_COLLECTION[s], { status: { $nin: ["won", "lost"] } }, df)
       )
     ),
     Promise.all(
@@ -276,13 +289,13 @@ export async function computeLeadStats(): Promise<LeadStats> {
     Promise.all(
       ALL_SOURCES.map((s) => countAlive(SOURCE_COLLECTION[s], { createdAt: { $gte: day90 } }))
     ),
-    Promise.all(ALL_SOURCES.map((s) => statusBreakdown(SOURCE_COLLECTION[s]))),
-    Promise.all(ALL_SOURCES.map((s) => dailyBuckets(SOURCE_COLLECTION[s], bucketStart))),
+    Promise.all(ALL_SOURCES.map((s) => statusBreakdown(SOURCE_COLLECTION[s], df))),
+    Promise.all(ALL_SOURCES.map((s) => dailyBuckets(SOURCE_COLLECTION[s], bucketStart, opts.to))),
     // community proxies — only ones that semantically exist
-    topByField("inquiries", "propertyTitle", 50),
-    topByField("marketreportsubscriptions", "areas", 50),   // areas is an array — Mongo $group unwinds it implicitly if we $unwind first; without $unwind it groups by the whole array. Skip and merge below.
-    topByField("property_submissions", "community", 50),
-    topInquiredProperties(10),
+    topByField("inquiries", "propertyTitle", 50, {}, df),
+    topByField("marketreportsubscriptions", "areas", 50, {}, df),   // areas is an array — Mongo $group unwinds it implicitly if we $unwind first; without $unwind it groups by the whole array. Skip and merge below.
+    topByField("property_submissions", "community", 50, {}, df),
+    topInquiredProperties(10, df),
     avgTimeToContact(),
   ]);
 
@@ -300,8 +313,11 @@ export async function computeLeadStats(): Promise<LeadStats> {
 
   // Daily buckets — generate every day in range so the chart has no gaps.
   const byDay: { date: string; count: number }[] = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = daysAgo(i);
+  const bucketEnd = opts.to ?? new Date();
+  const msPerDay = 86_400_000;
+  const dayCount = Math.min(365, Math.ceil((bucketEnd.getTime() - bucketStart.getTime()) / msPerDay) + 1);
+  for (let i = 0; i < dayCount; i++) {
+    const d = new Date(bucketStart.getTime() + i * msPerDay);
     const key = d.toLocaleDateString("en-CA", { timeZone: "Asia/Dubai" });  // YYYY-MM-DD
     const total = dailyMaps.reduce((sum, m) => sum + (m.get(key) ?? 0), 0);
     byDay.push({ date: key, count: total });
