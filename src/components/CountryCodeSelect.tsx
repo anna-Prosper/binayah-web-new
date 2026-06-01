@@ -90,7 +90,7 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
       {open && (
         <div
           onKeyDown={e => e.key === "Escape" && setOpen(false)}
-          className="absolute z-50 right-0 top-full mt-1 w-72 rounded-2xl border border-border bg-background shadow-2xl overflow-hidden"
+          className="absolute z-50 right-0 top-full mt-1 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-background shadow-2xl overflow-hidden"
         >
           {/* Search bar */}
           <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
@@ -121,9 +121,9 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
                     ? "bg-primary/10 text-primary"
                     : "hover:bg-muted text-foreground"}`}
               >
-                <span className="text-xl leading-none w-7 shrink-0">{flagEmoji(c.iso)}</span>
+                <span className="text-lg leading-none w-7 shrink-0">{flagEmoji(c.iso)}</span>
+                <span className="text-sm text-muted-foreground w-14 shrink-0">{c.dial}</span>
                 <span className="flex-1 text-sm font-medium truncate">{c.name}</span>
-                <span className="text-sm text-muted-foreground shrink-0">{c.dial}</span>
               </li>
             ))}
           </ul>
