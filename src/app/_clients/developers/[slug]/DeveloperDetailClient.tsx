@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
@@ -214,7 +214,7 @@ export default function DeveloperDetailClient({
                       </h3>
                       <div className="flex items-center justify-between border-t border-border pt-3">
                         <p className="text-sm font-bold text-primary">
-                          {formatProjectPrice(p.startingPrice, p.currency)}
+                          <AedPrice value={p.startingPrice} currency={p.currency} />
                         </p>
                         {p.completionDate && (
                           <p className="text-xs text-muted-foreground flex items-center gap-1">

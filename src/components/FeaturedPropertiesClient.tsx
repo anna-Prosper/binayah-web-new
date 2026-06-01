@@ -7,6 +7,7 @@ import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { CardActions } from "@/components/PropertyActions";
 import { useTranslations } from "next-intl";
+import { AedPrice } from "@/components/AedPrice";
 
 interface SecondaryListing {
   _id: string;
@@ -27,12 +28,6 @@ interface SecondaryListing {
   imageGallery?: string[];
 }
 
-const DIRHAM = '\u{1ECBC}';
-function formatPrice(price: number | null | undefined, currency = "AED"): string {
-  if (!price) return "Price on request";
-  const symbol = currency === "AED" ? DIRHAM : currency;
-  return `${symbol} ${Math.round(price).toLocaleString("en-AE")}`;
-}
 
 function getLabel(p: SecondaryListing): string {
   return p.title || p.name || p.slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -155,7 +150,7 @@ const FeaturedPropertiesClient = ({
                       </div>
                     )}
                     <div className="border-t border-border pt-2 flex items-center justify-between mt-1">
-                      <p className="text-xs font-bold text-primary">{formatPrice(p.price, p.currency)}</p>
+                      <p className="text-xs font-bold text-primary"><AedPrice value={p.price} currency={p.currency} /></p>
                       <ArrowUpRight className="h-3 w-3 text-muted-foreground" />
                     </div>
                   </div>
@@ -198,7 +193,7 @@ const FeaturedPropertiesClient = ({
                       {p.size && <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4" />{p.size} {p.sizeUnit || "sqft"}</span>}
                     </div>
                     <div className="border-t border-border pt-4 flex items-center justify-between mt-auto">
-                      <p className="text-xl font-bold text-primary">{formatPrice(p.price, p.currency)}</p>
+                      <p className="text-xl font-bold text-primary"><AedPrice value={p.price} currency={p.currency} /></p>
                       <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">
                         {t("details")} <ArrowUpRight className="h-3 w-3" />
                       </span>

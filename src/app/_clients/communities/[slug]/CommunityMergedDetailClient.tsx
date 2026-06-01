@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { AedPrice } from "@/components/AedPrice";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -179,9 +179,9 @@ export default function CommunityMergedDetailClient({
                         </p>
                         <p className="flex items-center gap-2 text-foreground font-medium">
                           <Wallet className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                          {formatProjectPrice(priceRange.min, priceRange.currency)}{" "}
+                          <AedPrice value={priceRange.min} currency={priceRange.currency} />{" "}
                           &ndash;{" "}
-                          {formatProjectPrice(priceRange.max, priceRange.currency)}
+                          <AedPrice value={priceRange.max} currency={priceRange.currency} />
                         </p>
                       </div>
                     )}
@@ -298,7 +298,7 @@ export default function CommunityMergedDetailClient({
                       </h3>
                       <div className="flex items-center justify-between border-t border-border pt-3">
                         <p className="text-sm font-bold text-primary">
-                          {formatProjectPrice(p.startingPrice, p.currency)}
+                          <AedPrice value={p.startingPrice} currency={p.currency} />
                         </p>
                         {p.completionDate && (
                           <p className="text-xs text-muted-foreground flex items-center gap-1">

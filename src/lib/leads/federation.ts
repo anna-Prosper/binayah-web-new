@@ -67,6 +67,15 @@ function mapInquiry(doc: Document): UnifiedLead {
     property: doc.propertySlug
       ? { slug: doc.propertySlug, title: doc.propertyTitle }
       : undefined,
+    pageUrl: doc.propertySlug
+      ? `/property/${doc.propertySlug}`
+      : channel.startsWith("project-detail:")
+        ? `/project/${channel.slice("project-detail:".length)}`
+        : channel.startsWith("property-detail:")
+          ? `/property/${channel.slice("property-detail:".length)}`
+          : channel.startsWith("brochure-request:")
+            ? `/project/${channel.slice("brochure-request:".length)}`
+            : undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
     notes: normalizeNotes(doc.notes),
@@ -138,6 +147,7 @@ function mapProjectSubscribe(doc: Document): UnifiedLead {
     email: doc.email ? decrypt(doc.email as string) : undefined,
     phone: doc.phone ? decrypt(doc.phone as string) : undefined,
     project: doc.slug ? { slug: doc.slug, name: doc.projectName } : undefined,
+    pageUrl: doc.slug ? `/project/${doc.slug}` : undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
     notes: normalizeNotes(doc.notes),
@@ -337,6 +347,7 @@ export function leadToCsvRow(l: UnifiedLead): Record<string, string> {
     community: l.community || "",
     property: l.property?.title || l.property?.slug || "",
     project: l.project?.name || l.project?.slug || "",
+    pageUrl: l.pageUrl || "",
     intent: (l.intent || []).join("|"),
     budgetMin: l.budget?.min != null ? String(l.budget.min) : "",
     budgetMax: l.budget?.max != null ? String(l.budget.max) : "",

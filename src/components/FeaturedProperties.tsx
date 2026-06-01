@@ -6,7 +6,7 @@ import { Bed, Bath, Maximize, MapPin, Heart, ArrowUpRight, Building } from "luci
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { AedPrice } from "@/components/AedPrice";
 import { useTranslations } from "next-intl";
 
 
@@ -43,8 +43,6 @@ const FeaturedProperties = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
           {(projects || []).map((p, i) => {
-            const price = formatProjectPrice(p.startingPrice, p.currency);
-
             const sizeRange = p.unitSizeMin && p.unitSizeMax
               ? `${p.unitSizeMin}–${p.unitSizeMax} sqft`
               : null;
@@ -93,7 +91,7 @@ const FeaturedProperties = () => {
                       )}
                     </div>
                     <div className="mt-auto border-t border-border pt-4 flex items-center justify-between">
-                      <p className="text-xl font-bold text-primary">{price}</p>
+                      <p className="text-xl font-bold text-primary"><AedPrice value={p.startingPrice} currency={p.currency} /></p>
                       <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1">
                         {t("details")} <ArrowUpRight className="h-3 w-3" />
                       </span>

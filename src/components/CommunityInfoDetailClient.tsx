@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { AedPrice } from "@/components/AedPrice";
 import { motion } from "framer-motion";
 import { Building2, CheckCircle2, ChevronRight, MapPin, Building, Wallet } from "lucide-react";
 import Link from "next/link";
@@ -173,8 +173,8 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
                         </p>
                         <p className="flex items-center gap-2 text-foreground font-medium">
                           <Wallet className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                          {formatProjectPrice(priceRange.min, priceRange.currency)} &ndash;{" "}
-                          {formatProjectPrice(priceRange.max, priceRange.currency)}
+                          <AedPrice value={priceRange.min} currency={priceRange.currency} /> &ndash;{" "}
+                          <AedPrice value={priceRange.max} currency={priceRange.currency} />
                         </p>
                       </div>
                     )}

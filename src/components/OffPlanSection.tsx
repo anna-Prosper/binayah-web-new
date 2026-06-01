@@ -6,7 +6,7 @@ import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { formatProjectPrice } from "@/lib/formatPrice";
+import { AedPrice } from "@/components/AedPrice";
 import { useTranslations } from "next-intl";
 
 
@@ -44,9 +44,6 @@ const OffPlanSection = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {(projects || []).map((p, i) => {
-            const price = p.startingPrice
-              ? formatProjectPrice(p.startingPrice, p.currency)
-              : tCommon("priceOnRequest");
 
             return (
               <motion.div
@@ -79,7 +76,9 @@ const OffPlanSection = () => {
                       {p.name}
                     </h3>
                     <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-                      <p className="text-sm font-bold text-primary">{p.startingPrice ? tCommon("fromPrice", { price }) : price}</p>
+                      <p className="text-sm font-bold text-primary">{p.startingPrice
+                        ? <>{t("from")} <AedPrice value={p.startingPrice} currency={p.currency} /></>
+                        : tCommon("priceOnRequest")}</p>
                       {p.completionDate && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <CalendarDays className="h-3 w-3" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}

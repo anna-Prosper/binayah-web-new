@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { useTranslations } from "next-intl";
+import { AedPrice } from "@/components/AedPrice";
 
 interface Listing {
   _id: string;
@@ -28,12 +29,6 @@ interface Listing {
   _source?: string;
 }
 
-const DIRHAM = '\u{1ECBC}';
-function formatPrice(price?: number, currency = "AED") {
-  if (!price) return "Price on request";
-  const symbol = currency === "AED" ? DIRHAM : currency;
-  return `${symbol} ${Math.round(price).toLocaleString("en-AE")}`;
-}
 
 export default function FeaturedPropertiesClient({ listings }: { listings: Listing[] }) {
   const t = useTranslations("featuredPropertiesServer");
@@ -77,7 +72,7 @@ export default function FeaturedPropertiesClient({ listings }: { listings: Listi
                     {l.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span>}
                   </div>
                   <div className="border-t border-border pt-3">
-                    <p className="text-sm font-bold text-primary">{formatPrice(l.price, l.currency)}</p>
+                    <p className="text-sm font-bold text-primary"><AedPrice value={l.price} currency={l.currency} /></p>
                   </div>
                 </div>
               </Link>
