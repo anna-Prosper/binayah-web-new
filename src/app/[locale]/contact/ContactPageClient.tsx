@@ -131,7 +131,7 @@ export default function ContactPage() {
                         onChange={(dial) => setForm({ ...form, countryCode: dial })}
                         className="px-3 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-w-[180px]"
                       />
-                      <input type="tel" required pattern="[0-9+\s\-()]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
+                      <input type="tel" required pattern="[0-9+\s()-]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
                     </div>
                   </div>
                   <div>

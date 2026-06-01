@@ -179,7 +179,7 @@ const InquirySection = () => {
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
                   />
-                  <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
+                  <input required type="tel" pattern="[0-9\s()+-]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                 </div>
               </div>
               <div>
@@ -224,7 +224,7 @@ const InquirySection = () => {
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
                   />
-                  <input required type="tel" pattern="[0-9\s\-()]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
+                  <input required type="tel" pattern="[0-9\s()+-]{5,15}" title="Enter digits only, 5–15 characters" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^0-9\s\-()]/g, "") })} className={`${inputClasses} flex-1 min-w-0`} placeholder="50 123 4567" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-5 mb-5">
