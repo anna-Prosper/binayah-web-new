@@ -5,7 +5,7 @@ import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2
 import { useState, useEffect } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
-import PhoneCodePicker from "@/components/PhoneCodePicker";
+import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 
 const inputClasses =
@@ -175,7 +175,7 @@ const InquirySection = () => {
               <div>
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                 <div className="flex gap-2">
-                  <PhoneCodePicker
+                  <CountryCodeSelect
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
                   />
@@ -220,7 +220,7 @@ const InquirySection = () => {
               <div className="mb-5">
                 <label className="text-[11px] font-semibold tracking-[0.15em] text-muted-foreground uppercase mb-2 block">{t("phone")}</label>
                 <div className="flex gap-2">
-                  <PhoneCodePicker
+                  <CountryCodeSelect
                     value={form.countryCode}
                     onChange={(dial) => setForm({ ...form, countryCode: dial })}
                   />
