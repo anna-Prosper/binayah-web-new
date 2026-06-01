@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { DirhemSign } from "./DirhemSign";
 
 interface AedPriceProps {
@@ -7,7 +8,8 @@ interface AedPriceProps {
 }
 
 export function AedPrice({ value, currency = "AED", className }: AedPriceProps) {
-  if (!value) return <span className={className}>Price on request</span>;
+  const t = useTranslations("common");
+  if (!value) return <span className={className}>{t("priceOnRequest")}</span>;
   const aed = value < 1_000 ? Math.round(value * 1_000_000) : Math.round(value);
   const formatted = aed.toLocaleString("en-AE");
   if (currency !== "AED") {
