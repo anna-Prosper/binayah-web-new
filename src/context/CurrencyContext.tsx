@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { DirhemSign } from "@/components/DirhemSign";
 
 const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"] as const;
 type Currency = (typeof SUPPORTED)[number];
@@ -36,13 +37,42 @@ function normalizeAed(price: number, isProject: boolean): number {
   return price;
 }
 
-const CURRENCY_DISPLAY: Record<string, string> = { AED: '\u{1ECBC}' };
-
 function formatAmount(amount: number, symbol: string): string {
-  const display = CURRENCY_DISPLAY[symbol] ?? symbol;
+  const display = symbol === "AED" ? "AED" : symbol;
   if (amount >= 1_000_000) return `${display} ${(amount / 1_000_000).toFixed(1)}M`;
   if (amount >= 1_000) return `${display} ${Math.round(amount / 1_000).toLocaleString()}K`;
   return `${display} ${Math.round(amount).toLocaleString()}`;
+}
+
+/** JSX component — renders price with the SVG Dirham sign for AED, plain symbol for other currencies. */
+export function CurrencyPrice({
+  aedPrice,
+  opts,
+  className,
+}: {
+  aedPrice: number | null | undefined;
+  opts?: { isProject?: boolean; fallback?: string };
+  className?: string;
+}) {
+  const { currency, rates } = useCurrency();
+  if (!aedPrice) return <span className={className}>{opts?.fallback ?? "Price on request"}</span>;
+  const normalized = aedPrice < 1_000 && opts?.isProject ? aedPrice * 1_000_000 : aedPrice;
+  const converted = normalized * (rates[currency] ?? 1);
+  const num =
+    converted >= 1_000_000
+      ? `${(converted / 1_000_000).toFixed(1)}M`
+      : converted >= 1_000
+        ? `${Math.round(converted / 1_000).toLocaleString()}K`
+        : Math.round(converted).toLocaleString();
+  if (currency === "AED") {
+    return (
+      <span className={className}>
+        <DirhemSign className="inline-block h-[0.8em] w-auto mr-[0.2em] align-middle relative -top-px" />
+        {num}
+      </span>
+    );
+  }
+  return <span className={className}>{currency} {num}</span>;
 }
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {

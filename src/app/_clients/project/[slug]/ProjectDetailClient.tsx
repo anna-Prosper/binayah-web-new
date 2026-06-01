@@ -34,7 +34,7 @@ import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
-import { useCurrency } from "@/context/CurrencyContext";
+import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 
@@ -444,7 +444,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 >
                   <div className="flex flex-col gap-0.5 lg:items-end">
                     {project.startingPrice ? <span className="hidden sm:inline text-white/70 text-[11px] sm:text-xs uppercase tracking-widest font-semibold">{t("startingFrom")}</span> : null}
-                    <span className="text-xl sm:text-3xl lg:text-4xl font-bold text-white">{formatPrice(project.startingPrice, { isProject: true })}</span>
+                    <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-xl sm:text-3xl lg:text-4xl font-bold text-white" />
                   </div>
 
                   {images.length > 1 && (
@@ -2021,7 +2021,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <div className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden">
                     <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
-                      <p className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1">{formatPrice(project.startingPrice, { isProject: true })}</p>
+                      <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1 block" />
                       {project.priceRange && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{project.priceRange}</p>}
                     </div>
                     <div className="p-3.5 sm:p-6 md:p-8">
@@ -2252,7 +2252,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
                     {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
-                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, { isProject: true })}</p>
+                  <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
                   {project.priceRange && (
                     <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
                   )}
@@ -2346,7 +2346,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
                     {project.ctaHeadline || t("ctaHeadlineDefault")}
                   </p>
-                  <p className="text-3xl font-bold text-primary-foreground relative z-10">{formatPrice(project.startingPrice, { isProject: true })}</p>
+                  <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
                   {project.priceRange && (
                     <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
                   )}
