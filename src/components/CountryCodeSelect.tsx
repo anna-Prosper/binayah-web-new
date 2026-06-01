@@ -56,8 +56,8 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
       style={style}
     >
       {options.map((c) => (
-        <option key={c.iso} value={c.dial} title={c.name}>
-          {flagEmoji(c.iso)} {c.dial}
+        <option key={c.iso} value={c.dial}>
+          {flagEmoji(c.iso)} {c.dial} {c.name}
         </option>
       ))}
     </select>
