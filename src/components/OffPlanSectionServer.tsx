@@ -51,9 +51,9 @@ export default function OffPlanSectionClient({ projects }: { projects: Project[]
                     {p.community && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{p.community}</span>}
                   </div>
                   <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">{p.name}</h3>
-                  <div className="mt-auto flex items-center justify-between border-t border-border pt-2.5">
-                    <p className="text-xs font-bold text-primary"><AedPrice value={p.startingPrice} currency={p.currency} /></p>
-                    {p.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}</p>}
+                  <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5">
+                    <p className="text-xs font-bold text-primary min-w-0"><AedPrice value={p.startingPrice} currency={p.currency} /></p>
+                    {p.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1 flex-shrink-0"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}</p>}
                   </div>
                 </div>
               </Link>

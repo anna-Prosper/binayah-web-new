@@ -83,12 +83,12 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
                     <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">
                       {p.name}
                     </h3>
-                    <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-                      <p className="text-sm font-bold text-primary">{p.startingPrice
+                    <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-3">
+                      <p className="text-xs sm:text-sm font-bold text-primary min-w-0">{p.startingPrice
                         ? <>{t("from")} <AedPrice value={p.startingPrice} currency={p.currency} /></>
                         : <AedPrice value={p.startingPrice} currency={p.currency} />}</p>
                       {p.completionDate && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                        <p className="text-xs text-muted-foreground flex items-center gap-1 flex-shrink-0">
                           <CalendarDays className="h-3 w-3" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}
                         </p>
                       )}

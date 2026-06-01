@@ -67,12 +67,14 @@ export function CurrencyPrice({
   if (currency === "AED") {
     return (
       <span className={className}>
-        <DirhemSign className="inline-block h-[0.8em] w-auto mr-[0.2em] align-middle relative -top-px" />
-        {num}
+        <span className="whitespace-nowrap">
+          <DirhemSign className="inline-block h-[0.8em] w-auto mr-[0.2em] align-middle relative -top-px" />
+          {num}
+        </span>
       </span>
     );
   }
-  return <span className={className}>{currency} {num}</span>;
+  return <span className={className}><span className="whitespace-nowrap">{currency} {num}</span></span>;
 }
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {

@@ -17,8 +17,10 @@ export function AedPrice({ value, currency = "AED", className }: AedPriceProps) 
   }
   return (
     <span className={className}>
-      <DirhemSign className="inline-block h-[0.8em] w-auto mr-[0.2em] align-middle relative -top-px" />
-      {formatted}
+      <span className="whitespace-nowrap">
+        <DirhemSign className="inline-block h-[0.8em] w-auto mr-[0.2em] align-middle relative -top-px" />
+        {formatted}
+      </span>
     </span>
   );
 }
