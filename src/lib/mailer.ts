@@ -35,7 +35,7 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
     throw new Error("[mailer] SMTP env vars not configured");
   }
   await transporter.sendMail({
-    from: `Binayah Properties <${SMTP_USER}>`,
+    from: `Binayah.ae <${SMTP_USER}>`,
     to,
     subject,
     html,
