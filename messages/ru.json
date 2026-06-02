@@ -560,7 +560,8 @@
       "services": "Услуги",
       "about": "О нас",
       "news": "Новости",
-      "contact": "Контакты"
+      "contact": "Контакты",
+      "developers": "Застройщики"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
@@ -1156,7 +1157,8 @@
     "noProjects": "У этого застройщика пока нет активных проектов.",
     "establishedYear": "Осн.",
     "activeProjects": "Активных проектов",
-    "website": "Сайт"
+    "website": "Сайт",
+    "breadcrumbHome": "Главная"
   },
   "news": {
     "heroLabel": "Свежие материалы",

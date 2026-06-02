@@ -53,6 +53,7 @@ const Footer = () => {
             <li><Link href="/search?intent=rent" className="hover:text-accent transition-colors">{t("links.rent")}</Link></li>
             <li><Link href="/search?status=Off-Plan" className="hover:text-accent transition-colors">{t("links.offPlan")}</Link></li>
             <li><Link href="/communities" className="hover:text-accent transition-colors">{t("links.communities")}</Link></li>
+            <li><Link href="/developers" className="hover:text-accent transition-colors">{t("links.developers")}</Link></li>
             <li><Link href="/valuation" className="hover:text-accent transition-colors">{t("links.valuation")}</Link></li>
           </ul>
         </div>

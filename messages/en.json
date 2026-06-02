@@ -560,7 +560,8 @@
       "services": "Services",
       "about": "About Us",
       "news": "News",
-      "contact": "Contact"
+      "contact": "Contact",
+      "developers": "Developers"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
@@ -1160,7 +1161,8 @@
     "noProjects": "No projects available from this developer yet.",
     "establishedYear": "Est.",
     "activeProjects": "Active Projects",
-    "website": "Website"
+    "website": "Website",
+    "breadcrumbHome": "Home"
   },
   "news": {
     "heroLabel": "Latest Updates",

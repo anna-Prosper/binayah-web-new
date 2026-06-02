@@ -560,7 +560,8 @@
       "services": "الخدمات",
       "about": "من نحن",
       "news": "الأخبار",
-      "contact": "اتصل بنا"
+      "contact": "اتصل بنا",
+      "developers": "المطورون"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
@@ -1155,7 +1156,8 @@
     "noProjects": "لا تتوفر مشاريع لهذا المطوّر حالياً.",
     "establishedYear": "تأسست عام",
     "activeProjects": "مشروع نشط",
-    "website": "الموقع الإلكتروني"
+    "website": "الموقع الإلكتروني",
+    "breadcrumbHome": "الرئيسية"
   },
   "news": {
     "heroLabel": "آخر المستجدات",

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 
 interface Developer {
   _id: string;
@@ -76,6 +77,11 @@ export default function DeveloperDetailClient({
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <DetailBreadcrumb items={[
+        { label: t("breadcrumbHome"), href: "/" },
+        { label: t("breadcrumbDevelopers"), href: "/developers" },
+        { label: developer.name },
+      ]} />
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-primary text-primary-foreground overflow-hidden">

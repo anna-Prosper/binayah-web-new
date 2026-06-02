@@ -566,7 +566,8 @@
       "services": "服务",
       "about": "关于我们",
       "news": "资讯",
-      "contact": "联系我们"
+      "contact": "联系我们",
+      "developers": "开发商"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
@@ -1161,7 +1162,8 @@
     "noProjects": "该开发商暂无在售项目。",
     "establishedYear": "成立于",
     "activeProjects": "在售项目",
-    "website": "官网"
+    "website": "官网",
+    "breadcrumbHome": "首页"
   },
   "news": {
     "heroLabel": "最新资讯",
