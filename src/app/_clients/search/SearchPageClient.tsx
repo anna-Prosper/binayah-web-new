@@ -402,9 +402,11 @@ function SearchContent() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="pt-24 pb-6 bg-card border-b border-border">
+      <section className="pt-24 pb-5 bg-background border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex gap-3 mb-6">
+
+          {/* Search bar + mobile filter trigger */}
+          <div className="flex gap-3 mb-5">
             <SearchAutocomplete
               value={q}
               onChange={setQ}
@@ -412,7 +414,7 @@ function SearchContent() {
               placeholder={t("title")}
               tab={status === "Off-Plan" ? "Off-Plan" : intent === "rent" ? "Rent" : intent === "buy" ? "Buy" : "All"}
             />
-            <button onClick={() => setFiltersOpen(true)} className="relative px-4 py-3 rounded-xl bg-background border border-border text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2 lg:hidden">
+            <button onClick={() => setFiltersOpen(true)} className="relative px-4 py-3 rounded-xl bg-muted/60 border border-border/60 text-sm text-foreground hover:bg-muted transition-colors flex items-center gap-2 lg:hidden">
               <SlidersHorizontal className="h-4 w-4" />
               {activeFilters.length > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-[10px] font-bold text-white flex items-center justify-center">
@@ -422,30 +424,59 @@ function SearchContent() {
             </button>
           </div>
 
-          <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-            {statusTabs.map((tab) => (
-              <button key={tab} onClick={() => setStatus(tab)} className={`px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${status === tab ? "text-white shadow-sm" : "bg-background text-muted-foreground hover:text-foreground border border-border"}`} style={status === tab ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}>
-                {tab === "All" ? t("tabAll") : tab === "Off-Plan" ? t("tabOffPlan") : t("tabSecondary")}
-              </button>
-            ))}
-          </div>
-
-          {status !== "Off-Plan" && (
-            <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
-              {secondaryModes.map((mode) => (
-                <button key={mode.value || "any"} onClick={() => { setIntent(mode.value); if (!mode.value) setStatus(status); }} className={`px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-[0.12em] whitespace-nowrap transition-all ${(intent || "") === mode.value ? "text-primary bg-primary/10 border border-primary/20" : "text-muted-foreground border border-border hover:text-foreground"}`}>
-                  {mode.value === "" ? t("tabAll") : mode.value === "buy" ? t("forSale") : t("forRent")}
+          {/* Status + intent tabs on one line */}
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            {/* Segmented control: All / Off-Plan / Secondary */}
+            <div className="inline-flex items-center bg-muted rounded-xl p-1 gap-0.5">
+              {statusTabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setStatus(tab)}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                    status === tab
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {tab === "All" ? t("tabAll") : tab === "Off-Plan" ? t("tabOffPlan") : t("tabSecondary")}
                 </button>
               ))}
             </div>
-          )}
 
-          <div className="hidden lg:grid grid-cols-8 gap-3">
+            {/* Divider */}
+            {status !== "Off-Plan" && <div className="h-5 w-px bg-border/60" />}
+
+            {/* Segmented control: All / Buy / Rent */}
+            {status !== "Off-Plan" && (
+              <div className="inline-flex items-center bg-muted rounded-xl p-1 gap-0.5">
+                {secondaryModes.map((mode) => (
+                  <button
+                    key={mode.value || "any"}
+                    onClick={() => { setIntent(mode.value); if (!mode.value) setStatus(status); }}
+                    className={`px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                      (intent || "") === mode.value
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {mode.value === "" ? t("tabAll") : mode.value === "buy" ? t("forSale") : t("forRent")}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop filter row */}
+          <div className="hidden lg:flex items-center gap-2 bg-muted/40 rounded-2xl px-3 py-2.5 border border-border/40">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
+            <div className="h-5 w-px bg-border/50 shrink-0" />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
+            <div className="h-5 w-px bg-border/50 shrink-0" />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
+            <div className="h-5 w-px bg-border/50 shrink-0" />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-            <div className="col-span-2 px-1">
+            <div className="h-5 w-px bg-border/50 shrink-0" />
+            <div className="flex-1 min-w-[160px] px-2">
               <PriceRangeFilter
                 min={priceBounds.min}
                 max={priceBounds.max}
@@ -454,12 +485,19 @@ function SearchContent() {
                 onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
               />
             </div>
+            <div className="h-5 w-px bg-border/50 shrink-0" />
             {status === "Off-Plan" || intent === "off-plan" ? (
               <FilterSelect placeholder={t("handoverYear")} value={completionYear} onChange={setCompletionYear} options={completionYears} />
             ) : (
               <FilterSelect placeholder={t("furnishing")} value={furnishing} onChange={setFurnishing} options={furnishingOptions} />
             )}
-            <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+            <div className="h-5 w-px bg-border/50 shrink-0" />
+            <input
+              value={developer}
+              onChange={(e) => setDeveloper(e.target.value)}
+              placeholder={t("developer")}
+              className="w-28 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+            />
           </div>
 
           <FilterSheet
@@ -516,16 +554,21 @@ function SearchContent() {
             </div>
           </FilterSheet>
 
-          <div className="flex flex-col gap-3 mt-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-muted-foreground">{loading ? t("searching") : t("results", { count: totalResults })}</p>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <label htmlFor="search-sort" className="text-xs text-muted-foreground mr-2">{t("sortBy")}</label>
+          {/* Results bar */}
+          <div className="flex items-center justify-between mt-4 gap-3">
+            <p className="text-sm text-muted-foreground">
+              {loading ? t("searching") : (
+                <><span className="font-semibold text-foreground">{totalResults.toLocaleString()}</span> {t("results")}</>
+              )}
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="relative flex items-center gap-2">
+                <span className="text-xs text-muted-foreground hidden sm:inline">{t("sortBy")}</span>
                 <select
                   id="search-sort"
                   value={sort}
-                  onChange={(event) => setSort(event.target.value as SortKey)}
-                  className="bg-background border border-border rounded-lg pl-3 pr-8 py-1.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                  onChange={(e) => setSort(e.target.value as SortKey)}
+                  className="bg-muted/60 border border-border/60 rounded-lg pl-3 pr-7 py-1.5 text-sm text-foreground appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 >
                   <option value="newest">{t("newest")}</option>
                   <option value="price_asc">{t("priceAsc")}</option>
@@ -534,10 +577,10 @@ function SearchContent() {
                   <option value="ppsf_desc">{t("ppsfDesc")}</option>
                   <option value="featured">{t("sortFeatured")}</option>
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
               </div>
               {activeFilters.length > 0 && (
-                <button onClick={clearFilters} className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
+                <button onClick={clearFilters} className="text-xs text-muted-foreground hover:text-foreground font-medium flex items-center gap-1 transition-colors border border-border/60 rounded-lg px-2.5 py-1.5 hover:bg-muted/60">
                   <X className="h-3 w-3" /> {t("clearFilters")}
                 </button>
               )}
@@ -545,9 +588,9 @@ function SearchContent() {
           </div>
 
           {activeFilters.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
+            <div className="flex flex-wrap gap-1.5 mt-3">
               {activeFilters.map((filter) => (
-                <span key={filter} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary/8 text-primary border border-primary/10">
+                <span key={filter} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/8 text-primary border border-primary/15">
                   {filter}
                 </span>
               ))}
