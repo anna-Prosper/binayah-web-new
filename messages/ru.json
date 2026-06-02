@@ -4,7 +4,7 @@
     "rent": "Аренда",
     "offPlan": "Новостройки",
     "pulse": "Рынок",
-    "communities": "Районы",
+    "communities": "Комьюнити",
     "valuation": "Оценка",
     "guides": "Статьи",
     "developers": "Застройщики",
@@ -28,8 +28,8 @@
     "chatWithTeam": "Написать нашей команде",
     "savedProperties": "Избранное",
     "areas": "Районы",
-    "dubaiReport": "Dubai Report",
-    "news": "Dubai News"
+    "dubaiReport": "Отчёт по Дубаю",
+    "news": "Новости Дубая"
   },
   "common": {
     "viewAll": "Смотреть все",
