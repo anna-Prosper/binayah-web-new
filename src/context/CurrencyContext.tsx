@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { DirhemSign } from "@/components/DirhemSign";
 
 const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"] as const;
@@ -55,7 +56,8 @@ export function CurrencyPrice({
   className?: string;
 }) {
   const { currency, rates } = useCurrency();
-  if (!aedPrice) return <span className={className}>{opts?.fallback ?? "Price on request"}</span>;
+  const tCommon = useTranslations("common");
+  if (!aedPrice) return <span className={className}>{opts?.fallback ?? tCommon("priceOnRequest")}</span>;
   const normalized = aedPrice < 1_000 && opts?.isProject ? aedPrice * 1_000_000 : aedPrice;
   const converted = normalized * (rates[currency] ?? 1);
   const num =

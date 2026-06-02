@@ -973,7 +973,7 @@ function FilterSelect({
 }) {
   return (
     <div className="relative min-w-[110px]">
-      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-transparent border-0 pl-2 pr-7 py-2 text-sm text-foreground appearance-none cursor-pointer focus:outline-none whitespace-nowrap">
+      <select value={value} onChange={(event) => onChange(event.target.value)} className="w-full bg-transparent border-0 pl-2 pr-7 py-2 text-sm text-foreground appearance-none cursor-pointer focus:outline-none whitespace-nowrap hover:text-foreground/80 transition-colors">
         <option value="">{placeholder}</option>
         {options.map((option) => {
           const optionValue = typeof option === "string" ? option : option.value;

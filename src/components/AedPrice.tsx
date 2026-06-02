@@ -25,9 +25,3 @@ export function AedPrice({ value, currency = "AED", className }: AedPriceProps) 
   );
 }
 
-/** Same logic but raw number only — keeps the existing string function working for non-JSX contexts. */
-export function formatAedNumber(value: number | null | undefined): string {
-  if (!value) return "Price on request";
-  const aed = value < 1_000 ? Math.round(value * 1_000_000) : Math.round(value);
-  return `AED ${aed.toLocaleString("en-AE")}`;
-}
