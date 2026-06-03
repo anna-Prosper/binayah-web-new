@@ -64,8 +64,8 @@ export const getProject = cache(async (slug: string) =>
 export const getListing = cache(async (slug: string) =>
   fetchJsonOr404(`/api/listings/${slug}`)
 );
-export const getNewsArticle = cache(async (slug: string) =>
-  fetchJsonOr404(`/api/news/${slug}`)
+export const getNewsArticle = cache(async (slug: string, lang = "en") =>
+  fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
 );
 export const getRelatedNews = cache(
   async (currentSlug: string, category?: string, limit = 3): Promise<any[]> => {

@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
 
@@ -24,24 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const article = await getNewsArticle(slug);
-  if (!article) return notFound();
-
-  // If article lang doesn't match current locale, find the translation or English version
-  const articleLang = (article as any).lang;
-  if (articleLang && articleLang !== locale) {
-    try {
-      const res = await serverFetch(serverApiUrl(`/api/news/translation?slug=${slug}&lang=${locale}`));
-      if (res.ok) {
-        const data = await res.json();
-        if (data.slug && data.slug !== slug) {
-          redirect(`/${locale}/news/${data.slug}`);
-        }
-      }
-    } catch {}
-    // No translation found — redirect to news list
-    if (articleLang !== "en") redirect(`/${locale}/news`);
-  }
+  // Pass locale so API returns translated title/body/excerpt when available
+  const article = await getNewsArticle(slug, locale);
   let related: any[] = [];
   try {
     related = await getRelatedNews(slug, article.category, 3);
