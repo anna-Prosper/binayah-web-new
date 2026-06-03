@@ -188,9 +188,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 <AnimatePresence>
                   {insightsOpen && (
                     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2">
-                      <div className="min-w-[180px] rounded-lg overflow-hidden shadow-xl border border-white/10" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                      <div className="min-w-[220px] rounded-lg overflow-hidden shadow-xl border border-white/10" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {insightsNav.map((item) => (
-                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-5 py-3 text-[13px] font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors uppercase tracking-[0.15em]">
+                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-5 py-3 text-[13px] font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors uppercase tracking-[0.15em] whitespace-nowrap">
                             {item.label}
                           </button>
                         ))}
