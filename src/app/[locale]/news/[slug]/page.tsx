@@ -6,17 +6,28 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const article = await getNewsArticle(slug);
+  const article = await getNewsArticle(slug, locale);
   if (!article) return { title: "Not Found" };
+  const siteUrl = "https://www.binayah.ae";
   return {
     title: article.metaTitle || `${article.title} | Binayah Properties`,
     description: article.metaDescription || article.excerpt,
-    alternates: { canonical: `/${locale}/news/${slug}` },
+    alternates: {
+      canonical: `${siteUrl}/${locale}/news/${slug}`,
+      languages: {
+        "en": `${siteUrl}/en/news/${slug}`,
+        "ru": `${siteUrl}/ru/news/${slug}`,
+        "ar": `${siteUrl}/ar/news/${slug}`,
+        "zh": `${siteUrl}/zh/news/${slug}`,
+        "x-default": `${siteUrl}/en/news/${slug}`,
+      },
+    },
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
       type: "article",
-      url: `/${locale}/news/${slug}`,
+      url: `${siteUrl}/${locale}/news/${slug}`,
+      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : "en_AE",
       ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
     },
   };
