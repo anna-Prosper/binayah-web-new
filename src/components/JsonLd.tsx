@@ -7,16 +7,30 @@ function safeJsonLd(data: unknown): string {
 export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
+    "@type": ["RealEstateAgent", "LocalBusiness"],
     name: "Binayah Properties",
     alternateName: "Binayah Real Estate",
     url: "https://www.binayah.ae",
     logo: "https://www.binayah.ae/assets/binayah-logo.png",
     image: "https://www.binayah.ae/assets/dubai-hero.webp",
     description:
-      "Dubai's trusted property partner. Find luxury homes, off-plan investments, and expert property management services.",
+      "Dubai's trusted property partner since 2007. Find luxury homes, off-plan investments, and expert property management services.",
     telephone: "+971549988811",
     email: "info@binayah.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Marasi Drive",
+      addressLocality: "Business Bay",
+      addressRegion: "Dubai",
+      addressCountry: "AE",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 25.1855,
+      longitude: 55.2666,
+    },
+    foundingDate: "2007",
+    numberOfEmployees: { "@type": "QuantitativeValue", value: 50 },
     sameAs: [
       "https://www.instagram.com/dubai_realty",
       "https://www.facebook.com/BinayahRealEstateLLC",
@@ -30,11 +44,11 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       closes: "21:00",
     },
     priceRange: "AED 500,000 - AED 50,000,000+",
-    areaServed: {
-      "@type": "City",
-      name: "Dubai",
-      addressCountry: "AE",
-    },
+    areaServed: [
+      { "@type": "City", name: "Dubai", addressCountry: "AE" },
+      { "@type": "City", name: "Abu Dhabi", addressCountry: "AE" },
+    ],
+    hasMap: "https://maps.google.com/?q=Business+Bay+Dubai",
   };
 
   return (
