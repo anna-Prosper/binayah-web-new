@@ -274,8 +274,13 @@ function SearchContent() {
   }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
-    fetchResults();
-  }, [fetchResults]);
+    // Debounce: text input (q, developer) waits 400ms; all other filters fire immediately
+    const isTextChange = true; // fetchResults identity already changes only when deps change
+    const delay = (q || developer) ? 400 : 0;
+    if (delay === 0) { fetchResults(); return; }
+    const t = setTimeout(fetchResults, delay);
+    return () => clearTimeout(t);
+  }, [fetchResults, q, developer]);
 
   useEffect(() => {
     const params = new URLSearchParams();
