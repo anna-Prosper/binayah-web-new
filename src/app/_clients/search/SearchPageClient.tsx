@@ -250,7 +250,10 @@ function SearchContent() {
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
 
     try {
-      const response = await fetch(apiUrl(`/api/search?${params.toString()}`));
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10_000); // 10s timeout — prevents stuck spinner
+      const response = await fetch(apiUrl(`/api/search?${params.toString()}`), { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
       setProjects(data.projects || []);
@@ -274,13 +277,10 @@ function SearchContent() {
   }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
-    // Debounce: text input (q, developer) waits 400ms; all other filters fire immediately
-    const isTextChange = true; // fetchResults identity already changes only when deps change
-    const delay = (q || developer) ? 400 : 0;
-    if (delay === 0) { fetchResults(); return; }
-    const t = setTimeout(fetchResults, delay);
+    // Small debounce on every filter change to batch rapid state updates
+    const t = setTimeout(fetchResults, 50);
     return () => clearTimeout(t);
-  }, [fetchResults, q, developer]);
+  }, [fetchResults]);
 
   useEffect(() => {
     const params = new URLSearchParams();
