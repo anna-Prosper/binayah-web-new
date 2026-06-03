@@ -27,10 +27,20 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const article = await getNewsArticle(slug);
   if (!article) return notFound();
 
-  // If article lang doesn't match current locale, redirect to news list for this locale
+  // If article lang doesn't match current locale, find the translation or English version
   const articleLang = (article as any).lang;
-  if (articleLang && articleLang !== "en" && articleLang !== locale) {
-    redirect(`/${locale}/news`);
+  if (articleLang && articleLang !== locale) {
+    try {
+      const res = await serverFetch(serverApiUrl(`/api/news/translation?slug=${slug}&lang=${locale}`));
+      if (res.ok) {
+        const data = await res.json();
+        if (data.slug && data.slug !== slug) {
+          redirect(`/${locale}/news/${data.slug}`);
+        }
+      }
+    } catch {}
+    // No translation found — redirect to news list
+    if (articleLang !== "en") redirect(`/${locale}/news`);
   }
   let related: any[] = [];
   try {
