@@ -3,10 +3,15 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 900;
 
-export default async function NewsPage() {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function NewsPage({ params }: Props) {
+  const { locale } = await params;
   let articles: any[] = [];
   try {
-    const res = await serverFetch(serverApiUrl("/api/news"));
+    const res = await serverFetch(serverApiUrl(`/api/news?lang=${locale}`));
     if (res.ok) {
       articles = await res.json();
     }

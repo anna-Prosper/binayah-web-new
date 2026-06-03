@@ -24,14 +24,15 @@ async function fetchJson(path: string) {
   }
 }
 
-export default async function PulsePage() {
+export default async function PulsePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const t = await getTranslations("pulse");
   const [marketStats, marketData, areasData, projectsData, binayahNews] = await Promise.all([
     fetchJson("/api/market-stats"),
     fetchJson("/api/market-data"),
     fetchJson("/api/dld/areas?sort=totalSales&limit=20"),
     fetchJson("/api/projects?status=active&limit=200"),
-    fetchJson("/api/news?limit=8"),
+    fetchJson(`/api/news?limit=8&lang=${locale}`),
   ]);
 
   return (
