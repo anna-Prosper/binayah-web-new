@@ -41,6 +41,9 @@ interface Article {
   author?: string;
   readTime?: string;
   publishedAt?: string;
+  lang?: string;
+  rtl?: boolean;
+  direction?: "ltr" | "rtl";
 }
 
 interface RelatedArticle {
@@ -215,7 +218,7 @@ function NewsDetailInner({
             </nav>
           </div>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 relative w-full">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} dir={article.direction || (article.rtl ? "rtl" : "ltr")}>
               {article.category && (
                 <span className="inline-block text-[10px] font-bold px-3 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider mb-4">
                   {article.category}
@@ -256,7 +259,9 @@ function NewsDetailInner({
                 </button>
               </div>
               {article.body && article.body.length > 0 ? (
-                <ArticleBody body={article.body} />
+                <div dir={article.direction || (article.rtl ? "rtl" : "ltr")}>
+                  <ArticleBody body={article.body} />
+                </div>
               ) : article.content ? (
                 <div
                   className="prose prose-lg max-w-none
