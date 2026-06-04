@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# Only one deploy runs at a time — cancels the queued run if a newer push arrives
+concurrency:
+  group: deploy-beget
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,14 +21,19 @@ jobs:
           username: root
           key: ${{ secrets.BEGET_SSH_KEY }}
           script: |
+            set -e
             cd /var/www/binayah-ru
+
             printf 'NEXT_PUBLIC_SITE_URL=https://binayah.ru\n' > .env.local
             printf 'NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru\n' >> .env.local
             printf 'NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com\n' >> .env.local
             printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
             printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
             printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
+
             git pull
             npm install
             NODE_OPTIONS="--max-old-space-size=1536" npm run build
-            pm2 restart binayah-ru
+
+            # Graceful reload — zero downtime
+            pm2 reload binayah-ru || pm2 start npm --name binayah-ru -- start
