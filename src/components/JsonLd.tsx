@@ -4,6 +4,58 @@ function safeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
+export function ArticleJsonLd({
+  headline,
+  description,
+  url,
+  imageUrl,
+  datePublished,
+  dateModified,
+  authorName = "Binayah Properties",
+  wordCount,
+  nonce,
+}: {
+  headline: string;
+  description: string;
+  url: string;
+  imageUrl?: string;
+  datePublished: string;
+  dateModified?: string;
+  authorName?: string;
+  wordCount?: number;
+  nonce?: string;
+}) {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline,
+    description,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: { "@type": "Organization", name: authorName, url: "https://www.binayah.ae" },
+    publisher: {
+      "@type": "Organization",
+      name: "Binayah Properties",
+      url: "https://www.binayah.ae",
+      logo: { "@type": "ImageObject", url: "https://www.binayah.ae/assets/binayah-logo.png" },
+    },
+    datePublished,
+    dateModified: dateModified ?? datePublished,
+    ...(imageUrl ? { image: { "@type": "ImageObject", url: imageUrl } } : {}),
+    ...(wordCount ? { wordCount } : {}),
+    inLanguage: "en",
+    isPartOf: { "@type": "WebSite", name: "Binayah Properties", url: "https://www.binayah.ae" },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}
+
 export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
