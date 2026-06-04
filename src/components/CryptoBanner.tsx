@@ -2,13 +2,16 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 const cryptoBg = "/assets/crypto-banner.webp";
 
 const CryptoBanner = () => {
   const t = useTranslations("home.crypto");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const cryptoHref = `${locale === "en" ? "" : `/${locale}`}/buy-with-crypto`;
   return (
   <section className="relative overflow-hidden my-2 sm:my-6">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">
@@ -46,30 +49,26 @@ const CryptoBanner = () => {
           </p>
         </div>
 
-        <motion.a
-          href="https://wa.me/971549988811?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="hidden sm:inline-flex items-center gap-2.5 px-8 py-3.5 rounded-lg text-sm font-bold tracking-wide uppercase transition-all duration-300 shrink-0 hover:shadow-[0_6px_28px_rgba(212,168,71,0.5)] hover:brightness-110"
-          style={{
-            background: "linear-gradient(135deg, #D4A847 0%, #C49B35 50%, #B8922F 100%)",
-            color: "#fff",
-            boxShadow: "0 4px 20px rgba(212,168,71,0.35)",
-            border: "1px solid rgba(255,255,255,0.15)",
-          }}
-        >
-          {tCommon("learnMore")}
-          <ArrowRight className="h-4 w-4" />
-        </motion.a>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} className="hidden sm:block shrink-0">
+          <Link
+            href={cryptoHref}
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-lg text-sm font-bold tracking-wide uppercase transition-all duration-300 hover:shadow-[0_6px_28px_rgba(212,168,71,0.5)] hover:brightness-110"
+            style={{
+              background: "linear-gradient(135deg, #D4A847 0%, #C49B35 50%, #B8922F 100%)",
+              color: "#fff",
+              boxShadow: "0 4px 20px rgba(212,168,71,0.35)",
+              border: "1px solid rgba(255,255,255,0.15)",
+            }}
+          >
+            {tCommon("learnMore")}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </motion.div>
       </motion.div>
 
       {/* Mobile CTA */}
-      <motion.a
-        href="https://wa.me/971549988811?text=Hi%2C%20I%E2%80%99m%20interested%20in%20buying%20property%20with%20cryptocurrency"
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        href={cryptoHref}
         className="sm:hidden absolute bottom-4 right-4 z-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-bold text-white"
         style={{
           background: "linear-gradient(135deg, #D4A847, #B8922F)",
@@ -78,7 +77,7 @@ const CryptoBanner = () => {
       >
         {tCommon("learnMore")}
         <ArrowRight className="h-3.5 w-3.5" />
-      </motion.a>
+      </Link>
     </div>
   </section>
   );
