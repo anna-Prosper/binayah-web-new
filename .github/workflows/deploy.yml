@@ -17,17 +17,12 @@ jobs:
           key: ${{ secrets.BEGET_SSH_KEY }}
           script: |
             cd /var/www/binayah-ru
-
-            # Write env file on first deploy or whenever it changes
-            cat > .env.local << 'ENVEOF'
-            NEXT_PUBLIC_SITE_URL=https://binayah.ru
-            NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru
-            NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com
-            API_BASE_URL=https://binayah-api.onrender.com
-            NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811
-            NEXTAUTH_URL=https://binayah.ru
-            ENVEOF
-
+            printf 'NEXT_PUBLIC_SITE_URL=https://binayah.ru\n' > .env.local
+            printf 'NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru\n' >> .env.local
+            printf 'NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com\n' >> .env.local
+            printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
+            printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
+            printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
             git pull
             npm install
             NODE_OPTIONS="--max-old-space-size=1536" npm run build
