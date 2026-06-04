@@ -54,6 +54,18 @@ function isStagingHost(host: string | null): boolean {
   return host === "staging.binayahhub.com" || host.endsWith(".vercel.app");
 }
 
+const DOMAIN_LOCALE_MAP: Record<string, string> = {
+  "binayah.ru": "ru",
+  "www.binayah.ru": "ru",
+  "binayah.cn": "zh",
+  "www.binayah.cn": "zh",
+};
+
+function getDomainLocale(host: string | null): string | null {
+  if (!host) return null;
+  return DOMAIN_LOCALE_MAP[host.toLowerCase()] ?? null;
+}
+
 // Pick the highest-q-weighted supported locale from Accept-Language.
 // "en" is the implicit default — returned as-is so caller can short-circuit
 // without an unnecessary redirect.
@@ -138,6 +150,20 @@ export function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/${savedLocale}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
+    response.headers.set("Content-Security-Policy", CSP);
+    applySecurityHeaders(response, request);
+    setGeoCookie(response, request);
+    return response;
+  }
+
+  // Domain-based locale: binayah.ru → ru, binayah.cn → zh (works on self-hosted VPS without Vercel geo headers)
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const domainLocale = getDomainLocale(host);
+  if (domainLocale && domainLocale !== "en") {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${domainLocale}${pathname === "/" ? "" : pathname}`;
+    const response = NextResponse.redirect(url);
+    setLocaleCookie(response, domainLocale);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
     setGeoCookie(response, request);
