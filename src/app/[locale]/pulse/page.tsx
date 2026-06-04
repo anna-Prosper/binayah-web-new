@@ -6,13 +6,30 @@ import PulsePageClient from "@/app/_clients/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { canonical, altLangs } from "@/lib/site";
 
 export const revalidate = 300;
 
-export const metadata = {
-  title: "Dubai Market Pulse | Binayah Properties",
-  description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
-};
+interface Props { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
+    description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
+    alternates: {
+      canonical: canonical(locale, "/pulse"),
+      languages: altLangs("/pulse"),
+    },
+    openGraph: {
+      title: "Dubai Market Pulse | Binayah Properties",
+      url: canonical(locale, "/pulse"),
+      type: "website",
+      images: [{ url: "/assets/og-image.webp", width: 1200, height: 630 }],
+    },
+  };
+}
 
 async function fetchJson(path: string) {
   try {

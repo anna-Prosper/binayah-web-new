@@ -1,11 +1,21 @@
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "List Your Property in Dubai | Binayah Properties",
-  description: "Sell or rent your Dubai property with Binayah. RERA-certified agents, wide buyer network, full service from valuation to close.",
-};
-
+import type { Metadata } from "next";
+import { canonical, altLangs } from "@/lib/site";
 import { getServerSession } from "next-auth";
+
+interface Props { params: Promise<{ locale: string }> }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "List Your Property in Dubai | Binayah Properties",
+    description: "Sell or rent your Dubai property with Binayah. RERA-certified agents, wide buyer network, full service from valuation to close.",
+    alternates: {
+      canonical: canonical(locale, "/list-your-property"),
+      languages: altLangs("/list-your-property"),
+    },
+  };
+}
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";

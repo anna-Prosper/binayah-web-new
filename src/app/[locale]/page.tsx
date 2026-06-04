@@ -1,7 +1,43 @@
 import HomePageClient from "@/components/HomePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
+import type { Metadata } from "next";
+import { canonical, altLangs } from "@/lib/site";
 
 export const revalidate = 300;
+
+interface Props { params: Promise<{ locale: string }> }
+
+const titles: Record<string, string> = {
+  en: "Dubai Real Estate | Buy, Rent & Invest | Binayah Properties",
+  ru: "Недвижимость в Дубае | Купить, Снять, Инвестировать | Binayah",
+  ar: "عقارات دبي | شراء وإيجار واستثمار | بناية للعقارات",
+  zh: "迪拜房地产 | 购买、租赁和投资 | Binayah Properties",
+};
+const descriptions: Record<string, string> = {
+  en: "Find luxury apartments, villas and off-plan projects in Dubai. Trusted by thousands of buyers and investors since 2007.",
+  ru: "Найдите роскошные апартаменты, виллы и новостройки в Дубае. Более 2500 объектов недвижимости. Binayah Properties с 2007 года.",
+  ar: "اعثر على شقق فاخرة وفلل ومشاريع على الخارطة في دبي. موثوق من قبل آلاف المشترين والمستثمرين منذ عام 2007.",
+  zh: "在迪拜寻找豪华公寓、别墅和期房项目。自2007年以来深受数千名买家和投资者信赖。",
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: titles[locale] || titles.en,
+    description: descriptions[locale] || descriptions.en,
+    alternates: {
+      canonical: canonical(locale, "/"),
+      languages: altLangs("/"),
+    },
+    openGraph: {
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
+      url: canonical(locale, "/"),
+      type: "website",
+      images: [{ url: "/assets/og-image.webp", width: 1200, height: 630, alt: "Binayah Properties — Dubai Real Estate" }],
+    },
+  };
+}
 
 const FALLBACK_LISTINGS = [
   {

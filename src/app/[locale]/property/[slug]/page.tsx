@@ -3,6 +3,7 @@ import PropertyDetailClient from "@/app/_clients/property/[slug]/PropertyDetailC
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { canonical as makeCanonical, altLangs } from "@/lib/site";
 
 export const revalidate = 1800;
 
@@ -32,14 +33,15 @@ export async function generateMetadata({
     title: seo.metaTitle || titleFallback,
     description: descFallback,
     alternates: {
-      canonical: seo.canonicalUrl || `/${locale}/property/${slug}`,
+      canonical: seo.canonicalUrl || makeCanonical(locale, `/property/${slug}`),
+      languages: altLangs(`/property/${slug}`),
     },
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/beds/photo overlay).
       type: "website",
-      url: `/${locale}/property/${slug}`,
+      url: makeCanonical(locale, `/property/${slug}`),
     },
     twitter: {
       card: "summary_large_image",

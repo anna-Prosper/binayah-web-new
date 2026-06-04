@@ -6,6 +6,7 @@ import { getCommunity } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
+import { canonical as makeCanonical, altLangs } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -50,7 +51,8 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `/${locale}/communities/${slug}`,
+      canonical: makeCanonical(locale, `/communities/${slug}`),
+      languages: altLangs(`/communities/${slug}`),
     },
     openGraph: {
       title,

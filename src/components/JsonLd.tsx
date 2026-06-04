@@ -69,7 +69,7 @@ export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: `https://www.binayah.ae${item.href}`,
+      item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}${item.href}`,
     })),
   };
 
