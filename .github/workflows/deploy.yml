@@ -1,0 +1,23 @@
+name: Deploy to Beget
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 155.212.186.193
+          username: root
+          key: ${{ secrets.BEGET_SSH_KEY }}
+          script: |
+            cd /var/www/binayah-ru
+            git pull
+            npm install
+            NODE_OPTIONS="--max-old-space-size=1536" npm run build
+            pm2 restart binayah-ru
