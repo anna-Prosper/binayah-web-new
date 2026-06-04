@@ -1,19 +1,25 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { canonical, altLangs } from "@/lib/site";
 
-// /rent is preserved for SEO and direct/external traffic. The unified
-// filter UX lives on /search?intent=rent — sending visitors straight
-// there means Buy, Rent and Off-Plan all share the same filter bar.
-export const metadata = {
-  title: "Properties for Rent in Dubai | Binayah Properties",
-  description:
-    "Browse apartments, villas and townhouses for rent in Dubai. Find your perfect rental with Binayah Properties.",
-};
-
-export default async function RentPage({
-  searchParams,
-}: {
+interface Props {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Properties for Rent in Dubai | Binayah Properties",
+    description: "Browse apartments, villas and townhouses for rent in Dubai. Find your perfect rental with Binayah Properties.",
+    alternates: {
+      canonical: canonical(locale, "/rent"),
+      languages: altLangs("/rent"),
+    },
+  };
+}
+
+export default async function RentPage({ searchParams }: Props) {
   const sp = await searchParams;
   const qs = new URLSearchParams({ intent: "rent" });
   for (const [k, v] of Object.entries(sp)) {

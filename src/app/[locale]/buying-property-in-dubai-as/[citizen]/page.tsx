@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer } from "@/lib/foreign-buyers";
+import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 
 export const revalidate = 86400;
 
@@ -29,8 +30,17 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/${locale}/buying-property-in-dubai-as/${b.slug}` },
-    openGraph: { title, description, type: "article", url: `/${locale}/buying-property-in-dubai-as/${b.slug}` },
+    alternates: {
+      canonical: makeCanonical(locale, `/buying-property-in-dubai-as/${b.slug}`),
+      languages: altLangs(`/buying-property-in-dubai-as/${b.slug}`),
+    },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: makeCanonical(locale, `/buying-property-in-dubai-as/${b.slug}`),
+      images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }],
+    },
   };
 }
 

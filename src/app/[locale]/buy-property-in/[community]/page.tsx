@@ -5,6 +5,7 @@ import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity } from "@/lib/buy-communities";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 
 export const revalidate = 1800;
 
@@ -28,12 +29,16 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/${locale}/buy-property-in/${c.slug}` },
+    alternates: {
+      canonical: makeCanonical(locale, `/buy-property-in/${c.slug}`),
+      languages: altLangs(`/buy-property-in/${c.slug}`),
+    },
     openGraph: {
       title,
       description,
       type: "website",
-      url: `/${locale}/buy-property-in/${c.slug}`,
+      url: makeCanonical(locale, `/buy-property-in/${c.slug}`),
+      images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }],
     },
   };
 }
