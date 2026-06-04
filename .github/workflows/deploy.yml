@@ -5,7 +5,7 @@ on:
     branches:
       - main
 
-# Only one deploy at a time — cancels queued run if a newer push arrives
+# Only one deploy at a time
 concurrency:
   group: deploy-beget
   cancel-in-progress: false
@@ -15,41 +15,67 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Deploy to server
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Write env
+        run: |
+          printf 'NEXT_PUBLIC_SITE_URL=https://binayah.ru\n' > .env.local
+          printf 'NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru\n' >> .env.local
+          printf 'NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com\n' >> .env.local
+          printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
+          printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
+          printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
+          printf 'NEXT_DEFAULT_LOCALE=ru\n' >> .env.local
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
+
+      - name: Deploy built files to server
         uses: appleboy/ssh-action@master
         with:
           host: 155.212.186.193
           username: root
           key: ${{ secrets.BEGET_SSH_KEY }}
-          command_timeout: 25m
+          command_timeout: 5m
           script: |
             set -e
-
-            # Create 2GB swap if not already present (prevents OOM during build)
+            # Create swap if not present
             if [ ! -f /swapfile ]; then
-              fallocate -l 2G /swapfile
-              chmod 600 /swapfile
-              mkswap /swapfile
-              swapon /swapfile
+              fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
               echo '/swapfile none swap sw 0 0' >> /etc/fstab
             fi
+            mkdir -p /var/www/binayah-ru
 
+      - name: Sync built files to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete --exclude='.git' --exclude='node_modules'
+          path: ./
+          remote_path: /var/www/binayah-ru/
+          remote_host: 155.212.186.193
+          remote_user: root
+          remote_key: ${{ secrets.BEGET_SSH_KEY }}
+
+      - name: Restart app (zero downtime)
+        uses: appleboy/ssh-action@master
+        with:
+          host: 155.212.186.193
+          username: root
+          key: ${{ secrets.BEGET_SSH_KEY }}
+          command_timeout: 2m
+          script: |
             cd /var/www/binayah-ru
-
-            printf 'NEXT_PUBLIC_SITE_URL=https://binayah.ru\n' > .env.local
-            printf 'NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru\n' >> .env.local
-            printf 'NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com\n' >> .env.local
-            printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
-            printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
-            printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
-            printf 'NEXT_DEFAULT_LOCALE=ru\n' >> .env.local
-
-            git pull
-            npm install
-
-            # Stop server during build to free RAM (build needs ~1.5GB alone)
-            pm2 stop binayah-ru || true
-            NODE_OPTIONS="--max-old-space-size=1536" npm run build
-
-            # Start / reload after successful build
+            npm install --production --ignore-scripts 2>/dev/null || true
             pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start

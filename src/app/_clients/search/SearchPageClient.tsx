@@ -251,7 +251,7 @@ function SearchContent() {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10_000); // 10s timeout — prevents stuck spinner
+      const timeoutId = setTimeout(() => controller.abort(), 25_000); // 25s — covers Render cold-start wake-up (~15s)
       const response = await fetch(apiUrl(`/api/search?${params.toString()}`), { signal: controller.signal });
       clearTimeout(timeoutId);
       if (!response.ok) throw new Error("Search failed");
