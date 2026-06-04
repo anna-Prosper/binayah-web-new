@@ -75,6 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     withAlternates("/pulse/guides", 0.6, "weekly", now),
     withAlternates("/pulse/calculator", 0.5, "monthly", now),
     withAlternates("/list-your-property", 0.5, "monthly", now),
+    withAlternates("/buy-with-crypto", 0.8, "monthly", now),
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
