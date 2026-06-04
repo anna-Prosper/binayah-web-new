@@ -42,6 +42,7 @@ jobs:
             printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
             printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
             printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
+            printf 'NEXT_DEFAULT_LOCALE=ru\n' >> .env.local
 
             git pull
             npm install

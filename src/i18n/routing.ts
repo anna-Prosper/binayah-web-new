@@ -1,8 +1,12 @@
 import { defineRouting } from "next-intl/routing";
 
+// On binayah.ru, set NEXT_DEFAULT_LOCALE=ru so Russian is the default —
+// no /ru/ prefix needed, binayah.ru/ serves Russian content directly.
+const defaultLocale = (process.env.NEXT_DEFAULT_LOCALE as "en" | "ru" | "zh" | "ar") || "en";
+
 export const routing = defineRouting({
   locales: ["en", "ru", "zh", "ar"],
-  defaultLocale: "en",
-  localePrefix: "as-needed", // English: /about — Others: /ru/about, /zh/about, /ar/about
-  localeDetection: false, // Custom middleware owns cookie/geo detection; prevents Accept-Language from overriding the user's explicit choice (Arabic→English was being reverted)
+  defaultLocale,
+  localePrefix: "as-needed", // default locale: /about — others: /ru/about etc.
+  localeDetection: false,
 });

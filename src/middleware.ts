@@ -132,37 +132,13 @@ export function middleware(request: NextRequest) {
   const domainLocale = getDomainLocale(host);
 
   // --- binayah.ru (and other domain-mapped hosts) ---
-  // Use a domain-specific cookie so binayah.ae's "en" preference doesn't bleed over.
-  // The site defaults to Russian on binayah.ru unless the user explicitly switched.
+  // When NEXT_DEFAULT_LOCALE=ru, next-intl serves Russian at / with no prefix —
+  // no manual redirect needed. Just pass through to intlMiddleware.
   if (domainLocale) {
+    const response = intlMiddleware(request);
     if (prefixMatch) {
-      // User navigated to an explicit locale URL (e.g. /en/project/...) — respect it and save per-domain cookie
-      const response = intlMiddleware(request);
       response.cookies.set(RU_LOCALE_COOKIE, prefixMatch[1], { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" });
-      response.headers.set("Content-Security-Policy", CSP);
-      applySecurityHeaders(response, request);
-      return response;
     }
-    const savedRuLocale = request.cookies.get(RU_LOCALE_COOKIE)?.value;
-    if (savedRuLocale && routing.locales.includes(savedRuLocale as (typeof routing.locales)[number])) {
-      if (savedRuLocale === "en") {
-        const response = intlMiddleware(request);
-        response.headers.set("Content-Security-Policy", CSP);
-        applySecurityHeaders(response, request);
-        return response;
-      }
-      const url = request.nextUrl.clone();
-      url.pathname = `/${savedRuLocale}${pathname === "/" ? "" : pathname}`;
-      const response = NextResponse.redirect(url);
-      response.headers.set("Content-Security-Policy", CSP);
-      applySecurityHeaders(response, request);
-      return response;
-    }
-    // No per-domain cookie — default to domain locale (Russian on binayah.ru)
-    const url = request.nextUrl.clone();
-    url.pathname = `/${domainLocale}${pathname === "/" ? "" : pathname}`;
-    const response = NextResponse.redirect(url);
-    response.cookies.set(RU_LOCALE_COOKIE, domainLocale, { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" });
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
     return response;
