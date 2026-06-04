@@ -270,7 +270,7 @@ function SearchContent() {
         bedrooms: toFacetMap(incoming.bedrooms),
       });
     } catch (error) {
-      console.error("Search error:", error);
+      console.warn("Search error:", error);
     } finally {
       setLoading(false);
     }

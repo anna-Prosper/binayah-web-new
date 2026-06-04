@@ -51,7 +51,7 @@ async function streamChat({
   if (!resp.ok || !resp.body) {
     let errMsg = "Something went wrong. Please try again.";
     try { const d = await resp.json(); if (d?.error) errMsg = d.error; } catch { /* ignore */ }
-    console.error("[chat]", resp.status, errMsg);
+    console.warn("[chat]", resp.status, errMsg);
     onError(errMsg);
     return;
   }

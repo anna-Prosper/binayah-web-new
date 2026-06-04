@@ -55,7 +55,7 @@ const MarketDashboard = () => {
     fetch(apiUrl("/api/market-stats"))
       .then((res) => res.json())
       .then((d) => setData(d))
-      .catch(console.error)
+      .catch(e => console.warn("[market]", e))
       .finally(() => setLoading(false));
   }, []);
 

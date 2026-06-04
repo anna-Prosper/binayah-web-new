@@ -73,7 +73,7 @@ export default function DevelopersPageClient({
         writePageToUrl(nextPage);
       }
     } catch (err) {
-      console.error("Failed to load more developers:", err);
+      console.warn("Failed to load more developers:", err);
       setHasMore(false);
     } finally {
       setLoading(false);
@@ -103,7 +103,7 @@ export default function DevelopersPageClient({
         setDevelopers(Array.isArray(results) ? results : []);
         setHasMore(false);
       } catch (err) {
-        console.error("Search failed:", err);
+        console.warn("Search failed:", err);
       } finally {
         setSearching(false);
       }
