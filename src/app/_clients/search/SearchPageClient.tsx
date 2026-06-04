@@ -563,7 +563,7 @@ function SearchContent() {
           <div className="flex items-center justify-between mt-4 gap-3">
             <p className="text-sm text-muted-foreground">
               {loading ? t("searching") : (
-                <><span className="font-semibold text-foreground">{totalResults.toLocaleString()}</span> {t("results")}</>
+                <>{t("results", { count: totalResults })}</>
               )}
             </p>
             <div className="flex items-center gap-3">
