@@ -284,6 +284,7 @@ interface PulsePageClientProps {
 export default function PulsePageClient({ marketStats, marketData, areasData, projectsData, binayahNews }: PulsePageClientProps) {
   const t = useTranslations("pulse");
   const locale = useLocale();
+  const currentYear = new Date().getFullYear();
   const [activeTab, setActiveTab] = useState<MainTab>("market");
   const [sortKey, setSortKey] = useState<SortKey>("totalListings");
   const [sortAsc, setSortAsc] = useState(false);
@@ -778,7 +779,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                             <CartesianGrid strokeDasharray="3 3" stroke="hsl(40,15%,92%)" vertical={false} />
                             <XAxis dataKey="area" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                             <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                            <Tooltip formatter={(v: number) => [v.toLocaleString(), "Properties"]} contentStyle={TOOLTIP_STYLE} />
+                            <Tooltip formatter={(v: number) => [v.toLocaleString(), t("properties")]} contentStyle={TOOLTIP_STYLE} />
                             <Bar dataKey="volume" radius={[6, 6, 0, 0]}>{marketStats.volumeByArea.map((_, i) => <Cell key={i} fill={`hsl(168, ${80 - i * 6}%, ${20 + i * 5}%)`} />)}</Bar>
                           </BarChart>
                         </ResponsiveContainer>
@@ -880,7 +881,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                   onClick={(e) => { e.stopPropagation(); setDrawerCommunity(c.area); }}
                                   className="text-[10px] font-medium text-accent hover:underline"
                                 >
-                                  {"Details →"}
+                                  {t("detailsCta")} →
                                 </button>
                               </td>
                             </tr>
@@ -964,7 +965,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                   viewport={{ once: true }}
                   transition={{ delay: 0 }}
                 >
-                  <SectionHeader label={t("dldHeroLabel")} title={t("totalTxYtd")} titleItalic={t("ytdLabel")} />
+                  <SectionHeader label={t("dldHeroLabel")} title={t("totalTxYtd")} titleItalic={t("ytdLabel", { year: currentYear })} />
                   <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -974,7 +975,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                   <Kpi
                     label={t("totalTxYtd")}
                     valueNum={txData.summary.totalTransactions}
-                    sub={t("ytdLabel")}
+                    sub={t("ytdLabel", { year: currentYear })}
                     icon={BarChart3}
                     accent
                   />
@@ -1385,7 +1386,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                         <div className="flex items-center gap-1.5 mt-auto">
                           <Newspaper className="h-3 w-3 text-muted-foreground/40" />
                           <p className="text-[10px] text-muted-foreground/60">
-                            {new Date(item.publishedAt).toLocaleDateString("en-AE", { day: "numeric", month: "short", year: "numeric" })}
+                            {new Date(item.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
                           </p>
                         </div>
                       </a>
@@ -1465,7 +1466,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
           >
             <div className="flex items-center justify-between mb-5">
               <div>
-                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mb-0.5">{"Community"}</p>
+                <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mb-0.5">{t("colCommunity")}</p>
                 <h2 className="text-xl font-bold text-foreground">{drawerCommunity}</h2>
               </div>
               <button onClick={() => setDrawerCommunity(null)} className="text-muted-foreground hover:text-foreground text-lg leading-none">×</button>
@@ -1478,10 +1479,10 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
               return (
                 <div className="grid grid-cols-2 gap-3 mb-5">
                   {[
-                    { label: "Price / sqft", value: comm.avgPricePerSqft > 0 ? `AED ${comm.avgPricePerSqft.toLocaleString()}` : "—" },
-                    { label: "Rental Yield", value: comm.rentalYield > 0 ? `${comm.rentalYield}%` : "—" },
-                    { label: "Investment Score", value: comm.investmentScore > 0 ? `${comm.investmentScore}/100` : "—" },
-                    { label: "Off-Plan", value: `${comm.offPlanCount} of ${comm.totalListings}` },
+                    { label: t("priceSqft"), value: comm.avgPricePerSqft > 0 ? `AED ${comm.avgPricePerSqft.toLocaleString()}` : "—" },
+                    { label: t("rentalYield"), value: comm.rentalYield > 0 ? `${comm.rentalYield}%` : "—" },
+                    { label: t("investmentScore"), value: comm.investmentScore > 0 ? `${comm.investmentScore}/100` : "—" },
+                    { label: t("offPlan"), value: `${comm.offPlanCount} of ${comm.totalListings}` },
                   ].map((item) => (
                     <div key={item.label} className="bg-muted/30 rounded-xl p-3">
                       <p className="text-[10px] text-muted-foreground mb-0.5">{item.label}</p>
@@ -1494,13 +1495,13 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
 
             {/* Top Buildings from DLD */}
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{"Top Buildings (DLD)"}</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{t("topBuildingsTitle")}</p>
               {drawerLoading ? (
                 <div className="space-y-2">
                   {[1,2,3].map((i) => <div key={i} className="h-12 bg-muted/30 rounded-xl animate-pulse" />)}
                 </div>
               ) : drawerBuildings.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{"No DLD building data for this area."}</p>
+                <p className="text-sm text-muted-foreground">{t("drawerNoDldData")}</p>
               ) : (
                 <div className="space-y-2">
                   {drawerBuildings.map((b, i) => (
@@ -1510,7 +1511,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                         <span className="text-sm font-medium text-foreground truncate">{b.name}</span>
                       </div>
                       <div className="text-right flex-shrink-0 ml-2">
-                        <p className="text-xs font-semibold text-foreground">{`${b.sales} sales`}</p>
+                        <p className="text-xs font-semibold text-foreground">{t("salesCount", { count: b.sales })}</p>
                         {b.avgPpsf > 0 && <p className="text-[10px] text-muted-foreground">{`AED ${Math.round(b.avgPpsf / 10.764).toLocaleString()}/sqft`}</p>}
                       </div>
                     </div>
@@ -1525,7 +1526,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                {"Compare with other communities →"}
+                {t("drawerCompareCta")} →
               </Link>
             </div>
           </motion.div>

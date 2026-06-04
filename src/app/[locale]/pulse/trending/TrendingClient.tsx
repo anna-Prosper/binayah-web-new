@@ -206,7 +206,7 @@ export default function TrendingClient({
   const latest = monthly[monthly.length - 1] ?? null;
 
   // ── Share ─────────────────────────────────────────────────────────────
-  const [baseUrl, setBaseUrl] = useState("https://www.binayah.ae/pulse/trending");
+  const [baseUrl, setBaseUrl] = useState(`${typeof window !== "undefined" ? window.location.origin : "https://www.binayah.ae"}/pulse/trending`);
   useEffect(() => {
     if (typeof window !== "undefined") {
       setBaseUrl(`${window.location.origin}/pulse/trending`);
@@ -369,7 +369,7 @@ export default function TrendingClient({
           viewport={{ once: true }}
           transition={{ delay: 0.09 }}
         >
-          <SectionHeader label="RENTAL YIELD" title="Yield" titleItalic="Champions" />
+          <SectionHeader label={t("yieldLabel")} title={t("yieldTitle")} titleItalic={t("yieldItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {yieldChampions.map((c, i) => (
               <div key={c.area} className="bg-card border border-border/50 rounded-xl p-4 hover:border-accent/30 hover:shadow-sm transition-all">
@@ -381,8 +381,8 @@ export default function TrendingClient({
                   <span className="text-lg font-bold text-emerald-600">{c.rentalYield}%</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs mt-3">
-                  <div><p className="text-muted-foreground">{"Avg Sale"}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice) : "—"}</p></div>
-                  <div><p className="text-muted-foreground">{"Price/sqft"}</p><p className="font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice) : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
                 </div>
               </div>
             ))}
@@ -398,12 +398,12 @@ export default function TrendingClient({
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          <SectionHeader label="INVESTMENT" title="Best Value" titleItalic="Areas" />
+          <SectionHeader label={t("investmentLabel")} title={t("bestValueTitle")} titleItalic={t("bestValueItalic")} />
           <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border/50 bg-muted/30">
-                  {["Community", "Score", "Price/sqft", "Yield"].map((col, i) => (
+                  {[t("colCommunity"), t("colScore"), t("colPriceSqft"), t("colYield")].map((col, i) => (
                     <th key={i} className={`px-4 py-3 text-xs font-semibold text-muted-foreground ${i === 0 ? "text-left" : "text-right"}`}>{col}</th>
                   ))}
                 </tr>
@@ -438,7 +438,7 @@ export default function TrendingClient({
           viewport={{ once: true }}
           transition={{ delay: 0.11 }}
         >
-          <SectionHeader label="DLD DATA" title="Transaction" titleItalic="Hotspots" />
+          <SectionHeader label={t("dldLabel")} title={t("txTitle")} titleItalic={t("txItalic")} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {activityLeaders.map((area, i) => (
               <div key={area.area} className="bg-card border border-border/50 rounded-xl p-4 hover:border-accent/30 transition-all">
@@ -449,14 +449,14 @@ export default function TrendingClient({
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-xs mt-3">
-                  <div><p className="text-muted-foreground">{"Sales"}</p><p className="font-bold text-foreground">{area.count.toLocaleString()}</p></div>
-                  <div><p className="text-muted-foreground">{"Avg Price"}</p><p className="font-semibold text-foreground">{area.avgPrice > 0 ? AED(area.avgPrice) : "—"}</p></div>
-                  <div><p className="text-muted-foreground">{"AED/sqft"}</p><p className="font-semibold text-foreground">{area.avgPpsf > 0 ? area.avgPpsf.toLocaleString() : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("colSales")}</p><p className="font-bold text-foreground">{area.count.toLocaleString()}</p></div>
+                  <div><p className="text-muted-foreground">{t("colAvgPrice")}</p><p className="font-semibold text-foreground">{area.avgPrice > 0 ? AED(area.avgPrice) : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("colAedSqft")}</p><p className="font-semibold text-foreground">{area.avgPpsf > 0 ? area.avgPpsf.toLocaleString() : "—"}</p></div>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-[10px] text-muted-foreground mt-2">{"Source: Dubai Land Department transaction data"}</p>
+          <p className="text-[10px] text-muted-foreground mt-2">{t("dldSource")}</p>
         </motion.section>
       )}
 
@@ -468,12 +468,12 @@ export default function TrendingClient({
           viewport={{ once: true }}
           transition={{ delay: 0.12 }}
         >
-          <SectionHeader label="DEVELOPMENT" title="Off-Plan" titleItalic="Hotspots" />
+          <SectionHeader label={t("devLabel")} title={t("offPlanTitle")} titleItalic={t("hotspotItalic")} />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {offPlanHotspots.map((c, i) => (
               <div key={c.area} className="bg-card border border-border/50 rounded-xl p-3 text-center hover:border-accent/30 transition-all">
                 <div className="text-xl font-bold text-primary mb-0.5">{c.offPlanCount}</div>
-                <div className="text-[10px] text-muted-foreground font-medium mb-1">{"projects"}</div>
+                <div className="text-[10px] text-muted-foreground font-medium mb-1">{t("projects")}</div>
                 <div className="text-xs font-semibold text-foreground leading-tight">{c.area}</div>
                 {c.avgPricePerSqft > 0 && (
                   <div className="text-[10px] text-accent mt-1">{`AED ${c.avgPricePerSqft.toLocaleString()}/sqft`}</div>
