@@ -10,6 +10,8 @@ const GEO_LOCALE_MAP: Record<string, string> = {
 };
 
 const LOCALE_COOKIE = "BINAYAH_LOCALE";
+// Separate cookie for binayah.ru so .ae locale preference doesn't bleed over
+const RU_LOCALE_COOKIE = "BINAYAH_LOCALE_RU";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 const intlMiddleware = createMiddleware(routing);
 const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar)(\/|$)/;
@@ -126,6 +128,47 @@ export function middleware(request: NextRequest) {
   }
 
   const prefixMatch = pathname.match(LOCALE_PREFIX_REGEX);
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const domainLocale = getDomainLocale(host);
+
+  // --- binayah.ru (and other domain-mapped hosts) ---
+  // Use a domain-specific cookie so binayah.ae's "en" preference doesn't bleed over.
+  // The site defaults to Russian on binayah.ru unless the user explicitly switched.
+  if (domainLocale) {
+    if (prefixMatch) {
+      // User navigated to an explicit locale URL (e.g. /en/project/...) — respect it and save per-domain cookie
+      const response = intlMiddleware(request);
+      response.cookies.set(RU_LOCALE_COOKIE, prefixMatch[1], { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" });
+      response.headers.set("Content-Security-Policy", CSP);
+      applySecurityHeaders(response, request);
+      return response;
+    }
+    const savedRuLocale = request.cookies.get(RU_LOCALE_COOKIE)?.value;
+    if (savedRuLocale && routing.locales.includes(savedRuLocale as (typeof routing.locales)[number])) {
+      if (savedRuLocale === "en") {
+        const response = intlMiddleware(request);
+        response.headers.set("Content-Security-Policy", CSP);
+        applySecurityHeaders(response, request);
+        return response;
+      }
+      const url = request.nextUrl.clone();
+      url.pathname = `/${savedRuLocale}${pathname === "/" ? "" : pathname}`;
+      const response = NextResponse.redirect(url);
+      response.headers.set("Content-Security-Policy", CSP);
+      applySecurityHeaders(response, request);
+      return response;
+    }
+    // No per-domain cookie — default to domain locale (Russian on binayah.ru)
+    const url = request.nextUrl.clone();
+    url.pathname = `/${domainLocale}${pathname === "/" ? "" : pathname}`;
+    const response = NextResponse.redirect(url);
+    response.cookies.set(RU_LOCALE_COOKIE, domainLocale, { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" });
+    response.headers.set("Content-Security-Policy", CSP);
+    applySecurityHeaders(response, request);
+    return response;
+  }
+
+  // --- binayah.ae / Vercel ---
   if (prefixMatch) {
     const response = intlMiddleware(request);
     setLocaleCookie(response, prefixMatch[1]);
@@ -150,20 +193,6 @@ export function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/${savedLocale}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
-    setGeoCookie(response, request);
-    return response;
-  }
-
-  // Domain-based locale: binayah.ru → ru, binayah.cn → zh (works on self-hosted VPS without Vercel geo headers)
-  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
-  const domainLocale = getDomainLocale(host);
-  if (domainLocale && domainLocale !== "en") {
-    const url = request.nextUrl.clone();
-    url.pathname = `/${domainLocale}${pathname === "/" ? "" : pathname}`;
-    const response = NextResponse.redirect(url);
-    setLocaleCookie(response, domainLocale);
     response.headers.set("Content-Security-Policy", CSP);
     applySecurityHeaders(response, request);
     setGeoCookie(response, request);

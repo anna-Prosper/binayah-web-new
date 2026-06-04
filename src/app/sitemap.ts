@@ -4,26 +4,31 @@ import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
-const LOCALES = ["en", "ru", "zh", "ar"] as const;
+import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
+
+const IS_RU = SITE_URL.includes("binayah.ru");
 
 function localeUrl(path: string, locale: string) {
-  const prefix = locale === "en" ? "" : `/${locale}`;
-  return `${BASE}${prefix}${path}`;
+  if (locale === "ru") return `${RU_URL}/ru${path}`;
+  if (locale === "en") return `${AE_URL}${path}`;
+  return `${AE_URL}/${locale}${path}`;
 }
 
 function withAlternates(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
-  const languages: Record<string, string> = {};
-  for (const locale of LOCALES) {
-    languages[locale === "en" ? "x-default" : locale] = localeUrl(path, locale);
-    if (locale !== "en") languages[locale] = localeUrl(path, locale);
-  }
   return {
-    url: localeUrl(path, "en"),
+    url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
     lastModified,
     changeFrequency,
     priority,
-    alternates: { languages },
+    alternates: {
+      languages: {
+        en: `${AE_URL}${path}`,
+        ru: `${RU_URL}/ru${path}`,
+        ar: `${AE_URL}/ar${path}`,
+        zh: `${AE_URL}/zh${path}`,
+        "x-default": `${AE_URL}${path}`,
+      },
+    },
   };
 }
 
@@ -81,5 +86,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
   ];
 
+  // On binayah.ru: only expose Russian URLs — other locales live on binayah.ae
+  if (IS_RU) {
+    return [...staticPages, ...dynamicPages];
+  }
   return [...staticPages, ...dynamicPages];
 }

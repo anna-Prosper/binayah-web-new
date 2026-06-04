@@ -1,0 +1,22 @@
+export const AE_URL = "https://www.binayah.ae";
+export const RU_URL = "https://binayah.ru";
+// Set NEXT_PUBLIC_SITE_URL=https://binayah.ru in .env.local on the Beget server
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || AE_URL;
+
+// Authoritative canonical URL for a given locale and path (e.g. path = "/about")
+export function canonical(locale: string, path: string): string {
+  if (locale === "ru") return `${RU_URL}/ru${path}`;
+  if (locale === "en") return `${AE_URL}${path}`;
+  return `${AE_URL}/${locale}${path}`;
+}
+
+// Cross-domain hreflang alternates — Russian always points to binayah.ru
+export function altLangs(path: string): Record<string, string> {
+  return {
+    en: `${AE_URL}${path}`,
+    ru: `${RU_URL}/ru${path}`,
+    ar: `${AE_URL}/ar${path}`,
+    zh: `${AE_URL}/zh${path}`,
+    "x-default": `${AE_URL}${path}`,
+  };
+}

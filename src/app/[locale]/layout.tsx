@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { OrganizationJsonLd } from "@/components/JsonLd";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
@@ -22,7 +23,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 const GA_ID = "G-9FZKWX04K3";
 const CLARITY_ID = "wuee1w39pj";
 const LIVECHAT_LICENSE = "6313921";
-const PROD_HOSTS = new Set(["www.binayah.ae", "binayah.ae"]);
+const PROD_HOSTS = new Set(["www.binayah.ae", "binayah.ae", "binayah.ru", "www.binayah.ru"]);
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "cyrillic-ext"],
@@ -75,21 +76,26 @@ export async function generateMetadata({
   const verificationGoogle = process.env.GOOGLE_VERIFICATION_CODE;
   const hasVerification = !!verificationGoogle || Object.keys(verificationOther).length > 0;
 
+  const titles: Record<string, string> = {
+    en: "Binayah Properties — Dubai Real Estate & Investments",
+    ru: "Binayah Properties — Недвижимость в Дубае",
+    ar: "بناية للعقارات — العقارات في دبي والاستثمار",
+    zh: "Binayah Properties — 迪拜房地产与投资",
+  };
+  const descriptions: Record<string, string> = {
+    en: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+    ru: "Binayah Properties — ваш надёжный партнёр по недвижимости в Дубае с 2007 года. Купить, снять или инвестировать в жильё, новостройки и управление недвижимостью.",
+    ar: "بناية للعقارات — شريكك الموثوق في عقارات دبي. شراء أو إيجار أو استثمار في المنازل الفاخرة والمشاريع على الخارطة.",
+    zh: "Binayah Properties — 迪拜值得信赖的房产合作伙伴。购买、租赁或投资豪华住宅、期房项目，享受全面的物业管理服务。",
+  };
+
   return {
-    // 56 chars — within recommended 50–60 range
-    title: "Binayah Properties — Dubai Real Estate & Investments",
-    // 154 chars — within recommended 120–160 range
-    description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+    title: titles[locale] || titles.en,
+    description: descriptions[locale] || descriptions.en,
     metadataBase: new URL(siteUrl),
     alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        en: "/en",
-        ar: "/ar",
-        ru: "/ru",
-        zh: "/zh",
-        "x-default": "/en",
-      },
+      canonical: makeCanonical(locale, "/"),
+      languages: altLangs("/"),
     },
     keywords: [
       "Dubai real estate",
@@ -123,11 +129,11 @@ export async function generateMetadata({
       apple: "/icon.png",
     },
     openGraph: {
-      title: "Binayah Properties — Dubai Real Estate & Investments",
-      description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
       type: "website",
       siteName: "Binayah Properties",
-      url: `${siteUrl}/${locale}`,
+      url: makeCanonical(locale, "/"),
       locale: OG_LOCALE[locale] ?? "en_AE",
       images: [
         {
@@ -140,8 +146,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: "Binayah Properties — Dubai Real Estate & Investments",
-      description: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
       images: ["/assets/og-image.webp"],
     },
     ...(hasVerification && {

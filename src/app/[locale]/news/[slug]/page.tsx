@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
+import { canonical, altLangs, AE_URL } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -8,25 +9,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug, locale } = await params;
   const article = await getNewsArticle(slug, locale);
   if (!article) return { title: "Not Found" };
-  const siteUrl = "https://www.binayah.ae";
   return {
     title: article.metaTitle || `${article.title} | Binayah Properties`,
     description: article.metaDescription || article.excerpt,
     alternates: {
-      canonical: `${siteUrl}/${locale}/news/${slug}`,
-      languages: {
-        "en": `${siteUrl}/en/news/${slug}`,
-        "ru": `${siteUrl}/ru/news/${slug}`,
-        "ar": `${siteUrl}/ar/news/${slug}`,
-        "zh": `${siteUrl}/zh/news/${slug}`,
-        "x-default": `${siteUrl}/en/news/${slug}`,
-      },
+      canonical: canonical(locale, `/news/${slug}`),
+      languages: altLangs(`/news/${slug}`),
     },
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
       type: "article",
-      url: `${siteUrl}/${locale}/news/${slug}`,
+      url: canonical(locale, `/news/${slug}`),
       locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : "en_AE",
       ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
     },
@@ -58,11 +52,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
             "@context": "https://schema.org",
             "@type": "NewsArticle",
             headline: article.title,
-            image: article.featuredImage || "https://www.binayah.ae/assets/dubai-hero.webp",
+            image: article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`,
             datePublished: article.publishedAt,
             author: { "@type": "Person", name: article.author || "Binayah Editorial" },
-            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: "https://www.binayah.ae/assets/binayah-logo.webp" } },
-            url: `https://www.binayah.ae/news/${slug}`,
+            publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` } },
+            url: canonical(locale, `/news/${slug}`),
           }).replace(/</g, "\\u003c"),
         }}
       />

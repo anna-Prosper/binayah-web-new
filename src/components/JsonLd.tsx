@@ -36,6 +36,7 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       "https://www.facebook.com/BinayahRealEstateLLC",
       "https://www.youtube.com/@binayahproperties",
       "https://www.linkedin.com/company/binayah-real-estate",
+      "https://binayah.ru",
     ],
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
