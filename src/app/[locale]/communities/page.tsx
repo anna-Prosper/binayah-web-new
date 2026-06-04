@@ -1,7 +1,7 @@
 import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageClient";
 import { fetchPlaceCards } from "./fetchPlaces";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -14,7 +14,7 @@ const titles: Record<string, string> = {
   zh: "迪拜社区与街区 | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
-  en: "Explore Dubai's top residential communities — Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay and more. Browse properties by neighbourhood with live market data.",
+  en: "Explore Dubai's top communities — Marina, Downtown, Palm Jumeirah, Business Bay. Browse properties by neighbourhood with live market data.",
   ru: "Изучите лучшие жилые районы Дубая — Дубай Марина, Даунтаун, Пальма Джумейра, Бизнес-Бей и другие. Сравните цены и найдите недвижимость по районам.",
   ar: "استكشف أفضل المجتمعات السكنية في دبي — دبي مارينا، وسط المدينة، نخلة جميرا، الخليج التجاري والمزيد.",
   zh: "探索迪拜顶级住宅社区——迪拜marina、市中心、棕榈岛、商业湾等。按社区浏览房产，附实时市场数据。",
@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[locale] || descriptions.en,
       url: canonical(locale, "/communities"),
       type: "website",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }

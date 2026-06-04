@@ -7,7 +7,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -23,10 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: altLangs("/pulse"),
     },
     openGraph: {
-      title: "Dubai Market Pulse | Binayah Properties",
+      title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
+      description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends and economic indicators.",
       url: canonical(locale, "/pulse"),
       type: "website",
-      images: [{ url: "/assets/og-image.webp", width: 1200, height: 630 }],
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }

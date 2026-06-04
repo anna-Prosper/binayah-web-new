@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -15,6 +15,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonical(locale, "/buy"),
       languages: altLangs("/buy"),
+    },
+    openGraph: {
+      title: "Properties for Sale in Dubai | Binayah Properties",
+      description: "Browse apartments, villas and townhouses for sale in Dubai. Find secondary market properties with Binayah Properties.",
+      url: canonical(locale, "/buy"),
+      type: "website",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }

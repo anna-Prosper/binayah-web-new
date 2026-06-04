@@ -1,6 +1,6 @@
 import ServicesPageClient from "./ServicesPageClient";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 86400;
 
@@ -33,6 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[locale] || descriptions.en,
       url: canonical(locale, "/services"),
       type: "website",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }

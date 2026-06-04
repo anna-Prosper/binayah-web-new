@@ -10,6 +10,14 @@ export function canonical(locale: string, path: string): string {
   return `${AE_URL}/${locale}${path}`;
 }
 
+// og:locale per locale
+export const OG_LOCALE: Record<string, string> = {
+  en: "en_AE", ru: "ru_RU", ar: "ar_AE", zh: "zh_CN",
+};
+
+// Default OG image (absolute URL)
+export const DEFAULT_OG_IMAGE = `${AE_URL}/assets/og-image.webp`;
+
 // Cross-domain hreflang alternates — Russian always points to binayah.ru
 export function altLangs(path: string): Record<string, string> {
   return {

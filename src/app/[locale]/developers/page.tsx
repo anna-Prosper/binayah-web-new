@@ -1,7 +1,7 @@
 import DevelopersPageClient from "@/app/_clients/developers/DevelopersPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[locale] || descriptions.en,
       url: canonical(locale, "/developers"),
       type: "website",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }

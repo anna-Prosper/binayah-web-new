@@ -1,7 +1,7 @@
 import HomePageClient from "@/components/HomePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -34,7 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[locale] || descriptions.en,
       url: canonical(locale, "/"),
       type: "website",
-      images: [{ url: "/assets/og-image.webp", width: 1200, height: 630, alt: "Binayah Properties — Dubai Real Estate" }],
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      siteName: "Binayah Properties",
+      images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630, alt: "Binayah Properties — Dubai Real Estate" }],
     },
   };
 }

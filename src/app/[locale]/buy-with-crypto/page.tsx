@@ -292,28 +292,18 @@ export default async function BuyWithCryptoPage({ params }: Props) {
       <Navbar />
 
       {/* ── Hero ────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden min-h-[520px] flex items-center"
-        style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #1A7A5A 60%, #0D4A33 100%)" }}
-      >
-        {/* Crypto banner as decorative right-side element */}
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src="/assets/crypto-banner.webp"
-            alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : "Cryptocurrency and Dubai real estate investment"}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center opacity-25 mix-blend-luminosity"
-          />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.95) 0%, rgba(26,122,90,0.75) 60%, rgba(11,61,46,0.9) 100%)" }} />
-        </div>
-
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }}
+      <section className="relative overflow-hidden min-h-[520px] flex items-center">
+        {/* Gold crypto banner as full hero background */}
+        <Image
+          src="/assets/crypto-banner.webp"
+          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : "Cryptocurrency and Dubai real estate investment"}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
+        {/* Dark overlay for text readability while preserving the gold coins */}
+        <div className="absolute inset-0 bg-black/55" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-28 md:py-36">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-5">{c.heroLabel}</p>

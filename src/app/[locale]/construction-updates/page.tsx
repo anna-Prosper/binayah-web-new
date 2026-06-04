@@ -1,7 +1,7 @@
 import ConstructionUpdatesClient from "@/app/_clients/construction-updates/ConstructionUpdatesClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 600;
 
@@ -17,10 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: altLangs("/construction-updates"),
     },
     openGraph: {
-      title: "Construction Updates | Binayah Properties",
+      title: "Construction Updates | Dubai Off-Plan Projects | Binayah",
+      description: "Track the latest construction progress of Dubai's top off-plan projects. Real-time updates, completion timelines, and developer information.",
       url: canonical(locale, "/construction-updates"),
       type: "website",
-      images: [{ url: "/assets/og-image.webp", width: 1200, height: 630 }],
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }
