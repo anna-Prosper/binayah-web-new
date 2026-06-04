@@ -121,13 +121,13 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent() {
+function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
-  const initialIntent = (params.get("intent") as SearchIntent) || "";
+  const initialIntent = (params.get("intent") as SearchIntent) || defaultIntent || "";
 
-  const [status, setStatus] = useState<SearchStatus>(normalizeStatus(params.get("status"), initialIntent));
+  const [status, setStatus] = useState<SearchStatus>(normalizeStatus(params.get("status") || defaultStatus || null, initialIntent));
   const [intent, setIntent] = useState<SearchIntent>(initialIntent);
 
   // Sync tab when URL params change (e.g. nav links between Buy/Rent/Off-Plan)
@@ -993,10 +993,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient() {
+export default function SearchPageClient({ defaultStatus, defaultIntent }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} />
     </Suspense>
   );
 }
