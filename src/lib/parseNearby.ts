@@ -91,61 +91,39 @@ export async function fetchNearbyFromGoogleMaps(
   lat: number,
   lng: number
 ): Promise<NearbyItem[]> {
-  const key = process.env.GOOGLE_PLACES_API_KEY;
+  // Use GOOGLE_PLACES_API_KEY if set, otherwise fall back to the Maps Embed key
+  // Note: requires Distance Matrix API + billing enabled on the GCP project
+  const key = process.env.GOOGLE_PLACES_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "";
   if (!key) return [];
 
-  // Preset destination POIs for Dubai context
-  const destinations = [
-    { name: "Nearest Metro Station", query: "metro station" },
-    { name: "Nearest Shopping Mall", query: "shopping mall" },
-    { name: "Nearest Beach / Waterfront", query: "beach waterfront" },
-    { name: "Nearest Hospital", query: "hospital" },
-    { name: "Dubai International Airport", query: "Dubai International Airport" },
-    { name: "Downtown Dubai", query: "Downtown Dubai" },
+  // Preset Dubai POI destinations — address strings for Distance Matrix
+  const POI_DESTINATIONS = [
+    { address: "nearest metro station near " + lat + "," + lng, label: "Metro Station", type: "metro" },
+    { address: "nearest shopping mall near " + lat + "," + lng, label: "Shopping Mall", type: "mall" },
+    { address: "nearest beach Dubai", label: "Beach / Waterfront", type: "beach" },
+    { address: "nearest hospital near " + lat + "," + lng, label: "Hospital", type: "hospital" },
+    { address: "Dubai International Airport", label: "Dubai Airport (DXB)", type: "airport" },
+    { address: "Downtown Dubai", label: "Downtown Dubai", type: "landmark" },
   ];
 
   try {
-    // Step 1: Find each destination using Places Nearby Search
-    const placeRequests = destinations.map(async (dest) => {
-      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&rankby=distance&type=${encodeURIComponent(dest.query)}&key=${key}`;
-      const res = await fetch(url, { next: { revalidate: 86400 } });
-      if (!res.ok) return null;
-      const data = await res.json();
-      const place = data.results?.[0];
-      if (!place) return null;
-      return {
-        placeId: place.place_id,
-        name: place.name as string,
-        destName: dest.name,
-        query: dest.query,
-      };
-    });
+    // Use Distance Matrix API (requires billing + Distance Matrix API enabled on GCP project)
+    const destParam = POI_DESTINATIONS.map((d) => encodeURIComponent(d.address)).join("|");
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${lat},${lng}&destinations=${destParam}&mode=driving&key=${key}`;
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (data.status !== "OK") return [];
 
-    const places = (await Promise.all(placeRequests)).filter(Boolean);
-    if (places.length === 0) return [];
-
-    // Step 2: Distance Matrix from origin to all found places
-    const destinations_str = places
-      .map((p) => `place_id:${p!.placeId}`)
-      .join("|");
-    const matrixUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${lat},${lng}&destinations=${encodeURIComponent(destinations_str)}&mode=driving&key=${key}`;
-    const matrixRes = await fetch(matrixUrl, { next: { revalidate: 86400 } });
-    if (!matrixRes.ok) return [];
-    const matrix = await matrixRes.json();
-
-    const elements: any[] = matrix.rows?.[0]?.elements || [];
+    const elements: any[] = data.rows?.[0]?.elements || [];
     const items: NearbyItem[] = [];
 
     elements.forEach((el, i) => {
-      const place = places[i];
-      if (!place || el.status !== "OK") return;
+      const poi = POI_DESTINATIONS[i];
+      if (!poi || el.status !== "OK") return;
       const mins = Math.round((el.duration.value as number) / 60);
-      const unit = mins <= 15 ? "min walk" : "min drive";
-      items.push({
-        name: place.name || place.destName,
-        type: inferType(place.destName),
-        distance: `${mins} ${unit}`,
-      });
+      const unit = mins <= 10 ? "min walk" : "min drive";
+      items.push({ name: poi.label, type: poi.type, distance: `${mins} ${unit}` });
     });
 
     return items;

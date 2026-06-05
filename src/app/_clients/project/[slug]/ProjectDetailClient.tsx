@@ -39,7 +39,7 @@ import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 
-const MAPS_KEY = "AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8";
+const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "";
 
 /** Convert any Google Maps URL to a valid Maps Embed API v1 src. */
 function toMapEmbedSrc(rawUrl: string): string {

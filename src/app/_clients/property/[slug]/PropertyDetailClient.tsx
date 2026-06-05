@@ -1118,8 +1118,8 @@ export default function PropertyDetailClient({
                     country={listing.country || "UAE"}
                     mapEmbedSrc={
                       hasMap
-                        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${listing.latitude},${listing.longitude}&zoom=15`
-                        : `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
+                        ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${listing.latitude},${listing.longitude}&zoom=15`
+                        : `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
                     }
                     nearby={nearbyItems}
                     iconForType={nearbyIcon}
