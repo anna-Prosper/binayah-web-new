@@ -275,14 +275,14 @@ export default async function SellPage({ params }: Props) {
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section
-        className="relative overflow-hidden pt-32 pb-20 text-white"
+        className="relative overflow-hidden pt-20 sm:pt-32 pb-12 sm:pb-20 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{c.heroLabel}</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4">{c.h1}</h1>
-          <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-2xl mb-10">{c.heroDesc}</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 sm:mb-4">{c.h1}</h1>
+          <p className="text-primary-foreground/80 text-sm sm:text-base leading-relaxed max-w-2xl mb-8 sm:mb-10">{c.heroDesc}</p>
           <div className="flex flex-wrap gap-4">
             <Link
               href={`${lp}/valuation`}
@@ -315,7 +315,7 @@ export default async function SellPage({ params }: Props) {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20">
 
         {/* ── How it works ──────────────────────────────────────────── */}
         <section>

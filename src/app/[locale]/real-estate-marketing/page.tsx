@@ -78,7 +78,7 @@ export default async function RealEstateMarketingPage({ params }: Props) {
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Navbar />
 
-      <section className="relative overflow-hidden pt-32 pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+      <section className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">
@@ -117,7 +117,7 @@ export default async function RealEstateMarketingPage({ params }: Props) {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Services</p>

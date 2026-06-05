@@ -285,28 +285,59 @@ export default async function TopProjectsPage({ params }: Props) {
 
       {/* Hero */}
       <section
-        className="relative overflow-hidden pt-32 pb-16 text-white"
+        className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{c.heroLabel}</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-2">{c.h1}</h1>
-          <p className="text-3xl sm:text-4xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
-          <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-2xl">{c.heroDesc}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3 sm:mb-4">{c.heroLabel}</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-2">{c.h1}</h1>
+          <p className="text-xl sm:text-3xl font-light text-primary-foreground/70 mb-4 sm:mb-6">{c.h1sub}</p>
+          <p className="text-primary-foreground/80 text-sm sm:text-base leading-relaxed max-w-2xl">{c.heroDesc}</p>
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20">
 
-        {/* Developer comparison table */}
+        {/* Developer comparison */}
         <section>
-          <div className="text-center mb-10">
+          <div className="text-center mb-8 sm:mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Compare</p>
-            <h2 className="text-3xl font-bold text-foreground mb-2">{c.devTitle}</h2>
-            <p className="text-muted-foreground">{c.devSubtitle}</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.devTitle}</h2>
+            <p className="text-sm sm:text-base text-muted-foreground">{c.devSubtitle}</p>
           </div>
-          <div className="overflow-x-auto rounded-2xl border border-border/50">
+
+          {/* Mobile: cards */}
+          <div className="sm:hidden space-y-3">
+            {DEVELOPERS.map((d) => (
+              <div key={d.name} className="bg-card border border-border/50 rounded-2xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">{d.flag}</span>
+                  <div>
+                    <p className="font-bold text-foreground text-sm">{d.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{d.knownFor}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="bg-muted/30 rounded-lg p-2 text-center">
+                    <p className="text-muted-foreground mb-0.5">Yield</p>
+                    <p className="font-bold text-emerald-600">{d.avgYield}</p>
+                  </div>
+                  <div className="bg-muted/30 rounded-lg p-2 text-center">
+                    <p className="text-muted-foreground mb-0.5">Price/sqft</p>
+                    <p className="font-semibold text-foreground text-[10px]">{d.avgPriceSqft}</p>
+                  </div>
+                  <div className="bg-muted/30 rounded-lg p-2 text-center">
+                    <p className="text-muted-foreground mb-0.5">Delivered</p>
+                    <p className="font-semibold text-foreground">{d.delivered}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-border/50">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-muted/40 border-b border-border/50">
@@ -316,7 +347,7 @@ export default async function TopProjectsPage({ params }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {DEVELOPERS.map((d, i) => (
+                {DEVELOPERS.map((d) => (
                   <tr key={d.name} className="border-b border-border/30 last:border-0 hover:bg-muted/20 transition-colors">
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
@@ -330,9 +361,7 @@ export default async function TopProjectsPage({ params }: Props) {
                     <td className="px-4 py-4 text-center text-muted-foreground">{d.founded}</td>
                     <td className="px-4 py-4 text-center font-semibold text-foreground">{d.delivered}</td>
                     <td className="px-4 py-4 text-center text-foreground">{d.avgPriceSqft}</td>
-                    <td className="px-4 py-4 text-center">
-                      <span className="text-emerald-600 font-bold">{d.avgYield}</span>
-                    </td>
+                    <td className="px-4 py-4 text-center"><span className="text-emerald-600 font-bold">{d.avgYield}</span></td>
                     <td className="px-4 py-4 text-center text-muted-foreground text-xs">{d.paymentPlan}</td>
                   </tr>
                 ))}

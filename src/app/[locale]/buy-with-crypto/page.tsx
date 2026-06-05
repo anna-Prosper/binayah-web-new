@@ -292,7 +292,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
       <Navbar />
 
       {/* ── Hero ────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden min-h-[520px] flex items-center">
+      <section className="relative overflow-hidden min-h-[360px] sm:min-h-[520px] flex items-center">
         {/* Gold crypto banner as full hero background */}
         <Image
           src="/assets/crypto-banner.webp"
@@ -364,7 +364,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20">
 
         {/* ── How it works ────────────────────────────────────────── */}
         <section>
@@ -376,7 +376,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
             {c.steps.map((step) => (
               <div
                 key={step.n}
-                className="group bg-card border border-border/50 rounded-2xl p-7 hover:border-primary/30 hover:shadow-sm transition-all"
+                className="group bg-card border border-border/50 rounded-2xl p-5 sm:p-7 hover:border-primary/30 hover:shadow-sm transition-all"
               >
                 <div
                   className="text-4xl font-black mb-4 leading-none"
@@ -424,7 +424,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
                 key={i}
                 className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors"
               >
-                <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
+                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
                   <span>{faq.q}</span>
                   <span
                     className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45"
@@ -433,7 +433,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
                     +
                   </span>
                 </summary>
-                <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">
+                <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3 sm:pt-4">
                   {faq.a}
                 </div>
               </details>
@@ -443,7 +443,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
 
         {/* ── CTA ─────────────────────────────────────────────────── */}
         <section
-          className="rounded-3xl p-10 sm:p-14 text-center text-white relative overflow-hidden"
+          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-14 text-center text-white relative overflow-hidden"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
           <div
@@ -457,7 +457,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={`${lp}/contact`}
-                className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
+                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
               >
                 {c.ctaBtn}
@@ -466,7 +466,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
                 href="https://wa.me/971549988811"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 hover:border-white/50 transition-all text-base"
+                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 hover:border-white/50 transition-all text-base"
               >
                 {c.ctaWhatsApp}
               </a>

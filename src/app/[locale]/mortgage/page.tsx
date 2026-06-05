@@ -273,13 +273,13 @@ export default async function MortgagePage({ params }: Props) {
 
       {/* Hero */}
       <section
-        className="relative overflow-hidden pt-32 pb-16 text-white"
+        className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{c.heroLabel}</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-2">
             {c.h1}
           </h1>
           <p className="text-3xl sm:text-4xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
@@ -288,12 +288,12 @@ export default async function MortgagePage({ params }: Props) {
       </section>
 
       {/* Calculator */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <h2 className="text-2xl font-bold text-foreground mb-6 text-center">{c.calcTitle}</h2>
         <MortgageCalculator embedded />
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 space-y-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-16 space-y-12 sm:space-y-16">
 
         {/* Guide */}
         <section>

@@ -280,7 +280,7 @@ export default async function PropertyManagementPage({ params }: Props) {
 
       {/* Hero */}
       <section
-        className="relative overflow-hidden pt-32 pb-20 text-white"
+        className="relative overflow-hidden pt-20 sm:pt-32 pb-12 sm:pb-20 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
@@ -290,7 +290,7 @@ export default async function PropertyManagementPage({ params }: Props) {
           <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-2xl mb-10">{c.heroDesc}</p>
           <Link
             href={`${lp}/contact`}
-            className="inline-flex items-center gap-2 font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
+            className="inline-flex items-center gap-2 font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
             style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
           >
             {c.heroCta} →
@@ -312,7 +312,7 @@ export default async function PropertyManagementPage({ params }: Props) {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 space-y-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20">
 
         {/* Services */}
         <section>
@@ -341,7 +341,7 @@ export default async function PropertyManagementPage({ params }: Props) {
             {c.plans.map((plan, i) => (
               <div
                 key={plan.name}
-                className={`rounded-2xl p-7 border ${i === 1 ? "border-primary/40 shadow-lg" : "border-border/50 bg-card"}`}
+                className={`rounded-2xl p-5 sm:p-7 border ${i === 1 ? "border-primary/40 shadow-lg" : "border-border/50 bg-card"}`}
                 style={i === 1 ? { background: "linear-gradient(135deg, #0B3D2E08, #1A7A5A12)" } : {}}
               >
                 {i === 1 && <div className="text-xs font-bold text-primary tracking-widest uppercase mb-3">Most Popular</div>}
@@ -399,11 +399,11 @@ export default async function PropertyManagementPage({ params }: Props) {
           <div className="space-y-3">
             {c.faqs.map((faq, i) => (
               <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
-                <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
+                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
                   <span>{faq.question}</span>
                   <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
                 </summary>
-                <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
+                <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3 sm:pt-4">{faq.answer}</div>
               </details>
             ))}
           </div>
@@ -411,7 +411,7 @@ export default async function PropertyManagementPage({ params }: Props) {
 
         {/* CTA */}
         <section
-          className="rounded-3xl p-10 sm:p-14 text-center text-white relative overflow-hidden"
+          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-14 text-center text-white relative overflow-hidden"
           style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
         >
           <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
@@ -422,7 +422,7 @@ export default async function PropertyManagementPage({ params }: Props) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={`${lp}/contact`}
-                className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
+                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
               >
                 {c.ctaBtn}
@@ -431,7 +431,7 @@ export default async function PropertyManagementPage({ params }: Props) {
                 href="https://wa.me/971549988811"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all"
+                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
               >
                 {c.ctaWhatsApp}
               </a>
