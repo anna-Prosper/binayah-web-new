@@ -100,6 +100,8 @@ interface Listing {
   deedNo?: string;
   transactionNo?: string;
   flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean; tenanted?: boolean; managed?: boolean; str?: boolean };
+  offplan?: string;           // "1" = off-plan listing
+  completionDate?: string;    // e.g. "Q4 2026" or "2026"
   viewCount?: number;
   enquiryCount?: number;
   whatsappClickCount?: number;
@@ -668,10 +670,15 @@ export default function PropertyDetailClient({
             <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 sm:gap-6">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="pointer-events-auto">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
                     <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       {isRent ? t("forRent") : t("forSale")}
                     </span>
+                    {(listing.offplan === "1" || listing.completionStatus === "off_plan") && (
+                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-lg flex items-center gap-1" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                        🏗️ Off-Plan
+                      </span>
+                    )}
                     {listing.propertyType && (
                       <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-white/15 backdrop-blur-md text-white border border-white/20 shadow-lg">
                         {formatPropertyTypeLabel(listing.propertyType, listing.propertyType)}
@@ -834,6 +841,48 @@ export default function PropertyDetailClient({
               {/* ═══ OVERVIEW TAB ═══ */}
               {activeTab === "overview" && (
                 <>
+                  {/* Off-Plan Info Banner */}
+                  {(listing.offplan === "1" || listing.completionStatus === "off_plan") && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 }}
+                      className="mb-8 rounded-2xl overflow-hidden border border-amber-200/60"
+                      style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.08), rgba(184,146,47,0.06))" }}
+                    >
+                      <div className="flex items-start gap-4 p-4 sm:p-5">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                          🏗️
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-sm font-bold text-foreground">Off-Plan Property</span>
+                            {listing.completionDate && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
+                                Handover {listing.completionDate}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            This is an off-plan property — purchased before or during construction. You pay a deposit now with the balance due in instalments linked to construction milestones or on handover. Off-plan properties often offer lower entry prices and flexible payment plans.
+                          </p>
+                          <div className="flex flex-wrap gap-3 mt-3">
+                            {[
+                              { icon: "💰", label: "Flexible payment plan" },
+                              { icon: "📋", label: "OQOOD registration" },
+                              { icon: "🛡️", label: "RERA escrow protected" },
+                            ].map((item) => (
+                              <div key={item.label} className="flex items-center gap-1.5 text-[11px] font-semibold text-foreground/80">
+                                <span>{item.icon}</span>
+                                <span>{item.label}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
                   {/* Description */}
                   {(listing.cleanDescription || listing.description) && (() => {
                     const blocks = getDescriptionBlocks(listing.cleanDescription || listing.description);
