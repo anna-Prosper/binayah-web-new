@@ -785,6 +785,520 @@ A motivated buyer with a clear brief can be a Dubai property owner within 6–10
 
 Dubai is one of the most foreigner-friendly property markets in the world. The legal infrastructure is mature, the digital tools are functional, and the freehold structure provides genuine ownership equivalent to citizens. The friction is logistical (attestation chains, document collection) — not legal. With a competent local agent or property manager, non-resident ownership is operationally smooth.`,
   },
+  // ── NEW GUIDES ──────────────────────────────────────────────────────────
+
+  {
+    slug: "short-term-rental-dubai",
+    category: "Investment",
+    readTime: "9 min",
+    views: 3241,
+    titleKey: "guide_shortTermRental_title",
+    descriptionKey: "guide_shortTermRental_desc",
+    relatedCommunities: ["Dubai Marina", "Palm Jumeirah", "Downtown Dubai"],
+    body: `Dubai's short-term rental (STR) market — Airbnb, Booking.com, and direct holiday letting — has grown into one of the most lucrative niches in Dubai property. Average daily rates of AED 600–2,500 for a well-managed 1-bedroom can translate to annual revenue of AED 90,000–180,000, far exceeding the AED 65,000–90,000 achievable from an annual tenancy. But the economics are asymmetric: the upside is real, but so is the operational complexity and licensing requirement.
+
+**DTCM Licensing: The Non-Negotiable First Step**
+
+All short-term rentals in Dubai require a Holiday Home Licence from the Dubai Department of Tourism and Commerce Marketing (DTCM). Without it, operating on Airbnb or Booking.com is illegal and can result in fines of AED 10,000–100,000+.
+
+The application process:
+1. Register on the DTCM Holiday Homes Portal
+2. Submit: title deed, passport copy, property photos meeting DTCM standards
+3. Pay the annual licence fee (AED 1,520–3,020 depending on property size)
+4. Pass DTCM's property inspection (minimum furnishing and safety standards)
+5. Receive licence number — displayed on all listings
+
+Renewals are annual. The process takes 2–4 weeks for a first application.
+
+**DTCM-Graded vs. Non-Graded**
+
+DTCM classifies holiday homes as Standard, Deluxe, or no-grade (budget). Graded properties command 15–25% higher average daily rates on platforms because guests trust the quality signal. Achieving Deluxe grade requires specific furniture quality, linen standards, and amenities. Worth the investment for properties in premium communities.
+
+**Which Communities Deliver the Best STR Returns?**
+
+Location determines STR performance more than any other variable. Key metrics: occupancy rate, average daily rate (ADR), and revenue per available night (RevPAN).
+
+**Dubai Marina and JBR (Jumeirah Beach Residence):** The highest-performing STR zone in Dubai. Walking distance to beach, restaurants, and the Marina Walk. 1-bedroom ADR: AED 700–1,200. Occupancy: 75–85% year-round. Annual revenue potential: AED 140,000–200,000 for a 1-bedroom.
+
+**Downtown Dubai:** Reliable demand from business travellers and tourists. Proximity to Burj Khalifa and Dubai Mall drives premium pricing around school holidays. 1-bedroom ADR: AED 600–1,100. Occupancy: 70–80%.
+
+**Palm Jumeirah:** Premium pricing but lower occupancy. 1-bedroom ADR: AED 800–1,500. Occupancy: 60–70%. Best performers are signature villas and high-floor apartments with Burj Al Arab views.
+
+**Business Bay and DIFC:** Corporate travellers. Stable demand with lower seasonal variance. 1-bedroom ADR: AED 500–800. Good for investors who want more predictable income.
+
+**Jumeirah Village Circle (JVC) and Dubai Hills:** Budget-segment STR. Lower ADR (AED 300–500) but lower acquisition cost and reasonable occupancy. Suited for yield-maximising investors with limited capital.
+
+**Short-Term vs. Long-Term: The Real Numbers**
+
+For a 1-bedroom apartment in Dubai Marina worth AED 1.2M:
+- Long-term annual rent: AED 75,000–95,000. Net yield after management: ~6%.
+- Short-term (owner-managed): AED 130,000–180,000 gross. After cleaning, platform fees, utilities, maintenance: AED 80,000–120,000 net. Net yield: 7–10%.
+- Short-term (agency-managed): Gross revenue similar; agency takes 20–30%. Net to owner: AED 90,000–126,000. Net yield: 7.5–10.5%.
+
+The STR premium is real — but only if occupancy exceeds ~55%. Below that, long-term tenancy often wins on net yield.
+
+**Management Options**
+
+Owner-operated: Maximum revenue but significant time investment (check-ins, cleaning coordination, guest communication, maintenance). Feasible if you're based in Dubai.
+
+STR Management Company: Agencies like Frank Porter, Deluxe Holiday Homes, Maison Privee, and Kennedy Towers manage the full operation for 20–30% of gross revenue. They handle DTCM compliance, listing optimisation, dynamic pricing, guest communication, and cleaning. Recommended for non-resident investors.
+
+**Seasonal Patterns and Pricing Strategy**
+
+Dubai's STR market is counter-cyclical to European markets. Peak seasons: October–April (cooler weather + Dubai tourism season), New Year's Eve, and school half-terms. Shoulder: May, September. Low season: June–August (extreme heat, lower tourism volume). Dynamic pricing — adjusting rates daily based on demand — typically increases annual revenue 15–25% vs. flat pricing. All major STR management platforms use algorithmic pricing.
+
+**The Tax Position**
+
+UAE levies no income tax on STR revenue. However, each municipality night incurs a 10% municipality fee (Dubai Tourism Dirham) which is charged to guests (not owners) and remitted to DTCM. This is handled automatically by Airbnb in Dubai. Your home country may tax STR income — seek advice from your domestic tax adviser.
+
+**Risk Factors**
+
+Regulatory risk: Dubai periodically reviews STR policy. In 2023, DTCM introduced stricter enforcement of unlicensed operators. The risk of licensing being tightened or fees increasing is real — though Dubai's tourism strategy (target 25M visitors by 2025) makes STR-hostile regulation unlikely.
+
+Owner association restrictions: Some buildings' OA rules prohibit short-term rentals. Always check with the building's owners association before purchasing specifically for STR. Communities known to be STR-unfriendly include some villa communities where OA CCRs restrict occupancy changes.
+
+**Verdict**
+
+For investors who want to maximise income from a Dubai property and are willing to accept the operational complexity (or pay an agency to manage it), STR outperforms annual tenancy by 20–50% in well-located properties. The best STR properties are: sea-view or landmark-view units in Marina, JBR, Downtown, or Palm Jumeirah; fully furnished to Deluxe DTCM standard; in buildings without OA restrictions.`,
+  },
+
+  {
+    slug: "service-charges-explained",
+    category: "Legal & Process",
+    readTime: "6 min",
+    views: 2876,
+    titleKey: "guide_serviceCharges_title",
+    descriptionKey: "guide_serviceCharges_desc",
+    relatedCommunities: ["Business Bay", "Dubai Marina", "Palm Jumeirah"],
+    body: `Service charges are the single most underestimated cost in Dubai property ownership. First-time buyers often focus entirely on purchase price and DLD fees, then are surprised by an ongoing annual obligation that can run AED 8,000–80,000+ per year depending on property size and building. This guide gives you the framework to evaluate service charges before you buy.
+
+**What Are Service Charges?**
+
+Service charges (also called "maintenance fees") are annual payments by property owners to their Owners Association (OA) or the master developer. They fund the upkeep of shared facilities: elevators, lobbies, pools, gyms, security, parking structures, landscaping, and common area utilities. In villa communities, they also cover road maintenance, community centres, and community management.
+
+Service charges are set annually by the OA or developer and can increase year-on-year. They are calculated per square foot of your unit's GFA (Gross Floor Area).
+
+**How Are Service Charges Calculated?**
+
+RERA (Real Estate Regulatory Agency) introduced Service Charge Rate Indices in 2010 to provide a reference. RERA publishes annual benchmarks per community — the RERA Rate Calculator (available at dubailand.gov.ae) shows the approved rate for any registered building.
+
+Typical rates in 2026:
+- Budget apartment buildings (JVC, Dubai South): AED 8–14/sqft/year
+- Mid-market (Business Bay, Al Jaddaf, JLT): AED 12–18/sqft/year
+- Premium (Marina, Downtown, DIFC): AED 16–28/sqft/year
+- Ultra-premium (Palm Jumeirah signature towers, Bulgari): AED 25–50+/sqft/year
+- Villa communities: AED 3–8/sqft of plot area/year
+
+For a 1,000 sqft apartment in Business Bay at AED 15/sqft: AED 15,000/year.
+For a 1,000 sqft apartment on Palm at AED 30/sqft: AED 30,000/year.
+
+**Who Pays Service Charges?**
+
+The owner pays service charges — not the tenant. This is the standard position across Dubai. Investors should factor service charges into their yield calculations. A gross yield of 7% on a AED 1.2M property might be AED 84,000/year rent, but after a AED 15,000 service charge and AED 5,000 in agent commission, the net yield is 5.3%.
+
+**Can Service Charges Be Disputed?**
+
+Yes. If your building's OA charges significantly above RERA's published rate without justification, you can file a complaint with RERA. RERA can audit the OA accounts and direct a charge reduction. In practice, disputes are uncommon but the mechanism exists.
+
+**Service Charge Reserve Fund**
+
+In addition to the annual maintenance charge, most OAs maintain a Reserve Fund (also called a sinking fund) for major periodic expenses: elevator replacement, facade cleaning, major pump systems. The Reserve Fund contribution is typically included in your annual service charge invoice but shown separately. Reserve funds prevent special assessments (one-time levies) for large expenses.
+
+**Checking Service Charges Before You Buy**
+
+Always request the service charge statement for the past 2 years before purchasing any unit. Key things to verify:
+1. The annual rate per sqft and compare to RERA benchmarks
+2. Whether any arrears exist on the unit (unpaid service charges pass to the new owner in some circumstances)
+3. The OA reserve fund balance (a building with depleted reserves may levy a special assessment soon)
+4. Any pending major works (if a lift replacement is coming, a special levy may follow)
+
+Binayah agents obtain this data during due diligence as a standard step.
+
+**Service Charges for Off-Plan Properties**
+
+Off-plan buyers should check the developer's indicative service charge rate. Developers are required to disclose the estimated service charge in the SPA (Sale and Purchase Agreement). Be aware that estimates can increase by the time the building opens, especially as operating costs become clearer.
+
+**Master Community Fees vs. Building Fees**
+
+In masterplan communities (Dubai Hills Estate, Arabian Ranches, Palm Jumeirah), you may pay two fees: (1) a building-level service charge for your tower's shared facilities, and (2) a master community fee to the master developer (Emaar, Nakheel, DAMAC) for the wider community (roads, parks, community pools). Both are annual. Master community fees are typically AED 3–6/sqft of unit GFA.
+
+**The Bottom Line**
+
+Service charges are a real cost that can represent 1–3% of property value per year in premium locations. A penthouse buyer who ignores service charges may find their net rental yield is 2 percentage points lower than the gross headline number. Always net-of-service-charges when comparing investment opportunities.`,
+  },
+
+  {
+    slug: "how-to-rent-in-dubai",
+    category: "Renting",
+    readTime: "7 min",
+    views: 5102,
+    titleKey: "guide_howToRent_title",
+    descriptionKey: "guide_howToRent_desc",
+    relatedCommunities: ["Dubai Marina", "JVC", "Business Bay"],
+    body: `Renting an apartment in Dubai as a foreigner or expat is remarkably straightforward compared to many global cities — but the mechanics differ enough from European and American markets that first-timers frequently make costly mistakes. This guide covers the full process, from property search to Ejari registration.
+
+**Step 1: Define Your Budget (Total Cost, Not Just Rent)**
+
+Dubai rental prices are quoted annually. When you see "AED 75,000/year" for a 1-bedroom in Dubai Marina, that's the annual rent — typically paid upfront by post-dated cheques. Your total first-year cost will be higher:
+
+- Annual rent: AED 75,000
+- Agent fee: AED 3,750 (5% of annual rent — standard)
+- Ejari registration: AED 220
+- Security deposit: AED 5,000–7,500 (refundable on departure)
+- DEWA connection fee: AED 2,110 (electricity + water deposit)
+- Chiller/cooling (in many modern towers): AED 2,000–5,000/year additional
+- Moving costs: AED 1,000–3,000
+
+First year cash requirement for a AED 75K apartment: approximately AED 90,000–95,000.
+
+**Step 2: Choose Your Payment Structure**
+
+Dubai rents are paid by post-dated cheques. The fewer the cheques, the better the price — but the larger the upfront payment:
+- 1 cheque (full year upfront): Best price, typically 5–10% cheaper than 4 cheques
+- 2 cheques (6-monthly): Common for budget-conscious tenants
+- 4 cheques (quarterly): Standard for most rentals
+- 12 cheques (monthly): Rare, only in select buildings; commands a premium of 10–15%
+
+If your bank account is not yet set up, request 2–4 cheques to give yourself time to establish UAE banking before the later cheques clear.
+
+**Step 3: Understand the Tenancy Law**
+
+Dubai's rental market is governed by Decree No. 26 of 2007 (amended by Law No. 33 of 2008). Key provisions for tenants:
+
+**Rent increases:** Landlords can only increase rent at renewal if the current rent is below the RERA Rent Index for that building. If your current rent is already at or above the index, no increase is permitted. Increases are capped at 5–20% depending on the gap between your rent and the index rate. Check the RERA Rental Index Calculator (dubailand.gov.ae) before every renewal.
+
+**Notice periods:** Landlord must give 90 days' notice for rent increase, non-renewal, or eviction. Tenant must give 60 days' notice before lease end to vacate without penalty.
+
+**Eviction:** Landlords can only evict tenants for specific reasons: non-payment, subletting without permission, property sale (with 12-month notice), or personal use (with 12-month notice to a first-degree relative).
+
+**Step 4: The Property Search**
+
+Search on Bayut, Propertyfinder, or Binayah.ae. When you find a property:
+1. Verify it has a RERA-registered permit number (displayed on the listing) — unlicensed listings are illegal
+2. Arrange a viewing through the listing agent
+3. If interested, move quickly — well-priced Dubai rentals rent within 48–72 hours
+
+**Step 5: Due Diligence Before Signing**
+
+Before signing the tenancy contract, check:
+- Title deed in the landlord's name (or POA if someone is acting for them)
+- No outstanding service charges on the unit (can be checked via DLD app)
+- DEWA account status — confirm utilities are disconnected from previous tenant
+- Building amenities: chiller provider, gym access, pool access
+- Any restrictions (pets, smoking, short-term subletting)
+
+**Step 6: Sign the Tenancy Contract**
+
+Use RERA's standard tenancy contract form (Form H). This is mandatory in Dubai. Never sign a non-standard contract. The contract should specify: property details, annual rent, cheque structure, security deposit amount, maintenance responsibilities, and any agreed-upon special terms.
+
+**Step 7: Register with Ejari**
+
+Ejari is the DLD's tenancy registration system. Registration is mandatory and costs AED 220. You need: signed tenancy contract, title deed copy, passport copies of both parties, and proof of payment.
+
+Ejari registration is what connects your tenancy to the DLD system — without it, you cannot apply for UAE residency visas, connect utilities in your name, or register children in schools. Your agent typically handles Ejari registration as part of their service.
+
+**Step 8: DEWA Connection**
+
+Apply for DEWA (Dubai Electricity and Water Authority) connection online (dewa.gov.ae) or via the DEWA app. You'll need your Ejari certificate number, Emirates ID, and passport. Connection fee: AED 2,110 (refundable on departure). Connection is typically same or next business day for standard apartments.
+
+**Common Mistakes to Avoid**
+
+1. **Paying rent before signing contract and Ejari**: Never pay more than a security deposit holding cheque before the lease is signed and registered.
+2. **Not checking the RERA Rental Index**: Before agreeing to a renewal rent, always check the index. Landlords routinely test uninformed tenants.
+3. **Accepting verbal agreements**: Everything must be in writing in the tenancy contract. Verbal promises from landlords or agents about maintenance, renovations, or early exit are unenforceable.
+4. **Ignoring chiller costs**: In newer buildings, cooling is often through a district cooling system (Empower, Palm Utilities, etc.) which charges separately. A chiller bill can add AED 3,000–10,000/year on top of DEWA.
+
+**Renewing vs. Moving**
+
+Renewal is often better economics than moving: agent fee (5%), Ejari re-registration, new deposit, and moving costs make moving expensive. If your current rent is at or below the RERA index and the landlord cannot raise it, staying is usually the better financial decision.`,
+  },
+
+  {
+    slug: "property-roi-dubai",
+    category: "Investment",
+    readTime: "10 min",
+    views: 3854,
+    titleKey: "guide_propertyRoi_title",
+    descriptionKey: "guide_propertyRoi_desc",
+    relatedCommunities: ["JVC", "Business Bay", "Dubai Hills Estate"],
+    body: `Return on investment (ROI) in Dubai real estate has three components: rental yield, capital appreciation, and currency return. Each matters differently depending on your investment horizon, domicile, and risk appetite. This guide provides the analytical framework — and the actual numbers — for evaluating Dubai property investments.
+
+**Component 1: Rental Yield**
+
+Gross rental yield = (annual rent / purchase price) × 100
+
+Net rental yield subtracts: service charges, management fees, maintenance, DEWA (if not tenant-paid), insurance, and vacancy periods.
+
+**2026 Gross Rental Yields by Community and Property Type:**
+
+Studios:
+- JVC: 7.8–9.2%
+- Dubai South: 7.5–8.5%
+- Al Jaddaf: 7.0–8.0%
+- Business Bay: 6.5–7.5%
+- Dubai Marina: 5.5–7.0%
+- Downtown Dubai: 5.0–6.5%
+
+1-Bedroom Apartments:
+- JVC: 7.0–8.5%
+- Business Bay: 6.0–7.5%
+- Dubai Marina: 5.5–7.0%
+- Downtown Dubai: 5.0–6.5%
+- Palm Jumeirah: 4.5–6.0%
+
+2-Bedroom Apartments:
+- JVC: 6.5–7.5%
+- Business Bay: 5.5–7.0%
+- Dubai Marina: 5.0–6.5%
+- Downtown Dubai: 4.5–6.0%
+
+Villas (3-5 BR):
+- DAMAC Hills 2: 5.5–7.0%
+- Arabian Ranches: 5.0–6.5%
+- Dubai Hills Estate: 4.5–5.5%
+- Palm Jumeirah (villa): 4.0–5.5%
+
+**Net Yield Calculation Example:**
+
+1-bedroom apartment, Dubai Marina
+- Purchase price: AED 1,200,000
+- Annual rent: AED 80,000 (gross yield: 6.7%)
+- Service charge: AED 16,000
+- Management fee (8% of rent): AED 6,400
+- Maintenance allowance: AED 2,000
+- Insurance: AED 1,200
+- Vacancy (5% of rent): AED 4,000
+- Total costs: AED 29,600
+- Net annual income: AED 50,400
+- **Net yield: 4.2%**
+
+This is why Dubai's headline "6–9% yields" require scrutiny. Net of costs, a 7% gross yield typically delivers 4.5–5.5% net in a well-maintained property with professional management.
+
+**Component 2: Capital Appreciation**
+
+Dubai's capital appreciation since 2020:
+
+| Community | 2020 Price/sqft | 2026 Price/sqft | Change |
+|-----------|----------------|----------------|--------|
+| Downtown Dubai | AED 1,400 | AED 2,100 | +50% |
+| Dubai Marina | AED 1,000 | AED 1,650 | +65% |
+| Palm Jumeirah | AED 1,500 | AED 2,700 | +80% |
+| JVC | AED 600 | AED 850 | +42% |
+| Business Bay | AED 1,000 | AED 1,500 | +50% |
+
+Past performance does not predict future returns. But the structural drivers — population growth of 100,000+ per year, constrained freehold land supply, and AED's USD peg making Dubai a dollar-economy asset — are still in place.
+
+Forward appreciation estimates (2026–2028) from consensus analyst views: 5–15% for prime communities, 0–8% for secondary locations. Modelling zero appreciation is the conservative base case; the bull case models 10–20%.
+
+**Component 3: Currency Return**
+
+The AED is pegged to the USD at AED 3.6725/USD since 1997. For dollar-economy investors (US, Gulf) there is no currency risk. For euro, sterling, and ruble investors, the AED-USD peg means Dubai property is a USD asset. The EUR/USD and GBP/USD depreciation versus the dollar since 2021 has added 15–25% additional return for European investors in their home currency terms.
+
+**Total Return Scenarios (10-Year Hold)**
+
+Scenario A — Yield focus, no appreciation (conservative):
+- Net yield: 4.5%/year × 10 years = 45% total yield
+- Capital appreciation: 0%
+- Total return: 45% on invested capital
+
+Scenario B — Balanced (base case):
+- Net yield: 4.5%/year × 10 years = 45%
+- Capital appreciation: 40% over 10 years
+- Total return: 85% on invested capital (annualised: 6.3%)
+
+Scenario C — Appreciation play (bull case):
+- Net yield: 4.5%/year × 10 years = 45%
+- Capital appreciation: 80% over 10 years
+- Total return: 125% on invested capital (annualised: 8.5%)
+
+**Leverage Returns**
+
+Most international analyses of Dubai property assume cash purchase. With a mortgage:
+- AED 1.2M property with 50% LTV (AED 600K equity, AED 600K mortgage at 5%)
+- Annual rent: AED 80,000
+- Mortgage interest: AED 30,000
+- Service charge + management: AED 25,000
+- Net income after financing: AED 25,000
+- Cash-on-cash yield: 4.2% on AED 600K equity
+
+Leverage amplifies both gains and losses. If the property appreciates 50%, the equity returns 100% (AED 600K gain on AED 600K invested). If it falls 10%, the loss is 20% of invested equity.
+
+**Key Metrics for Property Selection**
+
+1. **Price-to-rent ratio**: Lower is better. Dubai Marina: 18x (moderate). JVC: 12x (attractive). Downtown: 20x (less efficient for pure yield).
+2. **Capital-value density**: Properties priced AED 1,500–2,500/sqft in high-demand locations offer the best combination of yield and appreciation potential.
+3. **Liquidity**: Can you sell within 3–6 months if needed? Measure transaction volume in your target building/community.
+4. **Developer delivery track record**: Off-plan in communities from developers with poor track records introduces completion risk that undermines calculated returns.
+
+**The 2026 Outlook**
+
+Dubai's transaction volumes reached record highs in 2024 and 2025. Supply pipeline is substantial: 60,000–80,000 units are expected to complete annually in 2025–2027. This creates a risk: if demand cannot absorb supply, secondary-market prices and yields soften. Mitigation: focus on undersupplied product types (luxury villas, marina-view apartments) rather than categories with oversupply risk (studio apartments in satellite communities where large off-plan pipelines are completing).`,
+  },
+
+  {
+    slug: "dubai-market-outlook-2026",
+    category: "Market Analysis",
+    readTime: "8 min",
+    views: 6140,
+    titleKey: "guide_marketOutlook_title",
+    descriptionKey: "guide_marketOutlook_desc",
+    relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Dubai Hills Estate"],
+    body: `Dubai's property market in 2026 is operating at an elevated but not irrational level. Transaction volumes, price appreciation, and developer launches have all hit records in the preceding 24 months — driven by a structural shift in who moves to Dubai and why. This guide provides a balanced assessment of where the market sits and where it's heading.
+
+**The Structural Shift Behind the Run-Up**
+
+The 2020–2026 Dubai property cycle is different from previous Dubai cycles (2003–2008, 2012–2014) for one fundamental reason: the buyers are end-users and long-term investors, not speculative flippers.
+
+In 2024 and 2025, 60–65% of Dubai residential transactions were for owner-occupation or long-term tenanted investment — versus 35–40% in the 2012–2014 cycle. This means the market is not relying on a "greater fool" to sustain prices. Buyers are staying.
+
+Why are people buying? Three primary forces:
+1. **Population growth**: Dubai's population grew from 3.1M (2019) to 3.8M (2025) — 700,000 additional residents requiring housing.
+2. **Wealth migration**: Russia, EU, UK, India, and China have all experienced net wealth emigration since 2020. Dubai is the primary beneficiary, receiving estimated $4–6 billion/year in inbound HNW capital.
+3. **Business relocation**: 10,000+ companies relocated or established UAE entities in 2022–2025, bringing employees who need housing.
+
+**Price Performance: What the Data Shows**
+
+Dubai residential prices (average price/sqft across all units) have increased approximately:
+- 2021: +18%
+- 2022: +21%
+- 2023: +15%
+- 2024: +12%
+- 2025: +9%
+
+Cumulative 5-year appreciation: approximately 90–95% for the broad market. Premium sub-segments (Palm Jumeirah villas, Downtown super-prime) have appreciated 120–160%.
+
+The rate of appreciation is decelerating. 2025's +9% was the slowest pace since 2021. This is not a red flag — it represents a market transitioning from rapid re-pricing to more sustainable annual appreciation.
+
+**Supply vs. Demand: The Critical Variable**
+
+Supply is the key risk in 2026 and beyond. Estimates suggest 50,000–75,000 residential units will complete in Dubai annually in 2025–2027, up from 30,000–40,000 in 2022–2023.
+
+Counter-argument: Dubai absorbed 40,000+ units/year in 2023 and 2024 without price correction. Binayah's data shows that luxury and community villas remain structurally undersupplied despite the large pipeline. The oversupply risk is concentrated in:
+- Studio and 1BR apartments in suburban communities (JVC, Dubai South, Dubai Industrial City) where large off-plan pipelines are completing simultaneously
+- Satellite communities without established infrastructure and transport links
+
+**Segment Outlook:**
+
+**Luxury villas (AED 5M+):** Still structurally undersupplied. New freehold land is limited; masterplan communities take 5+ years to build. Pricing expected to hold +5–10% in 2026–2027.
+
+**Prime apartments (Marina, Downtown, DIFC, Palm):** Supported by HNW demand. Limited new supply of comparable quality in established locations. Appreciation +5–8% expected.
+
+**Mid-market apartments (Business Bay, JLT, Al Jaddaf):** Best value in 2026. Yields of 6–7.5% with lower appreciation risk than prime. Suitable for income-focused investors.
+
+**Off-plan (delivery 2027–2029):** Price growth of 15–30% from booking to handover has been achievable in prime projects. Selectivity matters: branded projects by Emaar and Sobha in undersupplied locations vs. unbranded bulk production in oversupplied zones.
+
+**The Interest Rate Variable**
+
+UAE mortgage rates are tied to EIBOR (Emirates Interbank Offered Rate), which follows US Fed Funds rate. The Fed's rate cycle matters for Dubai:
+- High rates (2022–2024): Squeezed mortgage affordability, but Dubai's cash-heavy buyer base buffered the impact
+- If US rates decline in 2025–2026: Lower UAE mortgage rates could stimulate demand and sustain/accelerate appreciation
+- Risk: If US rates stay high or increase, mortgage demand softens — cash buyers dominate anyway
+
+**International Comparison: Is Dubai Still Good Value?**
+
+Price/sqft comparison (luxury apartments, central locations, 2026):
+- London: AED 6,000–14,000/sqft
+- New York: AED 7,000–18,000/sqft
+- Paris: AED 4,000–9,000/sqft
+- Singapore: AED 5,000–12,000/sqft
+- Dubai: AED 1,500–3,500/sqft
+
+On a price-per-sqft basis, Dubai remains 50–80% cheaper than comparable global alpha cities — despite the 5-year run-up. The yield gap reinforces this: London prime yields 2–3%, New York 3–4%, Dubai 4.5–6.5%. The relative value argument is intact.
+
+**Risks to Watch**
+
+1. **Oversupply in budget segment**: Studio and 1BR apartments in satellite communities. If supply materially exceeds demand, price corrections of 10–20% in specific sub-markets are possible.
+2. **Oil price**: UAE economy is diversified but oil still matters for GCC regional sentiment and government spending.
+3. **Regional geopolitical risk**: Dubai has been remarkably resilient to MENA conflicts, but it's not immune.
+4. **Developer insolvency**: With 200+ developers active in the off-plan market, quality varies enormously. A significant developer default would cause sentiment damage broader than the specific project.
+
+**Conclusion: Buy, Hold, or Rent?**
+
+For end-users: The lifestyle case for Dubai in 2026 is compelling. Buy in your price range in a community that suits your life — don't time the market.
+
+For yield investors: The best opportunities are in mid-market properties (Business Bay, JLT, Al Jaddaf) where gross yields of 6.5–8% are achievable with lower capital required than prime.
+
+For capital growth investors: Luxury villas and prime water-facing apartments continue to have structural support. The 2026–2028 outlook is more modest than 2021–2024, but 5–12% annual appreciation in selected segments is the consensus expectation.`,
+  },
+
+  {
+    slug: "inheritance-dubai-property",
+    category: "Legal & Process",
+    readTime: "8 min",
+    views: 2341,
+    titleKey: "guide_inheritance_title",
+    descriptionKey: "guide_inheritance_desc",
+    relatedCommunities: ["Palm Jumeirah", "Downtown Dubai", "Emirates Hills"],
+    body: `Inheritance planning for Dubai property is one of the most overlooked aspects of international real estate investment. The rules that govern what happens to your Dubai property after death are complex, depend on your nationality and religion, and can have unexpected consequences for your family without proper planning. This guide covers the key frameworks.
+
+**The UAE Legal Default: Sharia Law**
+
+By default, the UAE applies Sharia law to all inheritance matters for property located in the UAE, regardless of the owner's nationality or religion. Under Sharia:
+- The estate is distributed according to fixed shares to specified heirs (spouse, children, parents)
+- Males typically receive twice the share of females
+- Non-Muslim spouses do not automatically inherit from a Muslim spouse
+- Non-Muslims cannot inherit from Muslims
+- There is no concept of freely distributing your estate as you wish
+
+For Muslim expatriates: the default Sharia rules typically align with your home country practices and are straightforward.
+
+For non-Muslim expatriates: the default Sharia rules may be entirely contrary to your wishes. A spouse might receive only a fraction of the estate; adult children might be excluded; a partner without marriage recognition under UAE law has no default claim.
+
+**The 2021 Federal Law Change: A Critical Update**
+
+Federal Decree Law No. 41 of 2022 on Civil Personal Status (effective 2023) provides that **non-Muslim expatriates can opt for their home country's inheritance law** to govern their UAE estate — including Dubai real estate — if they register a Will or statutory declaration with the UAE authorities.
+
+This is a fundamental change. Previously, the only option for non-Muslims to avoid Sharia succession was through corporate structures. Now, direct registration of a Will applying home-country law is available.
+
+**Registering a Will in Dubai**
+
+Non-Muslim expatriates should register a Will with the DIFC Wills Service Centre (for DIFC and UAE-wide property) or the Dubai Courts (for all Dubai property). A DIFC Will:
+- Applies to all freehold property in Dubai (and optionally other emirates)
+- Can apply home-country law OR DIFC's own succession framework (based on English law)
+- Is drafted in English
+- Cost: AED 10,000–15,000 for registration (including legal fees)
+- Expedited probate processing: DIFC Court processes UAE property probate significantly faster than Sharia courts (weeks vs. months)
+
+For Russian nationals: Russia is a civil law jurisdiction with forced heirship rules. A DIFC Will can distribute your Dubai property according to your wishes, overriding the Sharia default.
+
+For UK nationals: A DIFC Will aligned to UK inheritance law is straightforward. The UAE-UK Convention on the recognition of foreign judgments helps enforcement.
+
+For Chinese nationals: China's inheritance law allows testamentary freedom for foreign-sited assets. A DIFC Will governs the Dubai property; the Chinese succession process governs mainland assets.
+
+**Corporate Structures for Estate Planning**
+
+Before the 2022 law change, the most common estate planning tool was holding Dubai property through an offshore company (BVI, Cayman, Guernsey) or UAE free zone entity (DIFC, RAK ICC). Transferring company shares does not trigger UAE succession law — the property stays in the company and the shares pass under the company's jurisdiction law.
+
+This remains relevant for:
+- Properties where the offshore holding structure has other advantages (multiple shareholders, complex ownership)
+- Investors with significant portfolios who want a consolidated holding vehicle
+- Investors whose home country DTA with the UAE creates beneficial treatment for corporate holdings
+
+**Probate Without a Will: The Process**
+
+If an expatriate dies without a registered Will, the default process is:
+1. The family files a succession case with the UAE Personal Status Court
+2. The court applies Sharia rules (for any property in the UAE, regardless of owner's religion, absent a Will)
+3. The court issues a succession certificate listing the heirs and their shares
+4. DLD then processes the title transfer to the heirs
+5. Each heir must accept their portion — property cannot be consolidated without unanimous heir consent
+
+The process takes 6–18 months without a Will; 2–6 months with a DIFC registered Will.
+
+**No Inheritance Tax**
+
+The UAE charges no inheritance tax, no estate duty, and no capital gains tax on death. The transferred asset value is the current market value of the property — no tax is triggered by the transfer. This is a material benefit versus the UK (40% IHT above nil-rate band) or France (IFI wealth tax and inheritance taxes).
+
+**Practical Recommendations**
+
+1. **Register a DIFC Will if you're non-Muslim**: This is the single most impactful step. Cost is low relative to the estate size; consequence of not doing it can be severe.
+2. **Consider a UAE POA alongside the Will**: If you become incapacitated (not deceased), a UAE Power of Attorney allows someone to act on your behalf without requiring court intervention.
+3. **Inform your heirs**: Many overseas owners of Dubai property have not informed their family that they own it. Your heirs need to know about the asset and ideally where the title deed and Will are held.
+4. **Review every 5 years**: Family circumstances change (divorce, new children, deaths among your heirs). Your Will should be updated to reflect current reality.
+5. **Get domicile advice in your home jurisdiction**: For UK-domiciled individuals, worldwide assets (including Dubai) are subject to UK IHT. For US citizens, worldwide estate tax applies. The Dubai property's treatment in your home-country estate depends on your home law — not UAE law.
+
+The good news: Dubai's legal infrastructure has matured significantly. The 2022 Federal Law change and the DIFC Wills Service Centre make proper non-Muslim succession planning accessible and relatively affordable. Do not leave Dubai property intestate — the consequences for your family are avoidable.`,
+  },
 ];
 
 export function findGuide(slug: string): PulseGuide | undefined {

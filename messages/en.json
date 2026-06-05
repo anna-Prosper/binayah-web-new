@@ -2214,7 +2214,19 @@
     "guide_goldenVisa_desc": "10-year UAE residency through property ownership. Eligibility, application process, family inclusion, and common pitfalls for off-plan and mortgaged buyers.",
     "guide_nonResident_title": "Buying Property in Dubai as a Non-Resident",
     "guide_nonResident_desc": "Power of attorney, digital transfer via Dubai REST, non-resident mortgage terms, tax implications, and a realistic 6–10 week remote-purchase timeline.",
-    "relatedAreas": "Explore related areas"
+    "relatedAreas": "Explore related areas",
+    "guide_shortTermRental_title": "Short-Term Rental & Airbnb Guide Dubai",
+    "guide_shortTermRental_desc": "DTCM licensing, best communities, Airbnb vs annual tenancy income comparison, and management options for Dubai holiday homes.",
+    "guide_serviceCharges_title": "Service Charges in Dubai: The Complete Guide",
+    "guide_serviceCharges_desc": "Everything owners need to know about service charges, RERA benchmarks, OA fees, reserve funds, and how to dispute excessive charges.",
+    "guide_howToRent_title": "How to Rent an Apartment in Dubai",
+    "guide_howToRent_desc": "Step-by-step guide for expats: cheque structure, Ejari registration, DEWA connection, tenancy law, and how to avoid the most common mistakes.",
+    "guide_propertyRoi_title": "Dubai Property ROI: Calculating Real Returns",
+    "guide_propertyRoi_desc": "Gross vs. net yield, capital appreciation data by community, leverage scenarios, and a 10-year total return framework for Dubai property investors.",
+    "guide_marketOutlook_title": "Dubai Real Estate Market Outlook 2026",
+    "guide_marketOutlook_desc": "Data-driven analysis of where Dubai property is heading — supply pipeline, buyer demographics, price forecasts by segment, and key risks to watch.",
+    "guide_inheritance_title": "Inheritance & Estate Planning for Dubai Property",
+    "guide_inheritance_desc": "How Sharia succession default applies to expat-owned Dubai property, the 2022 Federal Law change, DIFC Wills, and what happens without a registered Will."
   },
   "areas": {
     "heroLabel": "Explore Dubai",
