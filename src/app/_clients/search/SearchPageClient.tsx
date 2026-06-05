@@ -65,7 +65,7 @@ interface Listing {
   featuredImage?: string;
   images?: string[];
   flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean };
-  offplan?: string;           // "1" = off-plan, "0" = secondary/ready
+  offplan?: string | number;  // 1 or "1" = off-plan
   completionStatus?: string;  // "off_plan" | "completed_property"
   agentName?: string;
   whatsappNumber?: string;
@@ -824,7 +824,7 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? t("forRent") : t("forSale")}</span>
-                              {(listing.offplan === "1" || listing.completionStatus === "off_plan") && (
+                              {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
                                 <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                                   Off-Plan
                                 </span>

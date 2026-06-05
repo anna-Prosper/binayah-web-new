@@ -100,7 +100,7 @@ interface Listing {
   deedNo?: string;
   transactionNo?: string;
   flags?: { featured?: boolean; offplan?: boolean; exclusive?: boolean; tenanted?: boolean; managed?: boolean; str?: boolean };
-  offplan?: string;           // "1" = off-plan listing
+  offplan?: string | number;  // 1 or "1" = off-plan
   completionDate?: string;    // e.g. "Q4 2026" or "2026"
   viewCount?: number;
   enquiryCount?: number;
@@ -708,7 +708,7 @@ export default function PropertyDetailClient({
                     <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-lg" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       {isRent ? t("forRent") : t("forSale")}
                     </span>
-                    {(listing.offplan === "1" || listing.completionStatus === "off_plan") && (
+                    {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
                       <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-lg flex items-center gap-1" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
                         🏗️ Off-Plan
                       </span>
@@ -876,7 +876,7 @@ export default function PropertyDetailClient({
               {activeTab === "overview" && (
                 <>
                   {/* Off-Plan Info Banner */}
-                  {(listing.offplan === "1" || listing.completionStatus === "off_plan") && (
+                  {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
                     <motion.div
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
