@@ -67,11 +67,33 @@ export function LocationSection({
           ))}
         </div>
 
-        {description && (
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-5">
-            {description}
-          </p>
-        )}
+        {description && (() => {
+          // Split on bullet chars so they render as a proper list instead of plain text
+          const parts = description.split(/\s*[•●◦▪■]\s*/).map(s => s.trim()).filter(Boolean);
+          if (parts.length <= 1) {
+            return (
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-5">
+                {description}
+              </p>
+            );
+          }
+          const [intro, ...bullets] = parts;
+          return (
+            <div className="mb-4 sm:mb-5 space-y-2">
+              {intro && (
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{intro}</p>
+              )}
+              <ul className="space-y-1.5">
+                {bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-muted-foreground">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                    <span className="leading-relaxed">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })()}
 
         <div className="rounded-xl overflow-hidden mb-4 sm:mb-5 border border-border/30" style={{ aspectRatio: "16/9" }}>
           <iframe

@@ -1441,9 +1441,24 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-foreground">{t("locationNearby")}</h2>
-                        {project.locationDescription && (
-                          <p className="text-xs text-muted-foreground mt-0.5">{project.locationDescription}</p>
-                        )}
+                        {project.locationDescription && (() => {
+                          const parts = project.locationDescription!.split(/\s*[•●◦▪■]\s*/).map((s: string) => s.trim()).filter(Boolean);
+                          if (parts.length <= 1) return <p className="text-xs text-muted-foreground mt-0.5">{project.locationDescription}</p>;
+                          const [intro, ...bullets] = parts;
+                          return (
+                            <div className="mt-1 space-y-1.5">
+                              {intro && <p className="text-xs text-muted-foreground">{intro}</p>}
+                              <ul className="space-y-1">
+                                {bullets.map((b: string, i: number) => (
+                                  <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
+                                    <span>{b}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
 

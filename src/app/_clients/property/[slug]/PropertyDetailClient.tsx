@@ -317,6 +317,30 @@ function buildNearby(community?: string): NearbyItem[] {
     { name: "GEMS Schools Network", type: "school", distance: "5 min drive" },
     { name: "Dubai International Airport", type: "airport", distance: "25 min drive" },
   ];
+  if (/jaddaf|al jaddaf/.test(c)) return [
+    { name: "Al Jaddaf Metro Station", type: "metro", distance: "3 min walk" },
+    { name: "Dubai Healthcare City", type: "hospital", distance: "5 min walk" },
+    { name: "Zabeel Park", type: "park", distance: "10 min drive" },
+    { name: "Downtown Dubai", type: "landmark", distance: "10 min drive" },
+    { name: "Dubai Creek Harbour", type: "waterfront", distance: "5 min drive" },
+    { name: "Dubai International Airport", type: "airport", distance: "10 min drive" },
+  ];
+  if (/business bay/.test(c)) return [
+    { name: "Dubai Mall", type: "mall", distance: "10 min walk" },
+    { name: "Burj Khalifa", type: "landmark", distance: "10 min walk" },
+    { name: "Business Bay Metro", type: "metro", distance: "5 min walk" },
+    { name: "Dubai Canal Walk", type: "waterfront", distance: "5 min walk" },
+    { name: "DIFC", type: "landmark", distance: "10 min drive" },
+    { name: "Dubai International Airport", type: "airport", distance: "20 min drive" },
+  ];
+  if (/arabian ranches|damac hills/.test(c)) return [
+    { name: "Trump International Golf Club", type: "park", distance: "5 min drive" },
+    { name: "Arabian Ranches Golf Club", type: "park", distance: "5 min drive" },
+    { name: "Ranches Souk", type: "mall", distance: "5 min drive" },
+    { name: "GEMS School", type: "school", distance: "10 min drive" },
+    { name: "Al Maktoum International Airport", type: "airport", distance: "30 min drive" },
+    { name: "Dubai Marina", type: "landmark", distance: "25 min drive" },
+  ];
   return [
     { name: "Nearest Metro Station", type: "metro", distance: "10 min drive" },
     { name: "Shopping Mall", type: "mall", distance: "10 min drive" },
@@ -457,6 +481,16 @@ export default function PropertyDetailClient({
       setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
     }
   }, []);
+
+  // Track property view on mount
+  useEffect(() => {
+    fetch(apiUrl("/api/track"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "view", entityType: "property", entitySlug: listing.slug, entityTitle: listing.title }),
+    }).catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listing.slug]);
 
   useEffect(() => {
     if (listing.developer || !listing.community) return;
