@@ -80,6 +80,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     withAlternates("/services/property-management", 0.8, "monthly", now),
     withAlternates("/mortgage", 0.8, "monthly", now),
     withAlternates("/off-plan/top-projects", 0.8, "weekly", now),
+    withAlternates("/off-plan/abu-dhabi", 0.7, "monthly", now),
+    withAlternates("/off-plan/sharjah", 0.7, "monthly", now),
+    withAlternates("/off-plan/ras-al-khaimah", 0.7, "monthly", now),
+    withAlternates("/apartments", 0.8, "weekly", now),
+    withAlternates("/villas", 0.8, "weekly", now),
+    withAlternates("/penthouses", 0.7, "weekly", now),
+    withAlternates("/offices", 0.7, "monthly", now),
+    withAlternates("/townhouses", 0.7, "weekly", now),
+    withAlternates("/warehouses", 0.6, "monthly", now),
+    withAlternates("/land-for-sale", 0.7, "monthly", now),
+    withAlternates("/golden-visa", 0.8, "monthly", now),
+    withAlternates("/real-estate-marketing", 0.7, "monthly", now),
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
