@@ -37,6 +37,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCurrency, SUPPORTED_CURRENCIES } from "@/context/CurrencyContext";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
+import { parseNearbyFromDescription } from "@/lib/parseNearby";
 
 const MortgageCalculator = dynamic(() => import("@/components/MortgageCalculator"));
 
@@ -613,7 +614,12 @@ export default function PropertyDetailClient({
     ...defaultAmenities.filter(d => !realAmenities.some(r => r.toLowerCase() === d.toLowerCase())),
   ];
   const highlights = buildHighlights(listing, parkingText);
-  const nearbyItems = buildNearby(listing.community);
+  // Use parsed locationDescription bullets if available; else fall back to community-based defaults
+  const nearbyItems = (() => {
+    const parsed = parseNearbyFromDescription((listing as any).locationDescription);
+    if (parsed.length > 0) return parsed;
+    return buildNearby(listing.community);
+  })();
   const faqs = buildFaqs(isRent);
   const hasMap = !!(listing.latitude && listing.longitude && listing.latitude !== 0 && listing.longitude !== 0);
 

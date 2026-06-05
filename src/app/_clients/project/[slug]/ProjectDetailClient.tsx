@@ -32,6 +32,7 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
+import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
@@ -275,7 +276,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
     : project.featuredImage
       ? [project.featuredImage]
       : ["/assets/amenities-placeholder.webp"];
-  const nearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
+  // Priority: 1) DB nearbyAttractions  2) parsed from locationDescription  3) empty
+  const nearby: NearbyAttraction[] = (() => {
+    const db = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
+    if (db.length > 0) return db;
+    const parsed = parseNearbyFromDescription(project.locationDescription as string | undefined);
+    if (parsed.length > 0) return parsed as unknown as NearbyAttraction[];
+    return [];
+  })();
   const dbFaqs = ((project.faqs as FAQ[] | null) || []).filter(f => f.question?.trim());
   const faqs = dbFaqs.length > 0 ? dbFaqs : [
     { question: "What is the payment plan?", answer: `${project.name} offers a flexible payment plan designed to suit both end-users and investors. Typically this includes a down payment on booking, installments during construction, and the remaining balance on handover. Contact us for the detailed payment schedule.` },
@@ -1488,7 +1496,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                     {/* Nearby amenities */}
                     {(() => {
-                      const nearby: NearbyAttraction[] = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
+                      const dbNearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
+                      const nearby: NearbyAttraction[] = dbNearby.length > 0
+                        ? dbNearby
+                        : (parseNearbyFromDescription(project.locationDescription as string | undefined) as unknown as NearbyAttraction[]);
                       const fallback: NearbyAttraction[] = [
                         { name: "Dubai Marina Mall", type: "mall", distance: "5 min walk" },
                         { name: "JBR Beach", type: "beach", distance: "8 min walk" },
