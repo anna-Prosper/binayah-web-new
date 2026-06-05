@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- property detail client has many locale-aware and industry-term strings */
 "use client";
 
 import { useTranslations } from "next-intl";

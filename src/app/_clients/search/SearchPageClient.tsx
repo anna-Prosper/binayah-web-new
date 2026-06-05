@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- search client uses many industry terms and status values */
 "use client";
 
 import { apiUrl } from "@/lib/api";
