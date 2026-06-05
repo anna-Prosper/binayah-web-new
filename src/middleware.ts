@@ -127,6 +127,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Redirect /en/* → /* (canonical English has no prefix with localePrefix:"as-needed").
+  // Without this Google discovers both /en/about and /about as duplicate pages.
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    const canonical = pathname.replace(/^\/en/, "") || "/";
+    const url = request.nextUrl.clone();
+    url.pathname = canonical;
+    const response = NextResponse.redirect(url, 301);
+    response.headers.set("Content-Security-Policy", CSP);
+    return response;
+  }
+
   const prefixMatch = pathname.match(LOCALE_PREFIX_REGEX);
   const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
   const domainLocale = getDomainLocale(host);
