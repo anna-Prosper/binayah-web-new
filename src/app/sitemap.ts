@@ -14,6 +14,12 @@ function localeUrl(path: string, locale: string) {
   return `${AE_URL}/${locale}${path}`;
 }
 
+// Strip trailing slash from locale prefix URLs so the sitemap emits the
+// canonical form (e.g. /zh not /zh/) and Google doesn't flag a redirect.
+function localeAlt(base: string, prefix: string, path: string) {
+  return path === "/" ? `${base}/${prefix}` : `${base}/${prefix}${path}`;
+}
+
 function withAlternates(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
   return {
     url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
@@ -23,9 +29,9 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
     alternates: {
       languages: {
         en: `${AE_URL}${path}`,
-        ru: `${RU_URL}/ru${path}`,
-        ar: `${AE_URL}/ar${path}`,
-        zh: `${AE_URL}/zh${path}`,
+        ru: path === "/" ? `${RU_URL}/ru` : `${RU_URL}/ru${path}`,
+        ar: localeAlt(AE_URL, "ar", path),
+        zh: localeAlt(AE_URL, "zh", path),
         "x-default": `${AE_URL}${path}`,
       },
     },
