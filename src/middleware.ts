@@ -26,23 +26,30 @@ const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com 
 const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const LIVECHAT = "https://cdn.livechatinc.com https://*.livechatinc.com";
 const LIVECHAT_WSS = "wss://*.livechatinc.com";
-const CSP = [
-  "default-src 'self'",
-  isDev
-    ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`
-    : `script-src 'self' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https:",
-  "media-src 'self' https:",
-  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
-  `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
-  "frame-ancestors 'self'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "upgrade-insecure-requests",
-].join("; ");
+
+// Build a per-request CSP that includes a nonce. Per the CSP3 spec, when a
+// nonce is present in script-src, CSP3-compliant browsers ignore 'unsafe-inline'
+// entirely — so modern browsers enforce nonce-only while legacy browsers fall
+// back to 'unsafe-inline'. Nothing breaks; XSS protection improves.
+function buildCSP(nonce: string): string {
+  return [
+    "default-src 'self'",
+    isDev
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`
+      : `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https:",
+    "media-src 'self' https:",
+    `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
+    `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
+    "frame-ancestors 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
 
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",
@@ -127,15 +134,34 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Generate a unique nonce for every page request. Set it as a request
+  // header so server components (layout.tsx) can read it via headers().
+  // Using getRandomValues — available in both Node.js and Edge runtimes.
+  const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+  const CSP = buildCSP(nonce);
+
+  // Forward nonce to the route handler by including it on the request headers
+  // that Next.js passes to server components.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+  const requestWithNonce = new NextRequest(request.nextUrl, {
+    headers: requestHeaders,
+    method: request.method,
+  });
+
+  // Helper: set CSP + security headers on any response
+  const withCSP = (res: NextResponse) => {
+    res.headers.set("Content-Security-Policy", CSP);
+    return res;
+  };
+
   // Redirect /en/* → /* (canonical English has no prefix with localePrefix:"as-needed").
   // Without this Google discovers both /en/about and /about as duplicate pages.
   if (pathname === "/en" || pathname.startsWith("/en/")) {
     const canonical = pathname.replace(/^\/en/, "") || "/";
     const url = request.nextUrl.clone();
     url.pathname = canonical;
-    const response = NextResponse.redirect(url, 301);
-    response.headers.set("Content-Security-Policy", CSP);
-    return response;
+    return withCSP(NextResponse.redirect(url, 301));
   }
 
   const prefixMatch = pathname.match(LOCALE_PREFIX_REGEX);
@@ -143,24 +169,20 @@ export function middleware(request: NextRequest) {
   const domainLocale = getDomainLocale(host);
 
   // --- binayah.ru (and other domain-mapped hosts) ---
-  // When NEXT_DEFAULT_LOCALE=ru, next-intl serves Russian at / with no prefix —
-  // no manual redirect needed. Just pass through to intlMiddleware.
   if (domainLocale) {
-    const response = intlMiddleware(request);
+    const response = intlMiddleware(requestWithNonce);
     if (prefixMatch) {
       response.cookies.set(RU_LOCALE_COOKIE, prefixMatch[1], { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" });
     }
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     return response;
   }
 
   // --- binayah.ae / Vercel ---
   if (prefixMatch) {
-    const response = intlMiddleware(request);
+    const response = intlMiddleware(requestWithNonce);
     setLocaleCookie(response, prefixMatch[1]);
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
@@ -168,10 +190,9 @@ export function middleware(request: NextRequest) {
   const savedLocale = request.cookies.get(LOCALE_COOKIE)?.value;
 
   if (savedLocale === "en") {
-    const response = intlMiddleware(request);
+    const response = intlMiddleware(requestWithNonce);
     setLocaleCookie(response, "en");
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
@@ -180,29 +201,23 @@ export function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/${savedLocale}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
 
-  // Browser preference (Accept-Language) takes priority over IP geo:
-  // a Russian traveler in Dubai with a Russian browser should see Russian,
-  // not Arabic. en short-circuits to the default branch (no redirect).
+  // Browser preference (Accept-Language) takes priority over IP geo.
   const acceptLang = pickAcceptLanguage(request.headers.get("accept-language"));
   if (acceptLang && acceptLang !== "en") {
     const url = request.nextUrl.clone();
     url.pathname = `/${acceptLang}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
     setLocaleCookie(response, acceptLang);
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
 
-  // Skip geo lookup if Accept-Language explicitly asked for English —
-  // honor the user's stated preference over country guess.
   const country = acceptLang === "en" ? "" : (request.headers.get("x-vercel-ip-country") ?? "");
   const geoLocale = GEO_LOCALE_MAP[country.toUpperCase()];
 
@@ -211,16 +226,14 @@ export function middleware(request: NextRequest) {
     url.pathname = `/${geoLocale}${pathname === "/" ? "" : pathname}`;
     const response = NextResponse.redirect(url);
     setLocaleCookie(response, geoLocale);
-    response.headers.set("Content-Security-Policy", CSP);
-    applySecurityHeaders(response, request);
+    applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
 
-  const response = intlMiddleware(request);
+  const response = intlMiddleware(requestWithNonce);
   setLocaleCookie(response, "en");
-  response.headers.set("Content-Security-Policy", CSP);
-  applySecurityHeaders(response, request);
+  applySecurityHeaders(withCSP(response), request);
   setGeoCookie(response, request);
   return response;
 }
