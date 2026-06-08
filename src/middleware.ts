@@ -1,6 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/i18n/routing";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const GEO_LOCALE_MAP: Record<string, string> = {
   CN: "zh", TW: "zh", HK: "zh",
