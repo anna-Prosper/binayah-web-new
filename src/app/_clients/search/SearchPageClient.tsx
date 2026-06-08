@@ -326,11 +326,51 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
 
   const goToProjectsPage = (next: number) => {
     const clamped = Math.max(1, Math.min(projectTotalPages, next));
+    if (status === "All") {
+      // In "All" mode, navigate to a dedicated Off-Plan page so the user
+      // sees only projects at this page count (not the split two-segment view).
+      const p = new URLSearchParams();
+      p.set("status", "Off-Plan");
+      if (type) p.set("type", String(normalizePropertyType(type, type)));
+      if (selectedLocations.length > 0) p.set("locations", selectedLocations.join(","));
+      if (beds) p.set("bedrooms", beds);
+      if (baths) p.set("bathrooms", baths);
+      if (priceMin != null) p.set("budgetMin", String(priceMin));
+      if (priceMax != null) p.set("budgetMax", String(priceMax));
+      if (developer) p.set("developer", developer);
+      if (completionYear) p.set("completionYear", completionYear);
+      if (q) p.set("q", q);
+      if (sort && sort !== "newest") p.set("sort", sort);
+      if (clamped > 1) p.set("projectsPage", String(clamped));
+      router.push(`/search?${p.toString()}`);
+      return;
+    }
     setProjectsPage(clamped);
     projectsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const goToListingsPage = (next: number) => {
     const clamped = Math.max(1, Math.min(listingTotalPages, next));
+    if (status === "All") {
+      // In "All" mode, navigate to a dedicated Secondary page so the user
+      // sees only listings at this page count (not the split two-segment view).
+      const p = new URLSearchParams();
+      p.set("status", "Secondary");
+      if (intent && intent !== "off-plan") p.set("intent", intent);
+      if (type) p.set("type", String(normalizePropertyType(type, type)));
+      if (selectedLocations.length > 0) p.set("locations", selectedLocations.join(","));
+      if (beds) p.set("bedrooms", beds);
+      if (baths) p.set("bathrooms", baths);
+      if (priceMin != null) p.set("budgetMin", String(priceMin));
+      if (priceMax != null) p.set("budgetMax", String(priceMax));
+      if (developer) p.set("developer", developer);
+      if (furnishing) p.set("furnishing", furnishing);
+      if (completionYear) p.set("completionYear", completionYear);
+      if (q) p.set("q", q);
+      if (sort && sort !== "newest") p.set("sort", sort);
+      if (clamped > 1) p.set("listingsPage", String(clamped));
+      router.push(`/search?${p.toString()}`);
+      return;
+    }
     setListingsPage(clamped);
     listingsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
