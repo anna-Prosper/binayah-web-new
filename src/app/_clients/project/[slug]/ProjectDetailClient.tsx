@@ -1329,10 +1329,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     const unitPrice = Math.round(basePrice * priceMultiplier);
 
                     const milestones = [
-                      { pct: 10, label: "On Booking", icon: Wallet, color: "bg-accent" },
-                      { pct: 10, label: "After 3 Months", icon: Calendar, color: "bg-primary" },
-                      { pct: 10, label: "After 6 Months", icon: Clock, color: "bg-primary" },
-                      { pct: 30, label: "During Construction", icon: Building2, color: "bg-primary/70" },
+                      { pct: 10, label: t("onBooking"), icon: Wallet, color: "bg-accent" },
+                      { pct: 10, label: t("after3Months"), icon: Calendar, color: "bg-primary" },
+                      { pct: 10, label: t("after6Months"), icon: Clock, color: "bg-primary" },
+                      { pct: 30, label: t("duringConstruction"), icon: Building2, color: "bg-primary/70" },
                       { pct: 40, label: t("onHandover"), icon: CheckCircle2, color: "bg-emerald-500" },
                     ];
 
@@ -2081,8 +2081,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     const duringPct = 100 - downPct > 40 ? Math.round((100 - downPct) * 0.6) : 100 - downPct - 20;
                     const handoverPct = 100 - downPct - (duringPct > 0 ? duringPct : 0);
                     const milestones = [
-                      { label: "On Booking", pct: downPct, desc: "Down Payment", icon: Wallet, color: "from-accent to-accent/80" },
-                      ...(duringPct > 0 ? [{ label: "During Construction", pct: duringPct, desc: "Progress-linked installments", icon: Building2, color: "from-primary to-primary/80" }] : []),
+                      { label: t("onBooking"), pct: downPct, desc: t("downPaymentDesc"), icon: Wallet, color: "from-accent to-accent/80" },
+                      ...(duringPct > 0 ? [{ label: t("duringConstruction"), pct: duringPct, desc: t("progressInstallments"), icon: Building2, color: "from-primary to-primary/80" }] : []),
                       ...(handoverPct > 0 ? [{ label: t("onHandover"), pct: handoverPct, desc: t("balanceOnCompletion"), icon: Home, color: "from-primary to-[#145C42]" }] : []),
                     ];
                     return (
