@@ -27,16 +27,39 @@ const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const LIVECHAT = "https://cdn.livechatinc.com https://*.livechatinc.com";
 const LIVECHAT_WSS = "wss://*.livechatinc.com";
 
-// Build a per-request CSP that includes a nonce. Per the CSP3 spec, when a
-// nonce is present in script-src, CSP3-compliant browsers ignore 'unsafe-inline'
-// entirely — so modern browsers enforce nonce-only while legacy browsers fall
-// back to 'unsafe-inline'. Nothing breaks; XSS protection improves.
-function buildCSP(nonce: string): string {
+const SCRIPT_ALLOWLIST = `${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`;
+
+// Enforced CSP — keeps 'unsafe-inline' so Next.js hydration scripts are
+// never blocked. This is the active policy that browsers enforce.
+function buildCSP(): string {
   return [
     "default-src 'self'",
     isDev
-      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`
-      : `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`,
+      ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
+      : `script-src 'self' 'unsafe-inline' ${SCRIPT_ALLOWLIST}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https:",
+    "media-src 'self' https:",
+    `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
+    `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
+    "frame-ancestors 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+
+// Report-Only CSP — nonce-based policy that reports violations without
+// blocking. Tells us which inline scripts would be blocked once we can
+// nonce Next.js's own hydration scripts and enforce this policy.
+function buildCSPReportOnly(nonce: string): string {
+  return [
+    "default-src 'self'",
+    isDev
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
+      : `script-src 'self' 'nonce-${nonce}' ${SCRIPT_ALLOWLIST}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
@@ -138,7 +161,8 @@ export function middleware(request: NextRequest) {
   // header so server components (layout.tsx) can read it via headers().
   // Using getRandomValues — available in both Node.js and Edge runtimes.
   const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
-  const CSP = buildCSP(nonce);
+  const CSP = buildCSP();
+  const reportCSP = buildCSPReportOnly(nonce);
 
   // Forward nonce to the route handler by including it on the request headers
   // that Next.js passes to server components.
@@ -149,9 +173,10 @@ export function middleware(request: NextRequest) {
     method: request.method,
   });
 
-  // Helper: set CSP + security headers on any response
+  // Helper: set enforced CSP + report-only nonce CSP on any response
   const withCSP = (res: NextResponse) => {
     res.headers.set("Content-Security-Policy", CSP);
+    res.headers.set("Content-Security-Policy-Report-Only", reportCSP);
     return res;
   };
 
