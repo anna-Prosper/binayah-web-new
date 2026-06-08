@@ -46,12 +46,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const project = applyTranslation(await getProject(slug), locale);
   if (!project) return notFound();
 
-  const jsonLd = {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae";
+  const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     name: project.name,
     description: project.shortOverview || project.overview || undefined,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}`,
+    url: `${siteUrl}/${locale}/project/${slug}`,
     ...(project.featuredImage ? { image: [project.featuredImage] } : {}),
     ...(project.startingPrice ? {
       offers: {
@@ -72,6 +73,46 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
         "@type": "Organization",
         name: project.developerName,
       },
+    } : {}),
+    ...(project.latitude && project.longitude ? {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: project.latitude,
+        longitude: project.longitude,
+      },
+    } : {}),
+    ...(Array.isArray(project.amenities) && project.amenities.length > 0 ? {
+      amenityFeature: project.amenities.map((a: string) => ({
+        "@type": "LocationFeatureSpecification",
+        name: a,
+        value: true,
+      })),
+    } : {}),
+    ...(Array.isArray(project.unitTypes) && project.unitTypes.length > 0 ? {
+      numberOfBedrooms: project.unitTypes.join(", "),
+    } : {}),
+    ...(project.unitSizeMin && project.unitSizeMax ? {
+      floorSize: {
+        "@type": "QuantitativeValue",
+        minValue: project.unitSizeMin,
+        maxValue: project.unitSizeMax,
+        unitCode: project.unitSizeUnit === "sqm" ? "MTK" : "FTK",
+      },
+    } : {}),
+    ...(project.videoUrl ? {
+      video: {
+        "@type": "VideoObject",
+        name: `${project.name} – Project Video`,
+        description: project.shortOverview || `Video overview of ${project.name} by ${project.developerName || "developer"} in ${project.community || project.city || "Dubai"}.`,
+        thumbnailUrl: project.videoThumbnail || project.featuredImage,
+        contentUrl: project.videoUrl,
+        uploadDate: project.createdAt || new Date().toISOString(),
+      },
+    } : {}),
+    ...(project.seo?.metaKeywords?.length ? {
+      keywords: Array.isArray(project.seo.metaKeywords)
+        ? project.seo.metaKeywords.join(", ")
+        : project.seo.metaKeywords,
     } : {}),
   };
 
