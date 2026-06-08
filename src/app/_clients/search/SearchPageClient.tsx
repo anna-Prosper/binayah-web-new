@@ -806,6 +806,7 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
                               images={[project.featuredImage, ...(project.imageGallery || [])]}
                               alt={project.name}
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              priority={index < 3}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex gap-2">
@@ -861,6 +862,7 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
                               images={[listing.featuredImage, ...(listing.images || [])]}
                               alt={listing.title}
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              priority={index < 3}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">

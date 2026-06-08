@@ -131,7 +131,7 @@ const FeaturedPropertiesClient = ({
               >
                 <Link href={`/property/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
                   <div className="relative overflow-hidden aspect-[3/2]">
-                    <ImageWithFallback src={getImage(p)} alt={getLabel(p)} fill sizes="260px" className="object-cover" />
+                    <ImageWithFallback src={getImage(p)} alt={getLabel(p)} fill sizes="260px" priority={i === 0} className="object-cover" />
                     {p.propertyType && (
                       <span className="absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {p.propertyType}

@@ -12,6 +12,8 @@ interface Props {
   limit?: number;
   /** Fallback shown when `images` resolves to an empty list. */
   fallback?: string;
+  /** Pass true for cards in the first viewport row to improve LCP. */
+  priority?: boolean;
 }
 
 const DEFAULT_FALLBACK = "/assets/amenities-placeholder.webp";
@@ -22,6 +24,7 @@ export default function CardImageCarousel({
   sizes,
   limit = 6,
   fallback = DEFAULT_FALLBACK,
+  priority = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -67,6 +70,7 @@ export default function CardImageCarousel({
               alt={alt}
               fill
               sizes={sizes}
+              priority={priority && i === 0}
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
           </div>

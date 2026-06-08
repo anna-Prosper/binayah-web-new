@@ -41,7 +41,8 @@ function buildCSP(): string {
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
     "media-src 'self' https:",
-    `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
+    // GA4 pings go to www.google.com/g/collect (not google-analytics.com)
+  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com https://www.google.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
     `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
     "frame-ancestors 'self'",
     "object-src 'none'",
@@ -64,7 +65,8 @@ function buildCSPReportOnly(nonce: string): string {
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
     "media-src 'self' https:",
-    `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
+    // GA4 pings go to www.google.com/g/collect (not google-analytics.com)
+  `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com https://www.google.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
     `frame-src https://www.google.com https://maps.google.com ${VERCEL_LIVE} ${LIVECHAT}`,
     "frame-ancestors 'self'",
     "object-src 'none'",

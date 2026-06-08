@@ -173,7 +173,13 @@ function getDescriptionBlocks(description?: string): DescBlock[] {
   const withBreaks = decoded
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/(p|div|li|h[1-6])>/gi, "\n")
-    .replace(/<[^>]*>/g, " ");
+    .replace(/<[^>]*>/g, " ")
+    // Strip injected CSS/HTML artifacts from scraper contamination —
+    // e.g. Tailwind class strings like *]:pointer-events-auto or [calc(var(--...))]
+    .replace(/\S*\[calc\([^\]]*\)\]\S*/g, " ")
+    .replace(/\*\]:[a-z-]+\b/g, " ")
+    .replace(/\bdata-[a-z-]+=["'][^"']*["']/gi, " ")
+    .replace(/--[a-z-]+(?:-[a-z-]+)+/g, " ");
 
   const cleaned = withBreaks
     .replace(/\r/g, "\n")
