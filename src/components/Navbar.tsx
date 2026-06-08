@@ -326,7 +326,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-1 min-w-0 flex-shrink">
+            <div className="hidden lg:flex items-center gap-0.5 xl:gap-1 min-w-0 flex-shrink">
               {/* ── BUY mega menu (3 columns) ──────────────────────────── */}
               <div
                 ref={buyRef}
@@ -336,7 +336,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 <button
                   onClick={() => handleNav("/search?intent=buy")}
-                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("buy")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${buyOpen ? "rotate-180" : ""}`} />
@@ -378,7 +378,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 <button
                   onClick={() => handleNav("/search?intent=rent")}
-                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("rent")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${rentOpen ? "rotate-180" : ""}`} />
@@ -420,7 +420,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 <button
                   onClick={() => handleNav("/search?status=Off-Plan")}
-                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("offPlan")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${offPlanOpen ? "rotate-180" : ""}`} />
@@ -456,13 +456,13 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               {/* ── GUIDES mega menu (2 columns, new tab) ──────────────── */}
               <div
                 ref={guidesRef}
-                className="relative"
+                className="relative hidden xl:flex items-center"
                 onMouseEnter={() => openOnly("guides")}
                 onMouseLeave={() => setGuidesOpen(false)}
               >
                 <button
                   onClick={() => handleNav("/pulse/guides")}
-                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("guides")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${guidesOpen ? "rotate-180" : ""}`} />
@@ -497,7 +497,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               <button
                 onClick={() => handleNav("/list-your-property")}
-                className="relative hidden xl:flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                className="relative hidden xl:flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
               >
                 {t("listYourProperty")}
                 <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
@@ -510,7 +510,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseEnter={() => openOnly("insights")}
                 onMouseLeave={() => setInsightsOpen(false)}
               >
-                <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
+                <button className="relative flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap">
                   {t("insights")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${insightsOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
@@ -539,7 +539,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               >
                 <button
                   onClick={() => handleNav("/services")}
-                  className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  className="relative flex items-center gap-1 px-3 xl:px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("services")}
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
