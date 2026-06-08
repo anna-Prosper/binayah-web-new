@@ -14,7 +14,13 @@ export async function generateMetadata({
 }) {
   const { slug, locale } = await params;
   const data = await getListing(slug);
-  if (!data) return { title: "Not Found" };
+  if (!data) return {
+    title: "Not Found",
+    // Explicitly set canonical to this URL (not root) and noindex so the
+    // layout's canonical / robots defaults don't bleed into 404 property pages.
+    robots: { index: false, follow: false },
+    alternates: { canonical: makeCanonical(locale, `/property/${slug}`) },
+  };
   const { listing } = data;
   const seo = listing.seo || {};
 

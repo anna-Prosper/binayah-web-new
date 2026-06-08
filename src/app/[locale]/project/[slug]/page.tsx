@@ -3,13 +3,18 @@ import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClie
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { canonical as makeCanonical } from "@/lib/site";
 
 export const revalidate = 1800;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const project = applyTranslation(await getProject(slug), locale);
-  if (!project) return { title: "Not Found" };
+  if (!project) return {
+    title: "Not Found",
+    robots: { index: false, follow: false },
+    alternates: { canonical: makeCanonical(locale, `/project/${slug}`) },
+  };
   const seo = project.seo || {};
 
   const priceStr = project.startingPrice
