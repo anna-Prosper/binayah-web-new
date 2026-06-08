@@ -31,22 +31,149 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const t = useTranslations("nav");
   const { data: session, status } = useSession();
 
-  const primaryNav = [
-    { label: t("buy"), href: "/search?intent=buy" },
-    { label: t("rent"), href: "/search?intent=rent" },
-    { label: t("offPlan"), href: "/search?status=Off-Plan" },
+  type NavLink = { label: string; href: string };
+  type MegaColumn = { header: string; links: NavLink[] };
+
+  // ── Mega menu data ────────────────────────────────────────────────────────
+  const buyColumns: MegaColumn[] = [
+    {
+      header: t("megaBuyByType"),
+      links: [
+        { label: t("apartments"), href: "/apartments" },
+        { label: t("villas"), href: "/villas" },
+        { label: t("townhouses"), href: "/townhouses" },
+        { label: t("penthouses"), href: "/penthouses" },
+        { label: t("landForSale"), href: "/land-for-sale" },
+        { label: t("offices"), href: "/offices" },
+      ],
+    },
+    {
+      header: t("megaBuyAreas"),
+      links: [
+        { label: t("dubaiMarina"), href: "/buy-property-in/dubai-marina" },
+        { label: t("downtownDubai"), href: "/buy-property-in/downtown-dubai" },
+        { label: t("palmJumeirah"), href: "/buy-property-in/palm-jumeirah" },
+        { label: t("businessBay"), href: "/buy-property-in/business-bay" },
+        { label: t("jvc"), href: "/buy-property-in/jumeirah-village-circle" },
+        { label: t("dubaiHills"), href: "/buy-property-in/dubai-hills-estate" },
+      ],
+    },
+    {
+      header: t("megaBuyBudget"),
+      links: [
+        { label: t("underAed1m"), href: "/search?intent=buy&maxPrice=1000000" },
+        { label: t("aed1mTo3m"), href: "/search?intent=buy&minPrice=1000000&maxPrice=3000000" },
+        { label: t("aed3mTo10m"), href: "/search?intent=buy&minPrice=3000000&maxPrice=10000000" },
+        { label: t("aed10mPlus"), href: "/search?intent=buy&minPrice=10000000" },
+        { label: t("buyWithCrypto"), href: "/buy-with-crypto" },
+      ],
+    },
   ];
-  const insightsNav = [
+
+  const rentColumns: MegaColumn[] = [
+    {
+      header: t("megaRentByType"),
+      links: [
+        { label: t("apartments"), href: "/search?intent=rent&type=Apartment" },
+        { label: t("villas"), href: "/search?intent=rent&type=Villa" },
+        { label: t("townhouses"), href: "/search?intent=rent&type=Townhouse" },
+        { label: t("offices"), href: "/search?intent=rent&type=Office" },
+        { label: t("warehouses"), href: "/warehouses" },
+      ],
+    },
+    {
+      header: t("megaRentAreas"),
+      links: [
+        { label: t("dubaiMarina"), href: "/search?intent=rent&community=dubai-marina" },
+        { label: t("downtownDubai"), href: "/search?intent=rent&community=downtown-dubai" },
+        { label: t("palmJumeirah"), href: "/search?intent=rent&community=palm-jumeirah" },
+        { label: t("jvc"), href: "/search?intent=rent&community=jumeirah-village-circle" },
+        { label: t("businessBay"), href: "/search?intent=rent&community=business-bay" },
+      ],
+    },
+  ];
+
+  const offPlanColumns: MegaColumn[] = [
+    {
+      header: t("megaOffPlanByType"),
+      links: [
+        { label: t("apartments"), href: "/search?status=Off-Plan&type=Apartment" },
+        { label: t("villas"), href: "/search?status=Off-Plan&type=Villa" },
+        { label: t("townhouses"), href: "/search?status=Off-Plan&type=Townhouse" },
+        { label: t("penthouses"), href: "/search?status=Off-Plan&type=Penthouse" },
+      ],
+    },
+    {
+      header: t("megaOffPlanBrowse"),
+      links: [
+        { label: t("newLaunches"), href: "/off-plan" },
+        { label: t("constructionUpdates"), href: "/construction-updates" },
+        { label: t("offPlanByDeveloper"), href: "/developers" },
+        { label: t("paymentPlans"), href: "/search?status=Off-Plan" },
+      ],
+    },
+  ];
+
+  const guidesColumns: MegaColumn[] = [
+    {
+      header: t("megaGuidesInvestment"),
+      links: [
+        { label: t("bestAreasDubai"), href: "/pulse/guides/best-areas-dubai-2026" },
+        { label: t("buyingAsForeigner"), href: "/pulse/guides/buying-as-foreigner" },
+        { label: t("rentalYieldExplained"), href: "/pulse/guides/rental-yield-explained" },
+        { label: t("dubaiVsAbuDhabi"), href: "/pulse/guides/dubai-vs-abu-dhabi" },
+      ],
+    },
+    {
+      header: t("megaGuidesHow"),
+      links: [
+        { label: t("howToBuyProperty"), href: "/pulse/guides" },
+        { label: t("mortgageGuide"), href: "/mortgage" },
+        { label: t("goldenVisaGuide"), href: "/golden-visa" },
+        { label: t("valuationTool"), href: "/valuation" },
+      ],
+    },
+  ];
+
+  const servicesColumns: MegaColumn[] = [
+    {
+      header: t("megaServicesForBuyers"),
+      links: [
+        { label: t("buyProperty"), href: "/buy" },
+        { label: t("mortgageCalculator"), href: "/mortgage" },
+        { label: t("propertyValuation"), href: "/valuation" },
+        { label: t("goldenVisa"), href: "/golden-visa" },
+      ],
+    },
+    {
+      header: t("megaServicesForSellers"),
+      links: [
+        { label: t("sellYourProperty"), href: "/sell" },
+        { label: t("listYourPropertyLink"), href: "/list-your-property" },
+        { label: t("realEstateMarketing"), href: "/real-estate-marketing" },
+        { label: t("freeValuation"), href: "/valuation" },
+      ],
+    },
+  ];
+
+  const insightsNav: NavLink[] = [
     { label: t("pulse"), href: "/pulse" },
-    { label: t("dubaiReport"), href: "/pulse/emirate/dubai" },
     { label: t("communities"), href: "/communities" },
-    { label: t("areas"), href: "/areas" },
-    { label: t("valuation"), href: "/valuation" },
-    { label: t("guides"), href: "/pulse/guides" },
     { label: t("news"), href: "/news" },
   ];
-  const moreNav = [
-    { label: t("services"), href: "/services" },
+
+  // Flatten each desktop mega menu (all columns + CTA) into a single mobile list.
+  const flattenWithCta = (columns: MegaColumn[], cta: NavLink): NavLink[] => [
+    ...columns.flatMap((c) => c.links),
+    cta,
+  ];
+  const mobileBuyLinks = flattenWithCta(buyColumns, { label: t("megaBuyCtaAll"), href: "/search?intent=buy" });
+  const mobileRentLinks = flattenWithCta(rentColumns, { label: t("megaRentCtaAll"), href: "/search?intent=rent" });
+  const mobileOffPlanLinks = flattenWithCta(offPlanColumns, { label: t("megaOffPlanCtaAll"), href: "/off-plan" });
+  const mobileGuidesLinks = flattenWithCta(guidesColumns, { label: t("megaGuidesCtaAll"), href: "/pulse/guides" });
+  const mobileServicesLinks: NavLink[] = [
+    ...servicesColumns.flatMap((c) => c.links),
+    { label: t("megaServicesCtaAll"), href: "/services" },
     { label: t("about"), href: "/about" },
     { label: t("contact"), href: "/contact" },
   ];
@@ -54,16 +181,28 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
+  const [buyOpen, setBuyOpen] = useState(false);
+  const [rentOpen, setRentOpen] = useState(false);
+  const [offPlanOpen, setOffPlanOpen] = useState(false);
+  const [guidesOpen, setGuidesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileInsightsOpen, setMobileInsightsOpen] = useState(false);
-  const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
+  const [mobileBuyOpen, setMobileBuyOpen] = useState(false);
+  const [mobileRentOpen, setMobileRentOpen] = useState(false);
+  const [mobileOffPlanOpen, setMobileOffPlanOpen] = useState(false);
+  const [mobileGuidesOpen, setMobileGuidesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const { currency: mobileCurrency, setCurrency: setMobileCurrency } = useCurrency();
   const [phoneHover, setPhoneHover] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [showLangDropdown, setShowLangDropdown] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
+  const buyRef = useRef<HTMLDivElement>(null);
+  const rentRef = useRef<HTMLDivElement>(null);
+  const offPlanRef = useRef<HTMLDivElement>(null);
+  const guidesRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
@@ -96,8 +235,12 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
       if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) setInsightsOpen(false);
+      if (buyRef.current && !buyRef.current.contains(e.target as Node)) setBuyOpen(false);
+      if (rentRef.current && !rentRef.current.contains(e.target as Node)) setRentOpen(false);
+      if (offPlanRef.current && !offPlanRef.current.contains(e.target as Node)) setOffPlanOpen(false);
+      if (guidesRef.current && !guidesRef.current.contains(e.target as Node)) setGuidesOpen(false);
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) setServicesOpen(false);
       if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) setShowCurrencyDropdown(false);
       if (langRef.current && !langRef.current.contains(e.target as Node)) setShowLangDropdown(false);
     };
@@ -107,10 +250,39 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   const handleNav = (href: string) => {
     setMobileOpen(false);
-    setMoreOpen(false);
+    setInsightsOpen(false);
+    setBuyOpen(false);
+    setRentOpen(false);
+    setOffPlanOpen(false);
+    setGuidesOpen(false);
+    setServicesOpen(false);
     setMobileInsightsOpen(false);
-    setMobileCompanyOpen(false);
+    setMobileBuyOpen(false);
+    setMobileRentOpen(false);
+    setMobileOffPlanOpen(false);
+    setMobileGuidesOpen(false);
+    setMobileServicesOpen(false);
     router.push(href);
+  };
+
+  // Open exactly one desktop panel, closing all others (single-open invariant).
+  const openOnly = (which: "buy" | "rent" | "offPlan" | "guides" | "services" | "insights" | null) => {
+    setBuyOpen(which === "buy");
+    setRentOpen(which === "rent");
+    setOffPlanOpen(which === "offPlan");
+    setGuidesOpen(which === "guides");
+    setServicesOpen(which === "services");
+    setInsightsOpen(which === "insights");
+  };
+
+  // Open exactly one mobile accordion (toggle behavior: re-tapping the open one closes it).
+  const toggleMobile = (which: "buy" | "rent" | "offPlan" | "guides" | "insights" | "services") => {
+    setMobileBuyOpen(which === "buy" ? (v) => !v : false);
+    setMobileRentOpen(which === "rent" ? (v) => !v : false);
+    setMobileOffPlanOpen(which === "offPlan" ? (v) => !v : false);
+    setMobileGuidesOpen(which === "guides" ? (v) => !v : false);
+    setMobileInsightsOpen(which === "insights" ? (v) => !v : false);
+    setMobileServicesOpen(which === "services" ? (v) => !v : false);
   };
 
   const switchLocale = (locale: string) => {
@@ -155,16 +327,173 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
             {/* Desktop nav */}
             <div className="hidden lg:flex items-center gap-1 min-w-0 flex-shrink">
-              {primaryNav.map((item) => (
+              {/* ── BUY mega menu (3 columns) ──────────────────────────── */}
+              <div
+                ref={buyRef}
+                className="relative"
+                onMouseEnter={() => openOnly("buy")}
+                onMouseLeave={() => setBuyOpen(false)}
+              >
                 <button
-                  key={item.label}
-                  onClick={() => handleNav(item.href)}
+                  onClick={() => handleNav("/search?intent=buy")}
                   className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
-                  {item.label}
+                  {t("buy")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${buyOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-              ))}
+                <AnimatePresence>
+                  {buyOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                      <div className="min-w-[720px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-3 gap-2 p-4">
+                          {buyColumns.map((col) => (
+                            <div key={col.header}>
+                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
+                              {col.links.map((link) => (
+                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                                  {link.label}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/10 px-4 py-2.5">
+                          <button onClick={() => handleNav("/search?intent=buy")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("megaBuyCtaAll")} →
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── RENT mega menu (2 columns) ─────────────────────────── */}
+              <div
+                ref={rentRef}
+                className="relative"
+                onMouseEnter={() => openOnly("rent")}
+                onMouseLeave={() => setRentOpen(false)}
+              >
+                <button
+                  onClick={() => handleNav("/search?intent=rent")}
+                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                >
+                  {t("rent")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${rentOpen ? "rotate-180" : ""}`} />
+                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                </button>
+                <AnimatePresence>
+                  {rentOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-2 gap-2 p-4">
+                          {rentColumns.map((col) => (
+                            <div key={col.header}>
+                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
+                              {col.links.map((link) => (
+                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                                  {link.label}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/10 px-4 py-2.5">
+                          <button onClick={() => handleNav("/search?intent=rent")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("megaRentCtaAll")} →
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── OFF-PLAN mega menu (2 columns) ─────────────────────── */}
+              <div
+                ref={offPlanRef}
+                className="relative"
+                onMouseEnter={() => openOnly("offPlan")}
+                onMouseLeave={() => setOffPlanOpen(false)}
+              >
+                <button
+                  onClick={() => handleNav("/search?status=Off-Plan")}
+                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                >
+                  {t("offPlan")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${offPlanOpen ? "rotate-180" : ""}`} />
+                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                </button>
+                <AnimatePresence>
+                  {offPlanOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-2 gap-2 p-4">
+                          {offPlanColumns.map((col) => (
+                            <div key={col.header}>
+                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
+                              {col.links.map((link) => (
+                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                                  {link.label}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/10 px-4 py-2.5">
+                          <button onClick={() => handleNav("/off-plan")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("megaOffPlanCtaAll")} →
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ── GUIDES mega menu (2 columns, new tab) ──────────────── */}
+              <div
+                ref={guidesRef}
+                className="relative"
+                onMouseEnter={() => openOnly("guides")}
+                onMouseLeave={() => setGuidesOpen(false)}
+              >
+                <button
+                  onClick={() => handleNav("/pulse/guides")}
+                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                >
+                  {t("guides")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${guidesOpen ? "rotate-180" : ""}`} />
+                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                </button>
+                <AnimatePresence>
+                  {guidesOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-2 gap-2 p-4">
+                          {guidesColumns.map((col) => (
+                            <div key={col.header}>
+                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
+                              {col.links.map((link) => (
+                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                                  {link.label}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/10 px-4 py-2.5">
+                          <button onClick={() => handleNav("/pulse/guides")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("megaGuidesCtaAll")} →
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               <button
                 onClick={() => handleNav("/list-your-property")}
@@ -174,10 +503,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </button>
 
+              {/* ── INSIGHTS dropdown (trimmed to 3 items) ─────────────── */}
               <div
                 ref={insightsRef}
                 className="relative"
-                onMouseEnter={() => { setInsightsOpen(true); setMoreOpen(false); }}
+                onMouseEnter={() => openOnly("insights")}
                 onMouseLeave={() => setInsightsOpen(false)}
               >
                 <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
@@ -187,7 +517,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </button>
                 <AnimatePresence>
                   {insightsOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2">
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
                       <div className="min-w-[220px] rounded-lg overflow-hidden shadow-xl border border-white/10" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {insightsNav.map((item) => (
                           <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-5 py-3 text-[13px] font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors uppercase tracking-[0.15em] whitespace-nowrap">
@@ -200,26 +530,48 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </AnimatePresence>
               </div>
 
+              {/* ── SERVICES mega menu (2 columns + multi-CTA, was Company) ─ */}
               <div
-                ref={moreRef}
+                ref={servicesRef}
                 className="relative"
-                onMouseEnter={() => { setMoreOpen(true); setInsightsOpen(false); }}
-                onMouseLeave={() => setMoreOpen(false)}
+                onMouseEnter={() => openOnly("services")}
+                onMouseLeave={() => setServicesOpen(false)}
               >
-                <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
-                  {t("company")}
-                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
+                <button
+                  onClick={() => handleNav("/services")}
+                  className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                >
+                  {t("services")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
                 <AnimatePresence>
-                  {moreOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2">
-                      <div className="min-w-[160px] rounded-lg overflow-hidden shadow-xl border border-white/10" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        {moreNav.map((item) => (
-                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-5 py-3 text-[13px] font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors uppercase tracking-[0.15em]">
-                            {item.label}
+                  {servicesOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full right-0 pt-2 z-[60]">
+                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-2 gap-2 p-4">
+                          {servicesColumns.map((col) => (
+                            <div key={col.header}>
+                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
+                              {col.links.map((link) => (
+                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                                  {link.label}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-t border-white/10 px-4 py-2.5 flex items-center gap-5">
+                          <button onClick={() => handleNav("/services")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("megaServicesCtaAll")} →
                           </button>
-                        ))}
+                          <button onClick={() => handleNav("/about")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("about")}
+                          </button>
+                          <button onClick={() => handleNav("/contact")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                            {t("contact")}
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   )}
@@ -472,19 +824,41 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 )}
               </motion.div>
 
-              {/* ── Nav links ─────────────────────────────────────────────── */}
-              {primaryNav.map((item, i) => (
-                <motion.button
-                  key={item.label}
+              {/* ── Nav links (mega menus → accordions) ───────────────────── */}
+              {([
+                { key: "buy" as const, label: t("buy"), open: mobileBuyOpen, links: mobileBuyLinks, delay: 0 },
+                { key: "rent" as const, label: t("rent"), open: mobileRentOpen, links: mobileRentLinks, delay: 0.05 },
+                { key: "offPlan" as const, label: t("offPlan"), open: mobileOffPlanOpen, links: mobileOffPlanLinks, delay: 0.1 },
+                { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.13 },
+              ]).map((section) => (
+                <motion.div
+                  key={section.key}
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05, duration: 0.3 }}
-                  onClick={() => handleNav(item.href)}
-                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
+                  transition={{ delay: section.delay, duration: 0.3 }}
+                  className="border-b border-white/10"
                 >
-                  {item.label}
-                  <ChevronRight className="h-4 w-4 text-white/40" />
-                </motion.button>
+                  <button
+                    onClick={() => toggleMobile(section.key)}
+                    className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
+                  >
+                    {section.label}
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${section.open ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {section.open && (
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
+                        <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
+                          {section.links.map((link) => (
+                            <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] transition-colors min-h-[44px] flex items-center">
+                              {link.label}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               ))}
 
               <motion.button
@@ -523,8 +897,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }} className="border-b border-white/10">
                 <button
-                  onClick={() => { setMobileInsightsOpen(!mobileInsightsOpen); setMobileCompanyOpen(false); }}
-                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
+                  onClick={() => toggleMobile("insights")}
+                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
                 >
                   {t("insights")}
                   <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileInsightsOpen ? "rotate-180" : ""}`} />
@@ -546,19 +920,19 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="border-b border-white/10">
                 <button
-                  onClick={() => { setMobileCompanyOpen(!mobileCompanyOpen); setMobileInsightsOpen(false); }}
-                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors"
+                  onClick={() => toggleMobile("services")}
+                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
                 >
-                  {t("company")}
-                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileCompanyOpen ? "rotate-180" : ""}`} />
+                  {t("services")}
+                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`} />
                 </button>
                 <AnimatePresence>
-                  {mobileCompanyOpen && (
+                  {mobileServicesOpen && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
                       <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
-                        {moreNav.map((item) => (
-                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] uppercase tracking-[0.12em] transition-colors min-h-[44px] flex items-center">
-                            {item.label}
+                        {mobileServicesLinks.map((link) => (
+                          <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] transition-colors min-h-[44px] flex items-center">
+                            {link.label}
                           </button>
                         ))}
                       </div>

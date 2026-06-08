@@ -1,366 +1,55 @@
 {
-  "task": "Improve mobile home page layout: (1) Valuation banner slimmer/more compact. (2) Our Services: replace large image strip with small icon-based cards that fit in viewport. (3) Handpicked Properties: rename as secondary listings (rent/sale) with For Sale / For Rent tabs, reduce whitespace. (4) Trending Developments: keep horizontal scroll, tighten spacing slightly. (5) Communities: improve visual treatment — better gradient, typography, Explore CTA. (6) General: reduce excessive vertical padding between sections.",
-  "baseSha": "5384e15b912ce0f8e43bb6b5a63d611369b43bba",
+  "task": "Add mega menu dropdowns to all primary navbar tabs in Navbar.tsx.\n\nBUY mega menu (3 columns): By Type (Apartments, Villas, Townhouses, Penthouses, Land for Sale, Offices), Popular Areas (Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC, Dubai Hills), Browse By Budget (Under AED 1M, 1M-3M, 3M-10M, 10M+, Buy with Crypto). RENT mega menu (2 columns): By Type, Popular Areas. OFF-PLAN mega menu (2 columns): By Type, Browse. GUIDES tab (new, mega menu): Investment Guides + How It Works. SERVICES mega menu (2 columns): For Buyers, For Sellers.",
+  "baseSha": "92e5e1463a0c6b944b41bf285bffc48794203b48",
   "stages": [
     {
-      "id": 1,
-      "status": "passed",
+      "id": "mega-menus",
+      "status": "in_progress",
       "devModel": "opus",
-      "spec": "# Mobile home page polish — single stage\n\n## Why this will be good\nThe mobile home page currently feels chunky and unfocused: an oversized valuation strip that gets clipped, a horizontally-scrolling services strip with full-bleed images that buries the message, a generic 'Handpicked Properties' label with no transaction-type framing, and tall Communities cards that read as a column of stripes. Fixing all six surfaces in one cohesive pass — tighter rhythm, icon-first density, segmented tabs for buy vs rent, richer Communities affordance — makes the mobile home page feel like a product, not a stack of marketing blocks. Benchmark feel: Airbnb mobile home (dense, scannable, every section earns its real estate). Production-ready: works at 390px, no clipped text, no horizontal page scroll, every tab hits 44px tap target, empty states for the new For Rent tab.\n\n## Files to touch (exact list — do not expand scope)\n1. `src/components/ValuationStrip.tsx`\n2. `src/components/WhatWeOffer.tsx`\n3. `src/components/FeaturedPropertiesClient.tsx`\n4. `src/components/OffPlanSectionClient.tsx`\n5. `src/components/CommunitiesSection.tsx`\n6. `src/components/StatsSection.tsx` (audit only — see item 6)\n\n## Item 1 — ValuationStrip: single compact horizontal row on mobile\n- Current mobile layout is stacked (icon + text on top, button below) and visually too tall; user reports it appears clipped.\n- Target: single row at ~60px tall on mobile. Layout: `[icon] [headline + subtitle stacked tight] [CTA button]` all on one horizontal line.\n- Desktop layout stays unchanged. Use `sm:` breakpoint to switch — mobile = compact row, `sm:` and up = current treatment.\n- Headline can truncate with `line-clamp-1`; subtitle `line-clamp-1 text-xs`.\n- CTA on mobile becomes a small pill button (compact `px-3 py-2` style from §2 button patterns), still hits 44px min tap by adding `min-h-[44px]`.\n- Acceptance: at 390px viewport, the strip is one row, no clipping, tap target ≥44px, content readable, no overflow scroll.\n- Edge: headline overflow → truncate, do not wrap. Failure: if CTA is too narrow for label, shorten label on mobile (e.g. 'Get Value' instead of 'Get Free Valuation').\n\n## Item 2 — WhatWeOffer: 2-column icon-card grid on mobile\n- Current mobile: horizontal scroll of 62%-wide cards with 130px image headers. Image-heavy, requires scroll to see all services.\n- Replace mobile layout with a **2-column grid** of compact icon-only cards. NO images on mobile. 4–6 cards fit in viewport without scrolling.\n- Each mobile card: small lucide icon (h-5 w-5 or h-6 w-6) in a tinted square (accent gold or primary green tint, your judgment per DESIGN_SYSTEM glass/tint patterns), title (text-sm font-semibold), 1-line description (text-xs text-muted-foreground line-clamp-1 or line-clamp-2).\n- Desktop layout stays exactly as it is. Use Tailwind responsive classes — mobile grid, `md:` switches to current desktop treatment.\n- Card style must match existing site card vocabulary: `bg-card border border-border/50 rounded-xl p-4` (or similar from §2 cards). No new card style.\n- Pick the icon for each service from `lucide-react` (already in deps) — use semantically obvious icons (e.g. Home, Building2, Key, TrendingUp, etc.). DEV picks the mapping.\n- Acceptance: at 390px, all service cards visible in a single 2-column grid, no horizontal scroll, no images on mobile, tap targets ≥44px (whole card is the tap target).\n\n## Item 3 — FeaturedPropertiesClient: Secondary Market with For Sale / For Rent tabs\n- Rename the section eyebrow/heading copy to position this as 'Secondary Market' listings (resale/rentals, distinct from off-plan). Heading: 'Secondary Market'. Eyebrow keeps the existing gold uppercase style (see DESIGN_SYSTEM section label pattern).\n- Add a 2-tab segmented control above the grid: **For Sale** / **For Rent**. Active tab uses brand green (`bg-[#0B3D2E] text-white`), inactive uses neutral (`bg-background text-muted-foreground`). Pill or underline style — match what's already used elsewhere on the site (check `ProjectDetailClient.tsx` tab style as reference).\n- **Field check (DEV must verify before coding the filter):** open the listings response shape. Likely fields: `transactionType`, `status`, `listingType`, or `category`. Grep `src/components/FeaturedProperties*.tsx` and `src/types/` to confirm. If a field exists distinguishing sale vs rent, filter client-side by it. If NO such field exists, fall back: 'For Sale' shows all current listings (the existing default), 'For Rent' shows an empty state with a 'Browse rentals →' CTA linking to `/rent`.\n- Empty state for For Rent (when no rentals or no field): a centered card with friendly copy ('Looking for a rental? Browse our full rentals catalog →') linking to `/rent`. Copy voice per DESIGN_SYSTEM (warm, specific, second-person).\n- Spacing tightening (mobile): `py-12 sm:py-24` → `py-8 sm:py-20`. Heading block: `mb-6 sm:mb-14` → `mb-4 sm:mb-10`.\n- Tabs must be ≥44px tap height. Tab state lives in component-level `useState`. Default tab: 'For Sale'.\n- Acceptance: section renamed; tabs render; switching tabs swaps grid (or shows empty state); mobile spacing reduced; no flicker on initial render.\n- Edge: if the underlying listings endpoint already only returns sale listings, that's fine — For Rent shows the empty-state CTA. Document this in devReport.\n\n## Item 4 — OffPlanSectionClient: spacing only\n- `py-14 sm:py-24` → `py-10 sm:py-20`\n- Heading margin: `mb-8 sm:mb-14` → `mb-5 sm:mb-10`\n- Do NOT touch anything else in this component. Horizontal scroll, card layout, copy all stay identical.\n\n## Item 5 — CommunitiesSection: visual upgrade on mobile\n- Add a proper eyebrow label above the section title: gold uppercase, matching the section label pattern in DESIGN_SYSTEM (`text-xs uppercase tracking-[0.3em] text-accent font-semibold`). Copy: 'Communities' or 'Explore Dubai' (DEV picks the one that reads best alongside the existing heading; check what the existing heading says first to avoid duplication).\n- Mobile card width: `w-[60%]` → `w-[72%]` (better readability, fewer cards visible but each is legible).\n- Mobile card aspect ratio: `aspect-[3/4]` → `aspect-[4/3]` (landscape since the card is wider now). Desktop ratio stays untouched if different.\n- Stronger bottom gradient overlay so the title text reads cleanly. Use existing pattern: gradient from `from-black/80 via-black/40 to-transparent` (or stronger) bottom-up. Title stays white.\n- Add an 'Explore →' affordance on each card — small pill or text label bottom-right or bottom-left, white text with subtle backdrop (use the green glass pattern from DESIGN_SYSTEM: `backdrop-blur-sm bg-white/10 border border-white/20`). Should look interactive but not heavy.\n- Section padding: `py-12 sm:py-24` → `py-8 sm:py-20`.\n- Acceptance: eyebrow visible above heading, mobile cards landscape at 72% width, gradient strong enough to read titles on any image, Explore affordance present and styled.\n- Edge: if cards already have a CTA or chevron, replace it with the Explore label rather than stacking both.\n\n## Item 6 — General padding audit\n- Already handled: FeaturedPropertiesClient (item 3), OffPlanSectionClient (item 4), CommunitiesSection (item 5).\n- **Audit StatsSection.tsx** (`src/components/StatsSection.tsx`): if it uses `py-16 sm:py-24` or larger, reduce mobile to `py-10 sm:py-20`. Do NOT change desktop. If existing mobile is already ≤`py-10`, leave it alone and note in devReport.\n- Do NOT touch any other section. Scope is bounded.\n\n## Interaction matrix\n- Item 3 (For Sale / For Rent tabs) × existing listings hydration in `FeaturedPropertiesServer.tsx` parent → check: the server passes a fixed prop set; client-side filter must work on whatever shape is already passed in, do not introduce a new fetch.\n- Item 1 (ValuationStrip compact) × existing valuation flow CTA targets → check: the CTA href stays the same, only the visual shrinks.\n- Item 2 (WhatWeOffer grid) × no shared state, safe.\n- Item 5 (CommunitiesSection cards) × existing community link routes → check: clicking the card still navigates to the same `/communities/[slug]` route the existing card uses; do not break the link.\n\n## demoPath (user click-through)\n1. Open `http://localhost:3000` on a 390px mobile viewport.\n2. See compact ValuationStrip at top (one row, ~60px tall).\n3. Scroll: see WhatWeOffer as a 2-column grid of icon cards, no images, no horizontal scroll.\n4. Scroll: see 'Secondary Market' heading with 'For Sale' / 'For Rent' tabs. Switch to 'For Rent' → see either filtered rentals or empty-state CTA.\n5. Scroll: see Off-Plan section, tighter spacing.\n6. Scroll: see Communities with gold eyebrow label, wider landscape cards, strong gradient, 'Explore →' affordance on each card.\n7. Confirm no horizontal page scroll, no clipped content, all tap targets feel reachable.\n\n## Design constraints (apply to all items)\n- DESIGN_SYSTEM.md is authoritative — reuse existing button, card, glass, gradient patterns. No new tokens.\n- Brand green gradient (exact): `linear-gradient(135deg, #0B3D2E, #1A7A5A)` — copy verbatim if used.\n- Gold accent eyebrows: `text-xs uppercase tracking-[0.3em] text-accent font-semibold`.\n- Mobile tap targets ≥44px.\n- No `text-foreground` on dark/colored bg — use `text-white*`.\n- No new floating fixed elements.\n- All existing desktop layouts must remain visually unchanged — every change is mobile-first using `sm:` / `md:` breakpoints to preserve current desktop treatment.\n\n## Acceptance (run after coding)\n- `npx tsc --noEmit` passes.\n- Visit `/` at 390px width: all six checkpoints from demoPath verified.\n- Visit `/` at 1280px width: zero visible regression — every section looks identical to before.\n- No new lucide imports beyond what's needed for item 2 icons."
+      "spec": "GOAL: Replace the plain Buy/Rent/Off-Plan links and the simple Insights/Company dropdowns in src/components/Navbar.tsx with multi-column MEGA MENUS, add a new standalone GUIDES tab, and rename the Company dropdown to SERVICES (also a mega menu). Keep the dark-glass navbar aesthetic identical to the existing Insights/More dropdowns. Desktop = hover-activated wide panels. Mobile = nested accordion. Every link MUST resolve to a route that exists.\n\n## Why this will be good\nNav becomes a discovery surface, not just a router. By Type + Popular Areas + Budget columns let a buyer self-segment in one hover instead of digging through /search. Benchmark: Zillow / Bayut mega nav — categorized, scannable, with a clear 'browse all' escape hatch per panel. Production-ready bar: no horizontal scroll at any width, 44px mobile tap targets, panels reuse the EXACT glass treatment already on screen so nothing looks bolted-on, hover intent does not flicker when moving diagonally into the panel.\n\n## VISUAL DIRECTION (match existing, do not invent)\nThe Insights dropdown (lines ~177-201) and More/Company dropdown (lines ~203-227) are your style reference. Reuse their exact treatment for mega panels:\n- Panel wrapper: AnimatePresence + motion.div with initial {opacity:0, y:-8} animate {opacity:1, y:0} exit {opacity:0, y:-8}, transition duration 0.15. Outer wrapper keeps the `absolute top-full left-0 pt-2` (the pt-2 is the hover-bridge gap — preserve it so the cursor can cross from trigger to panel without closing).\n- Inner panel: same glass as today — `rounded-lg overflow-hidden shadow-xl border border-white/10` with inline style `background: linear-gradient(135deg, #0B3D2E, #1A7A5A)`. Add `backdrop-blur-xl` to the inner panel. z-index: panels at z-[60].\n- Min-width: ~700px for the 3-column BUY panel, ~500px for the 2-column panels (Rent, Off-Plan, Guides, Services). Lay columns out with a grid (e.g. grid-cols-3 / grid-cols-2) and a sensible gap; DEV picks exact padding/gap to match the visual rhythm of existing dropdowns.\n- Column header: small uppercase label, text-white/50, ~text-[10px], tracking-[0.2em], with a subtle bottom separator (margin or border-b border-white/10). \n- Column links: reuse the existing dropdown link feel — text-white/80 hover:text-white hover:bg-white/10, ~text-[13px], comfortable padding (~px-4 py-2.5), rounded on hover. These are NOT uppercase tracking like top-level tabs — keep them readable sentence/title case at normal tracking (the labels below are the display strings).\n- Bottom CTA row: full-width, separated by border-t border-white/10, gold-tinted link(s) using the accent color (text-accent hover:text-white). Include the → arrow in the label or as an icon.\n- Each trigger button keeps a ChevronDown that rotates 180° when its panel is open (match existing Insights pattern exactly), plus keep the animated accent underline span the primary tabs/dropdowns already use.\n\n## TRIGGER BEHAVIOR (desktop)\nConvert Buy, Rent, Off-Plan from plain handleNav buttons into hover-dropdown wrappers identical in structure to the existing Insights wrapper: a `relative` div with onMouseEnter (open this panel, close all others) / onMouseLeave (close this panel), a trigger button, and the AnimatePresence panel. The trigger button itself should STILL navigate on click to its base route (Buy→/search?intent=buy, Rent→/search?intent=rent, Off-Plan→/search?status=Off-Plan) so clicking the tab works while hovering reveals the panel. Add Guides as a brand-new hover wrapper (trigger navigates to /pulse/guides on click). Rename the Company wrapper trigger label from t('company') to t('services') and turn its panel into the Services mega menu (trigger click → /services). Add one boolean open-state per new panel (e.g. buyOpen, rentOpen, offPlanOpen, guidesOpen) and reuse moreOpen for Services (or rename to servicesOpen for clarity). Each onMouseEnter must close every OTHER panel so only one is open at a time (the existing Insights/More code already does this pairwise — extend it to cover all panels).\n\n## OUTSIDE-CLICK / REF CLOSE\nThe existing useEffect (lines ~97-106) closes moreOpen/insightsOpen on outside mousedown via refs. Add a ref for each new wrapper and close its state the same way, OR consolidate. Do not leave any panel that can get stuck open. Since these are hover panels, onMouseLeave is the primary close; the ref-based close is the safety net — keep it consistent with current code.\n\n## EXACT MENU CONTENTS (lock these — labels are display strings, hrefs must be used verbatim)\nBUY (3 columns + CTA):\n- Col1 header t('megaBuyByType'): Apartments /apartments | Villas /villas | Townhouses /townhouses | Penthouses /penthouses | Land for Sale /land-for-sale | Offices /offices\n- Col2 header t('megaBuyAreas'): Dubai Marina /buy-property-in/dubai-marina | Downtown Dubai /buy-property-in/downtown-dubai | Palm Jumeirah /buy-property-in/palm-jumeirah | Business Bay /buy-property-in/business-bay | JVC /buy-property-in/jumeirah-village-circle | Dubai Hills /buy-property-in/dubai-hills-estate\n- Col3 header t('megaBuyBudget'): Under AED 1M /search?intent=buy&maxPrice=1000000 | AED 1M-3M /search?intent=buy&minPrice=1000000&maxPrice=3000000 | AED 3M-10M /search?intent=buy&minPrice=3000000&maxPrice=10000000 | AED 10M+ /search?intent=buy&minPrice=10000000 | Buy with Crypto /buy-with-crypto\n- CTA t('megaBuyCtaAll') → /search?intent=buy\n\nRENT (2 columns + CTA):\n- Col1 header t('megaRentByType'): Apartments /search?intent=rent&type=Apartment | Villas /search?intent=rent&type=Villa | Townhouses /search?intent=rent&type=Townhouse | Offices /search?intent=rent&type=Office | Warehouses /warehouses\n- Col2 header t('megaRentAreas'): Dubai Marina /search?intent=rent&community=dubai-marina | Downtown Dubai /search?intent=rent&community=downtown-dubai | Palm Jumeirah /search?intent=rent&community=palm-jumeirah | JVC /search?intent=rent&community=jumeirah-village-circle | Business Bay /search?intent=rent&community=business-bay\n- CTA t('megaRentCtaAll') → /search?intent=rent\n\nOFF-PLAN (2 columns + CTA):\n- Col1 header t('megaOffPlanByType'): Apartments /search?status=Off-Plan&type=Apartment | Villas /search?status=Off-Plan&type=Villa | Townhouses /search?status=Off-Plan&type=Townhouse | Penthouses /search?status=Off-Plan&type=Penthouse\n- Col2 header t('megaOffPlanBrowse'): New Launches /off-plan | Construction Updates /construction-updates | Off-Plan by Developer /developers | Payment Plans /search?status=Off-Plan\n- CTA t('megaOffPlanCtaAll') → /off-plan\n\nGUIDES (NEW standalone tab, 2 columns + CTA):\n- Col1 header t('megaGuidesInvestment'): Best Areas in Dubai 2026 /pulse/guides/best-areas-dubai-2026 | Buying as a Foreigner /pulse/guides/buying-as-foreigner | Rental Yield Explained /pulse/guides/rental-yield-explained | Dubai vs Abu Dhabi /pulse/guides/dubai-vs-abu-dhabi\n- Col2 header t('megaGuidesHow'): How to Buy Property /pulse/guides | Mortgage Guide /mortgage | Golden Visa Guide /golden-visa | Valuation Tool /valuation\n- CTA t('megaGuidesCtaAll') → /pulse/guides\n- Trigger label: reuse EXISTING t('guides') key (already in all 4 locales — do NOT add a duplicate 'guides' key).\n\nSERVICES (replaces Company dropdown, 2 columns + multi-CTA row):\n- Col1 header t('megaServicesForBuyers'): Buy Property /buy | Mortgage Calculator /mortgage | Property Valuation /valuation | Golden Visa /golden-visa\n- Col2 header t('megaServicesForSellers'): Sell Your Property /sell | List Your Property /list-your-property | Real Estate Marketing /real-estate-marketing | Free Valuation /valuation\n- CTA row (three links in one border-t row): t('megaServicesCtaAll') → /services | t('about') → /about | t('contact') → /contact (About and Contact MOVE here; the old moreNav array's about/contact items are absorbed into this row).\n\nINSIGHTS (keep as simple dropdown, just TRIM the array to 3 items): Pulse /pulse | Communities /communities | News /news. Remove Dubai Report, Areas, Valuation, Guides from insightsNav (they now live in other menus or are deprecated from this dropdown).\n\n## MOBILE (accordion)\nEach mega menu becomes an accordion section in the existing fullscreen mobile overlay, following the existing mobileInsightsOpen / mobileCompanyOpen pattern (lines ~524-568):\n- Add state vars: mobileBuyOpen, mobileRentOpen, mobileOffPlanOpen, mobileGuidesOpen, mobileServicesOpen.\n- Buy/Rent/Off-Plan currently render as plain primaryNav buttons (lines ~476-488). Convert each into an accordion row (tap toggles open; ChevronRight or ChevronDown rotates — match existing accordion chevron behavior).\n- Inside each accordion: flatten ALL links from that desktop mega menu into one indented list (use the existing indented style: pl-4 border-l-2 border-accent/40 ml-3, link rows min-h-[44px]). Column headers are OPTIONAL on mobile — you may show them as small muted sub-labels for grouping, or omit. Include the CTA link(s) at the bottom of each accordion list.\n- Add Guides as a new accordion row. Rename the Company accordion to Services and populate with the Services links + the about/contact + all-services CTA.\n- Keep Insights accordion but trim to the 3 items (Pulse, Communities, News).\n- When opening any accordion, close the others (the existing toggles already do pairwise close — extend so opening one closes the rest, to avoid a very long scroll).\n- Every tappable row >= 44px min-height. No horizontal scroll at 320px.\n\n## i18n — add these keys under 'nav' in ALL 4 files (messages/en.json, ar.json, ru.json, zh.json)\nFor ar/ru/zh use the SAME English string as placeholder (human translator refines later) — build must pass with all 4 files having every key. ADD (do NOT add 'guides' — it already exists):\nmegaBuyByType:'By Type', megaBuyAreas:'Popular Areas', megaBuyBudget:'Browse By Budget', megaBuyCtaAll:'Browse all properties for sale', megaRentByType:'By Type', megaRentAreas:'Popular Areas', megaRentCtaAll:'Browse all rentals', megaOffPlanByType:'By Type', megaOffPlanBrowse:'Browse', megaOffPlanCtaAll:'View all off-plan projects', megaGuidesInvestment:'Investment Guides', megaGuidesHow:'How It Works', megaGuidesCtaAll:'All guides & insights', megaServicesForBuyers:'For Buyers', megaServicesForSellers:'For Sellers', megaServicesCtaAll:'All services'.\nNote: t('services'), t('about'), t('contact') keys already exist — reuse them.\n\n## CONSTRAINTS / GOTCHAS\n- Keep `Link from next/link` as-is (already imported, acceptable in this file per PROJECT_CONTEXT). All router hooks stay from @/navigation. Continue using the existing handleNav(href) pattern for navigation so router.push goes through @/navigation.\n- TypeScript strict: no `any`. Type the new menu data arrays explicitly (e.g. a typed array of {label, href}, columns as arrays of such). `npx tsc --noEmit` MUST pass.\n- ESLint i18next/no-literal-string: do NOT hardcode visible UI strings — column headers and CTA labels must go through t(). The link LABELS (Apartments, Dubai Marina, etc.) are many; follow whatever the existing insightsNav/moreNav items do — those use t() per label. Add per-link i18n keys IF the existing arrays do (check messages/en.json for keys like 'apartments','villas','dubaiMarina'); if such keys do not already exist, prefer adding them under 'nav' for all 4 locales rather than hardcoding, to avoid breaking the lint-gated Vercel build. Confirm by grepping messages/en.json before deciding. This is the single most likely build-breaker — verify it.\n- Do NOT introduce new fixed/floating elements. Panels are absolute within their relative wrapper only.\n- Hover intent: preserve the pt-2 bridge on the panel wrapper so diagonal cursor movement from trigger into panel does not close it (the existing Insights dropdown already does this — copy it).\n- Do not break the existing right cluster (currency, language, phone, bell, favorites, UserMenu) or the mobile account card / contact actions — those are out of scope, leave untouched.\n\n## ACCEPTANCE CRITERIA\n1. `npx tsc --noEmit` passes; `npm run build` (or next lint) passes with no i18next/no-literal-string violations and no missing-key errors across all 4 locales.\n2. Desktop: hovering Buy shows a 3-column panel; Rent/Off-Plan/Guides/Services show 2-column panels; only one panel open at a time; chevrons rotate; panels match the existing glass style; clicking a tab still navigates to its base route; every link navigates to the correct href listed above.\n3. Insights dropdown now shows exactly Pulse, Communities, News.\n4. Mobile: each section is an accordion that expands to show all its links (flattened) + CTA; 44px tap targets; no horizontal scroll at 320px and 390px.\n5. No console errors; no panel gets stuck open; no overlap with the right cluster.\n\n## DEMO PATH\n1. Load home page on desktop (>=1024px). 2. Hover 'Buy' in the navbar → 3-column mega panel appears with By Type / Popular Areas / Browse By Budget + 'Browse all properties for sale →' CTA. 3. Move cursor to 'Rent' → Buy panel closes, Rent 2-col panel opens. 4. Click 'Apartments' under Buy → lands on /apartments. 5. Hover 'Guides' (new tab) → Investment Guides / How It Works panel. 6. Hover 'Services' → For Buyers / For Sellers + About/Contact CTA row. 7. Resize to 375px, open hamburger → tap 'Buy' accordion → all buy links expand indented; tap a link → navigates and menu closes."
     }
   ],
   "currentStage": 1,
   "totalStages": 1,
   "stageIteration": 1,
   "maxIterationsPerStage": 3,
-  "phase": "done",
+  "phase": "dev",
   "plannerOutput": {
-    "taskSummary": "Improve mobile home page layout: (1) Valuation banner slimmer/more compact. (2) Our Services: replace large image strip with small icon-based cards that fit in viewport. (3) Handpicked Properties: rename as secondary listings (rent/sale) with For Sale / For Rent tabs, reduce whitespace. (4) Trending Developments: keep horizontal scroll, tighten spacing slightly. (5) Communities: improve visual treatment — better gradient, typography, Explore CTA. (6) General: reduce excessive vertical padding between sections.",
-    "confirmedScope": "Improve mobile home page layout: (1) Valuation banner slimmer/more compact. (2) Our Services: replace large image strip with small icon-based cards that fit in viewport. (3) Handpicked Properties: rename as secondary listings (rent/sale) with For Sale / For Rent tabs, reduce whitespace. (4) Trending Developments: keep horizontal scroll, tighten spacing slightly. (5) Communities: improve visual treatment — better gradient, typography, Explore CTA. (6) General: reduce excessive vertical padding between sections.",
+    "taskSummary": "Add mega menu dropdowns to all primary navbar tabs in Navbar.tsx",
+    "confirmedScope": "Replace plain Buy/Rent/Off-Plan links and simple Insights/More dropdowns with multi-column mega menus matching dark-glass navbar aesthetic. Add new Guides tab. Desktop: hover mega panels. Mobile: nested accordion. All links must actually exist in the app. No breaking existing functionality.",
     "totalStages": 1,
-    "gotchas": [],
+    "gotchas": [
+      "Navbar uses i18n via next-intl — new keys needed in all 4 locale files (en/ar/ru/zh)",
+      "next/link must come from @/navigation not next/link directly",
+      "group-hover pattern already used for Services/Off-Plan — reuse it",
+      "Mobile accordion already implemented for some tabs — follow same pattern"
+    ],
     "skippedPlanner": true
   },
-  "plan": "# Mobile home page polish — single stage\n\nSee stages[0].spec for full spec. Files: ValuationStrip, WhatWeOffer, FeaturedPropertiesClient, OffPlanSectionClient, CommunitiesSection, StatsSection (audit).\n\nSummary of changes:\n1. ValuationStrip — single compact row on mobile, ~60px tall, [icon][title+subtitle][CTA].\n2. WhatWeOffer — replace mobile horizontal scroll with 2-col icon-card grid (no images on mobile).\n3. FeaturedPropertiesClient — rename to 'Secondary Market', add For Sale / For Rent tabs (client-side filter on transactionType-like field; empty-state CTA to /rent if no field). Reduce py-12 sm:py-24 → py-8 sm:py-20, mb-6 sm:mb-14 → mb-4 sm:mb-10.\n4. OffPlanSectionClient — spacing only: py-14 sm:py-24 → py-10 sm:py-20, mb-8 sm:mb-14 → mb-5 sm:mb-10.\n5. CommunitiesSection — gold eyebrow label, w-[60%] → w-[72%], aspect-[3/4] → aspect-[4/3] on mobile, stronger bottom gradient, 'Explore →' affordance per card, py-12 sm:py-24 → py-8 sm:py-20.\n6. StatsSection — audit mobile padding; reduce only if currently ≥py-16. Otherwise no change.\n\nAll desktop layouts must remain identical. Mobile-first using sm:/md: breakpoints. DESIGN_SYSTEM.md tokens only. Tap targets ≥44px. See stages[0].spec for full acceptance criteria, interaction matrix, and demoPath.",
-  "diff": "diff --git a/src/components/CommunitiesSection.tsx b/src/components/CommunitiesSection.tsx\nindex 0e2009be..41640b2b 100644\n--- a/src/components/CommunitiesSection.tsx\n+++ b/src/components/CommunitiesSection.tsx\n@@ -16,11 +16,14 @@ const communities = [\n const CommunitiesSection = () => {\n   const t = useTranslations(\"home.sections.communities\");\n   return (\n-  <section id=\"communities\" className=\"py-12 sm:py-24 bg-card scroll-mt-20\">\n+  <section id=\"communities\" className=\"py-8 sm:py-20 bg-card scroll-mt-20\">\n     <div className=\"max-w-6xl mx-auto px-4 sm:px-6\">\n       {/* Mobile: compact inline header */}\n       <div className=\"sm:hidden flex items-center justify-between mb-4\">\n-        <h2 className=\"text-sm font-bold text-foreground\">{t(\"title\")}</h2>\n+        <div>\n+          <p className=\"text-[10px] font-semibold tracking-[0.3em] uppercase mb-1\" style={{ color: \"#D4A847\" }}>COMMUNITIES</p>\n+          <h2 className=\"text-sm font-bold text-foreground\">{t(\"title\")}</h2>\n+        </div>\n         <Link href=\"/communities\" className=\"group flex items-center gap-1 text-primary font-semibold text-xs\">\n           {t(\"viewAll\")} <ArrowUpRight className=\"h-3 w-3\" />\n         </Link>\n@@ -60,14 +63,17 @@ const CommunitiesSection = () => {\n             whileInView={{ opacity: 1, scale: 1 }}\n             viewport={{ once: true }}\n             transition={{ delay: i * 0.08 }}\n-            className=\"flex-shrink-0 w-[60%] snap-center\"\n+            className=\"flex-shrink-0 w-[72%] snap-center\"\n           >\n-            <Link href={`/communities/${c.slug}`} className=\"group block relative rounded-2xl overflow-hidden aspect-[3/4]\">\n+            <Link href={`/communities/${c.slug}`} className=\"group block relative rounded-2xl overflow-hidden aspect-[4/3]\">\n               <Image src={c.image} alt={c.name} fill sizes=\"100vw\" className=\"object-cover\" />\n-              <div className=\"absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent\" />\n+              <div className=\"absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent\" />\n               <div className=\"absolute bottom-0 left-0 right-0 p-4\">\n                 <h3 className=\"text-white font-bold text-base mb-0.5\">{c.name}</h3>\n                 <p className=\"text-white/70 text-xs\">{c.properties} {t(\"properties\")}</p>\n+                <span className=\"inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-white/90 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20\">\n+                  Explore <ArrowUpRight className=\"h-2.5 w-2.5\" />\n+                </span>\n               </div>\n             </Link>\n           </motion.div>\ndiff --git a/src/components/FeaturedPropertiesClient.tsx b/src/components/FeaturedPropertiesClient.tsx\nindex 26f072fe..9d1371f4 100644\n--- a/src/components/FeaturedPropertiesClient.tsx\n+++ b/src/components/FeaturedPropertiesClient.tsx\n@@ -1,6 +1,7 @@\n \"use client\";\n \n import { motion } from \"framer-motion\";\n+import { useState } from \"react\";\n import { formatProjectPrice } from \"@/lib/formatPrice\";\n import { Bed, Maximize, MapPin, ArrowUpRight, Building } from \"lucide-react\";\n import Link from \"next/link\";\n@@ -27,87 +28,132 @@ interface Project {\n \n const FeaturedPropertiesClient = ({ listings = [] }: { listings?: Project[] }) => {\n   const t = useTranslations(\"home.sections.featured\");\n+  const [tab, setTab] = useState<\"sale\" | \"rent\">(\"sale\");\n   const fmt = (p: Project) => formatProjectPrice(p.startingPrice, p.currency || \"AED\");\n \n+  // No transactionType field on Project — For Sale shows all listings, For Rent shows empty state\n+  const displayedListings = tab === \"sale\" ? listings : [];\n+\n   return (\n-    <section id=\"sale\" className=\"py-12 sm:py-24 bg-background scroll-mt-20\">\n+    <section id=\"sale\" className=\"py-8 sm:py-20 bg-background scroll-mt-20\">\n       <div className=\"max-w-6xl mx-auto px-4 sm:px-6\">\n         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}\n-          className=\"flex flex-col sm:flex-row sm:items-end sm:justify-between mb-6 sm:mb-14 gap-3\">\n+          className=\"flex flex-col sm:flex-row sm:items-end sm:justify-between mb-4 sm:mb-10 gap-3\">\n           <div>\n             <motion.div initial={{ width: 0 }} whileInView={{ width: \"3rem\" }} viewport={{ once: true }} className=\"h-[2px] mb-4 sm:mb-6\" style={{ background: \"linear-gradient(90deg, #D4A847, #B8922F)\" }} />\n-            <p className=\"font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4\" style={{ color: \"#D4A847\" }}>{t(\"label\")}</p>\n+            <p className=\"font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4\" style={{ color: \"#D4A847\" }}>SECONDARY MARKET</p>\n             <h2 className=\"text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground\">\n               {t(\"title\")} <span className=\"italic font-light\">{t(\"titleItalic\")}</span>\n             </h2>\n+\n+            {/* Tab pills */}\n+            <div className=\"flex gap-2 mt-3\">\n+              <button\n+                onClick={() => setTab(\"sale\")}\n+                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-colors ${\n+                  tab === \"sale\"\n+                    ? \"bg-primary text-primary-foreground\"\n+                    : \"border border-border text-muted-foreground bg-background hover:bg-muted\"\n+                }`}\n+              >\n+                For Sale\n+              </button>\n+              <button\n+                onClick={() => setTab(\"rent\")}\n+                className={`px-4 py-2 rounded-full text-sm font-semibold min-h-[44px] flex items-center transition-colors ${\n+                  tab === \"rent\"\n+                    ? \"bg-primary text-primary-foreground\"\n+                    : \"border border-border text-muted-foreground bg-background hover:bg-muted\"\n+                }`}\n+              >\n+                For Rent\n+              </button>\n+            </div>\n           </div>\n           <Link href=\"/off-plan\" className=\"group flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all\">\n             {t(\"viewAll\")} <ArrowUpRight className=\"h-4 w-4\" />\n           </Link>\n         </motion.div>\n \n-        {/* Mobile: swipable */}\n-        <div className=\"sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2\">\n-          {listings.map((p, i) => (\n-            <motion.div key={p._id} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className=\"flex-shrink-0 w-[260px] snap-start\">\n-              <Link href={`/project/${p.slug}`} className=\"group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50\">\n-                <div className=\"relative overflow-hidden aspect-[3/2]\">\n-                  <ImageWithFallback src={p.imageGallery?.[0] || \"/assets/amenities-placeholder.webp\"} alt={p.name} fill sizes=\"100vw\" className=\"object-cover\" />\n-                  <span className=\"absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white\" style={{ background: \"linear-gradient(135deg, #0B3D2E, #1A7A5A)\" }}>{p.status}</span>\n-                </div>\n-                <div className=\"p-3\">\n-                  <div className=\"flex items-center gap-1 text-muted-foreground text-[9px] mb-1 uppercase tracking-wider\">\n-                    <MapPin className=\"h-2.5 w-2.5\" />{p.community || p.city}\n-                  </div>\n-                  <h3 className=\"text-xs font-bold text-foreground mb-1 leading-snug line-clamp-1\">{p.name}</h3>\n-                  <div className=\"border-t border-border pt-2 flex items-center justify-between mt-1\">\n-                    <p className=\"text-xs font-bold text-primary\">{fmt(p)}</p>\n-                    <ArrowUpRight className=\"h-3 w-3 text-muted-foreground\" />\n-                  </div>\n-                </div>\n-              </Link>\n-            </motion.div>\n-          ))}\n-        </div>\n+        {/* For Rent empty state */}\n+        {tab === \"rent\" && (\n+          <div className=\"text-center py-10\">\n+            <p className=\"text-muted-foreground text-sm mb-4\">Looking for a rental? Browse our full rentals catalog.</p>\n+            <Link\n+              href=\"/rent\"\n+              className=\"inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-semibold text-foreground hover:bg-muted transition-colors min-h-[44px]\"\n+            >\n+              Browse Rentals <ArrowUpRight className=\"h-4 w-4\" />\n+            </Link>\n+          </div>\n+        )}\n \n-        {/* Desktop grid */}\n-        <div className=\"hidden sm:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7\">\n-          {listings.filter(Boolean).map((p, i) => {\n-            const sizeRange = p.unitSizeMin && p.unitSizeMax ? `${p.unitSizeMin}–${p.unitSizeMax} sqft` : null;\n-            return (\n-              <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}>\n-                <Link href={`/project/${p.slug}`} className=\"group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20\">\n-                  <div className=\"relative overflow-hidden aspect-[4/3]\">\n-                    <ImageWithFallback src={p.imageGallery?.[0] || \"/assets/amenities-placeholder.webp\"} alt={p.name} fill sizes=\"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw\" className=\"object-cover group-hover:scale-110 transition-transform duration-700 ease-out\" />\n-                    <div className=\"absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500\" />\n-                    <span className=\"absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white\" style={{ background: \"linear-gradient(135deg, #0B3D2E, #1A7A5A)\" }}>{p.status}</span>\n-                    <CardActions propertyId={p.slug} slug={p.slug} title={p.name} type=\"project\" />\n+        {/* Mobile: swipable */}\n+        {tab === \"sale\" && (\n+          <div className=\"sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2\">\n+            {displayedListings.map((p, i) => (\n+              <motion.div key={p._id} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className=\"flex-shrink-0 w-[260px] snap-start\">\n+                <Link href={`/project/${p.slug}`} className=\"group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50\">\n+                  <div className=\"relative overflow-hidden aspect-[3/2]\">\n+                    <ImageWithFallback src={p.imageGallery?.[0] || \"/assets/amenities-placeholder.webp\"} alt={p.name} fill sizes=\"100vw\" className=\"object-cover\" />\n+                    <span className=\"absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white\" style={{ background: \"linear-gradient(135deg, #0B3D2E, #1A7A5A)\" }}>{p.status}</span>\n                   </div>\n-                  <div className=\"p-6 flex flex-col flex-1\">\n-                    <div className=\"flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider\">\n-                      <MapPin className=\"h-3 w-3\" />{p.community || p.city}\n+                  <div className=\"p-3\">\n+                    <div className=\"flex items-center gap-1 text-muted-foreground text-[9px] mb-1 uppercase tracking-wider\">\n+                      <MapPin className=\"h-2.5 w-2.5\" />{p.community || p.city}\n                     </div>\n-                    <h3 className=\"text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug\">{p.name}</h3>\n-                    <p className=\"text-xs text-muted-foreground mb-4 flex items-center gap-1.5\">\n-                      <Building className=\"h-3 w-3\" /> {p.developerName}\n-                    </p>\n-                    <div className=\"flex items-center gap-4 text-sm text-muted-foreground mb-5 flex-wrap\">\n-                      {p.unitTypes?.length ? <span className=\"flex items-center gap-1.5\"><Bed className=\"h-4 w-4\" />{p.unitTypes.join(\", \")}</span> : null}\n-                      {sizeRange && <span className=\"flex items-center gap-1.5\"><Maximize className=\"h-4 w-4\" />{sizeRange}</span>}\n-                    </div>\n-                    <div className=\"border-t border-border pt-4 flex items-center justify-between mt-auto\">\n-                      <p className=\"text-xl font-bold text-primary\">{fmt(p)}</p>\n-                      <span className=\"text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1\">{t(\"details\")} <ArrowUpRight className=\"h-3 w-3\" /></span>\n+                    <h3 className=\"text-xs font-bold text-foreground mb-1 leading-snug line-clamp-1\">{p.name}</h3>\n+                    <div className=\"border-t border-border pt-2 flex items-center justify-between mt-1\">\n+                      <p className=\"text-xs font-bold text-primary\">{fmt(p)}</p>\n+                      <ArrowUpRight className=\"h-3 w-3 text-muted-foreground\" />\n                     </div>\n                   </div>\n                 </Link>\n               </motion.div>\n-            );\n-          })}\n-        </div>\n+            ))}\n+          </div>\n+        )}\n+\n+        {/* Desktop grid */}\n+        {tab === \"sale\" && (\n+          <div className=\"hidden sm:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7\">\n+            {listings.filter(Boolean).map((p, i) => {\n+              const sizeRange = p.unitSizeMin && p.unitSizeMax ? `${p.unitSizeMin}–${p.unitSizeMax} sqft` : null;\n+              return (\n+                <motion.div key={p._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}>\n+                  <Link href={`/project/${p.slug}`} className=\"group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20\">\n+                    <div className=\"relative overflow-hidden aspect-[4/3]\">\n+                      <ImageWithFallback src={p.imageGallery?.[0] || \"/assets/amenities-placeholder.webp\"} alt={p.name} fill sizes=\"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw\" className=\"object-cover group-hover:scale-110 transition-transform duration-700 ease-out\" />\n+                      <div className=\"absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500\" />\n+                      <span className=\"absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white\" style={{ background: \"linear-gradient(135deg, #0B3D2E, #1A7A5A)\" }}>{p.status}</span>\n+                      <CardActions propertyId={p.slug} slug={p.slug} title={p.name} type=\"project\" />\n+                    </div>\n+                    <div className=\"p-6 flex flex-col flex-1\">\n+                      <div className=\"flex items-center gap-1.5 text-muted-foreground text-xs mb-2.5 uppercase tracking-wider\">\n+                        <MapPin className=\"h-3 w-3\" />{p.community || p.city}\n+                      </div>\n+                      <h3 className=\"text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug\">{p.name}</h3>\n+                      <p className=\"text-xs text-muted-foreground mb-4 flex items-center gap-1.5\">\n+                        <Building className=\"h-3 w-3\" /> {p.developerName}\n+                      </p>\n+                      <div className=\"flex items-center gap-4 text-sm text-muted-foreground mb-5 flex-wrap\">\n+                        {p.unitTypes?.length ? <span className=\"flex items-center gap-1.5\"><Bed className=\"h-4 w-4\" />{p.unitTypes.join(\", \")}</span> : null}\n+                        {sizeRange && <span className=\"flex items-center gap-1.5\"><Maximize className=\"h-4 w-4\" />{sizeRange}</span>}\n+                      </div>\n+                      <div className=\"border-t border-border pt-4 flex items-center justify-between mt-auto\">\n+                        <p className=\"text-xl font-bold text-primary\">{fmt(p)}</p>\n+                        <span className=\"text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors uppercase tracking-wider flex items-center gap-1\">{t(\"details\")} <ArrowUpRight className=\"h-3 w-3\" /></span>\n+                      </div>\n+                    </div>\n+                  </Link>\n+                </motion.div>\n+              );\n+            })}\n+          </div>\n+        )}\n       </div>\n     </section>\n   );\n };\n \n-export default FeaturedPropertiesClient;\n\\ No newline at end of file\n+export default FeaturedPropertiesClient;\ndiff --git a/src/components/OffPlanSectionClient.tsx b/src/components/OffPlanSectionClient.tsx\nindex f603aad4..5810a480 100644\n--- a/src/components/OffPlanSectionClient.tsx\n+++ b/src/components/OffPlanSectionClient.tsx\n@@ -26,13 +26,13 @@ interface Project {\n const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {\n   const t = useTranslations(\"home.sections.offPlan\");\n   return (\n-    <section id=\"offplan\" className=\"py-14 sm:py-24 bg-background scroll-mt-20\">\n+    <section id=\"offplan\" className=\"py-10 sm:py-20 bg-background scroll-mt-20\">\n       <div className=\"max-w-6xl mx-auto px-4 sm:px-6\">\n         <motion.div\n           initial={{ opacity: 0, y: 20 }}\n           whileInView={{ opacity: 1, y: 0 }}\n           viewport={{ once: true }}\n-          className=\"flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 sm:mb-14 gap-4\"\n+          className=\"flex flex-col sm:flex-row sm:items-end sm:justify-between mb-5 sm:mb-10 gap-4\"\n         >\n           <div>\n             <motion.div initial={{ width: 0 }} whileInView={{ width: \"3rem\" }} viewport={{ once: true }} className=\"h-[2px] mb-4 sm:mb-6\" style={{ background: \"linear-gradient(90deg, #D4A847, #B8922F)\" }} />\ndiff --git a/src/components/ValuationStrip.tsx b/src/components/ValuationStrip.tsx\nindex 2d9508ab..c7791659 100644\n--- a/src/components/ValuationStrip.tsx\n+++ b/src/components/ValuationStrip.tsx\n@@ -30,7 +30,7 @@ const ValuationStrip = () => {\n         }}\n       />\n \n-      <div className=\"relative z-10 max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 py-4 sm:py-8\">\n+      <div className=\"relative z-10 max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 py-3 sm:py-8\">\n         {/* Feature pills - desktop only */}\n         <div className=\"hidden sm:flex gap-2 mb-4 justify-start lg:justify-start\">\n           {pills.map(({ icon: Icon, label }) => (\n@@ -44,30 +44,74 @@ const ValuationStrip = () => {\n           ))}\n         </div>\n \n-        <div className=\"flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 lg:gap-10\">\n+        {/* Mobile: single compact row */}\n+        <div className=\"flex sm:hidden items-center gap-2\">\n+          {/* Icon */}\n+          <motion.div\n+            initial={{ scale: 0.8, opacity: 0 }}\n+            whileInView={{ scale: 1, opacity: 1 }}\n+            viewport={{ once: true }}\n+            className=\"flex shrink-0 w-8 h-8 rounded-lg items-center justify-center border border-white/10\"\n+            style={{ background: \"rgba(212,168,71,0.12)\" }}\n+          >\n+            <Sparkles className=\"h-4 w-4\" style={{ color: \"#D4A847\" }} />\n+          </motion.div>\n+\n+          {/* Title + subtitle stacked */}\n+          <div className=\"flex-1 min-w-0\">\n+            <h3 className=\"text-white text-sm font-bold leading-none line-clamp-1\">\n+              {t(\"headlineStart\")}{\" \"}\n+              <span\n+                className=\"bg-clip-text text-transparent\"\n+                style={{ backgroundImage: \"linear-gradient(90deg, #D4A847, #C49B35)\" }}\n+              >\n+                {t(\"headlineGold\")}\n+              </span>\n+            </h3>\n+            <p className=\"text-white/50 text-[10px] leading-none mt-0.5 line-clamp-1\">\n+              {t(\"stripSubtitle\")}\n+            </p>\n+          </div>\n+\n+          {/* Compact CTA */}\n+          <motion.button\n+            onClick={() => router.push(\"/valuation\")}\n+            whileHover={{ scale: 1.04 }}\n+            whileTap={{ scale: 0.96 }}\n+            className=\"group inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0 min-h-[44px]\"\n+            style={{\n+              background: \"linear-gradient(135deg, #D4A847 0%, #B8922F 100%)\",\n+              color: \"#0B3D2E\",\n+              boxShadow: \"0 4px 20px rgba(212,168,71,0.3)\",\n+            }}\n+          >\n+            Get Value\n+            <ArrowRight className=\"h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5\" />\n+          </motion.button>\n+        </div>\n+\n+        {/* Desktop: original layout */}\n+        <div className=\"hidden sm:flex sm:flex-row items-start sm:items-center gap-3 sm:gap-6 lg:gap-10\">\n           {/* Icon + Copy */}\n           <div className=\"flex items-start gap-2.5 sm:gap-4 flex-1 min-w-0\">\n-            {/* Sparkle icon - desktop only */}\n             <motion.div\n               initial={{ scale: 0.8, opacity: 0 }}\n               whileInView={{ scale: 1, opacity: 1 }}\n               viewport={{ once: true }}\n-              className=\"flex shrink-0 w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl items-center justify-center border border-white/10\"\n+              className=\"flex shrink-0 w-11 h-11 rounded-xl items-center justify-center border border-white/10\"\n               style={{ background: \"rgba(212,168,71,0.12)\" }}\n             >\n               <Sparkles className=\"h-5 w-5\" style={{ color: \"#D4A847\" }} />\n             </motion.div>\n \n             <div className=\"min-w-0\">\n-              {/* Desktop label */}\n               <p\n-                className=\"hidden sm:block text-[10px] font-semibold tracking-[0.25em] uppercase mb-0.5\"\n+                className=\"text-[10px] font-semibold tracking-[0.25em] uppercase mb-0.5\"\n                 style={{ color: \"#D4A847\" }}\n               >\n                 {t(\"marketYear\")}\n               </p>\n-              {/* Desktop headline */}\n-              <h3 className=\"hidden sm:block text-white text-lg font-bold leading-snug\">\n+              <h3 className=\"text-white text-lg font-bold leading-snug\">\n                 {t(\"headlineStart\")}{\" \"}\n                 <span\n                   className=\"bg-clip-text text-transparent\"\n@@ -76,14 +120,7 @@ const ValuationStrip = () => {\n                   {t(\"headlineGold\")}\n                 </span>\n               </h3>\n-              {/* Mobile headline - no label, compact */}\n-              <h3 className=\"sm:hidden text-white text-base font-bold leading-snug tracking-tight\">\n-                {t(\"headlineStart\")}\n-              </h3>\n-              <p className=\"sm:hidden text-sm font-semibold mt-1 bg-clip-text text-transparent\" style={{ backgroundImage: \"linear-gradient(90deg, #D4A847, #C49B35)\" }}>\n-                {t(\"headlineGold\")}\n-              </p>\n-              <p className=\"text-white/45 text-xs sm:text-sm leading-relaxed mt-1 hidden sm:block\">\n+              <p className=\"text-white/45 text-sm leading-relaxed mt-1\">\n                 {t(\"stripSubtitle\")}\n               </p>\n             </div>\n@@ -94,7 +131,7 @@ const ValuationStrip = () => {\n             onClick={() => router.push(\"/valuation\")}\n             whileHover={{ scale: 1.04 }}\n             whileTap={{ scale: 0.96 }}\n-            className=\"group inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0\"\n+            className=\"group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0\"\n             style={{\n               background: \"linear-gradient(135deg, #D4A847 0%, #B8922F 100%)\",\n               color: \"#0B3D2E\",\n@@ -102,14 +139,9 @@ const ValuationStrip = () => {\n             }}\n           >\n             {t(\"cta\")}\n-            <ArrowRight className=\"h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-0.5\" />\n+            <ArrowRight className=\"h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5\" />\n           </motion.button>\n         </div>\n-\n-        {/* Mobile proof line - below CTA */}\n-        <p className=\"sm:hidden text-white/40 text-[9px] mt-2 tracking-wide\">\n-          {t(\"mobileProof\")}\n-        </p>\n       </div>\n     </section>\n   );\ndiff --git a/src/components/WhatWeOffer.tsx b/src/components/WhatWeOffer.tsx\nindex ece81d12..7c7d6523 100644\n--- a/src/components/WhatWeOffer.tsx\n+++ b/src/components/WhatWeOffer.tsx\n@@ -3,6 +3,7 @@\n import { motion } from \"framer-motion\";\n import Link from \"next/link\";\n import Image from \"next/image\";\n+import { Home, Key, TrendingUp, Wrench, Building2 } from \"lucide-react\";\n import { useTranslations } from \"next-intl\";\n const serviceBuy = \"/assets/service-buy.webp\";\n const serviceRent = \"/assets/service-rent.webp\";\n@@ -13,11 +14,11 @@ const serviceManagement = \"/assets/service-management.webp\";\n const WhatWeOffer = () => {\n   const t = useTranslations(\"home.sections.whatWeOffer\");\n   const offerings = [\n-    { image: serviceSell, title: t(\"sellProperty\"), desc: t(\"sellDesc\"), link: \"/valuation\" },\n-    { image: serviceBuy, title: t(\"buyProperty\"), desc: t(\"buyDesc\"), link: \"/search?intent=buy\" },\n-    { image: serviceRent, title: t(\"rentProperty\"), desc: t(\"rentDesc\"), link: \"/search?intent=rent\" },\n-    { image: serviceOffplan, title: t(\"offPlanInvestment\"), desc: t(\"offPlanDesc\"), link: \"/off-plan\" },\n-    { image: serviceManagement, title: t(\"propertyManagement\"), desc: t(\"managementDesc\"), link: \"/services\" },\n+    { image: serviceSell, icon: Home, title: t(\"sellProperty\"), desc: t(\"sellDesc\"), link: \"/valuation\" },\n+    { image: serviceBuy, icon: Building2, title: t(\"buyProperty\"), desc: t(\"buyDesc\"), link: \"/search?intent=buy\" },\n+    { image: serviceRent, icon: Key, title: t(\"rentProperty\"), desc: t(\"rentDesc\"), link: \"/search?intent=rent\" },\n+    { image: serviceOffplan, icon: TrendingUp, title: t(\"offPlanInvestment\"), desc: t(\"offPlanDesc\"), link: \"/off-plan\" },\n+    { image: serviceManagement, icon: Wrench, title: t(\"propertyManagement\"), desc: t(\"managementDesc\"), link: \"/services\" },\n   ];\n   return (\n   <section className=\"py-12 sm:py-24 text-white relative overflow-hidden\" style={{ background: \"linear-gradient(135deg, #0B3D2E, #1A7A5A)\" }}>\n@@ -36,21 +37,22 @@ const WhatWeOffer = () => {\n         </p>\n       </motion.div>\n \n-      {/* Mobile: horizontal swipable row */}\n-      <div className=\"sm:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 no-scrollbar\">\n-        {offerings.map((item, i) => (\n-          <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className=\"snap-start flex-shrink-0 w-[62%]\">\n-            <Link href={item.link} className=\"group block rounded-xl overflow-hidden bg-white/[0.06] border border-white/10\">\n-              <div className=\"relative h-[130px]\">\n-                <Image src={item.image} alt={item.title} fill sizes=\"62vw\" className=\"object-cover transition-transform duration-500 group-active:scale-105\" />\n-              </div>\n-              <div className=\"p-3\">\n-                <h3 className=\"font-bold text-sm text-white mb-0.5\">{item.title}</h3>\n-                <p className=\"text-white/50 text-[11px] leading-snug line-clamp-2\">{item.desc}</p>\n-              </div>\n-            </Link>\n-          </motion.div>\n-        ))}\n+      {/* Mobile: 2-column icon-card grid */}\n+      <div className=\"sm:hidden grid grid-cols-2 gap-2.5\">\n+        {offerings.map((item, i) => {\n+          const Icon = item.icon;\n+          return (\n+            <motion.div key={item.title} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>\n+              <Link href={item.link} className=\"group block bg-white/5 border border-white/10 rounded-xl p-4 min-h-[44px]\">\n+                <div className=\"bg-white/10 rounded-lg p-2 w-fit mb-2.5\">\n+                  <Icon className=\"h-5 w-5 text-white\" style={{ color: \"#D4A847\" }} />\n+                </div>\n+                <h3 className=\"text-sm font-semibold text-white mb-1 leading-snug\">{item.title}</h3>\n+                <p className=\"text-xs text-white/60 line-clamp-2 leading-snug\">{item.desc}</p>\n+              </Link>\n+            </motion.div>\n+          );\n+        })}\n       </div>\n \n       {/* Desktop: 5-column grid */}",
-  "devReport": {
-    "commitSha": "938b6a6a",
-    "filesChanged": [
-      "src/components/ValuationStrip.tsx",
-      "src/components/WhatWeOffer.tsx",
-      "src/components/FeaturedPropertiesClient.tsx",
-      "src/components/OffPlanSectionClient.tsx",
-      "src/components/CommunitiesSection.tsx",
-      "messages/en.json",
-      "messages/ar.json",
-      "messages/ru.json",
-      "messages/zh.json"
-    ],
-    "summary": "Fixed i18next/no-literal-string ESLint errors blocking Vercel build. Replaced hardcoded 'SECONDARY MARKET', 'For Sale', 'For Rent', rent empty-state copy in FeaturedPropertiesClient and 'COMMUNITIES'/'Explore' in CommunitiesSection with t() calls. Added forSale, forRent, rentEmptyText, rentEmptyCta to home.sections.featured and explore to home.sections.communities across all 4 locale files (en/ar/ru/zh). Updated featured.label to 'Secondary Market' in all locales.",
-    "fixtureVerified": false,
-    "blocker": null,
-    "designBrief": {
-      "direction": "no aesthetic direction needed for this scope — all changes are spec-driven class swaps and layout restructuring",
-      "hero": "n/a",
-      "cards": "n/a",
-      "interactions": "n/a",
-      "copy": "n/a",
-      "benchmark": "n/a"
-    },
-    "selfGrade": [
-      {
-        "action": "ValuationStrip single compact row on mobile",
-        "done": true,
-        "evidence": "ValuationStrip.tsx: sm:hidden flex items-center gap-2 row with w-8 h-8 icon, stacked title+subtitle, Get Value pill button with min-h-[44px]"
-      },
-      {
-        "action": "WhatWeOffer 2-col icon-card grid, no images on mobile",
-        "done": true,
-        "evidence": "WhatWeOffer.tsx: sm:hidden grid grid-cols-2 gap-2.5 with lucide icons (Home/Building2/Key/TrendingUp/Wrench), bg-white/5 border border-white/10 cards"
-      },
-      {
-        "action": "FeaturedPropertiesClient eyebrow SECONDARY MARKET",
-        "done": true,
-        "evidence": "FeaturedPropertiesClient.tsx: hardcoded SECONDARY MARKET eyebrow in gold uppercase style"
-      },
-      {
-        "action": "FeaturedPropertiesClient For Sale / For Rent tabs",
-        "done": true,
-        "evidence": "FeaturedPropertiesClient.tsx: useState tab, two pill buttons with min-h-[44px], For Rent empty state with /rent CTA"
-      },
-      {
-        "action": "FeaturedPropertiesClient spacing py-8 sm:py-20, mb-4 sm:mb-10",
-        "done": true,
-        "evidence": "FeaturedPropertiesClient.tsx line 33 py-8 sm:py-20; mb-4 sm:mb-10 on heading block"
-      },
-      {
-        "action": "OffPlanSectionClient py-10 sm:py-20, mb-5 sm:mb-10",
-        "done": true,
-        "evidence": "OffPlanSectionClient.tsx: py-10 sm:py-20 and mb-5 sm:mb-10"
-      },
-      {
-        "action": "CommunitiesSection gold eyebrow COMMUNITIES",
-        "done": true,
-        "evidence": "CommunitiesSection.tsx: p tag with tracking-[0.3em] uppercase color #D4A847 COMMUNITIES above h2"
-      },
-      {
-        "action": "CommunitiesSection card w-[72%] aspect-[4/3]",
-        "done": true,
-        "evidence": "CommunitiesSection.tsx: flex-shrink-0 w-[72%] and aspect-[4/3]"
-      },
-      {
-        "action": "CommunitiesSection stronger gradient from-black/80 via-black/40",
-        "done": true,
-        "evidence": "CommunitiesSection.tsx: bg-gradient-to-t from-black/80 via-black/40 to-transparent"
-      },
-      {
-        "action": "CommunitiesSection Explore affordance on each card",
-        "done": true,
-        "evidence": "CommunitiesSection.tsx: inline-flex span with Explore + ArrowUpRight, bg-white/10 backdrop-blur-sm border border-white/20"
-      },
-      {
-        "action": "CommunitiesSection py-8 sm:py-20",
-        "done": true,
-        "evidence": "CommunitiesSection.tsx: py-8 sm:py-20"
-      },
-      {
-        "action": "StatsSection audit — already py-10, no change",
-        "done": true,
-        "evidence": "StatsSection.tsx: py-10 sm:py-24 already below threshold, left unchanged"
-      }
-    ],
-    "unverifiedClaims": [
-      {
-        "claim": "All mobile layouts render correctly at 390px with no horizontal scroll",
-        "reason": "No browser available to verify; logic is structurally correct per Tailwind classes"
-      },
-      {
-        "claim": "For Rent tab empty state renders and links to /rent",
-        "reason": "Client-side conditional rendering — correct per code logic but not click-tested"
-      }
-    ],
-    "contextGaps": [
-      "FeaturedPropertiesClient Project interface has no transactionType/listingType field — For Rent tab correctly shows empty state with /rent CTA; this is documented behavior.",
-      "StatsSection already uses py-10 on mobile (not py-16+), so no padding change was needed — note for future audits.",
-      "WhatWeOffer section has a dark green background (linear-gradient 135deg #0B3D2E #1A7A5A), so mobile icon cards must use white/opacity text and bg-white/5 borders — not the standard light-mode card vocabulary."
-    ]
-  },
-  "reviewerReport": {
-    "passed": true,
-    "findings": [
-      {
-        "severity": "minor",
-        "category": "pattern",
-        "file": "src/components/WhatWeOffer.tsx",
-        "line": 48,
-        "issue": "Icon has both className='h-5 w-5 text-white' and style={{ color: '#D4A847' }} — the inline style always wins, making className color redundant. Harmless but inconsistent.",
-        "suggestedFix": "Remove the text-white class from Icon since the inline style overrides it.",
-        "fixedInline": false,
-        "commitSha": null
-      },
-      {
-        "severity": "minor",
-        "category": "pattern",
-        "file": "src/components/FeaturedPropertiesClient.tsx",
-        "line": 44,
-        "issue": "Eyebrow copy 'SECONDARY MARKET' is hardcoded in English. Other eyebrows in this file use t('label') for i18n. This will not translate if the site ever ships Arabic/other locales.",
-        "suggestedFix": "Either add a translation key or note this as intentionally en-only in a comment.",
-        "fixedInline": false,
-        "commitSha": null
-      },
-      {
-        "severity": "minor",
-        "category": "pattern",
-        "file": "src/components/CommunitiesSection.tsx",
-        "line": 75,
-        "issue": "'Explore' text inside the affordance span is hardcoded English, not translated.",
-        "suggestedFix": "Same as above — add a translation key or note it.",
-        "fixedInline": false,
-        "commitSha": null
-      }
-    ],
-    "blastRadius": [],
-    "summary": "Pure UI change across 5 components. No auth, no API routes, no shared state touched. TypeScript passes cleanly. All spec items delivered: compact mobile ValuationStrip with min-h-[44px] CTA, WhatWeOffer 2-col icon grid (desktop images intact), FeaturedPropertiesClient renamed with working tabs + empty state, OffPlanSectionClient spacing-only, CommunitiesSection eyebrow + wider landscape cards + Explore affordance. Brand green gradient used verbatim where present. next/link vs @/navigation is pre-existing in all 3 files, not introduced by this diff. 3 minor i18n/style nits, none blocking."
-  },
-  "qaReport": {
-    "passed": true,
-    "tested": [
-      "ValuationStrip mobile single-row layout",
-      "WhatWeOffer 2-column icon grid (no images on mobile)",
-      "FeaturedPropertiesClient SECONDARY MARKET eyebrow + For Sale/For Rent tabs",
-      "FeaturedPropertiesClient For Rent empty state with /rent CTA",
-      "CommunitiesSection gold eyebrow + landscape cards + Explore badge",
-      "OffPlanSectionClient spacing tightened",
-      "Desktop regression at 1280x800 - all sections",
-      "Mobile horizontal scroll check"
-    ],
-    "behavioralChecks": [
-      {
-        "specItem": "1",
-        "method": "behavioral",
-        "verified": "Navigated to http://localhost:3000/en at 390x844. ValuationStrip renders as a single flex row (sm:hidden flex items-center gap-2) at exactly 44px height with icon (32px), stacked title+subtitle (211px wide), and 'Get Value' pill button (99x44px). No vertical stacking, no clipping."
-      },
-      {
-        "specItem": "2",
-        "method": "behavioral",
-        "verified": "WhatWeOffer green section shows sm:hidden grid grid-cols-2 gap-2.5 with 5 service cards, each 165x129px, all having SVG icons (lucide), no img elements. Desktop sm:grid grid-cols-2 lg:grid-cols-5 is hidden. No horizontal scroll."
-      },
-      {
-        "specItem": "3",
-        "method": "behavioral",
-        "verified": "FeaturedPropertiesClient renders 'SECONDARY MARKET' eyebrow (gold #D4A847, font-semibold 600, letter-spacing 4px). For Sale and For Rent buttons both present, both 44px height meeting tap target spec. Clicked For Rent — empty state 'Looking for a rental' text appeared with /rent link href confirmed."
-      },
-      {
-        "specItem": "4",
-        "method": "behavioral",
-        "verified": "OffPlanSectionClient DOM verified has py-10 sm:py-20 and mb-5 sm:mb-10 classes. Section loads correctly alongside other sections with no layout breakage."
-      },
-      {
-        "specItem": "5",
-        "method": "behavioral",
-        "verified": "CommunitiesSection shows 'COMMUNITIES' eyebrow paragraph in gold (#D4A847, font-weight 600). Community cards are 258x193px (landscape, wider than tall). Explore badge span found with bg-white/10 backdrop-blur-sm border border-white/20 classes and ArrowUpRight icon."
-      },
-      {
-        "specItem": "6",
-        "method": "behavioral",
-        "verified": "Desktop 1280x800 regression: mobile grid (sm:hidden) not visible, desktop grid (hidden sm:grid) active for WhatWeOffer. ValuationStrip desktop layout (hidden sm:flex) visible. FeaturedProperties desktop grid present. No horizontal page scroll on desktop or mobile."
-      }
-    ],
-    "bugs": [
-      {
-        "severity": "env",
-        "category": "functional",
-        "principle": null,
-        "description": "Console errors: 'Image is missing required alt property' (6 instances) — these come from components not touched by this diff (pre-existing). Confirmed by grep: all changed components (ValuationStrip, WhatWeOffer, CommunitiesSection) have proper alt= props.",
-        "reproSteps": "1. Load http://localhost:3000/en. 2. Check browser console.",
-        "expected": "No alt prop errors",
-        "actual": "6 alt prop errors from pre-existing components",
-        "file": null,
-        "fixedInline": false,
-        "commitSha": null
-      }
-    ],
-    "designChecked": true,
-    "designSkipReason": null,
-    "benchmarkScores": [
-      {
-        "surface": "ValuationStrip mobile",
-        "rating": "AT BAR",
-        "comparedTo": "Airbnb mobile compact promo strips"
-      },
-      {
-        "surface": "WhatWeOffer 2-col icon grid",
-        "rating": "AT BAR",
-        "comparedTo": "Airbnb mobile home service categories"
-      },
-      {
-        "surface": "FeaturedPropertiesClient tabs",
-        "rating": "AT BAR",
-        "comparedTo": "Airbnb search type tabs"
-      },
-      {
-        "surface": "CommunitiesSection mobile",
-        "rating": "AT BAR",
-        "comparedTo": "Airbnb neighborhood exploration cards"
-      }
-    ],
-    "consoleErrors": [
-      "Image is missing required 'alt' property (6x — pre-existing, not from diff)"
-    ],
-    "screenshots": [
-      "/tmp/qa-screenshot1-mobile-top.png",
-      "/tmp/qa-screenshot2-mobile-whatweoffer.png",
-      "/tmp/qa-screenshot3-mobile-secondary.png"
-    ],
-    "regressions": [],
-    "viewportsTested": [
-      "mobile (390x844)",
-      "desktop (1280x800)"
-    ],
-    "blocker": null,
-    "testManifest": {
-      "/": {
-        "testedInStage": 1,
-        "testedInIter": 1,
-        "testedAfterSha": "015a5804",
-        "diffFiles": [
-          "src/components/CommunitiesSection.tsx",
-          "src/components/FeaturedPropertiesClient.tsx",
-          "src/components/OffPlanSectionClient.tsx",
-          "src/components/ValuationStrip.tsx",
-          "src/components/WhatWeOffer.tsx"
-        ],
-        "passedAt": "2026-05-11T14:00:00Z"
-      }
-    }
-  },
-  "liveTestReport": {
-    "passed": true,
-    "stagingUrl": "https://staging.binayahhub.com",
-    "pagesChecked": [
-      "/"
-    ],
-    "behavioralChecks": [
-      {
-        "specItem": "1",
-        "method": "behavioral",
-        "verified": "ValuationStrip renders as a single compact horizontal row at 390px — gold sparkle icon (32px), stacked title+subtitle, and 'Get Value' gold pill button all on one line. No vertical stacking, no overflow. Mobile row element confirmed present via DOM query."
-      },
-      {
-        "specItem": "2",
-        "method": "behavioral",
-        "verified": "WhatWeOffer green section shows sm:hidden 2-column icon grid (mobileGridFound: true). No image headers visible on mobile. 9 two-column grids detected in DOM, mobile-specific grid confirmed. No horizontal scroll."
-      },
-      {
-        "specItem": "3",
-        "method": "behavioral",
-        "verified": "FeaturedPropertiesClient: 'SECONDARY MARKET' gold eyebrow visible, 'For Sale' tab active with bg-primary class, 'For Rent' tab present. Clicked For Rent — empty state text 'Looking for a rental' appeared with /rent link confirmed. Clicked back to For Sale — property card links reappeared. Both tabs have min-h-[44px]."
-      },
-      {
-        "specItem": "4",
-        "method": "behavioral",
-        "verified": "OffPlanSectionClient section has className 'py-10 sm:py-20 bg-background scroll-mt-20' confirmed live. Spacing tightened as spec."
-      },
-      {
-        "specItem": "5",
-        "method": "behavioral",
-        "verified": "CommunitiesSection: 'Explore Dubai' gold eyebrow paragraph present, 4 community cards each with class 'flex-shrink-0 w-[72%] snap-center', aspect-[4/3] landscape confirmed in DOM, 'Explore' badge span with ArrowUpRight present on cards, stronger gradient from-black/80 via-black/40 in place."
-      },
-      {
-        "specItem": "6",
-        "method": "behavioral",
-        "verified": "No horizontal page scroll at 390px — scrollWidth equals clientWidth. Zero console errors throughout full interaction sequence including tab switching."
-      }
-    ],
-    "consoleErrors": [],
-    "bugs": [],
-    "screenshots": [
-      "/tmp/live-qa-mobile-top.png",
-      "/tmp/live-qa-secondary-market.png"
-    ],
-    "blocker": null,
-    "screenshotDescriptions": [
-      "Screenshot 1 (/tmp/live-qa-mobile-top.png): Top of homepage at 390px. Navbar with BINAYAH logo, hero section showing Dubai skyline, BUY/RENT/OFF PLAN tabs, search bar, gold SEARCH button. Below hero: ValuationStrip compact single row visible with 'What's Your Property Get Yo...' heading and 'Get Value' gold pill button. Cookie consent banner overlay present but non-blocking.",
-      "Screenshot 2 (/tmp/live-qa-secondary-market.png): Secondary Market section at 390px. Gold 'SECONDARY MARKET' eyebrow, 'Handpicked Properties' heading in bold with italic. 'For Sale' tab active (dark green bg, white text), 'For Rent' tab inactive (no fill). Two property card thumbnails visible in mobile swipe row showing Dubai pool/skyline images with 'Price on request' labels. Section below shows OffPlan 'Buy Property with' section — spacing visually compact."
-    ]
-  },
-  "pmDecision": "ship",
-  "summary": "Global CurrencyContext with live rates wired to Navbar, ProjectDetailClient, PropertyDetailClient, SearchPageClient, OffPlanPageClient, ListingsPageClient",
-  "contextGaps": [
-    "ProjectDetailClient's local CURRENCY_RATES/CURRENCY_SYMBOLS/formatPrice block was ~35 lines at module scope (lines 57–91 in original). Removing it and aliasing useCurrency() format/rates inside the component required updating 15+ formatPrice() call sites throughout the ~2700-line file — the secondary ~USD display lines were spread widely including hero, stat cards, payment plan milestones, CTA sidebar, and mobile CTA.",
-    "PropertyDetailClient had 4 USD_RATE usage sites: hero, stats strip, mobile CTA, sidebar CTA. All cleanly removable by replacing formattedPrice derivation with fmtPrice().",
-    "The ListingsPageClient local formatPrice() was a per-listing function (took a Listing object, not a price number). Replacing it with fmtCurrency() required switching the call site to pass l.price directly. The function was then dead code and removed to avoid noUnusedLocals TS errors.",
-    "SearchPageClient's formatProjectPrice import came from @/lib/formatPrice — simply swapping the import for useCurrency and using fmtCurrency() was sufficient. The module-level formatPrice function (line 99) was left as-is since module-level unused functions don't trigger TS errors.",
-    "/api/currency-rates correctly returns {} (empty object) when serverApiUrl returns a relative path (i.e. API_BASE_URL not set in dev). CurrencyProvider falls back to FALLBACK_RATES in that case.",
-    "CurrencyProvider is outermost — wraps SessionProvider — so useCurrency() is available even inside next-auth callbacks if needed."
-  ],
+  "plan": "See stages[0].spec — single-stage mega-menu implementation in src/components/Navbar.tsx + 4 locale files. Replace Buy/Rent/Off-Plan plain links and Insights/Company simple dropdowns with multi-column hover mega panels (desktop) / nested accordions (mobile), add a new standalone Guides tab, rename Company→Services as a mega menu, trim Insights to Pulse/Communities/News. All menu contents, hrefs, i18n keys, visual treatment (reuse existing glass dropdown style), and acceptance criteria are in stages[0].spec. Reuse the existing nav.guides i18n key — do NOT add a duplicate. Verify per-link label i18n keys against messages/en.json before hardcoding any string (ESLint i18next/no-literal-string gates the Vercel build — this is the top build-breaker risk).",
+  "diff": "",
+  "devReport": null,
+  "reviewerReport": null,
+  "qaReport": null,
+  "liveTestReport": null,
+  "pmDecision": "start",
+  "summary": "Stage 1/1: mega-menu navbar — Buy(3col)/Rent/Off-Plan/Guides(new)/Services(was Company) as hover panels + mobile accordions, Insights trimmed to 3 items. All decisions locked from plannerOutput; routed direct to dev (no designer — aesthetic pinned to existing dropdown style).",
   "securitySensitive": false,
   "history": [],
-  "stageHistory": [
-    {
-      "stage": 1,
-      "summary": "Mobile home page polish: compact valuation strip, icon grid services, secondary market tabs, tighter spacing, communities upgrade",
-      "passedAt": "2026-05-11T06:42:42Z",
-      "commitSha": "015a5804"
-    }
-  ],
+  "stageHistory": [],
   "orchestratorDecisions": [],
   "dispatches": [],
   "memoryGaps": [],
   "namespace": "binayah-properties",
   "regressionSweepDone": false,
-  "startedAt": "2026-05-11T13:27:30Z",
+  "startedAt": "2026-06-08T00:00:00Z",
   "devServerPid": null,
   "screenshotsUsed": 0,
-  "pushedSha": "8911c746",
-  "vercelDeployUrl": "https://staging.binayahhub.com",
+  "pushedSha": null,
+  "vercelDeployUrl": null,
   "testFixture": null,
   "metricsLog": ".iterate/metrics.jsonl",
   "flags": {
     "noDesigner": false
-  },
-  "loopContext": {
-    "designRoute": "dev",
-    "designRouteReason": "Spec is highly specific (exact files, exact class swaps, exact behaviors) — aesthetic direction is already resolved by user request. Designer would add cost without changing direction."
   }
 }
