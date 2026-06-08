@@ -34,6 +34,10 @@ const nextConfig: NextConfig = {
     // dynamic segment was greedy-matching unrelated short paths so the
     // structure was changed to /<prefix>/<dynamic>. 301 the old URLs.
     return [
+      // Old binayah.com WordPress had a /downloads/ page (brochures).
+      // Redirect to /services to recover any backlink value.
+      { source: "/downloads", destination: "/services", permanent: true },
+      { source: "/downloads/", destination: "/services", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
