@@ -1,10 +1,36 @@
 import { MetadataRoute } from "next";
+import { MongoClient } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 
 import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
+
+// Fetch all slugs directly from MongoDB — bypasses the API's 100-item hard cap.
+// Falls back to empty array on any error so the sitemap still builds.
+async function fetchAllSlugsFromDb(
+  collection: string,
+  filter: Record<string, unknown> = {}
+): Promise<string[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return [];
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const db = client.db();
+    const docs = await db
+      .collection(collection)
+      .find(filter, { projection: { slug: 1, _id: 0 } })
+      .toArray();
+    return (docs as { slug?: string }[]).map((d) => d.slug).filter(Boolean) as string[];
+  } catch {
+    return [];
+  } finally {
+    await client?.close();
+  }
+}
 
 const IS_RU = SITE_URL.includes("binayah.ru");
 
@@ -55,8 +81,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const [projects, listings, articles, communities, updates, developers] =
     await Promise.all([
-      fetchSlugs("/api/projects?limit=1000&fields=slug"),
-      fetchSlugs("/api/listings?limit=1000&fields=slug"),
+      // Use MongoDB directly for listings/projects — the API hard-caps at 100
+      // items regardless of ?limit=, so the sitemap would only include 100 of
+      // 3000+ pages. MongoDB returns all published slugs with no cap.
+      fetchAllSlugsFromDb("projects", { slug: { $exists: true, $ne: "" } }),
+      fetchAllSlugsFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
       fetchSlugs("/api/news?limit=1000&fields=slug"),
       fetchSlugs("/api/communities?limit=500&fields=slug"),
       fetchSlugs("/api/construction-updates?limit=500&fields=slug"),
