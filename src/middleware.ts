@@ -70,7 +70,7 @@ function buildCSPReportOnly(nonce: string): string {
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    "upgrade-insecure-requests",
+    // upgrade-insecure-requests is not valid in report-only policies (browsers log a warning)
   ].join("; ");
 }
 
