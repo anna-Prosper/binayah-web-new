@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { FAQJsonLd } from "./JsonLd";
 import { useTranslations } from "next-intl";
 
 export default function FAQSection() {
@@ -20,7 +19,6 @@ export default function FAQSection() {
 
   return (
     <section className="py-16 sm:py-24 bg-card">
-      <FAQJsonLd faqs={faqs} />
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <div
