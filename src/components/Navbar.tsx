@@ -533,7 +533,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               {/* ── SERVICES mega menu (2 columns + multi-CTA, was Company) ─ */}
               <div
                 ref={servicesRef}
-                className="relative"
+                className="relative hidden xl:flex items-center"
                 onMouseEnter={() => openOnly("services")}
                 onMouseLeave={() => setServicesOpen(false)}
               >
