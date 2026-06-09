@@ -403,7 +403,7 @@ function Leaderboard({ data, t }: { data: DailyData; t: T }) {
                     viewport={{ once: true }}
                     transition={{ duration: 0.7, ease: "easeOut", delay: i * 0.06 }}
                     className="h-full rounded-full"
-                    style={{ background: "linear-gradient(90deg, #B8860B, #D4A847, #E8C97A)" }}
+                    style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   />
                 </div>
               </div>
@@ -478,7 +478,7 @@ function MixRow({ label, count, value, pct, index, t }: {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
             className="h-full rounded-full"
-            style={{ background: "linear-gradient(90deg, #1A7A5A, #2FA876)" }}
+            style={{ background: "#1A7A5A" }}
           />
         </div>
       </div>
