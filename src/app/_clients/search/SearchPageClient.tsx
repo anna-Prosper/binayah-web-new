@@ -449,10 +449,10 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
   }, [loading, totalResults, q]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className={syncUrl ? "min-h-screen bg-background" : "bg-background"}>
+      {syncUrl && <Navbar />}
 
-      <section className="pt-24 pb-5 bg-background border-b border-border/60">
+      <section className={`${syncUrl ? "pt-24" : "pt-5"} pb-5 bg-background border-b border-border/60`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
           {/* Search bar + mobile filter trigger */}
@@ -900,8 +900,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
         </div>
       </section>
 
-      <Footer />
-      <WhatsAppButton />
+      {syncUrl && <Footer />}
+      {syncUrl && <WhatsAppButton />}
       <PropertyComparison />
     </div>
   );
