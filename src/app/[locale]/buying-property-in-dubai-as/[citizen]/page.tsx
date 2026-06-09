@@ -1,15 +1,17 @@
-/* eslint-disable i18next/no-literal-string -- SEO landing page, English-only by design (targets English search queries) */
+/* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer } from "@/lib/foreign-buyers";
-import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 86400;
 
+// ── Static-params: all locales × all citizen slugs ─────────────────────────
 export function generateStaticParams() {
   const locales = ["en", "ar", "zh", "ru"];
   return locales.flatMap((locale) =>
@@ -17,6 +19,312 @@ export function generateStaticParams() {
   );
 }
 
+// ── UI content (locale-aware headings, steps, FAQs, labels) ────────────────
+const CONTENT = {
+  en: {
+    heroLabel: "FOREIGN BUYER GUIDE",
+    guideSuffix: "Citizen",
+    guideFor: "Guide for",
+    buyers: "Buyers",
+    introBadge: "Buying Property in Dubai",
+
+    statsLabels: {
+      tax: "Capital Gains Tax",
+      ownership: "Freehold Ownership",
+      visa: "Golden Visa Threshold",
+      yield: "Typical Gross Yield",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "All Nationalities",
+      visa: "AED 2M",
+      yield: "5–8%",
+    },
+
+    stepsHeading: "How to Buy Property in Dubai",
+    stepsSubheading: "The standard 5-step purchase process applies to all nationalities, including non-residents.",
+    steps: [
+      { n: "01", title: "Agree Price & Sign MOU", body: "Negotiate and sign a Memorandum of Understanding (MOU / Form F) with the seller. Your agent files this with the Dubai Land Department." },
+      { n: "02", title: "Pay 10% Security Deposit", body: "A 10% deposit (held in trust or with the real estate agency) is paid upon signing the MOU. This secures the property and is forfeited if you pull out." },
+      { n: "03", title: "Obtain NOC from Developer", body: "The developer issues a No Objection Certificate (NOC) confirming no outstanding service charges or payments on the property. Typically 5–10 working days." },
+      { n: "04", title: "DLD Transfer & Fees", body: "Both parties attend the DLD Trustee Office (or use an authorised power-of-attorney). Pay the 4% DLD transfer fee plus admin fees. The title deed is issued same day." },
+      { n: "05", title: "Receive Title Deed", body: "The DLD issues a digital and physical title deed in your name. You are now the legal owner. Rental income from day one is entirely tax-free." },
+    ],
+
+    whyHeading: "Why Dubai for",
+    legalHeading: "Legal Status & Ownership Rights",
+    financeHeading: "Financing Options",
+    taxHeading: "Tax Implications",
+    repatHeading: "Repatriating Funds",
+    areasHeading: "Preferred Areas",
+    areasIntro: "Based on Binayah's transaction data, the communities most commonly chosen by",
+    areasOutro: "buyers are:",
+    areasCta: "Buy property in",
+
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Can any nationality buy freehold property in Dubai?",
+        answer: "Yes. All nationalities can purchase freehold property in Dubai's designated freehold zones — over 60 communities including Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, and JVC. There are no restrictions based on nationality, religion, or residency status. You receive a DLD title deed with full ownership rights.",
+      },
+      {
+        question: "Do I need a UAE residency visa to buy property in Dubai?",
+        answer: "No. Non-residents can buy, own, and rent out property in Dubai without any UAE visa. A residency visa is not required for purchase. If your investment is AED 750,000 or more you qualify for a 2-year investor visa; AED 2,000,000 or more qualifies you for the 10-year UAE Golden Visa.",
+      },
+      {
+        question: "What are the total costs when buying property in Dubai?",
+        answer: "DLD transfer fee: 4% of purchase price. Agent commission: typically 2%. DLD admin fee: AED 580. Trustee office fee: AED 4,000 (for properties over AED 500K). Mortgage registration fee (if applicable): 0.25% of loan value. Total transaction costs are approximately 6–7% of purchase price.",
+      },
+      {
+        question: "Can I get a mortgage in Dubai as a non-resident?",
+        answer: "Yes. UAE banks offer non-resident mortgages to foreign nationals, typically at 40–50% LTV (you pay 50–60% cash). Your home-country income documentation, bank statements, and credit history are assessed. Major international banks in the UAE (HSBC, Emirates NBD, Mashreq, Citibank) actively lend to foreign buyers. Pre-approval takes 2–4 weeks.",
+      },
+      {
+        question: "Is there any tax on rental income or capital gains in Dubai?",
+        answer: "No. Dubai levies zero income tax, zero capital gains tax, and zero inheritance tax on property. Rental income is entirely tax-free at the UAE level. Your home country may tax foreign-source rental income or gains — see the nationality-specific tax section above, and consult a tax adviser for your specific situation.",
+      },
+    ],
+
+    ctaTitle: "Ready to Buy in Dubai?",
+    ctaDesc: "Binayah's RERA-certified agents work with buyers from every nationality daily. We handle property search, viewings, legal coordination, and post-purchase management.",
+    ctaBtn: "Contact Our Team",
+    ctaBtnSecondary: "Browse Properties",
+
+    breadcrumbs: {
+      home: "Home",
+      guides: "Guides",
+    },
+  },
+
+  ru: {
+    heroLabel: "РУКОВОДСТВО ДЛЯ ИНОСТРАННЫХ ПОКУПАТЕЛЕЙ",
+    guideSuffix: "гражданин",
+    guideFor: "Руководство для",
+    buyers: "покупателей",
+    introBadge: "Покупка недвижимости в Дубае",
+
+    statsLabels: {
+      tax: "Налог на прирост капитала",
+      ownership: "Право собственности",
+      visa: "Золотая виза от",
+      yield: "Типичная доходность",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "Все национальности",
+      visa: "2М AED",
+      yield: "5–8%",
+    },
+
+    stepsHeading: "Как купить недвижимость в Дубае",
+    stepsSubheading: "Стандартный 5-шаговый процесс покупки применяется ко всем национальностям, включая нерезидентов.",
+    steps: [
+      { n: "01", title: "Согласование цены и подписание MOU", body: "Согласуйте и подпишите меморандум о намерениях (MOU / форма F) с продавцом. Агент регистрирует документ в Земельном департаменте Дубая (DLD)." },
+      { n: "02", title: "Оплата 10% задатка", body: "При подписании MOU вносится 10% задатка (хранится у агента или в трасте). Задаток фиксирует объект и теряется в случае отказа покупателя." },
+      { n: "03", title: "Получение NOC от застройщика", body: "Застройщик выдаёт Сертификат об отсутствии возражений (NOC), подтверждающий отсутствие задолженностей. Обычно занимает 5–10 рабочих дней." },
+      { n: "04", title: "Передача прав в DLD и оплата сборов", body: "Обе стороны присутствуют в офисе доверенного лица DLD (или действуют через нотариальную доверенность). Оплачивается 4% сбор DLD плюс административные сборы. Свидетельство о праве собственности выдаётся в тот же день." },
+      { n: "05", title: "Получение свидетельства о праве собственности", body: "DLD выдаёт цифровое и физическое свидетельство на ваше имя. С первого дня доход от аренды полностью освобождён от налогов на уровне ОАЭ." },
+    ],
+
+    whyHeading: "Почему Дубай для",
+    legalHeading: "Правовой статус и права собственности",
+    financeHeading: "Варианты финансирования",
+    taxHeading: "Налоговые последствия",
+    repatHeading: "Репатриация средств",
+    areasHeading: "Предпочтительные районы",
+    areasIntro: "По данным транзакций Binayah, наиболее популярные районы среди",
+    areasOutro: "покупателей:",
+    areasCta: "Купить недвижимость в",
+
+    faqHeading: "Часто задаваемые вопросы",
+    faqs: [
+      {
+        question: "Могут ли иностранцы любой национальности купить фрихолд-недвижимость в Дубае?",
+        answer: "Да. Все национальности могут приобретать недвижимость в свободное владение в специально отведённых фрихолд-зонах Дубая — более 60 сообществ, включая Дубай Марина, Даунтаун Дубай, Пальм Джумейра, Бизнес-Бей и JVC. Ограничений по гражданству, религии или статусу резидента нет. Вы получаете официальное свидетельство DLD с полными правами собственности.",
+      },
+      {
+        question: "Нужна ли виза резидента ОАЭ для покупки недвижимости в Дубае?",
+        answer: "Нет. Нерезиденты могут покупать, владеть и сдавать недвижимость в Дубае без визы ОАЭ. Виза не требуется для совершения сделки. При инвестиции от 750 000 AED вы получаете 2-летнюю инвесторскую визу; от 2 000 000 AED — 10-летнюю Золотую визу ОАЭ.",
+      },
+      {
+        question: "Каковы полные затраты при покупке недвижимости в Дубае?",
+        answer: "Сбор DLD за передачу: 4% от стоимости. Комиссия агента: около 2%. Административный сбор DLD: 580 AED. Сбор доверенного офиса: 4 000 AED (для объектов свыше 500K AED). Регистрация ипотеки (при наличии): 0,25% от суммы кредита. Итого транзакционные расходы составляют около 6–7% от стоимости.",
+      },
+      {
+        question: "Могу ли я получить ипотеку в Дубае как нерезидент?",
+        answer: "Да. Банки ОАЭ предоставляют ипотеку нерезидентам, как правило при LTV 40–50% (вы оплачиваете 50–60% наличными). Оцениваются доходные документы, выписки со счетов и кредитная история вашей страны. Крупные международные банки в ОАЭ (HSBC, Emirates NBD, Mashreq, Citibank) активно кредитуют иностранных покупателей. Предварительное одобрение занимает 2–4 недели.",
+      },
+      {
+        question: "Облагается ли налогом доход от аренды или прирост капитала в Дубае?",
+        answer: "Нет. В Дубае нет налога на доходы физических лиц, налога на прирост капитала и налога на наследство. Доход от аренды полностью освобождён от налогов на уровне ОАЭ. Ваша страна проживания может облагать налогом иностранный доход от аренды или прирост — см. раздел о налоговых последствиях выше и проконсультируйтесь с налоговым консультантом.",
+      },
+    ],
+
+    ctaTitle: "Готовы купить в Дубае?",
+    ctaDesc: "Сертифицированные агенты RERA компании Binayah ежедневно работают с покупателями всех национальностей. Мы берём на себя поиск объектов, просмотры, юридическое сопровождение и управление после покупки.",
+    ctaBtn: "Связаться с нашей командой",
+    ctaBtnSecondary: "Просмотреть объекты",
+
+    breadcrumbs: {
+      home: "Главная",
+      guides: "Гайды",
+    },
+  },
+
+  ar: {
+    heroLabel: "دليل المشتري الأجنبي",
+    guideSuffix: "مواطن",
+    guideFor: "دليل",
+    buyers: "المشترين",
+    introBadge: "شراء عقار في دبي",
+
+    statsLabels: {
+      tax: "ضريبة أرباح رأس المال",
+      ownership: "حق التملك الحر",
+      visa: "الحد الأدنى للتأشيرة الذهبية",
+      yield: "عائد الإيجار المعتاد",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "جميع الجنسيات",
+      visa: "2 مليون درهم",
+      yield: "5–8%",
+    },
+
+    stepsHeading: "كيفية شراء عقار في دبي",
+    stepsSubheading: "تنطبق عملية الشراء المعيارية من 5 خطوات على جميع الجنسيات، بما فيها غير المقيمين.",
+    steps: [
+      { n: "٠١", title: "الاتفاق على السعر وتوقيع MOU", body: "تفاوض ووقّع على مذكرة التفاهم (MOU / نموذج F) مع البائع. يقدّم وكيلك هذه المذكرة إلى دائرة الأراضي والأملاك في دبي." },
+      { n: "٠٢", title: "دفع عربون 10%", body: "يُدفع عربون 10% عند توقيع MOU (يُحفظ لدى الوكالة أو في حساب ائتماني). يضمن العربون الحجز ويُفقد في حال تراجع المشتري." },
+      { n: "٠٣", title: "الحصول على عدم ممانعة من المطوّر", body: "يُصدر المطوّر شهادة عدم ممانعة (NOC) تؤكد خلوّ العقار من أي مستحقات أو رسوم. تستغرق عادةً 5–10 أيام عمل." },
+      { n: "٠٤", title: "نقل الملكية عبر DLD وسداد الرسوم", body: "يحضر الطرفان إلى مكتب الأمين المعتمد لـDLD (أو يُنيبان محامياً بالتوكيل الرسمي). يُسدَّد رسم نقل 4% إضافةً إلى الرسوم الإدارية. يُصدر سند الملكية في نفس اليوم." },
+      { n: "٠٥", title: "استلام سند الملكية", body: "تُصدر DLD سند ملكية رقمياً وورقياً باسمك. أنت الآن المالك القانوني. دخل الإيجار معفى تماماً من الضرائب اعتباراً من اليوم الأول." },
+    ],
+
+    whyHeading: "لماذا دبي لـ",
+    legalHeading: "الوضع القانوني وحقوق الملكية",
+    financeHeading: "خيارات التمويل",
+    taxHeading: "الانعكاسات الضريبية",
+    repatHeading: "إعادة الأموال إلى الوطن",
+    areasHeading: "المناطق المفضلة",
+    areasIntro: "استناداً إلى بيانات معاملات بناية، أكثر المجتمعات التي يختارها",
+    areasOutro: "المشترون:",
+    areasCta: "شراء عقار في",
+
+    faqHeading: "الأسئلة الشائعة",
+    faqs: [
+      {
+        question: "هل يمكن لأي جنسية شراء عقار تملّك حر في دبي؟",
+        answer: "نعم. يحق لجميع الجنسيات شراء عقارات تملّك حر في المناطق المخصصة بدبي — أكثر من 60 مجتمعاً تشمل دبي مارينا ووسط المدينة والنخلة جميرا والخليج التجاري وJVC. لا توجد قيود على أساس الجنسية أو الدين أو وضع الإقامة. تحصل على سند ملكية DLD رسمي مع كامل حقوق الملكية.",
+      },
+      {
+        question: "هل أحتاج إلى تأشيرة إقامة إماراتية لشراء عقار في دبي؟",
+        answer: "لا. يمكن لغير المقيمين شراء العقارات وتملّكها وتأجيرها في دبي دون أي تأشيرة إماراتية. لا تُشترط تأشيرة الإقامة لإتمام الشراء. إذا كان استثمارك 750,000 درهم أو أكثر، تحصل على تأشيرة مستثمر لمدة سنتين؛ ومن 2,000,000 درهم فأكثر، تحصل على التأشيرة الذهبية الإماراتية لمدة 10 سنوات.",
+      },
+      {
+        question: "ما التكاليف الإجمالية عند شراء عقار في دبي؟",
+        answer: "رسوم نقل DLD: 4% من سعر الشراء. عمولة الوكيل: عادةً 2%. الرسوم الإدارية لـDLD: 580 درهماً. رسوم مكتب الأمين: 4,000 درهم (للعقارات التي تتجاوز 500,000 درهم). رسوم تسجيل الرهن العقاري (إن وُجد): 0.25% من قيمة القرض. تبلغ إجمالي تكاليف المعاملة نحو 6–7% من سعر الشراء.",
+      },
+      {
+        question: "هل يمكنني الحصول على رهن عقاري في دبي بوصفي غير مقيم؟",
+        answer: "نعم. تمنح البنوك الإماراتية رهوناً عقارية لغير المقيمين، وعادةً بنسبة تمويل 40–50% (تدفع 50–60% نقداً). تُقيَّم وثائق الدخل وكشوف الحساب البنكي والتاريخ الائتماني في بلدك. البنوك الدولية الكبرى في الإمارات (HSBC وإمارات NBD وماشريق وسيتي بنك) تُقرض المشترين الأجانب بنشاط. يستغرق الموافقة المسبقة 2–4 أسابيع.",
+      },
+      {
+        question: "هل يوجد ضريبة على دخل الإيجار أو أرباح رأس المال في دبي؟",
+        answer: "لا. لا تفرض دبي أي ضريبة دخل أو ضريبة على أرباح رأس المال أو ضريبة ميراث على العقارات. دخل الإيجار معفى تماماً على المستوى الإماراتي. قد تفرض دولتك ضريبةً على دخل الإيجار الأجنبي أو الأرباح — راجع قسم الانعكاسات الضريبية أعلاه واستشر مستشاراً ضريبياً.",
+      },
+    ],
+
+    ctaTitle: "مستعد للشراء في دبي؟",
+    ctaDesc: "يعمل وكلاء بناية المعتمدون من RERA يومياً مع مشترين من جميع الجنسيات. نتولى البحث عن العقار والمعاينات والتنسيق القانوني وإدارة العقار بعد الشراء.",
+    ctaBtn: "تواصل مع فريقنا",
+    ctaBtnSecondary: "تصفح العقارات",
+
+    breadcrumbs: {
+      home: "الرئيسية",
+      guides: "الأدلة",
+    },
+  },
+
+  zh: {
+    heroLabel: "外国买家指南",
+    guideSuffix: "公民",
+    guideFor: "指南",
+    buyers: "买家",
+    introBadge: "在迪拜购买房产",
+
+    statsLabels: {
+      tax: "资本利得税",
+      ownership: "自由持有产权",
+      visa: "黄金签证门槛",
+      yield: "典型租金回报率",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "所有国籍均可",
+      visa: "200万迪拉姆",
+      yield: "5–8%",
+    },
+
+    stepsHeading: "如何在迪拜购买房产",
+    stepsSubheading: "标准5步购房流程适用于所有国籍，包括非居民。",
+    steps: [
+      { n: "01", title: "议价并签署MOU", body: "与卖方协商并签署意向备忘录（MOU / F表格）。您的经纪人将此文件提交迪拜土地局（DLD）。" },
+      { n: "02", title: "支付10%定金", body: "签署MOU时支付10%定金（由经纪公司或信托账户持有）。定金锁定房产，买方反悔则予以没收。" },
+      { n: "03", title: "获取开发商NOC", body: "开发商签发无异议证书（NOC），确认房产无未缴服务费或欠款。通常需要5–10个工作日。" },
+      { n: "04", title: "DLD过户并缴纳费用", body: "双方前往DLD受托人办公室（或通过公证授权书办理）。缴纳4%过户费及行政费用。产权证书当日签发。" },
+      { n: "05", title: "领取产权证书", body: "DLD以您的名义签发电子和纸质产权证书。您现在是合法业主。迪拜层面的租金收入从第一天起完全免税。" },
+    ],
+
+    whyHeading: "迪拜为何吸引",
+    legalHeading: "法律地位与产权",
+    financeHeading: "融资选择",
+    taxHeading: "税务影响",
+    repatHeading: "资金汇回",
+    areasHeading: "热门区域",
+    areasIntro: "根据Binayah的交易数据，",
+    areasOutro: "买家最常选择的社区为：",
+    areasCta: "购买房产 —",
+
+    faqHeading: "常见问题",
+    faqs: [
+      {
+        question: "任何国籍都可以在迪拜购买自由持有房产吗？",
+        answer: "可以。所有国籍均可在迪拜指定的自由持有区购买房产——超过60个社区，包括迪拜Marina、市中心、棕榈岛、商业湾和JVC。没有基于国籍、宗教或居住身份的限制。您将获得DLD官方产权证书，享有完整所有权。",
+      },
+      {
+        question: "购买迪拜房产需要阿联酋居留签证吗？",
+        answer: "不需要。非居民无需任何阿联酋签证即可在迪拜购买、持有和出租房产。购房不需要居留签证。投资75万迪拉姆及以上可申请2年投资者签证；200万迪拉姆及以上可申请10年阿联酋黄金签证。",
+      },
+      {
+        question: "在迪拜购房的总费用是多少？",
+        answer: "DLD过户费：购买价的4%。中介佣金：通常为2%。DLD行政费：580迪拉姆。受托人办公室费用：4,000迪拉姆（价值超过50万迪拉姆的房产）。按揭登记费（如适用）：贷款额的0.25%。交易总成本约为购买价的6–7%。",
+      },
+      {
+        question: "作为非居民，我能在迪拜获得按揭贷款吗？",
+        answer: "可以。阿联酋银行向非居民提供按揭贷款，通常贷款价值比（LTV）为40–50%（您需支付50–60%现金）。银行会评估您的母国收入证明、银行流水和信用记录。阿联酋主要国际银行（汇丰、阿联酋国民银行、马士里格银行、花旗银行）均积极为外国买家提供贷款。预批通常需2–4周。",
+      },
+      {
+        question: "迪拜征收租金收入税或资本利得税吗？",
+        answer: "不征收。迪拜不征收所得税、资本利得税和遗产税。在阿联酋层面，租金收入完全免税。您的母国可能对境外租金收入或收益征税——请参阅上方特定国籍税务部分，并咨询税务顾问了解您的具体情况。",
+      },
+    ],
+
+    ctaTitle: "准备好在迪拜购房了吗？",
+    ctaDesc: "Binayah的RERA认证经纪人每天为来自各国的买家提供服务。我们负责房产搜索、看房、法律协调及购后物业管理。",
+    ctaBtn: "联系我们的团队",
+    ctaBtnSecondary: "浏览房产",
+
+    breadcrumbs: {
+      home: "首页",
+      guides: "指南",
+    },
+  },
+} as const;
+
+type Locale = keyof typeof CONTENT;
+
+// ── Metadata ───────────────────────────────────────────────────────────────
 export async function generateMetadata({
   params,
 }: {
@@ -25,25 +333,61 @@ export async function generateMetadata({
   const { citizen, locale } = await params;
   const b = findForeignBuyer(citizen);
   if (!b) return {};
-  const title = `Buying Property in Dubai as a ${b.citizen} Citizen | Binayah`;
-  const description = `Complete guide for ${b.citizen} citizens buying property in Dubai: legal status, financing options, tax implications, repatriation, and preferred areas.`;
+
+  const isRu = locale === "ru";
+  const isAr = locale === "ar";
+  const isZh = locale === "zh";
+
+  const title = isRu
+    ? `Покупка недвижимости в Дубае для граждан ${b.country === "Russian" ? "России" : b.country} | Binayah`
+    : isAr
+    ? `شراء عقار في دبي للمواطنين ${b.flag} | بناية للعقارات`
+    : isZh
+    ? `${b.flag} ${b.citizen}公民在迪拜购房指南 | Binayah`
+    : `Buying Property in Dubai as a ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
+
+  const description = isRu
+    ? `Полное руководство для граждан по покупке недвижимости в Дубае: правовой статус, финансирование, налоги, репатриация средств и предпочтительные районы.`
+    : isAr
+    ? `الدليل الشامل لشراء عقار في دبي: الوضع القانوني وخيارات التمويل والضرائب وإعادة الأموال والمناطق المفضلة.`
+    : isZh
+    ? `在迪拜购房的完整指南：法律地位、融资选择、税务影响、资金汇回及热门区域。`
+    : `Complete guide for ${b.citizen} citizens buying property in Dubai: legal status, financing options, tax implications, repatriation rules, and preferred communities.`;
+
+  const path = `/buying-property-in-dubai-as/${b.slug}`;
   return {
     title,
     description,
     alternates: {
-      canonical: makeCanonical(locale, `/buying-property-in-dubai-as/${b.slug}`),
-      languages: altLangs(`/buying-property-in-dubai-as/${b.slug}`),
+      canonical: makeCanonical(locale, path),
+      languages: altLangs(path),
     },
     openGraph: {
       title,
       description,
       type: "article",
-      url: makeCanonical(locale, `/buying-property-in-dubai-as/${b.slug}`),
+      url: makeCanonical(locale, path),
+      locale: OG_LOCALE[locale] ?? "en_AE",
       images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }],
     },
+    keywords:
+      locale === "ru"
+        ? [`купить недвижимость дубай ${b.country}`, "недвижимость дубай иностранцы", "покупка квартиры дубай нерезидент"]
+        : locale === "ar"
+        ? ["شراء عقار دبي أجانب", "تملك حر دبي", "عقارات دبي للمقيمين خارجها"]
+        : locale === "zh"
+        ? ["迪拜外国人购房", "迪拜自由持有房产", "迪拜黄金签证购房"]
+        : [
+            `buying property in dubai as ${b.citizen.toLowerCase()} citizen`,
+            `dubai real estate ${b.citizen.toLowerCase()} buyer`,
+            `${b.citizen.toLowerCase()} invest dubai property`,
+            "foreign buyer dubai freehold",
+            "dubai property non resident",
+          ],
   };
 }
 
+// ── Page ───────────────────────────────────────────────────────────────────
 export default async function ForeignBuyerPage({
   params,
 }: {
@@ -53,99 +397,243 @@ export default async function ForeignBuyerPage({
   const b = findForeignBuyer(citizen);
   if (!b) notFound();
 
-  const localePrefix = locale === "en" ? "" : `/${locale}`;
-  const breadcrumbs = [
-    { name: "Home", href: `${localePrefix}/` },
-    { name: "Guides", href: `${localePrefix}/pulse/guides` },
-    { name: `${b.citizen} Citizens`, href: `${localePrefix}/buying-property-in-dubai-as/${b.slug}` },
-  ];
+  const c = CONTENT[(locale as Locale)] ?? CONTENT.en;
+  const isRtl = locale === "ar";
+  const lp = locale === "en" ? "" : `/${locale}`;
 
-  const sections: { title: string; body: string }[] = [
-    { title: `Why ${b.citizen} Buyers Choose Dubai`, body: b.whyDubai },
-    { title: "Legal Status and Ownership Rights", body: b.legalStatus },
-    { title: `Financing for ${b.citizen} Non-Residents`, body: b.financing },
-    { title: "Tax Implications", body: b.taxImplications },
-    { title: "Repatriating Funds", body: b.repatriation },
+  const breadcrumbs = [
+    { name: c.breadcrumbs.home, href: `${lp}/` },
+    { name: c.breadcrumbs.guides, href: `${lp}/pulse/guides` },
+    { name: `${b.citizen} ${c.guideSuffix}`, href: `${lp}/buying-property-in-dubai-as/${b.slug}` },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
+      <FAQJsonLd faqs={[...c.faqs]} />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative">
-          <p className="text-accent font-semibold tracking-[0.4em] uppercase text-xs mb-4">
-            <span className="mr-2">{b.flag}</span> Guide for {b.country} Buyers
+      {/* ── Hero ── */}
+      <section
+        className="relative overflow-hidden pt-20 sm:pt-28 pb-10 sm:pb-14 text-white"
+        style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+      >
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">
+            <span className="mr-2 text-base">{b.flag}</span>
+            {c.heroLabel}
           </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Buying Property in Dubai as a{" "}
-            <span className="font-light">{b.citizen} Citizen</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+            {c.introBadge}{" "}
+            <span className="font-light text-primary-foreground/70">
+              {locale === "en"
+                ? `as a ${b.citizen} Citizen`
+                : locale === "ru"
+                ? `для граждан ${b.country === "Russian" ? "России" : b.country}`
+                : locale === "ar"
+                ? `للمواطنين ${b.flag}`
+                : `—${b.citizen}${c.guideSuffix}`}
+            </span>
           </h1>
-          <p className="text-primary-foreground/80 text-lg leading-relaxed max-w-3xl">{b.intro}</p>
+          <p className="text-primary-foreground/80 text-sm sm:text-base leading-relaxed max-w-3xl">
+            {b.intro}
+          </p>
         </div>
       </section>
 
-      {/* Body */}
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-        {sections.map((s) => (
-          <section key={s.title} className="mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{s.title}</h2>
-            <p className="text-base text-foreground/80 leading-relaxed">{s.body}</p>
-          </section>
-        ))}
+      {/* ── Stats bar ── */}
+      <section className="border-b border-border/50 bg-card">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-border/40">
+            {(
+              [
+                { val: c.statsValues.tax, label: c.statsLabels.tax },
+                { val: c.statsValues.ownership, label: c.statsLabels.ownership },
+                { val: c.statsValues.visa, label: c.statsLabels.visa },
+                { val: c.statsValues.yield, label: c.statsLabels.yield },
+              ] as const
+            ).map((s) => (
+              <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
+                <p className="text-lg sm:text-2xl font-black text-primary mb-0.5">{s.val}</p>
+                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <section className="mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Preferred Areas for {b.citizen} Buyers
-          </h2>
-          <p className="text-base text-foreground/80 leading-relaxed mb-4">
-            Based on Binayah&apos;s transaction data, the communities most commonly chosen by {b.citizen} buyers are:
+      {/* ── Body ── */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-14">
+
+        {/* Why Dubai for this nationality */}
+        <section>
+          <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
+            {c.whyHeading} {b.citizen} {c.buyers}
           </p>
-          <ul className="space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+            {c.whyHeading} {b.citizen} {c.buyers}
+          </h2>
+          <p className="text-base text-foreground/80 leading-relaxed">{b.whyDubai}</p>
+        </section>
+
+        {/* Buying steps */}
+        <section>
+          <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
+            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : "步骤详解"}
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.stepsHeading}</h2>
+          <p className="text-sm text-muted-foreground mb-8">{c.stepsSubheading}</p>
+          <div className="space-y-4">
+            {c.steps.map((step) => (
+              <div
+                key={step.n}
+                className="flex gap-4 sm:gap-6 bg-card border border-border/50 rounded-2xl p-4 sm:p-6"
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-black text-white"
+                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                  {step.n}
+                </div>
+                <div>
+                  <h3 className="font-bold text-foreground text-sm sm:text-base mb-1">{step.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Legal status */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.legalHeading}</h2>
+          <p className="text-base text-foreground/80 leading-relaxed">{b.legalStatus}</p>
+        </section>
+
+        {/* Financing */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+            {c.financeHeading}
+          </h2>
+          <p className="text-base text-foreground/80 leading-relaxed">{b.financing}</p>
+        </section>
+
+        {/* Tax */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.taxHeading}</h2>
+          <p className="text-base text-foreground/80 leading-relaxed">{b.taxImplications}</p>
+        </section>
+
+        {/* Repatriation */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.repatHeading}</h2>
+          <p className="text-base text-foreground/80 leading-relaxed">{b.repatriation}</p>
+        </section>
+
+        {/* Preferred areas */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">{c.areasHeading}</h2>
+          <p className="text-sm text-muted-foreground mb-5">
+            {c.areasIntro} {b.citizen} {c.areasOutro}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {b.preferredAreas.map((area) => {
               const slug = area.toLowerCase().replace(/\s+/g, "-");
               return (
-                <li key={area}>
-                  <a
-                    href={`${localePrefix}/buy-property-in/${slug}`}
-                    className="text-primary hover:text-primary/80 font-semibold underline"
-                  >
-                    Buy property in {area} →
-                  </a>
-                </li>
+                <Link
+                  key={area}
+                  href={`${lp}/buy-property-in/${slug}`}
+                  className="flex items-center justify-between bg-card border border-border/50 rounded-xl px-4 py-3 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+                >
+                  <span className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors">
+                    {area}
+                  </span>
+                  <span className="text-primary text-lg" aria-hidden="true">→</span>
+                </Link>
               );
             })}
-          </ul>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section>
+          <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{c.faqHeading}</h2>
+          <div className="space-y-2 sm:space-y-3">
+            {c.faqs.map((faq, i) => (
+              <details
+                key={i}
+                className="group bg-card border border-border/50 rounded-2xl overflow-hidden"
+              >
+                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
+                  <span>{faq.question}</span>
+                  <span
+                    className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
         </section>
 
         {/* CTA */}
-        <section className="bg-card border border-border rounded-2xl p-6 sm:p-8 mt-12">
-          <h3 className="text-xl font-bold text-foreground mb-3">
-            Ready to explore Dubai property?
-          </h3>
-          <p className="text-sm text-muted-foreground mb-5">
-            Binayah&apos;s team works with {b.citizen} buyers daily. We&apos;ll handle search, viewings, legal coordination,
-            and post-purchase property management.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={`${localePrefix}/contact`}
-              className="px-5 py-2.5 rounded-lg font-bold text-sm text-white"
-              style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-            >
-              Contact our team
-            </a>
-            <a
-              href={`${localePrefix}/buy`}
-              className="px-5 py-2.5 rounded-lg font-bold text-sm border border-border hover:bg-muted transition-colors"
-            >
-              Browse properties
-            </a>
+        <section
+          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+          <div className="relative z-10">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{c.ctaTitle}</h2>
+            <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">
+              {c.ctaDesc}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href={`${lp}/contact`}
+                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
+                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+              >
+                {c.ctaBtn}
+              </Link>
+              <Link
+                href={`${lp}/buy`}
+                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+              >
+                {c.ctaBtnSecondary}
+              </Link>
+              <a
+                href="https://wa.me/971549988811"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-white/20 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+              >
+                WhatsApp
+              </a>
+            </div>
           </div>
         </section>
-      </article>
+      </div>
 
       <Footer />
       <WhatsAppButton />
