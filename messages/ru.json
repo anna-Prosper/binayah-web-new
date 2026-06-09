@@ -2589,7 +2589,7 @@
     "totalTransactions": "Всего сделок",
     "rentContracts": "Договоры аренды",
     "rentContractsNote": "Новые регистрации в Ejari",
-    "salesCountFootnote": "в т.ч. {value} продаж",
+    "salesCountFootnote": "{value} продаж · {others} ипотек и переводов",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",
     "medianPpsf": "Median Price / sqft",

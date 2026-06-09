@@ -233,7 +233,10 @@ function HeadlineTiles({ data, prev, t }: { data: DailyData; prev: PrevDay | nul
           value={data.totalAllTypes ?? data.totalTransactions}
           format={(n) => Math.round(n).toLocaleString()}
           deltaPct={txDelta}
-          footnote={data.totalAllTypes != null ? t("salesCountFootnote", { value: data.totalTransactions.toLocaleString() }) : undefined}
+          footnote={data.totalAllTypes != null ? t("salesCountFootnote", {
+            value: data.totalTransactions.toLocaleString(),
+            others: (data.totalAllTypes - data.totalTransactions).toLocaleString(),
+          }) : undefined}
           t={t}
           accent
         />

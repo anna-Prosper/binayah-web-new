@@ -2596,7 +2596,7 @@
     "totalTransactions": "Total Transactions",
     "rentContracts": "Rent Contracts",
     "rentContractsNote": "Ejari new rental registrations",
-    "salesCountFootnote": "incl. {value} sales",
+    "salesCountFootnote": "{value} sales · {others} mortgages & transfers",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",
     "medianPpsf": "Median Price / sqft",

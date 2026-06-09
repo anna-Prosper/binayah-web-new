@@ -2594,7 +2594,7 @@
     "totalTransactions": "总交易量",
     "rentContracts": "租赁合同",
     "rentContractsNote": "Ejari 新租赁登记",
-    "salesCountFootnote": "含 {value} 笔销售",
+    "salesCountFootnote": "{value} 笔销售 · {others} 抵押及转让",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",
     "medianPpsf": "Median Price / sqft",

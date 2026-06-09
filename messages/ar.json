@@ -2588,7 +2588,7 @@
     "totalTransactions": "إجمالي المعاملات",
     "rentContracts": "عقود الإيجار",
     "rentContractsNote": "تسجيلات إيجارية جديدة في إيجاري",
-    "salesCountFootnote": "منها {value} مبيعات",
+    "salesCountFootnote": "{value} مبيعات · {others} رهون وتحويلات",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",
     "medianPpsf": "Median Price / sqft",
