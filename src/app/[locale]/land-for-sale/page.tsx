@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PropertyTypeLanding from "@/components/PropertyTypeLanding";
+import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import { findPropertyTypePage } from "@/lib/property-type-pages";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -40,6 +41,7 @@ export default async function Page({ params }: Props) {
       icon={page.icon}
       searchType={page.searchType}
       c={c}
+      searchSlot={<SearchPageClient defaultType="Plot" defaultIntent="buy" />}
     />
   );
 }

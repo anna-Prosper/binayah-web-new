@@ -1,4 +1,5 @@
 /* eslint-disable i18next/no-literal-string -- content from data file */
+import React from "react";
 import Link from "next/link";
 import type { PropertyTypeLocale } from "@/lib/property-type-pages";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -12,9 +13,10 @@ interface Props {
   icon: string;
   searchType: string;
   c: PropertyTypeLocale;
+  searchSlot?: React.ReactNode;
 }
 
-export default function PropertyTypeLanding({ locale, slug, icon, searchType, c }: Props) {
+export default function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
   const isRtl = locale === "ar";
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
@@ -106,6 +108,17 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c 
             ))}
           </div>
         </section>
+
+      </div>
+
+      {/* ── Embedded search ── */}
+      {searchSlot && (
+        <div className="border-t border-border/40">
+          {searchSlot}
+        </div>
+      )}
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
 
         {/* FAQ */}
         <section>

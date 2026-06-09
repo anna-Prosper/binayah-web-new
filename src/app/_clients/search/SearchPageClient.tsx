@@ -124,7 +124,7 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent } = {}) {
+function SearchContent({ defaultStatus, defaultIntent, defaultType }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
@@ -137,12 +137,12 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
   useEffect(() => {
     const urlIntent = (params.get("intent") as SearchIntent) || "";
     const urlStatus = params.get("status");
-    const urlType = String(normalizePropertyType(params.get("type") || "", ""));
-    setIntent(urlIntent);
-    setStatus(normalizeStatus(urlStatus, urlIntent));
+    const urlType = String(normalizePropertyType(params.get("type") || defaultType || "", ""));
+    setIntent(urlIntent || (defaultIntent ?? "") as SearchIntent);
+    setStatus(normalizeStatus(urlStatus, urlIntent || defaultIntent || ""));
     setType(urlType);
   }, [searchParams]);
-  const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || "", "")));
+  const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || defaultType || "", "")));
   const initialLocations = (() => {
     const raw = params.get("locations") || params.get("location") || "";
     return raw.split(",").map((s) => s.trim()).filter(Boolean);
@@ -1045,10 +1045,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient({ defaultStatus, defaultIntent }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent } = {}) {
+export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} />
     </Suspense>
   );
 }
