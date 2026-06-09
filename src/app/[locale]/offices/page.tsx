@@ -41,7 +41,7 @@ export default async function Page({ params }: Props) {
       icon={page.icon}
       searchType={page.searchType}
       c={c}
-      searchSlot={<SearchPageClient defaultType="Commercial" />}
+      searchSlot={<SearchPageClient defaultType="Commercial" syncUrl={false} />}
     />
   );
 }

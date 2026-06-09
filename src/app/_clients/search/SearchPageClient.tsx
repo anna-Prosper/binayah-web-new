@@ -124,7 +124,7 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent({ defaultStatus, defaultIntent, defaultType }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string } = {}) {
+function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = true }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
@@ -305,8 +305,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType }: { defaultS
     if (projectsPage > 1) params.set("projectsPage", String(projectsPage));
     if (listingsPage > 1) params.set("listingsPage", String(listingsPage));
     const query = params.toString();
-    router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
-  }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, router, selectedLocations, sort, status, type]);
+    if (syncUrl) router.replace(`/search${query ? `?${query}` : ""}`, { scroll: false });
+  }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, router, selectedLocations, sort, status, syncUrl, type]);
 
   const clearFilters = () => {
     setStatus("All");
@@ -1045,10 +1045,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string } = {}) {
+export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, syncUrl = true }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} syncUrl={syncUrl} />
     </Suspense>
   );
 }
