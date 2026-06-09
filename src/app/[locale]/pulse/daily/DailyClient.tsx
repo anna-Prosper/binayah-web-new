@@ -451,11 +451,11 @@ function MixSection({ data, t }: { data: DailyData; t: T }) {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8">
+    <div className="grid lg:grid-cols-2 gap-8 items-stretch">
       {types.length > 0 && (
-        <section>
+        <section className="flex flex-col">
           <SectionHeader label={t("typeMixLabel")} title={t("typeMixTitle")} titleItalic={t("typeMixTitleItalic")} />
-          <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-3">
+          <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-3 flex-1">
             {types.map((row, i) => (
               <MixRow key={row.type} label={row.type} count={row.count} value={row.value} pct={(row.count / typeMax) * 100} index={i} t={t} />
             ))}
@@ -463,9 +463,9 @@ function MixSection({ data, t }: { data: DailyData; t: T }) {
         </section>
       )}
       {beds.length > 0 && (
-        <section>
+        <section className="flex flex-col">
           <SectionHeader label={t("bedroomMixLabel")} title={t("bedroomMixTitle")} titleItalic={t("bedroomMixTitleItalic")} />
-          <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-3">
+          <div className="bg-card border border-border/50 rounded-2xl p-5 space-y-3 flex-1">
             {beds.map((row, i) => (
               <MixRow key={`${row.bedrooms}`} label={bedLabel(row.bedrooms)} count={row.count} value={row.value} pct={(row.count / bedMax) * 100} index={i} t={t} />
             ))}
