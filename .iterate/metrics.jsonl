@@ -120,3 +120,14 @@
 {"ts":"2026-05-11T06:42:42Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"push","role":"qa","passed":true}
 {"ts":"2026-05-11T06:51:10Z","stage":1,"iter":1,"fromPhase":"qa_live","toPhase":"done","role":"qa_live","passed":true}
 {"ts":"2026-06-08T12:58:39Z","stage":1,"iter":1,"fromPhase":"pm","toPhase":"dev","role":"pm","passed":null}
+{"ts":"2026-06-08T13:06:13Z","stage":1,"iter":1,"fromPhase":"dev","toPhase":"review","role":"dev","passed":null}
+{"ts":"2026-06-08T13:09:16Z","stage":1,"iter":1,"fromPhase":"review","toPhase":"qa","role":"reviewer","passed":true}
+{"ts":"2026-06-08T15:12:38Z","stage":1,"iter":1,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false}
+{"ts":"2026-06-08T15:18:18Z","stage":1,"iter":2,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-06-08T15:34:35Z","stage":1,"iter":2,"fromPhase":"qa","toPhase":"dev_fix","role":"qa","passed":false}
+{"ts":"2026-06-08T15:39:55Z","stage":1,"iter":3,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-06-08T15:54:39Z","stage":1,"iter":3,"fromPhase":"qa","toPhase":"pm","role":"qa","passed":false}
+{"ts":"2026-06-08T15:59:16Z","stage":1,"iter":4,"fromPhase":"pm","toPhase":"dev_fix","role":"pm","passed":null}
+{"ts":"2026-06-08T16:01:21Z","stage":1,"iter":4,"fromPhase":"dev_fix","toPhase":"qa","role":"dev","passed":null}
+{"ts":"2026-06-09T05:58:28Z","stage":1,"iter":4,"fromPhase":"qa","toPhase":"push","role":"qa","passed":true}
+{"ts":"2026-06-09T06:10:02Z","stage":1,"iter":4,"fromPhase":"qa_live","toPhase":"dev_live_fix","role":"qa_live","passed":false}

@@ -85,7 +85,9 @@
     "offPlanByDeveloper": "按开发商",
     "paymentPlans": "付款计划",
     "aboutUs": "关于我们",
-    "contactUs": "联系我们"
+    "contactUs": "联系我们",
+    "megaArticlesAnalytics": "分析数据",
+    "megaSellServices": "服务"
   },
   "common": {
     "viewAll": "查看全部",
@@ -1816,23 +1818,61 @@
     "questions": {
       "purpose": {
         "question": "您的置业目标是什么？",
-        "subtitle": "目标不同，选址与回报重心也随之不同。"
+        "subtitle": "目标不同，选址与回报重心也随之不同。",
+        "options": [
+          "自住购买",
+          "投资购买",
+          "转售购买",
+          "租住",
+          "租商业"
+        ]
       },
       "propertyType": {
         "question": "意向房产类型？",
-        "subtitle": "不同房型在回报率与生活方式上各有侧重。"
+        "subtitle": "不同房型在回报率与生活方式上各有侧重。",
+        "options": [
+          "公寓",
+          "别墅/联排",
+          "无偏好"
+        ]
       },
       "areas": {
         "question": "感兴趣的区域有哪些？",
-        "subtitle": "可多选，或选择「不限区域」。"
+        "subtitle": "可多选，或选择「不限区域」。",
+        "options": [
+          "Downtown Dubai",
+          "Dubai Marina",
+          "Palm Jumeirah",
+          "Business Bay",
+          "JVC / JVT",
+          "Dubai Hills",
+          "Creek Harbour",
+          "无偏好"
+        ]
       },
       "budget": {
         "question": "您的预算范围？",
-        "subtitle": "我们将在您的预算内为您优选高性价比房源。"
+        "subtitle": "我们将在您的预算内为您优选高性价比房源。",
+        "options": [
+          "50万迪拉姆以下",
+          "50–100万迪拉姆",
+          "100–200万迪拉姆",
+          "200–500万迪拉姆",
+          "500–1000万迪拉姆",
+          "1000万迪拉姆以上"
+        ]
       },
       "bedrooms": {
         "question": "需要几间卧室？",
-        "subtitle": "开间公寓回报率最高，家庭用户则更看重空间。"
+        "subtitle": "开间公寓回报率最高，家庭用户则更看重空间。",
+        "options": [
+          "开间",
+          "1卧室",
+          "2卧室",
+          "3卧室",
+          "4+卧室",
+          "灵活"
+        ]
       }
     }
   },
@@ -1843,7 +1883,35 @@
     "titleEnd": "。",
     "subtitle": "AI 深度分析近期成交、在售房源与市场趋势，为您呈现数据支撑的精准估值，告别凭感觉定价。",
     "getValuation": "免费获取估值",
-    "uploadDeed": "上传房产证"
+    "uploadDeed": "上传房产证",
+    "stats": [
+      {
+        "value": "48小时",
+        "label": "平均交付时间"
+      },
+      {
+        "value": "±3%",
+        "label": "精确度"
+      },
+      {
+        "value": "免费",
+        "label": "无义务"
+      }
+    ],
+    "features": [
+      {
+        "title": "实时市场数据",
+        "desc": "从Property Finder和Bayut的市场交易及在售房源抓取数据，实时更新。"
+      },
+      {
+        "title": "三数字估值",
+        "desc": "公允价值、建议挂牌价及快速出售价格区间——让您精准掌握定价依据。"
+      },
+      {
+        "title": "含专家策略",
+        "desc": "每份报告包含可比交易证据、市场解读及推荐定价策略。"
+      }
+    ]
   },
   "valuationEntry": {
     "ownerTool": "业主工具",

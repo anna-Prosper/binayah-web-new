@@ -5,15 +5,11 @@ import { Target, TrendingUp, Sparkles, ArrowRight, FileText } from "lucide-react
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const stats = [
-  { value: "48h", label: "Average turnaround" },
-  { value: "AED", label: "Accurate to ±3%" },
-  { value: "Free", label: "No obligation" },
-];
-
 export default function ValuationBanner() {
   const router = useRouter();
   const t = useTranslations("valuationBanner");
+  const stats = t.raw("stats") as Array<{ value: string; label: string }>;
+  const features = t.raw("features") as Array<{ title: string; desc: string }>;
 
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
@@ -108,26 +104,11 @@ export default function ValuationBanner() {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            {[
-              {
-                icon: TrendingUp,
-                title: "Live market data",
-                desc: "Pulls from market transactions, current listings on Property Finder and Bayut, updated in real-time.",
-                color: "#D4A847",
-              },
-              {
-                icon: Target,
-                title: "Three-number breakdown",
-                desc: "Fair value, suggested list price, and quick-sale range — so you know exactly where to price.",
-                color: "#1A7A5A",
-              },
-              {
-                icon: Sparkles,
-                title: "Expert strategy included",
-                desc: "Every report includes comparable evidence, market read, and a recommended pricing strategy.",
-                color: "#D4A847",
-              },
-            ].map((card, i) => (
+            {features.map((f, i) => {
+              const icons = [TrendingUp, Target, Sparkles];
+              const colors = ["#D4A847", "#1A7A5A", "#D4A847"];
+              const card = { icon: icons[i] ?? Sparkles, title: f.title, desc: f.desc, color: colors[i] ?? "#D4A847" };
+              return (
               <motion.div
                 key={card.title}
                 initial={{ opacity: 0, y: 16 }}
@@ -146,7 +127,8 @@ export default function ValuationBanner() {
                   <p className="text-white/60 text-sm leading-relaxed">{card.desc}</p>
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       </div>

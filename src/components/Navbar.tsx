@@ -126,33 +126,27 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("valuationTool"), href: "/valuation" },
       ],
     },
-  ];
-
-  const servicesColumns: MegaColumn[] = [
     {
-      header: t("megaServicesForBuyers"),
+      header: t("megaArticlesAnalytics"),
       links: [
-        { label: t("buyProperty"), href: "/buy" },
-        { label: t("mortgageCalculator"), href: "/mortgage" },
-        { label: t("propertyValuation"), href: "/valuation" },
-        { label: t("goldenVisa"), href: "/golden-visa" },
+        { label: t("pulse"), href: "/pulse" },
+        { label: t("communities"), href: "/communities" },
+        { label: t("news"), href: "/news" },
       ],
     },
+  ];
+
+  const sellColumns: MegaColumn[] = [
     {
-      header: t("megaServicesForSellers"),
+      header: t("megaSellServices"),
       links: [
         { label: t("sellYourProperty"), href: "/sell" },
         { label: t("listYourPropertyLink"), href: "/list-your-property" },
-        { label: t("realEstateMarketing"), href: "/real-estate-marketing" },
         { label: t("freeValuation"), href: "/valuation" },
+        { label: t("realEstateMarketing"), href: "/real-estate-marketing" },
+        { label: t("mortgageCalculator"), href: "/mortgage" },
       ],
     },
-  ];
-
-  const insightsNav: NavLink[] = [
-    { label: t("pulse"), href: "/pulse" },
-    { label: t("communities"), href: "/communities" },
-    { label: t("news"), href: "/news" },
   ];
 
   // Flatten each desktop mega menu (all columns + CTA) into a single mobile list.
@@ -164,38 +158,30 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const mobileRentLinks = flattenWithCta(rentColumns, { label: t("megaRentCtaAll"), href: "/search?intent=rent" });
   const mobileOffPlanLinks = flattenWithCta(offPlanColumns, { label: t("megaOffPlanCtaAll"), href: "/off-plan" });
   const mobileGuidesLinks = flattenWithCta(guidesColumns, { label: t("megaGuidesCtaAll"), href: "/pulse/guides" });
-  const mobileServicesLinks: NavLink[] = [
-    ...servicesColumns.flatMap((c) => c.links),
-    { label: t("megaServicesCtaAll"), href: "/services" },
-    { label: t("about"), href: "/about" },
-    { label: t("contact"), href: "/contact" },
-  ];
+  const mobileSellLinks = flattenWithCta(sellColumns, { label: t("sell"), href: "/sell" });
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [insightsOpen, setInsightsOpen] = useState(false);
   const [buyOpen, setBuyOpen] = useState(false);
   const [rentOpen, setRentOpen] = useState(false);
   const [offPlanOpen, setOffPlanOpen] = useState(false);
   const [guidesOpen, setGuidesOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileInsightsOpen, setMobileInsightsOpen] = useState(false);
+  const [sellOpen, setSellOpen] = useState(false);
   const [mobileBuyOpen, setMobileBuyOpen] = useState(false);
   const [mobileRentOpen, setMobileRentOpen] = useState(false);
   const [mobileOffPlanOpen, setMobileOffPlanOpen] = useState(false);
   const [mobileGuidesOpen, setMobileGuidesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSellOpen, setMobileSellOpen] = useState(false);
   const { currency: mobileCurrency, setCurrency: setMobileCurrency } = useCurrency();
   const [phoneHover, setPhoneHover] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [showLangDropdown, setShowLangDropdown] = useState(false);
-  const insightsRef = useRef<HTMLDivElement>(null);
   const buyRef = useRef<HTMLDivElement>(null);
   const rentRef = useRef<HTMLDivElement>(null);
   const offPlanRef = useRef<HTMLDivElement>(null);
   const guidesRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
+  const sellRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
@@ -228,12 +214,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (insightsRef.current && !insightsRef.current.contains(e.target as Node)) setInsightsOpen(false);
       if (buyRef.current && !buyRef.current.contains(e.target as Node)) setBuyOpen(false);
       if (rentRef.current && !rentRef.current.contains(e.target as Node)) setRentOpen(false);
       if (offPlanRef.current && !offPlanRef.current.contains(e.target as Node)) setOffPlanOpen(false);
       if (guidesRef.current && !guidesRef.current.contains(e.target as Node)) setGuidesOpen(false);
-      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) setServicesOpen(false);
+      if (sellRef.current && !sellRef.current.contains(e.target as Node)) setSellOpen(false);
       if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) setShowCurrencyDropdown(false);
       if (langRef.current && !langRef.current.contains(e.target as Node)) setShowLangDropdown(false);
     };
@@ -243,39 +228,35 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   const handleNav = (href: string) => {
     setMobileOpen(false);
-    setInsightsOpen(false);
     setBuyOpen(false);
     setRentOpen(false);
     setOffPlanOpen(false);
     setGuidesOpen(false);
-    setServicesOpen(false);
-    setMobileInsightsOpen(false);
+    setSellOpen(false);
     setMobileBuyOpen(false);
     setMobileRentOpen(false);
     setMobileOffPlanOpen(false);
     setMobileGuidesOpen(false);
-    setMobileServicesOpen(false);
+    setMobileSellOpen(false);
     router.push(href);
   };
 
   // Open exactly one desktop panel, closing all others (single-open invariant).
-  const openOnly = (which: "buy" | "rent" | "offPlan" | "guides" | "services" | "insights" | null) => {
+  const openOnly = (which: "buy" | "rent" | "offPlan" | "guides" | "sell" | null) => {
     setBuyOpen(which === "buy");
     setRentOpen(which === "rent");
     setOffPlanOpen(which === "offPlan");
     setGuidesOpen(which === "guides");
-    setServicesOpen(which === "services");
-    setInsightsOpen(which === "insights");
+    setSellOpen(which === "sell");
   };
 
   // Open exactly one mobile accordion (toggle behavior: re-tapping the open one closes it).
-  const toggleMobile = (which: "buy" | "rent" | "offPlan" | "guides" | "insights" | "services") => {
+  const toggleMobile = (which: "buy" | "rent" | "offPlan" | "guides" | "sell") => {
     setMobileBuyOpen(which === "buy" ? (v) => !v : false);
     setMobileRentOpen(which === "rent" ? (v) => !v : false);
     setMobileOffPlanOpen(which === "offPlan" ? (v) => !v : false);
     setMobileGuidesOpen(which === "guides" ? (v) => !v : false);
-    setMobileInsightsOpen(which === "insights" ? (v) => !v : false);
-    setMobileServicesOpen(which === "services" ? (v) => !v : false);
+    setMobileSellOpen(which === "sell" ? (v) => !v : false);
   };
 
   const switchLocale = (locale: string) => {
@@ -446,7 +427,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </AnimatePresence>
               </div>
 
-              {/* ── GUIDES mega menu (2 columns, new tab) ──────────────── */}
+              {/* ── СТАТЬИ mega menu (3 columns: guides + analytics) ───── */}
               <div
                 ref={guidesRef}
                 className="relative"
@@ -464,8 +445,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 <AnimatePresence>
                   {guidesOpen && (
                     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
-                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        <div className="grid grid-cols-2 gap-2 p-4">
+                      <div className="min-w-[680px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-3 gap-2 p-4">
                           {guidesColumns.map((col) => (
                             <div key={col.header}>
                               <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
@@ -488,82 +469,31 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </AnimatePresence>
               </div>
 
-              <button
-                onClick={() => handleNav("/list-your-property")}
-                className="relative hidden xl:flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.1em] xl:tracking-[0.15em] group whitespace-nowrap"
-              >
-                {t("listYourProperty")}
-                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-              </button>
-
-              {/* ── INSIGHTS dropdown (trimmed to 3 items) ─────────────── */}
+              {/* ── ПРОДАТЬ small dropdown ──────────────────────────────── */}
               <div
-                ref={insightsRef}
+                ref={sellRef}
                 className="relative"
-                onMouseEnter={() => openOnly("insights")}
-                onMouseLeave={() => setInsightsOpen(false)}
-              >
-                <button className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap">
-                  {t("insights")}
-                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${insightsOpen ? "rotate-180" : ""}`} />
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                </button>
-                <AnimatePresence>
-                  {insightsOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
-                      <div className="min-w-[220px] rounded-lg overflow-hidden shadow-xl border border-white/10" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        {insightsNav.map((item) => (
-                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-5 py-3 text-[13px] font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors uppercase tracking-[0.15em] whitespace-nowrap">
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* ── SERVICES mega menu (2 columns + multi-CTA, was Company) ─ */}
-              <div
-                ref={servicesRef}
-                className="relative hidden xl:flex items-center"
-                onMouseEnter={() => openOnly("services")}
-                onMouseLeave={() => setServicesOpen(false)}
+                onMouseEnter={() => openOnly("sell")}
+                onMouseLeave={() => setSellOpen(false)}
               >
                 <button
-                  onClick={() => handleNav("/services")}
-                  className="relative flex items-center gap-1 px-4 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+                  onClick={() => handleNav("/sell")}
+                  className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
-                  {t("services")}
-                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} />
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                  {t("sell")}
+                  <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${sellOpen ? "rotate-180" : ""}`} />
+                  <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
                 <AnimatePresence>
-                  {servicesOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full right-0 pt-2 z-[60]">
-                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        <div className="grid grid-cols-2 gap-2 p-4">
-                          {servicesColumns.map((col) => (
-                            <div key={col.header}>
-                              <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>
-                              {col.links.map((link) => (
-                                <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
-                                  {link.label}
-                                </button>
-                              ))}
-                            </div>
+                  {sellOpen && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                      <div className="min-w-[240px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="p-2">
+                          {sellColumns[0].links.map((link) => (
+                            <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-4 py-2.5 text-[13px] text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded">
+                              {link.label}
+                            </button>
                           ))}
-                        </div>
-                        <div className="border-t border-white/10 px-4 py-2.5 flex items-center gap-5">
-                          <button onClick={() => handleNav("/services")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
-                            {t("megaServicesCtaAll")} →
-                          </button>
-                          <button onClick={() => handleNav("/about")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
-                            {t("about")}
-                          </button>
-                          <button onClick={() => handleNav("/contact")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
-                            {t("contact")}
-                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -822,7 +752,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 { key: "buy" as const, label: t("buy"), open: mobileBuyOpen, links: mobileBuyLinks, delay: 0 },
                 { key: "rent" as const, label: t("rent"), open: mobileRentOpen, links: mobileRentLinks, delay: 0.05 },
                 { key: "offPlan" as const, label: t("offPlan"), open: mobileOffPlanOpen, links: mobileOffPlanLinks, delay: 0.1 },
-                { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.13 },
+                { key: "sell" as const, label: t("sell"), open: mobileSellOpen, links: mobileSellLinks, delay: 0.13 },
+                { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.16 },
               ]).map((section) => (
                 <motion.div
                   key={section.key}
@@ -854,17 +785,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </motion.div>
               ))}
 
-              <motion.button
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.12, duration: 0.3 }}
-                onClick={() => handleNav("/list-your-property")}
-                className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors"
-              >
-                {t("listYourProperty")}
-                <ChevronRight className="h-4 w-4 text-white/40" />
-              </motion.button>
-
               {/* Saved Properties row */}
               <motion.button
                 initial={{ opacity: 0, x: 30 }}
@@ -887,52 +807,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </span>
                 <ChevronRight className="h-4 w-4 text-white/40" />
               </motion.button>
-
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15, duration: 0.3 }} className="border-b border-white/10">
-                <button
-                  onClick={() => toggleMobile("insights")}
-                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
-                >
-                  {t("insights")}
-                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileInsightsOpen ? "rotate-180" : ""}`} />
-                </button>
-                <AnimatePresence>
-                  {mobileInsightsOpen && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
-                      <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
-                        {insightsNav.map((item) => (
-                          <button key={item.label} onClick={() => handleNav(item.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] uppercase tracking-[0.12em] transition-colors min-h-[44px] flex items-center">
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.3 }} className="border-b border-white/10">
-                <button
-                  onClick={() => toggleMobile("services")}
-                  className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
-                >
-                  {t("services")}
-                  <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`} />
-                </button>
-                <AnimatePresence>
-                  {mobileServicesOpen && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
-                      <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
-                        {mobileServicesLinks.map((link) => (
-                          <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] transition-colors min-h-[44px] flex items-center">
-                            {link.label}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
 
               {/* Mobile language switcher */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.3 }} className="pt-5 pb-2 border-b border-white/10">

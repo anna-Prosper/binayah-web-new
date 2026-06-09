@@ -123,7 +123,7 @@ const ResultContent = ({ result }: { result: string }) => {
 // ─── Component ───
 const PropertyMatcher = () => {
   const t = useTranslations("propertyMatcher");
-  const questionDefs = t.raw("questions") as Record<string, { question: string; subtitle: string }>;
+  const questionDefs = t.raw("questions") as Record<string, { question: string; subtitle: string; options?: string[] }>;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [multiSelections, setMultiSelections] = useState<string[]>([]);
@@ -284,7 +284,7 @@ const PropertyMatcher = () => {
                   <p className="text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 ml-10 sm:ml-[52px]">{questionDefs?.[current.id]?.subtitle ?? current.subtitle}</p>
 
                   <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
-                    {current.options.map((opt) => {
+                    {(questionDefs?.[current.id]?.options ?? current.options).map((opt) => {
                       const isSelected = current.multi && multiSelections.includes(opt);
                       const isPopular = current.popular?.includes(opt);
                       return (
