@@ -395,7 +395,11 @@
     "buildingInfoFound": "Найдено здание: {name}",
     "buildingMarketData": "Данные о здании",
     "buildingAreaDescription": "{building} расположено в районе {area}. Изучите руководства по районам, цены и доступные объекты.",
-    "viewAreaGuide": "Гид по {area}"
+    "viewAreaGuide": "Гид по {area}",
+    "typeApartment": "Апартаменты",
+    "typeVilla": "Вилла / Таунхаус",
+    "typeCommercial": "Коммерческая",
+    "typePlot": "Земельный участок"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",

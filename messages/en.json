@@ -396,7 +396,11 @@
     "buildingInfoFound": "We found a building: {name}",
     "buildingMarketData": "Building Data",
     "buildingAreaDescription": "{building} is located in {area}. Explore area guides, pricing, and available properties.",
-    "viewAreaGuide": "View {area} guide"
+    "viewAreaGuide": "View {area} guide",
+    "typeApartment": "Apartment",
+    "typeVilla": "Villa / Townhouse",
+    "typeCommercial": "Commercial",
+    "typePlot": "Plot"
   },
   "offPlan": {
     "title": "Off-Plan Properties",

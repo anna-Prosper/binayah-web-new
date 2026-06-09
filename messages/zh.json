@@ -401,7 +401,11 @@
     "buildingInfoFound": "找到楼宇：{name}",
     "buildingMarketData": "楼宇数据",
     "buildingAreaDescription": "{building} 位于 {area}。浏览区域指南、价格及可售物业。",
-    "viewAreaGuide": "查看 {area} 指南"
+    "viewAreaGuide": "查看 {area} 指南",
+    "typeApartment": "公寓",
+    "typeVilla": "别墅 / 联排",
+    "typeCommercial": "商业",
+    "typePlot": "地块"
   },
   "offPlan": {
     "title": "迪拜期房",

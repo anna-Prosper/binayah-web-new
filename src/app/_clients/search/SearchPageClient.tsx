@@ -169,6 +169,12 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
 
   const t = useTranslations("search");
   const { format: fmtCurrency } = useCurrency();
+  const localizedPropertyTypes = [
+    { value: "Apartment", label: t("typeApartment") },
+    { value: "Villa", label: t("typeVilla") },
+    { value: "Commercial", label: t("typeCommercial") },
+    { value: "Plot", label: t("typePlot") },
+  ];
   const furnishingOptions = FURNISHING_VALUES.map((v) => ({
     value: v,
     label: v === "furnished" ? t("furnishingFurnished")
@@ -388,10 +394,16 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
     : furnishing === "unfurnished" ? t("furnishingUnfurnished")
     : furnishing === "partial" ? t("furnishingPartial")
     : "";
+  const typeLabels: Record<string, string> = {
+    Apartment: t("typeApartment"),
+    "Villa / Townhouse": t("typeVilla"),
+    Commercial: t("typeCommercial"),
+    Plot: t("typePlot"),
+  };
   const activeFilters = [
     status !== "All" ? status : "",
-    intent === "buy" ? "Buy" : intent === "rent" ? "Rent" : "",
-    type ? formatPropertyTypeLabel(type, type) : "",
+    intent === "buy" ? t("forSale") : intent === "rent" ? t("forRent") : "",
+    type ? (typeLabels[formatPropertyTypeLabel(type, type)] ?? formatPropertyTypeLabel(type, type)) : "",
     ...selectedLocations,
     beds ? `${beds} bed` : "",
     baths ? `${baths} bath` : "",
@@ -518,7 +530,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
 
           {/* Desktop filter row */}
           <div className="hidden lg:flex items-center gap-2 bg-muted/40 rounded-2xl px-3 py-2.5 border border-border/40">
-            <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
+            <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={localizedPropertyTypes} counts={facets.propertyType} />
             <div className="h-5 w-px bg-border/50 shrink-0" />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
             <div className="h-5 w-px bg-border/50 shrink-0" />
@@ -562,7 +574,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
             <div className="space-y-4">
               <div>
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("propertyType")}</p>
-                <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={propertyTypes} counts={facets.propertyType} />
+                <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={localizedPropertyTypes} counts={facets.propertyType} />
               </div>
               <div>
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("community")}</p>

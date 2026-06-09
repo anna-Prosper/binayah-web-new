@@ -395,7 +395,11 @@
     "buildingInfoFound": "وجدنا مبنى: {name}",
     "buildingMarketData": "بيانات المبنى",
     "buildingAreaDescription": "{building} يقع في {area}. استكشف أدلة المناطق والأسعار والعقارات المتاحة.",
-    "viewAreaGuide": "عرض دليل {area}"
+    "viewAreaGuide": "عرض دليل {area}",
+    "typeApartment": "شقة",
+    "typeVilla": "فيلا / تاون هاوس",
+    "typeCommercial": "تجاري",
+    "typePlot": "أرض"
   },
   "offPlan": {
     "title": "مشاريع على الخارطة",
