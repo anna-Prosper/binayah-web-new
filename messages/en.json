@@ -2594,6 +2594,8 @@
     "heroSubtitle": "A daily snapshot of registered property sales, straight from the Dubai Land Department.",
     "sourcePill": "Sales only — source: Dubai Land Department",
     "totalTransactions": "Total Transactions",
+    "rentContracts": "Rent Contracts",
+    "rentContractsNote": "Ejari new rental registrations",
     "salesCountFootnote": "incl. {value} sales",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",

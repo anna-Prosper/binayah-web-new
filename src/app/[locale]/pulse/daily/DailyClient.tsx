@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, BarChart3, Layers, Home, Building2,
-  ChevronLeft, ChevronRight, CalendarDays, RefreshCw, MapPin,
+  ChevronLeft, ChevronRight, CalendarDays, RefreshCw, MapPin, KeyRound,
 } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 
@@ -36,6 +36,7 @@ interface DailyData {
   byPropertyType: { type: string; count: number; value: number }[];
   byBedrooms: { bedrooms: number | null; count: number; value: number }[];
   prevDay: PrevDay | null;
+  rentCount: number | null;
 }
 
 type T = ReturnType<typeof useTranslations<"pulseDaily">>;
@@ -263,6 +264,20 @@ function HeadlineTiles({ data, prev, t }: { data: DailyData; prev: PrevDay | nul
           t={t}
         />
       </div>
+
+      {data.rentCount != null && (
+        <div className="mt-3">
+          <Tile
+            icon={KeyRound}
+            label={t("rentContracts")}
+            value={data.rentCount}
+            format={(n) => Math.round(n).toLocaleString()}
+            deltaPct={null}
+            footnote={t("rentContractsNote")}
+            t={t}
+          />
+        </div>
+      )}
     </section>
   );
 }
