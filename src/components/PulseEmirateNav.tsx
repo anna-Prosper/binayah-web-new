@@ -2,10 +2,11 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, Link } from "@/navigation";
-import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, Globe } from "lucide-react";
+import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, Globe, CalendarDays } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "overview", href: "/pulse", icon: Activity },
+  { id: "daily", href: "/pulse/daily", icon: CalendarDays },
   { id: "trending", href: "/pulse/trending", icon: TrendingUp },
   { id: "compare", href: "/pulse/compare", icon: BarChart2 },
   { id: "calculator", href: "/pulse/calculator", icon: Calculator },
@@ -61,7 +62,7 @@ export default function PulseEmirateNav() {
                 aria-current={active ? "page" : undefined}
               >
                 <Icon className="h-3.5 w-3.5 flex-shrink-0" />
-                {t(id as "overview" | "trending" | "compare" | "calculator" | "guides")}
+                {t(id as "overview" | "daily" | "trending" | "compare" | "calculator" | "guides")}
               </Link>
             );
           })}
