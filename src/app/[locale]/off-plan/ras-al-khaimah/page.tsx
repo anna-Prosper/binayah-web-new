@@ -13,12 +13,14 @@ interface Props { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const url = canonical(locale, "/off-plan/ras-al-khaimah");
+  const desc = locale === "ru" ? "Новостройки в Рас-эль-Хайме — Wynn Resort, Аль-Марджан Айленд, Мина Аль-Араб. Самый быстрорастущий эмират ОАЭ, доходность 7–9%." : locale === "ar" ? "مشاريع على الخارطة في رأس الخيمة — Wynn Resort وجزيرة المرجان وميناء العرب. أسرع إمارة إماراتية نمواً، عوائد 7-9%." : locale === "zh" ? "阿联酋增长最快的酋长国期房——Wynn Resort、Al Marjan岛、Mina Al Arab，租金回报率7-9%。" : "Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields.";
+  const title = locale === "ru" ? "Новостройки в Рас-эль-Хайме 2026 | Wynn Resort | Binayah" : locale === "ar" ? "عقارات على الخارطة في رأس الخيمة 2026 | Binayah" : locale === "zh" ? "阿联酋RAK期房2026 | Binayah" : "Off-Plan Properties in Ras Al Khaimah 2026 | Wynn Resort | Binayah";
   return {
-    title: "Off-Plan Properties in Ras Al Khaimah 2026 | Wynn Resort | Binayah",
-    description: "Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields.",
+    title,
+    description: desc,
     keywords: "off plan properties ras al khaimah, rak property investment, al marjan island wynn resort".split(", "),
     alternates: { canonical: url, languages: altLangs("/off-plan/ras-al-khaimah") },
-    openGraph: { title: "Off-Plan Properties in Ras Al Khaimah 2026 | Wynn Resort | Binayah", description: "Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields.", url, type: "website", locale: OG_LOCALE[locale] ?? "en_AE", images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }] },
+    openGraph: { title, description: desc, url, type: "website", locale: OG_LOCALE[locale] ?? "en_AE", images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }] },
   };
 }
 
@@ -31,7 +33,7 @@ export default async function Page({ params }: Props) {
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
     { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : "Off-Plan", href: `${lp}/off-plan` },
-    { name: locale === "ru" ? "Новостройки в Ras Al Khaimah" : locale === "ar" ? "على الخارطة في Ras Al Khaimah" : locale === "zh" ? "Ras Al Khaimah期房" : "Off-Plan in Ras Al Khaimah", href: `${lp}/off-plan/ras-al-khaimah` },
+    { name: locale === "ru" ? "Новостройки в Рас-эль-Хайме" : locale === "ar" ? "على الخارطة في رأس الخيمة" : locale === "zh" ? "Ras Al Khaimah期房" : "Off-Plan in Ras Al Khaimah", href: `${lp}/off-plan/ras-al-khaimah` },
   ];
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
@@ -43,9 +45,9 @@ export default async function Page({ params }: Props) {
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{locale === "ru" ? "НОВОСТРОЙКИ" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : "OFF-PLAN"}</p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            {locale === "ru" ? "Новостройки в Ras Al Khaimah" : locale === "ar" ? "على الخارطة في Ras Al Khaimah" : locale === "zh" ? "Ras Al Khaimah期房项目" : "Off-Plan Properties in Ras Al Khaimah"}
+            {locale === "ru" ? "Новостройки в Рас-эль-Хайме" : locale === "ar" ? "على الخارطة في رأس الخيمة" : locale === "zh" ? "Ras Al Khaimah期房项目" : "Off-Plan Properties in Ras Al Khaimah"}
           </h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl mb-8">Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields.</p>
+          <p className="text-primary-foreground/80 text-lg max-w-2xl mb-8">{locale === "ru" ? "Новостройки в Рас-эль-Хайме — Wynn Resort, Аль-Марджан Айленд, Мина Аль-Араб. Самый быстрорастущий эмират ОАЭ, доходность 7–9%." : locale === "ar" ? "مشاريع على الخارطة في رأس الخيمة — Wynn Resort وجزيرة المرجان وميناء العرب. أسرع إمارة إماراتية نمواً، عوائد 7-9%." : locale === "zh" ? "阿联酋增长最快的酋长国期房——Wynn Resort、Al Marjan岛、Mina Al Arab，租金回报率7-9%。" : "Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields."}</p>
           <div className="flex flex-wrap gap-4">
             <Link href={`${lp}/contact`} className="font-bold px-8 py-4 rounded-xl hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
               {locale === "ru" ? "Консультация специалиста" : locale === "ar" ? "استشر متخصصًا" : locale === "zh" ? "咨询专家" : "Get Expert Advice"} →
@@ -56,7 +58,7 @@ export default async function Page({ params }: Props) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10">
         <section>
           <h2 className="text-2xl font-bold text-foreground mb-5">
-            {locale === "ru" ? "Ключевые районы и острова" : locale === "ar" ? "المناطق الرئيسية" : locale === "zh" ? "主要区域" : "Key Areas & Islands"}
+            {locale === "ru" ? "Ключевые районы" : locale === "ar" ? "المناطق الرئيسية" : locale === "zh" ? "主要区域" : "Key Areas"}
           </h2>
           <div className="flex flex-wrap gap-3">
             {AREAS.map((a) => (
@@ -66,9 +68,9 @@ export default async function Page({ params }: Props) {
         </section>
         <section className="bg-card border border-border/50 rounded-2xl p-8">
           <h2 className="text-xl font-bold text-foreground mb-4">
-            {locale === "ru" ? "Почему инвестировать в Ras Al Khaimah?" : locale === "ar" ? "لماذا الاستثمار في Ras Al Khaimah؟" : locale === "zh" ? "为什么投资Ras Al Khaimah？" : "Why Invest in Ras Al Khaimah?"}
+            {locale === "ru" ? "Почему инвестировать в Рас-эль-Хайму?" : locale === "ar" ? "لماذا الاستثمار في رأس الخيمة؟" : locale === "zh" ? "为什么投资RAK？" : "Why Invest in Ras Al Khaimah?"}
           </h2>
-          <p className="text-muted-foreground mb-6">Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields.</p>
+          <p className="text-muted-foreground mb-6">{locale === "ru" ? "Новостройки в Рас-эль-Хайме — Wynn Resort, Аль-Марджан Айленд, Мина Аль-Араб. Самый быстрорастущий эмират ОАЭ, доходность 7–9%." : locale === "ar" ? "مشاريع على الخارطة في رأس الخيمة — Wynn Resort وجزيرة المرجان وميناء العرب. أسرع إمارة إماراتية نمواً، عوائد 7-9%." : locale === "zh" ? "阿联酋增长最快的酋长国期房——Wynn Resort、Al Marjan岛、Mina Al Arab，租金回报率7-9%。" : "Off-plan in RAK — Wynn Resort, Al Marjan Island, Mina Al Arab. Fastest-growing UAE emirate, 7-9% yields."}</p>
           <Link href={`${lp}/contact`} className="inline-flex items-center gap-2 font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
             {locale === "ru" ? "Получить подборку объектов" : locale === "ar" ? "احصل على قائمة مختارة" : locale === "zh" ? "获取精选房源" : "Get Curated Listings"} →
           </Link>

@@ -45,6 +45,13 @@ export async function generateMetadata({
 
 const BATCH_SIZE = 9;
 
+const LABELS = {
+  en: { home: "Home", buy: "Buy", buyIn: "Buy Property in", dubai: "Dubai", priceRange: "Price range", grossYield: "Gross yield", listings: "Listings", forSale: "Properties for Sale in", secondary: "SECONDARY MARKET" },
+  ru: { home: "Главная", buy: "Купить", buyIn: "Купить недвижимость в", dubai: "Дубае", priceRange: "Диапазон цен", grossYield: "Доходность", listings: "Объектов", forSale: "Недвижимость на продажу в", secondary: "ВТОРИЧНЫЙ РЫНОК" },
+  ar: { home: "الرئيسية", buy: "شراء", buyIn: "شراء عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forSale: "عقارات للبيع في", secondary: "السوق الثانوي" },
+  zh: { home: "首页", buy: "购买", buyIn: "购买房产 —", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产 —", secondary: "二手市场" },
+} as const;
+
 export default async function BuyInCommunityPage({
   params,
 }: {
@@ -53,6 +60,7 @@ export default async function BuyInCommunityPage({
   const { locale, community } = await params;
   const c = findBuyCommunity(community);
   if (!c) notFound();
+  const L = LABELS[(locale as keyof typeof LABELS)] ?? LABELS.en;
 
   let initialListings: any[] = [];
   let totalCount = 0;
@@ -74,8 +82,8 @@ export default async function BuyInCommunityPage({
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
-    { name: "Home", href: `${localePrefix}/` },
-    { name: "Buy", href: `${localePrefix}/buy` },
+    { name: L.home, href: `${localePrefix}/` },
+    { name: L.buy, href: `${localePrefix}/buy` },
     { name: c.name, href: `${localePrefix}/buy-property-in/${c.slug}` },
   ];
 
@@ -84,21 +92,21 @@ export default async function BuyInCommunityPage({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{c.vibe}</p>
         <h1 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
-          Buy Property in {c.name}, Dubai
+          {L.buyIn} {c.name}, {L.dubai}
         </h1>
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{c.shortIntro}</p>
         <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{c.why}</p>
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price range</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>
             <p className="text-sm sm:text-base font-bold text-foreground">{c.priceRange}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Gross yield</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.grossYield}</p>
             <p className="text-sm sm:text-base font-bold text-foreground">{c.yield}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Listings</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
             <p className="text-sm sm:text-base font-bold text-foreground">{totalCount}+</p>
           </div>
         </div>
@@ -113,7 +121,7 @@ export default async function BuyInCommunityPage({
         initialListings={initialListings}
         totalCount={totalCount}
         listingType="Sale"
-        title={`Properties for Sale in ${c.name}`}
+        title={`${L.forSale} ${c.name}`}
         subtitle={c.shortIntro}
         initialPage={1}
         batchSize={BATCH_SIZE}
