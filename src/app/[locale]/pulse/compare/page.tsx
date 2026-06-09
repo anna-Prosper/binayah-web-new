@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -7,10 +8,30 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 300;
 
-export const metadata = {
-  title: "Community Compare | Dubai Pulse | Binayah Properties",
-  description: "Compare Dubai communities and developers side-by-side on price, yield, volume and more.",
+const translations: Record<string, { title: string; description: string }> = {
+  en: {
+    title: "Community Compare | Dubai Pulse | Binayah Properties",
+    description: "Compare Dubai communities and developers side-by-side on price, yield, volume and more.",
+  },
+  ru: {
+    title: "Сравнение районов | Дубай Пульс | Binayah Properties",
+    description: "Сравните районы и застройщиков Дубая по цене, доходности, объёму сделок и другим показателям.",
+  },
+  ar: {
+    title: "مقارنة المجتمعات | نبض دبي | بناية للعقارات",
+    description: "قارن مجتمعات دبي والمطورين جنباً إلى جنب من حيث السعر والعائد والحجم والمزيد.",
+  },
+  zh: {
+    title: "社区对比 | 迪拜脉搏 | Binayah Properties",
+    description: "对比迪拜各社区和开发商的价格、收益率、交易量等指标。",
+  },
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = translations[locale] ?? translations.en;
+  return { title: t.title, description: t.description };
+}
 
 async function fetchJson(path: string) {
   try {

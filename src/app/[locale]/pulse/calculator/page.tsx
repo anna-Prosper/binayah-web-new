@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -7,10 +8,30 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 300;
 
-export const metadata = {
-  title: "Investment Calculator | Dubai Pulse | Binayah Properties",
-  description: "Calculate potential returns, rental yield and projected value for Dubai real estate investment.",
+const translations: Record<string, { title: string; description: string }> = {
+  en: {
+    title: "Investment Calculator | Dubai Pulse | Binayah Properties",
+    description: "Calculate potential returns, rental yield and projected value for Dubai real estate investment.",
+  },
+  ru: {
+    title: "Инвестиционный калькулятор | Дубай Пульс | Binayah Properties",
+    description: "Рассчитайте потенциальную доходность, доходность аренды и прогнозируемую стоимость инвестиций в недвижимость Дубая.",
+  },
+  ar: {
+    title: "حاسبة الاستثمار | نبض دبي | بناية للعقارات",
+    description: "احسب العوائد المحتملة وعائد الإيجار والقيمة المتوقعة للاستثمار في عقارات دبي.",
+  },
+  zh: {
+    title: "投资计算器 | 迪拜脉搏 | Binayah Properties",
+    description: "计算迪拜房地产投资的潜在回报、租金收益率和预期价值。",
+  },
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = translations[locale] ?? translations.en;
+  return { title: t.title, description: t.description };
+}
 
 async function fetchJson(path: string) {
   try {
