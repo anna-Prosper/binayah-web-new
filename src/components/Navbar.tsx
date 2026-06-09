@@ -41,10 +41,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       links: [
         { label: t("apartments"), href: "/apartments" },
         { label: t("villas"), href: "/villas" },
-        { label: t("townhouses"), href: "/townhouses" },
-        { label: t("penthouses"), href: "/penthouses" },
-        { label: t("landForSale"), href: "/land-for-sale" },
-        { label: t("offices"), href: "/offices" },
       ],
     },
     {
@@ -76,9 +72,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       links: [
         { label: t("apartments"), href: "/search?intent=rent&type=Apartment" },
         { label: t("villas"), href: "/search?intent=rent&type=Villa" },
-        { label: t("townhouses"), href: "/search?intent=rent&type=Townhouse" },
-        { label: t("offices"), href: "/search?intent=rent&type=Office" },
-        { label: t("warehouses"), href: "/warehouses" },
       ],
     },
     {
