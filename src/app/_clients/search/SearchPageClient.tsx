@@ -328,9 +328,9 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
 
   const goToProjectsPage = (next: number) => {
     const clamped = Math.max(1, Math.min(projectTotalPages, next));
-    if (status === "All") {
-      // In "All" mode, navigate to a dedicated Off-Plan page so the user
-      // sees only projects at this page count (not the split two-segment view).
+    if (syncUrl && status === "All") {
+      // In "All" mode on the standalone search page, navigate to a dedicated
+      // Off-Plan page so the user sees only projects (not the split view).
       const p = new URLSearchParams();
       p.set("status", "Off-Plan");
       if (type) p.set("type", String(normalizePropertyType(type, type)));
@@ -352,9 +352,9 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
   };
   const goToListingsPage = (next: number) => {
     const clamped = Math.max(1, Math.min(listingTotalPages, next));
-    if (status === "All") {
-      // In "All" mode, navigate to a dedicated Secondary page so the user
-      // sees only listings at this page count (not the split two-segment view).
+    if (syncUrl && status === "All") {
+      // In "All" mode on the standalone search page, navigate to a dedicated
+      // Secondary page so the user sees only listings (not the split view).
       const p = new URLSearchParams();
       p.set("status", "Secondary");
       if (intent && intent !== "off-plan") p.set("intent", intent);
