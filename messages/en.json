@@ -83,7 +83,10 @@
     "newLaunches": "New Launches",
     "constructionUpdates": "Construction Updates",
     "offPlanByDeveloper": "Off-Plan by Developer",
-    "paymentPlans": "Payment Plans"
+    "paymentPlans": "Payment Plans",
+    "aboutUs": "About Us",
+    "contactUs": "Contact",
+    "sell": "Sell"
   },
   "common": {
     "viewAll": "View All",
