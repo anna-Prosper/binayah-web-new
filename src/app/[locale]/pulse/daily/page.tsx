@@ -36,7 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function fetchJson(path: string) {
   try {
-    const res = await serverFetch(serverApiUrl(path), 12_000);
+    const apiKey = process.env.API_KEY;
+    const res = await serverFetch(serverApiUrl(path), 12_000, apiKey ? { "x-api-key": apiKey } : undefined);
     if (!res.ok) return null;
     return res.json();
   } catch {

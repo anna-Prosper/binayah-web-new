@@ -36,9 +36,10 @@ export function serverApiUrl(path: string): string {
  */
 export async function serverFetch(
   url: string,
-  ms = 8000
+  ms = 8000,
+  headers?: Record<string, string>
 ): Promise<Response> {
-  return fetch(url, { signal: AbortSignal.timeout(ms) });
+  return fetch(url, { signal: AbortSignal.timeout(ms), headers });
 }
 
 // ---------------------------------------------------------------------------
