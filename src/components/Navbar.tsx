@@ -664,12 +664,12 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               <button
                 onClick={() => handleNav("/contact")}
-                className="hidden xl:flex px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
+                className="hidden 2xl:flex px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
               >
                 {t("getInTouch")}
               </button>
-              <div className="hidden xl:block w-px h-5 bg-white/15" />
+              <div className="hidden 2xl:block w-px h-5 bg-white/15" />
               <NotificationsBell />
               <button
                 onClick={handleFavoritesClick}
