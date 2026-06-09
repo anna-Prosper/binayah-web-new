@@ -7,7 +7,7 @@ import {
   TrendingUp, TrendingDown, BarChart3, Layers, Home, Building2,
   ChevronLeft, ChevronRight, CalendarDays, RefreshCw, MapPin, KeyRound,
 } from "lucide-react";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, proxyUrl } from "@/lib/api";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -119,7 +119,7 @@ export default function DailyClient({ initialData }: { initialData: DailyData | 
     setLoading(true);
     setError(false);
     try {
-      const res = await fetch(apiUrl(`/api/dld/daily?date=${date}`), {
+      const res = await fetch(proxyUrl(`/api/dld/daily?date=${date}`), {
         signal: AbortSignal.timeout(12_000),
       });
       if (!res.ok) throw new Error("bad response");

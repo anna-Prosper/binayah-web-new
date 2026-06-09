@@ -30,6 +30,15 @@ export function serverApiUrl(path: string): string {
 }
 
 /**
+ * Returns a proxied URL for client-side calls to protected Render endpoints.
+ * Routes through /api/proxy/... so the API key stays server-side.
+ * Usage: proxyUrl("/api/dld/areas") → "/api/proxy/dld/areas"
+ */
+export function proxyUrl(path: string): string {
+  return path.replace(/^\/api\//, "/api/proxy/");
+}
+
+/**
  * Fetch wrapper for server components — times out after `ms` milliseconds
  * so cold Render starts don't block the build for 60s+.
  * Falls back gracefully; callers should handle a non-ok response.

@@ -15,7 +15,7 @@ import PulseSentimentChip from "@/components/PulseSentimentChip";
 import CommunityLeaderboard, { type LeaderboardRow } from "@/components/CommunityLeaderboard";
 import FeaturedInsightPanel from "@/components/FeaturedInsightPanel";
 import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, proxyUrl } from "@/lib/api";
 import { useEffect } from "react";
 import { Link } from "@/navigation";
 
@@ -445,7 +445,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
     Promise.all(
       queries.map(({ area, slug }) =>
-        fetch(apiUrl(`/api/dld/areas/${slug}/yield`))
+        fetch(proxyUrl(`/api/dld/areas/${slug}/yield`))
           .then((r) => r.ok ? r.json() : null)
           .catch(() => null)
           .then((data) => data ? { area, ...data } : null)

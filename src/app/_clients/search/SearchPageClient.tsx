@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- search client uses many industry terms and status values */
 "use client";
 
-import { apiUrl } from "@/lib/api";
+import { apiUrl, proxyUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -417,7 +417,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType }: { defaultS
             setCommunityInfo(null);
             // Fallback: try DLD buildings search
             try {
-              const bRes = await fetch(apiUrl(`/api/dld/buildings?q=${encodeURIComponent(q.trim())}&limit=1`));
+              const bRes = await fetch(proxyUrl(`/api/dld/buildings?q=${encodeURIComponent(q.trim())}&limit=1`));
               if (bRes.ok) {
                 const bData = await bRes.json() as { results?: Array<{ name: string; area: string; slug: string }> };
                 const hit = bData.results?.[0];

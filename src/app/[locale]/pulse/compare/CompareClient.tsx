@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, BarChart2, Building2, TrendingUp, Star, Landmark } from "lucide-react";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, proxyUrl } from "@/lib/api";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -197,7 +197,7 @@ export default function CompareClient({
       return;
     }
     setBuildingSearchLoading(true);
-    fetch(apiUrl(`/api/dld/buildings?q=${encodeURIComponent(debouncedQuery.trim())}&limit=10`))
+    fetch(proxyUrl(`/api/dld/buildings?q=${encodeURIComponent(debouncedQuery.trim())}&limit=10`))
       .then((r) => r.ok ? r.json() : { results: [] })
       .then((data: { results?: DldBuilding[] }) => {
         setBuildingSearchResults(Array.isArray(data.results) ? data.results : []);
@@ -214,7 +214,7 @@ export default function CompareClient({
 
     setLiveLoading(true);
     const url = mode === "communities"
-      ? apiUrl(`/api/dld/areas?q=${encodeURIComponent(q)}&limit=10&sortBy=totalSales`)
+      ? proxyUrl(`/api/dld/areas?q=${encodeURIComponent(q)}&limit=10&sortBy=totalSales`)
       : apiUrl(`/api/developers?q=${encodeURIComponent(q)}&limit=20`);
 
     fetch(url)
@@ -313,7 +313,7 @@ export default function CompareClient({
       if (inTx) continue; // tx already has data, skip DLD area fetch
       if (dldAreaCache[name] !== undefined) continue; // already fetched (null = not found)
       const searchQ = dldSearchTerm(name);
-      fetch(apiUrl(`/api/dld/areas?q=${encodeURIComponent(searchQ)}&limit=1`))
+      fetch(proxyUrl(`/api/dld/areas?q=${encodeURIComponent(searchQ)}&limit=1`))
         .then((r) => r.ok ? r.json() : { results: [] })
         .then((data: { results?: { avgPpsf?: number; totalSales?: number }[] }) => {
           const area = data.results?.[0];

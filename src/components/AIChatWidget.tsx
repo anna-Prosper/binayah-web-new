@@ -10,7 +10,7 @@ import Image from "next/image";
 // Lazy-load react-markdown (~110KB) — only fetched when first message renders.
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
-import { apiUrl } from "@/lib/api";
+import { proxyUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 
 const binayahLogo = "/assets/binayah-logo.webp";
@@ -20,7 +20,7 @@ type Msg = { role: "user" | "assistant" | "system"; content: string };
 // Idle timer + warning banner live in <LiveChatBanner /> mounted at the
 // root layout — it works on every page, not just where AIChatWidget is.
 
-const CHAT_URL = apiUrl("/api/chat");
+const CHAT_URL = proxyUrl("/api/chat");
 
 async function streamChat({
   messages,

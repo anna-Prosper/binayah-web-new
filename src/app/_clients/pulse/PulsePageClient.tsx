@@ -15,7 +15,7 @@ import {
   Globe, RefreshCw, ExternalLink, Zap, BarChart2, Users, Landmark,
 } from "lucide-react";
 import Link from "next/link";
-import { apiUrl } from "@/lib/api";
+import { apiUrl, proxyUrl } from "@/lib/api";
 import PulseQuickTicker from "@/components/PulseQuickTicker";
 import PulseSentimentChip from "@/components/PulseSentimentChip";
 import CommunityLeaderboard, { type LeaderboardRow } from "@/components/CommunityLeaderboard";
@@ -298,7 +298,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
   const [drawerLoading, setDrawerLoading] = useState(false);
 
   useEffect(() => {
-    fetch(apiUrl("/api/dld/buildings?sortBy=sales&order=desc&limit=10"))
+    fetch(proxyUrl("/api/dld/buildings?sortBy=sales&order=desc&limit=10"))
       .then((r) => r.ok ? r.json() : { results: [] })
       .then((data: { results?: DldBuilding[] }) => {
         setTopBuildings(Array.isArray(data.results) ? data.results : []);
@@ -311,7 +311,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
     if (!drawerCommunity) return;
     setDrawerLoading(true);
     setDrawerBuildings([]);
-    fetch(apiUrl(`/api/dld/buildings?area=${encodeURIComponent(drawerCommunity)}&sortBy=sales&order=desc&limit=5`))
+    fetch(proxyUrl(`/api/dld/buildings?area=${encodeURIComponent(drawerCommunity)}&sortBy=sales&order=desc&limit=5`))
       .then((r) => r.ok ? r.json() : { results: [] })
       .then((data: { results?: { name: string; area: string; sales: number; avgPpsf: number; units: number }[] }) => {
         setDrawerBuildings(Array.isArray(data.results) ? data.results : []);
