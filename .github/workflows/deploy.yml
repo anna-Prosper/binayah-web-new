@@ -12,27 +12,23 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
       - name: Write env
         run: |
-          printf 'NEXT_PUBLIC_SITE_URL=https://binayah.ru\n' > .env.local
-          printf 'NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru\n' >> .env.local
-          printf 'NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com\n' >> .env.local
-          printf 'API_BASE_URL=https://binayah-api.onrender.com\n' >> .env.local
-          printf 'NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811\n' >> .env.local
-          printf 'NEXTAUTH_URL=https://binayah.ru\n' >> .env.local
-          printf 'NEXT_DEFAULT_LOCALE=ru\n' >> .env.local
+          cat > .env.local << 'EOF'
+          NEXT_PUBLIC_SITE_URL=https://binayah.ru
+          NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru
+          NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com
+          API_BASE_URL=https://binayah-api.onrender.com
+          NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811
+          NEXTAUTH_URL=https://binayah.ru
+          NEXT_DEFAULT_LOCALE=ru
+          EOF
 
       - name: Install dependencies
         run: npm ci
@@ -42,40 +38,21 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
-      - name: Deploy built files to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: 155.212.186.193
-          username: root
-          key: ${{ secrets.BEGET_SSH_KEY }}
-          command_timeout: 5m
-          script: |
-            set -e
-            # Create swap if not present
-            if [ ! -f /swapfile ]; then
-              fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
-              echo '/swapfile none swap sw 0 0' >> /etc/fstab
-            fi
-            mkdir -p /var/www/binayah-ru
-
-      - name: Sync built files to server
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          switches: -avz --delete --exclude='.git' --exclude='node_modules'
-          path: ./
-          remote_path: /var/www/binayah-ru/
-          remote_host: 155.212.186.193
-          remote_user: root
-          remote_key: ${{ secrets.BEGET_SSH_KEY }}
-
-      - name: Restart app (zero downtime)
-        uses: appleboy/ssh-action@master
-        with:
-          host: 155.212.186.193
-          username: root
-          key: ${{ secrets.BEGET_SSH_KEY }}
-          command_timeout: 2m
-          script: |
-            cd /var/www/binayah-ru
-            npm install --production --ignore-scripts 2>/dev/null || true
-            pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start
+      - name: Swap & reload PM2
+        run: |
+          set -e
+          # Ensure swap exists (prevents OOM on 1GB VPS)
+          if [ ! -f /swapfile ]; then
+            fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+            echo '/swapfile none swap sw 0 0' >> /etc/fstab
+          fi
+          # Copy build output to serve dir
+          mkdir -p /var/www/binayah-ru
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            ./ /var/www/binayah-ru/
+          cd /var/www/binayah-ru
+          npm install --omit=dev --ignore-scripts 2>/dev/null || true
+          pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start
+          pm2 save
