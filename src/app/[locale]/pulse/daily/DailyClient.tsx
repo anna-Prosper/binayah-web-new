@@ -23,6 +23,7 @@ interface PrevDay {
 
 interface DailyData {
   date: string;
+  totalAllTypes: number | null;
   totalTransactions: number;
   totalValue: number;
   offPlanCount: number;
@@ -227,10 +228,11 @@ function HeadlineTiles({ data, prev, t }: { data: DailyData; prev: PrevDay | nul
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Tile
           icon={BarChart3}
-          label={t("salesTransactions")}
-          value={data.totalTransactions}
+          label={data.totalAllTypes != null ? t("totalTransactions") : t("salesTransactions")}
+          value={data.totalAllTypes ?? data.totalTransactions}
           format={(n) => Math.round(n).toLocaleString()}
           deltaPct={txDelta}
+          footnote={data.totalAllTypes != null ? t("salesCountFootnote", { value: data.totalTransactions.toLocaleString() }) : undefined}
           t={t}
           accent
         />

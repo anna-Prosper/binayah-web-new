@@ -2585,6 +2585,8 @@
     "heroTitleItalic": "Today",
     "heroSubtitle": "A daily snapshot of registered property sales, straight from the Dubai Land Department.",
     "sourcePill": "Sales only — source: Dubai Land Department",
+    "totalTransactions": "إجمالي المعاملات",
+    "salesCountFootnote": "منها {value} مبيعات",
     "salesTransactions": "Sales Transactions",
     "totalValue": "Total Value",
     "medianPpsf": "Median Price / sqft",
