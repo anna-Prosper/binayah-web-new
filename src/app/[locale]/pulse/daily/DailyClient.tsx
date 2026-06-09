@@ -163,7 +163,7 @@ export default function DailyClient({ initialData }: { initialData: DailyData | 
             onClick={goPrev}
             disabled={loading}
             aria-label={t("prevDay")}
-            className="h-10 w-10 flex items-center justify-center rounded-xl bg-card border border-border/60 text-foreground hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-50"
+            className="h-11 w-11 flex items-center justify-center rounded-xl bg-card border border-border/60 text-foreground hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -179,7 +179,7 @@ export default function DailyClient({ initialData }: { initialData: DailyData | 
             onClick={goNext}
             disabled={loading || isToday}
             aria-label={t("nextDay")}
-            className="h-10 w-10 flex items-center justify-center rounded-xl bg-card border border-border/60 text-foreground hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="h-11 w-11 flex items-center justify-center rounded-xl bg-card border border-border/60 text-foreground hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
