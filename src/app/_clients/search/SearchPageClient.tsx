@@ -133,12 +133,14 @@ function SearchContent({ defaultStatus, defaultIntent }: { defaultStatus?: Searc
   const [status, setStatus] = useState<SearchStatus>(normalizeStatus(params.get("status") || defaultStatus || null, initialIntent));
   const [intent, setIntent] = useState<SearchIntent>(initialIntent);
 
-  // Sync tab when URL params change (e.g. nav links between Buy/Rent/Off-Plan)
+  // Sync filters when URL params change (e.g. nav links between Buy/Rent/Off-Plan/type)
   useEffect(() => {
     const urlIntent = (params.get("intent") as SearchIntent) || "";
     const urlStatus = params.get("status");
+    const urlType = String(normalizePropertyType(params.get("type") || "", ""));
     setIntent(urlIntent);
     setStatus(normalizeStatus(urlStatus, urlIntent));
+    setType(urlType);
   }, [searchParams]);
   const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || "", "")));
   const initialLocations = (() => {
