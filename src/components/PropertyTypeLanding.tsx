@@ -54,11 +54,11 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
               </Link>
             </div>
             {/* Right: stats 2×2 */}
-            <div className="grid grid-cols-2 gap-px bg-white/10 rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-2 gap-[1px] bg-white/20 rounded-2xl overflow-hidden">
               {c.stats.map((s) => (
-                <div key={s.label} className="bg-white/5 px-4 py-4 sm:py-5 text-center">
-                  <p className="text-xl sm:text-2xl font-black mb-0.5">{s.n}</p>
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-primary-foreground/60 leading-tight">{s.label}</p>
+                <div key={s.label} className="bg-white/[0.08] px-3 py-4 sm:py-5 text-center">
+                  <p className="text-base sm:text-xl font-black mb-0.5 leading-tight break-words">{s.n}</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-primary-foreground/55 leading-tight">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -66,48 +66,42 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-7 sm:py-10 space-y-8 sm:space-y-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-5 sm:pb-6 space-y-5 sm:space-y-6">
 
-        {/* Highlights */}
-        <section>
-          <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
-            {c.highlights.map((h) => (
-              <div key={h.title} className="bg-card border border-border/50 rounded-xl p-4 hover:border-primary/20 transition-all">
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                  </div>
-                  <h3 className="text-sm font-bold text-foreground">{h.title}</h3>
-                </div>
+        {/* Highlights — inline text columns, no heavy cards */}
+        <section className="grid sm:grid-cols-3 gap-4 sm:gap-6">
+          {c.highlights.map((h) => (
+            <div key={h.title} className="flex gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
+              <div>
+                <h3 className="text-sm font-bold text-foreground mb-0.5">{h.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{h.body}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </section>
 
         {/* Areas */}
-        <section>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mr-1">
-              {locale === "ru" ? "Районы" : locale === "ar" ? "المناطق" : locale === "zh" ? "地区" : "Areas"}
-            </span>
-            {c.areas.map((area) => (
-              <Link
-                key={area}
-                href={`${searchUrl}&locations=${encodeURIComponent(area)}`}
-                className="bg-card border border-border/50 rounded-full px-3.5 py-1.5 text-xs font-semibold text-foreground hover:border-primary/30 hover:text-primary transition-all"
-              >
-                {area}
-              </Link>
-            ))}
-          </div>
+        <section className="flex flex-wrap items-center gap-2">
+          <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mr-1">
+            {locale === "ru" ? "Районы" : locale === "ar" ? "المناطق" : locale === "zh" ? "地区" : "Areas"}
+          </span>
+          {c.areas.map((area) => (
+            <Link
+              key={area}
+              href={`${searchUrl}&locations=${encodeURIComponent(area)}`}
+              className="bg-card border border-border/50 rounded-full px-3.5 py-1.5 text-xs font-semibold text-foreground hover:border-primary/30 hover:text-primary transition-all"
+            >
+              {area}
+            </Link>
+          ))}
         </section>
 
       </div>
 
       {/* ── Embedded search ── */}
       {searchSlot && (
-        <div className="border-t border-border/40">
+        <div className="border-t border-border/30 bg-muted/20">
           {searchSlot}
         </div>
       )}
