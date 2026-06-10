@@ -280,7 +280,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: { card: "summary_large_image", title: c.metaTitle, description: c.metaDesc },
     keywords: locale === "ru"
       ? ["лучшие новостройки дубай 2026", "off-plan дубай сравнение", "emaar damac sobha дубай", "новостройки дубай инвестиции"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["أفضل مشاريع على الخارطة دبي 2026", "مقارنة مطوّري دبي", "إعمار داماك سوبها دبي"]
       : locale === "zh"
       ? ["迪拜最佳期房2026", "迪拜开发商对比", "Emaar DAMAC Sobha迪拜"]
@@ -296,7 +296,7 @@ export default async function TopProjectsPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
   const cats = CATEGORIES[(locale as Locale)] || CATEGORIES.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   // Fetch latest off-plan projects from API

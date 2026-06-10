@@ -28,7 +28,7 @@ const AREAS = ["Al Marjan Island", "Mina Al Arab", "Al Hamra Village", "Hayat Is
 
 export default async function Page({ params }: Props) {
   const { locale } = await params;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },

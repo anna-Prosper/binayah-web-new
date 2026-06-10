@@ -314,7 +314,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     keywords: locale === "ru"
       ? ["купить недвижимость за биткоин дубай", "криптовалюта недвижимость дубай", "купить квартиру за крипто дубай", "биткоин недвижимость оаэ", "инвестиции крипто дубай"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["شراء عقار بالبيتكوين دبي", "عقارات بالعملات المشفرة دبي", "استثمار عقاري بالكريبتو", "شراء شقة بالبيتكوين الإمارات"]
       : locale === "zh"
       ? ["用比特币购买迪拜房产", "迪拜加密货币购房", "比特币房产迪拜", "用USDT买迪拜房子"]
@@ -332,7 +332,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

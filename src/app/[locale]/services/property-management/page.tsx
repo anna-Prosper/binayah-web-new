@@ -306,7 +306,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: { card: "summary_large_image", title: c.metaTitle, description: c.metaDesc },
     keywords: locale === "ru"
       ? ["управление недвижимостью дубай", "управляющая компания дубай", "аренда недвижимость дубай управление"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["إدارة العقارات دبي", "شركة إدارة عقارات دبي", "خدمات إدارة الإيجار دبي"]
       : locale === "zh"
       ? ["迪拜物业管理", "迪拜房产托管", "迪拜租赁管理"]
@@ -320,7 +320,7 @@ export default async function PropertyManagementPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [

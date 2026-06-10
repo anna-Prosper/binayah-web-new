@@ -156,7 +156,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     keywords: locale === "ru"
       ? ["аренда квартир дубай", "снять квартиру дубай", "аренда жилья дубай"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["شقق للإيجار دبي", "إيجار عقارات دبي", "استئجار شقة دبي"]
       : locale === "zh"
       ? ["迪拜租房", "迪拜公寓出租", "迪拜租住公寓"]
@@ -169,7 +169,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function RentPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

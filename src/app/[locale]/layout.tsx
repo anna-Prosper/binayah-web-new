@@ -53,6 +53,7 @@ const OG_LOCALE: Record<string, string> = {
   ar: "ar_AE",
   ru: "ru_RU",
   zh: "zh_CN",
+  vi: "vi_VN",
 };
 
 // Tells every browser the site is designed for light only — stops mobile
@@ -181,7 +182,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={locale === "ar" ? "rtl" : "ltr"} // vi, zh, ru, en are ltr
       suppressHydrationWarning
       className={`${jakarta.variable} ${playfair.variable} ${notoArabic.variable}`}
     >

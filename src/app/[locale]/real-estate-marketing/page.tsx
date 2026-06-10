@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: { title: TITLES[locale] || TITLES.en, description: DESCS[locale] || DESCS.en, url, type: "website", locale: OG_LOCALE[locale] ?? "en_AE", images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }] },
     keywords: locale === "ru"
       ? ["маркетинг недвижимости дубай", "продать квартиру дубай агентство", "продвижение недвижимости дубай"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["تسويق عقارات دبي", "بيع عقار دبي وكالة", "ترويج عقاري دبي"]
       : locale === "zh"
       ? ["迪拜房产营销", "迪拜出售房产代理", "迪拜房产推广"]
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RealEstateMarketingPage({ params }: Props) {
   const { locale } = await params;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const faqs = [

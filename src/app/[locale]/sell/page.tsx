@@ -293,7 +293,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: { card: "summary_large_image", title: c.metaTitle, description: c.metaDesc },
     keywords: locale === "ru"
       ? ["продать недвижимость дубай", "продать квартиру дубай", "оценка недвижимости дубай", "продажа виллы дубай"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["بيع عقار دبي", "بيع شقة دبي", "تقييم عقاري دبي", "بيع فيلا دبي"]
       : locale === "zh"
       ? ["在迪拜出售房产", "卖迪拜房子", "迪拜房产估价", "迪拜二手房出售"]
@@ -311,7 +311,7 @@ export default async function SellPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

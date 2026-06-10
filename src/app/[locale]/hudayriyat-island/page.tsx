@@ -757,7 +757,7 @@ const TABLE_ROWS_VI = [
 
 function getTableRows(locale: Locale): string[][] {
   if (locale === "ru") return TABLE_ROWS_RU;
-  if (locale === "ar") return TABLE_ROWS_AR;
+  if (locale === "ar") return TABLE_ROWS_AR; // vi uses TABLE_ROWS_VI below
   if (locale === "zh") return TABLE_ROWS_ZH;
   if (locale === "vi") return TABLE_ROWS_VI;
   return TABLE_ROWS_EN;
@@ -775,7 +775,7 @@ export default async function HudayriyatIslandPage({
   const { locale } = await params;
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const L = LABELS[locale as Locale] ?? LABELS.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const tableRows = getTableRows(locale as Locale);
 
   const breadcrumbs = [

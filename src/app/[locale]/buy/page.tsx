@@ -156,7 +156,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     keywords: locale === "ru"
       ? ["купить недвижимость дубай", "квартиры на продажу дубай", "недвижимость дубай цены"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["عقارات للبيع دبي", "شراء شقة دبي", "عقارات دبي أسعار"]
       : locale === "zh"
       ? ["迪拜房产出售", "购买迪拜房产", "迪拜公寓价格"]
@@ -169,7 +169,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BuyPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

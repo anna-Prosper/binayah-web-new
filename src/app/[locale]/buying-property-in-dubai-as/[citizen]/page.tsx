@@ -410,7 +410,7 @@ export async function generateMetadata({
   if (!b) return {};
 
   const isRu = locale === "ru";
-  const isAr = locale === "ar";
+  const isAr = locale === "ar"; // vi, zh, ru, en are ltr
   const isZh = locale === "zh";
   const isVi = locale === "vi";
 
@@ -453,7 +453,7 @@ export async function generateMetadata({
     keywords:
       locale === "ru"
         ? [`купить недвижимость дубай ${b.country}`, "недвижимость дубай иностранцы", "покупка квартиры дубай нерезидент"]
-        : locale === "ar"
+        : locale === "ar" // vi branch below
         ? ["شراء عقار دبي أجانب", "تملك حر دبي", "عقارات دبي للمقيمين خارجها"]
         : locale === "zh"
         ? ["迪拜外国人购房", "迪拜自由持有房产", "迪拜黄金签证购房"]
@@ -480,7 +480,7 @@ export default async function ForeignBuyerPage({
   if (!b) notFound();
 
   const c = CONTENT[(locale as Locale)] ?? CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
@@ -520,7 +520,7 @@ export default async function ForeignBuyerPage({
                 ? `as a ${b.citizen} Citizen`
                 : locale === "ru"
                 ? `для граждан ${b.country === "Russian" ? "России" : b.country}`
-                : locale === "ar"
+                : locale === "ar" // vi branch below
                 ? `للمواطنين ${b.flag}`
                 : locale === "vi"
                 ? `cho công dân ${b.citizen}`

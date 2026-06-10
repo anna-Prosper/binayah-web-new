@@ -308,7 +308,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: { card: "summary_large_image", title: c.metaTitle, description: c.metaDesc },
     keywords: locale === "ru"
       ? ["ипотека дубай", "ипотечный калькулятор дубай", "кредит на жилье дубай", "ипотека оаэ нерезидент"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["حاسبة رهن عقاري دبي", "قرض عقاري دبي", "تمويل عقاري دبي", "رهن عقاري للأجانب دبي"]
       : locale === "zh"
       ? ["迪拜房贷计算器", "迪拜住房贷款", "迪拜按揭贷款", "阿联酋房贷外籍人士"]
@@ -321,7 +321,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function MortgagePage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [
@@ -392,9 +392,7 @@ export default async function MortgagePage({ params }: Props) {
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4">
             {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
-             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." :
-             locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" :
-             locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." :
+             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." :
              "* Rates as of 2026. Terms depend on borrower profile and property type."}
           </p>
         </section>

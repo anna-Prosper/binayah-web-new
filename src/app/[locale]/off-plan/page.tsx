@@ -121,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     keywords: locale === "ru"
       ? ["новостройки дубай", "купить новостройку дубай", "off-plan дубай 2026", "инвестиции новостройки дубай"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["عقارات على الخارطة دبي", "مشاريع على الخارطة دبي 2026", "استثمار على الخارطة دبي"]
       : locale === "zh"
       ? ["迪拜期房", "迪拜新楼盘2026", "迪拜期房投资", "迪拜开发商楼盘"]
@@ -134,7 +134,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function OffPlanPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

@@ -188,7 +188,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: { card: "summary_large_image", title: c.title, description: c.desc },
     keywords: locale === "ru"
       ? ["золотая виза оаэ", "золотая виза дубай недвижимость", "резидентство оаэ через недвижимость"]
-      : locale === "ar"
+      : locale === "ar" // vi branch below
       ? ["التأشيرة الذهبية الإمارات", "تأشيرة ذهبية عقار دبي", "إقامة الإمارات عبر العقارات"]
       : locale === "zh"
       ? ["阿联酋黄金签证", "迪拜房产黄金签证", "阿联酋居住权房产"]
@@ -201,7 +201,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GoldenVisaPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
