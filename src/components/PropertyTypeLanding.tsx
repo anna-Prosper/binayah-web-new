@@ -102,8 +102,7 @@ export default async function PropertyTypeLanding({ locale, slug, icon, searchTy
             <div>
               <p className="text-3xl mb-2">{icon}</p>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mb-1">{c.h1}</h1>
-              <p className="text-sm sm:text-base font-light text-primary-foreground/70 mb-2">{c.h1sub}</p>
-              <p className="text-xs text-primary-foreground/50 mb-5 leading-relaxed line-clamp-2 max-w-sm">{c.heroDesc}</p>
+              <p className="text-sm sm:text-base font-light text-primary-foreground/70 mb-5">{c.h1sub}</p>
               <Link
                 href={searchUrl}
                 className="inline-flex items-center gap-2 font-bold px-5 py-2.5 rounded-xl text-sm hover:opacity-90 transition-all"
