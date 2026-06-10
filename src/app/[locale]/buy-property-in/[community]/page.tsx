@@ -46,11 +46,11 @@ export async function generateMetadata({
 const BATCH_SIZE = 9;
 
 const LABELS = {
-  en: { home: "Home", buy: "Buy", buyIn: "Buy Property in", dubai: "Dubai", priceRange: "Price range", grossYield: "Gross yield", listings: "Listings", forSale: "Properties for Sale in", secondary: "SECONDARY MARKET" },
-  ru: { home: "Главная", buy: "Купить", buyIn: "Купить недвижимость в", dubai: "Дубае", priceRange: "Диапазон цен", grossYield: "Доходность", listings: "Объектов", forSale: "Недвижимость на продажу в", secondary: "ВТОРИЧНЫЙ РЫНОК" },
-  ar: { home: "الرئيسية", buy: "شراء", buyIn: "شراء عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forSale: "عقارات للبيع في", secondary: "السوق الثانوي" },
-  zh: { home: "首页", buy: "购买", buyIn: "购买房产 —", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产 —", secondary: "二手市场" },
-  vi: { home: "Trang chủ", buy: "Mua", buyIn: "Mua bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forSale: "Bất động sản bán tại", secondary: "THỊ TRƯỜNG THỨ CẤP" },
+  en: { home: "Home", buy: "Buy", buyIn: "Buy Property in", dubai: "Dubai", priceRange: "Price range", grossYield: "Gross yield", listings: "Listings", forSale: "Properties for Sale in", secondary: "SECONDARY MARKET", emptyTitle: "No active listings here right now", emptyBody: "We add new homes in this community regularly. Tell us what you're after and we'll alert you the moment one lists — or explore what's available across Dubai today.", browseAll: "Browse all properties", getNotified: "Get notified" },
+  ru: { home: "Главная", buy: "Купить", buyIn: "Купить недвижимость в", dubai: "Дубае", priceRange: "Диапазон цен", grossYield: "Доходность", listings: "Объектов", forSale: "Недвижимость на продажу в", secondary: "ВТОРИЧНЫЙ РЫНОК", emptyTitle: "Сейчас здесь нет активных объявлений", emptyBody: "Мы регулярно добавляем новые объекты в этом районе. Расскажите, что ищете, и мы сообщим, как только появится подходящий вариант — или посмотрите доступное по всему Дубаю прямо сейчас.", browseAll: "Все объекты", getNotified: "Уведомить меня" },
+  ar: { home: "الرئيسية", buy: "شراء", buyIn: "شراء عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forSale: "عقارات للبيع في", secondary: "السوق الثانوي", emptyTitle: "لا توجد إعلانات نشطة هنا حاليًا", emptyBody: "نضيف عقارات جديدة في هذا المجتمع بانتظام. أخبرنا بما تبحث عنه وسننبهك فور توفّره — أو استكشف المتاح في جميع أنحاء دبي اليوم.", browseAll: "تصفّح كل العقارات", getNotified: "نبّهني" },
+  zh: { home: "首页", buy: "购买", buyIn: "购买房产 —", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产 —", secondary: "二手市场", emptyTitle: "该区域暂无在售房源", emptyBody: "我们会定期上架该社区的新房源。告诉我们您的需求，一有合适房源即刻通知您——或浏览迪拜全城目前可选的房源。", browseAll: "浏览全部房源", getNotified: "通知我" },
+  vi: { home: "Trang chủ", buy: "Mua", buyIn: "Mua bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forSale: "Bất động sản bán tại", secondary: "THỊ TRƯỜNG THỨ CẤP", emptyTitle: "Hiện chưa có tin đăng tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có — hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả bất động sản", getNotified: "Nhận thông báo" },
 } as const;
 
 export default async function BuyInCommunityPage({
@@ -108,11 +108,29 @@ export default async function BuyInCommunityPage({
           </div>
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
-            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount}+</p>
+            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount > 0 ? `${totalCount}+` : totalCount}</p>
           </div>
         </div>
       </div>
     </section>
+  );
+
+  const emptyState = (
+    <div className="max-w-xl mx-auto text-center py-16">
+      <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center text-primary-foreground" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+      </div>
+      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{L.emptyTitle}</h3>
+      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">{L.emptyBody}</p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href={`${localePrefix}/buy`} className="font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
+          {L.browseAll}
+        </a>
+        <a href={`${localePrefix}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">
+          {L.getNotified}
+        </a>
+      </div>
+    </div>
   );
 
   return (
@@ -128,6 +146,7 @@ export default async function BuyInCommunityPage({
         batchSize={BATCH_SIZE}
         community={c.name}
         headerSlot={seoBlock}
+        emptyState={emptyState}
       />
     </>
   );

@@ -45,6 +45,7 @@ export default function ListingsPageClient({
   batchSize = 9,
   community,
   headerSlot,
+  emptyState,
 }: {
   initialListings: Listing[];
   totalCount: number;
@@ -57,6 +58,8 @@ export default function ListingsPageClient({
   community?: string;
   /** Server-rendered SEO content slot, inserted between hero and listing grid. */
   headerSlot?: React.ReactNode;
+  /** Custom node shown when there are no listings (replaces the default message). */
+  emptyState?: React.ReactNode;
 }) {
   const t = useTranslations("rent");
   const { format: fmtCurrency } = useCurrency();
@@ -146,7 +149,7 @@ export default function ListingsPageClient({
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {listings.length === 0 ? (
-            <p className="text-center text-muted-foreground py-20">{t("noListings")}</p>
+            emptyState ?? <p className="text-center text-muted-foreground py-20">{t("noListings")}</p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {listings.map((l, i) => (
