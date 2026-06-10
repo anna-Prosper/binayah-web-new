@@ -137,7 +137,25 @@
     "pageNotFound": "Страница не найдена",
     "pageNotFoundMessage": "Страница не существует или была перемещена. Давайте найдём то, что вам нужно.",
     "searchProperties": "Поиск объектов",
-    "needHelp": "Нужна помощь?"
+    "needHelp": "Нужна помощь?",
+    "sidebar": {
+      "consultTitle": "Бесплатная инвестиционная консультация",
+      "consultDesc": "Наши эксперты по недвижимости Дубая помогут найти лучшую инвестицию для ваших целей.",
+      "consultCta": "Забронировать консультацию",
+      "marketSnapshot": "ОБЗОР РЫНКА",
+      "avgYield": "Средняя доходность",
+      "transactions": "Сделки",
+      "offPlanShare": "Доля новостроек",
+      "pricePerSqft": "Цена / кв.фут",
+      "guidesLabel": "ГИДЫ И АНАЛИТИКА",
+      "priceGuideLabel": "ЦЕНОВОЙ ОРИЕНТИР",
+      "newsletterTitle": "Обновления рынка",
+      "newsletterDesc": "Получайте аналитику по недвижимости Дубая на вашу почту.",
+      "newsletterEmail": "Ваш email",
+      "newsletterCta": "Подписаться",
+      "subscribedSuccess": "Вы подписаны!",
+      "subscribeError": "Что-то пошло не так. Попробуйте снова."
+    }
   },
   "home": {
     "hero": {

@@ -1,11 +1,14 @@
 /* eslint-disable i18next/no-literal-string -- content from data file */
 import React from "react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import type { PropertyTypeLocale } from "@/lib/property-type-pages";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { serverApiUrl, serverFetch } from "@/lib/api";
+import PropertyTypeSidebar, { type MarketStatsData, type GuideItem } from "@/components/PropertyTypeSidebar";
 
 interface Props {
   locale: string;
@@ -16,8 +19,53 @@ interface Props {
   searchSlot?: React.ReactNode;
 }
 
-export default function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
+export default async function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
   const isRtl = locale === "ar";
+
+  // ── Server-fetch market stats + related guides (each defaults gracefully) ──
+  let marketStats: MarketStatsData | null = null;
+  try {
+    const res = await serverFetch(serverApiUrl("/api/market-stats"));
+    if (res.ok) {
+      const data = await res.json();
+      marketStats = (data?.summary as MarketStatsData) ?? null;
+    }
+  } catch {
+    marketStats = null;
+  }
+
+  let guides: GuideItem[] = [];
+  try {
+    const res = await serverFetch(serverApiUrl("/api/news?limit=4&category=guides"));
+    if (res.ok) {
+      const data = await res.json();
+      const list: unknown = Array.isArray(data) ? data : (data?.news ?? data?.articles ?? data?.data);
+      guides = Array.isArray(list) ? (list as GuideItem[]) : [];
+    }
+  } catch {
+    guides = [];
+  }
+
+  // ── Sidebar copy (next-intl, all 5 locales) ──
+  const t = await getTranslations({ locale, namespace: "common.sidebar" });
+  const sidebarMessages = {
+    consultTitle: t("consultTitle"),
+    consultDesc: t("consultDesc"),
+    consultCta: t("consultCta"),
+    marketSnapshot: t("marketSnapshot"),
+    avgYield: t("avgYield"),
+    transactions: t("transactions"),
+    offPlanShare: t("offPlanShare"),
+    pricePerSqft: t("pricePerSqft"),
+    guidesLabel: t("guidesLabel"),
+    priceGuideLabel: t("priceGuideLabel"),
+    newsletterTitle: t("newsletterTitle"),
+    newsletterDesc: t("newsletterDesc"),
+    newsletterEmail: t("newsletterEmail"),
+    newsletterCta: t("newsletterCta"),
+    subscribedSuccess: t("subscribedSuccess"),
+    subscribeError: t("subscribeError"),
+  };
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
 
@@ -111,17 +159,21 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
 
       </div>
 
-      {/* ── Embedded search ── */}
-      {searchSlot && (
-        <div className="border-t border-border/30 bg-muted/20">
-          {searchSlot}
-        </div>
-      )}
+      {/* ── Search + sidebar two-column region ── */}
+      <div className="max-w-6xl mx-auto w-full lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
+        {/* Main column: embedded search + FAQ + CTA */}
+        <div className="min-w-0">
+          {searchSlot && (
+            <div className="border-t border-border/30 bg-muted/20">
+              {searchSlot}
+            </div>
+          )}
 
-        {/* FAQ */}
-        <section>
+          <div className="px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
+
+            {/* FAQ */}
+            <section>
           <div className="text-center mb-8 sm:mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
@@ -168,6 +220,23 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
             </div>
           </div>
         </section>
+
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <aside className="px-4 sm:px-6 lg:px-0 lg:pr-6 pt-2 lg:pt-16 pb-10 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+          <PropertyTypeSidebar
+            locale={locale}
+            slug={slug}
+            searchType={searchType}
+            c={c}
+            marketStats={marketStats}
+            guides={guides}
+            messages={sidebarMessages}
+            apiUrl={process.env.NEXT_PUBLIC_API_URL || ""}
+          />
+        </aside>
 
       </div>
 

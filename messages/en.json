@@ -137,7 +137,25 @@
     "pageNotFound": "Page Not Found",
     "pageNotFoundMessage": "The page you're looking for doesn't exist or may have been moved. Let us help you find what you need.",
     "searchProperties": "Search Properties",
-    "needHelp": "Need help?"
+    "needHelp": "Need help?",
+    "sidebar": {
+      "consultTitle": "Free Investment Consultation",
+      "consultDesc": "Our Dubai property experts help you find the best investment for your goals.",
+      "consultCta": "Book Free Consultation",
+      "marketSnapshot": "MARKET SNAPSHOT",
+      "avgYield": "Avg. Rental Yield",
+      "transactions": "Transactions",
+      "offPlanShare": "Off-Plan Share",
+      "pricePerSqft": "Avg. Price / Sqft",
+      "guidesLabel": "GUIDES & INSIGHTS",
+      "priceGuideLabel": "PRICE GUIDE",
+      "newsletterTitle": "Market Updates",
+      "newsletterDesc": "Get Dubai property insights delivered to your inbox.",
+      "newsletterEmail": "Your email address",
+      "newsletterCta": "Subscribe",
+      "subscribedSuccess": "You're subscribed!",
+      "subscribeError": "Something went wrong. Try again."
+    }
   },
   "home": {
     "hero": {

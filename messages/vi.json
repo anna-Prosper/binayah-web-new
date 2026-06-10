@@ -137,7 +137,25 @@
     "pageNotFound": "Không tìm thấy trang",
     "pageNotFoundMessage": "Trang bạn đang tìm kiếm không tồn tại hoặc có thể đã được di chuyển. Hãy để chúng tôi giúp bạn tìm thấy những gì bạn cần.",
     "searchProperties": "Tìm kiếm bất động sản",
-    "needHelp": "Cần giúp đỡ?"
+    "needHelp": "Cần giúp đỡ?",
+    "sidebar": {
+      "consultTitle": "Tư vấn đầu tư miễn phí",
+      "consultDesc": "Chuyên gia bất động sản Dubai của chúng tôi giúp bạn tìm khoản đầu tư tốt nhất cho mục tiêu của bạn.",
+      "consultCta": "Đặt lịch tư vấn miễn phí",
+      "marketSnapshot": "TỔNG QUAN THỊ TRƯỜNG",
+      "avgYield": "Lợi suất thuê trung bình",
+      "transactions": "Giao dịch",
+      "offPlanShare": "Tỷ lệ dự án hình thành",
+      "pricePerSqft": "Giá TB / sqft",
+      "guidesLabel": "HƯỚNG DẪN & PHÂN TÍCH",
+      "priceGuideLabel": "THAM KHẢO GIÁ",
+      "newsletterTitle": "Cập nhật thị trường",
+      "newsletterDesc": "Nhận thông tin bất động sản Dubai gửi tới hộp thư của bạn.",
+      "newsletterEmail": "Địa chỉ email của bạn",
+      "newsletterCta": "Đăng ký",
+      "subscribedSuccess": "Đã đăng ký thành công!",
+      "subscribeError": "Có lỗi xảy ra. Vui lòng thử lại."
+    }
   },
   "home": {
     "hero": {

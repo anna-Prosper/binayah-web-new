@@ -137,7 +137,25 @@
     "pageNotFound": "الصفحة غير موجودة",
     "pageNotFoundMessage": "الصفحة التي تبحث عنها غير متاحة أو ربما تم نقلها. دعنا نساعدك في الوصول إلى ما تحتاجه.",
     "searchProperties": "ابحث عن عقار",
-    "needHelp": "تحتاج مساعدة؟"
+    "needHelp": "تحتاج مساعدة؟",
+    "sidebar": {
+      "consultTitle": "استشارة استثمارية مجانية",
+      "consultDesc": "يساعدك خبراء العقارات في دبي على إيجاد أفضل استثمار يناسب أهدافك.",
+      "consultCta": "احجز استشارة مجانية",
+      "marketSnapshot": "لمحة عن السوق",
+      "avgYield": "متوسط العائد الإيجاري",
+      "transactions": "المعاملات",
+      "offPlanShare": "حصة قيد الإنشاء",
+      "pricePerSqft": "متوسط السعر / قدم مربع",
+      "guidesLabel": "أدلة ورؤى",
+      "priceGuideLabel": "دليل الأسعار",
+      "newsletterTitle": "تحديثات السوق",
+      "newsletterDesc": "احصل على رؤى عقارات دبي في بريدك الإلكتروني.",
+      "newsletterEmail": "بريدك الإلكتروني",
+      "newsletterCta": "اشترك",
+      "subscribedSuccess": "تم اشتراكك!",
+      "subscribeError": "حدث خطأ ما. حاول مرة أخرى."
+    }
   },
   "home": {
     "hero": {
