@@ -67,7 +67,7 @@ export default function PropertyTypeSidebar({
   locale,
   slug,
   searchType: _searchType,
-  c,
+  c: _c,
   marketStats,
   guides,
   messages,
@@ -104,9 +104,6 @@ export default function PropertyTypeSidebar({
       pricePerSqft != null && { dt: messages.pricePerSqft, dd: `AED ${Math.round(pricePerSqft).toLocaleString()}` },
     ].filter(Boolean) as { dt: string; dd: string }[]
   );
-
-  // ── Price guide rows (from c.stats, max 4) ──
-  const priceStats = (c.stats || []).slice(0, 4);
 
   return (
     <div className="space-y-5">
@@ -167,25 +164,7 @@ export default function PropertyTypeSidebar({
         </div>
       )}
 
-      {/* 4 — Price Range Guide */}
-      {priceStats.length > 0 && (
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">{messages.priceGuideLabel}</p>
-          <ul className="space-y-3 text-sm">
-            {priceStats.map((stat) => (
-              <li key={stat.label} className="flex items-start gap-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                <span className="min-w-0 flex-1 leading-snug">
-                  <span className="font-bold text-foreground">{stat.n}</span>
-                  <span className="text-muted-foreground"> · {stat.label}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* 5 — Newsletter */}
+      {/* Newsletter */}
       <PropertyTypeSidebarNewsletter
         slug={slug}
         apiUrl={apiUrl}
