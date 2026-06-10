@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
+import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 export const dynamic = "force-dynamic";
 
@@ -161,30 +162,39 @@ export default async function OffPlanPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Search */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" />
-      </div>
+      {/* Search + sidebar two-column region */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
 
-      {/* FAQ */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-16">
-        <div className="text-center mb-10">
-          <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-          <h2 className="text-3xl font-bold text-foreground">
-            {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : "Off-Plan FAQs"}
-          </h2>
+        {/* Main column: search + FAQ */}
+        <div className="min-w-0 space-y-12 sm:space-y-16">
+          <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" syncUrl={false} />
+
+          {/* FAQ */}
+          <div>
+            <div className="text-center mb-10">
+              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+              <h2 className="text-3xl font-bold text-foreground">
+                {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : "Off-Plan FAQs"}
+              </h2>
+            </div>
+            <div className="space-y-3">
+              {c.faqs.map((faq, i) => (
+                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
+                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
+                    <span>{faq.question}</span>
+                    <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
+                  </summary>
+                  <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
+                </details>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="space-y-3">
-          {c.faqs.map((faq, i) => (
-            <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
-              <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm sm:text-base">
-                <span>{faq.question}</span>
-                <span className="text-accent text-xl font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</span>
-              </summary>
-              <div className="px-6 pb-6 text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-4">{faq.answer}</div>
-            </details>
-          ))}
-        </div>
+
+        {/* Sidebar */}
+        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+          <PropertyTypeSidebar locale={locale} slug="off-plan" />
+        </aside>
       </div>
 
       <Footer />
