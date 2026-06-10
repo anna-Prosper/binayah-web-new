@@ -29,12 +29,10 @@ export interface PropertyTypeSidebarMessages {
   consultDesc: string;
   consultCta: string;
   marketSnapshot: string;
-  avgYield: string;
   transactions: string;
   offPlanShare: string;
   pricePerSqft: string;
   guidesLabel: string;
-  priceGuideLabel: string;
   newsletterTitle: string;
   newsletterDesc: string;
   newsletterEmail: string;
@@ -42,6 +40,9 @@ export interface PropertyTypeSidebarMessages {
   subscribedSuccess: string;
   subscribeError: string;
 }
+
+// next-intl locale → BCP-47 tag for Intl date formatting
+const DATE_LOCALE: Record<string, string> = { en: "en-US", ru: "ru-RU", ar: "ar", zh: "zh-CN", vi: "vi-VN" };
 
 interface PropertyTypeSidebarProps {
   locale: string;
@@ -54,10 +55,10 @@ interface PropertyTypeSidebarProps {
   apiUrl: string;
 }
 
-function formatShortDate(dateStr?: string): string {
+function formatShortDate(dateStr: string | undefined, locale: string): string {
   if (!dateStr) return "";
   try {
-    return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+    return new Date(dateStr).toLocaleDateString(DATE_LOCALE[locale] ?? "en-US", { day: "numeric", month: "short", year: "numeric" });
   } catch {
     return dateStr;
   }
@@ -82,24 +83,17 @@ export default function PropertyTypeSidebar({
     if (n >= 1_000) return Math.round(n / 1_000) + "K+";
     return String(n);
   };
-  const yield_ = typeof s.avgYield === "number" ? s.avgYield : null;
+  // Yield is intentionally omitted here — the hero stats box already features it
+  // (as a typical range); repeating it as a live point-average reads as a contradiction.
+  // The snapshot shows only data the hero does NOT: transaction volume, off-plan share, price/sqft.
+  // The transactions label (incl. its coverage window) is pre-resolved by the parent via next-intl ICU.
   const txns = typeof s.transactions === "number" ? s.transactions : null;
-  const txnsYear = typeof s.transactionsYear === "number" ? s.transactionsYear : null;
-  const coverageMo = typeof s.transactionsCoverageMonths === "number" ? s.transactionsCoverageMonths : null;
   const offPlan = typeof s.offPlanShare === "number" ? s.offPlanShare : null;
   const pricePerSqft = typeof s.avgPricePerSqft === "number" ? s.avgPricePerSqft : null;
 
-  const txnsLabel =
-    coverageMo != null && coverageMo < 12
-      ? `${messages.transactions} (last ${coverageMo}mo)`
-      : txnsYear
-      ? `${messages.transactions} (${txnsYear})`
-      : messages.transactions;
-
   const snapshotRows = (
     [
-      yield_ != null && { dt: messages.avgYield, dd: yield_.toFixed(1) + "%" },
-      txns != null && { dt: txnsLabel, dd: formatK(txns) },
+      txns != null && { dt: messages.transactions, dd: formatK(txns) },
       offPlan != null && { dt: messages.offPlanShare, dd: offPlan.toFixed(0) + "%" },
       pricePerSqft != null && { dt: messages.pricePerSqft, dd: `AED ${Math.round(pricePerSqft).toLocaleString()}` },
     ].filter(Boolean) as { dt: string; dd: string }[]
@@ -153,7 +147,7 @@ export default function PropertyTypeSidebar({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  {g.publishedAt && <p className="text-[11px] text-muted-foreground mb-1">{formatShortDate(g.publishedAt)}</p>}
+                  {g.publishedAt && <p className="text-[11px] text-muted-foreground mb-1">{formatShortDate(g.publishedAt, locale)}</p>}
                   <p className="text-sm font-semibold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                     {g.title}
                   </p>

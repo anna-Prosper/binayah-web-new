@@ -48,17 +48,27 @@ export default async function PropertyTypeLanding({ locale, slug, icon, searchTy
 
   // ── Sidebar copy (next-intl, all 5 locales) ──
   const t = await getTranslations({ locale, namespace: "common.sidebar" });
+
+  // Resolve the transactions label here (ICU lives with t()): prefer the live
+  // coverage window ("last 5mo"), else the data year, else the plain label.
+  const covMo = marketStats?.transactionsCoverageMonths;
+  const txnYear = marketStats?.transactionsYear;
+  const transactionsLabel =
+    typeof covMo === "number" && covMo < 12
+      ? t("transactionsCoverage", { n: covMo })
+      : typeof txnYear === "number"
+      ? `${t("transactions")} (${txnYear})`
+      : t("transactions");
+
   const sidebarMessages = {
     consultTitle: t("consultTitle"),
     consultDesc: t("consultDesc"),
     consultCta: t("consultCta"),
     marketSnapshot: t("marketSnapshot"),
-    avgYield: t("avgYield"),
-    transactions: t("transactions"),
+    transactions: transactionsLabel,
     offPlanShare: t("offPlanShare"),
     pricePerSqft: t("pricePerSqft"),
     guidesLabel: t("guidesLabel"),
-    priceGuideLabel: t("priceGuideLabel"),
     newsletterTitle: t("newsletterTitle"),
     newsletterDesc: t("newsletterDesc"),
     newsletterEmail: t("newsletterEmail"),
@@ -86,7 +96,7 @@ export default async function PropertyTypeLanding({ locale, slug, icon, searchTy
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-10 items-center">
             {/* Left: identity */}
             <div>
@@ -121,7 +131,7 @@ export default async function PropertyTypeLanding({ locale, slug, icon, searchTy
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-5 sm:pb-6 space-y-5 sm:space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-5 sm:pb-6 space-y-5 sm:space-y-6">
 
         {/* Highlights — inline text columns, no heavy cards */}
         <section className="grid sm:grid-cols-3 gap-4 sm:gap-6">
