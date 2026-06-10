@@ -6,6 +6,7 @@ import {
   Info, Star, MapPin, Building2, DollarSign, Home, FileText,
 } from "lucide-react";
 import { useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import { useInView } from "framer-motion";
 import Image from "next/image";
 
@@ -207,7 +208,17 @@ function QuoteBlock({ text, author }: { text: string; author: string }) {
   );
 }
 
+const CALLOUT_TITLES: Record<string, Record<string, string>> = {
+  "Key Insight":    { ru: "Ключевой вывод", ar: "الفكرة الرئيسية", zh: "核心洞察", vi: "Điểm mấu chốt" },
+  "Important":      { ru: "Важно", ar: "مهم", zh: "重要", vi: "Quan trọng" },
+  "Note":           { ru: "Примечание", ar: "ملاحظة", zh: "备注", vi: "Lưu ý" },
+  "Warning":        { ru: "Предупреждение", ar: "تحذير", zh: "警告", vi: "Cảnh báo" },
+  "Tip":            { ru: "Совет", ar: "نصيحة", zh: "提示", vi: "Mẹo" },
+};
+
 function CalloutBlock({ title, text }: { title: string; text: string }) {
+  const locale = useLocale();
+  const localizedTitle = CALLOUT_TITLES[title]?.[locale] ?? title;
   return (
     <div className="rounded-2xl border border-[hsl(var(--accent))]/30 bg-gradient-to-br from-[hsl(var(--accent))]/[0.06] to-[hsl(var(--accent)/.75)]/[0.03] p-5 sm:p-6 my-5 sm:my-6">
       <div className="flex items-start gap-3">
@@ -215,7 +226,7 @@ function CalloutBlock({ title, text }: { title: string; text: string }) {
           <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
         </div>
         <div>
-          <h3 className="text-sm sm:text-base font-bold text-foreground mb-1.5">{title}</h3>
+          <h3 className="text-sm sm:text-base font-bold text-foreground mb-1.5">{localizedTitle}</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{text}</p>
         </div>
       </div>
