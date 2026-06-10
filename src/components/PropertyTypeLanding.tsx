@@ -1,14 +1,12 @@
 /* eslint-disable i18next/no-literal-string -- content from data file */
 import React from "react";
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
 import type { PropertyTypeLocale } from "@/lib/property-type-pages";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { serverApiUrl, serverFetch } from "@/lib/api";
-import PropertyTypeSidebar, { type MarketStatsData, type GuideItem } from "@/components/PropertyTypeSidebar";
+import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 interface Props {
   locale: string;
@@ -19,63 +17,8 @@ interface Props {
   searchSlot?: React.ReactNode;
 }
 
-export default async function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
+export default function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
   const isRtl = locale === "ar";
-
-  // ── Server-fetch market stats + related guides (each defaults gracefully) ──
-  let marketStats: MarketStatsData | null = null;
-  try {
-    const res = await serverFetch(serverApiUrl("/api/market-stats"));
-    if (res.ok) {
-      const data = await res.json();
-      marketStats = (data?.summary as MarketStatsData) ?? null;
-    }
-  } catch {
-    marketStats = null;
-  }
-
-  let guides: GuideItem[] = [];
-  try {
-    const res = await serverFetch(serverApiUrl("/api/news?limit=4&category=guides"));
-    if (res.ok) {
-      const data = await res.json();
-      const list: unknown = Array.isArray(data) ? data : (data?.news ?? data?.articles ?? data?.data);
-      guides = Array.isArray(list) ? (list as GuideItem[]) : [];
-    }
-  } catch {
-    guides = [];
-  }
-
-  // ── Sidebar copy (next-intl, all 5 locales) ──
-  const t = await getTranslations({ locale, namespace: "common.sidebar" });
-
-  // Resolve the transactions label here (ICU lives with t()): prefer the live
-  // coverage window ("last 5mo"), else the data year, else the plain label.
-  const covMo = marketStats?.transactionsCoverageMonths;
-  const txnYear = marketStats?.transactionsYear;
-  const transactionsLabel =
-    typeof covMo === "number" && covMo < 12
-      ? t("transactionsCoverage", { n: covMo })
-      : typeof txnYear === "number"
-      ? `${t("transactions")} (${txnYear})`
-      : t("transactions");
-
-  const sidebarMessages = {
-    consultTitle: t("consultTitle"),
-    consultDesc: t("consultDesc"),
-    consultCta: t("consultCta"),
-    marketSnapshot: t("marketSnapshot"),
-    transactions: transactionsLabel,
-    offPlanShare: t("offPlanShare"),
-    pricePerSqft: t("pricePerSqft"),
-    guidesLabel: t("guidesLabel"),
-    newsletterTitle: t("newsletterTitle"),
-    newsletterDesc: t("newsletterDesc"),
-    newsletterEmail: t("newsletterEmail"),
-    newsletterCta: t("newsletterCta"),
-    subscribedSuccess: t("subscribedSuccess"),
-    subscribeError: t("subscribeError"),
-  };
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
 
@@ -235,16 +178,7 @@ export default async function PropertyTypeLanding({ locale, slug, icon, searchTy
 
         {/* Sidebar */}
         <aside className="px-4 sm:px-6 lg:px-0 lg:pr-6 pt-2 lg:pt-16 pb-10 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar
-            locale={locale}
-            slug={slug}
-            searchType={searchType}
-            c={c}
-            marketStats={marketStats}
-            guides={guides}
-            messages={sidebarMessages}
-            apiUrl={process.env.NEXT_PUBLIC_API_URL || ""}
-          />
+          <PropertyTypeSidebar locale={locale} slug={slug} />
         </aside>
 
       </div>
