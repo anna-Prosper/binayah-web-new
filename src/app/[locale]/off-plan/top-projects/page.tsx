@@ -121,6 +121,14 @@ const CATEGORIES = {
     { label: "最佳低门槛入市", dev: "Azizi Developments", why: "成熟社区单间公寓起价50万迪拉姆。Azizi Riviera沿迪拜运河，性价比突出。" },
     { label: "最佳设计与精装", dev: "Ellington Properties", why: "Ellington以设计为核心的理念和五星级装修标准使其单位在二手市场具有溢价空间。" },
   ],
+  vi: [
+    { label: "Tốt nhất cho tăng giá vốn", dev: "Emaar Properties", why: "Tài sản tại Downtown & Creek Harbour đã tăng giá 40-60% kể từ năm 2021. Thương hiệu Emaar mang lại mức giá cao hơn khi bán lại." },
+    { label: "Tốt nhất cho lợi suất cho thuê", dev: "Binghatti Developers", why: "Các dự án Binghatti tại Al Jaddaf và Business Bay liên tục đạt lợi suất gộp 7-9% — trong số cao nhất Dubai." },
+    { label: "Tốt nhất cho gia đình", dev: "Sobha Realty", why: "Sobha Hartland II và MBR City mang đến lối sống cộng đồng, trường quốc tế và không gian xanh được các gia đình chuyển đến ưa thích." },
+    { label: "Kế hoạch thanh toán tốt nhất", dev: "DAMAC Properties", why: "Kế hoạch thanh toán sau bàn giao của DAMAC (lên đến 5 năm sau khi nhận chìa khóa) là thân thiện với người mua nhất trên thị trường." },
+    { label: "Điểm vào giá phải chăng nhất", dev: "Azizi Developments", why: "Studio từ 500K AED tại các khu vực lâu đời. Azizi Riviera trên Kênh Dubai mang đến view kênh với giá cạnh tranh." },
+    { label: "Thiết kế & Hoàn thiện tốt nhất", dev: "Ellington Properties", why: "Cách tiếp cận lấy thiết kế làm trung tâm và tiêu chuẩn hoàn thiện 5 sao của Ellington định vị các căn ở phân khúc cao cấp của thị trường bán lại." },
+  ],
 };
 
 const CONTENT = {
@@ -224,6 +232,31 @@ const CONTENT = {
     breadcrumb: "2026精选项目",
     catLabel: "类别",
   },
+  vi: {
+    metaTitle: "Dự án Off-Plan tốt nhất tại Dubai 2026 | Ra mắt mới | Binayah",
+    metaDesc: "So sánh các dự án off-plan hàng đầu Dubai cho 2026. Emaar, DAMAC, Sobha, Binghatti — ROI, kế hoạch thanh toán, lợi suất và tin đăng dự án trực tiếp từ Binayah Properties.",
+    heroLabel: "OFF-PLAN DUBAI 2026",
+    h1: "Dự án Off-Plan tốt nhất",
+    h1sub: "tại Dubai 2026",
+    heroDesc: "So sánh các chủ đầu tư off-plan hàng đầu và dự án ra mắt mới tại Dubai. Chúng tôi xếp hạng theo tiềm năng ROI, độ linh hoạt kế hoạch thanh toán, chất lượng xây dựng và lợi suất cho thuê — với tin đăng trực tiếp cập nhật hàng ngày.",
+    devTitle: "So sánh chủ đầu tư",
+    devSubtitle: "Các chỉ số chính cho các chủ đầu tư off-plan hàng đầu Dubai",
+    catTitle: "Tốt nhất cho mọi loại người mua",
+    projectsTitle: "Dự án Off-Plan mới nhất",
+    fromLabel: "Từ",
+    noPrice: "Giá theo yêu cầu",
+    viewAll: "Xem tất cả dự án Off-Plan",
+    faqs: [
+      { question: "Chủ đầu tư nào có dự án off-plan tốt nhất tại Dubai 2026?", answer: "Emaar dẫn đầu về tăng giá vốn dài hạn (Downtown, Dubai Hills, Creek Harbour). Binghatti mang lại lợi suất cho thuê cao nhất (7-9%) ở các vị trí tầm trung. DAMAC cung cấp kế hoạch thanh toán sau bàn giao linh hoạt nhất. Sobha Realty được đánh giá cao nhất về chất lượng xây dựng và cộng đồng gia đình. Chủ đầu tư 'tốt nhất' phụ thuộc hoàn toàn vào mục tiêu đầu tư của bạn — người mua chú trọng ROI và người dùng cuối ưu tiên các tiêu chí khác nhau." },
+      { question: "Giá trung bình của bất động sản off-plan tại Dubai 2026 là bao nhiêu?", answer: "Giá off-plan tại Dubai thay đổi rất lớn theo vị trí và chủ đầu tư. Cấp khởi điểm (JVC, Dubai South, Arjan): 500K–900K AED cho studio/1PN. Tầm trung (Business Bay, Al Jaddaf, JBR): 900K–2M AED. Cao cấp (Downtown, Dubai Marina, Palm): 2M–5M AED. Siêu sang (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. Giao dịch off-plan trung bình tại Dubai năm 2025 khoảng 1,8 triệu AED." },
+      { question: "Chủ đầu tư off-plan Dubai cung cấp kế hoạch thanh toán nào năm 2026?", answer: "Kế hoạch liên kết xây dựng tiêu chuẩn: 10% đặt chỗ + 10% khi ký SPA + 30% trong xây dựng + 50% khi bàn giao. Kế hoạch sau bàn giao mở rộng (DAMAC, một số dự án Binghatti): 40% trong xây dựng + 60% trong 2-5 năm sau bàn giao. Không lãi suất là tiêu chuẩn — kế hoạch tài chính chủ đầu tư không tính thêm lãi. Một số chủ đầu tư cung cấp trả góp 1% hàng tháng." },
+      { question: "Tôi có thể kỳ vọng ROI nào từ bất động sản off-plan tại Dubai?", answer: "Lợi suất cho thuê điển hình cho off-plan Dubai sau bàn giao: 5-9% gộp tùy vị trí và chủ đầu tư. Tăng giá vốn (flipping trước bàn giao): tiềm năng 10-40% trong thị trường tăng giá. Kể từ năm 2021, các dự án Emaar đã mang lại 40-70% tăng giá vốn từ giá off-plan đến giá trị thị trường hiện tại. Hiệu suất trong quá khứ thay đổi — các vị trí cao cấp và chủ đầu tư lâu đời trong lịch sử vượt trội hơn." },
+      { question: "Mua off-plan tại Dubai có an toàn năm 2026 không?", answer: "Dubai có một trong những hệ thống bảo vệ người mua off-plan mạnh nhất thế giới. RERA yêu cầu chủ đầu tư đặt khoản thanh toán của người mua vào tài khoản ký quỹ DLD tách biệt — vốn không thể sử dụng cho đến khi đạt các cột mốc xây dựng. Mọi dự án phải được đăng ký RERA. Chủ đầu tư phải nộp trái phiếu bảo lãnh hoàn thành. Không có chủ đầu tư uy tín nào (Emaar, DAMAC, Sobha, Binghatti) thất bại trong việc bàn giao dự án đã đăng ký. Tuy nhiên, chủ đầu tư nhỏ hơn và đơn vị mới gia nhập mang rủi ro cao hơn." },
+      { question: "Tôi có thể bán lại bất động sản off-plan trước khi bàn giao tại Dubai không?", answer: "Có, khi bạn đã trả 30-40% giá trị bất động sản (ngưỡng thay đổi theo chủ đầu tư). Đây gọi là giao dịch 'bán lại off-plan'. Binayah xử lý cả việc mua ban đầu và bán lại sau đó — đội ngũ off-plan của chúng tôi theo dõi các cơ hội trước bàn giao trên tất cả các dự án lớn." },
+    ],
+    breadcrumb: "Dự án hàng đầu 2026",
+    catLabel: "Danh mục",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -251,6 +284,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["أفضل مشاريع على الخارطة دبي 2026", "مقارنة مطوّري دبي", "إعمار داماك سوبها دبي"]
       : locale === "zh"
       ? ["迪拜最佳期房2026", "迪拜开发商对比", "Emaar DAMAC Sobha迪拜"]
+      : locale === "vi"
+      ? ["dự án off-plan tốt nhất dubai 2026", "emaar so với damac dubai", "so sánh chủ đầu tư dubai hàng đầu", "dự án mới dubai 2026"]
       : ["best off-plan projects dubai 2026", "emaar vs damac dubai", "top dubai developers comparison", "new launch dubai 2026"],
   };
 }
@@ -272,8 +307,8 @@ export default async function TopProjectsPage({ params }: Props) {
   } catch { /* serve page without live projects */ }
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
-    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : "Off-Plan", href: `${lp}/off-plan` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : "Off-Plan", href: `${lp}/off-plan` },
     { name: c.breadcrumb, href: `${lp}/off-plan/top-projects` },
   ];
 
@@ -445,7 +480,7 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
             <h2 className="text-3xl font-bold text-foreground">
-              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : "Frequently Asked Questions"}
+              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : "Frequently Asked Questions"}
             </h2>
           </div>
           <div className="space-y-3">
@@ -470,10 +505,10 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="relative z-10">
             <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">Binayah Properties</p>
             <h2 className="text-3xl font-bold mb-4">
-              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : "Find Your Perfect Off-Plan Project"}
+              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : locale === "vi" ? "Tìm dự án Off-Plan hoàn hảo của bạn" : "Find Your Perfect Off-Plan Project"}
             </h2>
             <p className="text-primary-foreground/75 text-lg mb-10 max-w-xl mx-auto">
-              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
+              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : locale === "vi" ? "Các chuyên gia off-plan của chúng tôi sẽ kết nối bạn với dự án phù hợp cho mục tiêu đầu tư, ngân sách và thời gian của bạn." : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -481,7 +516,7 @@ export default async function TopProjectsPage({ params }: Props) {
                 className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
               >
-                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : "Get Expert Advice"} →
+                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : "Get Expert Advice"} →
               </Link>
               <Link
                 href={`${lp}/off-plan`}

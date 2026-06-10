@@ -21,6 +21,7 @@ const LANGUAGES_LIST = [
   { code: "ru", label: "Русский", flag: "🇷🇺" },
   { code: "zh", label: "中文", flag: "🇨🇳" },
   { code: "ar", label: "العربية", flag: "🇦🇪" },
+  { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
 ];
 
 

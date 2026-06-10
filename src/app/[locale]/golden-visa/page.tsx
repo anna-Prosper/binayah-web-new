@@ -137,6 +137,40 @@ const CONTENT = {
     ctaDesc: "Binayah Properties帮助投资者识别符合黄金签证资格的房产，并管理从房产选择到签证发放的全程申请。",
     ctaBtn: "获取黄金签证咨询",
   },
+  vi: {
+    title: "Golden Visa UAE qua đầu tư bất động sản | Cư trú 10 năm | Binayah",
+    desc: "Nhận Golden Visa UAE 10 năm bằng cách đầu tư 2 triệu AED+ vào bất động sản Dubai. Hướng dẫn đầy đủ: điều kiện, quy trình, giấy tờ và bất động sản tốt nhất để đủ điều kiện. Tư vấn miễn phí.",
+    h1: "Golden Visa UAE",
+    h1sub: "Cư trú 10 năm qua bất động sản",
+    intro: "Golden Visa UAE cấp quyền cư trú 10 năm có thể gia hạn cho các nhà đầu tư bất động sản mua từ 2.000.000 AED (khoảng 545.000 USD) trở lên vào bất động sản UAE. Khác với thị thực do chủ lao động bảo trợ, Golden Visa tự bảo trợ, gia hạn vô thời hạn và bao gồm thành viên gia đình.",
+    steps: [
+      { n: "01", title: "Mua bất động sản 2 triệu AED+", body: "Mua một hoặc nhiều bất động sản UAE với tổng giá trị từ 2.000.000 AED+. Bất động sản có thể là off-plan (đã trả ít nhất 50%) hoặc căn đã hoàn thiện sẵn sàng." },
+      { n: "02", title: "Lấy sổ đỏ / OQOOD", body: "Với bất động sản đã hoàn thiện: sổ đỏ DLD. Với off-plan: đăng ký OQOOD (đăng ký tiền sổ đỏ do chủ đầu tư cấp). Cả hai đều đủ điều kiện cho thị thực." },
+      { n: "03", title: "Nộp đơn qua ICA hoặc GDRFA", body: "Nộp đơn Golden Visa qua Cơ quan Liên bang về Bản sắc, Quyền công dân, Hải quan và An ninh Cảng (ICA) hoặc GDRFA Dubai. Binayah hỗ trợ toàn bộ đơn." },
+      { n: "04", title: "Khám sức khỏe & Emirates ID", body: "Hoàn thành kiểm tra sức khỏe UAE. Nhận Emirates ID và dấu thị thực cư trú 10 năm. Quy trình thường mất 2–4 tuần từ khi nộp đơn." },
+    ],
+    benefits: [
+      { title: "10 năm có thể gia hạn", body: "Golden Visa có hiệu lực 10 năm và có thể gia hạn miễn là bạn duy trì khoản đầu tư bất động sản đủ điều kiện." },
+      { title: "Tự bảo trợ", body: "Không cần chủ lao động. Không cần người bảo trợ địa phương. Thị thực hoàn toàn gắn với quyền sở hữu bất động sản của bạn." },
+      { title: "Bao gồm gia đình", body: "Vợ/chồng, con cái (mọi độ tuổi), cha mẹ và người giúp việc có thể được bảo trợ theo Golden Visa của bạn." },
+      { title: "Nhập cảnh nhiều lần", body: "Không yêu cầu thời gian lưu trú tối thiểu. Bạn có thể sống ở bất cứ đâu và nhập cảnh UAE không giới hạn số lần mà không bị hạn chế thị thực." },
+      { title: "Tự do kinh doanh", body: "Người sở hữu Golden Visa có thể mở công ty UAE mà không cần đối tác địa phương ở đất liền (sở hữu nước ngoài 100% theo luật mới)." },
+      { title: "Tiếp cận giáo dục", body: "Con cái của người sở hữu Golden Visa đủ điều kiện nhập học trường UAE và có thể theo học các trường quốc tế hàng đầu ở Dubai." },
+    ],
+    faqs: [
+      { question: "Khoản đầu tư tối thiểu cho Golden Visa UAE qua bất động sản là bao nhiêu?", answer: "2.000.000 AED (khoảng 545.000 USD hoặc 500.000 EUR). Bất động sản có thể ở Dubai, Abu Dhabi hoặc bất kỳ tiểu vương quốc nào khác. Có thể là nhà ở hoặc thương mại. Bất động sản off-plan đủ điều kiện nếu ít nhất 2 triệu AED đã được trả cho chủ đầu tư (tối thiểu 50% giá mua)." },
+      { question: "Tôi có thể dùng bất động sản đang thế chấp để đủ điều kiện Golden Visa không?", answer: "Có, nhưng chỉ phần vốn chủ sở hữu được tính vào ngưỡng 2 triệu AED. Nếu bất động sản của bạn trị giá 3 triệu AED nhưng bạn còn khoản vay thế chấp 1,5 triệu AED, chỉ 1,5 triệu AED vốn chủ sở hữu đủ điều kiện. Bạn cần thêm bất động sản hoặc vốn để đạt ngưỡng 2 triệu AED." },
+      { question: "Người nước ngoài từ mọi quốc tịch có thể nhận Golden Visa UAE không?", answer: "Có. Golden Visa UAE mở cho mọi quốc tịch. Không có hạn chế theo quốc tịch. Người Nga, châu Âu, Mỹ, Trung Quốc và mọi quốc tịch khác đều đủ điều kiện như nhau miễn là họ đáp ứng ngưỡng đầu tư." },
+      { question: "Golden Visa có yêu cầu tôi phải sống ở UAE không?", answer: "Không. Không có yêu cầu thời gian lưu trú tối thiểu cho Golden Visa. Bạn có thể sống ngoài UAE và thị thực vẫn có hiệu lực. Yêu cầu duy nhất là duy trì khoản đầu tư bất động sản đủ điều kiện. Trước đây, thị thực UAE bị hủy nếu bạn ở ngoài UAE 6 tháng — Golden Visa đã bỏ hạn chế này." },
+      { question: "Sự khác biệt giữa Golden Visa và thị thực bất động sản UAE thông thường là gì?", answer: "Thị thực bất động sản thông thường (còn gọi là thị thực nhà đầu tư) yêu cầu 750.000 AED bất động sản và cấp cư trú 2 năm có thể gia hạn. Golden Visa yêu cầu 2.000.000 AED và cấp cư trú 10 năm không có yêu cầu lưu trú và quyền bảo trợ gia đình mở rộng." },
+      { question: "Bất động sản nào tại Dubai đủ điều kiện Golden Visa?", answer: "Bất kỳ bất động sản freehold UAE nào trị giá 2 triệu AED+. Căn hộ đã hoàn thiện, biệt thự, nhà phố, penthouse, văn phòng hoặc lô đất đều đủ điều kiện. Bất động sản phải được đăng ký với Sở Đất đai Dubai (DLD). Có thể kết hợp nhiều bất động sản để đạt ngưỡng." },
+      { question: "Đơn Golden Visa mất bao lâu?", answer: "Quy trình nộp đơn mất khoảng 3–6 tuần từ khi mua bất động sản đến khi cấp thị thực. Đăng ký bất động sản: 1–3 ngày. Xử lý đơn ICA/GDRFA: 5–10 ngày làm việc. Khám sức khỏe và Emirates ID: 5–10 ngày làm việc. Tổng: thường 4–6 tuần cho đơn đơn giản." },
+      { question: "Thành viên gia đình tôi có thể được bảo trợ theo Golden Visa của tôi không?", answer: "Có. Vợ/chồng, con cái (mọi độ tuổi, kể cả con đã trưởng thành), cha mẹ và người giúp việc có thể được đưa vào làm người phụ thuộc theo Golden Visa của bạn. Mỗi người phụ thuộc nhận cùng cư trú 10 năm. Con cái được đưa vào làm người phụ thuộc duy trì thị thực ngay cả sau 18 tuổi miễn là chúng là sinh viên toàn thời gian." },
+    ],
+    ctaTitle: "Bắt đầu hành trình Golden Visa của bạn",
+    ctaDesc: "Binayah Properties giúp các nhà đầu tư xác định bất động sản đủ điều kiện Golden Visa và quản lý toàn bộ quy trình nộp đơn — từ chọn bất động sản đến cấp thị thực.",
+    ctaBtn: "Nhận tư vấn Golden Visa",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -158,6 +192,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["التأشيرة الذهبية الإمارات", "تأشيرة ذهبية عقار دبي", "إقامة الإمارات عبر العقارات"]
       : locale === "zh"
       ? ["阿联酋黄金签证", "迪拜房产黄金签证", "阿联酋居住权房产"]
+      : locale === "vi"
+      ? ["golden visa uae bất động sản", "golden visa dubai", "golden visa 2 triệu aed", "cư trú uae qua bất động sản"]
       : ["uae golden visa property", "dubai golden visa", "golden visa 2 million aed", "uae residency through property"],
   };
 }
@@ -168,7 +204,7 @@ export default async function GoldenVisaPage({ params }: Props) {
   const isRtl = locale === "ar";
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.h1, href: `${lp}/golden-visa` },
   ];
 
@@ -181,7 +217,7 @@ export default async function GoldenVisaPage({ params }: Props) {
       <section className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : "UAE GOLDEN VISA"}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : locale === "vi" ? "GOLDEN VISA UAE" : "UAE GOLDEN VISA"}</p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-2">{c.h1}</h1>
           <p className="text-2xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mb-10">{c.intro}</p>
@@ -197,7 +233,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Process</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : "How to Get the Golden Visa"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : locale === "vi" ? "Cách nhận Golden Visa" : "How to Get the Golden Visa"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             {c.steps.map((s) => (
@@ -214,7 +250,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Benefits</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : "Golden Visa Benefits"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : locale === "vi" ? "Lợi ích của Golden Visa" : "Golden Visa Benefits"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {c.benefits.map((b) => (
@@ -235,7 +271,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : "Frequently Asked Questions"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : "Frequently Asked Questions"}</h2>
           </div>
           <div className="space-y-3">
             {c.faqs.map((f, i) => (
@@ -262,7 +298,7 @@ export default async function GoldenVisaPage({ params }: Props) {
                 {c.ctaBtn}
               </Link>
               <Link href={`${lp}/search?budgetMin=2000000`} className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all">
-                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : "Browse AED 2M+ Properties"}
+                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : locale === "vi" ? "Xem bất động sản 2 triệu AED+" : "Browse AED 2M+ Properties"}
               </Link>
             </div>
           </div>

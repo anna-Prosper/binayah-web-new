@@ -58,6 +58,7 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
         ru: path === "/" ? `${RU_URL}/ru` : `${RU_URL}/ru${path}`,
         ar: localeAlt(AE_URL, "ar", path),
         zh: localeAlt(AE_URL, "zh", path),
+        vi: localeAlt(AE_URL, "vi", path),
         "x-default": `${AE_URL}${path}`,
       },
     },

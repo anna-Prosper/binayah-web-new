@@ -111,6 +111,31 @@ const CONTENT = {
     ctaDesc: "我们的RERA认证经纪人帮助您在迪拜找到、谈判并完成房产购买——无额外费用。",
     ctaBtn: "联系经纪人",
   },
+  vi: {
+    metaTitle: "Bất động sản bán tại Dubai | 3.000+ tin đăng | Binayah",
+    metaDesc: "Khám phá hơn 3.000 bất động sản bán tại Dubai — căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.",
+    heroLabel: "MUA BẤT ĐỘNG SẢN TẠI DUBAI",
+    h1: "Bất động sản bán",
+    h1sub: "tại Dubai",
+    heroDesc: "Tìm căn hộ, biệt thự, nhà phố và dự án off-plan trên 60+ khu vực Dubai. Tin đăng đã xác minh, giá DLD trực tiếp và chuyên viên sẵn sàng 7 ngày một tuần.",
+    stats: [
+      { n: "3.000+", label: "Bất động sản bán" },
+      { n: "350K AED", label: "Giá khởi điểm" },
+      { n: "0%", label: "Thuế lãi vốn" },
+      { n: "60+", label: "Khu vực" },
+    ],
+    faqs: [
+      { question: "Người nước ngoài có thể mua bất động sản tại Dubai không?", answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu được chỉ định của Dubai — Marina, Downtown, JVC, Palm, Business Bay và 60+ khu khác. Không cần cư trú. Bạn nhận sổ đỏ DLD đầy đủ với quyền sở hữu giống công dân UAE." },
+      { question: "Quy trình mua bất động sản Dubai là gì?", answer: "1) Thỏa thuận giá & ký MOU (Bản ghi nhớ). 2) Trả 10% đặt cọc. 3) Lấy NOC từ chủ đầu tư. 4) Chuyển nhượng DLD — trả phí chuyển nhượng 4%. 5) Nhận sổ đỏ. Quy trình mất 3–6 tuần cho thị trường thứ cấp, 2–4 tuần cho đặt chỗ off-plan." },
+      { question: "Tổng chi phí khi mua bất động sản tại Dubai là gì?", answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: ~2%. Phí quản lý DLD: 580 AED. Phí ủy thác: 4.000 AED (bất động sản trên 500K AED). Đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch: khoảng 6–7% giá trị bất động sản." },
+      { question: "Khoản đầu tư tối thiểu để mua bất động sản tại Dubai là bao nhiêu?", answer: "Căn hộ studio khởi điểm từ 300.000–500.000 AED (~82K–136K USD) tại các khu như JVC và Dubai South. Để nhận Golden Visa UAE 10 năm, giá trị bất động sản tối thiểu là 2.000.000 AED (~545K USD)." },
+      { question: "Bất động sản Dubai có phải khoản đầu tư tốt năm 2026 không?", answer: "Dubai mang lại lợi suất cho thuê gộp 5–8% (cao nhất thế giới), 0 thuế lãi vốn, 0 thuế thu nhập và đồng tiền neo AED-USD. Các khu vực cao cấp đã tăng giá 40–60% kể từ năm 2021. Các yếu tố cơ bản — tăng dân số, nguồn cung biệt thự thiếu hụt và vị thế trung tâm kinh doanh — vẫn hỗ trợ." },
+    ],
+    breadcrumb: "Mua",
+    ctaTitle: "Cần hướng dẫn chuyên gia?",
+    ctaDesc: "Các chuyên viên được chứng nhận RERA của chúng tôi giúp bạn tìm, đàm phán và hoàn tất việc mua bất động sản tại Dubai — không tốn thêm chi phí.",
+    ctaBtn: "Trao đổi với chuyên viên",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -135,6 +160,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["عقارات للبيع دبي", "شراء شقة دبي", "عقارات دبي أسعار"]
       : locale === "zh"
       ? ["迪拜房产出售", "购买迪拜房产", "迪拜公寓价格"]
+      : locale === "vi"
+      ? ["bất động sản bán dubai", "mua bất động sản dubai", "giá bất động sản dubai"]
       : ["properties for sale dubai", "buy property dubai", "dubai real estate for sale", "apartments for sale dubai"],
   };
 }
@@ -146,7 +173,7 @@ export default async function BuyPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy` },
   ];
 
@@ -195,7 +222,7 @@ export default async function BuyPage({ params }: Props) {
         <div className="text-center mb-8">
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : "Buying in Dubai — FAQs"}
+            {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : locale === "vi" ? "Mua tại Dubai — Câu hỏi thường gặp" : "Buying in Dubai — FAQs"}
           </h2>
         </div>
         <div className="space-y-2 sm:space-y-3">

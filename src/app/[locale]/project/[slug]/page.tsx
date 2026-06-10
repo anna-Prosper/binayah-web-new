@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
       url: `/${locale}/project/${slug}`,
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : "en_AE",
     },
     twitter: {
       card: "summary_large_image",

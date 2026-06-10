@@ -25,6 +25,10 @@ const translations: Record<string, { title: string; description: string }> = {
     title: "热门动态 | 迪拜脉搏 | Binayah Properties",
     description: "迪拜房地产市场最大涨幅、新楼盘发布及最新市场洞察。",
   },
+  vi: {
+    title: "Xu hướng | Dubai Pulse | Binayah Properties",
+    description: "Những biến động lớn nhất, dự án mới ra mắt và phân tích mới nhất từ thị trường bất động sản Dubai.",
+  },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

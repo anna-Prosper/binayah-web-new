@@ -25,6 +25,10 @@ const translations: Record<string, { title: string; description: string }> = {
     title: "投资计算器 | 迪拜脉搏 | Binayah Properties",
     description: "计算迪拜房地产投资的潜在回报、租金收益率和预期价值。",
   },
+  vi: {
+    title: "Máy tính đầu tư | Dubai Pulse | Binayah Properties",
+    description: "Tính lợi nhuận tiềm năng, lợi suất cho thuê và giá trị dự kiến cho đầu tư bất động sản Dubai.",
+  },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

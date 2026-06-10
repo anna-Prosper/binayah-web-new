@@ -82,6 +82,23 @@ const CONTENT = {
     breadcrumb: "期房",
     searchTitle: "浏览期房项目",
   },
+  vi: {
+    metaTitle: "Bất động sản Off-Plan tại Dubai 2026 | Dự án mới | Binayah",
+    metaDesc: "Khám phá hơn 3.000 bất động sản off-plan tại Dubai. Ra mắt dự án mới từ Emaar, DAMAC, Sobha, Aldar. Kế hoạch thanh toán linh hoạt, ROI cao. Hướng dẫn chuyên gia.",
+    heroLabel: "OFF-PLAN DUBAI",
+    h1: "Bất động sản Off-Plan tại Dubai",
+    heroDesc: "Khám phá các dự án off-plan mới ra mắt tốt nhất Dubai. Kế hoạch thanh toán linh hoạt, bảo lãnh của chủ đầu tư và tiềm năng tăng giá vốn 15–30% trước khi bàn giao.",
+    faqs: [
+      { question: "Bất động sản off-plan tại Dubai là gì?", answer: "Off-plan có nghĩa là mua một bất động sản trước khi xây dựng hoặc trong quá trình xây dựng. Bạn trả một phần trước (thường 10–20%), phần còn lại trả góp trong quá trình xây dựng hoặc sau khi bàn giao. Bất động sản off-plan thường rẻ hơn 15–30% so với căn đã hoàn thiện trong cùng tòa nhà." },
+      { question: "Rủi ro khi mua off-plan tại Dubai là gì?", answer: "Rủi ro chính bao gồm chậm tiến độ dự án và (hiếm khi) chủ đầu tư mất khả năng thanh toán. RERA của Dubai quản lý tài khoản ký quỹ — vốn của chủ đầu tư được giữ trong tài khoản tách biệt cho đến khi đạt các cột mốc xây dựng. Hãy chọn dự án đã đăng ký RERA và chủ đầu tư giàu kinh nghiệm có thành tích." },
+      { question: "Tôi có thể bán bất động sản off-plan trước khi bàn giao không?", answer: "Có. Khi bạn đã trả tối thiểu 30–40% giá trị bất động sản, hầu hết chủ đầu tư cho phép bán lại trên thị trường thứ cấp. Việc này gọi là 'flipping' và có thể tạo ra 10–30% lợi nhuận trong thị trường tăng giá trước khi bạn nhận chìa khóa." },
+      { question: "Chủ đầu tư nào có dự án off-plan tốt nhất tại Dubai?", answer: "Các chủ đầu tư hàng đầu gồm Emaar (Downtown, Dubai Creek Harbour), DAMAC (Cavalli, Lagoons), Sobha Realty (Hartland II), Aldar (Yas Island), Nakheel (Palm Jumeirah) và Mag (MBR City). Mỗi đơn vị có mức giá, vị trí và cơ cấu thanh toán khác nhau." },
+      { question: "Chủ đầu tư off-plan cung cấp kế hoạch thanh toán nào?", answer: "Cơ cấu điển hình: 10% khi đặt chỗ + 10% khi ký SPA + 30% trong quá trình xây dựng + 50% khi bàn giao. Một số chủ đầu tư cung cấp kế hoạch thanh toán sau bàn giao (ví dụ 40% trong xây dựng + 60% trong 3 năm sau bàn giao). Kế hoạch không lãi suất cũng có sẵn từ một số chủ đầu tư." },
+      { question: "Off-plan có tốt hơn bất động sản đã hoàn thiện tại Dubai không?", answer: "Off-plan mang lại giá vào thấp hơn, tiềm năng tăng giá vốn và kế hoạch thanh toán linh hoạt — nhưng bạn phải chờ 2–4 năm để nhận chìa khóa. Bất động sản đã hoàn thiện cung cấp thu nhập cho thuê ngay, dễ vay thế chấp hơn và không có rủi ro hoàn thành. Lựa chọn phù hợp phụ thuộc vào tầm nhìn đầu tư và nhu cầu dòng tiền của bạn." },
+    ],
+    breadcrumb: "Off-Plan",
+    searchTitle: "Xem dự án Off-Plan",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -108,6 +125,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["عقارات على الخارطة دبي", "مشاريع على الخارطة دبي 2026", "استثمار على الخارطة دبي"]
       : locale === "zh"
       ? ["迪拜期房", "迪拜新楼盘2026", "迪拜期房投资", "迪拜开发商楼盘"]
+      : locale === "vi"
+      ? ["bất động sản off-plan dubai", "off-plan dubai 2026", "dự án mới dubai", "đầu tư off-plan dubai", "mua off-plan dubai"]
       : ["off-plan properties dubai", "off-plan dubai 2026", "new launch dubai", "dubai off plan investment", "buy off plan dubai"],
   };
 }
@@ -119,7 +138,7 @@ export default async function OffPlanPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/off-plan` },
   ];
 
@@ -152,7 +171,7 @@ export default async function OffPlanPage({ params }: Props) {
         <div className="text-center mb-10">
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
           <h2 className="text-3xl font-bold text-foreground">
-            {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : "Off-Plan FAQs"}
+            {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : "Off-Plan FAQs"}
           </h2>
         </div>
         <div className="space-y-3">

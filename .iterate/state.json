@@ -1,451 +1,52 @@
 {
-  "task": "Add mega menu dropdowns to all primary navbar tabs in Navbar.tsx.\n\nBUY mega menu (3 columns): By Type (Apartments, Villas, Townhouses, Penthouses, Land for Sale, Offices), Popular Areas (Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC, Dubai Hills), Browse By Budget (Under AED 1M, 1M-3M, 3M-10M, 10M+, Buy with Crypto). RENT mega menu (2 columns): By Type, Popular Areas. OFF-PLAN mega menu (2 columns): By Type, Browse. GUIDES tab (new, mega menu): Investment Guides + How It Works. SERVICES mega menu (2 columns): For Buyers, For Sellers.",
-  "baseSha": "92e5e1463a0c6b944b41bf285bffc48794203b48",
+  "task": "Add Vietnamese (vi) language support to the entire Binayah Properties website",
+  "baseSha": "28fddec8314d17fe7758f79f991c42a307be3cba",
   "stages": [
     {
-      "id": "mega-menus",
-      "status": "passed",
+      "id": "vi-locale-full",
+      "status": "in_progress",
       "devModel": "opus",
-      "spec": "GOAL: Replace the plain Buy/Rent/Off-Plan links and the simple Insights/More dropdowns in src/components/Navbar.tsx with multi-column MEGA MENUS, add a new standalone GUIDES tab, and rename the Company dropdown to SERVICES (also a mega menu). Keep the dark-glass navbar aesthetic identical to the existing Insights/More dropdowns. Desktop = hover-activated wide panels. Mobile = nested accordion. Every link MUST resolve to a route that exists.\n\n## Why this will be good\nNav becomes a discovery surface, not just a router. By Type + Popular Areas + Budget columns let a buyer self-segment in one hover instead of digging through /search. Benchmark: Zillow / Bayut mega nav \u2014 categorized, scannable, with a clear 'browse all' escape hatch per panel. Production-ready bar: no horizontal scroll at any width, 44px mobile tap targets, panels reuse the EXACT glass treatment already on screen so nothing looks bolted-on, hover intent does not flicker when moving diagonally into the panel.\n\n## VISUAL DIRECTION (match existing, do not invent)\nThe Insights dropdown (lines ~177-201) and More/Company dropdown (lines ~203-227) are your style reference. Reuse their exact treatment for mega panels:\n- Panel wrapper: AnimatePresence + motion.div with initial {opacity:0, y:-8} animate {opacity:1, y:0} exit {opacity:0, y:-8}, transition duration 0.15. Outer wrapper keeps the `absolute top-full left-0 pt-2` (the pt-2 is the hover-bridge gap \u2014 preserve it so the cursor can cross from trigger to panel without closing).\n- Inner panel: same glass as today \u2014 `rounded-lg overflow-hidden shadow-xl border border-white/10` with inline style `background: linear-gradient(135deg, #0B3D2E, #1A7A5A)`. Add `backdrop-blur-xl` to the inner panel. z-index: panels at z-[60].\n- Min-width: ~700px for the 3-column BUY panel, ~500px for the 2-column panels (Rent, Off-Plan, Guides, Services). Lay columns out with a grid (e.g. grid-cols-3 / grid-cols-2) and a sensible gap; DEV picks exact padding/gap to match the visual rhythm of existing dropdowns.\n- Column header: small uppercase label, text-white/50, ~text-[10px], tracking-[0.2em], with a subtle bottom separator (margin or border-b border-white/10). \n- Column links: reuse the existing dropdown link feel \u2014 text-white/80 hover:text-white hover:bg-white/10, ~text-[13px], comfortable padding (~px-4 py-2.5), rounded on hover. These are NOT uppercase tracking like top-level tabs \u2014 keep them readable sentence/title case at normal tracking (the labels below are the display strings).\n- Bottom CTA row: full-width, separated by border-t border-white/10, gold-tinted link(s) using the accent color (text-accent hover:text-white). Include the \u2192 arrow in the label or as an icon.\n- Each trigger button keeps a ChevronDown that rotates 180\u00b0 when its panel is open (match existing Insights pattern exactly), plus keep the animated accent underline span the primary tabs/dropdowns already use.\n\n## TRIGGER BEHAVIOR (desktop)\nConvert Buy, Rent, Off-Plan from plain handleNav buttons into hover-dropdown wrappers identical in structure to the existing Insights wrapper: a `relative` div with onMouseEnter (open this panel, close all others) / onMouseLeave (close this panel), a trigger button, and the AnimatePresence panel. The trigger button itself should STILL navigate on click to its base route (Buy\u2192/search?intent=buy, Rent\u2192/search?intent=rent, Off-Plan\u2192/search?status=Off-Plan) so clicking the tab works while hovering reveals the panel. Add Guides as a brand-new hover wrapper (trigger navigates to /pulse/guides on click). Rename the Company wrapper trigger label from t('company') to t('services') and turn its panel into the Services mega menu (trigger click \u2192 /services). Add one boolean open-state per new panel (e.g. buyOpen, rentOpen, offPlanOpen, guidesOpen) and reuse moreOpen for Services (or rename to servicesOpen for clarity). Each onMouseEnter must close every OTHER panel so only one is open at a time (the existing Insights/More code already does this pairwise \u2014 extend it to cover all panels).\n\n## OUTSIDE-CLICK / REF CLOSE\nThe existing useEffect (lines ~97-106) closes moreOpen/insightsOpen on outside mousedown via refs. Add a ref for each new wrapper and close its state the same way, OR consolidate. Do not leave any panel that can get stuck open. Since these are hover panels, onMouseLeave is the primary close; the ref-based close is the safety net \u2014 keep it consistent with current code.\n\n## EXACT MENU CONTENTS (lock these \u2014 labels are display strings, hrefs must be used verbatim)\nBUY (3 columns + CTA):\n- Col1 header t('megaBuyByType'): Apartments /apartments | Villas /villas | Townhouses /townhouses | Penthouses /penthouses | Land for Sale /land-for-sale | Offices /offices\n- Col2 header t('megaBuyAreas'): Dubai Marina /buy-property-in/dubai-marina | Downtown Dubai /buy-property-in/downtown-dubai | Palm Jumeirah /buy-property-in/palm-jumeirah | Business Bay /buy-property-in/business-bay | JVC /buy-property-in/jumeirah-village-circle | Dubai Hills /buy-property-in/dubai-hills-estate\n- Col3 header t('megaBuyBudget'): Under AED 1M /search?intent=buy&maxPrice=1000000 | AED 1M-3M /search?intent=buy&minPrice=1000000&maxPrice=3000000 | AED 3M-10M /search?intent=buy&minPrice=3000000&maxPrice=10000000 | AED 10M+ /search?intent=buy&minPrice=10000000 | Buy with Crypto /buy-with-crypto\n- CTA t('megaBuyCtaAll') \u2192 /search?intent=buy\n\nRENT (2 columns + CTA):\n- Col1 header t('megaRentByType'): Apartments /search?intent=rent&type=Apartment | Villas /search?intent=rent&type=Villa | Townhouses /search?intent=rent&type=Townhouse | Offices /search?intent=rent&type=Office | Warehouses /warehouses\n- Col2 header t('megaRentAreas'): Dubai Marina /search?intent=rent&community=dubai-marina | Downtown Dubai /search?intent=rent&community=downtown-dubai | Palm Jumeirah /search?intent=rent&community=palm-jumeirah | JVC /search?intent=rent&community=jumeirah-village-circle | Business Bay /search?intent=rent&community=business-bay\n- CTA t('megaRentCtaAll') \u2192 /search?intent=rent\n\nOFF-PLAN (2 columns + CTA):\n- Col1 header t('megaOffPlanByType'): Apartments /search?status=Off-Plan&type=Apartment | Villas /search?status=Off-Plan&type=Villa | Townhouses /search?status=Off-Plan&type=Townhouse | Penthouses /search?status=Off-Plan&type=Penthouse\n- Col2 header t('megaOffPlanBrowse'): New Launches /off-plan | Construction Updates /construction-updates | Off-Plan by Developer /developers | Payment Plans /search?status=Off-Plan\n- CTA t('megaOffPlanCtaAll') \u2192 /off-plan\n\nGUIDES (NEW standalone tab, 2 columns + CTA):\n- Col1 header t('megaGuidesInvestment'): Best Areas in Dubai 2026 /pulse/guides/best-areas-dubai-2026 | Buying as a Foreigner /pulse/guides/buying-as-foreigner | Rental Yield Explained /pulse/guides/rental-yield-explained | Dubai vs Abu Dhabi /pulse/guides/dubai-vs-abu-dhabi\n- Col2 header t('megaGuidesHow'): How to Buy Property /pulse/guides | Mortgage Guide /mortgage | Golden Visa Guide /golden-visa | Valuation Tool /valuation\n- CTA t('megaGuidesCtaAll') \u2192 /pulse/guides\n- Trigger label: reuse EXISTING t('guides') key (already in all 4 locales \u2014 do NOT add a duplicate 'guides' key).\n\nSERVICES (replaces Company dropdown, 2 columns + multi-CTA row):\n- Col1 header t('megaServicesForBuyers'): Buy Property /buy | Mortgage Calculator /mortgage | Property Valuation /valuation | Golden Visa /golden-visa\n- Col2 header t('megaServicesForSellers'): Sell Your Property /sell | List Your Property /list-your-property | Real Estate Marketing /real-estate-marketing | Free Valuation /valuation\n- CTA row (three links in one border-t row): t('megaServicesCtaAll') \u2192 /services | t('about') \u2192 /about | t('contact') \u2192 /contact (About and Contact MOVE here; the old moreNav array's about/contact items are absorbed into this row).\n\nINSIGHTS (keep as simple dropdown, just TRIM the array to 3 items): Pulse /pulse | Communities /communities | News /news. Remove Dubai Report, Areas, Valuation, Guides from insightsNav (they now live in other menus or are deprecated from this dropdown).\n\n## MOBILE (accordion)\nEach mega menu becomes an accordion section in the existing fullscreen mobile overlay, following the existing mobileInsightsOpen / mobileCompanyOpen pattern (lines ~524-568):\n- Add state vars: mobileBuyOpen, mobileRentOpen, mobileOffPlanOpen, mobileGuidesOpen, mobileServicesOpen.\n- Buy/Rent/Off-Plan currently render as plain primaryNav buttons (lines ~476-488). Convert each into an accordion row (tap toggles open; ChevronRight or ChevronDown rotates \u2014 match existing accordion chevron behavior).\n- Inside each accordion: flatten ALL links from that desktop mega menu into one indented list (use the existing indented style: pl-4 border-l-2 border-accent/40 ml-3, link rows min-h-[44px]). Column headers are OPTIONAL on mobile \u2014 you may show them as small muted sub-labels for grouping, or omit. Include the CTA link(s) at the bottom of each accordion list.\n- Add Guides as a new accordion row. Rename the Company accordion to Services and populate with the Services links + the about/contact + all-services CTA.\n- Keep Insights accordion but trim to the 3 items (Pulse, Communities, News).\n- When opening any accordion, close the others (the existing toggles already do pairwise close \u2014 extend so opening one closes the rest, to avoid a very long scroll).\n- Every tappable row >= 44px min-height. No horizontal scroll at 320px.\n\n## i18n \u2014 add these keys under 'nav' in ALL 4 files (messages/en.json, ar.json, ru.json, zh.json)\nFor ar/ru/zh use the SAME English string as placeholder (human translator refines later) \u2014 build must pass with all 4 files having every key. ADD (do NOT add 'guides' \u2014 it already exists):\nmegaBuyByType:'By Type', megaBuyAreas:'Popular Areas', megaBuyBudget:'Browse By Budget', megaBuyCtaAll:'Browse all properties for sale', megaRentByType:'By Type', megaRentAreas:'Popular Areas', megaRentCtaAll:'Browse all rentals', megaOffPlanByType:'By Type', megaOffPlanBrowse:'Browse', megaOffPlanCtaAll:'View all off-plan projects', megaGuidesInvestment:'Investment Guides', megaGuidesHow:'How It Works', megaGuidesCtaAll:'All guides & insights', megaServicesForBuyers:'For Buyers', megaServicesForSellers:'For Sellers', megaServicesCtaAll:'All services'.\nNote: t('services'), t('about'), t('contact') keys already exist \u2014 reuse them.\n\n## CONSTRAINTS / GOTCHAS\n- Keep `Link from next/link` as-is (already imported, acceptable in this file per PROJECT_CONTEXT). All router hooks stay from @/navigation. Continue using the existing handleNav(href) pattern for navigation so router.push goes through @/navigation.\n- TypeScript strict: no `any`. Type the new menu data arrays explicitly (e.g. a typed array of {label, href}, columns as arrays of such). `npx tsc --noEmit` MUST pass.\n- ESLint i18next/no-literal-string: do NOT hardcode visible UI strings \u2014 column headers and CTA labels must go through t(). The link LABELS (Apartments, Dubai Marina, etc.) are many; follow whatever the existing insightsNav/moreNav items do \u2014 those use t() per label. Add per-link i18n keys IF the existing arrays do (check messages/en.json for keys like 'apartments','villas','dubaiMarina'); if such keys do not already exist, prefer adding them under 'nav' for all 4 locales rather than hardcoding, to avoid breaking the lint-gated Vercel build. Confirm by grepping messages/en.json before deciding. This is the single most likely build-breaker \u2014 verify it.\n- Do NOT introduce new fixed/floating elements. Panels are absolute within their relative wrapper only.\n- Hover intent: preserve the pt-2 bridge on the panel wrapper so diagonal cursor movement from trigger into panel does not close it (the existing Insights dropdown already does this \u2014 copy it).\n- Do not break the existing right cluster (currency, language, phone, bell, favorites, UserMenu) or the mobile account card / contact actions \u2014 those are out of scope, leave untouched.\n\n## ONE-LINE FIX REQUIRED (iter 4 only)\nQA confirmed a single remaining bug: the Services wrapper div currently has `className=\"relative\"`. Change it to `className=\"hidden xl:flex relative\"`. This hides Services from the desktop nav at lg (1024\u20131279px) where the AED button physically blocks it, keeping it accessible at xl (1280px+) and in the mobile accordion. This is identical to the pattern used for 'List Your Property'. Do NOT change anything else \u2014 all other menu panels pass QA.\n\n## ACCEPTANCE CRITERIA\n1. `npx tsc --noEmit` passes; `npm run build` (or next lint) passes with no i18next/no-literal-string violations and no missing-key errors across all 4 locales.\n2. Desktop: hovering Buy shows a 3-column panel; Rent/Off-Plan/Guides show 2-column panels; Insights shows Pulse/Communities/News; Services shows at xl+ (hidden at lg); only one panel open at a time; chevrons rotate; panels match the existing glass style; clicking a tab still navigates to its base route; every link navigates to the correct href listed above.\n3. Insights dropdown now shows exactly Pulse, Communities, News.\n4. Mobile: each section is an accordion that expands to show all its links (flattened) + CTA; 44px tap targets; no horizontal scroll at 320px and 390px; Services accessible in mobile accordion.\n5. No console errors; no panel gets stuck open; no overlap with the right cluster.\n\n## DEMO PATH\n1. Load home page on desktop (>=1280px). 2. Hover 'Buy' in the navbar \u2192 3-column mega panel appears with By Type / Popular Areas / Browse By Budget + 'Browse all properties for sale \u2192' CTA. 3. Move cursor to 'Rent' \u2192 Buy panel closes, Rent 2-col panel opens. 4. Click 'Apartments' under Buy \u2192 lands on /apartments. 5. Hover 'Guides' (new tab) \u2192 Investment Guides / How It Works panel. 6. Hover 'Services' (at xl+) \u2192 For Buyers / For Sellers + About/Contact CTA row. 7. Resize to 375px, open hamburger \u2192 tap 'Buy' accordion \u2192 all buy links expand indented; tap a link \u2192 navigates and menu closes. 8. In mobile menu, tap 'Services' accordion \u2192 For Buyers / For Sellers links visible."
+      "spec": "Add Vietnamese (vi) as a complete, first-class locale across the entire site. This mirrors exactly how ru/zh/ar were added (see git log: commits 97953d44, 0fb4a4bd, 90fe0028, 4bc035b0). The bar: a Vietnamese visitor on /vi/apartments, /vi/buy, /vi/off-plan/abu-dhabi, /vi/golden-visa etc. sees fully Vietnamese content with NO English fallback leaking through, the navbar language switcher offers Tiếng Việt 🇻🇳, and `npx tsc --noEmit` + `npm run build` both pass.\n\n=== Why this will be good ===\nProduction-ready means PARITY with the four existing locales, not a half-add. Three distinct translation surfaces exist in this codebase and ALL THREE must get vi or the page is half-English: (A) messages/*.json next-intl dictionaries, (B) per-page locale-keyed CONTENT/LABELS object maps, (C) inline `locale === \"ru\" ? ... : \"ar\" ? ... : <english>` ternary chains in SEO pages. Surface C is the trap: a missing vi branch does NOT break the build — it silently falls through to the English string. So 'build passes' is necessary but NOT sufficient; the acceptance test is visual Vietnamese on the demo pages. Benchmark: how a top global product (Airbnb, Booking.com) ships a new language — every visible string localized, nothing left in English by accident.\n\n=== EXACT FILE SURFACE (audited iter 1 — this is the complete list) ===\n\n--- 1. Core i18n config ---\n- src/i18n/routing.ts (line 8): add \"vi\" to `locales: [\"en\",\"ru\",\"zh\",\"ar\"]` → `[\"en\",\"ru\",\"zh\",\"ar\",\"vi\"]`. Also widen the `defaultLocale` cast type union to include \"vi\".\n- src/i18n/request.ts: NO CHANGE — it imports messages/${locale}.json dynamically and validates against routing.locales. Adding vi to routing + creating messages/vi.json is sufficient.\n- src/middleware.ts: `LOCALE_PREFIX_REGEX = /^\\/(ru|zh|ar)(\\/|$)/` → add vi → `/^\\/(ru|zh|ar|vi)(\\/|$)/`. (createMiddleware(routing) auto-picks up vi from routing; the manual regex must be widened too or vi-prefix detection in the cookie/redirect logic misbehaves.)\n- next.config.ts (lines ~47 and ~57): two rewrite rules use `source: \"/:locale(ar|ru|zh)/...\"`. Add vi to BOTH regex groups → `(ar|ru|zh|vi)`. Without this, /vi/buy-property-in-dubai-marina and /vi/buying-property-in-dubai-as-X do not rewrite and 404.\n\n--- 2. Navbar language switcher ---\n- src/components/Navbar.tsx (LANGUAGES_LIST, ~line 19-23): add `{ code: \"vi\", label: \"Tiếng Việt\", flag: \"🇻🇳\" }` after the ar entry. Match the existing object shape exactly.\n\n--- 3. SEO / sitemap / canonical helpers ---\n- src/lib/site.ts: (a) `OG_LOCALE` Record (~line 14-15): add `vi: \"vi_VN\"`. (b) `altLangs()` returned object (~line 22-27): add `vi: \"${AE_URL}/vi${path}\"`. `canonical()` needs no change — its fallback branch `return ${AE_URL}/${locale}${path}` already handles vi.\n- src/app/sitemap.ts: `alternates.languages` object (~line 56-60): add `vi: localeAlt(AE_URL, \"vi\", path)` alongside ar/zh. (Russian stays cross-domain; vi follows the ar/zh same-domain pattern.)\n\n--- 4. messages/vi.json (THE BIG ONE) ---\n- Create messages/vi.json as a COMPLETE Vietnamese translation of EVERY key in messages/en.json. en.json has ~2561 leaf keys across 70+ namespaces (nav, common, home, search, offPlan, rent, buy, valuation, contact, footer, lang, about, signIn, ..., pulseDaily). next-intl throws a BUILD ERROR if any key present in en.json is missing in vi.json. Requirements: (1) translate to natural Vietnamese (Tiếng Việt), not machine word-salad; real estate terms — căn hộ (apartment), biệt thự (villa), nhà phố (townhouse), penthouse stays penthouse, off-plan → 'dự án hình thành trong tương lai' or keep 'off-plan' where it's a proper UI label matching other locales' treatment; (2) preserve ALL interpolation placeholders exactly: `{count}`, `{name}`, `{price}`, ICU plurals, and any HTML/markup tokens — do not translate or reorder placeholder names; (3) keep brand names untranslated (Binayah, Dubai, Abu Dhabi, Aldar, DLD); (4) the `lang` namespace 'Tiếng Việt' self-label and the nav/common high-traffic namespaces matter most for the demo path — get those perfect. Easiest reliable method: load en.json, walk every leaf, translate value-by-value preserving structure and placeholders, write valid JSON. Validate: `node -e \"const e=require('./messages/en.json'),v=require('./messages/vi.json');const f=(o,p='')=>Object.entries(o).flatMap(([k,x])=>x&&typeof x==='object'?f(x,p+k+'.'):[p+k]);const ek=new Set(f(e)),vk=new Set(f(v));const missing=[...ek].filter(k=>!vk.has(k));console.log('missing in vi:',missing.length,missing.slice(0,20))\"` MUST print `missing in vi: 0`.\n\n--- 5. property-type-pages.ts ---\n- src/lib/property-type-pages.ts: locale-keyed map covering all 7 property types. Add a `vi` entry mirroring the existing `ru`/`ar`/`zh` entries — same keys, Vietnamese values. This drives /vi/apartments (THE DEMO PATH), /vi/villas, /vi/townhouses, /vi/penthouses, etc.\n\n--- 6. Per-page locale-keyed CONTENT/LABELS object maps (add a `vi:` block mirroring `ru:`/`ar:`/`zh:` in each) ---\nThese files have explicit `en:{} ru:{} ar:{} zh:{}` object maps — add a parallel `vi:{}` with the SAME inner keys:\n  - src/app/[locale]/golden-visa/page.tsx\n  - src/app/[locale]/sell/page.tsx\n  - src/app/[locale]/buy-with-crypto/page.tsx\n  - src/app/[locale]/rent/page.tsx\n  - src/app/[locale]/buy/page.tsx\n  - src/app/[locale]/mortgage/page.tsx\n  - src/app/[locale]/off-plan/page.tsx\n  - src/app/[locale]/off-plan/top-projects/page.tsx\n  - src/app/[locale]/buy-property-in/[community]/page.tsx  (LABELS map — task item 7)\n  - src/app/[locale]/buying-property-in-dubai-as/[citizen]/page.tsx\n  - src/app/[locale]/hudayriyat-island/page.tsx  (LABELS map — task item 9)\n  - src/app/[locale]/pulse/calculator/page.tsx\n  - src/app/[locale]/pulse/compare/page.tsx\n  - src/app/[locale]/pulse/trending/page.tsx\n  - src/app/[locale]/services/property-management/page.tsx\nGOTCHA: if any of these maps is accessed as `MAP[locale]` without a fallback, a missing vi key = runtime undefined crash. If accessed as `MAP[locale] ?? MAP.en`, missing vi = silent English. Either way, ADD the vi block — do not rely on fallbacks.\n\n--- 7. Inline ternary-chain SEO pages (add a `locale === \"vi\" ? \"...\"` branch BEFORE the trailing English fallback in EVERY ternary) ---\nThese pages build SEO copy (title/description/breadcrumbs/body) with `locale === \"ru\" ? X : locale === \"ar\" ? Y : locale === \"zh\" ? Z : <ENGLISH>`. The trailing English is the fallback, so a missing vi branch compiles fine but renders ENGLISH to Vietnamese users. Add `: locale === \"vi\" ? \"<vietnamese>\"` immediately before each final English fallback, for every such ternary in:\n  - src/app/[locale]/off-plan/abu-dhabi/page.tsx  (task item 8)\n  - src/app/[locale]/off-plan/ras-al-khaimah/page.tsx  (task item 8)\n  - src/app/[locale]/off-plan/sharjah/page.tsx  (task item 8)\n  - src/app/[locale]/real-estate-marketing/page.tsx\n  - src/app/[locale]/pulse/guides/[slug]/page.tsx\n  - (the buy/rent/sell/off-plan/golden-visa/buy-with-crypto/mortgage/buying-property-in-dubai-as/top-projects pages from item 6 ALSO contain ternary chains in their generateMetadata — cover those too)\nThis is the surface most likely to be under-done. Grep your own work before finishing: `grep -rn 'locale === \"ar\"' src/app --include=\"*.tsx\" | grep -v 'locale === \"vi\"'` should reveal each ternary chain still lacking a vi branch — work through them.\n\n--- 8. generateStaticParams locale arrays ---\nOnly 3 files have generateStaticParams with a hardcoded locale array. Add \"vi\":\n  - src/app/[locale]/pulse/guides/[slug]/page.tsx\n  - src/app/[locale]/buying-property-in-dubai-as/[citizen]/page.tsx\n  - src/app/[locale]/buy-property-in/[community]/page.tsx\nIf any other generateStaticParams derives locales from routing.locales, it auto-includes vi (no change). Confirm by grepping the array literal in each.\n\n=== Interaction matrix ===\n- routing.ts locales × middleware LOCALE_PREFIX_REGEX → both must list vi or cookie/redirect logic and createMiddleware disagree on what's a valid prefix.\n- routing.ts locales × next.config rewrite regex (ar|ru|zh) → community + citizen vanity URLs 404 under /vi if regex not widened.\n- messages/vi.json × next-intl request.ts → any missing key = hard build failure (this is the safety net that catches surface A gaps).\n- localePrefix \"as-needed\" + defaultLocale en × vi → vi is NEVER the default, so it ALWAYS renders as /vi/... — demo path /vi/apartments is correct. Do NOT add vi to any 'default locale unprefixed' special-case.\n- site.ts altLangs/OG_LOCALE × sitemap alternates → keep in sync; both emit hreflang. Mismatch = SEO inconsistency but not a build break.\n- NEXT_DEFAULT_LOCALE=ru (binayah.ru VPS) × vi → unaffected; vi is not default anywhere. Do not touch the ru default logic.\n\n=== Edge cases ===\n- Empty state: a key untranslated in vi.json → build error (caught by validation script). A missing ternary vi branch → English shows (caught by grep). A missing CONTENT vi block → English-or-crash (caught by visual QA).\n- RTL: vi is LTR (like en/ru/zh) — do NOT add vi to the `dir=\"rtl\"` / `isRtl` checks (those are ar-only). Confirm vi pages render dir=ltr.\n- Placeholder integrity: any `{count}`/`{name}` mangled in vi.json → runtime ICU error on that string. Preserve exactly.\n\n=== Acceptance criteria (user-visible) ===\n1. `npx tsc --noEmit` passes. `npm run build` passes (this proves messages/vi.json has full key parity).\n2. Navbar language switcher shows 'Tiếng Việt' with 🇻🇳 and switching to it navigates to the /vi/... prefixed URL via router.replace (the existing @/navigation switcher — no new code path).\n3. DEMO PATH: /vi/apartments renders in Vietnamese (hero, headings, body copy — Vietnamese, not English).\n4. Spot-check /vi/buy, /vi/off-plan/abu-dhabi, /vi/golden-visa, /vi/mortgage, /vi/hudayriyat-island — all show Vietnamese, no English fallback leaking in main content.\n5. `grep -rn 'locale === \"ar\"' src/app --include=\"*.tsx\" | grep -v 'locale === \"vi\"'` returns nothing meaningful (every ternary chain has a vi branch).\n6. Validation script prints `missing in vi: 0`.\n7. No regression: en/ru/ar/zh pages unchanged; ar still RTL.\n\nFILES TO TOUCH (scope boundary — do not modify others): src/i18n/routing.ts, src/middleware.ts, next.config.ts, src/components/Navbar.tsx, src/lib/site.ts, src/app/sitemap.ts, messages/vi.json (NEW), src/lib/property-type-pages.ts, and the page.tsx files enumerated in items 6, 7, 8. Do NOT change src/i18n/request.ts. Do NOT introduce new UI components or restyle anything — this is locale data only."
     }
   ],
   "currentStage": 1,
   "totalStages": 1,
-  "stageIteration": 4,
+  "stageIteration": 1,
   "maxIterationsPerStage": 3,
-  "phase": "done",
+  "phase": "dev",
   "plannerOutput": {
-    "taskSummary": "Add mega menu dropdowns to all primary navbar tabs in Navbar.tsx",
-    "confirmedScope": "Replace plain Buy/Rent/Off-Plan links and simple Insights/More dropdowns with multi-column mega menus matching dark-glass navbar aesthetic. Add new Guides tab. Desktop: hover mega panels. Mobile: nested accordion. All links must actually exist in the app. No breaking existing functionality.",
+    "taskSummary": "Add Vietnamese (vi) locale to the entire Binayah Properties Next.js site",
+    "confirmedScope": "1. Add vi to locales config (next.config, middleware, i18n/navigation). 2. Create messages/vi.json with full translations of all namespaces from en.json. 3. Add Vietnamese flag+label to Navbar language switcher. 4. Add vi to all generateStaticParams locale arrays across src/app. 5. Add vi entries to property-type-pages.ts for all 7 property types. 6. Add vi to CONTENT objects in buy/rent/sell/off-plan/mortgage/golden-visa etc pages. 7. Add vi to buy-communities page locale list if applicable.",
     "totalStages": 1,
-    "gotchas": [
-      "Navbar uses i18n via next-intl \u2014 new keys needed in all 4 locale files (en/ar/ru/zh)",
-      "next/link must come from @/navigation not next/link directly",
-      "group-hover pattern already used for Services/Off-Plan \u2014 reuse it",
-      "Mobile accordion already implemented for some tabs \u2014 follow same pattern"
-    ],
+    "gotchas": ["messages/vi.json must cover ALL keys in en.json or next-intl throws at build time", "All generateStaticParams must include vi or those pages 404 on /vi/", "Navigation must use @/navigation wrappers not next/link directly", "NEXT_DEFAULT_LOCALE should remain ru for binayah.ru deploy"],
     "skippedPlanner": true
   },
-  "plan": "One-line fix only: on the Services wrapper div in src/components/Navbar.tsx, change className=\"relative\" to className=\"hidden xl:flex relative\". This hides Services at lg (1024\u20131279px) where the AED button blocks it, keeping it accessible at xl+ and in mobile. No other changes needed \u2014 all other panels pass QA.",
-  "diff": "commit 846007564e7dead257b71f0a8bc36d492c26d455\nAuthor: anna-Prosper <anna@prosper-fi.com>\nDate:   Tue Jun 9 13:17:51 2026 +0700\n\n    Fix design-token violations in DailyClient: canonical gold + green bar colors\n    \n    - Leaderboard gold gradient: replace unlisted stops (#B8860B,#D4A847,#E8C97A)\n      with canonical linear-gradient(to right, #D4A847, #B8922F)\n    - Property-type bar: replace unlisted #2FA876 endpoint with solid #1A7A5A\n    \n    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\ndiff --git a/src/app/[locale]/pulse/daily/DailyClient.tsx b/src/app/[locale]/pulse/daily/DailyClient.tsx\nindex 5cc1f868..56f0ec34 100644\n--- a/src/app/[locale]/pulse/daily/DailyClient.tsx\n+++ b/src/app/[locale]/pulse/daily/DailyClient.tsx\n@@ -403,7 +403,7 @@ function Leaderboard({ data, t }: { data: DailyData; t: T }) {\n                     viewport={{ once: true }}\n                     transition={{ duration: 0.7, ease: \"easeOut\", delay: i * 0.06 }}\n                     className=\"h-full rounded-full\"\n-                    style={{ background: \"linear-gradient(90deg, #B8860B, #D4A847, #E8C97A)\" }}\n+                    style={{ background: \"linear-gradient(to right, #D4A847, #B8922F)\" }}\n                   />\n                 </div>\n               </div>\n@@ -478,7 +478,7 @@ function MixRow({ label, count, value, pct, index, t }: {\n             viewport={{ once: true }}\n             transition={{ duration: 0.6, ease: \"easeOut\", delay: index * 0.05 }}\n             className=\"h-full rounded-full\"\n-            style={{ background: \"linear-gradient(90deg, #1A7A5A, #2FA876)\" }}\n+            style={{ background: \"#1A7A5A\" }}\n           />\n         </div>\n       </div>\n",
-  "devReport": {
-    "commitSha": "84600756",
-    "apiCommitSha": "e03a75d",
-    "filesChanged": [
-      "src/app/[locale]/pulse/daily/page.tsx",
-      "src/app/[locale]/pulse/daily/DailyClient.tsx",
-      "src/components/PulseEmirateNav.tsx",
-      "messages/en.json",
-      "messages/ar.json",
-      "messages/ru.json",
-      "messages/zh.json",
-      "(binayah-api) src/routes/dld.ts"
-    ],
-    "summary": "Fix two design-token violations in DailyClient.tsx: leaderboard gold gradient -> canonical linear-gradient(to right, #D4A847, #B8922F); property-type bar -> solid #1A7A5A (removes unlisted #2FA876 stop).",
-    "fixtureVerified": true,
-    "blocker": null,
-    "designBrief": {
-      "direction": "Bloomberg-terminal daily market briefing with Dubai-luxury restraint \u2014 numbers headline on calm sand-white canvas, one green hero band, gold reserved for leaderboard + eyebrows",
-      "hero": "Verbatim pulse green gradient linear-gradient(135deg,#0B3D2E,#1A7A5A), CalendarDays gold eyebrow, human date, translucent honesty pill \"Sales only \u2014 source: Dubai Land Department\"",
-      "cards": "4 light bg-card rounded-2xl headline tiles (Sales Transactions green/primary variant, Total Value, Median PPSF w/ avg footnote, Off-plan Share) with count-up + delta chips; mirrors trending StatCard",
-      "interactions": "Count-up on mount (ease-out cubic), animated 0->width bars, staggered leaderboard rows 60ms, prev/next date arrows + native date input (next disabled on today), client refetch keeps prior data on error",
-      "copy": "Honest sales-only framing, \"Where Dubai Bought Today\", warm empty-day card \"DLD hasn\u2019t published [date]\u2019s sales yet\"",
-      "benchmark": "Stripe Dashboard daily-volume cards + Linear stat tiles + existing /pulse/trending sibling layout"
-    },
-    "selfGrade": [
-      {
-        "action": "API: add prevDay/medianPpsf/byPropertyType/byBedrooms to /daily",
-        "done": true,
-        "evidence": "dld.ts +110 lines; live endpoint returns all 4 keys (verified curl: medianPpsf 18164 < avgPpsf 20832, prevDay 2026-06-08, 6 types, 7 bedroom buckets)"
-      },
-      {
-        "action": "Hero verbatim green gradient + human date + source pill",
-        "done": true,
-        "evidence": "page.tsx hero uses linear-gradient(135deg,#0B3D2E,#1A7A5A) + sourcePill"
-      },
-      {
-        "action": "4 headline tiles, Sales Transactions label (NOT Total), median headline, avg footnote",
-        "done": true,
-        "evidence": "DailyClient HeadlineTiles; grep confirms no \"Total Transactions\" label; avgPpsfFootnote present"
-      },
-      {
-        "action": "Off-plan/Ready split bar animated",
-        "done": true,
-        "evidence": "SplitBar component, two animated segments green/neutral"
-      },
-      {
-        "action": "Gold leaderboard Where Dubai Bought Today",
-        "done": true,
-        "evidence": "Leaderboard component, gold gradient bars staggered 0.06s/row"
-      },
-      {
-        "action": "Property type + bedroom mix neutral/green bars",
-        "done": true,
-        "evidence": "MixSection lg:grid-cols-2, green bars (not gold), null->Studio"
-      },
-      {
-        "action": "Date controls prev/next + input, next disabled on today",
-        "done": true,
-        "evidence": "goPrev/goNext, isToday disables next button + caps date input at max=today"
-      },
-      {
-        "action": "Empty-day warm card + View yesterday button",
-        "done": true,
-        "evidence": "EmptyDay component, totalTransactions===0 trigger"
-      },
-      {
-        "action": "Daily tab in PulseEmirateNav",
-        "done": true,
-        "evidence": "NAV_ITEMS daily entry + CalendarDays icon + typed union updated"
-      },
-      {
-        "action": "i18n in all 4 locales",
-        "done": true,
-        "evidence": "pulseDaily namespace + pulseEmirateNav.daily added to en/ar/ru/zh; build passes no missing-key errors"
-      },
-      {
-        "action": "tsc + build pass",
-        "done": true,
-        "evidence": "tsc --noEmit clean both repos; npm run build emits full route table incl /pulse/daily, no errors"
-      }
-    ],
-    "unverifiedClaims": [
-      {
-        "claim": "Live page visual render / count-up / date-switching / empty-state",
-        "reason": "staging.binayahhub.com returns 401 (Vercel deployment protection) \u2014 browser interactions are QA-owned via Playwright with auth"
-      },
-      {
-        "claim": "Empty-day card appears for dates with zero sales",
-        "reason": "Current/recent dates all have data; empty branch is code-correct but not exercised against a genuinely empty DLD day"
-      }
-    ],
-    "contextGapsNote": "DESIGN_SYSTEM.md canonical gold gradient is linear-gradient(to right, #D4A847, #B8922F); canonical green bar color is solid #1A7A5A (no gradient endpoint #2FA876 exists in system)"
-  },
-  "reviewerReport": {
-    "passed": true,
-    "findings": [],
-    "summary": "Both prior major findings confirmed resolved: leaderboard bar is now linear-gradient(to right, #D4A847, #B8922F) (line 406); property-type bar is now solid #1A7A5A (line 481). No new issues introduced."
-  },
-  "qaReport": {
-    "passed": true,
-    "tested": [
-      "/pulse/daily page load and hero (1440px)",
-      "PulseEmirateNav Daily tab active state",
-      "4 headline tiles (Sales Transactions, Total Value, Median PPSF, Off-plan Share)",
-      "Delta chips (% change vs yesterday, no NaN/Infinity)",
-      "Off-plan vs Ready split bar",
-      "Gold leaderboard Where Dubai Bought Today",
-      "Property type + bedroom mix sections",
-      "Prev button navigation (changes date)",
-      "Next button disabled on today",
-      "Empty state (zero transactions -> warm card, NOT zeroed tiles)",
-      "Mobile viewport 390x844 (no horizontal scroll)",
-      "Design token compliance (gold gradient, green bar colors)"
-    ],
-    "behavioralChecks": [
-      {
-        "specItem": "1",
-        "method": "behavioral",
-        "verified": "Navigated to http://localhost:3000/en/pulse/daily \u2014 page returns 200, H1 = 'What Dubai Bought Today', title = 'Daily Sales Report | Dubai Pulse | Binayah Properties'. Hero renders with linear-gradient(135deg,#0B3D2E,#1A7A5A) confirmed via computed style."
-      },
-      {
-        "specItem": "2",
-        "method": "behavioral",
-        "verified": "PulseEmirateNav Daily link has aria-current='page', border-color:#D4A847 (gold underline), text-foreground class \u2014 active state confirmed. Other tabs show text-muted-foreground and border-transparent."
-      },
-      {
-        "specItem": "3",
-        "method": "behavioral",
-        "verified": "Tile label 'Sales Transactions' is visible. 'Total Transactions' only appears in the JSON bundle (pulseTrending namespace), not as a visible UI label. No tile is labeled 'Total Transactions'."
-      },
-      {
-        "specItem": "4",
-        "method": "behavioral",
-        "verified": "All 4 tiles visible: Sales Transactions (green accent variant, 253), Total Value (AED 673.4M), Median Price/sqft (AED 18,164, with avg footnote AED 20,832), Off-plan Share (67%). Delta chips show -33.8%, -30.6%, +1.1pp vs yesterday \u2014 no NaN or Infinity found."
-      },
-      {
-        "specItem": "5",
-        "method": "behavioral",
-        "verified": "Leaderboard 'Where Dubai Bought Today' renders with 5 rows (Madinat Al Mataar, Al Hebiah Fifth, MEYDAN ONE, Al Thanyah Fifth, Business Bay). Bars use linear-gradient(to right, #D4A847, #B8922F) \u2014 canonical gold gradient confirmed."
-      },
-      {
-        "specItem": "6",
-        "method": "behavioral",
-        "verified": "By Property Type section visible (Flat, Villa, Residential, Office, Hotel Apartment). Bedroom mix visible (Studio, 1 BR, 2 BR, 3 BR). Both in lg:grid-cols-2 layout. Green bars confirmed solid #1A7A5A."
-      },
-      {
-        "specItem": "7",
-        "method": "behavioral",
-        "verified": "Clicked prev button (aria-label='Previous day') \u2014 date changed from 2026-06-09 to 2026-06-08. Next button (aria-label='Next day') has disabled=true when activeDate >= today. Date input has max=today."
-      },
-      {
-        "specItem": "8",
-        "method": "behavioral",
-        "verified": "Intercepted external API to return totalTransactions:0. Clicked prev button. EmptyDay card appeared with 'No sales published yet', warm DLD copy, and 'View yesterday's report' green button. Tiles hidden. NOT zeroed."
-      },
-      {
-        "specItem": "9",
-        "method": "behavioral",
-        "verified": "Mobile 390x844: no horizontal scroll (scrollWidth===clientWidth===390). Hero, Daily tab (active), tiles all render. Prev/next buttons are 40x40 (below 44px spec \u2014 see minor bug). Footer visible."
-      },
-      {
-        "specItem": "10",
-        "method": "behavioral",
-        "verified": "Delta chips show formatted values (-33.8%vs yesterday, -30.6%vs yesterday, +1.1ppvs yesterday). No NaN or Infinity in page content. delta() function guards against prev===0 and non-finite values."
-      }
-    ],
-    "bugs": [
-      {
-        "severity": "minor",
-        "category": "functional",
-        "principle": null,
-        "description": "Prev/Next day navigation buttons are 40x40px on mobile, below the 44px minimum tap target specified in the plan",
-        "reproSteps": "1. View /pulse/daily on 390px mobile viewport. 2. Inspect prev/next day buttons.",
-        "expected": "Buttons min-h-[44px] min-w-[44px] per mobile rules",
-        "actual": "Buttons are h-10 w-10 (40x40px)",
-        "file": "src/app/[locale]/pulse/daily/DailyClient.tsx",
-        "fixedInline": false,
-        "commitSha": null
-      },
-      {
-        "severity": "env",
-        "category": "functional",
-        "principle": null,
-        "description": "Nonce hydration mismatch (pre-existing, env): SSR nonce != client nonce due to sandbox isolation",
-        "reproSteps": "Load any page in the sandbox",
-        "expected": "Nonces match SSR vs client",
-        "actual": "Hydration warning logged (pre-existing from commit 1263b571)",
-        "file": null,
-        "fixedInline": false,
-        "commitSha": null
-      },
-      {
-        "severity": "env",
-        "category": "functional",
-        "principle": null,
-        "description": "CSP blocks va.vercel-scripts.com in dev environment (pre-existing, not blocking prod)",
-        "reproSteps": "Load any page in the sandbox",
-        "expected": "Vercel analytics scripts load",
-        "actual": "Blocked by CSP in dev (pre-existing)",
-        "file": null,
-        "fixedInline": false,
-        "commitSha": null
-      }
-    ],
-    "designChecked": true,
-    "designSkipReason": null,
-    "benchmarkScores": [
-      {
-        "surface": "/pulse/daily hero + 4 tiles",
-        "rating": "AT BAR",
-        "comparedTo": "Stripe Dashboard daily-volume cards \u2014 big number hero per card, muted label above, delta chip below; brief benchmark matched"
-      },
-      {
-        "surface": "/pulse/daily gold leaderboard",
-        "rating": "AT BAR",
-        "comparedTo": "Linear stat tiles \u2014 staggered animated bars, gold restricted to leaderboard only, canonical gradient verified"
-      },
-      {
-        "surface": "/pulse/daily empty state",
-        "rating": "AT BAR",
-        "comparedTo": "Warm copy pattern (not 'No results') \u2014 'DLD hasn't published X's sales yet' is specific and honest"
-      }
-    ],
-    "consoleErrors": [
-      "Hydration mismatch: nonce attribute SSR vs client (pre-existing, env)",
-      "CSP violation: va.vercel-scripts.com blocked (pre-existing, env)"
-    ],
-    "screenshots": [
-      "/tmp/daily-page-desktop.png",
-      "/tmp/daily-mobile-390.png",
-      "/tmp/daily-desktop-1440.png"
-    ],
-    "regressions": [],
-    "viewportsTested": [
-      "desktop-1440x900",
-      "mobile-390x844"
-    ],
-    "blocker": null
-  },
-  "liveTestReport": {
-    "passed": true,
-    "stagingUrl": "https://binayah-web-new.vercel.app",
-    "note": "staging.binayahhub.com alias still points to older deployment (binayah-web-lii853475). Tested against binayah-web-new.vercel.app which is verified as commit df262933 (latest, includes daily page + tap-target fix). Both the user-supplied preview URL https://binayah-web-g8xg97nj5-prosper3.vercel.app and binayah-web-new.vercel.app return 401 directly; binayah-web-new.vercel.app redirects 301 -> 200 (accessible). All 7 acceptance items confirmed against commit df262933.",
-    "pagesChecked": [
-      "/en/pulse/daily",
-      "/"
-    ],
-    "behavioralChecks": [
-      {
-        "specItem": "1 (Page loads 200)",
-        "method": "behavioral",
-        "verified": "GET https://binayah-web-new.vercel.app/en/pulse/daily returns 200. Final URL is /pulse/daily (locale redirect). Title: 'Daily Sales Report | Dubai Pulse | Binayah Properties'. H1: 'What Dubai Bought Today'. No error page."
-      },
-      {
-        "specItem": "2 (Hero band green gradient)",
-        "method": "behavioral",
-        "verified": "Hero <section> at top:51 height:402 has computedStyle backgroundImage = linear-gradient(135deg, rgb(11, 61, 46), rgb(26, 122, 90)) \u2014 exact match to spec #0B3D2E -> #1A7A5A. Screenshot confirms dark green band fills full viewport width above the fold. 'Sales only \u2014 source: Dubai Land Department' pill visible."
-      },
-      {
-        "specItem": "3 (Sales Transactions headline, not Total Transactions)",
-        "method": "behavioral",
-        "verified": "page.getByText('Sales Transactions').isVisible() = true. page.getByText('Total Transactions').all() returned 0 visible DOM elements \u2014 the string appears only in the JS bundle, not as any rendered label. Tile 1 label is confirmed 'Sales Transactions'."
-      },
-      {
-        "specItem": "4 (Tiles show numbers, not NaN or zeroed)",
-        "method": "behavioral",
-        "verified": "All 4 tiles render real data: Sales Transactions=253 (visible), Total Value=AED 673.4M (visible), Median Price/sqft=AED 18,164 (visible), Off-plan Share=67% (visible). Delta chips: -33.8%vs yesterday, -30.6%vs yesterday, +1.1ppvs yesterday. No NaN found anywhere on the page."
-      },
-      {
-        "specItem": "5 (Gold area leaderboard visible)",
-        "method": "behavioral",
-        "verified": "'Where Dubai Bought Today' leaderboard section found in page text. 8 gold gradient bar elements detected (style: linear-gradient(to right, #D4A847, #B8922F) via DOM query) \u2014 canonical gold confirmed. Leaderboard rows staggered and present."
-      },
-      {
-        "specItem": "6 (PulseEmirateNav has Daily tab)",
-        "method": "behavioral",
-        "verified": "PulseEmirateNav links found: Overview, Daily, Trending, Compare, Calculator, Guides, Dubai. 'Daily' link at /en/pulse/daily has aria-current='page' (active state). All other tabs have aria-current=null. Tab is visible=true."
-      },
-      {
-        "specItem": "7 (No console errors from this feature)",
-        "method": "behavioral",
-        "verified": "Zero console errors captured across the full page load and networkidle on /en/pulse/daily. No CORS errors, no 404s on API calls, no uncaught promise rejections. No HTTP 400+ responses observed. Pre-existing nonce/CSP errors from prior commits also absent on live staging."
-      }
-    ],
-    "consoleErrors": [],
-    "bugs": [],
-    "screenshots": [
-      "/tmp/live-daily-desktop-1440.png",
-      "/tmp/live-daily-pulse-nav.png"
-    ],
-    "blocker": null
-  },
-  "pmDecision": "ship",
-  "escalateNextDevToOpus": false,
-  "summary": "auto-shipped, confidence=90",
+  "plan": "Add Vietnamese (vi) as a complete first-class locale, mirroring how ru/zh/ar were added. See stages[0].spec for the full audited file surface and acceptance criteria. CRITICAL: this codebase has THREE translation surfaces and all three need vi — (A) messages/vi.json next-intl dict [missing key = BUILD FAIL], (B) per-page locale-keyed CONTENT/LABELS object maps [add a vi: block], (C) inline `locale === \"ru\" ? .. : \"ar\" ? .. : <english>` ternary chains in SEO pages [add a vi branch before the English fallback — a missing branch silently renders English, does NOT fail the build]. Surface C is the trap; 'build passes' is necessary but NOT sufficient — the real test is visual Vietnamese on the demo pages. Work the exact file list in stages[0].spec items 1-8. Demo path: /vi/apartments must render in Vietnamese.",
+  "diff": "",
+  "devReport": null,
+  "reviewerReport": null,
+  "qaReport": null,
+  "liveTestReport": null,
+  "pmDecision": "start",
+  "summary": "Iter1 plan: add vi locale full — config (routing/middleware/next.config/site.ts/sitemap) + Navbar switcher + messages/vi.json (full ~2561-key translation) + property-type-pages.ts + ~15 CONTENT/LABELS map files + ~14 ternary-chain SEO pages + 3 generateStaticParams arrays. 1 stage, dev model opus. No env vars, no design needed.",
   "securitySensitive": false,
   "history": [],
-  "stageHistory": [
-    {
-      "stage": 1,
-      "summary": "New /pulse/daily page: DLD daily sales briefing with 4 tiles, gold leaderboard, date controls, empty state. API enhanced with medianPpsf, prevDay, byPropertyType, byBedrooms.",
-      "passedAt": "2026-06-09T06:41:42.467271Z",
-      "commitSha": "df262933"
-    }
-  ],
+  "stageHistory": [],
   "orchestratorDecisions": [],
   "dispatches": [],
-  "memoryGaps": [
-    {
-      "domain": "env",
-      "query": "What URL to use for live QA when staging.binayahhub.com returns 401",
-      "couldntFind": "checked: state.json vercelDeployUrl, .env.shared \u2014 no bypass token or alternate URL documented",
-      "discoveredOnTheFly": "staging.binayahhub.com has Vercel SSO blocking it despite being a custom domain (ssoProtection=all_except_custom_domains). Actual accessible alias for the latest deploy is binayah-web-new.vercel.app which points to the same deployment as the preview URL. Use binayah-web-new.vercel.app for headless live QA when staging.binayahhub.com is 401.",
-      "namespace": "binayah-properties"
-    },
-    {
-      "domain": "env",
-      "query": "staging.binayahhub.com alias deployment target",
-      "couldntFind": "checked: state.vercelDeployUrl \u2014 only shows staging.binayahhub.com, no indication it lags behind",
-      "discoveredOnTheFly": "staging.binayahhub.com alias points to an older deployment (binayah-web-lii853475, not the latest). The Vercel project alias binayah-web-new.vercel.app is always auto-updated to the latest READY deployment. Use Vercel API GET /v2/aliases/<alias> to verify before testing.",
-      "namespace": "binayah-properties"
-    }
+  "memoryGaps": [],
+  "contextGaps": [
+    { "section": "§1 — Routing (next-intl)", "missing": "Translation lives in THREE surfaces, not one: (A) messages/*.json next-intl dicts, (B) per-page locale-keyed CONTENT/LABELS object maps (buy/rent/sell/off-plan/mortgage/golden-visa/buy-with-crypto/buying-as-citizen/hudayriyat/community/pulse-calc/compare/trending/property-management), (C) inline `locale === \"ru\" ? .. : <english>` ternary chains in ~14 SEO pages (off-plan emirate pages, real-estate-marketing, pulse guides, and the metadata of the surface-B pages). Adding a locale = touching all three. Surface C silently falls back to English when a branch is missing — build passes anyway." },
+    { "section": "§1 — Routing (next-intl)", "missing": "Locale list is hardcoded in SEVEN places that must stay in sync: src/i18n/routing.ts (locales array), src/middleware.ts (LOCALE_PREFIX_REGEX), next.config.ts (two rewrite-rule regexes `(ar|ru|zh)`), src/lib/site.ts (OG_LOCALE + altLangs), src/app/sitemap.ts (alternates.languages), src/components/Navbar.tsx (LANGUAGES_LIST). Only 3 generateStaticParams files hardcode a locale array (pulse/guides/[slug], buying-property-in-dubai-as/[citizen], buy-property-in/[community])." },
+    { "section": "§1 — Routing (next-intl)", "missing": "src/i18n/request.ts is generic (dynamic import of messages/${locale}.json validated against routing.locales) — never needs editing when adding a locale. The next-intl build-time missing-key error is the safety net for messages/*.json parity." }
   ],
   "namespace": "binayah-properties",
   "regressionSweepDone": false,
-  "startedAt": "2026-06-08T00:00:00Z",
+  "startedAt": "2026-06-10T06:53:00Z",
   "devServerPid": null,
-  "screenshotsUsed": 2,
-  "pushedSha": "df262933",
-  "vercelDeployUrl": "https://staging.binayahhub.com",
+  "screenshotsUsed": 0,
+  "pushedSha": null,
+  "vercelDeployUrl": null,
   "testFixture": null,
-  "metricsLog": ".iterate/metrics.jsonl",
-  "flags": {
-    "noDesigner": false
-  },
-  "contextGaps": [
-    "Navbar.tsx mega-menu pattern: desktop panels use a single openOnly(which) helper to enforce one-open-at-a-time across buy/rent/offPlan/guides/services/insights; mobile uses toggleMobile(which) with functional setState updaters (v=>!v) so re-tapping the open accordion closes it while closing all siblings. The pt-2 wrapper on each AnimatePresence panel is a deliberate hover-bridge \u2014 do not remove it.",
-    "Per-nav-link i18n keys (apartments, villas, dubaiMarina, etc.) did NOT exist before this stage \u2014 they are NEW under the nav namespace as of commit d8d75fca. ar/ru/zh hold English placeholder values pending human translation.",
-    "Page route dirs confirmed to exist under src/app/[locale]/: apartments, villas, townhouses, penthouses, land-for-sale, offices, warehouses, buy-with-crypto, off-plan, construction-updates, developers, mortgage, golden-visa, valuation, buy, sell, list-your-property, real-estate-marketing, services, about, contact, buy-property-in, communities, news, pulse, pulse/guides, pulse/guides/[slug].",
-    "Navbar layout \u2014 correct structural fix (as of cfd5ed3e): use CSS grid lg:grid-cols-[auto_1fr_auto] on the inner row. This gives logo (auto), nav items (1fr), and right cluster (auto) each independent grid tracks. The right cluster CANNOT overlap the nav column because they are in separate tracks. Previous attempts using flex justify-between with flex-shrink were insufficient \u2014 whitespace-nowrap items overflow their shrunk container visually. The grid approach is the correct solution and restores all original padding/tracking values without needing responsive variants.",
-    "Mega menu panels are position:absolute children of position:relative wrappers \u2014 they paint in the page stacking context, not clipped by the 1fr grid column. Grid layout does not interfere with absolute-positioned mega menu panels.",
-    "Services wrapper fix (iter 4): change className='relative' to className='hidden xl:flex relative'. This hides Services at lg (1024\u20131279px) where the AED button physically blocks it. Services remains in mobile accordion and appears in desktop nav at xl+. Pattern is identical to 'List Your Property' (also hidden xl:flex). Do NOT change anything else.",
-    "LIVE QA finding (commit 40146a98, 2026-06-09): 'hidden xl:flex' correctly hides Services at 1279px but does NOT resolve the pointer-event overlap at 1280px. At 1280px viewport, Services wrapper is display:flex (xl breakpoint fires at exactly 1280px) but the AED button (x:720-798) still overlaps Services button center (x:700-827, center ~763). elementFromPoint(763,32) returns AED button, not Services. Services hover works at 1440px+ (Services x:780 at 1440px, clear of AED button). Root cause: Tailwind xl = min-width:1280px so the breakpoint fires at exactly 1280px, putting Services back into competition with the right cluster at that exact width. Fix options: (a) make Services visible only at 2xl or a custom breakpoint like min-width:1300px via arbitrary value, (b) reduce Services button padding/font so total width fits, (c) reorganize right cluster to give more space. The spec says 'xl+' but 1280px is the edge case where it breaks.",
-    "binayah-api lives at /Users/zoop/All home folders/Binayah/binayah-api (NOT /Users/zoop/binayah-api as CLAUDE.md table implies). Render service id srv-d7egiqkvikkc73epupp0, live at binayah-api.onrender.com.",
-    "DLD daily data shape: DldTransaction has propertyType (e.g. \"Flat\",\"Villa\",\"Residential\"), bedrooms (number|null, and 0 = studio), pricePerSqft, isOffPlan (boolean|null), amount, area, transactionType (regex /sale/i for sales). transactionDate stored as naive midnight string; /daily uses a -12h/+36h window around the Dubai-time label to catch tz drift.",
-    "medianPpsf is meaningfully lower than avgPpsf (18164 vs 20832 on 2026-06-09) because luxury sales drag the mean up \u2014 median computed in JS from sorted pricePerSqft>0 rows, not in the aggregation.",
-    "Pulse pages: client-side API calls use apiUrl() (NEXT_PUBLIC_API_URL) from @/lib/api; server components use serverApiUrl()+serverFetch(). PulseEmirateNav tab labels use the pulseEmirateNav i18n namespace, not pulse. New per-page namespaces follow the pulse<PageName> convention (pulseTrending, pulseDaily, etc.).",
-    "PulseEmirateNav t() calls cast id with an inline union literal \u2014 adding a NAV_ITEMS entry requires updating that union string too or tsc fails."
-  ],
-  "designBrief": {
-    "direction": "A daily DLD 'market briefing card' in the register of a Bloomberg Terminal morning report reimagined with Dubai-luxury restraint \u2014 numbers are the headline act on a calm sand-white canvas, with one green hero band up top and gold reserved strictly for the leaderboard and accents. The page should feel like a published report you'd trust, not an Instagram story you'd scroll past.",
-    "benchmark": {
-      "product": "Stripe Dashboard daily-volume cards + Linear clean stat tiles + existing /pulse/trending layout",
-      "whatToMatch": "Big number hero per card, muted label above, delta chip below; flat cards hairline borders; reuse trending SectionHeader + StatCard patterns and bg-card rounded-2xl tiles so page reads as trending sibling"
-    },
-    "surfaces": [
-      {
-        "name": "Hero band",
-        "decisions": [
-          "Reuse pulse hero verbatim (linear-gradient #0B3D2E->#1A7A5A)",
-          "Human date + honesty pill: 'Sales only \u2014 source: Dubai Land Department'",
-          "CalendarDays eyebrow icon + gold tracking-wide label"
-        ]
-      },
-      {
-        "name": "Headline tiles",
-        "decisions": [
-          "4 tiles: Sales Transactions (green variant), Total Value, Median PPSF, Off-plan Share",
-          "Big number + delta chip (emerald/red); count-up on mount; hidden when prevDay missing",
-          "Median PPSF is headline; avgPpsf is footnote"
-        ]
-      },
-      {
-        "name": "Off-plan/Ready proportion bar",
-        "decisions": [
-          "One h-12 bar, two labelled segments animated 0->proportion",
-          "Green=offplan, neutral=ready; SectionHeader above"
-        ]
-      },
-      {
-        "name": "Top-5 Areas leaderboard (centerpiece)",
-        "decisions": [
-          "Gold gradient horizontal bars scaled to max count",
-          "Staggered animate L->R on mount ~60ms/row",
-          "'Where Dubai Bought Today' section header"
-        ]
-      },
-      {
-        "name": "Property-type + Bedroom mix",
-        "decisions": [
-          "Two sibling blocks lg:grid-cols-2",
-          "Neutral/green bars (NOT gold)",
-          "null->Studio for bedrooms"
-        ]
-      },
-      {
-        "name": "Date controls",
-        "decisions": [
-          "Prev/next arrows + native date input",
-          "Next disabled on today",
-          "Client fetch with spinner; inline error preserves prior data"
-        ]
-      },
-      {
-        "name": "Empty day",
-        "decisions": [
-          "totalTransactions===0 -> warm card, never blank tiles",
-          "Copy: 'DLD hasn't published [date]'s sales yet \u2014 they usually post by evening Dubai time'",
-          "Green button 'View yesterday's report'"
-        ]
-      }
-    ],
-    "doNot": [
-      "Do NOT label headline 'Total Transactions' \u2014 must be 'Sales Transactions'",
-      "Do NOT use avgPpsf as headline \u2014 medianPpsf is headline",
-      "Do NOT spread gold \u2014 reserved for leaderboard bars + eyebrows only",
-      "Do NOT render NaN/+0%/Infinity% \u2014 use em dash, hide bad chips",
-      "Do NOT use dark pulse-glass panels in content area \u2014 light bg-card only"
-    ]
-  }
+  "metricsLog": ".iterate/metrics.jsonl"
 }

@@ -10,7 +10,7 @@ import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 export const revalidate = 1800;
 
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru"];
+  const locales = ["en", "ar", "zh", "ru", "vi"];
   return locales.flatMap((locale) =>
     BUY_COMMUNITIES.map((c) => ({ locale, community: c.slug }))
   );
@@ -50,6 +50,7 @@ const LABELS = {
   ru: { home: "Главная", buy: "Купить", buyIn: "Купить недвижимость в", dubai: "Дубае", priceRange: "Диапазон цен", grossYield: "Доходность", listings: "Объектов", forSale: "Недвижимость на продажу в", secondary: "ВТОРИЧНЫЙ РЫНОК" },
   ar: { home: "الرئيسية", buy: "شراء", buyIn: "شراء عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forSale: "عقارات للبيع في", secondary: "السوق الثانوي" },
   zh: { home: "首页", buy: "购买", buyIn: "购买房产 —", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产 —", secondary: "二手市场" },
+  vi: { home: "Trang chủ", buy: "Mua", buyIn: "Mua bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forSale: "Bất động sản bán tại", secondary: "THỊ TRƯỜNG THỨ CẤP" },
 } as const;
 
 export default async function BuyInCommunityPage({

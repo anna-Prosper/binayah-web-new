@@ -25,6 +25,10 @@ const translations: Record<string, { title: string; description: string }> = {
     title: "社区对比 | 迪拜脉搏 | Binayah Properties",
     description: "对比迪拜各社区和开发商的价格、收益率、交易量等指标。",
   },
+  vi: {
+    title: "So sánh khu vực | Dubai Pulse | Binayah Properties",
+    description: "So sánh các khu vực và chủ đầu tư Dubai song song về giá, lợi suất, khối lượng và hơn thế nữa.",
+  },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

@@ -226,6 +226,61 @@ const CONTENT = {
     ctaWhatsApp: "WhatsApp咨询",
     breadcrumbs: ["首页", "服务", "物业管理"],
   },
+
+  vi: {
+    metaTitle: "Quản lý bất động sản Dubai | Dịch vụ chủ nhà không phiền hà | Binayah",
+    metaDesc: "Quản lý bất động sản Dubai chuyên nghiệp: sàng lọc khách thuê, thu tiền thuê, bảo trì, EJARI và báo cáo. Giải phóng thời gian, bảo vệ khoản đầu tư của bạn. Chứng nhận RERA.",
+    heroLabel: "QUẢN LÝ BẤT ĐỘNG SẢN",
+    h1: "Dịch vụ quản lý bất động sản Dubai",
+    heroDesc: "Để Binayah xử lý mọi thứ — từ tìm khách thuê phù hợp đến bảo trì hàng tháng và thu tiền thuê. Đội ngũ được chứng nhận RERA của chúng tôi bảo vệ khoản đầu tư của bạn trong khi bạn tập trung vào điều quan trọng.",
+    heroCta: "Nhận tư vấn miễn phí",
+    stats: [
+      { n: "17+", label: "Năm quản lý bất động sản Dubai" },
+      { n: "RERA", label: "Đội ngũ quản lý được chứng nhận" },
+      { n: "95%", label: "Tỷ lệ giữ chân khách thuê" },
+      { n: "48h", label: "Thời gian phản hồi khách thuê TB" },
+    ],
+    servicesTitle: "Những gì được bao gồm",
+    services: [
+      { icon: "🏡", title: "Sàng lọc & Bố trí khách thuê", body: "Kiểm tra lý lịch, xác minh việc làm và xem xét lịch sử thuê. Chúng tôi chỉ bố trí khách thuê đáp ứng tiêu chí đánh giá nghiêm ngặt của Binayah." },
+      { icon: "💰", title: "Thu & Chuyển tiền thuê", body: "Thu tiền thuê hàng tháng, quản lý chi phiếu và chuyển tiền trực tiếp vào tài khoản của bạn. Báo cáo số đầy đủ với xác nhận thanh toán." },
+      { icon: "🔧", title: "Bảo trì & Sửa chữa", body: "Điều phối bảo trì 24/7 với mạng lưới nhà thầu đã được kiểm duyệt của chúng tôi. Kế hoạch bảo trì phòng ngừa để bảo vệ giá trị tài sản và giảm thiểu chi phí khẩn cấp." },
+      { icon: "📋", title: "EJARI & Tuân thủ pháp lý", body: "Soạn thảo hợp đồng thuê, đăng ký EJARI với Sở Đất đai Dubai và tuân thủ đầy đủ luật thuê UAE (Nghị định số 33)." },
+      { icon: "📊", title: "Báo cáo hàng tháng", body: "Bảng kê chi tiết hàng tháng bao gồm tiền thuê đã nhận, chi tiêu bảo trì và hiệu suất bất động sản. Truy cập qua cổng chủ sở hữu Binayah của bạn." },
+      { icon: "⚖️", title: "Giải quyết tranh chấp", body: "Hòa giải chuyên gia và hỗ trợ pháp lý cho tranh chấp thuê. Đội ngũ được đào tạo RERA xử lý trục xuất, đàm phán gia hạn và hồ sơ RDC." },
+    ],
+    plansTitle: "Gói quản lý",
+    plans: [
+      { name: "Tiêu chuẩn", fee: "5% / tháng", features: ["Thu tiền thuê", "Đăng ký EJARI", "Giao tiếp với khách thuê", "Điều phối bảo trì cơ bản", "Bảng kê hàng tháng"] },
+      { name: "Cao cấp", fee: "8% / tháng", features: ["Mọi thứ trong Tiêu chuẩn", "Ảnh chuyên nghiệp + niêm yết", "Sàng lọc & bố trí khách thuê", "Phản hồi bảo trì 24/7", "Kiểm tra bất động sản hàng quý", "Quản lý tài khoản riêng"] },
+      { name: "Dịch vụ trọn gói", fee: "10% / tháng", features: ["Mọi thứ trong Cao cấp", "Quản lý dự án cải tạo", "Thiết lập & quản lý tiện ích", "Xem xét tiền thuê thị trường hàng năm", "Xử lý tranh chấp pháp lý", "Cổng chủ sở hữu với dữ liệu thời gian thực"] },
+    ],
+    whyTitle: "Vì sao chọn Binayah để quản lý bất động sản",
+    whyPoints: [
+      { title: "Dịch vụ trọn gói", body: "Từ căn trống đến tiền thuê được trả — chúng tôi xử lý mọi bước để bạn không phải làm. Lý tưởng cho nhà đầu tư ở nước ngoài và chủ nhà bận rộn." },
+      { title: "Phí minh bạch", body: "Phí dựa trên tỷ lệ phần trăm đơn giản, không phí ẩn. Bạn chỉ trả khi tiền thuê được thu." },
+      { title: "Đội ngũ được chứng nhận RERA", body: "Mọi quản lý bất động sản đều được cấp phép bởi Cơ quan Quản lý Bất động sản của Dubai. Tuân thủ pháp lý đầy đủ ở mọi bước." },
+      { title: "Mạng lưới nhà thầu đã kiểm duyệt", body: "Nhà thầu được phê duyệt trước cho ống nước, điện, điều hòa, vệ sinh và sơn. Không báo giá thổi phồng — chúng tôi sử dụng giá đấu thầu cạnh tranh." },
+      { title: "Truy cập cổng chủ sở hữu", body: "Đăng nhập bất cứ lúc nào để xem thanh toán tiền thuê, lịch sử bảo trì, chi tiết khách thuê và tài liệu bất động sản." },
+      { title: "Giao tiếp chủ động", body: "Bạn nhận thông báo trước về gia hạn hợp đồng thuê, tăng tiền thuê và bất kỳ vấn đề nào — trước khi chúng trở thành rắc rối." },
+    ],
+    faqTitle: "Câu hỏi thường gặp",
+    faqs: [
+      { question: "Quản lý bất động sản tại Dubai tốn bao nhiêu?", answer: "Phí quản lý bất động sản của Binayah dao động từ 5% đến 10% tiền thuê hàng tháng, tùy mức dịch vụ. Quản lý tiêu chuẩn (thu tiền thuê, EJARI, bảo trì cơ bản) khởi điểm từ 5%/tháng. Quản lý trọn gói bao gồm tìm khách thuê, bảo trì 24/7 và hỗ trợ pháp lý là 10%/tháng. Không có phí trả trước." },
+      { question: "Quản lý bất động sản Dubai bao gồm những gì?", answer: "Gói quản lý bất động sản trọn gói bao gồm: sàng lọc và bố trí khách thuê, soạn thảo hợp đồng thuê, đăng ký EJARI, thu và chuyển tiền thuê, điều phối bảo trì (khẩn cấp và theo kế hoạch), kiểm tra bất động sản hàng quý, báo cáo tài chính hàng tháng và giải quyết tranh chấp. Binayah quản lý toàn bộ mối quan hệ chủ nhà-khách thuê thay mặt bạn." },
+      { question: "Binayah có thể quản lý bất động sản của tôi nếu tôi sống ở nước ngoài không?", answer: "Có, đây là một trong những trường hợp sử dụng phổ biến nhất của chúng tôi. Các nhà đầu tư Nga, châu Âu, Trung Quốc và quốc tế khác tin tưởng Binayah quản lý các khoản đầu tư Dubai của họ từ xa. Bạn nhận tiền thuê trực tiếp vào tài khoản ngân hàng và báo cáo hàng tháng qua email hoặc cổng chủ sở hữu của chúng tôi. Không bao giờ cần đến Dubai để quản lý thường lệ." },
+      { question: "Binayah có thể tìm khách thuê cho tôi nhanh thế nào?", answer: "Với bất động sản định giá tốt, Binayah thường tìm được khách thuê đủ điều kiện trong vòng 2–4 tuần. Chúng tôi niêm yết trên Bayut, Propertyfinder, Dubizzle và cơ sở dữ liệu khách thuê đã sàng lọc trước của riêng mình. Gói Cao cấp và Trọn gói của chúng tôi bao gồm ảnh chuyên nghiệp để tối đa hóa hiệu suất tin đăng." },
+      { question: "EJARI là gì và vì sao cần nó?", answer: "EJARI là hệ thống đăng ký thuê chính thức tại Dubai, do Sở Đất đai Dubai yêu cầu cho mọi hợp đồng thuê. Không có đăng ký EJARI, khách thuê không thể nhận thị thực cư trú UAE, kết nối tiện ích hoặc đăng ký học. Nó cũng bảo vệ cả chủ nhà và khách thuê về mặt pháp lý. Binayah xử lý đăng ký EJARI như một phần của mọi gói quản lý." },
+      { question: "Điều gì xảy ra nếu khách thuê không trả tiền thuê?", answer: "Binayah có quy trình leo thang có cấu trúc: thông báo nhắc nhở, thư yêu cầu chính thức và — nếu cần — thủ tục pháp lý qua Trung tâm Tranh chấp Thuê (RDC). Luật UAE cho phép chủ nhà trục xuất khách thuê không trả tiền, dù quy trình mất 3–6 tháng. Việc sàng lọc khách thuê kỹ lưỡng của chúng tôi giảm đáng kể rủi ro vỡ nợ." },
+      { question: "Tôi có thể chuyển sang Binayah nếu đã có quản lý bất động sản không?", answer: "Có. Việc chuyển đổi đơn giản — chúng tôi tiếp quản quản lý khi gia hạn hợp đồng thuê hoặc, trong một số trường hợp, trong thời gian thuê hiện tại với thông báo phù hợp cho quản lý hiện tại. Quản lý tài khoản Binayah của bạn sẽ xử lý toàn bộ quá trình chuyển đổi." },
+      { question: "Binayah quản lý những loại bất động sản nào?", answer: "Chúng tôi quản lý mọi loại bất động sản nhà ở: studio, căn hộ 1–5 phòng ngủ, nhà phố, biệt thự và penthouse. Bất động sản trên tất cả các khu vực lớn của Dubai bao gồm Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches và hơn thế nữa." },
+    ],
+    ctaTitle: "Bắt đầu quản lý thông minh hơn",
+    ctaDesc: "Nhận tư vấn miễn phí với đội ngũ quản lý bất động sản của chúng tôi. Chúng tôi sẽ đánh giá bất động sản của bạn, đề xuất gói phù hợp và tiếp quản từ ngày đầu tiên.",
+    ctaBtn: "Nhận tư vấn miễn phí",
+    ctaWhatsApp: "WhatsApp ngay",
+    breadcrumbs: ["Trang chủ", "Dịch vụ", "Quản lý bất động sản"],
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -255,6 +310,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["إدارة العقارات دبي", "شركة إدارة عقارات دبي", "خدمات إدارة الإيجار دبي"]
       : locale === "zh"
       ? ["迪拜物业管理", "迪拜房产托管", "迪拜租赁管理"]
+      : locale === "vi"
+      ? ["quản lý bất động sản dubai", "quản lý bất động sản dubai chuyên nghiệp", "dịch vụ quản lý cho thuê dubai"]
       : ["property management dubai", "dubai property manager", "villa management dubai", "rental management dubai", "landlord services dubai"],
   };
 }

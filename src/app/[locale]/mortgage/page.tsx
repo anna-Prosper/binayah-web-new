@@ -222,6 +222,68 @@ const CONTENT = {
     ctaWhatsApp: "WhatsApp咨询",
     breadcrumb: "房贷计算器",
   },
+
+  vi: {
+    metaTitle: "Máy tính vay thế chấp Dubai 2026 | Hướng dẫn vay mua nhà UAE | Binayah",
+    metaDesc: "Máy tính vay thế chấp Dubai miễn phí. So sánh lãi suất vay mua nhà UAE, tỷ lệ LTV cho người nước ngoài và cư dân, giấy tờ cần thiết và lựa chọn ngân hàng. Hướng dẫn chuyên gia từ Binayah.",
+    heroLabel: "VAY THẾ CHẤP & VAY MUA NHÀ",
+    h1: "Máy tính vay thế chấp Dubai",
+    h1sub: "& Hướng dẫn vay mua nhà UAE",
+    heroDesc: "Tính khoản trả hàng tháng của bạn tức thì. Sau đó đọc hướng dẫn đầy đủ của chúng tôi về việc vay thế chấp tại Dubai — lãi suất, ngân hàng, tỷ lệ LTV và mọi thứ người nước ngoài cần biết.",
+    calcTitle: "Máy tính vay thế chấp",
+    guideTitle: "Hướng dẫn đầy đủ về vay thế chấp tại Dubai",
+    sections: [
+      {
+        title: "Ai có thể vay thế chấp tại Dubai?",
+        body: "Cả cư dân UAE và người không cư trú (người nước ngoài sống ở nước ngoài) đều có thể vay thế chấp tại Dubai. Cư dân thường đủ điều kiện cho tỷ lệ LTV 75–80%, trong khi người không cư trú bị giới hạn ở 50–65%. Các ngân hàng cho người không cư trú vay gồm Emirates NBD, ADCB, ENBD, Mashreq và Dubai Islamic Bank. Giá trị bất động sản tối thiểu thường là 1.000.000 AED cho khoản vay người không cư trú.",
+      },
+      {
+        title: "Lãi suất vay thế chấp UAE hiện tại (2026)",
+        body: "Lãi suất vay thế chấp UAE là cố định hoặc thả nổi (liên kết với EIBOR — Lãi suất Liên ngân hàng Emirates). Lãi suất cố định cho 1–5 năm thường từ 3,99% đến 5,49%/năm. Lãi suất thả nổi theo EIBOR + 1,5–2,5%. Hầu hết người vay chọn lãi suất cố định cho 3–5 năm đầu để có sự dự đoán được. Vay thế chấp Hồi giáo (Murabaha/Ijara) cũng có sẵn và cạnh tranh về cơ cấu.",
+      },
+      {
+        title: "Yêu cầu trả trước",
+        body: "Quy định UAE (CBUAE): Với bất động sản dưới 5 triệu AED — cư dân cần trả trước 20% (nhà đầu tiên), 30% cho đầu tư. Người không cư trú cần 25–35%. Với bất động sản trên 5 triệu AED — 30% (cư dân) và 35–40% (người không cư trú). Vay thế chấp off-plan thường yêu cầu trả trước 50% hoặc kế hoạch thanh toán theo tiến độ xây dựng. Tài chính từ chủ đầu tư có thể giảm yêu cầu tiền mặt ban đầu.",
+      },
+      {
+        title: "Giấy tờ cần thiết",
+        body: "Người làm công ăn lương: hộ chiếu, thị thực (cư dân), Emirates ID, sao kê ngân hàng 3–6 tháng, phiếu lương, thư xác nhận việc làm. Người tự kinh doanh: tương tự + báo cáo tài chính được kiểm toán 2 năm, giấy phép kinh doanh. Người không cư trú: hộ chiếu, sao kê ngân hàng 6 tháng ở quốc gia của bạn, chứng minh thu nhập, báo cáo tín dụng từ quốc gia của bạn. Một số ngân hàng cũng yêu cầu báo cáo tín dụng UAE nếu bạn có lịch sử tài chính UAE trước đó.",
+      },
+      {
+        title: "Chi phí cần dự trù",
+        body: "Ngoài khoản trả trước: phí thu xếp (0,5–1% khoản vay), phí đăng ký DLD (0,25% giá trị khoản vay), phí định giá bất động sản (2.500–3.500 AED), bảo hiểm bất động sản (0,1–0,2%/năm), bảo hiểm nhân thọ (yêu cầu bởi một số ngân hàng, 0,1–0,3%/năm) và phí pháp lý (5.000–10.000 AED cho hồ sơ thế chấp). Dự trù khoảng 3–5% giá trị bất động sản cho tổng chi phí giao dịch.",
+      },
+      {
+        title: "Lịch trình vay thế chấp",
+        body: "Phê duyệt trước: 2–5 ngày làm việc (sau khi nộp giấy tờ). Phê duyệt chính thức: 7–14 ngày (sau khi định giá bất động sản xong). Chuyển khoản ngân hàng cho người bán/DLD: 1–2 ngày sau khi phê duyệt. Tổng từ nộp đơn đến chuyển nhượng: thường 3–5 tuần cho bất động sản đã hoàn thiện. Vay thế chấp off-plan có thể mất lâu hơn vì phụ thuộc vào các cột mốc xây dựng.",
+      },
+    ],
+    banksTitle: "Các ngân hàng hàng đầu cho vay thế chấp Dubai",
+    banks: [
+      { name: "Emirates NBD", rate: "Từ 3,99%", note: "Dẫn đầu thị trường, chương trình mạnh cho người nước ngoài" },
+      { name: "ADCB", rate: "Từ 4,25%", note: "Lãi suất cạnh tranh, phê duyệt nhanh" },
+      { name: "Mashreq", rate: "Từ 4,10%", note: "Tốt cho người tự kinh doanh" },
+      { name: "Dubai Islamic Bank", rate: "Từ 4,05%", note: "Tài chính Hồi giáo tuân thủ Sharia" },
+      { name: "Abu Dhabi Commercial Bank", rate: "Từ 4,30%", note: "Chương trình mạnh cho người không cư trú" },
+      { name: "HSBC UAE", rate: "Từ 4,15%", note: "Khách hàng quốc tế, dịch vụ cao cấp" },
+    ],
+    faqTitle: "Câu hỏi thường gặp",
+    faqs: [
+      { question: "Tôi có thể vay thế chấp tại Dubai với tư cách người nước ngoài hoặc người không cư trú không?", answer: "Có. Các ngân hàng UAE cho cả người nước ngoài cư trú và người không cư trú sống ở nước ngoài vay. Cư dân có thể vay tối đa 80% LTV (nhà đầu tiên dưới 5 triệu AED). Người không cư trú bị giới hạn ở 50–65% LTV và cần giá trị bất động sản tối thiểu 1.000.000 AED. Các ngân hàng như Emirates NBD, ADCB và HSBC có chương trình vay thế chấp riêng cho người không cư trú." },
+      { question: "Lãi suất vay thế chấp hiện tại tại Dubai là bao nhiêu?", answer: "Tính đến năm 2026, lãi suất vay thế chấp Dubai dao động khoảng 3,99% đến 5,49%/năm cho sản phẩm lãi suất cố định (cố định 1–5 năm). Lãi suất thả nổi liên kết với EIBOR (hiện ~5%) cộng biên ngân hàng 1,5–2,5%. Tổng lãi suất hiệu dụng cho vay thế chấp thả nổi thường 6,5–7,5%/năm. Lãi suất cố định mang lại sự chắc chắn hơn cho kỳ hạn ban đầu." },
+      { question: "Tôi cần đặt cọc bao nhiêu cho vay thế chấp Dubai?", answer: "Quy định Ngân hàng Trung ương UAE: tối thiểu 20% cho cư dân mua nhà đầu tiên dưới 5 triệu AED (80% LTV). 25–35% cho người không cư trú trên cùng giá trị bất động sản. 30% cho cư dân mua bất động sản đầu tư. Với bất động sản trên 5 triệu AED, đặt cọc tối thiểu là 30% (cư dân) hoặc 35–40% (người không cư trú)." },
+      { question: "Tôi cần giấy tờ gì để xin vay thế chấp UAE?", answer: "Người làm công ăn lương cần: hộ chiếu, sao kê ngân hàng 3–6 tháng, 3 phiếu lương gần nhất và thư của chủ lao động. Người tự kinh doanh cần 2 năm tài khoản được kiểm toán và giấy phép kinh doanh. Người không cư trú bổ sung báo cáo tín dụng và chứng minh thu nhập từ quốc gia của họ. Mọi giấy tờ thường cần trong vòng 3 tháng kể từ khi nộp đơn." },
+      { question: "Nên vay thế chấp lãi suất cố định hay thả nổi tại Dubai?", answer: "Lãi suất cố định (thường 3,99–5,49% cho 1–5 năm) mang lại sự chắc chắn về khoản trả và bảo vệ khỏi tăng lãi suất. Lãi suất thả nổi (liên kết với EIBOR) có thể thấp hơn khi lãi suất giảm nhưng tạo ra sự bất định. Hầu hết cố vấn tài chính khuyến nghị cố định cho 3–5 năm đầu, đặc biệt cho nơi ở chính nơi sự chắc chắn về ngân sách quan trọng." },
+      { question: "Tôi có thể vay thế chấp cho bất động sản off-plan tại Dubai không?", answer: "Vay thế chấp off-plan có sẵn nhưng ít phổ biến hơn. Hầu hết người mua off-plan dùng kế hoạch thanh toán của chủ đầu tư (thường 40–60% trong quá trình xây dựng + 40–60% khi bàn giao). Một số ngân hàng cung cấp vay thế chấp liên kết xây dựng giải ngân vốn theo cột mốc. LTV tối thiểu thường là 50%, yêu cầu trả trước 50%." },
+      { question: "Mất bao lâu để được phê duyệt vay thế chấp tại Dubai?", answer: "Phê duyệt trước (còn gọi là phê duyệt theo nguyên tắc): 2–5 ngày làm việc với giấy tờ đầy đủ. Phê duyệt chính thức đầy đủ sau khi định giá bất động sản: 7–14 ngày. Toàn bộ quy trình từ nộp đơn đến chuyển khoản thường mất 3–5 tuần cho bất động sản đã hoàn thiện." },
+      { question: "Tất cả các chi phí liên quan đến việc vay thế chấp Dubai là gì?", answer: "Khoản trả trước (20–35% giá trị bất động sản) + phí chuyển nhượng DLD (4% giá trị bất động sản, thường chia người mua/người bán) + phí đăng ký thế chấp DLD (0,25% khoản vay) + phí thu xếp ngân hàng (0,5–1% khoản vay) + định giá bất động sản (2.500–3.500 AED) + bảo hiểm. Tổng chi phí giao dịch ngoài giá mua: khoảng 3–5% giá trị bất động sản." },
+    ],
+    ctaTitle: "Nhận phê duyệt trước hôm nay",
+    ctaDesc: "Binayah hợp tác với các nhà môi giới vay thế chấp hàng đầu UAE. Chúng tôi sẽ kết nối bạn với đúng ngân hàng, chuẩn bị đơn của bạn và hướng dẫn bạn qua quá trình phê duyệt — không tốn thêm chi phí.",
+    ctaBtn: "Trao đổi với chuyên gia vay thế chấp",
+    ctaWhatsApp: "WhatsApp ngay",
+    breadcrumb: "Máy tính vay thế chấp",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -250,6 +312,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["حاسبة رهن عقاري دبي", "قرض عقاري دبي", "تمويل عقاري دبي", "رهن عقاري للأجانب دبي"]
       : locale === "zh"
       ? ["迪拜房贷计算器", "迪拜住房贷款", "迪拜按揭贷款", "阿联酋房贷外籍人士"]
+      : locale === "vi"
+      ? ["máy tính vay thế chấp dubai", "vay mua nhà dubai", "lãi suất vay thế chấp uae", "vay thế chấp dubai người nước ngoài"]
       : ["mortgage calculator dubai", "dubai home loan", "uae mortgage rates", "dubai mortgage expat", "buy property dubai mortgage"],
   };
 }
@@ -261,7 +325,7 @@ export default async function MortgagePage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/mortgage` },
   ];
 
@@ -330,6 +394,7 @@ export default async function MortgagePage({ params }: Props) {
             {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
              locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." :
              locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" :
+             locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." :
              "* Rates as of 2026. Terms depend on borrower profile and property type."}
           </p>
         </section>

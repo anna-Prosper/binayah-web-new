@@ -13,8 +13,8 @@ interface Props { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const url = canonical(locale, "/off-plan/sharjah");
-  const desc = locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE.";
-  const title = locale === "ru" ? "Новостройки в Шардже 2026 | Доступные ОАЭ | Binayah" : locale === "ar" ? "عقارات على الخارطة في الشارقة 2026 | Binayah" : locale === "zh" ? "沙迦期房2026 | Binayah" : "Off-Plan Properties in Sharjah 2026 | Affordable UAE | Binayah";
+  const desc = locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : locale === "vi" ? "Off-plan giá phải chăng tại Sharjah — rẻ hơn Dubai 30%. Aljada, Tilal City, Masaar. Giá trị tốt nhất UAE." : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE.";
+  const title = locale === "ru" ? "Новостройки в Шардже 2026 | Доступные ОАЭ | Binayah" : locale === "ar" ? "عقارات على الخارطة في الشارقة 2026 | Binayah" : locale === "zh" ? "沙迦期房2026 | Binayah" : locale === "vi" ? "Bất động sản Off-Plan tại Sharjah 2026 | UAE giá phải chăng | Binayah" : "Off-Plan Properties in Sharjah 2026 | Affordable UAE | Binayah";
   return {
     title,
     description: desc,
@@ -31,9 +31,9 @@ export default async function Page({ params }: Props) {
   const isRtl = locale === "ar";
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
-    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : "Off-Plan", href: `${lp}/off-plan` },
-    { name: locale === "ru" ? "Новостройки в Шардже" : locale === "ar" ? "على الخارطة في الشارقة" : locale === "zh" ? "Sharjah期房" : "Off-Plan in Sharjah", href: `${lp}/off-plan/sharjah` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : "Off-Plan", href: `${lp}/off-plan` },
+    { name: locale === "ru" ? "Новостройки в Шардже" : locale === "ar" ? "على الخارطة في الشارقة" : locale === "zh" ? "Sharjah期房" : locale === "vi" ? "Off-Plan tại Sharjah" : "Off-Plan in Sharjah", href: `${lp}/off-plan/sharjah` },
   ];
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
@@ -43,14 +43,14 @@ export default async function Page({ params }: Props) {
       <section className="relative overflow-hidden pt-32 pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{locale === "ru" ? "НОВОСТРОЙКИ" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : "OFF-PLAN"}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">{locale === "ru" ? "НОВОСТРОЙКИ" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "OFF-PLAN" : "OFF-PLAN"}</p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-            {locale === "ru" ? "Новостройки в Шардже" : locale === "ar" ? "على الخارطة في الشارقة" : locale === "zh" ? "Sharjah期房项目" : "Off-Plan Properties in Sharjah"}
+            {locale === "ru" ? "Новостройки в Шардже" : locale === "ar" ? "على الخارطة في الشارقة" : locale === "zh" ? "Sharjah期房项目" : locale === "vi" ? "Bất động sản Off-Plan tại Sharjah" : "Off-Plan Properties in Sharjah"}
           </h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl mb-8">{locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE."}</p>
+          <p className="text-primary-foreground/80 text-lg max-w-2xl mb-8">{locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : locale === "vi" ? "Off-plan giá phải chăng tại Sharjah — rẻ hơn Dubai 30%. Aljada, Tilal City, Masaar. Giá trị tốt nhất UAE." : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE."}</p>
           <div className="flex flex-wrap gap-4">
             <Link href={`${lp}/contact`} className="font-bold px-8 py-4 rounded-xl hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
-              {locale === "ru" ? "Консультация специалиста" : locale === "ar" ? "استشر متخصصًا" : locale === "zh" ? "咨询专家" : "Get Expert Advice"} →
+              {locale === "ru" ? "Консультация специалиста" : locale === "ar" ? "استشر متخصصًا" : locale === "zh" ? "咨询专家" : locale === "vi" ? "Nhận tư vấn chuyên gia" : "Get Expert Advice"} →
             </Link>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default async function Page({ params }: Props) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10">
         <section>
           <h2 className="text-2xl font-bold text-foreground mb-5">
-            {locale === "ru" ? "Ключевые районы" : locale === "ar" ? "المناطق الرئيسية" : locale === "zh" ? "主要区域" : "Key Areas"}
+            {locale === "ru" ? "Ключевые районы" : locale === "ar" ? "المناطق الرئيسية" : locale === "zh" ? "主要区域" : locale === "vi" ? "Khu vực chính" : "Key Areas"}
           </h2>
           <div className="flex flex-wrap gap-3">
             {AREAS.map((a) => (
@@ -68,11 +68,11 @@ export default async function Page({ params }: Props) {
         </section>
         <section className="bg-card border border-border/50 rounded-2xl p-8">
           <h2 className="text-xl font-bold text-foreground mb-4">
-            {locale === "ru" ? "Почему инвестировать в Шарджу?" : locale === "ar" ? "لماذا الاستثمار في الشارقة؟" : locale === "zh" ? "为什么投资沙迦？" : "Why Invest in Sharjah?"}
+            {locale === "ru" ? "Почему инвестировать в Шарджу?" : locale === "ar" ? "لماذا الاستثمار في الشارقة؟" : locale === "zh" ? "为什么投资沙迦？" : locale === "vi" ? "Vì sao đầu tư vào Sharjah?" : "Why Invest in Sharjah?"}
           </h2>
-          <p className="text-muted-foreground mb-6">{locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE."}</p>
+          <p className="text-muted-foreground mb-6">{locale === "ru" ? "Бюджетные новостройки в Шардже — на 30% дешевле Дубая. Aljada, Tilal City, Masaar. Лучшее соотношение цены и качества в ОАЭ." : locale === "ar" ? "مشاريع على الخارطة الاقتصادية في الشارقة — أرخص بنسبة 30% من دبي. الجادة وتلال سيتي ومسار. أفضل قيمة في الإمارات." : locale === "zh" ? "沙迦实惠期房——比迪拜便宜30%。Aljada、Tilal City、Masaar，阿联酋最佳性价比。" : locale === "vi" ? "Off-plan giá phải chăng tại Sharjah — rẻ hơn Dubai 30%. Aljada, Tilal City, Masaar. Giá trị tốt nhất UAE." : "Budget-friendly off-plan in Sharjah — 30% cheaper than Dubai. Aljada, Tilal City, Masaar. Best value UAE."}</p>
           <Link href={`${lp}/contact`} className="inline-flex items-center gap-2 font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
-            {locale === "ru" ? "Получить подборку объектов" : locale === "ar" ? "احصل على قائمة مختارة" : locale === "zh" ? "获取精选房源" : "Get Curated Listings"} →
+            {locale === "ru" ? "Получить подборку объектов" : locale === "ar" ? "احصل على قائمة مختارة" : locale === "zh" ? "获取精选房源" : locale === "vi" ? "Nhận danh sách được chọn lọc" : "Get Curated Listings"} →
           </Link>
         </section>
       </div>

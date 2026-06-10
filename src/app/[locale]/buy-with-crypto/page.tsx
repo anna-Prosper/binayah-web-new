@@ -225,6 +225,59 @@ const CONTENT = {
     browseCta: "浏览房产",
     breadcrumb: "加密货币购房",
   },
+
+  vi: {
+    metaTitle: "Mua bất động sản Dubai bằng Bitcoin & Tiền điện tử | Binayah",
+    metaDesc: "Mua bất động sản Dubai bằng Bitcoin, Ethereum hoặc USDT. Giao dịch tiền điện tử hợp pháp, tuân thủ DLD. 0% thuế. Hướng dẫn chuyên gia từ Binayah Properties.",
+    ogLocale: "vi_VN",
+    heroLabel: "HIỆN CHẤP NHẬN TIỀN ĐIỆN TỬ",
+    h1a: "Mua bất động sản Dubai",
+    h1b: "bằng Tiền điện tử",
+    heroDesc: "Binayah Properties hỗ trợ các giao dịch bất động sản bằng tiền điện tử hợp pháp, tuân thủ DLD — off-plan và thị trường thứ cấp. Hướng dẫn trọn gói từ tư vấn đến sổ đỏ.",
+    heroCta: "Tư vấn miễn phí",
+    heroCtaArrow: "→",
+    stats: [
+      { n: "500+", label: "Giao dịch tiền điện tử" },
+      { n: "17+", label: "Năm tại Dubai" },
+      { n: "2.500+", label: "Bất động sản" },
+      { n: "0%", label: "Thuế lãi vốn" },
+    ],
+    coinsLabel: "Tiền điện tử được chấp nhận",
+    coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
+    howTitle: "Cách hoạt động",
+    steps: [
+      { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 2.500 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
+      { n: "02", title: "Xét duyệt pháp lý & KYC", body: "Chúng tôi xác minh tài liệu nguồn gốc tiền điện tử của bạn (AML/KYC) và xác nhận việc chấp nhận tiền điện tử với chủ đầu tư hoặc người bán." },
+      { n: "03", title: "Chuyển khoản an toàn", body: "Vốn được chuyển qua sàn giao dịch tiền điện tử được cấp phép hoặc chuyển khoản ví trực tiếp, chuyển đổi sang AED theo tỷ giá thỏa thuận để đăng ký DLD." },
+      { n: "04", title: "Cấp sổ đỏ", body: "Bất động sản được đăng ký tại Sở Đất đai Dubai dưới tên bạn. Bạn nhận sổ đỏ chính thức — quyền sở hữu hợp pháp đầy đủ." },
+    ],
+    whyTitle: "Vì sao chọn Dubai cho bất động sản tiền điện tử",
+    whyPoints: [
+      { title: "Khung pháp lý VARA", body: "Cơ quan Quản lý Tài sản Ảo của Dubai (VARA) cung cấp khung pháp lý rõ ràng, có thể thực thi cho các giao dịch bất động sản bằng tiền điện tử." },
+      { title: "0% thuế", body: "Không thuế lãi vốn, thuế bất động sản hay thuế thu nhập tại UAE. Khoản đầu tư tiền điện tử thành bất động sản của bạn tăng trưởng hoàn toàn miễn thuế." },
+      { title: "Đăng ký DLD", body: "Mọi giao dịch được đăng ký với Sở Đất đai Dubai. Quyền sở hữu của bạn được ghi nhận bằng sổ đỏ chính thức của chính phủ." },
+      { title: "Không hạn chế quốc tịch", body: "Chào đón mọi quốc tịch — bao gồm Nga, Trung Quốc, châu Âu và GCC. Tiền điện tử không biên giới, lý tưởng cho nhà đầu tư quốc tế." },
+      { title: "Golden Visa 10 năm", body: "Đầu tư 2 triệu AED+ (≈ 545K USD) vào bất động sản và đủ điều kiện nhận Golden Visa UAE. Có thể thanh toán bằng tiền điện tử." },
+      { title: "Lợi suất cho thuê 5–10%", body: "Trong số lợi suất cho thuê cao nhất thế giới. Giá off-plan tại các khu vực chính đã tăng 40–60% kể từ năm 2021." },
+    ],
+    faqTitle: "Câu hỏi thường gặp",
+    faqs: [
+      { q: "Mua bất động sản tại Dubai bằng tiền điện tử có hợp pháp không?", a: "Có. Cơ quan Quản lý Tài sản Ảo của UAE (VARA) cung cấp khung pháp lý rõ ràng. Nhiều chủ đầu tư Dubai và DLD hỗ trợ mua bằng tiền điện tử. Giao dịch phải tuân thủ yêu cầu AML/KYC — không có rào cản pháp lý cho người mua nước ngoài." },
+      { q: "Những loại tiền điện tử nào được chấp nhận?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) và BNB. USDT phổ biến nhất vì loại bỏ rủi ro biến động giá trong giai đoạn giao dịch." },
+      { q: "Chuyển nhượng DLD có yêu cầu chuyển đổi sang AED không?", a: "Có. DLD ghi nhận giao dịch bằng AED. Tiền điện tử của bạn được chuyển đổi theo tỷ giá thỏa thuận vào ngày giao dịch, qua sàn giao dịch UAE được cấp phép hoặc qua chủ đầu tư. Chuyên viên Binayah xử lý toàn bộ việc phối hợp." },
+      { q: "Có bất kỳ loại thuế nào trên giao dịch mua bất động sản bằng tiền điện tử không?", a: "Không thuế lãi vốn, không thuế thu nhập, không thuế tài sản. Chi phí duy nhất là phí chuyển nhượng DLD (4% giá trị AED) và phí môi giới (~2%). Không có thuế trên chính lãi tiền điện tử." },
+      { q: "Khoản đầu tư tối thiểu là bao nhiêu?", a: "Studio khởi điểm từ 500.000 AED (≈136K USD hoặc ₿2). Để nhận Golden Visa UAE 10 năm, giá trị bất động sản tối thiểu là 2.000.000 AED (≈545K USD)." },
+      { q: "Công dân Nga có thể mua bất động sản Dubai bằng tiền điện tử không?", a: "Hoàn toàn được. Không có hạn chế cho công dân Nga. Tiền điện tử đặc biệt tiện lợi do các hạn chế ngân hàng quốc tế. Chúng tôi xử lý toàn bộ quy trình bao gồm tài liệu AML." },
+      { q: "Quy trình mua mất bao lâu?", a: "Off-plan: 2–4 tuần từ thỏa thuận đến xác nhận đặt chỗ. Thị trường thứ cấp: 3–6 tuần cho chuyển nhượng đầy đủ. Bản thân việc chuyển tiền điện tử mất 1–3 ngày làm việc khi giấy tờ đã đầy đủ." },
+      { q: "Khu vực nào tốt nhất cho đầu tư bất động sản tiền điện tử?", a: "Dubai Marina, Downtown Dubai, Business Bay, Palm Jumeirah và JVC là những lựa chọn hàng đầu. Các dự án off-plan của Emaar, DAMAC và Sobha chấp nhận tiền điện tử cho khoản trả trước ban đầu với kế hoạch thanh toán linh hoạt." },
+    ],
+    ctaTitle: "Sẵn sàng đầu tư?",
+    ctaDesc: "Các chuyên gia bất động sản tiền điện tử của chúng tôi sẵn sàng 7 ngày một tuần. Nhận tư vấn cá nhân hóa và danh sách bất động sản được chọn lọc.",
+    ctaBtn: "Liên hệ chuyên gia",
+    ctaWhatsApp: "WhatsApp ngay",
+    browseCta: "Xem bất động sản",
+    breadcrumb: "Mua bằng tiền điện tử",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -265,6 +318,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["شراء عقار بالبيتكوين دبي", "عقارات بالعملات المشفرة دبي", "استثمار عقاري بالكريبتو", "شراء شقة بالبيتكوين الإمارات"]
       : locale === "zh"
       ? ["用比特币购买迪拜房产", "迪拜加密货币购房", "比特币房产迪拜", "用USDT买迪拜房子"]
+      : locale === "vi"
+      ? ["mua bất động sản dubai bitcoin", "bất động sản tiền điện tử dubai", "mua căn hộ dubai tiền điện tử", "bitcoin bất động sản uae", "mua bất động sản dubai usdt"]
       : ["buy property dubai bitcoin", "crypto real estate dubai", "buy dubai apartment cryptocurrency", "bitcoin property uae", "ethereum buy dubai property"],
   };
 }
@@ -281,7 +336,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy-with-crypto` },
   ];
 
@@ -296,7 +351,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
         {/* Gold crypto banner as full hero background */}
         <Image
           src="/assets/crypto-banner.webp"
-          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : "Cryptocurrency and Dubai real estate investment"}
+          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : locale === "vi" ? "Tiền điện tử và đầu tư bất động sản Dubai" : "Cryptocurrency and Dubai real estate investment"}
           fill
           priority
           sizes="100vw"

@@ -13,7 +13,7 @@ export const revalidate = 86400;
 
 // ── Static-params: all locales × all citizen slugs ─────────────────────────
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru"];
+  const locales = ["en", "ar", "zh", "ru", "vi"];
   return locales.flatMap((locale) =>
     FOREIGN_BUYERS.map((b) => ({ locale, citizen: b.slug }))
   );
@@ -320,6 +320,81 @@ const CONTENT = {
       guides: "指南",
     },
   },
+
+  vi: {
+    heroLabel: "HƯỚNG DẪN CHO NGƯỜI MUA NƯỚC NGOÀI",
+    guideSuffix: "công dân",
+    guideFor: "Hướng dẫn cho",
+    buyers: "người mua",
+    introBadge: "Mua bất động sản tại Dubai",
+
+    statsLabels: {
+      tax: "Thuế lãi vốn",
+      ownership: "Sở hữu vĩnh viễn",
+      visa: "Ngưỡng Golden Visa",
+      yield: "Lợi suất gộp điển hình",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "Mọi quốc tịch",
+      visa: "2 triệu AED",
+      yield: "5–8%",
+    },
+
+    stepsHeading: "Cách mua bất động sản tại Dubai",
+    stepsSubheading: "Quy trình mua tiêu chuẩn 5 bước áp dụng cho mọi quốc tịch, bao gồm cả người không cư trú.",
+    steps: [
+      { n: "01", title: "Thỏa thuận giá & Ký MOU", body: "Đàm phán và ký Bản ghi nhớ (MOU / Form F) với người bán. Chuyên viên của bạn nộp văn bản này cho Sở Đất đai Dubai." },
+      { n: "02", title: "Trả 10% đặt cọc", body: "Khoản đặt cọc 10% (được giữ ủy thác hoặc tại công ty môi giới) được trả khi ký MOU. Điều này giữ chỗ bất động sản và sẽ mất nếu bạn rút lui." },
+      { n: "03", title: "Lấy NOC từ chủ đầu tư", body: "Chủ đầu tư cấp Chứng nhận Không phản đối (NOC) xác nhận không còn phí dịch vụ hoặc khoản thanh toán nào trên bất động sản. Thường 5–10 ngày làm việc." },
+      { n: "04", title: "Chuyển nhượng DLD & Phí", body: "Cả hai bên đến Văn phòng Ủy thác DLD (hoặc dùng giấy ủy quyền hợp pháp). Trả phí chuyển nhượng DLD 4% cộng phí quản lý. Sổ đỏ được cấp trong ngày." },
+      { n: "05", title: "Nhận sổ đỏ", body: "DLD cấp sổ đỏ điện tử và bản giấy mang tên bạn. Bạn nay là chủ sở hữu hợp pháp. Thu nhập cho thuê từ ngày đầu tiên hoàn toàn miễn thuế." },
+    ],
+
+    whyHeading: "Vì sao chọn Dubai cho",
+    legalHeading: "Tình trạng pháp lý & Quyền sở hữu",
+    financeHeading: "Lựa chọn tài chính",
+    taxHeading: "Tác động thuế",
+    repatHeading: "Hồi hương vốn",
+    areasHeading: "Khu vực ưa thích",
+    areasIntro: "Dựa trên dữ liệu giao dịch của Binayah, các khu vực được lựa chọn nhiều nhất bởi người mua",
+    areasOutro: "là:",
+    areasCta: "Mua bất động sản tại",
+
+    faqHeading: "Câu hỏi thường gặp",
+    faqs: [
+      {
+        question: "Bất kỳ quốc tịch nào cũng có thể mua bất động sản sở hữu vĩnh viễn tại Dubai không?",
+        answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu freehold được chỉ định của Dubai — hơn 60 khu vực bao gồm Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay và JVC. Không có hạn chế dựa trên quốc tịch, tôn giáo hay tình trạng cư trú. Bạn nhận sổ đỏ DLD với quyền sở hữu đầy đủ.",
+      },
+      {
+        question: "Tôi có cần thị thực cư trú UAE để mua bất động sản tại Dubai không?",
+        answer: "Không. Người không cư trú có thể mua, sở hữu và cho thuê bất động sản tại Dubai mà không cần bất kỳ thị thực UAE nào. Không cần thị thực cư trú để mua. Nếu khoản đầu tư của bạn từ 750.000 AED trở lên, bạn đủ điều kiện nhận thị thực nhà đầu tư 2 năm; từ 2.000.000 AED trở lên, bạn đủ điều kiện nhận Golden Visa UAE 10 năm.",
+      },
+      {
+        question: "Tổng chi phí khi mua bất động sản tại Dubai là gì?",
+        answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: thường 2%. Phí quản lý DLD: 580 AED. Phí văn phòng ủy thác: 4.000 AED (cho bất động sản trên 500K AED). Phí đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch khoảng 6–7% giá mua.",
+      },
+      {
+        question: "Tôi có thể vay thế chấp tại Dubai với tư cách người không cư trú không?",
+        answer: "Có. Các ngân hàng UAE cung cấp vay thế chấp cho người không cư trú, thường ở mức LTV 40–50% (bạn trả 50–60% tiền mặt). Tài liệu thu nhập, sao kê ngân hàng và lịch sử tín dụng tại quốc gia của bạn được đánh giá. Các ngân hàng quốc tế lớn tại UAE (HSBC, Emirates NBD, Mashreq, Citibank) tích cực cho người mua nước ngoài vay. Phê duyệt trước mất 2–4 tuần.",
+      },
+      {
+        question: "Có thuế nào trên thu nhập cho thuê hoặc lãi vốn tại Dubai không?",
+        answer: "Không. Dubai áp dụng 0 thuế thu nhập, 0 thuế lãi vốn và 0 thuế thừa kế trên bất động sản. Thu nhập cho thuê hoàn toàn miễn thuế ở cấp độ UAE. Quốc gia của bạn có thể đánh thuế thu nhập cho thuê hoặc lãi từ nguồn nước ngoài — xem phần thuế theo quốc tịch ở trên và tham khảo cố vấn thuế cho tình huống cụ thể của bạn.",
+      },
+    ],
+
+    ctaTitle: "Sẵn sàng mua tại Dubai?",
+    ctaDesc: "Các chuyên viên được chứng nhận RERA của Binayah làm việc với người mua từ mọi quốc tịch hàng ngày. Chúng tôi xử lý tìm kiếm bất động sản, xem nhà, phối hợp pháp lý và quản lý sau khi mua.",
+    ctaBtn: "Liên hệ đội ngũ của chúng tôi",
+    ctaBtnSecondary: "Xem bất động sản",
+
+    breadcrumbs: {
+      home: "Trang chủ",
+      guides: "Hướng dẫn",
+    },
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -337,6 +412,7 @@ export async function generateMetadata({
   const isRu = locale === "ru";
   const isAr = locale === "ar";
   const isZh = locale === "zh";
+  const isVi = locale === "vi";
 
   const title = isRu
     ? `Покупка недвижимости в Дубае для граждан ${b.country === "Russian" ? "России" : b.country} | Binayah`
@@ -344,6 +420,8 @@ export async function generateMetadata({
     ? `شراء عقار في دبي للمواطنين ${b.flag} | بناية للعقارات`
     : isZh
     ? `${b.flag} ${b.citizen}公民在迪拜购房指南 | Binayah`
+    : isVi
+    ? `Mua bất động sản tại Dubai cho công dân ${b.citizen} ${b.flag} | Hướng dẫn đầy đủ | Binayah`
     : `Buying Property in Dubai as a ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
 
   const description = isRu
@@ -352,6 +430,8 @@ export async function generateMetadata({
     ? `الدليل الشامل لشراء عقار في دبي: الوضع القانوني وخيارات التمويل والضرائب وإعادة الأموال والمناطق المفضلة.`
     : isZh
     ? `在迪拜购房的完整指南：法律地位、融资选择、税务影响、资金汇回及热门区域。`
+    : isVi
+    ? `Hướng dẫn đầy đủ cho công dân ${b.citizen} mua bất động sản tại Dubai: tình trạng pháp lý, lựa chọn tài chính, tác động thuế, quy tắc hồi hương vốn và khu vực ưa thích.`
     : `Complete guide for ${b.citizen} citizens buying property in Dubai: legal status, financing options, tax implications, repatriation rules, and preferred communities.`;
 
   const path = `/buying-property-in-dubai-as/${b.slug}`;
@@ -377,6 +457,8 @@ export async function generateMetadata({
         ? ["شراء عقار دبي أجانب", "تملك حر دبي", "عقارات دبي للمقيمين خارجها"]
         : locale === "zh"
         ? ["迪拜外国人购房", "迪拜自由持有房产", "迪拜黄金签证购房"]
+        : locale === "vi"
+        ? ["mua bất động sản dubai người nước ngoài", "bất động sản dubai freehold", "mua nhà dubai golden visa"]
         : [
             `buying property in dubai as ${b.citizen.toLowerCase()} citizen`,
             `dubai real estate ${b.citizen.toLowerCase()} buyer`,
@@ -440,6 +522,8 @@ export default async function ForeignBuyerPage({
                 ? `для граждан ${b.country === "Russian" ? "России" : b.country}`
                 : locale === "ar"
                 ? `للمواطنين ${b.flag}`
+                : locale === "vi"
+                ? `cho công dân ${b.citizen}`
                 : `—${b.citizen}${c.guideSuffix}`}
             </span>
           </h1>
@@ -489,7 +573,7 @@ export default async function ForeignBuyerPage({
         {/* Buying steps */}
         <section>
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
-            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : "步骤详解"}
+            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : "步骤详解"}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.stepsHeading}</h2>
           <p className="text-sm text-muted-foreground mb-8">{c.stepsSubheading}</p>

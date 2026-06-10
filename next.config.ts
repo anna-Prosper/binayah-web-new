@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/:locale(ar|ru|zh)/buy-property-in-:community",
+        source: "/:locale(ar|ru|zh|vi)/buy-property-in-:community",
         destination: "/:locale/buy-property-in/:community",
         permanent: true,
       },
@@ -54,7 +54,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/:locale(ar|ru|zh)/buying-property-in-dubai-as-:citizen",
+        source: "/:locale(ar|ru|zh|vi)/buying-property-in-dubai-as-:citizen",
         destination: "/:locale/buying-property-in-dubai-as/:citizen",
         permanent: true,
       },

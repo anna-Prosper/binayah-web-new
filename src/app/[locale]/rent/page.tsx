@@ -111,6 +111,31 @@ const CONTENT = {
     ctaDesc: "我们的租赁经纪人根据您的预算、社区偏好和入住日期筛选房源——对租客免费。",
     ctaBtn: "联系租赁经纪人",
   },
+  vi: {
+    metaTitle: "Bất động sản cho thuê tại Dubai | Căn hộ & Biệt thự | Binayah",
+    metaDesc: "Tìm bất động sản thuê hoàn hảo tại Dubai — căn hộ, biệt thự, studio và nhà phố. Tin đăng đã xác minh với giá trực tiếp. Sẵn vào ở. Tìm hơn 1.000 tin thuê ngay.",
+    heroLabel: "THUÊ TẠI DUBAI",
+    h1: "Bất động sản cho thuê",
+    h1sub: "tại Dubai",
+    heroDesc: "Tin đăng cho thuê đã xác minh trên tất cả khu vực Dubai. Studio từ 25K AED/năm. Biệt thự gia đình từ 90K AED/năm. Tìm ngôi nhà của bạn với chuyên viên cho thuê đáng tin cậy của Binayah.",
+    stats: [
+      { n: "1.000+", label: "Tin đăng cho thuê" },
+      { n: "25K AED", label: "Studio từ/năm" },
+      { n: "90K+", label: "Khách thuê đang hoạt động" },
+      { n: "48h", label: "Thời gian so khớp TB" },
+    ],
+    faqs: [
+      { question: "Tôi cần giấy tờ gì để thuê tại Dubai?", answer: "Bản sao hộ chiếu, Emirates ID (nếu là cư dân) hoặc thị thực, và chi phiếu ghi ngày sau (hoặc bảo lãnh ngân hàng ở một số tòa nhà). Với hợp đồng thuê hàng năm, hầu hết chủ nhà yêu cầu 1–4 chi phiếu ghi ngày sau. Bạn cũng cần đăng ký hợp đồng thuê với Ejari (hệ thống thuê của DLD) — chuyên viên của bạn xử lý việc này." },
+      { question: "Quy trình thuê tại Dubai hoạt động như thế nào?", answer: "1) Tìm bất động sản và thỏa thuận điều khoản. 2) Ký hợp đồng thuê (Form H tiêu chuẩn RERA). 3) Trả tiền đặt cọc (thường 5% tiền thuê hàng năm) và chi phiếu thuê đầu tiên. 4) Đăng ký với Ejari (220 AED). 5) Kết nối DEWA (điện & nước — đặt cọc 2.110 AED, hoàn lại khi rời đi). Quy trình mất 3–7 ngày." },
+      { question: "Chủ nhà có thể tăng tiền thuê của tôi tại Dubai không?", answer: "Tăng tiền thuê khi gia hạn bị giới hạn bởi Chỉ số Thuê RERA. Nếu tiền thuê hiện tại của bạn bằng hoặc thấp hơn chuẩn RERA, không được phép tăng. Mức tăng bị giới hạn ở 5–20% tùy thuộc vào tiền thuê hiện tại của bạn thấp hơn chỉ số bao nhiêu. Kiểm tra Máy tính Thuê RERA (dubailand.gov.ae) trước mỗi lần gia hạn." },
+      { question: "Khu vực thuê rẻ nhất tại Dubai là đâu?", answer: "Các khu vực phải chăng nhất: International City (studio từ 18K AED), Dubai South (studio từ 22K AED), Deira (1PN từ 30K AED), JVC (studio từ 28K AED). Giá trị tốt nhất với kết nối tốt: JVC, Al Quoz và Al Nahda tiết kiệm 20–35% so với Dubai Marina hoặc Downtown cho diện tích căn tương đương." },
+      { question: "Tiền thuê trung bình tại Dubai là bao nhiêu?", answer: "Studio: 28.000–55.000 AED/năm tùy khu vực. 1 phòng ngủ: 45.000–100.000 AED/năm. 2 phòng ngủ: 70.000–160.000 AED/năm. Biệt thự 3 phòng ngủ: 120.000–250.000 AED/năm. Dubai Marina và Downtown có giá cao hơn; JVC, JLT và Deira phải chăng hơn nhiều." },
+    ],
+    breadcrumb: "Thuê",
+    ctaTitle: "Cần giúp tìm nhà thuê?",
+    ctaDesc: "Các chuyên viên cho thuê của chúng tôi chọn lọc bất động sản phù hợp với ngân sách, khu vực ưa thích và ngày vào ở của bạn — miễn phí cho khách thuê.",
+    ctaBtn: "Trao đổi với chuyên viên cho thuê",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -135,6 +160,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["شقق للإيجار دبي", "إيجار عقارات دبي", "استئجار شقة دبي"]
       : locale === "zh"
       ? ["迪拜租房", "迪拜公寓出租", "迪拜租住公寓"]
+      : locale === "vi"
+      ? ["bất động sản cho thuê dubai", "thuê căn hộ dubai", "tin đăng cho thuê dubai"]
       : ["properties for rent dubai", "rent apartment dubai", "dubai rental listings", "apartments for rent dubai"],
   };
 }
@@ -146,7 +173,7 @@ export default async function RentPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/rent` },
   ];
 
@@ -195,7 +222,7 @@ export default async function RentPage({ params }: Props) {
         <div className="text-center mb-8">
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : "Renting in Dubai — FAQs"}
+            {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : locale === "vi" ? "Thuê tại Dubai — Câu hỏi thường gặp" : "Renting in Dubai — FAQs"}
           </h2>
         </div>
         <div className="space-y-2 sm:space-y-3">

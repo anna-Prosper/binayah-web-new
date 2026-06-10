@@ -212,6 +212,56 @@ const CONTENT = {
     ctaSecondary: "挂牌出售",
     breadcrumb: "出售房产",
   },
+
+  vi: {
+    metaTitle: "Bán bất động sản tại Dubai | Nhanh, chuyên nghiệp, chứng nhận RERA | Binayah",
+    metaDesc: "Bán bất động sản Dubai với Binayah Properties. Chuyên viên được chứng nhận RERA, định giá chuyên nghiệp, hơn 17 năm kinh nghiệm. Nhận định giá thị trường miễn phí ngay hôm nay.",
+    heroLabel: "BÁN VỚI SỰ TỰ TIN",
+    h1: "Bán bất động sản của bạn tại Dubai",
+    heroDesc: "Binayah Properties đã bán bất động sản Dubai từ năm 2007. Đội ngũ được chứng nhận RERA của chúng tôi cung cấp định giá chuyên nghiệp, tiếp thị chuyên nghiệp và kết quả nhanh chóng — với dịch vụ trọn gói từ niêm yết đến hoàn tất.",
+    heroCta: "Định giá miễn phí",
+    heroCtaSecondary: "Niêm yết bất động sản",
+    stats: [
+      { n: "17+", label: "Năm bán bất động sản Dubai" },
+      { n: "RERA", label: "Chuyên viên được chứng nhận" },
+      { n: "30", label: "Số ngày bán TB" },
+      { n: "2.500+", label: "Bất động sản đã bán" },
+    ],
+    howTitle: "Cách chúng tôi bán bất động sản của bạn",
+    howSubtitle: "Quy trình 5 bước đã được kiểm chứng từ định giá đến chuyển nhượng sổ đỏ",
+    steps: [
+      { n: "01", title: "Định giá thị trường miễn phí", body: "Các chuyên viên của chúng tôi đánh giá bất động sản của bạn bằng dữ liệu giao dịch DLD trực tiếp, các giao dịch tương đương trong tòa nhà và điều kiện thị trường hiện tại để đặt giá chào bán phù hợp." },
+      { n: "02", title: "Tiếp thị chuyên nghiệp", body: "Chúng tôi tạo tin đăng chuyên nghiệp với ảnh HDR, mặt bằng và mô tả chi tiết. Bất động sản của bạn được niêm yết đồng thời trên Bayut, Propertyfinder, Dubizzle và Binayah.ae." },
+      { n: "03", title: "Sàng lọc người mua", body: "Chúng tôi chỉ mang đến những người mua nghiêm túc đã được sàng lọc trước — vốn đã xác minh, phê duyệt vay trước hoặc bằng chứng tiền mặt được xác nhận trước khi xem nhà." },
+      { n: "04", title: "Chào giá & Đàm phán", body: "Chúng tôi quản lý mọi đề nghị và đàm phán thay mặt bạn để đạt giá tốt nhất. Bạn phê duyệt điều khoản cuối cùng trước khi ký bất kỳ giấy tờ nào." },
+      { n: "05", title: "Chuyển nhượng DLD & Hoàn tất", body: "Chúng tôi phối hợp với chuyên viên của người mua, ngân hàng (nếu vay thế chấp) và Sở Đất đai Dubai để đảm bảo chuyển nhượng quyền sở hữu suôn sẻ, tuân thủ pháp luật." },
+    ],
+    whyTitle: "Vì sao bán với Binayah",
+    whyPoints: [
+      { title: "Đội ngũ được chứng nhận RERA", body: "Mọi chuyên viên Binayah đều được cấp phép bởi Cơ quan Quản lý Bất động sản (RERA). Bạn được luật Dubai bảo vệ ở mọi bước." },
+      { title: "Định giá chuyên nghiệp miễn phí", body: "Dựa trên dữ liệu giao dịch DLD thực tế và các giao dịch tương đương — không phải ước tính. Bạn biết chính xác giá trị bất động sản trước khi niêm yết." },
+      { title: "Tiếp thị đa cổng", body: "Niêm yết trên Bayut, Propertyfinder, Dubizzle và Binayah.ae với ảnh chuyên nghiệp. Tiếp cận tối đa người mua đủ điều kiện." },
+      { title: "Không bán, không phí", body: "Chúng tôi làm việc trên cơ sở hoa hồng — bạn chỉ trả khi bất động sản được bán. Không phí trả trước, không phí ẩn." },
+      { title: "Người mua Nga & Quốc tế", body: "Với các văn phòng phục vụ người mua Nga, Trung Quốc, châu Âu và GCC, chúng tôi kết nối bất động sản của bạn với mạng lưới nhà đầu tư và người dùng cuối toàn cầu." },
+      { title: "Quản lý giấy tờ trọn gói", body: "Từ Bản ghi nhớ (MOU) đến NOC, phí chuyển nhượng DLD và sổ đỏ — chúng tôi xử lý mọi giấy tờ từ đầu đến cuối." },
+    ],
+    faqTitle: "Câu hỏi thường gặp",
+    faqs: [
+      { q: "Bán một bất động sản tại Dubai mất bao lâu?", a: "Thời gian trung bình để bán một bất động sản tại Dubai là 30–60 ngày từ niêm yết đến chuyển nhượng. Bất động sản định giá tốt ở vị trí cao cấp (Dubai Marina, Downtown, Palm) có thể bán trong dưới 2 tuần. Trung bình của Binayah là 30 ngày từ niêm yết đến hợp đồng." },
+      { q: "Tôi phải trả phí gì khi bán bất động sản tại Dubai?", a: "Với tư cách người bán, chi phí chính của bạn là hoa hồng môi giới (thường 2% giá bán). Chi phí bổ sung bao gồm phí NOC của DLD (500–5.000 AED tùy chủ đầu tư) và phí chuyển nhượng DLD (4% — dù thường được chia giữa người mua và người bán). Không có thuế lãi vốn hay thuế thu nhập tại UAE." },
+      { q: "Tôi có cần ở Dubai để bán bất động sản không?", a: "Không. Bạn có thể bán từ xa bằng cách cấp Giấy ủy quyền (POA) cho chuyên viên hoặc đại diện pháp lý tại Dubai. Binayah thường xuyên xử lý người bán quốc tế, bao gồm khách hàng Nga, châu Âu và châu Á hoàn tất giao dịch hoàn toàn từ xa." },
+      { q: "Tôi có thể bán bất động sản đang thế chấp tại Dubai không?", a: "Có. Khoản thanh toán của người mua được dùng để tất toán khoản vay thế chấp còn lại của bạn (quy trình gọi là 'blocking letter'), số tiền còn lại được chuyển cho bạn. Chuyên viên Binayah phối hợp với ngân hàng của bạn để đảm bảo chuyển đổi suôn sẻ." },
+      { q: "Tôi cần giấy tờ gì để bán bất động sản tại Dubai?", a: "Bản sao hộ chiếu, sổ đỏ gốc (hoặc bản sao do ủy thác cấp), chi tiết bất động sản (mặt bằng, bảng kê phí dịch vụ), NOC từ chủ đầu tư và Form A đã ký (thỏa thuận niêm yết). Nếu bán từ xa, cần POA từ công chứng viên được UAE ủy quyền." },
+      { q: "Định giá bất động sản được tính như thế nào?", a: "Định giá miễn phí của Binayah dựa trên các giao dịch đã đăng ký DLD gần đây trong tòa nhà và khu vực của bạn (không phải giá chào), nhu cầu hiện tại, tầng, view và tình trạng bất động sản. Chúng tôi dùng cùng nguồn dữ liệu như RERA và ngân hàng — nên bạn có giá thị trường thực tế." },
+      { q: "Thời điểm tốt nhất để bán bất động sản tại Dubai là khi nào?", a: "Q1 (tháng 1–tháng 3) và Q4 (tháng 10–tháng 12) trong lịch sử là mùa bán mạnh nhất, được thúc đẩy bởi người nước ngoài đến và hoạt động đầu tư. Tuy nhiên, thị trường Dubai đã mạnh quanh năm kể từ năm 2021, với khối lượng giao dịch ở mức kỷ lục." },
+      { q: "NOC là gì và vì sao tôi cần nó?", a: "Chứng nhận Không phản đối (NOC) do chủ đầu tư cấp xác nhận không còn phí dịch vụ hoặc khoản thanh toán nào trên căn hộ. Không có NOC, Sở Đất đai Dubai sẽ không xử lý chuyển nhượng quyền sở hữu. Chuyên viên Binayah xử lý đơn xin NOC thay mặt bạn." },
+    ],
+    ctaTitle: "Sẵn sàng bán?",
+    ctaDesc: "Nhận định giá thị trường miễn phí, không ràng buộc từ đội ngũ được chứng nhận RERA của chúng tôi. Chúng tôi sẽ cho bạn biết chính xác giá trị bất động sản của bạn trong thị trường hôm nay.",
+    ctaBtn: "Định giá miễn phí",
+    ctaSecondary: "Niêm yết bất động sản",
+    breadcrumb: "Bán bất động sản",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -247,6 +297,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["بيع عقار دبي", "بيع شقة دبي", "تقييم عقاري دبي", "بيع فيلا دبي"]
       : locale === "zh"
       ? ["在迪拜出售房产", "卖迪拜房子", "迪拜房产估价", "迪拜二手房出售"]
+      : locale === "vi"
+      ? ["bán bất động sản dubai", "bán căn hộ dubai", "định giá bất động sản dubai", "bán biệt thự dubai"]
       : ["sell property dubai", "sell apartment dubai", "sell house dubai", "list property dubai", "dubai property valuation"],
   };
 }
@@ -263,7 +315,7 @@ export default async function SellPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/sell` },
   ];
 

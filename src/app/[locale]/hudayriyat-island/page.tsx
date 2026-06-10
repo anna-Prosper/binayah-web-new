@@ -11,7 +11,7 @@ import { Waves, Bike, Trophy, Trees, Anchor, Building2, MapPin, TrendingUp, Shie
 
 export const revalidate = 86400;
 
-type Locale = "en" | "ru" | "ar" | "zh";
+type Locale = "en" | "ru" | "ar" | "zh" | "vi";
 
 const HERO_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-hero.jpg";
 const AERIAL_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-aerial.jpg";
@@ -456,6 +456,104 @@ const LABELS: Record<Locale, {
     developerSub: "84.5%由ADQ持股——阿布扎比主权投资机构",
     freeholdBadge: "永久产权 · 所有国籍",
   },
+
+  vi: {
+    metaTitle: "Bất động sản Hudayriyat Island | Sở hữu vĩnh viễn Abu Dhabi | Binayah",
+    metaDesc:
+      "Mua bất động sản sở hữu vĩnh viễn trên Hudayriyat Island, Abu Dhabi — biệt thự từ 6 triệu AED, căn hộ từ 2 triệu AED. Chủ đầu tư được chính phủ hậu thuẫn Modon. Phí chuyển nhượng 2%. 10 phút từ CBD Abu Dhabi. Hướng dẫn chuyên gia từ Binayah Properties.",
+    heroEyebrow: "Abu Dhabi · Đảo sở hữu vĩnh viễn · Bởi Modon Properties",
+    heroH1Line1: "Beverly Hills",
+    heroH1Line2: "của Abu Dhabi",
+    heroSubtitle:
+      "Hudayriyat Island — hơn 3.000 hecta sống ven biển quy hoạch tổng thể, 10 phút từ CBD Abu Dhabi. Sở hữu vĩnh viễn cho mọi quốc tịch, phí chuyển nhượng 2%, chủ đầu tư được chính phủ hậu thuẫn.",
+    trustSignals: ["Sở hữu vĩnh viễn · Mọi quốc tịch", "Phí chuyển nhượng 2%", "Đủ điều kiện Golden Visa", "Modon (ADQ hậu thuẫn)"],
+    ctaPrimary: "Tư vấn đầu tư miễn phí",
+    ctaSecondary: "Xem các khu dân cư",
+    aboutEyebrow: "Về hòn đảo",
+    aboutHeading: "Dự án ven biển tham vọng nhất Abu Dhabi",
+    aboutPara1:
+      "Al Hudayriyat Island trải dài hơn 3.000 hecta ngoài khơi bờ biển phía tây Abu Dhabi. Kết nối với đất liền qua Cầu Hudayriyat, chỉ cách CBD của thủ đô UAE 10 phút — khu ven biển sở hữu vĩnh viễn gần nhất tại Abu Dhabi. Được phát triển bởi Modon Properties (84,5% thuộc sở hữu nhà nước qua ADQ), hòn đảo là dự án thành phố ven biển hàng đầu của Abu Dhabi.",
+    aboutPara2:
+      "Với 16 km bãi biển tự nhiên, 2,25 triệu m² công viên, Surf Abu Dhabi (hồ tạo sóng nhân tạo lớn nhất thế giới) và 220 km hạ tầng đạp xe, Hudayriyat là địa chỉ duy nhất tại UAE kết hợp thể thao đỉnh cao, lối sống ven biển và nhà ở sở hữu vĩnh viễn trong một hòn đảo quy hoạch tổng thể.",
+    aboutMinistats: [
+      ["3.000+", "Hecta tổng diện tích"],
+      ["16 km", "Bãi biển tự nhiên"],
+      ["10–20 phút", "Lái xe đến CBD Abu Dhabi"],
+      ["99", "Quốc tịch đang đầu tư"],
+    ],
+    amenitiesEyebrow: "Hạ tầng đẳng cấp thế giới",
+    amenitiesHeading: "Được xây dựng cho cuộc sống ven biển năng động",
+    amenitiesSubheading:
+      "Địa chỉ UAE duy nhất nơi lướt sóng, velodrome, 220 km đạp xe và sống ven biển tồn tại trong một quy hoạch tổng thể.",
+    communitiesEyebrow: "Khu dân cư",
+    communitiesHeading: "Tìm khu của bạn",
+    communitiesSubheading:
+      "Sáu khu sở hữu vĩnh viễn bởi Modon — căn hộ từ 2 triệu AED, dinh thự siêu sang đến 80 triệu AED+.",
+    communitiesCta: "Nhận thông tin sẵn có & Giá",
+    communitiesStartingFrom: "Khởi điểm từ",
+    communitiesHandover: "Bàn giao",
+    whyInvestEyebrow: "Luận điểm đầu tư",
+    whyInvestHeading: "Vì sao nhà đầu tư chọn Hudayriyat",
+    whyInvestSubheading:
+      "Thị trường bất động sản số 1 Abu Dhabi theo giá trị giao dịch trong Q1 2026. Bốn lợi thế cấu trúc không hòn đảo nào khác có.",
+    tableHeaders: ["Chỉ số", "Hudayriyat Island", "TB Dubai"],
+    whyInvestCards: [
+      ["Chủ đầu tư được chính phủ hậu thuẫn", "Modon Properties thuộc sở hữu 84,5% của ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi. Bảo lãnh chủ đầu tư mạnh nhất UAE."],
+      ["Phí chuyển nhượng 2%", "Bằng một nửa mức 4% của Dubai. Chi phí giao dịch thấp hơn cải thiện ROI ròng cho nhà đầu tư và giảm ma sát ở mỗi lần bán lại."],
+      ["Sở hữu vĩnh viễn, mọi quốc tịch", "Quyền sở hữu 100%, không hạn chế. Bất động sản trên 2 triệu AED tự động giúp bạn đủ điều kiện cư trú Golden Visa UAE."],
+      ["10 phút đến trung tâm thành phố", "Qua Cầu Hudayriyat. 25 phút đến Sân bay Quốc tế Abu Dhabi. Khu ven biển sở hữu vĩnh viễn gần thủ đô UAE nhất."],
+    ],
+    stats: [
+      ["11,97 tỷ AED", "Giao dịch Q1 2026", "#1 tại Abu Dhabi"],
+      ["40–50%", "Tăng giá vốn", "Ghi nhận bởi người mua sớm"],
+      ["7–9%", "Lợi suất cho thuê gộp", "Abu Dhabi ven biển"],
+      ["2%", "Phí chuyển nhượng", "Bằng một nửa mức của Dubai"],
+    ],
+    faqEyebrow: "Câu hỏi thường gặp",
+    faqHeading: "Hudayriyat Island — Câu hỏi về bất động sản",
+    faqSubheading: "Mọi điều người mua và nhà đầu tư hỏi trước khi cam kết với địa chỉ phát triển nhanh nhất Abu Dhabi.",
+    faqs: [
+      {
+        question: "Người nước ngoài có thể mua bất động sản trên Hudayriyat Island không?",
+        answer:
+          "Có. Hudayriyat Island là khu sở hữu vĩnh viễn được chỉ định mở cho mọi quốc tịch. Bạn nhận quyền sở hữu đầy đủ với sổ đỏ UAE được đăng ký với Sở Đô thị và Giao thông Abu Dhabi. Bất động sản có giá trên 2 triệu AED đủ điều kiện nhận Golden Visa UAE (cư trú 10 năm có thể gia hạn).",
+      },
+      {
+        question: "Phí chuyển nhượng trên Hudayriyat Island là bao nhiêu?",
+        answer:
+          "Phí chuyển nhượng bất động sản Abu Dhabi là 2% giá mua — đúng bằng một nửa mức 4% của Dubai. Điều này giảm chi phí vào của bạn và cải thiện lợi nhuận đầu tư ròng ở mọi lần bán lại.",
+      },
+      {
+        question: "Những loại bất động sản nào có sẵn?",
+        answer:
+          "Hudayriyat Island cung cấp: căn hộ (1–4PN, từ 2 triệu AED); biệt thự (3–8PN, từ 6 triệu AED); biệt thự golf và nhà phố (từ 4,25 triệu AED); dinh thự sang trọng (từ 25 triệu AED); dinh thự siêu sang trên đồi (41 triệu AED+). Tất cả đều được phát triển bởi Modon Properties được chính phủ hậu thuẫn.",
+      },
+      {
+        question: "Tôi có thể kỳ vọng lợi suất cho thuê nào trên Hudayriyat Island?",
+        answer:
+          "Bất động sản ven biển Abu Dhabi thường tạo ra lợi suất cho thuê gộp 7–9%. Người mua sớm trên Hudayriyat Island đã ghi nhận tăng giá vốn 40–50% kể từ khi hòn đảo ra mắt năm 2020. Q1 2026 chứng kiến 11,97 tỷ AED giao dịch trên đảo — cao nhất trong số bất kỳ khu vực nào ở Abu Dhabi.",
+      },
+      {
+        question: "Hudayriyat Island cách trung tâm thành phố Abu Dhabi bao xa?",
+        answer:
+          "10–20 phút bằng ô tô qua Cầu Hudayriyat. Hòn đảo nằm trên bờ biển phía tây Abu Dhabi đối diện Al Bateen. Sân bay Quốc tế Abu Dhabi cách khoảng 25–30 phút. Một tuyến metro/xe buýt Surf Abu Dhabi chuyên dụng được lên kế hoạch như một phần của Kế hoạch Tổng thể Giao thông Đô thị Abu Dhabi.",
+      },
+      {
+        question: "Hudayriyat Island có phải khoản đầu tư tốt so với Dubai không?",
+        answer:
+          "Hudayriyat Island cung cấp chi phí vào thấp hơn cho bất động sản sở hữu vĩnh viễn chất lượng cao so với các khu ven biển Dubai tương đương, với phí chuyển nhượng 2% so với 4% của Dubai, lợi suất gộp cao hơn (7–9% so với 5,5–7% của Dubai) và tăng giá vốn 40–50% được ghi nhận cho người mua sớm. Chủ đầu tư được chính phủ hậu thuẫn và sổ đỏ đất được chủ quyền bảo đảm loại bỏ hoàn toàn rủi ro bàn giao.",
+      },
+    ],
+    ctaEyebrow: "Trao đổi với chuyên gia",
+    ctaHeading: "Sẵn sàng đầu tư trên Hudayriyat Island?",
+    ctaBody:
+      "Đội ngũ Abu Dhabi của chúng tôi cung cấp tư vấn miễn phí, không ràng buộc về tình trạng căn sẵn có, kế hoạch thanh toán và ROI dự kiến trên cả sáu khu Modon — bao gồm các lựa chọn ngoài thị trường.",
+    ctaPrimaryBtn: "Tư vấn miễn phí",
+    trustFooter: ["17+ năm trong bất động sản UAE", "2.500+ bất động sản", "Không hoa hồng cho người mua", "Được RERA quản lý"],
+    developerBadge: "Modon Properties · Được chính phủ hậu thuẫn",
+    developerSub: "84,5% thuộc sở hữu ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi",
+    freeholdBadge: "Sở hữu vĩnh viễn · Mọi quốc tịch",
+  },
 };
 
 export async function generateMetadata({
@@ -479,7 +577,7 @@ export async function generateMetadata({
       type: "website",
       url: makeCanonical(locale, "/hudayriyat-island"),
       siteName: "Binayah Properties",
-      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : "en_AE",
       images: [
         {
           url: OG_IMG,
@@ -649,10 +747,19 @@ const TABLE_ROWS_ZH = [
   ["黄金签证门槛", "200万迪拉姆", "200万迪拉姆"],
 ];
 
+const TABLE_ROWS_VI = [
+  ["Phí chuyển nhượng", "2%", "4%"],
+  ["Lợi suất cho thuê gộp", "7–9%", "5.5–7%"],
+  ["Tăng giá vốn", "40–50%", "15–25%"],
+  ["Rủi ro chủ đầu tư", "Chủ quyền (ADQ)", "Thay đổi"],
+  ["Ngưỡng Golden Visa", "2 triệu AED", "2 triệu AED"],
+];
+
 function getTableRows(locale: Locale): string[][] {
   if (locale === "ru") return TABLE_ROWS_RU;
   if (locale === "ar") return TABLE_ROWS_AR;
   if (locale === "zh") return TABLE_ROWS_ZH;
+  if (locale === "vi") return TABLE_ROWS_VI;
   return TABLE_ROWS_EN;
 }
 

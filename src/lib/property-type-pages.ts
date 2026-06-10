@@ -10,6 +10,7 @@ export interface PropertyTypePage {
   ru: PropertyTypeLocale;
   ar: PropertyTypeLocale;
   zh: PropertyTypeLocale;
+  vi: PropertyTypeLocale;
 }
 
 export interface PropertyTypeLocale {
@@ -123,6 +124,29 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "浏览所有公寓",
       keywords: ["迪拜公寓出售", "迪拜公寓出租", "购买迪拜公寓", "迪拜单间公寓"],
     },
+    vi: {
+      metaTitle: "Căn hộ bán & cho thuê tại Dubai | Studio đến 4PN | Binayah",
+      metaDesc: "Khám phá căn hộ Dubai — studio, 1, 2, 3 & 4 phòng ngủ để bán và cho thuê. Tin đăng đã xác minh tại Marina, Downtown, JVC, Business Bay.",
+      h1: "Căn hộ tại Dubai",
+      h1sub: "Studio đến 4 phòng ngủ | Bán & Cho thuê",
+      heroDesc: "Thị trường căn hộ Dubai trải dài từ studio 350K AED tại JVC đến căn hộ trên cao 20 triệu AED tại Downtown. Khám phá hơn 2.500 tin đăng đã xác minh với công cụ tìm kiếm AI của Binayah.",
+      stats: [{ n: "2.500+", label: "Căn hộ trong cơ sở dữ liệu" }, { n: "350K AED", label: "Giá khởi điểm" }, { n: "5–8%", label: "Lợi suất cho thuê TB" }, { n: "60+", label: "Khu vực" }],
+      highlights: [
+        { title: "Studio & 1PN", body: "Căn hộ Dubai cấp khởi điểm từ 350K–700K AED. JVC, Dubai South và Arjan mang lại lợi suất cao nhất (6–9%) cho nhà đầu tư cho thuê." },
+        { title: "2 & 3 phòng ngủ", body: "Phân khúc thanh khoản nhất. Gia đình và cặp đôi nước ngoài thúc đẩy nhu cầu tại Marina, JLT, Business Bay và Dubai Hills. Giá điển hình: 900K–2,5 triệu AED." },
+        { title: "Cao cấp 3PN+", body: "Căn hộ nguyên tầng và penthouse tại Downtown, Palm Jumeirah và DIFC khởi điểm từ 3 triệu AED với thành tích tăng giá vốn xuất sắc." },
+      ],
+      areas: ["Dubai Marina", "Downtown Dubai", "Jumeirah Village Circle", "Business Bay", "Dubai Hills Estate", "Jumeirah Lake Towers", "Palm Jumeirah", "Al Jaddaf"],
+      faqs: [
+        { question: "Giá trung bình của một căn hộ tại Dubai là bao nhiêu?", answer: "Căn hộ studio khởi điểm từ 350.000–500.000 AED tại các khu vùng ven như JVC và Dubai South. Căn hộ 1 phòng ngủ dao động 500K–1,2 triệu AED. Căn hộ 2 phòng ngủ giá 900K–2,5 triệu AED. Căn 2 phòng ngủ tại Downtown và Palm Jumeirah khởi điểm từ 2,5 triệu AED+. Giá trung bình mỗi foot vuông toàn thành phố cho căn hộ khoảng 1.450 AED trong Q1 2026." },
+        { question: "Đâu là khu vực tốt nhất để mua căn hộ tại Dubai?", answer: "Về lợi suất cho thuê (6–9%): JVC, Dubai South, Al Jaddaf, Business Bay. Về tăng giá vốn: Downtown Dubai, Palm Jumeirah, Dubai Marina. Cho gia đình: Dubai Hills Estate, Arabian Ranches, Mirdif. Cho người mua tiết kiệm: Dubai South, Arjan, International City." },
+        { question: "Người nước ngoài có thể mua căn hộ tại Dubai không?", answer: "Có. Mọi quốc tịch đều có thể mua căn hộ sở hữu vĩnh viễn (freehold) tại các khu freehold được chỉ định của Dubai — bao gồm hơn 60 khu vực như Dubai Marina, Downtown, JVC, Business Bay và Palm Jumeirah. Không hạn chế, không vốn tối thiểu (trừ khi xin Golden Visa), sở hữu sổ đỏ đầy đủ." },
+        { question: "Phí dịch vụ điển hình cho căn hộ Dubai là bao nhiêu?", answer: "Phí dịch vụ tại Dubai dao động 8–25 AED mỗi foot vuông mỗi năm tùy tòa nhà. Một căn hộ 1.000 foot vuông tại tòa nhà trung bình tốn 8.000–12.000 AED mỗi năm. Tòa nhà cao cấp (DIFC, Downtown, Palm) có thể vượt 20.000 AED mỗi năm. Phí dịch vụ do chủ sở hữu trả, không phải khách thuê." },
+        { question: "Nên mua hay thuê căn hộ tại Dubai?", answer: "Ở hầu hết khu vực Dubai, mua có lợi hơn về tài chính nếu bạn dự định ở từ 3 năm trở lên. Điểm hòa vốn mua-so-với-thuê ở mức giá và lãi suất hiện tại thường là 18–30 tháng. Với thời gian ở ngắn hơn hoặc linh hoạt tối đa, thuê hợp lý hơn. Tỷ lệ thuê-trên-giá tại Dubai thường 5–8%, khiến nơi đây là một trong những thị trường mua-cho-thuê hấp dẫn nhất thế giới." },
+      ],
+      ctaSearch: "Xem tất cả căn hộ",
+      keywords: ["căn hộ bán dubai", "căn hộ dubai", "mua căn hộ dubai", "căn hộ cho thuê dubai", "studio dubai"],
+    },
   },
 
   {
@@ -221,6 +245,29 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "浏览所有别墅",
       keywords: ["迪拜别墅出售", "迪拜别墅出租", "购买迪拜别墅", "迪拜豪华别墅"],
     },
+    vi: {
+      metaTitle: "Biệt thự bán & cho thuê tại Dubai | Cao cấp đến Gia đình | Binayah",
+      metaDesc: "Khám phá biệt thự Dubai — biệt thự độc lập, bán độc lập và nhà phố 3 đến 7 phòng ngủ để bán và cho thuê. Arabian Ranches, Palm, Dubai Hills.",
+      h1: "Biệt thự tại Dubai",
+      h1sub: "3–7 phòng ngủ | Khu dân cư khép kín",
+      heroDesc: "Thị trường biệt thự Dubai trải dài từ nhà gia đình 2 triệu AED tại Arabian Ranches đến các dinh thự siêu sang 100 triệu AED+ tại Palm Jumeirah và Emirates Hills. Tìm ngôi nhà hoàn hảo của bạn với Binayah.",
+      stats: [{ n: "800+", label: "Biệt thự trong cơ sở dữ liệu" }, { n: "2 triệu AED", label: "Giá khởi điểm" }, { n: "4–6%", label: "Lợi suất cho thuê TB" }, { n: "25+", label: "Khu biệt thự" }],
+      highlights: [
+        { title: "Biệt thự gia đình", body: "Biệt thự 3–5 phòng ngủ tại các khu khép kín như Arabian Ranches, Jumeirah Golf Estates và DAMAC Hills khởi điểm từ 2–5 triệu AED. Các khu này có trường học, công viên và nhà câu lạc bộ." },
+        { title: "Biệt thự ven biển", body: "Biệt thự đặc trưng Palm Jumeirah (15–80 triệu AED+) và bất động sản Dubai Creek Harbour mang lại lối ra biển/lạch trực tiếp. Loại tài sản được săn đón và kém thanh khoản nhất Dubai." },
+        { title: "Biệt thự golf & nghỉ dưỡng", body: "Jumeirah Golf Estates, Trump International và Jumeirah Golf Club mang lại biệt thự với view sân golf trực tiếp từ 5–20 triệu AED." },
+      ],
+      areas: ["Arabian Ranches", "Palm Jumeirah", "Dubai Hills Estate", "Jumeirah Golf Estates", "DAMAC Hills", "Mudon", "Mirdif", "Al Barari"],
+      faqs: [
+        { question: "Giá trung bình của một biệt thự tại Dubai là bao nhiêu?", answer: "Biệt thự 3 phòng ngủ tại các khu lâu đời (Arabian Ranches, DAMAC Hills) khởi điểm từ 2–3,5 triệu AED. Biệt thự 4-5 phòng ngủ dao động 3,5–8 triệu AED. Biệt thự ven biển (Palm Jumeirah, Jumeirah Bay) dao động 15–80 triệu AED. Mega-biệt thự Emirates Hills có thể vượt 200 triệu AED." },
+        { question: "Đâu là khu biệt thự tốt nhất tại Dubai?", answer: "Sống gia đình: Arabian Ranches (3 giai đoạn), Dubai Hills Estate, Mudon. Khu golf: Jumeirah Golf Estates, DAMAC Hills. Cao cấp/ven biển: Palm Jumeirah, Emirates Hills. Giá trị: Town Square, Akoya Oxygen, The Springs." },
+        { question: "Người nước ngoài có thể mua biệt thự tại Dubai không?", answer: "Có. Người nước ngoài có thể mua biệt thự tại các khu freehold của Dubai, bao gồm hầu hết các khu biệt thự. Không hạn chế theo quốc tịch. Một số khu quy hoạch tổng thể như Jumeirah và Al Wasl là thuê dài hạn (không phải freehold) — chuyên viên Binayah sẽ làm rõ trước khi bạn mua." },
+        { question: "Phí dịch vụ cho biệt thự Dubai là bao nhiêu?", answer: "Phí dịch vụ biệt thự dao động 2–8 AED mỗi foot vuông diện tích lô đất mỗi năm, tùy khu vực. Arabian Ranches trung bình 3–5 AED/foot vuông; DAMAC Hills 4–6 AED/foot vuông. Phí dịch vụ bao gồm an ninh, cảnh quan, hồ bơi và bảo trì khu vực." },
+        { question: "Mua biệt thự tại Dubai có phải khoản đầu tư tốt không?", answer: "Giá biệt thự Dubai đã tăng 35–60% tại các khu chính kể từ năm 2021, được thúc đẩy bởi nhu cầu lối sống hậu đại dịch từ người mua châu Âu, Nga và Trung Quốc. Lợi suất cho thuê 4–6% thấp hơn căn hộ nhưng biệt thự thu hút khách thuê dài hạn (hợp đồng 2–3 năm), giảm rủi ro trống nhà. Nguồn cung biệt thự hạn chế hơn căn hộ, hỗ trợ giá sàn." },
+      ],
+      ctaSearch: "Xem tất cả biệt thự",
+      keywords: ["biệt thự bán dubai", "biệt thự dubai", "mua biệt thự dubai", "biệt thự cho thuê dubai", "biệt thự sang trọng dubai"],
+    },
   },
 
   {
@@ -311,6 +358,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "浏览顶层公寓",
       keywords: ["迪拜顶层公寓", "迪拜penthouse出售", "迪拜豪华顶层公寓"],
+    },
+    vi: {
+      metaTitle: "Penthouse bán tại Dubai | Nhà trên cao sang trọng | Binayah",
+      metaDesc: "Penthouse độc quyền tại Dubai — Downtown, Marina, Palm Jumeirah. Căn nguyên tầng, hồ bơi riêng, view toàn cảnh. Chuyên gia bất động sản cao cấp Binayah.",
+      h1: "Penthouse tại Dubai",
+      h1sub: "Sang trọng nguyên tầng | Hồ bơi riêng & View",
+      heroDesc: "Penthouse Dubai đại diện cho đỉnh cao của cuộc sống đô thị — hồ bơi vô cực riêng, view toàn cảnh đường chân trời và sự riêng tư vô song trên cao. Khám phá danh mục penthouse độc quyền của Binayah.",
+      stats: [{ n: "3 triệu AED", label: "Giá khởi điểm" }, { n: "4.000+", label: "Foot vuông TB" }, { n: "50 triệu AED+", label: "Siêu sang" }, { n: "DIFC, Marina, Downtown", label: "Vị trí hàng đầu" }],
+      highlights: [
+        { title: "Penthouse trên cao", body: "Căn penthouse nguyên tầng tại Downtown Dubai và Dubai Marina (tầng 30–80) với view toàn cảnh 360°. 5–25 triệu AED. Thang máy riêng, hệ thống nhà thông minh." },
+        { title: "Penthouse hồ bơi riêng", body: "Penthouse trên sân thượng với hồ bơi vô cực tại Palm Jumeirah, Jumeirah Bay Island và Downtown. 10–50 triệu AED+." },
+        { title: "Penthouse thương hiệu", body: "Penthouse mang thương hiệu Four Seasons, Armani, Bulgari và Address có mức giá cao nhất (20–200 triệu AED) và giữ giá tốt nhất trong thị trường đi xuống." },
+      ],
+      areas: ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "DIFC", "Jumeirah Bay Island", "Business Bay", "Bluewaters Island"],
+      faqs: [
+        { question: "Khoảng giá cho penthouse tại Dubai là bao nhiêu?", answer: "Giá penthouse Dubai dao động từ 3 triệu AED cho căn 3 phòng ngủ tầng cao tại tòa nhà bậc trung đến 200 triệu AED+ cho cung điện trên cao thương hiệu nguyên tầng tại Palm Jumeirah và DIFC. Khoảng lý tưởng cho penthouse đầu tư là 5–20 triệu AED tại Downtown Dubai và Dubai Marina." },
+        { question: "Penthouse khác căn hộ thông thường tại Dubai như thế nào?", answer: "Penthouse thường chiếm 1–3 tầng trên cùng của tòa nhà với diện tích sàn lớn hơn (4.000–15.000+ foot vuông), trần cao hơn (3,5–6m), sân thượng riêng, thang máy riêng và view toàn cảnh. Phí dịch vụ thường cao gấp 2–3 lần căn hộ tiêu chuẩn." },
+        { question: "Penthouse Dubai có phải khoản đầu tư tốt không?", answer: "Penthouse cao cấp tại các tòa nhà thương hiệu hoặc biểu tượng đã vượt trội thị trường bất động sản Dubai chung kể từ năm 2021 — tăng giá 50–100% cho các tài sản phù hợp. Tuy nhiên, thị trường mỏng (nguồn cung và người mua hạn chế), khiến việc thoát vốn chậm. Penthouse chủ yếu là kho lưu trữ tài sản hơn là đầu tư lợi suất." },
+        { question: "Tòa nhà nào có penthouse tốt nhất tại Dubai?", answer: "Address Sky View, Armani Hotel Residences, Four Seasons Private Residences, 1/JBR, Como Residences tại Palm Jumeirah và các dự án siêu cao cấp của XXI Century luôn có mức giá cao nhất và nhu cầu bán lại mạnh nhất." },
+      ],
+      ctaSearch: "Xem penthouse",
+      keywords: ["penthouse dubai", "penthouse bán dubai", "penthouse sang trọng dubai", "penthouse trên cao dubai"],
     },
   },
 
@@ -403,6 +472,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "浏览办公室",
       keywords: ["迪拜办公室出售", "迪拜办公室出租", "迪拜商业地产"],
     },
+    vi: {
+      metaTitle: "Văn phòng bán & cho thuê tại Dubai | Bất động sản thương mại | Binayah",
+      metaDesc: "Văn phòng thương mại tại Dubai — DIFC, Business Bay, JLT, Downtown. Văn phòng hoàn thiện và thô để bán và cho thuê. Chuyên gia bất động sản thương mại Binayah.",
+      h1: "Văn phòng tại Dubai",
+      h1sub: "Bán & Cho thuê | DIFC đến Business Bay",
+      heroDesc: "Thị trường văn phòng thương mại Dubai cung cấp văn phòng hoàn thiện hạng A tại DIFC từ giá thuê 200 AED/foot vuông đến cơ hội thô để hoàn thiện theo yêu cầu. Khám phá các tin đăng thương mại đã xác minh của Binayah.",
+      stats: [{ n: "80 AED/foot vuông", label: "Thuê khởi điểm/năm" }, { n: "1.500 AED/foot vuông", label: "Bán khởi điểm" }, { n: "6–9%", label: "Lợi suất thương mại" }, { n: "DIFC, JLT, BBay", label: "Vị trí hàng đầu" }],
+      highlights: [
+        { title: "Văn phòng hoàn thiện", body: "Văn phòng hạng A sẵn vào ở với IT, vách ngăn và điều hòa. Văn phòng hoàn thiện DIFC: 160–280 AED/foot vuông/năm. Business Bay: 80–130 AED/foot vuông/năm." },
+        { title: "Thô & Cơ bản", body: "Văn phòng thô chưa hoàn thiện để thiết kế tùy chỉnh. 1.500–3.000 AED/foot vuông để mua. Chi phí hoàn thiện ban đầu thấp hơn mang lại sự linh hoạt cho doanh nghiệp đang phát triển." },
+        { title: "Văn phòng khu tự do", body: "Văn phòng DIFC, DMCC, Jebel Ali Free Zone và Dubai South đủ điều kiện sở hữu nước ngoài 100%, không thuế doanh nghiệp và hồi hương lợi nhuận đầy đủ." },
+      ],
+      areas: ["DIFC", "Business Bay", "Jumeirah Lake Towers", "Downtown Dubai", "Dubai Internet City", "Dubai Media City", "Deira"],
+      faqs: [
+        { question: "Giá văn phòng thương mại tại Dubai là bao nhiêu?", answer: "Thuê văn phòng tại Dubai: DIFC hạng A 160–280 AED/foot vuông/năm; Business Bay 80–130 AED/foot vuông/năm; JLT 60–100 AED/foot vuông/năm. Để mua: văn phòng DIFC 2.500–5.000 AED/foot vuông; Business Bay 1.500–2.500 AED/foot vuông." },
+        { question: "Quy trình để một công ty thuê văn phòng tại Dubai là gì?", answer: "Bạn cần giấy phép kinh doanh UAE để thuê văn phòng hợp pháp. Đối với công ty đất liền: giấy phép DED + hợp đồng thuê + đăng ký Ejari. Đối với công ty khu tự do: cơ quan khu tự do cấp giấy phép và thường là chủ nhà. DIFC có cơ quan riêng (DIFCA) và hệ thống pháp luật thông luật." },
+        { question: "Người nước ngoài có thể sở hữu văn phòng thương mại tại Dubai không?", answer: "Có. Người nước ngoài có thể mua văn phòng thương mại sở hữu vĩnh viễn tại các khu được chỉ định. Văn phòng khu tự do (DIFC, DMCC, JLT) cho phép sở hữu nước ngoài 100% không cần đối tác địa phương, cộng với không thuế doanh nghiệp." },
+        { question: "Điều khoản thuê thương mại điển hình tại Dubai là gì?", answer: "Hợp đồng thuê thương mại tại Dubai thường 1–3 năm, thanh toán bằng chi phiếu ghi ngày sau (1–4 chi phiếu mỗi năm). Thời gian báo trước là 90 ngày. DIFC hoạt động theo thông luật Anh với cơ cấu thuê tinh vi hơn. Phí dịch vụ riêng và thường 15–35 AED/foot vuông/năm." },
+      ],
+      ctaSearch: "Xem văn phòng",
+      keywords: ["văn phòng bán dubai", "thuê văn phòng dubai", "bất động sản thương mại dubai", "văn phòng difc", "văn phòng business bay"],
+    },
   },
 
   {
@@ -494,6 +585,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "浏览联排别墅",
       keywords: ["迪拜联排别墅出售", "迪拜联排别墅出租", "购买迪拜联排别墅"],
     },
+    vi: {
+      metaTitle: "Nhà phố bán & cho thuê tại Dubai | Sống cộng đồng | Binayah",
+      metaDesc: "Nhà phố Dubai — nhà liền kề và bán độc lập 2 đến 5 phòng ngủ tại JVC, Town Square, Arabian Ranches. Giá trị tốt hơn biệt thự, không gian rộng hơn căn hộ.",
+      h1: "Nhà phố tại Dubai",
+      h1sub: "2–5 phòng ngủ | Sống cộng đồng",
+      heroDesc: "Nhà phố Dubai mang lại sự cân bằng hoàn hảo — nhiều không gian và riêng tư hơn căn hộ, giá trị tốt hơn biệt thự độc lập. 1–5 triệu AED trên 30+ khu vực lâu đời.",
+      stats: [{ n: "1 triệu AED", label: "Giá khởi điểm" }, { n: "1.800–3.500", label: "Foot vuông TB" }, { n: "5–7%", label: "Lợi suất cho thuê" }, { n: "30+", label: "Khu vực" }],
+      highlights: [
+        { title: "Nhà gia đình giá phải chăng", body: "Nhà phố 3-4 phòng ngủ từ 1–2 triệu AED tại JVC, Town Square và Mudon. Vườn riêng, bãi đỗ xe, hồ bơi cộng đồng — mọi thứ gia đình cần ở mức giá căn hộ." },
+        { title: "Nhà phố cao cấp", body: "Nhà phố 4-5 phòng ngủ tại Dubai Hills Estate, Emaar South và Arabian Ranches 3 từ 2,5–5 triệu AED. Tiêu chuẩn cao hơn, tiện ích cộng đồng cao cấp." },
+        { title: "Nhà phố đầu tư", body: "Nhà phố liên tục mang lại lợi suất cho thuê gộp 5–7%. Căn 3 phòng ngủ tại JVC và Town Square cho thuê 80K–120K AED/năm, mang lại thu nhập mạnh so với giá mua." },
+      ],
+      areas: ["Jumeirah Village Circle", "Town Square", "Arabian Ranches", "Dubai Hills Estate", "Mudon", "DAMAC Hills 2", "Emaar South", "Al Furjan"],
+      faqs: [
+        { question: "Giá của một nhà phố tại Dubai là bao nhiêu?", answer: "Giá nhà phố Dubai dao động từ 1–1,8 triệu AED cho căn 2-3 phòng ngủ tại các khu giá rẻ (Town Square, DAMAC Hills 2) đến 2,5–5 triệu AED cho nhà phố cao cấp 4-5 phòng ngủ tại Dubai Hills Estate và Arabian Ranches. Hầu hết nhà phố off-plan có kế hoạch thanh toán với 20–40% trả trước." },
+        { question: "Sự khác biệt giữa nhà phố và biệt thự tại Dubai là gì?", answer: "Nhà phố chia sẻ một hoặc hai bức tường với căn lân cận (bán độc lập hoặc liền kề). Biệt thự là công trình hoàn toàn độc lập. Nhà phố thường rẻ hơn 20–40% so với biệt thự tương đương trong cùng khu vực và có diện tích lô đất nhỏ hơn (1.000–3.000 foot vuông so với 5.000–15.000+ foot vuông cho biệt thự)." },
+        { question: "Khu nhà phố nào có lợi suất cho thuê tốt nhất tại Dubai?", answer: "JVC (Jumeirah Village Circle): gộp 5,5–7%. Town Square: gộp 5–6,5%. DAMAC Hills 2: 5–7%. Mudon: 5,5–6,5%. Lợi suất thường cao hơn tại các khu mới hoặc vùng ven nơi giá mua thấp hơn so với tiền thuê đạt được." },
+        { question: "Nhà phố có phải khoản đầu tư tốt tại Dubai 2026 không?", answer: "Có. Nhà phố Dubai đã tăng giá 30–50% kể từ năm 2021 tại các khu lâu đời. Nguồn cung bất động sản sống cộng đồng (nhà phố và biệt thự gộp lại) vẫn thấp hơn nhiều so với nhu cầu — đặc biệt từ các gia đình có con chuyển đến Dubai. Nhu cầu thuê nhà gia đình 3-4 phòng ngủ thiếu cung về mặt cơ cấu." },
+      ],
+      ctaSearch: "Xem nhà phố",
+      keywords: ["nhà phố bán dubai", "nhà phố dubai", "mua nhà phố dubai", "nhà phố cho thuê dubai"],
+    },
   },
 
   {
@@ -580,6 +693,27 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "浏览仓库",
       keywords: ["迪拜仓库出租", "迪拜仓库出售", "迪拜工业地产"],
+    },
+    vi: {
+      metaTitle: "Kho xưởng bán & cho thuê tại Dubai | Bất động sản công nghiệp | Binayah",
+      metaDesc: "Kho xưởng công nghiệp tại Dubai — Al Quoz, Jebel Ali, Dubai South, DIC. Không gian logistics, lưu trữ và sản xuất để thuê và mua.",
+      h1: "Kho xưởng tại Dubai",
+      h1sub: "Công nghiệp & Logistics | Al Quoz đến Jebel Ali",
+      heroDesc: "Vị thế trung tâm logistics của Dubai khiến nơi đây trở thành một trong những thị trường bất động sản công nghiệp sôi động nhất Trung Đông. Kho xưởng từ giá thuê 60 AED/foot vuông tại Al Quoz đến 35 AED/foot vuông tại Jebel Ali Free Zone.",
+      stats: [{ n: "35 AED/foot vuông", label: "Thuê từ/năm" }, { n: "400 AED/foot vuông", label: "Mua từ" }, { n: "7–10%", label: "Lợi suất công nghiệp" }, { n: "Jebel Ali FZ", label: "Trung tâm lớn nhất" }],
+      highlights: [
+        { title: "Kho lưu trữ tiêu chuẩn", body: "Al Quoz và Dubai Investment Park cung cấp kho xưởng tiêu chuẩn 5.000–50.000 foot vuông với chiều cao thông thủy 6–9m, bến bốc dỡ và văn phòng lửng. Thuê: 50–80 AED/foot vuông/năm." },
+        { title: "Kho xưởng khu tự do", body: "Kho xưởng Jebel Ali Free Zone (JAFZA) và Dubai South Free Zone cho phép sở hữu nước ngoài 100%, tái xuất không thuế và tiếp cận cảng/sân bay trực tiếp. Thuê: 35–55 AED/foot vuông/năm." },
+        { title: "Kho lạnh & Chuyên dụng", body: "Kho kiểm soát nhiệt độ và kho dược phẩm tại Al Quoz và Dubai Industrial Park có mức giá thuê cao hơn 20–40% so với kho tiêu chuẩn do đầu tư hoàn thiện." },
+      ],
+      areas: ["Al Quoz", "Jebel Ali Free Zone", "Dubai Industrial Park", "Dubai South", "Dubai Investment Park", "Ras Al Khor", "Al Qusais"],
+      faqs: [
+        { question: "Giá thuê kho xưởng công nghiệp tại Dubai là bao nhiêu?", answer: "Al Quoz: 50–80 AED/foot vuông/năm cho kho tiêu chuẩn. DIP (Dubai Investment Park): 40–60 AED/foot vuông/năm. Jebel Ali Free Zone: 35–55 AED/foot vuông/năm. Dubai South: 30–50 AED/foot vuông/năm. Kho chuyên dụng hoặc kho lạnh có mức giá cao hơn 20–40%." },
+        { question: "Công ty nước ngoài có thể sở hữu kho xưởng tại Dubai không?", answer: "Tại các khu tự do (Jebel Ali, Dubai South, Dubai Airport Free Zone): có, sở hữu nước ngoài 100% không cần đối tác địa phương. Tại các khu đất liền (Al Quoz, DIP): áp dụng quy định thương mại UAE — doanh nghiệp nước ngoài thường dùng cơ cấu đại lý địa phương hoặc LLC với đối tác Emirati, dù cải cách Luật Công ty hiện cho phép sở hữu nước ngoài 100% trong hầu hết hoạt động." },
+        { question: "Diện tích kho xưởng tối thiểu để thuê tại Dubai là bao nhiêu?", answer: "Diện tích kho xưởng tối thiểu tại Dubai thường khởi điểm từ 2.000–3.000 foot vuông tại các tòa nhà Al Quoz cũ. Hầu hết khu logistics hiện đại (DIP, Dubai South) yêu cầu cam kết tối thiểu 10.000–25.000 foot vuông. Cơ hội cho thuê lại tại các kho lâu đời có thể cung cấp đơn vị nhỏ hơn." },
+      ],
+      ctaSearch: "Xem kho xưởng",
+      keywords: ["kho xưởng cho thuê dubai", "kho xưởng bán dubai", "bất động sản công nghiệp dubai", "kho al quoz"],
     },
   },
 
@@ -668,6 +802,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "浏览土地地块",
       keywords: ["迪拜土地出售", "迪拜地块出售", "购买迪拜土地", "迪拜住宅地块"],
+    },
+    vi: {
+      metaTitle: "Đất nền bán tại Dubai | Sở hữu vĩnh viễn | Binayah Properties",
+      metaDesc: "Đất nền dân cư và thương mại bán tại Dubai. Lô đất freehold tại Jumeirah, MBR City, Tilal Al Ghaf, Al Barari. Phê duyệt GFA, sổ đỏ rõ ràng.",
+      h1: "Đất nền bán tại Dubai",
+      h1sub: "Lô đất dân cư & thương mại | Sở hữu vĩnh viễn",
+      heroDesc: "Thị trường đất Dubai cung cấp các lô đất freehold hiếm có tại các khu vực lâu đời và mới nổi. Xây biệt thự tùy chỉnh của bạn hoặc phát triển dự án thương mại trên một trong những bức tranh đô thị năng động nhất thế giới.",
+      stats: [{ n: "200 AED/foot vuông", label: "Khởi điểm dân cư" }, { n: "400 AED/foot vuông", label: "Vị trí cao cấp" }, { n: "3.000+", label: "Lô tối thiểu (foot vuông)" }, { n: "MBR City", label: "Nguồn cung lớn nhất" }],
+      highlights: [
+        { title: "Lô đất dân cư", body: "Xây biệt thự tùy chỉnh của bạn trên đất freehold tại Jumeirah, Al Barari, Nad Al Sheba và Mohammed Bin Rashid City (MBR). Giá từ 200 AED/foot vuông đến 1.000 AED/foot vuông tại các khu ven biển cao cấp." },
+        { title: "Thương mại & Đa năng", body: "Lô đất phát triển tại Business Bay, Dubai South và Jebel Ali cho dự án thương mại, dân cư hoặc đa năng. Thường được bán kèm giấy phép GFA (Tổng diện tích sàn) đã phê duyệt." },
+        { title: "Đất công nghiệp", body: "Lô đất quy hoạch công nghiệp tại Al Quoz, Dubai Investment Park và Dubai South cho kho bãi hoặc sản xuất. Từ 50 AED/foot vuông với quyền sử dụng dài hạn." },
+      ],
+      areas: ["Jumeirah", "Mohammed Bin Rashid City", "Al Barari", "Tilal Al Ghaf", "Nad Al Sheba", "Dubai Hills Estate", "Hatta", "Dubai South"],
+      faqs: [
+        { question: "Người nước ngoài có thể mua đất tại Dubai không?", answer: "Có, tại các khu freehold được chỉ định. Người nước ngoài có thể mua đất freehold tại các khu vực bao gồm MBR City, Jumeirah Village Circle, Business Bay, Dubai South và những khu khác. Ngoại lệ chính: Jumeirah (khu dân cư truyền thống) và một số khu cũ là thuê dài hạn. Luôn xác minh tình trạng freehold trước khi mua." },
+        { question: "Quy trình mua đất tại Dubai là gì?", answer: "1) Thỏa thuận giá và điều khoản với người bán. 2) Ký MOU và trả 10% đặt cọc. 3) NOC từ chủ đầu tư (nếu là đất quy hoạch tổng thể). 4) Đảm bảo lô đất có tỷ lệ GFA/FAR đã phê duyệt. 5) Chuyển nhượng DLD với phí chuyển nhượng 4%. 6) Nộp đơn lên Đô thị Dubai hoặc cơ quan liên quan để xin giấy phép xây dựng." },
+        { question: "Tôi có thể xây gì trên đất freehold tại Dubai?", answer: "Giấy phép sử dụng phụ thuộc vào phân loại quy hoạch (dân cư, thương mại, đa năng, công nghiệp). Dân cư G+1 hoặc G+2 tại hầu hết các khu biệt thự. MBR City cho phép G+3 đến G+5 tại một số lô. Luôn kiểm tra GFA đã phê duyệt và yêu cầu khoảng lùi trước khi mua." },
+        { question: "Giá mỗi foot vuông cho đất tại Dubai là bao nhiêu?", answer: "Thay đổi rất lớn theo vị trí. Đất dân cư: 200–400 AED/foot vuông (vùng ven), 500–1.000 AED/foot vuông (Jumeirah/ven biển cao cấp). Đất thương mại: 400–2.000 AED/foot vuông (Business Bay, rìa DIFC). Công nghiệp/logistics: 50–150 AED/foot vuông." },
+      ],
+      ctaSearch: "Xem đất & lô đất",
+      keywords: ["đất bán dubai", "lô đất bán dubai", "đất freehold dubai", "mua đất dubai", "lô đất dân cư dubai"],
     },
   },
 ];
