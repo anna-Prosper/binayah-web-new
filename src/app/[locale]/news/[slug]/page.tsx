@@ -33,7 +33,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const article = await getNewsArticle(slug, locale);
   let related: any[] = [];
   try {
-    related = await getRelatedNews(slug, article.category, 3);
+    related = await getRelatedNews(slug, article.category, 3, locale);
   } catch {
     related = [];
   }

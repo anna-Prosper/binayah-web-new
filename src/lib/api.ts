@@ -78,9 +78,9 @@ export const getNewsArticle = cache(async (slug: string, lang = "en") =>
   fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
 );
 export const getRelatedNews = cache(
-  async (currentSlug: string, category?: string, limit = 3): Promise<any[]> => {
+  async (currentSlug: string, category?: string, limit = 3, lang = "en"): Promise<any[]> => {
     try {
-      const raw = await fetchJsonOr404<any>(`/api/news?limit=20`);
+      const raw = await fetchJsonOr404<any>(`/api/news?limit=20&lang=${lang}`);
       const list: any[] = Array.isArray(raw)
         ? raw
         : Array.isArray(raw?.articles)
