@@ -1,9 +1,9 @@
-/* eslint-disable i18next/no-literal-string -- SEO landing page, English-only by design (targets English search queries) */
+/* eslint-disable i18next/no-literal-string -- SEO landing page; community copy is localized via localizeCommunityText, UI labels via the LABELS map */
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { BUY_COMMUNITIES, findBuyCommunity } from "@/lib/buy-communities";
+import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const c = findBuyCommunity(community);
   if (!c) return {};
   const title = `Buy Property in ${c.name}, Dubai | ${c.priceRange} | Binayah`;
-  const description = `${c.shortIntro} Avg yield ${c.yield}. Browse current listings for sale in ${c.name} with Binayah Properties.`;
+  const description = `${localizeCommunityText(c.shortIntro, locale)} Avg yield ${c.yield}. Browse current listings for sale in ${c.name} with Binayah Properties.`;
   return {
     title,
     description,
@@ -91,12 +91,12 @@ export default async function BuyInCommunityPage({
   const seoBlock = (
     <section className="bg-card border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{c.vibe}</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{localizeCommunityText(c.vibe, locale)}</p>
         <h1 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
           {L.buyIn} {c.name}, {L.dubai}
         </h1>
-        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{c.shortIntro}</p>
-        <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{c.why}</p>
+        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{localizeCommunityText(c.shortIntro, locale)}</p>
+        <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{localizeCommunityText(c.why, locale)}</p>
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>
@@ -123,7 +123,7 @@ export default async function BuyInCommunityPage({
         totalCount={totalCount}
         listingType="Sale"
         title={`${L.forSale} ${c.name}`}
-        subtitle={c.shortIntro}
+        subtitle={localizeCommunityText(c.shortIntro, locale)}
         initialPage={1}
         batchSize={BATCH_SIZE}
         community={c.name}
