@@ -213,12 +213,16 @@ export default async function BuyPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Search + sidebar two-column region */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+      {/* Full-width embedded search (spans the page like the sections above) */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
+        <SearchPageClient defaultIntent="buy" syncUrl={false} />
+      </div>
 
-        {/* Main column: search + FAQ + CTA */}
+      {/* FAQ + CTA, with the sidebar starting here (below the full-width search) */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+
+        {/* Main column: FAQ + CTA */}
         <div className="min-w-0 space-y-12 sm:space-y-16">
-          <SearchPageClient defaultIntent="buy" syncUrl={false} />
 
           {/* FAQ */}
           <div>

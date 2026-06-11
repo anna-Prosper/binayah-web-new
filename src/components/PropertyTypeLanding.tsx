@@ -111,18 +111,18 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
 
       </div>
 
-      {/* ── Search + sidebar two-column region ── */}
-      <div className="max-w-6xl mx-auto w-full lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+      {/* ── Full-width embedded search (spans the page like the sections above) ── */}
+      {searchSlot && (
+        <div className="border-t border-border/30 bg-muted/20">
+          {searchSlot}
+        </div>
+      )}
 
-        {/* Main column: embedded search + FAQ + CTA */}
-        <div className="min-w-0">
-          {searchSlot && (
-            <div className="border-t border-border/30 bg-muted/20">
-              {searchSlot}
-            </div>
-          )}
+      {/* ── FAQ + CTA, with the sidebar starting here (below the full-width search) ── */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
 
-          <div className="px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
+        {/* Main column: FAQ + CTA */}
+        <div className="min-w-0 space-y-12 sm:space-y-16">
 
             {/* FAQ */}
             <section>
@@ -173,11 +173,10 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
           </div>
         </section>
 
-          </div>
         </div>
 
-        {/* Sidebar */}
-        <aside className="px-4 sm:px-6 lg:px-0 lg:pr-6 pt-2 lg:pt-16 pb-10 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+        {/* Sidebar — sits beside the FAQ/CTA, below the full-width search */}
+        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
           <PropertyTypeSidebar locale={locale} slug={slug} />
         </aside>
 
