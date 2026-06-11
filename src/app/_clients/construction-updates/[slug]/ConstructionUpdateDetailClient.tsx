@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Globe, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
+import { ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -31,9 +31,6 @@ interface ProjectArticle {
 const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 const WHATSAPP_NUMBER = "971549988811";
 
-const LANG_NAMES: Record<string, string> = {
-  en: "English", ru: "Русский", ar: "العربية", zh: "中文", he: "עברית", vi: "Tiếng Việt",
-};
 
 const LABELS: Record<string, Record<string, string>> = {
   en: { back: "Project Guides", faq: "Frequently Asked Questions", viewProject: "View Project", langs: "Available in", topics: "Topics", author: "Binayah Editorial", bookConsultation: "Book a Consultation", investmentTitle: "Get Investment Advice", investmentDesc: "Our experts are ready to guide you through this project's payment plan and ROI potential.", ctaTitle: "Ready to Invest?", ctaDesc: "Speak to our team about this project and get exclusive pricing and payment plans.", ctaWhatsApp: "Chat on WhatsApp", newsletter: "Weekly Market Report", newsletterDesc: "Get Dubai property insights every week." },
@@ -136,32 +133,18 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
 
             {/* Article body */}
             <div className="min-w-0">
-              {/* Share strip — identical to NewsDetailClient, with language switcher on the right */}
+              {/* Share strip — identical to NewsDetailClient */}
               <div className="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-border/60">
                 <div className="flex items-center gap-3">
                   <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{shareLabel}</span>
                   <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Facebook className="h-4 w-4" /></a>
                   <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Twitter className="h-4 w-4" /></a>
                   <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Linkedin className="h-4 w-4" /></a>
-                  <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
-                    <LinkIcon className="h-4 w-4" />
-                    {copied && <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded whitespace-nowrap">{copiedLabel}</span>}
-                  </button>
                 </div>
-                {article.langs && article.langs.length > 1 && (
-                  <div className="flex items-center gap-1.5">
-                    <Globe className="h-3.5 w-3.5 text-muted-foreground" />
-                    {article.langs.map((lang) => (
-                      <Link
-                        key={lang}
-                        href={lang === "en" ? `/construction-updates/${article.slug}` : `/${lang}/construction-updates/${article.slug}`}
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${lang === locale ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-                      >
-                        {lang.toUpperCase()}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
+                  <LinkIcon className="h-4 w-4" />
+                  {copied && <span className="absolute -top-8 right-0 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded whitespace-nowrap">{copiedLabel}</span>}
+                </button>
               </div>
 
               {/* Body */}
