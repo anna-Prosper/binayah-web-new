@@ -69,7 +69,7 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
 
   let guides: GuideItem[] = [];
   try {
-    const res = await serverFetch(serverApiUrl("/api/news?limit=4&category=guides"));
+    const res = await serverFetch(serverApiUrl(`/api/news?limit=4&category=guides&lang=${encodeURIComponent(locale)}`));
     if (res.ok) {
       const data = await res.json();
       const list: unknown = Array.isArray(data) ? data : (data?.news ?? data?.articles ?? data?.data);

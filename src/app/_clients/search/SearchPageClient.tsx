@@ -529,7 +529,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
           </div>
 
           {/* Desktop filter row */}
-          <div className="hidden lg:flex items-center gap-2 bg-muted/40 rounded-2xl px-3 py-2.5 border border-border/40">
+          <div className="hidden lg:flex flex-wrap items-center gap-x-2 gap-y-2 bg-muted/40 rounded-2xl px-3 py-2.5 border border-border/40">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={localizedPropertyTypes} counts={facets.propertyType} />
             <div className="h-5 w-px bg-border/50 shrink-0" />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
