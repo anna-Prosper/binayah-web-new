@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect, useRef } from "react";
 
-interface Faq { question: string; answer: string }
+interface Faq { question?: string; answer?: string; q?: string; a?: string }
 
 interface ProjectArticle {
   slug: string;
@@ -154,15 +154,20 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                 <div className="mt-12 pt-8 border-t border-border">
                   <h2 className="text-xl font-bold text-foreground mb-5">{l.faq}</h2>
                   <div className="space-y-2">
-                    {article.faq.map((item, i) => (
-                      <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
-                        <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 cursor-pointer list-none font-semibold text-sm text-foreground hover:text-primary transition-colors">
-                          <span>{item.question}</span>
-                          <span className="text-accent text-lg font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45">+</span>
-                        </summary>
-                        <div className="px-4 sm:px-6 pb-4 pt-3 text-sm text-muted-foreground leading-relaxed border-t border-border/30">{item.answer}</div>
-                      </details>
-                    ))}
+                    {article.faq.map((item, i) => {
+                      const question = item.question ?? item.q ?? "";
+                      const answer = item.answer ?? item.a ?? "";
+                      if (!question) return null;
+                      return (
+                        <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/20 transition-colors">
+                          <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 cursor-pointer list-none font-semibold text-sm text-foreground hover:text-primary transition-colors">
+                            <span>{question}</span>
+                            <span className="text-accent text-lg font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45">+</span>
+                          </summary>
+                          <div className="px-4 sm:px-6 pb-4 pt-3 text-sm text-muted-foreground leading-relaxed border-t border-border/30">{answer}</div>
+                        </details>
+                      );
+                    })}
                   </div>
                 </div>
               )}
