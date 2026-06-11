@@ -425,7 +425,9 @@
     "typeApartment": "公寓",
     "typeVilla": "别墅 / 联排",
     "typeCommercial": "商业",
-    "typePlot": "地块"
+    "typePlot": "地块",
+    "price": "价格",
+    "reset": "重置"
   },
   "offPlan": {
     "title": "迪拜期房",

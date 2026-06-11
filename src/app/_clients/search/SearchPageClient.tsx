@@ -16,6 +16,7 @@ import CardImageCarousel from "@/components/CardImageCarousel";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 import MultiSelectFilter from "@/components/MultiSelectFilter";
 import PriceRangeFilter from "@/components/PriceRangeFilter";
+import PriceFilter from "@/components/PriceFilter";
 import FilterSheet from "@/components/FilterSheet";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -538,15 +539,16 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
             <div className="h-5 w-px bg-border/50 shrink-0" />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
             <div className="h-5 w-px bg-border/50 shrink-0" />
-            <div className="flex-1 min-w-[160px] px-2">
-              <PriceRangeFilter
-                min={priceBounds.min}
-                max={priceBounds.max}
-                step={priceBounds.step}
-                value={[priceMin, priceMax]}
-                onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
-              />
-            </div>
+            <PriceFilter
+              min={priceBounds.min}
+              max={priceBounds.max}
+              value={[priceMin, priceMax]}
+              onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
+              priceLabel={t("price")}
+              minLabel={`${t("minPrice")} (AED)`}
+              maxLabel={`${t("maxPrice")} (AED)`}
+              resetLabel={t("reset")}
+            />
             <div className="h-5 w-px bg-border/50 shrink-0" />
             {status === "Off-Plan" || intent === "off-plan" ? (
               <FilterSelect placeholder={t("handoverYear")} value={completionYear} onChange={setCompletionYear} options={completionYears} />

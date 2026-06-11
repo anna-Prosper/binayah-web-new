@@ -419,7 +419,9 @@
     "typeApartment": "Apartment",
     "typeVilla": "Villa / Townhouse",
     "typeCommercial": "Commercial",
-    "typePlot": "Plot"
+    "typePlot": "Plot",
+    "price": "Price",
+    "reset": "Reset"
   },
   "offPlan": {
     "title": "Off-Plan Properties",

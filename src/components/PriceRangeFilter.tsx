@@ -15,6 +15,34 @@ function clamp(n: number, lo: number, hi: number) {
   return Math.max(lo, Math.min(hi, n));
 }
 
+// Compact display so large prices fit the narrow input: 36,000,000 -> "36M", 350,000 -> "350K".
+export function formatPrice(n: number): string {
+  if (n >= 1_000_000) {
+    const m = n / 1_000_000;
+    return (Number.isInteger(m) ? String(m) : m.toFixed(1).replace(/\.0$/, "")) + "M";
+  }
+  if (n >= 1_000) {
+    const k = n / 1_000;
+    return (Number.isInteger(k) ? String(k) : k.toFixed(0)) + "K";
+  }
+  return n.toLocaleString();
+}
+
+// Parse user input back to a number, understanding "36m" / "350k" / "1.2M" / "1,200,000".
+export function parsePrice(raw: string): number | null {
+  const s = raw.trim().toLowerCase().replace(/[,\s]/g, "");
+  if (s === "") return null;
+  const m = s.match(/^([0-9]*\.?[0-9]+)([mk])?$/);
+  if (!m) {
+    const digits = raw.replace(/[^0-9]/g, "");
+    return digits === "" ? null : Number(digits);
+  }
+  let v = parseFloat(m[1]);
+  if (m[2] === "m") v *= 1_000_000;
+  else if (m[2] === "k") v *= 1_000;
+  return Math.round(v);
+}
+
 // Use numeric comparison rather than referential equality to avoid
 // the sync effect firing on every parent re-render when value is an
 // inline array literal.
@@ -59,15 +87,15 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
   // Text inputs commit on blur or Enter, not on every keystroke, to avoid
   // spamming the search API with a request per digit typed.
   const onLowInputCommit = (raw: string) => {
-    const parsed = raw.replace(/[^0-9]/g, "");
-    const n = parsed === "" ? min : Number(parsed);
+    const parsed = parsePrice(raw);
+    const n = parsed === null ? min : parsed;
     const next = clamp(n, min, high - step);
     setLow(next);
     commit(next, high);
   };
   const onHighInputCommit = (raw: string) => {
-    const parsed = raw.replace(/[^0-9]/g, "");
-    const n = parsed === "" ? max : Number(parsed);
+    const parsed = parsePrice(raw);
+    const n = parsed === null ? max : parsed;
     const next = clamp(n, low + step, max);
     setHigh(next);
     commit(low, next);

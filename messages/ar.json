@@ -419,7 +419,9 @@
     "typeApartment": "شقة",
     "typeVilla": "فيلا / تاون هاوس",
     "typeCommercial": "تجاري",
-    "typePlot": "أرض"
+    "typePlot": "أرض",
+    "price": "السعر",
+    "reset": "إعادة تعيين"
   },
   "offPlan": {
     "title": "مشاريع على الخارطة",

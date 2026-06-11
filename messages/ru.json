@@ -419,7 +419,9 @@
     "typeApartment": "Апартаменты",
     "typeVilla": "Вилла / Таунхаус",
     "typeCommercial": "Коммерческая",
-    "typePlot": "Земельный участок"
+    "typePlot": "Земельный участок",
+    "price": "Цена",
+    "reset": "Сбросить"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",

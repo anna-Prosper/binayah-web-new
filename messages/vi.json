@@ -419,7 +419,9 @@
     "typeApartment": "Căn Hộ",
     "typeVilla": "Biệt Thự / Nhà Phố",
     "typeCommercial": "Thương Mại",
-    "typePlot": "Đất"
+    "typePlot": "Đất",
+    "price": "Giá",
+    "reset": "Đặt lại"
   },
   "offPlan": {
     "title": "Bất Động Sản Off-Plan",
