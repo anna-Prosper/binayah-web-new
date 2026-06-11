@@ -3,7 +3,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 interface Props { params: Promise<{ locale: string }> }
 

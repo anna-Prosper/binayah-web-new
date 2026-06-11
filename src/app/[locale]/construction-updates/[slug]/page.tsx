@@ -3,7 +3,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
 
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 interface Props { params: Promise<{ slug: string; locale: string }> }
 
