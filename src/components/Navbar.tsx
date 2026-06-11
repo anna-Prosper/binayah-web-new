@@ -43,7 +43,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("apartments"), href: "/apartments" },
         { label: t("villas"), href: "/villas" },
         { label: t("townhouses"), href: "/townhouses" },
-        { label: t("penthouses"), href: "/penthouses" },
       ],
     },
     {
@@ -76,7 +75,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("apartments"), href: "/search?intent=rent&type=Apartment" },
         { label: t("villas"), href: "/search?intent=rent&type=Villa" },
         { label: t("townhouses"), href: "/search?intent=rent&type=Townhouse" },
-        { label: t("penthouses"), href: "/search?intent=rent&type=Penthouse" },
       ],
     },
     {
@@ -98,7 +96,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("apartments"), href: "/search?status=Off-Plan&type=Apartment" },
         { label: t("villas"), href: "/search?status=Off-Plan&type=Villa" },
         { label: t("townhouses"), href: "/search?status=Off-Plan&type=Townhouse" },
-        { label: t("penthouses"), href: "/search?status=Off-Plan&type=Penthouse" },
       ],
     },
     {

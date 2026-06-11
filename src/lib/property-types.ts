@@ -7,7 +7,6 @@ const APARTMENT_LIKE_TERMS = [
   "apt",
   "flat",
   "studio",
-  "penthouse",
   "hotel apartment",
   "hotel apartments",
   "hotel apt",
