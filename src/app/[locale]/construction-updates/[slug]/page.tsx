@@ -1,34 +1,48 @@
 import { notFound } from "next/navigation";
-import ConstructionUpdateDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
-import { getConstructionUpdate } from "@/lib/api";
-import { canonical, altLangs } from "@/lib/site";
+import { serverApiUrl, serverFetch } from "@/lib/api";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
 
 export const revalidate = 600;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+interface Props { params: Promise<{ slug: string; locale: string }> }
+
+async function fetchArticle(slug: string, locale: string) {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/project-articles/${slug}?lang=${locale}`));
+    if (res.status === 404) return null;
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }: Props) {
   const { slug, locale } = await params;
-  const data = await getConstructionUpdate(slug);
-  if (!data) return { title: "Not Found" };
-  const { update } = data;
+  const article = await fetchArticle(slug, locale);
+  if (!article) return { title: "Not Found" };
   return {
-    title: `${update.title} Construction Update | Binayah Properties`,
-    description: `Track construction progress of ${update.title} by ${update.developerName}. Currently at ${update.progress ?? 0}% completion.`,
+    title: article.metaTitle || `${article.h1} | Binayah`,
+    description: article.metaDescription || article.excerpt || "",
     alternates: {
       canonical: canonical(locale, `/construction-updates/${slug}`),
       languages: altLangs(`/construction-updates/${slug}`),
     },
     openGraph: {
-      title: `${update.title} Construction Update`,
+      title: article.metaTitle || article.h1,
+      description: article.metaDescription || "",
       url: canonical(locale, `/construction-updates/${slug}`),
-      type: "website",
+      type: "article",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: article.heroImage?.url || DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }
 
-export default async function ConstructionUpdatePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
-  const { slug } = await params;
-  const data = await getConstructionUpdate(slug);
-  if (!data) return notFound();
-  const { update, related } = data;
-  return <ConstructionUpdateDetailClient update={update} related={related} />;
+export default async function ProjectArticlePage({ params }: Props) {
+  const { slug, locale } = await params;
+  const article = await fetchArticle(slug, locale);
+  if (!article) return notFound();
+  return <ProjectArticleDetailClient article={article} locale={locale} />;
 }
