@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
+import { findPropertyTypePage } from "@/lib/property-type-pages";
 
 interface Props {
   locale: string;
@@ -21,6 +22,14 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
   const isRtl = locale === "ar";
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
+
+  // The search API matches community names in English (as stored in the DB),
+  // but c.areas are localized for display. The per-locale areas arrays are
+  // positionally aligned with the English ones, so map each localized label
+  // back to its English value for the `locations=` filter — otherwise a
+  // localized name (e.g. "Дубай Марина") is sent and matches nothing.
+  const enAreas = findPropertyTypePage(slug)?.en.areas ?? c.areas;
+  const areaValue = (i: number) => enAreas[i] ?? c.areas[i];
 
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
@@ -93,10 +102,10 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
           <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mr-1">
             {locale === "ru" ? "Районы" : locale === "ar" ? "المناطق" : locale === "zh" ? "地区" : "Areas"}
           </span>
-          {c.areas.slice(0, 6).map((area) => (
+          {c.areas.slice(0, 6).map((area, i) => (
             <Link
               key={area}
-              href={`${searchUrl}&locations=${encodeURIComponent(area)}`}
+              href={`${searchUrl}&locations=${encodeURIComponent(areaValue(i))}`}
               className="bg-card border border-border/50 rounded-full px-3.5 py-1.5 text-xs font-semibold text-foreground hover:border-primary/30 hover:text-primary transition-all"
             >
               {area}
