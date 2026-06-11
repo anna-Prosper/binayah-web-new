@@ -111,15 +111,21 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
 
       </div>
 
-      {/* ── Full-width embedded search (spans the page like the sections above) ── */}
+      {/* ── Embedded search: full-width filter bar on top, then results beside the
+            guide sidebar (sidebar injected into the search client so it sits next
+            to the listings instead of being buried far below them) ── */}
       {searchSlot && (
         <div className="border-t border-border/30 bg-muted/20">
-          {searchSlot}
+          {React.isValidElement(searchSlot)
+            ? React.cloneElement(searchSlot as React.ReactElement<{ sidebarSlot?: React.ReactNode }>, {
+                sidebarSlot: <PropertyTypeSidebar locale={locale} slug={slug} />,
+              })
+            : searchSlot}
         </div>
       )}
 
-      {/* ── FAQ + CTA, with the sidebar starting here (below the full-width search) ── */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+      {/* ── FAQ + CTA, full-width below the search ── */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-16">
 
         {/* Main column: FAQ + CTA */}
         <div className="min-w-0 space-y-12 sm:space-y-16">
@@ -174,11 +180,6 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
         </section>
 
         </div>
-
-        {/* Sidebar — sits beside the FAQ/CTA, below the full-width search */}
-        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug={slug} />
-        </aside>
 
       </div>
 

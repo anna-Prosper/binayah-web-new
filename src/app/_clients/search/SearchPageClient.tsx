@@ -20,7 +20,7 @@ import PriceFilter from "@/components/PriceFilter";
 import DeveloperFilter from "@/components/DeveloperFilter";
 import FilterSheet from "@/components/FilterSheet";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
   formatPropertyTypeLabel,
@@ -126,7 +126,7 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = true }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean } = {}) {
+function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
@@ -553,13 +553,9 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
           {/* Desktop filter row */}
           <div className="hidden lg:flex flex-wrap items-center gap-x-2 gap-y-2 bg-muted/40 rounded-2xl px-3 py-2.5 border border-border/40">
             <FilterSelect placeholder={t("propertyType")} value={type} onChange={setType} options={localizedPropertyTypes} counts={facets.propertyType} />
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             <MultiSelectFilter placeholder={t("community")} value={selectedLocations} onChange={setSelectedLocations} options={locationOptions} counts={facets.community} />
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             <FilterSelect placeholder={t("bedrooms")} value={beds} onChange={setBeds} options={bedrooms} counts={bedroomCounts} />
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             <FilterSelect placeholder={t("bathrooms")} value={baths} onChange={setBaths} options={bathrooms} />
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             <PriceFilter
               min={priceBounds.min}
               max={priceBounds.max}
@@ -570,13 +566,11 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
               maxLabel={t("maxPrice")}
               resetLabel={t("reset")}
             />
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             {status === "Off-Plan" || intent === "off-plan" ? (
               <FilterSelect placeholder={t("handoverYear")} value={completionYear} onChange={setCompletionYear} options={completionYears} />
             ) : (
               <FilterSelect placeholder={t("furnishing")} value={furnishing} onChange={setFurnishing} options={furnishingOptions} />
             )}
-            <div className="h-5 w-px bg-border/50 shrink-0" />
             <DeveloperFilter
               value={developer}
               onChange={setDeveloper}
@@ -694,7 +688,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
       </section>
 
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className={`max-w-6xl mx-auto px-4 sm:px-6${sidebarSlot ? " lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start" : ""}`}>
+          <div className="min-w-0">
           {loading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("searching")}</span></div>
           ) : totalResults === 0 ? (
@@ -941,6 +936,12 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
               </div>
             </>
           )}
+          </div>
+          {sidebarSlot && (
+            <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+              {sidebarSlot}
+            </aside>
+          )}
         </div>
       </section>
 
@@ -1089,10 +1090,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, syncUrl = true }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean } = {}) {
+export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} syncUrl={syncUrl} />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} syncUrl={syncUrl} sidebarSlot={sidebarSlot} />
     </Suspense>
   );
 }
