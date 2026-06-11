@@ -421,7 +421,9 @@
     "typeCommercial": "Commercial",
     "typePlot": "Plot",
     "price": "Price",
-    "reset": "Reset"
+    "reset": "Reset",
+    "searchDeveloper": "Search developer",
+    "anyDeveloper": "Any developer"
   },
   "offPlan": {
     "title": "Off-Plan Properties",

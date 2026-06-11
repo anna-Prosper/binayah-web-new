@@ -421,7 +421,9 @@
     "typeCommercial": "Thương Mại",
     "typePlot": "Đất",
     "price": "Giá",
-    "reset": "Đặt lại"
+    "reset": "Đặt lại",
+    "searchDeveloper": "Tìm chủ đầu tư",
+    "anyDeveloper": "Mọi chủ đầu tư"
   },
   "offPlan": {
     "title": "Bất Động Sản Off-Plan",

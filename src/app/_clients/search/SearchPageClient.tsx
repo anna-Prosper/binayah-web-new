@@ -17,6 +17,7 @@ import SearchAutocomplete from "@/components/SearchAutocomplete";
 import MultiSelectFilter from "@/components/MultiSelectFilter";
 import PriceRangeFilter from "@/components/PriceRangeFilter";
 import PriceFilter from "@/components/PriceFilter";
+import DeveloperFilter from "@/components/DeveloperFilter";
 import FilterSheet from "@/components/FilterSheet";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -167,6 +168,26 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
   const [q, setQ] = useState(params.get("q") || "");
   const initialSort = (params.get("sort") as SortKey) || "newest";
   const [sort, setSort] = useState<SortKey>(VALID_SORTS.has(initialSort) ? initialSort : "newest");
+
+  // Developer dropdown options, loaded once from the DB.
+  const [developerOptions, setDeveloperOptions] = useState<string[]>([]);
+  useEffect(() => {
+    let active = true;
+    fetch(apiUrl("/api/developers?limit=1000"))
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (!active) return;
+        const list = Array.isArray(data) ? data : (data.developers ?? data.data ?? []);
+        const names = Array.from(new Set(list.map((d: any) => d?.name).filter(Boolean))).sort((a, b) =>
+          (a as string).localeCompare(b as string)
+        );
+        setDeveloperOptions(names as string[]);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const t = useTranslations("search");
   const { format: fmtCurrency } = useCurrency();
@@ -556,11 +577,13 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
               <FilterSelect placeholder={t("furnishing")} value={furnishing} onChange={setFurnishing} options={furnishingOptions} />
             )}
             <div className="h-5 w-px bg-border/50 shrink-0" />
-            <input
+            <DeveloperFilter
               value={developer}
-              onChange={(e) => setDeveloper(e.target.value)}
+              onChange={setDeveloper}
+              options={developerOptions}
               placeholder={t("developer")}
-              className="w-28 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+              searchPlaceholder={t("searchDeveloper")}
+              anyLabel={t("anyDeveloper")}
             />
           </div>
 
@@ -613,7 +636,14 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
               )}
               <div>
                 <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{t("developer")}</p>
-                <input value={developer} onChange={(event) => setDeveloper(event.target.value)} placeholder={t("developer")} className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                <DeveloperFilter
+                  value={developer}
+                  onChange={setDeveloper}
+                  options={developerOptions}
+                  placeholder={t("developer")}
+                  searchPlaceholder={t("searchDeveloper")}
+                  anyLabel={t("anyDeveloper")}
+                />
               </div>
             </div>
           </FilterSheet>

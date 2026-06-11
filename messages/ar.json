@@ -421,7 +421,9 @@
     "typeCommercial": "تجاري",
     "typePlot": "أرض",
     "price": "السعر",
-    "reset": "إعادة تعيين"
+    "reset": "إعادة تعيين",
+    "searchDeveloper": "ابحث عن المطوّر",
+    "anyDeveloper": "أي مطوّر"
   },
   "offPlan": {
     "title": "مشاريع على الخارطة",

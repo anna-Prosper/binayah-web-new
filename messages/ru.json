@@ -421,7 +421,9 @@
     "typeCommercial": "Коммерческая",
     "typePlot": "Земельный участок",
     "price": "Цена",
-    "reset": "Сбросить"
+    "reset": "Сбросить",
+    "searchDeveloper": "Поиск застройщика",
+    "anyDeveloper": "Любой застройщик"
   },
   "offPlan": {
     "title": "Off-Plan недвижимость",
