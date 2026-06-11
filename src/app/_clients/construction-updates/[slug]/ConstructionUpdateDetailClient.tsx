@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Globe, MessageCircle, TrendingUp, User } from "lucide-react";
+import { ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Globe, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -57,7 +57,25 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);
   const [subState, setSubState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [copied, setCopied] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
+
+  const shareUrl = typeof window !== "undefined" ? window.location.href : `https://www.binayah.ae${lp}/construction-updates/${article.slug}`;
+  const shareText = encodeURIComponent(article.h1);
+  const shareLinks = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+    twitter: `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(shareUrl)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+  };
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch { /* noop */ }
+  };
+  const shareLabel = ({ en: "Share", ru: "Поделиться", ar: "مشاركة", zh: "分享", vi: "Chia sẻ" } as Record<string, string>)[locale] ?? "Share";
+  const copiedLabel = ({ en: "Copied!", ru: "Скопировано!", ar: "تم النسخ!", zh: "已复制!", vi: "Đã sao chép!" } as Record<string, string>)[locale] ?? "Copied!";
 
   useEffect(() => {
     const onScroll = () => {
@@ -118,14 +136,18 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
 
             {/* Article body */}
             <div className="min-w-0">
-              {/* Share-style strip with language switcher */}
+              {/* Share strip — identical to NewsDetailClient, with language switcher on the right */}
               <div className="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-border/60">
-                <Link href={`${lp}/construction-updates`} className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm font-medium transition-colors group">
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-muted group-hover:bg-muted/70 transition-colors">
-                    <ArrowLeft className="h-3.5 w-3.5" />
-                  </span>
-                  {l.back}
-                </Link>
+                <div className="flex items-center gap-3">
+                  <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">{shareLabel}</span>
+                  <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Facebook className="h-4 w-4" /></a>
+                  <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Twitter className="h-4 w-4" /></a>
+                  <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"><Linkedin className="h-4 w-4" /></a>
+                  <button type="button" onClick={handleCopy} aria-label="Copy link" className="w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
+                    <LinkIcon className="h-4 w-4" />
+                    {copied && <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-semibold bg-foreground text-background px-2 py-1 rounded whitespace-nowrap">{copiedLabel}</span>}
+                  </button>
+                </div>
                 {article.langs && article.langs.length > 1 && (
                   <div className="flex items-center gap-1.5">
                     <Globe className="h-3.5 w-3.5 text-muted-foreground" />
