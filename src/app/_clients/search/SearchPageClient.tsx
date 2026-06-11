@@ -545,8 +545,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
               value={[priceMin, priceMax]}
               onChange={([lo, hi]) => { setPriceMin(lo); setPriceMax(hi); }}
               priceLabel={t("price")}
-              minLabel={`${t("minPrice")} (AED)`}
-              maxLabel={`${t("maxPrice")} (AED)`}
+              minLabel={t("minPrice")}
+              maxLabel={t("maxPrice")}
               resetLabel={t("reset")}
             />
             <div className="h-5 w-px bg-border/50 shrink-0" />
