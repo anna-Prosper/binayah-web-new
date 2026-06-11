@@ -14,6 +14,8 @@ export type LocalizedText = { en: string; ru: string; ar: string; zh: string; vi
 export interface BuyCommunity {
   slug: string;
   name: string;
+  /** Community value as stored on listings, when it differs from `name` (used for the API filter). */
+  apiName?: string;
   shortIntro: LocalizedText;
   why: LocalizedText;
   priceRange: string;
@@ -300,6 +302,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
   {
     slug: "mbr-city",
     name: "MBR City",
+    apiName: "Mohammed Bin Rashid City",
     shortIntro: {
       en: "Mohammed Bin Rashid City. Diverse mega-district with everything from Meydan villas to District One mansions.",
       ru: "Mohammed Bin Rashid City. Разнообразный мегарайон — от вилл в Meydan до особняков в District One.",
@@ -462,6 +465,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
   {
     slug: "jumeirah-lakes-towers",
     name: "Jumeirah Lakes Towers",
+    apiName: "Jumeirah Lake Towers",
     shortIntro: {
       en: "Mixed-use tower cluster with metro access. Solid yields, deep liquidity, easy commute.",
       ru: "Многофункциональный кластер башен с доступом к метро. Уверенная доходность, высокая ликвидность, удобная дорога.",

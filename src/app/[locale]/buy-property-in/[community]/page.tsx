@@ -65,14 +65,15 @@ export default async function BuyInCommunityPage({
 
   let initialListings: any[] = [];
   let totalCount = 0;
+  const apiCommunity = c.apiName ?? c.name;
 
   try {
     const [listingsRes, countRes] = await Promise.all([
       serverFetch(
-        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(c.name)}&limit=${BATCH_SIZE}`)
+        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(apiCommunity)}&limit=${BATCH_SIZE}`)
       ),
       serverFetch(
-        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(c.name)}&countOnly=1`)
+        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(apiCommunity)}&countOnly=1`)
       ),
     ]);
     if (listingsRes.ok) initialListings = await listingsRes.json();
@@ -144,7 +145,7 @@ export default async function BuyInCommunityPage({
         subtitle={localizeCommunityText(c.shortIntro, locale)}
         initialPage={1}
         batchSize={BATCH_SIZE}
-        community={c.name}
+        community={apiCommunity}
         headerSlot={seoBlock}
         emptyState={emptyState}
       />
