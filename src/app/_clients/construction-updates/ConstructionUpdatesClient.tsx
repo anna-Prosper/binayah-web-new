@@ -9,35 +9,27 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-interface Article {
+interface ProjectArticle {
   _id: string;
   slug: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  featuredImage: string;
-  publishedAt: string;
-  readTime: string;
-  _appliedLang?: string;
+  h1: string;
+  excerpt?: string;
+  heroImage?: { url: string; alt?: string };
+  publishedAt?: string | null;
+  readingTimeMin?: number;
+  projectSlug?: string;
+  langs?: string[];
 }
 
-const CATEGORY_LABELS: Record<string, Record<string, string>> = {
-  en: { all: "All", "Market Report": "Market Report", Investment: "Investment", Lifestyle: "Lifestyle" },
-  ru: { all: "Все", "Market Report": "Отчёты", Investment: "Инвестиции", Lifestyle: "Стиль жизни" },
-  ar: { all: "الكل", "Market Report": "تقارير السوق", Investment: "استثمار", Lifestyle: "أسلوب الحياة" },
-  zh: { all: "全部", "Market Report": "市场报告", Investment: "投资", Lifestyle: "生活方式" },
-  vi: { all: "Tất cả", "Market Report": "Báo cáo", Investment: "Đầu tư", Lifestyle: "Phong cách sống" },
+const PAGE_LABELS: Record<string, { hero: string; sub: string; search: string; noResults: string; label: string }> = {
+  en: { label: "Project Guides", hero: "Project Guides", sub: "In-depth guides for Dubai's top off-plan projects — lifestyle, location, and investment insights.", search: "Search projects…", noResults: "No articles found." },
+  ru: { label: "Гайды по проектам", hero: "Гайды по проектам", sub: "Подробные гайды по ведущим офф-план проектам Дубая — стиль жизни, локация, инвестиции.", search: "Поиск проектов…", noResults: "Статьи не найдены." },
+  ar: { label: "أدلة المشاريع", hero: "أدلة المشاريع", sub: "أدلة متعمقة لأفضل المشاريع على الخارطة في دبي — أسلوب الحياة والموقع والاستثمار.", search: "البحث في المشاريع…", noResults: "لا توجد مقالات." },
+  zh: { label: "项目指南", hero: "项目指南", sub: "迪拜顶级期房项目深度指南——生活方式、地理位置与投资洞察。", search: "搜索项目…", noResults: "未找到文章。" },
+  vi: { label: "Hướng dẫn dự án", hero: "Hướng dẫn dự án", sub: "Hướng dẫn chuyên sâu về các dự án off-plan hàng đầu Dubai — phong cách sống, vị trí và đầu tư.", search: "Tìm kiếm dự án…", noResults: "Không tìm thấy bài viết." },
 };
 
-const PAGE_LABELS: Record<string, { hero: string; sub: string; search: string; noResults: string }> = {
-  en: { hero: "Real Estate Insights", sub: "Expert analysis, market reports and investment guides for Dubai property.", search: "Search articles…", noResults: "No articles found." },
-  ru: { hero: "Аналитика рынка", sub: "Экспертный анализ, отчёты и инвестиционные гайды по недвижимости Дубая.", search: "Поиск статей…", noResults: "Статьи не найдены." },
-  ar: { hero: "رؤى عقارية", sub: "تحليل متخصص وتقارير السوق وأدلة الاستثمار في عقارات دبي.", search: "البحث في المقالات…", noResults: "لا توجد مقالات." },
-  zh: { hero: "房产洞察", sub: "迪拜房产专家分析、市场报告与投资指南。", search: "搜索文章…", noResults: "未找到文章。" },
-  vi: { hero: "Phân tích bất động sản", sub: "Phân tích chuyên sâu, báo cáo thị trường và hướng dẫn đầu tư bất động sản Dubai.", search: "Tìm bài viết…", noResults: "Không tìm thấy bài viết." },
-};
-
-function formatDate(dateStr: string, lang: string) {
+function formatDate(dateStr: string | null | undefined, lang: string) {
   if (!dateStr) return "";
   try {
     return new Date(dateStr).toLocaleDateString(
@@ -49,22 +41,16 @@ function formatDate(dateStr: string, lang: string) {
   }
 }
 
-const CATEGORIES = ["all", "Market Report", "Investment", "Lifestyle"];
-
-export default function ConstructionUpdatesClient({ articles, locale }: { articles: Article[]; locale: string }) {
+export default function ConstructionUpdatesClient({ articles, locale }: { articles: ProjectArticle[]; locale: string }) {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
 
   const labels = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
-  const catLabels = CATEGORY_LABELS[locale] ?? CATEGORY_LABELS.en;
   const lp = locale === "en" ? "" : `/${locale}`;
   const isRtl = locale === "ar";
 
   const filtered = articles.filter((a) => {
     const q = search.trim().toLowerCase();
-    const matchesSearch = !q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q);
-    const matchesCategory = category === "all" || a.category === category;
-    return matchesSearch && matchesCategory;
+    return !q || a.h1.toLowerCase().includes(q) || (a.excerpt ?? "").toLowerCase().includes(q);
   });
 
   return (
@@ -82,9 +68,9 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-        {/* Search + category tabs */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:items-center mb-8">
-          <div className="relative flex-1 max-w-md">
+        {/* Search */}
+        <div className="mb-8 max-w-md">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <input
               value={search}
@@ -93,24 +79,8 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
               className="w-full pl-9 pr-3 py-2.5 text-sm bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          <div className="flex gap-1.5 flex-wrap">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                  category === cat
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-card border border-border text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {catLabels[cat] ?? cat}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Count */}
         <p className="text-xs text-muted-foreground mb-6">{filtered.length} articles</p>
 
         {/* Grid */}
@@ -125,10 +95,10 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
                 className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col"
               >
                 <div className="relative aspect-[16/9] bg-muted overflow-hidden">
-                  {article.featuredImage ? (
+                  {article.heroImage?.url ? (
                     <Image
-                      src={article.featuredImage}
-                      alt={article.title}
+                      src={article.heroImage.url}
+                      alt={article.heroImage.alt ?? article.h1}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -136,13 +106,15 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5" />
                   )}
-                  <span className="absolute top-3 left-3 bg-primary/90 text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                    {catLabels[article.category] ?? article.category}
-                  </span>
+                  {article.langs && article.langs.length > 1 && (
+                    <span className="absolute top-3 left-3 bg-black/50 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full backdrop-blur-sm">
+                      {article.langs.length} languages
+                    </span>
+                  )}
                 </div>
                 <div className="p-4 sm:p-5 flex flex-col flex-1">
                   <h2 className="text-sm font-bold text-foreground leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                    {article.title}
+                    {article.h1}
                   </h2>
                   {article.excerpt && (
                     <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3 flex-1">
@@ -156,10 +128,10 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
                         {formatDate(article.publishedAt, locale)}
                       </span>
                     )}
-                    {article.readTime && (
+                    {article.readingTimeMin && (
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {article.readTime}
+                        {article.readingTimeMin} min
                       </span>
                     )}
                   </div>

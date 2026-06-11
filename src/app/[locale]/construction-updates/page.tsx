@@ -43,7 +43,7 @@ export default async function InsightsPage({ params }: Props) {
   const { locale } = await params;
   let articles: any[] = [];
   try {
-    const res = await serverFetch(serverApiUrl(`/api/news?lang=${locale}&limit=100`));
+    const res = await serverFetch(serverApiUrl(`/api/project-articles?lang=${locale}&limit=100`));
     if (res.ok) articles = await res.json();
   } catch (err) {
     console.warn("[InsightsPage] API unavailable:", (err as Error).message);
