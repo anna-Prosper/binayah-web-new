@@ -135,14 +135,16 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
   const [status, setStatus] = useState<SearchStatus>(normalizeStatus(params.get("status") || defaultStatus || null, initialIntent));
   const [intent, setIntent] = useState<SearchIntent>(initialIntent);
 
-  // Sync filters when URL params change (e.g. nav links between Buy/Rent/Off-Plan/type)
+  // Sync filters when URL params change (e.g. nav links between Buy/Rent/Off-Plan/type/area)
   useEffect(() => {
     const urlIntent = (params.get("intent") as SearchIntent) || "";
     const urlStatus = params.get("status");
     const urlType = String(normalizePropertyType(params.get("type") || defaultType || "", ""));
+    const urlLocs = (params.get("locations") || params.get("location") || "").split(",").map(s => s.trim()).filter(Boolean);
     setIntent(urlIntent || (defaultIntent ?? "") as SearchIntent);
     setStatus(normalizeStatus(urlStatus, urlIntent || defaultIntent || ""));
     setType(urlType);
+    setSelectedLocations(urlLocs);
   }, [searchParams]);
   const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || defaultType || "", "")));
   const initialLocations = (() => {

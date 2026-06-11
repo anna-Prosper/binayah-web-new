@@ -80,11 +80,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaRentAreas"),
       links: [
-        { label: t("dubaiMarina"), href: "/search?intent=rent&community=dubai-marina" },
-        { label: t("downtownDubai"), href: "/search?intent=rent&community=downtown-dubai" },
-        { label: t("palmJumeirah"), href: "/search?intent=rent&community=palm-jumeirah" },
-        { label: t("jvc"), href: "/search?intent=rent&community=jumeirah-village-circle" },
-        { label: t("businessBay"), href: "/search?intent=rent&community=business-bay" },
+        { label: t("dubaiMarina"), href: "/search?intent=rent&locations=Dubai+Marina" },
+        { label: t("downtownDubai"), href: "/search?intent=rent&locations=Downtown+Dubai" },
+        { label: t("palmJumeirah"), href: "/search?intent=rent&locations=Palm+Jumeirah" },
+        { label: t("jvc"), href: "/search?intent=rent&locations=Jumeirah+Village+Circle" },
+        { label: t("businessBay"), href: "/search?intent=rent&locations=Business+Bay" },
       ],
     },
   ];
