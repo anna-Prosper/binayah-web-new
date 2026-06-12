@@ -93,9 +93,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaOffPlanByType"),
       links: [
-        { label: t("apartments"), href: "/search?status=Off-Plan&type=Apartment" },
-        { label: t("villas"), href: "/search?status=Off-Plan&type=Villa" },
-        { label: t("townhouses"), href: "/search?status=Off-Plan&type=Townhouse" },
+        { label: t("apartments"), href: "/off-plan/apartments" },
+        { label: t("villas"), href: "/off-plan/villas" },
+        { label: t("townhouses"), href: "/off-plan/townhouses" },
       ],
     },
     {
