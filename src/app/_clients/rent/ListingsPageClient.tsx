@@ -23,6 +23,8 @@ interface Listing {
   listingType?: string;
   propertyType?: string;
   propertyId?: string;
+  offplan?: string | number;
+  completionStatus?: string;
   bedrooms?: string | number;
   bathrooms?: string | number;
   size?: number;
@@ -62,6 +64,7 @@ export default function ListingsPageClient({
   emptyState?: React.ReactNode;
 }) {
   const t = useTranslations("rent");
+  const tEnum = useTranslations("enums");
   const { format: fmtCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
@@ -174,8 +177,15 @@ export default function ListingsPageClient({
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
-                        {l.listingType === "Rent" ? t("forRent") : t("forSale")}
+                      <span className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">
+                          {l.listingType === "Rent" ? t("forRent") : t("forSale")}
+                        </span>
+                        {(String(l.offplan) === "1" || l.completionStatus === "off_plan") && (
+                          <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                            {tEnum("offPlan")}
+                          </span>
+                        )}
                       </span>
                       {l.propertyType && (
                         <span className="absolute top-3 right-12 text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur text-foreground uppercase tracking-wider">

@@ -16,6 +16,8 @@ interface SecondaryListing {
   slug: string;
   listingType?: string;
   propertyType?: string;
+  offplan?: string | number;
+  completionStatus?: string;
   bedrooms?: number | null;
   bathrooms?: number | null;
   size?: number | null;
@@ -45,7 +47,11 @@ const FeaturedPropertiesClient = ({
   rentalListings?: SecondaryListing[];
 }) => {
   const t = useTranslations("home.sections.featured");
+  const tEnum = useTranslations("enums");
   const [tab, setTab] = useState<"sale" | "rent">("sale");
+
+  const isOffPlan = (p: SecondaryListing) =>
+    String(p.offplan) === "1" || p.completionStatus === "off_plan";
 
   const listings = (tab === "sale" ? saleListings : rentalListings).slice(0, 3);
   const viewAllHref = tab === "sale" ? "/buy" : "/rent";
@@ -132,8 +138,13 @@ const FeaturedPropertiesClient = ({
                 <Link href={`/property/${p.slug}`} className="group block bg-card rounded-xl overflow-hidden shadow-sm border border-border/50">
                   <div className="relative overflow-hidden aspect-[3/2]">
                     <ImageWithFallback src={getImage(p)} alt={getLabel(p)} fill sizes="260px" priority={i === 0} className="object-cover" />
+                    {isOffPlan(p) && (
+                      <span className="absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                        {tEnum("offPlan")}
+                      </span>
+                    )}
                     {p.propertyType && (
-                      <span className="absolute top-2 left-2 text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                      <span className={`absolute top-2 ${isOffPlan(p) ? "right-2" : "left-2"} text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white`} style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {p.propertyType}
                       </span>
                     )}
@@ -175,8 +186,13 @@ const FeaturedPropertiesClient = ({
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <ImageWithFallback src={getImage(p)} alt={getLabel(p)} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {isOffPlan(p) && (
+                      <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                        {tEnum("offPlan")}
+                      </span>
+                    )}
                     {p.propertyType && (
-                      <span className="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                      <span className={`absolute top-4 ${isOffPlan(p) ? "right-4" : "left-4"} text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide text-white`} style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         {p.propertyType}
                       </span>
                     )}

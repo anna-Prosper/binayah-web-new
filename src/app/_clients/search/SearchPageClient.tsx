@@ -191,6 +191,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
   }, []);
 
   const t = useTranslations("search");
+  const tEnum = useTranslations("enums");
   const { format: fmtCurrency } = useCurrency();
   const localizedPropertyTypes = [
     { value: "Apartment", label: t("typeApartment") },
@@ -910,8 +911,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
                             <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                               <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{listing.listingType === "Rent" ? t("forRent") : t("forSale")}</span>
                               {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
-                                <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                                  Off-Plan
+                                <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                                  {tEnum("offPlan")}
                                 </span>
                               )}
                             </div>

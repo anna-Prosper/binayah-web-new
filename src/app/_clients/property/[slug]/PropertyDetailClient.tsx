@@ -459,6 +459,7 @@ export default function PropertyDetailClient({
   const t = useTranslations("propertyDetail");
   const tProject = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
+  const tEnum = useTranslations("enums");
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -730,7 +731,7 @@ export default function PropertyDetailClient({
                     </span>
                     {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
                       <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-lg flex items-center gap-1" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-                        🏗️ Off-Plan
+                        🏗️ {tEnum("offPlan")}
                       </span>
                     )}
                     {listing.propertyType && (
@@ -895,48 +896,6 @@ export default function PropertyDetailClient({
               {/* ═══ OVERVIEW TAB ═══ */}
               {activeTab === "overview" && (
                 <>
-                  {/* Off-Plan Info Banner */}
-                  {(String(listing.offplan) === "1" || listing.completionStatus === "off_plan") && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.05 }}
-                      className="mb-8 rounded-2xl overflow-hidden border border-amber-200/60"
-                      style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.08), rgba(184,146,47,0.06))" }}
-                    >
-                      <div className="flex items-start gap-4 p-4 sm:p-5">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-                          🏗️
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-bold text-foreground">Off-Plan Property</span>
-                            {listing.completionDate && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
-                                Handover {listing.completionDate}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed">
-                            This is an off-plan property — purchased before or during construction. You pay a deposit now with the balance due in instalments linked to construction milestones or on handover. Off-plan properties often offer lower entry prices and flexible payment plans.
-                          </p>
-                          <div className="flex flex-wrap gap-3 mt-3">
-                            {[
-                              { icon: "💰", label: "Flexible payment plan" },
-                              { icon: "📋", label: "OQOOD registration" },
-                              { icon: "🛡️", label: "RERA escrow protected" },
-                            ].map((item) => (
-                              <div key={item.label} className="flex items-center gap-1.5 text-[11px] font-semibold text-foreground/80">
-                                <span>{item.icon}</span>
-                                <span>{item.label}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
                   {/* Description */}
                   {(listing.cleanDescription || listing.description) && (() => {
                     const blocks = getDescriptionBlocks(listing.cleanDescription || listing.description);
