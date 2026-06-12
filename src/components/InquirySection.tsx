@@ -13,9 +13,11 @@ const inputClasses =
 
 const InquirySection = () => {
   const t = useTranslations("inquiry");
+  const tc = useTranslations("common");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
@@ -28,18 +30,21 @@ const InquirySection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
+    setError(false);
     try {
-      await fetch(apiUrl("/api/inquiries"), {
+      const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
       });
-    } catch {}
-    setTimeout(() => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
-      setSending(false);
       setForm({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
-    }, 600);
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const contactItems = [
@@ -247,6 +252,10 @@ const InquirySection = () => {
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder={t("messagePlaceholder")} />
               </div>
             </div>
+
+            {error && (
+              <p className="text-sm text-red-600 text-center -mt-1" role="alert">{tc("somethingWentWrong")}</p>
+            )}
 
             <motion.button type="submit" disabled={sending}
               whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.985 }}

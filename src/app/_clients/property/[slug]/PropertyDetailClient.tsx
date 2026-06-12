@@ -460,6 +460,7 @@ export default function PropertyDetailClient({
 }) {
   const t = useTranslations("propertyDetail");
   const tProject = useTranslations("projectDetail");
+  const tCommon = useTranslations("common");
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -467,6 +468,7 @@ export default function PropertyDetailClient({
   const { currency, setCurrency, format: fmtPrice } = useCurrency();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [enquirySending, setEnquirySending] = useState(false);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
   const [fetchedDeveloper, setFetchedDeveloper] = useState<{name: string; slug: string} | null>(null);
@@ -540,8 +542,10 @@ export default function PropertyDetailClient({
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (enquirySending) return;
+    setEnquirySending(true);
     try {
-      await fetch(apiUrl("/api/inquiries"), {
+      const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -555,9 +559,14 @@ export default function PropertyDetailClient({
           source: `property-detail:${listing.slug}`,
         }),
       });
-    } catch {}
-    setEnquirySubmitted(true);
-    toast({ title: t("inquirySent"), description: t("teamReply") });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setEnquirySubmitted(true);
+      toast({ title: t("inquirySent"), description: t("teamReply") });
+    } catch {
+      toast({ title: tCommon("somethingWentWrong"), variant: "destructive" });
+    } finally {
+      setEnquirySending(false);
+    }
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "971549988811";
@@ -1193,9 +1202,9 @@ export default function PropertyDetailClient({
                           className="flex-1 h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
                           placeholder="50 123 4567" />
                       </div>
-                      <button type="submit" className="w-full h-12 rounded-full text-white font-bold text-sm"
+                      <button type="submit" disabled={enquirySending} className="w-full h-12 rounded-full text-white font-bold text-sm disabled:opacity-60"
                         style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                        {t("sendQuickEnquiry")}
+                        {enquirySending ? t("sending") : t("sendQuickEnquiry")}
                       </button>
                       <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                     </form>
@@ -1332,10 +1341,11 @@ export default function PropertyDetailClient({
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+                      disabled={enquirySending}
+                      className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:hover:scale-100"
                       style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
                     >
-                      {t("sendQuickEnquiry")}
+                      {enquirySending ? t("sending") : t("sendQuickEnquiry")}
                     </button>
                     <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                   </form>

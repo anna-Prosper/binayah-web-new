@@ -1065,7 +1065,8 @@
     "reasonCapitalAppreciation": "Высокий потенциал роста стоимости",
     "reasonWorldClassAmenities": "Инфраструктура мирового класса",
     "readMore": "Читать далее",
-    "readLess": "Свернуть"
+    "readLess": "Свернуть",
+    "sending": "Отправка…"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
@@ -1204,7 +1205,8 @@
     "guideSaleOffPlanTitle": "Покупка недвижимости на стадии котлована",
     "guideSaleOffPlanDesc": "Планы оплаты, сроки сдачи и проверка застройщика.",
     "guideSaleFirstTimerTitle": "Руководство для первичного покупателя",
-    "guideSaleFirstTimerDesc": "Всё, что нужно знать покупателю впервые в Дубае."
+    "guideSaleFirstTimerDesc": "Всё, что нужно знать покупателю впервые в Дубае.",
+    "sending": "Отправка…"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",

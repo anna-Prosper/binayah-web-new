@@ -33,11 +33,12 @@ const WHATSAPP_NUMBER = "971549988811";
 
 
 const LABELS: Record<string, Record<string, string>> = {
-  en: { back: "Project Guides", faq: "Frequently Asked Questions", viewProject: "View Project", langs: "Available in", topics: "Topics", author: "Binayah Editorial", bookConsultation: "Book a Consultation", investmentTitle: "Get Investment Advice", investmentDesc: "Our experts are ready to guide you through this project's payment plan and ROI potential.", ctaTitle: "Ready to Invest?", ctaDesc: "Speak to our team about this project and get exclusive pricing and payment plans.", ctaWhatsApp: "Chat on WhatsApp", newsletter: "Weekly Market Report", newsletterDesc: "Get Dubai property insights every week." },
-  ru: { back: "Гайды по проектам", faq: "Частые вопросы", viewProject: "Смотреть проект", langs: "Читать на", topics: "Темы", author: "Редакция Binayah", bookConsultation: "Записаться на консультацию", investmentTitle: "Получите инвестиционный совет", investmentDesc: "Наши эксперты готовы провести вас через план оплаты и потенциал ROI этого проекта.", ctaTitle: "Готовы инвестировать?", ctaDesc: "Обратитесь к нашей команде и получите эксклюзивные цены и планы оплаты.", ctaWhatsApp: "Написать в WhatsApp", newsletter: "Еженедельный отчёт", newsletterDesc: "Получайте аналитику рынка недвижимости Дубая каждую неделю." },
-  ar: { back: "أدلة المشاريع", faq: "الأسئلة الشائعة", viewProject: "عرض المشروع", langs: "متوفر بـ", topics: "مواضيع", author: "تحرير بنايه", bookConsultation: "احجز استشارة", investmentTitle: "احصل على نصيحة استثمارية", investmentDesc: "خبراؤنا مستعدون لإرشادك.", ctaTitle: "هل أنت مستعد للاستثمار؟", ctaDesc: "تحدث مع فريقنا للحصول على أسعار حصرية.", ctaWhatsApp: "تواصل عبر واتساب", newsletter: "تقرير أسبوعي", newsletterDesc: "احصل على رؤى سوق العقارات أسبوعياً." },
-  zh: { back: "项目指南", faq: "常见问题", viewProject: "查看项目", langs: "可用语言", topics: "主题", author: "Binayah编辑", bookConsultation: "预约咨询", investmentTitle: "获取投资建议", investmentDesc: "我们的专家准备好指导您了解付款计划和投资回报率。", ctaTitle: "准备好投资了吗？", ctaDesc: "与我们的团队联系，获取独家定价和付款计划。", ctaWhatsApp: "WhatsApp咨询", newsletter: "每周市场报告", newsletterDesc: "每周获取迪拜房产见解。" },
-  vi: { back: "Hướng dẫn dự án", faq: "FAQ", viewProject: "Xem dự án", langs: "Có sẵn bằng", topics: "Chủ đề", author: "Biên tập Binayah", bookConsultation: "Đặt lịch tư vấn", investmentTitle: "Nhận tư vấn đầu tư", investmentDesc: "Chuyên gia của chúng tôi sẵn sàng hướng dẫn bạn.", ctaTitle: "Sẵn sàng đầu tư?", ctaDesc: "Liên hệ đội ngũ của chúng tôi để nhận báo giá độc quyền.", ctaWhatsApp: "Chat trên WhatsApp", newsletter: "Báo cáo thị trường hàng tuần", newsletterDesc: "Nhận thông tin thị trường bất động sản Dubai mỗi tuần." },
+  en: { back: "Project Guides", faq: "Frequently Asked Questions", viewProject: "View Project", langs: "Available in", topics: "Topics", author: "Binayah Editorial", bookConsultation: "Book a Consultation", investmentTitle: "Get Investment Advice", investmentDesc: "Our experts are ready to guide you through this project's payment plan and ROI potential.", ctaTitle: "Ready to Invest?", ctaDesc: "Speak to our team about this project and get exclusive pricing and payment plans.", ctaWhatsApp: "Chat on WhatsApp", newsletter: "Weekly Market Report", newsletterDesc: "Get Dubai property insights every week.", subscribe: "Subscribe", subscribed: "Subscribed!", subError: "Something went wrong. Please try again.", emailPlaceholder: "your@email.com" },
+  ru: { back: "Гайды по проектам", faq: "Частые вопросы", viewProject: "Смотреть проект", langs: "Читать на", topics: "Темы", author: "Редакция Binayah", bookConsultation: "Записаться на консультацию", investmentTitle: "Получите инвестиционный совет", investmentDesc: "Наши эксперты готовы провести вас через план оплаты и потенциал ROI этого проекта.", ctaTitle: "Готовы инвестировать?", ctaDesc: "Обратитесь к нашей команде и получите эксклюзивные цены и планы оплаты.", ctaWhatsApp: "Написать в WhatsApp", newsletter: "Еженедельный отчёт", newsletterDesc: "Получайте аналитику рынка недвижимости Дубая каждую неделю.", subscribe: "Подписаться", subscribed: "Вы подписаны!", subError: "Что-то пошло не так. Попробуйте снова.", emailPlaceholder: "your@email.com" },
+  ar: { back: "أدلة المشاريع", faq: "الأسئلة الشائعة", viewProject: "عرض المشروع", langs: "متوفر بـ", topics: "مواضيع", author: "تحرير بنايه", bookConsultation: "احجز استشارة", investmentTitle: "احصل على نصيحة استثمارية", investmentDesc: "خبراؤنا مستعدون لإرشادك.", ctaTitle: "هل أنت مستعد للاستثمار؟", ctaDesc: "تحدث مع فريقنا للحصول على أسعار حصرية.", ctaWhatsApp: "تواصل عبر واتساب", newsletter: "تقرير أسبوعي", newsletterDesc: "احصل على رؤى سوق العقارات أسبوعياً.", subscribe: "اشترك", subscribed: "تم الاشتراك!", subError: "حدث خطأ ما. حاول مرة أخرى.", emailPlaceholder: "your@email.com" },
+  zh: { back: "项目指南", faq: "常见问题", viewProject: "查看项目", langs: "可用语言", topics: "主题", author: "Binayah编辑", bookConsultation: "预约咨询", investmentTitle: "获取投资建议", investmentDesc: "我们的专家准备好指导您了解付款计划和投资回报率。", ctaTitle: "准备好投资了吗？", ctaDesc: "与我们的团队联系，获取独家定价和付款计划。", ctaWhatsApp: "WhatsApp咨询", newsletter: "每周市场报告", newsletterDesc: "每周获取迪拜房产见解。", subscribe: "订阅", subscribed: "已订阅！", subError: "出了点问题，请重试。", emailPlaceholder: "your@email.com" },
+  vi: { back: "Hướng dẫn dự án", faq: "FAQ", viewProject: "Xem dự án", langs: "Có sẵn bằng", topics: "Chủ đề", author: "Biên tập Binayah", bookConsultation: "Đặt lịch tư vấn", investmentTitle: "Nhận tư vấn đầu tư", investmentDesc: "Chuyên gia của chúng tôi sẵn sàng hướng dẫn bạn.", ctaTitle: "Sẵn sàng đầu tư?", ctaDesc: "Liên hệ đội ngũ của chúng tôi để nhận báo giá độc quyền.", ctaWhatsApp: "Chat trên WhatsApp", newsletter: "Báo cáo thị trường hàng tuần", newsletterDesc: "Nhận thông tin thị trường bất động sản Dubai mỗi tuần.", subscribe: "Đăng ký", subscribed: "Đã đăng ký!", subError: "Đã xảy ra lỗi. Vui lòng thử lại.", emailPlaceholder: "your@email.com" },
+  he: { back: "מדריכי פרויקטים", faq: "שאלות נפוצות", viewProject: "צפה בפרויקט", langs: "זמין ב", topics: "נושאים", author: "מערכת Binayah", bookConsultation: "קביעת ייעוץ", investmentTitle: "קבלו ייעוץ השקעות", investmentDesc: "המומחים שלנו מוכנים ללוות אתכם בתוכנית התשלומים ובפוטנציאל התשואה של הפרויקט.", ctaTitle: "מוכנים להשקיע?", ctaDesc: "דברו עם הצוות שלנו וקבלו תמחור ותוכניות תשלום בלעדיות.", ctaWhatsApp: "שיחה ב-WhatsApp", newsletter: "דוח שוק שבועי", newsletterDesc: "קבלו תובנות נדל\"ן בדובאי מדי שבוע.", subscribe: "הרשמה", subscribed: "נרשמת!", subError: "משהו השתבש. נסו שוב.", emailPlaceholder: "your@email.com" },
 };
 
 function formatDate(dateStr?: string | null) {
@@ -71,8 +72,8 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
       setTimeout(() => setCopied(false), 1800);
     } catch { /* noop */ }
   };
-  const shareLabel = ({ en: "Share", ru: "Поделиться", ar: "مشاركة", zh: "分享", vi: "Chia sẻ" } as Record<string, string>)[locale] ?? "Share";
-  const copiedLabel = ({ en: "Copied!", ru: "Скопировано!", ar: "تم النسخ!", zh: "已复制!", vi: "Đã sao chép!" } as Record<string, string>)[locale] ?? "Copied!";
+  const shareLabel = ({ en: "Share", ru: "Поделиться", ar: "مشاركة", zh: "分享", vi: "Chia sẻ", he: "שיתוף" } as Record<string, string>)[locale] ?? "Share";
+  const copiedLabel = ({ en: "Copied!", ru: "Скопировано!", ar: "تم النسخ!", zh: "已复制!", vi: "Đã sao chép!", he: "הועתק!" } as Record<string, string>)[locale] ?? "Copied!";
 
   useEffect(() => {
     const onScroll = () => {
@@ -242,7 +243,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                 {subState === "done" ? (
                   <div className="flex items-center gap-2 text-primary font-semibold text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-                    Subscribed!
+                    {l.subscribed}
                   </div>
                 ) : (
                   <form onSubmit={async (e) => {
@@ -256,11 +257,11 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                       setSubState(res.ok ? "done" : "error");
                     } catch { setSubState("error"); }
                   }} className="space-y-2.5">
-                    <input type="email" name="email" required placeholder="your@email.com" className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all" />
+                    <input type="email" name="email" required placeholder={l.emailPlaceholder} className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all" />
                     <button type="submit" disabled={subState === "loading"} className="w-full px-4 py-2.5 rounded-xl text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                      {subState === "loading" ? "..." : "Subscribe"}
+                      {subState === "loading" ? "..." : l.subscribe}
                     </button>
-                    {subState === "error" && <p className="text-xs text-red-500">Something went wrong. Please try again.</p>}
+                    {subState === "error" && <p className="text-xs text-red-500">{l.subError}</p>}
                   </form>
                 )}
               </div>

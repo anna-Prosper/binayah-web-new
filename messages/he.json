@@ -1065,7 +1065,8 @@
     "reasonCapitalAppreciation": "עליית ערך הון חזקה",
     "reasonWorldClassAmenities": "שירותים ברמה עולמית",
     "readMore": "קרא עוד",
-    "readLess": "הצג פחות"
+    "readLess": "הצג פחות",
+    "sending": "שולח…"
   },
   "propertyDetail": {
     "backToProperties": "חזרה לנכסים",
@@ -1208,7 +1209,8 @@
     "guideSaleOffPlanTitle": "קניית על הנייר בדובאי",
     "guideSaleOffPlanDesc": "תוכניות תשלום, לוחות זמנים למסירה ובדיקת היזם.",
     "guideSaleFirstTimerTitle": "מדריך לקונה בפעם הראשונה",
-    "guideSaleFirstTimerDesc": "כל מה שקונה בפעם הראשונה צריך לדעת על דובאי."
+    "guideSaleFirstTimerDesc": "כל מה שקונה בפעם הראשונה צריך לדעת על דובאי.",
+    "sending": "שולח…"
   },
   "communities": {
     "heroLabel": "חקור את דובאי",

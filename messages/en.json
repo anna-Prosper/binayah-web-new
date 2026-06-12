@@ -1065,7 +1065,8 @@
     "reasonCapitalAppreciation": "Strong capital appreciation",
     "reasonWorldClassAmenities": "World-class amenities",
     "readMore": "Read more",
-    "readLess": "Show less"
+    "readLess": "Show less",
+    "sending": "Sending…"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",
@@ -1208,7 +1209,8 @@
     "guideSaleOffPlanTitle": "Buying Off-Plan in Dubai",
     "guideSaleOffPlanDesc": "Payment plans, handover timelines, and developer vetting.",
     "guideSaleFirstTimerTitle": "First-Time Buyer's Guide",
-    "guideSaleFirstTimerDesc": "Everything a first-time buyer needs to know about Dubai."
+    "guideSaleFirstTimerDesc": "Everything a first-time buyer needs to know about Dubai.",
+    "sending": "Sending…"
   },
   "communities": {
     "heroLabel": "Explore Dubai",

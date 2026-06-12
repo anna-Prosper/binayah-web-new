@@ -1064,7 +1064,8 @@
     "reasonCapitalAppreciation": "ارتفاع قوي في قيمة رأس المال",
     "reasonWorldClassAmenities": "مرافق بمستوى عالمي",
     "readMore": "اقرأ المزيد",
-    "readLess": "عرض أقل"
+    "readLess": "عرض أقل",
+    "sending": "جارٍ الإرسال…"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1203,7 +1204,8 @@
     "guideSaleOffPlanTitle": "شراء عقار على الخارطة",
     "guideSaleOffPlanDesc": "خطط الدفع والجداول الزمنية للتسليم وتقييم المطور.",
     "guideSaleFirstTimerTitle": "دليل المشتري لأول مرة",
-    "guideSaleFirstTimerDesc": "كل ما يحتاجه المشتري لأول مرة في دبي."
+    "guideSaleFirstTimerDesc": "كل ما يحتاجه المشتري لأول مرة في دبي.",
+    "sending": "جارٍ الإرسال…"
   },
   "communities": {
     "heroLabel": "استكشف دبي",

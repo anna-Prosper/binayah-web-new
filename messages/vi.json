@@ -1065,7 +1065,8 @@
     "reasonCapitalAppreciation": "Tăng trưởng vốn mạnh",
     "reasonWorldClassAmenities": "Tiện ích đẳng cấp thế giới",
     "readMore": "Đọc thêm",
-    "readLess": "Hiển thị ít hơn"
+    "readLess": "Hiển thị ít hơn",
+    "sending": "Đang gửi…"
   },
   "propertyDetail": {
     "backToProperties": "Quay lại Bất động sản",
@@ -1208,7 +1209,8 @@
     "guideSaleOffPlanTitle": "Mua Dự án hình thành trong tương lai ở Dubai",
     "guideSaleOffPlanDesc": "Kế hoạch thanh toán, thời gian bàn giao và kiểm tra chủ đầu tư.",
     "guideSaleFirstTimerTitle": "Hướng dẫn cho Người mua lần đầu",
-    "guideSaleFirstTimerDesc": "Mọi thứ mà người mua lần đầu cần biết về Dubai."
+    "guideSaleFirstTimerDesc": "Mọi thứ mà người mua lần đầu cần biết về Dubai.",
+    "sending": "Đang gửi…"
   },
   "communities": {
     "heroLabel": "Khám phá Dubai",

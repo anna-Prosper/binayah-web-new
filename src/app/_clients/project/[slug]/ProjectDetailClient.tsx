@@ -168,6 +168,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [enquirySending, setEnquirySending] = useState(false);
+  const [enquiryError, setEnquiryError] = useState(false);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
   const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>([]);
 
@@ -244,8 +246,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (enquirySending) return;
+    setEnquirySending(true);
+    setEnquiryError(false);
     try {
-      await fetch(apiUrl("/api/inquiries"), {
+      const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -259,9 +264,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           contactMethod: enquiryForm.contactMethod,
         }),
       });
-    } catch {}
-    setEnquirySubmitted(true);
-    setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setEnquirySubmitted(true);
+      setEnquiryForm({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" });
+    } catch {
+      setEnquiryError(true);
+    } finally {
+      setEnquirySending(false);
+    }
   };
 
 
@@ -1903,12 +1913,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                         <button
                           type="submit"
-                          className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+                          disabled={enquirySending}
+                          className="w-full h-12 rounded-full text-white font-bold text-sm transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:hover:scale-100"
                           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 20px rgba(212,168,71,0.3)" }}
                         >
-                          {t("sendQuickEnquiry")}
+                          {enquirySending ? t("sending") : t("sendQuickEnquiry")}
                         </button>
 
+                        {enquiryError && <p className="text-xs text-red-600 text-center" role="alert">{tCommon("somethingWentWrong")}</p>}
                         <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                       </form>
                     )}
@@ -2344,11 +2356,13 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-11 rounded-full text-white font-bold text-sm active:scale-[0.98] transition-all"
+                      disabled={enquirySending}
+                      className="w-full h-11 rounded-full text-white font-bold text-sm active:scale-[0.98] transition-all disabled:opacity-60"
                       style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                     >
-                      {t("sendQuickEnquiry")}
+                      {enquirySending ? t("sending") : t("sendQuickEnquiry")}
                     </button>
+                    {enquiryError && <p className="text-xs text-red-600 text-center" role="alert">{tCommon("somethingWentWrong")}</p>}
                     <p className="text-[10px] text-muted-foreground text-center">{t("responseTime")}</p>
                   </form>
                 )}

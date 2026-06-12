@@ -20,9 +20,11 @@ interface Props {
 // the actual brochure, and confirm to the user.
 export default function BrochureRequestModal({ open, onClose, projectName, projectSlug }: Props) {
   const t = useTranslations("brochureRequest");
+  const tc = useTranslations("common");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const dial = dialFromIso(readGeoCountryCookie());
@@ -49,8 +51,9 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
+    setError(false);
     try {
-      await fetch(apiUrl("/api/inquiries"), {
+      const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -62,9 +65,10 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
           source: `brochure-request:${projectSlug}`,
         }),
       });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
     } catch {
-      setSent(true);
+      setError(true);
     } finally {
       setSending(false);
     }
@@ -152,6 +156,9 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
                 />
               </div>
 
+              {error && (
+                <p className="text-sm text-red-600 text-center" role="alert">{tc("somethingWentWrong")}</p>
+              )}
               <button
                 type="submit"
                 disabled={sending}

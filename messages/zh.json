@@ -1070,7 +1070,8 @@
     "reasonCapitalAppreciation": "资本增值潜力强劲",
     "reasonWorldClassAmenities": "世界级配套",
     "readMore": "阅读更多",
-    "readLess": "收起"
+    "readLess": "收起",
+    "sending": "发送中…"
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",
@@ -1209,7 +1210,8 @@
     "guideSaleOffPlanTitle": "在迪拜购买期房",
     "guideSaleOffPlanDesc": "付款计划、交付时间表及开发商评估。",
     "guideSaleFirstTimerTitle": "首次购房者指南",
-    "guideSaleFirstTimerDesc": "首次在迪拜购房所需了解的一切。"
+    "guideSaleFirstTimerDesc": "首次在迪拜购房所需了解的一切。",
+    "sending": "发送中…"
   },
   "communities": {
     "heroLabel": "探索迪拜",
