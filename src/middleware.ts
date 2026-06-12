@@ -7,6 +7,8 @@ const GEO_LOCALE_MAP: Record<string, string> = {
   RU: "ru", BY: "ru", KZ: "ru", UA: "ru", KG: "ru", MD: "ru", TJ: "ru", UZ: "ru", AM: "ru", AZ: "ru",
   AE: "ar", SA: "ar", EG: "ar", QA: "ar", KW: "ar", BH: "ar", OM: "ar",
   JO: "ar", LB: "ar", IQ: "ar", SY: "ar", YE: "ar", LY: "ar", TN: "ar", DZ: "ar", MA: "ar",
+  IL: "he",
+  VN: "vi",
 };
 
 const LOCALE_COOKIE = "BINAYAH_LOCALE";

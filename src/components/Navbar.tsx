@@ -11,11 +11,11 @@ import { useSession } from "next-auth/react";
 import UserMenu from "@/components/UserMenu";
 import { useFavorites } from "@/components/PropertyActions";
 import { NotificationsBell } from "@/components/NotificationsBell";
-import { useCurrency } from "@/context/CurrencyContext";
+import { useCurrency, SUPPORTED_CURRENCIES } from "@/context/CurrencyContext";
 
 const binayahLogo = "/assets/binayah-logo.svg";
 
-const CURRENCIES = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"];
+const CURRENCIES = SUPPORTED_CURRENCIES as readonly string[];
 const LANGUAGES_LIST = [
   { code: "en", label: "English", flag: "🇬🇧" },
   { code: "ru", label: "Русский", flag: "🇷🇺" },

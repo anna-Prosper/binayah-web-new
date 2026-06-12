@@ -1,14 +1,21 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DirhemSign } from "@/components/DirhemSign";
 
-const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB"] as const;
+const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB", "ILS", "VND"] as const;
 type Currency = (typeof SUPPORTED)[number];
 
+// Per 1 AED. Fallbacks only — live rates from /api/currency-rates override these
+// (note: the upstream rates feed does not yet include ILS/VND, so those rely on these).
 const FALLBACK_RATES: Record<string, number> = {
-  AED: 1, USD: 0.2723, EUR: 0.2512, GBP: 0.2155, CNY: 1.9788, RUB: 24.89,
+  AED: 1, USD: 0.2723, EUR: 0.2512, GBP: 0.2155, CNY: 1.9788, RUB: 24.89, ILS: 0.99, VND: 6920,
+};
+
+// Default currency per language, used until the visitor picks one explicitly.
+const LOCALE_CURRENCY: Record<string, string> = {
+  ar: "AED", en: "AED", ru: "RUB", zh: "CNY", he: "ILS", vi: "VND",
 };
 
 const STORAGE_KEY = "binayah_currency";
@@ -73,16 +80,22 @@ export function CurrencyPrice({
 }
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
   const [currency, setCurrencyState] = useState<string>("AED");
   const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
 
-  // Restore persisted selection
+  // Restore the visitor's saved selection; otherwise default to the language's currency.
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && (SUPPORTED as readonly string[]).includes(saved)) setCurrencyState(saved);
+      if (saved && (SUPPORTED as readonly string[]).includes(saved)) {
+        setCurrencyState(saved);
+        return;
+      }
     } catch {}
-  }, []);
+    const byLocale = LOCALE_CURRENCY[locale];
+    if (byLocale && (SUPPORTED as readonly string[]).includes(byLocale)) setCurrencyState(byLocale);
+  }, [locale]);
 
   // Fetch live rates once on mount (cached 1h server-side via Next.js revalidate)
   useEffect(() => {
