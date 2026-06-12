@@ -190,7 +190,8 @@
       "askAiCta": "اسأل المساعد الذكي",
       "communityGuide": "دليل المجتمع",
       "communityInformation": "معلومات المجتمع",
-      "communityGuideLabel": "دليل"
+      "communityGuideLabel": "دليل",
+      "searchAreasPlaceholder": "ابحث عن المناطق..."
     },
     "featured": "عقارات منتقاة بعناية",
     "offPlan": "مشاريع على الخارطة",
@@ -1067,7 +1068,8 @@
     "readLess": "عرض أقل",
     "sending": "جارٍ الإرسال…",
     "namePlaceholder": "اسمك الكامل",
-    "requirementsPlaceholder": "أي متطلبات محددة..."
+    "requirementsPlaceholder": "أي متطلبات محددة...",
+    "openPermit": "افتح المستند →"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1209,7 +1211,11 @@
     "guideSaleFirstTimerDesc": "كل ما يحتاجه المشتري لأول مرة في دبي.",
     "sending": "جارٍ الإرسال…",
     "namePlaceholder": "اسمك الكامل",
-    "requirementsPlaceholder": "هل لديك متطلبات محددة..."
+    "requirementsPlaceholder": "هل لديك متطلبات محددة...",
+    "furnishingLabel": "التأثيث",
+    "tenureLabel": "مدة الملكية",
+    "yearBuiltLabel": "سنة البناء",
+    "viewLabel": "عرض"
   },
   "communities": {
     "heroLabel": "استكشف دبي",
@@ -1569,7 +1575,10 @@
     "sendButton": "إرسال الاستفسار",
     "sending": "جارٍ الإرسال...",
     "sent": "تم إرسال استفسارك!",
-    "reraNotice": "رقم التسجيل لدى RERA: 1162، هيئة تنظيم العقارات بدبي"
+    "reraNotice": "رقم التسجيل لدى RERA: 1162، هيئة تنظيم العقارات بدبي",
+    "sentTitle": "تم استلام الاستفسار!",
+    "sentMessage": "سيتواصل معك فريقنا خلال 24 ساعة.",
+    "sendAnother": "أرسل استفسارًا آخر"
   },
   "newsletter": {
     "title": "كن في صدارة السوق",

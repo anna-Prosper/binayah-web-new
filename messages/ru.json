@@ -190,7 +190,8 @@
       "askAiCta": "Спросить ИИ",
       "communityGuide": "Путеводитель по сообществу",
       "communityInformation": "Информация о сообществе",
-      "communityGuideLabel": "Гид"
+      "communityGuideLabel": "Гид",
+      "searchAreasPlaceholder": "Поиск районов..."
     },
     "featured": "Избранные объекты",
     "offPlan": "Новостройки",
@@ -1210,7 +1211,11 @@
     "guideSaleFirstTimerDesc": "Всё, что нужно знать покупателю впервые в Дубае.",
     "sending": "Отправка…",
     "namePlaceholder": "Ваше полное имя",
-    "requirementsPlaceholder": "Какие-либо особые требования..."
+    "requirementsPlaceholder": "Какие-либо особые требования...",
+    "furnishingLabel": "Меблировка",
+    "tenureLabel": "Срок владения",
+    "yearBuiltLabel": "Год постройки",
+    "viewLabel": "Просмотр"
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",
@@ -1570,7 +1575,10 @@
     "sendButton": "Отправить запрос",
     "sending": "Отправка…",
     "sent": "Запрос отправлен!",
-    "reraNotice": "Регистрационный номер RERA 1162, Агентство по регулированию недвижимости Дубая"
+    "reraNotice": "Регистрационный номер RERA 1162, Агентство по регулированию недвижимости Дубая",
+    "sentTitle": "Запрос получен!",
+    "sentMessage": "Наша команда свяжется с вами в течение 24 часов.",
+    "sendAnother": "Отправить еще один запрос"
   },
   "newsletter": {
     "title": "Будьте на шаг впереди рынка",

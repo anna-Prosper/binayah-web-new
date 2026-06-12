@@ -196,7 +196,8 @@
       "askAiCta": "问 AI",
       "communityGuide": "社区指南",
       "communityInformation": "社区信息",
-      "communityGuideLabel": "指南"
+      "communityGuideLabel": "指南",
+      "searchAreasPlaceholder": "搜索地区..."
     },
     "featured": "臻选房源",
     "offPlan": "期房项目",
@@ -1073,7 +1074,8 @@
     "readLess": "收起",
     "sending": "发送中…",
     "namePlaceholder": "您的全名",
-    "requirementsPlaceholder": "有任何特定要求..."
+    "requirementsPlaceholder": "有任何特定要求...",
+    "openPermit": "打开文档 →"
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",
@@ -1215,7 +1217,11 @@
     "guideSaleFirstTimerDesc": "首次在迪拜购房所需了解的一切。",
     "sending": "发送中…",
     "namePlaceholder": "您的全名",
-    "requirementsPlaceholder": "有任何特定要求..."
+    "requirementsPlaceholder": "有任何特定要求...",
+    "furnishingLabel": "家具",
+    "tenureLabel": "租期",
+    "yearBuiltLabel": "建造年份",
+    "viewLabel": "查看"
   },
   "communities": {
     "heroLabel": "探索迪拜",
@@ -1575,7 +1581,10 @@
     "sendButton": "提交咨询",
     "sending": "发送中…",
     "sent": "咨询已发送！",
-    "reraNotice": "RERA 注册号 1162，迪拜房地产监管局"
+    "reraNotice": "RERA 注册号 1162，迪拜房地产监管局",
+    "sentTitle": "询问已收到！",
+    "sentMessage": "我们的团队将在24小时内回复您。",
+    "sendAnother": "发送另一个询问"
   },
   "newsletter": {
     "title": "抢先把握市场动向",

@@ -102,7 +102,7 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search country or code..."
+              placeholder={t("searchPlaceholder")}
               className="flex-1 text-sm bg-transparent outline-none text-foreground placeholder:text-muted-foreground"
             />
           </div>
@@ -110,7 +110,7 @@ export default function CountryCodeSelect({ value, onChange, className, style, a
           {/* List */}
           <ul className="max-h-64 overflow-y-auto" role="listbox">
             {filtered.length === 0 && (
-              <li className="px-4 py-4 text-sm text-muted-foreground text-center">No results</li>
+              <li className="px-4 py-4 text-sm text-muted-foreground text-center">{t("noResults")}</li>
             )}
             {filtered.map(c => (
               <li

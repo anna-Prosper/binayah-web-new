@@ -190,7 +190,8 @@
       "askAiCta": "Ask AI",
       "communityGuide": "Community Guide",
       "communityInformation": "Community information",
-      "communityGuideLabel": "Guide"
+      "communityGuideLabel": "Guide",
+      "searchAreasPlaceholder": "Search areas..."
     },
     "featured": "Handpicked Properties",
     "offPlan": "Off-Plan Projects",

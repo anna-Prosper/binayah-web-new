@@ -1795,7 +1795,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                             value={enquiryForm.name}
                             onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
                             className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                            placeholder="Your full name"
+                            placeholder={t("namePlaceholder")}
                           />
                         </div>
 
@@ -1873,7 +1873,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                   value={enquiryForm.message}
                                   onChange={(e) => setEnquiryForm(f => ({ ...f, message: e.target.value }))}
                                   className="w-full rounded-xl bg-muted/30 border border-border/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all resize-none"
-                                  placeholder="Any specific requirements..."
+                                  placeholder={t("requirementsPlaceholder")}
                                 />
                               </div>
                               <div>
@@ -2335,7 +2335,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       value={enquiryForm.name}
                       onChange={(e) => setEnquiryForm(f => ({ ...f, name: e.target.value }))}
                       className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                      placeholder="Your name"
+                      placeholder={t("namePlaceholder")}
                     />
                     <div className="flex gap-2">
                       <CountryCodeSelect
