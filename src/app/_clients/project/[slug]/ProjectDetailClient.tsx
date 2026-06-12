@@ -702,9 +702,11 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         !s || /^update\s+soon\b/i.test(s.trim()) || s.trim().length < 12;
                       const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
                       const shortClean = (project.shortOverview || "").trim();
+                      // Keep newlines (structure) — only collapse runs of spaces/tabs.
                       const fullClean = (project.fullDescription || "")
                         .replace(/<[^>]*>/g, " ")
-                        .replace(/\s{2,}/g, " ")
+                        .replace(/\r/g, "")
+                        .replace(/[ \t]{2,}/g, " ")
                         .trim();
                       const showShort = !isPlaceholder(shortClean);
                       const showFull = !isPlaceholder(fullClean);
@@ -717,19 +719,67 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       const lead = showFull && showShort && !fullStartsWithShort ? shortClean : "";
                       if (!body) return null;
 
-                      // Split into ~3-sentence paragraphs. Unicode-aware so RU/AR/ZH/HE/VI chunk too:
-                      // the next char may be an uppercase letter (\p{Lu}) or a caseless letter
-                      // (\p{Lo}, for Arabic/CJK/Hebrew which have no capital forms).
-                      const sentences = body
-                        .split(/(?<=[.!?。！？])\s+(?=[\p{Lu}\p{Lo}])/u)
-                        .filter(Boolean);
-                      const paragraphs: string[] = [];
-                      for (let i = 0; i < sentences.length; i += 3) {
-                        paragraphs.push(sentences.slice(i, i + 3).join(" "));
+                      // Parse the body into typed blocks: section headers (h), bullet lists (ul),
+                      // and paragraphs (p). Headers are short lines with no terminal punctuation.
+                      type Block =
+                        | { type: "h"; text: string }
+                        | { type: "p"; text: string }
+                        | { type: "ul"; items: string[] };
+                      const blocks: Block[] = [];
+                      for (const line of body.split(/\n+/).map((l) => l.trim()).filter(Boolean)) {
+                        const bullet = line.match(/^[-•·▪*]\s+(.+)$/);
+                        if (bullet) {
+                          const last = blocks[blocks.length - 1];
+                          if (last && last.type === "ul") last.items.push(bullet[1].trim());
+                          else blocks.push({ type: "ul", items: [bullet[1].trim()] });
+                          continue;
+                        }
+                        const isHeader =
+                          line.split(/\s+/).length <= 6 && line.length <= 60 && !/[.!?:,;]$/.test(line);
+                        blocks.push({ type: isHeader ? "h" : "p", text: line });
                       }
-                      if (paragraphs.length === 0) paragraphs.push(body);
+                      // No structure (one long paragraph)? Chunk it into ~3-sentence paragraphs so
+                      // there's still something to collapse. Unicode-aware for RU/AR/ZH/HE/VI.
+                      if (blocks.length === 1 && blocks[0].type === "p") {
+                        const sentences = blocks[0].text
+                          .split(/(?<=[.!?。！？])\s+(?=[\p{Lu}\p{Lo}])/u)
+                          .filter(Boolean);
+                        if (sentences.length > 3) {
+                          blocks.length = 0;
+                          for (let i = 0; i < sentences.length; i += 3)
+                            blocks.push({ type: "p", text: sentences.slice(i, i + 3).join(" ") });
+                        }
+                      }
 
-                      const hasMore = paragraphs.length > 1;
+                      const hasMore = blocks.length > 1;
+                      const renderBlock = (b: Block, key: number, prominent = false) => {
+                        if (b.type === "h")
+                          return (
+                            <h3 key={key} className="text-base sm:text-lg font-bold text-foreground mt-4 first:mt-0">
+                              {b.text}
+                            </h3>
+                          );
+                        if (b.type === "ul")
+                          return (
+                            <ul key={key} className="list-disc pl-5 space-y-1 text-sm sm:text-base text-muted-foreground">
+                              {b.items.map((it, i) => (
+                                <li key={i}>{it}</li>
+                              ))}
+                            </ul>
+                          );
+                        return (
+                          <p
+                            key={key}
+                            className={
+                              prominent
+                                ? "text-base sm:text-lg text-foreground/90 leading-relaxed font-medium"
+                                : "text-sm sm:text-base text-muted-foreground leading-relaxed"
+                            }
+                          >
+                            {b.text}
+                          </p>
+                        );
+                      };
 
                       return (
                         <div className="space-y-3">
@@ -738,25 +788,10 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                               {lead}
                             </p>
                           )}
-                          {paragraphs.length > 0 && (
-                            <p
-                              className={
-                                lead
-                                  ? "text-sm sm:text-base text-muted-foreground leading-relaxed"
-                                  : "text-base sm:text-lg text-foreground/90 leading-relaxed font-medium"
-                              }
-                            >
-                              {paragraphs[0]}
-                            </p>
-                          )}
+                          {blocks.length > 0 &&
+                            renderBlock(blocks[0], 0, !lead && blocks[0].type === "p")}
 
-                          {hasMore && descExpanded && (
-                            <>
-                              {paragraphs.slice(1).map((para, i) => (
-                                <p key={i} className="text-sm sm:text-base text-muted-foreground leading-relaxed">{para}</p>
-                              ))}
-                            </>
-                          )}
+                          {descExpanded && blocks.slice(1).map((b, i) => renderBlock(b, i + 1))}
 
                           {hasMore && (
                             <button
