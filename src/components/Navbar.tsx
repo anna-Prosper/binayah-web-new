@@ -99,6 +99,16 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       ],
     },
     {
+      header: t("megaOffPlanAreas"),
+      links: [
+        { label: t("dubaiMarina"), href: "/off-plan-in/dubai-marina" },
+        { label: t("downtownDubai"), href: "/off-plan-in/downtown-dubai" },
+        { label: t("businessBay"), href: "/off-plan-in/business-bay" },
+        { label: t("jvc"), href: "/off-plan-in/jumeirah-village-circle" },
+        { label: t("dubaiHills"), href: "/off-plan-in/dubai-hills-estate" },
+      ],
+    },
+    {
       header: t("megaOffPlanBrowse"),
       links: [
         { label: t("newLaunches"), href: "/off-plan" },

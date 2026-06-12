@@ -125,7 +125,7 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
+function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
@@ -143,12 +143,13 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
     setIntent(urlIntent || (defaultIntent ?? "") as SearchIntent);
     setStatus(normalizeStatus(urlStatus, urlIntent || defaultIntent || ""));
     setType(urlType);
-    setSelectedLocations(urlLocs);
+    setSelectedLocations(urlLocs.length ? urlLocs : (defaultLocations ?? []));
   }, [searchParams]);
   const [type, setType] = useState(() => String(normalizePropertyType(params.get("type") || defaultType || "", "")));
   const initialLocations = (() => {
     const raw = params.get("locations") || params.get("location") || "";
-    return raw.split(",").map((s) => s.trim()).filter(Boolean);
+    const fromUrl = raw.split(",").map((s) => s.trim()).filter(Boolean);
+    return fromUrl.length ? fromUrl : (defaultLocations ?? []);
   })();
   const [selectedLocations, setSelectedLocations] = useState<string[]>(initialLocations);
   const [beds, setBeds] = useState(params.get("bedrooms") || "");
@@ -1092,10 +1093,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
+export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} syncUrl={syncUrl} sidebarSlot={sidebarSlot} />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} defaultLocations={defaultLocations} syncUrl={syncUrl} sidebarSlot={sidebarSlot} />
     </Suspense>
   );
 }
