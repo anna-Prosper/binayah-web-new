@@ -30,8 +30,8 @@ const managementServices = [
 const additionalServices = [
   { icon: Building2, title: "Off-Plan Investment Advisory", desc: "Expert guidance on the best off-plan opportunities with high ROI potential across Dubai's emerging communities.", link: "/off-plan" },
   { icon: TrendingUp, title: "AI Property Valuation", desc: "Get an instant, AI-driven property valuation based on real-time market data and comparable transactions.", link: "/valuation" },
-  { icon: Home, title: "Resale Properties", desc: "Access premium secondary market listings across 50+ communities with dedicated buyer representation.", link: "/search?intent=buy" },
-  { icon: Key, title: "Rental Services", desc: "Whether you're a tenant looking for a home or a landlord listing a property — we match you perfectly.", link: "/search?intent=rent" },
+  { icon: Home, title: "Resale Properties", desc: "Access premium secondary market listings across 50+ communities with dedicated buyer representation.", link: "/buy" },
+  { icon: Key, title: "Rental Services", desc: "Whether you're a tenant looking for a home or a landlord listing a property — we match you perfectly.", link: "/rent" },
   { icon: FileText, title: "Mortgage Advisory", desc: "Pre-approval assistance, rate comparison from 12+ banks, and end-to-end mortgage processing support.", link: "/contact" },
   { icon: Handshake, title: "Golden Visa Assistance", desc: "Complete support for property-linked Golden Visa applications — from eligibility to approval.", link: "/contact" },
 ];

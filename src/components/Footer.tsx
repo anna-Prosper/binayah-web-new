@@ -49,9 +49,9 @@ const Footer = () => {
         <div className="md:col-span-2">
           <h4 className="font-semibold text-white mb-3 sm:mb-5 text-[10px] sm:text-xs uppercase tracking-[0.2em]">{t("properties")}</h4>
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-            <li><Link href="/search?intent=buy" className="hover:text-accent transition-colors">{t("links.buy")}</Link></li>
-            <li><Link href="/search?intent=rent" className="hover:text-accent transition-colors">{t("links.rent")}</Link></li>
-            <li><Link href="/search?status=Off-Plan" className="hover:text-accent transition-colors">{t("links.offPlan")}</Link></li>
+            <li><Link href="/buy" className="hover:text-accent transition-colors">{t("links.buy")}</Link></li>
+            <li><Link href="/rent" className="hover:text-accent transition-colors">{t("links.rent")}</Link></li>
+            <li><Link href="/off-plan" className="hover:text-accent transition-colors">{t("links.offPlan")}</Link></li>
             <li><Link href="/communities" className="hover:text-accent transition-colors">{t("links.communities")}</Link></li>
             <li><Link href="/developers" className="hover:text-accent transition-colors">{t("links.developers")}</Link></li>
             <li><Link href="/valuation" className="hover:text-accent transition-colors">{t("links.valuation")}</Link></li>

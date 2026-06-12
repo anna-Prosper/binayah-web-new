@@ -56,7 +56,7 @@ export default async function ContactThankYouPage() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              href="/search?intent=buy"
+              href="/buy"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm shadow-lg"
               style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
             >
