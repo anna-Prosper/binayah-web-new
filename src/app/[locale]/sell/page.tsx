@@ -297,9 +297,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["بيع عقار دبي", "بيع شقة دبي", "تقييم عقاري دبي", "بيع فيلا دبي"]
       : locale === "zh"
       ? ["在迪拜出售房产", "卖迪拜房子", "迪拜房产估价", "迪拜二手房出售"]
-      : locale === "vi"
-      ? ["bán bất động sản dubai", "bán căn hộ dubai", "định giá bất động sản dubai", "bán biệt thự dubai"]
-      : ["sell property dubai", "sell apartment dubai", "sell house dubai", "list property dubai", "dubai property valuation"],
+      : locale === "vi" ? ["bán bất động sản dubai", "bán căn hộ dubai", "định giá bất động sản dubai", "bán biệt thự dubai"] : locale === "he" ? ["מכירת נכס Dubai","מכירת דירה Dubai","מכירת בית Dubai","רישום נכס Dubai","הערכת נכס Dubai"] : ["sell property dubai", "sell apartment dubai", "sell house dubai", "list property dubai", "dubai property valuation"],
   };
 }
 
@@ -311,11 +309,11 @@ export default async function SellPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/sell` },
   ];
 

@@ -310,9 +310,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["إدارة العقارات دبي", "شركة إدارة عقارات دبي", "خدمات إدارة الإيجار دبي"]
       : locale === "zh"
       ? ["迪拜物业管理", "迪拜房产托管", "迪拜租赁管理"]
-      : locale === "vi"
-      ? ["quản lý bất động sản dubai", "quản lý bất động sản dubai chuyên nghiệp", "dịch vụ quản lý cho thuê dubai"]
-      : ["property management dubai", "dubai property manager", "villa management dubai", "rental management dubai", "landlord services dubai"],
+      : locale === "vi" ? ["quản lý bất động sản dubai", "quản lý bất động sản dubai chuyên nghiệp", "dịch vụ quản lý cho thuê dubai"] : locale === "he" ? ["ניהול נכסים Dubai","מנהל נכסים Dubai","ניהול וילות Dubai","ניהול השכרות Dubai","שירותי בעל נכס Dubai"] : ["property management dubai", "dubai property manager", "villa management dubai", "rental management dubai", "landlord services dubai"],
   };
 }
 
@@ -320,7 +318,7 @@ export default async function PropertyManagementPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [

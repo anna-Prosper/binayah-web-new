@@ -410,9 +410,10 @@ export async function generateMetadata({
   if (!b) return {};
 
   const isRu = locale === "ru";
-  const isAr = locale === "ar"; // vi, zh, ru, en are ltr
+  const isAr = locale === "ar"; // ar, he are rtl; vi, zh, ru, en are ltr
   const isZh = locale === "zh";
   const isVi = locale === "vi";
+  const isHe = locale === "he";
 
   const title = isRu
     ? `Покупка недвижимости в Дубае для граждан ${b.country === "Russian" ? "России" : b.country} | Binayah`
@@ -422,6 +423,8 @@ export async function generateMetadata({
     ? `${b.flag} ${b.citizen}公民在迪拜购房指南 | Binayah`
     : isVi
     ? `Mua bất động sản tại Dubai cho công dân ${b.citizen} ${b.flag} | Hướng dẫn đầy đủ | Binayah`
+    : isHe
+    ? `קניית נדל"ן בדובאי לאזרחי ${b.citizen} ${b.flag} | מדריך מלא | Binayah`
     : `Buying Property in Dubai as a ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
 
   const description = isRu
@@ -432,6 +435,8 @@ export async function generateMetadata({
     ? `在迪拜购房的完整指南：法律地位、融资选择、税务影响、资金汇回及热门区域。`
     : isVi
     ? `Hướng dẫn đầy đủ cho công dân ${b.citizen} mua bất động sản tại Dubai: tình trạng pháp lý, lựa chọn tài chính, tác động thuế, quy tắc hồi hương vốn và khu vực ưa thích.`
+    : isHe
+    ? `מדריך מלא לאזרחי ${b.citizen} לרכישת נדל"ן בדובאי: מעמד משפטי, אפשרויות מימון, השלכות מס, כללי החזרת הון ושכונות מועדפות.`
     : `Complete guide for ${b.citizen} citizens buying property in Dubai: legal status, financing options, tax implications, repatriation rules, and preferred communities.`;
 
   const path = `/buying-property-in-dubai-as/${b.slug}`;
@@ -459,6 +464,8 @@ export async function generateMetadata({
         ? ["迪拜外国人购房", "迪拜自由持有房产", "迪拜黄金签证购房"]
         : locale === "vi"
         ? ["mua bất động sản dubai người nước ngoài", "bất động sản dubai freehold", "mua nhà dubai golden visa"]
+        : locale === "he"
+        ? ["קניית נדל\"ן בדובאי לזרים", "נדל\"ן freehold בדובאי", "קניית דירה בדובאי גולדן ויזה"]
         : [
             `buying property in dubai as ${b.citizen.toLowerCase()} citizen`,
             `dubai real estate ${b.citizen.toLowerCase()} buyer`,
@@ -480,7 +487,7 @@ export default async function ForeignBuyerPage({
   if (!b) notFound();
 
   const c = CONTENT[(locale as Locale)] ?? CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
@@ -524,6 +531,8 @@ export default async function ForeignBuyerPage({
                 ? `للمواطنين ${b.flag}`
                 : locale === "vi"
                 ? `cho công dân ${b.citizen}`
+                : locale === "he"
+                ? `לאזרחי ${b.citizen}`
                 : `—${b.citizen}${c.guideSuffix}`}
             </span>
           </h1>
@@ -573,7 +582,7 @@ export default async function ForeignBuyerPage({
         {/* Buying steps */}
         <section>
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
-            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : "步骤详解"}
+            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : locale === "he" ? "步骤详解" : "步骤详解"}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.stepsHeading}</h2>
           <p className="text-sm text-muted-foreground mb-8">{c.stepsSubheading}</p>

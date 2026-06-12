@@ -284,9 +284,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["أفضل مشاريع على الخارطة دبي 2026", "مقارنة مطوّري دبي", "إعمار داماك سوبها دبي"]
       : locale === "zh"
       ? ["迪拜最佳期房2026", "迪拜开发商对比", "Emaar DAMAC Sobha迪拜"]
-      : locale === "vi"
-      ? ["dự án off-plan tốt nhất dubai 2026", "emaar so với damac dubai", "so sánh chủ đầu tư dubai hàng đầu", "dự án mới dubai 2026"]
-      : ["best off-plan projects dubai 2026", "emaar vs damac dubai", "top dubai developers comparison", "new launch dubai 2026"],
+      : locale === "vi" ? ["dự án off-plan tốt nhất dubai 2026", "emaar so với damac dubai", "so sánh chủ đầu tư dubai hàng đầu", "dự án mới dubai 2026"] : locale === "he" ? ["הפרויקטים הטובים ביותר לפני בנייה בדובאי 2026","אמאאר מול דמאק דובאי","השוואת מפתחי דובאי המובילים","השקה חדשה דובאי 2026"] : ["best off-plan projects dubai 2026", "emaar vs damac dubai", "top dubai developers comparison", "new launch dubai 2026"],
   };
 }
 
@@ -296,7 +294,7 @@ export default async function TopProjectsPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
   const cats = CATEGORIES[(locale as Locale)] || CATEGORIES.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   // Fetch latest off-plan projects from API
@@ -307,8 +305,8 @@ export default async function TopProjectsPage({ params }: Props) {
   } catch { /* serve page without live projects */ }
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
-    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : "Off-Plan", href: `${lp}/off-plan` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : locale === "he" ? "על הנייר" : "Off-Plan", href: `${lp}/off-plan` },
     { name: c.breadcrumb, href: `${lp}/off-plan/top-projects` },
   ];
 
@@ -480,7 +478,7 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
             <h2 className="text-3xl font-bold text-foreground">
-              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : "Frequently Asked Questions"}
+              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "he" ? "שאלות נפוצות" : "Frequently Asked Questions"}
             </h2>
           </div>
           <div className="space-y-3">
@@ -505,10 +503,10 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="relative z-10">
             <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">Binayah Properties</p>
             <h2 className="text-3xl font-bold mb-4">
-              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : locale === "vi" ? "Tìm dự án Off-Plan hoàn hảo của bạn" : "Find Your Perfect Off-Plan Project"}
+              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : locale === "vi" ? "Tìm dự án Off-Plan hoàn hảo của bạn" : locale === "he" ? "מצא את פרויקט על הנייר המושלם שלך" : "Find Your Perfect Off-Plan Project"}
             </h2>
             <p className="text-primary-foreground/75 text-lg mb-10 max-w-xl mx-auto">
-              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : locale === "vi" ? "Các chuyên gia off-plan của chúng tôi sẽ kết nối bạn với dự án phù hợp cho mục tiêu đầu tư, ngân sách và thời gian của bạn." : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
+              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : locale === "vi" ? "Các chuyên gia off-plan của chúng tôi sẽ kết nối bạn với dự án phù hợp cho mục tiêu đầu tư, ngân sách và thời gian của bạn." : locale === "he" ? "המומחים שלנו לנכסים על הנייר יתאימו לך את הפרויקט הנכון למטרות ההשקעה שלך, התקציב ולוח הזמנים." : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -516,7 +514,7 @@ export default async function TopProjectsPage({ params }: Props) {
                 className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
               >
-                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : "Get Expert Advice"} →
+                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : locale === "he" ? "קבלו ייעוץ מומחה" : "Get Expert Advice"} →
               </Link>
               <Link
                 href={`${lp}/off-plan`}

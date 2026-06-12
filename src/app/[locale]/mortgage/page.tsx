@@ -312,20 +312,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["حاسبة رهن عقاري دبي", "قرض عقاري دبي", "تمويل عقاري دبي", "رهن عقاري للأجانب دبي"]
       : locale === "zh"
       ? ["迪拜房贷计算器", "迪拜住房贷款", "迪拜按揭贷款", "阿联酋房贷外籍人士"]
-      : locale === "vi"
-      ? ["máy tính vay thế chấp dubai", "vay mua nhà dubai", "lãi suất vay thế chấp uae", "vay thế chấp dubai người nước ngoài"]
-      : ["mortgage calculator dubai", "dubai home loan", "uae mortgage rates", "dubai mortgage expat", "buy property dubai mortgage"],
+      : locale === "vi" ? ["máy tính vay thế chấp dubai", "vay mua nhà dubai", "lãi suất vay thế chấp uae", "vay thế chấp dubai người nước ngoài"] : locale === "he" ? ["מחשבון משכנתא Dubai","הלוואת דירה Dubai","ריביות משכנתא UAE","משכנתא Dubai לאקספטים","קניית נכס Dubai עם משכנתא"] : ["mortgage calculator dubai", "dubai home loan", "uae mortgage rates", "dubai mortgage expat", "buy property dubai mortgage"],
   };
 }
 
 export default async function MortgagePage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/mortgage` },
   ];
 
@@ -392,8 +390,7 @@ export default async function MortgagePage({ params }: Props) {
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4">
             {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
-             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." :
-             "* Rates as of 2026. Terms depend on borrower profile and property type."}
+             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." : locale === "he" ? "* שיעורים נכון ל-2026. התנאים תלויים בפרופיל הלווה ובסוג הנכס." : "* Rates as of 2026. Terms depend on borrower profile and property type."}
           </p>
         </section>
 

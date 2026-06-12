@@ -11,7 +11,7 @@ import { Waves, Bike, Trophy, Trees, Anchor, Building2, MapPin, TrendingUp, Shie
 
 export const revalidate = 86400;
 
-type Locale = "en" | "ru" | "ar" | "zh" | "vi";
+type Locale = "en" | "ru" | "ar" | "zh" | "vi" | "he";
 
 const HERO_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-hero.jpg";
 const AERIAL_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-aerial.jpg";
@@ -554,6 +554,103 @@ const LABELS: Record<Locale, {
     developerSub: "84,5% thuộc sở hữu ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi",
     freeholdBadge: "Sở hữu vĩnh viễn · Mọi quốc tịch",
   },
+he: {
+    metaTitle: "Hudayriyat Island נכסים למכירה | בעלות מלאה (Freehold) אבו דאבי | Binayah",
+    metaDesc:
+      "קנו נכסים בבעלות מלאה ב-Hudayriyat Island, אבו דאבי — וילות החל מ-AED 6M, דירות החל מ-AED 2M. מפתח מגובה ממשלתית Modon. דמי העברה 2%. 10 דקות ממרכז העסקים של אבו דאבי. ייעוץ מומחים מ-Binayah Properties.",
+    heroEyebrow: "אבו דאבי · אי בעלות מלאה · על ידי Modon Properties",
+    heroH1Line1: "הבוורלי הילס",
+    heroH1Line2: "של אבו דאבי",
+    heroSubtitle:
+      "Hudayriyat Island — מעל 3,000 דונם של מגורים חופיים מתוכננים, 10 דקות ממרכז העסקים של אבו דאבי. בעלות מלאה לכל הלאומים, דמי העברה 2%, מפתח מגובה ממשלתית.",
+    trustSignals: ["בעלות מלאה · כל הלאומים", "דמי העברה 2%", "זכאות לויזת זהב", "Modon (מגובה על ידי ADQ)"],
+    ctaPrimary: "ייעוץ השקעה חינם",
+    ctaSecondary: "צפו בקהילות",
+    aboutEyebrow: "על האי",
+    aboutHeading: "הפיתוח החופי השאפתני ביותר של אבו דאבי",
+    aboutPara1:
+      "אי אל-חודייריאת משתרע על פני יותר מ-3,000 דונם מול חוף המערבי של אבו דאבי. מחובר ליבשה דרך גשר חודייריאת, הוא נמצא רק 10 דקות ממרכז העסקים של בירת האמירויות — החוף הקרוב ביותר בבעלות מלאה באבו דאבי. פותח על ידי Modon Properties (84.5% בבעלות ממשלתית דרך ADQ), האי הוא פרויקט הדגל החופי של אבו דאבי.",
+    aboutPara2:
+      "עם 16 ק\"מ של חופים טבעיים, 2.25 מיליון מ\"ר של פארק, Surf Abu Dhabi (בריכת הגלים המלאכותית הגדולה בעולם), ו-220 ק\"מ של תשתית רכיבה על אופניים, חודייריאת הוא הכתובת היחידה באמירויות שמשלבת ספורט עילית, אורח חיים חופי, ומגורים בבעלות מלאה באי מתוכנן אחד.",
+    aboutMinistats: [
+      ["3,000+", "דונם שטח כולל"],
+      ["16 ק\"מ", "חופים טבעיים"],
+      ["10–20 דקות", "נסיעה למרכז העסקים של אבו דאבי"],
+      ["99", "לאומים משקיעים"],
+    ],
+    amenitiesEyebrow: "תשתית ברמה עולמית",
+    amenitiesHeading: "נבנה לחיים פעילים וחופיים",
+    amenitiesSubheading:
+      "הכתובת היחידה באמירויות שבה Surf, Velodrome, 220 ק\"מ רכיבה על אופניים, ומגורים על חוף הים קיימים בתוכנית אב אחת.",
+    communitiesEyebrow: "קהילות מגורים",
+    communitiesHeading: "מצאו את הקהילה שלכם",
+    communitiesSubheading:
+      "שש קהילות בעלות מלאה על ידי Modon — דירות החל מ-AED 2M, אחוזות אולטרה-יוקרתיות עד AED 80M+.",
+    communitiesCta: "קבלו זמינות ומחירים",
+    communitiesStartingFrom: "החל מ",
+    communitiesHandover: "מסירה",
+    whyInvestEyebrow: "מקרה השקעה",
+    whyInvestHeading: "למה משקיעים בוחרים בחודייריאת",
+    whyInvestSubheading:
+      "שוק הנדל\"ן מספר 1 של אבו דאבי לפי ערך עסקאות ברבעון הראשון של 2026. ארבעה יתרונות מבניים שאין לאי אחר.",
+    tableHeaders: ["מדד", "Hudayriyat Island", "ממוצע דובאי"],
+    whyInvestCards: [
+      ["מפתח מגובה ממשלתית", "Modon Properties הוא בבעלות 84.5% על ידי ADQ — זרוע ההשקעות הריבונית של אבו דאבי. ההבטחה החזקה ביותר של מפתח באמירויות."],
+      ["דמי העברה 2%", "חצי מה-4% של דובאי. עלויות עסקה נמוכות יותר משפרות את התשואה נטו על ההשקעה ומפחיתות חיכוך בכל מכירה חוזרת."],
+      ["בעלות מלאה, כל הלאומים", "זכויות בעלות 100%, ללא הגבלות. נכסים מעל AED 2M מזכים אוטומטית לויזת זהב של האמירויות."],
+      ["10 דקות למרכז העיר", "דרך גשר חודייריאת. 25 דקות לנמל התעופה הבינלאומי של אבו דאבי. החוף הקרוב ביותר בבעלות מלאה לבירת האמירויות."],
+    ],
+    stats: [
+      ["AED 11.97B", "עסקאות ברבעון הראשון של 2026", "#1 באבו דאבי"],
+      ["40–50%", "הערכת ערך הון", "נרשם על ידי קונים מוקדמים"],
+      ["7–9%", "תשואת שכירות ברוטו", "חוף אבו דאבי"],
+      ["2%", "דמי העברה", "חצי מהשיעור של דובאי"],
+    ],
+    faqEyebrow: "שאלות נפוצות",
+    faqHeading: "Hudayriyat Island — שאלות נפוצות על נכסים",
+    faqSubheading: "כל מה שקונים ומשקיעים שואלים לפני שמתחייבים לכתובת הצומחת ביותר של אבו דאבי.",
+    faqs: [
+      {
+        question: "האם זרים יכולים לקנות נכסים ב-Hudayriyat Island?",
+        answer:
+          "כן. Hudayriyat Island הוא אזור בעלות מלאה המיועד לכל הלאומים. אתם מקבלים זכויות בעלות מלאות עם שטר בעלות של האמירויות הרשום במחלקת העיריות והתחבורה של אבו דאבי. נכסים במחיר מעל 2 מיליון AED מזכים לויזת זהב של האמירויות (תושבות מתחדשת ל-10 שנים).",
+      },
+      {
+        question: "מהו דמי ההעברה ב-Hudayriyat Island?",
+        answer:
+          "דמי ההעברה של נכסים באבו דאבי הם 2% ממחיר הרכישה — בדיוק חצי מה-4% של דובאי. זה מפחית את עלות הכניסה ומשפר את התשואה נטו על ההשקעה בכל מכירה חוזרת.",
+      },
+      {
+        question: "אילו סוגי נכסים זמינים?",
+        answer:
+          "Hudayriyat Island מציע: דירות (1–4 חדרי שינה, החל מ-AED 2M); וילות (3–8 חדרי שינה, החל מ-AED 6M); וילות גולף ובתים טוריים (החל מ-AED 4.25M); אחוזות יוקרה (החל מ-AED 25M); אחוזות אולטרה-יוקרתיות על גבעה (AED 41M+). כל אלו מפותחים על ידי Modon Properties המגובה ממשלתית.",
+      },
+      {
+        question: "אילו תשואות שכירות אני יכול לצפות ב-Hudayriyat Island?",
+        answer:
+          "נכסים בחוף אבו דאבי בדרך כלל מניבים תשואות שכירות ברוטו של 7–9%. קונים מוקדמים ב-Hudayriyat Island רשמו הערכת ערך הון של 40–50% מאז השקת האי ב-2020. ברבעון הראשון של 2026 נרשמו עסקאות באי בסך AED 11.97B — הגבוה ביותר בכל אזור באבו דאבי.",
+      },
+      {
+        question: "כמה רחוק Hudayriyat Island ממרכז העיר אבו דאבי?",
+        answer:
+          "10–20 דקות ברכב דרך גשר חודייריאת. האי ממוקם על החוף המערבי של אבו דאבי מול אל-בטין. נמל התעופה הבינלאומי של אבו דאבי נמצא כ-25–30 דקות משם. מתוכנן קישור מטרו/אוטובוס ייעודי ל-Surf Abu Dhabi כחלק מתוכנית האב לניידות עירונית של אבו דאבי.",
+      },
+      {
+        question: "האם Hudayriyat Island היא השקעה טובה לעומת דובאי?",
+        answer:
+          "Hudayriyat Island מציע עלות כניסה נמוכה יותר לנכסים בבעלות מלאה באיכות גבוהה מאשר קהילות חוף דובאי דומות, עם דמי העברה של 2% לעומת 4% של דובאי, תשואות ברוטו גבוהות יותר (7–9% לעומת 5.5–7% של דובאי), והערכת ערך הון של 40–50% שתועדה עבור קונים מוקדמים. המפתח המגובה ממשלתית ושטר הבעלות המגובה ריבונית מסירים את הסיכון למסירה לחלוטין.",
+      },
+    ],
+    ctaEyebrow: "דברו עם מומחה",
+    ctaHeading: "מוכנים להשקיע ב-Hudayriyat Island?",
+    ctaBody:
+      "הצוות שלנו באבו דאבי מספק ייעוץ חינם וללא התחייבות על זמינות יחידות, תוכניות תשלום, ותשואה צפויה על ההשקעה בכל שש הקהילות של Modon — כולל אפשרויות מחוץ לשוק.",
+    ctaPrimaryBtn: "ייעוץ חינם",
+    trustFooter: ["17+ שנים בנדל\"ן באמירויות", "2,500+ נכסים", "ללא עמלה לקונים", "מוסדר על ידי RERA"],
+    developerBadge: "Modon Properties · מגובה ממשלתית",
+    developerSub: "בבעלות 84.5% על ידי ADQ — זרוע ההשקעות הריבונית של אבו דאבי",
+    freeholdBadge: "בעלות מלאה · כל הלאומים",
+},
 };
 
 export async function generateMetadata({
@@ -577,7 +674,7 @@ export async function generateMetadata({
       type: "website",
       url: makeCanonical(locale, "/hudayriyat-island"),
       siteName: "Binayah Properties",
-      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : locale === "he" ? "he_IL" : "en_AE",
       images: [
         {
           url: OG_IMG,
@@ -755,11 +852,20 @@ const TABLE_ROWS_VI = [
   ["Ngưỡng Golden Visa", "2 triệu AED", "2 triệu AED"],
 ];
 
+const TABLE_ROWS_HE = [
+  ["דמי העברה", "2%", "4%"],
+  ["תשואת שכירות ברוטו", "7–9%", "5.5–7%"],
+  ["עליית ערך הון", "40–50%", "15–25%"],
+  ["סיכון יזם", "ריבוני (ADQ)", "משתנה"],
+  ["סף ויזת זהב", "AED 2M", "AED 2M"],
+];
+
 function getTableRows(locale: Locale): string[][] {
   if (locale === "ru") return TABLE_ROWS_RU;
   if (locale === "ar") return TABLE_ROWS_AR; // vi uses TABLE_ROWS_VI below
   if (locale === "zh") return TABLE_ROWS_ZH;
   if (locale === "vi") return TABLE_ROWS_VI;
+  if (locale === "he") return TABLE_ROWS_HE;
   return TABLE_ROWS_EN;
 }
 
@@ -775,7 +881,7 @@ export default async function HudayriyatIslandPage({
   const { locale } = await params;
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const L = LABELS[locale as Locale] ?? LABELS.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const tableRows = getTableRows(locale as Locale);
 
   const breadcrumbs = [

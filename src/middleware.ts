@@ -14,7 +14,7 @@ const LOCALE_COOKIE = "BINAYAH_LOCALE";
 const RU_LOCALE_COOKIE = "BINAYAH_LOCALE_RU";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 const intlMiddleware = createMiddleware(routing);
-const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar|vi)(\/|$)/;
+const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar|vi|he)(\/|$)/;
 
 const isDev = process.env.NODE_ENV === "development";
 // Vercel Live ships the preview-feedback widget from vercel.live (loaded on

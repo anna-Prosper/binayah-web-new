@@ -22,6 +22,7 @@ const LANGUAGES_LIST = [
   { code: "zh", label: "中文", flag: "🇨🇳" },
   { code: "ar", label: "العربية", flag: "🇦🇪" },
   { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
+  { code: "he", label: "עברית", flag: "🇮🇱" },
 ];
 
 

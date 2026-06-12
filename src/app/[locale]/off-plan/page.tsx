@@ -126,20 +126,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["عقارات على الخارطة دبي", "مشاريع على الخارطة دبي 2026", "استثمار على الخارطة دبي"]
       : locale === "zh"
       ? ["迪拜期房", "迪拜新楼盘2026", "迪拜期房投资", "迪拜开发商楼盘"]
-      : locale === "vi"
-      ? ["bất động sản off-plan dubai", "off-plan dubai 2026", "dự án mới dubai", "đầu tư off-plan dubai", "mua off-plan dubai"]
-      : ["off-plan properties dubai", "off-plan dubai 2026", "new launch dubai", "dubai off plan investment", "buy off plan dubai"],
+      : locale === "vi" ? ["bất động sản off-plan dubai", "off-plan dubai 2026", "dự án mới dubai", "đầu tư off-plan dubai", "mua off-plan dubai"] : locale === "he" ? ["נכסים בתכנון מראש Dubai","תכנון מראש Dubai 2026","השקה חדשה Dubai","השקעה בתכנון מראש Dubai","קנה בתכנון מראש Dubai"] : ["off-plan properties dubai", "off-plan dubai 2026", "new launch dubai", "dubai off plan investment", "buy off plan dubai"],
   };
 }
 
 export default async function OffPlanPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/off-plan` },
   ];
 
@@ -178,7 +176,7 @@ export default async function OffPlanPage({ params }: Props) {
             <div className="text-center mb-10">
               <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
               <h2 className="text-3xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : "Off-Plan FAQs"}
+                {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi về Off-Plan" : locale === "he" ? "שאלות נפוצות על הנייר" : "Off-Plan FAQs"}
               </h2>
             </div>
             <div className="space-y-3">

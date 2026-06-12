@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: article.metaDescription || article.excerpt,
       type: "article",
       url: canonical(locale, `/news/${slug}`),
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
       ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
     },
   };

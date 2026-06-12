@@ -182,7 +182,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"} // vi, zh, ru, en are ltr
+      dir={locale === "ar" || locale === "he" ? "rtl" : "ltr"} // ar, he are rtl; vi, zh, ru, en are ltr
       suppressHydrationWarning
       className={`${jakarta.variable} ${playfair.variable} ${notoArabic.variable}`}
     >

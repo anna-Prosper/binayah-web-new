@@ -48,7 +48,7 @@ export async function generateMetadata({
       // opengraph-image.tsx serves the dynamic branded OG image (price/beds/photo overlay).
       type: "website",
       url: makeCanonical(locale, `/property/${slug}`),
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
     },
     twitter: {
       card: "summary_large_image",

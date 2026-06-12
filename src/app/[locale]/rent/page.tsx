@@ -161,20 +161,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["شقق للإيجار دبي", "إيجار عقارات دبي", "استئجار شقة دبي"]
       : locale === "zh"
       ? ["迪拜租房", "迪拜公寓出租", "迪拜租住公寓"]
-      : locale === "vi"
-      ? ["bất động sản cho thuê dubai", "thuê căn hộ dubai", "tin đăng cho thuê dubai"]
-      : ["properties for rent dubai", "rent apartment dubai", "dubai rental listings", "apartments for rent dubai"],
+      : locale === "vi" ? ["bất động sản cho thuê dubai", "thuê căn hộ dubai", "tin đăng cho thuê dubai"] : locale === "he" ? ["נכסים להשכרה Dubai","השכרת דירה Dubai","רשימות השכרה Dubai","דירות להשכרה Dubai"] : ["properties for rent dubai", "rent apartment dubai", "dubai rental listings", "apartments for rent dubai"],
   };
 }
 
 export default async function RentPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/rent` },
   ];
 
@@ -229,7 +227,7 @@ export default async function RentPage({ params }: Props) {
             <div className="text-center mb-8">
               <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : locale === "vi" ? "Thuê tại Dubai — Câu hỏi thường gặp" : "Renting in Dubai — FAQs"}
+                {locale === "ru" ? "Частые вопросы об аренде" : locale === "ar" ? "أسئلة شائعة عن الإيجار" : locale === "zh" ? "租房常见问题" : locale === "vi" ? "Thuê tại Dubai — Câu hỏi thường gặp" : locale === "he" ? "שכירות בדובאי — שאלות נפוצות" : "Renting in Dubai — FAQs"}
               </h2>
             </div>
             <div className="space-y-2 sm:space-y-3">

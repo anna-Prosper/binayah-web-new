@@ -192,19 +192,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["التأشيرة الذهبية الإمارات", "تأشيرة ذهبية عقار دبي", "إقامة الإمارات عبر العقارات"]
       : locale === "zh"
       ? ["阿联酋黄金签证", "迪拜房产黄金签证", "阿联酋居住权房产"]
-      : locale === "vi"
-      ? ["golden visa uae bất động sản", "golden visa dubai", "golden visa 2 triệu aed", "cư trú uae qua bất động sản"]
-      : ["uae golden visa property", "dubai golden visa", "golden visa 2 million aed", "uae residency through property"],
+      : locale === "vi" ? ["golden visa uae bất động sản", "golden visa dubai", "golden visa 2 triệu aed", "cư trú uae qua bất động sản"] : locale === "he" ? ["נכס ויזה זהב איחוד האמירויות","ויזה זהב דובאי","ויזה זהב 2 מיליון AED","תושבות איחוד האמירויות דרך נכס"] : ["uae golden visa property", "dubai golden visa", "golden visa 2 million aed", "uae residency through property"],
   };
 }
 
 export default async function GoldenVisaPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.h1, href: `${lp}/golden-visa` },
   ];
 
@@ -217,7 +215,7 @@ export default async function GoldenVisaPage({ params }: Props) {
       <section className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : locale === "vi" ? "GOLDEN VISA UAE" : "UAE GOLDEN VISA"}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : locale === "vi" ? "GOLDEN VISA UAE" : locale === "he" ? "ויזת זהב של איחוד האמירויות" : "UAE GOLDEN VISA"}</p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-2">{c.h1}</h1>
           <p className="text-2xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mb-10">{c.intro}</p>
@@ -233,7 +231,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Process</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : locale === "vi" ? "Cách nhận Golden Visa" : "How to Get the Golden Visa"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : locale === "vi" ? "Cách nhận Golden Visa" : locale === "he" ? "איך להשיג את ויזת הזהב" : "How to Get the Golden Visa"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             {c.steps.map((s) => (
@@ -250,7 +248,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Benefits</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : locale === "vi" ? "Lợi ích của Golden Visa" : "Golden Visa Benefits"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : locale === "vi" ? "Lợi ích của Golden Visa" : locale === "he" ? "היתרונות של ויזת הזהב" : "Golden Visa Benefits"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {c.benefits.map((b) => (
@@ -271,7 +269,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : "Frequently Asked Questions"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "he" ? "שאלות נפוצות" : "Frequently Asked Questions"}</h2>
           </div>
           <div className="space-y-3">
             {c.faqs.map((f, i) => (
@@ -298,7 +296,7 @@ export default async function GoldenVisaPage({ params }: Props) {
                 {c.ctaBtn}
               </Link>
               <Link href={`${lp}/search?budgetMin=2000000`} className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all">
-                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : locale === "vi" ? "Xem bất động sản 2 triệu AED+" : "Browse AED 2M+ Properties"}
+                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : locale === "vi" ? "Xem bất động sản 2 triệu AED+" : locale === "he" ? "עיין בנכסים מעל 2 מיליון AED" : "Browse AED 2M+ Properties"}
               </Link>
             </div>
           </div>

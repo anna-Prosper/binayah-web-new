@@ -161,20 +161,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["عقارات للبيع دبي", "شراء شقة دبي", "عقارات دبي أسعار"]
       : locale === "zh"
       ? ["迪拜房产出售", "购买迪拜房产", "迪拜公寓价格"]
-      : locale === "vi"
-      ? ["bất động sản bán dubai", "mua bất động sản dubai", "giá bất động sản dubai"]
-      : ["properties for sale dubai", "buy property dubai", "dubai real estate for sale", "apartments for sale dubai"],
+      : locale === "vi" ? ["bất động sản bán dubai", "mua bất động sản dubai", "giá bất động sản dubai"] : locale === "he" ? ["נכסים למכירה בדובאי","קניית נכס בדובאי","נדל\"ן למכירה בדובאי","דירות למכירה בדובאי"] : ["properties for sale dubai", "buy property dubai", "dubai real estate for sale", "apartments for sale dubai"],
   };
 }
 
 export default async function BuyPage({ params }: Props) {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy` },
   ];
 
@@ -229,7 +227,7 @@ export default async function BuyPage({ params }: Props) {
             <div className="text-center mb-8">
               <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : locale === "vi" ? "Mua tại Dubai — Câu hỏi thường gặp" : "Buying in Dubai — FAQs"}
+                {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : locale === "vi" ? "Mua tại Dubai — Câu hỏi thường gặp" : locale === "he" ? "קנייה בדובאי — שאלות נפוצות" : "Buying in Dubai — FAQs"}
               </h2>
             </div>
             <div className="space-y-2 sm:space-y-3">

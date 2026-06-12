@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar" || locale === "he";
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
 

@@ -71,9 +71,9 @@ export default async function GuideDetailPage({ params }: Props) {
   const wordCount = guide.body.split(/\s+/).length;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
-    { name: locale === "ru" ? "Аналитика" : locale === "ar" ? "تحليل السوق" : locale === "zh" ? "市场分析" : locale === "vi" ? "Phân tích thị trường" : "Market Pulse", href: `${lp}/pulse` },
-    { name: locale === "ru" ? "Руководства" : locale === "ar" ? "الأدلة" : locale === "zh" ? "投资指南" : locale === "vi" ? "Hướng dẫn" : "Guides", href: `${lp}/pulse/guides` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Аналитика" : locale === "ar" ? "تحليل السوق" : locale === "zh" ? "市场分析" : locale === "vi" ? "Phân tích thị trường" : locale === "he" ? "דופק השוק" : "Market Pulse", href: `${lp}/pulse` },
+    { name: locale === "ru" ? "Руководства" : locale === "ar" ? "الأدلة" : locale === "zh" ? "投资指南" : locale === "vi" ? "Hướng dẫn" : locale === "he" ? "מדריכים" : "Guides", href: `${lp}/pulse/guides` },
     { name: title, href: `${lp}/pulse/guides/${slug}` },
   ];
 

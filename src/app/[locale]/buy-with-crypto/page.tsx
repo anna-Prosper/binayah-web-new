@@ -318,9 +318,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["شراء عقار بالبيتكوين دبي", "عقارات بالعملات المشفرة دبي", "استثمار عقاري بالكريبتو", "شراء شقة بالبيتكوين الإمارات"]
       : locale === "zh"
       ? ["用比特币购买迪拜房产", "迪拜加密货币购房", "比特币房产迪拜", "用USDT买迪拜房子"]
-      : locale === "vi"
-      ? ["mua bất động sản dubai bitcoin", "bất động sản tiền điện tử dubai", "mua căn hộ dubai tiền điện tử", "bitcoin bất động sản uae", "mua bất động sản dubai usdt"]
-      : ["buy property dubai bitcoin", "crypto real estate dubai", "buy dubai apartment cryptocurrency", "bitcoin property uae", "ethereum buy dubai property"],
+      : locale === "vi" ? ["mua bất động sản dubai bitcoin", "bất động sản tiền điện tử dubai", "mua căn hộ dubai tiền điện tử", "bitcoin bất động sản uae", "mua bất động sản dubai usdt"] : locale === "he" ? ["לקנות נכס בדובאי ביטקוין","נדל\"ן קריפטו דובאי","לקנות דירה בדובאי במטבעות קריפטו","נכס ביטקוין איחוד האמירויות","את'ריום לקנות נכס בדובאי"] : ["buy property dubai bitcoin", "crypto real estate dubai", "buy dubai apartment cryptocurrency", "bitcoin property uae", "ethereum buy dubai property"],
   };
 }
 
@@ -332,11 +330,11 @@ export default async function BuyWithCryptoPage({ params }: Props) {
   const { locale } = await params;
   if (!(locale in CONTENT)) return notFound();
   const c = CONTENT[locale as Locale];
-  const isRtl = locale === "ar"; // vi, zh, ru, en are ltr
+  const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy-with-crypto` },
   ];
 
@@ -351,7 +349,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
         {/* Gold crypto banner as full hero background */}
         <Image
           src="/assets/crypto-banner.webp"
-          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : locale === "vi" ? "Tiền điện tử và đầu tư bất động sản Dubai" : "Cryptocurrency and Dubai real estate investment"}
+          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : locale === "vi" ? "Tiền điện tử và đầu tư bất động sản Dubai" : locale === "he" ? "השקעה בנדל\"ן בדובאי ומטבעות קריפטוגרפיים" : "Cryptocurrency and Dubai real estate investment"}
           fill
           priority
           sizes="100vw"

@@ -49,7 +49,7 @@ function formatDate(dateStr?: string | null) {
 
 export default function ProjectArticleDetailClient({ article, locale }: { article: ProjectArticle; locale: string }) {
   const lp = locale === "en" ? "" : `/${locale}`;
-  const isRtl = locale === "ar" || article.dir === "rtl";
+  const isRtl = locale === "ar" || locale === "he" || article.dir === "rtl";
   const l = LABELS[locale] ?? LABELS.en;
   const [progress, setProgress] = useState(0);
   const [showTop, setShowTop] = useState(false);

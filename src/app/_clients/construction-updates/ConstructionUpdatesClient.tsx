@@ -40,7 +40,7 @@ const LABEL: Record<string, { overline: string; h1: string; sub: string }> = {
 
 export default function ConstructionUpdatesClient({ articles, locale }: { articles: ProjectArticle[]; locale: string }) {
   const lp = locale === "en" ? "" : `/${locale}`;
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar" || locale === "he";
   const label = LABEL[locale] ?? LABEL.en;
 
   return (

@@ -12,7 +12,7 @@ export function canonical(locale: string, path: string): string {
 
 // og:locale per locale
 export const OG_LOCALE: Record<string, string> = {
-  en: "en_AE", ru: "ru_RU", ar: "ar_AE", zh: "zh_CN", vi: "vi_VN",
+  en: "en_AE", ru: "ru_RU", ar: "ar_AE", zh: "zh_CN", vi: "vi_VN", he: "he_IL",
 };
 
 // Default OG image (absolute URL)
@@ -26,6 +26,7 @@ export function altLangs(path: string): Record<string, string> {
     ar: `${AE_URL}/ar${path}`,
     zh: `${AE_URL}/zh${path}`,
     vi: `${AE_URL}/vi${path}`,
+    he: `${AE_URL}/he${path}`,
     "x-default": `${AE_URL}${path}`,
   };
 }
