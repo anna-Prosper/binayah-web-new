@@ -32,7 +32,7 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
   const areaValue = (i: number) => enAreas[i] ?? c.areas[i];
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : "Home", href: `${lp}/` },
     { name: c.h1, href: `${lp}/${slug}` },
   ];
 
@@ -100,7 +100,7 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
         {/* Areas — top 6 only */}
         <section className="flex flex-wrap items-center gap-2">
           <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-accent mr-1">
-            {locale === "ru" ? "Районы" : locale === "ar" ? "المناطق" : locale === "zh" ? "地区" : "Areas"}
+            {locale === "ru" ? "Районы" : locale === "ar" ? "المناطق" : locale === "zh" ? "地区" : locale === "vi" ? "Khu vực" : "Areas"}
           </span>
           {c.areas.slice(0, 6).map((area, i) => (
             <Link
@@ -144,7 +144,7 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
           <div className="text-center mb-8 sm:mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : "Frequently Asked Questions"}
+              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : "Frequently Asked Questions"}
             </h2>
           </div>
           <div className="space-y-2 sm:space-y-3">
@@ -182,7 +182,7 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
                 href={`${lp}/contact`}
                 className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
               >
-                {locale === "ru" ? "Консультация" : locale === "ar" ? "استشارة" : locale === "zh" ? "咨询" : "Get Expert Advice"}
+                {locale === "ru" ? "Консультация" : locale === "ar" ? "استشارة" : locale === "zh" ? "咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : "Get Expert Advice"}
               </Link>
             </div>
           </div>
