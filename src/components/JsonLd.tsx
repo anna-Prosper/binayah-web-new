@@ -113,6 +113,33 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   );
 }
 
+export function WebSiteJsonLd({ nonce }: { nonce?: string }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Binayah Properties",
+    alternateName: "Binayah Real Estate",
+    url: "https://www.binayah.ae",
+    // Enables Google's sitelinks search box for brand queries.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://www.binayah.ae/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}
+
 export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",

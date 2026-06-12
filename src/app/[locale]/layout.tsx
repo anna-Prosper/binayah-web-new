@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { OrganizationJsonLd } from "@/components/JsonLd";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CompareProvider } from "@/context/CompareContext";
@@ -200,6 +200,7 @@ export default async function LocaleLayout({
       </head>
       <body className={jakarta.className}>
         <OrganizationJsonLd nonce={nonce} />
+        <WebSiteJsonLd nonce={nonce} />
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <FavoritesProvider>
