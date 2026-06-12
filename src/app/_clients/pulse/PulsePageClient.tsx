@@ -1332,11 +1332,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     {CURRENCIES.filter((c) => rates[c.code]).map((c) => {
                       const converted = aedNum * rates[c.code];
-                      const formattedConverted = converted >= 1_000_000
-                        ? `${c.code} ${(converted / 1_000_000).toFixed(2)}M`
-                        : converted >= 1_000
-                        ? `${c.code} ${(converted / 1_000).toFixed(1)}K`
-                        : `${c.code} ${converted.toFixed(2)}`;
+                      const formattedConverted = `${c.code} ${Math.round(converted).toLocaleString()}`;
                       return (
                         <div key={c.code} className="bg-muted/30 rounded-xl p-3 sm:p-4">
                           <div className="flex items-center gap-2 mb-2">

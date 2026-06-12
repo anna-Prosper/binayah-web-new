@@ -117,6 +117,8 @@ interface SimilarListing {
   slug: string;
   listingType?: string;
   propertyType?: string;
+  offplan?: string | number;
+  completionStatus?: string;
   bedrooms?: number;
   bathrooms?: number;
   size?: number;
@@ -1421,7 +1423,9 @@ export default function PropertyDetailClient({
                 key: l._id,
                 title: l.title,
                 location: l.community ? `${l.community}${l.city ? `, ${l.city}` : ""}` : undefined,
-                statusLabel: l.listingType === "Rent" ? t("forRent") : t("forSale"),
+                statusLabel: (String(l.offplan) === "1" || l.completionStatus === "off_plan")
+                  ? tEnum("offPlan")
+                  : l.listingType === "Rent" ? t("forRent") : t("forSale"),
                 imageUrl: l.featuredImage || l.images?.[0] || undefined,
                 priceLabel: fmtPrice(l.price, { fallback: t("priceOnRequest") }),
                 href: `/property/${l.slug}`,

@@ -226,7 +226,7 @@ export default function ListingsPageClient({
                       <div className="flex gap-3 text-xs text-muted-foreground mb-3 flex-wrap">
                         {l.bedrooms != null && (
                           <span className="flex items-center gap-1">
-                            <BedDouble className="h-3 w-3" /> {Number(l.bedrooms) === 0 ? "Studio" : `${l.bedrooms} ${t("bed")}`}
+                            <BedDouble className="h-3 w-3" /> {Number(l.bedrooms) === 0 ? tEnum("studio") : `${l.bedrooms} ${t("bed")}`}
                           </span>
                         )}
                         {l.bathrooms != null && Number(l.bathrooms) > 0 && (
