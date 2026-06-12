@@ -7,10 +7,9 @@ import { DirhemSign } from "@/components/DirhemSign";
 const SUPPORTED = ["AED", "USD", "EUR", "GBP", "CNY", "RUB", "ILS", "VND"] as const;
 type Currency = (typeof SUPPORTED)[number];
 
-// Per 1 AED. Fallbacks only — live rates from /api/currency-rates override these
-// (note: the upstream rates feed does not yet include ILS/VND, so those rely on these).
+// Per 1 AED. Fallbacks only — live daily rates from /api/currency-rates override these.
 const FALLBACK_RATES: Record<string, number> = {
-  AED: 1, USD: 0.2723, EUR: 0.2512, GBP: 0.2155, CNY: 1.9788, RUB: 24.89, ILS: 0.99, VND: 6920,
+  AED: 1, USD: 0.2723, EUR: 0.2512, GBP: 0.2155, CNY: 1.9788, RUB: 24.89, ILS: 0.8033, VND: 7137,
 };
 
 // Default currency per language, used until the visitor picks one explicitly.

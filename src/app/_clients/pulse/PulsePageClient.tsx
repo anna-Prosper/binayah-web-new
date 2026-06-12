@@ -107,6 +107,8 @@ const CURRENCIES = [
   { code: "INR", flag: "🇮🇳", label: "Indian Rupee" },
   { code: "KZT", flag: "🇰🇿", label: "Kazakhstani Tenge" },
   { code: "CNY", flag: "🇨🇳", label: "Chinese Yuan" },
+  { code: "ILS", flag: "🇮🇱", label: "Israeli Shekel" },
+  { code: "VND", flag: "🇻🇳", label: "Vietnamese Dong" },
 ];
 
 // ── Chart tabs (no closure refs — module scope) ────────────────────────────
