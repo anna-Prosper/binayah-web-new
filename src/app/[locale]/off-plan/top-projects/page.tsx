@@ -452,7 +452,7 @@ export default async function TopProjectsPage({ params }: Props) {
                       <p className="text-xs text-muted-foreground">{p.community || p.city}</p>
                       {p.startingPrice ? (
                         <p className="text-sm font-bold text-primary">
-                          {c.fromLabel} AED {(p.startingPrice / 1_000_000).toFixed(1)}M
+                          {c.fromLabel} AED {(p.startingPrice < 1_000 ? p.startingPrice * 1_000_000 : p.startingPrice).toLocaleString("en-AE")}
                         </p>
                       ) : (
                         <p className="text-xs text-muted-foreground">{c.noPrice}</p>

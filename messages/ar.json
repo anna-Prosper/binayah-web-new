@@ -1065,7 +1065,9 @@
     "reasonWorldClassAmenities": "مرافق بمستوى عالمي",
     "readMore": "اقرأ المزيد",
     "readLess": "عرض أقل",
-    "sending": "جارٍ الإرسال…"
+    "sending": "جارٍ الإرسال…",
+    "namePlaceholder": "اسمك الكامل",
+    "requirementsPlaceholder": "أي متطلبات محددة..."
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",
@@ -1205,7 +1207,9 @@
     "guideSaleOffPlanDesc": "خطط الدفع والجداول الزمنية للتسليم وتقييم المطور.",
     "guideSaleFirstTimerTitle": "دليل المشتري لأول مرة",
     "guideSaleFirstTimerDesc": "كل ما يحتاجه المشتري لأول مرة في دبي.",
-    "sending": "جارٍ الإرسال…"
+    "sending": "جارٍ الإرسال…",
+    "namePlaceholder": "اسمك الكامل",
+    "requirementsPlaceholder": "هل لديك متطلبات محددة..."
   },
   "communities": {
     "heroLabel": "استكشف دبي",
@@ -1764,7 +1768,16 @@
       "offPlanROI": "عوائد الاستثمار على الخارطة؟",
       "goldenVisa": "شروط الإقامة الذهبية؟",
       "pricesTrend": "اتجاهات الأسعار في 2026؟"
-    }
+    },
+    "backToAI": "العودة إلى AI",
+    "liveAgent": "وكيل مباشر",
+    "connectedViaLiveChat": "متصل عبر LiveChat",
+    "chatWithLiveAgent": "الدردشة مع وكيل مباشر",
+    "liveAgentPanelDesc": "نافذة الدردشة المباشرة لـ Binayah مفتوحة. تابع محادثتك هناك — سنرد بمجرد توفر وكيل.",
+    "openLiveChat": "افتح LiveChat",
+    "liveChatStarted": "تم بدء المحادثة المباشرة — تنتهي تلقائيًا بعد 30 دقيقة من عدم النشاط",
+    "liveChatEnded": "انتهى الدردشة المباشرة",
+    "liveChatEndedInactivity": "انتهى الدردشة المباشرة - 30 دقيقة من عدم النشاط"
   },
   "marketDashboard": {
     "title": "لوحة بيانات السوق",
@@ -1892,7 +1905,10 @@
           "مرن"
         ]
       }
-    }
+    },
+    "noMatches": "لا توجد تطابقات قريبة في قائمتنا الحالية — لكن يمكن لفريقنا إعداد قائمة مختصرة لك. تواصل معنا عبر WhatsApp أو +971 54 998 8811.",
+    "errorGeneric": "عذرًا، لم أتمكن من توليد توصيات حاليًا. يرجى المحاولة مرة أخرى أو الاتصال بنا على +971 54 998 8811.",
+    "errorBusy": "الخدمة مشغولة، يرجى المحاولة مرة أخرى."
   },
   "valuationBanner": {
     "label": "تقييم عقاري بالذكاء الاصطناعي",
@@ -2719,5 +2735,20 @@
     "emptyCta": "View yesterday’s report",
     "loadError": "Couldn’t refresh — showing the last loaded report.",
     "unitsCount": "{count} units"
+  },
+  "liveChat": {
+    "backToAI": "العودة إلى AI",
+    "liveAgent": "وكيل مباشر",
+    "connectedVia": "متصل عبر LiveChat",
+    "inactivityWarning": "ستنتهي المحادثة المباشرة خلال 5 دقائق بسبب عدم النشاط.",
+    "keepChatting": "استمر في الدردشة",
+    "endTitle": "إنهاء LiveChat؟",
+    "endBody": "أنت تتحدث مع وكيل مباشر. إغلاق هذا سينهي الجلسة.",
+    "stayInChat": "ابقَ في الدردشة",
+    "endLiveChat": "إنهاء LiveChat"
+  },
+  "countryCode": {
+    "searchPlaceholder": "ابحث عن الدولة أو الرمز...",
+    "noResults": "لا توجد نتائج"
   }
 }

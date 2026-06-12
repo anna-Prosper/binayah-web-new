@@ -1066,7 +1066,9 @@
     "reasonWorldClassAmenities": "World-class amenities",
     "readMore": "Read more",
     "readLess": "Show less",
-    "sending": "Sending…"
+    "sending": "Sending…",
+    "namePlaceholder": "Your full name",
+    "requirementsPlaceholder": "Any specific requirements..."
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",
@@ -1210,7 +1212,9 @@
     "guideSaleOffPlanDesc": "Payment plans, handover timelines, and developer vetting.",
     "guideSaleFirstTimerTitle": "First-Time Buyer's Guide",
     "guideSaleFirstTimerDesc": "Everything a first-time buyer needs to know about Dubai.",
-    "sending": "Sending…"
+    "sending": "Sending…",
+    "namePlaceholder": "Your full name",
+    "requirementsPlaceholder": "Any specific requirements..."
   },
   "communities": {
     "heroLabel": "Explore Dubai",
@@ -1772,7 +1776,16 @@
       "offPlanROI": "Off-plan ROI in Dubai?",
       "goldenVisa": "Golden Visa eligibility?",
       "pricesTrend": "Price trends in 2026?"
-    }
+    },
+    "backToAI": "Back to AI",
+    "liveAgent": "Live agent",
+    "connectedViaLiveChat": "Connected via LiveChat",
+    "chatWithLiveAgent": "Chat with a live agent",
+    "liveAgentPanelDesc": "The Binayah live chat window is open. Continue your conversation there — we'll respond as soon as an agent is available.",
+    "openLiveChat": "Open live chat",
+    "liveChatStarted": "Live chat started — auto-ends after 30 minutes of inactivity",
+    "liveChatEnded": "Live chat ended",
+    "liveChatEndedInactivity": "Live chat ended — 30 minutes of inactivity"
   },
   "marketDashboard": {
     "title": "Dashboard",
@@ -1900,7 +1913,10 @@
           "Flexible"
         ]
       }
-    }
+    },
+    "noMatches": "No close matches in our current pipeline — but our team can short-list options for you. Reach us on WhatsApp or +971 54 998 8811.",
+    "errorGeneric": "Sorry, I couldn't generate recommendations right now. Please try again or contact us at +971 54 998 8811.",
+    "errorBusy": "Service busy, please try again."
   },
   "valuationBanner": {
     "label": "AI Property Valuation",
@@ -2727,5 +2743,20 @@
     "emptyCta": "View yesterday’s report",
     "loadError": "Couldn’t refresh — showing the last loaded report.",
     "unitsCount": "{count} units"
+  },
+  "liveChat": {
+    "backToAI": "Back to AI",
+    "liveAgent": "Live agent",
+    "connectedVia": "connected via LiveChat",
+    "inactivityWarning": "Live chat will end in 5 minutes due to inactivity.",
+    "keepChatting": "Keep chatting",
+    "endTitle": "End live chat?",
+    "endBody": "You're currently chatting with a live agent. Closing this will end the session.",
+    "stayInChat": "Stay in chat",
+    "endLiveChat": "End live chat"
+  },
+  "countryCode": {
+    "searchPlaceholder": "Search country or code...",
+    "noResults": "No results"
   }
 }

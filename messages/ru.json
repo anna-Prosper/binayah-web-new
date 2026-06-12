@@ -1066,7 +1066,9 @@
     "reasonWorldClassAmenities": "Инфраструктура мирового класса",
     "readMore": "Читать далее",
     "readLess": "Свернуть",
-    "sending": "Отправка…"
+    "sending": "Отправка…",
+    "namePlaceholder": "Ваше полное имя",
+    "requirementsPlaceholder": "Есть особые требования..."
   },
   "propertyDetail": {
     "backToProperties": "К объектам",
@@ -1206,7 +1208,9 @@
     "guideSaleOffPlanDesc": "Планы оплаты, сроки сдачи и проверка застройщика.",
     "guideSaleFirstTimerTitle": "Руководство для первичного покупателя",
     "guideSaleFirstTimerDesc": "Всё, что нужно знать покупателю впервые в Дубае.",
-    "sending": "Отправка…"
+    "sending": "Отправка…",
+    "namePlaceholder": "Ваше полное имя",
+    "requirementsPlaceholder": "Какие-либо особые требования..."
   },
   "communities": {
     "heroLabel": "Исследуйте Дубай",
@@ -1765,7 +1769,16 @@
       "offPlanROI": "Доходность off-plan в Дубае?",
       "goldenVisa": "Условия получения Golden Visa?",
       "pricesTrend": "Динамика цен в 2026 году?"
-    }
+    },
+    "backToAI": "Назад к AI",
+    "liveAgent": "Живой агент",
+    "connectedViaLiveChat": "Подключено через LiveChat",
+    "chatWithLiveAgent": "Чат с агентом",
+    "liveAgentPanelDesc": "Окно Binayah LiveChat открыто. Продолжайте разговор там — ответим, как только агент будет доступен.",
+    "openLiveChat": "Открыть LiveChat",
+    "liveChatStarted": "Чат начат — автоматически завершится через 30 минут бездействия",
+    "liveChatEnded": "Чат завершен",
+    "liveChatEndedInactivity": "Чат завершен — 30 минут бездействия"
   },
   "marketDashboard": {
     "title": "Дашборд рынка",
@@ -1893,7 +1906,10 @@
           "Без предпочтений"
         ]
       }
-    }
+    },
+    "noMatches": "Нет подходящих вариантов в нашей базе — но наша команда может подобрать для вас. Свяжитесь с нами через WhatsApp или +971 54 998 8811.",
+    "errorGeneric": "Извините, не удалось создать рекомендации. Попробуйте снова или свяжитесь с нами по телефону +971 54 998 8811.",
+    "errorBusy": "Сервис занят, попробуйте снова."
   },
   "valuationBanner": {
     "label": "ИИ-оценка недвижимости",
@@ -2720,5 +2736,20 @@
     "emptyCta": "View yesterday’s report",
     "loadError": "Couldn’t refresh — showing the last loaded report.",
     "unitsCount": "{count} units"
+  },
+  "liveChat": {
+    "backToAI": "Назад к AI",
+    "liveAgent": "Живой агент",
+    "connectedVia": "подключено через LiveChat",
+    "inactivityWarning": "Чат завершится через 5 минут из-за бездействия.",
+    "keepChatting": "Продолжить общение",
+    "endTitle": "Завершить LiveChat?",
+    "endBody": "Вы общаетесь с живым агентом. Закрытие завершит сессию.",
+    "stayInChat": "Остаться в чате",
+    "endLiveChat": "Завершить LiveChat"
+  },
+  "countryCode": {
+    "searchPlaceholder": "Поиск страны или кода...",
+    "noResults": "Нет результатов"
   }
 }

@@ -26,7 +26,7 @@ export default async function OgImage({
   }
 
   const priceStr = project.startingPrice
-    ? `From ${project.currency || "AED"} ${project.startingPrice < 1_000 ? project.startingPrice + "M" : (project.startingPrice / 1_000_000).toFixed(1) + "M"}`
+    ? `From ${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}`
     : null;
   const bgUrl = project.featuredImage || project.imageGallery?.[0] || null;
 

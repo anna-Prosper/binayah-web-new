@@ -115,8 +115,7 @@ const PRICE_BOUNDS = {
 
 function formatPrice(price?: number, currency = "AED", fallback = "Price on request") {
   if (!price) return fallback;
-  if (price >= 1_000_000) return `${currency} ${(price / 1_000_000).toFixed(1)}M`;
-  return `${currency} ${price.toLocaleString()}`;
+  return `${currency} ${Math.round(price).toLocaleString()}`;
 }
 
 function normalizeStatus(status: string | null, intent: SearchIntent): SearchStatus {
@@ -409,7 +408,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, syncUrl = tr
 
   const priceChip = (() => {
     if (priceMin == null && priceMax == null) return "";
-    const fmt = (n: number) => n >= 1_000_000 ? `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M` : n >= 1_000 ? `${Math.round(n / 1_000)}K` : n.toLocaleString();
+    const fmt = (n: number) => Math.round(n).toLocaleString();
     if (priceMin != null && priceMax != null) return `AED ${fmt(priceMin)}–${fmt(priceMax)}`;
     if (priceMin != null) return `AED ${fmt(priceMin)}+`;
     return `Up to AED ${fmt(priceMax!)}`;

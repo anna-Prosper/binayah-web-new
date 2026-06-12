@@ -25,7 +25,7 @@ export async function generateMetadata({
   const seo = listing.seo || {};
 
   const priceStr = listing.price
-    ? ` | ${listing.currency || "AED"} ${listing.price >= 1_000_000 ? (listing.price / 1_000_000).toFixed(1) + "M" : Math.round(listing.price / 1000) + "K"}`
+    ? ` | ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}`
     : "";
   const bedsStr = listing.bedrooms != null
     ? ` | ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} BR`}`
@@ -33,7 +33,7 @@ export async function generateMetadata({
   const titleFallback = `${listing.name || listing.title}${bedsStr}${priceStr} | ${listing.community || "Dubai"} | Binayah`;
 
   const descFallback = seo.metaDescription ||
-    `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "sale"} in ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} bedroom`}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. Listed at ${listing.currency || "AED"} ${listing.price >= 1_000_000 ? (listing.price / 1_000_000).toFixed(1) + "M" : Math.round(listing.price / 1000) + "K"}` : ""}. View photos, floor plans and contact agent.`;
+    `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "sale"} in ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} bedroom`}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. Listed at ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}` : ""}. View photos, floor plans and contact agent.`;
 
   return {
     title: seo.metaTitle || titleFallback,

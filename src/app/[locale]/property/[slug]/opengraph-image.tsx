@@ -26,7 +26,7 @@ export default async function OgImage({
 
   const { listing } = data;
   const priceStr = listing.price
-    ? `${listing.currency || "AED"} ${listing.price >= 1_000_000 ? (listing.price / 1_000_000).toFixed(1) + "M" : Math.round(listing.price / 1000) + "K"}`
+    ? `${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}`
     : null;
   const bedsStr = listing.bedrooms != null
     ? listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} Bedroom${listing.bedrooms > 1 ? "s" : ""}`

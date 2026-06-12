@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const seo = project.seo || {};
 
   const priceStr = project.startingPrice
-    ? ` | From ${project.currency || "AED"} ${project.startingPrice < 1_000 ? `${project.startingPrice}M` : (project.startingPrice / 1_000_000).toFixed(1) + "M"}`
+    ? ` | From ${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}`
     : "";
   const communityStr = project.community ? ` | ${project.community}` : "";
   const titleFallback = `${project.name}${priceStr}${communityStr} | Binayah`;

@@ -40,8 +40,6 @@ function normalizeAed(price: number, isProject: boolean): number {
 
 function formatAmount(amount: number, symbol: string): string {
   const display = symbol === "AED" ? "AED" : symbol;
-  if (amount >= 1_000_000) return `${display} ${(amount / 1_000_000).toFixed(1)}M`;
-  if (amount >= 1_000) return `${display} ${Math.round(amount / 1_000).toLocaleString()}K`;
   return `${display} ${Math.round(amount).toLocaleString()}`;
 }
 
@@ -60,12 +58,7 @@ export function CurrencyPrice({
   if (!aedPrice) return <span className={className}>{opts?.fallback ?? tCommon("priceOnRequest")}</span>;
   const normalized = aedPrice < 1_000 && opts?.isProject ? aedPrice * 1_000_000 : aedPrice;
   const converted = normalized * (rates[currency] ?? 1);
-  const num =
-    converted >= 1_000_000
-      ? `${(converted / 1_000_000).toFixed(1)}M`
-      : converted >= 1_000
-        ? `${Math.round(converted / 1_000).toLocaleString()}K`
-        : Math.round(converted).toLocaleString();
+  const num = Math.round(converted).toLocaleString();
   if (currency === "AED") {
     return (
       <span className={className}>

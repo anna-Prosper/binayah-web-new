@@ -17,15 +17,7 @@ function clamp(n: number, lo: number, hi: number) {
 
 // Compact display so large prices fit the narrow input: 36,000,000 -> "36M", 350,000 -> "350K".
 export function formatPrice(n: number): string {
-  if (n >= 1_000_000) {
-    const m = n / 1_000_000;
-    return (Number.isInteger(m) ? String(m) : m.toFixed(1).replace(/\.0$/, "")) + "M";
-  }
-  if (n >= 1_000) {
-    const k = n / 1_000;
-    return (Number.isInteger(k) ? String(k) : k.toFixed(0)) + "K";
-  }
-  return n.toLocaleString();
+  return Math.round(n).toLocaleString();
 }
 
 // Parse user input back to a number, understanding "36m" / "350k" / "1.2M" / "1,200,000".
