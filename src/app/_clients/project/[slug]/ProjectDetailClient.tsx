@@ -162,6 +162,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [showGallery, setShowGallery] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
   const { currency, setCurrency, format: formatPrice, rates: CURRENCY_RATES } = useCurrency();
+  // priceRange is a freeform DB string (often "From AED 799,999"); localize a leading English
+  // "From"/"Starting from" prefix to the active locale while keeping the per-project amount.
+  const priceRangeLabel = (() => {
+    const pr = (project.priceRange || "").trim();
+    if (!pr) return "";
+    const stripped = pr.replace(/^(starting\s+from|from)\s+/i, "").trim();
+    return stripped !== pr ? `${t("startingFrom")} ${stripped}` : pr;
+  })();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
@@ -699,31 +707,47 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         .replace(/\s{2,}/g, " ")
                         .trim();
                       const showShort = !isPlaceholder(shortClean);
-                      // If full duplicates short, drop full.
-                      const fullIsDup =
-                        showShort && fullClean && norm(fullClean).startsWith(norm(shortClean));
-                      const showFull = !isPlaceholder(fullClean) && !fullIsDup;
-                      if (!showShort && !showFull) return null;
+                      const showFull = !isPlaceholder(fullClean);
+                      // The full description usually opens with the same text as the short overview.
+                      // Render the richest text we have as the body; only show the curated short
+                      // overview as a separate lead when the full body doesn't already include it.
+                      const fullStartsWithShort =
+                        showShort && showFull && norm(fullClean).startsWith(norm(shortClean));
+                      const body = showFull ? fullClean : showShort ? shortClean : "";
+                      const lead = showFull && showShort && !fullStartsWithShort ? shortClean : "";
+                      if (!body) return null;
 
-                      const sentences = showFull
-                        ? fullClean.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean)
-                        : [];
+                      // Split into ~3-sentence paragraphs. Unicode-aware so RU/AR/ZH/HE/VI chunk too:
+                      // the next char may be an uppercase letter (\p{Lu}) or a caseless letter
+                      // (\p{Lo}, for Arabic/CJK/Hebrew which have no capital forms).
+                      const sentences = body
+                        .split(/(?<=[.!?。！？])\s+(?=[\p{Lu}\p{Lo}])/u)
+                        .filter(Boolean);
                       const paragraphs: string[] = [];
                       for (let i = 0; i < sentences.length; i += 3) {
                         paragraphs.push(sentences.slice(i, i + 3).join(" "));
                       }
+                      if (paragraphs.length === 0) paragraphs.push(body);
 
                       const hasMore = paragraphs.length > 1;
 
                       return (
                         <div className="space-y-3">
-                          {showShort && (
+                          {lead && (
                             <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">
-                              {shortClean}
+                              {lead}
                             </p>
                           )}
                           {paragraphs.length > 0 && (
-                            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{paragraphs[0]}</p>
+                            <p
+                              className={
+                                lead
+                                  ? "text-sm sm:text-base text-muted-foreground leading-relaxed"
+                                  : "text-base sm:text-lg text-foreground/90 leading-relaxed font-medium"
+                              }
+                            >
+                              {paragraphs[0]}
+                            </p>
                           )}
 
                           {hasMore && descExpanded && (
@@ -2060,7 +2084,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
                       <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1 block" />
-                      {project.priceRange && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{project.priceRange}</p>}
+                      {priceRangeLabel && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{priceRangeLabel}</p>}
                     </div>
                     <div className="p-3.5 sm:p-6 md:p-8">
                       <div className="grid grid-cols-2 gap-2 sm:gap-4">
@@ -2291,8 +2315,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {t("ctaHeadlineDefault")}
                   </p>
                   <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
-                  {project.priceRange && (
-                    <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
+                  {priceRangeLabel && (
+                    <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{priceRangeLabel}</p>
                   )}
                 </div>
                 <div className="px-4 pb-2 pt-2 bg-card border-x border-border/50">
@@ -2387,8 +2411,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     {t("ctaHeadlineDefault")}
                   </p>
                   <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
-                  {project.priceRange && (
-                    <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{project.priceRange}</p>
+                  {priceRangeLabel && (
+                    <p className="text-primary-foreground/50 text-sm mt-1.5 relative z-10">{priceRangeLabel}</p>
                   )}
                 </div>
                 {/* Desktop: full CTA buttons */}

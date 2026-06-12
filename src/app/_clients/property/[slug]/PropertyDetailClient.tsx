@@ -230,7 +230,7 @@ function getDescriptionBlocks(description?: string): DescBlock[] {
 
   // If we ended up with a single giant paragraph, split into 3-sentence chunks.
   if (blocks.length === 1 && blocks[0].type === "p") {
-    const sentences = blocks[0].text.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(Boolean);
+    const sentences = blocks[0].text.split(/(?<=[.!?。！？])\s+(?=[\p{Lu}\p{Lo}])/u).filter(Boolean);
     if (sentences.length > 3) {
       const chunked: DescBlock[] = [];
       for (let i = 0; i < sentences.length; i += 3) {
