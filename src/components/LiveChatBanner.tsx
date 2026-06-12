@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type LiveChatApi = {
   call: (cmd: string, arg?: unknown) => void;
@@ -26,6 +27,7 @@ const HUMAN_WARNING_MS = 25 * 60 * 1000;
  * independent of AIChatWidget's state.
  */
 export default function LiveChatBanner() {
+  const t = useTranslations("liveChat");
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [warning, setWarning] = useState(false);
@@ -143,30 +145,30 @@ export default function LiveChatBanner() {
           boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
         }}
         role="region"
-        aria-label="Live chat session controls"
+        aria-label={t("liveAgent")}
       >
         <div className="max-w-5xl mx-auto px-3 sm:px-5 py-2.5 flex items-center gap-3">
           <button
             type="button"
             onClick={() => setConfirmOpen(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors text-xs font-bold"
-            aria-label="End live chat and return to AI"
+            aria-label={t("backToAI")}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
-            Back to AI
+            {t("backToAI")}
           </button>
           <div className="flex-1 flex items-center justify-center gap-2 text-[12px] sm:text-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="hidden sm:inline font-semibold">Live agent</span>
-            <span className="text-white/70">· connected via LiveChat</span>
+            <span className="hidden sm:inline font-semibold">{t("liveAgent")}</span>
+            <span className="text-white/70">· {t("connectedVia")}</span>
           </div>
           <span className="w-[88px] hidden sm:block" />
         </div>
         {warning && (
           <div className="bg-amber-500 text-amber-950 px-3 sm:px-5 py-2 text-xs sm:text-sm flex items-center justify-center gap-3 flex-wrap">
-            <span>⚠ Live chat will end in <strong>5 minutes</strong> due to inactivity.</span>
+            <span>⚠ {t("inactivityWarning")}</span>
             <button
               type="button"
               onClick={() => {
@@ -175,7 +177,7 @@ export default function LiveChatBanner() {
               }}
               className="font-bold underline hover:text-amber-900 whitespace-nowrap"
             >
-              Keep chatting
+              {t("keepChatting")}
             </button>
           </div>
         )}
@@ -189,9 +191,9 @@ export default function LiveChatBanner() {
           onClick={() => setConfirmOpen(false)}
         >
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-base font-bold text-gray-900 mb-2">End live chat?</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{t("endTitle")}</h3>
             <p className="text-sm text-gray-600 mb-5">
-              You&apos;re currently chatting with a live agent. Closing this will end the session.
+              {t("endBody")}
             </p>
             <div className="flex gap-2 justify-end">
               <button
@@ -199,7 +201,7 @@ export default function LiveChatBanner() {
                 onClick={() => setConfirmOpen(false)}
                 className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100"
               >
-                Stay in chat
+                {t("stayInChat")}
               </button>
               <button
                 type="button"
@@ -207,7 +209,7 @@ export default function LiveChatBanner() {
                 className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
-                End live chat
+                {t("endLiveChat")}
               </button>
             </div>
           </div>

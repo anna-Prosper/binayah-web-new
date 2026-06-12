@@ -2288,7 +2288,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-5 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || t("ctaHeadlineDefault")}
+                    {t("ctaHeadlineDefault")}
                   </p>
                   <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
                   {project.priceRange && (
@@ -2384,7 +2384,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 <div className="relative p-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                   <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-accent/20 blur-2xl" />
                   <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.15em] font-semibold mb-1 relative z-10">
-                    {project.ctaHeadline || t("ctaHeadlineDefault")}
+                    {t("ctaHeadlineDefault")}
                   </p>
                   <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-3xl font-bold text-primary-foreground relative z-10 block" />
                   {project.priceRange && (
@@ -2393,8 +2393,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                 </div>
                 {/* Desktop: full CTA buttons */}
                 <div className="hidden sm:block p-5 space-y-3">
-                  {(project.ctaSubheadline || t("ctaSubheadlineDefault")) && (
-                    <p className="text-sm text-muted-foreground mb-1">{project.ctaSubheadline || t("ctaSubheadlineDefault")}</p>
+                  {t("ctaSubheadlineDefault") && (
+                    <p className="text-sm text-muted-foreground mb-1">{t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
                     href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}

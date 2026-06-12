@@ -28,12 +28,14 @@ async function streamChat({
   onDone,
   onError,
   onHandoff,
+  fallbacks,
 }: {
   messages: Msg[];
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (msg: string) => void;
   onHandoff?: () => void;
+  fallbacks: { busy: string; generic: string };
 }) {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
@@ -45,11 +47,11 @@ async function streamChat({
 
   if (resp.status === 429 || resp.status === 402) {
     const data = await resp.json();
-    onError(data.error || "Service busy, please try again.");
+    onError(data.error || fallbacks.busy);
     return;
   }
   if (!resp.ok || !resp.body) {
-    let errMsg = "Something went wrong. Please try again.";
+    let errMsg = fallbacks.generic;
     try { const d = await resp.json(); if (d?.error) errMsg = d.error; } catch { /* ignore */ }
     console.warn("[chat]", resp.status, errMsg);
     onError(errMsg);
@@ -69,7 +71,7 @@ async function streamChat({
       onDone();
       return;
     } catch {
-      onError("Bad response from chat service.");
+      onError(fallbacks.generic);
       return;
     }
   }
@@ -130,8 +132,8 @@ const AIChatWidget = () => {
   // Append a system divider message and flip back to AI mode.
   const endHumanChat = (reason: "manual" | "timeout") => {
     const text = reason === "timeout"
-      ? "Live chat ended — 30 minutes of inactivity"
-      : "Live chat ended";
+      ? t("liveChatEndedInactivity")
+      : t("liveChatEnded");
     setMessages((prev) => [...prev, { role: "system", content: text }]);
     setMode("ai");
     setEndConfirmOpen(false);
@@ -226,6 +228,7 @@ const AIChatWidget = () => {
     try {
       await streamChat({
         messages: [...messages, userMsg],
+        fallbacks: { busy: t("errorBusy"), generic: t("errorGeneric") },
         onDelta: upsertAssistant,
         onDone: () => setIsLoading(false),
         onError: (msg) => {
@@ -239,7 +242,7 @@ const AIChatWidget = () => {
           setTimeout(() => {
             setMessages((prev) => [
               ...prev,
-              { role: "system", content: "Live chat started — auto-ends after 30 minutes of inactivity" },
+              { role: "system", content: t("liveChatStarted") },
             ]);
             setMode("human");
           }, 1500);
@@ -294,19 +297,19 @@ const AIChatWidget = () => {
                     type="button"
                     onClick={() => setEndConfirmOpen(true)}
                     className="flex items-center gap-1.5 text-white/90 hover:text-white text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                    aria-label="Back to AI"
+                    aria-label={t("backToAI")}
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    Back to AI
+                    {t("backToAI")}
                   </button>
                   <div className="flex-1 text-right">
                     <p className="text-white font-bold text-sm tracking-wide flex items-center justify-end gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Live agent
+                      {t("liveAgent")}
                     </p>
-                    <p className="text-white/60 text-[11px]">Connected via LiveChat</p>
+                    <p className="text-white/60 text-[11px]">{t("connectedViaLiveChat")}</p>
                   </div>
                 </div>
               )}
@@ -322,9 +325,9 @@ const AIChatWidget = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                   </svg>
                 </div>
-                <p className="text-sm font-semibold text-foreground mb-1">Chat with a live agent</p>
+                <p className="text-sm font-semibold text-foreground mb-1">{t("chatWithLiveAgent")}</p>
                 <p className="text-xs text-muted-foreground mb-4 max-w-[260px]">
-                  The Binayah live chat window is open. Continue your conversation there — we&apos;ll respond as soon as an agent is available.
+                  {t("liveAgentPanelDesc")}
                 </p>
                 <button
                   type="button"
@@ -332,7 +335,7 @@ const AIChatWidget = () => {
                   className="text-xs font-semibold px-4 py-2 rounded-full text-white"
                   style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                 >
-                  Open live chat
+                  {t("openLiveChat")}
                 </button>
               </div>
             )}

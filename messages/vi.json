@@ -1066,7 +1066,9 @@
     "reasonWorldClassAmenities": "Tiện ích đẳng cấp thế giới",
     "readMore": "Đọc thêm",
     "readLess": "Hiển thị ít hơn",
-    "sending": "Đang gửi…"
+    "sending": "Đang gửi…",
+    "namePlaceholder": "Tên đầy đủ của bạn",
+    "requirementsPlaceholder": "Yêu cầu cụ thể nào..."
   },
   "propertyDetail": {
     "backToProperties": "Quay lại Bất động sản",
@@ -1210,7 +1212,9 @@
     "guideSaleOffPlanDesc": "Kế hoạch thanh toán, thời gian bàn giao và kiểm tra chủ đầu tư.",
     "guideSaleFirstTimerTitle": "Hướng dẫn cho Người mua lần đầu",
     "guideSaleFirstTimerDesc": "Mọi thứ mà người mua lần đầu cần biết về Dubai.",
-    "sending": "Đang gửi…"
+    "sending": "Đang gửi…",
+    "namePlaceholder": "Tên đầy đủ của bạn",
+    "requirementsPlaceholder": "Yêu cầu cụ thể nào..."
   },
   "communities": {
     "heroLabel": "Khám phá Dubai",
@@ -1772,7 +1776,16 @@
       "offPlanROI": "ROI off-plan ở Dubai?",
       "goldenVisa": "Điều kiện Golden Visa?",
       "pricesTrend": "Xu hướng giá năm 2026?"
-    }
+    },
+    "backToAI": "Quay lại AI",
+    "liveAgent": "Đại lý trực tiếp",
+    "connectedViaLiveChat": "Kết nối qua LiveChat",
+    "chatWithLiveAgent": "Trò chuyện với nhân viên trực tiếp",
+    "liveAgentPanelDesc": "Cửa sổ LiveChat Binayah đang mở. Tiếp tục trò chuyện tại đó — chúng tôi sẽ trả lời ngay khi có nhân viên.",
+    "openLiveChat": "Mở LiveChat",
+    "liveChatStarted": "Trò chuyện trực tiếp bắt đầu — tự động kết thúc sau 30 phút không hoạt động",
+    "liveChatEnded": "Trò chuyện trực tiếp đã kết thúc",
+    "liveChatEndedInactivity": "Trò chuyện kết thúc — không hoạt động 30 phút"
   },
   "marketDashboard": {
     "title": "Bảng điều khiển",
@@ -1900,7 +1913,10 @@
           "Linh hoạt"
         ]
       }
-    }
+    },
+    "noMatches": "Không có lựa chọn nào phù hợp trong danh sách hiện tại — nhưng đội ngũ của chúng tôi có thể chọn lọc cho bạn. Liên hệ qua WhatsApp hoặc +971 54 998 8811.",
+    "errorGeneric": "Xin lỗi, tôi không thể tạo đề xuất ngay bây giờ. Vui lòng thử lại hoặc liên hệ với chúng tôi qua +971 54 998 8811.",
+    "errorBusy": "Dịch vụ bận, vui lòng thử lại."
   },
   "valuationBanner": {
     "label": "Định giá bất động sản AI",
@@ -2727,5 +2743,20 @@
     "emptyCta": "Xem báo cáo hôm qua",
     "loadError": "Không thể làm mới — đang hiển thị báo cáo đã tải gần nhất.",
     "unitsCount": "{count} căn"
+  },
+  "liveChat": {
+    "backToAI": "Quay lại AI",
+    "liveAgent": "Đại lý trực tiếp",
+    "connectedVia": "kết nối qua LiveChat",
+    "inactivityWarning": "Trò chuyện trực tiếp sẽ kết thúc sau 5 phút do không hoạt động.",
+    "keepChatting": "Tiếp tục trò chuyện",
+    "endTitle": "Kết thúc LiveChat?",
+    "endBody": "Bạn đang trò chuyện với một nhân viên trực tuyến. Đóng sẽ kết thúc phiên.",
+    "stayInChat": "Tiếp tục trò chuyện",
+    "endLiveChat": "Kết thúc LiveChat"
+  },
+  "countryCode": {
+    "searchPlaceholder": "Tìm kiếm quốc gia hoặc mã...",
+    "noResults": "Không có kết quả"
   }
 }

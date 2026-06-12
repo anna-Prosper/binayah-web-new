@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Search } from "lucide-react";
 import { COUNTRIES, flagEmoji } from "@/lib/country-codes";
 
@@ -22,6 +23,7 @@ const PREFERRED_ISO_PER_DIAL: Record<string, string> = {
 const PINNED_DIALS = ["+971", "+1", "+44", "+91", "+7", "+86", "+33", "+49", "+81", "+61"];
 
 export default function CountryCodeSelect({ value, onChange, className, style, ariaLabel }: Props) {
+  const t = useTranslations("countryCode");
   const id = useId();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");

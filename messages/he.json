@@ -1066,7 +1066,9 @@
     "reasonWorldClassAmenities": "שירותים ברמה עולמית",
     "readMore": "קרא עוד",
     "readLess": "הצג פחות",
-    "sending": "שולח…"
+    "sending": "שולח…",
+    "namePlaceholder": "שם מלא",
+    "requirementsPlaceholder": "דרישות מיוחדות..."
   },
   "propertyDetail": {
     "backToProperties": "חזרה לנכסים",
@@ -1210,7 +1212,9 @@
     "guideSaleOffPlanDesc": "תוכניות תשלום, לוחות זמנים למסירה ובדיקת היזם.",
     "guideSaleFirstTimerTitle": "מדריך לקונה בפעם הראשונה",
     "guideSaleFirstTimerDesc": "כל מה שקונה בפעם הראשונה צריך לדעת על דובאי.",
-    "sending": "שולח…"
+    "sending": "שולח…",
+    "namePlaceholder": "שמך המלא",
+    "requirementsPlaceholder": "דרישות מיוחדות..."
   },
   "communities": {
     "heroLabel": "חקור את דובאי",
@@ -1772,7 +1776,16 @@
       "offPlanROI": "תשואה על הנייר בדובאי?",
       "goldenVisa": "זכאות לויזת זהב?",
       "pricesTrend": "מגמות מחירים ב-2026?"
-    }
+    },
+    "backToAI": "חזרה ל-AI",
+    "liveAgent": "סוכן חי",
+    "connectedViaLiveChat": "מחובר דרך LiveChat",
+    "chatWithLiveAgent": "שוחח עם סוכן חי",
+    "liveAgentPanelDesc": "חלון הצ'אט החי של Binayah פתוח. המשך בשיחה שם — נענה ברגע שסוכן יהיה זמין.",
+    "openLiveChat": "פתח LiveChat",
+    "liveChatStarted": "צ'אט חי התחיל — מסתיים אוטומטית לאחר 30 דקות של חוסר פעילות",
+    "liveChatEnded": "השיחה הסתיימה",
+    "liveChatEndedInactivity": "השיחה הסתיימה — 30 דקות של חוסר פעילות"
   },
   "marketDashboard": {
     "title": "לוח מחוונים",
@@ -1900,7 +1913,10 @@
           "גמיש"
         ]
       }
-    }
+    },
+    "noMatches": "אין התאמות קרובות בצנרת הנוכחית שלנו — אבל הצוות שלנו יכול להכין רשימה קצרה עבורך. צור קשר ב-WhatsApp או +971 54 998 8811.",
+    "errorGeneric": "מצטערים, לא הצלחנו להפיק המלצות כרגע. אנא נסה שוב או צור קשר איתנו ב-+971 54 998 8811.",
+    "errorBusy": "השירות עסוק, אנא נסה שוב."
   },
   "valuationBanner": {
     "label": "הערכת נדל\"ן AI",
@@ -2727,5 +2743,20 @@
     "emptyCta": "צפה בדוח של אתמול",
     "loadError": "לא ניתן לרענן — מציג את הדוח האחרון שנטען.",
     "unitsCount": "{count} יחידות"
+  },
+  "liveChat": {
+    "backToAI": "חזרה ל-AI",
+    "liveAgent": "סוכן חי",
+    "connectedVia": "מחובר דרך LiveChat",
+    "inactivityWarning": "השיחה תסתיים בעוד 5 דקות עקב חוסר פעילות.",
+    "keepChatting": "המשך לשוחח",
+    "endTitle": "סיים את ה-LiveChat?",
+    "endBody": "אתה משוחח כעת עם סוכן חי. סגירה תסיים את השיחה.",
+    "stayInChat": "הישאר בצ'אט",
+    "endLiveChat": "סיים צ'אט חי"
+  },
+  "countryCode": {
+    "searchPlaceholder": "חפש מדינה או קוד...",
+    "noResults": "אין תוצאות"
   }
 }

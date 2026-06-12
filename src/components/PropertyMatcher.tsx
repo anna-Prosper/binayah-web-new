@@ -191,7 +191,7 @@ const PropertyMatcher = () => {
 
       if (resp.status === 429 || resp.status === 402) {
         const data = await resp.json();
-        setResult(data.error || "Service busy, please try again.");
+        setResult(data.error || t("errorBusy"));
         setLoading(false);
         return;
       }
@@ -205,7 +205,7 @@ const PropertyMatcher = () => {
       const matches: Array<{ name?: string; slug?: string; reason?: string }> =
         Array.isArray(data?.matches) ? data.matches : [];
       if (matches.length === 0) {
-        setResult("No close matches in our current pipeline — but our team can short-list options for you. Reach us on WhatsApp or +971 54 998 8811.");
+        setResult(t("noMatches"));
       } else {
         const md = matches
           .map((m, i) => {
@@ -218,7 +218,7 @@ const PropertyMatcher = () => {
         setResult(md);
       }
     } catch {
-      setResult("Sorry, I couldn't generate recommendations right now. Please try again or contact us at +971 54 998 8811.");
+      setResult(t("errorGeneric"));
     }
     setLoading(false);
   };

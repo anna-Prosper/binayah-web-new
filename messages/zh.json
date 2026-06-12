@@ -1071,7 +1071,9 @@
     "reasonWorldClassAmenities": "世界级配套",
     "readMore": "阅读更多",
     "readLess": "收起",
-    "sending": "发送中…"
+    "sending": "发送中…",
+    "namePlaceholder": "您的全名",
+    "requirementsPlaceholder": "有任何特定要求..."
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",
@@ -1211,7 +1213,9 @@
     "guideSaleOffPlanDesc": "付款计划、交付时间表及开发商评估。",
     "guideSaleFirstTimerTitle": "首次购房者指南",
     "guideSaleFirstTimerDesc": "首次在迪拜购房所需了解的一切。",
-    "sending": "发送中…"
+    "sending": "发送中…",
+    "namePlaceholder": "您的全名",
+    "requirementsPlaceholder": "有任何特定要求..."
   },
   "communities": {
     "heroLabel": "探索迪拜",
@@ -1770,7 +1774,16 @@
       "offPlanROI": "迪拜期房回报率如何？",
       "goldenVisa": "黄金签证申请条件？",
       "pricesTrend": "2026 年价格走势？"
-    }
+    },
+    "backToAI": "返回 AI",
+    "liveAgent": "在线客服",
+    "connectedViaLiveChat": "通过LiveChat连接",
+    "chatWithLiveAgent": "与在线客服聊天",
+    "liveAgentPanelDesc": "Binayah在线聊天窗口已打开。继续在此对话——我们会在有客服可用时尽快回复。",
+    "openLiveChat": "打开LiveChat",
+    "liveChatStarted": "实时聊天已开始—30分钟无活动后自动结束",
+    "liveChatEnded": "实时聊天已结束",
+    "liveChatEndedInactivity": "实时聊天已结束—30分钟无活动"
   },
   "marketDashboard": {
     "title": "市场仪表盘",
@@ -1898,7 +1911,10 @@
           "灵活"
         ]
       }
-    }
+    },
+    "noMatches": "当前没有合适的匹配项，但我们的团队可以为您筛选选项。请通过WhatsApp或+971 54 998 8811联系我们。",
+    "errorGeneric": "抱歉，目前无法生成推荐。请重试或通过+971 54 998 8811联系我们。",
+    "errorBusy": "服务繁忙，请重试。"
   },
   "valuationBanner": {
     "label": "AI 房产估值",
@@ -2725,5 +2741,20 @@
     "emptyCta": "View yesterday’s report",
     "loadError": "Couldn’t refresh — showing the last loaded report.",
     "unitsCount": "{count} units"
+  },
+  "liveChat": {
+    "backToAI": "返回 AI",
+    "liveAgent": "在线客服",
+    "connectedVia": "通过LiveChat连接",
+    "inactivityWarning": "由于长时间未活动，实时聊天将在5分钟后结束。",
+    "keepChatting": "继续聊天",
+    "endTitle": "结束实时聊天？",
+    "endBody": "您正在与在线客服聊天。关闭此窗口将结束会话。",
+    "stayInChat": "保持聊天",
+    "endLiveChat": "结束LiveChat"
+  },
+  "countryCode": {
+    "searchPlaceholder": "搜索国家或代码...",
+    "noResults": "无结果"
   }
 }
