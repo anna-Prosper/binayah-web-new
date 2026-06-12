@@ -13,12 +13,16 @@ const titles: Record<string, string> = {
   ru: "Недвижимость в Дубае | Купить, Снять, Инвестировать | Binayah",
   ar: "عقارات دبي | شراء وإيجار واستثمار | بناية للعقارات",
   zh: "迪拜房地产 | 购买、租赁和投资 | Binayah Properties",
+  vi: "Bất Động Sản Dubai | Mua, Thuê & Đầu Tư | Binayah Properties",
+  he: "נדל\"ן בדובאי | קנייה, השכרה והשקעה | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
   en: "Find luxury apartments, villas and off-plan projects in Dubai. Trusted by thousands of buyers and investors since 2007.",
   ru: "Найдите роскошные апартаменты, виллы и новостройки в Дубае. Более 2500 объектов недвижимости. Binayah Properties с 2007 года.",
   ar: "اعثر على شقق فاخرة وفلل ومشاريع على الخارطة في دبي. موثوق من قبل آلاف المشترين والمستثمرين منذ عام 2007.",
   zh: "在迪拜寻找豪华公寓、别墅和期房项目。自2007年以来深受数千名买家和投资者信赖。",
+  vi: "Tìm căn hộ sang trọng, biệt thự và dự án chưa hoàn thiện ở Dubai. Được hàng nghìn người mua và nhà đầu tư tin tưởng từ năm 2007.",
+  he: "מצאו דירות יוקרה, וילות ופרויקטים בתכנון בדובאי. אמון על ידי אלפי קונים ומשקיעים מאז 2007.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -199,6 +203,26 @@ const HOME_FAQS: Record<string, { question: string; answer: string }[]> = {
     { question: "在迪拜购房需要多长时间？", answer: "期房：从预订到确认约2-4周。二手房：从议价到DLD产权证约4-8周。DLD过户本身在所有文件就绪后1-2个工作日完成。" },
     { question: "非居民可以在迪拜申请贷款吗？", answer: "可以。阿联酋银行为非居民提供现房贷款，外国买家的贷款价值比（LTV）通常为50-60%。部分开发商还为期房提供0利率开发商融资计划。" },
     { question: "DLD过户费是多少？", answer: "迪拜土地局（DLD）收取房产价值4%的过户费，通常由买卖双方各承担一半（各2%）。此外还有约580迪拉姆的行政费和4000迪拉姆的公证费。" },
+  ],
+  vi: [
+    { question: "Người nước ngoài có thể mua bất động sản ở Dubai không?", answer: "Có. UAE cho phép sở hữu tự do 100% cho tất cả các quốc tịch trong các khu vực tự do được chỉ định bao gồm Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC và hơn 60 cộng đồng khác. Không yêu cầu cư trú." },
+    { question: "Đầu tư tối thiểu để mua bất động sản ở Dubai là bao nhiêu?", answer: "Căn hộ studio bắt đầu từ AED 300,000–500,000 (~$82K–$136K). Các dự án chưa hoàn thành thường yêu cầu đặt cọc 10–20% với các kế hoạch thanh toán linh hoạt sau khi bàn giao. Đối với Thị thực Vàng UAE 10 năm, tối thiểu là AED 2,000,000 (~$545K)." },
+    { question: "Có thuế bất động sản ở Dubai không?", answer: "Không. Dubai không có thuế bất động sản hàng năm, không có thuế lợi tức vốn, không có thuế thu nhập và không có thuế thừa kế. Các chi phí một lần duy nhất là phí chuyển nhượng DLD (4%) và hoa hồng đại lý (~2%). Điều này làm cho Dubai trở thành một trong những thị trường bất động sản hiệu quả về thuế nhất trên thế giới." },
+    { question: "Bất động sản chưa hoàn thành ở Dubai là gì?", answer: "Chưa hoàn thành có nghĩa là mua một bất động sản trước khi nó được xây dựng hoặc trong quá trình xây dựng. Người mua thường trả trước 10–20% với phần còn lại được thanh toán theo từng đợt trong quá trình xây dựng hoặc sau khi bàn giao. Bất động sản chưa hoàn thành ở Dubai thường rẻ hơn 15–30% so với các đơn vị đã sẵn sàng tương đương và mang lại sự tăng giá vốn mạnh mẽ." },
+    { question: "Những khu vực nào tốt nhất để đầu tư ở Dubai?", answer: "Đối với lợi nhuận cho thuê: Jumeirah Village Circle (JVC), Dubai Marina và Business Bay cung cấp lợi nhuận gộp 6–9%. Đối với tăng giá vốn: Downtown Dubai, Palm Jumeirah và Dubai Creek Harbour. Đối với chưa hoàn thành: Dubai South, Meydan và Ras Al Khor là những khu vực tăng trưởng cao mới nổi." },
+    { question: "Quá trình mua bất động sản ở Dubai mất bao lâu?", answer: "Chưa hoàn thành: 2–4 tuần từ khi đặt chỗ đến khi xác nhận đặt chỗ. Thị trường sẵn sàng/thứ cấp: 4–8 tuần từ giá đã thỏa thuận đến giấy chứng nhận quyền sở hữu DLD. Việc chuyển nhượng DLD tự nó mất 1–2 ngày làm việc khi tất cả các tài liệu đã sẵn sàng và khoản vay thế chấp (nếu có) được phê duyệt." },
+    { question: "Tôi có thể vay thế chấp ở Dubai khi không phải là cư dân không?", answer: "Có. Các ngân hàng UAE cung cấp các khoản vay thế chấp cho người không cư trú đối với các bất động sản đã sẵn sàng. Tỷ lệ LTV điển hình cho người không cư trú là 50–60% (so với 75–80% cho cư dân UAE). Giá trị bất động sản tối thiểu cho khoản vay thế chấp của người không cư trú thường là AED 1,000,000. Một số nhà phát triển cũng cung cấp tài chính phát triển không lãi suất cho các dự án chưa hoàn thành." },
+    { question: "Phí chuyển nhượng DLD ở Dubai là gì?", answer: "Cục Đất đai Dubai (DLD) tính phí chuyển nhượng 4% trên giá trị bất động sản. Thông thường, phí này được chia đều giữa người mua và người bán (2% mỗi bên), mặc dù có thể thương lượng. Cũng có phí hành chính DLD là AED 580, phí ủy thác là AED 4,000 (đối với bất động sản trên AED 500K), và phí cấp giấy chứng nhận quyền sở hữu là AED 250." },
+  ],
+  he: [
+    { question: "האם זרים יכולים לקנות נכס בדובאי?", answer: "כן. איחוד האמירויות מאפשר בעלות חופשית של 100% לכל הלאומים באזורים חופשיים מוגדרים כולל Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC, ו-60+ קהילות נוספות. אין צורך בתושבות." },
+    { question: "מהו ההשקעה המינימלית לרכישת נכס בדובאי?", answer: "דירות סטודיו מתחילות מ-AED 300,000–500,000 (~$82K–$136K). פרויקטים בתכנון מוקדם דורשים לעיתים קרובות מקדמה של 10–20% עם תוכניות תשלום גמישות לאחר מסירה. עבור ויזת זהב ל-10 שנים באיחוד האמירויות, המינימום הוא AED 2,000,000 (~$545K)." },
+    { question: "האם יש מיסי נכס בדובאי?", answer: "לא. בדובאי אין מס נכס שנתי, אין מס רווחי הון, אין מס הכנסה ואין מס ירושה. העלויות היחידות הן דמי העברה ל-DLD (4%) ועמלת סוכן (~2%). זה הופך את דובאי לאחד משוקי הנדל\"ן היעילים ביותר מבחינת מיסוי בעולם." },
+    { question: "מהו נכס בתכנון מוקדם בדובאי?", answer: "תכנון מוקדם משמעו רכישת נכס לפני שהוא נבנה או במהלך הבנייה. קונים בדרך כלל משלמים 10–20% מראש והיתרה בתשלומים במהלך הבנייה או לאחר המסירה. נכסים בתכנון מוקדם בדובאי הם לעיתים קרובות זולים ב-15–30% מיחידות מוכנות דומות ומציעים הערכת הון חזקה." },
+    { question: "מהם האזורים הטובים ביותר להשקעה בדובאי?", answer: "לתשואה מהשכרה: Jumeirah Village Circle (JVC), Dubai Marina, ו-Business Bay מציעים תשואות ברוטו של 6–9%. להערכת הון: Downtown Dubai, Palm Jumeirah, ו-Dubai Creek Harbour. לתכנון מוקדם: Dubai South, Meydan, ו-Ras Al Khor הם אזורים מתפתחים עם צמיחה גבוהה." },
+    { question: "כמה זמן לוקח תהליך רכישת נכס בדובאי?", answer: "תכנון מוקדם: 2–4 שבועות מהזמנה לאישור הזמנה. שוק מוכן/משני: 4–8 שבועות מהסכמה על מחיר עד ל-DLD title deed. ההעברה ב-DLD עצמה לוקחת 1–2 ימי עסקים לאחר שכל המסמכים מוכנים והמשכנתא (אם יש) מאושרת." },
+    { question: "האם אני יכול לקבל משכנתא בדובאי כלא תושב?", answer: "כן. בנקים באיחוד האמירויות מציעים משכנתאות ללא תושבים עבור נכסים מוכנים. יחס LTV טיפוסי ללא תושבים הוא 50–60% (לעומת 75–80% לתושבי איחוד האמירויות). ערך הנכס המינימלי למשכנתא ללא תושב הוא בדרך כלל AED 1,000,000. חלק מהיזמים מציעים גם מימון יזמי ללא ריבית על פרויקטים בתכנון מוקדם." },
+    { question: "מהו דמי ההעברה ל-DLD בדובאי?", answer: "מחלקת הקרקעות של דובאי (DLD) גובה דמי העברה של 4% מערך הנכס. זה בדרך כלל מתחלק שווה בשווה בין הקונה והמוכר (2% כל אחד), אם כי ניתן לנהל משא ומתן. יש גם דמי ניהול ל-DLD של AED 580, דמי נאמן של AED 4,000 (לנכסים מעל AED 500K), ודמי הנפקת title deed של AED 250." },
   ],
 };
 

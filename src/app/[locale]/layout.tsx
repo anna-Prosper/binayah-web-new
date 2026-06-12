@@ -54,6 +54,7 @@ const OG_LOCALE: Record<string, string> = {
   ru: "ru_RU",
   zh: "zh_CN",
   vi: "vi_VN",
+  he: "he_IL",
 };
 
 // Tells every browser the site is designed for light only — stops mobile
@@ -82,12 +83,16 @@ export async function generateMetadata({
     ru: "Binayah Properties — Недвижимость в Дубае",
     ar: "بناية للعقارات — العقارات في دبي والاستثمار",
     zh: "Binayah Properties — 迪拜房地产与投资",
+    vi: "Binayah Properties — Bất động sản & Đầu tư tại Dubai",
+    he: "Binayah Properties — נדל\"ן והשקעות בדובאי",
   };
   const descriptions: Record<string, string> = {
     en: "Binayah Properties — Dubai's trusted real estate partner. Buy, rent or invest in luxury homes, off-plan projects & enjoy full property management.",
     ru: "Binayah Properties — ваш надёжный партнёр по недвижимости в Дубае с 2007 года. Купить, снять или инвестировать в жильё, новостройки и управление недвижимостью.",
     ar: "بناية للعقارات — شريكك الموثوق في عقارات دبي. شراء أو إيجار أو استثمار في المنازل الفاخرة والمشاريع على الخارطة.",
     zh: "Binayah Properties — 迪拜值得信赖的房产合作伙伴。购买、租赁或投资豪华住宅、期房项目，享受全面的物业管理服务。",
+    vi: "Binayah Properties — đối tác bất động sản đáng tin cậy tại Dubai. Mua, thuê hoặc đầu tư vào nhà sang trọng, dự án off-plan và quản lý bất động sản toàn diện.",
+    he: "Binayah Properties — שותף הנדל\"ן המהימן בדובאי. קנו, השכירו או השקיעו בבתי יוקרה, בפרויקטים על הנייר, ותיהנו מניהול נכסים מלא.",
   };
 
   return {

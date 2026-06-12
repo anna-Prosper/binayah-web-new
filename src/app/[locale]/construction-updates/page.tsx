@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ar: "رؤى سوق العقارات في دبي | تقارير وأدلة الاستثمار | Binayah",
     zh: "迪拜房产洞察 | 市场报告与投资指南 | Binayah",
     vi: "Phân tích bất động sản Dubai | Báo cáo thị trường | Binayah",
+    he: "תובנות נדל\"ן בדובאי | דוחות שוק ומדריכי השקעות | Binayah",
   };
   const descs: Record<string, string> = {
     en: "Expert market analysis, investment guides and property reports for Dubai real estate.",
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ar: "تحليل سوق متخصص وأدلة الاستثمار وتقارير عقارات دبي.",
     zh: "迪拜房产市场分析、投资指南与专业报告。",
     vi: "Phân tích thị trường chuyên sâu, hướng dẫn đầu tư và báo cáo bất động sản Dubai.",
+    he: "ניתוח שוק מומחה, מדריכי השקעות ודוחות נכסים עבור נדל\"ן בדובאי.",
   };
   const title = titles[locale] ?? titles.en;
   const description = descs[locale] ?? descs.en;

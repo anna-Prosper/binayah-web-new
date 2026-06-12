@@ -17,6 +17,7 @@ const TITLES: Record<string, string> = {
   ar: "تسويق عقارات دبي | بِع أسرع | بناية للعقارات",
   zh: "迪拜房产营销 | 更快出售 | Binayah Properties",
   vi: "Tiếp thị bất động sản Dubai | Niêm yết & Bán nhanh hơn | Binayah Properties",
+  he: "שיווק נדל\"ן בדובאי | רשום ומכור מהר יותר | Binayah Properties",
 };
 const DESCS: Record<string, string> = {
   en: "Professional real estate marketing in Dubai. HDR photography, Bayut & Propertyfinder listings, social media, and digital campaigns. Sell or rent faster with Binayah.",
@@ -24,6 +25,7 @@ const DESCS: Record<string, string> = {
   ar: "تسويق عقاري احترافي في دبي. تصوير HDR وإدراج على Bayut وPropertyfinder وسوشيال ميديا. بِع أو أجِّر أسرع مع بناية.",
   zh: "迪拜专业房产营销。HDR摄影、Bayut和Propertyfinder挂牌、社交媒体和数字广告活动。与Binayah更快出售或出租。",
   vi: "Tiếp thị bất động sản chuyên nghiệp tại Dubai. Ảnh HDR, tin đăng Bayut & Propertyfinder, mạng xã hội và chiến dịch số. Bán hoặc cho thuê nhanh hơn với Binayah.",
+  he: "שיווק נדל\"ן מקצועי בדובאי. צילום HDR, רישומים ב-Bayut ו-Propertyfinder, מדיה חברתית וקמפיינים דיגיטליים. מכרו או השכירו מהר יותר עם Binayah.",
 };
 const SERVICES = [
   { en: "Professional HDR Photography", ru: "Профессиональная HDR-съёмка", ar: "تصوير HDR احترافي", zh: "专业HDR摄影", vi: "Chụp ảnh HDR chuyên nghiệp", he: "צילום HDR מקצועי", icon: "📸", enBody: "Full-service property photography with HDR post-processing, sky replacement, and virtual staging options. Properties with professional photos receive 4x more inquiries." },

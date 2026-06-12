@@ -13,12 +13,16 @@ const titles: Record<string, string> = {
   ru: "Бесплатная оценка недвижимости в Дубае | ИИ-оценка онлайн | Binayah",
   ar: "تقييم عقاري مجاني في دبي | تقدير فوري بالذكاء الاصطناعي | بناية",
   zh: "迪拜免费房产估价 | AI驱动即时估价 | Binayah",
+  vi: "Định Giá Bất Động Sản Miễn Phí Dubai | Ước Tính Tức Thì Bằng AI | Binayah",
+  he: "הערכת נכס חינם בדובאי | הערכה מיידית מבוססת AI | Binayah",
 };
 const descriptions: Record<string, string> = {
   en: "Get an instant AI-powered property valuation for Dubai and UAE real estate. Free, accurate, no registration required.",
   ru: "Получите мгновенную оценку недвижимости в Дубае и ОАЭ на базе ИИ. Бесплатно, точно, без регистрации.",
   ar: "احصل على تقييم عقاري فوري بالذكاء الاصطناعي لعقارات دبي والإمارات. مجاني، دقيق، بدون تسجيل.",
   zh: "获取迪拜和阿联酋房产的AI驱动即时估价。免费、准确，无需注册。",
+  vi: "Nhận định giá bất động sản tại Dubai và UAE ngay lập tức với công nghệ AI. Miễn phí, chính xác, không cần đăng ký.",
+  he: "קבלו הערכת נכס מיידית בעזרת AI לנכסים בדובאי ובאיחוד האמירויות. חינם, מדויק, ללא צורך בהרשמה.",
 };
 
 const VALUATION_FAQS: Record<string, { question: string; answer: string }[]> = {
