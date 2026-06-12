@@ -25,7 +25,9 @@ export async function generateMetadata({
   const c = findBuyCommunity(community);
   if (!c) return {};
   const title = `Rent Property in ${c.name}, Dubai | Apartments & Villas | Binayah`;
-  const description = `${localizeCommunityText(c.shortIntro, locale)} Browse the latest apartments and villas for rent in ${c.name} with Binayah Properties.`;
+  const full = `${localizeCommunityText(c.shortIntro, locale)} Browse apartments and villas for rent in ${c.name} with Binayah.`;
+  // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
+  const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
   return {
     title,
     description,

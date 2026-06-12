@@ -17,11 +17,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
   const seo = project.seo || {};
 
-  const priceStr = project.startingPrice
-    ? ` | From ${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}`
-    : "";
+  // Tight title within Google's ~60-char SERP limit: project + area + brand.
+  // Starting price is in the description and RealEstateListing schema.
+  const rawName = String(project.name || "Off-Plan Project");
+  const projName = rawName.length > 42 ? `${rawName.slice(0, 41).trimEnd()}…` : rawName;
   const communityStr = project.community ? ` | ${project.community}` : "";
-  const titleFallback = `${project.name}${priceStr}${communityStr} | Binayah`;
+  const titleFallback = `${projName}${communityStr} | Binayah`;
   const descFallback = `${project.name} is an off-plan project${project.community ? ` in ${project.community}` : ""} by ${project.developerName || "a leading developer"} in Dubai.${project.startingPrice ? ` Starting from AED ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}.` : ""} Explore floor plans, payment plans and availability.`;
 
   return {

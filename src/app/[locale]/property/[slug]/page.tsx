@@ -24,13 +24,12 @@ export async function generateMetadata({
   const { listing } = data;
   const seo = listing.seo || {};
 
-  const priceStr = listing.price
-    ? ` | ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}`
-    : "";
-  const bedsStr = listing.bedrooms != null
-    ? ` | ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} BR`}`
-    : "";
-  const titleFallback = `${listing.name || listing.title}${bedsStr}${priceStr} | ${listing.community || "Dubai"} | Binayah`;
+  // Keep the title within Google's ~60-char SERP display limit: name + area +
+  // brand. Beds/price live in the description and the RealEstateListing schema,
+  // so they don't need to (and shouldn't) bloat the title past the cut-off.
+  const rawName = String(listing.name || listing.title || "Property");
+  const name = rawName.length > 45 ? `${rawName.slice(0, 44).trimEnd()}…` : rawName;
+  const titleFallback = `${name} | ${listing.community || "Dubai"} | Binayah`;
 
   const descFallback = seo.metaDescription ||
     `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "sale"} in ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} bedroom`}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. Listed at ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}` : ""}. View photos, floor plans and contact agent.`;
