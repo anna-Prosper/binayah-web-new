@@ -2,14 +2,11 @@ import React from "react";
 import Link from "next/link";
 import { TrendingUp } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import ImageWithFallback from "@/components/ImageWithFallback";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import PropertyTypeSidebarNewsletter from "@/components/PropertyTypeSidebarNewsletter";
+import { PULSE_GUIDES } from "@/lib/pulse-guides";
 
-const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
 
-// next-intl locale → BCP-47 tag for Intl date formatting
-const DATE_LOCALE: Record<string, string> = { en: "en-US", ru: "ru-RU", ar: "ar", zh: "zh-CN", vi: "vi-VN" };
 
 interface MarketStatsData {
   avgYield?: number;
@@ -21,11 +18,9 @@ interface MarketStatsData {
 }
 
 interface GuideItem {
-  _id: string;
   slug: string;
   title: string;
-  featuredImage?: string;
-  publishedAt?: string;
+  readTime: string;
 }
 
 interface PropertyTypeSidebarProps {
@@ -34,14 +29,6 @@ interface PropertyTypeSidebarProps {
   slug: string;
 }
 
-function formatShortDate(dateStr: string | undefined, locale: string): string {
-  if (!dateStr) return "";
-  try {
-    return new Date(dateStr).toLocaleDateString(DATE_LOCALE[locale] ?? "en-US", { day: "numeric", month: "short", year: "numeric" });
-  } catch {
-    return dateStr;
-  }
-}
 
 function formatK(n: number): string {
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M+";
@@ -67,17 +54,15 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
     marketStats = null;
   }
 
-  let guides: GuideItem[] = [];
-  try {
-    const res = await serverFetch(serverApiUrl(`/api/news?limit=4&category=guides&lang=${encodeURIComponent(locale)}`));
-    if (res.ok) {
-      const data = await res.json();
-      const list: unknown = Array.isArray(data) ? data : (data?.news ?? data?.articles ?? data?.data);
-      guides = Array.isArray(list) ? (list as GuideItem[]) : [];
-    }
-  } catch {
-    guides = [];
-  }
+  // Real property-investment guides (static, localized) — not the news feed.
+  // The previous /api/news?category=guides call had no matching category and
+  // returned generic/lifestyle articles under a "Guides" heading.
+  const tGuides = await getTranslations({ locale, namespace: "pulseGuides" });
+  const guides: GuideItem[] = PULSE_GUIDES.slice(0, 4).map((g) => ({
+    slug: g.slug,
+    title: tGuides(g.titleKey as never),
+    readTime: g.readTime,
+  }));
 
   const t = await getTranslations({ locale, namespace: "common.sidebar" });
   const lp = locale === "en" ? "" : `/${locale}`;
@@ -144,22 +129,17 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
       {guides.length > 0 && (
         <div>
           <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">{t("guidesLabel")}</p>
-          <div className="space-y-4">
+          <div className="space-y-2.5">
             {guides.map((g) => (
-              <Link key={g._id} href={`${lp}/news/${g.slug}`} className="group flex items-start gap-3">
-                <div className="relative w-20 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                  <ImageWithFallback
-                    src={g.featuredImage || FALLBACK_IMAGE}
-                    alt={g.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+              <Link key={g.slug} href={`${lp}/pulse/guides/${g.slug}`} className="group flex items-start gap-3 rounded-xl border border-border/50 p-3 hover:border-primary/30 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <TrendingUp className="h-4 w-4 text-primary" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  {g.publishedAt && <p className="text-[11px] text-muted-foreground mb-1">{formatShortDate(g.publishedAt, locale)}</p>}
                   <p className="text-sm font-semibold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                     {g.title}
                   </p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{g.readTime}</p>
                 </div>
               </Link>
             ))}
