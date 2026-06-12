@@ -1852,7 +1852,8 @@
     "type": "类型",
     "compareCount": "对比",
     "selectedCount": "已选 {count} / 3 套房源",
-    "remove": "移除"
+    "remove": "移除",
+    "furnishing": "家具配置"
   },
   "propertyMatcher": {
     "title": "匹配您的理想房产",

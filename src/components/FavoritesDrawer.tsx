@@ -24,6 +24,8 @@ interface FavProperty {
   community?: string;
   bedrooms?: number;
   listingType?: string;
+  offplan?: string | number;
+  completionStatus?: string;
 }
 
 function formatPrice(price?: number, currency = "AED") {
@@ -39,6 +41,7 @@ export default function FavoritesDrawer() {
   const pathname = usePathname();
   const { status: sessionStatus } = useSession();
   const t = useTranslations("favoritesDrawer");
+  const tEnum = useTranslations("enums");
   const isAnonymous = sessionStatus === "unauthenticated";
 
   // Allow other components to open the drawer via a custom window event
@@ -226,6 +229,7 @@ export default function FavoritesDrawer() {
                     const displayPrice = formatPrice(p.price || p.startingPrice, p.currency);
                     const image = p.featuredImage || p.imageGallery?.[0];
                     const href = p.title ? `/property/${p.slug}` : `/project/${p.slug}`;
+                    const isOffPlan = !p.title || String(p.offplan) === "1" || p.completionStatus === "off_plan";
 
                     return (
                       <div
@@ -246,6 +250,11 @@ export default function FavoritesDrawer() {
                             <div className="w-full h-full flex items-center justify-center">
                               <Building2 className="h-6 w-6 text-muted-foreground/30" />
                             </div>
+                          )}
+                          {isOffPlan && (
+                            <span className="absolute top-1 left-1 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                              {tEnum("offPlan")}
+                            </span>
                           )}
                         </div>
 

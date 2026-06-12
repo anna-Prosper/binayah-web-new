@@ -28,6 +28,8 @@ interface Property {
   amenities?: string[];
   parking?: number;
   furnishing?: string;
+  offplan?: string | number;
+  completionStatus?: string;
 }
 
 function formatPrice(price?: number, currency = "AED") {
@@ -38,6 +40,8 @@ function formatPrice(price?: number, currency = "AED") {
 export default function PropertyComparison() {
   const t = useTranslations("propertyComparison");
   const tProp = useTranslations("propertyDetail");
+  const tEnum = useTranslations("enums");
+  const isOffPlan = (p: Property) => String(p.offplan) === "1" || p.completionStatus === "off_plan";
   const { ids, toggle, clear } = useCompare();
   const { ids: favIds } = useFavorites();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -102,15 +106,15 @@ export default function PropertyComparison() {
     { label: t("bathrooms"), icon: <Bath className="h-3.5 w-3.5" />, key: "bathrooms" },
     { label: t("area"), icon: <Maximize className="h-3.5 w-3.5" />, key: "size" },
     { label: t("community"), icon: <MapPin className="h-3.5 w-3.5" />, key: "community" },
-    { label: "Furnishing", icon: null, key: "furnishing" },
-    { label: "Parking", icon: null, key: "parking" },
+    { label: t("furnishing"), icon: null, key: "furnishing" },
+    { label: tProp("parking"), icon: null, key: "parking" },
   ];
 
   const getValue = (p: Property, key: string): string => {
     if (key === "priceFormatted") return formatPrice(p.price, p.currency);
     if (key === "size") return p.size ? `${new Intl.NumberFormat("en-AE").format(p.size)} ${p.sizeUnit || "sqft"}` : "-";
     if (key === "propertyType") return p.propertyType ? formatPropertyTypeLabel(p.propertyType, p.propertyType) : "-";
-    if (key === "bedrooms" && p.bedrooms === 0) return "Studio";
+    if (key === "bedrooms" && p.bedrooms === 0) return tEnum("studio");
     const val = (p as unknown as Record<string, unknown>)[key];
     if (val == null) return "-";
     return String(val);
@@ -185,6 +189,11 @@ export default function PropertyComparison() {
                                 <div className="w-full h-full flex items-center justify-center">
                                   <Building2 className="h-8 w-8 text-muted-foreground/30" />
                                 </div>
+                              )}
+                              {isOffPlan(p) && (
+                                <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                                  {tEnum("offPlan")}
+                                </span>
                               )}
                             </div>
                             <Link href={`/property/${p.slug}`} className="text-sm font-medium text-foreground line-clamp-2 hover:text-primary transition-colors">

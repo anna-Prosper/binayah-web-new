@@ -1846,7 +1846,8 @@
     "type": "النوع",
     "compareCount": "قارِن",
     "selectedCount": "تم اختيار {count} من أصل 3",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "furnishing": "التأثيث"
   },
   "propertyMatcher": {
     "title": "اعثر على عقارك المثالي",

@@ -1846,7 +1846,8 @@
     "type": "Type",
     "compareCount": "Compare",
     "selectedCount": "{count} of 3 selected",
-    "remove": "Remove"
+    "remove": "Remove",
+    "furnishing": "Furnishing"
   },
   "propertyMatcher": {
     "title": "Find Your Perfect Match",

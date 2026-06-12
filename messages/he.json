@@ -1846,7 +1846,8 @@
     "type": "סוג",
     "compareCount": "השווה",
     "selectedCount": "{count} מתוך 3 נבחרו",
-    "remove": "הסר"
+    "remove": "הסר",
+    "furnishing": "ריהוט"
   },
   "propertyMatcher": {
     "title": "מצא את ההתאמה המושלמת שלך",

@@ -1846,7 +1846,8 @@
     "type": "Тип",
     "compareCount": "Сравнить",
     "selectedCount": "Выбрано {count} из 3",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "furnishing": "Меблировка"
   },
   "propertyMatcher": {
     "title": "Найдите идеальный объект",

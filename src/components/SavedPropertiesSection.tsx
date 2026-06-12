@@ -22,6 +22,8 @@ interface FavProperty {
   community?: string;
   bedrooms?: number;
   listingType?: string;
+  offplan?: string | number;
+  completionStatus?: string;
 }
 
 function formatPrice(price?: number, currency = "AED") {
@@ -48,6 +50,7 @@ interface SavedPropertiesSectionProps {
 
 export default function SavedPropertiesSection({ onCountChange }: SavedPropertiesSectionProps) {
   const t = useTranslations("savedProperties");
+  const tEnum = useTranslations("enums");
   const { ids, toggle } = useFavorites();
 
   const { data, isLoading, isError } = useQuery({
@@ -159,6 +162,7 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
         const image = p.featuredImage || p.imageGallery?.[0];
         const href = p.title ? `/property/${p.slug}` : `/project/${p.slug}`;
         const isProject = !p.title;
+        const isOffPlan = isProject || String(p.offplan) === "1" || p.completionStatus === "off_plan";
         const isForRent = p.listingType?.toLowerCase().includes("rent");
 
         return (
@@ -189,15 +193,15 @@ export default function SavedPropertiesSection({ onCountChange }: SavedPropertie
               )}
 
               {/* Type badge */}
-              {(isProject || isForRent) && (
+              {(isOffPlan || isForRent) && (
                 <span
                   className={`absolute top-3 left-3 text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm border ${
-                    isProject
+                    isOffPlan
                       ? "bg-[#0B3D2E]/80 text-white border-white/20"
                       : "bg-blue-600/80 text-white border-blue-400/30"
                   }`}
                 >
-                  {isProject ? t("offPlanBadge") : t("forRentBadge")}
+                  {isOffPlan ? tEnum("offPlan") : t("forRentBadge")}
                 </span>
               )}
 

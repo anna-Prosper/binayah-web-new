@@ -1846,7 +1846,8 @@
     "type": "Loại",
     "compareCount": "So sánh",
     "selectedCount": "Đã chọn {count} trong 3",
-    "remove": "Xóa"
+    "remove": "Xóa",
+    "furnishing": "Nội thất"
   },
   "propertyMatcher": {
     "title": "Tìm bất động sản phù hợp nhất",
