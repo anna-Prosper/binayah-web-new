@@ -1069,7 +1069,19 @@
     "sending": "جارٍ الإرسال…",
     "namePlaceholder": "اسمك الكامل",
     "requirementsPlaceholder": "أي متطلبات محددة...",
-    "openPermit": "افتح المستند →"
+    "openPermit": "افتح المستند →",
+    "guideHowToBuyTitle": "كيفية شراء عقار في دبي",
+    "guideHowToBuyDesc": "خطوة بخطوة: من وكيل ريرا إلى سند الملكية في 30 يومًا",
+    "guideGoldenVisaTitle": "الإقامة الذهبية عبر العقار",
+    "guideGoldenVisaDesc": "حد مليوني درهم، الأهلية وشمول العائلة",
+    "guideOffPlanTitle": "عقارات على الخارطة مقابل الجاهزة",
+    "guideOffPlanDesc": "المزايا والعيوب ومصفوفة القرار لكل نوع",
+    "guideDldFeesTitle": "شرح رسوم دائرة الأراضي والأملاك",
+    "guideDldFeesDesc": "التكلفة الإجمالية الحقيقية بعد نسبة 4٪ المعلنة",
+    "guideTitleDeedTitle": "سند الملكية مقابل الأوقود",
+    "guideTitleDeedDesc": "لماذا يهم هذا الفرق لإعادة البيع والتأشيرة",
+    "guideNonResidentTitle": "الشراء كغير مقيم",
+    "guideNonResidentDesc": "التوكيل والتمويل والجداول الزمنية موضّحة"
   },
   "propertyDetail": {
     "backToProperties": "العودة إلى العقارات",

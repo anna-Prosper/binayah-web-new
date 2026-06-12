@@ -1069,7 +1069,19 @@
     "readLess": "Show less",
     "sending": "Sending…",
     "namePlaceholder": "Your full name",
-    "requirementsPlaceholder": "Any specific requirements..."
+    "requirementsPlaceholder": "Any specific requirements...",
+    "guideHowToBuyTitle": "How to Buy Property in Dubai",
+    "guideHowToBuyDesc": "Step-by-step: from RERA agent to title deed in 30 days",
+    "guideGoldenVisaTitle": "Golden Visa Through Property",
+    "guideGoldenVisaDesc": "AED 2M threshold, eligibility and family inclusion",
+    "guideOffPlanTitle": "Off-Plan vs Ready Properties",
+    "guideOffPlanDesc": "Pros, cons and decision matrix for each type",
+    "guideDldFeesTitle": "DLD Fees Explained",
+    "guideDldFeesDesc": "The real all-in cost beyond the 4% headline",
+    "guideTitleDeedTitle": "Title Deed vs Oqood",
+    "guideTitleDeedDesc": "Why this difference matters for resale and visa",
+    "guideNonResidentTitle": "Buying as a Non-Resident",
+    "guideNonResidentDesc": "Power of attorney, financing and timelines explained"
   },
   "propertyDetail": {
     "backToProperties": "Back to Properties",

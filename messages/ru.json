@@ -1069,7 +1069,19 @@
     "readLess": "Свернуть",
     "sending": "Отправка…",
     "namePlaceholder": "Ваше полное имя",
-    "requirementsPlaceholder": "Есть особые требования..."
+    "requirementsPlaceholder": "Есть особые требования...",
+    "guideHowToBuyTitle": "Как купить недвижимость в Дубае",
+    "guideHowToBuyDesc": "Пошагово: от агента RERA до титула за 30 дней",
+    "guideGoldenVisaTitle": "Золотая виза через недвижимость",
+    "guideGoldenVisaDesc": "Порог AED 2 млн, право на участие и включение семьи",
+    "guideOffPlanTitle": "Офф-план или готовая недвижимость",
+    "guideOffPlanDesc": "Плюсы, минусы и матрица решений для каждого типа",
+    "guideDldFeesTitle": "Сборы DLD: разбор",
+    "guideDldFeesDesc": "Реальная полная стоимость сверх заявленных 4%",
+    "guideTitleDeedTitle": "Титул собственности или Oqood",
+    "guideTitleDeedDesc": "Почему эта разница важна для перепродажи и визы",
+    "guideNonResidentTitle": "Покупка нерезидентом",
+    "guideNonResidentDesc": "Доверенность, финансирование и сроки — с пояснениями"
   },
   "propertyDetail": {
     "backToProperties": "К объектам",

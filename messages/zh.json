@@ -1075,7 +1075,19 @@
     "sending": "发送中…",
     "namePlaceholder": "您的全名",
     "requirementsPlaceholder": "有任何特定要求...",
-    "openPermit": "打开文档 →"
+    "openPermit": "打开文档 →",
+    "guideHowToBuyTitle": "如何在迪拜购房",
+    "guideHowToBuyDesc": "分步指南：从 RERA 代理到 30 天内取得房产证",
+    "guideGoldenVisaTitle": "通过房产获得黄金签证",
+    "guideGoldenVisaDesc": "200 万迪拉姆门槛、资格与家庭纳入",
+    "guideOffPlanTitle": "期房与现房对比",
+    "guideOffPlanDesc": "各类型的利弊与决策矩阵",
+    "guideDldFeesTitle": "DLD 费用详解",
+    "guideDldFeesDesc": "4% 标价之外的真实全包成本",
+    "guideTitleDeedTitle": "房产证与 Oqood 对比",
+    "guideTitleDeedDesc": "为何这一差异对转售和签证至关重要",
+    "guideNonResidentTitle": "非居民购房",
+    "guideNonResidentDesc": "授权书、融资与时间安排详解"
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",

@@ -1069,7 +1069,19 @@
     "readLess": "Hiển thị ít hơn",
     "sending": "Đang gửi…",
     "namePlaceholder": "Tên đầy đủ của bạn",
-    "requirementsPlaceholder": "Yêu cầu cụ thể nào..."
+    "requirementsPlaceholder": "Yêu cầu cụ thể nào...",
+    "guideHowToBuyTitle": "Cách mua bất động sản tại Dubai",
+    "guideHowToBuyDesc": "Từng bước: từ đại lý RERA đến sổ đỏ trong 30 ngày",
+    "guideGoldenVisaTitle": "Thị thực Vàng qua bất động sản",
+    "guideGoldenVisaDesc": "Ngưỡng 2 triệu AED, điều kiện và bao gồm gia đình",
+    "guideOffPlanTitle": "Nhà hình thành tương lai và nhà có sẵn",
+    "guideOffPlanDesc": "Ưu, nhược điểm và ma trận quyết định cho từng loại",
+    "guideDldFeesTitle": "Giải thích phí DLD",
+    "guideDldFeesDesc": "Chi phí trọn gói thực tế ngoài mức 4% công bố",
+    "guideTitleDeedTitle": "Sổ đỏ và Oqood",
+    "guideTitleDeedDesc": "Vì sao khác biệt này quan trọng cho bán lại và thị thực",
+    "guideNonResidentTitle": "Mua khi không cư trú",
+    "guideNonResidentDesc": "Giấy ủy quyền, tài chính và tiến độ được giải thích"
   },
   "propertyDetail": {
     "backToProperties": "Quay lại Bất động sản",

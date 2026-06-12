@@ -2645,12 +2645,12 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 items-stretch">
           {[
-            { title: "How to Buy Property in Dubai", desc: "Step-by-step: from RERA agent to title deed in 30 days", icon: Home, href: "/pulse/guides/how-to-buy-property-in-dubai" },
-            { title: "Golden Visa Through Property", desc: "AED 2M threshold, eligibility and family inclusion", icon: Shield, href: "/pulse/guides/golden-visa-process" },
-            { title: "Off-Plan vs Ready Properties", desc: "Pros, cons and decision matrix for each type", icon: TrendingUp, href: "/pulse/guides/off-plan-vs-secondary" },
-            { title: "DLD Fees Explained", desc: "The real all-in cost beyond the 4% headline", icon: CreditCard, href: "/pulse/guides/dld-fees-explained" },
-            { title: "Title Deed vs Oqood", desc: "Why this difference matters for resale and visa", icon: Compass, href: "/pulse/guides/title-deed-vs-oqood" },
-            { title: "Buying as a Non-Resident", desc: "Power of attorney, financing and timelines explained", icon: Star, href: "/pulse/guides/buying-as-non-resident" },
+            { title: t("guideHowToBuyTitle"), desc: t("guideHowToBuyDesc"), icon: Home, href: "/pulse/guides/how-to-buy-property-in-dubai" },
+            { title: t("guideGoldenVisaTitle"), desc: t("guideGoldenVisaDesc"), icon: Shield, href: "/pulse/guides/golden-visa-process" },
+            { title: t("guideOffPlanTitle"), desc: t("guideOffPlanDesc"), icon: TrendingUp, href: "/pulse/guides/off-plan-vs-secondary" },
+            { title: t("guideDldFeesTitle"), desc: t("guideDldFeesDesc"), icon: CreditCard, href: "/pulse/guides/dld-fees-explained" },
+            { title: t("guideTitleDeedTitle"), desc: t("guideTitleDeedDesc"), icon: Compass, href: "/pulse/guides/title-deed-vs-oqood" },
+            { title: t("guideNonResidentTitle"), desc: t("guideNonResidentDesc"), icon: Star, href: "/pulse/guides/buying-as-non-resident" },
           ].map((guide, i) => (
             <motion.a
               key={i}

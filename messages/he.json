@@ -1069,7 +1069,19 @@
     "readLess": "הצג פחות",
     "sending": "שולח…",
     "namePlaceholder": "שם מלא",
-    "requirementsPlaceholder": "דרישות מיוחדות..."
+    "requirementsPlaceholder": "דרישות מיוחדות...",
+    "guideHowToBuyTitle": "איך לקנות נכס בדובאי",
+    "guideHowToBuyDesc": "שלב אחר שלב: מסוכן RERA ועד שטר בעלות ב-30 יום",
+    "guideGoldenVisaTitle": "ויזת זהב באמצעות נכס",
+    "guideGoldenVisaDesc": "סף של 2 מיליון AED, זכאות וצירוף המשפחה",
+    "guideOffPlanTitle": "נכסים על הנייר מול נכסים מוכנים",
+    "guideOffPlanDesc": "יתרונות, חסרונות ומטריצת החלטה לכל סוג",
+    "guideDldFeesTitle": "הסבר על עמלות DLD",
+    "guideDldFeesDesc": "העלות הכוללת האמיתית מעבר לכותרת ה-4%",
+    "guideTitleDeedTitle": "שטר בעלות מול Oqood",
+    "guideTitleDeedDesc": "למה ההבדל הזה חשוב למכירה חוזרת ולוויזה",
+    "guideNonResidentTitle": "רכישה כתושב חוץ",
+    "guideNonResidentDesc": "ייפוי כוח, מימון ולוחות זמנים בהסבר"
   },
   "propertyDetail": {
     "backToProperties": "חזרה לנכסים",
