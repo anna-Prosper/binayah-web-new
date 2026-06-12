@@ -1519,22 +1519,18 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       <div>
                         <h2 className="text-xl font-bold text-foreground">{t("locationNearby")}</h2>
                         {project.locationDescription && (() => {
-                          const parts = project.locationDescription!.split(/\s*[•●◦▪■]\s*/).map((s: string) => s.trim()).filter(Boolean);
-                          if (parts.length <= 1) return <p className="text-xs text-muted-foreground mt-0.5">{project.locationDescription}</p>;
-                          const [intro, ...bullets] = parts;
-                          return (
-                            <div className="mt-1 space-y-1.5">
-                              {intro && <p className="text-xs text-muted-foreground">{intro}</p>}
-                              <ul className="space-y-1">
-                                {bullets.map((b: string, i: number) => (
-                                  <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
-                                    <span>{b}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          );
+                          // Show only the descriptive intro — the connectivity bullets duplicate
+                          // the nearby-attraction cards rendered below the map.
+                          const raw = project.locationDescription!;
+                          const hadBullets = /[•●◦▪■]/.test(raw);
+                          const lines = raw.split(/\s*[•●◦▪■]\s*/)[0].split(/\n+/).map((l: string) => l.trim()).filter(Boolean);
+                          // Drop a trailing short header label (e.g. "Key Connectivities" / "Ключевые связи").
+                          if (hadBullets && lines.length > 1) {
+                            const last = lines[lines.length - 1];
+                            if (last.split(/\s+/).length <= 6 && !/[.!?:,;]$/.test(last)) lines.pop();
+                          }
+                          const text = lines.join(" ").trim();
+                          return text ? <p className="text-xs text-muted-foreground mt-0.5">{text}</p> : null;
                         })()}
                       </div>
                     </div>
