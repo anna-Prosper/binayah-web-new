@@ -73,9 +73,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaRentByType"),
       links: [
-        { label: t("apartments"), href: "/search?intent=rent&type=Apartment" },
-        { label: t("villas"), href: "/search?intent=rent&type=Villa" },
-        { label: t("townhouses"), href: "/search?intent=rent&type=Townhouse" },
+        { label: t("apartments"), href: "/rent/apartments" },
+        { label: t("villas"), href: "/rent/villas" },
+        { label: t("townhouses"), href: "/rent/townhouses" },
       ],
     },
     {
