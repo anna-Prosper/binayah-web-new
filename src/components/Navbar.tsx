@@ -104,7 +104,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("newLaunches"), href: "/off-plan" },
         { label: t("constructionUpdates"), href: "/construction-updates" },
         { label: t("offPlanByDeveloper"), href: "/developers" },
-        { label: t("paymentPlans"), href: "/search?status=Off-Plan" },
+        { label: t("paymentPlans"), href: "/off-plan" },
       ],
     },
   ];
@@ -156,8 +156,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     ...columns.flatMap((c) => c.links),
     cta,
   ];
-  const mobileBuyLinks = flattenWithCta(buyColumns, { label: t("megaBuyCtaAll"), href: "/search?intent=buy" });
-  const mobileRentLinks = flattenWithCta(rentColumns, { label: t("megaRentCtaAll"), href: "/search?intent=rent" });
+  const mobileBuyLinks = flattenWithCta(buyColumns, { label: t("megaBuyCtaAll"), href: "/buy" });
+  const mobileRentLinks = flattenWithCta(rentColumns, { label: t("megaRentCtaAll"), href: "/rent" });
   const mobileOffPlanLinks = flattenWithCta(offPlanColumns, { label: t("megaOffPlanCtaAll"), href: "/off-plan" });
   const mobileGuidesLinks = flattenWithCta(guidesColumns, { label: t("megaGuidesCtaAll"), href: "/pulse/guides" });
   const mobileSellLinks = flattenWithCta(sellColumns, { label: t("sell"), href: "/sell" });
@@ -311,7 +311,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseLeave={() => setBuyOpen(false)}
               >
                 <button
-                  onClick={() => handleNav("/search?intent=buy")}
+                  onClick={() => handleNav("/buy")}
                   className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("buy")}
@@ -335,7 +335,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           ))}
                         </div>
                         <div className="border-t border-white/10 px-4 py-2.5">
-                          <button onClick={() => handleNav("/search?intent=buy")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                          <button onClick={() => handleNav("/buy")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
                             {t("megaBuyCtaAll")} →
                           </button>
                         </div>
@@ -353,7 +353,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseLeave={() => setRentOpen(false)}
               >
                 <button
-                  onClick={() => handleNav("/search?intent=rent")}
+                  onClick={() => handleNav("/rent")}
                   className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("rent")}
@@ -377,7 +377,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           ))}
                         </div>
                         <div className="border-t border-white/10 px-4 py-2.5">
-                          <button onClick={() => handleNav("/search?intent=rent")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
+                          <button onClick={() => handleNav("/rent")} className="text-[12px] text-accent hover:text-white transition-colors font-medium">
                             {t("megaRentCtaAll")} →
                           </button>
                         </div>
@@ -395,7 +395,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseLeave={() => setOffPlanOpen(false)}
               >
                 <button
-                  onClick={() => handleNav("/search?status=Off-Plan")}
+                  onClick={() => handleNav("/off-plan")}
                   className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
                 >
                   {t("offPlan")}
