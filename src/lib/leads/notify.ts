@@ -30,9 +30,6 @@ export function notifyNewLead(
     createdAt?: string;
   }
 ): void {
-  const url = process.env.LEADS_WEBHOOK_URL;
-  if (!url) return;
-
   const site = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
   const full: NewLeadWebhookPayload = {
     event: "lead.created",
@@ -50,13 +47,55 @@ export function notifyNewLead(
     adminUrl: `${site}/admin/leads`,
   };
 
-  fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(full),
-    // Reasonable cap so a slow webhook can't pin a serverless function.
-    signal: AbortSignal.timeout(5_000),
-  }).catch((err: Error) => {
-    console.error("[notifyNewLead] webhook failed:", err.message);
-  });
+  // 1. Optional webhook (Slack/Zapier/CRM) when configured.
+  const url = process.env.LEADS_WEBHOOK_URL;
+  if (url) {
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(full),
+      // Reasonable cap so a slow webhook can't pin a serverless function.
+      signal: AbortSignal.timeout(5_000),
+    }).catch((err: Error) => {
+      console.error("[notifyNewLead] webhook failed:", err.message);
+    });
+  }
+
+  // 2. WhatsApp alert to the team group — the primary live channel.
+  const base = process.env.WHATSAPP_API_BASE_URL;
+  const key = process.env.WHATSAPP_API_KEY;
+  const group = process.env.WHATSAPP_GROUP_JID;
+  if (base && key && group) {
+    fetch(`${base}/api/messages/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": key },
+      body: JSON.stringify({ to: group, text: buildLeadMessage(full) }),
+      signal: AbortSignal.timeout(5_000),
+    }).catch((err: Error) => {
+      console.error("[notifyNewLead] whatsapp failed:", err.message);
+    });
+  }
+}
+
+const SOURCE_LABEL: Record<string, string> = {
+  inquiry: "Property Inquiry",
+  newsletter: "Newsletter / Market Report",
+  "list-property": "List Your Property",
+  "project-subscribe": "Project Updates",
+  valuation: "Property Valuation",
+};
+
+function buildLeadMessage(p: NewLeadWebhookPayload): string {
+  const lines: string[] = ["🔔 *New Lead — Binayah*", "", `Type: ${SOURCE_LABEL[p.source] ?? p.source}`];
+  if (p.name) lines.push(`Name: ${p.name}`);
+  if (p.email) lines.push(`Email: ${p.email}`);
+  if (p.phone) lines.push(`Phone: ${p.phone}`);
+  if (p.community) lines.push(`Area: ${p.community}`);
+  if (p.intent?.length) lines.push(`Intent: ${p.intent.join(", ")}`);
+  if (p.property?.title) lines.push(`Property: ${p.property.title}`);
+  if (p.project?.name) lines.push(`Project: ${p.project.name}`);
+  if (p.message) lines.push(`Message: ${p.message.slice(0, 300)}`);
+  if (p.channel && p.channel !== p.source) lines.push(`Channel: ${p.channel}`);
+  lines.push("", `View: ${p.adminUrl}`);
+  return lines.join("\n");
 }
