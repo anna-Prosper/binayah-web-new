@@ -18,6 +18,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import LiveChatBanner from "@/components/LiveChatBanner";
 import GlobalImageFallback from "@/components/GlobalImageFallback";
+import ChunkReloadGuard from "@/components/ChunkReloadGuard";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const GA_ID = "G-9FZKWX04K3";
@@ -206,6 +207,7 @@ export default async function LocaleLayout({
             <FavoritesProvider>
               <CompareProvider>
                 <SubscriptionsProvider>
+                  <ChunkReloadGuard />
                   {children}
                   <WhatsAppButton />
                   <FavoritesDrawer />
