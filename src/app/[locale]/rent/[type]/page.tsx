@@ -10,9 +10,6 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 export const revalidate = 1800;
-// Only the 3 whitelisted types are valid; any other slug returns a real 404
-// (Next built-in via dynamicParams=false), not a soft 200.
-export const dynamicParams = false;
 export function generateStaticParams() {
   const locales = ["en", "ru", "ar", "zh", "vi", "he"];
   return locales.flatMap((locale) => ["apartments", "villas", "townhouses"].map((type) => ({ locale, type })));
