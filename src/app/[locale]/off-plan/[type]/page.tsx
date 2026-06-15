@@ -9,7 +9,14 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
+// Only the 3 whitelisted types are valid; any other slug returns a real 404
+// (Next built-in via dynamicParams=false), not a soft 200.
+export const dynamicParams = false;
+export function generateStaticParams() {
+  const locales = ["en", "ru", "ar", "zh", "vi", "he"];
+  return locales.flatMap((locale) => ["apartments", "villas", "townhouses"].map((type) => ({ locale, type })));
+}
 
 interface Props {
   params: Promise<{ locale: string; type: string }>;
