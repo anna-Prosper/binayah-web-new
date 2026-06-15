@@ -8,6 +8,11 @@ import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 1800;
 
+// Enables proper 404 status for notFound() on unknown slugs (Next 15 returns 200
+// for notFound() in fully-dynamic routes without generateStaticParams). Slugs
+// still render on-demand via ISR.
+export function generateStaticParams() { return []; }
+
 export async function generateMetadata({
   params,
 }: {

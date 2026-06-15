@@ -11,6 +11,13 @@ import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 export const dynamic = "force-dynamic";
 
+// Pre-generate the valid type pages; unknown types 404 cleanly.
+export function generateStaticParams() {
+  const locales = ["en", "ru", "ar", "zh", "vi", "he"];
+  return locales.flatMap((locale) => ["apartments", "villas", "townhouses"].map((type) => ({ locale, type })));
+}
+
+
 interface Props {
   params: Promise<{ locale: string; type: string }>;
 }
