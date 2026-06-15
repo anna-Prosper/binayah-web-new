@@ -65,7 +65,7 @@ function descFor(typeLabel: string, locale: string): string {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, type } = await params;
   const entry = TYPES[type as TypeSlug];
-  if (!entry) return {};
+  if (!entry) notFound();
   const typeLabel = entry.label[(locale as Loc)] ?? entry.label.en;
   const url = canonical(locale, `/rent/${type}`);
   const title = titleFor(typeLabel, locale);

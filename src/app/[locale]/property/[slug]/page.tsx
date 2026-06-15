@@ -4,6 +4,7 @@ import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 1800;
 
@@ -14,13 +15,9 @@ export async function generateMetadata({
 }) {
   const { slug, locale } = await params;
   const data = await getListing(slug);
-  if (!data) return {
-    title: "Not Found",
-    // Explicitly set canonical to this URL (not root) and noindex so the
-    // layout's canonical / robots defaults don't bleed into 404 property pages.
-    robots: { index: false, follow: false },
-    alternates: { canonical: makeCanonical(locale, `/property/${slug}`) },
-  };
+  // Missing/delisted listing → real 404 (status code), not a soft 200+noindex
+  // page, so Google drops the URL instead of parking it under "Excluded by noindex".
+  if (!data) notFound();
   const { listing } = data;
   const seo = listing.seo || {};
 
@@ -66,6 +63,7 @@ export default async function PropertyPage({
   const data = await getListing(slug);
   if (!data) return notFound();
   const { listing, similarListings } = data;
+  const nonce = await getNonce();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -118,6 +116,7 @@ export default async function PropertyPage({
     <>
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
 import { canonical, altLangs, AE_URL } from "@/lib/site";
+import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
+  const nonce = await getNonce();
   // Pass locale so API returns translated title/body/excerpt when available
   const article = await getNewsArticle(slug, locale);
   let related: any[] = [];
@@ -47,6 +49,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
       <NewsDetailClient article={article} related={related} marketStats={marketStats} />
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

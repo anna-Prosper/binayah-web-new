@@ -220,17 +220,18 @@ export default async function LocaleLayout({
                       <Script
                         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
                         strategy="lazyOnload"
+                        nonce={nonce}
                       />
-                      <Script id="ga-init" strategy="lazyOnload">
+                      <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
                         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${GA_ID}');`}
                       </Script>
-                      <Script id="clarity-init" strategy="lazyOnload">
+                      <Script id="clarity-init" strategy="lazyOnload" nonce={nonce}>
                         {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${CLARITY_ID}");`}
                       </Script>
-                      <Script id="livechat-init" strategy="lazyOnload">
+                      <Script id="livechat-init" strategy="lazyOnload" nonce={nonce}>
                         {`window.__lc = window.__lc || {};
 window.__lc.license = ${LIVECHAT_LICENSE};
 window.__lc.integration_name = "manual_channels";

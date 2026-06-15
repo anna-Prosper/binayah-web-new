@@ -1,10 +1,12 @@
+import { getNonce } from "@/lib/nonce";
+
 // JSON.stringify does not escape </script> sequences, which can break out of the
 // script tag if a DB field contains that string. Replace < to be safe.
 function safeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-export function ArticleJsonLd({
+export async function ArticleJsonLd({
   headline,
   description,
   url,
@@ -47,16 +49,18 @@ export function ArticleJsonLd({
     isPartOf: { "@type": "WebSite", name: "Binayah Properties", url: "https://www.binayah.ae" },
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
+export async function OrganizationJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": ["RealEstateAgent", "LocalBusiness"],
@@ -104,16 +108,18 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     hasMap: "https://maps.google.com/?q=Business+Bay+Dubai",
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function WebSiteJsonLd({ nonce }: { nonce?: string }) {
+export async function WebSiteJsonLd({ nonce }: { nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -131,16 +137,18 @@ export function WebSiteJsonLd({ nonce }: { nonce?: string }) {
     },
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href: string }[]; nonce?: string }) {
+export async function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -152,16 +160,18 @@ export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href
     })),
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: string }[]; nonce?: string }) {
+export async function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -175,16 +185,18 @@ export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: s
     })),
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function ReviewJsonLd({
+export async function ReviewJsonLd({
   reviews,
   nonce,
 }: {
@@ -216,16 +228,18 @@ export function ReviewJsonLd({
     })),
   };
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 }
 
-export function RealEstateListingJsonLd({
+export async function RealEstateListingJsonLd({
   name,
   description,
   image,
@@ -281,10 +295,12 @@ export function RealEstateListingJsonLd({
     };
   }
 
+  const resolvedNonce = nonce || (await getNonce());
+
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
+      nonce={resolvedNonce}
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );

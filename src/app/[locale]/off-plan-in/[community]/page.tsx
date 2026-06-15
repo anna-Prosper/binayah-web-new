@@ -23,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { community, locale } = await params;
   const c = findBuyCommunity(community);
-  if (!c) return {};
+  if (!c) notFound();
   const title = `Off-Plan Projects in ${c.name}, Dubai | New Launches | Binayah`;
   const full = `${localizeCommunityText(c.shortIntro, locale)} Off-plan & new-launch projects in ${c.name} with flexible payment plans — Binayah.`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.

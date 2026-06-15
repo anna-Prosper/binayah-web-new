@@ -3,18 +3,17 @@ import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClie
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
-import { canonical as makeCanonical } from "@/lib/site";
+import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 1800;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const project = applyTranslation(await getProject(slug), locale);
-  if (!project) return {
-    title: "Not Found",
-    robots: { index: false, follow: false },
-    alternates: { canonical: makeCanonical(locale, `/project/${slug}`) },
-  };
+  // Missing/delisted project → real 404 (status code), not a soft 200+noindex
+  // page. Calling notFound() in generateMetadata makes Next return a proper 404
+  // so Google drops the URL instead of parking it under "Excluded by noindex".
+  if (!project) notFound();
   const seo = project.seo || {};
 
   // Tight title within Google's ~60-char SERP limit: project + area + brand.
@@ -51,6 +50,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const { locale, slug } = await params;
   const project = applyTranslation(await getProject(slug), locale);
   if (!project) return notFound();
+  const nonce = await getNonce();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae";
   const jsonLd: Record<string, unknown> = {
@@ -133,7 +133,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <ProjectDetailClient serverProject={project} />

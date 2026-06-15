@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { getNonce } from "@/lib/nonce";
 import { Waves, Bike, Trophy, Trees, Anchor, Building2, MapPin, TrendingUp, Shield, Star, ArrowRight, Phone, ChevronRight, CheckCircle } from "lucide-react";
 
 export const revalidate = 86400;
@@ -879,6 +880,7 @@ export default async function HudayriyatIslandPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const nonce = await getNonce();
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const L = LABELS[locale as Locale] ?? LABELS.en;
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
@@ -894,7 +896,8 @@ export default async function HudayriyatIslandPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_ARTICLE) }}
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_ARTICLE).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <FAQJsonLd faqs={L.faqs} />
