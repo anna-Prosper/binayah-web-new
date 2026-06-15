@@ -4,14 +4,23 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-interface Props { params: Promise<{ locale: string }> }
+interface Props {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const sp = await searchParams;
   const url = canonical(locale, "/search");
+  // Faceted-search URLs (?type=, ?locations=, ?q=, …) are infinite near-duplicate
+  // combinations — keep them out of the index (but follow links) so they don't pile
+  // up under "Duplicate without user-selected canonical". Bare /search stays indexable.
+  const hasFilters = Object.keys(sp).length > 0;
   return {
     title: "Search Properties in Dubai | Binayah Properties",
     description: "Search apartments, villas, townhouses and off-plan projects in Dubai. Filter by area, price, bedrooms and more.",
+    ...(hasFilters ? { robots: { index: false, follow: true } } : {}),
     alternates: { canonical: url, languages: altLangs("/search") },
     openGraph: {
       title: "Search Properties in Dubai | Binayah Properties",
