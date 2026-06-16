@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
-import { FOREIGN_BUYERS, findForeignBuyer } from "@/lib/foreign-buyers";
+import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText } from "@/lib/foreign-buyers";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 86400;
@@ -625,7 +625,7 @@ export default async function ForeignBuyerPage({
             </span>
           </h1>
           <p className="text-primary-foreground/80 text-sm sm:text-base leading-relaxed max-w-3xl">
-            {b.intro}
+            {localizeBuyerText(b.intro, locale)}
           </p>
         </div>
       </section>
@@ -664,7 +664,7 @@ export default async function ForeignBuyerPage({
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
             {c.whyHeading} {b.citizen} {c.buyers}
           </h2>
-          <p className="text-base text-foreground/80 leading-relaxed">{b.whyDubai}</p>
+          <p className="text-base text-foreground/80 leading-relaxed">{localizeBuyerText(b.whyDubai, locale)}</p>
         </section>
 
         {/* Buying steps */}
@@ -696,7 +696,7 @@ export default async function ForeignBuyerPage({
         {/* Legal status */}
         <section>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.legalHeading}</h2>
-          <p className="text-base text-foreground/80 leading-relaxed">{b.legalStatus}</p>
+          <p className="text-base text-foreground/80 leading-relaxed">{localizeBuyerText(b.legalStatus, locale)}</p>
         </section>
 
         {/* Financing */}
@@ -704,19 +704,19 @@ export default async function ForeignBuyerPage({
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
             {c.financeHeading}
           </h2>
-          <p className="text-base text-foreground/80 leading-relaxed">{b.financing}</p>
+          <p className="text-base text-foreground/80 leading-relaxed">{localizeBuyerText(b.financing, locale)}</p>
         </section>
 
         {/* Tax */}
         <section>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.taxHeading}</h2>
-          <p className="text-base text-foreground/80 leading-relaxed">{b.taxImplications}</p>
+          <p className="text-base text-foreground/80 leading-relaxed">{localizeBuyerText(b.taxImplications, locale)}</p>
         </section>
 
         {/* Repatriation */}
         <section>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">{c.repatHeading}</h2>
-          <p className="text-base text-foreground/80 leading-relaxed">{b.repatriation}</p>
+          <p className="text-base text-foreground/80 leading-relaxed">{localizeBuyerText(b.repatriation, locale)}</p>
         </section>
 
         {/* Preferred areas */}
