@@ -31,16 +31,20 @@ const LIVECHAT_WSS = "wss://*.livechatinc.com";
 
 const SCRIPT_ALLOWLIST = `${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`;
 
-// Enforced CSP — nonce + 'strict-dynamic' so Next.js auto-nonces its hydration
-// scripts and only trusted (nonce'd) scripts run. 'unsafe-inline' + the host
-// allowlist are kept as a legacy fallback: CSP3 browsers ignore them when a
-// nonce/strict-dynamic is present, older browsers use them so nothing breaks.
+// Enforced CSP — 'self' covers all same-origin _next/static/chunks (including
+// lazily-loaded webpack code-split chunks whose script elements are created by
+// the webpack runtime without a nonce attribute). 'unsafe-inline' covers
+// Next.js hydration and other inline scripts. External scripts are gated by
+// the host allowlist. We intentionally omit 'strict-dynamic' because
+// webpack's chunk loader (r.nc) is never wired up in the Next.js 15 build,
+// so dynamically-created script elements lack a nonce and CSP logs violations
+// even though strict-dynamic would eventually allow them via trust propagation.
 function buildCSP(nonce: string): string {
   return [
     "default-src 'self'",
     isDev
-      ? `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
-      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' ${SCRIPT_ALLOWLIST}`,
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
+      : `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${SCRIPT_ALLOWLIST}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
