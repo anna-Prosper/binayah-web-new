@@ -46,13 +46,20 @@ jobs:
             fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
             echo '/swapfile none swap sw 0 0' >> /etc/fstab
           fi
-          # Copy build output to serve dir
+          # Copy build output to serve dir. Exclude .next/cache — it's the
+          # webpack build cache (can be 400MB+), only used at build time, never
+          # by `next start`. Shipping it to the small VPS disk filled it up and
+          # crash-looped the app ("no production build in .next"). The explicit
+          # rm guarantees it's gone even if an old copy lingers (rsync --exclude
+          # protects excluded paths from --delete).
           mkdir -p /var/www/binayah-ru
           rsync -a --delete \
             --exclude='.git' \
             --exclude='node_modules' \
+            --exclude='.next/cache' \
             ./ /var/www/binayah-ru/
           cd /var/www/binayah-ru
+          rm -rf .next/cache
           npm install --omit=dev --ignore-scripts 2>/dev/null || true
           pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start
           pm2 save
