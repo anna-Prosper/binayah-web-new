@@ -36,7 +36,10 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NODE_OPTIONS: '--max-old-space-size=4096'
+          # VPS has 960MB RAM + 2GB swap. 4096 let Node's heap balloon and the
+          # kernel OOM-killed the runner (it then stayed dead for days). 1536
+          # builds fine here and stays within RAM+swap.
+          NODE_OPTIONS: '--max-old-space-size=1536'
 
       - name: Swap & reload PM2
         run: |
