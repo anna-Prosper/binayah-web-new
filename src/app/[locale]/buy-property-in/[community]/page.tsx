@@ -10,7 +10,7 @@ import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 export const revalidate = 1800;
 
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
   return locales.flatMap((locale) =>
     BUY_COMMUNITIES.map((c) => ({ locale, community: c.slug }))
   );
@@ -33,7 +33,7 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: makeCanonical(locale, `/buy-property-in/${c.slug}`),
-      languages: altLangs(`/buy-property-in/${c.slug}`, ["he"]),
+      languages: altLangs(`/buy-property-in/${c.slug}`),
     },
     openGraph: {
       title,
@@ -53,6 +53,7 @@ const LABELS = {
   ar: { home: "الرئيسية", buy: "شراء", buyIn: "شراء عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forSale: "عقارات للبيع في", secondary: "السوق الثانوي", emptyTitle: "لا توجد إعلانات نشطة هنا حاليًا", emptyBody: "نضيف عقارات جديدة في هذا المجتمع بانتظام. أخبرنا بما تبحث عنه وسننبهك فور توفّره — أو استكشف المتاح في جميع أنحاء دبي اليوم.", browseAll: "تصفّح كل العقارات", getNotified: "نبّهني" },
   zh: { home: "首页", buy: "购买", buyIn: "购买房产 —", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产 —", secondary: "二手市场", emptyTitle: "该区域暂无在售房源", emptyBody: "我们会定期上架该社区的新房源。告诉我们您的需求，一有合适房源即刻通知您——或浏览迪拜全城目前可选的房源。", browseAll: "浏览全部房源", getNotified: "通知我" },
   vi: { home: "Trang chủ", buy: "Mua", buyIn: "Mua bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forSale: "Bất động sản bán tại", secondary: "THỊ TRƯỜNG THỨ CẤP", emptyTitle: "Hiện chưa có tin đăng tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có — hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả bất động sản", getNotified: "Nhận thông báo" },
+  he: { home: "בית", buy: "קנייה", buyIn: "קניית נכס ב", dubai: "דובאי", priceRange: "טווח מחירים", grossYield: "תשואה ברוטו", listings: "מודעות", forSale: "נכסים למכירה ב", secondary: "שוק משני", emptyTitle: "אין כרגע מודעות פעילות כאן", emptyBody: "אנו מוסיפים נכסים חדשים בקהילה זו באופן קבוע. ספרו לנו מה אתם מחפשים ונעדכן אתכם ברגע שיתפרסם נכס מתאים — או גלו את ההיצע ברחבי דובאי היום.", browseAll: "עיון בכל הנכסים", getNotified: "עדכנו אותי" },
 } as const;
 
 export default async function BuyInCommunityPage({

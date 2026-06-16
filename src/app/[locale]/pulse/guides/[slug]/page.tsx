@@ -17,7 +17,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
   return locales.flatMap((locale) =>
     PULSE_GUIDES.map((g) => ({ locale, slug: g.slug }))
   );
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: url,
-      languages: altLangs(`/pulse/guides/${slug}`, ["he"]),
+      languages: altLangs(`/pulse/guides/${slug}`),
     },
     openGraph: {
       title,
