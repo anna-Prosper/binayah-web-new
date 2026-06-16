@@ -1,5 +1,3 @@
-import { apiUrl } from "@/lib/api";
-
 export type LeadAction = "view" | "whatsapp" | "phone" | "chat-open" | "inquiry" | "share" | "save";
 
 interface LeadEntity {
@@ -9,24 +7,29 @@ interface LeadEntity {
 }
 
 /**
- * Fire-and-forget lead/interaction tracking → /api/track (userevents, powers the
- * admin dashboard). Uses navigator.sendBeacon (with a keepalive fetch fallback)
- * because WhatsApp/tel CTAs navigate away immediately — a plain fetch is often
- * cancelled mid-flight before it reaches the server, undercounting leads.
+ * Fire-and-forget lead/interaction tracking → the SAME-ORIGIN /api/track route
+ * (Next.js handler that writes to userevents, which powers the admin dashboard).
+ *
+ * We intentionally hit the relative same-origin route, NOT the external API:
+ * sendBeacon / keepalive must reach the server even as a WhatsApp/tel click
+ * navigates away, and a cross-origin beacon with Content-Type application/json
+ * is a non-simple CORS request that the browser silently drops (no preflight).
+ * Same-origin avoids CORS entirely and is reliable through navigation.
  */
 export function trackLead(action: LeadAction, entity: LeadEntity = {}): void {
   if (typeof window === "undefined") return;
+  const url = "/api/track";
+  const payload = {
+    action,
+    entityType: entity.entityType || "unknown",
+    entitySlug: entity.entitySlug ?? null,
+    entityTitle: entity.entityTitle ?? null,
+  };
   try {
-    const body = JSON.stringify({
-      action,
-      entityType: entity.entityType || "unknown",
-      entitySlug: entity.entitySlug ?? null,
-      entityTitle: entity.entityTitle ?? null,
-    });
-    const url = apiUrl("/api/track");
+    const body = JSON.stringify(payload);
     if (navigator.sendBeacon) {
-      navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
-      return;
+      const ok = navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
+      if (ok) return;
     }
     void fetch(url, {
       method: "POST",
