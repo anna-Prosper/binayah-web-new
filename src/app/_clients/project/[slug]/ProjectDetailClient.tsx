@@ -701,13 +701,25 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       const isPlaceholder = (s?: string) =>
                         !s || /^update\s+soon\b/i.test(s.trim()) || s.trim().length < 12;
                       const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-                      const shortClean = (project.shortOverview || "").trim();
+                      // Strip WordPress cache-plugin boilerplate scraped into descriptions
+                      // (e.g. "Note: None of these options will be applied if this post has
+                      // been excluded from cache in the global cache settings.").
+                      const stripJunk = (s: string) =>
+                        s
+                          .replace(/Note:\s*None of these options[^.]*\.?/gi, "")
+                          .replace(/^.*\b(?:excluded from cache|global cache settings|none of these options will be applied)\b.*$/gim, "")
+                          .replace(/[ \t]{2,}/g, " ")
+                          .replace(/\n{3,}/g, "\n\n")
+                          .trim();
+                      const shortClean = stripJunk((project.shortOverview || "").trim());
                       // Keep newlines (structure) — only collapse runs of spaces/tabs.
-                      const fullClean = (project.fullDescription || "")
-                        .replace(/<[^>]*>/g, " ")
-                        .replace(/\r/g, "")
-                        .replace(/[ \t]{2,}/g, " ")
-                        .trim();
+                      const fullClean = stripJunk(
+                        (project.fullDescription || "")
+                          .replace(/<[^>]*>/g, " ")
+                          .replace(/\r/g, "")
+                          .replace(/[ \t]{2,}/g, " ")
+                          .trim()
+                      );
                       const showShort = !isPlaceholder(shortClean);
                       const showFull = !isPlaceholder(fullClean);
                       // The full description usually opens with the same text as the short overview.
