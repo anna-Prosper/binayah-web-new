@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { StickyMobileCta } from "./StickyMobileCta";
+import { StickyMobileCta, type LeadEntity } from "./StickyMobileCta";
 
 export interface DetailStickyCtaProps {
   /** Pre-built WhatsApp deep link with the encoded `?text=` payload. */
@@ -10,6 +10,8 @@ export interface DetailStickyCtaProps {
   phone: string;
   /** Optional override for the Live Chat anchor target. */
   liveChatHref?: string;
+  /** Property/project context for lead tracking. */
+  entity?: LeadEntity;
 }
 
 /**
@@ -18,10 +20,11 @@ export interface DetailStickyCtaProps {
  * shared `whatsapp` translation namespace so call sites don't have to know
  * which keys to pass.
  */
-export function DetailStickyCta({ whatsappUrl, phone, liveChatHref = "#live-chat" }: DetailStickyCtaProps) {
+export function DetailStickyCta({ whatsappUrl, phone, liveChatHref = "#live-chat", entity }: DetailStickyCtaProps) {
   const t = useTranslations("whatsapp");
   return (
     <StickyMobileCta
+      entity={entity}
       actions={[
         { type: "whatsapp", href: whatsappUrl, label: t("whatsapp") },
         { type: "call", href: `tel:${phone}`, label: t("call") },

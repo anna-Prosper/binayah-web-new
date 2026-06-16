@@ -3,14 +3,11 @@
 import { motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { apiUrl } from "@/lib/api";
+import { trackLead } from "@/lib/track";
 
 function trackClick(action: "whatsapp" | "phone" | "chat-open") {
-  fetch(apiUrl("/api/track"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action, source: window.location.pathname }),
-  }).catch(() => {});
+  // Reliable even as the click navigates away (sendBeacon/keepalive).
+  trackLead(action, { entityType: "global", entitySlug: typeof window !== "undefined" ? window.location.pathname : null });
 }
 
 const WhatsAppButton = () => {

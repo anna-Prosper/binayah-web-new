@@ -28,6 +28,7 @@ import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { trackLead } from "@/lib/track";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
@@ -251,6 +252,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   // (project.qrCode). If absent, hide entirely — don't synthesize a QR
   // that just encodes the project page URL (misleading; not the real permit).
   const hasStoredQr = Boolean(project.qrCode && project.qrCode.startsWith("http"));
+
+  const leadEntity = { entityType: "project", entitySlug: project.slug, entityTitle: project.name };
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1120,6 +1123,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                                           <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
                                         </div>
                                         <a
+                                          onClick={() => trackLead("whatsapp", leadEntity)}
                                           href={`https://wa.me/${(project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}`}
                                           target="_blank"
                                           rel="noopener noreferrer"
@@ -1206,6 +1210,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                                 {/* CTA */}
                                 <a
+                                  onClick={() => trackLead("whatsapp", leadEntity)}
                                   href={`https://wa.me/${(project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`I'm interested in ${activeUnit?.name} at ${project.name}`)}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
@@ -1998,6 +2003,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                       time slot. The old `#schedule-call` anchor had no
                       matching target on the page. */}
                   <a
+                    onClick={() => trackLead("whatsapp", leadEntity)}
                     href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi, I'd like to schedule a video consultation about ${project.name}. When are you available?`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -2464,6 +2470,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <p className="text-sm text-muted-foreground mb-1">{t("ctaSubheadlineDefault")}</p>
                   )}
                   <a
+                    onClick={() => trackLead("whatsapp", leadEntity)}
                     href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -2472,6 +2479,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
                   <a
+                    onClick={() => trackLead("phone", leadEntity)}
                     href={`tel:${(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}`}
                     className="w-full flex items-center justify-center gap-2 py-3.5 text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
@@ -2702,6 +2710,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
       {/* ───── STICKY MOBILE CTA BAR (shared 3-button component — labels live inside) ───── */}
       <DetailStickyCta
+        entity={leadEntity}
         whatsappUrl={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
         phone={(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}
       />

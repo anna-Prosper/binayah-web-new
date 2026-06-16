@@ -2,6 +2,7 @@
 
 import { MessageCircle, Phone } from "lucide-react";
 import type React from "react";
+import { trackLead } from "@/lib/track";
 
 export type StickyCtaAction =
   | { type: "whatsapp"; href: string; label: string }
@@ -9,8 +10,16 @@ export type StickyCtaAction =
   | { type: "live-chat"; href: string; label: string }
   | { type: "custom"; href: string; label: string; icon?: React.ElementType; className?: string };
 
+export interface LeadEntity {
+  entityType?: string;
+  entitySlug?: string | null;
+  entityTitle?: string | null;
+}
+
 export interface StickyMobileCtaProps {
   actions: StickyCtaAction[];
+  /** Attaches the property/project context to lead-tracking events. */
+  entity?: LeadEntity;
 }
 
 function actionClass(type: StickyCtaAction["type"]): string {
@@ -37,7 +46,7 @@ function actionIcon(action: StickyCtaAction): React.ElementType {
   return MessageCircle;
 }
 
-export function StickyMobileCta({ actions }: StickyMobileCtaProps) {
+export function StickyMobileCta({ actions, entity }: StickyMobileCtaProps) {
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
@@ -53,7 +62,7 @@ export function StickyMobileCta({ actions }: StickyMobileCtaProps) {
                 <button
                   key={i}
                   type="button"
-                  onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
+                  onClick={() => { trackLead("chat-open", entity); window.dispatchEvent(new CustomEvent("open-ai-chat")); }}
                   className={baseClass}
                   style={actionStyle(action.type)}
                 >
@@ -69,6 +78,7 @@ export function StickyMobileCta({ actions }: StickyMobileCtaProps) {
                 href={action.href}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noopener noreferrer" : undefined}
+                onClick={() => trackLead(action.type === "call" ? "phone" : "whatsapp", entity)}
                 className={baseClass}
                 style={actionStyle(action.type)}
               >

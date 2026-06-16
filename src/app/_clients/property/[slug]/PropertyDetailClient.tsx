@@ -26,6 +26,7 @@ import { GalleryModal } from "@/components/GalleryModal";
 import { StatCard } from "@/components/StatCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { DetailStickyCta } from "@/components/DetailStickyCta";
+import { trackLead } from "@/lib/track";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
@@ -462,6 +463,7 @@ export default function PropertyDetailClient({
   const tProject = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tEnum = useTranslations("enums");
+  const leadEntity = { entityType: "property", entitySlug: listing.slug, entityTitle: listing.title };
   const { toast } = useToast();
   const [currentImage, setCurrentImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -1353,18 +1355,19 @@ export default function PropertyDetailClient({
                 <div className="hidden sm:block p-5 space-y-3">
                   <p className="text-sm text-muted-foreground mb-1">{t("speakToExperts")}</p>
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
-                    onClick={() => fetch(apiUrl("/api/track"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "whatsapp", entityType: "property", entitySlug: listing.slug, entityTitle: listing.title }) }).catch(() => {})}
+                    onClick={() => trackLead("whatsapp", leadEntity)}
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
                     style={{ background: "linear-gradient(to right,#25D366,#1DA851)" }}>
                     <MessageCircle className="h-4 w-4" /> {t("whatsappInquiry")}
                   </a>
                   <a href="tel:+971549988811"
+                    onClick={() => trackLead("phone", leadEntity)}
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-white font-bold text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
                     style={{ background: "linear-gradient(to right,#D4A847,#B8922F)" }}>
                     <Phone className="h-4 w-4" /> {t("callNow")}
                   </a>
                   <button type="button"
-                    onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
+                    onClick={() => { trackLead("chat-open", leadEntity); window.dispatchEvent(new CustomEvent("open-ai-chat")); }}
                     className="w-full flex items-center justify-center gap-2 py-3 border-2 border-primary/30 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white hover:border-transparent transition-all">
                     <MessageCircle className="h-4 w-4" /> {t("liveChat")}
                   </button>
@@ -1535,7 +1538,7 @@ export default function PropertyDetailClient({
       />
 
       {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
-      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+971549988811" />
+      <DetailStickyCta whatsappUrl={whatsappUrl} phone="+971549988811" entity={leadEntity} />
 
       <Footer />
       <div className="hidden lg:block">
