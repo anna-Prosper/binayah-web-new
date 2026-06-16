@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: url,
-      languages: altLangs(`/pulse/guides/${slug}`),
+      languages: altLangs(`/pulse/guides/${slug}`, ["he"]),
     },
     openGraph: {
       title,

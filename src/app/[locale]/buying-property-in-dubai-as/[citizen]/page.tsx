@@ -445,7 +445,7 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: makeCanonical(locale, path),
-      languages: altLangs(path),
+      languages: altLangs(path, ["he"]),
     },
     openGraph: {
       title,

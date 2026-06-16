@@ -183,7 +183,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.title,
     description: c.desc,
-    alternates: { canonical: url, languages: altLangs("/golden-visa") },
+    alternates: { canonical: url, languages: altLangs("/golden-visa", ["he"]) },
     openGraph: { title: c.title, description: c.desc, url, type: "website", locale: OG_LOCALE[locale] ?? "en_AE", images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }] },
     twitter: { card: "summary_large_image", title: c.title, description: c.desc },
     keywords: locale === "ru"

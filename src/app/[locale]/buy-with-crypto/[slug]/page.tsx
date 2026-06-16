@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs(path) },
+    alternates: { canonical: url, languages: altLangs(path, ["he"]) },
     openGraph: {
       title: c.metaTitle,
       description: c.metaDesc,

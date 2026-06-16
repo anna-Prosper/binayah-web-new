@@ -18,15 +18,17 @@ export const OG_LOCALE: Record<string, string> = {
 // Default OG image (absolute URL)
 export const DEFAULT_OG_IMAGE = `${AE_URL}/assets/og-image.webp`;
 
-// Cross-domain hreflang alternates — Russian always points to binayah.ru
-export function altLangs(path: string): Record<string, string> {
-  return {
-    en: `${AE_URL}${path}`,
-    ru: `${RU_URL}/ru${path}`,
-    ar: `${AE_URL}/ar${path}`,
-    zh: `${AE_URL}/zh${path}`,
-    vi: `${AE_URL}/vi${path}`,
-    he: `${AE_URL}/he${path}`,
-    "x-default": `${AE_URL}${path}`,
-  };
+// Cross-domain hreflang alternates — Russian always points to binayah.ru.
+// `exclude` drops locales a given route doesn't actually render (e.g. SEO
+// templates that aren't built for Hebrew), so we never advertise an hreflang
+// that 404s or serves an English-fallback page.
+const ALT_LOCALES = ["en", "ru", "ar", "zh", "vi", "he"] as const;
+export function altLangs(path: string, exclude: readonly string[] = []): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const l of ALT_LOCALES) {
+    if (exclude.includes(l)) continue;
+    out[l] = l === "ru" ? `${RU_URL}/ru${path}` : l === "en" ? `${AE_URL}${path}` : `${AE_URL}/${l}${path}`;
+  }
+  out["x-default"] = `${AE_URL}${path}`;
+  return out;
 }

@@ -33,7 +33,7 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: makeCanonical(locale, `/buy-property-in/${c.slug}`),
-      languages: altLangs(`/buy-property-in/${c.slug}`),
+      languages: altLangs(`/buy-property-in/${c.slug}`, ["he"]),
     },
     openGraph: {
       title,

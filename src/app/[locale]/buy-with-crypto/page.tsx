@@ -297,7 +297,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs("/buy-with-crypto") },
+    alternates: { canonical: url, languages: altLangs("/buy-with-crypto", ["he"]) },
     openGraph: {
       title: c.metaTitle,
       description: c.metaDesc,
