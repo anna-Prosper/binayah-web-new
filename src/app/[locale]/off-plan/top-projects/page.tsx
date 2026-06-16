@@ -89,6 +89,38 @@ const DEVELOPERS = [
 ];
 
 const CATEGORIES = {
+  he: [
+    {
+      "label": "הטוב ביותר לעליית ערך",
+      "dev": "Emaar Properties",
+      "why": "נכסים ב-Downtown וב-Creek Harbour הניבו עליית ערך של 40-60% מאז 2021. המותג של Emaar מבטיח פרמיה במכירה חוזרת."
+    },
+    {
+      "label": "הטוב ביותר לתשואת שכירות",
+      "dev": "Binghatti Developers",
+      "why": "פרויקטים של Binghatti ב-Al Jaddaf וב-Business Bay משיגים באופן עקבי תשואות ברוטו של 7-9% — מהגבוהות בדובאי."
+    },
+    {
+      "label": "הטוב ביותר למשפחות",
+      "dev": "Sobha Realty",
+      "why": "Sobha Hartland II ו-MBR City מציעים אורח חיים קהילתי, בתי ספר בינלאומיים ושטחים ירוקים המועדפים על משפחות עוברות דירה."
+    },
+    {
+      "label": "תוכנית התשלום הטובה ביותר",
+      "dev": "DAMAC Properties",
+      "why": "תוכניות התשלום של DAMAC לאחר מסירת המפתח (עד 5 שנים לאחר קבלת המפתחות) הן הידידותיות ביותר לקונה בשוק."
+    },
+    {
+      "label": "כניסה במחיר נגיש",
+      "dev": "Azizi Developments",
+      "why": "סטודיו החל מ-500K AED בקהילות מבוססות. Azizi Riviera על תעלת דובאי מציעה נוף לתעלה במחיר תחרותי."
+    },
+    {
+      "label": "העיצוב והגימור הטובים ביותר",
+      "dev": "Ellington Properties",
+      "why": "הגישה מוכוונת-העיצוב של Ellington ומפרטי גימור ברמת 5 כוכבים ממצבים את היחידות בקצה הפרימיום של שוק המכירה החוזרת."
+    }
+  ],
   en: [
     { label: "Best for Capital Appreciation", dev: "Emaar Properties", why: "Downtown & Creek Harbour assets have delivered 40-60% appreciation since 2021. Emaar's brand commands resale premiums." },
     { label: "Best for Rental Yield", dev: "Binghatti Developers", why: "Binghatti projects in Al Jaddaf and Business Bay consistently achieve 7-9% gross yields — among the highest in Dubai." },
@@ -132,6 +164,49 @@ const CATEGORIES = {
 };
 
 const CONTENT = {
+  he: {
+    "metaTitle": "פרויקטים על הנייר הטובים ביותר בדובאי 2026 | השקות חדשות | Binayah",
+    "metaDesc": "השוו בין מיזמי הנדל\"ן המובילים על הנייר בדובאי לשנת 2026. Emaar, DAMAC, Sobha, Binghatti — ROI, תוכניות תשלום, תשואות ורשימות פרויקטים חיות מ-Binayah Properties.",
+    "heroLabel": "על הנייר דובאי 2026",
+    "h1": "הפרויקטים הטובים ביותר על הנייר",
+    "h1sub": "בדובאי 2026",
+    "heroDesc": "השוו בין היזמים המובילים והפרויקטים החדשים על הנייר בדובאי. אנו מדרגים לפי פוטנציאל ROI, גמישות תוכנית התשלום, איכות הבנייה ותשואת השכירות — עם רשימות חיות המתעדכנות מדי יום.",
+    "devTitle": "השוואת יזמים",
+    "devSubtitle": "מדדים מרכזיים ליזמים המובילים בדובאי על הנייר",
+    "catTitle": "הטוב ביותר לכל סוג של קונה",
+    "projectsTitle": "ההשקות האחרונות על הנייר",
+    "fromLabel": "החל מ-",
+    "noPrice": "מחיר לפי בקשה",
+    "viewAll": "עיינו בכל הפרויקטים על הנייר",
+    "faqs": [
+      {
+        "question": "לאיזה יזם יש הפרויקטים הטובים ביותר על הנייר בדובאי 2026?",
+        "answer": "Emaar מובילה בעליית ערך לטווח ארוך (Downtown, Dubai Hills, Creek Harbour). Binghatti מספקת את תשואות השכירות הגבוהות ביותר (7-9%) במיקומים בטווח הביניים. DAMAC מציעה את תוכניות התשלום הגמישות ביותר לאחר מסירת המפתח. Sobha Realty מדורגת בראש מבחינת איכות בנייה וקהילות משפחתיות. היזם ה'טוב ביותר' תלוי לחלוטין במטרות ההשקעה שלכם — קונים ממוקדי ROI ומשתמשי קצה מעדיפים קריטריונים שונים."
+      },
+      {
+        "question": "מהו המחיר הממוצע של נכס על הנייר בדובאי 2026?",
+        "answer": "מחירי נכסים על הנייר בדובאי משתנים מאוד לפי מיקום ויזם. רמת כניסה (JVC, Dubai South, Arjan): 500K–900K AED לסטודיו/חדר אחד. טווח ביניים (Business Bay, Al Jaddaf, JBR): 900K–2M AED. פרימיום (Downtown, Dubai Marina, Palm): 2M–5M AED. יוקרה מוחלטת (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. עסקת על הנייר ממוצעת בדובאי ב-2025 הייתה כ-1.8M AED."
+      },
+      {
+        "question": "אילו תוכניות תשלום מציעים יזמי על הנייר בדובאי ב-2026?",
+        "answer": "תוכנית סטנדרטית מקושרת לבנייה: 10% בהזמנה + 10% בחתימת ה-SPA + 30% במהלך הבנייה + 50% במסירה. תוכניות מורחבות לאחר מסירת המפתח (DAMAC, חלק מפרויקטי Binghatti): 40% במהלך הבנייה + 60% לאורך 2-5 שנים לאחר המסירה. אפס ריבית הוא הסטנדרט — תוכניות מימון של היזם אינן נושאות חיוב ריבית נוסף. חלק מהיזמים מציעים תשלומים חודשיים של 1%."
+      },
+      {
+        "question": "איזה ROI אפשר לצפות מנכס על הנייר בדובאי?",
+        "answer": "תשואות שכירות טיפוסיות לנכס על הנייר בדובאי לאחר מסירה: 5-9% ברוטו בהתאם למיקום וליזם. עליית ערך (מכירה חוזרת לפני מסירה): פוטנציאל של 10-40% בשווקים עולים. מאז 2021, פרויקטים של Emaar הניבו עליית ערך של 40-70% ממחיר העל הנייר לערך השוק הנוכחי. ביצועי העבר משתנים — מיקומים מובילים ויזמים מבוססים נוטים היסטורית להציג ביצועים טובים יותר."
+      },
+      {
+        "question": "האם רכישה על הנייר בדובאי בטוחה ב-2026?",
+        "answer": "לדובאי יש מהגנות הקונה החזקות בעולם בתחום העל הנייר. RERA מחייבת יזמים להפקיד את תשלומי הקונים בחשבונות נאמנות (escrow) מבודדים של DLD — הכספים אינם ניתנים לשימוש עד להשגת אבני דרך בבנייה. כל הפרויקטים חייבים להיות רשומים ב-RERA. יזמים חייבים להפקיד ערבות השלמה. אף יזם בעל מוניטין (Emaar, DAMAC, Sobha, Binghatti) לא נכשל במסירת פרויקט רשום. עם זאת, יזמים קטנים יותר ושחקנים חדשים נושאים סיכון גבוה יותר."
+      },
+      {
+        "question": "האם ניתן למכור מחדש נכס על הנייר לפני המסירה בדובאי?",
+        "answer": "כן, לאחר ששילמתם 30-40% מערך הנכס (הסף משתנה לפי היזם). עסקה זו נקראת 'מכירה חוזרת על הנייר'. Binayah מטפלת הן ברכישה המקורית והן במכירה החוזרת שלאחריה — צוות העל הנייר שלנו עוקב אחר הזדמנויות לפני מסירה בכל המיזמים המרכזיים."
+      }
+    ],
+    "breadcrumb": "פרויקטים מובילים 2026",
+    "catLabel": "קטגוריה"
+  },
   en: {
     metaTitle: "Best Off-Plan Projects in Dubai 2026 | New Launches | Binayah",
     metaDesc: "Compare Dubai's top off-plan developments for 2026. Emaar, DAMAC, Sobha, Binghatti — ROI, payment plans, yields, and live project listings from Binayah Properties.",
@@ -271,7 +346,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs("/off-plan/top-projects", ["he"]) },
+    alternates: { canonical: url, languages: altLangs("/off-plan/top-projects") },
     openGraph: {
       title: c.metaTitle, description: c.metaDesc, url,
       type: "website", locale: OG_LOCALE[locale] ?? "en_AE",

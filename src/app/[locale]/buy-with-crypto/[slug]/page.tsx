@@ -18,7 +18,7 @@ import {
 
 export const revalidate = 86400;
 
-const LOCALES: CryptoLocale[] = ["en", "ru", "ar", "zh", "vi"];
+const LOCALES: CryptoLocale[] = ["en", "ru", "ar", "zh", "vi", "he"];
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs(path, ["he"]) },
+    alternates: { canonical: url, languages: altLangs(path) },
     openGraph: {
       title: c.metaTitle,
       description: c.metaDesc,
@@ -68,7 +68,7 @@ export default async function CryptoSpokePage({ params }: Props) {
   const loc = locale as CryptoLocale;
   const c = page.locales[loc];
   const t = CRYPTO_LABELS[loc];
-  const isRtl = locale === "ar";
+  const isRtl = locale === "ar" || locale === "he";
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [

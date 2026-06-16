@@ -12,6 +12,58 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 const CONTENT = {
+  he: {
+    "metaTitle": "נכסים למכירה בדובאי | 3,000+ מודעות | Binayah",
+    "metaDesc": "עיינו ב-3,000+ נכסים למכירה בדובאי — דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",
+    "heroLabel": "רכישת נכס בדובאי",
+    "h1": "נכסים למכירה",
+    "h1sub": "בדובאי",
+    "heroDesc": "חפשו דירות, וילות, בתי טאון ופרויקטים על הנייר ביותר מ-60 קהילות ברחבי דובאי. מודעות מאומתות, מחירי DLD בזמן אמת וסוכנים מומחים זמינים 7 ימים בשבוע.",
+    "stats": [
+      {
+        "n": "3,000+",
+        "label": "נכסים למכירה"
+      },
+      {
+        "n": "AED 350K",
+        "label": "מחיר התחלתי"
+      },
+      {
+        "n": "0%",
+        "label": "מס רווחי הון"
+      },
+      {
+        "n": "60+",
+        "label": "קהילות"
+      }
+    ],
+    "faqs": [
+      {
+        "question": "האם זרים יכולים לרכוש נכס בדובאי?",
+        "answer": "כן. כל הלאומים יכולים לרכוש נכס בבעלות מלאה (freehold) באזורים המיועדים של דובאי — Dubai Marina, Downtown Dubai, JVC, Palm, Business Bay ועוד 60+ אזורים נוספים. אין צורך באשרת תושב. אתם מקבלים שטר בעלות מלא מטעם ה-DLD עם אותן זכויות בעלות כמו לאזרחי איחוד האמירויות."
+      },
+      {
+        "question": "מהו תהליך רכישת נכס בדובאי?",
+        "answer": "1) הסכמה על מחיר וחתימה על MOU (מזכר הבנות). 2) תשלום פיקדון של 10%. 3) קבלת NOC מהיזם. 4) העברת בעלות ב-DLD — תשלום עמלת העברה של 4%. 5) קבלת שטר הבעלות. התהליך אורך 3–6 שבועות בשוק המשני, ו-2–4 שבועות להזמנת נכס על הנייר."
+      },
+      {
+        "question": "מהן העלויות הכוללות ברכישת נכס בדובאי?",
+        "answer": "עמלת העברה של ה-DLD: 4% ממחיר הרכישה. עמלת סוכן: כ-2%. אגרה מנהלית של ה-DLD: AED 580. אגרת נאמן: AED 4,000 (נכסים מעל AED 500K). רישום משכנתה (אם רלוונטי): 0.25% מסכום ההלוואה. סך עלויות העסקה: כ-6–7% משווי הנכס."
+      },
+      {
+        "question": "מהי ההשקעה המינימלית לרכישת נכס בדובאי?",
+        "answer": "דירות סטודיו מתחילות מ-AED 300,000–500,000 (כ-82K$–136K$) בקהילות כמו JVC ו-Dubai South. לקבלת Golden Visa של איחוד האמירויות ל-10 שנים, שווי הנכס המינימלי הוא AED 2,000,000 (כ-545K$)."
+      },
+      {
+        "question": "האם נכס בדובאי הוא השקעה טובה ב-2026?",
+        "answer": "דובאי מציעה תשואות שכירות ברוטו של 5–8% (מהגבוהות בעולם), אפס מס רווחי הון, אפס מס הכנסה ומטבע מקובע ל-AED-USD. קהילות יוקרה רשמו עלייה של 40–60% בערך מאז 2021. היסודות — גידול אוכלוסין, מלאי וילות מצומצם ומעמד של מרכז עסקים — ממשיכים לתמוך."
+      }
+    ],
+    "breadcrumb": "רכישה",
+    "ctaTitle": "זקוקים לליווי מקצועי?",
+    "ctaDesc": "הסוכנים שלנו, מוסמכי RERA, יסייעו לכם למצוא, לנהל משא ומתן ולהשלים את רכישת הנכס שלכם בדובאי — ללא עלות נוספת.",
+    "ctaBtn": "שוחחו עם סוכן"
+  },
   en: {
     metaTitle: "Properties for Sale in Dubai | 3,000+ Listings | Binayah",
     metaDesc: "Browse 3,000+ properties for sale in Dubai — apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.",
@@ -149,7 +201,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs("/buy", ["he"]) },
+    alternates: { canonical: url, languages: altLangs("/buy") },
     openGraph: {
       title: c.metaTitle, description: c.metaDesc, url,
       type: "website", locale: OG_LOCALE[locale] ?? "en_AE",

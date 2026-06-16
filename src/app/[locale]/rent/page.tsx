@@ -12,6 +12,58 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 const CONTENT = {
+  he: {
+    "metaTitle": "נכסים להשכרה בדובאי | דירות ווילות | Binayah",
+    "metaDesc": "מצאו את נכס ההשכרה המושלם בדובאי — דירות, וילות, סטודיו ובתים טוריים. רישומים מאומתים עם מחירים בזמן אמת. מוכן לכניסה. חפשו עכשיו מתוך 1,000+ נכסים להשכרה.",
+    "heroLabel": "השכרה בדובאי",
+    "h1": "נכסים להשכרה",
+    "h1sub": "בדובאי",
+    "heroDesc": "רישומי השכרה מאומתים בכל קהילות דובאי. סטודיו החל מ-AED 25K לשנה. וילות משפחתיות החל מ-AED 90K לשנה. מצאו את ביתכם עם סוכני ההשכרה המהימנים של Binayah.",
+    "stats": [
+      {
+        "n": "1,000+",
+        "label": "רישומי השכרה"
+      },
+      {
+        "n": "AED 25K",
+        "label": "סטודיו החל מ/שנה"
+      },
+      {
+        "n": "90K+",
+        "label": "שוכרים פעילים"
+      },
+      {
+        "n": "48h",
+        "label": "זמן התאמה ממוצע"
+      }
+    ],
+    "faqs": [
+      {
+        "question": "אילו מסמכים אני צריך כדי לשכור בדובאי?",
+        "answer": "צילום דרכון, Emirates ID (אם אתם תושבים) או ויזה, והמחאות דחויות (או ערבות בנקאית בחלק מהבניינים). עבור השכרה שנתית, רוב בעלי הנכסים דורשים 1–4 המחאות דחויות. תצטרכו גם לרשום את חוזה השכירות ב-Ejari (מערכת השכירות של DLD) — הסוכן שלכם מטפל בכך."
+      },
+      {
+        "question": "כיצד מתנהל תהליך ההשכרה בדובאי?",
+        "answer": "1) מצאו נכס והסכימו על התנאים. 2) חתמו על חוזה השכירות (טופס H הסטנדרטי של RERA). 3) שלמו פיקדון ביטחון (בדרך כלל 5% מדמי השכירות השנתיים) ואת המחאות השכירות הראשונות. 4) הירשמו ב-Ejari (AED 220). 5) חברו DEWA (חשמל ומים — פיקדון AED 2,110, מוחזר ביציאה). התהליך אורך 3–7 ימים."
+      },
+      {
+        "question": "האם בעל הנכס יכול להעלות לי את שכר הדירה בדובאי?",
+        "answer": "העלאות שכר דירה בעת חידוש מוגבלות על ידי מדד השכירות של RERA. אם שכר הדירה הנוכחי שלכם זהה או נמוך מנקודת הייחוס של RERA, לא מותרת העלאה. ההעלאות מוגבלות ל-5–20% בהתאם למידת הפער שבין שכר הדירה הנוכחי שלכם למדד. בדקו את מחשבון השכירות של RERA (dubailand.gov.ae) לפני כל חידוש."
+      },
+      {
+        "question": "מהו האזור הזול ביותר לשכירה בדובאי?",
+        "answer": "האזורים המשתלמים ביותר: International City (סטודיו החל מ-AED 18K), Dubai South (סטודיו החל מ-AED 22K), Deira (חדר שינה אחד החל מ-AED 30K), JVC (סטודיו החל מ-AED 28K). התמורה הטובה ביותר לכסף עם נגישות מצוינת: JVC, Al Quoz ו-Al Nahda מציעים חיסכון של 20–35% לעומת Dubai Marina או Downtown עבור גדלי יחידות דומים."
+      },
+      {
+        "question": "כמה עולה שכר דירה ממוצע בדובאי?",
+        "answer": "סטודיו: AED 28,000–55,000 לשנה בהתאם לאזור. חדר שינה אחד: AED 45,000–100,000 לשנה. שני חדרי שינה: AED 70,000–160,000 לשנה. וילה עם שלושה חדרי שינה: AED 120,000–250,000 לשנה. Dubai Marina ו-Downtown גובים פרמיה; JVC, JLT ו-Deira משתלמים משמעותית."
+      }
+    ],
+    "breadcrumb": "השכרה",
+    "ctaTitle": "צריכים עזרה במציאת נכס להשכרה?",
+    "ctaDesc": "סוכני ההשכרה שלנו בוחרים נכסים התואמים את התקציב, העדפת הקהילה ותאריך הכניסה שלכם — ללא תשלום עבור שוכרים.",
+    "ctaBtn": "דברו עם סוכן השכרה"
+  },
   en: {
     metaTitle: "Properties for Rent in Dubai | Apartments & Villas | Binayah",
     metaDesc: "Find your perfect Dubai rental — apartments, villas, studios and townhouses. Verified listings with live prices. Move in ready. Search 1,000+ rentals now.",
@@ -149,7 +201,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: c.metaTitle,
     description: c.metaDesc,
-    alternates: { canonical: url, languages: altLangs("/rent", ["he"]) },
+    alternates: { canonical: url, languages: altLangs("/rent") },
     openGraph: {
       title: c.metaTitle, description: c.metaDesc, url,
       type: "website", locale: OG_LOCALE[locale] ?? "en_AE",
