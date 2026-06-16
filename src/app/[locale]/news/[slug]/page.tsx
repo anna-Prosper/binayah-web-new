@@ -3,6 +3,7 @@ import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
 import { canonical, altLangs, AE_URL } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
+import { sanitizeArticleHtml } from "@/lib/sanitize";
 
 export const revalidate = 3600;
 
@@ -33,6 +34,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   const nonce = await getNonce();
   // Pass locale so API returns translated title/body/excerpt when available
   const article = await getNewsArticle(slug, locale);
+  // article.content is scraped HTML rendered via dangerouslySetInnerHTML — sanitize
+  // server-side (CSP allows 'unsafe-inline', so injected scripts would execute).
+  if (article?.content) article.content = sanitizeArticleHtml(article.content);
   let related: any[] = [];
   try {
     related = await getRelatedNews(slug, article.category, 3, locale);

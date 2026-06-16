@@ -378,7 +378,7 @@ function ProfileClientInner({ user }: Props) {
               >
                 <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-[#0B3D2E]">
                   {user.image ? (
-                    <Image src={user.image} alt="" width={112} height={112} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                    <Image src={user.image} alt={`${user.name || "User"} avatar`} width={112} height={112} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-[#0B3D2E] flex items-center justify-center">
                       <User className="h-10 w-10 text-white/30" />

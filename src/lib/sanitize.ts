@@ -1,3 +1,29 @@
+import sanitizeHtml from "sanitize-html";
+
+// Sanitizes scraped/CMS article HTML before it is rendered via
+// dangerouslySetInnerHTML. News content comes from an external scraper, and the
+// CSP allows 'unsafe-inline', so an injected <script> or onerror handler would
+// otherwise execute (stored XSS). Allows safe formatting tags only.
+export function sanitizeArticleHtml(html: string | null | undefined): string {
+  if (!html) return "";
+  return sanitizeHtml(html, {
+    allowedTags: [
+      "h2", "h3", "h4", "h5", "h6", "p", "blockquote", "ul", "ol", "li",
+      "strong", "b", "em", "i", "u", "s", "a", "img", "figure", "figcaption",
+      "br", "hr", "table", "thead", "tbody", "tr", "th", "td", "span", "div",
+    ],
+    allowedAttributes: {
+      a: ["href", "title", "target", "rel"],
+      img: ["src", "alt", "title", "width", "height", "loading"],
+      "*": ["class"],
+    },
+    allowedSchemes: ["https", "http", "mailto"],
+    transformTags: {
+      a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer", target: "_blank" }),
+    },
+  });
+}
+
 // Strips WordPress cache-plugin boilerplate that was scraped into project
 // descriptions (e.g. "Note: None of these options will be applied if this post
 // has been excluded from cache in the global cache settings.") — present in
