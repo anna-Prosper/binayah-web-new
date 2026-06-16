@@ -4,12 +4,13 @@ import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
+import { sanitizeDescriptions } from "@/lib/sanitize";
 
 export const revalidate = 1800;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const project = applyTranslation(await getProject(slug), locale);
+  const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
   // Missing/delisted project → real 404 (status code), not a soft 200+noindex
   // page. Calling notFound() in generateMetadata makes Next return a proper 404
   // so Google drops the URL instead of parking it under "Excluded by noindex".
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ProjectPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const project = applyTranslation(await getProject(slug), locale);
+  const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
   if (!project) return notFound();
   const nonce = await getNonce();
 
