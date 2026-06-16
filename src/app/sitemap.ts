@@ -4,6 +4,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
+import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
 
 import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
 
@@ -151,6 +152,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
+    ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];
 
   // On binayah.ru: only expose Russian URLs — other locales live on binayah.ae

@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, AE_URL } from "@/lib/site";
+import { CRYPTO_PAGES, CRYPTO_LABELS, type CryptoLocale } from "@/lib/crypto-pages";
 
 export const revalidate = 86400;
 
@@ -491,6 +492,26 @@ export default async function BuyWithCryptoPage({ params }: Props) {
                 </div>
               </details>
             ))}
+          </div>
+        </section>
+
+        {/* ── Related crypto guides (hub → spokes, SEO siloing) ───── */}
+        <section>
+          <h2 className="text-lg font-bold text-foreground mb-4">{CRYPTO_LABELS[locale as CryptoLocale].relatedTitle}</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CRYPTO_PAGES.map((p) => {
+              const sc = p.locales[locale as CryptoLocale];
+              return (
+                <Link
+                  key={p.slug}
+                  href={`${lp}/buy-with-crypto/${p.slug}`}
+                  className="block bg-card border border-border/50 rounded-2xl p-5 hover:border-primary/30 hover:shadow-sm transition-all"
+                >
+                  <p className="text-sm font-bold text-foreground mb-1 group-hover:text-primary">{sc.breadcrumb}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{sc.heroDesc}</p>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
