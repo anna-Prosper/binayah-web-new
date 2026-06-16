@@ -92,6 +92,15 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 86400,
   },
+  webpack: (config) => {
+    // The self-hosted runner that builds binayah.ru has a tiny disk (8.7GB).
+    // Webpack's persistent filesystem cache (.next/cache) grows to 400MB+ and
+    // overflowed the disk mid-build, leaving a broken deploy. Disable it in CI.
+    if (process.env.DISABLE_WEBPACK_CACHE === "1") {
+      config.cache = false;
+    }
+    return config;
+  },
 };
 
 export default withBundleAnalyzer(withNextIntl(nextConfig));

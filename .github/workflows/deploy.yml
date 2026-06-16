@@ -40,6 +40,9 @@ jobs:
           # kernel OOM-killed the runner (it then stayed dead for days). 1536
           # builds fine here and stays within RAM+swap.
           NODE_OPTIONS: '--max-old-space-size=1536'
+          # Disable webpack's 400MB+ filesystem cache — the 8.7GB disk can't
+          # hold it during the build (it overflowed and broke deploys).
+          DISABLE_WEBPACK_CACHE: '1'
 
       - name: Swap & reload PM2
         run: |
