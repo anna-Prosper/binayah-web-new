@@ -8,8 +8,23 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { serverFetch, serverApiUrl } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
+
+async function getInitialBuyListings() {
+  try {
+    const res = await serverFetch(
+      serverApiUrl("/api/search?intent=buy&status=Secondary&pageSize=24"),
+      8000,
+    );
+    if (!res.ok) return null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return res.json() as Promise<any>;
+  } catch {
+    return null;
+  }
+}
 
 const CONTENT = {
   fr: {
@@ -270,7 +285,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BuyPage({ params }: Props) {
-  const { locale } = await params;
+  const [{ locale }, initialData] = await Promise.all([params, getInitialBuyListings()]);
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
@@ -317,7 +332,7 @@ export default async function BuyPage({ params }: Props) {
 
       {/* Full-width embedded search (spans the page like the sections above) */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <SearchPageClient defaultIntent="buy" syncUrl={false} />
+        <SearchPageClient defaultIntent="buy" syncUrl={false} initialData={initialData} />
       </div>
 
       {/* FAQ + CTA, with the sidebar starting here (below the full-width search) */}

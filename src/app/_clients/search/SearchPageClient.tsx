@@ -75,6 +75,16 @@ interface Listing {
   _source?: string;
 }
 
+interface InitialSearchData {
+  projects: Project[];
+  listings: Listing[];
+  projectCount: number;
+  listingCount: number;
+  projectTotalPages?: number;
+  listingTotalPages?: number;
+  facets?: { community: unknown[]; propertyType: unknown[]; bedrooms: unknown[] };
+}
+
 const statusTabs: SearchStatus[] = ["All", "Off-Plan", "Secondary"];
 const secondaryModes: Array<{ value: SearchIntent }> = [
   { value: "" },
@@ -125,7 +135,7 @@ function normalizeStatus(status: string | null, intent: SearchIntent): SearchSta
   return "All";
 }
 
-function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
+function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot, initialData }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode; initialData?: InitialSearchData | null } = {}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = searchParams ?? new URLSearchParams();
@@ -210,14 +220,18 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
   const initialListingsPage = (() => { const n = parseInt(params.get("listingsPage") || params.get("page") || "1", 10); return Number.isFinite(n) && n >= 1 ? n : 1; })();
   const [projectsPage, setProjectsPage] = useState(initialProjectsPage);
   const [listingsPage, setListingsPage] = useState(initialListingsPage);
-  const [projectTotalPages, setProjectTotalPages] = useState(1);
-  const [listingTotalPages, setListingTotalPages] = useState(1);
-  const [facets, setFacets] = useState<{ community: Record<string, number>; propertyType: Record<string, number>; bedrooms: Record<string, number> }>({ community: {}, propertyType: {}, bedrooms: {} });
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [projectCount, setProjectCount] = useState(0);
-  const [listingCount, setListingCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [projectTotalPages, setProjectTotalPages] = useState(initialData?.projectTotalPages ?? 1);
+  const [listingTotalPages, setListingTotalPages] = useState(initialData?.listingTotalPages ?? 1);
+  const [facets, setFacets] = useState<{ community: Record<string, number>; propertyType: Record<string, number>; bedrooms: Record<string, number> }>(() =>
+    !initialData?.facets
+      ? { community: {}, propertyType: {}, bedrooms: {} }
+      : { community: toFacetMap(initialData.facets.community), propertyType: toFacetMap(initialData.facets.propertyType), bedrooms: toFacetMap(initialData.facets.bedrooms) }
+  );
+  const [projects, setProjects] = useState<Project[]>(initialData?.projects ?? []);
+  const [listings, setListings] = useState<Listing[]>(initialData?.listings ?? []);
+  const [projectCount, setProjectCount] = useState(initialData?.projectCount ?? 0);
+  const [listingCount, setListingCount] = useState(initialData?.listingCount ?? 0);
+  const [loading, setLoading] = useState(!initialData);
   const projectsSectionRef = useRef<HTMLDivElement | null>(null);
   const listingsSectionRef = useRef<HTMLDivElement | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -253,6 +267,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
     else if (status === "All") { if (intent === "off-plan") setIntent(""); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
+
+  const skipInitialFetch = useRef(!!initialData);
 
   // Reset pagination whenever a filter changes (skip first render so URL-seeded pages survive).
   const isInitialMount = useRef(true);
@@ -313,7 +329,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
   }, [baths, beds, completionYear, developer, furnishing, intent, listingsPage, locationsKey, priceMax, priceMin, projectsPage, q, sort, status, type]);
 
   useEffect(() => {
-    // Small debounce on every filter change to batch rapid state updates
+    if (skipInitialFetch.current) { skipInitialFetch.current = false; return; }
     const t = setTimeout(fetchResults, 50);
     return () => clearTimeout(t);
   }, [fetchResults]);
@@ -1093,10 +1109,10 @@ function FilterSelect({
   );
 }
 
-export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode } = {}) {
+export default function SearchPageClient({ defaultStatus, defaultIntent, defaultType, defaultLocations, syncUrl = true, sidebarSlot, initialData }: { defaultStatus?: SearchStatus; defaultIntent?: SearchIntent; defaultType?: string; defaultLocations?: string[]; syncUrl?: boolean; sidebarSlot?: ReactNode; initialData?: InitialSearchData | null } = {}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
-      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} defaultLocations={defaultLocations} syncUrl={syncUrl} sidebarSlot={sidebarSlot} />
+      <SearchContent defaultStatus={defaultStatus} defaultIntent={defaultIntent} defaultType={defaultType} defaultLocations={defaultLocations} syncUrl={syncUrl} sidebarSlot={sidebarSlot} initialData={initialData} />
     </Suspense>
   );
 }
