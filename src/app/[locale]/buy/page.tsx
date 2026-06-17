@@ -19,8 +19,7 @@ async function getInitialBuyListings() {
       8000,
     );
     if (!res.ok) return null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return res.json() as Promise<any>;
+    return res.json() as Promise<any>; // server-trusted API response
   } catch {
     return null;
   }
