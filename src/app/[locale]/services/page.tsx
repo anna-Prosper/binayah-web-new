@@ -18,13 +18,13 @@ const titles: Record<string, string> = {
   he: "שירותי נדל\"ן בדובאי | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
-  fr: "Immobilier à service complet à Dubaï : achat, vente, location, investissement sur plan, gestion immobilière et évaluations. Plus de 15 ans d'expertise.",
-  en: "Full-service Dubai real estate: buying, selling, renting, off-plan investment, property management and valuations. 15+ years of expertise.",
-  ru: "Полный спектр услуг по недвижимости в Дубае: покупка, продажа, аренда, инвестиции в новостройки, управление недвижимостью и оценка. Более 15 лет опыта.",
-  ar: "خدمات عقارية متكاملة في دبي: شراء، بيع، إيجار، استثمار على الخارطة، إدارة العقارات والتقييم. خبرة تزيد على 15 عامًا.",
-  zh: "迪拜一站式房产服务：购买、出售、租赁、期房投资、物业管理和估价。超过15年专业经验。",
-  vi: "Bất động sản Dubai dịch vụ đầy đủ: mua, bán, cho thuê, đầu tư dự án, quản lý và định giá tài sản. Hơn 15 năm kinh nghiệm.",
-  he: "נדל\"ן בדובאי עם שירות מלא: קנייה, מכירה, השכרה, השקעה בתוכניות עתידיות, ניהול נכסים והערכות שווי. מעל 15 שנות מומחיות.",
+  fr: "Immobilier à service complet à Dubaï : achat, vente, location, investissement sur plan, gestion immobilière et évaluations. Plus de 19 ans d'expertise.",
+  en: "Full-service Dubai real estate: buying, selling, renting, off-plan investment, property management and valuations. 19+ years of expertise.",
+  ru: "Полный спектр услуг по недвижимости в Дубае: покупка, продажа, аренда, инвестиции в новостройки, управление недвижимостью и оценка. Более 19 лет опыта.",
+  ar: "خدمات عقارية متكاملة في دبي: شراء، بيع، إيجار، استثمار على الخارطة، إدارة العقارات والتقييم. خبرة تزيد على 19 عامًا.",
+  zh: "迪拜一站式房产服务：购买、出售、租赁、期房投资、物业管理和估价。超过19年专业经验。",
+  vi: "Bất động sản Dubai dịch vụ đầy đủ: mua, bán, cho thuê, đầu tư dự án, quản lý và định giá tài sản. Hơn 19 năm kinh nghiệm.",
+  he: "נדל\"ן בדובאי עם שירות מלא: קנייה, מכירה, השכרה, השקעה בתוכניות עתידיות, ניהול נכסים והערכות שווי. מעל 19 שנות מומחיות.",
 };
 
 const SERVICES_FAQS: Record<string, { question: string; answer: string }[]> = {

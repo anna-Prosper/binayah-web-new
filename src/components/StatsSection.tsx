@@ -8,9 +8,9 @@ const StatsSection = () => {
   const t = useTranslations("home.sections.stats");
   const stats = [
     { icon: Building2, value: "11,200+", label: t("propertiesListed") },
-    { icon: Users, value: "11,200+", label: t("happyClients") },
+    { icon: Users, value: "12,000+", label: t("happyClients") },
     { icon: Award, value: "19+", label: t("industryAwards") },
-    { icon: MapPin, value: "50+", label: t("communitiesCovered") },
+    { icon: MapPin, value: "60+", label: t("communitiesCovered") },
   ];
   return (
   <section className="py-10 sm:py-24 bg-card relative overflow-hidden">
