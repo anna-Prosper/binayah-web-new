@@ -13,7 +13,7 @@ export default function AboutPage() {
 
   const stats = [
     { icon: Building2, value: "19+", label: t("statsYears") },
-    { icon: Users, value: "11,200+", label: t("statsClients") },
+    { icon: Users, value: "12,000+", label: t("statsClients") },
     { icon: Globe, value: "30+", label: t("statsNationalities") },
     { icon: Award, value: "AED 2.1B+", label: t("statsAwards") },
   ];

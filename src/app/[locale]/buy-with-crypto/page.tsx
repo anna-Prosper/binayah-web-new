@@ -29,14 +29,14 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "Crypto Transactions" },
       { n: "19+", label: "Years in Dubai" },
-      { n: "11,200+", label: "Properties" },
+      { n: "2,500+", label: "Properties" },
       { n: "0%", label: "Capital Gains Tax" },
     ],
     coinsLabel: "Accepted Cryptocurrencies",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "How It Works",
     steps: [
-      { n: "01", title: "Choose Your Property", body: "Browse 11,200+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
+      { n: "01", title: "Choose Your Property", body: "Browse 2,500+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
       { n: "02", title: "Legal & KYC Review", body: "We verify your crypto source documentation (AML/KYC) and confirm crypto acceptance with the developer or seller." },
       { n: "03", title: "Secure Transfer", body: "Funds are transferred via a licensed crypto exchange or direct wallet transfer, converted to AED at the agreed rate for DLD registration." },
       { n: "04", title: "Title Deed Issued", body: "The property is registered at the Dubai Land Department in your name. You receive the official title deed — full legal ownership." },
@@ -187,7 +187,7 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "加密货币交易" },
       { n: "19+", label: "年迪拜经验" },
-      { n: "11,200+", label: "在售房源" },
+      { n: "2,500+", label: "在售房源" },
       { n: "0%", label: "资本利得税" },
     ],
     coinsLabel: "接受的加密货币",
@@ -298,7 +298,7 @@ const CONTENT = {
         "label": "שנים בדובאי"
       },
       {
-        "n": "11,200+",
+        "n": "2,500+",
         "label": "נכסים"
       },
       {

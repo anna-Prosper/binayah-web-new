@@ -197,7 +197,7 @@
     },
     "featured": "Handpicked Properties",
     "offPlan": "Off-Plan Projects",
-    "communities": "Premier Communities",
+    "communities": "Top Communities",
     "news": "Latest News",
     "crypto": {
       "accepting": "Now Accepting",
@@ -220,7 +220,7 @@
       },
       "communities": {
         "label": "Explore Dubai",
-        "title": "Premier",
+        "title": "Top",
         "titleItalic": "Communities",
         "viewAll": "View All Communities",
         "properties": "properties",
@@ -234,9 +234,9 @@
       },
       "stats": {
         "label": "Why Choose Us",
-        "title": "Dubai's Premier Real Estate",
-        "titleItalic": "Agency",
-        "titleMobile": "Dubai's Premier Agency",
+        "title": "Trusted in Dubai",
+        "titleItalic": "Since 2007",
+        "titleMobile": "Trusted in Dubai",
         "subtitle": "Trusted by thousands of buyers, sellers, and investors across Dubai since 2007.",
         "propertiesListed": "Properties Listed",
         "happyClients": "Happy Clients",

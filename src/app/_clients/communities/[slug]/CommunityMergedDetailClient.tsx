@@ -322,10 +322,6 @@ export default function CommunityMergedDetailClient({
               ))}
             </div>
 
-            {/* Wikipedia attribution */}
-            <p className="mt-10 text-xs text-muted-foreground/50 text-right">
-              {tMerged("wikiAttribution")}
-            </p>
           </div>
         </section>
       )}
