@@ -7,9 +7,9 @@ import { useTranslations } from "next-intl";
 const StatsSection = () => {
   const t = useTranslations("home.sections.stats");
   const stats = [
-    { icon: Building2, value: "2,500+", label: t("propertiesListed") },
-    { icon: Users, value: "1,200+", label: t("happyClients") },
-    { icon: Award, value: "15+", label: t("industryAwards") },
+    { icon: Building2, value: "11,200+", label: t("propertiesListed") },
+    { icon: Users, value: "11,200+", label: t("happyClients") },
+    { icon: Award, value: "19+", label: t("industryAwards") },
     { icon: MapPin, value: "50+", label: t("communitiesCovered") },
   ];
   return (

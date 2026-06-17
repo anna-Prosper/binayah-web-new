@@ -16,13 +16,13 @@ const titles: Record<string, string> = {
   he: "אודות Binayah Properties | סוכנות הנדל\"ן המהימנה של דובאי",
 };
 const descriptions: Record<string, string> = {
-  fr: "Découvrez Binayah Properties — l'agence immobilière de confiance à Dubaï depuis 2007. Équipe certifiée RERA, recherche optimisée par IA, plus de 2 500 annonces.",
-  en: "Learn about Binayah Properties — Dubai's trusted real estate agency since 2007. RERA-certified team, AI-powered search, 2,500+ listings.",
+  fr: "Découvrez Binayah Properties — l'agence immobilière de confiance à Dubaï depuis 2007. Équipe certifiée RERA, recherche optimisée par IA, plus de 11 200 annonces.",
+  en: "Learn about Binayah Properties — Dubai's trusted real estate agency since 2007. RERA-certified team, AI-powered search, 11,200+ listings.",
   ru: "Узнайте о Binayah Properties — агентстве недвижимости в Дубае с 2007 года. RERA-сертифицированная команда, поиск на базе ИИ, более 2500 объектов.",
   ar: "تعرف على شركة بناية للعقارات — وكالة العقارات الموثوقة في دبي منذ عام 2007. فريق معتمد من RERA، بحث بالذكاء الاصطناعي.",
   zh: "了解Binayah Properties — 自2007年以来迪拜值得信赖的房产中介。RERA认证团队，AI驱动搜索，超过2500个房源。",
-  vi: "Tìm hiểu về Binayah Properties — Đại lý bất động sản đáng tin cậy của Dubai từ năm 2007. Đội ngũ được chứng nhận RERA, tìm kiếm bằng AI, hơn 2.500 danh sách.",
-  he: "למדו על Binayah Properties — סוכנות הנדל\"ן המהימנה של דובאי מאז 2007. צוות מוסמך RERA, חיפוש מבוסס AI, מעל 2,500 רישומים.",
+  vi: "Tìm hiểu về Binayah Properties — Đại lý bất động sản đáng tin cậy của Dubai từ năm 2007. Đội ngũ được chứng nhận RERA, tìm kiếm bằng AI, hơn 11.200 danh sách.",
+  he: "למדו על Binayah Properties — סוכנות הנדל\"ן המהימנה של דובאי מאז 2007. צוות מוסמך RERA, חיפוש מבוסס AI, מעל 11,200 רישומים.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

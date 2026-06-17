@@ -112,7 +112,7 @@ export default async function RealEstateMarketingPage({ params }: Props) {
               { n: "10+", label: locale === "ru" ? "Порталов размещения" : locale === "ar" ? "منصات الإدراج" : locale === "zh" ? "挂牌平台" : locale === "vi" ? "Cổng niêm yết" : locale === "he" ? "פורטלי רישום" : "Listing Portals" },
               { n: "15K+", label: locale === "ru" ? "База покупателей" : locale === "ar" ? "قاعدة المشترين" : locale === "zh" ? "买家数据库" : locale === "vi" ? "Cơ sở dữ liệu người mua" : locale === "he" ? "מאגר קונים" : "Buyer Database" },
               { n: "4x", label: locale === "ru" ? "Больше запросов" : locale === "ar" ? "مزيد من الاستفسارات" : locale === "zh" ? "更多询价" : locale === "vi" ? "Nhiều yêu cầu hơn" : locale === "he" ? "עוד פניות" : "More Inquiries" },
-              { n: "17+", label: locale === "ru" ? "Лет опыта" : locale === "ar" ? "سنوات خبرة" : locale === "zh" ? "年经验" : locale === "vi" ? "Năm kinh nghiệm" : locale === "he" ? "שנות ניסיון" : "Years Experience" },
+              { n: "19+", label: locale === "ru" ? "Лет опыта" : locale === "ar" ? "سنوات خبرة" : locale === "zh" ? "年经验" : locale === "vi" ? "Năm kinh nghiệm" : locale === "he" ? "שנות ניסיון" : "Years Experience" },
             ].map((s) => (
               <div key={s.label} className="py-6 px-4 sm:px-8 text-center">
                 <p className="text-2xl font-black text-primary mb-1">{s.n}</p>

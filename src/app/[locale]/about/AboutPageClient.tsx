@@ -12,10 +12,10 @@ export default function AboutPage() {
   const t = useTranslations("about");
 
   const stats = [
-    { icon: Building2, value: "15+", label: t("statsYears") },
-    { icon: Users, value: "5,000+", label: t("statsClients") },
+    { icon: Building2, value: "19+", label: t("statsYears") },
+    { icon: Users, value: "11,200+", label: t("statsClients") },
     { icon: Globe, value: "30+", label: t("statsNationalities") },
-    { icon: Award, value: "50+", label: t("statsAwards") },
+    { icon: Award, value: "AED 2.1B+", label: t("statsAwards") },
   ];
 
   const values = [

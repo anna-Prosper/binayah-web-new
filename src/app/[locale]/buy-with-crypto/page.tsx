@@ -28,15 +28,15 @@ const CONTENT = {
     heroCtaArrow: "→",
     stats: [
       { n: "500+", label: "Crypto Transactions" },
-      { n: "17+", label: "Years in Dubai" },
-      { n: "2,500+", label: "Properties" },
+      { n: "19+", label: "Years in Dubai" },
+      { n: "11,200+", label: "Properties" },
       { n: "0%", label: "Capital Gains Tax" },
     ],
     coinsLabel: "Accepted Cryptocurrencies",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "How It Works",
     steps: [
-      { n: "01", title: "Choose Your Property", body: "Browse 2,500+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
+      { n: "01", title: "Choose Your Property", body: "Browse 11,200+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
       { n: "02", title: "Legal & KYC Review", body: "We verify your crypto source documentation (AML/KYC) and confirm crypto acceptance with the developer or seller." },
       { n: "03", title: "Secure Transfer", body: "Funds are transferred via a licensed crypto exchange or direct wallet transfer, converted to AED at the agreed rate for DLD registration." },
       { n: "04", title: "Title Deed Issued", body: "The property is registered at the Dubai Land Department in your name. You receive the official title deed — full legal ownership." },
@@ -81,8 +81,8 @@ const CONTENT = {
     heroCtaArrow: "→",
     stats: [
       { n: "500+", label: "Крипто-сделок" },
-      { n: "17+", label: "Лет в Дубае" },
-      { n: "2 500+", label: "Объектов" },
+      { n: "19+", label: "Лет в Дубае" },
+      { n: "11 200+", label: "Объектов" },
       { n: "0%", label: "Налог на прибыль" },
     ],
     coinsLabel: "Принимаемые криптовалюты",
@@ -186,8 +186,8 @@ const CONTENT = {
     heroCtaArrow: "→",
     stats: [
       { n: "500+", label: "加密货币交易" },
-      { n: "17+", label: "年迪拜经验" },
-      { n: "2,500+", label: "在售房源" },
+      { n: "19+", label: "年迪拜经验" },
+      { n: "11,200+", label: "在售房源" },
       { n: "0%", label: "资本利得税" },
     ],
     coinsLabel: "接受的加密货币",
@@ -238,15 +238,15 @@ const CONTENT = {
     heroCtaArrow: "→",
     stats: [
       { n: "500+", label: "Giao dịch tiền điện tử" },
-      { n: "17+", label: "Năm tại Dubai" },
-      { n: "2.500+", label: "Bất động sản" },
+      { n: "19+", label: "Năm tại Dubai" },
+      { n: "11.200+", label: "Bất động sản" },
       { n: "0%", label: "Thuế lãi vốn" },
     ],
     coinsLabel: "Tiền điện tử được chấp nhận",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "Cách hoạt động",
     steps: [
-      { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 2.500 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
+      { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 11.200 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
       { n: "02", title: "Xét duyệt pháp lý & KYC", body: "Chúng tôi xác minh tài liệu nguồn gốc tiền điện tử của bạn (AML/KYC) và xác nhận việc chấp nhận tiền điện tử với chủ đầu tư hoặc người bán." },
       { n: "03", title: "Chuyển khoản an toàn", body: "Vốn được chuyển qua sàn giao dịch tiền điện tử được cấp phép hoặc chuyển khoản ví trực tiếp, chuyển đổi sang AED theo tỷ giá thỏa thuận để đăng ký DLD." },
       { n: "04", title: "Cấp sổ đỏ", body: "Bất động sản được đăng ký tại Sở Đất đai Dubai dưới tên bạn. Bạn nhận sổ đỏ chính thức — quyền sở hữu hợp pháp đầy đủ." },
@@ -294,11 +294,11 @@ const CONTENT = {
         "label": "עסקאות קריפטו"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "שנים בדובאי"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "נכסים"
       },
       {
@@ -320,7 +320,7 @@ const CONTENT = {
       {
         "n": "01",
         "title": "בחירת הנכס",
-        "body": "עיינו ביותר מ-2,500 נכסים ופרויקטים על הנייר. הסוכנים שלנו ירכיבו רשימה קצרה של נכסים שמתאימים לתקציב וליעדי ההשקעה שלכם."
+        "body": "עיינו ביותר מ-11,200 נכסים ופרויקטים על הנייר. הסוכנים שלנו ירכיבו רשימה קצרה של נכסים שמתאימים לתקציב וליעדי ההשקעה שלכם."
       },
       {
         "n": "02",

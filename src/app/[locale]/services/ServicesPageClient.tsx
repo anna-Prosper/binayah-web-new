@@ -53,9 +53,9 @@ const faqs = [
 ];
 
 const stats = [
-  { value: "2,500+", label: "Properties Managed", icon: Building2 },
-  { value: "5,000+", label: "Properties Sold", icon: TrendingUp },
-  { value: "15+", label: "Years Experience", icon: Award },
+  { value: "11,200+", label: "Properties Managed", icon: Building2 },
+  { value: "11,200+", label: "Properties Sold", icon: TrendingUp },
+  { value: "19+", label: "Years Experience", icon: Award },
   { value: "4.9★", label: "Client Rating", icon: Star },
 ];
 

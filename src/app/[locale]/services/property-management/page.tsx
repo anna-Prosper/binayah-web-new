@@ -19,7 +19,7 @@ const CONTENT = {
     "heroCta": "קבלו ייעוץ חינם",
     "stats": [
       {
-        "n": "17+",
+        "n": "19+",
         "label": "שנות ניהול נכסים בדובאי"
       },
       {
@@ -186,7 +186,7 @@ const CONTENT = {
     heroDesc: "Let Binayah handle everything — from finding the right tenant to monthly maintenance and rent collection. Our RERA-certified team protects your investment while you focus on what matters.",
     heroCta: "Get a Free Consultation",
     stats: [
-      { n: "17+", label: "Years Managing Dubai Properties" },
+      { n: "19+", label: "Years Managing Dubai Properties" },
       { n: "RERA", label: "Certified Management Team" },
       { n: "95%", label: "Tenant Retention Rate" },
       { n: "48h", label: "Average Tenant Response Time" },
@@ -241,7 +241,7 @@ const CONTENT = {
     heroDesc: "Доверьте Binayah всё — от поиска арендатора до ежемесячного обслуживания и сбора аренды. RERA-сертифицированная команда защитит ваши инвестиции, пока вы занимаетесь важными делами. Обслуживание на русском языке.",
     heroCta: "Бесплатная консультация",
     stats: [
-      { n: "17+", label: "Лет управления в Дубае" },
+      { n: "19+", label: "Лет управления в Дубае" },
       { n: "RERA", label: "Сертификация" },
       { n: "95%", label: "Удержание арендаторов" },
       { n: "48ч", label: "Среднее время ответа" },
@@ -348,7 +348,7 @@ const CONTENT = {
     heroDesc: "让Binayah处理一切——从寻找合适租客到每月维护和租金收取。我们的RERA认证团队保护您的投资，提供全程中文服务。",
     heroCta: "免费咨询",
     stats: [
-      { n: "17+", label: "年迪拜物业管理经验" },
+      { n: "19+", label: "年迪拜物业管理经验" },
       { n: "RERA", label: "认证团队" },
       { n: "95%", label: "租客留存率" },
       { n: "48小时", label: "平均响应时间" },
@@ -402,7 +402,7 @@ const CONTENT = {
     heroDesc: "Để Binayah xử lý mọi thứ — từ tìm khách thuê phù hợp đến bảo trì hàng tháng và thu tiền thuê. Đội ngũ được chứng nhận RERA của chúng tôi bảo vệ khoản đầu tư của bạn trong khi bạn tập trung vào điều quan trọng.",
     heroCta: "Nhận tư vấn miễn phí",
     stats: [
-      { n: "17+", label: "Năm quản lý bất động sản Dubai" },
+      { n: "19+", label: "Năm quản lý bất động sản Dubai" },
       { n: "RERA", label: "Đội ngũ quản lý được chứng nhận" },
       { n: "95%", label: "Tỷ lệ giữ chân khách thuê" },
       { n: "48h", label: "Thời gian phản hồi khách thuê TB" },

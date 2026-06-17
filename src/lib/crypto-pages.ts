@@ -77,11 +77,11 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "label": "Crypto Transactions"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "Years in Dubai"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "Properties"
       },
       {
@@ -93,7 +93,7 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
       {
         "n": "01",
         "title": "Choose Your Property",
-        "body": "Browse 2,500+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals."
+        "body": "Browse 11,200+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals."
       },
       {
         "n": "02",
@@ -140,11 +140,11 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "label": "Крипто-сделок"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "Лет в Дубае"
       },
       {
-        "n": "2 500+",
+        "n": "11 200+",
         "label": "Объектов"
       },
       {
@@ -266,11 +266,11 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "label": "加密货币交易"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "年迪拜经验"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "在售房源"
       },
       {
@@ -329,11 +329,11 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "label": "Giao dịch tiền điện tử"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "Năm tại Dubai"
       },
       {
-        "n": "2.500+",
+        "n": "11.200+",
         "label": "Bất động sản"
       },
       {
@@ -345,7 +345,7 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
       {
         "n": "01",
         "title": "Chọn bất động sản",
-        "body": "Khám phá hơn 2.500 tin đăng và dự án off-plan. Chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn."
+        "body": "Khám phá hơn 11.200 tin đăng và dự án off-plan. Chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn."
       },
       {
         "n": "02",
@@ -392,11 +392,11 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "label": "עסקאות קריפטו"
       },
       {
-        "n": "17+",
+        "n": "19+",
         "label": "שנים בדובאי"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "נכסים"
       },
       {
@@ -408,7 +408,7 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
       {
         "n": "01",
         "title": "בחירת הנכס שלכם",
-        "body": "עיינו בלמעלה מ-2,500 נכסים ופרויקטים על הנייר. הסוכנים שלנו יבחרו עבורכם נכסים המתאימים לתקציב וליעדי ההשקעה שלכם."
+        "body": "עיינו בלמעלה מ-11,200 נכסים ופרויקטים על הנייר. הסוכנים שלנו יבחרו עבורכם נכסים המתאימים לתקציב וליעדי ההשקעה שלכם."
       },
       {
         "n": "02",
@@ -436,7 +436,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
     "locales": {
       "en": {
         "metaTitle": "Buy Property in Dubai with Bitcoin (BTC) | Binayah",
-        "metaDesc": "Buy Dubai property with Bitcoin. Convert BTC to AED via a licensed UAE exchange, register with DLD, get a title deed and 0% tax. 17+ years, 2,500+ listings.",
+        "metaDesc": "Buy Dubai property with Bitcoin. Convert BTC to AED via a licensed UAE exchange, register with DLD, get a title deed and 0% tax. 19+ years, 11,200+ listings.",
         "heroLabel": "BUY WITH BITCOIN",
         "h1a": "Buy Property in Dubai",
         "h1b": "With Bitcoin (BTC)",
@@ -501,7 +501,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ru": {
         "metaTitle": "Купить недвижимость в Дубае за Bitcoin | Binayah",
-        "metaDesc": "Покупка недвижимости в Дубае за Bitcoin. Конвертация BTC в AED через лицензированную биржу ОАЭ, регистрация в DLD, 0% налога. 17+ лет, 2500+ объектов.",
+        "metaDesc": "Покупка недвижимости в Дубае за Bitcoin. Конвертация BTC в AED через лицензированную биржу ОАЭ, регистрация в DLD, 0% налога. 19+ лет, 2500+ объектов.",
         "heroLabel": "ПОКУПКА ЗА BITCOIN",
         "h1a": "Недвижимость в Дубае",
         "h1b": "За Bitcoin (BTC)",
@@ -566,7 +566,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ar": {
         "metaTitle": "شراء عقار في دبي بعملة Bitcoin | Binayah",
-        "metaDesc": "اشترِ عقارك في دبي بعملة Bitcoin. تحويل BTC إلى AED عبر منصة مرخصة في الإمارات، تسجيل في DLD وضريبة 0%. خبرة 17+ عاماً و2,500+ عقار.",
+        "metaDesc": "اشترِ عقارك في دبي بعملة Bitcoin. تحويل BTC إلى AED عبر منصة مرخصة في الإمارات، تسجيل في DLD وضريبة 0%. خبرة 19+ عاماً و11,200+ عقار.",
         "heroLabel": "اشترِ بعملة BITCOIN",
         "h1a": "اشترِ عقاراً في دبي",
         "h1b": "بعملة Bitcoin (BTC)",
@@ -631,7 +631,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "zh": {
         "metaTitle": "用比特币(BTC)购买迪拜房产 | Binayah",
-        "metaDesc": "用比特币购买迪拜房产。通过阿联酋持牌交易所将BTC兑换为AED，在DLD登记产权，享0%税率。17年以上经验，2,500+房源。",
+        "metaDesc": "用比特币购买迪拜房产。通过阿联酋持牌交易所将BTC兑换为AED，在DLD登记产权，享0%税率。19年以上经验，11,200+房源。",
         "heroLabel": "用比特币购房",
         "h1a": "购买迪拜房产",
         "h1b": "使用比特币 (BTC)",
@@ -696,7 +696,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "vi": {
         "metaTitle": "Mua bất động sản Dubai bằng Bitcoin | Binayah",
-        "metaDesc": "Mua bất động sản Dubai bằng Bitcoin. Đổi BTC sang AED qua sàn UAE được cấp phép, đăng ký DLD, thuế 0%. Hơn 17 năm kinh nghiệm, 2.500+ bất động sản.",
+        "metaDesc": "Mua bất động sản Dubai bằng Bitcoin. Đổi BTC sang AED qua sàn UAE được cấp phép, đăng ký DLD, thuế 0%. Hơn 19 năm kinh nghiệm, 11.200+ bất động sản.",
         "heroLabel": "MUA BẰNG BITCOIN",
         "h1a": "Mua bất động sản Dubai",
         "h1b": "Bằng Bitcoin (BTC)",
@@ -761,7 +761,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "he": {
         "metaTitle": "קניית נכס בדובאי ב-Bitcoin (BTC) | Binayah",
-        "metaDesc": "קנו נכס בדובאי ב-Bitcoin. המרת BTC ל-AED דרך בורסה מורשית באיחוד האמירויות, רישום ב-DLD, קבלת שטר בעלות ו-0% מס. 17+ שנים, 2,500+ נכסים.",
+        "metaDesc": "קנו נכס בדובאי ב-Bitcoin. המרת BTC ל-AED דרך בורסה מורשית באיחוד האמירויות, רישום ב-DLD, קבלת שטר בעלות ו-0% מס. 19+ שנים, 11,200+ נכסים.",
         "heroLabel": "קנייה ב-BITCOIN",
         "h1a": "קניית נכס בדובאי",
         "h1b": "ב-Bitcoin (BTC)",
@@ -832,7 +832,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
     "locales": {
       "en": {
         "metaTitle": "Buy Property in Dubai with Ethereum | Binayah",
-        "metaDesc": "Buy Dubai property with Ethereum (ETH). Convert ETH to AED at an agreed rate via a licensed UAE exchange, register with DLD, 0% tax. Binayah, 17+ years.",
+        "metaDesc": "Buy Dubai property with Ethereum (ETH). Convert ETH to AED at an agreed rate via a licensed UAE exchange, register with DLD, 0% tax. Binayah, 19+ years.",
         "heroLabel": "Pay with Ethereum (ETH)",
         "h1a": "Buy Property in Dubai",
         "h1b": "with Ethereum (ETH)",
@@ -1092,7 +1092,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "vi": {
         "metaTitle": "Mua bất động sản Dubai bằng Ethereum | Binayah",
-        "metaDesc": "Mua bất động sản Dubai bằng Ethereum (ETH). Đổi ETH sang AED theo tỷ giá thỏa thuận qua sàn được cấp phép tại UAE, đăng ký DLD, thuế 0%. Binayah, hơn 17 năm.",
+        "metaDesc": "Mua bất động sản Dubai bằng Ethereum (ETH). Đổi ETH sang AED theo tỷ giá thỏa thuận qua sàn được cấp phép tại UAE, đăng ký DLD, thuế 0%. Binayah, hơn 19 năm.",
         "heroLabel": "Thanh toán bằng Ethereum (ETH)",
         "h1a": "Mua bất động sản Dubai",
         "h1b": "bằng Ethereum (ETH)",
@@ -1157,7 +1157,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "he": {
         "metaTitle": "קניית נכס בדובאי ב-Ethereum | Binayah",
-        "metaDesc": "קנו נכס בדובאי ב-Ethereum (ETH). המרת ETH ל-AED בשער מוסכם דרך בורסה מורשית באיחוד האמירויות, רישום ב-DLD, 0% מס. Binayah, 17+ שנים.",
+        "metaDesc": "קנו נכס בדובאי ב-Ethereum (ETH). המרת ETH ל-AED בשער מוסכם דרך בורסה מורשית באיחוד האמירויות, רישום ב-DLD, 0% מס. Binayah, 19+ שנים.",
         "heroLabel": "תשלום ב-Ethereum (ETH)",
         "h1a": "קניית נכס בדובאי",
         "h1b": "ב-Ethereum (ETH)",
@@ -1228,7 +1228,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
     "locales": {
       "en": {
         "metaTitle": "Buy Property in Dubai with USDT | Binayah",
-        "metaDesc": "Buy Dubai property with USDT (Tether). USD-pegged stablecoin means no volatility, predictable AED conversion and fast settlement. VARA-compliant. 17+ years.",
+        "metaDesc": "Buy Dubai property with USDT (Tether). USD-pegged stablecoin means no volatility, predictable AED conversion and fast settlement. VARA-compliant. 19+ years.",
         "heroLabel": "USDT (Tether) Property Payments",
         "h1a": "Buy Property in Dubai",
         "h1b": "with USDT (Tether)",
@@ -1282,7 +1282,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Start Your USDT Property Purchase Today",
-        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai real estate with USDT. With 17+ years and 2,500+ properties, we handle conversion, AML/KYC and DLD registration. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai real estate with USDT. With 19+ years and 11,200+ properties, we handle conversion, AML/KYC and DLD registration. WhatsApp +971 54 998 8811.",
         "keywords": [
           "buy property in Dubai with USDT",
           "Tether Dubai real estate",
@@ -1293,7 +1293,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ru": {
         "metaTitle": "Купить недвижимость в Дубае за USDT | Binayah",
-        "metaDesc": "Покупка недвижимости в Дубае за USDT (Tether). Стейблкоин с привязкой к USD: без волатильности, предсказуемый курс AED, быстрые расчёты. VARA, 17+ лет.",
+        "metaDesc": "Покупка недвижимости в Дубае за USDT (Tether). Стейблкоин с привязкой к USD: без волатильности, предсказуемый курс AED, быстрые расчёты. VARA, 19+ лет.",
         "heroLabel": "Оплата недвижимости в USDT (Tether)",
         "h1a": "Купить недвижимость в Дубае",
         "h1b": "за USDT (Tether)",
@@ -1347,7 +1347,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Начните покупку недвижимости за USDT сегодня",
-        "ctaDesc": "Свяжитесь с многоязычной командой Binayah о покупке недвижимости в Дубае за USDT. 17+ лет и 2500+ объектов: берём на себя конвертацию, AML/KYC и регистрацию в DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Свяжитесь с многоязычной командой Binayah о покупке недвижимости в Дубае за USDT. 19+ лет и 2500+ объектов: берём на себя конвертацию, AML/KYC и регистрацию в DLD. WhatsApp +971 54 998 8811.",
         "keywords": [
           "купить недвижимость в Дубае за USDT",
           "Tether недвижимость Дубай",
@@ -1358,7 +1358,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ar": {
         "metaTitle": "شراء عقار في دبي بعملة USDT | Binayah",
-        "metaDesc": "اشترِ عقاراً في دبي عبر USDT (Tether). عملة مستقرة مرتبطة بالدولار: بلا تقلبات، تحويل AED متوقع وتسوية سريعة. ضمن إطار VARA وخبرة 17+ عاماً.",
+        "metaDesc": "اشترِ عقاراً في دبي عبر USDT (Tether). عملة مستقرة مرتبطة بالدولار: بلا تقلبات، تحويل AED متوقع وتسوية سريعة. ضمن إطار VARA وخبرة 19+ عاماً.",
         "heroLabel": "الدفع للعقارات بعملة USDT (Tether)",
         "h1a": "اشترِ عقاراً في دبي",
         "h1b": "بعملة USDT (Tether)",
@@ -1412,7 +1412,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "ابدأ شراء عقارك بعملة USDT اليوم",
-        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول شراء عقارات دبي بعملة USDT. بخبرة 17+ عاماً و2,500+ عقار، نتولى التحويل وAML/KYC وتسجيل DLD. واتساب +971 54 998 8811.",
+        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول شراء عقارات دبي بعملة USDT. بخبرة 19+ عاماً و11,200+ عقار، نتولى التحويل وAML/KYC وتسجيل DLD. واتساب +971 54 998 8811.",
         "keywords": [
           "شراء عقار في دبي بعملة USDT",
           "Tether عقارات دبي",
@@ -1477,7 +1477,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "立即开启您的 USDT 购房之旅",
-        "ctaDesc": "就用 USDT 购买迪拜房产联系 Binayah 多语种团队。凭借 17 年以上经验和 2,500+ 套房源，我们负责兑换、AML/KYC 和 DLD 登记。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "就用 USDT 购买迪拜房产联系 Binayah 多语种团队。凭借 17 年以上经验和 11,200+ 套房源，我们负责兑换、AML/KYC 和 DLD 登记。WhatsApp +971 54 998 8811。",
         "keywords": [
           "用 USDT 在迪拜买房",
           "Tether 迪拜房产",
@@ -1488,7 +1488,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "vi": {
         "metaTitle": "Mua bất động sản Dubai bằng USDT | Binayah",
-        "metaDesc": "Mua bất động sản Dubai bằng USDT (Tether). Stablecoin neo theo USD: không biến động, quy đổi AED dự đoán được, thanh toán nhanh. Theo VARA, hơn 17 năm.",
+        "metaDesc": "Mua bất động sản Dubai bằng USDT (Tether). Stablecoin neo theo USD: không biến động, quy đổi AED dự đoán được, thanh toán nhanh. Theo VARA, hơn 19 năm.",
         "heroLabel": "Thanh toán bất động sản bằng USDT (Tether)",
         "h1a": "Mua bất động sản tại Dubai",
         "h1b": "bằng USDT (Tether)",
@@ -1542,7 +1542,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Bắt đầu mua bất động sản bằng USDT ngay hôm nay",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về mua bất động sản Dubai bằng USDT. Hơn 17 năm và 2.500+ bất động sản, chúng tôi lo quy đổi, AML/KYC và đăng ký DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về mua bất động sản Dubai bằng USDT. Hơn 19 năm và 11.200+ bất động sản, chúng tôi lo quy đổi, AML/KYC và đăng ký DLD. WhatsApp +971 54 998 8811.",
         "keywords": [
           "mua bất động sản Dubai bằng USDT",
           "Tether bất động sản Dubai",
@@ -1553,7 +1553,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "he": {
         "metaTitle": "קניית נכס בדובאי ב-USDT | Binayah",
-        "metaDesc": "קנו נכס בדובאי ב-USDT (Tether). מטבע יציב צמוד לדולר ללא תנודתיות, המרת AED צפויה וסליקה מהירה. תואם VARA. 17+ שנות ניסיון.",
+        "metaDesc": "קנו נכס בדובאי ב-USDT (Tether). מטבע יציב צמוד לדולר ללא תנודתיות, המרת AED צפויה וסליקה מהירה. תואם VARA. 19+ שנות ניסיון.",
         "heroLabel": "תשלומי נכסים ב-USDT (Tether)",
         "h1a": "קניית נכס בדובאי",
         "h1b": "באמצעות USDT (Tether)",
@@ -1607,7 +1607,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "התחילו את רכישת הנכס שלכם ב-USDT היום",
-        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah על רכישת נדל\"ן בדובאי ב-USDT. עם 17+ שנים ו-2,500+ נכסים, אנו מטפלים בהמרה, ב-AML/KYC וברישום ה-DLD. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah על רכישת נדל\"ן בדובאי ב-USDT. עם 19+ שנים ו-11,200+ נכסים, אנו מטפלים בהמרה, ב-AML/KYC וברישום ה-DLD. WhatsApp ‎+971 54 998 8811.",
         "keywords": [
           "קניית נכס בדובאי ב-USDT",
           "Tether נדל\"ן דובאי",
@@ -1624,7 +1624,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
     "locales": {
       "en": {
         "metaTitle": "Buy Property in Dubai with USDC | Binayah",
-        "metaDesc": "Buy Dubai property with USDC, the regulated, fully-reserved USD stablecoin by Circle. Transparent, compliant, audited. DLD title deed, 0% tax. Binayah, 17+ years.",
+        "metaDesc": "Buy Dubai property with USDC, the regulated, fully-reserved USD stablecoin by Circle. Transparent, compliant, audited. DLD title deed, 0% tax. Binayah, 19+ years.",
         "heroLabel": "USDC Real Estate",
         "h1a": "Buy Property in Dubai",
         "h1b": "with USDC (USD Coin)",
@@ -1678,7 +1678,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Buy Dubai property with USDC today",
-        "ctaDesc": "Binayah has guided buyers for 17+ years across 2,500+ properties. Our multilingual agents make USDC settlement simple and compliant. Message us on WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah has guided buyers for 19+ years across 11,200+ properties. Our multilingual agents make USDC settlement simple and compliant. Message us on WhatsApp +971 54 998 8811.",
         "keywords": [
           "buy property in Dubai with USDC",
           "USDC real estate Dubai",
@@ -1689,7 +1689,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ru": {
         "metaTitle": "Купить недвижимость в Дубае за USDC | Binayah",
-        "metaDesc": "Купите недвижимость в Дубае за USDC, регулируемый стейблкоин Circle с полным резервом. Прозрачно, аудит, 0% налогов, титул DLD. Binayah, 17+ лет.",
+        "metaDesc": "Купите недвижимость в Дубае за USDC, регулируемый стейблкоин Circle с полным резервом. Прозрачно, аудит, 0% налогов, титул DLD. Binayah, 19+ лет.",
         "heroLabel": "Недвижимость за USDC",
         "h1a": "Купить недвижимость в Дубае",
         "h1b": "за USDC (USD Coin)",
@@ -1743,7 +1743,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Купите недвижимость в Дубае за USDC сегодня",
-        "ctaDesc": "Binayah сопровождает покупателей более 17 лет, продав 2 500+ объектов. Наши многоязычные агенты делают расчёт в USDC простым и безопасным. Напишите нам в WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah сопровождает покупателей более 19 лет, продав 11 200+ объектов. Наши многоязычные агенты делают расчёт в USDC простым и безопасным. Напишите нам в WhatsApp +971 54 998 8811.",
         "keywords": [
           "купить недвижимость в Дубае за USDC",
           "недвижимость Дубай за USD Coin",
@@ -1754,7 +1754,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "ar": {
         "metaTitle": "شراء عقار في دبي بـ USDC | Binayah",
-        "metaDesc": "اشترِ عقاراً في دبي بـ USDC، العملة المستقرة المنظمة والمدعومة بالكامل من Circle. شفافية، تدقيق، 0% ضرائب، سند ملكية DLD. Binayah، 17+ عاماً.",
+        "metaDesc": "اشترِ عقاراً في دبي بـ USDC، العملة المستقرة المنظمة والمدعومة بالكامل من Circle. شفافية، تدقيق، 0% ضرائب، سند ملكية DLD. Binayah، 19+ عاماً.",
         "heroLabel": "عقارات بـ USDC",
         "h1a": "شراء عقار في دبي",
         "h1b": "بـ USDC (USD Coin)",
@@ -1808,7 +1808,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "اشترِ عقاراً في دبي بـ USDC اليوم",
-        "ctaDesc": "رافقت Binayah المشترين لأكثر من 17 عاماً عبر 2,500+ عقار. يجعل وكلاؤنا متعددو اللغات التسوية بـ USDC بسيطة ومتوافقة. راسلنا عبر WhatsApp +971 54 998 8811.",
+        "ctaDesc": "رافقت Binayah المشترين لأكثر من 17 عاماً عبر 11,200+ عقار. يجعل وكلاؤنا متعددو اللغات التسوية بـ USDC بسيطة ومتوافقة. راسلنا عبر WhatsApp +971 54 998 8811.",
         "keywords": [
           "شراء عقار في دبي بـ USDC",
           "عقارات دبي بـ USD Coin",
@@ -1819,7 +1819,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "zh": {
         "metaTitle": "用USDC在迪拜购房 | Binayah",
-        "metaDesc": "用USDC在迪拜购房，Circle发行的受监管、足额储备美元稳定币。透明、经审计、0%税、DLD产权证。Binayah，17年以上经验。",
+        "metaDesc": "用USDC在迪拜购房，Circle发行的受监管、足额储备美元稳定币。透明、经审计、0%税、DLD产权证。Binayah，19年以上经验。",
         "heroLabel": "USDC房产",
         "h1a": "在迪拜购房",
         "h1b": "使用USDC（USD Coin）",
@@ -1873,7 +1873,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "立即用USDC购买迪拜房产",
-        "ctaDesc": "Binayah拥有17年以上经验，已成交2,500多套房产。我们的多语言团队让USDC结算简单又合规。通过WhatsApp +971 54 998 8811联系我们。",
+        "ctaDesc": "Binayah拥有19年以上经验，已成交11,200多套房产。我们的多语言团队让USDC结算简单又合规。通过WhatsApp +971 54 998 8811联系我们。",
         "keywords": [
           "用USDC在迪拜购房",
           "迪拜房产USD Coin",
@@ -1884,7 +1884,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "vi": {
         "metaTitle": "Mua bất động sản Dubai bằng USDC | Binayah",
-        "metaDesc": "Mua bất động sản Dubai bằng USDC, stablecoin USD được quản lý, dự trữ đầy đủ của Circle. Minh bạch, kiểm toán, 0% thuế, sổ đỏ DLD. Binayah, hơn 17 năm.",
+        "metaDesc": "Mua bất động sản Dubai bằng USDC, stablecoin USD được quản lý, dự trữ đầy đủ của Circle. Minh bạch, kiểm toán, 0% thuế, sổ đỏ DLD. Binayah, hơn 19 năm.",
         "heroLabel": "Bất động sản USDC",
         "h1a": "Mua bất động sản tại Dubai",
         "h1b": "bằng USDC (USD Coin)",
@@ -1938,7 +1938,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Mua bất động sản Dubai bằng USDC ngay hôm nay",
-        "ctaDesc": "Binayah đồng hành cùng người mua hơn 17 năm với hơn 2.500 bất động sản. Đội ngũ đa ngôn ngữ giúp thanh toán USDC đơn giản và tuân thủ. Nhắn cho chúng tôi qua WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah đồng hành cùng người mua hơn 19 năm với hơn 11.200 bất động sản. Đội ngũ đa ngôn ngữ giúp thanh toán USDC đơn giản và tuân thủ. Nhắn cho chúng tôi qua WhatsApp +971 54 998 8811.",
         "keywords": [
           "mua bất động sản Dubai bằng USDC",
           "bất động sản Dubai USD Coin",
@@ -1949,7 +1949,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
       },
       "he": {
         "metaTitle": "קניית נכס בדובאי ב-USDC | Binayah",
-        "metaDesc": "קנו נכס בדובאי ב-USDC, המטבע היציב המוסדר והמגובה במלואו של Circle. שקוף, תואם ומבוקר. שטר בעלות DLD, 0% מס. Binayah, 17+ שנים.",
+        "metaDesc": "קנו נכס בדובאי ב-USDC, המטבע היציב המוסדר והמגובה במלואו של Circle. שקוף, תואם ומבוקר. שטר בעלות DLD, 0% מס. Binayah, 19+ שנים.",
         "heroLabel": "נדל\"ן ב-USDC",
         "h1a": "קניית נכס בדובאי",
         "h1b": "באמצעות USDC (USD Coin)",
@@ -2003,7 +2003,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "קנו נכס בדובאי ב-USDC היום",
-        "ctaDesc": "Binayah ליוותה רוכשים במשך 17+ שנים ב-2,500+ נכסים. הסוכנים הרב-לשוניים שלנו הופכים את הסליקה ב-USDC לפשוטה ותואמת. כתבו לנו ב-WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "Binayah ליוותה רוכשים במשך 19+ שנים ב-11,200+ נכסים. הסוכנים הרב-לשוניים שלנו הופכים את הסליקה ב-USDC לפשוטה ותואמת. כתבו לנו ב-WhatsApp ‎+971 54 998 8811.",
         "keywords": [
           "קניית נכס בדובאי ב-USDC",
           "USDC נדל\"ן דובאי",
@@ -2074,7 +2074,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Start Your Off-Plan Crypto Purchase",
-        "ctaDesc": "Talk to Binayah's multilingual team about paying off-plan deposits and milestones in crypto. 17+ years, 2,500+ properties. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Talk to Binayah's multilingual team about paying off-plan deposits and milestones in crypto. 19+ years, 11,200+ properties. WhatsApp +971 54 998 8811.",
         "keywords": [
           "buy off-plan Dubai with crypto",
           "off-plan property cryptocurrency Dubai",
@@ -2139,7 +2139,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Начните покупку off-plan за криптовалюту",
-        "ctaDesc": "Обсудите с многоязычной командой Binayah оплату депозитов и этапов off-plan криптой. 17+ лет, 2500+ объектов. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Обсудите с многоязычной командой Binayah оплату депозитов и этапов off-plan криптой. 19+ лет, 2500+ объектов. WhatsApp +971 54 998 8811.",
         "keywords": [
           "купить off-plan Дубай за крипту",
           "off-plan недвижимость криптовалюта Дубай",
@@ -2204,7 +2204,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "ابدأ شراءك على الخارطة بالكريبتو",
-        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول دفع العربون والأقساط على الخارطة بالكريبتو. 17+ عاماً و2500+ عقار. واتساب +971 54 998 8811.",
+        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول دفع العربون والأقساط على الخارطة بالكريبتو. 19+ عاماً و2500+ عقار. واتساب +971 54 998 8811.",
         "keywords": [
           "شراء عقار على الخارطة بالكريبتو دبي",
           "عقار على الخارطة بالعملات الرقمية دبي",
@@ -2269,7 +2269,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "开启您的加密货币期房购置",
-        "ctaDesc": "就用加密货币支付期房订金和进度款，咨询 Binayah 多语种团队。17+ 年经验，2500+ 套房产。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "就用加密货币支付期房订金和进度款，咨询 Binayah 多语种团队。19+ 年经验，2500+ 套房产。WhatsApp +971 54 998 8811。",
         "keywords": [
           "加密货币购买迪拜期房",
           "迪拜期房数字货币支付",
@@ -2334,7 +2334,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Bắt đầu mua off-plan bằng crypto",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về trả cọc và tiến độ off-plan bằng crypto. 17+ năm, 2.500+ bất động sản. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về trả cọc và tiến độ off-plan bằng crypto. 19+ năm, 11.200+ bất động sản. WhatsApp +971 54 998 8811.",
         "keywords": [
           "mua off-plan Dubai bằng crypto",
           "bất động sản off-plan tiền điện tử Dubai",
@@ -2399,7 +2399,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "התחילו את רכישת הקריפטו על הנייר שלכם",
-        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על תשלום פיקדונות ואבני דרך על הנייר בקריפטו. מעל 17 שנה, מעל 2,500 נכסים. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על תשלום פיקדונות ואבני דרך על הנייר בקריפטו. מעל 19 שנה, מעל 11,200 נכסים. WhatsApp ‎+971 54 998 8811.",
         "keywords": [
           "קניית נכס על הנייר בדובאי בקריפטו",
           "נכס על הנייר במטבע קריפטו בדובאי",
@@ -2470,7 +2470,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Convert Crypto Into Your Golden Visa",
-        "ctaDesc": "Speak with Binayah's multilingual team to choose a qualifying property and pay in crypto. 17+ years, 2,500+ properties. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Speak with Binayah's multilingual team to choose a qualifying property and pay in crypto. 19+ years, 11,200+ properties. WhatsApp +971 54 998 8811.",
         "keywords": [
           "UAE Golden Visa crypto",
           "buy Dubai property with crypto",
@@ -2535,7 +2535,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Превратите крипто в свою Golden Visa",
-        "ctaDesc": "Обратитесь к многоязычной команде Binayah, чтобы выбрать объект и оплатить криптой. 17+ лет, 2 500+ объектов. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Обратитесь к многоязычной команде Binayah, чтобы выбрать объект и оплатить криптой. 19+ лет, 11 200+ объектов. WhatsApp +971 54 998 8811.",
         "keywords": [
           "Golden Visa ОАЭ крипто",
           "купить недвижимость в Дубае за крипто",
@@ -2600,7 +2600,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "حوّل عملاتك الرقمية إلى Golden Visa",
-        "ctaDesc": "تواصل مع فريق Binayah متعدد اللغات لاختيار عقار مؤهل والدفع بالعملات الرقمية. أكثر من 17 عاماً و2,500+ عقار. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "تواصل مع فريق Binayah متعدد اللغات لاختيار عقار مؤهل والدفع بالعملات الرقمية. أكثر من 17 عاماً و11,200+ عقار. WhatsApp ‎+971 54 998 8811.",
         "keywords": [
           "Golden Visa الإمارات بالعملات الرقمية",
           "شراء عقار في دبي بالعملات الرقمية",
@@ -2665,7 +2665,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "把加密资产变成您的 Golden Visa",
-        "ctaDesc": "联系 Binayah 多语言团队，挑选合格房产并用加密货币付款。17 年以上经验，2,500+ 房源。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "联系 Binayah 多语言团队，挑选合格房产并用加密货币付款。17 年以上经验，11,200+ 房源。WhatsApp +971 54 998 8811。",
         "keywords": [
           "阿联酋黄金签证 加密货币",
           "加密货币购买迪拜房产",
@@ -2730,7 +2730,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Biến crypto thành Golden Visa của bạn",
-        "ctaDesc": "Liên hệ đội ngũ đa ngôn ngữ của Binayah để chọn bất động sản đủ điều kiện và trả bằng crypto. Hơn 17 năm, 2.500+ bất động sản. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Liên hệ đội ngũ đa ngôn ngữ của Binayah để chọn bất động sản đủ điều kiện và trả bằng crypto. Hơn 19 năm, 11.200+ bất động sản. WhatsApp +971 54 998 8811.",
         "keywords": [
           "Golden Visa UAE crypto",
           "mua bất động sản Dubai bằng crypto",
@@ -2795,7 +2795,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "המירו קריפטו ל-Golden Visa שלכם",
-        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah לבחירת נכס מזכה ולתשלום בקריפטו. מעל 17 שנה, מעל 2,500 נכסים. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah לבחירת נכס מזכה ולתשלום בקריפטו. מעל 19 שנה, מעל 11,200 נכסים. WhatsApp ‎+971 54 998 8811.",
         "keywords": [
           "Golden Visa באיחוד האמירויות בקריפטו",
           "קניית נכס בדובאי בקריפטו",

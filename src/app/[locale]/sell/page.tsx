@@ -25,7 +25,7 @@ const CONTENT = {
     "heroCtaSecondary": "Listez Votre Bien",
     "stats": [
       {
-        "n": "17+",
+        "n": "19+",
         "label": "Années de vente de biens à Dubai"
       },
       {
@@ -37,7 +37,7 @@ const CONTENT = {
         "label": "Jours moyens pour vendre"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "Biens vendus"
       }
     ],
@@ -140,7 +140,7 @@ const CONTENT = {
   },
   he: {
     "metaTitle": "מכירת נכס בדובאי | מהיר, מקצועי, מוסמך RERA | Binayah",
-    "metaDesc": "מכרו את הנכס שלכם בדובאי עם Binayah Properties. סוכנים מוסמכי RERA, הערכת שווי מקצועית, ניסיון של 17+ שנים. קבלו הערכת שוק חינם עוד היום.",
+    "metaDesc": "מכרו את הנכס שלכם בדובאי עם Binayah Properties. סוכנים מוסמכי RERA, הערכת שווי מקצועית, ניסיון של 19+ שנים. קבלו הערכת שוק חינם עוד היום.",
     "heroLabel": "מכרו בביטחון",
     "h1": "מכרו את הנכס שלכם בדובאי",
     "heroDesc": "Binayah Properties מוכרת נדל\"ן בדובאי מאז 2007. הצוות המוסמך שלנו ב-RERA מספק הערכת שווי מקצועית, שיווק מקצועי ותוצאות מהירות — עם שירות מלא מהרישום ועד להשלמת העסקה.",
@@ -148,7 +148,7 @@ const CONTENT = {
     "heroCtaSecondary": "רשמו את הנכס שלכם",
     "stats": [
       {
-        "n": "17+",
+        "n": "19+",
         "label": "שנות מכירת נכסים בדובאי"
       },
       {
@@ -160,7 +160,7 @@ const CONTENT = {
         "label": "ימים בממוצע עד למכירה"
       },
       {
-        "n": "2,500+",
+        "n": "11,200+",
         "label": "נכסים שנמכרו"
       }
     ],
@@ -263,17 +263,17 @@ const CONTENT = {
   },
   en: {
     metaTitle: "Sell Property in Dubai | Fast, Expert, RERA-Certified | Binayah",
-    metaDesc: "Sell your Dubai property with Binayah Properties. RERA-certified agents, professional valuation, 17+ years experience. Get a free market appraisal today.",
+    metaDesc: "Sell your Dubai property with Binayah Properties. RERA-certified agents, professional valuation, 19+ years experience. Get a free market appraisal today.",
     heroLabel: "SELL WITH CONFIDENCE",
     h1: "Sell Your Property in Dubai",
     heroDesc: "Binayah Properties has been selling Dubai real estate since 2007. Our RERA-certified team delivers expert valuation, professional marketing, and fast results — with full service from listing to completion.",
     heroCta: "Get Free Valuation",
     heroCtaSecondary: "List Your Property",
     stats: [
-      { n: "17+", label: "Years Selling Dubai Property" },
+      { n: "19+", label: "Years Selling Dubai Property" },
       { n: "RERA", label: "Certified Agents" },
       { n: "30", label: "Avg Days to Sell" },
-      { n: "2,500+", label: "Properties Sold" },
+      { n: "11,200+", label: "Properties Sold" },
     ],
     howTitle: "How We Sell Your Property",
     howSubtitle: "A proven 5-step process from valuation to title deed transfer",
@@ -313,17 +313,17 @@ const CONTENT = {
 
   ru: {
     metaTitle: "Продать недвижимость в Дубае | Быстро и выгодно | Binayah",
-    metaDesc: "Продайте недвижимость в Дубае с Binayah Properties. RERA-сертифицированные агенты, профессиональная оценка, 17+ лет опыта. Бесплатная оценка рынка.",
+    metaDesc: "Продайте недвижимость в Дубае с Binayah Properties. RERA-сертифицированные агенты, профессиональная оценка, 19+ лет опыта. Бесплатная оценка рынка.",
     heroLabel: "ПРОДАЙТЕ ВЫГОДНО",
     h1: "Продать недвижимость в Дубае",
     heroDesc: "Binayah Properties продаёт недвижимость в Дубае с 2007 года. RERA-сертифицированная команда, профессиональный маркетинг и быстрые результаты — полное сопровождение от оценки до передачи права собственности. Обслуживание на русском языке.",
     heroCta: "Бесплатная оценка",
     heroCtaSecondary: "Выставить объект",
     stats: [
-      { n: "17+", label: "Лет на рынке Дубая" },
+      { n: "19+", label: "Лет на рынке Дубая" },
       { n: "RERA", label: "Сертифицированные агенты" },
       { n: "30", label: "Дней в среднем до продажи" },
-      { n: "2 500+", label: "Проданных объектов" },
+      { n: "11 200+", label: "Проданных объектов" },
     ],
     howTitle: "Как мы продаём вашу недвижимость",
     howSubtitle: "Проверенный 5-шаговый процесс от оценки до передачи права собственности",
@@ -412,17 +412,17 @@ const CONTENT = {
 
   zh: {
     metaTitle: "在迪拜出售房产 | 快速专业 | Binayah Properties",
-    metaDesc: "通过Binayah Properties出售您的迪拜房产。RERA认证经纪人，专业估价，17年以上经验。立即获取免费市场评估。",
+    metaDesc: "通过Binayah Properties出售您的迪拜房产。RERA认证经纪人，专业估价，19年以上经验。立即获取免费市场评估。",
     heroLabel: "放心出售",
     h1: "在迪拜出售您的房产",
     heroDesc: "Binayah Properties自2007年起在迪拜销售房产。RERA认证团队，专业营销，快速成交——从估价到产权转让全程服务，提供中文支持。",
     heroCta: "免费估价",
     heroCtaSecondary: "挂牌出售",
     stats: [
-      { n: "17+", label: "年迪拜房产经验" },
+      { n: "19+", label: "年迪拜房产经验" },
       { n: "RERA", label: "认证经纪人" },
       { n: "30", label: "天平均出售周期" },
-      { n: "2,500+", label: "已售房产" },
+      { n: "11,200+", label: "已售房产" },
     ],
     howTitle: "我们如何出售您的房产",
     howSubtitle: "从估价到产权转让的5步验证流程",
@@ -461,17 +461,17 @@ const CONTENT = {
 
   vi: {
     metaTitle: "Bán bất động sản tại Dubai | Nhanh, chuyên nghiệp, chứng nhận RERA | Binayah",
-    metaDesc: "Bán bất động sản Dubai với Binayah Properties. Chuyên viên được chứng nhận RERA, định giá chuyên nghiệp, hơn 17 năm kinh nghiệm. Nhận định giá thị trường miễn phí ngay hôm nay.",
+    metaDesc: "Bán bất động sản Dubai với Binayah Properties. Chuyên viên được chứng nhận RERA, định giá chuyên nghiệp, hơn 19 năm kinh nghiệm. Nhận định giá thị trường miễn phí ngay hôm nay.",
     heroLabel: "BÁN VỚI SỰ TỰ TIN",
     h1: "Bán bất động sản của bạn tại Dubai",
     heroDesc: "Binayah Properties đã bán bất động sản Dubai từ năm 2007. Đội ngũ được chứng nhận RERA của chúng tôi cung cấp định giá chuyên nghiệp, tiếp thị chuyên nghiệp và kết quả nhanh chóng — với dịch vụ trọn gói từ niêm yết đến hoàn tất.",
     heroCta: "Định giá miễn phí",
     heroCtaSecondary: "Niêm yết bất động sản",
     stats: [
-      { n: "17+", label: "Năm bán bất động sản Dubai" },
+      { n: "19+", label: "Năm bán bất động sản Dubai" },
       { n: "RERA", label: "Chuyên viên được chứng nhận" },
       { n: "30", label: "Số ngày bán TB" },
-      { n: "2.500+", label: "Bất động sản đã bán" },
+      { n: "11.200+", label: "Bất động sản đã bán" },
     ],
     howTitle: "Cách chúng tôi bán bất động sản của bạn",
     howSubtitle: "Quy trình 5 bước đã được kiểm chứng từ định giá đến chuyển nhượng sổ đỏ",
