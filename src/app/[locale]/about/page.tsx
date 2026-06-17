@@ -7,6 +7,7 @@ export const revalidate = 86400;
 interface Props { params: Promise<{ locale: string }> }
 
 const titles: Record<string, string> = {
+  fr: "À propos de Binayah Properties | Agence immobilière de confiance à Dubaï",
   en: "About Binayah Properties | Dubai's Trusted Real Estate Agency",
   ru: "О компании Binayah Properties | Агентство недвижимости в Дубае",
   ar: "عن بناية للعقارات | الوكالة العقارية الموثوقة في دبي",
@@ -15,6 +16,7 @@ const titles: Record<string, string> = {
   he: "אודות Binayah Properties | סוכנות הנדל\"ן המהימנה של דובאי",
 };
 const descriptions: Record<string, string> = {
+  fr: "Découvrez Binayah Properties — l'agence immobilière de confiance à Dubaï depuis 2007. Équipe certifiée RERA, recherche optimisée par IA, plus de 2 500 annonces.",
   en: "Learn about Binayah Properties — Dubai's trusted real estate agency since 2007. RERA-certified team, AI-powered search, 2,500+ listings.",
   ru: "Узнайте о Binayah Properties — агентстве недвижимости в Дубае с 2007 года. RERA-сертифицированная команда, поиск на базе ИИ, более 2500 объектов.",
   ar: "تعرف على شركة بناية للعقارات — وكالة العقارات الموثوقة في دبي منذ عام 2007. فريق معتمد من RERA، بحث بالذكاء الاصطناعي.",

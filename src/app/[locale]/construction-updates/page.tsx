@@ -10,6 +10,7 @@ interface Props { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const titles: Record<string, string> = {
+  fr: "Aperçus de l'immobilier à Dubaï | Rapports de marché & Guides d'investissement | Binayah",
     en: "Dubai Real Estate Insights | Market Reports & Investment Guides | Binayah",
     ru: "Аналитика рынка недвижимости Дубая | Отчёты и инвестиционные гайды | Binayah",
     ar: "رؤى سوق العقارات في دبي | تقارير وأدلة الاستثمار | Binayah",
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     he: "תובנות נדל\"ן בדובאי | דוחות שוק ומדריכי השקעות | Binayah",
   };
   const descs: Record<string, string> = {
+  fr: "Analyse experte du marché, guides d'investissement et rapports immobiliers pour l'immobilier à Dubaï.",
     en: "Expert market analysis, investment guides and property reports for Dubai real estate.",
     ru: "Экспертный анализ рынка, инвестиционные гайды и отчёты по недвижимости Дубая.",
     ar: "تحليل سوق متخصص وأدلة الاستثمار وتقارير عقارات دبي.",

@@ -8,6 +8,7 @@ export const revalidate = 3600;
 interface Props { params: Promise<{ locale: string }> }
 
 const titles: Record<string, string> = {
+  fr: "Quartiers & Districts de Dubaï | Binayah Properties",
   en: "Dubai Areas & Districts | Binayah Properties",
   ru: "Районы и округа Дубая | Цены на недвижимость | Binayah",
   ar: "مناطق وأحياء دبي | بناية للعقارات",
@@ -16,6 +17,7 @@ const titles: Record<string, string> = {
   he: "אזורים ורובעים בדובאי | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
+  fr: "Explorez tous les quartiers et districts de Dubaï — Downtown Dubaï, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah et plus encore. Comparez les prix et trouvez des propriétés par quartier.",
   en: "Explore all Dubai areas and districts — Downtown Dubai, Dubai Marina, Jumeirah, Business Bay, Palm Jumeirah and more. Compare prices and find properties by area.",
   ru: "Изучите все районы Дубая — Даунтаун, Дубай Марина, Джумейра, Бизнес-Бей, Пальма Джумейра и другие. Сравните цены и найдите недвижимость по районам.",
   ar: "استكشف جميع مناطق وأحياء دبي — وسط المدينة، دبي مارينا، جميرا، الخليج التجاري، نخلة جميرا والمزيد.",

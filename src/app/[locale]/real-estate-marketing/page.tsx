@@ -12,6 +12,7 @@ export const revalidate = 86400;
 interface Props { params: Promise<{ locale: string }> }
 
 const TITLES: Record<string, string> = {
+  fr: "Marketing Immobilier Dubaï | Listez & Vendez Plus Vite | Binayah Properties",
   en: "Real Estate Marketing Dubai | List & Sell Faster | Binayah Properties",
   ru: "Маркетинг недвижимости в Дубае | Продайте быстрее | Binayah Properties",
   ar: "تسويق عقارات دبي | بِع أسرع | بناية للعقارات",
@@ -20,6 +21,7 @@ const TITLES: Record<string, string> = {
   he: "שיווק נדל\"ן בדובאי | רשום ומכור מהר יותר | Binayah Properties",
 };
 const DESCS: Record<string, string> = {
+  fr: "Marketing immobilier professionnel à Dubaï. Photographie HDR, annonces sur Bayut & Propertyfinder, réseaux sociaux et campagnes digitales. Vendez ou louez plus rapidement avec Binayah.",
   en: "Professional real estate marketing in Dubai. HDR photography, Bayut & Propertyfinder listings, social media, and digital campaigns. Sell or rent faster with Binayah.",
   ru: "Профессиональный маркетинг недвижимости в Дубае. HDR-фотосъёмка, размещение на Bayut и Propertyfinder, соцсети. Продайте или сдайте быстрее с Binayah.",
   ar: "تسويق عقاري احترافي في دبي. تصوير HDR وإدراج على Bayut وPropertyfinder وسوشيال ميديا. بِع أو أجِّر أسرع مع بناية.",

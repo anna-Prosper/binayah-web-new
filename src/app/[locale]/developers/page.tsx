@@ -8,6 +8,7 @@ export const revalidate = 3600;
 interface Props { params: Promise<{ locale: string }> }
 
 const titles: Record<string, string> = {
+  fr: "Promoteurs Immobiliers à Dubaï | Binayah Properties",
   en: "Dubai Property Developers | Binayah Properties",
   ru: "Застройщики Дубая | Новостройки от ведущих девелоперов | Binayah",
   ar: "مطورو العقارات في دبي | بناية للعقارات",
@@ -16,6 +17,7 @@ const titles: Record<string, string> = {
   he: "מפתחי נדל\"ן בדובאי | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
+  fr: "Découvrez les meilleurs promoteurs immobiliers de Dubaï — Emaar, DAMAC, Nakheel, Meraas, Aldar et plus. Trouvez des projets sur plan et prêts par promoteur.",
   en: "Browse top Dubai real estate developers — Emaar, DAMAC, Nakheel, Meraas, Aldar and more. Find off-plan and ready projects by developer.",
   ru: "Изучите ведущих застройщиков Дубая — Emaar, DAMAC, Nakheel, Meraas, Aldar и других. Найдите новостройки и готовые проекты от застройщика.",
   ar: "تصفح كبار مطوري العقارات في دبي — إعمار، داماك، نخيل، مراس، الدار والمزيد. اعثر على مشاريع على الخارطة وجاهزة.",

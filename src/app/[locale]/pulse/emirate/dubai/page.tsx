@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 export const revalidate = 600;
 
 const TITLES: Record<string, string> = {
+  fr: "Rapport du Marché de Dubaï | Binayah Properties",
   en: "Dubai Market Report | Binayah Properties",
   ru: "Отчёт по рынку Дубая | Binayah Properties",
   ar: "تقرير سوق دبي العقاري | بناية للعقارات",
@@ -19,6 +20,7 @@ const TITLES: Record<string, string> = {
   he: "דו\"ח שוק דובאי | Binayah Properties",
 };
 const DESCS: Record<string, string> = {
+  fr: "Analyse immobilière de Dubaï en direct — transactions YTD, prix moyen au pied carré, rendement locatif, leaders communautaires, classement des promoteurs et points forts de l'investissement.",
   en: "Live Dubai real estate analytics — transactions YTD, average PPSF, rental yield, community leaders, developer rankings, and investment highlights.",
   ru: "Актуальная аналитика рынка недвижимости Дубая — сделки за год, средняя цена за кв. фут, доходность аренды, лидеры районов и рейтинг застройщиков.",
   ar: "تحليلات عقارات دبي الحية — المعاملات حتى الآن، متوسط السعر، عوائد الإيجار، أبرز المجتمعات والمطورين.",

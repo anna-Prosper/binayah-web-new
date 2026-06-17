@@ -9,6 +9,7 @@ export const revalidate = 86400;
 interface Props { params: Promise<{ locale: string }> }
 
 const titles: Record<string, string> = {
+  fr: "Évaluation Gratuite de Propriété Dubaï | Estimation Instantanée par IA | Binayah",
   en: "Free Property Valuation Dubai | AI-Powered Instant Estimate | Binayah",
   ru: "Бесплатная оценка недвижимости в Дубае | ИИ-оценка онлайн | Binayah",
   ar: "تقييم عقاري مجاني في دبي | تقدير فوري بالذكاء الاصطناعي | بناية",
@@ -17,6 +18,7 @@ const titles: Record<string, string> = {
   he: "הערכת נכס חינם בדובאי | הערכה מיידית מבוססת AI | Binayah",
 };
 const descriptions: Record<string, string> = {
+  fr: "Obtenez une évaluation immobilière instantanée alimentée par l'IA pour les biens immobiliers à Dubaï et aux Émirats Arabes Unis. Gratuit, précis, sans inscription requise.",
   en: "Get an instant AI-powered property valuation for Dubai and UAE real estate. Free, accurate, no registration required.",
   ru: "Получите мгновенную оценку недвижимости в Дубае и ОАЭ на базе ИИ. Бесплатно, точно, без регистрации.",
   ar: "احصل على تقييم عقاري فوري بالذكاء الاصطناعي لعقارات دبي والإمارات. مجاني، دقيق، بدون تسجيل.",

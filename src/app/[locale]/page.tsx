@@ -15,6 +15,7 @@ const titles: Record<string, string> = {
   zh: "迪拜房地产 | 购买、租赁和投资 | Binayah Properties",
   vi: "Bất Động Sản Dubai | Mua, Thuê & Đầu Tư | Binayah Properties",
   he: "נדל\"ן בדובאי | קנייה, השכרה והשקעה | Binayah Properties",
+  fr: "Immobilier à Dubaï | Acheter, Louer & Investir | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
   en: "Find luxury apartments, villas and off-plan projects in Dubai. Trusted by thousands of buyers and investors since 2007.",
@@ -23,6 +24,7 @@ const descriptions: Record<string, string> = {
   zh: "在迪拜寻找豪华公寓、别墅和期房项目。自2007年以来深受数千名买家和投资者信赖。",
   vi: "Tìm căn hộ sang trọng, biệt thự và dự án chưa hoàn thiện ở Dubai. Được hàng nghìn người mua và nhà đầu tư tin tưởng từ năm 2007.",
   he: "מצאו דירות יוקרה, וילות ופרויקטים בתכנון בדובאי. אמון על ידי אלפי קונים ומשקיעים מאז 2007.",
+  fr: "Découvrez des appartements de luxe, des villas et des projets sur plan à Dubaï. La confiance de milliers d'acheteurs et d'investisseurs depuis 2007.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

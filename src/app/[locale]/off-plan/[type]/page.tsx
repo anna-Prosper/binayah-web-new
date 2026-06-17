@@ -39,9 +39,11 @@ type TypeSlug = keyof typeof TYPES;
 type Loc = keyof (typeof TYPES)["apartments"]["label"];
 
 const OFFPLAN_LABEL: Record<string, string> = {
+  fr: "Sur plan",
   en: "Off-Plan", ru: "Новостройки", ar: "على الخارطة", zh: "期房", vi: "Off-Plan", he: "על הנייר",
 };
 const HOME_LABEL: Record<string, string> = {
+  fr: "Accueil",
   en: "Home", ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית",
 };
 

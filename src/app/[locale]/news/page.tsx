@@ -8,6 +8,7 @@ export const revalidate = 900;
 interface Props { params: Promise<{ locale: string }> }
 
 const titles: Record<string, string> = {
+  fr: "Actualités Immobilières de Dubaï & Rapports de Marché | Binayah Properties",
   en: "Dubai Real Estate News & Market Reports | Binayah Properties",
   ru: "Новости рынка недвижимости Дубая | Аналитика и обзоры | Binayah",
   ar: "أخبار عقارات دبي وتقارير السوق | بناية للعقارات",
@@ -16,6 +17,7 @@ const titles: Record<string, string> = {
   he: "חדשות נדל\"ן ודו\"חות שוק בדובאי | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
+  fr: "Restez informé du marché immobilier de Dubaï avec les dernières actualités, rapports de marché et analyses d'investissement de l'équipe éditoriale de Binayah.",
   en: "Stay ahead of the Dubai property market with the latest news, market reports and investment insights from Binayah's editorial team.",
   ru: "Будьте в курсе рынка недвижимости Дубая: последние новости, аналитические отчёты и инвестиционные идеи от редакции Binayah.",
   ar: "ابقَ على اطلاع بسوق العقارات في دبي مع آخر الأخبار والتقارير ورؤى الاستثمار من فريق تحرير بناية.",

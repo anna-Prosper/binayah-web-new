@@ -5,9 +5,11 @@ import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
 
 const GUIDES_LABEL: Record<string, string> = {
+  fr: "Guides de Projets",
   en: "Project Guides", ru: "Гайды по проектам", ar: "أدلة المشاريع", zh: "项目指南", vi: "Hướng dẫn dự án", he: "מדריכי פרויקטים",
 };
 const HOME_LABEL: Record<string, string> = {
+  fr: "Accueil",
   en: "Home", ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית",
 };
 

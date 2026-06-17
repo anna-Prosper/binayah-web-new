@@ -39,9 +39,11 @@ type TypeSlug = keyof typeof TYPES;
 type Loc = keyof (typeof TYPES)["apartments"]["label"];
 
 const RENT_LABEL: Record<string, string> = {
+  fr: "Louer",
   en: "Rent", ru: "Аренда", ar: "إيجار", zh: "租赁", vi: "Thuê", he: "השכרה",
 };
 const HOME_LABEL: Record<string, string> = {
+  fr: "Accueil",
   en: "Home", ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית",
 };
 
