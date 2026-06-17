@@ -196,7 +196,8 @@ export async function scrapeCommunityInfo(query: string): Promise<CommunityInfoP
     slug,
     name: summary.title,
     location: "Dubai, UAE",
-    description: summary.extract?.slice(0, 600) ?? undefined,
+    // description intentionally omitted — Wikipedia text must not be stored as-is.
+    // The gen-community-descriptions admin endpoint generates original copy later.
     heroImage: summary.thumbnail?.source,
     sources: [wikiUrl],
     scrapedAt: new Date(),
