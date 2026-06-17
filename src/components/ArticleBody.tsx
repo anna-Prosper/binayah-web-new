@@ -37,6 +37,11 @@ export type ArticleBlock =
 /* ─── BLOCK COMPONENTS ─── */
 
 function Paragraph({ text }: { text: string }) {
+  const hasHtml = /<[a-z][\s\S]*>/i.test(text);
+  if (hasHtml) return (
+    <p className="text-base text-foreground/80 leading-[1.85] mb-4 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-primary/70 [&_strong]:font-semibold [&_em]:italic"
+       dangerouslySetInnerHTML={{ __html: text }} />
+  );
   return (
     <p className="text-base text-foreground/80 leading-[1.85] mb-4">{text}</p>
   );
@@ -44,6 +49,11 @@ function Paragraph({ text }: { text: string }) {
 
 function IntroBlock({ text }: { text: string }) {
   if (!text) return null;
+  const hasHtml = /<[a-z][\s\S]*>/i.test(text);
+  if (hasHtml) return (
+    <p className="text-lg font-medium text-foreground/90 leading-[1.7] mb-4 border-l-4 border-primary pl-4 [&_a]:text-primary [&_a]:underline [&_a:hover]:text-primary/70"
+       dangerouslySetInnerHTML={{ __html: text }} />
+  );
   return (
     <p className="text-lg font-medium text-foreground/90 leading-[1.7] mb-4 border-l-4 border-primary pl-4">
       {text}
