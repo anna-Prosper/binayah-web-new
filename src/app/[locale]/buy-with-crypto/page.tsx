@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -420,8 +419,7 @@ interface Props { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  if (!(locale in CONTENT)) return {};
-  const c = CONTENT[locale as Locale];
+  const c = CONTENT[locale as Locale] ?? CONTENT.en;
   const url = canonical(locale, "/buy-with-crypto");
   return {
     title: c.metaTitle,
@@ -458,8 +456,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BuyWithCryptoPage({ params }: Props) {
   const { locale } = await params;
-  if (!(locale in CONTENT)) return notFound();
-  const c = CONTENT[locale as Locale];
+  const c = CONTENT[locale as Locale] ?? CONTENT.en;
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
@@ -626,10 +623,10 @@ export default async function BuyWithCryptoPage({ params }: Props) {
 
         {/* ── Related crypto guides (hub → spokes, SEO siloing) ───── */}
         <section>
-          <h2 className="text-lg font-bold text-foreground mb-4">{CRYPTO_LABELS[locale as CryptoLocale].relatedTitle}</h2>
+          <h2 className="text-lg font-bold text-foreground mb-4">{(CRYPTO_LABELS[locale as CryptoLocale] ?? CRYPTO_LABELS.en).relatedTitle}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {CRYPTO_PAGES.map((p) => {
-              const sc = p.locales[locale as CryptoLocale];
+              const sc = p.locales[locale as CryptoLocale] ?? p.locales.en;
               return (
                 <Link
                   key={p.slug}

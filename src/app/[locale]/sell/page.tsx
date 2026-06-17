@@ -15,6 +15,129 @@ export const revalidate = 86400;
 // ─────────────────────────────────────────────────────────────
 
 const CONTENT = {
+  fr: {
+    "metaTitle": "Vendre un bien à Dubai | Rapide, Expert, Certifié RERA | Binayah",
+    "metaDesc": "Vendez votre bien à Dubaï avec Binayah Properties. Agents certifiés RERA, évaluation professionnelle, plus de 17 ans d'expérience. Obtenez une estimation gratuite du marché aujourd'hui.",
+    "heroLabel": "VENDEZ AVEC CONFIANCE",
+    "h1": "Vendez Votre Bien à Dubai",
+    "heroDesc": "Binayah Properties vend de l'immobilier à Dubai depuis 2007. Notre équipe certifiée RERA offre une expertise en évaluation, un marketing professionnel et des résultats rapides — avec un service complet de l'inscription à l'achèvement.",
+    "heroCta": "Obtenez une évaluation gratuite",
+    "heroCtaSecondary": "Listez Votre Bien",
+    "stats": [
+      {
+        "n": "17+",
+        "label": "Années de vente de biens à Dubai"
+      },
+      {
+        "n": "RERA",
+        "label": "Agents certifiés"
+      },
+      {
+        "n": "30",
+        "label": "Jours moyens pour vendre"
+      },
+      {
+        "n": "2,500+",
+        "label": "Biens vendus"
+      }
+    ],
+    "howTitle": "Comment nous vendons votre bien",
+    "howSubtitle": "Un processus éprouvé en 5 étapes, de l'évaluation au transfert de l'acte de propriété",
+    "steps": [
+      {
+        "n": "01",
+        "title": "Évaluation gratuite du marché",
+        "body": "Nos agents évaluent votre bien en utilisant les données de transaction en direct du DLD, les ventes comparables dans votre immeuble, et les conditions actuelles du marché pour fixer le bon prix de vente."
+      },
+      {
+        "n": "02",
+        "title": "Marketing professionnel",
+        "body": "Nous créons une annonce professionnelle avec photographie HDR, plan d'étage, et une description détaillée. Votre bien est listé simultanément sur Bayut, Propertyfinder, Dubizzle, et Binayah.ae."
+      },
+      {
+        "n": "03",
+        "title": "Qualification des acheteurs",
+        "body": "Nous vous présentons uniquement des acheteurs sérieux et pré-qualifiés — fonds vérifiés, pré-approbation de prêt immobilier ou preuve de fonds en espèces confirmée avant les visites."
+      },
+      {
+        "n": "04",
+        "title": "Offre et négociation",
+        "body": "Nous gérons toutes les offres et négocions en votre nom pour obtenir le meilleur prix. Vous approuvez les conditions finales avant la signature de tout document."
+      },
+      {
+        "n": "05",
+        "title": "Transfert et finalisation DLD",
+        "body": "Nous coordonnons avec l'agent de l'acheteur, la banque (si prêt immobilier), et le Département des Terres de Dubaï pour assurer un transfert de propriété fluide et conforme à la législation."
+      }
+    ],
+    "whyTitle": "Pourquoi vendre avec Binayah",
+    "whyPoints": [
+      {
+        "title": "Équipe certifiée RERA",
+        "body": "Chaque agent de Binayah est agréé par l'Agence de Régulation de l'Immobilier (RERA). Vous êtes protégé par la loi de Dubaï à chaque étape."
+      },
+      {
+        "title": "Évaluation professionnelle gratuite",
+        "body": "Basée sur les données réelles des transactions DLD et des ventes comparables — pas des estimations. Vous savez exactement combien vaut votre bien avant de le mettre en vente."
+      },
+      {
+        "title": "Marketing multi-portails",
+        "body": "Listé sur Bayut, Propertyfinder, Dubizzle, et Binayah.ae avec une photographie professionnelle. Exposition maximale aux acheteurs qualifiés."
+      },
+      {
+        "title": "Pas de vente, pas de frais",
+        "body": "Nous travaillons sur une base de commission — vous ne payez que lorsque votre bien est vendu. Pas de frais initiaux, pas de frais cachés."
+      },
+      {
+        "title": "Acheteurs russes et internationaux",
+        "body": "Avec des bureaux desservant les acheteurs russes, chinois, européens et du CCG, nous connectons votre bien à un bassin mondial d'investisseurs et d'utilisateurs finaux."
+      },
+      {
+        "title": "Gestion complète des documents",
+        "body": "Du protocole d'accord (MOU) au NOC, frais de transfert DLD, et acte de propriété — nous gérons toute la documentation de bout en bout."
+      }
+    ],
+    "faqTitle": "Questions Fréquemment Posées",
+    "faqs": [
+      {
+        "q": "Combien de temps faut-il pour vendre un bien à Dubai ?",
+        "a": "Le délai moyen pour vendre un bien à Dubai est de 30 à 60 jours entre la mise en vente et le transfert. Les biens bien évalués dans des emplacements de choix (Dubai Marina, Downtown, Palm) peuvent se vendre en moins de 2 semaines. La moyenne de Binayah est de 30 jours entre la mise en vente et le contrat."
+      },
+      {
+        "q": "Quels frais dois-je payer lors de la vente d'un bien à Dubai ?",
+        "a": "En tant que vendeur, votre principal coût est la commission de l'agent (généralement 2 % du prix de vente). Les coûts supplémentaires incluent des frais de NOC du DLD (500–5,000 AED selon le promoteur) et des frais de transfert du DLD (4 % — bien que cela soit généralement partagé entre l'acheteur et le vendeur). Il n'y a pas d'impôt sur les plus-values ou d'impôt sur le revenu aux Émirats Arabes Unis."
+      },
+      {
+        "q": "Dois-je être à Dubai pour vendre mon bien ?",
+        "a": "Non. Vous pouvez vendre à distance en accordant une procuration (POA) à votre agent ou à un représentant légal à Dubai. Binayah gère régulièrement des vendeurs internationaux, y compris des clients russes, européens et asiatiques qui finalisent la vente entièrement à distance."
+      },
+      {
+        "q": "Puis-je vendre un bien hypothéqué à Dubai ?",
+        "a": "Oui. Le paiement de l'acheteur est utilisé pour régler votre prêt immobilier en cours (processus appelé 'lettre de blocage'), les fonds restants vous étant transférés. Votre agent Binayah coordonne avec votre banque pour assurer une transition en douceur."
+      },
+      {
+        "q": "Quels documents dois-je fournir pour vendre un bien à Dubai ?",
+        "a": "Copie du passeport, titre de propriété original (ou copie délivrée par un fiduciaire), détails du bien (plan d'étage, relevés de charges de service), NOC du promoteur, et un Formulaire A signé (contrat de mise en vente). Si vous vendez à distance, une procuration d'un notaire autorisé aux Émirats Arabes Unis."
+      },
+      {
+        "q": "Comment est calculée l'évaluation d'un bien ?",
+        "a": "L'évaluation gratuite de Binayah est basée sur les ventes récentes enregistrées par le DLD dans votre immeuble et quartier (et non sur les prix demandés), la demande actuelle, le niveau de l'étage, la vue et l'état du bien. Nous utilisons les mêmes sources de données que la RERA et les banques — vous obtenez ainsi un prix de marché réaliste."
+      },
+      {
+        "q": "Quel est le meilleur moment pour vendre un bien à Dubai ?",
+        "a": "Le premier trimestre (janvier-mars) et le quatrième trimestre (octobre-décembre) sont historiquement les saisons de vente les plus fortes, stimulées par l'arrivée d'expatriés et l'activité d'investissement. Cependant, le marché de Dubai est fort toute l'année depuis 2021, avec des volumes de transactions à des niveaux records."
+      },
+      {
+        "q": "Qu'est-ce qu'un NOC et pourquoi en ai-je besoin ?",
+        "a": "Un certificat de non-objection (NOC) est délivré par le promoteur immobilier confirmant qu'il n'y a pas de charges de service ou de paiements en suspens sur le bien. Sans NOC, le Département des Terres de Dubai ne traitera pas le transfert de propriété. Votre agent Binayah s'occupe de la demande de NOC en votre nom."
+      }
+    ],
+    "ctaTitle": "Prêt à vendre ?",
+    "ctaDesc": "Obtenez une évaluation gratuite et sans engagement du marché par notre équipe certifiée RERA. Nous vous dirons exactement combien vaut votre bien sur le marché actuel.",
+    "ctaBtn": "Obtenez une évaluation gratuite",
+    "ctaSecondary": "Listez Votre Bien",
+    "breadcrumb": "Vendre un bien"
+  },
   he: {
     "metaTitle": "מכירת נכס בדובאי | מהיר, מקצועי, מוסמך RERA | Binayah",
     "metaDesc": "מכרו את הנכס שלכם בדובאי עם Binayah Properties. סוכנים מוסמכי RERA, הערכת שווי מקצועית, ניסיון של 17+ שנים. קבלו הערכת שוק חינם עוד היום.",

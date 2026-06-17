@@ -35,7 +35,7 @@ const WhatsAppButton = () => {
     <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
       <div className="flex gap-2 px-4 py-2.5 max-w-lg mx-auto">
         <a
-          href="https://wa.me/971549988811?text=Hi, I'm interested in your property services"
+          href={`https://wa.me/971549988811?text=${encodeURIComponent(t("prefillServices"))}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackClick("whatsapp")}
@@ -54,7 +54,7 @@ const WhatsAppButton = () => {
           {t("call")}
         </a>
         <a
-          href="https://wa.me/971549988811?text=Hi, I'd like more information"
+          href={`https://wa.me/971549988811?text=${encodeURIComponent(t("prefillMoreInfo"))}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackClick("whatsapp")}

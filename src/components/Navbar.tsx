@@ -23,6 +23,7 @@ const LANGUAGES_LIST = [
   { code: "ar", label: "العربية", flag: "🇦🇪" },
   { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
   { code: "he", label: "עברית", flag: "🇮🇱" },
+  { code: "fr", label: "Français", flag: "🇫🇷" },
 ];
 
 

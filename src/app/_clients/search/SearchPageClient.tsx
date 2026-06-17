@@ -833,7 +833,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
               {projects.length > 0 && (
                 <div
                   ref={projectsSectionRef}
-                  className={`mb-12 scroll-mt-24 ${status === "All" && intent === "buy" ? "order-2" : "order-1"}`}
+                  className={`mb-12 scroll-mt-24 ${status === "All" && intent === "buy" && !q ? "order-2" : "order-1"}`}
                 >
                   <h2 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2"><Building2 className="h-5 w-5 text-primary" />{t("offPlanProjects")}<span className="text-sm font-normal text-muted-foreground">({projectCount})</span></h2>
                   {projectCount > PAGE_SIZE && (
@@ -880,7 +880,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
               {status !== "Off-Plan" && listings.length > 0 && (
                 <div
                   ref={listingsSectionRef}
-                  className={`scroll-mt-24 ${status === "All" && intent === "buy" ? "order-1 mb-12" : "order-2"}`}
+                  className={`scroll-mt-24 ${status === "All" && intent === "buy" && !q ? "order-1 mb-12" : "order-2"}`}
                 >
                   {status === "All" && projects.length > 0 && (
                     <>

@@ -9,6 +9,7 @@ const GEO_LOCALE_MAP: Record<string, string> = {
   JO: "ar", LB: "ar", IQ: "ar", SY: "ar", YE: "ar", LY: "ar", TN: "ar", DZ: "ar", MA: "ar",
   IL: "he",
   VN: "vi",
+  FR: "fr",
 };
 
 const LOCALE_COOKIE = "BINAYAH_LOCALE";
@@ -16,7 +17,7 @@ const LOCALE_COOKIE = "BINAYAH_LOCALE";
 const RU_LOCALE_COOKIE = "BINAYAH_LOCALE_RU";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 const intlMiddleware = createMiddleware(routing);
-const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar|vi|he)(\/|$)/;
+const LOCALE_PREFIX_REGEX = /^\/(ru|zh|ar|vi|he|fr)(\/|$)/;
 
 const isDev = process.env.NODE_ENV === "development";
 // Vercel Live ships the preview-feedback widget from vercel.live (loaded on

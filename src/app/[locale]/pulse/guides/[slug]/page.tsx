@@ -17,7 +17,7 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
   return locales.flatMap((locale) =>
     PULSE_GUIDES.map((g) => ({ locale, slug: g.slug }))
   );
@@ -87,6 +87,7 @@ export default async function GuideDetailPage({ params }: Props) {
         datePublished="2026-01-01"
         dateModified="2026-06-01"
         wordCount={wordCount}
+        locale={locale}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Navbar />

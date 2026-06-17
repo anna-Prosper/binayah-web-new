@@ -13,7 +13,7 @@ export const revalidate = 86400;
 
 // ── Static-params: all locales × all citizen slugs ─────────────────────────
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
   return locales.flatMap((locale) =>
     FOREIGN_BUYERS.map((b) => ({ locale, citizen: b.slug }))
   );

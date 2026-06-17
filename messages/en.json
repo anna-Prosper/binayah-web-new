@@ -600,6 +600,7 @@
     "namePlaceholder": "Your name",
     "emailPlaceholder": "your@email.com",
     "phonePlaceholder": "+971...",
+    "phoneInvalid": "Enter a valid phone number",
     "messagePlaceholder": "How can we help you?",
     "sending": "Sending...",
     "successToast": "Message sent! We'll be in touch shortly.",
@@ -1574,6 +1575,7 @@
     "email": "Email",
     "emailPlaceholder": "you@email.com",
     "phone": "Phone",
+    "phoneInvalid": "Enter digits only, 5–15 characters",
     "inquiryType": "Inquiry Type",
     "selectType": "Select type",
     "typeOptions": {
@@ -1622,6 +1624,7 @@
     "viewDetails": "View details",
     "viewAllProfile": "View all in Profile",
     "inquireWhatsapp": "Enquire About Saved Properties",
+    "inquirePrefill": "Hi, I'd like to inquire about {count} saved properties on your website.",
     "moreActions": "More actions",
     "signInTitle": "Sign in to save permanently",
     "signInHint": "Your favorites are stored on this device only."
@@ -1703,7 +1706,10 @@
     "ariaLabel": "Chat on WhatsApp",
     "whatsapp": "WhatsApp",
     "call": "Call",
-    "liveChat": "Live Chat"
+    "liveChat": "Live Chat",
+    "prefillServices": "Hi, I'm interested in your property services",
+    "prefillMoreInfo": "Hi, I'd like more information",
+    "prefillSaved": "Hi, I'd like to inquire about {count} saved properties on your website."
   },
   "scrollToTop": {
     "ariaLabel": "Scroll to top"

@@ -17,6 +17,41 @@ interface Props {
 }
 
 const CONTENT = {
+  fr: {
+    "metaTitle": "Biens sur plan à Dubaï 2026 | Nouveaux Lancements | Binayah",
+    "metaDesc": "Parcourez plus de 3 000 biens sur plan à Dubaï. Nouveaux lancements de projets par Emaar, DAMAC, Sobha, Aldar. Plans de paiement flexibles, rendement élevé. Conseils d'experts.",
+    "heroLabel": "SUR PLAN DUBAÏ",
+    "h1": "Biens sur plan à Dubaï",
+    "heroDesc": "Découvrez les meilleurs projets sur plan de Dubaï nouvellement lancés. Plans de paiement flexibles, garanties des promoteurs, et potentiel d'appréciation du capital de 15 à 30 % avant la remise des clés.",
+    "faqs": [
+      {
+        "question": "Qu'est-ce qu'un bien sur plan à Dubaï ?",
+        "answer": "Sur plan signifie acheter un bien avant qu'il ne soit construit ou pendant sa construction. Vous payez une partie à l'avance (généralement 10 à 20 %) et le reste est dû en plusieurs versements pendant la construction ou après la remise des clés. Les biens sur plan sont souvent 15 à 30 % moins chers que les unités prêtes dans le même immeuble."
+      },
+      {
+        "question": "Quels sont les risques d'acheter sur plan à Dubaï ?",
+        "answer": "Les principaux risques incluent les retards de projet et (rarement) l'insolvabilité du promoteur. La RERA de Dubaï régule les comptes séquestres — les fonds des promoteurs sont conservés dans des comptes séparés jusqu'à ce que les étapes de construction soient atteintes. Choisissez des projets enregistrés auprès de la RERA et des promoteurs expérimentés avec un historique solide."
+      },
+      {
+        "question": "Puis-je vendre un bien sur plan avant la remise des clés ?",
+        "answer": "Oui. Une fois que vous avez payé un minimum de 30 à 40 % de la valeur du bien, la plupart des promoteurs permettent la revente sur le marché secondaire. Cela s'appelle le 'flipping' et peut générer un profit de 10 à 30 % dans un marché en hausse avant même que vous ne receviez les clés."
+      },
+      {
+        "question": "Quels promoteurs ont les meilleurs projets sur plan à Dubaï ?",
+        "answer": "Les principaux promoteurs incluent Emaar (Downtown, Dubai Creek Harbour), DAMAC (Cavalli, Lagoons), Sobha Realty (Hartland II), Aldar (Yas Island), Nakheel (Palm Jumeirah), et Mag (MBR City). Chacun propose différents niveaux de prix, emplacements et structures de paiement."
+      },
+      {
+        "question": "Quels plans de paiement les promoteurs sur plan offrent-ils ?",
+        "answer": "Structures typiques : 10 % à la réservation + 10 % à la SPA + 30 % pendant la construction + 50 % à la remise des clés. Certains promoteurs offrent des plans de paiement après remise des clés (par exemple, 40 % pendant la construction + 60 % sur 3 ans après la remise des clés). Des plans sans intérêt sont également disponibles auprès de certains promoteurs."
+      },
+      {
+        "question": "Le sur plan est-il meilleur qu'un bien prêt à Dubaï ?",
+        "answer": "Le sur plan offre un prix d'entrée plus bas, un potentiel d'appréciation du capital, et des plans de paiement flexibles — mais vous attendez 2 à 4 ans pour les clés. Les biens prêts fournissent un revenu locatif immédiat, sont plus faciles à financer par prêt immobilier, et n'ont pas de risque d'achèvement. Le bon choix dépend de votre horizon d'investissement et de vos besoins en trésorerie."
+      }
+    ],
+    "breadcrumb": "Sur Plan",
+    "searchTitle": "Parcourir les Projets sur Plan"
+  },
   he: {
     "metaTitle": "נכסים על הנייר בדובאי 2026 | השקות חדשות | Binayah",
     "metaDesc": "עיינו ביותר מ-3,000 נכסים על הנייר בדובאי. השקות פרויקטים חדשים מ-Emaar, DAMAC, Sobha, Aldar. תוכניות תשלום גמישות, תשואה גבוהה. ליווי מקצועי.",

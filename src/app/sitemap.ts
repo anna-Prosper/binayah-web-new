@@ -61,6 +61,7 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
         zh: localeAlt(AE_URL, "zh", path),
         vi: localeAlt(AE_URL, "vi", path),
         he: localeAlt(AE_URL, "he", path),
+        fr: localeAlt(AE_URL, "fr", path),
         "x-default": `${AE_URL}${path}`,
       },
     },

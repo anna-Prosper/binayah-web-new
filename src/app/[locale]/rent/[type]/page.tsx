@@ -11,7 +11,7 @@ import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 export const revalidate = 1800;
 export function generateStaticParams() {
-  const locales = ["en", "ru", "ar", "zh", "vi", "he"];
+  const locales = ["en", "ru", "ar", "zh", "vi", "he", "fr"];
   return locales.flatMap((locale) => ["apartments", "villas", "townhouses"].map((type) => ({ locale, type })));
 }
 

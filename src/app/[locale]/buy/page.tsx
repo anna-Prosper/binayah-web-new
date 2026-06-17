@@ -12,6 +12,58 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 const CONTENT = {
+  fr: {
+    "metaTitle": "Biens à vendre à Dubai | Plus de 3 000 annonces | Binayah",
+    "metaDesc": "Parcourez plus de 3 000 biens à vendre à Dubai — appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.",
+    "heroLabel": "ACHETER UN BIEN À DUBAI",
+    "h1": "Biens à vendre",
+    "h1sub": "à Dubai",
+    "heroDesc": "Recherchez des appartements, villas, maisons de ville et projets sur plan dans plus de 60 quartiers de Dubai. Annonces vérifiées, prix en direct de la DLD, et agents experts disponibles 7 jours sur 7.",
+    "stats": [
+      {
+        "n": "3,000+",
+        "label": "Biens à vendre"
+      },
+      {
+        "n": "AED 350K",
+        "label": "Prix de départ"
+      },
+      {
+        "n": "0%",
+        "label": "Impôt sur les plus-values"
+      },
+      {
+        "n": "60+",
+        "label": "Quartiers"
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Les étrangers peuvent-ils acheter un bien immobilier à Dubaï ?",
+        "answer": "Oui. Toutes les nationalités peuvent acheter un bien en pleine propriété dans les zones désignées de Dubaï — Marina, Downtown, JVC, Palm, Business Bay, et plus de 60 autres. Aucune résidence requise. Vous recevez un acte de propriété complet du DLD avec les mêmes droits de propriété que les ressortissants des Émirats arabes unis."
+      },
+      {
+        "question": "Quel est le processus d'achat d'un bien immobilier à Dubaï ?",
+        "answer": "1) Convenir du prix et signer le MOU (Memorandum of Understanding). 2) Payer un dépôt de 10 %. 3) Obtenir le NOC du promoteur. 4) Transfert DLD — payer 4 % de frais de transfert. 5) Recevoir l'acte de propriété. Le processus prend 3 à 6 semaines pour le marché secondaire, 2 à 4 semaines pour une réservation sur plan."
+      },
+      {
+        "question": "Quels sont les coûts totaux lors de l'achat d'un bien immobilier à Dubaï ?",
+        "answer": "Frais de transfert DLD : 4 % du prix d'achat. Commission d'agent : ~2 %. Frais administratifs DLD : AED 580. Frais de fiduciaire : AED 4,000 (biens de plus de AED 500K). Enregistrement du prêt immobilier (le cas échéant) : 0,25 % de la valeur du prêt. Coûts totaux de la transaction : environ 6 à 7 % de la valeur du bien."
+      },
+      {
+        "question": "Quel est l'investissement minimum pour acheter un bien immobilier à Dubaï ?",
+        "answer": "Les studios commencent à partir de AED 300,000–500,000 (~82K–136K USD) dans des quartiers comme JVC et Dubai South. Pour un visa doré des Émirats arabes unis de 10 ans, la valeur minimale du bien est de AED 2,000,000 (~545K USD)."
+      },
+      {
+        "question": "L'immobilier à Dubaï est-il un bon investissement en 2026 ?",
+        "answer": "Dubaï offre des rendements locatifs bruts de 5 à 8 % (parmi les plus élevés au monde), zéro impôt sur les plus-values, zéro impôt sur le revenu, et une monnaie indexée sur l'AED-USD. Les quartiers de premier choix ont vu une appréciation de 40 à 60 % depuis 2021. Les fondamentaux — croissance démographique, stock de villas sous-approvisionné, et statut de hub d'affaires — restent favorables."
+      }
+    ],
+    "breadcrumb": "Acheter",
+    "ctaTitle": "Besoin de conseils d'expert ?",
+    "ctaDesc": "Nos agents certifiés RERA vous aident à trouver, négocier et finaliser l'achat de votre bien à Dubai — sans frais supplémentaires.",
+    "ctaBtn": "Parlez à un agent"
+  },
   he: {
     "metaTitle": "נכסים למכירה בדובאי | 3,000+ מודעות | Binayah",
     "metaDesc": "עיינו ב-3,000+ נכסים למכירה בדובאי — דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",

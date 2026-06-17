@@ -10,7 +10,7 @@ import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 export const revalidate = 1800;
 
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
   return locales.flatMap((locale) =>
     BUY_COMMUNITIES.map((c) => ({ locale, community: c.slug }))
   );

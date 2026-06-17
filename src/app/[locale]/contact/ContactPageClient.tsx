@@ -12,10 +12,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const locale = useLocale();
   const router = useRouter();
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", message: "" });
@@ -41,6 +42,7 @@ export default function ContactPage() {
           phone: form.phone ? `${form.countryCode} ${form.phone}` : "",
           inquiryType: "General",
           source: "contact-page",
+          locale,
         }),
       });
       if (!res.ok) throw new Error("Request failed");
@@ -131,7 +133,7 @@ export default function ContactPage() {
                         onChange={(dial) => setForm({ ...form, countryCode: dial })}
                         className="px-3 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 max-w-[180px]"
                       />
-                      <input type="tel" required pattern="[0-9+\s()-]{6,}" title="Enter a valid phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
+                      <input type="tel" required pattern="[0-9+\s()-]{6,}" title={t("phoneInvalid")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("phonePlaceholder")} />
                     </div>
                   </div>
                   <div>

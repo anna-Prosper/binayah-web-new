@@ -12,7 +12,7 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi", "he"];
+  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
   return locales.flatMap((locale) => BUY_COMMUNITIES.map((c) => ({ locale, community: c.slug })));
 }
 

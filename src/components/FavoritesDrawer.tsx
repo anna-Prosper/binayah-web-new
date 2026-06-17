@@ -28,8 +28,8 @@ interface FavProperty {
   completionStatus?: string;
 }
 
-function formatPrice(price?: number, currency = "AED") {
-  if (!price) return "Price on request";
+function formatPrice(price: number | undefined, currency: string, onRequest: string) {
+  if (!price) return onRequest;
   return `${currency} ${Math.round(price).toLocaleString("en-AE")}`;
 }
 
@@ -42,6 +42,7 @@ export default function FavoritesDrawer() {
   const { status: sessionStatus } = useSession();
   const t = useTranslations("favoritesDrawer");
   const tEnum = useTranslations("enums");
+  const tCommon = useTranslations("common");
   const isAnonymous = sessionStatus === "unauthenticated";
 
   // Allow other components to open the drawer via a custom window event
@@ -226,7 +227,7 @@ export default function FavoritesDrawer() {
                 <div className="space-y-3">
                   {properties.map((p) => {
                     const displayTitle = p.title || p.name || "Property";
-                    const displayPrice = formatPrice(p.price || p.startingPrice, p.currency);
+                    const displayPrice = formatPrice(p.price || p.startingPrice, p.currency || "AED", tCommon("priceOnRequest"));
                     const image = p.featuredImage || p.imageGallery?.[0];
                     const href = p.title ? `/property/${p.slug}` : `/project/${p.slug}`;
                     const isOffPlan = !p.title || String(p.offplan) === "1" || p.completionStatus === "off_plan";
@@ -315,7 +316,7 @@ export default function FavoritesDrawer() {
                 </button>
                 {/* WhatsApp CTA */}
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "971549988811"}?text=${encodeURIComponent(`Hi, I'd like to inquire about ${ids.length} saved properties on your website.`)}`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "971549988811"}?text=${encodeURIComponent(t("inquirePrefill", { count: ids.length }))}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-2.5 bg-[#25D366] hover:bg-[#22c55e] text-white rounded-xl font-semibold text-sm transition-colors"

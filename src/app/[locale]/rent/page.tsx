@@ -12,6 +12,58 @@ import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 const CONTENT = {
+  fr: {
+    "metaTitle": "Biens à louer à Dubai | Appartements & Villas | Binayah",
+    "metaDesc": "Trouvez votre location idéale à Dubaï — appartements, villas, studios et maisons de ville. Annonces vérifiées avec prix en temps réel. Prêt à emménager. Recherchez plus de 1 000 locations dès maintenant.",
+    "heroLabel": "LOUER À DUBAI",
+    "h1": "Biens à louer",
+    "h1sub": "à Dubai",
+    "heroDesc": "Annonces de location vérifiées dans tous les quartiers de Dubai. Studios à partir de 25K AED/an. Villas familiales à partir de 90K AED/an. Trouvez votre maison avec les agents de location de confiance de Binayah.",
+    "stats": [
+      {
+        "n": "1,000+",
+        "label": "Annonces de location"
+      },
+      {
+        "n": "AED 25K",
+        "label": "Studio à partir de/an"
+      },
+      {
+        "n": "90K+",
+        "label": "Locataires actifs"
+      },
+      {
+        "n": "48h",
+        "label": "Temps moyen de correspondance"
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Quels documents dois-je fournir pour louer à Dubaï ?",
+        "answer": "Copie du passeport, carte d'identité Emirates (si résident) ou visa, et chèques postdatés (ou garantie bancaire dans certains immeubles). Pour les locations annuelles, la plupart des propriétaires exigent 1 à 4 chèques postdatés. Vous devrez également enregistrer le contrat de location avec Ejari (le système de location du DLD) — votre agent s'en charge."
+      },
+      {
+        "question": "Comment fonctionne le processus de location à Dubaï ?",
+        "answer": "1) Trouvez un bien et convenez des termes. 2) Signez le contrat de location (Formulaire standard RERA H). 3) Payez le dépôt de garantie (généralement 5 % du loyer annuel) et le(s) premier(s) chèque(s) de loyer. 4) Enregistrez-vous avec Ejari (220 AED). 5) Connectez DEWA (électricité & eau — dépôt de 2,110 AED, remboursable à la sortie). Le processus prend 3 à 7 jours."
+      },
+      {
+        "question": "Un propriétaire peut-il augmenter mon loyer à Dubaï ?",
+        "answer": "Les augmentations de loyer lors du renouvellement sont plafonnées par l'Indice de Location RERA. Si votre loyer actuel est au niveau ou en dessous de la référence RERA, aucune augmentation n'est autorisée. Les augmentations sont plafonnées à 5–20 % selon la distance entre votre loyer actuel et l'indice. Consultez le Calculateur de Loyer RERA (dubailand.gov.ae) avant chaque renouvellement."
+      },
+      {
+        "question": "Quelle est la zone la moins chère pour louer à Dubaï ?",
+        "answer": "Zones les plus abordables : International City (studio à partir de 18K AED), Dubai South (studio à partir de 22K AED), Deira (1 chambre à partir de 30K AED), JVC (studio à partir de 28K AED). Meilleur rapport qualité-prix avec bonne connectivité : JVC, Al Quoz et Al Nahda offrent des économies de 20 à 35 % par rapport à Dubai Marina ou Downtown pour des tailles d'unités comparables."
+      },
+      {
+        "question": "Quel est le loyer moyen à Dubaï ?",
+        "answer": "Studio : 28,000–55,000 AED/an selon la zone. 1 chambre : 45,000–100,000 AED/an. 2 chambres : 70,000–160,000 AED/an. Villa 3 chambres : 120,000–250,000 AED/an. Dubai Marina et Downtown imposent des primes ; JVC, JLT et Deira sont nettement plus abordables."
+      }
+    ],
+    "breadcrumb": "Louer",
+    "ctaTitle": "Besoin d'aide pour trouver une location ?",
+    "ctaDesc": "Nos agents de location sélectionnent des biens correspondant à votre budget, vos préférences de quartier et votre date d'emménagement — sans frais pour les locataires.",
+    "ctaBtn": "Parlez à un agent de location"
+  },
   he: {
     "metaTitle": "נכסים להשכרה בדובאי | דירות ווילות | Binayah",
     "metaDesc": "מצאו את נכס ההשכרה המושלם בדובאי — דירות, וילות, סטודיו ובתים טוריים. רישומים מאומתים עם מחירים בזמן אמת. מוכן לכניסה. חפשו עכשיו מתוך 1,000+ נכסים להשכרה.",

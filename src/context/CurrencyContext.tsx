@@ -14,7 +14,7 @@ const FALLBACK_RATES: Record<string, number> = {
 
 // Default currency per language, used until the visitor picks one explicitly.
 const LOCALE_CURRENCY: Record<string, string> = {
-  ar: "AED", en: "AED", ru: "RUB", zh: "CNY", he: "ILS", vi: "VND",
+  ar: "AED", en: "AED", ru: "RUB", zh: "CNY", he: "ILS", vi: "VND", fr: "EUR",
 };
 
 const STORAGE_KEY = "binayah_currency";

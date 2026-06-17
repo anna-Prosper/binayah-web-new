@@ -33,8 +33,8 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const page = getCryptoPage(slug);
-  if (!page || !LOCALES.includes(locale as CryptoLocale)) return {};
-  const c = page.locales[locale as CryptoLocale];
+  if (!page) return {};
+  const c = page.locales[locale as CryptoLocale] ?? page.locales.en;
   const path = `/buy-with-crypto/${slug}`;
   const url = canonical(locale, path);
   return {
@@ -63,11 +63,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CryptoSpokePage({ params }: Props) {
   const { locale, slug } = await params;
   const page = getCryptoPage(slug);
-  if (!page || !LOCALES.includes(locale as CryptoLocale)) return notFound();
+  if (!page) return notFound();
 
   const loc = locale as CryptoLocale;
-  const c = page.locales[loc];
-  const t = CRYPTO_LABELS[loc];
+  const c = page.locales[loc] ?? page.locales.en;
+  const t = CRYPTO_LABELS[loc] ?? CRYPTO_LABELS.en;
   const isRtl = locale === "ar" || locale === "he";
   const lp = locale === "en" ? "" : `/${locale}`;
 
@@ -80,7 +80,7 @@ export default async function CryptoSpokePage({ params }: Props) {
   // Cross-links to the other spokes + the hub.
   const related = CRYPTO_PAGES.filter((p) => p.slug !== slug).map((p) => ({
     href: `${lp}/buy-with-crypto/${p.slug}`,
-    label: p.locales[loc].breadcrumb,
+    label: (p.locales[loc] ?? p.locales.en).breadcrumb,
   }));
 
   return (

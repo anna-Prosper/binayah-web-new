@@ -1,7 +1,6 @@
 /* eslint-disable i18next/no-literal-string -- multilingual SEO landing page */
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -484,8 +483,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PropertyManagementPage({ params }: Props) {
   const { locale } = await params;
-  if (!(locale in CONTENT)) return notFound();
-  const c = CONTENT[locale as Locale];
+  const c = CONTENT[locale as Locale] ?? CONTENT.en;
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 

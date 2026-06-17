@@ -66,6 +66,7 @@ export default async function ProjectArticlePage({ params }: Props) {
         datePublished={article.publishedAt || article.createdAt || new Date(0).toISOString()}
         dateModified={article.updatedAt}
         wordCount={article.wordCount}
+        locale={locale}
       />
       <BreadcrumbJsonLd
         items={[

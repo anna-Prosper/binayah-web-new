@@ -13,6 +13,7 @@ export function ArticleJsonLd({
   dateModified,
   authorName = "Binayah Properties",
   wordCount,
+  locale = "en",
   nonce,
 }: {
   headline: string;
@@ -23,6 +24,7 @@ export function ArticleJsonLd({
   dateModified?: string;
   authorName?: string;
   wordCount?: number;
+  locale?: string;
   nonce?: string;
 }) {
   const data: Record<string, unknown> = {
@@ -43,7 +45,7 @@ export function ArticleJsonLd({
     dateModified: dateModified ?? datePublished,
     ...(imageUrl ? { image: { "@type": "ImageObject", url: imageUrl } } : {}),
     ...(wordCount ? { wordCount } : {}),
-    inLanguage: "en",
+    inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Binayah Properties", url: "https://www.binayah.ae" },
   };
 
