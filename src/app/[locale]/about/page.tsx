@@ -16,13 +16,13 @@ const titles: Record<string, string> = {
   he: "אודות Binayah Properties | סוכנות הנדל\"ן המהימנה של דובאי",
 };
 const descriptions: Record<string, string> = {
-  fr: "Découvrez Binayah Properties — l'agence immobilière de confiance à Dubaï depuis 2007. Équipe certifiée RERA, recherche optimisée par IA, 2 500+ annonces actives.",
-  en: "Learn about Binayah Properties — Dubai's trusted real estate agency since 2007. RERA-certified team, AI-powered search, 2,500+ active listings.",
-  ru: "Узнайте о Binayah Properties — агентстве недвижимости в Дубае с 2007 года. RERA-сертифицированная команда, поиск на базе ИИ, более 2 500 активных объектов.",
-  ar: "تعرف على شركة بناية للعقارات — وكالة العقارات الموثوقة في دبي منذ عام 2007. فريق معتمد من RERA، بحث بالذكاء الاصطناعي، أكثر من 2,500 عقار.",
-  zh: "了解Binayah Properties — 自2007年以来迪拜值得信赖的房产中介。RERA认证团队，AI驱动搜索，2,500+在售房源。",
-  vi: "Tìm hiểu về Binayah Properties — Đại lý bất động sản đáng tin cậy của Dubai từ năm 2007. Đội ngũ được chứng nhận RERA, tìm kiếm bằng AI, hơn 2.500 danh sách.",
-  he: "למדו על Binayah Properties — סוכנות הנדל\"ן המהימנה של דובאי מאז 2007. צוות מוסמך RERA, חיפוש מבוסס AI, מעל 2,500 נכסים פעילים.",
+  fr: "Découvrez Binayah Properties — l'agence immobilière de confiance à Dubaï depuis 2007. Équipe certifiée RERA, recherche optimisée par IA, 3 000+ annonces actives.",
+  en: "Learn about Binayah Properties — Dubai's trusted real estate agency since 2007. RERA-certified team, AI-powered search, 3,000+ active listings.",
+  ru: "Узнайте о Binayah Properties — агентстве недвижимости в Дубае с 2007 года. RERA-сертифицированная команда, поиск на базе ИИ, более 3 000 активных объектов.",
+  ar: "تعرف على شركة بناية للعقارات — وكالة العقارات الموثوقة في دبي منذ عام 2007. فريق معتمد من RERA، بحث بالذكاء الاصطناعي، أكثر من 3,000 عقار.",
+  zh: "了解Binayah Properties — 自2007年以来迪拜值得信赖的房产中介。RERA认证团队，AI驱动搜索，3,000+在售房源。",
+  vi: "Tìm hiểu về Binayah Properties — Đại lý bất động sản đáng tin cậy của Dubai từ năm 2007. Đội ngũ được chứng nhận RERA, tìm kiếm bằng AI, hơn 3.000 danh sách.",
+  he: "למדו על Binayah Properties — סוכנות הנדל\"ן המהימנה של דובאי מאז 2007. צוות מוסמך RERA, חיפוש מבוסס AI, מעל 3,000 נכסים פעילים.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

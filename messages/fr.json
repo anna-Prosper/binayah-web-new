@@ -167,7 +167,7 @@
       "headlineSub": "à Dubaï",
       "heroSubline": "Appartements, villas et projets sur plan à Dubaï — à acheter, louer ou investir, avec des experts depuis 2007.",
       "dubaiItalic": "Dubai",
-      "mobileSubtitle": "Plus de 2 500 annonces dans plus de 50 quartiers",
+      "mobileSubtitle": "Plus de 3 000 annonces dans plus de 60 quartiers",
       "smartAiSearch": "Recherche intelligente IA",
       "cmdK": "⌘K",
       "enterToSearch": "Appuyez sur Entrée pour rechercher",
@@ -2139,8 +2139,7 @@
     "propertiesTitle": "Biens immobiliers à {communityName} ({count})",
     "propertiesEyebrow": "Disponible maintenant",
     "noPropertiesNote": "Aucune annonce pour le moment — revenez bientôt.",
-    "browseSearch": "Parcourir tous les biens immobiliers",
-    "wikiAttribution": "Informations sur le quartier provenant de Wikipedia"
+    "browseSearch": "Parcourir tous les biens immobiliers"
   },
   "pulseSubNav": {
     "navLabel": "Navigation Pulse",

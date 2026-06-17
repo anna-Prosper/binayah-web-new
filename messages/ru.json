@@ -167,7 +167,7 @@
       "headlineSub": "в Дубае",
       "heroSubline": "Апартаменты, виллы и проекты на стадии строительства в Дубае — купить, снять или инвестировать с экспертами с 2007 года.",
       "dubaiItalic": "Дубае",
-      "mobileSubtitle": "2 500+ объектов в 50+ районах",
+      "mobileSubtitle": "3 000+ объектов в 60+ районах",
       "smartAiSearch": "Умный ИИ-поиск",
       "cmdK": "⌘K",
       "enterToSearch": "Enter: поиск",
@@ -2133,8 +2133,7 @@
     "propertiesTitle": "Объекты в {communityName} ({count})",
     "propertiesEyebrow": "Доступно сейчас",
     "noPropertiesNote": "Пока нет объявлений — загляните позже.",
-    "browseSearch": "Смотреть все объекты",
-    "wikiAttribution": "Информация о районе предоставлена Википедией"
+    "browseSearch": "Смотреть все объекты"
   },
   "pulseSubNav": {
     "navLabel": "Навигация Pulse",

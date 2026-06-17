@@ -167,7 +167,7 @@
       "headlineSub": "في دبي",
       "heroSubline": "شقق وفلل ومشاريع على الخارطة في دبي — للشراء والإيجار والاستثمار، مع خبراء منذ عام 2007.",
       "dubaiItalic": "دبي",
-      "mobileSubtitle": "أكثر من 2,500 عقار في أكثر من 50 منطقة",
+      "mobileSubtitle": "أكثر من 3,000 عقار في أكثر من 60 منطقة",
       "smartAiSearch": "بحث ذكي بالذكاء الاصطناعي",
       "cmdK": "⌘K",
       "enterToSearch": "اضغط Enter للبحث",
@@ -2133,8 +2133,7 @@
     "propertiesTitle": "عقارات في {communityName} ({count})",
     "propertiesEyebrow": "متاح الآن",
     "noPropertiesNote": "لا توجد قوائم بعد — تحقق مرة أخرى قريباً.",
-    "browseSearch": "تصفح جميع العقارات",
-    "wikiAttribution": "معلومات المجتمع مصدرها ويكيبيديا"
+    "browseSearch": "تصفح جميع العقارات"
   },
   "pulseSubNav": {
     "navLabel": "تنقل النبض",

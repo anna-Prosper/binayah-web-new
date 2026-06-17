@@ -160,7 +160,7 @@ const LABELS: Record<Locale, {
     ctaBody:
       "Our Abu Dhabi team provides free, no-obligation advice on unit availability, payment plans, and expected ROI across all six Modon communities — including off-market options.",
     ctaPrimaryBtn: "Free Consultation",
-    trustFooter: ["19+ Years in UAE Real Estate", "11,200+ Properties", "No Commission for Buyers", "Regulated by RERA"],
+    trustFooter: ["19+ Years in UAE Real Estate", "3,000+ Properties", "No Commission for Buyers", "Regulated by RERA"],
     developerBadge: "Modon Properties · Government-Backed",
     developerSub: "84.5% owned by ADQ — Abu Dhabi's sovereign investment arm",
     freeholdBadge: "Freehold · All Nationalities",
@@ -257,7 +257,7 @@ const LABELS: Record<Locale, {
     ctaBody:
       "Наша команда в Абу-Даби предоставляет бесплатные консультации по наличию объектов, планам оплаты и ожидаемой доходности во всех шести сообществах Modon — включая варианты вне рынка.",
     ctaPrimaryBtn: "Бесплатная консультация",
-    trustFooter: ["19+ лет на рынке недвижимости ОАЭ", "11 200+ объектов", "Без комиссии для покупателей", "Лицензировано RERA"],
+    trustFooter: ["19+ лет на рынке недвижимости ОАЭ", "3 000+ объектов", "Без комиссии для покупателей", "Лицензировано RERA"],
     developerBadge: "Modon Properties · Государственный застройщик",
     developerSub: "84,5% принадлежит ADQ — суверенному инвестиционному фонду Абу-Даби",
     freeholdBadge: "Фрихолд · Все гражданства",
@@ -355,7 +355,7 @@ const LABELS: Record<Locale, {
     ctaBody:
       "يقدّم فريقنا في أبوظبي استشارات مجانية وغير مُلزِمة حول توفر الوحدات وخطط السداد والعائد على الاستثمار في جميع مجتمعات Modon الستة.",
     ctaPrimaryBtn: "استشارة مجانية",
-    trustFooter: ["أكثر من 17 عاماً في سوق العقارات الإماراتي", "11,200+ عقار", "بدون عمولة للمشترين", "مرخّص من RERA"],
+    trustFooter: ["أكثر من 17 عاماً في سوق العقارات الإماراتي", "3,000+ عقار", "بدون عمولة للمشترين", "مرخّص من RERA"],
     developerBadge: "Modon Properties · مدعومة حكومياً",
     developerSub: "مملوكة بنسبة 84.5% لـ ADQ — الذراع الاستثماري السيادي لأبوظبي",
     freeholdBadge: "تملك حر · جميع الجنسيات",
@@ -452,7 +452,7 @@ const LABELS: Record<Locale, {
     ctaBody:
       "我们的阿布扎比团队为您提供免费、无义务的咨询，涵盖所有六个Modon社区的单位供应、付款计划及预期投资回报——包括非公开市场房源。",
     ctaPrimaryBtn: "免费咨询",
-    trustFooter: ["深耕阿联酋房地产17年以上", "11,200+套房产", "买家零佣金", "持RERA监管牌照"],
+    trustFooter: ["深耕阿联酋房地产17年以上", "3,000+套房产", "买家零佣金", "持RERA监管牌照"],
     developerBadge: "Modon Properties · 政府背书开发商",
     developerSub: "84.5%由ADQ持股——阿布扎比主权投资机构",
     freeholdBadge: "永久产权 · 所有国籍",
@@ -550,7 +550,7 @@ const LABELS: Record<Locale, {
     ctaBody:
       "Đội ngũ Abu Dhabi của chúng tôi cung cấp tư vấn miễn phí, không ràng buộc về tình trạng căn sẵn có, kế hoạch thanh toán và ROI dự kiến trên cả sáu khu Modon — bao gồm các lựa chọn ngoài thị trường.",
     ctaPrimaryBtn: "Tư vấn miễn phí",
-    trustFooter: ["19+ năm trong bất động sản UAE", "11.200+ bất động sản", "Không hoa hồng cho người mua", "Được RERA quản lý"],
+    trustFooter: ["19+ năm trong bất động sản UAE", "3.000+ bất động sản", "Không hoa hồng cho người mua", "Được RERA quản lý"],
     developerBadge: "Modon Properties · Được chính phủ hậu thuẫn",
     developerSub: "84,5% thuộc sở hữu ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi",
     freeholdBadge: "Sở hữu vĩnh viễn · Mọi quốc tịch",
@@ -647,7 +647,7 @@ he: {
     ctaBody:
       "הצוות שלנו באבו דאבי מספק ייעוץ חינם וללא התחייבות על זמינות יחידות, תוכניות תשלום, ותשואה צפויה על ההשקעה בכל שש הקהילות של Modon — כולל אפשרויות מחוץ לשוק.",
     ctaPrimaryBtn: "ייעוץ חינם",
-    trustFooter: ["19+ שנים בנדל\"ן באמירויות", "11,200+ נכסים", "ללא עמלה לקונים", "מוסדר על ידי RERA"],
+    trustFooter: ["19+ שנים בנדל\"ן באמירויות", "3,000+ נכסים", "ללא עמלה לקונים", "מוסדר על ידי RERA"],
     developerBadge: "Modon Properties · מגובה ממשלתית",
     developerSub: "בבעלות 84.5% על ידי ADQ — זרוע ההשקעות הריבונית של אבו דאבי",
     freeholdBadge: "בעלות מלאה · כל הלאומים",

@@ -167,7 +167,7 @@
       "headlineSub": "in Dubai",
       "heroSubline": "Dubai apartments, villas and off-plan properties — to buy, rent or invest, with expert agents since 2007.",
       "dubaiItalic": "Dubai",
-      "mobileSubtitle": "2,500+ listings across 60+ communities",
+      "mobileSubtitle": "3,000+ listings across 60+ communities",
       "smartAiSearch": "Smart AI Search",
       "cmdK": "⌘K",
       "enterToSearch": "Enter to search",
@@ -2139,8 +2139,7 @@
     "propertiesTitle": "Properties in {communityName} ({count})",
     "propertiesEyebrow": "Available now",
     "noPropertiesNote": "No listings yet — check back soon.",
-    "browseSearch": "Browse all properties",
-    "wikiAttribution": "Community information sourced from Wikipedia"
+    "browseSearch": "Browse all properties"
   },
   "pulseSubNav": {
     "navLabel": "Pulse navigation",

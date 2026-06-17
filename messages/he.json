@@ -167,7 +167,7 @@
       "headlineSub": "בדובאי",
       "heroSubline": "דירות, וילות ופרויקטים בתכנון בדובאי — לרכישה, השכרה או השקעה, עם מומחים מאז 2007.",
       "dubaiItalic": "דובאי",
-      "mobileSubtitle": "2,500+ רישומים ביותר מ-50+ קהילות",
+      "mobileSubtitle": "3,000+ רישומים ביותר מ-60+ קהילות",
       "smartAiSearch": "חיפוש חכם בינה מלאכותית",
       "cmdK": "⌘K",
       "enterToSearch": "הזן לחיפוש",
@@ -2133,8 +2133,7 @@
     "propertiesTitle": "נכסים ב{communityName} ({count})",
     "propertiesEyebrow": "זמין כעת",
     "noPropertiesNote": "אין רישומים עדיין — חזרו בקרוב.",
-    "browseSearch": "עיינו בכל הנכסים",
-    "wikiAttribution": "מידע על הקהילה נלקח מוויקיפדיה"
+    "browseSearch": "עיינו בכל הנכסים"
   },
   "pulseSubNav": {
     "navLabel": "ניווט פולס",

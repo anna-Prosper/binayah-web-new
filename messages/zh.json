@@ -173,7 +173,7 @@
       "headlineSub": "在迪拜",
       "heroSubline": "迪拜公寓、别墅和期房项目——买房、租房或投资，专家团队服务自2007年。",
       "dubaiItalic": "迪拜",
-      "mobileSubtitle": "50+ 热门社区，2,500+ 优质房源",
+      "mobileSubtitle": "60+ 热门社区，3,000+ 优质房源",
       "smartAiSearch": "AI 智能搜索",
       "cmdK": "⌘K",
       "enterToSearch": "回车搜索",
@@ -2139,8 +2139,7 @@
     "propertiesTitle": "{communityName} 的房产 ({count})",
     "propertiesEyebrow": "立即可用",
     "noPropertiesNote": "暂无房源 — 请稍后再来查看。",
-    "browseSearch": "浏览所有房产",
-    "wikiAttribution": "社区信息来源于维基百科"
+    "browseSearch": "浏览所有房产"
   },
   "pulseSubNav": {
     "navLabel": "Pulse 导航",

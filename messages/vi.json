@@ -167,7 +167,7 @@
       "headlineSub": "tại Dubai",
       "heroSubline": "Căn hộ, biệt thự và bất động sản ngoài kế hoạch tại Dubai — để mua, thuê hoặc đầu tư, cùng các chuyên gia từ năm 2007.",
       "dubaiItalic": "Dubai",
-      "mobileSubtitle": "Hơn 2,500 danh sách tại hơn 50 khu dân cư",
+      "mobileSubtitle": "Hơn 3,000 danh sách tại hơn 60 khu dân cư",
       "smartAiSearch": "Tìm Kiếm AI Thông Minh",
       "cmdK": "⌘K",
       "enterToSearch": "Nhấn Enter để tìm kiếm",
@@ -2133,8 +2133,7 @@
     "propertiesTitle": "Bất động sản tại {communityName} ({count})",
     "propertiesEyebrow": "Hiện có sẵn",
     "noPropertiesNote": "Chưa có tin đăng — vui lòng quay lại sau.",
-    "browseSearch": "Xem tất cả bất động sản",
-    "wikiAttribution": "Thông tin khu vực lấy từ Wikipedia"
+    "browseSearch": "Xem tất cả bất động sản"
   },
   "pulseSubNav": {
     "navLabel": "Điều hướng Pulse",

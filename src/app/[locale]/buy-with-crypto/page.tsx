@@ -29,14 +29,14 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "Crypto Transactions" },
       { n: "19+", label: "Years in Dubai" },
-      { n: "2,500+", label: "Properties" },
+      { n: "3,000+", label: "Properties" },
       { n: "0%", label: "Capital Gains Tax" },
     ],
     coinsLabel: "Accepted Cryptocurrencies",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "How It Works",
     steps: [
-      { n: "01", title: "Choose Your Property", body: "Browse 2,500+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
+      { n: "01", title: "Choose Your Property", body: "Browse 3,000+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
       { n: "02", title: "Legal & KYC Review", body: "We verify your crypto source documentation (AML/KYC) and confirm crypto acceptance with the developer or seller." },
       { n: "03", title: "Secure Transfer", body: "Funds are transferred via a licensed crypto exchange or direct wallet transfer, converted to AED at the agreed rate for DLD registration." },
       { n: "04", title: "Title Deed Issued", body: "The property is registered at the Dubai Land Department in your name. You receive the official title deed — full legal ownership." },
@@ -82,14 +82,14 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "Крипто-сделок" },
       { n: "19+", label: "Лет в Дубае" },
-      { n: "11 200+", label: "Объектов" },
+      { n: "3 000+", label: "Объектов" },
       { n: "0%", label: "Налог на прибыль" },
     ],
     coinsLabel: "Принимаемые криптовалюты",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "Как это работает",
     steps: [
-      { n: "01", title: "Выбор объекта", body: "Более 2500 объектов и новостроек. Агенты подберут варианты под ваш бюджет и инвестиционные цели." },
+      { n: "01", title: "Выбор объекта", body: "Более 3000 объектов и новостроек. Агенты подберут варианты под ваш бюджет и инвестиционные цели." },
       { n: "02", title: "Юридическая проверка", body: "Проверяем документы о происхождении криптовалюты (AML/KYC) и согласовываем с застройщиком или продавцом условия оплаты." },
       { n: "03", title: "Безопасная сделка", body: "Средства переводятся через лицензированную биржу или напрямую с кошелька. Сумма конвертируется в дирхамы по согласованному курсу." },
       { n: "04", title: "Получение правоустанавливающего документа", body: "Недвижимость регистрируется в Земельном департаменте Дубая (DLD) на ваше имя. Вы получаете официальный правоустанавливающий документ." },
@@ -135,14 +135,14 @@ const CONTENT = {
     stats: [
       { n: "+500", label: "معاملة بالكريبتو" },
       { n: "+17", label: "عامًا في دبي" },
-      { n: "+2500", label: "عقار" },
+      { n: "+3,000", label: "عقار" },
       { n: "0%", label: "ضريبة أرباح رأس المال" },
     ],
     coinsLabel: "العملات المشفرة المقبولة",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "كيف تتم العملية",
     steps: [
-      { n: "١", title: "اختر عقارك", body: "أكثر من 2500 عقار ومشروع على الخارطة. يختار وكلاؤنا العقارات المناسبة لميزانيتك وأهدافك الاستثمارية." },
+      { n: "١", title: "اختر عقارك", body: "أكثر من 3,000 عقار ومشروع على الخارطة. يختار وكلاؤنا العقارات المناسبة لميزانيتك وأهدافك الاستثمارية." },
       { n: "٢", title: "الفحص القانوني", body: "نتحقق من وثائق مصدر العملة المشفرة (AML/KYC) وننسق مع المطوّر أو البائع لتأكيد القبول." },
       { n: "٣", title: "معاملة آمنة", body: "تُحوَّل الأموال عبر بورصة مرخّصة أو من المحفظة مباشرةً، وتُحوَّل إلى درهم بالسعر المتفق عليه." },
       { n: "٤", title: "استلام سند الملكية", body: "يُسجَّل العقار في دائرة الأراضي والأملاك باسمك. تحصل على سند الملكية الرسمي — ملكية قانونية كاملة." },
@@ -187,14 +187,14 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "加密货币交易" },
       { n: "19+", label: "年迪拜经验" },
-      { n: "2,500+", label: "在售房源" },
+      { n: "3,000+", label: "在售房源" },
       { n: "0%", label: "资本利得税" },
     ],
     coinsLabel: "接受的加密货币",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "购买流程",
     steps: [
-      { n: "01", title: "选择房产", body: "浏览2500多套房源和期房项目。我们的经纪人根据您的预算和投资目标为您筛选最优选择。" },
+      { n: "01", title: "选择房产", body: "浏览3,000多套房源和期房项目。我们的经纪人根据您的预算和投资目标为您筛选最优选择。" },
       { n: "02", title: "法律与合规审查", body: "核实加密货币来源文件（AML/KYC），并与开发商或卖家确认接受加密货币付款。" },
       { n: "03", title: "安全交易", body: "通过持牌加密货币交易所或直接钱包转账完成付款，按约定汇率兑换为迪拉姆进行DLD登记。" },
       { n: "04", title: "产权证书签发", body: "房产在迪拜土地局（DLD）以您的名义登记，您将收到官方产权证书——完全合法的所有权。" },
@@ -239,14 +239,14 @@ const CONTENT = {
     stats: [
       { n: "500+", label: "Giao dịch tiền điện tử" },
       { n: "19+", label: "Năm tại Dubai" },
-      { n: "11.200+", label: "Bất động sản" },
+      { n: "3.000+", label: "Bất động sản" },
       { n: "0%", label: "Thuế lãi vốn" },
     ],
     coinsLabel: "Tiền điện tử được chấp nhận",
     coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
     howTitle: "Cách hoạt động",
     steps: [
-      { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 11.200 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
+      { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 3.000 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
       { n: "02", title: "Xét duyệt pháp lý & KYC", body: "Chúng tôi xác minh tài liệu nguồn gốc tiền điện tử của bạn (AML/KYC) và xác nhận việc chấp nhận tiền điện tử với chủ đầu tư hoặc người bán." },
       { n: "03", title: "Chuyển khoản an toàn", body: "Vốn được chuyển qua sàn giao dịch tiền điện tử được cấp phép hoặc chuyển khoản ví trực tiếp, chuyển đổi sang AED theo tỷ giá thỏa thuận để đăng ký DLD." },
       { n: "04", title: "Cấp sổ đỏ", body: "Bất động sản được đăng ký tại Sở Đất đai Dubai dưới tên bạn. Bạn nhận sổ đỏ chính thức — quyền sở hữu hợp pháp đầy đủ." },
@@ -298,7 +298,7 @@ const CONTENT = {
         "label": "שנים בדובאי"
       },
       {
-        "n": "2,500+",
+        "n": "3,000+",
         "label": "נכסים"
       },
       {
@@ -320,7 +320,7 @@ const CONTENT = {
       {
         "n": "01",
         "title": "בחירת הנכס",
-        "body": "עיינו ביותר מ-11,200 נכסים ופרויקטים על הנייר. הסוכנים שלנו ירכיבו רשימה קצרה של נכסים שמתאימים לתקציב וליעדי ההשקעה שלכם."
+        "body": "עיינו ביותר מ-3,000 נכסים ופרויקטים על הנייר. הסוכנים שלנו ירכיבו רשימה קצרה של נכסים שמתאימים לתקציב וליעדי ההשקעה שלכם."
       },
       {
         "n": "02",
