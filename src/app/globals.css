@@ -96,12 +96,22 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Reserve the vertical scrollbar's space so its appearance/disappearance
+       never reflows the page width. Without this, lazy-mounting sections that
+       toggle the scrollbar make the layout jitter ("shake") on load. */
+    scrollbar-gutter: stable;
+    /* NOTE: `scroll-behavior: smooth` was removed intentionally. It fights the
+       hero's scroll-linked parallax (useScroll/useTransform) and the browser's
+       scroll-anchoring as homepage sections lazy-mount, which caused a
+       continuous shake/jitter. Anchor scrolling now jumps instantly. */
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-jakarta), sans-serif;
+    /* Stop any horizontally-overflowing element from creating a horizontal
+       scrollbar that toggles and shakes the layout. */
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
