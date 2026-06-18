@@ -707,7 +707,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
       </section>
 
       <section className="py-10">
-        <div className={`max-w-6xl mx-auto px-4 sm:px-6${sidebarSlot ? " xl:grid xl:grid-cols-[minmax(0,1fr)_320px] xl:gap-8 xl:items-start" : ""}`}>
+        <div className={`max-w-6xl mx-auto px-4 sm:px-6${sidebarSlot ? " lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start" : ""}`}>
           <div className="min-w-0">
           {loading ? (
             <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /><span>{t("searching")}</span></div>
@@ -957,7 +957,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
           )}
           </div>
           {sidebarSlot && (
-            <aside className="mt-12 xl:mt-0 xl:sticky xl:top-24 self-start xl:max-h-[calc(100vh-7rem)] xl:overflow-y-auto xl:[scrollbar-width:none] xl:[&::-webkit-scrollbar]:hidden">
+            <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
               {sidebarSlot}
             </aside>
           )}
