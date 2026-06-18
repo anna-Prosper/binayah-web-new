@@ -667,6 +667,24 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           {/* ═══ LEFT COLUMN ═══ */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-8">
 
+            {/* ── Sub-page deep dives ── */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {([
+                { href: `/project/${project.slug}/floor-plans`,  icon: FileText,   label: t("floorPlansLabel"), desc: "Layouts & sizes"  },
+                { href: `/project/${project.slug}/location`,      icon: MapPin,     label: t("tabLocation"),     desc: "Map & nearby"    },
+                { href: `/project/${project.slug}/payment-plan`,  icon: CreditCard, label: t("tabPayment"),      desc: "Plan & costs"    },
+              ] as const).map(({ href, icon: Icon, label, desc }) => (
+                <Link key={href} href={href}
+                  className="flex flex-col items-start gap-1.5 p-2.5 sm:p-3 rounded-xl border border-border/50 hover:border-accent/40 hover:bg-accent/5 transition-all group text-left">
+                  <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center">
+                    <Icon className="h-3.5 w-3.5 text-accent" />
+                  </div>
+                  <p className="text-xs font-bold text-foreground group-hover:text-accent transition-colors leading-tight">{label}</p>
+                  <p className="text-[10px] text-muted-foreground leading-tight">{desc}</p>
+                </Link>
+              ))}
+            </div>
+
             {/* Tab Navigation (shared component) */}
             <DetailTabs<typeof activeTab>
               animate
