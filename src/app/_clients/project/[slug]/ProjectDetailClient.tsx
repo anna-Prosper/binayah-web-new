@@ -274,6 +274,14 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   // that just encodes the project page URL (misleading; not the real permit).
   const hasStoredQr = Boolean(project.qrCode && project.qrCode.startsWith("http"));
 
+  // Sub-page H1 suffix — each dedicated URL gets its own unique H1 for SEO
+  const h1Suffix: string | null =
+    defaultTab === "floor-plans" ? t("floorPlansLabel")
+    : defaultTab === "location"   ? t("locationLabel")
+    : defaultTab === "payment"    ? t("paymentPlanLabel")
+    : defaultTab === "faq"        ? t("faqLabel")
+    : null;
+
   const leadEntity = { entityType: "project", entitySlug: project.slug, entityTitle: project.name };
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
@@ -439,6 +447,11 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                   {/* Project title */}
                   <h1 className="text-[22px] sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15]">
                     {project.name}
+                    {h1Suffix && (
+                      <span className="block text-base sm:text-2xl lg:text-3xl font-semibold text-white/75 mt-1 tracking-normal">
+                        {h1Suffix}
+                      </span>
+                    )}
                   </h1>
                   {/* Location with QR — only render if a regulator-issued QR image is stored in MongoDB */}
                   <div className="flex items-center gap-2 sm:gap-3 mt-1.5 sm:mt-3">
