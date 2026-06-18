@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
+import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -25,18 +26,29 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const titleFallback = `${projName}${communityStr} | Binayah`;
   const descFallback = `${project.name} is an off-plan project${project.community ? ` in ${project.community}` : ""} by ${project.developerName || "a leading developer"} in Dubai.${project.startingPrice ? ` Starting from AED ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}.` : ""} Explore floor plans, payment plans and availability.`;
 
+  // Migrated projects carry a legacy WordPress canonical (https://binayah.com/
+  // projects/<slug>) in seo.canonicalUrl. Pointing the canonical at the old
+  // domain hands indexing + link equity to a site we no longer run. Only honor
+  // a stored canonical if it's on our own domain; otherwise compute the .ae URL.
+  const path = `/project/${slug}`;
+  const canonicalUrl =
+    typeof seo.canonicalUrl === "string" && /(^|\/\/)([^/]*\.)?binayah\.ae/.test(seo.canonicalUrl)
+      ? seo.canonicalUrl
+      : makeCanonical(locale, path);
+
   return {
     title: seo.metaTitle || titleFallback,
     description: seo.metaDescription || descFallback,
     alternates: {
-      canonical: seo.canonicalUrl || `/${locale}/project/${slug}`,
+      canonical: canonicalUrl,
+      languages: altLangs(path),
     },
     openGraph: {
       title: seo.ogTitle || seo.metaTitle || titleFallback,
       description: seo.ogDescription || seo.metaDescription || descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
-      url: `/${locale}/project/${slug}`,
+      url: makeCanonical(locale, path),
       locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
     },
     twitter: {
