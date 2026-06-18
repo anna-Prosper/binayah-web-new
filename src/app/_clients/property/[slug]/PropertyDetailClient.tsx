@@ -1091,12 +1091,20 @@ export default function PropertyDetailClient({
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
                   <LocationSection
                     community={listing.community}
+                    subCommunity={listing.subCommunity}
                     city={listing.city || "Dubai"}
                     country={listing.country || "UAE"}
+                    building={listing.buildingName || listing.building}
+                    address={listing.address}
                     mapEmbedSrc={
                       hasMap
                         ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${listing.latitude},${listing.longitude}&zoom=15`
                         : `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
+                    }
+                    externalMapUrl={
+                      hasMap
+                        ? `https://www.google.com/maps/search/?api=1&query=${listing.latitude},${listing.longitude}`
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
                     }
                     nearby={nearbyItems}
                     iconForType={nearbyIcon}

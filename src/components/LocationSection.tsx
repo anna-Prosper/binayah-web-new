@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Compass, ExternalLink } from "lucide-react";
+import { MapPin, Compass, Map } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type React from "react";
 
@@ -13,8 +13,11 @@ export interface NearbyAttraction {
 
 export interface LocationSectionProps {
   community?: string;
+  subCommunity?: string;
   city?: string;
   country?: string;
+  building?: string;
+  address?: string;
   /** Pre-built map embed URL (with API key + query). Component does not construct it. */
   mapEmbedSrc: string;
   /** Optional descriptive paragraph shown between the cells grid and the map. */
@@ -29,8 +32,11 @@ export interface LocationSectionProps {
 
 export function LocationSection({
   community,
+  subCommunity,
   city,
   country,
+  building,
+  address,
   mapEmbedSrc,
   description,
   externalMapUrl,
@@ -40,6 +46,22 @@ export function LocationSection({
   // Both detail pages have the same keys in their respective namespaces with the same
   // values — picking propertyDetail keeps a single source of truth for this component.
   const t = useTranslations("propertyDetail");
+
+  const cells = [
+    subCommunity ? { label: t("subCommunityLabel"), value: subCommunity } : null,
+    { label: t("communityLabel"), value: community },
+    building ? { label: t("buildingLabel"), value: building } : null,
+    { label: t("cityLabel"), value: city },
+    { label: t("countryLabel"), value: country },
+  ].filter(Boolean) as { label: string; value: string | undefined }[];
+
+  const colClass =
+    cells.length <= 3
+      ? "grid-cols-3"
+      : cells.length === 4
+      ? "grid-cols-2 sm:grid-cols-4"
+      : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5";
+
   return (
     <div className="space-y-4 sm:space-y-8">
       {/* Location info + map */}
@@ -51,24 +73,26 @@ export function LocationSection({
           <h2 className="text-lg sm:text-xl font-bold text-foreground">{t("locationLabel")}</h2>
         </div>
 
-        {/* Community / City / Country cells */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-5">
-          {[
-            { label: t("communityLabel"), value: community },
-            { label: t("cityLabel"), value: city },
-            { label: t("countryLabel"), value: country },
-          ].map(({ label, value }) => (
+        {address && (
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-5 flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-accent" />
+            {address}
+          </p>
+        )}
+
+        {/* Data cells */}
+        <div className={`grid ${colClass} gap-2 sm:gap-3 mb-3 sm:mb-5`}>
+          {cells.map(({ label, value }) => (
             <div key={label} className="p-2.5 sm:p-4 bg-muted/50 rounded-xl">
               <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">
                 {label}
               </p>
-              <p className="text-xs sm:text-base font-bold text-foreground">{value || "—"}</p>
+              <p className="text-xs sm:text-sm font-bold text-foreground truncate">{value || "—"}</p>
             </div>
           ))}
         </div>
 
         {description && (() => {
-          // Split on bullet chars so they render as a proper list instead of plain text
           const parts = description.split(/\s*[•●◦▪■]\s*/).map(s => s.trim()).filter(Boolean);
           if (parts.length <= 1) {
             return (
@@ -110,9 +134,10 @@ export function LocationSection({
             href={externalMapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-xl text-xs sm:text-sm font-semibold hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl border border-primary/30 bg-primary/8 text-primary text-xs sm:text-sm font-semibold hover:bg-primary/15 hover:border-primary/50 transition-all"
           >
-            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t("viewOnGoogleMaps")}
+            <Map className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+            {t("viewOnGoogleMaps")}
           </a>
         )}
       </div>
