@@ -1562,21 +1562,9 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                       );
                     })()}
 
-                    {/* Nearby amenities */}
-                    {(() => {
-                      const dbNearby = (project.nearbyAttractions as NearbyAttraction[] | null) || [];
-                      const nearby: NearbyAttraction[] = dbNearby.length > 0
-                        ? dbNearby
-                        : (parseNearbyFromDescription(project.locationDescription as string | undefined) as unknown as NearbyAttraction[]);
-                      const fallback: NearbyAttraction[] = [
-                        { name: "Dubai Marina Mall", type: "mall", distance: "5 min walk" },
-                        { name: "JBR Beach", type: "beach", distance: "8 min walk" },
-                        { name: "Metro Station", type: "transport", distance: "3 min walk" },
-                        { name: "Dubai Airport", type: "airport", distance: "25 min drive" },
-                        { name: "Palm Jumeirah", type: "landmark", distance: "10 min drive" },
-                        { name: "Marina Walk", type: "park", distance: "2 min walk" },
-                      ];
-                      const items = nearby.length > 0 ? nearby : fallback;
+                    {/* Nearby amenities — uses outer `nearby` (DB → parsed-from-description, no hardcoded fallback) */}
+                    {nearby.length > 0 && (() => {
+                      const items = nearby;
                       return (
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                           {items.map((item, i) => {
