@@ -2044,8 +2044,8 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                         </div>
 
                         {/* Active floor plan */}
-                        {activeFp?.image ? (
-                          <div className="p-4 sm:p-6">
+                        <div className="p-4 sm:p-6">
+                          {activeFp?.image ? (
                             <div className="flex flex-col sm:flex-row gap-4">
                               {/* Image */}
                               <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-muted border border-border/50">
@@ -2057,7 +2057,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                                   sizes="(max-width: 640px) 100vw, 50vw"
                                 />
                               </div>
-                              {/* Specs */}
+                              {/* Specs alongside image */}
                               <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
                                 <h3 className="font-bold text-foreground text-base">{activeFp.title}</h3>
                                 {activeFp.type && (
@@ -2090,10 +2090,73 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                                 </a>
                               </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div className="p-6 text-center text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
-                        )}
+                          ) : (
+                            /* No image — show specs grid so content is never empty */
+                            <div className="space-y-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                {(activeFp?.beds || activeFp?.baths) && (
+                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
+                                    <Bed className="h-5 w-5 text-accent shrink-0" />
+                                    <div>
+                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("bedsLabel")}</p>
+                                      <p className="text-sm font-bold text-foreground">
+                                        {activeFp?.beds ?? "—"}{activeFp?.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                                {activeFp?.size && (
+                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
+                                    <Ruler className="h-5 w-5 text-accent shrink-0" />
+                                    <div>
+                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("sizeRange")}</p>
+                                      <p className="text-sm font-bold text-foreground">{activeFp.size}</p>
+                                    </div>
+                                  </div>
+                                )}
+                                {activeFp?.type && (
+                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
+                                    <Building2 className="h-5 w-5 text-accent shrink-0" />
+                                    <div>
+                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("propertyTypeLabel")}</p>
+                                      <p className="text-sm font-bold text-foreground">{activeFp.type}</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              {/* All-units summary table */}
+                              {fps.length > 1 && (
+                                <div className="overflow-x-auto rounded-xl border border-border/50">
+                                  <table className="w-full text-sm">
+                                    <thead>
+                                      <tr className="border-b border-border/50 bg-muted/30">
+                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("floorPlansLabel")}</th>
+                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("bedsLabel")}</th>
+                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("bathsLabel")}</th>
+                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("sizeRange")}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {fps.map((fp, i) => (
+                                        <tr
+                                          key={i}
+                                          onClick={() => setActiveFloorPlanTab(i)}
+                                          className={`border-b border-border/30 last:border-0 cursor-pointer transition-colors ${i === activeFloorPlanTab ? "bg-accent/5" : "hover:bg-muted/30"}`}
+                                        >
+                                          <td className="px-4 py-3 font-semibold text-foreground">{fp.title}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.beds ?? "—"}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.baths ?? "—"}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.size ?? "—"}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              )}
+                              <p className="text-xs text-muted-foreground text-center">{t("floorPlanOnRequest")}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     );
                   })() : (
