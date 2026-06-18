@@ -6,7 +6,7 @@ import { getCommunity } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -38,33 +38,45 @@ export async function generateMetadata({
     (wiki as any)?.description ||
     db?.community?.description ||
     "";
-  const description = rawDesc
-    ? rawDesc.replace(/<[^>]*>/g, "").slice(0, 160).trim()
+  const stripped = rawDesc.replace(/<[^>]*>/g, "").trim();
+  const description = stripped
+    ? (stripped.length <= 160
+        ? stripped
+        : stripped.slice(0, stripped.lastIndexOf(" ", 157)).trimEnd() + "…")
     : `Explore properties for sale and rent in ${name}, Dubai. Browse off-plan projects and secondary listings with Binayah Properties.`;
 
+  // Reject Wikipedia/Wikimedia-hosted images — they may go offline and signal
+  // third-party content to social crawlers. Fall back to our branded OG image.
+  const rawImage = (wiki as any)?.heroImage || db?.community?.featuredImage;
   const image =
-    (wiki as any)?.heroImage || db?.community?.featuredImage || undefined;
+    rawImage && !/(wikipedia|wikimedia)\.org/i.test(rawImage)
+      ? rawImage
+      : DEFAULT_OG_IMAGE;
 
   const title = `${name} Properties | Real Estate For Sale & Rent | Binayah`;
+
+  const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 
   return {
     title,
     description,
     alternates: {
-      canonical: makeCanonical(locale, `/communities/${slug}`),
+      canonical: canonicalUrl,
       languages: altLangs(`/communities/${slug}`),
     },
     openGraph: {
       title,
       description,
       type: "website",
-      ...(image ? { images: [{ url: image, width: 1200, height: 630, alt: `${name} Dubai` }] } : {}),
+      url: canonicalUrl,
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: image, width: 1200, height: 630, alt: `${name} Dubai` }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      images: [image],
     },
   };
 }
