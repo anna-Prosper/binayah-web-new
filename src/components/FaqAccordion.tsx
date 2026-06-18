@@ -16,14 +16,36 @@ export interface FaqAccordionProps {
   variant?: "card" | "compact";
   /** Emit FAQPage JSON-LD. Skip on supplementary inline FAQs to avoid duplicate schema on one page. */
   emitJsonLd?: boolean;
+  /** Render all answers expanded and static in the HTML (for dedicated /faq sub-pages so Google sees content). */
+  allExpanded?: boolean;
 }
 
-export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true }: FaqAccordionProps) {
+export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true, allExpanded = false }: FaqAccordionProps) {
   const [open, setOpen] = useState<number | null>(null);
 
   if (!faqs || faqs.length === 0) return null;
 
   const jsonLd = emitJsonLd ? <FAQJsonLd faqs={faqs} /> : null;
+
+  // Static fully-expanded render — all answers in the initial HTML for Google
+  if (allExpanded) {
+    return (
+      <div className="space-y-2 sm:space-y-3">
+        {jsonLd}
+        {faqs.map((faq, i) => (
+          <div key={i} className="rounded-xl border border-primary/15 bg-primary/5 overflow-hidden">
+            <div className="p-3 sm:p-5">
+              <h3 className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</h3>
+            </div>
+            <div className="px-3 sm:px-5 pb-3 sm:pb-5">
+              <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (variant === "compact") {
     // Tighter accordion used in inline / sidebar contexts.

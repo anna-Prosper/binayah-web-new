@@ -2369,7 +2369,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                         <h2 className="text-base sm:text-xl font-bold text-foreground">{t("faqLabel")}</h2>
                       </div>
                       <div className="px-3.5 sm:px-6 pb-3.5 sm:pb-6">
-                        <FaqAccordion faqs={faqs} emitJsonLd={false} />
+                        <FaqAccordion faqs={faqs} emitJsonLd={false} allExpanded={defaultTab === "faq"} />
                       </div>
                     </div>
                   ) : (
