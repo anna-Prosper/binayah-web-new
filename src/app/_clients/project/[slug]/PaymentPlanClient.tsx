@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
-import { ProjectSubNav } from "@/components/ProjectSubNav";
+import { DetailTabs } from "@/components/DetailTabs";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -54,7 +54,17 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
           { label: t("tabPayment") },
         ]}
       />
-      <ProjectSubNav slug={project.slug} />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4">
+        <DetailTabs<string>
+          active="payment"
+          tabs={[
+            { id: "overview", label: t("tabOverview"), href: `/project/${project.slug}` },
+            { id: "location", label: t("tabLocation"), href: `/project/${project.slug}/location` },
+            { id: "payment", label: t("tabPayment"), href: `/project/${project.slug}/payment-plan` },
+            { id: "faq", label: t("tabFaq"), href: `/project/${project.slug}` },
+          ]}
+        />
+      </div>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
 

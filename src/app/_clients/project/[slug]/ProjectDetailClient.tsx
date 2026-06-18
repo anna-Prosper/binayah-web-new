@@ -668,8 +668,8 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
               onChange={setActiveTab}
               tabs={[
                 { id: "overview", label: t("tabOverview") },
-                { id: "location", label: t("tabLocation") },
-                { id: "payment", label: t("tabPayment") },
+                { id: "location", label: t("tabLocation"), href: `/project/${project.slug}/location` },
+                { id: "payment", label: t("tabPayment"), href: `/project/${project.slug}/payment-plan` },
                 { id: "faq", label: t("tabFaq") },
               ]}
             />
