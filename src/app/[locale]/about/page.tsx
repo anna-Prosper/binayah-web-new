@@ -42,6 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: OG_LOCALE[locale] ?? "en_AE",
       images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: titles[locale] || titles.en,
+      description: descriptions[locale] || descriptions.en,
+      images: [DEFAULT_OG_IMAGE],
+    },
   };
 }
 

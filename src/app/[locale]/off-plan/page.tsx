@@ -190,6 +190,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: OG_LOCALE[locale] ?? "en_AE",
       images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: c.metaTitle,
+      description: c.metaDesc,
+      images: [DEFAULT_OG_IMAGE],
+    },
     keywords: locale === "ru"
       ? ["новостройки дубай", "купить новостройку дубай", "off-plan дубай 2026", "инвестиции новостройки дубай"]
       : locale === "ar" // vi branch below
