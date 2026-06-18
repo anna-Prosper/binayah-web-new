@@ -176,7 +176,11 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   const [activeUnitTab, setActiveUnitTab] = useState(0);
   const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(() => {
     const fps = Array.isArray(serverProject.floorPlans) ? serverProject.floorPlans : [];
-    const firstOneBR = fps.findIndex((fp: any) => String(fp.beds ?? fp.title ?? "").includes("1"));
+    // Exact match on beds field first; then title prefix "1 " / "1BR" / "1 BR"
+    const firstOneBR = fps.findIndex((fp: any) =>
+      String(fp.beds ?? "").trim() === "1" ||
+      /^1\s*(br|bed)/i.test(String(fp.title ?? ""))
+    );
     return firstOneBR >= 0 ? firstOneBR : 0;
   });
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
