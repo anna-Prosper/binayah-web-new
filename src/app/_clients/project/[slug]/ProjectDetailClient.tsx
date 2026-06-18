@@ -597,13 +597,25 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               // Skip cards with no real data so the grid doesn't show "—" placeholders.
               const unitTypesValue = formatUnitTypes(project.unitTypes, " · ");
               const hasSizeRange = project.unitSizeMin && project.unitSizeMax;
+
+              // Payment card: prefer paymentPlanSteps (most accurate) → paymentPlanSummary → downPayment fallback
+              const _ppSteps: Array<{ title: string; percentage: string }> = Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0 ? project.paymentPlanSteps : [];
+              const _downStep = _ppSteps.find(s => /down/i.test(s.title));
+              const paymentCardValue = _ppSteps.length > 0
+                ? (_downStep ? `${_downStep.percentage} Down` : _ppSteps[0].percentage)
+                : (project.paymentPlanSummary || (project.downPayment ? `${project.downPayment}% Down` : null));
+              const paymentCardSub = _ppSteps.length > 0
+                ? _ppSteps.map(s => s.percentage.replace(/%/g, "")).join("/") + "%"
+                : (project.paymentPlanSummary || null);
+              const hasPaymentData = !!(paymentCardValue);
+
               const stats = [
                 project.developerName && { icon: Building2, label: t("developer"), value: project.developerName, sub: null },
                 project.startingPrice && { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
                 unitTypesValue && unitTypesValue !== "—" && { icon: Bed, label: t("unitTypes"), value: unitTypesValue, sub: null },
                 hasSizeRange && { icon: Ruler, label: t("sizeRange"), value: sizeValue, sub: sizeSub },
                 (isReady || project.completionDate) && { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
-                (project.paymentPlanSummary || project.downPayment) && { icon: CreditCard, label: t("paymentPlanLabel"), value: project.paymentPlanSummary || `${project.downPayment} Down`, sub: project.paymentPlanSummary || null, isPaymentPlan: true },
+                hasPaymentData && { icon: CreditCard, label: t("paymentPlanLabel"), value: paymentCardValue!, sub: paymentCardSub, isPaymentPlan: true },
               ].filter(Boolean) as Array<{ icon: React.ElementType; label: string; value: string; sub: string | null; isCurrency?: boolean; isPaymentPlan?: boolean }>;
 
               return stats.map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => {
