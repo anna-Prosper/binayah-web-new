@@ -496,16 +496,6 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
 
                   {/* Watch Tour + Photos + Brochure inline */}
                   <div className="hidden sm:flex items-center gap-2 flex-wrap">
-                    {project.videoUrl && (
-                      <a
-                        href={project.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-semibold text-white hover:bg-white/20 transition-all"
-                      >
-                        <Play className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-accent fill-accent" /> {t("watchTour")}
-                      </a>
-                    )}
                     <button
                       onClick={() => setShowGallery(true)}
                       className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
