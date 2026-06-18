@@ -12,19 +12,19 @@ interface Props {
   onClose: () => void;
   projectName: string;
   projectSlug: string;
+  /** When provided, the brochure is emailed directly to the lead after form submission. */
+  brochureUrl?: string;
 }
 
-// Lead-capture modal shown when a project has no public brochure file.
-// We collect name + email + phone, file an inquiry tagged
-// `source=brochure-request:<slug>` so the agent team can follow up with
-// the actual brochure, and confirm to the user.
-export default function BrochureRequestModal({ open, onClose, projectName, projectSlug }: Props) {
+export default function BrochureRequestModal({ open, onClose, projectName, projectSlug, brochureUrl }: Props) {
   const t = useTranslations("brochureRequest");
   const tc = useTranslations("common");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
+
+  const hasBrochure = !!brochureUrl;
 
   useEffect(() => {
     const dial = dialFromIso(readGeoCountryCookie());
@@ -35,6 +35,9 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
 
   useEffect(() => {
     if (!open) return;
+    // reset state on re-open
+    setSent(false);
+    setError(false);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -63,6 +66,7 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
           type: "brochure-request",
           message: t("autoMessage", { name: projectName }),
           source: `brochure-request:${projectSlug}`,
+          ...(brochureUrl ? { brochureUrl, projectName } : {}),
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -91,7 +95,9 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
               <CheckCircle2 className="h-7 w-7 text-emerald-600" />
             </div>
             <h3 className="text-lg font-bold text-foreground mb-2">{t("successTitle")}</h3>
-            <p className="text-sm text-muted-foreground">{t("successBody", { name: projectName })}</p>
+            <p className="text-sm text-muted-foreground">
+              {hasBrochure ? t("successBody", { name: projectName }) : t("successBodyNoFile", { name: projectName })}
+            </p>
             <button
               onClick={onClose}
               className="mt-6 px-6 py-2.5 rounded-full text-sm font-semibold text-white"
@@ -119,7 +125,9 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
                   </h3>
                 </div>
               </div>
-              <p className="mt-3 text-xs sm:text-sm text-white/80">{t("subtitle")}</p>
+              <p className="mt-3 text-xs sm:text-sm text-white/80">
+                {hasBrochure ? t("subtitle") : t("subtitleNoFile")}
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-3">

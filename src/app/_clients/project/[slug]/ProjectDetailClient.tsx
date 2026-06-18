@@ -511,26 +511,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     >
                       <ImageIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("gallery")}
                     </button>
-                    {project.brochureUrl ? (
-                      <a
-                        href={project.brochureUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
-                        style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-                      >
-                        <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
-                      </a>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setBrochureModalOpen(true)}
-                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
-                        style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-                      >
-                        <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => setBrochureModalOpen(true)}
+                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                    >
+                      <Download className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {t("brochureButton")}
+                    </button>
                   </div>
                 </motion.div>
               </div>
@@ -548,26 +536,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         >
           <ImageIcon className="h-3.5 w-3.5" /> {t("galleryButton")} ({images.length})
         </button>
-        {project.brochureUrl ? (
-          <a
-            href={project.brochureUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
-            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-          >
-            <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
-          </a>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setBrochureModalOpen(true)}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
-            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-          >
-            <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() => setBrochureModalOpen(true)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-[12px] font-bold text-white shadow-md active:scale-[0.97] transition-all"
+          style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+        >
+          <Download className="h-3.5 w-3.5" /> {t("brochureButton")}
+        </button>
       </div>
 
       {/* ───── QUICK STATS CARDS ───── */}
@@ -1243,43 +1219,22 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     );
                   })()}
 
-                  {/* Brochure CTA — direct download if a file is attached,
-                      otherwise opens a lead-capture modal so the agent
-                      team can follow up with the brochure. */}
-                  {project.brochureUrl ? (
-                    <a
-                      href={project.brochureUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
-                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                    >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
-                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
-                        <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
-                      </div>
-                      <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setBrochureModalOpen(true)}
-                      className="w-full text-left flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
-                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                    >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
-                        <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
-                        <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
-                      </div>
-                      <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
-                    </button>
-                  )}
+                  {/* Brochure CTA — always collect email first, then deliver */}
+                  <button
+                    type="button"
+                    onClick={() => setBrochureModalOpen(true)}
+                    className="w-full text-left flex items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-full p-4 sm:p-6 group transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.01] active:scale-[0.99]"
+                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                  >
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                      <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-bold text-white">{t("downloadBrochure")}</p>
+                      <p className="text-[10px] sm:text-[11px] text-white/70">{t("brochureDesc")}</p>
+                    </div>
+                    <Download className="h-5 w-5 text-white/60 group-hover:translate-y-0.5 transition-transform flex-shrink-0" />
+                  </button>
 
                   {/* Key Highlights */}
                   {project.keyHighlights && project.keyHighlights.length > 0 && (
@@ -2785,6 +2740,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
         onClose={() => setBrochureModalOpen(false)}
         projectName={project.name}
         projectSlug={project.slug}
+        brochureUrl={project.brochureUrl}
       />
     </div>
   );
