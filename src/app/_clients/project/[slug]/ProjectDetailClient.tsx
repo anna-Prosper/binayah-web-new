@@ -2392,9 +2392,12 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                       const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
                       mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
                     }
-                    const externalMapUrl = project.mapUrl
-                      ? (project.googleMapsUrl || project.mapUrl.split(/\s+/)[0])
-                      : undefined;
+                    // Never use the embed URL as an external link — it only works inside iframes.
+                    // Priority: stored googleMapsUrl → lat/lng search → place-name search.
+                    const externalMapUrl: string = project.googleMapsUrl
+                      || (project.latitude && project.longitude
+                          ? `https://www.google.com/maps/search/?api=1&query=${project.latitude},${project.longitude}`
+                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${project.name} ${project.community || project.city || ""} ${project.country || "UAE"}`.trim())}`);
                     return (
                       <LocationSection
                         community={project.community}
