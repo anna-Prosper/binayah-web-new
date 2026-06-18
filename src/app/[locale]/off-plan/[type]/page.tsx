@@ -277,12 +277,6 @@ export default async function OffPlanTypePage({ params }: Props) {
   const normalizedType = String(normalizePropertyType(entry.searchType, entry.searchType));
   const initialData = await getInitialOffPlanListings(normalizedType);
 
-  // First stat shows the live project count (falls back to a safe estimate).
-  const liveCount = typeof initialData?.projectCount === "number" && initialData.projectCount > 0
-    ? `${initialData.projectCount.toLocaleString()}`
-    : "3,000+";
-  const stats = c.stats.map((s, i) => (i === 0 ? { ...s, n: liveCount } : s));
-
   const faqs = c.faqs.map((f) => ({ question: fill(f.question, typeLabel), answer: fill(f.answer, typeLabel) }));
 
   const breadcrumbs = [
@@ -297,104 +291,81 @@ export default async function OffPlanTypePage({ params }: Props) {
       <FAQJsonLd faqs={faqs} />
       <Navbar />
 
-      {/* Hero — max-w-6xl matches SearchPageClient's container so the heading
-          aligns with the search bar below it. */}
+      {/* Hero — compact; max-w-6xl matches SearchPageClient's container so the
+          heading aligns with the search bar below it. */}
       <section
-        className="relative overflow-hidden pt-32 pb-12 text-white"
+        className="relative overflow-hidden pt-28 pb-7 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{offplan}</p>
-          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl">{descFor(typeLabel, locale)}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-2">{offplan}</p>
+          <h1 className="text-2xl sm:text-4xl font-bold leading-tight mb-2">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
+          <p className="text-primary-foreground/80 text-sm sm:text-base max-w-2xl">{descFor(typeLabel, locale)}</p>
         </div>
       </section>
 
-      {/* Stats strip */}
-      <section className="border-b border-border/50 bg-card">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-border/40">
-            {stats.map((s) => (
-              <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
-                <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>
-                <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{s.label}</p>
-              </div>
+      {/* Search + sidebar — SearchPageClient keeps the filter bar full-width and
+          docks the sidebar on the right next to the listings (below the filters). */}
+      <SearchPageClient
+        defaultStatus="Off-Plan"
+        defaultIntent="off-plan"
+        defaultType={entry.searchType}
+        syncUrl={false}
+        initialData={initialData}
+        sidebarSlot={<PropertyTypeSidebar locale={locale} slug="off-plan" />}
+      />
+
+      {/* FAQ + CTA — full width below the search/listings */}
+      <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14 space-y-12 sm:space-y-16">
+
+        {/* FAQ */}
+        <div>
+          <div className="text-center mb-8">
+            <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fill(c.faqHeading, typeLabel)}</h2>
+          </div>
+          <div className="space-y-2 sm:space-y-3">
+            {faqs.map((faq, i) => (
+              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
+                <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
+                  <span>{faq.question}</span>
+                  <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+                </summary>
+                <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
+              </details>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Full-width embedded search (SSR'd listings via initialData) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <SearchPageClient
-          defaultStatus="Off-Plan"
-          defaultIntent="off-plan"
-          defaultType={entry.searchType}
-          syncUrl={false}
-          initialData={initialData}
-        />
-      </div>
-
-      {/* FAQ + CTA on the left, sidebar on the right (below the full-width search) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
-
-        {/* Main column: FAQ + CTA */}
-        <div className="min-w-0 space-y-12 sm:space-y-16">
-
-          {/* FAQ */}
-          <div>
-            <div className="text-center mb-8">
-              <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">{fill(c.faqHeading, typeLabel)}</h2>
-            </div>
-            <div className="space-y-2 sm:space-y-3">
-              {faqs.map((faq, i) => (
-                <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden">
-                  <summary className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 cursor-pointer list-none font-semibold text-foreground hover:text-primary transition-colors text-sm">
-                    <span>{faq.question}</span>
-                    <span className="text-accent text-lg font-light flex-shrink-0 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
-                  </summary>
-                  <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/30 pt-3">{faq.answer}</div>
-                </details>
-              ))}
+        {/* CTA */}
+        <section
+          className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+        >
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+          <div className="relative z-10">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fill(c.ctaTitle, typeLabel)}</h2>
+            <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href={`${lp}/contact`}
+                className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
+                style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
+              >
+                {c.ctaBtn}
+              </Link>
+              <a
+                href="https://wa.me/971549988811"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
+              >
+                WhatsApp
+              </a>
             </div>
           </div>
-
-          {/* CTA */}
-          <section
-            className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center text-white relative overflow-hidden"
-            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-          >
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-            <div className="relative z-10">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">{fill(c.ctaTitle, typeLabel)}</h2>
-              <p className="text-primary-foreground/75 text-sm sm:text-base mb-7 max-w-lg mx-auto">{c.ctaDesc}</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href={`${lp}/contact`}
-                  className="font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:opacity-90 transition-all"
-                  style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
-                >
-                  {c.ctaBtn}
-                </Link>
-                <a
-                  href="https://wa.me/971549988811"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
-                >
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        {/* Sidebar */}
-        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug="off-plan" />
-        </aside>
+        </section>
       </div>
 
       <Footer />
