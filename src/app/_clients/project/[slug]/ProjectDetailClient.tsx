@@ -174,7 +174,11 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   })();
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const [activeUnitTab, setActiveUnitTab] = useState(0);
-  const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(0);
+  const [activeFloorPlanTab, setActiveFloorPlanTab] = useState(() => {
+    const fps = Array.isArray(serverProject.floorPlans) ? serverProject.floorPlans : [];
+    const firstOneBR = fps.findIndex((fp: any) => String(fp.beds ?? fp.title ?? "").includes("1"));
+    return firstOneBR >= 0 ? firstOneBR : 0;
+  });
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -250,7 +254,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
       "floor-plans": `/project/${project.slug}/floor-plans`,
       "location":    `/project/${project.slug}/location`,
       "payment":     `/project/${project.slug}/payment-plan`,
-      "faq":         `/project/${project.slug}`,
+      "faq":         `/project/${project.slug}/faq`,
     };
     window.history.replaceState({}, "", tabUrls[id]);
   };
@@ -944,7 +948,6 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                       const features = [
                         tE("builtInWardrobes"),
                         bedrooms >= 2 ? tE("maidsRoom") : null,
-                        idx % 2 === 0 ? tE("seaView") : tE("cityView"),
                         tE("balcony"),
                         bedrooms >= 3 ? tE("privateTerrace") : null,
                         tE("centralAC"),
@@ -1589,8 +1592,8 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                   {/* Investment Highlights */}
                   {(() => {
                     const highlights = project.investmentHighlights || [];
-                    const defaultReasons = [
-                      t("reasonPrimeWaterfront"),
+                    const keyHighlights = Array.isArray(project.keyHighlights) && project.keyHighlights.length > 0 ? project.keyHighlights : null;
+                    const defaultReasons = keyHighlights || [
                       t("reasonHighRentalDemand"),
                       t("reasonGoldenVisa"),
                       t("reasonTaxFree"),
@@ -2143,14 +2146,27 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
 
                   {/* Payment Plan Visual Timeline */}
                   {(() => {
-                    const downPct = parseInt(project.downPayment || "0") || 20;
-                    const duringPct = 100 - downPct > 40 ? Math.round((100 - downPct) * 0.6) : 100 - downPct - 20;
-                    const handoverPct = 100 - downPct - (duringPct > 0 ? duringPct : 0);
-                    const milestones = [
-                      { label: t("onBooking"), pct: downPct, desc: t("downPaymentDesc"), icon: Wallet, color: "from-accent to-accent/80" },
-                      ...(duringPct > 0 ? [{ label: t("duringConstruction"), pct: duringPct, desc: t("progressInstallments"), icon: Building2, color: "from-primary to-primary/80" }] : []),
-                      ...(handoverPct > 0 ? [{ label: t("onHandover"), pct: handoverPct, desc: t("balanceOnCompletion"), icon: Home, color: "from-primary to-[#145C42]" }] : []),
-                    ];
+                    const stepColors = ["from-accent to-accent/80", "from-primary to-primary/80", "from-primary to-[#145C42]", "from-accent/70 to-accent/50"];
+                    const stepIcons = [Wallet, Building2, Home, CreditCard];
+                    const paymentSteps: Array<{ title: string; percentage: string }> = Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0 ? project.paymentPlanSteps : [];
+                    const milestones = paymentSteps.length > 0
+                      ? paymentSteps.map((s, i) => ({
+                          label: s.title,
+                          pct: parseInt(String(s.percentage).replace(/[^0-9]/g, "")) || 0,
+                          desc: "",
+                          icon: stepIcons[i % stepIcons.length],
+                          color: stepColors[i % stepColors.length],
+                        }))
+                      : (() => {
+                          const downPct = parseInt(project.downPayment || "0") || 20;
+                          const duringPct = 100 - downPct > 40 ? Math.round((100 - downPct) * 0.6) : 100 - downPct - 20;
+                          const handoverPct = 100 - downPct - (duringPct > 0 ? duringPct : 0);
+                          return [
+                            { label: t("onBooking"), pct: downPct, desc: t("downPaymentDesc"), icon: Wallet, color: "from-accent to-accent/80" },
+                            ...(duringPct > 0 ? [{ label: t("duringConstruction"), pct: duringPct, desc: t("progressInstallments"), icon: Building2, color: "from-primary to-primary/80" }] : []),
+                            ...(handoverPct > 0 ? [{ label: t("onHandover"), pct: handoverPct, desc: t("balanceOnCompletion"), icon: Home, color: "from-primary to-[#145C42]" }] : []),
+                          ];
+                        })();
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
                         <div className="p-3.5 sm:p-6 flex items-center gap-2.5 sm:gap-3" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
@@ -2182,7 +2198,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                           </div>
 
                           {/* Milestone cards */}
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4">
+                          <div className={`grid grid-cols-1 gap-2.5 sm:gap-4 ${milestones.length === 4 ? "sm:grid-cols-4" : milestones.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
                             {milestones.map((m, i) => {
                               const MIcon = m.icon;
                               return (
