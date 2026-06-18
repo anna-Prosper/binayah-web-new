@@ -318,6 +318,14 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   ];
   const hasPaymentInfo = project.downPayment || project.paymentPlanSummary || project.paymentPlanDetails;
 
+  const projectStatus = (project.status || "").toLowerCase();
+  const isRentalProject = /rent/i.test(projectStatus);
+  const isReadyProject  = /ready|complet/i.test(projectStatus);
+  const parentBreadcrumb = isRentalProject
+    ? { label: t("breadcrumbRent"),    href: "/rent" }
+    : isReadyProject
+      ? { label: t("breadcrumbBuy"),   href: "/buy" }
+      : { label: t("breadcrumbOffPlan"), href: "/off-plan" };
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -327,7 +335,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
       <DetailBreadcrumb
         items={[
           { label: t("breadcrumbHome"), href: "/" },
-          { label: t("breadcrumbProjects"), href: "/off-plan" },
+          parentBreadcrumb,
           { label: project.name },
         ]}
       />
