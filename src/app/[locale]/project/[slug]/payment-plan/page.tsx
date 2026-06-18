@@ -5,7 +5,7 @@ import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
-import PaymentPlanClient from "@/app/_clients/project/[slug]/PaymentPlanClient";
+import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
 export const revalidate = 1800;
 
@@ -81,7 +81,7 @@ export default async function PaymentPlanPage({ params }: { params: Promise<{ lo
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <PaymentPlanClient serverProject={project} />
+      <ProjectDetailClient serverProject={project} defaultTab="payment" />
     </>
   );
 }

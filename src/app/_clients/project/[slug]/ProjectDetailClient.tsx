@@ -70,6 +70,7 @@ type FAQ = { question: string; answer: string };
 
 interface ProjectDetailClientProps {
   serverProject: any;
+  defaultTab?: "overview" | "floor-plans" | "location" | "payment" | "faq";
 }
 
 const LANGUAGES = [
@@ -129,7 +130,7 @@ const attractionIcon = (type: string) => {
 };
 
 
-const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
+const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tE = useTranslations("enums");
@@ -161,7 +162,7 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   const [activeImage, setActiveImage] = useState(0);
   const [descExpanded, setDescExpanded] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "payment" | "faq" | "location">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "floor-plans" | "location" | "payment" | "faq">(defaultTab ?? "overview");
   const { currency, setCurrency, format: formatPrice, rates: CURRENCY_RATES } = useCurrency();
   // priceRange is a freeform DB string (often "From AED 799,999"); localize a leading English
   // "From"/"Starting from" prefix to the active locale while keeping the per-project amount.
@@ -241,6 +242,18 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
+
+  const handleTabChange = (id: "overview" | "floor-plans" | "location" | "payment" | "faq") => {
+    setActiveTab(id);
+    const tabUrls: Record<typeof id, string> = {
+      "overview":    `/project/${project.slug}`,
+      "floor-plans": `/project/${project.slug}/floor-plans`,
+      "location":    `/project/${project.slug}/location`,
+      "payment":     `/project/${project.slug}/payment-plan`,
+      "faq":         `/project/${project.slug}`,
+    };
+    window.history.replaceState({}, "", tabUrls[id]);
+  };
 
   // QR code: use permitUrl from DB if available, otherwise project page URL
   const qrUrl = project.permitUrl || (origin ? `${origin}/project/${project.slug}` : `/project/${project.slug}`);
@@ -643,34 +656,17 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
           {/* ═══ LEFT COLUMN ═══ */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-8">
 
-            {/* ── Sub-page deep dives ── */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              {([
-                { href: `/project/${project.slug}/floor-plans`,  icon: FileText,   label: t("floorPlansLabel"), desc: "Layouts & sizes"  },
-                { href: `/project/${project.slug}/location`,      icon: MapPin,     label: t("tabLocation"),     desc: "Map & nearby"    },
-                { href: `/project/${project.slug}/payment-plan`,  icon: CreditCard, label: t("tabPayment"),      desc: "Plan & costs"    },
-              ] as const).map(({ href, icon: Icon, label, desc }) => (
-                <Link key={href} href={href}
-                  className="flex flex-col items-start gap-1.5 p-2.5 sm:p-3 rounded-xl border border-border/50 hover:border-accent/40 hover:bg-accent/5 transition-all group text-left">
-                  <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <Icon className="h-3.5 w-3.5 text-accent" />
-                  </div>
-                  <p className="text-xs font-bold text-foreground group-hover:text-accent transition-colors leading-tight">{label}</p>
-                  <p className="text-[10px] text-muted-foreground leading-tight">{desc}</p>
-                </Link>
-              ))}
-            </div>
-
             {/* Tab Navigation (shared component) */}
             <DetailTabs<typeof activeTab>
               animate
               active={activeTab}
-              onChange={setActiveTab}
+              onChange={handleTabChange}
               tabs={[
-                { id: "overview", label: t("tabOverview") },
-                { id: "location", label: t("tabLocation"), href: `/project/${project.slug}/location` },
-                { id: "payment", label: t("tabPayment"), href: `/project/${project.slug}/payment-plan` },
-                { id: "faq", label: t("tabFaq") },
+                { id: "overview",    label: t("tabOverview") },
+                { id: "floor-plans", label: t("floorPlansLabel") },
+                { id: "location",    label: t("tabLocation") },
+                { id: "payment",     label: t("tabPayment") },
+                { id: "faq",         label: t("tabFaq") },
               ]}
             />
 
@@ -1994,8 +1990,21 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                     </div>
                   </a>
 
+                </motion.div>
+              )}
+
+              {/* ─── FLOOR PLANS TAB ─── */}
+              {activeTab === "floor-plans" && (
+                <motion.div
+                  key="floor-plans"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-4 sm:space-y-8"
+                >
                   {/* ───── FLOOR PLANS GALLERY ───── */}
-                  {(project.floorPlans?.length ?? 0) > 0 && (() => {
+                  {(project.floorPlans?.length ?? 0) > 0 ? (() => {
                     const fps = (project.floorPlans as { title: string; type?: string; beds?: string; baths?: string; size?: string; image?: string; pdf?: string }[]);
                     const activeFp = fps[activeFloorPlanTab] ?? fps[0];
                     return (
@@ -2084,8 +2093,9 @@ const ProjectDetailClient = ({ serverProject }: ProjectDetailClientProps) => {
                         )}
                       </div>
                     );
-                  })()}
-
+                  })() : (
+                    <div className="text-center py-12 text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
+                  )}
                 </motion.div>
               )}
 

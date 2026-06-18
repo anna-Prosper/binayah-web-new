@@ -5,7 +5,7 @@ import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
-import LocationClient from "@/app/_clients/project/[slug]/LocationClient";
+import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
 export const revalidate = 1800;
 
@@ -75,7 +75,7 @@ export default async function LocationPage({ params }: { params: Promise<{ local
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <LocationClient serverProject={project} />
+      <ProjectDetailClient serverProject={project} defaultTab="location" />
     </>
   );
 }
