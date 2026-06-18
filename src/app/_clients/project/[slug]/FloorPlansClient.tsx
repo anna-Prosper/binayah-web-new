@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- SEO content intentionally in English */
 "use client";
 
 import { useState } from "react";
