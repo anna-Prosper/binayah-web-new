@@ -47,5 +47,10 @@ export function sanitizeDescriptions<T extends Record<string, unknown>>(obj: T):
   for (const f of FIELDS) {
     if (typeof out[f] === "string") out[f] = stripCacheJunk(out[f] as string);
   }
+  // Drop heavy, never-rendered DB blobs so they don't bloat the serialized client
+  // payload — and, in seoArticle's case, leak rounded/stale prices (e.g. an
+  // AED 1,692,000 unit written as "from AED 1,690,000") into the HTML source.
+  delete out.seoArticle;
+  delete out.wpContent;
   return out as T;
 }

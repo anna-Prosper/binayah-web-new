@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { FAQJsonLd } from "./JsonLd";
 
@@ -16,36 +12,20 @@ export interface FaqAccordionProps {
   variant?: "card" | "compact";
   /** Emit FAQPage JSON-LD. Skip on supplementary inline FAQs to avoid duplicate schema on one page. */
   emitJsonLd?: boolean;
-  /** Render all answers expanded and static in the HTML (for dedicated /faq sub-pages so Google sees content). */
+  /** Render all items open by default (dedicated /faq sub-pages). Answers are in the HTML either way. */
   allExpanded?: boolean;
 }
 
+/**
+ * FAQ accordion built on native <details>/<summary>. The answer text is always
+ * present in the server-rendered HTML (collapsed by default, no JS required to
+ * read it) so Google indexes it — only the open/closed toggle is interactive.
+ * `allExpanded` simply opens every item on load.
+ */
 export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true, allExpanded = false }: FaqAccordionProps) {
-  const [open, setOpen] = useState<number | null>(null);
-
   if (!faqs || faqs.length === 0) return null;
 
   const jsonLd = emitJsonLd ? <FAQJsonLd faqs={faqs} /> : null;
-
-  // Static fully-expanded render — all answers in the initial HTML for Google
-  if (allExpanded) {
-    return (
-      <div className="space-y-2 sm:space-y-3">
-        {jsonLd}
-        {faqs.map((faq, i) => (
-          <div key={i} className="rounded-xl border border-primary/15 bg-primary/5 overflow-hidden">
-            <div className="p-3 sm:p-5">
-              <h3 className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</h3>
-            </div>
-            <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-              <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
 
   if (variant === "compact") {
     // Tighter accordion used in inline / sidebar contexts.
@@ -53,33 +33,15 @@ export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true, allExp
       <div>
         {jsonLd}
         {faqs.map((faq, i) => (
-          <div key={i} className="border-b border-border/50 last:border-0">
-            <button
-              type="button"
-              onClick={() => setOpen(open === i ? null : i)}
-              className="w-full flex items-center justify-between gap-4 py-4 text-left group"
-            >
+          <details key={i} open={allExpanded} className="group border-b border-border/50 last:border-0">
+            <summary className="w-full flex items-center justify-between gap-4 py-4 text-left cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
                 {faq.question}
               </span>
-              <ChevronDown
-                className={`h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {open === i && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="overflow-hidden"
-                >
-                  <p className="text-sm text-muted-foreground leading-relaxed pb-4 pr-8">{faq.answer}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+              <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform duration-200 group-open:rotate-180" />
+            </summary>
+            <p className="text-sm text-muted-foreground leading-relaxed pb-4 pr-8">{faq.answer}</p>
+          </details>
         ))}
       </div>
     );
@@ -90,39 +52,20 @@ export function FaqAccordion({ faqs, variant = "card", emitJsonLd = true, allExp
     <div className="space-y-2 sm:space-y-3">
       {jsonLd}
       {faqs.map((faq, i) => (
-        <motion.div
+        <details
           key={i}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.05 }}
-          className={`rounded-xl overflow-hidden transition-colors ${open === i ? "bg-primary/5 border border-primary/15" : "border border-border/50 hover:border-border"}`}
+          open={allExpanded}
+          className="group rounded-xl overflow-hidden border border-border/50 transition-colors hover:border-border open:bg-primary/5 open:border-primary/15"
         >
-          <button
-            onClick={() => setOpen(open === i ? null : i)}
-            className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3"
-          >
+          <summary className="w-full flex items-center justify-between p-3 sm:p-5 text-left gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <span className="text-xs sm:text-sm font-semibold text-foreground">{faq.question}</span>
-            <ChevronDown
-              className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${open === i ? "rotate-180 text-primary" : ""}`}
-            />
-          </button>
-          <AnimatePresence>
-            {open === i && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-              >
-                <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                  <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+            <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 group-open:rotate-180 group-open:text-primary" />
+          </summary>
+          <div className="px-3 sm:px-5 pb-3 sm:pb-5">
+            <div className="w-10 h-px bg-primary/20 mb-2 sm:mb-3" />
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
+          </div>
+        </details>
       ))}
     </div>
   );

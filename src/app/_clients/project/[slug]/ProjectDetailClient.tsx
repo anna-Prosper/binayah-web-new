@@ -282,6 +282,32 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
     : defaultTab === "faq"        ? t("faqLabel")
     : null;
 
+  // ── Canonical payment plan — ONE ordered source of truth used everywhere on
+  //    the page (stat card, overview timeline, payment tab, summary chips) so the
+  //    structure is consistent. Ordered Down → During → Handover → Post Handover.
+  //    paymentPlanSummary (e.g. a stale "65/35") is only a last-resort fallback. ──
+  const orderedPaymentSteps: { title: string; pct: number }[] = (() => {
+    const raw = Array.isArray(project.paymentPlanSteps) ? project.paymentPlanSteps : [];
+    const steps = raw
+      .map((s: any) => ({ title: String(s?.title || ""), pct: parseInt(String(s?.percentage ?? "").replace(/[^0-9]/g, "")) || 0 }))
+      .filter((s) => s.pct > 0);
+    const rank = (title: string) => {
+      const x = title.toLowerCase();
+      if (x.includes("down") || x.includes("booking")) return 0;
+      if (x.includes("during") || x.includes("construction")) return 1;
+      if (x.includes("post")) return 3;
+      if (x.includes("handover") || x.includes("completion")) return 2;
+      return 1.5;
+    };
+    return steps.sort((a, b) => rank(a.title) - rank(b.title));
+  })();
+  const paymentPlanPretty: string | null =
+    orderedPaymentSteps.length > 0
+      ? orderedPaymentSteps.map((s) => s.pct).join(" – ") + "%"
+      : project.paymentPlanSummary && project.paymentPlanSummary !== "TBA"
+      ? String(project.paymentPlanSummary)
+      : null;
+
   const leadEntity = { entityType: "project", entitySlug: project.slug, entityTitle: project.name };
 
   const handleEnquirySubmit = async (e: React.FormEvent) => {
@@ -611,16 +637,11 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               const unitTypesValue = formatUnitTypes(project.unitTypes, " · ");
               const hasSizeRange = project.unitSizeMin && project.unitSizeMax;
 
-              // Payment card: prefer paymentPlanSteps (most accurate) → paymentPlanSummary → downPayment fallback
-              const _ppSteps: Array<{ title: string; percentage: string }> = Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0 ? project.paymentPlanSteps : [];
-              const _downStep = _ppSteps.find(s => /down/i.test(s.title));
-              const paymentCardValue = _ppSteps.length > 0
-                ? (_downStep ? `${_downStep.percentage} Down` : _ppSteps[0].percentage)
-                : (project.paymentPlanSummary || (project.downPayment ? `${project.downPayment}% Down` : null));
-              const paymentCardSub = _ppSteps.length > 0
-                ? _ppSteps.map(s => s.percentage.replace(/%/g, "")).join("/") + "%"
-                : (project.paymentPlanSummary || null);
-              const hasPaymentData = !!(paymentCardValue);
+              // Payment card uses the canonical ordered plan (see orderedPaymentSteps above).
+              const paymentCardValue = paymentPlanPretty
+                || (project.downPayment ? `${String(project.downPayment).replace(/%/g, "")}% Down` : null);
+              const paymentCardSub = orderedPaymentSteps.length > 0 ? t("paymentPlanDefaultDesc") : null;
+              const hasPaymentData = !!paymentCardValue;
 
               const stats = [
                 project.developerName && { icon: Building2, label: t("developer"), value: project.developerName, sub: null },
@@ -631,7 +652,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                 hasPaymentData && { icon: CreditCard, label: t("paymentPlanLabel"), value: paymentCardValue!, sub: paymentCardSub, isPaymentPlan: true },
               ].filter(Boolean) as Array<{ icon: React.ElementType; label: string; value: string; sub: string | null; isCurrency?: boolean; isPaymentPlan?: boolean }>;
 
-              return stats.map(({ icon: StatIcon, label, value, sub, isPaymentPlan, isCurrency }, idx) => {
+              return stats.map(({ icon: StatIcon, label, value, sub, isCurrency }, idx) => {
                 const rightSlot = isCurrency ? (
                   <div className="relative">
                     <button
@@ -670,8 +691,8 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                     key={label}
                     icon={StatIcon}
                     label={label}
-                    value={isPaymentPlan ? t("paymentPlanDefault") : value}
-                    sub={isPaymentPlan ? t("paymentPlanDefaultDesc") : sub ?? undefined}
+                    value={value}
+                    sub={sub ?? undefined}
                     rightSlot={rightSlot}
                     delay={0.05 * idx + 0.2}
                   />
@@ -1413,16 +1434,22 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                     const priceMultiplier = 1 + activeUnitTab * 0.35;
                     const unitPrice = Math.round(basePrice * priceMultiplier);
 
-                    const milestones = [
-                      { pct: 10, label: t("onBooking"), icon: Wallet, color: "bg-accent" },
-                      { pct: 10, label: t("after3Months"), icon: Calendar, color: "bg-primary" },
-                      { pct: 10, label: t("after6Months"), icon: Clock, color: "bg-primary" },
-                      { pct: 30, label: t("duringConstruction"), icon: Building2, color: "bg-primary/70" },
-                      { pct: 40, label: t("onHandover"), icon: CheckCircle2, color: "bg-emerald-500" },
-                    ];
+                    // Prefer the real, ordered payment plan from the DB; fall back to a
+                    // generic schedule only when the project has no paymentPlanSteps.
+                    const stepIcons = [Wallet, Building2, CheckCircle2, Clock];
+                    const stepColors = ["bg-accent", "bg-primary/70", "bg-emerald-500", "bg-primary"];
+                    const milestones = orderedPaymentSteps.length > 0
+                      ? orderedPaymentSteps.map((s, i) => ({ pct: s.pct, label: s.title, icon: stepIcons[i % stepIcons.length], color: stepColors[i % stepColors.length] }))
+                      : [
+                          { pct: 10, label: t("onBooking"), icon: Wallet, color: "bg-accent" },
+                          { pct: 10, label: t("after3Months"), icon: Calendar, color: "bg-primary" },
+                          { pct: 10, label: t("after6Months"), icon: Clock, color: "bg-primary" },
+                          { pct: 30, label: t("duringConstruction"), icon: Building2, color: "bg-primary/70" },
+                          { pct: 40, label: t("onHandover"), icon: CheckCircle2, color: "bg-emerald-500" },
+                        ];
 
-                    // Use project payment plan data if available
-                    const planSummary = project.paymentPlanSummary;
+                    // Single source of truth for the summary chip.
+                    const planSummary = paymentPlanPretty;
 
                     return (
                       <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
@@ -1729,7 +1756,10 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                         {(() => {
                           const currentYear = new Date().getFullYear();
                           const stats = [
-                            developerStats.projectsDelivered != null
+                            // Only show a project count we're confident in. Our DB often
+                            // has just a handful of a developer's projects, so a low count
+                            // (e.g. "2+" for Expo City Dubai) is misleading — hide under 10.
+                            developerStats.projectsDelivered != null && developerStats.projectsDelivered >= 10
                               ? { value: `${developerStats.projectsDelivered}+`, label: t("projectsDelivered"), icon: Building2 }
                               : null,
                             developerStats.foundedYear
@@ -2199,7 +2229,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                         <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
                         <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1 block" />
                         {priceRangeLabel && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1">{priceRangeLabel}</p>}
-                        {project.paymentPlanSummary && <p className="text-primary-foreground/60 text-xs sm:text-sm mt-1">{project.paymentPlanSummary}</p>}
+                        {paymentPlanPretty && <p className="text-primary-foreground/60 text-xs sm:text-sm mt-1">{paymentPlanPretty}</p>}
                       </div>
                     </div>
                   )}
@@ -2208,11 +2238,10 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                   {(() => {
                     const stepColors = ["from-accent to-accent/80", "from-primary to-primary/80", "from-primary to-[#145C42]", "from-accent/70 to-accent/50"];
                     const stepIcons = [Wallet, Building2, Home, CreditCard];
-                    const paymentSteps: Array<{ title: string; percentage: string }> = Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0 ? project.paymentPlanSteps : [];
-                    const milestones = paymentSteps.length > 0
-                      ? paymentSteps.map((s, i) => ({
+                    const milestones = orderedPaymentSteps.length > 0
+                      ? orderedPaymentSteps.map((s, i) => ({
                           label: s.title,
-                          pct: parseInt(String(s.percentage).replace(/[^0-9]/g, "")) || 0,
+                          pct: s.pct,
                           desc: "",
                           icon: stepIcons[i % stepIcons.length],
                           color: stepColors[i % stepColors.length],
@@ -2235,8 +2264,8 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                           </div>
                           <div>
                             <h2 className="text-base sm:text-xl font-bold text-white">{t("paymentPlanLabel")}</h2>
-                            {project.paymentPlanSummary && (
-                              <p className="text-white/60 text-xs sm:text-sm">{project.paymentPlanSummary}</p>
+                            {paymentPlanPretty && (
+                              <p className="text-white/60 text-xs sm:text-sm">{paymentPlanPretty}</p>
                             )}
                           </div>
                         </div>
