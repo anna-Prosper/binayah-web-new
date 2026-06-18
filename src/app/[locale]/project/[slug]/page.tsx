@@ -136,10 +136,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   };
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
+  const projectStatus = String(project.status || "").toLowerCase();
+  const isRentalHub = /rent/i.test(projectStatus);
+  const isReadyHub  = /ready|complet/i.test(projectStatus);
+  const parentName  = isRentalHub ? "Rent" : isReadyHub ? "Buy" : "Off-Plan";
+  const parentPath  = isRentalHub ? "/rent" : isReadyHub ? "/buy" : "/off-plan";
   const breadcrumbs = [
-    { name: "Home", href: `${localePrefix}/` },
-    { name: "Off-Plan", href: `${localePrefix}/off-plan` },
-    { name: project.name, href: `${localePrefix}/project/${slug}` },
+    { name: "Home",          href: `${localePrefix}/` },
+    { name: parentName,      href: `${localePrefix}${parentPath}` },
+    { name: project.name,    href: `${localePrefix}/project/${slug}` },
   ];
 
   return (
