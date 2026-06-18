@@ -122,13 +122,14 @@ export default async function OffPlanTypePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Embedded search — off-plan, pre-filtered to this type, clean URL (no query params) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultType={entry.searchType} syncUrl={false} />
-      </div>
-
-      <div className="max-w-xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16">
-        <PropertyTypeSidebar locale={locale} slug="off-plan" />
+      {/* Search results + right sidebar */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+        <div className="min-w-0">
+          <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultType={entry.searchType} syncUrl={false} />
+        </div>
+        <aside className="mt-10 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+          <PropertyTypeSidebar locale={locale} slug="off-plan" />
+        </aside>
       </div>
 
       <Footer />
