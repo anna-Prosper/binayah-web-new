@@ -2179,37 +2179,17 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                   transition={{ duration: 0.3 }}
                   className="space-y-4 sm:space-y-8"
                 >
-                  {/* Pricing & Ownership — full card on desktop, just facts on mobile */}
-                  <div className="hidden sm:block bg-card rounded-2xl border border-border/50 overflow-hidden">
-                    <div className="p-4 sm:p-6 md:p-8" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                      <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
-                      <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1 block" />
-                      {priceRangeLabel && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1 sm:mt-2">{priceRangeLabel}</p>}
-                    </div>
-                    <div className="p-3.5 sm:p-6 md:p-8">
-                      <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                        <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
-                        </div>
-                        <div className="p-3 sm:p-4 bg-muted/50 rounded-xl">
-                          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                          <p className="text-sm sm:text-base font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
-                        </div>
+                  {/* Starting price card — payment-specific context only */}
+                  {project.startingPrice && (
+                    <div className="rounded-2xl overflow-hidden border border-border/50">
+                      <div className="p-4 sm:p-6" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <p className="text-primary-foreground/60 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold">{t("startingPrice")}</p>
+                        <CurrencyPrice aedPrice={project.startingPrice} opts={{ isProject: true }} className="text-2xl sm:text-4xl font-bold text-primary-foreground mt-1 block" />
+                        {priceRangeLabel && <p className="text-primary-foreground/50 text-xs sm:text-sm mt-1">{priceRangeLabel}</p>}
+                        {project.paymentPlanSummary && <p className="text-primary-foreground/60 text-xs sm:text-sm mt-1">{project.paymentPlanSummary}</p>}
                       </div>
                     </div>
-                  </div>
-                  {/* Mobile-only: just Title Type + Ownership */}
-                  <div className="sm:hidden grid grid-cols-2 gap-2">
-                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("titleType")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.titleType ? tEnum(project.titleType) : tEnum("Freehold")}</p>
-                    </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-1">{t("ownership")}</p>
-                      <p className="text-sm font-bold text-foreground">{project.ownershipEligibility ? tEnum(project.ownershipEligibility) : t("allNationalities")}</p>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Payment Plan Visual Timeline */}
                   {(() => {
