@@ -109,28 +109,30 @@ export default async function OffPlanTypePage({ params }: Props) {
       <BreadcrumbJsonLd items={breadcrumbs} />
       <Navbar />
 
-      {/* Hero */}
+      {/* Hero — max-w-6xl matches SearchPageClient's internal container so the
+          heading aligns with the search bar directly below it. */}
       <section
-        className="relative overflow-hidden pt-28 pb-12 text-white"
+        className="relative overflow-hidden pt-32 pb-14 text-white"
         style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
       >
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-3">{offplan}</p>
           <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">{titleFor(typeLabel, locale).split(" | ")[0]}</h1>
           <p className="text-primary-foreground/80 text-lg max-w-2xl">{descFor(typeLabel, locale)}</p>
         </div>
       </section>
 
-      {/* Search results + right sidebar */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 pb-12 sm:pb-16 xl:grid xl:grid-cols-[1fr_300px] xl:gap-8 xl:items-start">
-        <div className="min-w-0">
-          <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultType={entry.searchType} syncUrl={false} />
-        </div>
-        <aside className="mt-10 xl:mt-[220px] xl:sticky xl:top-24 self-start xl:max-h-[calc(100vh-7rem)] xl:overflow-y-auto xl:[scrollbar-width:none] xl:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug="off-plan" />
-        </aside>
-      </div>
+      {/* Search results — the sidebar is passed as a slot so SearchPageClient
+          keeps the filter bar full-width and aligns the sidebar with the
+          listing grid (not the filters), all handled by the component. */}
+      <SearchPageClient
+        defaultStatus="Off-Plan"
+        defaultIntent="off-plan"
+        defaultType={entry.searchType}
+        syncUrl={false}
+        sidebarSlot={<PropertyTypeSidebar locale={locale} slug="off-plan" />}
+      />
 
       <Footer />
       <WhatsAppButton />
