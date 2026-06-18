@@ -18,6 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Swap MUST be active before `npm run build`, not after. Previously it was
+      # created in the deploy step that runs post-build, so the build itself ran
+      # without the extra headroom and OOM-thrashed the VPS until the runner lost
+      # communication. Ensure at least 2G swap up front.
+      - name: Ensure swap
+        run: |
+          set -e
+          if ! swapon --show | grep -q '/swapfile'; then
+            if [ ! -f /swapfile ]; then
+              fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile
+            fi
+            swapon /swapfile || true
+            grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+          fi
+          free -h || true
+
       - name: Write env
         run: |
           cat > .env.local << 'EOF'
@@ -43,15 +59,17 @@ jobs:
           # Disable webpack's 400MB+ filesystem cache — the 8.7GB disk can't
           # hold it during the build (it overflowed and broke deploys).
           DISABLE_WEBPACK_CACHE: '1'
+          # Force single-threaded static generation (see next.config.ts). The
+          # app grew enough that parallel page renders OOM-thrash this VPS and
+          # the runner loses communication. Single-threaded is slower but fits.
+          LOW_MEM_BUILD: '1'
+          # No telemetry network calls / extra work during the build.
+          NEXT_TELEMETRY_DISABLED: '1'
 
       - name: Swap & reload PM2
         run: |
           set -e
-          # Ensure swap exists (prevents OOM on 1GB VPS)
-          if [ ! -f /swapfile ]; then
-            fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
-            echo '/swapfile none swap sw 0 0' >> /etc/fstab
-          fi
+          # (Swap is ensured up front in the "Ensure swap" step before the build.)
           # Copy build output to serve dir. Exclude .next/cache — it's the
           # webpack build cache (can be 400MB+), only used at build time, never
           # by `next start`. Shipping it to the small VPS disk filled it up and

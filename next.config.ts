@@ -20,6 +20,15 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // The binayah.ru self-hosted runner is a ~960MB-RAM VPS. Next's default
+  // multi-worker static generation runs several page renders in parallel and
+  // spikes RAM until the kernel thrashes swap and the GitHub runner loses its
+  // heartbeat ("self-hosted runner lost communication"). LOW_MEM_BUILD forces
+  // single-threaded generation — slower, but it fits in RAM and the deploy
+  // survives. Not set on Vercel, so cloud builds keep full parallelism.
+  ...(process.env.LOW_MEM_BUILD === "1"
+    ? { experimental: { cpus: 1, workerThreads: false } }
+    : {}),
   async headers() {
     return [
       {
