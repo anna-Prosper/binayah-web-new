@@ -25,13 +25,18 @@ jobs:
       - name: Ensure swap
         run: |
           set -e
-          if ! swapon --show | grep -q '/swapfile'; then
-            if [ ! -f /swapfile ]; then
-              fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile
+          # ~960MB RAM needs ~3G swap to build this app without thrashing to death.
+          # Two files (2G + 1G) because the disk is too small to resize the live
+          # 2G file safely (RAM can't hold its contents during swapoff).
+          ensure_swap() { # $1=path $2=size
+            if ! swapon --show | grep -q "$1"; then
+              [ -f "$1" ] || { fallocate -l "$2" "$1" && chmod 600 "$1" && mkswap "$1"; }
+              swapon "$1" || true
+              grep -q "$1" /etc/fstab || echo "$1 none swap sw 0 0" >> /etc/fstab
             fi
-            swapon /swapfile || true
-            grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
-          fi
+          }
+          ensure_swap /swapfile 2G
+          ensure_swap /swapfile2 1G
           free -h || true
 
       - name: Write env
@@ -52,10 +57,12 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # VPS has 960MB RAM + 2GB swap. 4096 let Node's heap balloon and the
-          # kernel OOM-killed the runner (it then stayed dead for days). 1536
-          # builds fine here and stays within RAM+swap.
-          NODE_OPTIONS: '--max-old-space-size=1536'
+          # VPS has 960MB RAM + 3GB swap. A 1536 heap cap let Node over-allocate
+          # past RAM into a swap-thrash that froze the runner. 1024 keeps the
+          # heap closer to physical RAM (more GC, but the machine stays
+          # responsive and the runner keeps its heartbeat). Paired with
+          # LOW_MEM_BUILD single-threaded generation below.
+          NODE_OPTIONS: '--max-old-space-size=1024'
           # Disable webpack's 400MB+ filesystem cache — the 8.7GB disk can't
           # hold it during the build (it overflowed and broke deploys).
           DISABLE_WEBPACK_CACHE: '1'
