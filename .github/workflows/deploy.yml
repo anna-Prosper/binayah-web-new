@@ -94,3 +94,14 @@ jobs:
           npm install --omit=dev --ignore-scripts 2>/dev/null || true
           pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start
           pm2 save
+
+      # The 8.7GB disk repeatedly filled up (npm cache regrows to ~600MB every
+      # build) and that disk-full state is what kills the runner. Prune caches
+      # after each deploy so the box stays healthy run-to-run.
+      - name: Reclaim disk
+        if: always()
+        run: |
+          npm cache clean --force 2>/dev/null || true
+          rm -rf /root/.npm/_logs/* 2>/dev/null || true
+          rm -rf "$RUNNER_WORKSPACE"/../.next/cache 2>/dev/null || true
+          df -h / | tail -1 || true
