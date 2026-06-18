@@ -123,11 +123,11 @@ export default async function OffPlanTypePage({ params }: Props) {
       </section>
 
       {/* Search results + right sidebar */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 pb-12 sm:pb-16 xl:grid xl:grid-cols-[1fr_300px] xl:gap-8 xl:items-start">
         <div className="min-w-0">
           <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultType={entry.searchType} syncUrl={false} />
         </div>
-        <aside className="mt-10 lg:mt-[220px] lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
+        <aside className="mt-10 xl:mt-[220px] xl:sticky xl:top-24 self-start xl:max-h-[calc(100vh-7rem)] xl:overflow-y-auto xl:[scrollbar-width:none] xl:[&::-webkit-scrollbar]:hidden">
           <PropertyTypeSidebar locale={locale} slug="off-plan" />
         </aside>
       </div>
