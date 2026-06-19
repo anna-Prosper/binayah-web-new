@@ -3,6 +3,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 import { FAQJsonLd } from "@/components/JsonLd";
+import { getGoogleReviews } from "@/lib/googleReviews";
 
 export const revalidate = 300;
 
@@ -264,6 +265,9 @@ export default async function HomePage({ params }: Props) {
     console.warn("[HomePage] API unavailable, using fallback data:", (err as Error).message);
   }
 
+  // Real Google reviews (null until Places API is enabled + GOOGLE_PLACE_ID set).
+  const googleReviews = await getGoogleReviews();
+
   return (
     <>
       <FAQJsonLd faqs={faqs} />
@@ -272,6 +276,7 @@ export default async function HomePage({ params }: Props) {
         rentalListings={rentalListings.filter(Boolean)}
         offPlanProjects={projects.filter(Boolean)}
         latestArticles={articles.filter(Boolean)}
+        googleReviews={googleReviews}
       />
     </>
   );

@@ -353,7 +353,7 @@
       "testimonials": {
         "label": "客户口碑",
         "title": "客户",
-        "titleItalic": "心声"
+        "titleItalic": "心声", "googleReviews": "条 Google 评价"
       },
       "offPlan": {
         "label": "期房",

@@ -347,7 +347,7 @@
       "testimonials": {
         "label": "ביקורות לקוחות",
         "title": "מה הלקוחות שלנו",
-        "titleItalic": "אומרים"
+        "titleItalic": "אומרים", "googleReviews": "ביקורות ב-Google"
       },
       "offPlan": {
         "label": "Off Plan",

@@ -5,31 +5,21 @@ import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { ReviewJsonLd } from "./JsonLd";
 import { useTranslations } from "next-intl";
+import type { GoogleReviewsData } from "@/lib/googleReviews";
 
-const testimonials = [
-  {
-    name: "Sarah Al-Maktoum",
-    role: "Investor · Palm Jumeirah",
-    text: "Binayah found me a 4BR villa in Palm Jumeirah under budget in just 10 days. They handled everything from viewing to handover — I didn't have to chase a single document.",
-    rating: 5,
-  },
-  {
-    name: "James Richardson",
-    role: "Homeowner · Dubai Marina",
-    text: "Relocating from London, I expected months of searching. Binayah shortlisted five Marina apartments that matched exactly what we needed — we signed within two weeks.",
-    rating: 5,
-  },
-  {
-    name: "Fatima Hassan",
-    role: "Developer Partner",
-    text: "We've worked with many agencies but Binayah consistently brings qualified, ready-to-close buyers. They sold 80% of our JVC launch inventory in the first quarter.",
-    rating: 5,
-  },
-];
-
-const TestimonialsSection = () => {
+const TestimonialsSection = ({ data }: { data?: GoogleReviewsData | null }) => {
   const t = useTranslations("home.sections.testimonials");
   const [active, setActive] = useState(0);
+
+  // Real Google reviews only — no fabricated testimonials. If we have none yet
+  // (Places API not configured), render nothing rather than fake social proof.
+  const testimonials = (data?.reviews ?? []).map((r) => ({
+    name: r.author,
+    role: r.relativeTime ? `Google review · ${r.relativeTime}` : "Google review",
+    text: r.text,
+    rating: r.ratingValue,
+  }));
+  if (testimonials.length === 0) return null;
 
   const next = () => setActive((p) => (p + 1) % testimonials.length);
   const prev = () => setActive((p) => (p - 1 + testimonials.length) % testimonials.length);
@@ -37,10 +27,10 @@ const TestimonialsSection = () => {
   return (
     <section className="py-8 sm:py-24 bg-foreground text-background relative overflow-hidden">
       <ReviewJsonLd
-        reviews={testimonials.map((t) => ({
-          author: t.name,
-          reviewBody: t.text,
-          ratingValue: t.rating,
+        reviews={testimonials.map((tt) => ({
+          author: tt.name,
+          reviewBody: tt.text,
+          ratingValue: tt.rating,
         }))}
       />
       {/* Decorative quote — desktop only */}
@@ -150,6 +140,21 @@ const TestimonialsSection = () => {
               <ChevronRight className="h-3.5 w-3.5 text-background/60" />
             </button>
           </div>
+
+          {/* Google attribution (required when displaying Google reviews) */}
+          {data?.placeUrl && (
+            <div className="text-center mt-5 sm:mt-8">
+              <a
+                href={data.placeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[11px] sm:text-xs text-background/50 hover:text-background/80 transition-colors"
+              >
+                <Star className="h-3.5 w-3.5 fill-[#D4A847] text-[#D4A847]" />
+                {data.rating.toFixed(1)} · {data.total.toLocaleString()} {t("googleReviews")}
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import AIPulseBanner from "@/components/AIPulseBanner";
 import LazyMount from "@/components/LazyMount";
 import DeferUntilIdle from "@/components/DeferUntilIdle";
+import type { GoogleReviewsData } from "@/lib/googleReviews";
 
 // Below-the-fold: code-split and lazy-loaded
 const FAQSection           = dynamic(() => import("@/components/FAQSection"));
@@ -87,9 +88,10 @@ interface HomePageClientProps {
   rentalListings?: SecondaryListing[];
   offPlanProjects?: OffPlanListing[];
   latestArticles?: Article[];
+  googleReviews?: GoogleReviewsData | null;
 }
 
-export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [] }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -116,7 +118,7 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={240}><ValuationCTA /></LazyMount>
         <LazyMount minHeight={320}><ListYourPropertySection /></LazyMount>
         <LazyMount minHeight={520}><ServicesSection /></LazyMount>
-        <LazyMount minHeight={600}><TestimonialsSection /></LazyMount>
+        {googleReviews && <LazyMount minHeight={600}><TestimonialsSection data={googleReviews} /></LazyMount>}
         <LazyMount minHeight={680}><InquirySection /></LazyMount>
         <LazyMount minHeight={520}><NewsSection articles={latestArticles} /></LazyMount>
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>

@@ -347,7 +347,7 @@
       "testimonials": {
         "label": "آراء عملائنا",
         "title": "ماذا يقول",
-        "titleItalic": "عملاؤنا"
+        "titleItalic": "عملاؤنا", "googleReviews": "تقييم على Google"
       },
       "offPlan": {
         "label": "على الخارطة",

@@ -347,7 +347,7 @@
       "testimonials": {
         "label": "Client Reviews",
         "title": "What Our Clients",
-        "titleItalic": "Say"
+        "titleItalic": "Say", "googleReviews": "reviews on Google"
       },
       "offPlan": {
         "label": "Off Plan",

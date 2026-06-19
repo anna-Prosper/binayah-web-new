@@ -37,7 +37,6 @@ import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { LocationSection } from "@/components/LocationSection";
 import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
-import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
@@ -2788,19 +2787,9 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
         </div>
       )}
 
-      {/* ───── WHAT BUYERS SAY (shared component) ───── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
-        <TestimonialsCarousel
-          title={t("whatBuyersSay")}
-          items={[
-            { name: "Ahmed R.", role: `2 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "Exceptional quality and a prime location. The payment plan made it very accessible. The team at Binayah guided me through every step seamlessly.", avatarUrl: "https://i.pravatar.cc/80?img=12" },
-            { name: "Sarah L.", role: `3 Bedroom ${t("buyerSuffix")}`, rating: 5, text: "We fell in love with the views and the amenities. It's the perfect family home with everything you need within walking distance.", avatarUrl: "https://i.pravatar.cc/80?img=32" },
-            { name: "James K.", role: `1 Bedroom ${t("buyerSuffix")}`, rating: 4, text: "Great investment opportunity with strong rental yields. The developer has an excellent track record and the build quality is superb.", avatarUrl: "https://i.pravatar.cc/80?img=53" },
-          ]}
-        />
-      </div>
-
-
+      {/* Per-project testimonials intentionally omitted — Google reviews are
+          company-level, not project-specific, so we don't fabricate them here.
+          Real company reviews live on the homepage. */}
 
       {/* ───── BUYER'S GUIDE ───── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">

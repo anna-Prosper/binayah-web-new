@@ -347,7 +347,7 @@
       "testimonials": {
         "label": "Đánh Giá Khách Hàng",
         "title": "Khách Hàng Của Chúng Tôi",
-        "titleItalic": "Nói Gì"
+        "titleItalic": "Nói Gì", "googleReviews": "đánh giá trên Google"
       },
       "offPlan": {
         "label": "Off Plan",
