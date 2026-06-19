@@ -1097,9 +1097,11 @@ export default function PropertyDetailClient({
                     building={listing.buildingName || listing.building}
                     address={listing.address}
                     mapEmbedSrc={
+                      // Keyless classic embed — the Embed API v1 key renders blank in
+                      // production (Embed API / referrer allowlist), so avoid it.
                       hasMap
-                        ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${listing.latitude},${listing.longitude}&zoom=15`
-                        : `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || ""}&q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}`
+                        ? `https://maps.google.com/maps?q=${listing.latitude},${listing.longitude}&z=15&output=embed`
+                        : `https://maps.google.com/maps?q=${encodeURIComponent((listing.community || "") + ", " + (listing.city || "Dubai") + ", UAE")}&z=15&output=embed`
                     }
                     externalMapUrl={
                       hasMap

@@ -40,21 +40,30 @@ import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
 const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 
-const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "";
+/**
+ * Build a keyless "classic" Google Maps embed (maps?q=...&output=embed). We use
+ * this instead of the Maps Embed API v1, which requires an API key that has the
+ * Embed API enabled AND the right HTTP-referrer allowlist — a fragile dependency
+ * that was rendering blank maps in production.
+ */
+function classicMapEmbed(query: string): string {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=15&output=embed`;
+}
 
-/** Convert any Google Maps URL to a valid Maps Embed API v1 src. */
+/** Convert any stored Google Maps URL to an embeddable iframe src (keyless). */
 function toMapEmbedSrc(rawUrl: string): string {
   if (!rawUrl) return "";
   const url = rawUrl.split(/\s+/)[0]; // strip trailing HTML attributes
-  if (url.includes("/maps/embed/v1/")) return url; // already a valid embed URL
+  // Already embeddable (classic output=embed or Embed API v1) — use as-is.
+  if (url.includes("output=embed") || url.includes("/maps/embed")) return url;
   try {
     const parsed = new URL(url);
     // /maps/search/?api=1&query=lat,lng  or  /maps?q=lat,lng
     const q = parsed.searchParams.get("query") || parsed.searchParams.get("q");
-    if (q) return `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${encodeURIComponent(q)}&zoom=15`;
+    if (q) return classicMapEmbed(q);
     // /maps/place/PlaceName/@lat,lng/...
     const placeMatch = url.match(/\/place\/([^/@?]+)/);
-    if (placeMatch) return `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${encodeURIComponent(decodeURIComponent(placeMatch[1].replace(/\+/g, " ")))}&zoom=15`;
+    if (placeMatch) return classicMapEmbed(decodeURIComponent(placeMatch[1].replace(/\+/g, " ")));
   } catch { /* invalid URL — fall through */ }
   return "";
 }
@@ -1582,11 +1591,10 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                     {(() => {
                       let embedSrc = toMapEmbedSrc(project.mapUrl || "");
                       if (!embedSrc && project.latitude && project.longitude) {
-                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
+                        embedSrc = classicMapEmbed(`${project.latitude},${project.longitude}`);
                       }
                       if (!embedSrc) {
-                        const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
-                        embedSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
+                        embedSrc = classicMapEmbed(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
                       }
                       return (
                         <div className="rounded-xl overflow-hidden border border-border/50 mb-6 aspect-[16/9]">
@@ -2415,11 +2423,10 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                   {(() => {
                     let mapSrc = toMapEmbedSrc(project.mapUrl || "");
                     if (!mapSrc && project.latitude && project.longitude) {
-                      mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${project.latitude},${project.longitude}&zoom=15`;
+                      mapSrc = classicMapEmbed(`${project.latitude},${project.longitude}`);
                     }
                     if (!mapSrc) {
-                      const query = encodeURIComponent(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
-                      mapSrc = `https://www.google.com/maps/embed/v1/place?key=${MAPS_KEY}&q=${query}`;
+                      mapSrc = classicMapEmbed(`${project.name}, ${project.community || project.city || ""}, ${project.country || "UAE"}`);
                     }
                     // Never use the embed URL as an external link — it only works inside iframes.
                     // Priority: stored googleMapsUrl → lat/lng search → place-name search.
