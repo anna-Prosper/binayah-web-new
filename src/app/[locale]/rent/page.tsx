@@ -6,10 +6,32 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { serverFetch, serverApiUrl } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
+
+async function getInitialRentListings() {
+  try {
+    const res = await serverFetch(serverApiUrl("/api/search?intent=rent&pageSize=24"), 8000);
+    if (!res.ok) return null;
+    return res.json() as Promise<any>;
+  } catch {
+    return null;
+  }
+}
+
+function rentCollectionItems(initialData: any): { url: string; name: string }[] {
+  return [
+    ...(Array.isArray(initialData?.listings) ? initialData.listings : [])
+      .filter((l: any) => l?.slug && (l?.title || l?.name))
+      .map((l: any) => ({ url: `/property/${l.slug}`, name: String(l.title || l.name) })),
+    ...(Array.isArray(initialData?.projects) ? initialData.projects : [])
+      .filter((p: any) => p?.slug && p?.name)
+      .map((p: any) => ({ url: `/project/${p.slug}`, name: String(p.name) })),
+  ];
+}
 
 const CONTENT = {
   fr: {
@@ -275,6 +297,9 @@ export default async function RentPage({ params }: Props) {
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
+  const initialData = await getInitialRentListings();
+  const collectionItems = rentCollectionItems(initialData);
+
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/rent` },
@@ -284,6 +309,7 @@ export default async function RentPage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={[...c.faqs]} />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={c.metaDesc} url="/rent" items={collectionItems} />
       <Navbar />
 
       {/* Hero */}
@@ -317,7 +343,7 @@ export default async function RentPage({ params }: Props) {
 
       {/* Full-width embedded search (spans the page like the sections above) */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <SearchPageClient defaultIntent="rent" syncUrl={false} />
+        <SearchPageClient defaultIntent="rent" syncUrl={false} initialData={initialData} />
       </div>
 
       {/* FAQ + CTA, with the sidebar starting here (below the full-width search) */}

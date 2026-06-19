@@ -4,15 +4,24 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { serverFetch, serverApiUrl } from "@/lib/api";
+import { normalizePropertyType } from "@/lib/property-types";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
-export const revalidate = 1800;
-export function generateStaticParams() {
-  const locales = ["en", "ru", "ar", "zh", "vi", "he", "fr"];
-  return locales.flatMap((locale) => ["apartments", "villas", "townhouses"].map((type) => ({ locale, type })));
+export const dynamic = "force-dynamic";
+
+async function getInitialRentTypeListings(searchType: string) {
+  try {
+    const t = String(normalizePropertyType(searchType, searchType));
+    const res = await serverFetch(serverApiUrl(`/api/search?intent=rent&type=${encodeURIComponent(t)}&pageSize=24`), 8000);
+    if (!res.ok) return null;
+    return res.json() as Promise<any>;
+  } catch {
+    return null;
+  }
 }
 
 interface Props {
@@ -97,6 +106,16 @@ export default async function RentTypePage({ params }: Props) {
   const typeLabel = entry.label[(locale as Loc)] ?? entry.label.en;
   const rent = RENT_LABEL[locale] ?? RENT_LABEL.en;
 
+  const initialData = await getInitialRentTypeListings(entry.searchType);
+  const collectionItems: { url: string; name: string }[] = [
+    ...(Array.isArray(initialData?.listings) ? initialData.listings : [])
+      .filter((l: any) => l?.slug && (l?.title || l?.name))
+      .map((l: any) => ({ url: `/property/${l.slug}`, name: String(l.title || l.name) })),
+    ...(Array.isArray(initialData?.projects) ? initialData.projects : [])
+      .filter((p: any) => p?.slug && p?.name)
+      .map((p: any) => ({ url: `/project/${p.slug}`, name: String(p.name) })),
+  ];
+
   const breadcrumbs = [
     { name: HOME_LABEL[locale] ?? HOME_LABEL.en, href: `${lp}/` },
     { name: rent, href: `${lp}/rent` },
@@ -106,6 +125,12 @@ export default async function RentTypePage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <CollectionPageJsonLd
+        name={titleFor(typeLabel, locale).split(" | ")[0]}
+        description={descFor(typeLabel, locale)}
+        url={`/rent/${type}`}
+        items={collectionItems}
+      />
       <Navbar />
 
       <section
@@ -120,17 +145,15 @@ export default async function RentTypePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Embedded search — rent, pre-filtered to this type, clean URL (no query params) */}
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        <SearchPageClient defaultIntent="rent" defaultType={entry.searchType} syncUrl={false} />
-      </div>
-
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12 sm:pb-16 lg:grid lg:grid-cols-[1fr_320px] lg:gap-8 lg:items-start">
-        <div className="min-w-0" />
-        <aside className="mt-12 lg:mt-0 lg:sticky lg:top-24 self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:[scrollbar-width:none] lg:[&::-webkit-scrollbar]:hidden">
-          <PropertyTypeSidebar locale={locale} slug={entry.slug} />
-        </aside>
-      </div>
+      {/* Embedded search (SSR'd listings) — sidebar docked beside the listings
+          via sidebarSlot; the filter bar stays full-width. */}
+      <SearchPageClient
+        defaultIntent="rent"
+        defaultType={entry.searchType}
+        syncUrl={false}
+        initialData={initialData}
+        sidebarSlot={<PropertyTypeSidebar locale={locale} slug={entry.slug} />}
+      />
 
       <Footer />
       <WhatsAppButton />

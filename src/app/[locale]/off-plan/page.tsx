@@ -4,12 +4,34 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { serverFetch, serverApiUrl } from "@/lib/api";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 
 export const dynamic = "force-dynamic";
+
+async function getInitialOffPlanListings() {
+  try {
+    const res = await serverFetch(serverApiUrl("/api/search?intent=off-plan&status=Off-Plan&pageSize=24"), 8000);
+    if (!res.ok) return null;
+    return res.json() as Promise<any>;
+  } catch {
+    return null;
+  }
+}
+
+function collectionItemsFrom(initialData: any): { url: string; name: string }[] {
+  return [
+    ...(Array.isArray(initialData?.projects) ? initialData.projects : [])
+      .filter((p: any) => p?.slug && p?.name)
+      .map((p: any) => ({ url: `/project/${p.slug}`, name: String(p.name) })),
+    ...(Array.isArray(initialData?.listings) ? initialData.listings : [])
+      .filter((l: any) => l?.slug && (l?.title || l?.name))
+      .map((l: any) => ({ url: `/property/${l.slug}`, name: String(l.title || l.name) })),
+  ];
+}
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -212,6 +234,9 @@ export default async function OffPlanPage({ params }: Props) {
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
+  const initialData = await getInitialOffPlanListings();
+  const collectionItems = collectionItemsFrom(initialData);
+
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/off-plan` },
@@ -221,6 +246,7 @@ export default async function OffPlanPage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <CollectionPageJsonLd name={c.h1} description={c.heroDesc} url="/off-plan" items={collectionItems} />
       <Navbar />
 
       {/* Hero */}
@@ -238,7 +264,7 @@ export default async function OffPlanPage({ params }: Props) {
 
       {/* Full-width embedded search (spans the page like the sections above) */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
-        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" syncUrl={false} />
+        <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" syncUrl={false} initialData={initialData} />
       </div>
 
       {/* FAQ, with the sidebar starting here (below the full-width search) */}
