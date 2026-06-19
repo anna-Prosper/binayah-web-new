@@ -7,7 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
-import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { serverFetch, serverApiUrl } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
@@ -279,7 +279,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: c.metaTitle, description: c.metaDesc, url,
       type: "website", locale: OG_LOCALE[locale] ?? "en_AE",
-      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
+      // og:image from the route's opengraph-image.tsx (dynamic branded image)
     },
     keywords: locale === "ru"
       ? ["аренда квартир дубай", "снять квартиру дубай", "аренда жилья дубай"]

@@ -86,13 +86,19 @@ function plainEntry(path: string, priority: number, changeFrequency: MetadataRou
   };
 }
 
-async function fetchSlugs(path: string): Promise<string[]> {
+async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date }[]> {
   try {
     const res = await serverFetch(serverApiUrl(path), 10_000);
     if (!res.ok) return [];
     const data = await res.json();
-    const items: { slug?: string }[] = Array.isArray(data) ? data : [];
-    return items.map((d) => d.slug).filter(Boolean) as string[];
+    const items: { slug?: string; updatedAt?: string; modifiedAt?: string; publishedAt?: string }[] = Array.isArray(data) ? data : [];
+    return items
+      .filter((d) => d.slug)
+      .map((d) => {
+        const raw = d.updatedAt || d.modifiedAt || d.publishedAt;
+        const t = raw ? new Date(raw) : null;
+        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
+      });
   } catch {
     return [];
   }
@@ -108,10 +114,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // 3000+ pages. MongoDB returns all published slugs with no cap.
       fetchSlugDatesFromDb("projects", { slug: { $exists: true, $ne: "" } }),
       fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
-      fetchSlugs("/api/news?limit=1000&fields=slug"),
-      fetchSlugs("/api/communities?limit=500&fields=slug"),
-      fetchSlugs("/api/construction-updates?limit=500&fields=slug"),
-      fetchSlugs("/api/developers?limit=500&fields=slug"),
+      fetchSlugs("/api/news?limit=1000&fields=slug,updatedAt"),
+      fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
+      fetchSlugs("/api/construction-updates?limit=500&fields=slug,updatedAt"),
+      fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
     ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -170,10 +176,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       plainEntry(`/project/${p.slug}/faq`, 0.6, "weekly", p.lastmod ?? now),
     ]),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
-    ...articles.map((slug) => withAlternates(`/news/${slug}`, 0.6, "weekly", now)),
-    ...communities.map((slug) => withAlternates(`/communities/${slug}`, 0.7, "monthly", now)),
-    ...updates.map((slug) => withAlternates(`/construction-updates/${slug}`, 0.6, "weekly", now)),
-    ...developers.map((slug) => withAlternates(`/developers/${slug}`, 0.6, "monthly", now)),
+    ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
+    ...communities.map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
+    ...updates.map((u) => withAlternates(`/construction-updates/${u.slug}`, 0.6, "weekly", u.lastmod ?? now)),
+    ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
     // SEO content routes (compiled, not API-driven)
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),

@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
-import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { serverFetch, serverApiUrl } from "@/lib/api";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
@@ -210,13 +210,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url,
       type: "website",
       locale: OG_LOCALE[locale] ?? "en_AE",
-      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
+      // og:image comes from the route's opengraph-image.tsx (dynamic branded image)
     },
     twitter: {
       card: "summary_large_image",
       title: c.metaTitle,
       description: c.metaDesc,
-      images: [DEFAULT_OG_IMAGE],
     },
     keywords: locale === "ru"
       ? ["новостройки дубай", "купить новостройку дубай", "off-plan дубай 2026", "инвестиции новостройки дубай"]
