@@ -106,7 +106,7 @@ const HeroSection = () => {
   const flatSuggestions = suggestionSections.flatMap((section) => section.items);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
@@ -451,10 +451,16 @@ const HeroSection = () => {
 
   return (
     <section ref={ref} className="relative min-h-[auto] sm:min-h-screen flex items-end sm:items-center justify-center pt-16 pb-8 sm:pt-0 sm:pb-0" style={{ overflow: "visible" }}>
-      <motion.div className="absolute inset-0 overflow-hidden" style={{ y: imageY }}>
-        <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority fetchPriority="high" sizes="100vw" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
-      </motion.div>
+      {/* Static clip box keeps the parallax image inside the hero (the <section>
+          stays overflow:visible for the search dropdown). Inner layer is oversized
+          with headroom so the scroll translate never exposes an edge or bleeds
+          onto the section below. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div className="absolute inset-x-0 -top-[20%] h-[140%] will-change-transform" style={{ y: imageY }}>
+          <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority fetchPriority="high" sizes="100vw" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
+        </motion.div>
+      </div>
 
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <div className="absolute top-1/4 left-8 w-px h-32 bg-gradient-to-b from-transparent via-accent/30 to-transparent hidden lg:block" />
