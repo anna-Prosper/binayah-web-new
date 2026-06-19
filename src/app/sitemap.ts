@@ -10,10 +10,10 @@ import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
 
 // Fetch all slugs directly from MongoDB — bypasses the API's 100-item hard cap.
 // Falls back to empty array on any error so the sitemap still builds.
-async function fetchAllSlugsFromDb(
+async function fetchSlugDatesFromDb(
   collection: string,
   filter: Record<string, unknown> = {}
-): Promise<string[]> {
+): Promise<{ slug: string; lastmod?: Date }[]> {
   const uri = process.env.MONGODB_URI;
   if (!uri) return [];
   let client: MongoClient | null = null;
@@ -23,9 +23,14 @@ async function fetchAllSlugsFromDb(
     const db = client.db();
     const docs = await db
       .collection(collection)
-      .find(filter, { projection: { slug: 1, _id: 0 } })
+      .find(filter, { projection: { slug: 1, updatedAt: 1, _id: 0 } })
       .toArray();
-    return (docs as { slug?: string }[]).map((d) => d.slug).filter(Boolean) as string[];
+    return (docs as { slug?: string; updatedAt?: string | Date }[])
+      .filter((d) => d.slug)
+      .map((d) => {
+        const t = d.updatedAt ? new Date(d.updatedAt) : null;
+        return { slug: d.slug as string, lastmod: t && !isNaN(t.getTime()) ? t : undefined };
+      });
   } catch {
     return [];
   } finally {
@@ -101,8 +106,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
-      fetchAllSlugsFromDb("projects", { slug: { $exists: true, $ne: "" } }),
-      fetchAllSlugsFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
+      fetchSlugDatesFromDb("projects", { slug: { $exists: true, $ne: "" } }),
+      fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
       fetchSlugs("/api/news?limit=1000&fields=slug"),
       fetchSlugs("/api/communities?limit=500&fields=slug"),
       fetchSlugs("/api/construction-updates?limit=500&fields=slug"),
@@ -154,17 +159,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const dynamicPages: MetadataRoute.Sitemap = [
-    ...projects.map((slug) => withAlternates(`/project/${slug}`, 0.8, "weekly", now)),
+    ...projects.map((p) => withAlternates(`/project/${p.slug}`, 0.8, "weekly", p.lastmod ?? now)),
     // Project sub-pages — each has unique metadata + a distinct SEO content block,
     // so they're worth indexing as standalone topic pages. Lean entries (no
     // hreflang alternates) to keep the sitemap under Vercel's 19 MB cap.
-    ...projects.flatMap((slug) => [
-      plainEntry(`/project/${slug}/floor-plans`, 0.6, "weekly", now),
-      plainEntry(`/project/${slug}/location`, 0.6, "weekly", now),
-      plainEntry(`/project/${slug}/payment-plan`, 0.6, "weekly", now),
-      plainEntry(`/project/${slug}/faq`, 0.6, "weekly", now),
+    ...projects.flatMap((p) => [
+      plainEntry(`/project/${p.slug}/floor-plans`, 0.6, "weekly", p.lastmod ?? now),
+      plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now),
+      plainEntry(`/project/${p.slug}/payment-plan`, 0.6, "weekly", p.lastmod ?? now),
+      plainEntry(`/project/${p.slug}/faq`, 0.6, "weekly", p.lastmod ?? now),
     ]),
-    ...listings.map((slug) => withAlternates(`/property/${slug}`, 0.7, "weekly", now)),
+    ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((slug) => withAlternates(`/news/${slug}`, 0.6, "weekly", now)),
     ...communities.map((slug) => withAlternates(`/communities/${slug}`, 0.7, "monthly", now)),
     ...updates.map((slug) => withAlternates(`/construction-updates/${slug}`, 0.6, "weekly", now)),
