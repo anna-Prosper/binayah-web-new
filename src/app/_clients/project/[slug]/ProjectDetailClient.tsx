@@ -33,6 +33,7 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
 import { ProjectSeoBlock } from "@/components/ProjectSeoBlock";
+import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { LocationSection } from "@/components/LocationSection";
 import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
@@ -317,6 +318,24 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
       : project.paymentPlanSummary && project.paymentPlanSummary !== "TBA"
       ? String(project.paymentPlanSummary)
       : null;
+
+  // ── Entity interlink targets — only set when the destination page exists,
+  //    so we never emit a link to a 404 (builds the topical graph for SEO). ──
+  const interlinkDevSlug = project.developerSlug
+    || (project.developerName ? String(project.developerName).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : "");
+  const interlinkDeveloperHref = interlinkDevSlug ? `/developers/${interlinkDevSlug}` : undefined;
+  const interlinkPtype = String(
+    Array.isArray(project.propertyType) ? project.propertyType[0] : (project.propertyType || project.propertyTypes?.[0] || "")
+  ).toLowerCase();
+  const interlinkTypeSlug = /apartment|flat|studio/.test(interlinkPtype) ? "apartments"
+    : /townhouse/.test(interlinkPtype) ? "townhouses"
+    : /villa/.test(interlinkPtype) ? "villas"
+    : "";
+  const interlinkTypeHref = interlinkTypeSlug ? `/off-plan/${interlinkTypeSlug}` : undefined;
+  const interlinkCommunity = BUY_COMMUNITIES.find(
+    (c) => c.name.toLowerCase() === String(project.community || "").toLowerCase()
+  );
+  const interlinkCommunityHref = interlinkCommunity ? `/off-plan-in/${interlinkCommunity.slug}` : undefined;
 
   const leadEntity = { entityType: "project", entitySlug: project.slug, entityTitle: project.name };
 
@@ -2645,20 +2664,24 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               >
                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] mb-4">{t("projectDetailsLabel")}</h3>
                 <div className="divide-y divide-border/40">
-                  {[
-                    { label: t("developer"), value: project.developerName },
-                    { label: t("communityLabel"), value: project.community },
+                  {([
+                    { label: t("developer"), value: project.developerName, href: interlinkDeveloperHref },
+                    { label: t("communityLabel"), value: project.community, href: interlinkCommunityHref },
                     { label: t("cityLabel"), value: `${project.city}, ${project.country}` },
-                    { label: t("propertyTypeLabel"), value: project.propertyTypes?.length > 0 ? project.propertyTypes.map((pt: string) => tEnum(pt)).join(" · ") : tEnum(Array.isArray(project.propertyType) ? project.propertyType[0] : project.propertyType) },
+                    { label: t("propertyTypeLabel"), value: project.propertyTypes?.length > 0 ? project.propertyTypes.map((pt: string) => tEnum(pt)).join(" · ") : tEnum(Array.isArray(project.propertyType) ? project.propertyType[0] : project.propertyType), href: interlinkTypeHref },
                     { label: t("projectTypeLabel"), value: tEnum(project.projectType) },
                     { label: t("status"), value: tEnum(project.status) },
                     { label: t("titleType"), value: tEnum(project.titleType) },
                     { label: t("eligibility"), value: tEnum(project.ownershipEligibility) },
                     { label: t("availability"), value: tEnum(project.availabilityStatus) },
-                  ].filter(f => f.value).map(({ label, value }) => (
+                  ] as Array<{ label: string; value: unknown; href?: string }>).filter(f => f.value).map(({ label, value, href }) => (
                     <div key={label} className="flex justify-between items-center py-3.5 sm:py-3 text-sm">
                       <span className="text-muted-foreground">{label}</span>
-                      <span className="text-foreground font-semibold text-right max-w-[55%]">{value}</span>
+                      {href ? (
+                        <Link href={href} className="text-primary font-semibold text-right max-w-[55%] hover:underline">{value as React.ReactNode}</Link>
+                      ) : (
+                        <span className="text-foreground font-semibold text-right max-w-[55%]">{value as React.ReactNode}</span>
+                      )}
                     </div>
                   ))}
                 </div>
