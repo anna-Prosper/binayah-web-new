@@ -10,6 +10,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -127,11 +128,12 @@ export default function OffPlanPageClient({
               >
                 <Link href={p.slug === "__fallback__" ? "#" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
-                    <img
+                    <NextImage
                       src={p.featuredImage || p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"}
                       alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                     <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">

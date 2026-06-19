@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { useState, useRef, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -174,13 +175,14 @@ export default function DevelopersPageClient({
                   href={`/developers/${dev.slug}`}
                   className="group flex flex-col items-center bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/20 hover:shadow-xl transition-all duration-500 p-5 sm:p-6 text-center h-full"
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 mb-4 rounded-xl bg-primary/[0.06] flex items-center justify-center overflow-hidden border border-primary/10 group-hover:border-primary/25 group-hover:bg-primary/[0.10] transition-all">
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-4 rounded-xl bg-primary/[0.06] flex items-center justify-center overflow-hidden border border-primary/10 group-hover:border-primary/25 group-hover:bg-primary/[0.10] transition-all">
                     {dev.logo ? (
-                      <img
+                      <NextImage
                         src={dev.logo}
                         alt={dev.name}
-                        className="w-full h-full object-contain p-2"
-                        loading="lazy"
+                        fill
+                        sizes="80px"
+                        className="object-contain p-2"
                       />
                     ) : (
                       <Building2 className="h-8 w-8 text-primary/50 group-hover:text-primary transition-colors" />

@@ -6,6 +6,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Award, Users, Building2, Globe, CheckCircle2 } from "lucide-react";
+import NextImage from "next/image";
 import { useTranslations } from "next-intl";
 
 export default function AboutPage() {
@@ -77,11 +78,13 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden">
-              <img
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <NextImage
                 src="/assets/dubai-hero.webp"
                 alt="Dubai skyline"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
           </motion.div>
