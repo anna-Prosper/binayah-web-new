@@ -2458,6 +2458,35 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               )}
             </AnimatePresence>
 
+            {/* Crawlable cross-links — the tab bar switches via history.replaceState
+                (not crawlable), so these real <a> links let search engines discover
+                and pass equity between every sub-page. */}
+            <nav aria-label={t("discoverProject")} className="bg-card rounded-2xl border border-border/50 p-4 sm:p-5">
+              <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent mb-3">{t("discoverProject")}</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { href: `/project/${project.slug}`, label: t("tabOverview"), active: !defaultTab || defaultTab === "overview" },
+                  { href: `/project/${project.slug}/floor-plans`, label: t("floorPlansLabel"), active: defaultTab === "floor-plans" },
+                  { href: `/project/${project.slug}/location`, label: t("tabLocation"), active: defaultTab === "location" },
+                  { href: `/project/${project.slug}/payment-plan`, label: t("tabPayment"), active: defaultTab === "payment" },
+                  { href: `/project/${project.slug}/faq`, label: t("tabFaq"), active: defaultTab === "faq" },
+                ].map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    aria-current={l.active ? "page" : undefined}
+                    className={`text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl border transition-colors ${
+                      l.active
+                        ? "border-primary/30 bg-primary/5 text-primary"
+                        : "border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/30"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
+
             {/* Mobile-only: Quick Enquiry — after tab content */}
             <div className="sm:hidden space-y-0 mt-4">
               <div className="rounded-2xl rounded-b-none overflow-hidden shadow-lg shadow-foreground/5">

@@ -142,6 +142,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dynamicPages: MetadataRoute.Sitemap = [
     ...projects.map((slug) => withAlternates(`/project/${slug}`, 0.8, "weekly", now)),
+    // Project sub-pages — each has unique metadata + a distinct SEO content block,
+    // so they're worth indexing as standalone topic pages.
+    ...projects.flatMap((slug) => [
+      withAlternates(`/project/${slug}/floor-plans`, 0.6, "weekly", now),
+      withAlternates(`/project/${slug}/location`, 0.6, "weekly", now),
+      withAlternates(`/project/${slug}/payment-plan`, 0.6, "weekly", now),
+      withAlternates(`/project/${slug}/faq`, 0.6, "weekly", now),
+    ]),
     ...listings.map((slug) => withAlternates(`/property/${slug}`, 0.7, "weekly", now)),
     ...articles.map((slug) => withAlternates(`/news/${slug}`, 0.6, "weekly", now)),
     ...communities.map((slug) => withAlternates(`/communities/${slug}`, 0.7, "monthly", now)),
