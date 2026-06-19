@@ -285,14 +285,14 @@
         "popular": "الأكثر طلباً"
       },
       "aiBanner": {
-        "label": "مدعوم بالذكاء الاصطناعي",
-        "sublabel": "تحليل لحظي للسوق",
+        "label": "Binayah",
+        "sublabel": "موثوق منذ 2007",
         "live": "مباشر",
-        "listingsAnalyzed": "إعلان تمّ تحليله",
-        "marketSignals": "مؤشر سوقي",
-        "priceUpdates": "تحديث للأسعار",
-        "matchAccuracy": "دقة التطابق",
-        "aiModels": "نموذج ذكاء اصطناعي نشط"
+        "statListed": "عقار مُدرج",
+        "statClients": "عميل",
+        "statSold": "مُباع",
+        "statAwards": "جوائز القطاع",
+        "statYears": "سنة خبرة"
       },
       "valuation": {
         "label": "تقييم فوري",

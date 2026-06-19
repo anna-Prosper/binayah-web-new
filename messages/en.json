@@ -285,14 +285,14 @@
         "popular": "Popular"
       },
       "aiBanner": {
-        "label": "AI-Powered",
-        "sublabel": "Real-time analysis",
+        "label": "Binayah",
+        "sublabel": "Trusted since 2007",
         "live": "Live",
-        "listingsAnalyzed": "Listings Analyzed",
-        "marketSignals": "Market Signals",
-        "priceUpdates": "Price Updates",
-        "matchAccuracy": "Match Accuracy",
-        "aiModels": "AI Models Active"
+        "statListed": "Listed",
+        "statClients": "Clients",
+        "statSold": "Sold",
+        "statAwards": "Industry Awards",
+        "statYears": "Years Experience"
       },
       "valuation": {
         "label": "Instant Valuation",

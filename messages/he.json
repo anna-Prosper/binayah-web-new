@@ -285,14 +285,14 @@
         "popular": "פופולרי"
       },
       "aiBanner": {
-        "label": "מופעל על ידי AI",
-        "sublabel": "ניתוח בזמן אמת",
+        "label": "Binayah",
+        "sublabel": "מהימן משנת 2007",
         "live": "חי",
-        "listingsAnalyzed": "רישומים נותחו",
-        "marketSignals": "איתותי שוק",
-        "priceUpdates": "עדכוני מחיר",
-        "matchAccuracy": "דיוק התאמה",
-        "aiModels": "מודלים של AI פעילים"
+        "statListed": "נכסים",
+        "statClients": "לקוחות",
+        "statSold": "נמכרו",
+        "statAwards": "פרסי תעשייה",
+        "statYears": "שנות ניסיון"
       },
       "valuation": {
         "label": "הערכת שווי מיידית",

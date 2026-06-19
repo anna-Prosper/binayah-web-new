@@ -285,14 +285,14 @@
         "popular": "Phổ Biến"
       },
       "aiBanner": {
-        "label": "Được Hỗ Trợ Bởi AI",
-        "sublabel": "Phân Tích Thời Gian Thực",
+        "label": "Binayah",
+        "sublabel": "Được tin tưởng từ 2007",
         "live": "Trực Tiếp",
-        "listingsAnalyzed": "Danh Sách Đã Phân Tích",
-        "marketSignals": "Tín Hiệu Thị Trường",
-        "priceUpdates": "Cập Nhật Giá",
-        "matchAccuracy": "Độ Chính Xác Phù Hợp",
-        "aiModels": "Mô Hình AI Hoạt Động"
+        "statListed": "Đã niêm yết",
+        "statClients": "Khách hàng",
+        "statSold": "Đã bán",
+        "statAwards": "Giải thưởng ngành",
+        "statYears": "Năm kinh nghiệm"
       },
       "valuation": {
         "label": "Định Giá Ngay Lập Tức",

@@ -291,14 +291,14 @@
         "popular": "热门"
       },
       "aiBanner": {
-        "label": "AI 驱动",
-        "sublabel": "实时分析",
+        "label": "Binayah",
+        "sublabel": "自2007年值得信赖",
         "live": "实时",
-        "listingsAnalyzed": "已分析房源",
-        "marketSignals": "市场信号",
-        "priceUpdates": "价格更新",
-        "matchAccuracy": "匹配精度",
-        "aiModels": "在线 AI 模型"
+        "statListed": "在售房源",
+        "statClients": "客户",
+        "statSold": "已售出",
+        "statAwards": "行业奖项",
+        "statYears": "年经验"
       },
       "valuation": {
         "label": "一键估值",

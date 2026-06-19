@@ -285,14 +285,14 @@
         "popular": "Популярно"
       },
       "aiBanner": {
-        "label": "На базе ИИ",
-        "sublabel": "Анализ в реальном времени",
+        "label": "Binayah",
+        "sublabel": "Нам доверяют с 2007",
         "live": "Онлайн",
-        "listingsAnalyzed": "Объявлений проанализировано",
-        "marketSignals": "Рыночных сигналов",
-        "priceUpdates": "Обновлений цен",
-        "matchAccuracy": "Точность подбора",
-        "aiModels": "ИИ-моделей в работе"
+        "statListed": "Объектов",
+        "statClients": "Клиентов",
+        "statSold": "Продано",
+        "statAwards": "Наград",
+        "statYears": "Лет опыта"
       },
       "valuation": {
         "label": "Мгновенная оценка",

@@ -285,14 +285,14 @@
         "popular": "Populaire"
       },
       "aiBanner": {
-        "label": "Propulsé par l'IA",
-        "sublabel": "Analyse en temps réel",
+        "label": "Binayah",
+        "sublabel": "De confiance depuis 2007",
         "live": "En direct",
-        "listingsAnalyzed": "Annonces analysées",
-        "marketSignals": "Signaux du marché",
-        "priceUpdates": "Mises à jour des prix",
-        "matchAccuracy": "Précision des correspondances",
-        "aiModels": "Modèles d'IA actifs"
+        "statListed": "Référencés",
+        "statClients": "Clients",
+        "statSold": "Vendus",
+        "statAwards": "Prix du secteur",
+        "statYears": "Ans d'expérience"
       },
       "valuation": {
         "label": "Évaluation Instantanée",

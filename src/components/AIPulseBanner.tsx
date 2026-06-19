@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Brain, TrendingUp, BarChart3, Zap, Activity } from "lucide-react";
+import { Crown, Building2, Users, TrendingUp, Award, CalendarDays } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const AIPulseBanner = () => {
   const t = useTranslations("home.sections.aiBanner");
   const pulseStats = [
-    { icon: Brain, label: t("aiModels"), value: "3", suffix: "" },
-    { icon: BarChart3, label: t("listingsAnalyzed"), value: "30,847", suffix: "+" },
-    { icon: TrendingUp, label: t("marketSignals"), value: "1,245", suffix: "" },
-    { icon: Activity, label: t("priceUpdates"), value: t("live"), suffix: "" },
-    { icon: Zap, label: t("matchAccuracy"), value: "96", suffix: "%" },
+    { icon: Building2, label: t("statListed"), value: "3,000", suffix: "+" },
+    { icon: Users, label: t("statClients"), value: "11,200", suffix: "+" },
+    { icon: TrendingUp, label: t("statSold"), value: "AED 2.1B", suffix: "+" },
+    { icon: Award, label: t("statAwards"), value: "15", suffix: "+" },
+    { icon: CalendarDays, label: t("statYears"), value: "19", suffix: "+" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -41,7 +41,7 @@ const AIPulseBanner = () => {
           <div className="flex items-center gap-3 flex-shrink-0">
             <div className="relative">
               <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
-                <Brain className="h-4.5 w-4.5 text-accent" />
+                <Crown className="h-4.5 w-4.5 text-accent" />
               </div>
               <motion.div
                 className="absolute inset-0 rounded-lg border border-accent/40"
@@ -92,20 +92,20 @@ const AIPulseBanner = () => {
       <div className="sm:hidden max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between py-2.5">
           <div className="flex items-center gap-1.5">
-            <BarChart3 className="h-3.5 w-3.5 text-accent" />
-            <span className="text-[11px] font-bold text-background/80 tabular-nums">30,847+</span>
+            <Building2 className="h-3.5 w-3.5 text-accent" />
+            <span className="text-[11px] font-bold text-background/80 tabular-nums">3,000+</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <TrendingUp className="h-3.5 w-3.5 text-background/40" />
-            <span className="text-[11px] font-bold text-background/50 tabular-nums">1,245</span>
+            <Users className="h-3.5 w-3.5 text-background/40" />
+            <span className="text-[11px] font-bold text-background/50 tabular-nums">11,200+</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Activity className="h-3.5 w-3.5 text-background/40" />
-            <span className="text-[11px] font-bold text-background/50">{t("live")}</span>
+            <TrendingUp className="h-3.5 w-3.5 text-accent" />
+            <span className="text-[11px] font-bold text-background/80 tabular-nums">AED 2.1B+</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Zap className="h-3.5 w-3.5 text-accent" />
-            <span className="text-[11px] font-bold text-background/80 tabular-nums">96%</span>
+            <CalendarDays className="h-3.5 w-3.5 text-background/40" />
+            <span className="text-[11px] font-bold text-background/50 tabular-nums">19+</span>
           </div>
           <motion.div
             className="w-1.5 h-1.5 rounded-full bg-accent"
