@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { serverFetch, serverApiUrl } from "@/lib/api";
 
@@ -294,10 +294,20 @@ export default async function BuyPage({ params }: Props) {
     { name: c.breadcrumb, href: `${lp}/buy` },
   ];
 
+  const collectionItems: { url: string; name: string }[] = [
+    ...(Array.isArray(initialData?.projects) ? initialData.projects : [])
+      .filter((p: any) => p?.slug && p?.name)
+      .map((p: any) => ({ url: `/project/${p.slug}`, name: String(p.name) })),
+    ...(Array.isArray(initialData?.listings) ? initialData.listings : [])
+      .filter((l: any) => l?.slug && (l?.title || l?.name))
+      .map((l: any) => ({ url: `/property/${l.slug}`, name: String(l.title || l.name) })),
+  ];
+
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={[...c.faqs]} />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={c.metaDesc} url="/buy" items={collectionItems} />
       <Navbar />
 
       {/* Hero */}

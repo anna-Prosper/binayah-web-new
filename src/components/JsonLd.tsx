@@ -227,6 +227,55 @@ export function ReviewJsonLd({
   );
 }
 
+/**
+ * CollectionPage + ItemList for listing/landing pages (off-plan, buy, rent,
+ * communities, type pages). Tells Google the page is a curated collection and
+ * exposes the individual items as a structured, ordered list.
+ */
+export function CollectionPageJsonLd({
+  name,
+  description,
+  url,
+  items,
+  nonce,
+}: {
+  name: string;
+  description?: string;
+  url: string;
+  items: { url: string; name: string }[];
+  nonce?: string;
+}) {
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
+  const abs = (u: string) => (u.startsWith("http") ? u : `${base}${u}`);
+  if (!items || items.length === 0) return null;
+
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    ...(description ? { description } : {}),
+    url: abs(url),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: items.length,
+      itemListElement: items.map((it, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: abs(it.url),
+        name: it.name,
+      })),
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}
+
 export function RealEstateListingJsonLd({
   name,
   description,

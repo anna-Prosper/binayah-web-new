@@ -5,7 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, FAQJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { serverFetch, serverApiUrl } from "@/lib/api";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
@@ -279,6 +279,13 @@ export default async function OffPlanTypePage({ params }: Props) {
 
   const faqs = c.faqs.map((f) => ({ question: fill(f.question, typeLabel), answer: fill(f.answer, typeLabel) }));
 
+  // ItemList for the SSR'd projects shown on this landing page.
+  const collectionItems: { url: string; name: string }[] = Array.isArray(initialData?.projects)
+    ? initialData.projects
+        .filter((p: any) => p?.slug && p?.name)
+        .map((p: any) => ({ url: `/project/${p.slug}`, name: String(p.name) }))
+    : [];
+
   const breadcrumbs = [
     { name: HOME_LABEL[locale] ?? HOME_LABEL.en, href: `${lp}/` },
     { name: offplan, href: `${lp}/off-plan` },
@@ -289,6 +296,12 @@ export default async function OffPlanTypePage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <BreadcrumbJsonLd items={breadcrumbs} />
       <FAQJsonLd faqs={faqs} />
+      <CollectionPageJsonLd
+        name={titleFor(typeLabel, locale).split(" | ")[0]}
+        description={descFor(typeLabel, locale)}
+        url={`/off-plan/${type}`}
+        items={collectionItems}
+      />
       <Navbar />
 
       {/* Hero — compact; max-w-6xl matches SearchPageClient's container so the

@@ -2,6 +2,7 @@ import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageCli
 import { fetchPlaceCards } from "./fetchPlaces";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { CollectionPageJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 3600;
 
@@ -55,7 +56,21 @@ export type CommunityCard = {
   hasGuide: boolean;
 };
 
-export default async function CommunitiesPage() {
+export default async function CommunitiesPage({ params }: Props) {
+  const { locale } = await params;
   const merged = await fetchPlaceCards("community");
-  return <CommunitiesPageClient communities={merged} />;
+  const items = merged
+    .filter((c) => c.slug && c.name)
+    .map((c) => ({ url: `/communities/${c.slug}`, name: c.name }));
+  return (
+    <>
+      <CollectionPageJsonLd
+        name={(titles[locale] || titles.en).split(" | ")[0]}
+        description={descriptions[locale] || descriptions.en}
+        url="/communities"
+        items={items}
+      />
+      <CommunitiesPageClient communities={merged} />
+    </>
+  );
 }
