@@ -101,6 +101,7 @@ const AIPulseBanner = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <TrendingUp className="h-3.5 w-3.5 text-accent" />
+            {/* eslint-disable-next-line i18next/no-literal-string -- numeric stat, not translatable copy */}
             <span className="text-[11px] font-bold text-background/80 tabular-nums">AED 2.1B+</span>
           </div>
           <div className="flex items-center gap-1.5">
