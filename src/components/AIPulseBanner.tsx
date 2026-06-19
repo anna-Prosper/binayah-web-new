@@ -11,7 +11,7 @@ const AIPulseBanner = () => {
     { icon: Building2, label: t("statListed"), value: "3,000", suffix: "+" },
     { icon: Users, label: t("statClients"), value: "11,200", suffix: "+" },
     { icon: TrendingUp, label: t("statSold"), value: "AED 2.1B", suffix: "+" },
-    { icon: Award, label: t("statAwards"), value: "19", suffix: "+" },
+    { icon: Award, label: t("statAwards"), value: "15", suffix: "+" },
     { icon: CalendarDays, label: t("statYears"), value: "19", suffix: "+" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
