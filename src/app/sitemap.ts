@@ -107,7 +107,7 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [projects, listings, articles, communities, updates, developers] =
+  const [projects, listings, articles, communities, updates, developers, projectGuides] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
@@ -118,6 +118,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/construction-updates?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
+      // Project guides (project_articles) — served at /construction-updates/{slug}
+      fetchSlugs("/api/project-articles?limit=200"),
     ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -179,6 +181,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
     ...communities.map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
     ...updates.map((u) => withAlternates(`/construction-updates/${u.slug}`, 0.6, "weekly", u.lastmod ?? now)),
+    ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
     // SEO content routes (compiled, not API-driven)
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),

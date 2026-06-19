@@ -219,7 +219,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
               {article.projectSlug && (
                 <div>
                   <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">{l.thisProject}</p>
-                  <Link href={`${lp}/projects/${article.projectSlug}`} className="group flex items-start gap-3 rounded-xl border border-border p-3 hover:border-primary/30 transition-colors">
+                  <Link href={`${lp}/project/${article.projectSlug}`} className="group flex items-start gap-3 rounded-xl border border-border p-3 hover:border-primary/30 transition-colors">
                     {article.heroImage?.url && (
                       <div className="relative w-20 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                         <Image src={article.heroImage.url} alt={article.h1} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />

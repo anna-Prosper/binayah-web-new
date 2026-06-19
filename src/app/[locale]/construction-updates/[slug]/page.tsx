@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import ProjectArticleDetailClient from "@/app/_clients/construction-updates/[slug]/ConstructionUpdateDetailClient";
 
 const GUIDES_LABEL: Record<string, string> = {
@@ -58,6 +58,13 @@ export default async function ProjectArticlePage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
   const url = canonical(locale, `/construction-updates/${slug}`);
 
+  // FAQ is rendered visibly on the page, so the schema matches the content.
+  const faqItems: { question: string; answer: string }[] = Array.isArray(article.faq)
+    ? article.faq
+        .map((f: any) => ({ question: f?.question ?? f?.q ?? "", answer: f?.answer ?? f?.a ?? "" }))
+        .filter((f: { question: string; answer: string }) => f.question && f.answer)
+    : [];
+
   return (
     <>
       <ArticleJsonLd
@@ -77,6 +84,7 @@ export default async function ProjectArticlePage({ params }: Props) {
           { name: article.h1, href: `${lp}/construction-updates/${slug}` },
         ]}
       />
+      {faqItems.length > 0 && <FAQJsonLd faqs={faqItems} />}
       <ProjectArticleDetailClient article={article} locale={locale} />
     </>
   );
