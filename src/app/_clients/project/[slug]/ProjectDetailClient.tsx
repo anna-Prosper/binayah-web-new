@@ -32,6 +32,7 @@ import { trackLead } from "@/lib/track";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { HeroActionRow } from "@/components/HeroActionRow";
 import { DetailTabs } from "@/components/DetailTabs";
+import { ProjectSeoBlock } from "@/components/ProjectSeoBlock";
 import { LocationSection } from "@/components/LocationSection";
 import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
@@ -732,6 +733,12 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                 { id: "faq",         label: t("tabFaq") },
               ]}
             />
+
+            {/* Unique per-sub-page SEO copy — only on dedicated sub-pages (defaultTab
+                set), so each URL has distinct main content vs the hub. */}
+            {defaultTab && defaultTab !== "overview" && (
+              <ProjectSeoBlock project={project} tab={defaultTab} paymentPlanLabel={paymentPlanPretty} />
+            )}
 
             {/* ─── OVERVIEW TAB ─── */}
             <AnimatePresence mode="wait">
