@@ -7,7 +7,6 @@ import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import ParticleConstellation from "./ParticleConstellation";
 import { useTranslations } from "next-intl";
 import { formatPropertyTypeLabel, normalizePropertyType } from "@/lib/property-types";
 import {
@@ -456,8 +455,6 @@ const HeroSection = () => {
         <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority fetchPriority="high" sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </motion.div>
-
-      <div className="hidden sm:block"><ParticleConstellation /></div>
 
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <div className="absolute top-1/4 left-8 w-px h-32 bg-gradient-to-b from-transparent via-accent/30 to-transparent hidden lg:block" />
