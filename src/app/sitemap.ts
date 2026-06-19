@@ -68,6 +68,19 @@ function withAlternates(path: string, priority: number, changeFrequency: Metadat
   };
 }
 
+// Lean entry (no hreflang alternates) — used for high-volume secondary URLs like
+// project sub-pages. Alternates multiply each entry ~8x and would blow past
+// Vercel's 19 MB sitemap pre-render cap; hreflang for these is still served via
+// the middleware's HTTP Link headers.
+function plainEntry(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
+  return {
+    url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+  };
+}
+
 async function fetchSlugs(path: string): Promise<string[]> {
   try {
     const res = await serverFetch(serverApiUrl(path), 10_000);
@@ -143,12 +156,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicPages: MetadataRoute.Sitemap = [
     ...projects.map((slug) => withAlternates(`/project/${slug}`, 0.8, "weekly", now)),
     // Project sub-pages — each has unique metadata + a distinct SEO content block,
-    // so they're worth indexing as standalone topic pages.
+    // so they're worth indexing as standalone topic pages. Lean entries (no
+    // hreflang alternates) to keep the sitemap under Vercel's 19 MB cap.
     ...projects.flatMap((slug) => [
-      withAlternates(`/project/${slug}/floor-plans`, 0.6, "weekly", now),
-      withAlternates(`/project/${slug}/location`, 0.6, "weekly", now),
-      withAlternates(`/project/${slug}/payment-plan`, 0.6, "weekly", now),
-      withAlternates(`/project/${slug}/faq`, 0.6, "weekly", now),
+      plainEntry(`/project/${slug}/floor-plans`, 0.6, "weekly", now),
+      plainEntry(`/project/${slug}/location`, 0.6, "weekly", now),
+      plainEntry(`/project/${slug}/payment-plan`, 0.6, "weekly", now),
+      plainEntry(`/project/${slug}/faq`, 0.6, "weekly", now),
     ]),
     ...listings.map((slug) => withAlternates(`/property/${slug}`, 0.7, "weekly", now)),
     ...articles.map((slug) => withAlternates(`/news/${slug}`, 0.6, "weekly", now)),
