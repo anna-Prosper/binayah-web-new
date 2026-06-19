@@ -97,14 +97,18 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {/* Above-the-fold: keep eager so LCP isn't gated on hydration */}
         <HeroSection />
         <AIPulseBanner />
+
+        {/* Inventory first — surface real listings + off-plan projects right after the
+            hero, before the valuation tool (visitors come to browse properties). */}
+        <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
+        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
+
         <ValuationStrip />
         <StatsSection />
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
         <LazyMount minHeight={400}><WhatWeOffer /></LazyMount>
-        <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
         <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
-        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
         <LazyMount minHeight={520}><CommunitiesSection /></LazyMount>
         <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
         <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
