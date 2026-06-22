@@ -189,7 +189,7 @@ export default function ServicesPage() {
                 <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 overflow-hidden relative transition-all duration-300 group-hover:scale-110"
                   style={{ backgroundColor: "rgba(212,168,71,0.1)" }}>
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }} />
-                  <s.icon className="h-5 w-5 relative z-10 transition-colors duration-300" style={{ color: "#D4A847" }}  />
+                  <s.icon className="h-5 w-5 relative z-10 transition-colors duration-300 text-[#D4A847] group-hover:text-white" />
                 </div>
                 <h3 className="font-bold text-base sm:text-lg text-foreground mb-1.5 sm:mb-2">{s.title}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{s.desc}</p>

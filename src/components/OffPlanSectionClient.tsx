@@ -76,20 +76,20 @@ const OffPlanSection = ({ projects = [] }: { projects?: Project[] }) => {
                     </span>
                     <div className="hidden sm:block"><CardActions propertyId={p.slug} slug={p.slug} title={p.name} type="project" /></div>
                   </div>
-                  <div className="p-5 flex flex-col flex-1">
+                  <div className="p-3 sm:p-5 flex flex-col flex-1">
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2">
                       <Building className="h-3 w-3" /> {p.developerName}
                     </p>
-                    <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">
+                    <h3 className="font-bold text-sm sm:text-base text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">
                       {p.name}
                     </h3>
-                    <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-3">
-                      <p className="text-xs sm:text-sm font-bold text-primary min-w-0">{p.startingPrice
+                    <div className="mt-auto flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2 border-t border-border pt-3">
+                      <p className="text-xs sm:text-sm font-bold text-primary">{p.startingPrice
                         ? <>{t("from")} <AedPrice value={p.startingPrice} currency={p.currency} /></>
                         : <AedPrice value={p.startingPrice} currency={p.currency} />}</p>
                       {p.completionDate && (
-                        <p className="text-xs text-muted-foreground flex items-center gap-1 flex-shrink-0">
-                          <CalendarDays className="h-3 w-3" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <CalendarDays className="h-3 w-3 flex-shrink-0" /> {(() => { try { const d = new Date(p.completionDate); return isNaN(d.getTime()) ? p.completionDate : d.getFullYear(); } catch { return p.completionDate; } })()}
                         </p>
                       )}
                     </div>
