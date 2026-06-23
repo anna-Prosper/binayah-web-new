@@ -22,8 +22,18 @@ type Msg = { role: "user" | "assistant" | "system"; content: string };
 
 const CHAT_URL = proxyUrl("/api/chat");
 
+function getSessionId(): string {
+  if (typeof window === "undefined") return crypto.randomUUID();
+  const key = "binayah_chat_sid";
+  let sid = sessionStorage.getItem(key);
+  if (!sid) { sid = crypto.randomUUID(); sessionStorage.setItem(key, sid); }
+  return sid;
+}
+
 async function streamChat({
   messages,
+  sessionId,
+  page,
   onDelta,
   onDone,
   onError,
@@ -31,6 +41,8 @@ async function streamChat({
   fallbacks,
 }: {
   messages: Msg[];
+  sessionId: string;
+  page: string;
   onDelta: (text: string) => void;
   onDone: () => void;
   onError: (msg: string) => void;
@@ -42,7 +54,7 @@ async function streamChat({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify({ messages, sessionId, page }),
   });
 
   if (resp.status === 429 || resp.status === 402) {
@@ -228,6 +240,8 @@ const AIChatWidget = () => {
     try {
       await streamChat({
         messages: [...messages, userMsg],
+        sessionId: getSessionId(),
+        page: typeof window !== "undefined" ? window.location.pathname : "",
         fallbacks: { busy: t("errorBusy"), generic: t("errorGeneric") },
         onDelta: upsertAssistant,
         onDone: () => setIsLoading(false),
