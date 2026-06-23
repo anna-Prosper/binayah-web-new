@@ -292,7 +292,8 @@
         "statClients": "Clients",
         "statSold": "Sold",
         "statAwards": "Industry Awards",
-        "statYears": "Years Experience"
+        "statYears": "Years Experience",
+        "aboutLink": "About Binayah"
       },
       "valuation": {
         "label": "Instant Valuation",

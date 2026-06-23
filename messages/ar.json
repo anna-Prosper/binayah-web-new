@@ -292,7 +292,8 @@
         "statClients": "عميل",
         "statSold": "مُباع",
         "statAwards": "جوائز القطاع",
-        "statYears": "سنة خبرة"
+        "statYears": "سنة خبرة",
+        "aboutLink": "عن بناية"
       },
       "valuation": {
         "label": "تقييم فوري",

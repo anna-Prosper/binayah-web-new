@@ -298,7 +298,8 @@
         "statClients": "客户",
         "statSold": "已售出",
         "statAwards": "行业奖项",
-        "statYears": "年经验"
+        "statYears": "年经验",
+        "aboutLink": "关于Binayah"
       },
       "valuation": {
         "label": "一键估值",

@@ -292,7 +292,8 @@
         "statClients": "Clients",
         "statSold": "Vendus",
         "statAwards": "Prix du secteur",
-        "statYears": "Ans d'expérience"
+        "statYears": "Ans d'expérience",
+        "aboutLink": "À propos"
       },
       "valuation": {
         "label": "Évaluation Instantanée",

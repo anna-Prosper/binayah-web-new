@@ -292,7 +292,8 @@
         "statClients": "לקוחות",
         "statSold": "נמכרו",
         "statAwards": "פרסי תעשייה",
-        "statYears": "שנות ניסיון"
+        "statYears": "שנות ניסיון",
+        "aboutLink": "אודות Binayah"
       },
       "valuation": {
         "label": "הערכת שווי מיידית",

@@ -292,7 +292,8 @@
         "statClients": "Khách hàng",
         "statSold": "Đã bán",
         "statAwards": "Giải thưởng ngành",
-        "statYears": "Năm kinh nghiệm"
+        "statYears": "Năm kinh nghiệm",
+        "aboutLink": "Về Binayah"
       },
       "valuation": {
         "label": "Định Giá Ngay Lập Tức",

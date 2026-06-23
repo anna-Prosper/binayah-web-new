@@ -292,7 +292,8 @@
         "statClients": "Клиентов",
         "statSold": "Продано",
         "statAwards": "Наград",
-        "statYears": "Лет опыта"
+        "statYears": "Лет опыта",
+        "aboutLink": "О Binayah"
       },
       "valuation": {
         "label": "Мгновенная оценка",
