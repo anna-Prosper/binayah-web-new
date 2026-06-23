@@ -28,14 +28,11 @@ export default async function AdminLandingPage() {
   // Fetch counts
   const client = await clientPromise;
   const db = client.db("binayah_web_new_dev");
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  const [inquiryCount, submissionCount, subscriberCount, recentInquiries, trackStats] = await Promise.all([
+  const [inquiryCount, submissionCount, subscriberCount, trackStats] = await Promise.all([
     db.collection("inquiries").countDocuments(),
     db.collection("property_submissions").countDocuments(),
     db.collection("project_subscriptions").countDocuments(),
-    db.collection("inquiries").countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
     db.collection("userevents").aggregate([
-      { $match: { createdAt: { $gte: thirtyDaysAgo } } },
       { $group: { _id: "$action", count: { $sum: 1 } } },
     ]).toArray().then((rows) =>
       Object.fromEntries(rows.map((r: any) => [r._id as string, r.count as number]))
@@ -161,14 +158,14 @@ export default async function AdminLandingPage() {
           ))}
         </div>
 
-        {/* User Action Stats — last 30 days */}
+        {/* User Action Stats — all-time, matches the per-action event lists */}
         <div className="mt-10">
-          <h3 className="text-base font-semibold text-gray-700 mb-4">User Actions, Last 30 Days</h3>
+          <h3 className="text-base font-semibold text-gray-700 mb-4">User Actions</h3>
           <UserActionsStrip stats={[
             { key: "whatsapp", label: "WhatsApp Clicks", color: "#25D366", value: trackStats["whatsapp"] ?? 0 },
             { key: "phone", label: "Phone Clicks", color: "#D4A847", value: trackStats["phone"] ?? 0 },
             { key: "chat-open", label: "Chat Opens", color: "#6366f1", value: trackStats["chat-open"] ?? 0 },
-            { key: "inquiry", label: "Inquiries (30d)", color: "#1A7A5A", value: recentInquiries },
+            { key: "inquiry", label: "Inquiries", color: "#1A7A5A", value: trackStats["inquiry"] ?? 0 },
             { key: "view", label: "Property Views", color: "#64748b", value: trackStats["view"] ?? 0 },
           ]} />
         </div>
