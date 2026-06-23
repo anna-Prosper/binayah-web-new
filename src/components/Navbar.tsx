@@ -416,8 +416,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 <AnimatePresence>
                   {offPlanOpen && (
                     <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
-                      <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        <div className="grid grid-cols-2 gap-2 p-4">
+                      <div className="min-w-[680px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        <div className="grid grid-cols-3 gap-2 p-4">
                           {offPlanColumns.map((col) => (
                             <div key={col.header}>
                               <p className="px-3 pb-2 mb-1 text-[10px] uppercase tracking-[0.2em] text-white/50 font-semibold border-b border-white/10">{col.header}</p>

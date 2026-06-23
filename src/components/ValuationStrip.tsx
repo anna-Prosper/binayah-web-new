@@ -81,7 +81,7 @@ const ValuationStrip = () => {
             className="group inline-flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0 min-h-[44px]"
             style={{
               background: "linear-gradient(135deg, #D4A847 0%, #B8922F 100%)",
-              color: "#0B3D2E",
+              color: "#ffffff",
               boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
             }}
           >
@@ -134,7 +134,7 @@ const ValuationStrip = () => {
             className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-300 shrink-0"
             style={{
               background: "linear-gradient(135deg, #D4A847 0%, #B8922F 100%)",
-              color: "#0B3D2E",
+              color: "#ffffff",
               boxShadow: "0 4px 20px rgba(212,168,71,0.3)",
             }}
           >
