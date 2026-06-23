@@ -2789,8 +2789,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
 
             {/* ── Price section — numbers blurred until unlocked ── */}
             <div className="relative">
-              {/* Fair Value + Confidence */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-4">
+              {/* Fair Value */}
+              <div className="mb-4">
                 <div aria-label={showLockedFairValuePreview ? "Unlock the full report to reveal fair value" : undefined} className={`rounded-2xl overflow-hidden shadow-sm ${showLockedFairValuePreview ? "cursor-pointer transition-transform duration-300 hover:-translate-y-0.5" : ""}`} onClick={showLockedFairValuePreview ? scrollToUnlockSection : undefined} onKeyDown={showLockedFairValuePreview ? (event) => {
                 if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
@@ -2823,20 +2823,6 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </>)}
                     </div>
                   </div>
-                </div>
-                <div className="rounded-2xl border border-[rgba(227,221,207,0.5)] bg-white p-5 border-l-[3px] border-l-[#0B3D2E] shadow-sm sm:p-8">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-2">{tv("confidence")}</p>
-                  <div className="flex items-center gap-2 mb-3">
-                    <AlertTriangle className={`h-5 w-5 ${result.confidence === "High" ? "text-[#0B3D2E]"
-                : result.confidence === "Medium" ? "text-[#D4A847]"
-                    : "text-[#b42318]"}`}/>
-                    <span className={`text-sm font-bold px-3 py-1 rounded-full ${result.confidence === "High" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]"
-                : result.confidence === "Medium" ? "bg-[#D4A847]/15 text-[#B8922F]"
-                    : "bg-[rgba(180,35,24,0.1)] text-[#b42318]"}`}>
-                      {result.confidence}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#66706d] leading-relaxed">{renderValuationRichText(result.confidenceReason, "confidence-reason")}</p>
                 </div>
               </div>
 
