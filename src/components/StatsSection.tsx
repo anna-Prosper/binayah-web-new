@@ -19,11 +19,11 @@ const StatsSection = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-background">
+    <section className="py-14 sm:py-24 bg-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Top: content left, photo right */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-16 items-center">
 
           {/* LEFT — label + heading + copy + CTAs */}
           <motion.div
@@ -37,27 +37,27 @@ const StatsSection = () => {
               <p className="text-[11px] font-bold tracking-[0.4em] uppercase" style={{ color: "#D4A847" }}>{t("label")}</p>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-foreground leading-[1.15] mb-6">
+            <h2 className="text-[1.7rem] sm:text-4xl lg:text-[2.6rem] font-bold text-foreground leading-[1.15] mb-5 sm:mb-6">
               {t("heading")} <span style={{ color: "#1A7A5A" }}>{t("headingAccent")}</span> {t("headingEnd")}
             </h2>
 
-            <div className="space-y-4 text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
+            <div className="space-y-3.5 sm:space-y-4 text-muted-foreground text-[15px] sm:text-base leading-relaxed mb-7 sm:mb-8">
               <p>{t("p1")}</p>
               <p>{t("p2")}</p>
               <p>{t("p3")}</p>
             </div>
 
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm transition-all hover:shadow-lg hover:brightness-110"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 sm:py-3 rounded-full text-white font-semibold text-sm transition-all hover:shadow-lg hover:brightness-110"
                 style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
               >
                 {t("cta1")} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/buy"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border-2 transition-all hover:bg-accent/5"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 sm:py-3 rounded-full font-semibold text-sm border-2 transition-all hover:bg-accent/5"
                 style={{ borderColor: "#D4A847", color: "#B8922F" }}
               >
                 {t("cta2")} <ArrowRight className="h-4 w-4" />
@@ -97,11 +97,11 @@ const StatsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40"
+          className="mt-10 sm:mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40 [&>*:last-child]:col-span-2 sm:[&>*:last-child]:col-span-1"
         >
           {stats.map((s) => (
-            <div key={s.label} className="bg-background px-4 py-6 text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-foreground">{s.value}</p>
+            <div key={s.label} className="bg-background px-3 sm:px-4 py-5 sm:py-6 text-center">
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{s.value}</p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1.5 tracking-[0.12em] uppercase leading-tight">{s.label}</p>
             </div>
           ))}
