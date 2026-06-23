@@ -1,114 +1,93 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, Users, Award, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const StatsSection = () => {
   const t = useTranslations("home.sections.stats");
   const stats = [
-    { icon: Building2, value: "3,000+", label: t("propertiesListed") },
-    { icon: Users, value: "12,000+", label: t("happyClients") },
-    { icon: Award, value: "19+", label: t("industryAwards") },
-    { icon: MapPin, value: "60+", label: t("communitiesCovered") },
+    { value: "3,000+", label: t("propertiesListed") },
+    { value: "12,000+", label: t("happyClients") },
+    { value: "19+", label: t("industryAwards") },
+    { value: "60+", label: t("communitiesCovered") },
   ];
+
   return (
-  <section className="py-10 sm:py-24 bg-card relative overflow-hidden">
-    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "40px 40px" }} />
+    <section className="py-14 sm:py-24 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E 0%, #0e4f3a 100%)" }}>
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "44px 44px" }} />
 
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className="text-center mb-6 sm:mb-16"
-      >
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "3rem" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="h-[2px] mx-auto mb-3 sm:mb-6"
-          style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
-        />
-        <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>
-          {t("label")}
-        </p>
-        <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-          <span className="sm:hidden">{t("titleMobile")}</span>
-          <span className="hidden sm:inline">{t("title")}<br /><span className="font-light">{t("titleItalic")}</span></span>
-        </h2>
-        <p className="mt-3 sm:mt-5 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base hidden sm:block">
-          {t("subtitle")}
-        </p>
-      </motion.div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-      {/* Mobile: compact stats with icons */}
-      <div className="sm:hidden grid grid-cols-2 gap-3">
-        {stats.map((stat, i) => (
+          {/* Left — text + stats */}
           <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="flex items-center gap-3 rounded-xl px-3 py-3"
-            style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.05), rgba(26,122,90,0.08))" }}
+            transition={{ duration: 0.7 }}
           >
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-              <stat.icon className="h-4 w-4 text-white" />
-            </div>
-            <div>
-              <p className="text-lg font-bold text-foreground leading-none">{stat.value}</p>
-              <p className="text-[9px] text-muted-foreground font-medium mt-0.5 leading-tight">{stat.label}</p>
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "3rem" }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="h-[2px] mb-4"
+              style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
+            />
+            <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-3 sm:mb-4" style={{ color: "#D4A847" }}>
+              {t("label")}
+            </p>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 sm:mb-5">
+              {t("title")}<br />
+              <span className="font-light text-white/80">{t("titleItalic")}</span>
+            </h2>
+            <p className="text-white/50 text-sm sm:text-base leading-relaxed mb-10 max-w-md">
+              {t("subtitle")}
+            </p>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.15 + i * 0.1 }}
+                  className="rounded-2xl border border-white/10 px-5 py-4 hover:border-white/20 transition-colors"
+                  style={{ background: "rgba(255,255,255,0.05)" }}
+                >
+                  <p className="text-3xl sm:text-4xl font-bold text-white mb-1">{stat.value}</p>
+                  <p className="text-white/45 text-xs sm:text-sm font-medium">{stat.label}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
-        ))}
-      </div>
 
-      {/* Desktop: original card grid */}
-      <div className="hidden sm:grid grid-cols-4 gap-6 lg:gap-10">
-        {stats.map((stat, i) => (
+          {/* Right — photo */}
           <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.12 }}
-            className="text-center group"
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/40"
+            style={{ aspectRatio: "4/5" }}
           >
-            <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-all duration-300 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))" }}>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
-              <stat.icon className="h-7 w-7 text-[#0B3D2E] group-hover:text-white transition-colors duration-300 relative z-10" />
-            </div>
-            <p className="text-5xl font-bold text-foreground mb-2">{stat.value}</p>
-            <p className="text-sm text-muted-foreground font-medium tracking-wide">{stat.label}</p>
+            <Image
+              src="/assets/team.webp"
+              alt="Binayah Properties team"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 600px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           </motion.div>
-        ))}
-      </div>
 
-      {/* Team photo */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        className="mt-12 sm:mt-16 relative rounded-2xl overflow-hidden shadow-xl"
-        style={{ aspectRatio: "16/7" }}
-      >
-        <Image
-          src="/assets/team.webp"
-          alt="Binayah Properties team"
-          fill
-          className="object-cover object-top"
-          sizes="(max-width: 768px) 100vw, 1152px"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-      </motion.div>
-    </div>
-  </section>
+        </div>
+      </div>
+    </section>
   );
 };
 
