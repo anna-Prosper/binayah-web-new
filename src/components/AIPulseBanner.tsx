@@ -24,7 +24,7 @@ const AIPulseBanner = () => {
   }, [pulseStats.length]);
 
   return (
-    <section className="relative bg-foreground overflow-hidden hidden sm:block">
+    <section className="relative overflow-hidden hidden sm:block" style={{ background: "#0B3D2E" }}>
       {/* Animated gradient line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]">
         <motion.div
@@ -51,7 +51,7 @@ const AIPulseBanner = () => {
             </div>
             <div>
               <p className="text-[11px] font-bold tracking-wider text-accent uppercase">{t("label")}</p>
-              <p className="text-[10px] text-background/40">{t("sublabel")}</p>
+              <p className="text-[10px] text-white/50">{t("sublabel")}</p>
             </div>
           </div>
 
@@ -65,12 +65,12 @@ const AIPulseBanner = () => {
                   animate={{ opacity: isActive ? 1 : 0.4 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <stat.icon className={`h-4 w-4 flex-shrink-0 ${isActive ? "text-accent" : "text-background/30"}`} />
+                  <stat.icon className={`h-4 w-4 flex-shrink-0 ${isActive ? "text-accent" : "text-white/40"}`} />
                   <div>
-                    <p className={`text-sm font-bold tabular-nums ${isActive ? "text-background" : "text-background/40"}`}>
+                    <p className={`text-sm font-bold tabular-nums ${isActive ? "text-white" : "text-white/50"}`}>
                       {stat.value}{stat.suffix}
                     </p>
-                    <p className="text-[10px] text-background/30 hidden lg:block whitespace-nowrap">{stat.label}</p>
+                    <p className="text-[10px] text-white/40 hidden lg:block whitespace-nowrap">{stat.label}</p>
                   </div>
                 </motion.div>
               );
@@ -83,7 +83,7 @@ const AIPulseBanner = () => {
               animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            <span className="text-[11px] font-semibold text-background/50 uppercase tracking-wider">{t("live")}</span>
+            <span className="text-[11px] font-semibold text-white/60 uppercase tracking-wider">{t("live")}</span>
           </div>
         </div>
       </div>
@@ -93,20 +93,20 @@ const AIPulseBanner = () => {
         <div className="flex items-center justify-between py-2.5">
           <div className="flex items-center gap-1.5">
             <Building2 className="h-3.5 w-3.5 text-accent" />
-            <span className="text-[11px] font-bold text-background/80 tabular-nums">3,000+</span>
+            <span className="text-[11px] font-bold text-white/85 tabular-nums">3,000+</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Users className="h-3.5 w-3.5 text-background/40" />
-            <span className="text-[11px] font-bold text-background/50 tabular-nums">11,200+</span>
+            <Users className="h-3.5 w-3.5 text-white/50" />
+            <span className="text-[11px] font-bold text-white/60 tabular-nums">11,200+</span>
           </div>
           <div className="flex items-center gap-1.5">
             <TrendingUp className="h-3.5 w-3.5 text-accent" />
             {/* eslint-disable-next-line i18next/no-literal-string -- numeric stat, not translatable copy */}
-            <span className="text-[11px] font-bold text-background/80 tabular-nums">AED 2.1B+</span>
+            <span className="text-[11px] font-bold text-white/85 tabular-nums">AED 2.1B+</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CalendarDays className="h-3.5 w-3.5 text-background/40" />
-            <span className="text-[11px] font-bold text-background/50 tabular-nums">19+</span>
+            <CalendarDays className="h-3.5 w-3.5 text-white/50" />
+            <span className="text-[11px] font-bold text-white/60 tabular-nums">19+</span>
           </div>
           <motion.div
             className="w-1.5 h-1.5 rounded-full bg-accent"
