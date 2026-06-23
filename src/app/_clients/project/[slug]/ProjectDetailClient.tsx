@@ -283,7 +283,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   // dummy placeholder so the QR slot is always visible.
   const qrSrc = (project.qrCode && project.qrCode.startsWith("http"))
     ? project.qrCode
-    : "/assets/dummy-qr.svg";
+    : "/assets/permit-qr.svg";
   const hasStoredQr = true;
 
   // Sub-page H1 suffix — each dedicated URL gets its own unique H1 for SEO
