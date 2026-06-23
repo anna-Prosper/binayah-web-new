@@ -13,7 +13,7 @@ const CryptoBanner = () => {
   const locale = useLocale();
   const cryptoHref = `${locale === "en" ? "" : `/${locale}`}/buy-with-crypto`;
   return (
-  <section className="relative overflow-hidden my-2 sm:my-6">
+  <section className="relative overflow-hidden">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">
       {/* Background image — next/image serves correctly-sized WebP, saving ~400KB */}
       <Image

@@ -106,10 +106,10 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
 
         <ValuationStrip />
+        <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
         <LazyMount minHeight={400}><WhatWeOffer /></LazyMount>
-        <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
         <LazyMount minHeight={520}><CommunitiesSection /></LazyMount>
         <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
         <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
