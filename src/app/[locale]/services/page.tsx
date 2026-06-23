@@ -30,7 +30,7 @@ const descriptions: Record<string, string> = {
 const SERVICES_FAQS: Record<string, { question: string; answer: string }[]> = {
   en: [
     { question: "What real estate services does Binayah Properties offer?", answer: "Binayah Properties offers a complete range of Dubai real estate services: buying, selling, renting, off-plan project investment, property management for landlords, free AI-powered property valuations, and mortgage guidance. All services are provided by RERA-certified agents." },
-    { question: "How much does it cost to use Binayah's services?", answer: "Buyer and tenant services are free — Binayah earns a commission from sellers and landlords. Seller commission is typically 2% of the sale price. Landlord commission for finding a tenant is 5% of the annual rent. Property management fees are typically 5–8% of the monthly rent." },
+    { question: "How much does it cost to use Binayah's services?", answer: "Buyer and tenant services are free, Binayah earns a commission from sellers and landlords. Seller commission is typically 2% of the sale price. Landlord commission for finding a tenant is 5% of the annual rent. Property management fees are typically 5-8% of the monthly rent." },
     { question: "Does Binayah offer property management services?", answer: "Yes. Binayah's property management service covers tenant screening, rent collection, maintenance coordination, EJARI registration, and annual property inspections. This is ideal for overseas investors who cannot manage their Dubai property in person." },
     { question: "Can Binayah help with off-plan investments?", answer: "Yes. Binayah has dedicated off-plan specialists with access to all major Dubai developer launches (Emaar, DAMAC, Sobha, Aldar, Nakheel, and more). We provide unbiased advice on which projects offer the best ROI, payment plans, and rental potential." },
     { question: "Does Binayah provide mortgage assistance?", answer: "Yes. Binayah works with UAE mortgage brokers and banks to help clients secure home loans. We advise on eligibility, documentation, LTV ratios, and current rates for both residents and non-residents." },
@@ -38,21 +38,21 @@ const SERVICES_FAQS: Record<string, { question: string; answer: string }[]> = {
   ],
   ru: [
     { question: "Какие услуги предоставляет Binayah Properties?", answer: "Binayah предоставляет полный спектр услуг: покупка, продажа, аренда, инвестиции в новостройки, управление недвижимостью, бесплатная оценка и консультации по ипотеке. Все услуги оказываются RERA-сертифицированными агентами с обслуживанием на русском языке." },
-    { question: "Сколько стоят услуги Binayah?", answer: "Услуги для покупателей и арендаторов бесплатны — комиссия взимается с продавцов и арендодателей. Комиссия продавца — обычно 2% от стоимости продажи. Комиссия за поиск арендатора — 5% от годовой аренды." },
+    { question: "Сколько стоят услуги Binayah?", answer: "Услуги для покупателей и арендаторов бесплатны, комиссия взимается с продавцов и арендодателей. Комиссия продавца, обычно 2% от стоимости продажи. Комиссия за поиск арендатора, 5% от годовой аренды." },
     { question: "Предоставляет ли Binayah услуги по управлению недвижимостью?", answer: "Да. Управление включает проверку арендаторов, сбор арендной платы, координацию технического обслуживания, регистрацию EJARI и ежегодные инспекции. Оптимально для зарубежных инвесторов." },
     { question: "Помогает ли Binayah с инвестициями в новостройки?", answer: "Да. Специалисты Binayah по новостройкам имеют доступ ко всем крупным застройщикам Дубая (Emaar, DAMAC, Sobha и др.) и дают независимые рекомендации по ROI и планам рассрочки." },
     { question: "Как работает бесплатная оценка недвижимости?", answer: "Инструмент оценки Binayah на базе ИИ использует данные о сделках DLD, текущие объявления и аналитику по конкретному рынку. Для детального отчёта агенты проводят полный анализ вашего объекта." },
   ],
   ar: [
     { question: "ما الخدمات التي تقدمها بناية للعقارات؟", answer: "تُقدّم بناية طيفًا كاملًا من خدمات عقارات دبي: شراء وبيع وإيجار واستثمار على الخارطة وإدارة عقارية وتقييم مجاني مدعوم بالذكاء الاصطناعي وإرشاد عقاري. جميع الخدمات من وكلاء معتمدين من RERA." },
-    { question: "كم تكلّف خدمات بناية؟", answer: "خدمات المشترين والمستأجرين مجانية — تكسب بناية عمولةً من البائعين والملّاك. عمولة البائع عادةً 2% من سعر البيع. عمولة إيجاد مستأجر 5% من الإيجار السنوي." },
+    { question: "كم تكلّف خدمات بناية؟", answer: "خدمات المشترين والمستأجرين مجانية, تكسب بناية عمولةً من البائعين والملّاك. عمولة البائع عادةً 2% من سعر البيع. عمولة إيجاد مستأجر 5% من الإيجار السنوي." },
     { question: "هل تُقدّم بناية خدمات إدارة العقارات؟", answer: "نعم. تشمل الإدارة فحص المستأجرين وتحصيل الإيجار وتنسيق الصيانة وتسجيل عقود إيجاري والتفتيش السنوي. مثالية للمستثمرين من خارج الإمارات." },
     { question: "هل تساعد بناية في الاستثمار بالمشاريع على الخارطة؟", answer: "نعم. لدى بناية متخصصون في المشاريع على الخارطة مع إمكانية الوصول إلى جميع إطلاقات كبرى المطوّرين في دبي (إعمار وداماك وسوبها وغيرها) مع توصيات محايدة." },
     { question: "كيف يعمل تقييم العقارات المجاني؟", answer: "تستخدم أداة التقييم المدعومة بالذكاء الاصطناعي من بناية بيانات معاملات DLD الأخيرة والإعلانات الحالية لتقديم تقدير فوري. للتقرير التفصيلي، يُجري الوكلاء تحليلًا كاملًا للوحدة." },
   ],
   zh: [
     { question: "Binayah Properties提供哪些房产服务？", answer: "Binayah提供全套迪拜房产服务：购买、出售、租赁、期房投资、物业管理、免费AI驱动估价和按揭指导。所有服务均由RERA认证经纪人提供，支持中文服务。" },
-    { question: "使用Binayah服务需要多少费用？", answer: "买方和租客服务免费——Binayah从卖家和房东处收取佣金。卖家佣金通常为成交价的2%，寻找租客的佣金为年租金的5%。" },
+    { question: "使用Binayah服务需要多少费用？", answer: "买方和租客服务免费, , Binayah从卖家和房东处收取佣金。卖家佣金通常为成交价的2%，寻找租客的佣金为年租金的5%。" },
     { question: "Binayah提供物业管理服务吗？", answer: "是的。物业管理服务涵盖租客筛选、租金收取、维修协调、EJARI登记和年度检查，非常适合无法亲自管理迪拜房产的海外投资者。" },
     { question: "Binayah协助期房投资吗？", answer: "是的。Binayah的期房专家可获取所有主要迪拜开发商的楼盘信息（Emaar、DAMAC、Sobha等），并提供关于投资回报率和付款计划的客观建议。" },
     { question: "免费房产估价如何运作？", answer: "Binayah的AI驱动估价工具使用DLD近期交易数据和当前房源信息提供即时估价。如需详细报告，经纪人将根据您的具体单元楼层、景观和状况进行全面分析。" },

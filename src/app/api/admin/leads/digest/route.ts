@@ -40,7 +40,7 @@ function rowsHtml(leads: UnifiedLead[]): string {
       (l) => `
         <tr style="border-top:1px solid #eee">
           <td style="padding:8px;font-size:13px"><strong>${escape(l.name || "(no name)")}</strong></td>
-          <td style="padding:8px;font-size:12px;color:#555">${escape(l.email || l.phone || "—")}</td>
+          <td style="padding:8px;font-size:12px;color:#555">${escape(l.email || l.phone || ", ")}</td>
           <td style="padding:8px;font-size:12px;color:#555">${escape(l.source)}${l.community ? ` · ${escape(l.community)}` : ""}</td>
           <td style="padding:8px;font-size:11px;color:#888">${new Date(l.createdAt).toLocaleString("en-GB", { timeZone: "Asia/Dubai", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</td>
         </tr>`
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
   const html = `
     <div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;max-width:680px;margin:0 auto;padding:24px;color:#222">
       <div style="background:linear-gradient(135deg,#0B3D2E,#1A7A5A);color:#fff;padding:20px;border-radius:12px 12px 0 0">
-        <h1 style="margin:0;font-size:22px">Binayah leads digest — ${fmt(now)}</h1>
+        <h1 style="margin:0;font-size:22px">Binayah leads digest, ${fmt(now)}</h1>
         <p style="margin:6px 0 0;color:#cfead8;font-size:13px">Yesterday's wrap-up + what needs attention today</p>
       </div>
       <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;padding:24px">
@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
             <td style="width:8px"></td>
             <td style="padding:12px;background:#eff5fb;border-radius:8px"><div style="font-size:11px;color:#666">New last 7 days</div><div style="font-size:22px;font-weight:bold;color:#1d4ed8">${stats.last7Days}</div></td>
             <td style="width:8px"></td>
-            <td style="padding:12px;background:#fdf4e8;border-radius:8px"><div style="font-size:11px;color:#666">Avg first response</div><div style="font-size:22px;font-weight:bold;color:#a16207">${stats.avgTimeToContactMs ? formatDuration(stats.avgTimeToContactMs) : "—"}</div></td>
+            <td style="padding:12px;background:#fdf4e8;border-radius:8px"><div style="font-size:11px;color:#666">Avg first response</div><div style="font-size:22px;font-weight:bold;color:#a16207">${stats.avgTimeToContactMs ? formatDuration(stats.avgTimeToContactMs) : ", "}</div></td>
           </tr>
         </table>
 
@@ -126,7 +126,7 @@ export async function GET(req: NextRequest) {
         ${stats.topProperties.length > 0 ? `
           <h2 style="font-size:14px;color:#555;margin:24px 0 8px;letter-spacing:0.5px;text-transform:uppercase">Most-inquired this period</h2>
           <ul style="margin:0;padding-left:18px;font-size:13px;color:#444">
-            ${stats.topProperties.slice(0, 5).map((p) => `<li>${escape(p.title)} <span style="color:#888">— ${p.count} inquiries</span></li>`).join("")}
+            ${stats.topProperties.slice(0, 5).map((p) => `<li>${escape(p.title)} <span style="color:#888">, ${p.count} inquiries</span></li>`).join("")}
           </ul>
         ` : ""}
 
@@ -140,7 +140,7 @@ export async function GET(req: NextRequest) {
   try {
     await sendMail({
       to: recipients.join(", "),
-      subject: `Binayah leads — ${brandNew.total} new in last 24h, ${waiting.total} waiting`,
+      subject: `Binayah leads, ${brandNew.total} new in last 24h, ${waiting.total} waiting`,
       html,
     });
     return NextResponse.json({

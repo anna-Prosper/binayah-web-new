@@ -7,8 +7,8 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 
 const FALLBACK_ARTICLES = [
-  { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million — Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "/assets/dubai-hero.webp" },
-  { slug: "tax-benefits-dubai-property", title: "Tax Benefits of Owning Property in Dubai — The Complete Picture", date: "7 Feb 2026", category: "Guides", image: "/assets/dubai-hero.webp" },
+  { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million, Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "/assets/dubai-hero.webp" },
+  { slug: "tax-benefits-dubai-property", title: "Tax Benefits of Owning Property in Dubai, The Complete Picture", date: "7 Feb 2026", category: "Guides", image: "/assets/dubai-hero.webp" },
   { slug: "dubai-property-investment-2026", title: "Is Dubai Property a Good Investment in 2026?", date: "7 Feb 2026", category: "Market Insights", image: "/assets/dubai-hero.webp" },
 ];
 

@@ -76,7 +76,7 @@ export default function PulseSentimentChip({ sentiment: sentimentProp, monthly =
     ? "hsl(0, 72%, 51%)"
     : "hsl(43, 55%, 55%)";
 
-  const glyph = isBullish ? "●" : isBearish ? "—" : "›";
+  const glyph = isBullish ? "●" : isBearish ? ", " : "›";
   const label = isBullish ? t("bullish") : isBearish ? t("bearish") : t("neutral");
 
   // Sparkline dot y-positions (24px height, 3 dots at x=2,10,18)

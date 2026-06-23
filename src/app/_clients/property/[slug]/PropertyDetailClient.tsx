@@ -156,9 +156,9 @@ function getNumericText(value: unknown) {
 
 function decodeDescriptionText(value: string) {
   return value
-    .replace(/&mdash;/g, "—").replace(/&ndash;/g, "–").replace(/&amp;/g, "&")
+    .replace(/&mdash;/g, ", ").replace(/&ndash;/g, "-").replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
-    .replace(/&#8211;/g, "–").replace(/&#8212;/g, "—").replace(/&#160;/g, " ")
+    .replace(/&#8211;/g, "-").replace(/&#8212;/g, ", ").replace(/&#160;/g, " ")
     .replace(/&[a-z]+;/gi, " ");
 }
 
@@ -356,7 +356,7 @@ function buildNearby(community?: string): NearbyItem[] {
     { name: "Beach & Waterfront", type: "beach", distance: "15 min drive" },
     { name: "International Schools", type: "school", distance: "10 min drive" },
     { name: "Parks & Recreation", type: "park", distance: "5 min drive" },
-    { name: "Dubai International Airport", type: "airport", distance: "20–35 min drive" },
+    { name: "Dubai International Airport", type: "airport", distance: "20-35 min drive" },
   ];
 }
 
@@ -1452,14 +1452,14 @@ export default function PropertyDetailClient({
       {(() => {
         const testimonials = isRent
           ? [
-              { name: "Aisha M.", role: "Tenant in Dubai Marina", rating: 5, text: "The whole rental process took less than a week — viewing, paperwork, Ejari registration. Binayah's team made what could have been stressful incredibly smooth." },
+              { name: "Aisha M.", role: "Tenant in Dubai Marina", rating: 5, text: "The whole rental process took less than a week, viewing, paperwork, Ejari registration. Binayah's team made what could have been stressful incredibly smooth." },
               { name: "Ravi K.", role: "Tenant in JVC", rating: 5, text: "I was relocating from London and Binayah arranged a virtual tour, then handled everything before I even arrived. Walked into a fully furnished apartment ready to move in." },
-              { name: "Sophie L.", role: "Tenant in Downtown", rating: 4, text: "Honest about the building's strengths and quirks. No hidden fees, no surprises. The post-move-in support has been excellent — they actually pick up when I call." },
+              { name: "Sophie L.", role: "Tenant in Downtown", rating: 4, text: "Honest about the building's strengths and quirks. No hidden fees, no surprises. The post-move-in support has been excellent, they actually pick up when I call." },
             ]
           : [
-              { name: "Ahmed R.", role: "Buyer · 2 BR Apartment", rating: 5, text: "Exceptional knowledge of the Dubai market and the legal process. Binayah handled DLD registration, mortgage coordination, and snagging — I just signed the papers." },
-              { name: "Sarah L.", role: "Buyer · 3 BR Villa", rating: 5, text: "We saw twelve properties before settling on this one. Our agent never pushed, never rushed — just gave us honest assessments and let us decide. That trust is rare." },
-              { name: "James K.", role: "Investor · 1 BR Studio", rating: 4, text: "Strong rental yield analysis and realistic ROI projections — none of the inflated numbers other agencies threw at me. Bought sight-unseen based on their report." },
+              { name: "Ahmed R.", role: "Buyer · 2 BR Apartment", rating: 5, text: "Exceptional knowledge of the Dubai market and the legal process. Binayah handled DLD registration, mortgage coordination, and snagging, I just signed the papers." },
+              { name: "Sarah L.", role: "Buyer · 3 BR Villa", rating: 5, text: "We saw twelve properties before settling on this one. Our agent never pushed, never rushed, just gave us honest assessments and let us decide. That trust is rare." },
+              { name: "James K.", role: "Investor · 1 BR Studio", rating: 4, text: "Strong rental yield analysis and realistic ROI projections, none of the inflated numbers other agencies threw at me. Bought sight-unseen based on their report." },
             ];
         return (
           <section className="py-10 sm:py-14 border-t border-border/50">

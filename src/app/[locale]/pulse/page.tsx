@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return {
     title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
-    description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
+    description: "Live Dubai real estate analytics, price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
     alternates: {
       canonical: canonical(locale, "/pulse"),
       languages: altLangs("/pulse"),
     },
     openGraph: {
       title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
-      description: "Live Dubai real estate analytics — price per sqft, rental yields, investment scores, transaction trends and economic indicators.",
+      description: "Live Dubai real estate analytics, price per sqft, rental yields, investment scores, transaction trends and economic indicators.",
       url: canonical(locale, "/pulse"),
       type: "website",
       locale: OG_LOCALE[locale] ?? "en_AE",

@@ -54,7 +54,7 @@ export default async function PaymentPlanPage({ params }: { params: Promise<{ lo
   const jsonLd = {
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
-    name:        `${project.name} — Payment Plan`,
+    name:        `${project.name}, Payment Plan`,
     url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}/payment-plan`,
     description: `Payment plan details for ${project.name}`,
     address: {

@@ -6,7 +6,7 @@ import type { LeadStats } from "@/lib/leads/stats";
 import type { LeadStatus } from "@/lib/leads/types";
 
 function formatDuration(ms: number | null): string {
-  if (ms == null) return "—";
+  if (ms == null) return ", ";
   const minutes = ms / 60_000;
   if (minutes < 60) return `${Math.round(minutes)} min`;
   const hours = minutes / 60;
@@ -16,7 +16,7 @@ function formatDuration(ms: number | null): string {
 }
 
 function formatPct(v: number | undefined): string {
-  if (v == null) return "—";
+  if (v == null) return ", ";
   return `${(v * 100).toFixed(0)}%`;
 }
 
@@ -201,7 +201,7 @@ function Kpi({
     <div className="bg-white p-4">
       <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1">{label}</p>
       <p className={`text-xl sm:text-2xl font-bold ${accent}`}>
-        {loading ? <span className="text-gray-300">…</span> : typeof value === "number" ? value.toLocaleString() : value ?? "—"}
+        {loading ? <span className="text-gray-300">…</span> : typeof value === "number" ? value.toLocaleString() : value ?? ", "}
       </p>
     </div>
   );

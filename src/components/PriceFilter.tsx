@@ -38,7 +38,7 @@ export default function PriceFilter({ min, max, value, onChange, currency = "AED
   const triggerLabel = !hasValue
     ? priceLabel
     : lo != null && hi != null
-      ? `${formatPrice(lo)} – ${formatPrice(hi)}`
+      ? `${formatPrice(lo)} - ${formatPrice(hi)}`
       : lo != null
         ? `${formatPrice(lo)}+`
         : `≤ ${formatPrice(hi as number)}`;
@@ -79,7 +79,7 @@ export default function PriceFilter({ min, max, value, onChange, currency = "AED
           </div>
           <div className="flex items-center gap-2">
             <PriceInput key={`min-${lo ?? ""}`} placeholder={minLabel} currency={currency} defaultText={lo != null ? formatPrice(lo) : ""} onCommit={commitMin} />
-            <span className="text-muted-foreground shrink-0">—</span>
+            <span className="text-muted-foreground shrink-0">, </span>
             <PriceInput key={`max-${hi ?? ""}`} placeholder={maxLabel} currency={currency} defaultText={hi != null ? formatPrice(hi) : ""} onCommit={commitMax} />
           </div>
         </div>

@@ -20,7 +20,7 @@ const CONTENT = {
     "metaDesc": "Vendez votre bien à Dubaï avec Binayah Properties. Agents certifiés RERA, évaluation professionnelle, plus de 17 ans d'expérience. Obtenez une estimation gratuite du marché aujourd'hui.",
     "heroLabel": "VENDEZ AVEC CONFIANCE",
     "h1": "Vendez Votre Bien à Dubai",
-    "heroDesc": "Binayah Properties vend de l'immobilier à Dubai depuis 2007. Notre équipe certifiée RERA offre une expertise en évaluation, un marketing professionnel et des résultats rapides — avec un service complet de l'inscription à l'achèvement.",
+    "heroDesc": "Binayah Properties vend de l'immobilier à Dubai depuis 2007. Notre équipe certifiée RERA offre une expertise en évaluation, un marketing professionnel et des résultats rapides, avec un service complet de l'inscription à l'achèvement.",
     "heroCta": "Obtenez une évaluation gratuite",
     "heroCtaSecondary": "Listez Votre Bien",
     "stats": [
@@ -57,7 +57,7 @@ const CONTENT = {
       {
         "n": "03",
         "title": "Qualification des acheteurs",
-        "body": "Nous vous présentons uniquement des acheteurs sérieux et pré-qualifiés — fonds vérifiés, pré-approbation de prêt immobilier ou preuve de fonds en espèces confirmée avant les visites."
+        "body": "Nous vous présentons uniquement des acheteurs sérieux et pré-qualifiés, fonds vérifiés, pré-approbation de prêt immobilier ou preuve de fonds en espèces confirmée avant les visites."
       },
       {
         "n": "04",
@@ -78,7 +78,7 @@ const CONTENT = {
       },
       {
         "title": "Évaluation professionnelle gratuite",
-        "body": "Basée sur les données réelles des transactions DLD et des ventes comparables — pas des estimations. Vous savez exactement combien vaut votre bien avant de le mettre en vente."
+        "body": "Basée sur les données réelles des transactions DLD et des ventes comparables, pas des estimations. Vous savez exactement combien vaut votre bien avant de le mettre en vente."
       },
       {
         "title": "Marketing multi-portails",
@@ -86,7 +86,7 @@ const CONTENT = {
       },
       {
         "title": "Pas de vente, pas de frais",
-        "body": "Nous travaillons sur une base de commission — vous ne payez que lorsque votre bien est vendu. Pas de frais initiaux, pas de frais cachés."
+        "body": "Nous travaillons sur une base de commission, vous ne payez que lorsque votre bien est vendu. Pas de frais initiaux, pas de frais cachés."
       },
       {
         "title": "Acheteurs russes et internationaux",
@@ -94,7 +94,7 @@ const CONTENT = {
       },
       {
         "title": "Gestion complète des documents",
-        "body": "Du protocole d'accord (MOU) au NOC, frais de transfert DLD, et acte de propriété — nous gérons toute la documentation de bout en bout."
+        "body": "Du protocole d'accord (MOU) au NOC, frais de transfert DLD, et acte de propriété, nous gérons toute la documentation de bout en bout."
       }
     ],
     "faqTitle": "Questions Fréquemment Posées",
@@ -105,7 +105,7 @@ const CONTENT = {
       },
       {
         "q": "Quels frais dois-je payer lors de la vente d'un bien à Dubai ?",
-        "a": "En tant que vendeur, votre principal coût est la commission de l'agent (généralement 2 % du prix de vente). Les coûts supplémentaires incluent des frais de NOC du DLD (500–5,000 AED selon le promoteur) et des frais de transfert du DLD (4 % — bien que cela soit généralement partagé entre l'acheteur et le vendeur). Il n'y a pas d'impôt sur les plus-values ou d'impôt sur le revenu aux Émirats Arabes Unis."
+        "a": "En tant que vendeur, votre principal coût est la commission de l'agent (généralement 2 % du prix de vente). Les coûts supplémentaires incluent des frais de NOC du DLD (500-5,000 AED selon le promoteur) et des frais de transfert du DLD (4 %, bien que cela soit généralement partagé entre l'acheteur et le vendeur). Il n'y a pas d'impôt sur les plus-values ou d'impôt sur le revenu aux Émirats Arabes Unis."
       },
       {
         "q": "Dois-je être à Dubai pour vendre mon bien ?",
@@ -121,7 +121,7 @@ const CONTENT = {
       },
       {
         "q": "Comment est calculée l'évaluation d'un bien ?",
-        "a": "L'évaluation gratuite de Binayah est basée sur les ventes récentes enregistrées par le DLD dans votre immeuble et quartier (et non sur les prix demandés), la demande actuelle, le niveau de l'étage, la vue et l'état du bien. Nous utilisons les mêmes sources de données que la RERA et les banques — vous obtenez ainsi un prix de marché réaliste."
+        "a": "L'évaluation gratuite de Binayah est basée sur les ventes récentes enregistrées par le DLD dans votre immeuble et quartier (et non sur les prix demandés), la demande actuelle, le niveau de l'étage, la vue et l'état du bien. Nous utilisons les mêmes sources de données que la RERA et les banques, vous obtenez ainsi un prix de marché réaliste."
       },
       {
         "q": "Quel est le meilleur moment pour vendre un bien à Dubai ?",
@@ -143,7 +143,7 @@ const CONTENT = {
     "metaDesc": "מכרו את הנכס שלכם בדובאי עם Binayah Properties. סוכנים מוסמכי RERA, הערכת שווי מקצועית, ניסיון של 19+ שנים. קבלו הערכת שוק חינם עוד היום.",
     "heroLabel": "מכרו בביטחון",
     "h1": "מכרו את הנכס שלכם בדובאי",
-    "heroDesc": "Binayah Properties מוכרת נדל\"ן בדובאי מאז 2007. הצוות המוסמך שלנו ב-RERA מספק הערכת שווי מקצועית, שיווק מקצועי ותוצאות מהירות — עם שירות מלא מהרישום ועד להשלמת העסקה.",
+    "heroDesc": "Binayah Properties מוכרת נדל\"ן בדובאי מאז 2007. הצוות המוסמך שלנו ב-RERA מספק הערכת שווי מקצועית, שיווק מקצועי ותוצאות מהירות, עם שירות מלא מהרישום ועד להשלמת העסקה.",
     "heroCta": "קבלו הערכת שווי חינם",
     "heroCtaSecondary": "רשמו את הנכס שלכם",
     "stats": [
@@ -180,7 +180,7 @@ const CONTENT = {
       {
         "n": "03",
         "title": "סינון קונים",
-        "body": "אנו מביאים אליכם רק קונים רציניים ומסוננים מראש — עם אמצעים מאומתים, אישור משכנתה מוקדם או הוכחת מזומן שאומתו לפני הצפיות."
+        "body": "אנו מביאים אליכם רק קונים רציניים ומסוננים מראש, עם אמצעים מאומתים, אישור משכנתה מוקדם או הוכחת מזומן שאומתו לפני הצפיות."
       },
       {
         "n": "04",
@@ -201,7 +201,7 @@ const CONTENT = {
       },
       {
         "title": "הערכת שווי מקצועית חינם",
-        "body": "מבוססת על נתוני עסקאות אמיתיים של DLD ועל עסקאות דומות — לא על אומדנים. אתם יודעים בדיוק כמה שווה הנכס שלכם לפני שאתם מפרסמים אותו."
+        "body": "מבוססת על נתוני עסקאות אמיתיים של DLD ועל עסקאות דומות, לא על אומדנים. אתם יודעים בדיוק כמה שווה הנכס שלכם לפני שאתם מפרסמים אותו."
       },
       {
         "title": "שיווק רב-פלטפורמות",
@@ -209,7 +209,7 @@ const CONTENT = {
       },
       {
         "title": "אין מכירה, אין עמלה",
-        "body": "אנו עובדים על בסיס עמלה — אתם משלמים רק כשהנכס נמכר. ללא תשלום מראש וללא עלויות נסתרות."
+        "body": "אנו עובדים על בסיס עמלה, אתם משלמים רק כשהנכס נמכר. ללא תשלום מראש וללא עלויות נסתרות."
       },
       {
         "title": "קונים רוסים ובינלאומיים",
@@ -217,18 +217,18 @@ const CONTENT = {
       },
       {
         "title": "ניהול מלא של המסמכים",
-        "body": "ממזכר הבנות (MOU) ועד NOC, אגרות העברה של DLD ושטר הבעלות — אנו מטפלים בכל התיעוד מתחילה ועד סוף."
+        "body": "ממזכר הבנות (MOU) ועד NOC, אגרות העברה של DLD ושטר הבעלות, אנו מטפלים בכל התיעוד מתחילה ועד סוף."
       }
     ],
     "faqTitle": "שאלות נפוצות",
     "faqs": [
       {
         "q": "כמה זמן לוקח למכור נכס בדובאי?",
-        "a": "הזמן הממוצע למכירת נכס בדובאי הוא 30–60 ימים מהרישום ועד להעברה. נכסים במחיר נכון במיקומים מובילים (Dubai Marina, Downtown, Palm) יכולים להימכר תוך פחות משבועיים. הממוצע של Binayah הוא 30 ימים מהרישום ועד לחוזה."
+        "a": "הזמן הממוצע למכירת נכס בדובאי הוא 30-60 ימים מהרישום ועד להעברה. נכסים במחיר נכון במיקומים מובילים (Dubai Marina, Downtown, Palm) יכולים להימכר תוך פחות משבועיים. הממוצע של Binayah הוא 30 ימים מהרישום ועד לחוזה."
       },
       {
         "q": "אילו עלויות אני משלם בעת מכירת נכס בדובאי?",
-        "a": "כמוכר, העלות העיקרית שלכם היא עמלת הסוכן (בדרך כלל 2% ממחיר המכירה). עלויות נוספות כוללות אגרת NOC של DLD (500–5,000 AED בהתאם ליזם) ואגרת העברה של DLD (4% — אם כי בדרך כלל היא מתחלקת בין הקונה למוכר). אין מס רווחי הון ואין מס הכנסה באיחוד האמירויות."
+        "a": "כמוכר, העלות העיקרית שלכם היא עמלת הסוכן (בדרך כלל 2% ממחיר המכירה). עלויות נוספות כוללות אגרת NOC של DLD (500-5,000 AED בהתאם ליזם) ואגרת העברה של DLD (4%, אם כי בדרך כלל היא מתחלקת בין הקונה למוכר). אין מס רווחי הון ואין מס הכנסה באיחוד האמירויות."
       },
       {
         "q": "האם אני צריך להיות בדובאי כדי למכור את הנכס שלי?",
@@ -244,11 +244,11 @@ const CONTENT = {
       },
       {
         "q": "כיצד מחושבת הערכת שווי הנכס?",
-        "a": "הערכת השווי החינמית של Binayah מבוססת על עסקאות שנרשמו לאחרונה ב-DLD בבניין ובקהילה שלכם (לא מחירי הצעה), ביקוש נוכחי, מפלס הקומה, הנוף ומצב הנכס. אנו משתמשים באותם מקורות נתונים כמו RERA והבנקים — כך שאתם מקבלים מחיר שוק ריאלי."
+        "a": "הערכת השווי החינמית של Binayah מבוססת על עסקאות שנרשמו לאחרונה ב-DLD בבניין ובקהילה שלכם (לא מחירי הצעה), ביקוש נוכחי, מפלס הקומה, הנוף ומצב הנכס. אנו משתמשים באותם מקורות נתונים כמו RERA והבנקים, כך שאתם מקבלים מחיר שוק ריאלי."
       },
       {
         "q": "מתי הזמן הטוב ביותר למכור נכס בדובאי?",
-        "a": "הרבעון הראשון (ינואר–מרץ) והרבעון הרביעי (אוקטובר–דצמבר) הם היסטורית עונות המכירה החזקות ביותר, המונעות מהגעת זרים ומפעילות השקעה. עם זאת, שוק דובאי חזק לאורך כל השנה מאז 2021, עם נפחי עסקאות בשיא כל הזמנים."
+        "a": "הרבעון הראשון (ינואר-מרץ) והרבעון הרביעי (אוקטובר-דצמבר) הם היסטורית עונות המכירה החזקות ביותר, המונעות מהגעת זרים ומפעילות השקעה. עם זאת, שוק דובאי חזק לאורך כל השנה מאז 2021, עם נפחי עסקאות בשיא כל הזמנים."
       },
       {
         "q": "מהו NOC ולמה אני זקוק לו?",
@@ -266,7 +266,7 @@ const CONTENT = {
     metaDesc: "Sell your Dubai property with Binayah Properties. RERA-certified agents, professional valuation, 19+ years experience. Get a free market appraisal today.",
     heroLabel: "SELL WITH CONFIDENCE",
     h1: "Sell Your Property in Dubai",
-    heroDesc: "Binayah Properties has been selling Dubai real estate since 2007. Our RERA-certified team delivers expert valuation, professional marketing, and fast results — with full service from listing to completion.",
+    heroDesc: "Binayah Properties has been selling Dubai real estate since 2007. Our RERA-certified team delivers expert valuation, professional marketing, and fast results, with full service from listing to completion.",
     heroCta: "Get Free Valuation",
     heroCtaSecondary: "List Your Property",
     stats: [
@@ -280,28 +280,28 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Free Market Valuation", body: "Our agents assess your property using live DLD transaction data, comparable sales in your building, and current market conditions to set the right asking price." },
       { n: "02", title: "Professional Marketing", body: "We create a professional listing with HDR photography, floor plan, and a detailed description. Your property is listed on Bayut, Propertyfinder, Dubizzle, and Binayah.ae simultaneously." },
-      { n: "03", title: "Buyer Qualification", body: "We only bring you pre-qualified, serious buyers — verified funds, mortgage pre-approval or cash proof confirmed before viewings." },
+      { n: "03", title: "Buyer Qualification", body: "We only bring you pre-qualified, serious buyers, verified funds, mortgage pre-approval or cash proof confirmed before viewings." },
       { n: "04", title: "Offer & Negotiation", body: "We manage all offers and negotiate on your behalf to secure the best price. You approve the final terms before any paperwork is signed." },
       { n: "05", title: "DLD Transfer & Completion", body: "We coordinate with the buyer's agent, bank (if mortgaged), and the Dubai Land Department to ensure a smooth, legally compliant ownership transfer." },
     ],
     whyTitle: "Why Sell with Binayah",
     whyPoints: [
       { title: "RERA-Certified Team", body: "Every Binayah agent is licensed by the Real Estate Regulatory Agency (RERA). You're protected by Dubai law at every step." },
-      { title: "Free Professional Valuation", body: "Based on real DLD transaction data and comparable sales — not estimates. You know exactly what your property is worth before you list." },
+      { title: "Free Professional Valuation", body: "Based on real DLD transaction data and comparable sales, not estimates. You know exactly what your property is worth before you list." },
       { title: "Multi-Portal Marketing", body: "Listed on Bayut, Propertyfinder, Dubizzle, and Binayah.ae with professional photography. Maximum exposure to qualified buyers." },
-      { title: "No Sale, No Fee", body: "We work on a commission basis — you only pay when your property sells. No upfront fees, no hidden charges." },
+      { title: "No Sale, No Fee", body: "We work on a commission basis, you only pay when your property sells. No upfront fees, no hidden charges." },
       { title: "Russian & International Buyers", body: "With offices serving Russian, Chinese, European and GCC buyers, we connect your property to a global pool of investors and end-users." },
-      { title: "Full Paperwork Management", body: "From Memorandum of Understanding (MOU) to NOC, DLD transfer fees, and title deed — we handle all documentation end-to-end." },
+      { title: "Full Paperwork Management", body: "From Memorandum of Understanding (MOU) to NOC, DLD transfer fees, and title deed, we handle all documentation end-to-end." },
     ],
     faqTitle: "Frequently Asked Questions",
     faqs: [
-      { q: "How long does it take to sell a property in Dubai?", a: "The average time to sell a property in Dubai is 30–60 days from listing to transfer. Well-priced properties in prime locations (Dubai Marina, Downtown, Palm) can sell in under 2 weeks. Binayah's average is 30 days from listing to contract." },
-      { q: "What fees do I pay when selling property in Dubai?", a: "As a seller, your main cost is the agent commission (typically 2% of the sale price). Additional costs include a DLD NOC fee (AED 500–5,000 depending on developer) and a DLD transfer fee (4% — though this is usually split between buyer and seller). There is no capital gains tax or income tax in the UAE." },
+      { q: "How long does it take to sell a property in Dubai?", a: "The average time to sell a property in Dubai is 30-60 days from listing to transfer. Well-priced properties in prime locations (Dubai Marina, Downtown, Palm) can sell in under 2 weeks. Binayah's average is 30 days from listing to contract." },
+      { q: "What fees do I pay when selling property in Dubai?", a: "As a seller, your main cost is the agent commission (typically 2% of the sale price). Additional costs include a DLD NOC fee (AED 500-5,000 depending on developer) and a DLD transfer fee (4%, though this is usually split between buyer and seller). There is no capital gains tax or income tax in the UAE." },
       { q: "Do I need to be in Dubai to sell my property?", a: "No. You can sell remotely by granting a Power of Attorney (POA) to your agent or a legal representative in Dubai. Binayah handles international sellers regularly, including Russian, European, and Asian clients who complete the sale entirely remotely." },
       { q: "Can I sell a mortgaged property in Dubai?", a: "Yes. The buyer's payment is used to settle your outstanding mortgage (called a 'blocking letter' process), with the remaining funds transferred to you. Your Binayah agent coordinates with your bank to ensure a smooth transition." },
       { q: "What documents do I need to sell property in Dubai?", a: "Passport copy, original title deed (or trustee-issued copy), property details (floor plan, service charge statements), NOC from the developer, and a signed Form A (listing agreement). If selling remotely, a POA from a UAE-authorised notary." },
-      { q: "How is the property valuation calculated?", a: "Binayah's free valuation is based on recent DLD-registered sales in your building and community (not asking prices), current demand, floor level, view, and property condition. We use the same data sources as RERA and banks — so you get a realistic market price." },
-      { q: "When is the best time to sell property in Dubai?", a: "Q1 (January–March) and Q4 (October–December) are historically the strongest selling seasons, driven by expat arrivals and investment activity. However, the Dubai market has been strong year-round since 2021, with transaction volumes at record highs." },
+      { q: "How is the property valuation calculated?", a: "Binayah's free valuation is based on recent DLD-registered sales in your building and community (not asking prices), current demand, floor level, view, and property condition. We use the same data sources as RERA and banks, so you get a realistic market price." },
+      { q: "When is the best time to sell property in Dubai?", a: "Q1 (January-March) and Q4 (October-December) are historically the strongest selling seasons, driven by expat arrivals and investment activity. However, the Dubai market has been strong year-round since 2021, with transaction volumes at record highs." },
       { q: "What is an NOC and why do I need it?", a: "A No Objection Certificate (NOC) is issued by the property developer confirming there are no outstanding service charges or payments on the unit. Without an NOC, the Dubai Land Department will not process the ownership transfer. Your Binayah agent handles the NOC application on your behalf." },
     ],
     ctaTitle: "Ready to Sell?",
@@ -316,7 +316,7 @@ const CONTENT = {
     metaDesc: "Продайте недвижимость в Дубае с Binayah Properties. RERA-сертифицированные агенты, профессиональная оценка, 19+ лет опыта. Бесплатная оценка рынка.",
     heroLabel: "ПРОДАЙТЕ ВЫГОДНО",
     h1: "Продать недвижимость в Дубае",
-    heroDesc: "Binayah Properties продаёт недвижимость в Дубае с 2007 года. RERA-сертифицированная команда, профессиональный маркетинг и быстрые результаты — полное сопровождение от оценки до передачи права собственности. Обслуживание на русском языке.",
+    heroDesc: "Binayah Properties продаёт недвижимость в Дубае с 2007 года. RERA-сертифицированная команда, профессиональный маркетинг и быстрые результаты, полное сопровождение от оценки до передачи права собственности. Обслуживание на русском языке.",
     heroCta: "Бесплатная оценка",
     heroCtaSecondary: "Выставить объект",
     stats: [
@@ -330,7 +330,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Бесплатная рыночная оценка", body: "Наши агенты анализируют актуальные данные о сделках DLD, сопоставимые продажи в вашем доме и текущую рыночную конъюнктуру для установки правильной цены." },
       { n: "02", title: "Профессиональный маркетинг", body: "Создаём профессиональное объявление с HDR-фотографией и планировкой. Ваш объект одновременно размещается на Bayut, Propertyfinder, Dubizzle и Binayah.ae." },
-      { n: "03", title: "Проверка покупателей", body: "Мы приводим только проверенных, серьёзных покупателей — с подтверждёнными средствами или одобренной ипотекой до начала показов." },
+      { n: "03", title: "Проверка покупателей", body: "Мы приводим только проверенных, серьёзных покупателей, с подтверждёнными средствами или одобренной ипотекой до начала показов." },
       { n: "04", title: "Переговоры и предложение", body: "Ведём переговоры от вашего имени для получения наилучшей цены. Вы утверждаете окончательные условия до подписания документов." },
       { n: "05", title: "Регистрация в DLD", body: "Координируем с агентом покупателя, банком (при ипотеке) и Земельным департаментом Дубая для юридически чистой передачи права собственности." },
     ],
@@ -339,20 +339,20 @@ const CONTENT = {
       { title: "Сертификация RERA", body: "Каждый агент Binayah лицензирован RERA. Вы защищены законодательством ОАЭ на каждом этапе сделки." },
       { title: "Бесплатная оценка", body: "На основе реальных данных DLD о сделках, а не примерных оценок. Вы точно знаете рыночную стоимость объекта до выставления." },
       { title: "Размещение на всех порталах", body: "Bayut, Propertyfinder, Dubizzle и Binayah.ae с профессиональными фотографиями. Максимальный охват квалифицированных покупателей." },
-      { title: "Комиссия только при продаже", body: "Мы работаем на комиссионной основе — оплата только после успешной продажи. Никаких авансовых платежей и скрытых комиссий." },
+      { title: "Комиссия только при продаже", body: "Мы работаем на комиссионной основе, оплата только после успешной продажи. Никаких авансовых платежей и скрытых комиссий." },
       { title: "Русскоязычное обслуживание", body: "Полное сопровождение на русском языке. Активная база российских, европейских и азиатских покупателей." },
-      { title: "Полное ведение документов", body: "От MOU до NOC, сборов DLD и свидетельства о праве собственности — мы управляем всей документацией." },
+      { title: "Полное ведение документов", body: "От MOU до NOC, сборов DLD и свидетельства о праве собственности, мы управляем всей документацией." },
     ],
     faqTitle: "Частые вопросы",
     faqs: [
-      { q: "Сколько времени занимает продажа недвижимости в Дубае?", a: "В среднем 30–60 дней от выставления до передачи права собственности. Правильно оценённые объекты в ключевых локациях продаются менее чем за 2 недели. Средний срок Binayah — 30 дней от объявления до договора." },
-      { q: "Какие расходы несёт продавец в Дубае?", a: "Основная статья — комиссия агента (обычно 2% от стоимости). Дополнительно: сбор NOC застройщика (500–5 000 AED) и сбор за передачу прав DLD (4% — обычно делится между сторонами). Налога на прирост капитала и подоходного налога в ОАЭ нет." },
+      { q: "Сколько времени занимает продажа недвижимости в Дубае?", a: "В среднем 30-60 дней от выставления до передачи права собственности. Правильно оценённые объекты в ключевых локациях продаются менее чем за 2 недели. Средний срок Binayah, 30 дней от объявления до договора." },
+      { q: "Какие расходы несёт продавец в Дубае?", a: "Основная статья, комиссия агента (обычно 2% от стоимости). Дополнительно: сбор NOC застройщика (500-5 000 AED) и сбор за передачу прав DLD (4%, обычно делится между сторонами). Налога на прирост капитала и подоходного налога в ОАЭ нет." },
       { q: "Можно ли продать недвижимость в Дубае дистанционно, находясь в России?", a: "Да. Оформите доверенность (POA) на представителя или агента в Дубае. Binayah регулярно ведёт сделки с российскими продавцами полностью дистанционно. Мы помогаем с оформлением доверенности." },
       { q: "Можно ли продать ипотечную недвижимость?", a: "Да. Средства покупателя используются для погашения вашей ипотеки (процедура «blocking letter»), остаток перечисляется вам. Агент Binayah координирует процесс с вашим банком." },
-      { q: "Какие документы нужны для продажи?", a: "Копия паспорта, оригинал свидетельства о праве собственности, детали объекта (план, выписки по обслуживанию), NOC застройщика и подписанная форма A (договор о листинге). При дистанционной продаже — нотариально заверенная доверенность." },
-      { q: "Как рассчитывается рыночная стоимость объекта?", a: "Оценка Binayah основана на зарегистрированных сделках DLD в вашем здании (не на ценах предложения), текущем спросе, этаже, виде и состоянии объекта. Те же данные используют RERA и банки — вы получаете реальную рыночную цену." },
-      { q: "Когда лучше всего продавать недвижимость в Дубае?", a: "Исторически сильные сезоны — Q1 (январь–март) и Q4 (октябрь–декабрь). Однако с 2021 года рынок Дубая устойчив круглый год, а объёмы сделок на рекордном уровне." },
-      { q: "Что такое NOC и зачем он нужен?", a: "NOC (No Objection Certificate) — документ застройщика, подтверждающий отсутствие задолженностей по обслуживанию. Без NOC Земельный департамент не оформит переход права собственности. Агент Binayah подаёт заявку на NOC от вашего имени." },
+      { q: "Какие документы нужны для продажи?", a: "Копия паспорта, оригинал свидетельства о праве собственности, детали объекта (план, выписки по обслуживанию), NOC застройщика и подписанная форма A (договор о листинге). При дистанционной продаже, нотариально заверенная доверенность." },
+      { q: "Как рассчитывается рыночная стоимость объекта?", a: "Оценка Binayah основана на зарегистрированных сделках DLD в вашем здании (не на ценах предложения), текущем спросе, этаже, виде и состоянии объекта. Те же данные используют RERA и банки, вы получаете реальную рыночную цену." },
+      { q: "Когда лучше всего продавать недвижимость в Дубае?", a: "Исторически сильные сезоны, Q1 (январь-март) и Q4 (октябрь-декабрь). Однако с 2021 года рынок Дубая устойчив круглый год, а объёмы сделок на рекордном уровне." },
+      { q: "Что такое NOC и зачем он нужен?", a: "NOC (No Objection Certificate), документ застройщика, подтверждающий отсутствие задолженностей по обслуживанию. Без NOC Земельный департамент не оформит переход права собственности. Агент Binayah подаёт заявку на NOC от вашего имени." },
     ],
     ctaTitle: "Готовы продать?",
     ctaDesc: "Получите бесплатную рыночную оценку от RERA-сертифицированных агентов. Узнайте точную стоимость вашей недвижимости на сегодняшнем рынке.",
@@ -366,7 +366,7 @@ const CONTENT = {
     metaDesc: "بِع عقارك في دبي مع بناية للعقارات. وكلاء معتمدون من RERA، تقييم احترافي، خبرة تزيد على 17 عامًا. تقييم سوقي مجاني.",
     heroLabel: "بِع بثقة",
     h1: "بيع عقارك في دبي",
-    heroDesc: "تتولى بناية للعقارات بيع العقارات في دبي منذ عام 2007. فريق معتمد من RERA، تسويق احترافي، ونتائج سريعة — مع خدمة متكاملة من التقييم إلى نقل الملكية. خدمة كاملة باللغة العربية.",
+    heroDesc: "تتولى بناية للعقارات بيع العقارات في دبي منذ عام 2007. فريق معتمد من RERA، تسويق احترافي، ونتائج سريعة, مع خدمة متكاملة من التقييم إلى نقل الملكية. خدمة كاملة باللغة العربية.",
     heroCta: "تقييم مجاني",
     heroCtaSecondary: "أدرج عقارك",
     stats: [
@@ -380,7 +380,7 @@ const CONTENT = {
     steps: [
       { n: "١", title: "تقييم سوقي مجاني", body: "يحلّل وكلاؤنا أحدث بيانات معاملات DLD والمبيعات المقارنة في مبناك وأحوال السوق الراهنة لتحديد السعر المناسب." },
       { n: "٢", title: "تسويق احترافي", body: "نُعدّ إعلانًا احترافيًا بتصوير HDR ومخطط الشقة. يُدرج عقارك في آنٍ واحد على Bayut وPropertyfinder وDubizzle وBinayah.ae." },
-      { n: "٣", title: "تأهيل المشترين", body: "نُحضر مشترين جادّين ومؤهَّلين فقط — مع تأكيد السيولة أو الموافقة المسبقة على التمويل قبل الجولات." },
+      { n: "٣", title: "تأهيل المشترين", body: "نُحضر مشترين جادّين ومؤهَّلين فقط, مع تأكيد السيولة أو الموافقة المسبقة على التمويل قبل الجولات." },
       { n: "٤", title: "العرض والتفاوض", body: "ندير جميع العروض ونفاوض نيابةً عنك للحصول على أفضل سعر. أنت توافق على الشروط النهائية قبل توقيع أي أوراق." },
       { n: "٥", title: "التسجيل في DLD", body: "ننسّق مع وكيل المشتري والبنك (عند التمويل) ودائرة الأراضي والأملاك لضمان نقل ملكية سلس ومتوافق قانونيًا." },
     ],
@@ -389,18 +389,18 @@ const CONTENT = {
       { title: "اعتماد RERA", body: "كل وكيل في بناية مرخّص من هيئة تنظيم العقارات (RERA). أنت محميٌّ بموجب القانون الإماراتي في كل خطوة." },
       { title: "تقييم مجاني", body: "يستند إلى بيانات معاملات DLD الفعلية، لا التقديرات. ستعرف القيمة السوقية الدقيقة لعقارك قبل إدراجه." },
       { title: "إدراج على جميع المنصات", body: "Bayut وPropertyfinder وDubizzle وBinayah.ae بتصوير احترافي. أقصى ظهور للمشترين المؤهَّلين." },
-      { title: "لا عمولة قبل البيع", body: "نعمل على أساس العمولة — لا رسوم مسبقة ولا رسوم مخفية. تدفع فقط عند إتمام البيع." },
+      { title: "لا عمولة قبل البيع", body: "نعمل على أساس العمولة, لا رسوم مسبقة ولا رسوم مخفية. تدفع فقط عند إتمام البيع." },
       { title: "قاعدة مشترين دولية", body: "وصول إلى مشترين خليجيين وعرب وأوروبيين وروس وصينيين من قاعدة بيانات بناية الدولية." },
-      { title: "إدارة الأوراق بالكامل", body: "من MOU إلى NOC ورسوم DLD وسند الملكية — نتولى جميع المتطلبات الوثائقية من البداية إلى النهاية." },
+      { title: "إدارة الأوراق بالكامل", body: "من MOU إلى NOC ورسوم DLD وسند الملكية, نتولى جميع المتطلبات الوثائقية من البداية إلى النهاية." },
     ],
     faqTitle: "الأسئلة الشائعة",
     faqs: [
       { q: "كم يستغرق بيع عقار في دبي؟", a: "يتراوح المتوسط بين 30 و60 يومًا من الإدراج إلى نقل الملكية. قد تُباع العقارات ذات التسعير المناسب في المواقع الرئيسية خلال أسبوعين أو أقل. متوسط بناية هو 30 يومًا من الإدراج إلى العقد." },
-      { q: "ما الرسوم التي يتحملها البائع في دبي؟", a: "التكلفة الرئيسية هي عمولة الوكيل (عادةً 2% من سعر البيع). تضاف رسوم NOC من المطوّر (500–5,000 درهم) ورسوم نقل DLD (4% — يُقسَّم عادةً بين الطرفين). لا ضريبة مكاسب رأس المال ولا ضريبة دخل في الإمارات." },
+      { q: "ما الرسوم التي يتحملها البائع في دبي؟", a: "التكلفة الرئيسية هي عمولة الوكيل (عادةً 2% من سعر البيع). تضاف رسوم NOC من المطوّر (500-5,000 درهم) ورسوم نقل DLD (4%, يُقسَّم عادةً بين الطرفين). لا ضريبة مكاسب رأس المال ولا ضريبة دخل في الإمارات." },
       { q: "هل يمكن بيع العقار عن بُعد؟", a: "نعم. يمكن منح وكالة رسمية (POA) لوكيلك أو ممثلك القانوني في دبي لإتمام البيع. تتعامل بناية بانتظام مع بائعين دوليين يُنجزون البيع كاملًا عن بُعد." },
       { q: "هل يمكن بيع عقار ممرهَن؟", a: "نعم. تُستخدَم مدفوعات المشتري لسداد رهنك العقاري (إجراء «خطاب الحجب»)، وتُحوَّل الأموال المتبقية إليك. ينسّق وكيل بناية مع بنكك لضمان سير الأمور بسلاسة." },
       { q: "ما المستندات المطلوبة لبيع العقار؟", a: "نسخة جواز سفر، سند الملكية الأصلي، تفاصيل العقار (مخطط، كشوف رسوم الخدمة)، NOC من المطوّر، ونموذج A الموقَّع (اتفاقية الإدراج). عند البيع عن بُعد: وكالة رسمية موثَّقة." },
-      { q: "كيف يُحسَب تقييم العقار؟", a: "يستند تقييم بناية المجاني إلى مبيعات DLD المسجَّلة في مبناك ومجتمعك (لا أسعار الطلب)، ويراعي الطلب الراهن والطابق والإطلالة وحالة العقار — البيانات ذاتها التي تستخدمها RERA والبنوك." },
+      { q: "كيف يُحسَب تقييم العقار؟", a: "يستند تقييم بناية المجاني إلى مبيعات DLD المسجَّلة في مبناك ومجتمعك (لا أسعار الطلب)، ويراعي الطلب الراهن والطابق والإطلالة وحالة العقار, البيانات ذاتها التي تستخدمها RERA والبنوك." },
       { q: "ما هو شهر NOC وما أهميته؟", a: "شهادة عدم الممانعة (NOC) وثيقة تُصدرها جهة التطوير تُثبت خلوّ العقار من متأخرات الخدمة. بدون NOC لن تتم عملية نقل الملكية في دائرة الأراضي. يتولى وكيل بناية تقديم الطلب نيابةً عنك." },
     ],
     ctaTitle: "هل أنت مستعد للبيع؟",
@@ -415,7 +415,7 @@ const CONTENT = {
     metaDesc: "通过Binayah Properties出售您的迪拜房产。RERA认证经纪人，专业估价，19年以上经验。立即获取免费市场评估。",
     heroLabel: "放心出售",
     h1: "在迪拜出售您的房产",
-    heroDesc: "Binayah Properties自2007年起在迪拜销售房产。RERA认证团队，专业营销，快速成交——从估价到产权转让全程服务，提供中文支持。",
+    heroDesc: "Binayah Properties自2007年起在迪拜销售房产。RERA认证团队，专业营销，快速成交, , 从估价到产权转让全程服务，提供中文支持。",
     heroCta: "免费估价",
     heroCtaSecondary: "挂牌出售",
     stats: [
@@ -429,7 +429,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "免费市场估价", body: "我们的经纪人基于DLD实时交易数据、同楼可比销售案例和当前市场状况，为您设定合理挂牌价格。" },
       { n: "02", title: "专业营销推广", body: "制作专业房源信息，包含HDR摄影和平面图。同步发布至Bayut、Propertyfinder、Dubizzle和Binayah.ae。" },
-      { n: "03", title: "买家资质审核", body: "我们只为您引荐经过预审的认真买家——带看前确认资金证明或贷款预批。" },
+      { n: "03", title: "买家资质审核", body: "我们只为您引荐经过预审的认真买家, , 带看前确认资金证明或贷款预批。" },
       { n: "04", title: "报价与谈判", body: "代表您管理所有报价并进行谈判以争取最优价格。签署任何文件前均需您确认最终条款。" },
       { n: "05", title: "DLD登记过户", body: "协调买方经纪人、银行（若涉及贷款）和迪拜土地局，确保顺畅合规的产权转移。" },
     ],
@@ -438,9 +438,9 @@ const CONTENT = {
       { title: "RERA认证团队", body: "每位Binayah经纪人均持有房地产监管局(RERA)执照，您在每个环节均受阿联酋法律保护。" },
       { title: "免费专业估价", body: "基于DLD真实交易数据，而非估算。挂牌前您将精准了解房产市值。" },
       { title: "全平台发布", body: "在Bayut、Propertyfinder、Dubizzle和Binayah.ae发布专业摄影房源，最大化触达合格买家。" },
-      { title: "成交前零佣金", body: "佣金制合作——仅在房产成功出售后收取，无前期费用，无隐性收费。" },
+      { title: "成交前零佣金", body: "佣金制合作, , 仅在房产成功出售后收取，无前期费用，无隐性收费。" },
       { title: "国际买家资源", body: "连接来自中国、俄罗斯、欧洲和海湾地区的买家池，助您快速找到优质买家。" },
-      { title: "全程文件管理", body: "从意向书(MOU)到无异议证书(NOC)、DLD过户费用及产权证书——全程处理所有文件手续。" },
+      { title: "全程文件管理", body: "从意向书(MOU)到无异议证书(NOC)、DLD过户费用及产权证书, , 全程处理所有文件手续。" },
     ],
     faqTitle: "常见问题解答",
     faqs: [
@@ -449,7 +449,7 @@ const CONTENT = {
       { q: "可以在国内远程出售迪拜房产吗？", a: "可以。您可以向迪拜的代理人或法律代表授予授权委托书(POA)，委托其代办所有手续。Binayah定期为中国、俄罗斯等海外卖家提供全程远程出售服务。" },
       { q: "可以出售按揭中的房产吗？", a: "可以。买方款项将用于偿还您的贷款余额（封锁函流程），剩余款项转至您的账户。Binayah经纪人将协调您的贷款银行确保流程顺畅。" },
       { q: "出售房产需要哪些文件？", a: "护照复印件、原始产权证书、房产资料（平面图、物业费账单）、开发商NOC及签署的A表（委托挂牌协议）。远程出售需提供经公证的授权委托书。" },
-      { q: "如何计算房产市值？", a: "Binayah的免费估价基于您所在楼栋的DLD登记交易（非挂牌价格），同时考虑当前需求、楼层、景观和房屋状况——与RERA和银行使用相同的数据来源。" },
+      { q: "如何计算房产市值？", a: "Binayah的免费估价基于您所在楼栋的DLD登记交易（非挂牌价格），同时考虑当前需求、楼层、景观和房屋状况, , 与RERA和银行使用相同的数据来源。" },
       { q: "什么是NOC，为什么需要它？", a: "无异议证书(NOC)是开发商出具的证明，确认该单位不存在未付物业费或欠款。没有NOC，迪拜土地局将不会处理产权转让。您的Binayah经纪人将代您申请NOC。" },
     ],
     ctaTitle: "准备好出售了吗？",
@@ -464,7 +464,7 @@ const CONTENT = {
     metaDesc: "Bán bất động sản Dubai với Binayah Properties. Chuyên viên được chứng nhận RERA, định giá chuyên nghiệp, hơn 19 năm kinh nghiệm. Nhận định giá thị trường miễn phí ngay hôm nay.",
     heroLabel: "BÁN VỚI SỰ TỰ TIN",
     h1: "Bán bất động sản của bạn tại Dubai",
-    heroDesc: "Binayah Properties đã bán bất động sản Dubai từ năm 2007. Đội ngũ được chứng nhận RERA của chúng tôi cung cấp định giá chuyên nghiệp, tiếp thị chuyên nghiệp và kết quả nhanh chóng — với dịch vụ trọn gói từ niêm yết đến hoàn tất.",
+    heroDesc: "Binayah Properties đã bán bất động sản Dubai từ năm 2007. Đội ngũ được chứng nhận RERA của chúng tôi cung cấp định giá chuyên nghiệp, tiếp thị chuyên nghiệp và kết quả nhanh chóng, với dịch vụ trọn gói từ niêm yết đến hoàn tất.",
     heroCta: "Định giá miễn phí",
     heroCtaSecondary: "Niêm yết bất động sản",
     stats: [
@@ -478,28 +478,28 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Định giá thị trường miễn phí", body: "Các chuyên viên của chúng tôi đánh giá bất động sản của bạn bằng dữ liệu giao dịch DLD trực tiếp, các giao dịch tương đương trong tòa nhà và điều kiện thị trường hiện tại để đặt giá chào bán phù hợp." },
       { n: "02", title: "Tiếp thị chuyên nghiệp", body: "Chúng tôi tạo tin đăng chuyên nghiệp với ảnh HDR, mặt bằng và mô tả chi tiết. Bất động sản của bạn được niêm yết đồng thời trên Bayut, Propertyfinder, Dubizzle và Binayah.ae." },
-      { n: "03", title: "Sàng lọc người mua", body: "Chúng tôi chỉ mang đến những người mua nghiêm túc đã được sàng lọc trước — vốn đã xác minh, phê duyệt vay trước hoặc bằng chứng tiền mặt được xác nhận trước khi xem nhà." },
+      { n: "03", title: "Sàng lọc người mua", body: "Chúng tôi chỉ mang đến những người mua nghiêm túc đã được sàng lọc trước, vốn đã xác minh, phê duyệt vay trước hoặc bằng chứng tiền mặt được xác nhận trước khi xem nhà." },
       { n: "04", title: "Chào giá & Đàm phán", body: "Chúng tôi quản lý mọi đề nghị và đàm phán thay mặt bạn để đạt giá tốt nhất. Bạn phê duyệt điều khoản cuối cùng trước khi ký bất kỳ giấy tờ nào." },
       { n: "05", title: "Chuyển nhượng DLD & Hoàn tất", body: "Chúng tôi phối hợp với chuyên viên của người mua, ngân hàng (nếu vay thế chấp) và Sở Đất đai Dubai để đảm bảo chuyển nhượng quyền sở hữu suôn sẻ, tuân thủ pháp luật." },
     ],
     whyTitle: "Vì sao bán với Binayah",
     whyPoints: [
       { title: "Đội ngũ được chứng nhận RERA", body: "Mọi chuyên viên Binayah đều được cấp phép bởi Cơ quan Quản lý Bất động sản (RERA). Bạn được luật Dubai bảo vệ ở mọi bước." },
-      { title: "Định giá chuyên nghiệp miễn phí", body: "Dựa trên dữ liệu giao dịch DLD thực tế và các giao dịch tương đương — không phải ước tính. Bạn biết chính xác giá trị bất động sản trước khi niêm yết." },
+      { title: "Định giá chuyên nghiệp miễn phí", body: "Dựa trên dữ liệu giao dịch DLD thực tế và các giao dịch tương đương, không phải ước tính. Bạn biết chính xác giá trị bất động sản trước khi niêm yết." },
       { title: "Tiếp thị đa cổng", body: "Niêm yết trên Bayut, Propertyfinder, Dubizzle và Binayah.ae với ảnh chuyên nghiệp. Tiếp cận tối đa người mua đủ điều kiện." },
-      { title: "Không bán, không phí", body: "Chúng tôi làm việc trên cơ sở hoa hồng — bạn chỉ trả khi bất động sản được bán. Không phí trả trước, không phí ẩn." },
+      { title: "Không bán, không phí", body: "Chúng tôi làm việc trên cơ sở hoa hồng, bạn chỉ trả khi bất động sản được bán. Không phí trả trước, không phí ẩn." },
       { title: "Người mua Nga & Quốc tế", body: "Với các văn phòng phục vụ người mua Nga, Trung Quốc, châu Âu và GCC, chúng tôi kết nối bất động sản của bạn với mạng lưới nhà đầu tư và người dùng cuối toàn cầu." },
-      { title: "Quản lý giấy tờ trọn gói", body: "Từ Bản ghi nhớ (MOU) đến NOC, phí chuyển nhượng DLD và sổ đỏ — chúng tôi xử lý mọi giấy tờ từ đầu đến cuối." },
+      { title: "Quản lý giấy tờ trọn gói", body: "Từ Bản ghi nhớ (MOU) đến NOC, phí chuyển nhượng DLD và sổ đỏ, chúng tôi xử lý mọi giấy tờ từ đầu đến cuối." },
     ],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
-      { q: "Bán một bất động sản tại Dubai mất bao lâu?", a: "Thời gian trung bình để bán một bất động sản tại Dubai là 30–60 ngày từ niêm yết đến chuyển nhượng. Bất động sản định giá tốt ở vị trí cao cấp (Dubai Marina, Downtown, Palm) có thể bán trong dưới 2 tuần. Trung bình của Binayah là 30 ngày từ niêm yết đến hợp đồng." },
-      { q: "Tôi phải trả phí gì khi bán bất động sản tại Dubai?", a: "Với tư cách người bán, chi phí chính của bạn là hoa hồng môi giới (thường 2% giá bán). Chi phí bổ sung bao gồm phí NOC của DLD (500–5.000 AED tùy chủ đầu tư) và phí chuyển nhượng DLD (4% — dù thường được chia giữa người mua và người bán). Không có thuế lãi vốn hay thuế thu nhập tại UAE." },
+      { q: "Bán một bất động sản tại Dubai mất bao lâu?", a: "Thời gian trung bình để bán một bất động sản tại Dubai là 30-60 ngày từ niêm yết đến chuyển nhượng. Bất động sản định giá tốt ở vị trí cao cấp (Dubai Marina, Downtown, Palm) có thể bán trong dưới 2 tuần. Trung bình của Binayah là 30 ngày từ niêm yết đến hợp đồng." },
+      { q: "Tôi phải trả phí gì khi bán bất động sản tại Dubai?", a: "Với tư cách người bán, chi phí chính của bạn là hoa hồng môi giới (thường 2% giá bán). Chi phí bổ sung bao gồm phí NOC của DLD (500-5.000 AED tùy chủ đầu tư) và phí chuyển nhượng DLD (4%, dù thường được chia giữa người mua và người bán). Không có thuế lãi vốn hay thuế thu nhập tại UAE." },
       { q: "Tôi có cần ở Dubai để bán bất động sản không?", a: "Không. Bạn có thể bán từ xa bằng cách cấp Giấy ủy quyền (POA) cho chuyên viên hoặc đại diện pháp lý tại Dubai. Binayah thường xuyên xử lý người bán quốc tế, bao gồm khách hàng Nga, châu Âu và châu Á hoàn tất giao dịch hoàn toàn từ xa." },
       { q: "Tôi có thể bán bất động sản đang thế chấp tại Dubai không?", a: "Có. Khoản thanh toán của người mua được dùng để tất toán khoản vay thế chấp còn lại của bạn (quy trình gọi là 'blocking letter'), số tiền còn lại được chuyển cho bạn. Chuyên viên Binayah phối hợp với ngân hàng của bạn để đảm bảo chuyển đổi suôn sẻ." },
       { q: "Tôi cần giấy tờ gì để bán bất động sản tại Dubai?", a: "Bản sao hộ chiếu, sổ đỏ gốc (hoặc bản sao do ủy thác cấp), chi tiết bất động sản (mặt bằng, bảng kê phí dịch vụ), NOC từ chủ đầu tư và Form A đã ký (thỏa thuận niêm yết). Nếu bán từ xa, cần POA từ công chứng viên được UAE ủy quyền." },
-      { q: "Định giá bất động sản được tính như thế nào?", a: "Định giá miễn phí của Binayah dựa trên các giao dịch đã đăng ký DLD gần đây trong tòa nhà và khu vực của bạn (không phải giá chào), nhu cầu hiện tại, tầng, view và tình trạng bất động sản. Chúng tôi dùng cùng nguồn dữ liệu như RERA và ngân hàng — nên bạn có giá thị trường thực tế." },
-      { q: "Thời điểm tốt nhất để bán bất động sản tại Dubai là khi nào?", a: "Q1 (tháng 1–tháng 3) và Q4 (tháng 10–tháng 12) trong lịch sử là mùa bán mạnh nhất, được thúc đẩy bởi người nước ngoài đến và hoạt động đầu tư. Tuy nhiên, thị trường Dubai đã mạnh quanh năm kể từ năm 2021, với khối lượng giao dịch ở mức kỷ lục." },
+      { q: "Định giá bất động sản được tính như thế nào?", a: "Định giá miễn phí của Binayah dựa trên các giao dịch đã đăng ký DLD gần đây trong tòa nhà và khu vực của bạn (không phải giá chào), nhu cầu hiện tại, tầng, view và tình trạng bất động sản. Chúng tôi dùng cùng nguồn dữ liệu như RERA và ngân hàng, nên bạn có giá thị trường thực tế." },
+      { q: "Thời điểm tốt nhất để bán bất động sản tại Dubai là khi nào?", a: "Q1 (tháng 1-tháng 3) và Q4 (tháng 10-tháng 12) trong lịch sử là mùa bán mạnh nhất, được thúc đẩy bởi người nước ngoài đến và hoạt động đầu tư. Tuy nhiên, thị trường Dubai đã mạnh quanh năm kể từ năm 2021, với khối lượng giao dịch ở mức kỷ lục." },
       { q: "NOC là gì và vì sao tôi cần nó?", a: "Chứng nhận Không phản đối (NOC) do chủ đầu tư cấp xác nhận không còn phí dịch vụ hoặc khoản thanh toán nào trên căn hộ. Không có NOC, Sở Đất đai Dubai sẽ không xử lý chuyển nhượng quyền sở hữu. Chuyên viên Binayah xử lý đơn xin NOC thay mặt bạn." },
     ],
     ctaTitle: "Sẵn sàng bán?",

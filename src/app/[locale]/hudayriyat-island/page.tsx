@@ -71,25 +71,25 @@ const LABELS: Record<Locale, {
   en: {
     metaTitle: "Hudayriyat Island Property for Sale | Abu Dhabi Freehold | Binayah",
     metaDesc:
-      "Buy freehold property on Hudayriyat Island, Abu Dhabi — villas from AED 6M, apartments from AED 2M. Government-backed developer Modon. 2% transfer fee. 10 min from Abu Dhabi CBD. Expert guidance from Binayah Properties.",
+      "Buy freehold property on Hudayriyat Island, Abu Dhabi, villas from AED 6M, apartments from AED 2M. Government-backed developer Modon. 2% transfer fee. 10 min from Abu Dhabi CBD. Expert guidance from Binayah Properties.",
     heroEyebrow: "Abu Dhabi · Freehold Island · By Modon Properties",
     heroH1Line1: "The Beverly Hills",
     heroH1Line2: "of Abu Dhabi",
     heroSubtitle:
-      "Hudayriyat Island — 3,000+ hectares of master-planned coastal living, 10 minutes from Abu Dhabi CBD. Freehold for all nationalities, 2% transfer fee, government-backed developer.",
+      "Hudayriyat Island, 3,000+ hectares of master-planned coastal living, 10 minutes from Abu Dhabi CBD. Freehold for all nationalities, 2% transfer fee, government-backed developer.",
     trustSignals: ["Freehold · All nationalities", "2% transfer fee", "Golden Visa eligible", "Modon (ADQ-backed)"],
     ctaPrimary: "Free Investment Consultation",
     ctaSecondary: "View Communities",
     aboutEyebrow: "About the Island",
     aboutHeading: "Abu Dhabi's Most Ambitious Coastal Development",
     aboutPara1:
-      "Al Hudayriyat Island spans over 3,000 hectares off Abu Dhabi's western coast. Connected to the mainland via Hudayriyat Bridge, it is just 10 minutes from the UAE capital's CBD — the closest freehold waterfront in Abu Dhabi. Developed by Modon Properties (84.5% government-owned via ADQ), the island is Abu Dhabi's flagship coastal city project.",
+      "Al Hudayriyat Island spans over 3,000 hectares off Abu Dhabi's western coast. Connected to the mainland via Hudayriyat Bridge, it is just 10 minutes from the UAE capital's CBD, the closest freehold waterfront in Abu Dhabi. Developed by Modon Properties (84.5% government-owned via ADQ), the island is Abu Dhabi's flagship coastal city project.",
     aboutPara2:
       "With 16 km of natural beaches, 2.25 million sqm of park, Surf Abu Dhabi (the world's largest artificial wave pool), and 220 km of cycling infrastructure, Hudayriyat is the only address in the UAE that combines elite sport, coastal lifestyle, and freehold residential in one master-planned island.",
     aboutMinistats: [
       ["3,000+", "Hectares total area"],
       ["16 km", "Natural beaches"],
-      ["10–20 min", "Drive to Abu Dhabi CBD"],
+      ["10-20 min", "Drive to Abu Dhabi CBD"],
       ["99", "Nationalities investing"],
     ],
     amenitiesEyebrow: "World-Class Infrastructure",
@@ -99,7 +99,7 @@ const LABELS: Record<Locale, {
     communitiesEyebrow: "Residential Communities",
     communitiesHeading: "Find Your Community",
     communitiesSubheading:
-      "Six freehold communities by Modon — apartments from AED 2M, ultra-luxury mansions to AED 80M+.",
+      "Six freehold communities by Modon, apartments from AED 2M, ultra-luxury mansions to AED 80M+.",
     communitiesCta: "Get Availability & Pricing",
     communitiesStartingFrom: "Starting from",
     communitiesHandover: "Handover",
@@ -109,19 +109,19 @@ const LABELS: Record<Locale, {
       "Abu Dhabi's #1 real estate market by transaction value in Q1 2026. Four structural advantages no other island offers.",
     tableHeaders: ["Metric", "Hudayriyat Island", "Dubai Average"],
     whyInvestCards: [
-      ["Government-Backed Developer", "Modon Properties is 84.5% owned by ADQ — Abu Dhabi's sovereign investment arm. The strongest developer guarantee in the UAE."],
+      ["Government-Backed Developer", "Modon Properties is 84.5% owned by ADQ, Abu Dhabi's sovereign investment arm. The strongest developer guarantee in the UAE."],
       ["2% Transfer Fee", "Half of Dubai's 4%. Lower transaction costs improve net ROI for investors and reduce friction at every resale."],
       ["Freehold, All Nationalities", "100% ownership rights, no restrictions. Properties above AED 2M automatically qualify you for UAE Golden Visa residency."],
       ["10 Minutes to City Centre", "Via Hudayriyat Bridge. 25 minutes to Abu Dhabi International Airport. The closest waterfront freehold to the UAE capital."],
     ],
     stats: [
       ["AED 11.97B", "Q1 2026 Transactions", "#1 in Abu Dhabi"],
-      ["40–50%", "Capital Appreciation", "Recorded by early buyers"],
-      ["7–9%", "Gross Rental Yield", "Coastal Abu Dhabi"],
+      ["40-50%", "Capital Appreciation", "Recorded by early buyers"],
+      ["7-9%", "Gross Rental Yield", "Coastal Abu Dhabi"],
       ["2%", "Transfer Fee", "Half of Dubai's rate"],
     ],
     faqEyebrow: "Common Questions",
-    faqHeading: "Hudayriyat Island — Property FAQ",
+    faqHeading: "Hudayriyat Island, Property FAQ",
     faqSubheading: "Everything buyers and investors ask before committing to Abu Dhabi's fastest-growing address.",
     faqs: [
       {
@@ -132,62 +132,62 @@ const LABELS: Record<Locale, {
       {
         question: "What is the transfer fee on Hudayriyat Island?",
         answer:
-          "Abu Dhabi's property transfer fee is 2% of the purchase price — exactly half of Dubai's 4%. This reduces your entry cost and improves net investment returns on any resale.",
+          "Abu Dhabi's property transfer fee is 2% of the purchase price, exactly half of Dubai's 4%. This reduces your entry cost and improves net investment returns on any resale.",
       },
       {
         question: "What types of property are available?",
         answer:
-          "Hudayriyat Island offers: apartments (1–4BR, from AED 2M); villas (3–8BR, from AED 6M); golf villas and townhouses (from AED 4.25M); luxury mansions (from AED 25M); ultra-luxury hilltop mansions (AED 41M+). All are developed by government-backed Modon Properties.",
+          "Hudayriyat Island offers: apartments (1-4BR, from AED 2M); villas (3-8BR, from AED 6M); golf villas and townhouses (from AED 4.25M); luxury mansions (from AED 25M); ultra-luxury hilltop mansions (AED 41M+). All are developed by government-backed Modon Properties.",
       },
       {
         question: "What rental yields can I expect on Hudayriyat Island?",
         answer:
-          "Coastal Abu Dhabi properties typically generate 7–9% gross rental yields. Early buyers on Hudayriyat Island have recorded 40–50% capital appreciation since the island's launch in 2020. Q1 2026 saw AED 11.97B in island transactions — the highest of any area in Abu Dhabi.",
+          "Coastal Abu Dhabi properties typically generate 7-9% gross rental yields. Early buyers on Hudayriyat Island have recorded 40-50% capital appreciation since the island's launch in 2020. Q1 2026 saw AED 11.97B in island transactions, the highest of any area in Abu Dhabi.",
       },
       {
         question: "How far is Hudayriyat Island from Abu Dhabi city centre?",
         answer:
-          "10–20 minutes by car via Hudayriyat Bridge. The island sits on Abu Dhabi's western coast opposite Al Bateen. Abu Dhabi International Airport is approximately 25–30 minutes away. A dedicated Surf Abu Dhabi metro/bus link is planned as part of the Abu Dhabi Urban Mobility Master Plan.",
+          "10-20 minutes by car via Hudayriyat Bridge. The island sits on Abu Dhabi's western coast opposite Al Bateen. Abu Dhabi International Airport is approximately 25-30 minutes away. A dedicated Surf Abu Dhabi metro/bus link is planned as part of the Abu Dhabi Urban Mobility Master Plan.",
       },
       {
         question: "Is Hudayriyat Island a good investment vs Dubai?",
         answer:
-          "Hudayriyat Island offers a lower entry cost to high-quality freehold than comparable Dubai waterfront communities, with a 2% transfer fee vs Dubai's 4%, higher gross yields (7–9% vs Dubai's 5.5–7%), and 40–50% documented capital appreciation for early buyers. The government-backed developer and sovereign-backed land title remove delivery risk entirely.",
+          "Hudayriyat Island offers a lower entry cost to high-quality freehold than comparable Dubai waterfront communities, with a 2% transfer fee vs Dubai's 4%, higher gross yields (7-9% vs Dubai's 5.5-7%), and 40-50% documented capital appreciation for early buyers. The government-backed developer and sovereign-backed land title remove delivery risk entirely.",
       },
     ],
     ctaEyebrow: "Talk to a Specialist",
     ctaHeading: "Ready to Invest on Hudayriyat Island?",
     ctaBody:
-      "Our Abu Dhabi team provides free, no-obligation advice on unit availability, payment plans, and expected ROI across all six Modon communities — including off-market options.",
+      "Our Abu Dhabi team provides free, no-obligation advice on unit availability, payment plans, and expected ROI across all six Modon communities, including off-market options.",
     ctaPrimaryBtn: "Free Consultation",
     trustFooter: ["19+ Years in UAE Real Estate", "3,000+ Properties", "No Commission for Buyers", "Regulated by RERA"],
     developerBadge: "Modon Properties · Government-Backed",
-    developerSub: "84.5% owned by ADQ — Abu Dhabi's sovereign investment arm",
+    developerSub: "84.5% owned by ADQ, Abu Dhabi's sovereign investment arm",
     freeholdBadge: "Freehold · All Nationalities",
   },
 
   ru: {
     metaTitle: "Недвижимость на Hudayriyat Island | Фрихолд Абу-Даби | Binayah",
     metaDesc:
-      "Купить фрихолд-недвижимость на Hudayriyat Island, Абу-Даби — виллы от AED 6 млн, апартаменты от AED 2 млн. Застройщик Modon с государственной поддержкой. Налог на передачу 2%. 10 мин от делового центра Абу-Даби.",
+      "Купить фрихолд-недвижимость на Hudayriyat Island, Абу-Даби, виллы от AED 6 млн, апартаменты от AED 2 млн. Застройщик Modon с государственной поддержкой. Налог на передачу 2%. 10 мин от делового центра Абу-Даби.",
     heroEyebrow: "Абу-Даби · Фрихолд-остров · Застройщик Modon Properties",
     heroH1Line1: "Беверли-Хиллз",
     heroH1Line2: "Абу-Даби",
     heroSubtitle:
-      "Hudayriyat Island — более 3 000 га планируемой прибрежной застройки в 10 минутах от делового центра Абу-Даби. Фрихолд для всех гражданств, 2% налог на передачу, застройщик под государственной гарантией.",
+      "Hudayriyat Island, более 3 000 га планируемой прибрежной застройки в 10 минутах от делового центра Абу-Даби. Фрихолд для всех гражданств, 2% налог на передачу, застройщик под государственной гарантией.",
     trustSignals: ["Фрихолд · Все гражданства", "Налог на передачу 2%", "Право на Золотую визу", "Modon (под управлением ADQ)"],
     ctaPrimary: "Бесплатная инвестиционная консультация",
     ctaSecondary: "Просмотр сообществ",
     aboutEyebrow: "Об острове",
     aboutHeading: "Самый амбициозный прибрежный проект Абу-Даби",
     aboutPara1:
-      "Остров Аль-Худайрият занимает более 3 000 га у западного побережья Абу-Даби. Связанный с материком мостом Худайрият, он расположен всего в 10 минутах от делового центра столицы ОАЭ — ближайшая фрихолд-набережная в Абу-Даби. Застройщик — Modon Properties (84,5% в государственной собственности через ADQ), флагманский прибрежный городской проект эмирата.",
+      "Остров Аль-Худайрият занимает более 3 000 га у западного побережья Абу-Даби. Связанный с материком мостом Худайрият, он расположен всего в 10 минутах от делового центра столицы ОАЭ, ближайшая фрихолд-набережная в Абу-Даби. Застройщик, Modon Properties (84,5% в государственной собственности через ADQ), флагманский прибрежный городской проект эмирата.",
     aboutPara2:
       "16 км природных пляжей, 2,25 млн кв. м парка, Surf Abu Dhabi (крупнейший в мире искусственный волновой бассейн) и 220 км велосипедной инфраструктуры делают Худайрият единственным адресом в ОАЭ, где сочетаются элитный спорт, прибрежный образ жизни и фрихолд-жильё.",
     aboutMinistats: [
       ["3 000+", "Гектаров общей площади"],
       ["16 км", "Природных пляжей"],
-      ["10–20 мин", "Езды до делового центра Абу-Даби"],
+      ["10-20 мин", "Езды до делового центра Абу-Даби"],
       ["99", "Гражданств инвесторов"],
     ],
     amenitiesEyebrow: "Инфраструктура мирового класса",
@@ -197,7 +197,7 @@ const LABELS: Record<Locale, {
     communitiesEyebrow: "Жилые сообщества",
     communitiesHeading: "Найдите своё сообщество",
     communitiesSubheading:
-      "Шесть фрихолд-сообществ от Modon — апартаменты от AED 2 млн, ультра-люксовые особняки до AED 80 млн+.",
+      "Шесть фрихолд-сообществ от Modon, апартаменты от AED 2 млн, ультра-люксовые особняки до AED 80 млн+.",
     communitiesCta: "Узнать наличие и цены",
     communitiesStartingFrom: "Цена от",
     communitiesHandover: "Сдача",
@@ -206,19 +206,19 @@ const LABELS: Record<Locale, {
     whyInvestSubheading: "Рынок недвижимости №1 в Абу-Даби по объёму сделок в I кв. 2026 г.",
     tableHeaders: ["Показатель", "Hudayriyat Island", "Среднее по Дубаю"],
     whyInvestCards: [
-      ["Застройщик с государственной поддержкой", "Modon Properties на 84,5% принадлежит ADQ — суверенному инвестиционному фонду Абу-Даби."],
+      ["Застройщик с государственной поддержкой", "Modon Properties на 84,5% принадлежит ADQ, суверенному инвестиционному фонду Абу-Даби."],
       ["2% налог на передачу права", "Вдвое меньше дубайских 4%."],
       ["Фрихолд для всех гражданств", "100% право собственности. Объекты выше AED 2 млн дают право на Золотую визу."],
       ["10 минут до центра города", "Через мост Худайрият. 25 минут до аэропорта Абу-Даби."],
     ],
     stats: [
       ["AED 11,97 млрд", "Сделки за I кв. 2026 г.", "#1 в Абу-Даби"],
-      ["40–50%", "Прирост капитала", "Зафиксировано ранними покупателями"],
-      ["7–9%", "Валовая доходность аренды", "Прибрежный Абу-Даби"],
+      ["40-50%", "Прирост капитала", "Зафиксировано ранними покупателями"],
+      ["7-9%", "Валовая доходность аренды", "Прибрежный Абу-Даби"],
       ["2%", "Налог на передачу", "Вдвое меньше, чем в Дубае"],
     ],
     faqEyebrow: "Частые вопросы",
-    faqHeading: "Hudayriyat Island — Вопросы о недвижимости",
+    faqHeading: "Hudayriyat Island, Вопросы о недвижимости",
     faqSubheading: "Ответы на вопросы покупателей и инвесторов.",
     faqs: [
       {
@@ -229,62 +229,62 @@ const LABELS: Record<Locale, {
       {
         question: "Каков налог на передачу недвижимости на Hudayriyat Island?",
         answer:
-          "Налог на передачу недвижимости в Абу-Даби составляет 2% от стоимости покупки — ровно вдвое меньше дубайских 4%. Это снижает порог входа и улучшает чистую доходность при любой перепродаже.",
+          "Налог на передачу недвижимости в Абу-Даби составляет 2% от стоимости покупки, ровно вдвое меньше дубайских 4%. Это снижает порог входа и улучшает чистую доходность при любой перепродаже.",
       },
       {
         question: "Какие типы недвижимости доступны?",
         answer:
-          "На Hudayriyat Island представлены: апартаменты (1–4 спальни, от AED 2 млн); виллы (3–8 спален, от AED 6 млн); гольф-виллы и таунхаусы (от AED 4,25 млн); люксовые особняки (от AED 25 млн); ультра-люксовые особняки на холме (от AED 41 млн+). Все объекты — от государственного застройщика Modon Properties.",
+          "На Hudayriyat Island представлены: апартаменты (1-4 спальни, от AED 2 млн); виллы (3-8 спален, от AED 6 млн); гольф-виллы и таунхаусы (от AED 4,25 млн); люксовые особняки (от AED 25 млн); ультра-люксовые особняки на холме (от AED 41 млн+). Все объекты, от государственного застройщика Modon Properties.",
       },
       {
         question: "На какую арендную доходность можно рассчитывать?",
         answer:
-          "Прибрежная недвижимость Абу-Даби, как правило, приносит 7–9% валовой арендной доходности. Ранние покупатели на Hudayriyat Island зафиксировали прирост капитала 40–50% с момента запуска острова в 2020 году. В I кв. 2026 г. объём сделок составил AED 11,97 млрд — рекорд для любого района Абу-Даби.",
+          "Прибрежная недвижимость Абу-Даби, как правило, приносит 7-9% валовой арендной доходности. Ранние покупатели на Hudayriyat Island зафиксировали прирост капитала 40-50% с момента запуска острова в 2020 году. В I кв. 2026 г. объём сделок составил AED 11,97 млрд, рекорд для любого района Абу-Даби.",
       },
       {
         question: "Как далеко Hudayriyat Island от делового центра Абу-Даби?",
         answer:
-          "10–20 минут на автомобиле по мосту Худайрият. Остров расположен у западного побережья Абу-Даби напротив Аль-Батин. До международного аэропорта Абу-Даби около 25–30 минут. В рамках Генерального плана городской мобильности Абу-Даби запланировано прямое метро/автобусное сообщение с Surf Abu Dhabi.",
+          "10-20 минут на автомобиле по мосту Худайрият. Остров расположен у западного побережья Абу-Даби напротив Аль-Батин. До международного аэропорта Абу-Даби около 25-30 минут. В рамках Генерального плана городской мобильности Абу-Даби запланировано прямое метро/автобусное сообщение с Surf Abu Dhabi.",
       },
       {
-        question: "Hudayriyat Island — хорошая инвестиция по сравнению с Дубаем?",
+        question: "Hudayriyat Island, хорошая инвестиция по сравнению с Дубаем?",
         answer:
-          "Hudayriyat Island предлагает более низкий порог входа в качественный фрихолд, чем сопоставимые прибрежные районы Дубая: 2% налог на передачу против 4% в Дубае, более высокая валовая доходность (7–9% против 5,5–7%), а также задокументированный прирост капитала 40–50% для ранних покупателей. Государственный застройщик и суверенный земельный титул полностью исключают риск несдачи объекта.",
+          "Hudayriyat Island предлагает более низкий порог входа в качественный фрихолд, чем сопоставимые прибрежные районы Дубая: 2% налог на передачу против 4% в Дубае, более высокая валовая доходность (7-9% против 5,5-7%), а также задокументированный прирост капитала 40-50% для ранних покупателей. Государственный застройщик и суверенный земельный титул полностью исключают риск несдачи объекта.",
       },
     ],
     ctaEyebrow: "Свяжитесь со специалистом",
     ctaHeading: "Готовы инвестировать на Hudayriyat Island?",
     ctaBody:
-      "Наша команда в Абу-Даби предоставляет бесплатные консультации по наличию объектов, планам оплаты и ожидаемой доходности во всех шести сообществах Modon — включая варианты вне рынка.",
+      "Наша команда в Абу-Даби предоставляет бесплатные консультации по наличию объектов, планам оплаты и ожидаемой доходности во всех шести сообществах Modon, включая варианты вне рынка.",
     ctaPrimaryBtn: "Бесплатная консультация",
     trustFooter: ["19+ лет на рынке недвижимости ОАЭ", "3 000+ объектов", "Без комиссии для покупателей", "Лицензировано RERA"],
     developerBadge: "Modon Properties · Государственный застройщик",
-    developerSub: "84,5% принадлежит ADQ — суверенному инвестиционному фонду Абу-Даби",
+    developerSub: "84,5% принадлежит ADQ, суверенному инвестиционному фонду Абу-Даби",
     freeholdBadge: "Фрихолд · Все гражданства",
   },
 
   ar: {
     metaTitle: "عقارات جزيرة الحديريات | تملك حر أبوظبي | بناية",
     metaDesc:
-      "شراء عقارات بنظام التملك الحر في جزيرة الحديريات، أبوظبي — فلل من 6 ملايين درهم، شقق من 2 مليون درهم. مطوّر Modon مدعوم حكومياً. رسوم نقل 2%. 10 دقائق من مركز أعمال أبوظبي.",
+      "شراء عقارات بنظام التملك الحر في جزيرة الحديريات، أبوظبي, فلل من 6 ملايين درهم، شقق من 2 مليون درهم. مطوّر Modon مدعوم حكومياً. رسوم نقل 2%. 10 دقائق من مركز أعمال أبوظبي.",
     heroEyebrow: "أبوظبي · جزيرة تملك حر · من Modon Properties",
     heroH1Line1: "بيفرلي هيلز",
     heroH1Line2: "أبوظبي",
     heroSubtitle:
-      "جزيرة الحديريات — أكثر من 3,000 هكتار من المجتمعات الساحلية المخططة، على بُعد 10 دقائق من مركز أعمال أبوظبي.",
+      "جزيرة الحديريات, أكثر من 3,000 هكتار من المجتمعات الساحلية المخططة، على بُعد 10 دقائق من مركز أعمال أبوظبي.",
     trustSignals: ["تملك حر · جميع الجنسيات", "رسوم نقل 2%", "مؤهل للتأشيرة الذهبية", "Modon (مدعومة من ADQ)"],
     ctaPrimary: "استشارة استثمارية مجانية",
     ctaSecondary: "استعراض المجتمعات",
     aboutEyebrow: "عن الجزيرة",
     aboutHeading: "أكثر مشاريع التطوير الساحلي طموحاً في أبوظبي",
     aboutPara1:
-      "تمتد جزيرة الحديريات على أكثر من 3,000 هكتار قبالة الساحل الغربي لأبوظبي. وعبر جسر الحديريات، تبعد الجزيرة 10 دقائق فقط عن مركز أعمال عاصمة الإمارات — أقرب واجهة مائية بنظام التملك الحر في أبوظبي. تُطوّرها شركة Modon Properties (المملوكة بنسبة 84.5% للحكومة عبر ADQ).",
+      "تمتد جزيرة الحديريات على أكثر من 3,000 هكتار قبالة الساحل الغربي لأبوظبي. وعبر جسر الحديريات، تبعد الجزيرة 10 دقائق فقط عن مركز أعمال عاصمة الإمارات, أقرب واجهة مائية بنظام التملك الحر في أبوظبي. تُطوّرها شركة Modon Properties (المملوكة بنسبة 84.5% للحكومة عبر ADQ).",
     aboutPara2:
       "بفضل 16 كيلومتراً من الشواطئ الطبيعية، و2.25 مليون متر مربع من الحدائق، وSurf Abu Dhabi (أكبر حوض أمواج اصطناعي في العالم)، تُعدّ الحديريات العنوان الوحيد في الإمارات الذي يجمع الرياضة النخبوية والحياة الساحلية والمساكن بنظام التملك الحر.",
     aboutMinistats: [
       ["+3,000", "هكتار من المساحة الإجمالية"],
       ["16 كم", "من الشواطئ الطبيعية"],
-      ["10–20 دقيقة", "بالسيارة إلى مركز أعمال أبوظبي"],
+      ["10-20 دقيقة", "بالسيارة إلى مركز أعمال أبوظبي"],
       ["99", "جنسية من المستثمرين"],
     ],
     amenitiesEyebrow: "بنية تحتية عالمية المستوى",
@@ -294,7 +294,7 @@ const LABELS: Record<Locale, {
     communitiesEyebrow: "المجتمعات السكنية",
     communitiesHeading: "اعثر على مجتمعك",
     communitiesSubheading:
-      "ستة مجتمعات بنظام التملك الحر من Modon — شقق تبدأ من 2 مليون درهم، وقصور فاخرة حتى 80 مليون درهم وأكثر.",
+      "ستة مجتمعات بنظام التملك الحر من Modon, شقق تبدأ من 2 مليون درهم، وقصور فاخرة حتى 80 مليون درهم وأكثر.",
     communitiesCta: "الاطلاع على التوفر والأسعار",
     communitiesStartingFrom: "يبدأ من",
     communitiesHandover: "التسليم",
@@ -304,19 +304,19 @@ const LABELS: Record<Locale, {
       "السوق العقاري الأول في أبوظبي من حيث قيمة المعاملات في الربع الأول من عام 2026.",
     tableHeaders: ["المؤشر", "جزيرة الحديريات", "متوسط دبي"],
     whyInvestCards: [
-      ["مطوّر مدعوم حكومياً", "Modon Properties مملوكة بنسبة 84.5% لـ ADQ — الذراع الاستثماري السيادي لأبوظبي."],
+      ["مطوّر مدعوم حكومياً", "Modon Properties مملوكة بنسبة 84.5% لـ ADQ, الذراع الاستثماري السيادي لأبوظبي."],
       ["رسوم نقل 2%", "نصف رسوم دبي البالغة 4%. تكاليف معاملات أقل تحسّن صافي العائد على الاستثمار."],
       ["تملك حر لجميع الجنسيات", "حقوق ملكية 100% بلا قيود. العقارات التي تتجاوز 2 مليون درهم تمنحك التأشيرة الذهبية الإماراتية."],
       ["10 دقائق إلى وسط المدينة", "عبر جسر الحديريات. 25 دقيقة إلى مطار أبوظبي الدولي."],
     ],
     stats: [
       ["11.97 مليار درهم", "معاملات الربع الأول 2026", "الأول في أبوظبي"],
-      ["40–50%", "ارتفاع رأس المال", "سجّله المشترون الأوائل"],
-      ["7–9%", "عائد إيجاري إجمالي", "الساحل أبوظبي"],
+      ["40-50%", "ارتفاع رأس المال", "سجّله المشترون الأوائل"],
+      ["7-9%", "عائد إيجاري إجمالي", "الساحل أبوظبي"],
       ["2%", "رسوم النقل", "نصف معدل دبي"],
     ],
     faqEyebrow: "الأسئلة الشائعة",
-    faqHeading: "جزيرة الحديريات — أسئلة العقارات",
+    faqHeading: "جزيرة الحديريات, أسئلة العقارات",
     faqSubheading: "إجابات على أسئلة المشترين والمستثمرين.",
     faqs: [
       {
@@ -327,27 +327,27 @@ const LABELS: Record<Locale, {
       {
         question: "ما هي رسوم نقل الملكية في جزيرة الحديريات؟",
         answer:
-          "رسوم نقل الملكية في أبوظبي 2% من سعر الشراء — أي نصف رسوم دبي البالغة 4% بالضبط. مما يقلل تكاليف الدخول ويحسّن صافي عائد الاستثمار عند أي إعادة بيع.",
+          "رسوم نقل الملكية في أبوظبي 2% من سعر الشراء, أي نصف رسوم دبي البالغة 4% بالضبط. مما يقلل تكاليف الدخول ويحسّن صافي عائد الاستثمار عند أي إعادة بيع.",
       },
       {
         question: "ما أنواع العقارات المتاحة؟",
         answer:
-          "تتوفر في جزيرة الحديريات: شقق (1–4 غرف نوم، من 2 مليون درهم)؛ فلل (3–8 غرف نوم، من 6 ملايين درهم)؛ فلل جولف وتاون هاوس (من 4.25 مليون درهم)؛ قصور فاخرة (من 25 مليون درهم)؛ قصور فاخرة على التلال (41 مليون درهم وأكثر). جميعها من تطوير Modon Properties المدعومة حكومياً.",
+          "تتوفر في جزيرة الحديريات: شقق (1-4 غرف نوم، من 2 مليون درهم)؛ فلل (3-8 غرف نوم، من 6 ملايين درهم)؛ فلل جولف وتاون هاوس (من 4.25 مليون درهم)؛ قصور فاخرة (من 25 مليون درهم)؛ قصور فاخرة على التلال (41 مليون درهم وأكثر). جميعها من تطوير Modon Properties المدعومة حكومياً.",
       },
       {
         question: "ما العائد الإيجاري المتوقع في جزيرة الحديريات؟",
         answer:
-          "تحقق العقارات الساحلية في أبوظبي عادةً عائداً إيجارياً إجمالياً يتراوح بين 7–9%. وسجّل المشترون الأوائل في جزيرة الحديريات ارتفاعاً في رأس المال بنسبة 40–50% منذ إطلاق الجزيرة عام 2020. وبلغت قيمة المعاملات في الربع الأول من 2026 نحو 11.97 مليار درهم، وهو الأعلى بين جميع مناطق أبوظبي.",
+          "تحقق العقارات الساحلية في أبوظبي عادةً عائداً إيجارياً إجمالياً يتراوح بين 7-9%. وسجّل المشترون الأوائل في جزيرة الحديريات ارتفاعاً في رأس المال بنسبة 40-50% منذ إطلاق الجزيرة عام 2020. وبلغت قيمة المعاملات في الربع الأول من 2026 نحو 11.97 مليار درهم، وهو الأعلى بين جميع مناطق أبوظبي.",
       },
       {
         question: "كم تبعد جزيرة الحديريات عن وسط مدينة أبوظبي؟",
         answer:
-          "10–20 دقيقة بالسيارة عبر جسر الحديريات. تقع الجزيرة على الساحل الغربي لأبوظبي في مواجهة البطين. مطار أبوظبي الدولي على بُعد 25–30 دقيقة تقريباً. ورابط مترو/حافلة مخصص لـ Surf Abu Dhabi مخطط ضمن الخطة الرئيسية لتنقل أبوظبي الحضري.",
+          "10-20 دقيقة بالسيارة عبر جسر الحديريات. تقع الجزيرة على الساحل الغربي لأبوظبي في مواجهة البطين. مطار أبوظبي الدولي على بُعد 25-30 دقيقة تقريباً. ورابط مترو/حافلة مخصص لـ Surf Abu Dhabi مخطط ضمن الخطة الرئيسية لتنقل أبوظبي الحضري.",
       },
       {
         question: "هل تُعدّ جزيرة الحديريات استثماراً جيداً مقارنةً بدبي؟",
         answer:
-          "تُتيح جزيرة الحديريات دخولاً بتكلفة أقل إلى تملك حر عالي الجودة مقارنةً بمجتمعات دبي الساحلية المماثلة، بفارق رسوم نقل (2% مقابل 4% في دبي)، وعوائد أعلى (7–9% مقابل 5.5–7%)، وارتفاع موثّق في رأس المال بنسبة 40–50% للمشترين الأوائل. فضلاً عن أن المطوّر المدعوم حكومياً وصك الأرض السيادي يزيلان مخاطر التسليم كلياً.",
+          "تُتيح جزيرة الحديريات دخولاً بتكلفة أقل إلى تملك حر عالي الجودة مقارنةً بمجتمعات دبي الساحلية المماثلة، بفارق رسوم نقل (2% مقابل 4% في دبي)، وعوائد أعلى (7-9% مقابل 5.5-7%)، وارتفاع موثّق في رأس المال بنسبة 40-50% للمشترين الأوائل. فضلاً عن أن المطوّر المدعوم حكومياً وصك الأرض السيادي يزيلان مخاطر التسليم كلياً.",
       },
     ],
     ctaEyebrow: "تحدّث إلى متخصص",
@@ -357,32 +357,32 @@ const LABELS: Record<Locale, {
     ctaPrimaryBtn: "استشارة مجانية",
     trustFooter: ["أكثر من 17 عاماً في سوق العقارات الإماراتي", "3,000+ عقار", "بدون عمولة للمشترين", "مرخّص من RERA"],
     developerBadge: "Modon Properties · مدعومة حكومياً",
-    developerSub: "مملوكة بنسبة 84.5% لـ ADQ — الذراع الاستثماري السيادي لأبوظبي",
+    developerSub: "مملوكة بنسبة 84.5% لـ ADQ, الذراع الاستثماري السيادي لأبوظبي",
     freeholdBadge: "تملك حر · جميع الجنسيات",
   },
 
   zh: {
     metaTitle: "Hudayriyat Island房产出售 | 阿布扎比永久产权 | Binayah",
     metaDesc:
-      "在Hudayriyat Island购买永久产权房产——别墅起价600万迪拉姆，公寓起价200万迪拉姆。政府背书开发商Modon，2%过户费，距阿布扎比中央商务区仅10分钟。",
+      "在Hudayriyat Island购买永久产权房产, , 别墅起价600万迪拉姆，公寓起价200万迪拉姆。政府背书开发商Modon，2%过户费，距阿布扎比中央商务区仅10分钟。",
     heroEyebrow: "阿布扎比 · 自由持有产权岛 · 开发商 Modon Properties",
     heroH1Line1: "阿布扎比的",
     heroH1Line2: "比弗利山庄",
     heroSubtitle:
-      "Hudayriyat Island — 逾3,000公顷综合规划滨海社区，距阿布扎比中央商务区仅10分钟车程。面向所有国籍的永久产权，2%过户费，政府背书开发商。",
+      "Hudayriyat Island, 逾3,000公顷综合规划滨海社区，距阿布扎比中央商务区仅10分钟车程。面向所有国籍的永久产权，2%过户费，政府背书开发商。",
     trustSignals: ["永久产权 · 所有国籍", "2% 过户费", "符合黄金签证资格", "Modon（ADQ支持）"],
     ctaPrimary: "免费投资咨询",
     ctaSecondary: "查看社区",
     aboutEyebrow: "关于岛屿",
     aboutHeading: "阿布扎比最具雄心的滨海开发项目",
     aboutPara1:
-      "Al Hudayriyat Island位于阿布扎比西海岸，占地逾3,000公顷。通过Hudayriyat大桥与大陆相连，距阿联酋首都中央商务区仅10分钟车程——是阿布扎比最近的永久产权滨水区域。由Modon Properties开发（84.5%由ADQ国家控股），是阿布扎比旗舰滨海城市项目。",
+      "Al Hudayriyat Island位于阿布扎比西海岸，占地逾3,000公顷。通过Hudayriyat大桥与大陆相连，距阿联酋首都中央商务区仅10分钟车程, , 是阿布扎比最近的永久产权滨水区域。由Modon Properties开发（84.5%由ADQ国家控股），是阿布扎比旗舰滨海城市项目。",
     aboutPara2:
       "拥有16公里天然海滩、225万平方米公园、Surf Abu Dhabi（全球最大人工冲浪池）及220公里骑行基础设施，Hudayriyat是阿联酋唯一将精英运动、滨海生活与永久产权住宅融为一体的综合规划岛屿。",
     aboutMinistats: [
       ["3,000+", "公顷总面积"],
       ["16 公里", "天然海滩"],
-      ["10–20 分钟", "驾车至阿布扎比中央商务区"],
+      ["10-20 分钟", "驾车至阿布扎比中央商务区"],
       ["99", "投资者国籍"],
     ],
     amenitiesEyebrow: "世界级基础设施",
@@ -392,7 +392,7 @@ const LABELS: Record<Locale, {
     communitiesEyebrow: "住宅社区",
     communitiesHeading: "寻找您的社区",
     communitiesSubheading:
-      "Modon旗下六个永久产权社区——公寓起价200万迪拉姆，超豪华庄园最高8,000万迪拉姆以上。",
+      "Modon旗下六个永久产权社区, , 公寓起价200万迪拉姆，超豪华庄园最高8,000万迪拉姆以上。",
     communitiesCta: "获取房源及价格",
     communitiesStartingFrom: "起价",
     communitiesHandover: "交付时间",
@@ -401,19 +401,19 @@ const LABELS: Record<Locale, {
     whyInvestSubheading: "2026年第一季度阿布扎比交易额排名第一的房地产市场。",
     tableHeaders: ["指标", "Hudayriyat Island", "迪拜平均"],
     whyInvestCards: [
-      ["政府背书开发商", "Modon Properties由ADQ持股84.5%——阿布扎比主权投资机构，是阿联酋最强开发商保障。"],
+      ["政府背书开发商", "Modon Properties由ADQ持股84.5%, , 阿布扎比主权投资机构，是阿联酋最强开发商保障。"],
       ["2%过户费", "仅为迪拜4%的一半，更低交易成本提升净投资回报率。"],
       ["永久产权·所有国籍", "100%所有权，无限制。200万迪拉姆以上房产自动符合阿联酋黄金签证居留资格。"],
       ["10分钟至市中心", "经Hudayriyat大桥。距阿布扎比国际机场25分钟。阿联酋首都最近的滨水永久产权区域。"],
     ],
     stats: [
       ["AED 119.7亿", "2026年第一季度交易额", "阿布扎比第一"],
-      ["40–50%", "资本增值", "早期买家已录得"],
-      ["7–9%", "毛租金回报率", "阿布扎比沿海"],
+      ["40-50%", "资本增值", "早期买家已录得"],
+      ["7-9%", "毛租金回报率", "阿布扎比沿海"],
       ["2%", "过户费", "迪拜的一半"],
     ],
     faqEyebrow: "常见问题",
-    faqHeading: "Hudayriyat Island — 房产常见问题",
+    faqHeading: "Hudayriyat Island, 房产常见问题",
     faqSubheading: "买家和投资者的常见疑问解答。",
     faqs: [
       {
@@ -424,62 +424,62 @@ const LABELS: Record<Locale, {
       {
         question: "Hudayriyat Island的过户费是多少？",
         answer:
-          "阿布扎比房产过户费为购买价格的2%——恰好是迪拜4%的一半。这降低了您的入市成本，并在每次转售时提高净投资回报。",
+          "阿布扎比房产过户费为购买价格的2%, , 恰好是迪拜4%的一半。这降低了您的入市成本，并在每次转售时提高净投资回报。",
       },
       {
         question: "有哪些类型的房产可供选择？",
         answer:
-          "Hudayriyat Island提供：公寓（1–4卧室，起价200万迪拉姆）；别墅（3–8卧室，起价600万迪拉姆）；高尔夫别墅和联排别墅（起价425万迪拉姆）；豪华庄园（起价2,500万迪拉姆）；超豪华山顶庄园（4,100万迪拉姆以上）。所有房产均由政府背书的Modon Properties开发。",
+          "Hudayriyat Island提供：公寓（1-4卧室，起价200万迪拉姆）；别墅（3-8卧室，起价600万迪拉姆）；高尔夫别墅和联排别墅（起价425万迪拉姆）；豪华庄园（起价2,500万迪拉姆）；超豪华山顶庄园（4,100万迪拉姆以上）。所有房产均由政府背书的Modon Properties开发。",
       },
       {
         question: "在Hudayriyat Island可以期待什么样的租金回报？",
         answer:
-          "阿布扎比沿海房产通常产生7–9%的毛租金回报率。自2020年岛屿推出以来，早期买家已录得40–50%的资本增值。2026年第一季度岛内交易额达119.7亿迪拉姆——为阿布扎比所有地区中最高。",
+          "阿布扎比沿海房产通常产生7-9%的毛租金回报率。自2020年岛屿推出以来，早期买家已录得40-50%的资本增值。2026年第一季度岛内交易额达119.7亿迪拉姆, , 为阿布扎比所有地区中最高。",
       },
       {
         question: "Hudayriyat Island距阿布扎比市中心有多远？",
         answer:
-          "经Hudayriyat大桥驾车10–20分钟。该岛位于阿布扎比西海岸，与Al Bateen相对。距阿布扎比国际机场约25–30分钟。作为阿布扎比城市交通总体规划的一部分，专用的Surf Abu Dhabi地铁/公交线路已在规划之中。",
+          "经Hudayriyat大桥驾车10-20分钟。该岛位于阿布扎比西海岸，与Al Bateen相对。距阿布扎比国际机场约25-30分钟。作为阿布扎比城市交通总体规划的一部分，专用的Surf Abu Dhabi地铁/公交线路已在规划之中。",
       },
       {
         question: "与迪拜相比，Hudayriyat Island是否是一项好投资？",
         answer:
-          "与迪拜可比滨水社区相比，Hudayriyat Island提供更低的永久产权优质入市门槛：2%过户费对比迪拜4%，更高毛回报率（7–9%对比迪拜5.5–7%），以及早期买家已记录的40–50%资本增值。政府背书开发商和主权土地产权完全消除了交付风险。",
+          "与迪拜可比滨水社区相比，Hudayriyat Island提供更低的永久产权优质入市门槛：2%过户费对比迪拜4%，更高毛回报率（7-9%对比迪拜5.5-7%），以及早期买家已记录的40-50%资本增值。政府背书开发商和主权土地产权完全消除了交付风险。",
       },
     ],
     ctaEyebrow: "联系专家",
     ctaHeading: "准备好在Hudayriyat Island投资了吗？",
     ctaBody:
-      "我们的阿布扎比团队为您提供免费、无义务的咨询，涵盖所有六个Modon社区的单位供应、付款计划及预期投资回报——包括非公开市场房源。",
+      "我们的阿布扎比团队为您提供免费、无义务的咨询，涵盖所有六个Modon社区的单位供应、付款计划及预期投资回报, , 包括非公开市场房源。",
     ctaPrimaryBtn: "免费咨询",
     trustFooter: ["深耕阿联酋房地产17年以上", "3,000+套房产", "买家零佣金", "持RERA监管牌照"],
     developerBadge: "Modon Properties · 政府背书开发商",
-    developerSub: "84.5%由ADQ持股——阿布扎比主权投资机构",
+    developerSub: "84.5%由ADQ持股, , 阿布扎比主权投资机构",
     freeholdBadge: "永久产权 · 所有国籍",
   },
 
   vi: {
     metaTitle: "Bất động sản Hudayriyat Island | Sở hữu vĩnh viễn Abu Dhabi | Binayah",
     metaDesc:
-      "Mua bất động sản sở hữu vĩnh viễn trên Hudayriyat Island, Abu Dhabi — biệt thự từ 6 triệu AED, căn hộ từ 2 triệu AED. Chủ đầu tư được chính phủ hậu thuẫn Modon. Phí chuyển nhượng 2%. 10 phút từ CBD Abu Dhabi. Hướng dẫn chuyên gia từ Binayah Properties.",
+      "Mua bất động sản sở hữu vĩnh viễn trên Hudayriyat Island, Abu Dhabi, biệt thự từ 6 triệu AED, căn hộ từ 2 triệu AED. Chủ đầu tư được chính phủ hậu thuẫn Modon. Phí chuyển nhượng 2%. 10 phút từ CBD Abu Dhabi. Hướng dẫn chuyên gia từ Binayah Properties.",
     heroEyebrow: "Abu Dhabi · Đảo sở hữu vĩnh viễn · Bởi Modon Properties",
     heroH1Line1: "Beverly Hills",
     heroH1Line2: "của Abu Dhabi",
     heroSubtitle:
-      "Hudayriyat Island — hơn 3.000 hecta sống ven biển quy hoạch tổng thể, 10 phút từ CBD Abu Dhabi. Sở hữu vĩnh viễn cho mọi quốc tịch, phí chuyển nhượng 2%, chủ đầu tư được chính phủ hậu thuẫn.",
+      "Hudayriyat Island, hơn 3.000 hecta sống ven biển quy hoạch tổng thể, 10 phút từ CBD Abu Dhabi. Sở hữu vĩnh viễn cho mọi quốc tịch, phí chuyển nhượng 2%, chủ đầu tư được chính phủ hậu thuẫn.",
     trustSignals: ["Sở hữu vĩnh viễn · Mọi quốc tịch", "Phí chuyển nhượng 2%", "Đủ điều kiện Golden Visa", "Modon (ADQ hậu thuẫn)"],
     ctaPrimary: "Tư vấn đầu tư miễn phí",
     ctaSecondary: "Xem các khu dân cư",
     aboutEyebrow: "Về hòn đảo",
     aboutHeading: "Dự án ven biển tham vọng nhất Abu Dhabi",
     aboutPara1:
-      "Al Hudayriyat Island trải dài hơn 3.000 hecta ngoài khơi bờ biển phía tây Abu Dhabi. Kết nối với đất liền qua Cầu Hudayriyat, chỉ cách CBD của thủ đô UAE 10 phút — khu ven biển sở hữu vĩnh viễn gần nhất tại Abu Dhabi. Được phát triển bởi Modon Properties (84,5% thuộc sở hữu nhà nước qua ADQ), hòn đảo là dự án thành phố ven biển hàng đầu của Abu Dhabi.",
+      "Al Hudayriyat Island trải dài hơn 3.000 hecta ngoài khơi bờ biển phía tây Abu Dhabi. Kết nối với đất liền qua Cầu Hudayriyat, chỉ cách CBD của thủ đô UAE 10 phút, khu ven biển sở hữu vĩnh viễn gần nhất tại Abu Dhabi. Được phát triển bởi Modon Properties (84,5% thuộc sở hữu nhà nước qua ADQ), hòn đảo là dự án thành phố ven biển hàng đầu của Abu Dhabi.",
     aboutPara2:
       "Với 16 km bãi biển tự nhiên, 2,25 triệu m² công viên, Surf Abu Dhabi (hồ tạo sóng nhân tạo lớn nhất thế giới) và 220 km hạ tầng đạp xe, Hudayriyat là địa chỉ duy nhất tại UAE kết hợp thể thao đỉnh cao, lối sống ven biển và nhà ở sở hữu vĩnh viễn trong một hòn đảo quy hoạch tổng thể.",
     aboutMinistats: [
       ["3.000+", "Hecta tổng diện tích"],
       ["16 km", "Bãi biển tự nhiên"],
-      ["10–20 phút", "Lái xe đến CBD Abu Dhabi"],
+      ["10-20 phút", "Lái xe đến CBD Abu Dhabi"],
       ["99", "Quốc tịch đang đầu tư"],
     ],
     amenitiesEyebrow: "Hạ tầng đẳng cấp thế giới",
@@ -489,7 +489,7 @@ const LABELS: Record<Locale, {
     communitiesEyebrow: "Khu dân cư",
     communitiesHeading: "Tìm khu của bạn",
     communitiesSubheading:
-      "Sáu khu sở hữu vĩnh viễn bởi Modon — căn hộ từ 2 triệu AED, dinh thự siêu sang đến 80 triệu AED+.",
+      "Sáu khu sở hữu vĩnh viễn bởi Modon, căn hộ từ 2 triệu AED, dinh thự siêu sang đến 80 triệu AED+.",
     communitiesCta: "Nhận thông tin sẵn có & Giá",
     communitiesStartingFrom: "Khởi điểm từ",
     communitiesHandover: "Bàn giao",
@@ -499,19 +499,19 @@ const LABELS: Record<Locale, {
       "Thị trường bất động sản số 1 Abu Dhabi theo giá trị giao dịch trong Q1 2026. Bốn lợi thế cấu trúc không hòn đảo nào khác có.",
     tableHeaders: ["Chỉ số", "Hudayriyat Island", "TB Dubai"],
     whyInvestCards: [
-      ["Chủ đầu tư được chính phủ hậu thuẫn", "Modon Properties thuộc sở hữu 84,5% của ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi. Bảo lãnh chủ đầu tư mạnh nhất UAE."],
+      ["Chủ đầu tư được chính phủ hậu thuẫn", "Modon Properties thuộc sở hữu 84,5% của ADQ, cánh tay đầu tư chủ quyền của Abu Dhabi. Bảo lãnh chủ đầu tư mạnh nhất UAE."],
       ["Phí chuyển nhượng 2%", "Bằng một nửa mức 4% của Dubai. Chi phí giao dịch thấp hơn cải thiện ROI ròng cho nhà đầu tư và giảm ma sát ở mỗi lần bán lại."],
       ["Sở hữu vĩnh viễn, mọi quốc tịch", "Quyền sở hữu 100%, không hạn chế. Bất động sản trên 2 triệu AED tự động giúp bạn đủ điều kiện cư trú Golden Visa UAE."],
       ["10 phút đến trung tâm thành phố", "Qua Cầu Hudayriyat. 25 phút đến Sân bay Quốc tế Abu Dhabi. Khu ven biển sở hữu vĩnh viễn gần thủ đô UAE nhất."],
     ],
     stats: [
       ["11,97 tỷ AED", "Giao dịch Q1 2026", "#1 tại Abu Dhabi"],
-      ["40–50%", "Tăng giá vốn", "Ghi nhận bởi người mua sớm"],
-      ["7–9%", "Lợi suất cho thuê gộp", "Abu Dhabi ven biển"],
+      ["40-50%", "Tăng giá vốn", "Ghi nhận bởi người mua sớm"],
+      ["7-9%", "Lợi suất cho thuê gộp", "Abu Dhabi ven biển"],
       ["2%", "Phí chuyển nhượng", "Bằng một nửa mức của Dubai"],
     ],
     faqEyebrow: "Câu hỏi thường gặp",
-    faqHeading: "Hudayriyat Island — Câu hỏi về bất động sản",
+    faqHeading: "Hudayriyat Island, Câu hỏi về bất động sản",
     faqSubheading: "Mọi điều người mua và nhà đầu tư hỏi trước khi cam kết với địa chỉ phát triển nhanh nhất Abu Dhabi.",
     faqs: [
       {
@@ -522,61 +522,61 @@ const LABELS: Record<Locale, {
       {
         question: "Phí chuyển nhượng trên Hudayriyat Island là bao nhiêu?",
         answer:
-          "Phí chuyển nhượng bất động sản Abu Dhabi là 2% giá mua — đúng bằng một nửa mức 4% của Dubai. Điều này giảm chi phí vào của bạn và cải thiện lợi nhuận đầu tư ròng ở mọi lần bán lại.",
+          "Phí chuyển nhượng bất động sản Abu Dhabi là 2% giá mua, đúng bằng một nửa mức 4% của Dubai. Điều này giảm chi phí vào của bạn và cải thiện lợi nhuận đầu tư ròng ở mọi lần bán lại.",
       },
       {
         question: "Những loại bất động sản nào có sẵn?",
         answer:
-          "Hudayriyat Island cung cấp: căn hộ (1–4PN, từ 2 triệu AED); biệt thự (3–8PN, từ 6 triệu AED); biệt thự golf và nhà phố (từ 4,25 triệu AED); dinh thự sang trọng (từ 25 triệu AED); dinh thự siêu sang trên đồi (41 triệu AED+). Tất cả đều được phát triển bởi Modon Properties được chính phủ hậu thuẫn.",
+          "Hudayriyat Island cung cấp: căn hộ (1-4PN, từ 2 triệu AED); biệt thự (3-8PN, từ 6 triệu AED); biệt thự golf và nhà phố (từ 4,25 triệu AED); dinh thự sang trọng (từ 25 triệu AED); dinh thự siêu sang trên đồi (41 triệu AED+). Tất cả đều được phát triển bởi Modon Properties được chính phủ hậu thuẫn.",
       },
       {
         question: "Tôi có thể kỳ vọng lợi suất cho thuê nào trên Hudayriyat Island?",
         answer:
-          "Bất động sản ven biển Abu Dhabi thường tạo ra lợi suất cho thuê gộp 7–9%. Người mua sớm trên Hudayriyat Island đã ghi nhận tăng giá vốn 40–50% kể từ khi hòn đảo ra mắt năm 2020. Q1 2026 chứng kiến 11,97 tỷ AED giao dịch trên đảo — cao nhất trong số bất kỳ khu vực nào ở Abu Dhabi.",
+          "Bất động sản ven biển Abu Dhabi thường tạo ra lợi suất cho thuê gộp 7-9%. Người mua sớm trên Hudayriyat Island đã ghi nhận tăng giá vốn 40-50% kể từ khi hòn đảo ra mắt năm 2020. Q1 2026 chứng kiến 11,97 tỷ AED giao dịch trên đảo, cao nhất trong số bất kỳ khu vực nào ở Abu Dhabi.",
       },
       {
         question: "Hudayriyat Island cách trung tâm thành phố Abu Dhabi bao xa?",
         answer:
-          "10–20 phút bằng ô tô qua Cầu Hudayriyat. Hòn đảo nằm trên bờ biển phía tây Abu Dhabi đối diện Al Bateen. Sân bay Quốc tế Abu Dhabi cách khoảng 25–30 phút. Một tuyến metro/xe buýt Surf Abu Dhabi chuyên dụng được lên kế hoạch như một phần của Kế hoạch Tổng thể Giao thông Đô thị Abu Dhabi.",
+          "10-20 phút bằng ô tô qua Cầu Hudayriyat. Hòn đảo nằm trên bờ biển phía tây Abu Dhabi đối diện Al Bateen. Sân bay Quốc tế Abu Dhabi cách khoảng 25-30 phút. Một tuyến metro/xe buýt Surf Abu Dhabi chuyên dụng được lên kế hoạch như một phần của Kế hoạch Tổng thể Giao thông Đô thị Abu Dhabi.",
       },
       {
         question: "Hudayriyat Island có phải khoản đầu tư tốt so với Dubai không?",
         answer:
-          "Hudayriyat Island cung cấp chi phí vào thấp hơn cho bất động sản sở hữu vĩnh viễn chất lượng cao so với các khu ven biển Dubai tương đương, với phí chuyển nhượng 2% so với 4% của Dubai, lợi suất gộp cao hơn (7–9% so với 5,5–7% của Dubai) và tăng giá vốn 40–50% được ghi nhận cho người mua sớm. Chủ đầu tư được chính phủ hậu thuẫn và sổ đỏ đất được chủ quyền bảo đảm loại bỏ hoàn toàn rủi ro bàn giao.",
+          "Hudayriyat Island cung cấp chi phí vào thấp hơn cho bất động sản sở hữu vĩnh viễn chất lượng cao so với các khu ven biển Dubai tương đương, với phí chuyển nhượng 2% so với 4% của Dubai, lợi suất gộp cao hơn (7-9% so với 5,5-7% của Dubai) và tăng giá vốn 40-50% được ghi nhận cho người mua sớm. Chủ đầu tư được chính phủ hậu thuẫn và sổ đỏ đất được chủ quyền bảo đảm loại bỏ hoàn toàn rủi ro bàn giao.",
       },
     ],
     ctaEyebrow: "Trao đổi với chuyên gia",
     ctaHeading: "Sẵn sàng đầu tư trên Hudayriyat Island?",
     ctaBody:
-      "Đội ngũ Abu Dhabi của chúng tôi cung cấp tư vấn miễn phí, không ràng buộc về tình trạng căn sẵn có, kế hoạch thanh toán và ROI dự kiến trên cả sáu khu Modon — bao gồm các lựa chọn ngoài thị trường.",
+      "Đội ngũ Abu Dhabi của chúng tôi cung cấp tư vấn miễn phí, không ràng buộc về tình trạng căn sẵn có, kế hoạch thanh toán và ROI dự kiến trên cả sáu khu Modon, bao gồm các lựa chọn ngoài thị trường.",
     ctaPrimaryBtn: "Tư vấn miễn phí",
     trustFooter: ["19+ năm trong bất động sản UAE", "3.000+ bất động sản", "Không hoa hồng cho người mua", "Được RERA quản lý"],
     developerBadge: "Modon Properties · Được chính phủ hậu thuẫn",
-    developerSub: "84,5% thuộc sở hữu ADQ — cánh tay đầu tư chủ quyền của Abu Dhabi",
+    developerSub: "84,5% thuộc sở hữu ADQ, cánh tay đầu tư chủ quyền của Abu Dhabi",
     freeholdBadge: "Sở hữu vĩnh viễn · Mọi quốc tịch",
   },
 he: {
     metaTitle: "Hudayriyat Island נכסים למכירה | בעלות מלאה (Freehold) אבו דאבי | Binayah",
     metaDesc:
-      "קנו נכסים בבעלות מלאה ב-Hudayriyat Island, אבו דאבי — וילות החל מ-AED 6M, דירות החל מ-AED 2M. מפתח מגובה ממשלתית Modon. דמי העברה 2%. 10 דקות ממרכז העסקים של אבו דאבי. ייעוץ מומחים מ-Binayah Properties.",
+      "קנו נכסים בבעלות מלאה ב-Hudayriyat Island, אבו דאבי, וילות החל מ-AED 6M, דירות החל מ-AED 2M. מפתח מגובה ממשלתית Modon. דמי העברה 2%. 10 דקות ממרכז העסקים של אבו דאבי. ייעוץ מומחים מ-Binayah Properties.",
     heroEyebrow: "אבו דאבי · אי בעלות מלאה · על ידי Modon Properties",
     heroH1Line1: "הבוורלי הילס",
     heroH1Line2: "של אבו דאבי",
     heroSubtitle:
-      "Hudayriyat Island — מעל 3,000 דונם של מגורים חופיים מתוכננים, 10 דקות ממרכז העסקים של אבו דאבי. בעלות מלאה לכל הלאומים, דמי העברה 2%, מפתח מגובה ממשלתית.",
+      "Hudayriyat Island, מעל 3,000 דונם של מגורים חופיים מתוכננים, 10 דקות ממרכז העסקים של אבו דאבי. בעלות מלאה לכל הלאומים, דמי העברה 2%, מפתח מגובה ממשלתית.",
     trustSignals: ["בעלות מלאה · כל הלאומים", "דמי העברה 2%", "זכאות לויזת זהב", "Modon (מגובה על ידי ADQ)"],
     ctaPrimary: "ייעוץ השקעה חינם",
     ctaSecondary: "צפו בקהילות",
     aboutEyebrow: "על האי",
     aboutHeading: "הפיתוח החופי השאפתני ביותר של אבו דאבי",
     aboutPara1:
-      "אי אל-חודייריאת משתרע על פני יותר מ-3,000 דונם מול חוף המערבי של אבו דאבי. מחובר ליבשה דרך גשר חודייריאת, הוא נמצא רק 10 דקות ממרכז העסקים של בירת האמירויות — החוף הקרוב ביותר בבעלות מלאה באבו דאבי. פותח על ידי Modon Properties (84.5% בבעלות ממשלתית דרך ADQ), האי הוא פרויקט הדגל החופי של אבו דאבי.",
+      "אי אל-חודייריאת משתרע על פני יותר מ-3,000 דונם מול חוף המערבי של אבו דאבי. מחובר ליבשה דרך גשר חודייריאת, הוא נמצא רק 10 דקות ממרכז העסקים של בירת האמירויות, החוף הקרוב ביותר בבעלות מלאה באבו דאבי. פותח על ידי Modon Properties (84.5% בבעלות ממשלתית דרך ADQ), האי הוא פרויקט הדגל החופי של אבו דאבי.",
     aboutPara2:
       "עם 16 ק\"מ של חופים טבעיים, 2.25 מיליון מ\"ר של פארק, Surf Abu Dhabi (בריכת הגלים המלאכותית הגדולה בעולם), ו-220 ק\"מ של תשתית רכיבה על אופניים, חודייריאת הוא הכתובת היחידה באמירויות שמשלבת ספורט עילית, אורח חיים חופי, ומגורים בבעלות מלאה באי מתוכנן אחד.",
     aboutMinistats: [
       ["3,000+", "דונם שטח כולל"],
       ["16 ק\"מ", "חופים טבעיים"],
-      ["10–20 דקות", "נסיעה למרכז העסקים של אבו דאבי"],
+      ["10-20 דקות", "נסיעה למרכז העסקים של אבו דאבי"],
       ["99", "לאומים משקיעים"],
     ],
     amenitiesEyebrow: "תשתית ברמה עולמית",
@@ -586,7 +586,7 @@ he: {
     communitiesEyebrow: "קהילות מגורים",
     communitiesHeading: "מצאו את הקהילה שלכם",
     communitiesSubheading:
-      "שש קהילות בעלות מלאה על ידי Modon — דירות החל מ-AED 2M, אחוזות אולטרה-יוקרתיות עד AED 80M+.",
+      "שש קהילות בעלות מלאה על ידי Modon, דירות החל מ-AED 2M, אחוזות אולטרה-יוקרתיות עד AED 80M+.",
     communitiesCta: "קבלו זמינות ומחירים",
     communitiesStartingFrom: "החל מ",
     communitiesHandover: "מסירה",
@@ -596,19 +596,19 @@ he: {
       "שוק הנדל\"ן מספר 1 של אבו דאבי לפי ערך עסקאות ברבעון הראשון של 2026. ארבעה יתרונות מבניים שאין לאי אחר.",
     tableHeaders: ["מדד", "Hudayriyat Island", "ממוצע דובאי"],
     whyInvestCards: [
-      ["מפתח מגובה ממשלתית", "Modon Properties הוא בבעלות 84.5% על ידי ADQ — זרוע ההשקעות הריבונית של אבו דאבי. ההבטחה החזקה ביותר של מפתח באמירויות."],
+      ["מפתח מגובה ממשלתית", "Modon Properties הוא בבעלות 84.5% על ידי ADQ, זרוע ההשקעות הריבונית של אבו דאבי. ההבטחה החזקה ביותר של מפתח באמירויות."],
       ["דמי העברה 2%", "חצי מה-4% של דובאי. עלויות עסקה נמוכות יותר משפרות את התשואה נטו על ההשקעה ומפחיתות חיכוך בכל מכירה חוזרת."],
       ["בעלות מלאה, כל הלאומים", "זכויות בעלות 100%, ללא הגבלות. נכסים מעל AED 2M מזכים אוטומטית לויזת זהב של האמירויות."],
       ["10 דקות למרכז העיר", "דרך גשר חודייריאת. 25 דקות לנמל התעופה הבינלאומי של אבו דאבי. החוף הקרוב ביותר בבעלות מלאה לבירת האמירויות."],
     ],
     stats: [
       ["AED 11.97B", "עסקאות ברבעון הראשון של 2026", "#1 באבו דאבי"],
-      ["40–50%", "הערכת ערך הון", "נרשם על ידי קונים מוקדמים"],
-      ["7–9%", "תשואת שכירות ברוטו", "חוף אבו דאבי"],
+      ["40-50%", "הערכת ערך הון", "נרשם על ידי קונים מוקדמים"],
+      ["7-9%", "תשואת שכירות ברוטו", "חוף אבו דאבי"],
       ["2%", "דמי העברה", "חצי מהשיעור של דובאי"],
     ],
     faqEyebrow: "שאלות נפוצות",
-    faqHeading: "Hudayriyat Island — שאלות נפוצות על נכסים",
+    faqHeading: "Hudayriyat Island, שאלות נפוצות על נכסים",
     faqSubheading: "כל מה שקונים ומשקיעים שואלים לפני שמתחייבים לכתובת הצומחת ביותר של אבו דאבי.",
     faqs: [
       {
@@ -619,37 +619,37 @@ he: {
       {
         question: "מהו דמי ההעברה ב-Hudayriyat Island?",
         answer:
-          "דמי ההעברה של נכסים באבו דאבי הם 2% ממחיר הרכישה — בדיוק חצי מה-4% של דובאי. זה מפחית את עלות הכניסה ומשפר את התשואה נטו על ההשקעה בכל מכירה חוזרת.",
+          "דמי ההעברה של נכסים באבו דאבי הם 2% ממחיר הרכישה, בדיוק חצי מה-4% של דובאי. זה מפחית את עלות הכניסה ומשפר את התשואה נטו על ההשקעה בכל מכירה חוזרת.",
       },
       {
         question: "אילו סוגי נכסים זמינים?",
         answer:
-          "Hudayriyat Island מציע: דירות (1–4 חדרי שינה, החל מ-AED 2M); וילות (3–8 חדרי שינה, החל מ-AED 6M); וילות גולף ובתים טוריים (החל מ-AED 4.25M); אחוזות יוקרה (החל מ-AED 25M); אחוזות אולטרה-יוקרתיות על גבעה (AED 41M+). כל אלו מפותחים על ידי Modon Properties המגובה ממשלתית.",
+          "Hudayriyat Island מציע: דירות (1-4 חדרי שינה, החל מ-AED 2M); וילות (3-8 חדרי שינה, החל מ-AED 6M); וילות גולף ובתים טוריים (החל מ-AED 4.25M); אחוזות יוקרה (החל מ-AED 25M); אחוזות אולטרה-יוקרתיות על גבעה (AED 41M+). כל אלו מפותחים על ידי Modon Properties המגובה ממשלתית.",
       },
       {
         question: "אילו תשואות שכירות אני יכול לצפות ב-Hudayriyat Island?",
         answer:
-          "נכסים בחוף אבו דאבי בדרך כלל מניבים תשואות שכירות ברוטו של 7–9%. קונים מוקדמים ב-Hudayriyat Island רשמו הערכת ערך הון של 40–50% מאז השקת האי ב-2020. ברבעון הראשון של 2026 נרשמו עסקאות באי בסך AED 11.97B — הגבוה ביותר בכל אזור באבו דאבי.",
+          "נכסים בחוף אבו דאבי בדרך כלל מניבים תשואות שכירות ברוטו של 7-9%. קונים מוקדמים ב-Hudayriyat Island רשמו הערכת ערך הון של 40-50% מאז השקת האי ב-2020. ברבעון הראשון של 2026 נרשמו עסקאות באי בסך AED 11.97B, הגבוה ביותר בכל אזור באבו דאבי.",
       },
       {
         question: "כמה רחוק Hudayriyat Island ממרכז העיר אבו דאבי?",
         answer:
-          "10–20 דקות ברכב דרך גשר חודייריאת. האי ממוקם על החוף המערבי של אבו דאבי מול אל-בטין. נמל התעופה הבינלאומי של אבו דאבי נמצא כ-25–30 דקות משם. מתוכנן קישור מטרו/אוטובוס ייעודי ל-Surf Abu Dhabi כחלק מתוכנית האב לניידות עירונית של אבו דאבי.",
+          "10-20 דקות ברכב דרך גשר חודייריאת. האי ממוקם על החוף המערבי של אבו דאבי מול אל-בטין. נמל התעופה הבינלאומי של אבו דאבי נמצא כ-25-30 דקות משם. מתוכנן קישור מטרו/אוטובוס ייעודי ל-Surf Abu Dhabi כחלק מתוכנית האב לניידות עירונית של אבו דאבי.",
       },
       {
         question: "האם Hudayriyat Island היא השקעה טובה לעומת דובאי?",
         answer:
-          "Hudayriyat Island מציע עלות כניסה נמוכה יותר לנכסים בבעלות מלאה באיכות גבוהה מאשר קהילות חוף דובאי דומות, עם דמי העברה של 2% לעומת 4% של דובאי, תשואות ברוטו גבוהות יותר (7–9% לעומת 5.5–7% של דובאי), והערכת ערך הון של 40–50% שתועדה עבור קונים מוקדמים. המפתח המגובה ממשלתית ושטר הבעלות המגובה ריבונית מסירים את הסיכון למסירה לחלוטין.",
+          "Hudayriyat Island מציע עלות כניסה נמוכה יותר לנכסים בבעלות מלאה באיכות גבוהה מאשר קהילות חוף דובאי דומות, עם דמי העברה של 2% לעומת 4% של דובאי, תשואות ברוטו גבוהות יותר (7-9% לעומת 5.5-7% של דובאי), והערכת ערך הון של 40-50% שתועדה עבור קונים מוקדמים. המפתח המגובה ממשלתית ושטר הבעלות המגובה ריבונית מסירים את הסיכון למסירה לחלוטין.",
       },
     ],
     ctaEyebrow: "דברו עם מומחה",
     ctaHeading: "מוכנים להשקיע ב-Hudayriyat Island?",
     ctaBody:
-      "הצוות שלנו באבו דאבי מספק ייעוץ חינם וללא התחייבות על זמינות יחידות, תוכניות תשלום, ותשואה צפויה על ההשקעה בכל שש הקהילות של Modon — כולל אפשרויות מחוץ לשוק.",
+      "הצוות שלנו באבו דאבי מספק ייעוץ חינם וללא התחייבות על זמינות יחידות, תוכניות תשלום, ותשואה צפויה על ההשקעה בכל שש הקהילות של Modon, כולל אפשרויות מחוץ לשוק.",
     ctaPrimaryBtn: "ייעוץ חינם",
     trustFooter: ["19+ שנים בנדל\"ן באמירויות", "3,000+ נכסים", "ללא עמלה לקונים", "מוסדר על ידי RERA"],
     developerBadge: "Modon Properties · מגובה ממשלתית",
-    developerSub: "בבעלות 84.5% על ידי ADQ — זרוע ההשקעות הריבונית של אבו דאבי",
+    developerSub: "בבעלות 84.5% על ידי ADQ, זרוע ההשקעות הריבונית של אבו דאבי",
     freeholdBadge: "בעלות מלאה · כל הלאומים",
 },
 };
@@ -681,7 +681,7 @@ export async function generateMetadata({
           url: OG_IMG,
           width: 1200,
           height: 800,
-          alt: "Hudayriyat Island Abu Dhabi — Mediterranean villas with Abu Dhabi skyline",
+          alt: "Hudayriyat Island Abu Dhabi, Mediterranean villas with Abu Dhabi skyline",
         },
       ],
     },
@@ -707,7 +707,7 @@ export async function generateMetadata({
 const SCHEMA_ARTICLE = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Hudayriyat Island Property Guide 2025 — Buy Freehold in Abu Dhabi",
+  headline: "Hudayriyat Island Property Guide 2025, Buy Freehold in Abu Dhabi",
   description: LABELS.en.metaDesc,
   image: OG_IMG,
   author: { "@type": "Organization", name: "Binayah Properties", url: "https://www.binayah.ae" },
@@ -726,11 +726,11 @@ const SCHEMA_ARTICLE = {
 
 const AMENITIES = [
   { icon: Waves, label: "Surf Abu Dhabi", desc: "World's largest artificial wave pool, all skill levels" },
-  { icon: Bike, label: "220 km Cycling", desc: "Official Bike City — dedicated cycle network" },
+  { icon: Bike, label: "220 km Cycling", desc: "Official Bike City, dedicated cycle network" },
   { icon: Trophy, label: "Abu Dhabi Velodrome", desc: "International-grade indoor cycling track" },
   { icon: Trees, label: "2.25M sqm Park", desc: "Landscaped urban park & jogging trails" },
   { icon: Anchor, label: "Hudayriyat Marina", desc: "Full-service waterfront marina & mooring" },
-  { icon: Waves, label: "Free Public Beaches", desc: "Mar Vista & Al Bateen Beach — free entry" },
+  { icon: Waves, label: "Free Public Beaches", desc: "Mar Vista & Al Bateen Beach, free entry" },
   { icon: Building2, label: "321 Sports Dome", desc: "Largest indoor sports dome in the region" },
   { icon: Star, label: "Bab Al Nojoum", desc: "5-star beachfront glamping & eco resort" },
 ];
@@ -739,7 +739,7 @@ const COMMUNITIES = [
   {
     name: "Nawayef Park Views",
     type: "Apartments",
-    beds: "1–4 BR",
+    beds: "1-4 BR",
     priceFrom: "AED 2M",
     handover: "Q1 2028",
     desc: "Mediterranean-inspired residences overlooking the Arabian Gulf and Abu Dhabi skyline. Souq plaza, fine dining, and wellness spaces at your doorstep.",
@@ -751,10 +751,10 @@ const COMMUNITIES = [
   {
     name: "Bashayer",
     type: "Waterfront Villas & Apartments",
-    beds: "1–5 BR",
+    beds: "1-5 BR",
     priceFrom: "AED 2.35M",
-    handover: "Q4 2028–2029",
-    desc: "Abu Dhabi's first waterfront island community. 157 villas + 330 apartments, rooftop infinity pool, 3.5 km promenade. Sold out at launch — raising AED 3B.",
+    handover: "Q4 2028-2029",
+    desc: "Abu Dhabi's first waterfront island community. 157 villas + 330 apartments, rooftop infinity pool, 3.5 km promenade. Sold out at launch, raising AED 3B.",
     img: "https://cdn.prod.website-files.com/65b8ae9b3af43cf735dab067/69329cd6f5558c90f6eda9dd_6926cae021fc4137d048275b_Bashayer%250.webp",
     tag: "Waterfront",
     badge: "From AED 2.35M",
@@ -763,7 +763,7 @@ const COMMUNITIES = [
   {
     name: "Al Naseem",
     type: "Standalone Villas",
-    beds: "4–6 BR",
+    beds: "4-6 BR",
     priceFrom: "AED 7.8M",
     handover: "Q4 2027",
     desc: "Signature freestanding villas in South Californian and Modern Contemporary styles. Schools, community centre, pools, and cycling paths all within the community.",
@@ -775,10 +775,10 @@ const COMMUNITIES = [
   {
     name: "Nawayef Homes",
     type: "Hillside Villas",
-    beds: "3–5 BR",
+    beds: "3-5 BR",
     priceFrom: "AED 6M",
-    handover: "Q4 2026–2027",
-    desc: "Perched on man-made hills up to 60m high — panoramic views of Abu Dhabi's skyline and the Arabian Gulf. 3,700–5,000 sqft. Unique in the UAE.",
+    handover: "Q4 2026-2027",
+    desc: "Perched on man-made hills up to 60m high, panoramic views of Abu Dhabi's skyline and the Arabian Gulf. 3,700-5,000 sqft. Unique in the UAE.",
     img: "https://cdn.prod.website-files.com/65b8ae9b3af43cf735dab067/69329cdd77e71177de17491b_66c86ee529c70d65ed7c63d7_65eeb0678d0f6e270a004de0_Nawayef_Mansions_Type5_1%252520(1).webp",
     tag: "Hillside Villas",
     badge: "From AED 6M",
@@ -787,7 +787,7 @@ const COMMUNITIES = [
   {
     name: "Hudayriyat Golf Estates",
     type: "Golf Villas & Townhouses",
-    beds: "4–6 BR",
+    beds: "4-6 BR",
     priceFrom: "AED 4.25M",
     handover: "Q3 2030",
     desc: "Championship golf-course-front villas and townhouses. Resort lifestyle with direct green frontage in the heart of the island's leisure district.",
@@ -799,10 +799,10 @@ const COMMUNITIES = [
   {
     name: "Nawayef Mansions",
     type: "Ultra-Luxury Mansions",
-    beds: "6–8 BR",
+    beds: "6-8 BR",
     priceFrom: "AED 25M",
     handover: "2027",
-    desc: "The most exclusive addresses in Abu Dhabi. 8,700–29,000 sqft hilltop mansions commanding the island's highest elevations and uninterrupted 360° views.",
+    desc: "The most exclusive addresses in Abu Dhabi. 8,700-29,000 sqft hilltop mansions commanding the island's highest elevations and uninterrupted 360° views.",
     img: AERIAL_IMG,
     tag: "Ultra Luxury",
     badge: "From AED 25M",
@@ -815,48 +815,48 @@ const WHY_INVEST_ICONS = [Shield, TrendingUp, Star, MapPin];
 // Comparison table rows — labels are locale-aware, values are numeric/universal
 const TABLE_ROWS_EN = [
   ["Transfer Fee", "2%", "4%"],
-  ["Gross Rental Yield", "7–9%", "5.5–7%"],
-  ["Capital Appreciation", "40–50%", "15–25%"],
+  ["Gross Rental Yield", "7-9%", "5.5-7%"],
+  ["Capital Appreciation", "40-50%", "15-25%"],
   ["Developer Risk", "Sovereign (ADQ)", "Varies"],
   ["Golden Visa Threshold", "AED 2M", "AED 2M"],
 ];
 
 const TABLE_ROWS_RU = [
   ["Налог на передачу", "2%", "4%"],
-  ["Валовая доходность аренды", "7–9%", "5.5–7%"],
-  ["Прирост капитала", "40–50%", "15–25%"],
+  ["Валовая доходность аренды", "7-9%", "5.5-7%"],
+  ["Прирост капитала", "40-50%", "15-25%"],
   ["Риск застройщика", "Суверенный (ADQ)", "Varies"],
   ["Порог Золотой визы", "AED 2 млн", "AED 2 млн"],
 ];
 
 const TABLE_ROWS_AR = [
   ["رسوم النقل", "2%", "4%"],
-  ["العائد الإيجاري الإجمالي", "7–9%", "5.5–7%"],
-  ["ارتفاع رأس المال", "40–50%", "15–25%"],
+  ["العائد الإيجاري الإجمالي", "7-9%", "5.5-7%"],
+  ["ارتفاع رأس المال", "40-50%", "15-25%"],
   ["مخاطر المطوّر", "سيادي (ADQ)", "يتفاوت"],
   ["حد التأشيرة الذهبية", "2 مليون درهم", "2 مليون درهم"],
 ];
 
 const TABLE_ROWS_ZH = [
   ["过户费", "2%", "4%"],
-  ["毛租金回报率", "7–9%", "5.5–7%"],
-  ["资本增值", "40–50%", "15–25%"],
+  ["毛租金回报率", "7-9%", "5.5-7%"],
+  ["资本增值", "40-50%", "15-25%"],
   ["开发商风险", "主权背书 (ADQ)", "不等"],
   ["黄金签证门槛", "200万迪拉姆", "200万迪拉姆"],
 ];
 
 const TABLE_ROWS_VI = [
   ["Phí chuyển nhượng", "2%", "4%"],
-  ["Lợi suất cho thuê gộp", "7–9%", "5.5–7%"],
-  ["Tăng giá vốn", "40–50%", "15–25%"],
+  ["Lợi suất cho thuê gộp", "7-9%", "5.5-7%"],
+  ["Tăng giá vốn", "40-50%", "15-25%"],
   ["Rủi ro chủ đầu tư", "Chủ quyền (ADQ)", "Thay đổi"],
   ["Ngưỡng Golden Visa", "2 triệu AED", "2 triệu AED"],
 ];
 
 const TABLE_ROWS_HE = [
   ["דמי העברה", "2%", "4%"],
-  ["תשואת שכירות ברוטו", "7–9%", "5.5–7%"],
-  ["עליית ערך הון", "40–50%", "15–25%"],
+  ["תשואת שכירות ברוטו", "7-9%", "5.5-7%"],
+  ["עליית ערך הון", "40-50%", "15-25%"],
   ["סיכון יזם", "ריבוני (ADQ)", "משתנה"],
   ["סף ויזת זהב", "AED 2M", "AED 2M"],
 ];
@@ -910,7 +910,7 @@ export default async function HudayriyatIslandPage({
           <div className="absolute inset-0">
             <img
               src={HERO_IMG}
-              alt="Hudayriyat Island Abu Dhabi — aerial view of Mediterranean villas with Abu Dhabi skyline"
+              alt="Hudayriyat Island Abu Dhabi, aerial view of Mediterranean villas with Abu Dhabi skyline"
               className="w-full h-full object-cover"
               fetchPriority="high"
             />
@@ -1025,7 +1025,7 @@ export default async function HudayriyatIslandPage({
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src={AERIAL_IMG}
-                  alt="Hudayriyat Island masterplan aerial — circular villa community Abu Dhabi"
+                  alt="Hudayriyat Island masterplan aerial, circular villa community Abu Dhabi"
                   className="w-full aspect-[4/3] object-cover"
                   loading="lazy"
                 />
@@ -1107,7 +1107,7 @@ export default async function HudayriyatIslandPage({
                   <div className="relative h-52 overflow-hidden">
                     <img
                       src={c.img}
-                      alt={`${c.name} — ${c.type} on Hudayriyat Island Abu Dhabi`}
+                      alt={`${c.name}, ${c.type} on Hudayriyat Island Abu Dhabi`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />

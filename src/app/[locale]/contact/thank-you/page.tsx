@@ -10,7 +10,7 @@ import { getTranslations } from "next-intl/server";
 // view (e.g. GA4 lead-capture goal, Clarity funnel, Vercel Analytics)
 // instead of relying on an in-page toast that's invisible to tracking.
 export const metadata = {
-  title: "Thank You — We've Received Your Message | Binayah Properties",
+  title: "Thank You, We've Received Your Message | Binayah Properties",
   description: "Your enquiry has been received. A Binayah property consultant will be in touch within 24 hours.",
   robots: { index: false, follow: true },
 };

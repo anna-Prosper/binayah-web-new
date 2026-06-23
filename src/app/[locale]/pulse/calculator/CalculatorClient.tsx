@@ -508,26 +508,26 @@ function CalculatorInner({
               <MetricCard
                 icon={DollarSign}
                 label={t("estSize")}
-                value={outputs.estimatedSqft > 0 ? `${outputs.estimatedSqft.toLocaleString()} ${t("sqftUnit")}` : "—"}
+                value={outputs.estimatedSqft > 0 ? `${outputs.estimatedSqft.toLocaleString()} ${t("sqftUnit")}` : ", "}
                 sub={t("estSizeSub")}
                 accent
               />
               <MetricCard
                 icon={Percent}
                 label={t("grossYield")}
-                value={outputs.grossYield > 0 ? pct(outputs.grossYield) : "—"}
+                value={outputs.grossYield > 0 ? pct(outputs.grossYield) : ", "}
                 sub={t("grossYieldSub")}
               />
               <MetricCard
                 icon={TrendingUp}
                 label={t("netAnnualIncome")}
-                value={outputs.netAnnualIncome > 0 ? AED(outputs.netAnnualIncome) : "—"}
+                value={outputs.netAnnualIncome > 0 ? AED(outputs.netAnnualIncome) : ", "}
                 sub={t("netAnnualIncomeSub")}
               />
               <MetricCard
                 icon={Percent}
                 label={t("netYield")}
-                value={outputs.netYield > 0 ? pct(outputs.netYield) : "—"}
+                value={outputs.netYield > 0 ? pct(outputs.netYield) : ", "}
                 sub={t("netYieldSub")}
               />
             </div>
@@ -702,7 +702,7 @@ function CalculatorInner({
                 />
                 <CompareRow
                   label={t("cashOnCash")}
-                  value={outputs.cashOnCash > 0 ? pct(outputs.cashOnCash) : "—"}
+                  value={outputs.cashOnCash > 0 ? pct(outputs.cashOnCash) : ", "}
                   color="emerald"
                 />
               </div>

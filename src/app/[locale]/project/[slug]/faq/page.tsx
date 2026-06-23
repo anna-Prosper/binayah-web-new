@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const name  = String(project.name || "Project");
   const comm  = project.community ? ` in ${project.community}` : "";
   const dev   = project.developerName ? ` by ${project.developerName}` : "";
-  const title = `${name} FAQ — Common Questions Answered${comm} | Binayah`;
+  const title = `${name} FAQ, Common Questions Answered${comm} | Binayah`;
   const desc  = `Frequently asked questions about ${name}${dev}${comm}, Dubai. Pricing, payment plan, floor plans, developer, handover date, Golden Visa eligibility and more.`;
   const path  = `/project/${slug}/faq`;
 
@@ -47,13 +47,13 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   const dbFaqs = ((project.faqs as Array<{ question: string; answer: string }> | null) || []).filter(f => f.question?.trim());
   const faqs = dbFaqs.length > 0 ? dbFaqs : [
     { question: `What is the starting price of ${project.name}?`, answer: project.startingPrice ? `${project.name} starts from ${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}. Prices vary by unit type and floor. Contact us for the latest pricing and availability.` : `Please contact our team for the current pricing of ${project.name}. We'll share the latest price list and available units.` },
-    { question: `What floor plans are available at ${project.name}?`, answer: `${project.name} offers ${Array.isArray(project.unitTypes) && project.unitTypes.length > 0 ? project.unitTypes.join(", ") : "a range of unit types"}. Detailed floor plans with dimensions are available on request — contact us via WhatsApp or the inquiry form above.` },
+    { question: `What floor plans are available at ${project.name}?`, answer: `${project.name} offers ${Array.isArray(project.unitTypes) && project.unitTypes.length > 0 ? project.unitTypes.join(", ") : "a range of unit types"}. Detailed floor plans with dimensions are available on request, contact us via WhatsApp or the inquiry form above.` },
     { question: `Who is the developer of ${project.name}?`, answer: project.developerName ? `${project.name} is developed by ${project.developerName}, a leading real estate developer in Dubai.` : `Please contact our team for developer information about ${project.name}.` },
     { question: `When is the handover date for ${project.name}?`, answer: project.completionDate ? `The expected handover date for ${project.name} is ${project.completionDate}. Timelines are subject to construction progress and regulatory approvals.` : `Please contact our team for the latest handover timeline for ${project.name}.` },
     { question: `What is the payment plan for ${project.name}?`, answer: project.paymentPlanSummary && project.paymentPlanSummary !== "TBA" ? project.paymentPlanSummary : `${project.name} offers a flexible payment plan designed for both end-users and investors, typically including a down payment on booking, installments during construction, and the balance on handover. Contact us for the full schedule.` },
-    { question: `Is ${project.name} eligible for UAE Golden Visa?`, answer: `Yes — purchasing a property at ${project.name} valued at AED 2 million or above qualifies for the UAE Golden Visa, granting 10-year renewable residency. Our team can guide you through the application process.` },
+    { question: `Is ${project.name} eligible for UAE Golden Visa?`, answer: `Yes, purchasing a property at ${project.name} valued at AED 2 million or above qualifies for the UAE Golden Visa, granting 10-year renewable residency. Our team can guide you through the application process.` },
     { question: `Where is ${project.name} located?`, answer: project.community ? `${project.name} is located in ${project.community}, ${project.city || "Dubai"}, ${project.country || "UAE"}.` : `${project.name} is located in ${project.city || "Dubai"}, UAE. Contact us for detailed location and transport information.` },
-    { question: "Is mortgage financing available?", answer: "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50–80% depending on residency status. We can connect you with our banking partners for pre-approval." },
+    { question: "Is mortgage financing available?", answer: "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50-80% depending on residency status. We can connect you with our banking partners for pre-approval." },
   ];
 
   const faqJsonLd = {

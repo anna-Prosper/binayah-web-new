@@ -112,7 +112,7 @@ function EventsModal({ action, label, onClose }: { action: string; label: string
                       ) : ev.source ? (
                         <span className="text-gray-500 font-mono text-xs truncate block">{ev.source}</span>
                       ) : (
-                        <span className="text-gray-300">—</span>
+                        <span className="text-gray-300">, </span>
                       )}
                       {ev.source && ev.entityTitle && (
                         <span className="block text-[10px] text-gray-400 font-mono truncate">{ev.source}</span>

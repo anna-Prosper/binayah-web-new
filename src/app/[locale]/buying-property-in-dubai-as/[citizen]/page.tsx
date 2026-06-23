@@ -37,7 +37,7 @@ const CONTENT = {
       "tax": "0%",
       "ownership": "כל הלאומים",
       "visa": "AED 2M",
-      "yield": "5–8%"
+      "yield": "5-8%"
     },
     "stepsHeading": "כיצד לרכוש נכס בדובאי",
     "stepsSubheading": "תהליך הרכישה הסטנדרטי בן 5 השלבים חל על כל הלאומים, כולל מי שאינם תושבים.",
@@ -55,7 +55,7 @@ const CONTENT = {
       {
         "n": "03",
         "title": "קבלת NOC מהיזם",
-        "body": "היזם מנפיק אישור היעדר התנגדות (NOC) המאשר כי אין דמי שירות או תשלומים פתוחים על הנכס. בדרך כלל 5–10 ימי עסקים."
+        "body": "היזם מנפיק אישור היעדר התנגדות (NOC) המאשר כי אין דמי שירות או תשלומים פתוחים על הנכס. בדרך כלל 5-10 ימי עסקים."
       },
       {
         "n": "04",
@@ -81,7 +81,7 @@ const CONTENT = {
     "faqs": [
       {
         "question": "האם כל לאום יכול לרכוש נכס בבעלות מלאה (Freehold) בדובאי?",
-        "answer": "כן. כל הלאומים יכולים לרכוש נכסים בבעלות מלאה באזורי ה-Freehold הייעודיים של דובאי — מעל 60 קהילות, כולל Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay ו-JVC. אין הגבלות על בסיס לאום, דת או מעמד תושבות. אתם מקבלים שטר בעלות של ה-DLD עם זכויות בעלות מלאות."
+        "answer": "כן. כל הלאומים יכולים לרכוש נכסים בבעלות מלאה באזורי ה-Freehold הייעודיים של דובאי, מעל 60 קהילות, כולל Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay ו-JVC. אין הגבלות על בסיס לאום, דת או מעמד תושבות. אתם מקבלים שטר בעלות של ה-DLD עם זכויות בעלות מלאות."
       },
       {
         "question": "האם אני זקוק לאשרת תושבות באיחוד האמירויות כדי לרכוש נכס בדובאי?",
@@ -89,15 +89,15 @@ const CONTENT = {
       },
       {
         "question": "מהן העלויות הכוללות ברכישת נכס בדובאי?",
-        "answer": "אגרת העברה ל-DLD: 4% ממחיר הרכישה. עמלת סוכן: בדרך כלל 2%. דמי ניהול ל-DLD: AED 580. אגרת משרד הנאמן: AED 4,000 (לנכסים מעל AED 500K). אגרת רישום משכנתה (אם רלוונטי): 0.25% מגובה ההלוואה. סך עלויות העסקה הוא כ-6–7% ממחיר הרכישה."
+        "answer": "אגרת העברה ל-DLD: 4% ממחיר הרכישה. עמלת סוכן: בדרך כלל 2%. דמי ניהול ל-DLD: AED 580. אגרת משרד הנאמן: AED 4,000 (לנכסים מעל AED 500K). אגרת רישום משכנתה (אם רלוונטי): 0.25% מגובה ההלוואה. סך עלויות העסקה הוא כ-6-7% ממחיר הרכישה."
       },
       {
         "question": "האם אוכל לקבל משכנתה בדובאי כמי שאינו תושב?",
-        "answer": "כן. בנקים באיחוד האמירויות מציעים משכנתאות למי שאינם תושבים, בדרך כלל ביחס מימון (LTV) של 40–50% (אתם משלמים 50–60% במזומן). מסמכי ההכנסה ממדינת המוצא שלכם, דפי החשבון והיסטוריית האשראי נבחנים. בנקים בינלאומיים גדולים באיחוד האמירויות (HSBC, Emirates NBD, Mashreq, Citibank) מעניקים אשראי באופן פעיל לרוכשים זרים. אישור מקדים אורך 2–4 שבועות."
+        "answer": "כן. בנקים באיחוד האמירויות מציעים משכנתאות למי שאינם תושבים, בדרך כלל ביחס מימון (LTV) של 40-50% (אתם משלמים 50-60% במזומן). מסמכי ההכנסה ממדינת המוצא שלכם, דפי החשבון והיסטוריית האשראי נבחנים. בנקים בינלאומיים גדולים באיחוד האמירויות (HSBC, Emirates NBD, Mashreq, Citibank) מעניקים אשראי באופן פעיל לרוכשים זרים. אישור מקדים אורך 2-4 שבועות."
       },
       {
         "question": "האם קיים מס כלשהו על הכנסות שכירות או על רווחי הון בדובאי?",
-        "answer": "לא. דובאי גובה אפס מס הכנסה, אפס מס רווחי הון ואפס מס ירושה על נכסים. הכנסות שכירות פטורות לחלוטין ממס ברמת איחוד האמירויות. ייתכן שמדינת המוצא שלכם תמסה הכנסות שכירות או רווחים ממקור זר — ראו את סעיף המס הספציפי ללאום למעלה, והיוועצו ביועץ מס לגבי מצבכם הספציפי."
+        "answer": "לא. דובאי גובה אפס מס הכנסה, אפס מס רווחי הון ואפס מס ירושה על נכסים. הכנסות שכירות פטורות לחלוטין ממס ברמת איחוד האמירויות. ייתכן שמדינת המוצא שלכם תמסה הכנסות שכירות או רווחים ממקור זר, ראו את סעיף המס הספציפי ללאום למעלה, והיוועצו ביועץ מס לגבי מצבכם הספציפי."
       }
     ],
     "ctaTitle": "מוכנים לרכוש בדובאי?",
@@ -126,7 +126,7 @@ const CONTENT = {
       tax: "0%",
       ownership: "All Nationalities",
       visa: "AED 2M",
-      yield: "5–8%",
+      yield: "5-8%",
     },
 
     stepsHeading: "How to Buy Property in Dubai",
@@ -134,7 +134,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Agree Price & Sign MOU", body: "Negotiate and sign a Memorandum of Understanding (MOU / Form F) with the seller. Your agent files this with the Dubai Land Department." },
       { n: "02", title: "Pay 10% Security Deposit", body: "A 10% deposit (held in trust or with the real estate agency) is paid upon signing the MOU. This secures the property and is forfeited if you pull out." },
-      { n: "03", title: "Obtain NOC from Developer", body: "The developer issues a No Objection Certificate (NOC) confirming no outstanding service charges or payments on the property. Typically 5–10 working days." },
+      { n: "03", title: "Obtain NOC from Developer", body: "The developer issues a No Objection Certificate (NOC) confirming no outstanding service charges or payments on the property. Typically 5-10 working days." },
       { n: "04", title: "DLD Transfer & Fees", body: "Both parties attend the DLD Trustee Office (or use an authorised power-of-attorney). Pay the 4% DLD transfer fee plus admin fees. The title deed is issued same day." },
       { n: "05", title: "Receive Title Deed", body: "The DLD issues a digital and physical title deed in your name. You are now the legal owner. Rental income from day one is entirely tax-free." },
     ],
@@ -153,7 +153,7 @@ const CONTENT = {
     faqs: [
       {
         question: "Can any nationality buy freehold property in Dubai?",
-        answer: "Yes. All nationalities can purchase freehold property in Dubai's designated freehold zones — over 60 communities including Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, and JVC. There are no restrictions based on nationality, religion, or residency status. You receive a DLD title deed with full ownership rights.",
+        answer: "Yes. All nationalities can purchase freehold property in Dubai's designated freehold zones, over 60 communities including Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, and JVC. There are no restrictions based on nationality, religion, or residency status. You receive a DLD title deed with full ownership rights.",
       },
       {
         question: "Do I need a UAE residency visa to buy property in Dubai?",
@@ -161,15 +161,15 @@ const CONTENT = {
       },
       {
         question: "What are the total costs when buying property in Dubai?",
-        answer: "DLD transfer fee: 4% of purchase price. Agent commission: typically 2%. DLD admin fee: AED 580. Trustee office fee: AED 4,000 (for properties over AED 500K). Mortgage registration fee (if applicable): 0.25% of loan value. Total transaction costs are approximately 6–7% of purchase price.",
+        answer: "DLD transfer fee: 4% of purchase price. Agent commission: typically 2%. DLD admin fee: AED 580. Trustee office fee: AED 4,000 (for properties over AED 500K). Mortgage registration fee (if applicable): 0.25% of loan value. Total transaction costs are approximately 6-7% of purchase price.",
       },
       {
         question: "Can I get a mortgage in Dubai as a non-resident?",
-        answer: "Yes. UAE banks offer non-resident mortgages to foreign nationals, typically at 40–50% LTV (you pay 50–60% cash). Your home-country income documentation, bank statements, and credit history are assessed. Major international banks in the UAE (HSBC, Emirates NBD, Mashreq, Citibank) actively lend to foreign buyers. Pre-approval takes 2–4 weeks.",
+        answer: "Yes. UAE banks offer non-resident mortgages to foreign nationals, typically at 40-50% LTV (you pay 50-60% cash). Your home-country income documentation, bank statements, and credit history are assessed. Major international banks in the UAE (HSBC, Emirates NBD, Mashreq, Citibank) actively lend to foreign buyers. Pre-approval takes 2-4 weeks.",
       },
       {
         question: "Is there any tax on rental income or capital gains in Dubai?",
-        answer: "No. Dubai levies zero income tax, zero capital gains tax, and zero inheritance tax on property. Rental income is entirely tax-free at the UAE level. Your home country may tax foreign-source rental income or gains — see the nationality-specific tax section above, and consult a tax adviser for your specific situation.",
+        answer: "No. Dubai levies zero income tax, zero capital gains tax, and zero inheritance tax on property. Rental income is entirely tax-free at the UAE level. Your home country may tax foreign-source rental income or gains, see the nationality-specific tax section above, and consult a tax adviser for your specific situation.",
       },
     ],
 
@@ -201,7 +201,7 @@ const CONTENT = {
       tax: "0%",
       ownership: "Все национальности",
       visa: "2М AED",
-      yield: "5–8%",
+      yield: "5-8%",
     },
 
     stepsHeading: "Как купить недвижимость в Дубае",
@@ -209,7 +209,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Согласование цены и подписание MOU", body: "Согласуйте и подпишите меморандум о намерениях (MOU / форма F) с продавцом. Агент регистрирует документ в Земельном департаменте Дубая (DLD)." },
       { n: "02", title: "Оплата 10% задатка", body: "При подписании MOU вносится 10% задатка (хранится у агента или в трасте). Задаток фиксирует объект и теряется в случае отказа покупателя." },
-      { n: "03", title: "Получение NOC от застройщика", body: "Застройщик выдаёт Сертификат об отсутствии возражений (NOC), подтверждающий отсутствие задолженностей. Обычно занимает 5–10 рабочих дней." },
+      { n: "03", title: "Получение NOC от застройщика", body: "Застройщик выдаёт Сертификат об отсутствии возражений (NOC), подтверждающий отсутствие задолженностей. Обычно занимает 5-10 рабочих дней." },
       { n: "04", title: "Передача прав в DLD и оплата сборов", body: "Обе стороны присутствуют в офисе доверенного лица DLD (или действуют через нотариальную доверенность). Оплачивается 4% сбор DLD плюс административные сборы. Свидетельство о праве собственности выдаётся в тот же день." },
       { n: "05", title: "Получение свидетельства о праве собственности", body: "DLD выдаёт цифровое и физическое свидетельство на ваше имя. С первого дня доход от аренды полностью освобождён от налогов на уровне ОАЭ." },
     ],
@@ -228,23 +228,23 @@ const CONTENT = {
     faqs: [
       {
         question: "Могут ли иностранцы любой национальности купить фрихолд-недвижимость в Дубае?",
-        answer: "Да. Все национальности могут приобретать недвижимость в свободное владение в специально отведённых фрихолд-зонах Дубая — более 60 сообществ, включая Дубай Марина, Даунтаун Дубай, Пальм Джумейра, Бизнес-Бей и JVC. Ограничений по гражданству, религии или статусу резидента нет. Вы получаете официальное свидетельство DLD с полными правами собственности.",
+        answer: "Да. Все национальности могут приобретать недвижимость в свободное владение в специально отведённых фрихолд-зонах Дубая, более 60 сообществ, включая Дубай Марина, Даунтаун Дубай, Пальм Джумейра, Бизнес-Бей и JVC. Ограничений по гражданству, религии или статусу резидента нет. Вы получаете официальное свидетельство DLD с полными правами собственности.",
       },
       {
         question: "Нужна ли виза резидента ОАЭ для покупки недвижимости в Дубае?",
-        answer: "Нет. Нерезиденты могут покупать, владеть и сдавать недвижимость в Дубае без визы ОАЭ. Виза не требуется для совершения сделки. При инвестиции от 750 000 AED вы получаете 2-летнюю инвесторскую визу; от 2 000 000 AED — 10-летнюю Золотую визу ОАЭ.",
+        answer: "Нет. Нерезиденты могут покупать, владеть и сдавать недвижимость в Дубае без визы ОАЭ. Виза не требуется для совершения сделки. При инвестиции от 750 000 AED вы получаете 2-летнюю инвесторскую визу; от 2 000 000 AED, 10-летнюю Золотую визу ОАЭ.",
       },
       {
         question: "Каковы полные затраты при покупке недвижимости в Дубае?",
-        answer: "Сбор DLD за передачу: 4% от стоимости. Комиссия агента: около 2%. Административный сбор DLD: 580 AED. Сбор доверенного офиса: 4 000 AED (для объектов свыше 500K AED). Регистрация ипотеки (при наличии): 0,25% от суммы кредита. Итого транзакционные расходы составляют около 6–7% от стоимости.",
+        answer: "Сбор DLD за передачу: 4% от стоимости. Комиссия агента: около 2%. Административный сбор DLD: 580 AED. Сбор доверенного офиса: 4 000 AED (для объектов свыше 500K AED). Регистрация ипотеки (при наличии): 0,25% от суммы кредита. Итого транзакционные расходы составляют около 6-7% от стоимости.",
       },
       {
         question: "Могу ли я получить ипотеку в Дубае как нерезидент?",
-        answer: "Да. Банки ОАЭ предоставляют ипотеку нерезидентам, как правило при LTV 40–50% (вы оплачиваете 50–60% наличными). Оцениваются доходные документы, выписки со счетов и кредитная история вашей страны. Крупные международные банки в ОАЭ (HSBC, Emirates NBD, Mashreq, Citibank) активно кредитуют иностранных покупателей. Предварительное одобрение занимает 2–4 недели.",
+        answer: "Да. Банки ОАЭ предоставляют ипотеку нерезидентам, как правило при LTV 40-50% (вы оплачиваете 50-60% наличными). Оцениваются доходные документы, выписки со счетов и кредитная история вашей страны. Крупные международные банки в ОАЭ (HSBC, Emirates NBD, Mashreq, Citibank) активно кредитуют иностранных покупателей. Предварительное одобрение занимает 2-4 недели.",
       },
       {
         question: "Облагается ли налогом доход от аренды или прирост капитала в Дубае?",
-        answer: "Нет. В Дубае нет налога на доходы физических лиц, налога на прирост капитала и налога на наследство. Доход от аренды полностью освобождён от налогов на уровне ОАЭ. Ваша страна проживания может облагать налогом иностранный доход от аренды или прирост — см. раздел о налоговых последствиях выше и проконсультируйтесь с налоговым консультантом.",
+        answer: "Нет. В Дубае нет налога на доходы физических лиц, налога на прирост капитала и налога на наследство. Доход от аренды полностью освобождён от налогов на уровне ОАЭ. Ваша страна проживания может облагать налогом иностранный доход от аренды или прирост, см. раздел о налоговых последствиях выше и проконсультируйтесь с налоговым консультантом.",
       },
     ],
 
@@ -276,7 +276,7 @@ const CONTENT = {
       tax: "0%",
       ownership: "جميع الجنسيات",
       visa: "2 مليون درهم",
-      yield: "5–8%",
+      yield: "5-8%",
     },
 
     stepsHeading: "كيفية شراء عقار في دبي",
@@ -284,7 +284,7 @@ const CONTENT = {
     steps: [
       { n: "٠١", title: "الاتفاق على السعر وتوقيع MOU", body: "تفاوض ووقّع على مذكرة التفاهم (MOU / نموذج F) مع البائع. يقدّم وكيلك هذه المذكرة إلى دائرة الأراضي والأملاك في دبي." },
       { n: "٠٢", title: "دفع عربون 10%", body: "يُدفع عربون 10% عند توقيع MOU (يُحفظ لدى الوكالة أو في حساب ائتماني). يضمن العربون الحجز ويُفقد في حال تراجع المشتري." },
-      { n: "٠٣", title: "الحصول على عدم ممانعة من المطوّر", body: "يُصدر المطوّر شهادة عدم ممانعة (NOC) تؤكد خلوّ العقار من أي مستحقات أو رسوم. تستغرق عادةً 5–10 أيام عمل." },
+      { n: "٠٣", title: "الحصول على عدم ممانعة من المطوّر", body: "يُصدر المطوّر شهادة عدم ممانعة (NOC) تؤكد خلوّ العقار من أي مستحقات أو رسوم. تستغرق عادةً 5-10 أيام عمل." },
       { n: "٠٤", title: "نقل الملكية عبر DLD وسداد الرسوم", body: "يحضر الطرفان إلى مكتب الأمين المعتمد لـDLD (أو يُنيبان محامياً بالتوكيل الرسمي). يُسدَّد رسم نقل 4% إضافةً إلى الرسوم الإدارية. يُصدر سند الملكية في نفس اليوم." },
       { n: "٠٥", title: "استلام سند الملكية", body: "تُصدر DLD سند ملكية رقمياً وورقياً باسمك. أنت الآن المالك القانوني. دخل الإيجار معفى تماماً من الضرائب اعتباراً من اليوم الأول." },
     ],
@@ -303,7 +303,7 @@ const CONTENT = {
     faqs: [
       {
         question: "هل يمكن لأي جنسية شراء عقار تملّك حر في دبي؟",
-        answer: "نعم. يحق لجميع الجنسيات شراء عقارات تملّك حر في المناطق المخصصة بدبي — أكثر من 60 مجتمعاً تشمل دبي مارينا ووسط المدينة والنخلة جميرا والخليج التجاري وJVC. لا توجد قيود على أساس الجنسية أو الدين أو وضع الإقامة. تحصل على سند ملكية DLD رسمي مع كامل حقوق الملكية.",
+        answer: "نعم. يحق لجميع الجنسيات شراء عقارات تملّك حر في المناطق المخصصة بدبي, أكثر من 60 مجتمعاً تشمل دبي مارينا ووسط المدينة والنخلة جميرا والخليج التجاري وJVC. لا توجد قيود على أساس الجنسية أو الدين أو وضع الإقامة. تحصل على سند ملكية DLD رسمي مع كامل حقوق الملكية.",
       },
       {
         question: "هل أحتاج إلى تأشيرة إقامة إماراتية لشراء عقار في دبي؟",
@@ -311,15 +311,15 @@ const CONTENT = {
       },
       {
         question: "ما التكاليف الإجمالية عند شراء عقار في دبي؟",
-        answer: "رسوم نقل DLD: 4% من سعر الشراء. عمولة الوكيل: عادةً 2%. الرسوم الإدارية لـDLD: 580 درهماً. رسوم مكتب الأمين: 4,000 درهم (للعقارات التي تتجاوز 500,000 درهم). رسوم تسجيل الرهن العقاري (إن وُجد): 0.25% من قيمة القرض. تبلغ إجمالي تكاليف المعاملة نحو 6–7% من سعر الشراء.",
+        answer: "رسوم نقل DLD: 4% من سعر الشراء. عمولة الوكيل: عادةً 2%. الرسوم الإدارية لـDLD: 580 درهماً. رسوم مكتب الأمين: 4,000 درهم (للعقارات التي تتجاوز 500,000 درهم). رسوم تسجيل الرهن العقاري (إن وُجد): 0.25% من قيمة القرض. تبلغ إجمالي تكاليف المعاملة نحو 6-7% من سعر الشراء.",
       },
       {
         question: "هل يمكنني الحصول على رهن عقاري في دبي بوصفي غير مقيم؟",
-        answer: "نعم. تمنح البنوك الإماراتية رهوناً عقارية لغير المقيمين، وعادةً بنسبة تمويل 40–50% (تدفع 50–60% نقداً). تُقيَّم وثائق الدخل وكشوف الحساب البنكي والتاريخ الائتماني في بلدك. البنوك الدولية الكبرى في الإمارات (HSBC وإمارات NBD وماشريق وسيتي بنك) تُقرض المشترين الأجانب بنشاط. يستغرق الموافقة المسبقة 2–4 أسابيع.",
+        answer: "نعم. تمنح البنوك الإماراتية رهوناً عقارية لغير المقيمين، وعادةً بنسبة تمويل 40-50% (تدفع 50-60% نقداً). تُقيَّم وثائق الدخل وكشوف الحساب البنكي والتاريخ الائتماني في بلدك. البنوك الدولية الكبرى في الإمارات (HSBC وإمارات NBD وماشريق وسيتي بنك) تُقرض المشترين الأجانب بنشاط. يستغرق الموافقة المسبقة 2-4 أسابيع.",
       },
       {
         question: "هل يوجد ضريبة على دخل الإيجار أو أرباح رأس المال في دبي؟",
-        answer: "لا. لا تفرض دبي أي ضريبة دخل أو ضريبة على أرباح رأس المال أو ضريبة ميراث على العقارات. دخل الإيجار معفى تماماً على المستوى الإماراتي. قد تفرض دولتك ضريبةً على دخل الإيجار الأجنبي أو الأرباح — راجع قسم الانعكاسات الضريبية أعلاه واستشر مستشاراً ضريبياً.",
+        answer: "لا. لا تفرض دبي أي ضريبة دخل أو ضريبة على أرباح رأس المال أو ضريبة ميراث على العقارات. دخل الإيجار معفى تماماً على المستوى الإماراتي. قد تفرض دولتك ضريبةً على دخل الإيجار الأجنبي أو الأرباح, راجع قسم الانعكاسات الضريبية أعلاه واستشر مستشاراً ضريبياً.",
       },
     ],
 
@@ -351,7 +351,7 @@ const CONTENT = {
       tax: "0%",
       ownership: "所有国籍均可",
       visa: "200万迪拉姆",
-      yield: "5–8%",
+      yield: "5-8%",
     },
 
     stepsHeading: "如何在迪拜购买房产",
@@ -359,7 +359,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "议价并签署MOU", body: "与卖方协商并签署意向备忘录（MOU / F表格）。您的经纪人将此文件提交迪拜土地局（DLD）。" },
       { n: "02", title: "支付10%定金", body: "签署MOU时支付10%定金（由经纪公司或信托账户持有）。定金锁定房产，买方反悔则予以没收。" },
-      { n: "03", title: "获取开发商NOC", body: "开发商签发无异议证书（NOC），确认房产无未缴服务费或欠款。通常需要5–10个工作日。" },
+      { n: "03", title: "获取开发商NOC", body: "开发商签发无异议证书（NOC），确认房产无未缴服务费或欠款。通常需要5-10个工作日。" },
       { n: "04", title: "DLD过户并缴纳费用", body: "双方前往DLD受托人办公室（或通过公证授权书办理）。缴纳4%过户费及行政费用。产权证书当日签发。" },
       { n: "05", title: "领取产权证书", body: "DLD以您的名义签发电子和纸质产权证书。您现在是合法业主。迪拜层面的租金收入从第一天起完全免税。" },
     ],
@@ -372,13 +372,13 @@ const CONTENT = {
     areasHeading: "热门区域",
     areasIntro: "根据Binayah的交易数据，",
     areasOutro: "买家最常选择的社区为：",
-    areasCta: "购买房产 —",
+    areasCta: "购买房产, ",
 
     faqHeading: "常见问题",
     faqs: [
       {
         question: "任何国籍都可以在迪拜购买自由持有房产吗？",
-        answer: "可以。所有国籍均可在迪拜指定的自由持有区购买房产——超过60个社区，包括迪拜Marina、市中心、棕榈岛、商业湾和JVC。没有基于国籍、宗教或居住身份的限制。您将获得DLD官方产权证书，享有完整所有权。",
+        answer: "可以。所有国籍均可在迪拜指定的自由持有区购买房产, , 超过60个社区，包括迪拜Marina、市中心、棕榈岛、商业湾和JVC。没有基于国籍、宗教或居住身份的限制。您将获得DLD官方产权证书，享有完整所有权。",
       },
       {
         question: "购买迪拜房产需要阿联酋居留签证吗？",
@@ -386,15 +386,15 @@ const CONTENT = {
       },
       {
         question: "在迪拜购房的总费用是多少？",
-        answer: "DLD过户费：购买价的4%。中介佣金：通常为2%。DLD行政费：580迪拉姆。受托人办公室费用：4,000迪拉姆（价值超过50万迪拉姆的房产）。按揭登记费（如适用）：贷款额的0.25%。交易总成本约为购买价的6–7%。",
+        answer: "DLD过户费：购买价的4%。中介佣金：通常为2%。DLD行政费：580迪拉姆。受托人办公室费用：4,000迪拉姆（价值超过50万迪拉姆的房产）。按揭登记费（如适用）：贷款额的0.25%。交易总成本约为购买价的6-7%。",
       },
       {
         question: "作为非居民，我能在迪拜获得按揭贷款吗？",
-        answer: "可以。阿联酋银行向非居民提供按揭贷款，通常贷款价值比（LTV）为40–50%（您需支付50–60%现金）。银行会评估您的母国收入证明、银行流水和信用记录。阿联酋主要国际银行（汇丰、阿联酋国民银行、马士里格银行、花旗银行）均积极为外国买家提供贷款。预批通常需2–4周。",
+        answer: "可以。阿联酋银行向非居民提供按揭贷款，通常贷款价值比（LTV）为40-50%（您需支付50-60%现金）。银行会评估您的母国收入证明、银行流水和信用记录。阿联酋主要国际银行（汇丰、阿联酋国民银行、马士里格银行、花旗银行）均积极为外国买家提供贷款。预批通常需2-4周。",
       },
       {
         question: "迪拜征收租金收入税或资本利得税吗？",
-        answer: "不征收。迪拜不征收所得税、资本利得税和遗产税。在阿联酋层面，租金收入完全免税。您的母国可能对境外租金收入或收益征税——请参阅上方特定国籍税务部分，并咨询税务顾问了解您的具体情况。",
+        answer: "不征收。迪拜不征收所得税、资本利得税和遗产税。在阿联酋层面，租金收入完全免税。您的母国可能对境外租金收入或收益征税, , 请参阅上方特定国籍税务部分，并咨询税务顾问了解您的具体情况。",
       },
     ],
 
@@ -426,7 +426,7 @@ const CONTENT = {
       tax: "0%",
       ownership: "Mọi quốc tịch",
       visa: "2 triệu AED",
-      yield: "5–8%",
+      yield: "5-8%",
     },
 
     stepsHeading: "Cách mua bất động sản tại Dubai",
@@ -434,7 +434,7 @@ const CONTENT = {
     steps: [
       { n: "01", title: "Thỏa thuận giá & Ký MOU", body: "Đàm phán và ký Bản ghi nhớ (MOU / Form F) với người bán. Chuyên viên của bạn nộp văn bản này cho Sở Đất đai Dubai." },
       { n: "02", title: "Trả 10% đặt cọc", body: "Khoản đặt cọc 10% (được giữ ủy thác hoặc tại công ty môi giới) được trả khi ký MOU. Điều này giữ chỗ bất động sản và sẽ mất nếu bạn rút lui." },
-      { n: "03", title: "Lấy NOC từ chủ đầu tư", body: "Chủ đầu tư cấp Chứng nhận Không phản đối (NOC) xác nhận không còn phí dịch vụ hoặc khoản thanh toán nào trên bất động sản. Thường 5–10 ngày làm việc." },
+      { n: "03", title: "Lấy NOC từ chủ đầu tư", body: "Chủ đầu tư cấp Chứng nhận Không phản đối (NOC) xác nhận không còn phí dịch vụ hoặc khoản thanh toán nào trên bất động sản. Thường 5-10 ngày làm việc." },
       { n: "04", title: "Chuyển nhượng DLD & Phí", body: "Cả hai bên đến Văn phòng Ủy thác DLD (hoặc dùng giấy ủy quyền hợp pháp). Trả phí chuyển nhượng DLD 4% cộng phí quản lý. Sổ đỏ được cấp trong ngày." },
       { n: "05", title: "Nhận sổ đỏ", body: "DLD cấp sổ đỏ điện tử và bản giấy mang tên bạn. Bạn nay là chủ sở hữu hợp pháp. Thu nhập cho thuê từ ngày đầu tiên hoàn toàn miễn thuế." },
     ],
@@ -453,7 +453,7 @@ const CONTENT = {
     faqs: [
       {
         question: "Bất kỳ quốc tịch nào cũng có thể mua bất động sản sở hữu vĩnh viễn tại Dubai không?",
-        answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu freehold được chỉ định của Dubai — hơn 60 khu vực bao gồm Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay và JVC. Không có hạn chế dựa trên quốc tịch, tôn giáo hay tình trạng cư trú. Bạn nhận sổ đỏ DLD với quyền sở hữu đầy đủ.",
+        answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu freehold được chỉ định của Dubai, hơn 60 khu vực bao gồm Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay và JVC. Không có hạn chế dựa trên quốc tịch, tôn giáo hay tình trạng cư trú. Bạn nhận sổ đỏ DLD với quyền sở hữu đầy đủ.",
       },
       {
         question: "Tôi có cần thị thực cư trú UAE để mua bất động sản tại Dubai không?",
@@ -461,15 +461,15 @@ const CONTENT = {
       },
       {
         question: "Tổng chi phí khi mua bất động sản tại Dubai là gì?",
-        answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: thường 2%. Phí quản lý DLD: 580 AED. Phí văn phòng ủy thác: 4.000 AED (cho bất động sản trên 500K AED). Phí đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch khoảng 6–7% giá mua.",
+        answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: thường 2%. Phí quản lý DLD: 580 AED. Phí văn phòng ủy thác: 4.000 AED (cho bất động sản trên 500K AED). Phí đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch khoảng 6-7% giá mua.",
       },
       {
         question: "Tôi có thể vay thế chấp tại Dubai với tư cách người không cư trú không?",
-        answer: "Có. Các ngân hàng UAE cung cấp vay thế chấp cho người không cư trú, thường ở mức LTV 40–50% (bạn trả 50–60% tiền mặt). Tài liệu thu nhập, sao kê ngân hàng và lịch sử tín dụng tại quốc gia của bạn được đánh giá. Các ngân hàng quốc tế lớn tại UAE (HSBC, Emirates NBD, Mashreq, Citibank) tích cực cho người mua nước ngoài vay. Phê duyệt trước mất 2–4 tuần.",
+        answer: "Có. Các ngân hàng UAE cung cấp vay thế chấp cho người không cư trú, thường ở mức LTV 40-50% (bạn trả 50-60% tiền mặt). Tài liệu thu nhập, sao kê ngân hàng và lịch sử tín dụng tại quốc gia của bạn được đánh giá. Các ngân hàng quốc tế lớn tại UAE (HSBC, Emirates NBD, Mashreq, Citibank) tích cực cho người mua nước ngoài vay. Phê duyệt trước mất 2-4 tuần.",
       },
       {
         question: "Có thuế nào trên thu nhập cho thuê hoặc lãi vốn tại Dubai không?",
-        answer: "Không. Dubai áp dụng 0 thuế thu nhập, 0 thuế lãi vốn và 0 thuế thừa kế trên bất động sản. Thu nhập cho thuê hoàn toàn miễn thuế ở cấp độ UAE. Quốc gia của bạn có thể đánh thuế thu nhập cho thuê hoặc lãi từ nguồn nước ngoài — xem phần thuế theo quốc tịch ở trên và tham khảo cố vấn thuế cho tình huống cụ thể của bạn.",
+        answer: "Không. Dubai áp dụng 0 thuế thu nhập, 0 thuế lãi vốn và 0 thuế thừa kế trên bất động sản. Thu nhập cho thuê hoàn toàn miễn thuế ở cấp độ UAE. Quốc gia của bạn có thể đánh thuế thu nhập cho thuê hoặc lãi từ nguồn nước ngoài, xem phần thuế theo quốc tịch ở trên và tham khảo cố vấn thuế cho tình huống cụ thể của bạn.",
       },
     ],
 
@@ -621,7 +621,7 @@ export default async function ForeignBuyerPage({
                 ? `cho công dân ${b.citizen}`
                 : locale === "he"
                 ? `לאזרחי ${b.citizen}`
-                : `—${b.citizen}${c.guideSuffix}`}
+                : `, ${b.citizen}${c.guideSuffix}`}
             </span>
           </h1>
           <p className="text-primary-foreground/80 text-sm sm:text-base leading-relaxed max-w-3xl">

@@ -297,7 +297,7 @@ function PulseDocument({
   return React.createElement(
     Document,
     {
-      title: `Binayah Pulse — Dubai Market Report ${date}`,
+      title: `Binayah Pulse, Dubai Market Report ${date}`,
       author: "Binayah Properties",
       subject: "Dubai Real Estate Market Report",
     },
@@ -333,10 +333,10 @@ function PulseDocument({
         React.createElement(
           View,
           { style: styles.kpiGrid },
-          kpiCard("Avg Price/sqft", avgPpsf > 0 ? `AED ${avgPpsf.toLocaleString()}` : "—", "Dubai avg"),
-          kpiCard("Transactions YTD", txYtd > 0 ? txYtd.toLocaleString() : "—", "Year to date"),
-          kpiCard("Avg Rental Yield", avgYield > 0 ? pct(avgYield) : "—", "Gross, community avg"),
-          kpiCard("Off-Plan Share", offPlanShare > 0 ? pct(offPlanShare) : "—", "% of total listings")
+          kpiCard("Avg Price/sqft", avgPpsf > 0 ? `AED ${avgPpsf.toLocaleString()}` : ", ", "Dubai avg"),
+          kpiCard("Transactions YTD", txYtd > 0 ? txYtd.toLocaleString() : ", ", "Year to date"),
+          kpiCard("Avg Rental Yield", avgYield > 0 ? pct(avgYield) : ", ", "Gross, community avg"),
+          kpiCard("Off-Plan Share", offPlanShare > 0 ? pct(offPlanShare) : ", ", "% of total listings")
         ),
         // Communities table
         React.createElement(Text, { style: styles.sectionTitle }, "Top Communities"),
@@ -361,9 +361,9 @@ function PulseDocument({
               { key: area.name, style: [styles.tableRow, i % 2 === 1 ? styles.tableRowAlt : {}] },
               React.createElement(Text, { style: [styles.tableCellMuted, styles.colRank] }, String(area.rank)),
               React.createElement(Text, { style: [styles.tableCell, styles.colCommunity] }, area.name),
-              React.createElement(Text, { style: [styles.tableCell, styles.colYield] }, area.yield > 0 ? pct(area.yield) : "—"),
-              React.createElement(Text, { style: [styles.tableCell, styles.colPpsf] }, area.ppsf > 0 ? AED(area.ppsf) : "—"),
-              React.createElement(Text, { style: [styles.tableCellMuted, styles.colVol] }, area.vol > 0 ? area.vol.toLocaleString() : "—")
+              React.createElement(Text, { style: [styles.tableCell, styles.colYield] }, area.yield > 0 ? pct(area.yield) : ", "),
+              React.createElement(Text, { style: [styles.tableCell, styles.colPpsf] }, area.ppsf > 0 ? AED(area.ppsf) : ", "),
+              React.createElement(Text, { style: [styles.tableCellMuted, styles.colVol] }, area.vol > 0 ? area.vol.toLocaleString() : ", ")
             )
           )
         )
@@ -411,7 +411,7 @@ function PulseDocument({
         React.createElement(Text, { style: styles.methodologyBullet }, "• Rental Yield: Annual gross yield = avg annual rent / avg sale price, per community."),
         React.createElement(Text, { style: styles.methodologyBullet }, "• Off-Plan Share: Percentage of total active listings classified as off-plan."),
         React.createElement(Text, { style: styles.methodologyBullet }, "• Community rankings: By total sales volume in the trailing 12 months."),
-        React.createElement(Text, { style: styles.methodologyBullet }, "• Figures marked '—' indicate insufficient data (fewer than 10 transactions)."),
+        React.createElement(Text, { style: styles.methodologyBullet }, "• Figures marked ', ' indicate insufficient data (fewer than 10 transactions)."),
         React.createElement(
           View,
           { style: styles.disclaimerBox },
@@ -476,7 +476,7 @@ export async function GET() {
       const results = areas?.results ?? [];
       topAreas = results.slice(0, 5).map((a, i) => ({
         rank: i + 1,
-        name: a.area ?? "—",
+        name: a.area ?? ", ",
         yield: typeof a.rentalYield === "number" ? a.rentalYield : (typeof a.yieldValue === "number" ? a.yieldValue : 0),
         ppsf: a.avgPpsf ?? 0,
         vol: a.totalSales ?? 0,

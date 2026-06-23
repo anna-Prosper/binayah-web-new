@@ -32,7 +32,7 @@ export interface LeadNote {
 }
 
 export interface UnifiedLead {
-  id: string;            // composite: "<source>:<mongoId>" — used in PATCH endpoints
+  id: string;            // composite: "<source>:<mongoId>", used in PATCH endpoints
   source: LeadSource;
   channel?: string;      // sub-source: "contact-form" | "ai-chat" | "newsletter-strip" | ...
   name: string;
@@ -50,7 +50,7 @@ export interface UnifiedLead {
   notes: LeadNote[];
   createdAt: Date | string;
   updatedAt?: Date | string;
-  raw?: Record<string, unknown>;  // original document — included in detail view only
+  raw?: Record<string, unknown>;  // original document, included in detail view only
 }
 
 export interface LeadsListResponse {

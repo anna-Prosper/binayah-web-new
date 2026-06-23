@@ -35,7 +35,7 @@ const CONTENT = {
       {
         "n": "04",
         "title": "בדיקה רפואית ו-Emirates ID",
-        "body": "השלימו בדיקת כשירות רפואית של איחוד האמירויות. קבלו את ה-Emirates ID ואת חותמת ויזת התושבות ל-10 שנים. התהליך נמשך בדרך כלל 2–4 שבועות מרגע ההגשה."
+        "body": "השלימו בדיקת כשירות רפואית של איחוד האמירויות. קבלו את ה-Emirates ID ואת חותמת ויזת התושבות ל-10 שנים. התהליך נמשך בדרך כלל 2-4 שבועות מרגע ההגשה."
       }
     ],
     "benefits": [
@@ -79,7 +79,7 @@ const CONTENT = {
       },
       {
         "question": "האם ויזת הזהב מחייבת אותי לגור באיחוד האמירויות?",
-        "answer": "לא. אין דרישת שהייה מינימלית עבור ויזת הזהב. ניתן לגור מחוץ לאיחוד האמירויות והוויזה נשארת תקפה. הדרישה היחידה היא לשמור על השקעת הנכס המזכה. בעבר, ויזות לאיחוד האמירויות בוטלו אם שהיתם מחוץ לאיחוד האמירויות במשך 6 חודשים — ויזת הזהב הסירה הגבלה זו."
+        "answer": "לא. אין דרישת שהייה מינימלית עבור ויזת הזהב. ניתן לגור מחוץ לאיחוד האמירויות והוויזה נשארת תקפה. הדרישה היחידה היא לשמור על השקעת הנכס המזכה. בעבר, ויזות לאיחוד האמירויות בוטלו אם שהיתם מחוץ לאיחוד האמירויות במשך 6 חודשים, ויזת הזהב הסירה הגבלה זו."
       },
       {
         "question": "מה ההבדל בין ויזת זהב לבין ויזת נכס רגילה לאיחוד האמירויות?",
@@ -87,11 +87,11 @@ const CONTENT = {
       },
       {
         "question": "אילו נכסים בדובאי מזכים בוויזת הזהב?",
-        "answer": "כל נכס freehold באיחוד האמירויות בשווי 2 מיליון AED ומעלה. דירות מוגמרות, וילות, בתי טאון, פנטהאוזים, משרדים או מגרשים — כולם מזכים. הנכס חייב להיות רשום במחלקת הקרקעות של דובאי (DLD). ניתן לשלב מספר נכסים כדי להגיע לרף."
+        "answer": "כל נכס freehold באיחוד האמירויות בשווי 2 מיליון AED ומעלה. דירות מוגמרות, וילות, בתי טאון, פנטהאוזים, משרדים או מגרשים, כולם מזכים. הנכס חייב להיות רשום במחלקת הקרקעות של דובאי (DLD). ניתן לשלב מספר נכסים כדי להגיע לרף."
       },
       {
         "question": "כמה זמן אורכת בקשת ויזת הזהב?",
-        "answer": "תהליך הבקשה אורך כ-3–6 שבועות מרכישת הנכס ועד הנפקת הוויזה. רישום נכס: 1–3 ימים. עיבוד בקשת ICA/GDRFA: 5–10 ימי עסקים. בדיקה רפואית ו-Emirates ID: 5–10 ימי עסקים. סה\"כ: בדרך כלל 4–6 שבועות לבקשות פשוטות."
+        "answer": "תהליך הבקשה אורך כ-3-6 שבועות מרכישת הנכס ועד הנפקת הוויזה. רישום נכס: 1-3 ימים. עיבוד בקשת ICA/GDRFA: 5-10 ימי עסקים. בדיקה רפואית ו-Emirates ID: 5-10 ימי עסקים. סה\"כ: בדרך כלל 4-6 שבועות לבקשות פשוטות."
       },
       {
         "question": "האם בני משפחתי יכולים לקבל חסות במסגרת ויזת הזהב שלי?",
@@ -99,7 +99,7 @@ const CONTENT = {
       }
     ],
     "ctaTitle": "התחילו את מסע ויזת הזהב שלכם",
-    "ctaDesc": "Binayah Properties מסייעת למשקיעים לזהות נכסים המזכים בוויזת זהב ולנהל את כל תהליך הבקשה — מבחירת הנכס ועד הנפקת הוויזה.",
+    "ctaDesc": "Binayah Properties מסייעת למשקיעים לזהות נכסים המזכים בוויזת זהב ולנהל את כל תהליך הבקשה, מבחירת הנכס ועד הנפקת הוויזה.",
     "ctaBtn": "קבלו ייעוץ לוויזת זהב"
   },
   en: {
@@ -112,7 +112,7 @@ const CONTENT = {
       { n: "01", title: "Purchase AED 2M+ Property", body: "Buy one or more UAE properties with a combined value of AED 2,000,000+. The property can be off-plan (with at least 50% paid) or a completed ready unit." },
       { n: "02", title: "Obtain Title Deed / OQOOD", body: "For completed properties: DLD title deed. For off-plan: OQOOD registration (developer-registered pre-title deed). Both qualify for the visa." },
       { n: "03", title: "Apply via ICA or GDRFA", body: "Submit your Golden Visa application through the Federal Authority for Identity, Citizenship, Customs and Port Security (ICA) or GDRFA Dubai. Binayah assists with the full application." },
-      { n: "04", title: "Medical Test & Emirates ID", body: "Complete a UAE medical fitness test. Receive your Emirates ID and 10-year residency visa stamp. Process typically takes 2–4 weeks from application." },
+      { n: "04", title: "Medical Test & Emirates ID", body: "Complete a UAE medical fitness test. Receive your Emirates ID and 10-year residency visa stamp. Process typically takes 2-4 weeks from application." },
     ],
     benefits: [
       { title: "10-Year Renewable", body: "The Golden Visa is valid for 10 years and renewable as long as you maintain the qualifying property investment." },
@@ -126,14 +126,14 @@ const CONTENT = {
       { question: "What is the minimum investment for a UAE Golden Visa through property?", answer: "AED 2,000,000 (approximately USD 545,000 or EUR 500,000). The property can be in Dubai, Abu Dhabi, or any other emirate. It can be residential or commercial. Off-plan properties qualify if at least AED 2M has been paid to the developer (minimum 50% of purchase price)." },
       { question: "Can I use a mortgaged property to qualify for the Golden Visa?", answer: "Yes, but only the equity portion counts toward the AED 2M threshold. If your property is worth AED 3M but you have an outstanding mortgage of AED 1.5M, only AED 1.5M equity qualifies. You would need additional property or equity to reach the AED 2M threshold." },
       { question: "Can foreigners from all nationalities get the UAE Golden Visa?", answer: "Yes. The UAE Golden Visa is open to all nationalities. There are no restrictions by citizenship. Russians, Europeans, Americans, Chinese, and all other nationalities are equally eligible as long as they meet the investment threshold." },
-      { question: "Does the Golden Visa require me to live in the UAE?", answer: "No. There is no minimum stay requirement for the Golden Visa. You can live outside the UAE and the visa remains valid. The only requirement is to maintain the qualifying property investment. Previously, UAE visas were cancelled if you stayed outside the UAE for 6 months — the Golden Visa removed this restriction." },
+      { question: "Does the Golden Visa require me to live in the UAE?", answer: "No. There is no minimum stay requirement for the Golden Visa. You can live outside the UAE and the visa remains valid. The only requirement is to maintain the qualifying property investment. Previously, UAE visas were cancelled if you stayed outside the UAE for 6 months, the Golden Visa removed this restriction." },
       { question: "What is the difference between a Golden Visa and a regular UAE property visa?", answer: "A regular property visa (also called an investor visa) requires AED 750,000 in property and grants 2-year renewable residency. The Golden Visa requires AED 2,000,000 and grants 10-year residency with no stay requirements and expanded family sponsorship rights." },
       { question: "Which properties in Dubai qualify for the Golden Visa?", answer: "Any UAE freehold property worth AED 2M+. Completed apartments, villas, townhouses, penthouses, offices, or plots all qualify. The property must be registered with the Dubai Land Department (DLD). Multiple properties can be combined to reach the threshold." },
-      { question: "How long does the Golden Visa application take?", answer: "The application process takes approximately 3–6 weeks from property purchase to visa issuance. Property registration: 1–3 days. ICA/GDRFA application processing: 5–10 business days. Medical and Emirates ID: 5–10 business days. Total: typically 4–6 weeks for straightforward applications." },
+      { question: "How long does the Golden Visa application take?", answer: "The application process takes approximately 3-6 weeks from property purchase to visa issuance. Property registration: 1-3 days. ICA/GDRFA application processing: 5-10 business days. Medical and Emirates ID: 5-10 business days. Total: typically 4-6 weeks for straightforward applications." },
       { question: "Can my family members be sponsored on my Golden Visa?", answer: "Yes. Your spouse, children (all ages, including adult children), parents, and domestic workers can be included as dependants under your Golden Visa. Each dependant gets the same 10-year residency. Children included as dependants maintain their visa even after age 18 as long as they are full-time students." },
     ],
     ctaTitle: "Start Your Golden Visa Journey",
-    ctaDesc: "Binayah Properties helps investors identify Golden Visa-qualifying properties and manage the full application process — from property selection to visa issuance.",
+    ctaDesc: "Binayah Properties helps investors identify Golden Visa-qualifying properties and manage the full application process, from property selection to visa issuance.",
     ctaBtn: "Get Golden Visa Advice",
   },
   ru: {
@@ -146,7 +146,7 @@ const CONTENT = {
       { n: "01", title: "Покупка недвижимости от 2 млн AED", body: "Купите один или несколько объектов в ОАЭ общей стоимостью от 2 000 000 AED. Объект может быть off-plan (при условии оплаты не менее 50%) или готовым." },
       { n: "02", title: "Получение правоустанавливающего документа", body: "Для готовых объектов: свидетельство DLD. Для новостроек: регистрация OQOOD. Оба варианта подходят для визы." },
       { n: "03", title: "Подача заявки через ICA или GDRFA", body: "Подайте заявление на Золотую визу через Федеральное управление по идентификации и гражданству (ICA) или GDRFA Дубай. Binayah полностью сопровождает процесс." },
-      { n: "04", title: "Медицинское освидетельствование и Emirates ID", body: "Пройдите медицинский осмотр ОАЭ. Получите Emirates ID и визу на 10 лет. Процесс занимает 2–4 недели с момента подачи заявки." },
+      { n: "04", title: "Медицинское освидетельствование и Emirates ID", body: "Пройдите медицинский осмотр ОАЭ. Получите Emirates ID и визу на 10 лет. Процесс занимает 2-4 недели с момента подачи заявки." },
     ],
     benefits: [
       { title: "10 лет с возможностью продления", body: "Золотая виза действительна 10 лет и автоматически продлевается при сохранении права собственности на объект." },
@@ -158,10 +158,10 @@ const CONTENT = {
     ],
     faqs: [
       { question: "Какой минимальный порог инвестиций для Золотой визы ОАЭ через недвижимость?", answer: "2 000 000 AED (около $545 000 или €500 000). Объект может быть в любом эмирате. Новостройки подходят при оплате не менее 2 млн AED (минимум 50% от стоимости)." },
-      { question: "Можно ли использовать ипотечный объект для Золотой визы?", answer: "Да, но учитывается только собственный капитал. Если объект стоит 3 млн AED, а ипотечный остаток — 1,5 млн, учитывается только 1,5 млн. Для достижения порога нужен дополнительный капитал." },
+      { question: "Можно ли использовать ипотечный объект для Золотой визы?", answer: "Да, но учитывается только собственный капитал. Если объект стоит 3 млн AED, а ипотечный остаток, 1,5 млн, учитывается только 1,5 млн. Для достижения порога нужен дополнительный капитал." },
       { question: "Граждане России могут получить Золотую визу ОАЭ?", answer: "Да. Золотая виза ОАЭ открыта для всех национальностей без ограничений. Граждане России, Европы, США, Китая и других стран имеют равные права при соответствии инвестиционному порогу." },
-      { question: "Нужно ли жить в ОАЭ для сохранения Золотой визы?", answer: "Нет. Нет требований к минимальному сроку пребывания. Вы можете жить за рубежом, и виза сохраняет силу. Единственное условие — сохранять право собственности на объект." },
-      { question: "Сколько времени занимает оформление Золотой визы?", answer: "Весь процесс — от покупки до получения визы — занимает 3–6 недель. Регистрация объекта: 1–3 дня. Обработка заявки ICA/GDRFA: 5–10 рабочих дней. Медосмотр и Emirates ID: 5–10 рабочих дней." },
+      { question: "Нужно ли жить в ОАЭ для сохранения Золотой визы?", answer: "Нет. Нет требований к минимальному сроку пребывания. Вы можете жить за рубежом, и виза сохраняет силу. Единственное условие, сохранять право собственности на объект." },
+      { question: "Сколько времени занимает оформление Золотой визы?", answer: "Весь процесс, от покупки до получения визы, занимает 3-6 недель. Регистрация объекта: 1-3 дня. Обработка заявки ICA/GDRFA: 5-10 рабочих дней. Медосмотр и Emirates ID: 5-10 рабочих дней." },
     ],
     ctaTitle: "Начните путь к Золотой визе",
     ctaDesc: "Binayah Properties помогает инвесторам выбрать объекты, дающие право на Золотую визу, и сопровождает весь процесс подачи документов.",
@@ -239,7 +239,7 @@ const CONTENT = {
       { n: "01", title: "Mua bất động sản 2 triệu AED+", body: "Mua một hoặc nhiều bất động sản UAE với tổng giá trị từ 2.000.000 AED+. Bất động sản có thể là off-plan (đã trả ít nhất 50%) hoặc căn đã hoàn thiện sẵn sàng." },
       { n: "02", title: "Lấy sổ đỏ / OQOOD", body: "Với bất động sản đã hoàn thiện: sổ đỏ DLD. Với off-plan: đăng ký OQOOD (đăng ký tiền sổ đỏ do chủ đầu tư cấp). Cả hai đều đủ điều kiện cho thị thực." },
       { n: "03", title: "Nộp đơn qua ICA hoặc GDRFA", body: "Nộp đơn Golden Visa qua Cơ quan Liên bang về Bản sắc, Quyền công dân, Hải quan và An ninh Cảng (ICA) hoặc GDRFA Dubai. Binayah hỗ trợ toàn bộ đơn." },
-      { n: "04", title: "Khám sức khỏe & Emirates ID", body: "Hoàn thành kiểm tra sức khỏe UAE. Nhận Emirates ID và dấu thị thực cư trú 10 năm. Quy trình thường mất 2–4 tuần từ khi nộp đơn." },
+      { n: "04", title: "Khám sức khỏe & Emirates ID", body: "Hoàn thành kiểm tra sức khỏe UAE. Nhận Emirates ID và dấu thị thực cư trú 10 năm. Quy trình thường mất 2-4 tuần từ khi nộp đơn." },
     ],
     benefits: [
       { title: "10 năm có thể gia hạn", body: "Golden Visa có hiệu lực 10 năm và có thể gia hạn miễn là bạn duy trì khoản đầu tư bất động sản đủ điều kiện." },
@@ -253,14 +253,14 @@ const CONTENT = {
       { question: "Khoản đầu tư tối thiểu cho Golden Visa UAE qua bất động sản là bao nhiêu?", answer: "2.000.000 AED (khoảng 545.000 USD hoặc 500.000 EUR). Bất động sản có thể ở Dubai, Abu Dhabi hoặc bất kỳ tiểu vương quốc nào khác. Có thể là nhà ở hoặc thương mại. Bất động sản off-plan đủ điều kiện nếu ít nhất 2 triệu AED đã được trả cho chủ đầu tư (tối thiểu 50% giá mua)." },
       { question: "Tôi có thể dùng bất động sản đang thế chấp để đủ điều kiện Golden Visa không?", answer: "Có, nhưng chỉ phần vốn chủ sở hữu được tính vào ngưỡng 2 triệu AED. Nếu bất động sản của bạn trị giá 3 triệu AED nhưng bạn còn khoản vay thế chấp 1,5 triệu AED, chỉ 1,5 triệu AED vốn chủ sở hữu đủ điều kiện. Bạn cần thêm bất động sản hoặc vốn để đạt ngưỡng 2 triệu AED." },
       { question: "Người nước ngoài từ mọi quốc tịch có thể nhận Golden Visa UAE không?", answer: "Có. Golden Visa UAE mở cho mọi quốc tịch. Không có hạn chế theo quốc tịch. Người Nga, châu Âu, Mỹ, Trung Quốc và mọi quốc tịch khác đều đủ điều kiện như nhau miễn là họ đáp ứng ngưỡng đầu tư." },
-      { question: "Golden Visa có yêu cầu tôi phải sống ở UAE không?", answer: "Không. Không có yêu cầu thời gian lưu trú tối thiểu cho Golden Visa. Bạn có thể sống ngoài UAE và thị thực vẫn có hiệu lực. Yêu cầu duy nhất là duy trì khoản đầu tư bất động sản đủ điều kiện. Trước đây, thị thực UAE bị hủy nếu bạn ở ngoài UAE 6 tháng — Golden Visa đã bỏ hạn chế này." },
+      { question: "Golden Visa có yêu cầu tôi phải sống ở UAE không?", answer: "Không. Không có yêu cầu thời gian lưu trú tối thiểu cho Golden Visa. Bạn có thể sống ngoài UAE và thị thực vẫn có hiệu lực. Yêu cầu duy nhất là duy trì khoản đầu tư bất động sản đủ điều kiện. Trước đây, thị thực UAE bị hủy nếu bạn ở ngoài UAE 6 tháng, Golden Visa đã bỏ hạn chế này." },
       { question: "Sự khác biệt giữa Golden Visa và thị thực bất động sản UAE thông thường là gì?", answer: "Thị thực bất động sản thông thường (còn gọi là thị thực nhà đầu tư) yêu cầu 750.000 AED bất động sản và cấp cư trú 2 năm có thể gia hạn. Golden Visa yêu cầu 2.000.000 AED và cấp cư trú 10 năm không có yêu cầu lưu trú và quyền bảo trợ gia đình mở rộng." },
       { question: "Bất động sản nào tại Dubai đủ điều kiện Golden Visa?", answer: "Bất kỳ bất động sản freehold UAE nào trị giá 2 triệu AED+. Căn hộ đã hoàn thiện, biệt thự, nhà phố, penthouse, văn phòng hoặc lô đất đều đủ điều kiện. Bất động sản phải được đăng ký với Sở Đất đai Dubai (DLD). Có thể kết hợp nhiều bất động sản để đạt ngưỡng." },
-      { question: "Đơn Golden Visa mất bao lâu?", answer: "Quy trình nộp đơn mất khoảng 3–6 tuần từ khi mua bất động sản đến khi cấp thị thực. Đăng ký bất động sản: 1–3 ngày. Xử lý đơn ICA/GDRFA: 5–10 ngày làm việc. Khám sức khỏe và Emirates ID: 5–10 ngày làm việc. Tổng: thường 4–6 tuần cho đơn đơn giản." },
+      { question: "Đơn Golden Visa mất bao lâu?", answer: "Quy trình nộp đơn mất khoảng 3-6 tuần từ khi mua bất động sản đến khi cấp thị thực. Đăng ký bất động sản: 1-3 ngày. Xử lý đơn ICA/GDRFA: 5-10 ngày làm việc. Khám sức khỏe và Emirates ID: 5-10 ngày làm việc. Tổng: thường 4-6 tuần cho đơn đơn giản." },
       { question: "Thành viên gia đình tôi có thể được bảo trợ theo Golden Visa của tôi không?", answer: "Có. Vợ/chồng, con cái (mọi độ tuổi, kể cả con đã trưởng thành), cha mẹ và người giúp việc có thể được đưa vào làm người phụ thuộc theo Golden Visa của bạn. Mỗi người phụ thuộc nhận cùng cư trú 10 năm. Con cái được đưa vào làm người phụ thuộc duy trì thị thực ngay cả sau 18 tuổi miễn là chúng là sinh viên toàn thời gian." },
     ],
     ctaTitle: "Bắt đầu hành trình Golden Visa của bạn",
-    ctaDesc: "Binayah Properties giúp các nhà đầu tư xác định bất động sản đủ điều kiện Golden Visa và quản lý toàn bộ quy trình nộp đơn — từ chọn bất động sản đến cấp thị thực.",
+    ctaDesc: "Binayah Properties giúp các nhà đầu tư xác định bất động sản đủ điều kiện Golden Visa và quản lý toàn bộ quy trình nộp đơn, từ chọn bất động sản đến cấp thị thực.",
     ctaBtn: "Nhận tư vấn Golden Visa",
   },
 } as const;

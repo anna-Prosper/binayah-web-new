@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return {
     title: "Property Investment Guides | Dubai Pulse | Binayah Properties",
-    description: "In-depth guides on Dubai real estate investing — best areas, yields, off-plan vs secondary, and more.",
+    description: "In-depth guides on Dubai real estate investing, best areas, yields, off-plan vs secondary, and more.",
     alternates: {
       canonical: canonical(locale, "/pulse/guides"),
       languages: altLangs("/pulse/guides"),

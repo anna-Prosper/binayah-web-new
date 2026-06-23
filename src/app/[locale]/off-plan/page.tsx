@@ -52,7 +52,7 @@ const CONTENT = {
       },
       {
         "question": "Quels sont les risques d'acheter sur plan à Dubaï ?",
-        "answer": "Les principaux risques incluent les retards de projet et (rarement) l'insolvabilité du promoteur. La RERA de Dubaï régule les comptes séquestres — les fonds des promoteurs sont conservés dans des comptes séparés jusqu'à ce que les étapes de construction soient atteintes. Choisissez des projets enregistrés auprès de la RERA et des promoteurs expérimentés avec un historique solide."
+        "answer": "Les principaux risques incluent les retards de projet et (rarement) l'insolvabilité du promoteur. La RERA de Dubaï régule les comptes séquestres, les fonds des promoteurs sont conservés dans des comptes séparés jusqu'à ce que les étapes de construction soient atteintes. Choisissez des projets enregistrés auprès de la RERA et des promoteurs expérimentés avec un historique solide."
       },
       {
         "question": "Puis-je vendre un bien sur plan avant la remise des clés ?",
@@ -68,7 +68,7 @@ const CONTENT = {
       },
       {
         "question": "Le sur plan est-il meilleur qu'un bien prêt à Dubaï ?",
-        "answer": "Le sur plan offre un prix d'entrée plus bas, un potentiel d'appréciation du capital, et des plans de paiement flexibles — mais vous attendez 2 à 4 ans pour les clés. Les biens prêts fournissent un revenu locatif immédiat, sont plus faciles à financer par prêt immobilier, et n'ont pas de risque d'achèvement. Le bon choix dépend de votre horizon d'investissement et de vos besoins en trésorerie."
+        "answer": "Le sur plan offre un prix d'entrée plus bas, un potentiel d'appréciation du capital, et des plans de paiement flexibles, mais vous attendez 2 à 4 ans pour les clés. Les biens prêts fournissent un revenu locatif immédiat, sont plus faciles à financer par prêt immobilier, et n'ont pas de risque d'achèvement. Le bon choix dépend de votre horizon d'investissement et de vos besoins en trésorerie."
       }
     ],
     "breadcrumb": "Sur Plan",
@@ -79,19 +79,19 @@ const CONTENT = {
     "metaDesc": "עיינו ביותר מ-3,000 נכסים על הנייר בדובאי. השקות פרויקטים חדשים מ-Emaar, DAMAC, Sobha, Aldar. תוכניות תשלום גמישות, תשואה גבוהה. ליווי מקצועי.",
     "heroLabel": "על הנייר בדובאי",
     "h1": "נכסים על הנייר בדובאי",
-    "heroDesc": "גלו את פרויקטי ההשקה החדשים והטובים ביותר על הנייר בדובאי. תוכניות תשלום גמישות, ערבויות יזם ופוטנציאל עליית ערך של 15–30% לפני המסירה.",
+    "heroDesc": "גלו את פרויקטי ההשקה החדשים והטובים ביותר על הנייר בדובאי. תוכניות תשלום גמישות, ערבויות יזם ופוטנציאל עליית ערך של 15-30% לפני המסירה.",
     "faqs": [
       {
         "question": "מהו נכס על הנייר בדובאי?",
-        "answer": "על הנייר משמעו רכישת נכס לפני שנבנה או במהלך הבנייה. משלמים חלק מראש (בדרך כלל 10–20%) והיתרה בתשלומים במהלך הבנייה או לאחר המסירה. נכסים על הנייר זולים לרוב ב-15–30% מיחידות מוכנות באותו בניין."
+        "answer": "על הנייר משמעו רכישת נכס לפני שנבנה או במהלך הבנייה. משלמים חלק מראש (בדרך כלל 10-20%) והיתרה בתשלומים במהלך הבנייה או לאחר המסירה. נכסים על הנייר זולים לרוב ב-15-30% מיחידות מוכנות באותו בניין."
       },
       {
         "question": "מהם הסיכונים ברכישת נכס על הנייר בדובאי?",
-        "answer": "הסיכונים העיקריים כוללים עיכובים בפרויקט ו(לעיתים נדירות) חדלות פירעון של היזם. ה-RERA של דובאי מסדירה חשבונות נאמנות — כספי היזם מוחזקים בחשבונות מופרדים עד להשגת אבני דרך בבנייה. בחרו פרויקטים רשומים ב-RERA ויזמים מנוסים בעלי רקורד מוכח."
+        "answer": "הסיכונים העיקריים כוללים עיכובים בפרויקט ו(לעיתים נדירות) חדלות פירעון של היזם. ה-RERA של דובאי מסדירה חשבונות נאמנות, כספי היזם מוחזקים בחשבונות מופרדים עד להשגת אבני דרך בבנייה. בחרו פרויקטים רשומים ב-RERA ויזמים מנוסים בעלי רקורד מוכח."
       },
       {
         "question": "האם אפשר למכור נכס על הנייר לפני המסירה?",
-        "answer": "כן. לאחר ששילמתם מינימום של 30–40% מערך הנכס, רוב היזמים מאפשרים מכירה חוזרת בשוק המשני. זה נקרא 'flipping' ויכול להניב רווח של 10–30% בשוק עולה עוד לפני שתקבלו את המפתחות."
+        "answer": "כן. לאחר ששילמתם מינימום של 30-40% מערך הנכס, רוב היזמים מאפשרים מכירה חוזרת בשוק המשני. זה נקרא 'flipping' ויכול להניב רווח של 10-30% בשוק עולה עוד לפני שתקבלו את המפתחות."
       },
       {
         "question": "לאילו יזמים יש את הפרויקטים הטובים ביותר על הנייר בדובאי?",
@@ -103,7 +103,7 @@ const CONTENT = {
       },
       {
         "question": "האם נכס על הנייר עדיף על נכס מוכן בדובאי?",
-        "answer": "נכס על הנייר מציע מחיר כניסה נמוך יותר, פוטנציאל עליית ערך ותוכניות תשלום גמישות — אך תמתינו 2–4 שנים למפתחות. נכסים מוכנים מספקים הכנסה משכירות באופן מיידי, קל יותר למשכן אותם ואין בהם סיכון השלמה. הבחירה הנכונה תלויה באופק ההשקעה ובצורכי תזרים המזומנים שלכם."
+        "answer": "נכס על הנייר מציע מחיר כניסה נמוך יותר, פוטנציאל עליית ערך ותוכניות תשלום גמישות, אך תמתינו 2-4 שנים למפתחות. נכסים מוכנים מספקים הכנסה משכירות באופן מיידי, קל יותר למשכן אותם ואין בהם סיכון השלמה. הבחירה הנכונה תלויה באופק ההשקעה ובצורכי תזרים המזומנים שלכם."
       }
     ],
     "breadcrumb": "על הנייר",
@@ -114,14 +114,14 @@ const CONTENT = {
     metaDesc: "Browse 3,000+ off-plan properties in Dubai. New project launches from Emaar, DAMAC, Sobha, Aldar. Flexible payment plans, high ROI. Expert guidance.",
     heroLabel: "OFF-PLAN DUBAI",
     h1: "Off-Plan Properties in Dubai",
-    heroDesc: "Discover Dubai's best new-launch off-plan projects. Flexible payment plans, developer guarantees, and potential 15–30% capital appreciation before handover.",
+    heroDesc: "Discover Dubai's best new-launch off-plan projects. Flexible payment plans, developer guarantees, and potential 15-30% capital appreciation before handover.",
     faqs: [
-      { question: "What is an off-plan property in Dubai?", answer: "Off-plan means buying a property before it is built or during construction. You pay a portion upfront (typically 10–20%) with the rest due in instalments during construction or after handover. Off-plan properties are often 15–30% cheaper than ready units in the same building." },
-      { question: "What are the risks of buying off-plan in Dubai?", answer: "Main risks include project delays and (rarely) developer insolvency. Dubai's RERA regulates escrow accounts — developer funds are held in ring-fenced accounts until construction milestones are met. Choose RERA-registered projects and experienced developers with a track record." },
-      { question: "Can I sell an off-plan property before handover?", answer: "Yes. Once you have paid a minimum of 30–40% of the property value, most developers allow resale on the secondary market. This is called 'flipping' and can generate 10–30% profit in a rising market before you ever receive the keys." },
+      { question: "What is an off-plan property in Dubai?", answer: "Off-plan means buying a property before it is built or during construction. You pay a portion upfront (typically 10-20%) with the rest due in instalments during construction or after handover. Off-plan properties are often 15-30% cheaper than ready units in the same building." },
+      { question: "What are the risks of buying off-plan in Dubai?", answer: "Main risks include project delays and (rarely) developer insolvency. Dubai's RERA regulates escrow accounts, developer funds are held in ring-fenced accounts until construction milestones are met. Choose RERA-registered projects and experienced developers with a track record." },
+      { question: "Can I sell an off-plan property before handover?", answer: "Yes. Once you have paid a minimum of 30-40% of the property value, most developers allow resale on the secondary market. This is called 'flipping' and can generate 10-30% profit in a rising market before you ever receive the keys." },
       { question: "Which developers have the best off-plan projects in Dubai?", answer: "Top developers include Emaar (Downtown, Dubai Creek Harbour), DAMAC (Cavalli, Lagoons), Sobha Realty (Hartland II), Aldar (Yas Island), Nakheel (Palm Jumeirah), and Mag (MBR City). Each has different price points, locations, and payment structures." },
       { question: "What payment plans do off-plan developers offer?", answer: "Typical structures: 10% on booking + 10% on SPA + 30% during construction + 50% on handover. Some developers offer post-handover payment plans (e.g. 40% during construction + 60% over 3 years after handover). Zero-interest plans are also available from selected developers." },
-      { question: "Is off-plan better than ready property in Dubai?", answer: "Off-plan offers lower entry price, capital appreciation potential, and flexible payment plans — but you wait 2–4 years for the keys. Ready properties provide immediate rental income, are easier to mortgage, and have no completion risk. The right choice depends on your investment horizon and cash flow needs." },
+      { question: "Is off-plan better than ready property in Dubai?", answer: "Off-plan offers lower entry price, capital appreciation potential, and flexible payment plans, but you wait 2-4 years for the keys. Ready properties provide immediate rental income, are easier to mortgage, and have no completion risk. The right choice depends on your investment horizon and cash flow needs." },
     ],
     breadcrumb: "Off-Plan",
     searchTitle: "Browse Off-Plan Projects",
@@ -131,14 +131,14 @@ const CONTENT = {
     metaDesc: "Более 3000 объектов off-plan в Дубае. Новые проекты от Emaar, DAMAC, Sobha, Aldar. Гибкие планы рассрочки, высокий ROI.",
     heroLabel: "НОВОСТРОЙКИ ДУБАЙ",
     h1: "Новостройки и объекты Off-Plan в Дубае",
-    heroDesc: "Откройте для себя лучшие новостройки Дубая: гибкие планы рассрочки, гарантии застройщика и потенциальный рост стоимости на 15–30% до сдачи.",
+    heroDesc: "Откройте для себя лучшие новостройки Дубая: гибкие планы рассрочки, гарантии застройщика и потенциальный рост стоимости на 15-30% до сдачи.",
     faqs: [
-      { question: "Что такое объект off-plan в Дубае?", answer: "Off-plan — покупка объекта до или в процессе строительства. Обычно 10–20% вносится сразу, остаток — в рассрочку в ходе строительства или после сдачи. Off-plan объекты нередко на 15–30% дешевле готовых аналогов." },
-      { question: "Каковы риски покупки off-plan в Дубае?", answer: "Основные риски: задержки строительства и (редко) банкротство застройщика. RERA Дубая регулирует эскроу-счета — средства покупателей хранятся отдельно до достижения строительных этапов. Выбирайте проекты, зарегистрированные RERA, и застройщиков с подтверждённым опытом." },
-      { question: "Можно ли продать off-plan объект до сдачи?", answer: "Да. После оплаты минимум 30–40% стоимости большинство застройщиков разрешают перепродажу на вторичном рынке. Это может принести прибыль 10–30% ещё до получения ключей." },
+      { question: "Что такое объект off-plan в Дубае?", answer: "Off-plan, покупка объекта до или в процессе строительства. Обычно 10-20% вносится сразу, остаток, в рассрочку в ходе строительства или после сдачи. Off-plan объекты нередко на 15-30% дешевле готовых аналогов." },
+      { question: "Каковы риски покупки off-plan в Дубае?", answer: "Основные риски: задержки строительства и (редко) банкротство застройщика. RERA Дубая регулирует эскроу-счета, средства покупателей хранятся отдельно до достижения строительных этапов. Выбирайте проекты, зарегистрированные RERA, и застройщиков с подтверждённым опытом." },
+      { question: "Можно ли продать off-plan объект до сдачи?", answer: "Да. После оплаты минимум 30-40% стоимости большинство застройщиков разрешают перепродажу на вторичном рынке. Это может принести прибыль 10-30% ещё до получения ключей." },
       { question: "Какие крупнейшие застройщики в Дубае?", answer: "Ведущие застройщики: Emaar (Даунтаун, Дубай Крик Харбор), DAMAC (Cavalli, Lagoons), Sobha Realty (Hartland II), Aldar (о-в Яс), Nakheel (Пальма Джумейра), Mag (MBR City)." },
       { question: "Какие планы рассрочки предлагают застройщики?", answer: "Типичная структура: 10% при бронировании + 10% при SPA + 30% в ходе строительства + 50% при сдаче. Некоторые предлагают пост-хандоверные планы (оплата после получения ключей). Также доступны беспроцентные рассрочки." },
-      { question: "Что выгоднее — новостройка или готовый объект?", answer: "Off-plan предлагает более низкую цену входа, потенциальный рост стоимости и гибкие платежи — но придётся ждать 2–4 года. Готовые объекты дают немедленный доход от аренды и проще в получении ипотеки." },
+      { question: "Что выгоднее, новостройка или готовый объект?", answer: "Off-plan предлагает более низкую цену входа, потенциальный рост стоимости и гибкие платежи, но придётся ждать 2-4 года. Готовые объекты дают немедленный доход от аренды и проще в получении ипотеки." },
     ],
     breadcrumb: "Новостройки",
     searchTitle: "Найти объекты Off-Plan",
@@ -180,14 +180,14 @@ const CONTENT = {
     metaDesc: "Khám phá hơn 3.000 bất động sản off-plan tại Dubai. Ra mắt dự án mới từ Emaar, DAMAC, Sobha, Aldar. Kế hoạch thanh toán linh hoạt, ROI cao. Hướng dẫn chuyên gia.",
     heroLabel: "OFF-PLAN DUBAI",
     h1: "Bất động sản Off-Plan tại Dubai",
-    heroDesc: "Khám phá các dự án off-plan mới ra mắt tốt nhất Dubai. Kế hoạch thanh toán linh hoạt, bảo lãnh của chủ đầu tư và tiềm năng tăng giá vốn 15–30% trước khi bàn giao.",
+    heroDesc: "Khám phá các dự án off-plan mới ra mắt tốt nhất Dubai. Kế hoạch thanh toán linh hoạt, bảo lãnh của chủ đầu tư và tiềm năng tăng giá vốn 15-30% trước khi bàn giao.",
     faqs: [
-      { question: "Bất động sản off-plan tại Dubai là gì?", answer: "Off-plan có nghĩa là mua một bất động sản trước khi xây dựng hoặc trong quá trình xây dựng. Bạn trả một phần trước (thường 10–20%), phần còn lại trả góp trong quá trình xây dựng hoặc sau khi bàn giao. Bất động sản off-plan thường rẻ hơn 15–30% so với căn đã hoàn thiện trong cùng tòa nhà." },
-      { question: "Rủi ro khi mua off-plan tại Dubai là gì?", answer: "Rủi ro chính bao gồm chậm tiến độ dự án và (hiếm khi) chủ đầu tư mất khả năng thanh toán. RERA của Dubai quản lý tài khoản ký quỹ — vốn của chủ đầu tư được giữ trong tài khoản tách biệt cho đến khi đạt các cột mốc xây dựng. Hãy chọn dự án đã đăng ký RERA và chủ đầu tư giàu kinh nghiệm có thành tích." },
-      { question: "Tôi có thể bán bất động sản off-plan trước khi bàn giao không?", answer: "Có. Khi bạn đã trả tối thiểu 30–40% giá trị bất động sản, hầu hết chủ đầu tư cho phép bán lại trên thị trường thứ cấp. Việc này gọi là 'flipping' và có thể tạo ra 10–30% lợi nhuận trong thị trường tăng giá trước khi bạn nhận chìa khóa." },
+      { question: "Bất động sản off-plan tại Dubai là gì?", answer: "Off-plan có nghĩa là mua một bất động sản trước khi xây dựng hoặc trong quá trình xây dựng. Bạn trả một phần trước (thường 10-20%), phần còn lại trả góp trong quá trình xây dựng hoặc sau khi bàn giao. Bất động sản off-plan thường rẻ hơn 15-30% so với căn đã hoàn thiện trong cùng tòa nhà." },
+      { question: "Rủi ro khi mua off-plan tại Dubai là gì?", answer: "Rủi ro chính bao gồm chậm tiến độ dự án và (hiếm khi) chủ đầu tư mất khả năng thanh toán. RERA của Dubai quản lý tài khoản ký quỹ, vốn của chủ đầu tư được giữ trong tài khoản tách biệt cho đến khi đạt các cột mốc xây dựng. Hãy chọn dự án đã đăng ký RERA và chủ đầu tư giàu kinh nghiệm có thành tích." },
+      { question: "Tôi có thể bán bất động sản off-plan trước khi bàn giao không?", answer: "Có. Khi bạn đã trả tối thiểu 30-40% giá trị bất động sản, hầu hết chủ đầu tư cho phép bán lại trên thị trường thứ cấp. Việc này gọi là 'flipping' và có thể tạo ra 10-30% lợi nhuận trong thị trường tăng giá trước khi bạn nhận chìa khóa." },
       { question: "Chủ đầu tư nào có dự án off-plan tốt nhất tại Dubai?", answer: "Các chủ đầu tư hàng đầu gồm Emaar (Downtown, Dubai Creek Harbour), DAMAC (Cavalli, Lagoons), Sobha Realty (Hartland II), Aldar (Yas Island), Nakheel (Palm Jumeirah) và Mag (MBR City). Mỗi đơn vị có mức giá, vị trí và cơ cấu thanh toán khác nhau." },
       { question: "Chủ đầu tư off-plan cung cấp kế hoạch thanh toán nào?", answer: "Cơ cấu điển hình: 10% khi đặt chỗ + 10% khi ký SPA + 30% trong quá trình xây dựng + 50% khi bàn giao. Một số chủ đầu tư cung cấp kế hoạch thanh toán sau bàn giao (ví dụ 40% trong xây dựng + 60% trong 3 năm sau bàn giao). Kế hoạch không lãi suất cũng có sẵn từ một số chủ đầu tư." },
-      { question: "Off-plan có tốt hơn bất động sản đã hoàn thiện tại Dubai không?", answer: "Off-plan mang lại giá vào thấp hơn, tiềm năng tăng giá vốn và kế hoạch thanh toán linh hoạt — nhưng bạn phải chờ 2–4 năm để nhận chìa khóa. Bất động sản đã hoàn thiện cung cấp thu nhập cho thuê ngay, dễ vay thế chấp hơn và không có rủi ro hoàn thành. Lựa chọn phù hợp phụ thuộc vào tầm nhìn đầu tư và nhu cầu dòng tiền của bạn." },
+      { question: "Off-plan có tốt hơn bất động sản đã hoàn thiện tại Dubai không?", answer: "Off-plan mang lại giá vào thấp hơn, tiềm năng tăng giá vốn và kế hoạch thanh toán linh hoạt, nhưng bạn phải chờ 2-4 năm để nhận chìa khóa. Bất động sản đã hoàn thiện cung cấp thu nhập cho thuê ngay, dễ vay thế chấp hơn và không có rủi ro hoàn thành. Lựa chọn phù hợp phụ thuộc vào tầm nhìn đầu tư và nhu cầu dòng tiền của bạn." },
     ],
     breadcrumb: "Off-Plan",
     searchTitle: "Xem dự án Off-Plan",

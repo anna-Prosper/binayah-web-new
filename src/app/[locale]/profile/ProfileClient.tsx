@@ -537,7 +537,7 @@ function ProfileClientInner({ user }: Props) {
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-foreground">
                               {s.propertyType || "Property"}
-                              {s.community ? ` — ${s.community}` : ""}
+                              {s.community ? `, ${s.community}` : ""}
                             </p>
                             {s.askingPrice ? (
                               <p className="text-xs font-bold mt-0.5" style={{ color: "#D4A847" }}>

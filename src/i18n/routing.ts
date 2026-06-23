@@ -7,6 +7,6 @@ const defaultLocale = (process.env.NEXT_DEFAULT_LOCALE as "en" | "ru" | "zh" | "
 export const routing = defineRouting({
   locales: ["en", "ru", "zh", "ar", "vi", "he", "fr"],
   defaultLocale,
-  localePrefix: "as-needed", // default locale: /about — others: /ru/about etc.
+  localePrefix: "as-needed", // default locale: /about, others: /ru/about etc.
   localeDetection: false,
 });

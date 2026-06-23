@@ -136,7 +136,7 @@ export function SubscribeButton({
       const data = await res.json();
       if (!res.ok && !data.ok) {
         setSubscribed(false);
-        showToast("Could not subscribe — please try again.");
+        showToast("Could not subscribe, please try again.");
       } else {
         if (data.alreadySubscribed) {
           showToast(t("toasts.alreadySubscribed"));

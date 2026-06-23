@@ -10,7 +10,7 @@ const {
 
 if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
   // Warn at module load time (not throw) so build still succeeds when env is partial
-  console.warn("[mailer] SMTP env vars missing — emails will fail at runtime");
+  console.warn("[mailer] SMTP env vars missing, emails will fail at runtime");
 }
 
 const transporter = nodemailer.createTransport({

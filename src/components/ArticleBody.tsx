@@ -39,7 +39,7 @@ export type ArticleBlock =
 function Paragraph({ text }: { text: string }) {
   const hasHtml = /<[a-z][\s\S]*>/i.test(text);
   if (hasHtml) return (
-    <p className="text-base text-foreground/80 leading-[1.85] mb-4 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-primary/70 [&_strong]:font-semibold [&_em]:italic"
+    <p className="text-base text-foreground/80 leading-[1.85] mb-4 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-primary/70 [&_strong]:font-semibold"
        dangerouslySetInnerHTML={{ __html: text }} />
   );
   return (
@@ -211,7 +211,7 @@ function QuoteBlock({ text, author }: { text: string; author: string }) {
         </div>
         <div>
           <p className="text-sm sm:text-base text-foreground font-semibold leading-relaxed">"{text}"</p>
-          <p className="text-xs text-muted-foreground mt-2">— {author}</p>
+          <p className="text-xs text-muted-foreground mt-2">, {author}</p>
         </div>
       </div>
     </div>

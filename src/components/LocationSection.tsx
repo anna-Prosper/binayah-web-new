@@ -87,7 +87,7 @@ export function LocationSection({
               <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold mb-0.5 sm:mb-1">
                 {label}
               </p>
-              <p className="text-xs sm:text-sm font-bold text-foreground truncate">{value || "—"}</p>
+              <p className="text-xs sm:text-sm font-bold text-foreground truncate">{value || ", "}</p>
             </div>
           ))}
         </div>

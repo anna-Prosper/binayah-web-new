@@ -89,7 +89,7 @@ export default function ChatsClient() {
               {f.label}
             </button>
           ))}
-          <span className="ml-auto text-xs text-gray-400">{data?.total ?? "—"} sessions</span>
+          <span className="ml-auto text-xs text-gray-400">{data?.total ?? ", "} sessions</span>
         </div>
 
         {isLoading ? (

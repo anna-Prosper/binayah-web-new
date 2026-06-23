@@ -15,7 +15,7 @@ const CONTENT = {
     "metaDesc": "ניהול נכסים מקצועי בדובאי: סינון שוכרים, גביית שכר דירה, אחזקה, EJARI ודיווח. שחררו את זמנכם, הגנו על ההשקעה שלכם. מוסמך RERA.",
     "heroLabel": "ניהול נכסים",
     "h1": "שירותי ניהול נכסים בדובאי",
-    "heroDesc": "תנו ל-Binayah לטפל בהכול — מאיתור השוכר המתאים ועד אחזקה חודשית וגביית שכר דירה. הצוות המוסמך שלנו מטעם RERA מגן על ההשקעה שלכם בזמן שאתם מתמקדים במה שחשוב.",
+    "heroDesc": "תנו ל-Binayah לטפל בהכול, מאיתור השוכר המתאים ועד אחזקה חודשית וגביית שכר דירה. הצוות המוסמך שלנו מטעם RERA מגן על ההשקעה שלכם בזמן שאתם מתמקדים במה שחשוב.",
     "heroCta": "קבלו ייעוץ חינם",
     "stats": [
       {
@@ -110,7 +110,7 @@ const CONTENT = {
     "whyPoints": [
       {
         "title": "שירות מקצה לקצה",
-        "body": "מיחידה ריקה ועד שכר דירה משולם — אנו מטפלים בכל שלב כדי שלא תצטרכו. אידיאלי למשקיעים מחו\"ל ולבעלי דירות עסוקים."
+        "body": "מיחידה ריקה ועד שכר דירה משולם, אנו מטפלים בכל שלב כדי שלא תצטרכו. אידיאלי למשקיעים מחו\"ל ולבעלי דירות עסוקים."
       },
       {
         "title": "עמלות שקופות",
@@ -122,7 +122,7 @@ const CONTENT = {
       },
       {
         "title": "רשת קבלנים מאומתת",
-        "body": "קבלנים מאושרים מראש לאינסטלציה, חשמל, מיזוג אוויר, ניקיון וצביעה. ללא הצעות מחיר מנופחות — אנו משתמשים בתמחור מכרזי תחרותי."
+        "body": "קבלנים מאושרים מראש לאינסטלציה, חשמל, מיזוג אוויר, ניקיון וצביעה. ללא הצעות מחיר מנופחות, אנו משתמשים בתמחור מכרזי תחרותי."
       },
       {
         "title": "גישה לפורטל הבעלים",
@@ -130,7 +130,7 @@ const CONTENT = {
       },
       {
         "title": "תקשורת יזומה",
-        "body": "אתם מקבלים הודעה מראש על חידושי שכירות, העלאות שכר דירה וכל בעיה — לפני שהיא הופכת לבעיה ממשית."
+        "body": "אתם מקבלים הודעה מראש על חידושי שכירות, העלאות שכר דירה וכל בעיה, לפני שהיא הופכת לבעיה ממשית."
       }
     ],
     "faqTitle": "שאלות נפוצות",
@@ -149,7 +149,7 @@ const CONTENT = {
       },
       {
         "question": "כמה מהר Binayah יכולה למצוא לי שוכר?",
-        "answer": "עבור נכסים מתומחרים נכון, Binayah בדרך כלל מוצאת שוכר מתאים תוך 2–4 שבועות. אנו מפרסמים ב-Bayut, Propertyfinder, Dubizzle ובמאגר השוכרים המסוננים מראש שלנו. תוכניות הפרימיום והשירות המלא שלנו כוללות צילום מקצועי למיקסום ביצועי המודעה."
+        "answer": "עבור נכסים מתומחרים נכון, Binayah בדרך כלל מוצאת שוכר מתאים תוך 2-4 שבועות. אנו מפרסמים ב-Bayut, Propertyfinder, Dubizzle ובמאגר השוכרים המסוננים מראש שלנו. תוכניות הפרימיום והשירות המלא שלנו כוללות צילום מקצועי למיקסום ביצועי המודעה."
       },
       {
         "question": "מהו EJARI ומדוע הוא נדרש?",
@@ -157,15 +157,15 @@ const CONTENT = {
       },
       {
         "question": "מה קורה אם שוכר לא משלם שכר דירה?",
-        "answer": "ל-Binayah יש תהליך הסלמה מובנה: הודעות תזכורת, מכתבי דרישה רשמיים, ובמידת הצורך — הליכים משפטיים דרך מרכז יישוב סכסוכי השכירות (RDC). חוק איחוד האמירויות מאפשר לבעלי דירות לפנות שוכרים שאינם משלמים, אם כי התהליך אורך 3–6 חודשים. סינון השוכרים היסודי שלנו מצמצם משמעותית את סיכון אי-התשלום."
+        "answer": "ל-Binayah יש תהליך הסלמה מובנה: הודעות תזכורת, מכתבי דרישה רשמיים, ובמידת הצורך, הליכים משפטיים דרך מרכז יישוב סכסוכי השכירות (RDC). חוק איחוד האמירויות מאפשר לבעלי דירות לפנות שוכרים שאינם משלמים, אם כי התהליך אורך 3-6 חודשים. סינון השוכרים היסודי שלנו מצמצם משמעותית את סיכון אי-התשלום."
       },
       {
         "question": "האם אני יכול לעבור ל-Binayah אם כבר יש לי מנהל נכסים?",
-        "answer": "כן. המעבר פשוט — אנו משתלטים על הניהול בעת חידוש החוזה או, במקרים מסוימים, במהלך השכירות הקיימת תוך מתן הודעה מתאימה למנהל הנוכחי. מנהל התיק שלכם ב-Binayah יטפל בכל תהליך המעבר."
+        "answer": "כן. המעבר פשוט, אנו משתלטים על הניהול בעת חידוש החוזה או, במקרים מסוימים, במהלך השכירות הקיימת תוך מתן הודעה מתאימה למנהל הנוכחי. מנהל התיק שלכם ב-Binayah יטפל בכל תהליך המעבר."
       },
       {
         "question": "אילו סוגי נכסים Binayah מנהלת?",
-        "answer": "אנו מנהלים את כל סוגי הנכסים למגורים: סטודיו, דירות עם 1–5 חדרי שינה, בתי עיר, וילות ופנטהאוזים. נכסים בכל הקהילות המרכזיות של דובאי כולל Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches ועוד."
+        "answer": "אנו מנהלים את כל סוגי הנכסים למגורים: סטודיו, דירות עם 1-5 חדרי שינה, בתי עיר, וילות ופנטהאוזים. נכסים בכל הקהילות המרכזיות של דובאי כולל Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches ועוד."
       }
     ],
     "ctaTitle": "התחילו לנהל בצורה חכמה יותר",
@@ -183,7 +183,7 @@ const CONTENT = {
     metaDesc: "Professional Dubai property management: tenant screening, rent collection, maintenance, EJARI, and reporting. Free your time, protect your investment. RERA-certified.",
     heroLabel: "PROPERTY MANAGEMENT",
     h1: "Dubai Property Management Services",
-    heroDesc: "Let Binayah handle everything — from finding the right tenant to monthly maintenance and rent collection. Our RERA-certified team protects your investment while you focus on what matters.",
+    heroDesc: "Let Binayah handle everything, from finding the right tenant to monthly maintenance and rent collection. Our RERA-certified team protects your investment while you focus on what matters.",
     heroCta: "Get a Free Consultation",
     stats: [
       { n: "19+", label: "Years Managing Dubai Properties" },
@@ -208,23 +208,23 @@ const CONTENT = {
     ],
     whyTitle: "Why Choose Binayah for Property Management",
     whyPoints: [
-      { title: "End-to-End Service", body: "From empty unit to paid rent — we handle every step so you don't have to. Ideal for overseas investors and busy landlords." },
+      { title: "End-to-End Service", body: "From empty unit to paid rent, we handle every step so you don't have to. Ideal for overseas investors and busy landlords." },
       { title: "Transparent Fees", body: "Simple percentage-based fees with no hidden charges. You only pay when rent is collected." },
       { title: "RERA-Certified Team", body: "All property managers are licensed by Dubai's Real Estate Regulatory Agency. Full legal compliance at every step." },
-      { title: "Vetted Contractor Network", body: "Pre-approved contractors for plumbing, electrical, AC, cleaning, and painting. No inflated quotes — we use competitive tender pricing." },
+      { title: "Vetted Contractor Network", body: "Pre-approved contractors for plumbing, electrical, AC, cleaning, and painting. No inflated quotes, we use competitive tender pricing." },
       { title: "Owner Portal Access", body: "Log in anytime to view rent payments, maintenance history, tenant details, and property documents." },
-      { title: "Proactive Communication", body: "You receive advance notice on lease renewals, rent increases, and any issues — before they become problems." },
+      { title: "Proactive Communication", body: "You receive advance notice on lease renewals, rent increases, and any issues, before they become problems." },
     ],
     faqTitle: "Frequently Asked Questions",
     faqs: [
       { question: "How much does property management cost in Dubai?", answer: "Binayah's property management fees range from 5% to 10% of monthly rent, depending on the service level. Standard management (rent collection, EJARI, basic maintenance) starts at 5%/month. Full-service management including tenant finding, 24/7 maintenance, and legal support is 10%/month. There are no upfront fees." },
       { question: "What is included in Dubai property management?", answer: "A full-service property management package includes: tenant screening and placement, tenancy contract drafting, EJARI registration, rent collection and remittance, maintenance coordination (emergency and planned), quarterly property inspections, monthly financial reporting, and dispute resolution. Binayah manages the entire landlord-tenant relationship on your behalf." },
       { question: "Can Binayah manage my property if I live abroad?", answer: "Yes, this is one of our most common use cases. Russian, European, Chinese, and other international investors rely on Binayah to manage their Dubai investments remotely. You receive rent directly to your bank account and monthly reports via email or our owner portal. No need to ever visit Dubai for routine management." },
-      { question: "How quickly can Binayah find me a tenant?", answer: "For well-priced properties, Binayah typically finds a qualified tenant within 2–4 weeks. We list on Bayut, Propertyfinder, Dubizzle, and our own database of pre-qualified tenants. Our Premium and Full Service plans include professional photography to maximise listing performance." },
+      { question: "How quickly can Binayah find me a tenant?", answer: "For well-priced properties, Binayah typically finds a qualified tenant within 2-4 weeks. We list on Bayut, Propertyfinder, Dubizzle, and our own database of pre-qualified tenants. Our Premium and Full Service plans include professional photography to maximise listing performance." },
       { question: "What is EJARI and why is it required?", answer: "EJARI is the official tenancy registration system in Dubai, required by the Dubai Land Department for all rental contracts. Without EJARI registration, tenants cannot get UAE residency visas, utility connections, or school enrolments. It also protects both landlord and tenant legally. Binayah handles EJARI registration as part of all management plans." },
-      { question: "What happens if a tenant doesn't pay rent?", answer: "Binayah has a structured escalation process: reminder notices, formal demand letters, and — if necessary — legal proceedings through the Rental Disputes Centre (RDC). UAE law allows landlords to evict non-paying tenants, though the process takes 3–6 months. Our thorough tenant screening significantly reduces default risk." },
-      { question: "Can I switch to Binayah if I already have a property manager?", answer: "Yes. Switching is straightforward — we take over management at lease renewal or, in some cases, during the existing tenancy with proper notice to the current manager. Your Binayah account manager will handle the full transition process." },
-      { question: "What types of properties does Binayah manage?", answer: "We manage all residential property types: studios, 1–5 bedroom apartments, townhouses, villas, and penthouses. Properties across all major Dubai communities including Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches, and more." },
+      { question: "What happens if a tenant doesn't pay rent?", answer: "Binayah has a structured escalation process: reminder notices, formal demand letters, and, if necessary, legal proceedings through the Rental Disputes Centre (RDC). UAE law allows landlords to evict non-paying tenants, though the process takes 3-6 months. Our thorough tenant screening significantly reduces default risk." },
+      { question: "Can I switch to Binayah if I already have a property manager?", answer: "Yes. Switching is straightforward, we take over management at lease renewal or, in some cases, during the existing tenancy with proper notice to the current manager. Your Binayah account manager will handle the full transition process." },
+      { question: "What types of properties does Binayah manage?", answer: "We manage all residential property types: studios, 1-5 bedroom apartments, townhouses, villas, and penthouses. Properties across all major Dubai communities including Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches, and more." },
     ],
     ctaTitle: "Start Managing Smarter",
     ctaDesc: "Get a free consultation with our property management team. We'll assess your property, recommend the right plan, and take over from day one.",
@@ -238,7 +238,7 @@ const CONTENT = {
     metaDesc: "Профессиональное управление недвижимостью в Дубае: поиск арендаторов, сбор аренды, техническое обслуживание, EJARI и отчётность. RERA-сертифицированная команда.",
     heroLabel: "УПРАВЛЕНИЕ НЕДВИЖИМОСТЬЮ",
     h1: "Управление недвижимостью в Дубае",
-    heroDesc: "Доверьте Binayah всё — от поиска арендатора до ежемесячного обслуживания и сбора аренды. RERA-сертифицированная команда защитит ваши инвестиции, пока вы занимаетесь важными делами. Обслуживание на русском языке.",
+    heroDesc: "Доверьте Binayah всё, от поиска арендатора до ежемесячного обслуживания и сбора аренды. RERA-сертифицированная команда защитит ваши инвестиции, пока вы занимаетесь важными делами. Обслуживание на русском языке.",
     heroCta: "Бесплатная консультация",
     stats: [
       { n: "19+", label: "Лет управления в Дубае" },
@@ -263,7 +263,7 @@ const CONTENT = {
     ],
     whyTitle: "Почему Binayah для управления недвижимостью",
     whyPoints: [
-      { title: "Полный сервис", body: "От пустой квартиры до оплаченной аренды — мы берём на себя каждый шаг. Идеально для зарубежных инвесторов." },
+      { title: "Полный сервис", body: "От пустой квартиры до оплаченной аренды, мы берём на себя каждый шаг. Идеально для зарубежных инвесторов." },
       { title: "Прозрачные тарифы", body: "Простые процентные комиссии без скрытых платежей. Оплата только после получения аренды." },
       { title: "RERA-сертификация", body: "Все управляющие имеют лицензию RERA. Полное соответствие законодательству ОАЭ на каждом этапе." },
       { title: "Проверенная сеть подрядчиков", body: "Одобренные подрядчики для сантехники, электрики, кондиционирования, уборки и покраски по конкурентным ценам." },
@@ -272,13 +272,13 @@ const CONTENT = {
     ],
     faqTitle: "Частые вопросы",
     faqs: [
-      { question: "Сколько стоит управление недвижимостью в Дубае?", answer: "Тарифы Binayah составляют 5–10% от ежемесячной аренды в зависимости от уровня обслуживания. Стандартное управление начинается от 5%/мес., полный сервис — 10%/мес. Авансовых платежей нет." },
+      { question: "Сколько стоит управление недвижимостью в Дубае?", answer: "Тарифы Binayah составляют 5-10% от ежемесячной аренды в зависимости от уровня обслуживания. Стандартное управление начинается от 5%/мес., полный сервис, 10%/мес. Авансовых платежей нет." },
       { question: "Что входит в управление недвижимостью в Дубае?", answer: "Полный пакет включает: поиск и проверку арендаторов, составление договора, регистрацию EJARI, сбор аренды, координацию обслуживания, квартальные инспекции, ежемесячные финансовые отчёты и урегулирование споров." },
       { question: "Может ли Binayah управлять объектом, если я нахожусь за рубежом?", answer: "Да, это один из наших основных сценариев. Российские, европейские и азиатские инвесторы доверяют Binayah управление своей дубайской недвижимостью дистанционно. Аренда перечисляется на ваш счёт, ежемесячные отчёты приходят по электронной почте." },
-      { question: "Как быстро Binayah найдёт арендатора?", answer: "Для правильно оценённых объектов Binayah обычно находит квалифицированного арендатора за 2–4 недели. Размещаем на Bayut, Propertyfinder, Dubizzle и в нашей базе данных." },
-      { question: "Что такое EJARI и зачем он нужен?", answer: "EJARI — официальная система регистрации договоров аренды в Дубае, обязательная для всех арендных контрактов. Без регистрации EJARI арендаторы не могут получить визу ОАЭ, подключить коммунальные услуги или записать детей в школу. Binayah берёт на себя регистрацию EJARI." },
-      { question: "Что происходит, если арендатор не платит?", answer: "У нас есть структурированный процесс: напоминания, официальные требования, при необходимости — юридическое производство через Центр разрешения арендных споров (RDC). Тщательная проверка арендаторов значительно снижает риск неплатежей." },
-      { question: "Какими объектами управляет Binayah?", answer: "Все типы жилой недвижимости: студии, квартиры с 1–5 спальнями, таунхаусы, виллы и пентхаусы во всех основных районах Дубая: Марина, Даунтаун, Пальма Джумейра, JVC, Бизнес-Бей и других." },
+      { question: "Как быстро Binayah найдёт арендатора?", answer: "Для правильно оценённых объектов Binayah обычно находит квалифицированного арендатора за 2-4 недели. Размещаем на Bayut, Propertyfinder, Dubizzle и в нашей базе данных." },
+      { question: "Что такое EJARI и зачем он нужен?", answer: "EJARI, официальная система регистрации договоров аренды в Дубае, обязательная для всех арендных контрактов. Без регистрации EJARI арендаторы не могут получить визу ОАЭ, подключить коммунальные услуги или записать детей в школу. Binayah берёт на себя регистрацию EJARI." },
+      { question: "Что происходит, если арендатор не платит?", answer: "У нас есть структурированный процесс: напоминания, официальные требования, при необходимости, юридическое производство через Центр разрешения арендных споров (RDC). Тщательная проверка арендаторов значительно снижает риск неплатежей." },
+      { question: "Какими объектами управляет Binayah?", answer: "Все типы жилой недвижимости: студии, квартиры с 1-5 спальнями, таунхаусы, виллы и пентхаусы во всех основных районах Дубая: Марина, Даунтаун, Пальма Джумейра, JVC, Бизнес-Бей и других." },
     ],
     ctaTitle: "Начните управлять эффективнее",
     ctaDesc: "Получите бесплатную консультацию с нашей командой по управлению недвижимостью. Мы оценим объект, подберём оптимальный план и возьмёмся за работу сразу.",
@@ -292,7 +292,7 @@ const CONTENT = {
     metaDesc: "إدارة عقارية احترافية في دبي: فحص المستأجرين، تحصيل الإيجار، الصيانة، EJARI، والتقارير. فريق معتمد من RERA.",
     heroLabel: "إدارة العقارات",
     h1: "خدمات إدارة العقارات في دبي",
-    heroDesc: "دع بناية تتولى كل شيء — من إيجاد المستأجر المناسب إلى الصيانة الشهرية وتحصيل الإيجار. فريقنا المعتمد من RERA يحمي استثمارك بينما أنت تنصرف لما يهمّك.",
+    heroDesc: "دع بناية تتولى كل شيء, من إيجاد المستأجر المناسب إلى الصيانة الشهرية وتحصيل الإيجار. فريقنا المعتمد من RERA يحمي استثمارك بينما أنت تنصرف لما يهمّك.",
     heroCta: "استشارة مجانية",
     stats: [
       { n: "+17", label: "عامًا في إدارة عقارات دبي" },
@@ -317,12 +317,12 @@ const CONTENT = {
     ],
     whyTitle: "لماذا تختار بناية لإدارة عقارك",
     whyPoints: [
-      { title: "خدمة متكاملة", body: "من الوحدة الفارغة إلى الإيجار المدفوع — نتولى كل خطوة. مثالية للمستثمرين من الخارج." },
+      { title: "خدمة متكاملة", body: "من الوحدة الفارغة إلى الإيجار المدفوع, نتولى كل خطوة. مثالية للمستثمرين من الخارج." },
       { title: "رسوم شفافة", body: "رسوم بسيطة بنسبة مئوية دون رسوم مخفية. تدفع فقط عند تحصيل الإيجار." },
       { title: "اعتماد RERA", body: "جميع المديرين العقاريين مرخَّصون من RERA. امتثال قانوني كامل في كل مرحلة." },
       { title: "شبكة مقاولين معتمدين", body: "مقاولون معتمدون مسبقًا للسباكة والكهرباء والتكييف والتنظيف والدهان بأسعار تنافسية." },
       { title: "بوابة المالك", body: "سجِّل الدخول في أي وقت لعرض مدفوعات الإيجار وسجل الصيانة والمستندات." },
-      { title: "تواصل استباقي", body: "تتلقى إشعارًا مسبقًا بتجديد عقود الإيجار وزيادات الإيجار وأي مشكلات — قبل أن تتفاقم." },
+      { title: "تواصل استباقي", body: "تتلقى إشعارًا مسبقًا بتجديد عقود الإيجار وزيادات الإيجار وأي مشكلات, قبل أن تتفاقم." },
     ],
     faqTitle: "الأسئلة الشائعة",
     faqs: [
@@ -345,7 +345,7 @@ const CONTENT = {
     metaDesc: "专业迪拜物业管理：租客筛选、租金收取、维修协调、EJARI登记和报告。RERA认证团队，中文服务。",
     heroLabel: "物业管理",
     h1: "迪拜物业管理服务",
-    heroDesc: "让Binayah处理一切——从寻找合适租客到每月维护和租金收取。我们的RERA认证团队保护您的投资，提供全程中文服务。",
+    heroDesc: "让Binayah处理一切, , 从寻找合适租客到每月维护和租金收取。我们的RERA认证团队保护您的投资，提供全程中文服务。",
     heroCta: "免费咨询",
     stats: [
       { n: "19+", label: "年迪拜物业管理经验" },
@@ -370,7 +370,7 @@ const CONTENT = {
     ],
     whyTitle: "为什么选择Binayah物业管理",
     whyPoints: [
-      { title: "端到端服务", body: "从空置单元到收取租金——我们处理每一步。非常适合海外投资者和繁忙的房东。" },
+      { title: "端到端服务", body: "从空置单元到收取租金, , 我们处理每一步。非常适合海外投资者和繁忙的房东。" },
       { title: "透明收费", body: "简单的按比例收费，无隐性收费。只有在收取租金后才付费。" },
       { title: "RERA认证团队", body: "所有物业经理均持有RERA执照，每个环节完全符合阿联酋法律要求。" },
       { title: "审核承包商网络", body: "水暖、电气、空调、清洁和粉刷的预审承包商，提供竞争性报价。" },
@@ -399,7 +399,7 @@ const CONTENT = {
     metaDesc: "Quản lý bất động sản Dubai chuyên nghiệp: sàng lọc khách thuê, thu tiền thuê, bảo trì, EJARI và báo cáo. Giải phóng thời gian, bảo vệ khoản đầu tư của bạn. Chứng nhận RERA.",
     heroLabel: "QUẢN LÝ BẤT ĐỘNG SẢN",
     h1: "Dịch vụ quản lý bất động sản Dubai",
-    heroDesc: "Để Binayah xử lý mọi thứ — từ tìm khách thuê phù hợp đến bảo trì hàng tháng và thu tiền thuê. Đội ngũ được chứng nhận RERA của chúng tôi bảo vệ khoản đầu tư của bạn trong khi bạn tập trung vào điều quan trọng.",
+    heroDesc: "Để Binayah xử lý mọi thứ, từ tìm khách thuê phù hợp đến bảo trì hàng tháng và thu tiền thuê. Đội ngũ được chứng nhận RERA của chúng tôi bảo vệ khoản đầu tư của bạn trong khi bạn tập trung vào điều quan trọng.",
     heroCta: "Nhận tư vấn miễn phí",
     stats: [
       { n: "19+", label: "Năm quản lý bất động sản Dubai" },
@@ -424,23 +424,23 @@ const CONTENT = {
     ],
     whyTitle: "Vì sao chọn Binayah để quản lý bất động sản",
     whyPoints: [
-      { title: "Dịch vụ trọn gói", body: "Từ căn trống đến tiền thuê được trả — chúng tôi xử lý mọi bước để bạn không phải làm. Lý tưởng cho nhà đầu tư ở nước ngoài và chủ nhà bận rộn." },
+      { title: "Dịch vụ trọn gói", body: "Từ căn trống đến tiền thuê được trả, chúng tôi xử lý mọi bước để bạn không phải làm. Lý tưởng cho nhà đầu tư ở nước ngoài và chủ nhà bận rộn." },
       { title: "Phí minh bạch", body: "Phí dựa trên tỷ lệ phần trăm đơn giản, không phí ẩn. Bạn chỉ trả khi tiền thuê được thu." },
       { title: "Đội ngũ được chứng nhận RERA", body: "Mọi quản lý bất động sản đều được cấp phép bởi Cơ quan Quản lý Bất động sản của Dubai. Tuân thủ pháp lý đầy đủ ở mọi bước." },
-      { title: "Mạng lưới nhà thầu đã kiểm duyệt", body: "Nhà thầu được phê duyệt trước cho ống nước, điện, điều hòa, vệ sinh và sơn. Không báo giá thổi phồng — chúng tôi sử dụng giá đấu thầu cạnh tranh." },
+      { title: "Mạng lưới nhà thầu đã kiểm duyệt", body: "Nhà thầu được phê duyệt trước cho ống nước, điện, điều hòa, vệ sinh và sơn. Không báo giá thổi phồng, chúng tôi sử dụng giá đấu thầu cạnh tranh." },
       { title: "Truy cập cổng chủ sở hữu", body: "Đăng nhập bất cứ lúc nào để xem thanh toán tiền thuê, lịch sử bảo trì, chi tiết khách thuê và tài liệu bất động sản." },
-      { title: "Giao tiếp chủ động", body: "Bạn nhận thông báo trước về gia hạn hợp đồng thuê, tăng tiền thuê và bất kỳ vấn đề nào — trước khi chúng trở thành rắc rối." },
+      { title: "Giao tiếp chủ động", body: "Bạn nhận thông báo trước về gia hạn hợp đồng thuê, tăng tiền thuê và bất kỳ vấn đề nào, trước khi chúng trở thành rắc rối." },
     ],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
       { question: "Quản lý bất động sản tại Dubai tốn bao nhiêu?", answer: "Phí quản lý bất động sản của Binayah dao động từ 5% đến 10% tiền thuê hàng tháng, tùy mức dịch vụ. Quản lý tiêu chuẩn (thu tiền thuê, EJARI, bảo trì cơ bản) khởi điểm từ 5%/tháng. Quản lý trọn gói bao gồm tìm khách thuê, bảo trì 24/7 và hỗ trợ pháp lý là 10%/tháng. Không có phí trả trước." },
       { question: "Quản lý bất động sản Dubai bao gồm những gì?", answer: "Gói quản lý bất động sản trọn gói bao gồm: sàng lọc và bố trí khách thuê, soạn thảo hợp đồng thuê, đăng ký EJARI, thu và chuyển tiền thuê, điều phối bảo trì (khẩn cấp và theo kế hoạch), kiểm tra bất động sản hàng quý, báo cáo tài chính hàng tháng và giải quyết tranh chấp. Binayah quản lý toàn bộ mối quan hệ chủ nhà-khách thuê thay mặt bạn." },
       { question: "Binayah có thể quản lý bất động sản của tôi nếu tôi sống ở nước ngoài không?", answer: "Có, đây là một trong những trường hợp sử dụng phổ biến nhất của chúng tôi. Các nhà đầu tư Nga, châu Âu, Trung Quốc và quốc tế khác tin tưởng Binayah quản lý các khoản đầu tư Dubai của họ từ xa. Bạn nhận tiền thuê trực tiếp vào tài khoản ngân hàng và báo cáo hàng tháng qua email hoặc cổng chủ sở hữu của chúng tôi. Không bao giờ cần đến Dubai để quản lý thường lệ." },
-      { question: "Binayah có thể tìm khách thuê cho tôi nhanh thế nào?", answer: "Với bất động sản định giá tốt, Binayah thường tìm được khách thuê đủ điều kiện trong vòng 2–4 tuần. Chúng tôi niêm yết trên Bayut, Propertyfinder, Dubizzle và cơ sở dữ liệu khách thuê đã sàng lọc trước của riêng mình. Gói Cao cấp và Trọn gói của chúng tôi bao gồm ảnh chuyên nghiệp để tối đa hóa hiệu suất tin đăng." },
+      { question: "Binayah có thể tìm khách thuê cho tôi nhanh thế nào?", answer: "Với bất động sản định giá tốt, Binayah thường tìm được khách thuê đủ điều kiện trong vòng 2-4 tuần. Chúng tôi niêm yết trên Bayut, Propertyfinder, Dubizzle và cơ sở dữ liệu khách thuê đã sàng lọc trước của riêng mình. Gói Cao cấp và Trọn gói của chúng tôi bao gồm ảnh chuyên nghiệp để tối đa hóa hiệu suất tin đăng." },
       { question: "EJARI là gì và vì sao cần nó?", answer: "EJARI là hệ thống đăng ký thuê chính thức tại Dubai, do Sở Đất đai Dubai yêu cầu cho mọi hợp đồng thuê. Không có đăng ký EJARI, khách thuê không thể nhận thị thực cư trú UAE, kết nối tiện ích hoặc đăng ký học. Nó cũng bảo vệ cả chủ nhà và khách thuê về mặt pháp lý. Binayah xử lý đăng ký EJARI như một phần của mọi gói quản lý." },
-      { question: "Điều gì xảy ra nếu khách thuê không trả tiền thuê?", answer: "Binayah có quy trình leo thang có cấu trúc: thông báo nhắc nhở, thư yêu cầu chính thức và — nếu cần — thủ tục pháp lý qua Trung tâm Tranh chấp Thuê (RDC). Luật UAE cho phép chủ nhà trục xuất khách thuê không trả tiền, dù quy trình mất 3–6 tháng. Việc sàng lọc khách thuê kỹ lưỡng của chúng tôi giảm đáng kể rủi ro vỡ nợ." },
-      { question: "Tôi có thể chuyển sang Binayah nếu đã có quản lý bất động sản không?", answer: "Có. Việc chuyển đổi đơn giản — chúng tôi tiếp quản quản lý khi gia hạn hợp đồng thuê hoặc, trong một số trường hợp, trong thời gian thuê hiện tại với thông báo phù hợp cho quản lý hiện tại. Quản lý tài khoản Binayah của bạn sẽ xử lý toàn bộ quá trình chuyển đổi." },
-      { question: "Binayah quản lý những loại bất động sản nào?", answer: "Chúng tôi quản lý mọi loại bất động sản nhà ở: studio, căn hộ 1–5 phòng ngủ, nhà phố, biệt thự và penthouse. Bất động sản trên tất cả các khu vực lớn của Dubai bao gồm Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches và hơn thế nữa." },
+      { question: "Điều gì xảy ra nếu khách thuê không trả tiền thuê?", answer: "Binayah có quy trình leo thang có cấu trúc: thông báo nhắc nhở, thư yêu cầu chính thức và, nếu cần, thủ tục pháp lý qua Trung tâm Tranh chấp Thuê (RDC). Luật UAE cho phép chủ nhà trục xuất khách thuê không trả tiền, dù quy trình mất 3-6 tháng. Việc sàng lọc khách thuê kỹ lưỡng của chúng tôi giảm đáng kể rủi ro vỡ nợ." },
+      { question: "Tôi có thể chuyển sang Binayah nếu đã có quản lý bất động sản không?", answer: "Có. Việc chuyển đổi đơn giản, chúng tôi tiếp quản quản lý khi gia hạn hợp đồng thuê hoặc, trong một số trường hợp, trong thời gian thuê hiện tại với thông báo phù hợp cho quản lý hiện tại. Quản lý tài khoản Binayah của bạn sẽ xử lý toàn bộ quá trình chuyển đổi." },
+      { question: "Binayah quản lý những loại bất động sản nào?", answer: "Chúng tôi quản lý mọi loại bất động sản nhà ở: studio, căn hộ 1-5 phòng ngủ, nhà phố, biệt thự và penthouse. Bất động sản trên tất cả các khu vực lớn của Dubai bao gồm Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches và hơn thế nữa." },
     ],
     ctaTitle: "Bắt đầu quản lý thông minh hơn",
     ctaDesc: "Nhận tư vấn miễn phí với đội ngũ quản lý bất động sản của chúng tôi. Chúng tôi sẽ đánh giá bất động sản của bạn, đề xuất gói phù hợp và tiếp quản từ ngày đầu tiên.",

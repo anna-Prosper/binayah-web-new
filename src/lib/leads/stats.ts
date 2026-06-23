@@ -268,7 +268,7 @@ export async function computeLeadStats(opts: { from?: Date; to?: Date } = {}): P
     last90,
     statusBreakdowns,
     dailyMaps,
-    inqCommunityProxy,   // inquiries don't have community directly — best-effort via propertyTitle
+    inqCommunityProxy,   // inquiries don't have community directly, best-effort via propertyTitle
     newsCommunityMaps,
     listCommunityMap,
     topProps,
@@ -293,7 +293,7 @@ export async function computeLeadStats(opts: { from?: Date; to?: Date } = {}): P
     Promise.all(ALL_SOURCES.map((s) => dailyBuckets(SOURCE_COLLECTION[s], bucketStart, opts.to))),
     // community proxies — only ones that semantically exist
     topByField("inquiries", "propertyTitle", 50, {}, df),
-    topByField("marketreportsubscriptions", "areas", 50, {}, df),   // areas is an array — Mongo $group unwinds it implicitly if we $unwind first; without $unwind it groups by the whole array. Skip and merge below.
+    topByField("marketreportsubscriptions", "areas", 50, {}, df),   // areas is an array, Mongo $group unwinds it implicitly if we $unwind first; without $unwind it groups by the whole array. Skip and merge below.
     topByField("property_submissions", "community", 50, {}, df),
     topInquiredProperties(10, df),
     avgTimeToContact(),

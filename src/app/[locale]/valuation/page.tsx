@@ -29,18 +29,18 @@ const descriptions: Record<string, string> = {
 
 const VALUATION_FAQS: Record<string, { question: string; answer: string }[]> = {
   en: [
-    { question: "How accurate is the Binayah property valuation tool?", answer: "Binayah's AI valuation uses real DLD-registered transaction data from the past 6–12 months for your specific building and community. Accuracy is typically within 5–10% of actual market value. For mortgage or legal purposes, a RICS-certified in-person appraisal is recommended." },
+    { question: "How accurate is the Binayah property valuation tool?", answer: "Binayah's AI valuation uses real DLD-registered transaction data from the past 6-12 months for your specific building and community. Accuracy is typically within 5-10% of actual market value. For mortgage or legal purposes, a RICS-certified in-person appraisal is recommended." },
     { question: "What factors affect property value in Dubai?", answer: "Key factors include: location and community (Downtown and Palm command premiums), floor level and view, property condition and renovation, size and layout, building amenities (gym, pool, concierge), current market supply/demand, and proximity to metro, schools, and retail." },
     { question: "Is the property valuation really free?", answer: "Yes, completely free with no registration required. Binayah's valuation tool is designed to give owners and investors instant market intelligence. There is no obligation and no fee." },
-    { question: "How often do Dubai property values change?", answer: "Dubai property values are updated in real-time based on DLD transaction registrations. The market has seen 15–25% annual appreciation in prime areas since 2021. Use Binayah's Market Pulse dashboard for monthly trends by community." },
+    { question: "How often do Dubai property values change?", answer: "Dubai property values are updated in real-time based on DLD transaction registrations. The market has seen 15-25% annual appreciation in prime areas since 2021. Use Binayah's Market Pulse dashboard for monthly trends by community." },
     { question: "Can I use the Binayah valuation for a mortgage application?", answer: "Binayah's free online valuation is useful for market awareness but is not accepted as a formal valuation for mortgage purposes. Banks require an official RICS or bank-approved valuer. Your Binayah agent can refer you to accredited valuers." },
-    { question: "How is Dubai property value measured?", answer: "Dubai property is typically valued per square foot (AED/sqft). Average prices vary significantly: Downtown Dubai and Palm Jumeirah range from AED 2,000–5,000+/sqft, while areas like JVC and Dubai South range from AED 700–1,200/sqft." },
+    { question: "How is Dubai property value measured?", answer: "Dubai property is typically valued per square foot (AED/sqft). Average prices vary significantly: Downtown Dubai and Palm Jumeirah range from AED 2,000-5,000+/sqft, while areas like JVC and Dubai South range from AED 700-1,200/sqft." },
   ],
   ru: [
-    { question: "Насколько точна оценка Binayah?", answer: "ИИ-оценка Binayah использует реальные данные DLD о сделках за последние 6–12 месяцев по вашему зданию и району. Точность — как правило, в пределах 5–10% от рыночной стоимости." },
+    { question: "Насколько точна оценка Binayah?", answer: "ИИ-оценка Binayah использует реальные данные DLD о сделках за последние 6-12 месяцев по вашему зданию и району. Точность, как правило, в пределах 5-10% от рыночной стоимости." },
     { question: "Какие факторы влияют на стоимость недвижимости в Дубае?", answer: "Ключевые факторы: локация и район (Даунтаун и Пальма имеют премиальные цены), этаж и вид, состояние объекта, площадь и планировка, инфраструктура здания, близость к метро, школам и торговым центрам." },
     { question: "Оценка действительно бесплатна?", answer: "Да, абсолютно бесплатно без регистрации. Инструмент оценки Binayah даёт мгновенную рыночную информацию без каких-либо обязательств и платежей." },
-    { question: "Как часто меняются цены на недвижимость в Дубае?", answer: "Данные обновляются на основе зарегистрированных в DLD сделок. Начиная с 2021 года рынок показывает рост на 15–25% в год в премиальных районах." },
+    { question: "Как часто меняются цены на недвижимость в Дубае?", answer: "Данные обновляются на основе зарегистрированных в DLD сделок. Начиная с 2021 года рынок показывает рост на 15-25% в год в премиальных районах." },
     { question: "Можно ли использовать оценку Binayah для ипотеки?", answer: "Онлайн-оценка Binayah подходит для понимания рынка, но не является официальной для банков. Банки требуют оценку от аккредитованного оценщика RICS. Агент Binayah направит вас к проверенным специалистам." },
   ],
   ar: [

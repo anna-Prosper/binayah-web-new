@@ -157,7 +157,7 @@ const ValuationCTA = () => {
               <p className="text-white text-3xl sm:text-5xl font-bold tracking-tight mb-4 sm:mb-6">
                 AED 2.4
                 <span className="text-2xl sm:text-3xl text-white/60 font-normal">M</span>
-                <span className="text-white/30 text-lg font-normal mx-2">–</span>
+                <span className="text-white/30 text-lg font-normal mx-2">-</span>
                 2.8
                 <span className="text-2xl sm:text-3xl text-white/60 font-normal">M</span>
               </p>

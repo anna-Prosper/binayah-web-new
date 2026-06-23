@@ -303,7 +303,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 25_000); // 25s — covers Render cold-start wake-up (~15s)
+      const timeoutId = setTimeout(() => controller.abort(), 25_000); // 25s, covers Render cold-start wake-up (~15s)
       const response = await fetch(apiUrl(`/api/search?${params.toString()}`), { signal: controller.signal });
       clearTimeout(timeoutId);
       if (!response.ok) throw new Error("Search failed");
@@ -427,7 +427,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
   const priceChip = (() => {
     if (priceMin == null && priceMax == null) return "";
     const fmt = (n: number) => Math.round(n).toLocaleString();
-    if (priceMin != null && priceMax != null) return `AED ${fmt(priceMin)}–${fmt(priceMax)}`;
+    if (priceMin != null && priceMax != null) return `AED ${fmt(priceMin)}-${fmt(priceMax)}`;
     if (priceMin != null) return `AED ${fmt(priceMin)}+`;
     return `Up to AED ${fmt(priceMax!)}`;
   })();
@@ -844,7 +844,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
               )}
               {/* When the user lands on the Buy nav link (intent=buy on the
                   All tab), surface actual for-sale listings before off-plan
-                  projects — buyers want move-in-ready stock first. */}
+                  projects, buyers want move-in-ready stock first. */}
               <div className="flex flex-col">
               {projects.length > 0 && (
                 <div

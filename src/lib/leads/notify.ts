@@ -86,7 +86,7 @@ const SOURCE_LABEL: Record<string, string> = {
 };
 
 function buildLeadMessage(p: NewLeadWebhookPayload): string {
-  const lines: string[] = ["🔔 *New Lead — Binayah*", "", `Type: ${SOURCE_LABEL[p.source] ?? p.source}`];
+  const lines: string[] = ["🔔 *New Lead, Binayah*", "", `Type: ${SOURCE_LABEL[p.source] ?? p.source}`];
   if (p.name) lines.push(`Name: ${p.name}`);
   if (p.email) lines.push(`Email: ${p.email}`);
   if (p.phone) lines.push(`Phone: ${p.phone}`);

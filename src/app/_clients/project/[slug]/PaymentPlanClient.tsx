@@ -74,7 +74,7 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
             {t("paymentPlanLabel")}
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            {project.name} — {t("paymentPlanLabel")}
+            {project.name}, {t("paymentPlanLabel")}
           </h1>
           {project.community && (
             <p className="text-muted-foreground mt-1">
@@ -237,7 +237,7 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
           </h2>
           <p>
             Dubai&apos;s off-plan payment plans are structured to align buyer payments with construction
-            milestones — you pay as the building progresses, not all upfront. The Dubai Land
+            milestones, you pay as the building progresses, not all upfront. The Dubai Land
             Department (DLD) mandates that all off-plan payments be deposited into a dedicated
             escrow account, protecting buyer funds regardless of construction progress.
           </p>
@@ -249,7 +249,7 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
             on booking, allowing capital to be deployed across multiple investments simultaneously.
           </p>
           <p>
-            For end-users, the construction timeline (typically 2–4 years for off-plan projects in
+            For end-users, the construction timeline (typically 2-4 years for off-plan projects in
             Dubai) provides time to arrange mortgage financing or accumulate the handover balance
             through savings.
           </p>

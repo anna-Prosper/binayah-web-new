@@ -33,7 +33,7 @@ function formatBudget(min?: number, max?: number): string {
     if (n >= 1_000) return `AED ${Math.round(n / 1_000)}K`;
     return `AED ${n.toLocaleString()}`;
   }
-  if (min && max) return `${fmt(min)} — ${fmt(max)}`;
+  if (min && max) return `${fmt(min)}, ${fmt(max)}`;
   if (min) return `${fmt(min)}+`;
   if (max) return `up to ${fmt(max)}`;
   return "";
@@ -105,7 +105,7 @@ function BudgetEditRow({
     <div className="space-y-2 pt-1">
       <div className="flex justify-between items-center">
         <span className="text-xs font-mono tabular-nums text-foreground">
-          {isDefault ? t("anyBudget") : `${fmtBudget(currentMin)} — ${fmtBudget(currentMax)}`}
+          {isDefault ? t("anyBudget") : `${fmtBudget(currentMin)}, ${fmtBudget(currentMax)}`}
         </span>
         {!isDefault && (
           <button

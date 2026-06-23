@@ -28,7 +28,7 @@ async function getInitialBuyListings() {
 const CONTENT = {
   fr: {
     "metaTitle": "Biens à vendre à Dubai | Plus de 3 000 annonces | Binayah",
-    "metaDesc": "Parcourez plus de 3 000 biens à vendre à Dubai — appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.",
+    "metaDesc": "Parcourez plus de 3 000 biens à vendre à Dubai, appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.",
     "heroLabel": "ACHETER UN BIEN À DUBAI",
     "h1": "Biens à vendre",
     "h1sub": "à Dubai",
@@ -54,11 +54,11 @@ const CONTENT = {
     "faqs": [
       {
         "question": "Les étrangers peuvent-ils acheter un bien immobilier à Dubaï ?",
-        "answer": "Oui. Toutes les nationalités peuvent acheter un bien en pleine propriété dans les zones désignées de Dubaï — Marina, Downtown, JVC, Palm, Business Bay, et plus de 60 autres. Aucune résidence requise. Vous recevez un acte de propriété complet du DLD avec les mêmes droits de propriété que les ressortissants des Émirats arabes unis."
+        "answer": "Oui. Toutes les nationalités peuvent acheter un bien en pleine propriété dans les zones désignées de Dubaï, Marina, Downtown, JVC, Palm, Business Bay, et plus de 60 autres. Aucune résidence requise. Vous recevez un acte de propriété complet du DLD avec les mêmes droits de propriété que les ressortissants des Émirats arabes unis."
       },
       {
         "question": "Quel est le processus d'achat d'un bien immobilier à Dubaï ?",
-        "answer": "1) Convenir du prix et signer le MOU (Memorandum of Understanding). 2) Payer un dépôt de 10 %. 3) Obtenir le NOC du promoteur. 4) Transfert DLD — payer 4 % de frais de transfert. 5) Recevoir l'acte de propriété. Le processus prend 3 à 6 semaines pour le marché secondaire, 2 à 4 semaines pour une réservation sur plan."
+        "answer": "1) Convenir du prix et signer le MOU (Memorandum of Understanding). 2) Payer un dépôt de 10 %. 3) Obtenir le NOC du promoteur. 4) Transfert DLD, payer 4 % de frais de transfert. 5) Recevoir l'acte de propriété. Le processus prend 3 à 6 semaines pour le marché secondaire, 2 à 4 semaines pour une réservation sur plan."
       },
       {
         "question": "Quels sont les coûts totaux lors de l'achat d'un bien immobilier à Dubaï ?",
@@ -66,21 +66,21 @@ const CONTENT = {
       },
       {
         "question": "Quel est l'investissement minimum pour acheter un bien immobilier à Dubaï ?",
-        "answer": "Les studios commencent à partir de AED 300,000–500,000 (~82K–136K USD) dans des quartiers comme JVC et Dubai South. Pour un visa doré des Émirats arabes unis de 10 ans, la valeur minimale du bien est de AED 2,000,000 (~545K USD)."
+        "answer": "Les studios commencent à partir de AED 300,000-500,000 (~82K-136K USD) dans des quartiers comme JVC et Dubai South. Pour un visa doré des Émirats arabes unis de 10 ans, la valeur minimale du bien est de AED 2,000,000 (~545K USD)."
       },
       {
         "question": "L'immobilier à Dubaï est-il un bon investissement en 2026 ?",
-        "answer": "Dubaï offre des rendements locatifs bruts de 5 à 8 % (parmi les plus élevés au monde), zéro impôt sur les plus-values, zéro impôt sur le revenu, et une monnaie indexée sur l'AED-USD. Les quartiers de premier choix ont vu une appréciation de 40 à 60 % depuis 2021. Les fondamentaux — croissance démographique, stock de villas sous-approvisionné, et statut de hub d'affaires — restent favorables."
+        "answer": "Dubaï offre des rendements locatifs bruts de 5 à 8 % (parmi les plus élevés au monde), zéro impôt sur les plus-values, zéro impôt sur le revenu, et une monnaie indexée sur l'AED-USD. Les quartiers de premier choix ont vu une appréciation de 40 à 60 % depuis 2021. Les fondamentaux, croissance démographique, stock de villas sous-approvisionné, et statut de hub d'affaires, restent favorables."
       }
     ],
     "breadcrumb": "Acheter",
     "ctaTitle": "Besoin de conseils d'expert ?",
-    "ctaDesc": "Nos agents certifiés RERA vous aident à trouver, négocier et finaliser l'achat de votre bien à Dubai — sans frais supplémentaires.",
+    "ctaDesc": "Nos agents certifiés RERA vous aident à trouver, négocier et finaliser l'achat de votre bien à Dubai, sans frais supplémentaires.",
     "ctaBtn": "Parlez à un agent"
   },
   he: {
     "metaTitle": "נכסים למכירה בדובאי | 3,000+ מודעות | Binayah",
-    "metaDesc": "עיינו ב-3,000+ נכסים למכירה בדובאי — דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",
+    "metaDesc": "עיינו ב-3,000+ נכסים למכירה בדובאי, דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",
     "heroLabel": "רכישת נכס בדובאי",
     "h1": "נכסים למכירה",
     "h1sub": "בדובאי",
@@ -106,33 +106,33 @@ const CONTENT = {
     "faqs": [
       {
         "question": "האם זרים יכולים לרכוש נכס בדובאי?",
-        "answer": "כן. כל הלאומים יכולים לרכוש נכס בבעלות מלאה (freehold) באזורים המיועדים של דובאי — Dubai Marina, Downtown Dubai, JVC, Palm, Business Bay ועוד 60+ אזורים נוספים. אין צורך באשרת תושב. אתם מקבלים שטר בעלות מלא מטעם ה-DLD עם אותן זכויות בעלות כמו לאזרחי איחוד האמירויות."
+        "answer": "כן. כל הלאומים יכולים לרכוש נכס בבעלות מלאה (freehold) באזורים המיועדים של דובאי, Dubai Marina, Downtown Dubai, JVC, Palm, Business Bay ועוד 60+ אזורים נוספים. אין צורך באשרת תושב. אתם מקבלים שטר בעלות מלא מטעם ה-DLD עם אותן זכויות בעלות כמו לאזרחי איחוד האמירויות."
       },
       {
         "question": "מהו תהליך רכישת נכס בדובאי?",
-        "answer": "1) הסכמה על מחיר וחתימה על MOU (מזכר הבנות). 2) תשלום פיקדון של 10%. 3) קבלת NOC מהיזם. 4) העברת בעלות ב-DLD — תשלום עמלת העברה של 4%. 5) קבלת שטר הבעלות. התהליך אורך 3–6 שבועות בשוק המשני, ו-2–4 שבועות להזמנת נכס על הנייר."
+        "answer": "1) הסכמה על מחיר וחתימה על MOU (מזכר הבנות). 2) תשלום פיקדון של 10%. 3) קבלת NOC מהיזם. 4) העברת בעלות ב-DLD, תשלום עמלת העברה של 4%. 5) קבלת שטר הבעלות. התהליך אורך 3-6 שבועות בשוק המשני, ו-2-4 שבועות להזמנת נכס על הנייר."
       },
       {
         "question": "מהן העלויות הכוללות ברכישת נכס בדובאי?",
-        "answer": "עמלת העברה של ה-DLD: 4% ממחיר הרכישה. עמלת סוכן: כ-2%. אגרה מנהלית של ה-DLD: AED 580. אגרת נאמן: AED 4,000 (נכסים מעל AED 500K). רישום משכנתה (אם רלוונטי): 0.25% מסכום ההלוואה. סך עלויות העסקה: כ-6–7% משווי הנכס."
+        "answer": "עמלת העברה של ה-DLD: 4% ממחיר הרכישה. עמלת סוכן: כ-2%. אגרה מנהלית של ה-DLD: AED 580. אגרת נאמן: AED 4,000 (נכסים מעל AED 500K). רישום משכנתה (אם רלוונטי): 0.25% מסכום ההלוואה. סך עלויות העסקה: כ-6-7% משווי הנכס."
       },
       {
         "question": "מהי ההשקעה המינימלית לרכישת נכס בדובאי?",
-        "answer": "דירות סטודיו מתחילות מ-AED 300,000–500,000 (כ-82K$–136K$) בקהילות כמו JVC ו-Dubai South. לקבלת Golden Visa של איחוד האמירויות ל-10 שנים, שווי הנכס המינימלי הוא AED 2,000,000 (כ-545K$)."
+        "answer": "דירות סטודיו מתחילות מ-AED 300,000-500,000 (כ-82K$-136K$) בקהילות כמו JVC ו-Dubai South. לקבלת Golden Visa של איחוד האמירויות ל-10 שנים, שווי הנכס המינימלי הוא AED 2,000,000 (כ-545K$)."
       },
       {
         "question": "האם נכס בדובאי הוא השקעה טובה ב-2026?",
-        "answer": "דובאי מציעה תשואות שכירות ברוטו של 5–8% (מהגבוהות בעולם), אפס מס רווחי הון, אפס מס הכנסה ומטבע מקובע ל-AED-USD. קהילות יוקרה רשמו עלייה של 40–60% בערך מאז 2021. היסודות — גידול אוכלוסין, מלאי וילות מצומצם ומעמד של מרכז עסקים — ממשיכים לתמוך."
+        "answer": "דובאי מציעה תשואות שכירות ברוטו של 5-8% (מהגבוהות בעולם), אפס מס רווחי הון, אפס מס הכנסה ומטבע מקובע ל-AED-USD. קהילות יוקרה רשמו עלייה של 40-60% בערך מאז 2021. היסודות, גידול אוכלוסין, מלאי וילות מצומצם ומעמד של מרכז עסקים, ממשיכים לתמוך."
       }
     ],
     "breadcrumb": "רכישה",
     "ctaTitle": "זקוקים לליווי מקצועי?",
-    "ctaDesc": "הסוכנים שלנו, מוסמכי RERA, יסייעו לכם למצוא, לנהל משא ומתן ולהשלים את רכישת הנכס שלכם בדובאי — ללא עלות נוספת.",
+    "ctaDesc": "הסוכנים שלנו, מוסמכי RERA, יסייעו לכם למצוא, לנהל משא ומתן ולהשלים את רכישת הנכס שלכם בדובאי, ללא עלות נוספת.",
     "ctaBtn": "שוחחו עם סוכן"
   },
   en: {
     metaTitle: "Properties for Sale in Dubai | 3,000+ Listings | Binayah",
-    metaDesc: "Browse 3,000+ properties for sale in Dubai — apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.",
+    metaDesc: "Browse 3,000+ properties for sale in Dubai, apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.",
     heroLabel: "BUY PROPERTY IN DUBAI",
     h1: "Properties for Sale",
     h1sub: "in Dubai",
@@ -144,20 +144,20 @@ const CONTENT = {
       { n: "60+", label: "Communities" },
     ],
     faqs: [
-      { question: "Can foreigners buy property in Dubai?", answer: "Yes. All nationalities can buy freehold property in Dubai's designated zones — Marina, Downtown, JVC, Palm, Business Bay, and 60+ others. No residency required. You receive a full DLD title deed with the same ownership rights as UAE nationals." },
-      { question: "What is the buying process for Dubai property?", answer: "1) Agree price & sign MOU (Memorandum of Understanding). 2) Pay 10% deposit. 3) Obtain NOC from developer. 4) DLD transfer — pay 4% transfer fee. 5) Receive title deed. The process takes 3–6 weeks for secondary market, 2–4 weeks for off-plan booking." },
-      { question: "What are the total costs when buying property in Dubai?", answer: "DLD transfer fee: 4% of purchase price. Agent commission: ~2%. DLD admin fee: AED 580. Trustee fee: AED 4,000 (properties over AED 500K). Mortgage registration (if applicable): 0.25% of loan value. Total transaction costs: approximately 6–7% of property value." },
-      { question: "What is the minimum investment to buy property in Dubai?", answer: "Studio apartments start from AED 300,000–500,000 (~$82K–$136K) in communities like JVC and Dubai South. For a 10-year UAE Golden Visa, the minimum property value is AED 2,000,000 (~$545K)." },
-      { question: "Is Dubai property a good investment in 2026?", answer: "Dubai offers 5–8% gross rental yields (among the world's highest), zero capital gains tax, zero income tax, and an AED-USD pegged currency. Prime communities have seen 40–60% appreciation since 2021. The fundamentals — population growth, undersupplied villa stock, and business hub status — remain supportive." },
+      { question: "Can foreigners buy property in Dubai?", answer: "Yes. All nationalities can buy freehold property in Dubai's designated zones, Marina, Downtown, JVC, Palm, Business Bay, and 60+ others. No residency required. You receive a full DLD title deed with the same ownership rights as UAE nationals." },
+      { question: "What is the buying process for Dubai property?", answer: "1) Agree price & sign MOU (Memorandum of Understanding). 2) Pay 10% deposit. 3) Obtain NOC from developer. 4) DLD transfer, pay 4% transfer fee. 5) Receive title deed. The process takes 3-6 weeks for secondary market, 2-4 weeks for off-plan booking." },
+      { question: "What are the total costs when buying property in Dubai?", answer: "DLD transfer fee: 4% of purchase price. Agent commission: ~2%. DLD admin fee: AED 580. Trustee fee: AED 4,000 (properties over AED 500K). Mortgage registration (if applicable): 0.25% of loan value. Total transaction costs: approximately 6-7% of property value." },
+      { question: "What is the minimum investment to buy property in Dubai?", answer: "Studio apartments start from AED 300,000-500,000 (~$82K-$136K) in communities like JVC and Dubai South. For a 10-year UAE Golden Visa, the minimum property value is AED 2,000,000 (~$545K)." },
+      { question: "Is Dubai property a good investment in 2026?", answer: "Dubai offers 5-8% gross rental yields (among the world's highest), zero capital gains tax, zero income tax, and an AED-USD pegged currency. Prime communities have seen 40-60% appreciation since 2021. The fundamentals, population growth, undersupplied villa stock, and business hub status, remain supportive." },
     ],
     breadcrumb: "Buy",
     ctaTitle: "Need Expert Guidance?",
-    ctaDesc: "Our RERA-certified agents help you find, negotiate, and complete your Dubai property purchase — at no extra cost.",
+    ctaDesc: "Our RERA-certified agents help you find, negotiate, and complete your Dubai property purchase, at no extra cost.",
     ctaBtn: "Talk to an Agent",
   },
   ru: {
     metaTitle: "Купить недвижимость в Дубае | 3000+ объектов | Binayah",
-    metaDesc: "Более 3000 объектов на продажу в Дубае — квартиры, виллы, новостройки и вторичный рынок. Фильтр по району, цене и спальням. Обновляется ежедневно.",
+    metaDesc: "Более 3000 объектов на продажу в Дубае, квартиры, виллы, новостройки и вторичный рынок. Фильтр по району, цене и спальням. Обновляется ежедневно.",
     heroLabel: "КУПИТЬ НЕДВИЖИМОСТЬ В ДУБАЕ",
     h1: "Недвижимость на продажу",
     h1sub: "в Дубае",
@@ -169,20 +169,20 @@ const CONTENT = {
       { n: "60+", label: "Районов" },
     ],
     faqs: [
-      { question: "Могут ли иностранцы покупать недвижимость в Дубае?", answer: "Да. Все национальности могут покупать фрихолд-недвижимость в специальных зонах Дубая — Марина, Даунтаун, JVC, Пальма, Бизнес-Бей и более 60 других. Вид на жительство не требуется. Вы получаете полноценное свидетельство DLD." },
-      { question: "Каков процесс покупки недвижимости в Дубае?", answer: "1) Согласование цены и подписание MOU (меморандум о намерениях). 2) Оплата 10% задатка. 3) Получение NOC от застройщика. 4) Передача в DLD — уплата 4% сбора. 5) Получение свидетельства о праве собственности. Процесс занимает 3–6 недель для вторичного рынка, 2–4 недели для бронирования новостроек." },
-      { question: "Каковы общие расходы при покупке недвижимости в Дубае?", answer: "Сбор DLD: 4% от стоимости. Комиссия агента: ~2%. Административный сбор DLD: 580 AED. Сбор за доверенность: 4 000 AED. Регистрация ипотеки (при наличии): 0,25% от суммы кредита. Итого: около 6–7% от стоимости объекта." },
-      { question: "Какова минимальная сумма для покупки недвижимости в Дубае?", answer: "Студии начинаются от 300 000–500 000 AED (~$82–136 тыс.) в таких районах, как JVC и Дубай Саут. Для 10-летней Золотой визы ОАЭ минимальная стоимость объекта — 2 000 000 AED (~$545 тыс.)." },
-      { question: "Выгодно ли инвестировать в недвижимость Дубая в 2026 году?", answer: "Дубай предлагает 5–8% доходности от аренды (одни из самых высоких в мире), нулевой налог на прирост капитала и подоходный налог, стабильную привязку AED к доллару. Премиальные районы выросли на 40–60% с 2021 года." },
+      { question: "Могут ли иностранцы покупать недвижимость в Дубае?", answer: "Да. Все национальности могут покупать фрихолд-недвижимость в специальных зонах Дубая, Марина, Даунтаун, JVC, Пальма, Бизнес-Бей и более 60 других. Вид на жительство не требуется. Вы получаете полноценное свидетельство DLD." },
+      { question: "Каков процесс покупки недвижимости в Дубае?", answer: "1) Согласование цены и подписание MOU (меморандум о намерениях). 2) Оплата 10% задатка. 3) Получение NOC от застройщика. 4) Передача в DLD, уплата 4% сбора. 5) Получение свидетельства о праве собственности. Процесс занимает 3-6 недель для вторичного рынка, 2-4 недели для бронирования новостроек." },
+      { question: "Каковы общие расходы при покупке недвижимости в Дубае?", answer: "Сбор DLD: 4% от стоимости. Комиссия агента: ~2%. Административный сбор DLD: 580 AED. Сбор за доверенность: 4 000 AED. Регистрация ипотеки (при наличии): 0,25% от суммы кредита. Итого: около 6-7% от стоимости объекта." },
+      { question: "Какова минимальная сумма для покупки недвижимости в Дубае?", answer: "Студии начинаются от 300 000-500 000 AED (~$82-136 тыс.) в таких районах, как JVC и Дубай Саут. Для 10-летней Золотой визы ОАЭ минимальная стоимость объекта, 2 000 000 AED (~$545 тыс.)." },
+      { question: "Выгодно ли инвестировать в недвижимость Дубая в 2026 году?", answer: "Дубай предлагает 5-8% доходности от аренды (одни из самых высоких в мире), нулевой налог на прирост капитала и подоходный налог, стабильную привязку AED к доллару. Премиальные районы выросли на 40-60% с 2021 года." },
     ],
     breadcrumb: "Купить",
     ctaTitle: "Нужна экспертная помощь?",
-    ctaDesc: "Наши RERA-сертифицированные агенты помогут найти, согласовать и оформить покупку недвижимости в Дубае — без дополнительных расходов.",
+    ctaDesc: "Наши RERA-сертифицированные агенты помогут найти, согласовать и оформить покупку недвижимости в Дубае, без дополнительных расходов.",
     ctaBtn: "Связаться с агентом",
   },
   ar: {
     metaTitle: "عقارات للبيع في دبي | +3000 إعلان | بناية للعقارات",
-    metaDesc: "أكثر من 3000 عقار للبيع في دبي — شقق وفلل وعلى الخارطة وثانوية. فلتر حسب المنطقة والسعر والغرف. يُحدَّث يومياً.",
+    metaDesc: "أكثر من 3000 عقار للبيع في دبي, شقق وفلل وعلى الخارطة وثانوية. فلتر حسب المنطقة والسعر والغرف. يُحدَّث يومياً.",
     heroLabel: "شراء عقارات في دبي",
     h1: "عقارات للبيع",
     h1sub: "في دبي",
@@ -194,7 +194,7 @@ const CONTENT = {
       { n: "+60", label: "مجتمعًا" },
     ],
     faqs: [
-      { question: "هل يمكن للأجانب شراء عقارات في دبي؟", answer: "نعم. يحق لجميع الجنسيات شراء عقارات حرة في المناطق المخصصة في دبي — المارينا ووسط المدينة وJVC والنخلة والخليج التجاري وأكثر من 60 منطقة أخرى. لا يُشترط الإقامة. تحصل على سند ملكية DLD رسمي." },
+      { question: "هل يمكن للأجانب شراء عقارات في دبي؟", answer: "نعم. يحق لجميع الجنسيات شراء عقارات حرة في المناطق المخصصة في دبي, المارينا ووسط المدينة وJVC والنخلة والخليج التجاري وأكثر من 60 منطقة أخرى. لا يُشترط الإقامة. تحصل على سند ملكية DLD رسمي." },
       { question: "ما إجراءات شراء العقار في دبي؟", answer: "١) الاتفاق على السعر وتوقيع MOU. ٢) دفع 10% عربون. ٣) الحصول على NOC من المطوّر. ٤) نقل الملكية في DLD مع رسوم 4%. ٥) استلام سند الملكية. تستغرق العملية 3-6 أسابيع للسوق الثانوية و2-4 أسابيع لحجز المشاريع على الخارطة." },
       { question: "ما التكاليف الإجمالية عند شراء عقار في دبي؟", answer: "رسوم DLD: 4% من سعر الشراء. عمولة الوكيل: ~2%. رسوم DLD الإدارية: 580 درهم. رسوم الوكالة: 4,000 درهم. تسجيل الرهن (إن وُجد): 0.25% من قيمة القرض. الإجمالي: ~6-7% من قيمة العقار." },
       { question: "ما الحد الأدنى للاستثمار في عقارات دبي؟", answer: "تبدأ الاستوديوهات من 300,000-500,000 درهم في مجتمعات كـJVC ودبي ساوث. للحصول على التأشيرة الذهبية لمدة 10 سنوات، الحد الأدنى لقيمة العقار 2,000,000 درهم." },
@@ -202,12 +202,12 @@ const CONTENT = {
     ],
     breadcrumb: "شراء",
     ctaTitle: "تحتاج إرشادًا متخصصًا؟",
-    ctaDesc: "يساعدك وكلاؤنا المعتمدون من RERA في إيجاد عقارك والتفاوض وإتمام صفقة شراء عقارك في دبي — دون تكاليف إضافية.",
+    ctaDesc: "يساعدك وكلاؤنا المعتمدون من RERA في إيجاد عقارك والتفاوض وإتمام صفقة شراء عقارك في دبي, دون تكاليف إضافية.",
     ctaBtn: "تحدث مع وكيل",
   },
   zh: {
     metaTitle: "迪拜房产出售 | 3000+房源 | Binayah Properties",
-    metaDesc: "浏览3000多套迪拜在售房产——公寓、别墅、期房和二手房。按地区、价格和卧室筛选。每日更新。",
+    metaDesc: "浏览3000多套迪拜在售房产, , 公寓、别墅、期房和二手房。按地区、价格和卧室筛选。每日更新。",
     heroLabel: "购买迪拜房产",
     h1: "迪拜在售房产",
     h1sub: "公寓 · 别墅 · 期房",
@@ -219,20 +219,20 @@ const CONTENT = {
       { n: "60+", label: "社区" },
     ],
     faqs: [
-      { question: "外国人可以在迪拜购买房产吗？", answer: "可以。所有国籍均可在迪拜指定自由持有区购买房产——Marina、市中心、JVC、棕榈岛、商业湾等60多个地区。无需居住证。您将获得DLD官方产权证书。" },
-      { question: "迪拜购房流程是怎样的？", answer: "1）议价并签署MOU（意向备忘录）。2）支付10%定金。3）获取开发商NOC。4）DLD过户——支付4%过户费。5）领取产权证书。二手房通常需3-6周，期房预订需2-4周。" },
+      { question: "外国人可以在迪拜购买房产吗？", answer: "可以。所有国籍均可在迪拜指定自由持有区购买房产, , Marina、市中心、JVC、棕榈岛、商业湾等60多个地区。无需居住证。您将获得DLD官方产权证书。" },
+      { question: "迪拜购房流程是怎样的？", answer: "1）议价并签署MOU（意向备忘录）。2）支付10%定金。3）获取开发商NOC。4）DLD过户, , 支付4%过户费。5）领取产权证书。二手房通常需3-6周，期房预订需2-4周。" },
       { question: "在迪拜购房的总费用是多少？", answer: "DLD过户费：购买价的4%。中介佣金：约2%。DLD行政费：580迪拉姆。公证费：4,000迪拉姆。按揭登记费（如适用）：贷款额的0.25%。总交易成本约为房产价值的6-7%。" },
       { question: "在迪拜购房的最低投资额是多少？", answer: "JVC和迪拜南区的单间公寓起价30-50万迪拉姆（约8.2-13.6万美元）。申请10年阿联酋黄金签证的最低房产价值为200万迪拉姆（约54.5万美元）。" },
       { question: "2026年投资迪拜房产是否明智？", answer: "迪拜提供5-8%租金收益率（全球最高之一）、零资本利得税、零所得税以及迪拉姆与美元的稳定挂钩。优质社区自2021年以来已升值40-60%。" },
     ],
     breadcrumb: "购买",
     ctaTitle: "需要专业指导？",
-    ctaDesc: "我们的RERA认证经纪人帮助您在迪拜找到、谈判并完成房产购买——无额外费用。",
+    ctaDesc: "我们的RERA认证经纪人帮助您在迪拜找到、谈判并完成房产购买, , 无额外费用。",
     ctaBtn: "联系经纪人",
   },
   vi: {
     metaTitle: "Bất động sản bán tại Dubai | 3.000+ tin đăng | Binayah",
-    metaDesc: "Khám phá hơn 3.000 bất động sản bán tại Dubai — căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.",
+    metaDesc: "Khám phá hơn 3.000 bất động sản bán tại Dubai, căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.",
     heroLabel: "MUA BẤT ĐỘNG SẢN TẠI DUBAI",
     h1: "Bất động sản bán",
     h1sub: "tại Dubai",
@@ -244,15 +244,15 @@ const CONTENT = {
       { n: "60+", label: "Khu vực" },
     ],
     faqs: [
-      { question: "Người nước ngoài có thể mua bất động sản tại Dubai không?", answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu được chỉ định của Dubai — Marina, Downtown, JVC, Palm, Business Bay và 60+ khu khác. Không cần cư trú. Bạn nhận sổ đỏ DLD đầy đủ với quyền sở hữu giống công dân UAE." },
-      { question: "Quy trình mua bất động sản Dubai là gì?", answer: "1) Thỏa thuận giá & ký MOU (Bản ghi nhớ). 2) Trả 10% đặt cọc. 3) Lấy NOC từ chủ đầu tư. 4) Chuyển nhượng DLD — trả phí chuyển nhượng 4%. 5) Nhận sổ đỏ. Quy trình mất 3–6 tuần cho thị trường thứ cấp, 2–4 tuần cho đặt chỗ off-plan." },
-      { question: "Tổng chi phí khi mua bất động sản tại Dubai là gì?", answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: ~2%. Phí quản lý DLD: 580 AED. Phí ủy thác: 4.000 AED (bất động sản trên 500K AED). Đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch: khoảng 6–7% giá trị bất động sản." },
-      { question: "Khoản đầu tư tối thiểu để mua bất động sản tại Dubai là bao nhiêu?", answer: "Căn hộ studio khởi điểm từ 300.000–500.000 AED (~82K–136K USD) tại các khu như JVC và Dubai South. Để nhận Golden Visa UAE 10 năm, giá trị bất động sản tối thiểu là 2.000.000 AED (~545K USD)." },
-      { question: "Bất động sản Dubai có phải khoản đầu tư tốt năm 2026 không?", answer: "Dubai mang lại lợi suất cho thuê gộp 5–8% (cao nhất thế giới), 0 thuế lãi vốn, 0 thuế thu nhập và đồng tiền neo AED-USD. Các khu vực cao cấp đã tăng giá 40–60% kể từ năm 2021. Các yếu tố cơ bản — tăng dân số, nguồn cung biệt thự thiếu hụt và vị thế trung tâm kinh doanh — vẫn hỗ trợ." },
+      { question: "Người nước ngoài có thể mua bất động sản tại Dubai không?", answer: "Có. Mọi quốc tịch đều có thể mua bất động sản freehold tại các khu được chỉ định của Dubai, Marina, Downtown, JVC, Palm, Business Bay và 60+ khu khác. Không cần cư trú. Bạn nhận sổ đỏ DLD đầy đủ với quyền sở hữu giống công dân UAE." },
+      { question: "Quy trình mua bất động sản Dubai là gì?", answer: "1) Thỏa thuận giá & ký MOU (Bản ghi nhớ). 2) Trả 10% đặt cọc. 3) Lấy NOC từ chủ đầu tư. 4) Chuyển nhượng DLD, trả phí chuyển nhượng 4%. 5) Nhận sổ đỏ. Quy trình mất 3-6 tuần cho thị trường thứ cấp, 2-4 tuần cho đặt chỗ off-plan." },
+      { question: "Tổng chi phí khi mua bất động sản tại Dubai là gì?", answer: "Phí chuyển nhượng DLD: 4% giá mua. Hoa hồng môi giới: ~2%. Phí quản lý DLD: 580 AED. Phí ủy thác: 4.000 AED (bất động sản trên 500K AED). Đăng ký vay thế chấp (nếu có): 0,25% giá trị khoản vay. Tổng chi phí giao dịch: khoảng 6-7% giá trị bất động sản." },
+      { question: "Khoản đầu tư tối thiểu để mua bất động sản tại Dubai là bao nhiêu?", answer: "Căn hộ studio khởi điểm từ 300.000-500.000 AED (~82K-136K USD) tại các khu như JVC và Dubai South. Để nhận Golden Visa UAE 10 năm, giá trị bất động sản tối thiểu là 2.000.000 AED (~545K USD)." },
+      { question: "Bất động sản Dubai có phải khoản đầu tư tốt năm 2026 không?", answer: "Dubai mang lại lợi suất cho thuê gộp 5-8% (cao nhất thế giới), 0 thuế lãi vốn, 0 thuế thu nhập và đồng tiền neo AED-USD. Các khu vực cao cấp đã tăng giá 40-60% kể từ năm 2021. Các yếu tố cơ bản, tăng dân số, nguồn cung biệt thự thiếu hụt và vị thế trung tâm kinh doanh, vẫn hỗ trợ." },
     ],
     breadcrumb: "Mua",
     ctaTitle: "Cần hướng dẫn chuyên gia?",
-    ctaDesc: "Các chuyên viên được chứng nhận RERA của chúng tôi giúp bạn tìm, đàm phán và hoàn tất việc mua bất động sản tại Dubai — không tốn thêm chi phí.",
+    ctaDesc: "Các chuyên viên được chứng nhận RERA của chúng tôi giúp bạn tìm, đàm phán và hoàn tất việc mua bất động sản tại Dubai, không tốn thêm chi phí.",
     ctaBtn: "Trao đổi với chuyên viên",
   },
 } as const;
@@ -355,7 +355,7 @@ export default async function BuyPage({ params }: Props) {
             <div className="text-center mb-8">
               <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : locale === "vi" ? "Mua tại Dubai — Câu hỏi thường gặp" : locale === "he" ? "קנייה בדובאי — שאלות נפוצות" : "Buying in Dubai — FAQs"}
+                {locale === "ru" ? "Частые вопросы о покупке" : locale === "ar" ? "أسئلة شائعة عن الشراء" : locale === "zh" ? "购房常见问题" : locale === "vi" ? "Mua tại Dubai, Câu hỏi thường gặp" : locale === "he" ? "קנייה בדובאי, שאלות נפוצות" : "Buying in Dubai, FAQs"}
               </h2>
             </div>
             <div className="space-y-2 sm:space-y-3">

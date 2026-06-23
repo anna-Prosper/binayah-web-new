@@ -25,29 +25,29 @@ export const PULSE_GUIDES: PulseGuide[] = [
     titleKey: "guide_bestAreas_title",
     descriptionKey: "guide_bestAreas_desc",
     relatedCommunities: ["Dubai Marina", "Business Bay", "Jumeirah Village Circle"],
-    body: `Dubai's property market in 2026 is defined by a clear divide: communities that have crossed the liquidity threshold — where enough off-plan stock has completed to create a self-sustaining secondary market — and those still building toward it. Knowing which side a community sits on shapes your investment strategy entirely.
+    body: `Dubai's property market in 2026 is defined by a clear divide: communities that have crossed the liquidity threshold, where enough off-plan stock has completed to create a self-sustaining secondary market, and those still building toward it. Knowing which side a community sits on shapes your investment strategy entirely.
 
 **Business Bay: The Consistent Performer**
 
-Business Bay has been the most dependable performer in Binayah's data for three consecutive quarters. Average price per sqft sits around AED 1,450–1,600, with rental yields of 6.2–7.1% depending on unit size and floor. The community benefits from its proximity to Downtown Dubai while offering meaningfully lower entry points — a 1-bedroom in a mid-tier tower can be acquired for AED 900K–1.2M, versus AED 1.5M+ for a comparable Downtown unit.
+Business Bay has been the most dependable performer in Binayah's data for three consecutive quarters. Average price per sqft sits around AED 1,450-1,600, with rental yields of 6.2-7.1% depending on unit size and floor. The community benefits from its proximity to Downtown Dubai while offering meaningfully lower entry points, a 1-bedroom in a mid-tier tower can be acquired for AED 900K-1.2M, versus AED 1.5M+ for a comparable Downtown unit.
 
-What makes Business Bay compelling in 2026 is its depth of liquidity. Over 200 transactions recorded in Q1 alone, with an average deal size of AED 1.38M. The holding period for resellers averages 18 months, which suggests the market is active rather than speculative. For yield-seekers, 1-bedroom and 2-bedroom units in completed towers leasing for AED 75K–110K per year represent the sweet spot.
+What makes Business Bay compelling in 2026 is its depth of liquidity. Over 200 transactions recorded in Q1 alone, with an average deal size of AED 1.38M. The holding period for resellers averages 18 months, which suggests the market is active rather than speculative. For yield-seekers, 1-bedroom and 2-bedroom units in completed towers leasing for AED 75K-110K per year represent the sweet spot.
 
 **Dubai Marina: Premium Price, Premium Demand**
 
-At AED 1,700–2,200 per sqft, Dubai Marina sits in premium territory. Rental demand is among the strongest in the city — occupancy rates in well-managed buildings exceed 94%. The investor calculus here is not yield (gross yield is typically 5.5–6.5%) but capital growth. Marina prices have appreciated 18–24% over 24 months, driven by undersupply of quality stock and persistent demand from European and Russian buyers.
+At AED 1,700-2,200 per sqft, Dubai Marina sits in premium territory. Rental demand is among the strongest in the city, occupancy rates in well-managed buildings exceed 94%. The investor calculus here is not yield (gross yield is typically 5.5-6.5%) but capital growth. Marina prices have appreciated 18-24% over 24 months, driven by undersupply of quality stock and persistent demand from European and Russian buyers.
 
-For the right buyer — long horizon, cash-heavy, prioritising capital preservation — a Marina unit remains a defensible hold. The risk is entry price: overpaying in a trophy building absorbs years of appreciation before you break even on resale.
+For the right buyer, long horizon, cash-heavy, prioritising capital preservation, a Marina unit remains a defensible hold. The risk is entry price: overpaying in a trophy building absorbs years of appreciation before you break even on resale.
 
 **Jumeirah Village Circle: Highest Yield in the City**
 
-JVC remains the yield leader in Binayah's market data at 7.2–8.5% gross. Entry prices of AED 700–900 per sqft make it one of the most accessible investment communities. The trade-off is capital growth: JVC has historically appreciated more slowly than premium waterfront communities, though the 2025 spike in off-plan sales suggests developer confidence is high.
+JVC remains the yield leader in Binayah's market data at 7.2-8.5% gross. Entry prices of AED 700-900 per sqft make it one of the most accessible investment communities. The trade-off is capital growth: JVC has historically appreciated more slowly than premium waterfront communities, though the 2025 spike in off-plan sales suggests developer confidence is high.
 
-For investors who prioritise cash flow over appreciation — pension substitutes, income portfolios — JVC is the most direct answer Dubai offers.
+For investors who prioritise cash flow over appreciation, pension substitutes, income portfolios, JVC is the most direct answer Dubai offers.
 
 **Emerging Picks: Dubai Creek Harbour and Sobha Hartland**
 
-These communities are in the middle innings of their development arc. Dubai Creek Harbour has the infrastructure of a major urban district but transaction volumes that are still building. Sobha Hartland benefits from its developer's finish quality and a price point that has held firmer than broader mid-market. Both carry more illiquidity risk than mature communities but offer higher upside for 5–7 year holds.
+These communities are in the middle innings of their development arc. Dubai Creek Harbour has the infrastructure of a major urban district but transaction volumes that are still building. Sobha Hartland benefits from its developer's finish quality and a price point that has held firmer than broader mid-market. Both carry more illiquidity risk than mature communities but offer higher upside for 5-7 year holds.
 
 **The Comparison Framework**
 
@@ -57,7 +57,7 @@ When evaluating any community in 2026, apply three filters in order:
 2. **Yield vs. growth**: Pick one primary objective. Communities optimised for yield (JVC, Dubai South) underperform on appreciation. Premium waterfront optimises for growth.
 3. **Developer risk**: Off-plan in emerging communities adds delivery risk. Factor in the developer's completion track record before committing.
 
-The data is clear: the best area depends entirely on your objective. There is no universally "best" community — only the best match for your return requirement, time horizon, and risk tolerance.`,
+The data is clear: the best area depends entirely on your objective. There is no universally "best" community, only the best match for your return requirement, time horizon, and risk tolerance.`,
   },
   {
     slug: "dubai-vs-abu-dhabi",
@@ -67,21 +67,21 @@ The data is clear: the best area depends entirely on your objective. There is no
     titleKey: "guide_dubaiAbuDhabi_title",
     descriptionKey: "guide_dubaiAbuDhabi_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Business Bay"],
-    body: `Both emirates offer freehold ownership for foreign nationals and tax-free rental income. But they are fundamentally different investment propositions — different buyer bases, different liquidity profiles, and different risk characteristics.
+    body: `Both emirates offer freehold ownership for foreign nationals and tax-free rental income. But they are fundamentally different investment propositions, different buyer bases, different liquidity profiles, and different risk characteristics.
 
 **Transaction Volume and Liquidity**
 
-Dubai dominates on transaction volume. The official market registry recorded over 170,000 residential transactions in 2025, versus approximately 18,000 in Abu Dhabi. This 9:1 ratio matters: it means Dubai offers dramatically more exit liquidity. If your circumstances change, you can move a Dubai asset. Selling in Abu Dhabi outside of peak demand windows can take 9–18 months.
+Dubai dominates on transaction volume. The official market registry recorded over 170,000 residential transactions in 2025, versus approximately 18,000 in Abu Dhabi. This 9:1 ratio matters: it means Dubai offers dramatically more exit liquidity. If your circumstances change, you can move a Dubai asset. Selling in Abu Dhabi outside of peak demand windows can take 9-18 months.
 
 **Yield Comparison**
 
-Abu Dhabi's rental yields are strong in specific communities — Yas Island and Al Reem Island both post gross yields of 6.5–8.2%. These numbers are competitive with JVC and Dubai South. The difference is tenant profile: Abu Dhabi's rental demand is dominated by government and corporate employees, which means longer leases and lower vacancy — but also lower churn, so the market moves more slowly in both directions.
+Abu Dhabi's rental yields are strong in specific communities, Yas Island and Al Reem Island both post gross yields of 6.5-8.2%. These numbers are competitive with JVC and Dubai South. The difference is tenant profile: Abu Dhabi's rental demand is dominated by government and corporate employees, which means longer leases and lower vacancy, but also lower churn, so the market moves more slowly in both directions.
 
 Dubai's yield range is wider: from 4.5% in Palm Jumeirah to 8.5% in JVC. The breadth gives investors more options to optimise, but also more ways to pick wrongly.
 
 **Price Trajectory**
 
-Dubai prices rose 22% in 2024–2025 on average, with some waterfront communities up 35–40%. Abu Dhabi appreciation was more moderate — 12–16% across prime areas. The UAE government's investment in Abu Dhabi tourism, entertainment, and financial infrastructure (ADGM expansion, Saadiyat cultural district) suggests the gap will narrow, but Dubai's first-mover advantage in foreign investment brand recognition is substantial.
+Dubai prices rose 22% in 2024-2025 on average, with some waterfront communities up 35-40%. Abu Dhabi appreciation was more moderate, 12-16% across prime areas. The UAE government's investment in Abu Dhabi tourism, entertainment, and financial infrastructure (ADGM expansion, Saadiyat cultural district) suggests the gap will narrow, but Dubai's first-mover advantage in foreign investment brand recognition is substantial.
 
 **Visa Linkage**
 
@@ -89,11 +89,11 @@ The Golden Visa programme is available in both emirates. The AED 2M threshold fo
 
 **Who Should Invest Where**
 
-Dubai suits: yield-optimisers, short-to-medium holds (3–5 years), investors who prioritise exit flexibility, and buyers wanting the broadest price range (AED 400K studios to AED 100M+ penthouses).
+Dubai suits: yield-optimisers, short-to-medium holds (3-5 years), investors who prioritise exit flexibility, and buyers wanting the broadest price range (AED 400K studios to AED 100M+ penthouses).
 
 Abu Dhabi suits: long-horizon holders (7+ years), investors seeking a less volatile market, buyers attracted to the cultural district premium (Saadiyat Island), and anyone specifically wanting proximity to Abu Dhabi's commercial ecosystem.
 
-For first-time UAE investors, Dubai is the lower-risk choice — not because the assets are better, but because liquidity risk is significantly lower.`,
+For first-time UAE investors, Dubai is the lower-risk choice, not because the assets are better, but because liquidity risk is significantly lower.`,
   },
   {
     slug: "creek-harbour-guide",
@@ -103,31 +103,31 @@ For first-time UAE investors, Dubai is the lower-risk choice — not because the
     titleKey: "guide_creekHarbour_title",
     descriptionKey: "guide_creekHarbour_desc",
     relatedCommunities: ["Dubai Creek Harbour", "Downtown Dubai", "Business Bay"],
-    body: `Dubai Creek Harbour is one of the largest urban development projects currently underway globally — a planned district designed to house 200,000 residents across 6 square kilometres of waterfront, with a tower that will eventually surpass the Burj Khalifa. For investors, the question is: at what stage of development does buying make sense?
+    body: `Dubai Creek Harbour is one of the largest urban development projects currently underway globally, a planned district designed to house 200,000 residents across 6 square kilometres of waterfront, with a tower that will eventually surpass the Burj Khalifa. For investors, the question is: at what stage of development does buying make sense?
 
 **The Development Arc**
 
-Emaar Properties is the master developer. The first residential clusters — Creek Island and Creek Gate — are completed and occupied. Creek Rise, the mid-rise residential backbone, is in active handover. The planned urban spine — including the retail core, the Dubai Creek Tower (the record-breaker, timeline delayed), and Creek Marina — remains a medium-term build-out story.
+Emaar Properties is the master developer. The first residential clusters, Creek Island and Creek Gate, are completed and occupied. Creek Rise, the mid-rise residential backbone, is in active handover. The planned urban spine, including the retail core, the Dubai Creek Tower (the record-breaker, timeline delayed), and Creek Marina, remains a medium-term build-out story.
 
 This phased delivery creates a clear two-tier market: completed stock where you can inspect and take possession immediately, and off-plan in later phases where you are buying future delivery.
 
 **Pricing vs. Comparable Communities**
 
-In Q1 2026, completed units in Creek Harbour trade at AED 1,400–1,700 per sqft — below Downtown Dubai (AED 2,200–2,800) and slightly below Emaar's Harbour Views in the Marina (AED 1,800–2,000). The discount reflects the incomplete infrastructure rather than quality: Emaar's build quality is consistently above-market.
+In Q1 2026, completed units in Creek Harbour trade at AED 1,400-1,700 per sqft, below Downtown Dubai (AED 2,200-2,800) and slightly below Emaar's Harbour Views in the Marina (AED 1,800-2,000). The discount reflects the incomplete infrastructure rather than quality: Emaar's build quality is consistently above-market.
 
 **Rental Yield**
 
-Current gross yields on completed Creek Harbour stock sit at 5.5–6.5%, below JVC but above most waterfront premium communities. As the retail spine fills and the district achieves critical mass, yield compression should follow — meaning capital appreciation rather than income is the primary driver.
+Current gross yields on completed Creek Harbour stock sit at 5.5-6.5%, below JVC but above most waterfront premium communities. As the retail spine fills and the district achieves critical mass, yield compression should follow, meaning capital appreciation rather than income is the primary driver.
 
 **The Tower Factor**
 
-The Creek Tower, when complete, will anchor the district's global brand the way the Burj Khalifa anchored Downtown. The delay has created a negative sentiment overhang that shows up in discounted pricing relative to the infrastructure quality already on the ground. Buyers willing to hold 5–7 years are arguably getting paid for the patience the tower requires.
+The Creek Tower, when complete, will anchor the district's global brand the way the Burj Khalifa anchored Downtown. The delay has created a negative sentiment overhang that shows up in discounted pricing relative to the infrastructure quality already on the ground. Buyers willing to hold 5-7 years are arguably getting paid for the patience the tower requires.
 
 **Key Risks**
 
 1. **Completion risk**: The Creek Tower's timeline remains uncertain. If it continues to slip, the district's premium addressability is delayed.
 2. **Oversupply in off-plan**: Emaar has released significant off-plan volume in later phases. If absorption slows, secondary prices in completed stock face pressure.
-3. **Transport**: The metro Red Line extension to Creek Harbour is under construction but not yet operational. The commute to DIFC via bus/taxi is 20–30 minutes — workable, but it limits tenant demand from financial sector employees.
+3. **Transport**: The metro Red Line extension to Creek Harbour is under construction but not yet operational. The commute to DIFC via bus/taxi is 20-30 minutes, workable, but it limits tenant demand from financial sector employees.
 
 **Investment Case**
 
@@ -149,9 +149,9 @@ Before viewing a single unit, determine: investment (yield, capital growth, or b
 
 **Step 2: Financing**
 
-Most UAE banks offer mortgage products to foreign nationals. Typical terms: 25-year maximum, 75% LTV for sub-AED 5M properties (meaning 25% down payment plus ~5% acquisition costs), 3.5–4.5% fixed for 1–3 years, then variable. Some developers offer payment plans that effectively act as developer financing — worth comparing to bank terms on a total cost of ownership basis.
+Most UAE banks offer mortgage products to foreign nationals. Typical terms: 25-year maximum, 75% LTV for sub-AED 5M properties (meaning 25% down payment plus ~5% acquisition costs), 3.5-4.5% fixed for 1-3 years, then variable. Some developers offer payment plans that effectively act as developer financing, worth comparing to bank terms on a total cost of ownership basis.
 
-For off-plan, most developers require 10–20% on booking, then a milestone-linked schedule through construction. The balance is due on handover or can be financed via a post-handover plan.
+For off-plan, most developers require 10-20% on booking, then a milestone-linked schedule through construction. The balance is due on handover or can be financed via a post-handover plan.
 
 **Step 3: Legal Checks**
 
@@ -163,7 +163,7 @@ Engage a UAE-registered real estate attorney (not a broker). The key checks:
 **Step 4: The Transaction Process**
 
 1. Sign MOU (Memorandum of Understanding) with a 10% deposit cheque held in escrow or by the broker.
-2. Obtain NOC from developer (2–7 business days, fee AED 500–5,000 depending on developer).
+2. Obtain NOC from developer (2-7 business days, fee AED 500-5,000 depending on developer).
 3. Meet at the property registry (or use a certified trustee office for same-day transfer). Bring: passport, NOC, bank manager's cheque or bank transfer.
 4. Pay the property transfer fee: 4% of purchase price (buyer pays).
 5. Collect new title deed in your name.
@@ -171,7 +171,7 @@ Engage a UAE-registered real estate attorney (not a broker). The key checks:
 **Step 5: Running Costs**
 
 Factor these into your returns:
-- Service charges: AED 10–25 per sqft per year depending on building and community
+- Service charges: AED 10-25 per sqft per year depending on building and community
 - Agency fee: 2% of purchase price (paid by buyer in most transactions)
 - Property transfer fee: 4%
 - Mortgage registration (if applicable): 0.25% of loan value
@@ -180,7 +180,7 @@ Factor these into your returns:
 
 A property purchase of AED 2M or above qualifies the buyer for a 10-year UAE Golden Visa. The property can be mortgaged, but the equity value (not purchase price) must exceed AED 2M. Apply through the ICP (Federal Authority for Identity, Citizenship, Customs & Port Security) portal after obtaining the title deed.
 
-The process is straightforward when you work with an agent and attorney who have done it hundreds of times. The most common mistakes — skipping the title search, not checking service charge arrears, confusing listed price with total acquisition cost — are entirely avoidable with proper due diligence.`,
+The process is straightforward when you work with an agent and attorney who have done it hundreds of times. The most common mistakes, skipping the title search, not checking service charge arrears, confusing listed price with total acquisition cost, are entirely avoidable with proper due diligence.`,
   },
   {
     slug: "rental-yield-explained",
@@ -190,7 +190,7 @@ The process is straightforward when you work with an agent and attorney who have
     titleKey: "guide_rentalYield_title",
     descriptionKey: "guide_rentalYield_desc",
     relatedCommunities: ["Jumeirah Village Circle", "Business Bay", "Dubai South"],
-    body: `"Rental yield" appears in almost every Dubai property conversation, but the number being quoted is almost never the same thing twice. Understanding the difference between gross, net, and leveraged yield — and knowing which number to demand when evaluating a property — prevents the most common investment mistake: buying a "7% yield" that actually earns 4%.
+    body: `"Rental yield" appears in almost every Dubai property conversation, but the number being quoted is almost never the same thing twice. Understanding the difference between gross, net, and leveraged yield, and knowing which number to demand when evaluating a property, prevents the most common investment mistake: buying a "7% yield" that actually earns 4%.
 
 **Gross Yield: The Starting Number**
 
@@ -201,18 +201,18 @@ If you pay AED 800,000 for a unit that rents for AED 60,000 per year, gross yiel
 **Net Yield: What You Actually Earn**
 
 Net yield accounts for the expenses that reduce your income:
-- Service charges (Binayah's data: AED 10–25/sqft/year, averaging ~AED 15,000 for a 1,000 sqft unit)
+- Service charges (Binayah's data: AED 10-25/sqft/year, averaging ~AED 15,000 for a 1,000 sqft unit)
 - Agent commission for leasing: 5% of annual rent on a one-year lease
-- Void periods: even a strong market has 2–4 weeks of vacancy per year on average
-- Maintenance and minor repairs: budget AED 5,000–10,000 per year for a mid-tier unit
+- Void periods: even a strong market has 2-4 weeks of vacancy per year on average
+- Maintenance and minor repairs: budget AED 5,000-10,000 per year for a mid-tier unit
 
-For the same AED 800,000 unit at AED 60,000 gross rent: subtract AED 15,000 service charge, AED 3,000 agency fee, AED 3,000 void (4 weeks), AED 5,000 maintenance = net income of AED 34,000. Net yield: 4.25% — nearly half the headline number.
+For the same AED 800,000 unit at AED 60,000 gross rent: subtract AED 15,000 service charge, AED 3,000 agency fee, AED 3,000 void (4 weeks), AED 5,000 maintenance = net income of AED 34,000. Net yield: 4.25%, nearly half the headline number.
 
-The Binayah rule of thumb: **assume net yield is 75–85% of gross yield**. If gross is 7%, expect net of 5.25–5.95%.
+The Binayah rule of thumb: **assume net yield is 75-85% of gross yield**. If gross is 7%, expect net of 5.25-5.95%.
 
 **Cash-on-Cash Return: The Mortgage Lens**
 
-If you're financing, the relevant number is cash-on-cash return — your net income divided by the cash you actually put in (down payment + acquisition costs).
+If you're financing, the relevant number is cash-on-cash return, your net income divided by the cash you actually put in (down payment + acquisition costs).
 
 Example: AED 800,000 purchase, 25% down (AED 200,000), 4% acquisition costs (AED 32,000). Total cash invested: AED 232,000. Annual mortgage cost: AED 28,000 (75% LTV at 4% over 25 years). Net income: AED 34,000. Cash-on-cash: (34,000 - 28,000) / 232,000 = 2.6%.
 
@@ -220,11 +220,11 @@ Leverage amplifies both gains and losses. If rental rates drop 10%, your cash-on
 
 **What Drives Dubai Yields**
 
-JVC leads at 7.2–8.5% gross because prices are low (AED 700–900/sqft) and rents are strong for the asset class. Business Bay yields 6.2–7.1% with higher absolute rents but also higher prices. Premium waterfront (Palm, Marina) yields 4.5–6% because prices are high relative to rents — these are primarily appreciation plays.
+JVC leads at 7.2-8.5% gross because prices are low (AED 700-900/sqft) and rents are strong for the asset class. Business Bay yields 6.2-7.1% with higher absolute rents but also higher prices. Premium waterfront (Palm, Marina) yields 4.5-6% because prices are high relative to rents, these are primarily appreciation plays.
 
 **The Yield Curve Question**
 
-Should you buy at current yields or wait for yield compression? Dubai yields have been relatively stable because both prices and rents have risen in tandem. There is no evidence of structural yield compression coming from oversupply — the pipeline is absorbed quickly. But if mortgage rates in source markets (Europe, Russia) rise substantially, demand for investment purchases could soften.
+Should you buy at current yields or wait for yield compression? Dubai yields have been relatively stable because both prices and rents have risen in tandem. There is no evidence of structural yield compression coming from oversupply, the pipeline is absorbed quickly. But if mortgage rates in source markets (Europe, Russia) rise substantially, demand for investment purchases could soften.
 
 **The Bottom Line**
 
@@ -242,17 +242,17 @@ Ask for net yield, not gross. If a developer or agent can't tell you the service
 
 **Off-Plan: What You're Actually Buying**
 
-When you buy off-plan, you are purchasing a contractual right to a future unit. You are not buying a property — you're buying an option on one. This distinction matters: the developer bears construction risk until handover, but you bear the risk that the developer underdelivers or fails entirely.
+When you buy off-plan, you are purchasing a contractual right to a future unit. You are not buying a property, you're buying an option on one. This distinction matters: the developer bears construction risk until handover, but you bear the risk that the developer underdelivers or fails entirely.
 
-The advantages of off-plan are real: prices are typically 15–25% below projected post-completion market value (developers price to move inventory, not to market value). Payment plans spread capital deployment over the construction timeline. If you buy correctly, you can achieve appreciation before you've even made all your payments.
+The advantages of off-plan are real: prices are typically 15-25% below projected post-completion market value (developers price to move inventory, not to market value). Payment plans spread capital deployment over the construction timeline. If you buy correctly, you can achieve appreciation before you've even made all your payments.
 
-Binayah's data shows off-plan currently represents approximately 45–55% of total transactions in Dubai, which means it is not a niche market — it is the mainstream.
+Binayah's data shows off-plan currently represents approximately 45-55% of total transactions in Dubai, which means it is not a niche market, it is the mainstream.
 
 **Secondary Market: What You're Actually Getting**
 
 Secondary transactions involve completed, titled property. You can inspect it, measure it, understand the building's management quality, and take possession immediately. The title deed exists. The risk profile is fundamentally different from off-plan.
 
-The trade-off: you pay current market price, which already incorporates the appreciation off-plan buyers were counting on. There is no payment plan — you pay in full (or fund the mortgage) at completion. And you start generating rent from day one of ownership rather than waiting 2–4 years.
+The trade-off: you pay current market price, which already incorporates the appreciation off-plan buyers were counting on. There is no payment plan, you pay in full (or fund the mortgage) at completion. And you start generating rent from day one of ownership rather than waiting 2-4 years.
 
 **The Developer Risk Filter**
 
@@ -260,17 +260,17 @@ The single most important variable in off-plan is the developer's track record. 
 
 1. Check the developer's previous project handover timeline (RERA database or official public records)
 2. Confirm the project has an RERA escrow account (legally required; funds are ring-fenced)
-3. Visit a completed project by the same developer — walk the lobbies, check finish quality, talk to residents
+3. Visit a completed project by the same developer, walk the lobbies, check finish quality, talk to residents
 
 **The Payment Plan Math**
 
-A typical 40/60 plan: 40% during construction (spread over 2–3 years), 60% on handover. If you can't comfortably fund the 60% on handover, you are exposed to a forced sale at handover — exactly when the market has the most leverage over you.
+A typical 40/60 plan: 40% during construction (spread over 2-3 years), 60% on handover. If you can't comfortably fund the 60% on handover, you are exposed to a forced sale at handover, exactly when the market has the most leverage over you.
 
 Model the worst case: you need to pay the balance in 24 months and the market has fallen 20%. Can you service the debt? If not, add a buffer or reduce commitment.
 
 **Secondary Market: The Price Discovery Problem**
 
-The secondary market has genuine pricing opacity. Asking prices on portals are not transaction prices. The official registry publishes transaction data, but with a lag. Binayah's transaction data tools close some of this gap — you can see what units in a given building actually traded for in the last quarter. Use it.
+The secondary market has genuine pricing opacity. Asking prices on portals are not transaction prices. The official registry publishes transaction data, but with a lag. Binayah's transaction data tools close some of this gap, you can see what units in a given building actually traded for in the last quarter. Use it.
 
 **Decision Matrix**
 
@@ -301,11 +301,11 @@ Investment for yield, owner-occupation, capital appreciation, or Golden Visa are
 
 **Step 2: Engage a RERA-Registered Agent**
 
-Only agents licensed by RERA (Real Estate Regulatory Agency) can legally represent you. Ask for the agent's RERA number — it's verifiable on the DLD app. A good agent saves you weeks of unrepresented viewings and protects you in negotiation. Standard agent commission is 2% of purchase price, paid by the buyer at transfer.
+Only agents licensed by RERA (Real Estate Regulatory Agency) can legally represent you. Ask for the agent's RERA number, it's verifiable on the DLD app. A good agent saves you weeks of unrepresented viewings and protects you in negotiation. Standard agent commission is 2% of purchase price, paid by the buyer at transfer.
 
 **Step 3: Secure Financing or Confirm Cash**
 
-If you're paying cash, get a Letter of No Objection from your bank confirming funds. If you're financing, get a mortgage pre-approval *before* making offers — UAE banks lend up to 80% for residents and 50% for non-residents on a first property. Approval typically takes 5–10 days. Note: financing on off-plan is restricted to specific developer-partner banks.
+If you're paying cash, get a Letter of No Objection from your bank confirming funds. If you're financing, get a mortgage pre-approval *before* making offers, UAE banks lend up to 80% for residents and 50% for non-residents on a first property. Approval typically takes 5-10 days. Note: financing on off-plan is restricted to specific developer-partner banks.
 
 **Step 4: Submit Form F (Memorandum of Understanding)**
 
@@ -313,33 +313,33 @@ Once a price is agreed, both parties sign Form F (the standard DLD MOU). Buyer p
 
 **Step 5: Apply for NOC (Resale Only)**
 
-For secondary-market transactions, the developer issues a No Objection Certificate confirming service charges are paid and there's no lien. Fee is AED 500–5,000 depending on developer. Process takes 7–14 days. For off-plan you skip this step.
+For secondary-market transactions, the developer issues a No Objection Certificate confirming service charges are paid and there's no lien. Fee is AED 500-5,000 depending on developer. Process takes 7-14 days. For off-plan you skip this step.
 
 **Step 6: Final Settlement at the DLD Trustee Office**
 
 Buyer, seller, and both agents meet at a Dubai Land Department-approved trustee office (or via the Dubai REST app for digital transactions). Buyer pays:
 - 4% DLD transfer fee
-- AED 2,000–4,000 trustee office fee
+- AED 2,000-4,000 trustee office fee
 - AED 540 title-deed issuance fee
 - Mortgage registration: 0.25% of loan + AED 290 (if financed)
 - Agent commission (typically 2% + 5% VAT)
 
-The title deed is issued same-day on cash transactions, 24–48 hours on financed deals. You are now the legal owner.
+The title deed is issued same-day on cash transactions, 24-48 hours on financed deals. You are now the legal owner.
 
 **Step 7: Move Costs and Annual Obligations**
 
-Plan for: DEWA connection deposit (AED 2,000 for apartments), service charges (AED 10–25/sqft/year depending on building), and Ejari registration if you ever rent it out. Annual property tax does not exist in the UAE.
+Plan for: DEWA connection deposit (AED 2,000 for apartments), service charges (AED 10-25/sqft/year depending on building), and Ejari registration if you ever rent it out. Annual property tax does not exist in the UAE.
 
 **Common Mistakes**
 
-- **Skipping the NOC check** — buying a property with unpaid service charges means inheriting the debt
-- **Trusting brochure floor plans** — measure on viewing; reported sqft is often gross including walls and shared corridors
-- **Underestimating service charges** — a luxury tower can run AED 25–35/sqft/year, materially eroding net yield
-- **Buying through unregistered intermediaries** — no legal recourse if it goes wrong
+- **Skipping the NOC check**, buying a property with unpaid service charges means inheriting the debt
+- **Trusting brochure floor plans**, measure on viewing; reported sqft is often gross including walls and shared corridors
+- **Underestimating service charges**, a luxury tower can run AED 25-35/sqft/year, materially eroding net yield
+- **Buying through unregistered intermediaries**, no legal recourse if it goes wrong
 
 **Timeline Summary**
 
-A clean cash purchase: 14–21 days from offer to title deed. Financed purchase: 30–45 days. Off-plan: contract signed immediately, but title issuance happens at handover (often years later — you hold an Oqood instead, see our title-deed-vs-oqood guide).
+A clean cash purchase: 14-21 days from offer to title deed. Financed purchase: 30-45 days. Off-plan: contract signed immediately, but title issuance happens at handover (often years later, you hold an Oqood instead, see our title-deed-vs-oqood guide).
 
 Done in this order, with a competent RERA agent and a clear objective, the process is well-defined and protected by mature regulation.`,
   },
@@ -351,7 +351,7 @@ Done in this order, with a competent RERA agent and a clear objective, the proce
     titleKey: "guide_dldFees_title",
     descriptionKey: "guide_dldFees_desc",
     relatedCommunities: ["Business Bay", "Downtown Dubai", "Dubai Marina"],
-    body: `The headline DLD transfer fee is 4%, but the true cost of registering a property is closer to 5–7% all-in. Buyers who only budget the 4% headline get a nasty surprise at the trustee office. Here's the complete breakdown.
+    body: `The headline DLD transfer fee is 4%, but the true cost of registering a property is closer to 5-7% all-in. Buyers who only budget the 4% headline get a nasty surprise at the trustee office. Here's the complete breakdown.
 
 **The 4% DLD Transfer Fee**
 
@@ -360,8 +360,8 @@ The largest single charge. 4% of the agreed purchase price, paid to Dubai Land D
 **Trustee Office Fees**
 
 Transactions complete at a DLD-approved trustee office (or digitally via Dubai REST). The trustee charges:
-- AED 4,000 + 5% VAT — for properties priced above AED 500K
-- AED 2,000 + 5% VAT — for properties below AED 500K
+- AED 4,000 + 5% VAT, for properties priced above AED 500K
+- AED 2,000 + 5% VAT, for properties below AED 500K
 
 This fee is non-negotiable and covers the trustee's role in verifying ID, witnessing transfer, and submitting paperwork to DLD.
 
@@ -383,13 +383,13 @@ The seller's developer issues a No Objection Certificate confirming no outstandi
 - Emaar: AED 5,250
 - Damac: AED 5,000
 - Sobha: AED 3,150
-- Mid-tier developers: AED 500–2,000
+- Mid-tier developers: AED 500-2,000
 
-The seller typically pays this, but practice varies — negotiate explicitly in Form F.
+The seller typically pays this, but practice varies, negotiate explicitly in Form F.
 
 **Off-Plan Specific Fees**
 
-If you're buying off-plan, you pay DLD's Oqood registration fee (4% of price, same as a finished property — the structure is the same, you're just registering a contract rather than a title). The developer often markets the project as "DLD fees waived" — read the contract; usually it means the *developer* absorbs the 4%, not that it's not charged.
+If you're buying off-plan, you pay DLD's Oqood registration fee (4% of price, same as a finished property, the structure is the same, you're just registering a contract rather than a title). The developer often markets the project as "DLD fees waived", read the contract; usually it means the *developer* absorbs the 4%, not that it's not charged.
 
 **The Total — Real Example**
 
@@ -433,31 +433,31 @@ The title deed is the gold standard. If you can choose between a title-deeded un
 
 **Oqood: Registration of an Off-Plan Purchase Contract**
 
-Oqood (Arabic for "contracts") is what you receive when you buy off-plan. It is not an ownership document — it's official registration with DLD that you hold a contractual right to the property once it is completed and handed over. With an Oqood you:
+Oqood (Arabic for "contracts") is what you receive when you buy off-plan. It is not an ownership document, it's official registration with DLD that you hold a contractual right to the property once it is completed and handed over. With an Oqood you:
 
 - Have a legal claim against the developer for delivery
 - Can sell the contract to another buyer (subject to developer NOC and SPA terms)
-- Cannot rent the property — it doesn't exist yet
+- Cannot rent the property, it doesn't exist yet
 - Generally cannot use it for Golden Visa until completion (some exceptions for 50%-paid units)
 - Need to convert it to a title deed at handover
 
 **The Conversion**
 
-When the property is delivered, you visit the developer's handover desk, pay any outstanding balance, and the developer files a request with DLD to issue the title deed in your name. The Oqood is retired. Conversion typically takes 1–4 weeks after final payment and possession.
+When the property is delivered, you visit the developer's handover desk, pay any outstanding balance, and the developer files a request with DLD to issue the title deed in your name. The Oqood is retired. Conversion typically takes 1-4 weeks after final payment and possession.
 
 **Why This Matters in Negotiation**
 
-If you're buying an Oqood (assignment of an off-plan contract from the original buyer), you're not buying a property — you're buying a contract. Three implications:
+If you're buying an Oqood (assignment of an off-plan contract from the original buyer), you're not buying a property, you're buying a contract. Three implications:
 
-1. **Developer NOC required** — the developer must approve the transfer. Fee typically AED 1,500–5,000. Not all developers permit assignment freely.
-2. **Limited resale market** — fewer buyers are comfortable with Oqood resales than with title deeds. Discount your asking price expectations 5–15% vs equivalent finished stock.
-3. **Construction risk transfers to you** — if the project is delayed or specifications change, you inherit those issues.
+1. **Developer NOC required**, the developer must approve the transfer. Fee typically AED 1,500-5,000. Not all developers permit assignment freely.
+2. **Limited resale market**, fewer buyers are comfortable with Oqood resales than with title deeds. Discount your asking price expectations 5-15% vs equivalent finished stock.
+3. **Construction risk transfers to you**, if the project is delayed or specifications change, you inherit those issues.
 
 If you're selling an Oqood, time it carefully. The closer to handover, the smaller the discount. Selling at 90%-complete is typically much more efficient than selling at 30%.
 
 **The 50% Rule for Golden Visa**
 
-UAE law allows Golden Visa applications on off-plan units (Oqood) only when at least 50% of the purchase price has been paid. Most off-plan payment plans are structured 10% on signing, 20% during construction, 70% on handover — meaning you typically need to be deep into the payment schedule before Golden Visa is achievable on an off-plan unit. Title-deeded units have no such restriction.
+UAE law allows Golden Visa applications on off-plan units (Oqood) only when at least 50% of the purchase price has been paid. Most off-plan payment plans are structured 10% on signing, 20% during construction, 70% on handover, meaning you typically need to be deep into the payment schedule before Golden Visa is achievable on an off-plan unit. Title-deeded units have no such restriction.
 
 **Document Checklist When You Receive Either**
 
@@ -475,7 +475,7 @@ If either document doesn't verify, do not pay anything further until DLD confirm
     titleKey: "guide_ejari_title",
     descriptionKey: "guide_ejari_desc",
     relatedCommunities: ["Jumeirah Village Circle", "Business Bay", "Dubai Marina"],
-    body: `Ejari is the mandatory rental-contract registration system run by RERA. Without it your tenancy is technically unenforceable, you can't get DEWA connected as a tenant, and you can't sponsor a family visa or get a UAE driving licence. The process is fast — 10 minutes online if you have the documents ready.
+    body: `Ejari is the mandatory rental-contract registration system run by RERA. Without it your tenancy is technically unenforceable, you can't get DEWA connected as a tenant, and you can't sponsor a family visa or get a UAE driving licence. The process is fast, 10 minutes online if you have the documents ready.
 
 **Who Needs to Register**
 
@@ -492,7 +492,7 @@ Have these ready before you start:
 - Landlord's contact details
 - DEWA premise number (from any previous DEWA bill or available from DEWA)
 
-If you don't have the title deed, the landlord must provide it — it's their obligation. Push back firmly; no title deed, no registration.
+If you don't have the title deed, the landlord must provide it, it's their obligation. Push back firmly; no title deed, no registration.
 
 **How to Register**
 
@@ -509,7 +509,7 @@ Three routes:
 - Tenancy contract not on the unified Dubai tenancy form
 - Title deed page count doesn't match RERA records (the title was updated after a sub-division and the landlord hasn't refreshed their copy)
 - Tenant's visa expired (use a passport with a valid visa, or wait for renewal)
-- DEWA premise number mismatch — happens when units were renumbered after handover
+- DEWA premise number mismatch, happens when units were renumbered after handover
 
 **Renewing Ejari**
 
@@ -519,7 +519,7 @@ Ejari must be renewed every year when the tenancy is renewed. Same documents, sa
 
 Registration triggers RERA's tenant protections:
 
-- Rent increases capped per the RERA Rent Index (often 0–20% depending on how far below market your rent is)
+- Rent increases capped per the RERA Rent Index (often 0-20% depending on how far below market your rent is)
 - 12-month notice required for non-renewal
 - 90-day notice required for permitted rent increases
 - Tenancy disputes go to the Rental Dispute Settlement Centre (RDSC), which is far cheaper and faster than the courts
@@ -528,9 +528,9 @@ Without Ejari, none of these protections apply. The registration is genuinely va
 
 **For Landlords**
 
-You can also register the contract yourself — and many landlords prefer to, because you control the title-deed disclosure. If you're renting out multiple units, the Dubai REST app's bulk mode handles this efficiently.
+You can also register the contract yourself, and many landlords prefer to, because you control the title-deed disclosure. If you're renting out multiple units, the Dubai REST app's bulk mode handles this efficiently.
 
-Don't register a contract with terms that violate RERA rules (e.g., excessive deposits, prohibited eviction clauses) — the registration creates a legal record of the breach.`,
+Don't register a contract with terms that violate RERA rules (e.g., excessive deposits, prohibited eviction clauses), the registration creates a legal record of the breach.`,
   },
   {
     slug: "noc-certificate",
@@ -554,7 +554,7 @@ If any of these conditions aren't met, the developer either refuses to issue the
 
 **When You Need One**
 
-Only for secondary-market transactions — i.e., resale of a finished, title-deeded property. You do NOT need an NOC for:
+Only for secondary-market transactions, i.e., resale of a finished, title-deeded property. You do NOT need an NOC for:
 
 - Off-plan purchases directly from a developer
 - Inheritance transfers (different process via DLD)
@@ -569,46 +569,46 @@ The seller initiates. Typical steps:
 1. Seller logs in to developer's portal (or visits in person)
 2. Selects "Apply for NOC" or "Transfer Application"
 3. Uploads buyer's passport and Emirates ID, signed Form F (MOU)
-4. Pays the NOC fee — typically AED 500–5,000 depending on developer
+4. Pays the NOC fee, typically AED 500-5,000 depending on developer
 5. Developer audits service charge account, checks for violations
-6. Developer issues NOC valid for 30–60 days (varies)
+6. Developer issues NOC valid for 30-60 days (varies)
 
 **Timeline**
 
-- Major developers with digital portals (Emaar, Damac, Nakheel, Sobha, Meraas): 3–7 working days
-- Mid-tier developers: 7–14 working days
-- Smaller / less-digitised developers: 14–21+ working days
+- Major developers with digital portals (Emaar, Damac, Nakheel, Sobha, Meraas): 3-7 working days
+- Mid-tier developers: 7-14 working days
+- Smaller / less-digitised developers: 14-21+ working days
 
-The buyer cannot speed this up — it's entirely on the seller and the developer.
+The buyer cannot speed this up, it's entirely on the seller and the developer.
 
 **NOC Fees by Developer (Indicative 2026)**
 
 | Developer | NOC Fee | Typical Timeline |
 |---|---|---|
 | Emaar | AED 5,250 | 5 working days |
-| Damac | AED 5,000 | 5–7 working days |
-| Nakheel | AED 3,150 | 5–10 working days |
+| Damac | AED 5,000 | 5-7 working days |
+| Nakheel | AED 3,150 | 5-10 working days |
 | Sobha | AED 3,150 | 7 working days |
 | Meraas | AED 5,000 | 5 working days |
-| Dubai Properties | AED 1,500 | 7–10 working days |
-| Mid-tier (Azizi, Binghatti, etc.) | AED 500–2,000 | 10–21 working days |
+| Dubai Properties | AED 1,500 | 7-10 working days |
+| Mid-tier (Azizi, Binghatti, etc.) | AED 500-2,000 | 10-21 working days |
 
-Verify before signing Form F — the negotiation point of "who pays NOC" can save AED 5,000.
+Verify before signing Form F, the negotiation point of "who pays NOC" can save AED 5,000.
 
 **What Goes Wrong**
 
 The most common reasons NOC issuance stalls:
 
-- **Outstanding service charges** — the seller had a dispute with the developer, withheld payment, and now needs to settle (sometimes including interest) before NOC is issued. This can derail a sale entirely.
-- **Unit modifications** — the seller put up walls, changed flooring, or did renovations without developer approval. The developer demands restoration or fines before issuing.
-- **Building-wide audits** — some developers freeze NOCs for an entire building during a master-community audit. Nothing to do but wait.
-- **Cheque returned** — if any service charge cheque bounced historically, the developer flags it and requires resolution.
+- **Outstanding service charges**, the seller had a dispute with the developer, withheld payment, and now needs to settle (sometimes including interest) before NOC is issued. This can derail a sale entirely.
+- **Unit modifications**, the seller put up walls, changed flooring, or did renovations without developer approval. The developer demands restoration or fines before issuing.
+- **Building-wide audits**, some developers freeze NOCs for an entire building during a master-community audit. Nothing to do but wait.
+- **Cheque returned**, if any service charge cheque bounced historically, the developer flags it and requires resolution.
 
 **What Buyers Should Do**
 
 Before signing Form F, ask the seller to obtain a preliminary statement-of-account from the developer showing service charges paid up to date. This is free and confirms there's nothing surprising. If the seller refuses or stalls, treat it as a red flag.
 
-Once Form F is signed, build a 30–45 day window into the closing timeline. NOC delays are the single largest cause of broken deals in Dubai secondary market.`,
+Once Form F is signed, build a 30-45 day window into the closing timeline. NOC delays are the single largest cause of broken deals in Dubai secondary market.`,
   },
   {
     slug: "golden-visa-process",
@@ -624,16 +624,16 @@ Once Form F is signed, build a 30–45 day window into the closing timeline. NOC
 
 The headline rule: you need property worth at least AED 2 million. Specifics:
 
-- **Single property or combined** — one property at AED 2M qualifies, or two properties at AED 1M each (combined value on a single application). Most applicants use a single qualifying unit.
-- **Title deed required** — the property must be title-deeded in your name, fully completed and registered with DLD. Off-plan units do *not* qualify unless 50% of the price has been paid AND the developer is on the approved list (currently Emaar, Damac, Nakheel, Sobha, Meraas, Dubai Holding).
-- **Mortgage permitted** — financed purchases qualify, but you must have paid at least 50% of the property price (i.e., your equity must be at least AED 1M). The bank must issue a Letter of No Objection for the visa application.
-- **Joint ownership** — only the primary owner gets the visa. Joint owners need separately-qualifying interests.
+- **Single property or combined**, one property at AED 2M qualifies, or two properties at AED 1M each (combined value on a single application). Most applicants use a single qualifying unit.
+- **Title deed required**, the property must be title-deeded in your name, fully completed and registered with DLD. Off-plan units do *not* qualify unless 50% of the price has been paid AND the developer is on the approved list (currently Emaar, Damac, Nakheel, Sobha, Meraas, Dubai Holding).
+- **Mortgage permitted**, financed purchases qualify, but you must have paid at least 50% of the property price (i.e., your equity must be at least AED 1M). The bank must issue a Letter of No Objection for the visa application.
+- **Joint ownership**, only the primary owner gets the visa. Joint owners need separately-qualifying interests.
 
 **What's Included**
 
 - 10-year residency for the property owner
 - Family sponsorship: spouse, all children (no age limit for unmarried children), parents (with health-insurance proof)
-- Unlimited entries / exits — no 6-month rule like standard residency
+- Unlimited entries / exits, no 6-month rule like standard residency
 - Eligibility to sponsor domestic workers
 - Eligibility to open bank accounts, register a business, and own multiple properties
 - No physical-presence requirement to maintain the visa
@@ -656,8 +656,8 @@ The Golden Visa is processed by the General Directorate of Residency and Foreign
 - Health insurance certificate
 - Medical fitness certificate
 - Passport-style photos (white background)
-- Marriage certificate (attested) — if including spouse
-- Birth certificates (attested) — if including children
+- Marriage certificate (attested), if including spouse
+- Birth certificates (attested), if including children
 
 **Step 5: Pay fees** — main applicant: approximately AED 2,800–4,000 including visa, ID, and processing. Each dependent: approximately AED 2,500.
 
@@ -667,7 +667,7 @@ The Golden Visa is processed by the General Directorate of Residency and Foreign
 
 **For Foreign Applicants (Not Yet UAE Resident)**
 
-Apply for an entry permit first (the Golden Visa entry permit is separate from a tourist visa — it's specifically for entering UAE to complete a Golden Visa). On arrival, complete the medical and submit to GDRFA. The full process is doable within one 30-day visit.
+Apply for an entry permit first (the Golden Visa entry permit is separate from a tourist visa, it's specifically for entering UAE to complete a Golden Visa). On arrival, complete the medical and submit to GDRFA. The full process is doable within one 30-day visit.
 
 **Maintaining the Visa**
 
@@ -675,14 +675,14 @@ You must own the qualifying property continuously. If you sell and don't replace
 
 **Common Pitfalls**
 
-- **Off-plan disqualification** — buyers assume off-plan Oqood qualifies; usually it doesn't unless 50%+ paid AND approved-developer.
-- **Joint ownership confusion** — buyers assume both names on title deed = both eligible. Only one gets the visa per qualifying property.
-- **Mortgage threshold** — if your equity drops below AED 1M during the term (e.g., property value falls), you may face renewal issues.
-- **Health insurance gaps** — letting health insurance lapse can complicate dependent renewals.
+- **Off-plan disqualification**, buyers assume off-plan Oqood qualifies; usually it doesn't unless 50%+ paid AND approved-developer.
+- **Joint ownership confusion**, buyers assume both names on title deed = both eligible. Only one gets the visa per qualifying property.
+- **Mortgage threshold**, if your equity drops below AED 1M during the term (e.g., property value falls), you may face renewal issues.
+- **Health insurance gaps**, letting health insurance lapse can complicate dependent renewals.
 
 **Bottom Line**
 
-For property buyers at the AED 2M+ level, the Golden Visa converts a property purchase into a pathway to decade-long, family-inclusive UAE residency. The marginal cost (AED 5,000–10,000 in fees beyond the property itself) is trivial relative to the benefit. Plan it from day one of the property search — the threshold is a useful filter for what you buy.`,
+For property buyers at the AED 2M+ level, the Golden Visa converts a property purchase into a pathway to decade-long, family-inclusive UAE residency. The marginal cost (AED 5,000-10,000 in fees beyond the property itself) is trivial relative to the benefit. Plan it from day one of the property search, the threshold is a useful filter for what you buy.`,
   },
   {
     slug: "buying-as-non-resident",
@@ -692,7 +692,7 @@ For property buyers at the AED 2M+ level, the Golden Visa converts a property pu
     titleKey: "guide_nonResident_title",
     descriptionKey: "guide_nonResident_desc",
     relatedCommunities: ["Dubai Marina", "Downtown Dubai", "Palm Jumeirah"],
-    body: `You don't need to live in the UAE — or even visit — to buy property in Dubai. Foreign non-residents can purchase freehold property in designated areas, complete transactions remotely, and own property indefinitely. Here's the practical process.
+    body: `You don't need to live in the UAE, or even visit, to buy property in Dubai. Foreign non-residents can purchase freehold property in designated areas, complete transactions remotely, and own property indefinitely. Here's the practical process.
 
 **Freehold Areas: Where Foreigners Can Buy**
 
@@ -727,25 +727,25 @@ The most common remote-purchase mechanism. You issue a POA to a UAE-based repres
 4. Attested by the UAE Ministry of Foreign Affairs upon arrival
 5. Stamped by the Dubai Notary Public
 
-Total cost AED 1,500–3,000 plus your home-country notary/embassy fees. Plan 2–4 weeks for the full attestation chain. Once issued, your representative can sign Form F, attend the trustee office, and complete transfer on your behalf.
+Total cost AED 1,500-3,000 plus your home-country notary/embassy fees. Plan 2-4 weeks for the full attestation chain. Once issued, your representative can sign Form F, attend the trustee office, and complete transfer on your behalf.
 
 **Route 2: Digital Transfer via Dubai REST**
 
-DLD now permits fully digital transfers between parties who hold UAE Pass. As a non-resident, you can obtain UAE Pass with a valid passport. Both buyer and seller authenticate digitally, sign Form F and the title transfer in-app, and pay via card or wire. No physical attendance, no POA. This works smoothly for cash transactions and developer-direct sales. It does not yet work for mortgaged purchases — banks still require physical presence or POA for loan closing.
+DLD now permits fully digital transfers between parties who hold UAE Pass. As a non-resident, you can obtain UAE Pass with a valid passport. Both buyer and seller authenticate digitally, sign Form F and the title transfer in-app, and pay via card or wire. No physical attendance, no POA. This works smoothly for cash transactions and developer-direct sales. It does not yet work for mortgaged purchases, banks still require physical presence or POA for loan closing.
 
 **Route 3: Visit and Close in Person**
 
-The simplest path. Tourist visa, 7-day visit, complete everything in person. Most buyers do at least one viewing trip before committing — the AED 1.5–3K airfare is rounding error on a property purchase. Even if you intend a remote close, an in-person trip lets you verify the agent, see the unit, and meet the developer.
+The simplest path. Tourist visa, 7-day visit, complete everything in person. Most buyers do at least one viewing trip before committing, the AED 1.5-3K airfare is rounding error on a property purchase. Even if you intend a remote close, an in-person trip lets you verify the agent, see the unit, and meet the developer.
 
 **Mortgages for Non-Residents**
 
 UAE banks lend to non-residents on more restrictive terms than to residents:
 
 - Maximum LTV typically 50% (vs 80% for residents)
-- Higher interest rates: 4.5–6.5% currently vs 3.5–5% for residents
+- Higher interest rates: 4.5-6.5% currently vs 3.5-5% for residents
 - Required documents: 6 months of bank statements, 6 months of payslips (or equivalent self-employment proof), tax returns from your home country
-- Approval timeline: 14–21 working days
-- Repayment in AED — you take FX risk between your earning currency and AED
+- Approval timeline: 14-21 working days
+- Repayment in AED, you take FX risk between your earning currency and AED
 - Most banks require salary > AED 30,000/month equivalent
 
 Banks active in non-resident lending: HSBC, Standard Chartered, Mashreq, Emirates NBD (selective), ADCB (selective). Smaller banks rarely lend to non-residents.
@@ -754,7 +754,7 @@ For most non-resident buyers, cash purchase is the path of least friction. Mortg
 
 **Tax Considerations**
 
-UAE imposes no personal income tax, no capital gains tax, no inheritance tax on property, and no property tax. Your home country may tax differently — particularly the US (which taxes citizens on worldwide income and may treat rental income as taxable), UK (which taxes rental income for non-domiciled landlords), and India (which treats rental income from foreign property as taxable for residents). Get tax advice in your home jurisdiction before treating Dubai property as a tax-efficient strategy.
+UAE imposes no personal income tax, no capital gains tax, no inheritance tax on property, and no property tax. Your home country may tax differently, particularly the US (which taxes citizens on worldwide income and may treat rental income as taxable), UK (which taxes rental income for non-domiciled landlords), and India (which treats rental income from foreign property as taxable for residents). Get tax advice in your home jurisdiction before treating Dubai property as a tax-efficient strategy.
 
 **Repatriating Rental Income and Sale Proceeds**
 
@@ -762,7 +762,7 @@ The UAE has no foreign-exchange controls. You can wire rental income or sale pro
 
 **Setting Up Property Management**
 
-Non-resident owners typically engage a property-management company (Binayah offers this service) for AED 5,000–15,000/year plus 5–8% of collected rent. The manager handles:
+Non-resident owners typically engage a property-management company (Binayah offers this service) for AED 5,000-15,000/year plus 5-8% of collected rent. The manager handles:
 
 - Tenant sourcing and Ejari registration
 - Rent collection and remittance to your overseas account
@@ -774,16 +774,16 @@ Without local management, you'll spend significant time coordinating tenants, co
 
 **Realistic Timeline for a Fully-Remote Purchase**
 
-- POA preparation and attestation: 3–4 weeks
-- Property search and offer: 1–4 weeks
-- Form F to title transfer (cash): 14–21 days
-- Mortgage closing if financed: add 30–45 days
+- POA preparation and attestation: 3-4 weeks
+- Property search and offer: 1-4 weeks
+- Form F to title transfer (cash): 14-21 days
+- Mortgage closing if financed: add 30-45 days
 
-A motivated buyer with a clear brief can be a Dubai property owner within 6–10 weeks without setting foot in the UAE. With one viewing trip, the same process compresses to 4–6 weeks.
+A motivated buyer with a clear brief can be a Dubai property owner within 6-10 weeks without setting foot in the UAE. With one viewing trip, the same process compresses to 4-6 weeks.
 
 **The Bottom Line**
 
-Dubai is one of the most foreigner-friendly property markets in the world. The legal infrastructure is mature, the digital tools are functional, and the freehold structure provides genuine ownership equivalent to citizens. The friction is logistical (attestation chains, document collection) — not legal. With a competent local agent or property manager, non-resident ownership is operationally smooth.`,
+Dubai is one of the most foreigner-friendly property markets in the world. The legal infrastructure is mature, the digital tools are functional, and the freehold structure provides genuine ownership equivalent to citizens. The friction is logistical (attestation chains, document collection), not legal. With a competent local agent or property manager, non-resident ownership is operationally smooth.`,
   },
   // ── NEW GUIDES ──────────────────────────────────────────────────────────
 
@@ -795,24 +795,24 @@ Dubai is one of the most foreigner-friendly property markets in the world. The l
     titleKey: "guide_shortTermRental_title",
     descriptionKey: "guide_shortTermRental_desc",
     relatedCommunities: ["Dubai Marina", "Palm Jumeirah", "Downtown Dubai"],
-    body: `Dubai's short-term rental (STR) market — Airbnb, Booking.com, and direct holiday letting — has grown into one of the most lucrative niches in Dubai property. Average daily rates of AED 600–2,500 for a well-managed 1-bedroom can translate to annual revenue of AED 90,000–180,000, far exceeding the AED 65,000–90,000 achievable from an annual tenancy. But the economics are asymmetric: the upside is real, but so is the operational complexity and licensing requirement.
+    body: `Dubai's short-term rental (STR) market, Airbnb, Booking.com, and direct holiday letting, has grown into one of the most lucrative niches in Dubai property. Average daily rates of AED 600-2,500 for a well-managed 1-bedroom can translate to annual revenue of AED 90,000-180,000, far exceeding the AED 65,000-90,000 achievable from an annual tenancy. But the economics are asymmetric: the upside is real, but so is the operational complexity and licensing requirement.
 
 **DTCM Licensing: The Non-Negotiable First Step**
 
-All short-term rentals in Dubai require a Holiday Home Licence from the Dubai Department of Tourism and Commerce Marketing (DTCM). Without it, operating on Airbnb or Booking.com is illegal and can result in fines of AED 10,000–100,000+.
+All short-term rentals in Dubai require a Holiday Home Licence from the Dubai Department of Tourism and Commerce Marketing (DTCM). Without it, operating on Airbnb or Booking.com is illegal and can result in fines of AED 10,000-100,000+.
 
 The application process:
 1. Register on the DTCM Holiday Homes Portal
 2. Submit: title deed, passport copy, property photos meeting DTCM standards
-3. Pay the annual licence fee (AED 1,520–3,020 depending on property size)
+3. Pay the annual licence fee (AED 1,520-3,020 depending on property size)
 4. Pass DTCM's property inspection (minimum furnishing and safety standards)
-5. Receive licence number — displayed on all listings
+5. Receive licence number, displayed on all listings
 
-Renewals are annual. The process takes 2–4 weeks for a first application.
+Renewals are annual. The process takes 2-4 weeks for a first application.
 
 **DTCM-Graded vs. Non-Graded**
 
-DTCM classifies holiday homes as Standard, Deluxe, or no-grade (budget). Graded properties command 15–25% higher average daily rates on platforms because guests trust the quality signal. Achieving Deluxe grade requires specific furniture quality, linen standards, and amenities. Worth the investment for properties in premium communities.
+DTCM classifies holiday homes as Standard, Deluxe, or no-grade (budget). Graded properties command 15-25% higher average daily rates on platforms because guests trust the quality signal. Achieving Deluxe grade requires specific furniture quality, linen standards, and amenities. Worth the investment for properties in premium communities.
 
 **Which Communities Deliver the Best STR Returns?**
 
@@ -831,35 +831,35 @@ Location determines STR performance more than any other variable. Key metrics: o
 **Short-Term vs. Long-Term: The Real Numbers**
 
 For a 1-bedroom apartment in Dubai Marina worth AED 1.2M:
-- Long-term annual rent: AED 75,000–95,000. Net yield after management: ~6%.
-- Short-term (owner-managed): AED 130,000–180,000 gross. After cleaning, platform fees, utilities, maintenance: AED 80,000–120,000 net. Net yield: 7–10%.
-- Short-term (agency-managed): Gross revenue similar; agency takes 20–30%. Net to owner: AED 90,000–126,000. Net yield: 7.5–10.5%.
+- Long-term annual rent: AED 75,000-95,000. Net yield after management: ~6%.
+- Short-term (owner-managed): AED 130,000-180,000 gross. After cleaning, platform fees, utilities, maintenance: AED 80,000-120,000 net. Net yield: 7-10%.
+- Short-term (agency-managed): Gross revenue similar; agency takes 20-30%. Net to owner: AED 90,000-126,000. Net yield: 7.5-10.5%.
 
-The STR premium is real — but only if occupancy exceeds ~55%. Below that, long-term tenancy often wins on net yield.
+The STR premium is real, but only if occupancy exceeds ~55%. Below that, long-term tenancy often wins on net yield.
 
 **Management Options**
 
 Owner-operated: Maximum revenue but significant time investment (check-ins, cleaning coordination, guest communication, maintenance). Feasible if you're based in Dubai.
 
-STR Management Company: Agencies like Frank Porter, Deluxe Holiday Homes, Maison Privee, and Kennedy Towers manage the full operation for 20–30% of gross revenue. They handle DTCM compliance, listing optimisation, dynamic pricing, guest communication, and cleaning. Recommended for non-resident investors.
+STR Management Company: Agencies like Frank Porter, Deluxe Holiday Homes, Maison Privee, and Kennedy Towers manage the full operation for 20-30% of gross revenue. They handle DTCM compliance, listing optimisation, dynamic pricing, guest communication, and cleaning. Recommended for non-resident investors.
 
 **Seasonal Patterns and Pricing Strategy**
 
-Dubai's STR market is counter-cyclical to European markets. Peak seasons: October–April (cooler weather + Dubai tourism season), New Year's Eve, and school half-terms. Shoulder: May, September. Low season: June–August (extreme heat, lower tourism volume). Dynamic pricing — adjusting rates daily based on demand — typically increases annual revenue 15–25% vs. flat pricing. All major STR management platforms use algorithmic pricing.
+Dubai's STR market is counter-cyclical to European markets. Peak seasons: October-April (cooler weather + Dubai tourism season), New Year's Eve, and school half-terms. Shoulder: May, September. Low season: June-August (extreme heat, lower tourism volume). Dynamic pricing, adjusting rates daily based on demand, typically increases annual revenue 15-25% vs. flat pricing. All major STR management platforms use algorithmic pricing.
 
 **The Tax Position**
 
-UAE levies no income tax on STR revenue. However, each municipality night incurs a 10% municipality fee (Dubai Tourism Dirham) which is charged to guests (not owners) and remitted to DTCM. This is handled automatically by Airbnb in Dubai. Your home country may tax STR income — seek advice from your domestic tax adviser.
+UAE levies no income tax on STR revenue. However, each municipality night incurs a 10% municipality fee (Dubai Tourism Dirham) which is charged to guests (not owners) and remitted to DTCM. This is handled automatically by Airbnb in Dubai. Your home country may tax STR income, seek advice from your domestic tax adviser.
 
 **Risk Factors**
 
-Regulatory risk: Dubai periodically reviews STR policy. In 2023, DTCM introduced stricter enforcement of unlicensed operators. The risk of licensing being tightened or fees increasing is real — though Dubai's tourism strategy (target 25M visitors by 2025) makes STR-hostile regulation unlikely.
+Regulatory risk: Dubai periodically reviews STR policy. In 2023, DTCM introduced stricter enforcement of unlicensed operators. The risk of licensing being tightened or fees increasing is real, though Dubai's tourism strategy (target 25M visitors by 2025) makes STR-hostile regulation unlikely.
 
 Owner association restrictions: Some buildings' OA rules prohibit short-term rentals. Always check with the building's owners association before purchasing specifically for STR. Communities known to be STR-unfriendly include some villa communities where OA CCRs restrict occupancy changes.
 
 **Verdict**
 
-For investors who want to maximise income from a Dubai property and are willing to accept the operational complexity (or pay an agency to manage it), STR outperforms annual tenancy by 20–50% in well-located properties. The best STR properties are: sea-view or landmark-view units in Marina, JBR, Downtown, or Palm Jumeirah; fully furnished to Deluxe DTCM standard; in buildings without OA restrictions.`,
+For investors who want to maximise income from a Dubai property and are willing to accept the operational complexity (or pay an agency to manage it), STR outperforms annual tenancy by 20-50% in well-located properties. The best STR properties are: sea-view or landmark-view units in Marina, JBR, Downtown, or Palm Jumeirah; fully furnished to Deluxe DTCM standard; in buildings without OA restrictions.`,
   },
 
   {
@@ -870,7 +870,7 @@ For investors who want to maximise income from a Dubai property and are willing 
     titleKey: "guide_serviceCharges_title",
     descriptionKey: "guide_serviceCharges_desc",
     relatedCommunities: ["Business Bay", "Dubai Marina", "Palm Jumeirah"],
-    body: `Service charges are the single most underestimated cost in Dubai property ownership. First-time buyers often focus entirely on purchase price and DLD fees, then are surprised by an ongoing annual obligation that can run AED 8,000–80,000+ per year depending on property size and building. This guide gives you the framework to evaluate service charges before you buy.
+    body: `Service charges are the single most underestimated cost in Dubai property ownership. First-time buyers often focus entirely on purchase price and DLD fees, then are surprised by an ongoing annual obligation that can run AED 8,000-80,000+ per year depending on property size and building. This guide gives you the framework to evaluate service charges before you buy.
 
 **What Are Service Charges?**
 
@@ -880,21 +880,21 @@ Service charges are set annually by the OA or developer and can increase year-on
 
 **How Are Service Charges Calculated?**
 
-RERA (Real Estate Regulatory Agency) introduced Service Charge Rate Indices in 2010 to provide a reference. RERA publishes annual benchmarks per community — the RERA Rate Calculator (available at dubailand.gov.ae) shows the approved rate for any registered building.
+RERA (Real Estate Regulatory Agency) introduced Service Charge Rate Indices in 2010 to provide a reference. RERA publishes annual benchmarks per community, the RERA Rate Calculator (available at dubailand.gov.ae) shows the approved rate for any registered building.
 
 Typical rates in 2026:
-- Budget apartment buildings (JVC, Dubai South): AED 8–14/sqft/year
-- Mid-market (Business Bay, Al Jaddaf, JLT): AED 12–18/sqft/year
-- Premium (Marina, Downtown, DIFC): AED 16–28/sqft/year
-- Ultra-premium (Palm Jumeirah signature towers, Bulgari): AED 25–50+/sqft/year
-- Villa communities: AED 3–8/sqft of plot area/year
+- Budget apartment buildings (JVC, Dubai South): AED 8-14/sqft/year
+- Mid-market (Business Bay, Al Jaddaf, JLT): AED 12-18/sqft/year
+- Premium (Marina, Downtown, DIFC): AED 16-28/sqft/year
+- Ultra-premium (Palm Jumeirah signature towers, Bulgari): AED 25-50+/sqft/year
+- Villa communities: AED 3-8/sqft of plot area/year
 
 For a 1,000 sqft apartment in Business Bay at AED 15/sqft: AED 15,000/year.
 For a 1,000 sqft apartment on Palm at AED 30/sqft: AED 30,000/year.
 
 **Who Pays Service Charges?**
 
-The owner pays service charges — not the tenant. This is the standard position across Dubai. Investors should factor service charges into their yield calculations. A gross yield of 7% on a AED 1.2M property might be AED 84,000/year rent, but after a AED 15,000 service charge and AED 5,000 in agent commission, the net yield is 5.3%.
+The owner pays service charges, not the tenant. This is the standard position across Dubai. Investors should factor service charges into their yield calculations. A gross yield of 7% on a AED 1.2M property might be AED 84,000/year rent, but after a AED 15,000 service charge and AED 5,000 in agent commission, the net yield is 5.3%.
 
 **Can Service Charges Be Disputed?**
 
@@ -920,11 +920,11 @@ Off-plan buyers should check the developer's indicative service charge rate. Dev
 
 **Master Community Fees vs. Building Fees**
 
-In masterplan communities (Dubai Hills Estate, Arabian Ranches, Palm Jumeirah), you may pay two fees: (1) a building-level service charge for your tower's shared facilities, and (2) a master community fee to the master developer (Emaar, Nakheel, DAMAC) for the wider community (roads, parks, community pools). Both are annual. Master community fees are typically AED 3–6/sqft of unit GFA.
+In masterplan communities (Dubai Hills Estate, Arabian Ranches, Palm Jumeirah), you may pay two fees: (1) a building-level service charge for your tower's shared facilities, and (2) a master community fee to the master developer (Emaar, Nakheel, DAMAC) for the wider community (roads, parks, community pools). Both are annual. Master community fees are typically AED 3-6/sqft of unit GFA.
 
 **The Bottom Line**
 
-Service charges are a real cost that can represent 1–3% of property value per year in premium locations. A penthouse buyer who ignores service charges may find their net rental yield is 2 percentage points lower than the gross headline number. Always net-of-service-charges when comparing investment opportunities.`,
+Service charges are a real cost that can represent 1-3% of property value per year in premium locations. A penthouse buyer who ignores service charges may find their net rental yield is 2 percentage points lower than the gross headline number. Always net-of-service-charges when comparing investment opportunities.`,
   },
 
   {
@@ -935,31 +935,31 @@ Service charges are a real cost that can represent 1–3% of property value per 
     titleKey: "guide_howToRent_title",
     descriptionKey: "guide_howToRent_desc",
     relatedCommunities: ["Dubai Marina", "JVC", "Business Bay"],
-    body: `Renting an apartment in Dubai as a foreigner or expat is remarkably straightforward compared to many global cities — but the mechanics differ enough from European and American markets that first-timers frequently make costly mistakes. This guide covers the full process, from property search to Ejari registration.
+    body: `Renting an apartment in Dubai as a foreigner or expat is remarkably straightforward compared to many global cities, but the mechanics differ enough from European and American markets that first-timers frequently make costly mistakes. This guide covers the full process, from property search to Ejari registration.
 
 **Step 1: Define Your Budget (Total Cost, Not Just Rent)**
 
-Dubai rental prices are quoted annually. When you see "AED 75,000/year" for a 1-bedroom in Dubai Marina, that's the annual rent — typically paid upfront by post-dated cheques. Your total first-year cost will be higher:
+Dubai rental prices are quoted annually. When you see "AED 75,000/year" for a 1-bedroom in Dubai Marina, that's the annual rent, typically paid upfront by post-dated cheques. Your total first-year cost will be higher:
 
 - Annual rent: AED 75,000
-- Agent fee: AED 3,750 (5% of annual rent — standard)
+- Agent fee: AED 3,750 (5% of annual rent, standard)
 - Ejari registration: AED 220
-- Security deposit: AED 5,000–7,500 (refundable on departure)
+- Security deposit: AED 5,000-7,500 (refundable on departure)
 - DEWA connection fee: AED 2,110 (electricity + water deposit)
-- Chiller/cooling (in many modern towers): AED 2,000–5,000/year additional
-- Moving costs: AED 1,000–3,000
+- Chiller/cooling (in many modern towers): AED 2,000-5,000/year additional
+- Moving costs: AED 1,000-3,000
 
-First year cash requirement for a AED 75K apartment: approximately AED 90,000–95,000.
+First year cash requirement for a AED 75K apartment: approximately AED 90,000-95,000.
 
 **Step 2: Choose Your Payment Structure**
 
-Dubai rents are paid by post-dated cheques. The fewer the cheques, the better the price — but the larger the upfront payment:
-- 1 cheque (full year upfront): Best price, typically 5–10% cheaper than 4 cheques
+Dubai rents are paid by post-dated cheques. The fewer the cheques, the better the price, but the larger the upfront payment:
+- 1 cheque (full year upfront): Best price, typically 5-10% cheaper than 4 cheques
 - 2 cheques (6-monthly): Common for budget-conscious tenants
 - 4 cheques (quarterly): Standard for most rentals
-- 12 cheques (monthly): Rare, only in select buildings; commands a premium of 10–15%
+- 12 cheques (monthly): Rare, only in select buildings; commands a premium of 10-15%
 
-If your bank account is not yet set up, request 2–4 cheques to give yourself time to establish UAE banking before the later cheques clear.
+If your bank account is not yet set up, request 2-4 cheques to give yourself time to establish UAE banking before the later cheques clear.
 
 **Step 3: Understand the Tenancy Law**
 
@@ -974,16 +974,16 @@ Dubai's rental market is governed by Decree No. 26 of 2007 (amended by Law No. 3
 **Step 4: The Property Search**
 
 Search on Bayut, Propertyfinder, or Binayah.ae. When you find a property:
-1. Verify it has a RERA-registered permit number (displayed on the listing) — unlicensed listings are illegal
+1. Verify it has a RERA-registered permit number (displayed on the listing), unlicensed listings are illegal
 2. Arrange a viewing through the listing agent
-3. If interested, move quickly — well-priced Dubai rentals rent within 48–72 hours
+3. If interested, move quickly, well-priced Dubai rentals rent within 48-72 hours
 
 **Step 5: Due Diligence Before Signing**
 
 Before signing the tenancy contract, check:
 - Title deed in the landlord's name (or POA if someone is acting for them)
 - No outstanding service charges on the unit (can be checked via DLD app)
-- DEWA account status — confirm utilities are disconnected from previous tenant
+- DEWA account status, confirm utilities are disconnected from previous tenant
 - Building amenities: chiller provider, gym access, pool access
 - Any restrictions (pets, smoking, short-term subletting)
 
@@ -995,7 +995,7 @@ Use RERA's standard tenancy contract form (Form H). This is mandatory in Dubai. 
 
 Ejari is the DLD's tenancy registration system. Registration is mandatory and costs AED 220. You need: signed tenancy contract, title deed copy, passport copies of both parties, and proof of payment.
 
-Ejari registration is what connects your tenancy to the DLD system — without it, you cannot apply for UAE residency visas, connect utilities in your name, or register children in schools. Your agent typically handles Ejari registration as part of their service.
+Ejari registration is what connects your tenancy to the DLD system, without it, you cannot apply for UAE residency visas, connect utilities in your name, or register children in schools. Your agent typically handles Ejari registration as part of their service.
 
 **Step 8: DEWA Connection**
 
@@ -1006,7 +1006,7 @@ Apply for DEWA (Dubai Electricity and Water Authority) connection online (dewa.g
 1. **Paying rent before signing contract and Ejari**: Never pay more than a security deposit holding cheque before the lease is signed and registered.
 2. **Not checking the RERA Rental Index**: Before agreeing to a renewal rent, always check the index. Landlords routinely test uninformed tenants.
 3. **Accepting verbal agreements**: Everything must be in writing in the tenancy contract. Verbal promises from landlords or agents about maintenance, renovations, or early exit are unenforceable.
-4. **Ignoring chiller costs**: In newer buildings, cooling is often through a district cooling system (Empower, Palm Utilities, etc.) which charges separately. A chiller bill can add AED 3,000–10,000/year on top of DEWA.
+4. **Ignoring chiller costs**: In newer buildings, cooling is often through a district cooling system (Empower, Palm Utilities, etc.) which charges separately. A chiller bill can add AED 3,000-10,000/year on top of DEWA.
 
 **Renewing vs. Moving**
 
@@ -1021,7 +1021,7 @@ Renewal is often better economics than moving: agent fee (5%), Ejari re-registra
     titleKey: "guide_propertyRoi_title",
     descriptionKey: "guide_propertyRoi_desc",
     relatedCommunities: ["JVC", "Business Bay", "Dubai Hills Estate"],
-    body: `Return on investment (ROI) in Dubai real estate has three components: rental yield, capital appreciation, and currency return. Each matters differently depending on your investment horizon, domicile, and risk appetite. This guide provides the analytical framework — and the actual numbers — for evaluating Dubai property investments.
+    body: `Return on investment (ROI) in Dubai real estate has three components: rental yield, capital appreciation, and currency return. Each matters differently depending on your investment horizon, domicile, and risk appetite. This guide provides the analytical framework, and the actual numbers, for evaluating Dubai property investments.
 
 **Component 1: Rental Yield**
 
@@ -1032,31 +1032,31 @@ Net rental yield subtracts: service charges, management fees, maintenance, DEWA 
 **2026 Gross Rental Yields by Community and Property Type:**
 
 Studios:
-- JVC: 7.8–9.2%
-- Dubai South: 7.5–8.5%
-- Al Jaddaf: 7.0–8.0%
-- Business Bay: 6.5–7.5%
-- Dubai Marina: 5.5–7.0%
-- Downtown Dubai: 5.0–6.5%
+- JVC: 7.8-9.2%
+- Dubai South: 7.5-8.5%
+- Al Jaddaf: 7.0-8.0%
+- Business Bay: 6.5-7.5%
+- Dubai Marina: 5.5-7.0%
+- Downtown Dubai: 5.0-6.5%
 
 1-Bedroom Apartments:
-- JVC: 7.0–8.5%
-- Business Bay: 6.0–7.5%
-- Dubai Marina: 5.5–7.0%
-- Downtown Dubai: 5.0–6.5%
-- Palm Jumeirah: 4.5–6.0%
+- JVC: 7.0-8.5%
+- Business Bay: 6.0-7.5%
+- Dubai Marina: 5.5-7.0%
+- Downtown Dubai: 5.0-6.5%
+- Palm Jumeirah: 4.5-6.0%
 
 2-Bedroom Apartments:
-- JVC: 6.5–7.5%
-- Business Bay: 5.5–7.0%
-- Dubai Marina: 5.0–6.5%
-- Downtown Dubai: 4.5–6.0%
+- JVC: 6.5-7.5%
+- Business Bay: 5.5-7.0%
+- Dubai Marina: 5.0-6.5%
+- Downtown Dubai: 4.5-6.0%
 
 Villas (3-5 BR):
-- DAMAC Hills 2: 5.5–7.0%
-- Arabian Ranches: 5.0–6.5%
-- Dubai Hills Estate: 4.5–5.5%
-- Palm Jumeirah (villa): 4.0–5.5%
+- DAMAC Hills 2: 5.5-7.0%
+- Arabian Ranches: 5.0-6.5%
+- Dubai Hills Estate: 4.5-5.5%
+- Palm Jumeirah (villa): 4.0-5.5%
 
 **Net Yield Calculation Example:**
 
@@ -1072,7 +1072,7 @@ Villas (3-5 BR):
 - Net annual income: AED 50,400
 - **Net yield: 4.2%**
 
-This is why Dubai's headline "6–9% yields" require scrutiny. Net of costs, a 7% gross yield typically delivers 4.5–5.5% net in a well-maintained property with professional management.
+This is why Dubai's headline "6-9% yields" require scrutiny. Net of costs, a 7% gross yield typically delivers 4.5-5.5% net in a well-maintained property with professional management.
 
 **Component 2: Capital Appreciation**
 
@@ -1086,27 +1086,27 @@ Dubai's capital appreciation since 2020:
 | JVC | AED 600 | AED 850 | +42% |
 | Business Bay | AED 1,000 | AED 1,500 | +50% |
 
-Past performance does not predict future returns. But the structural drivers — population growth of 100,000+ per year, constrained freehold land supply, and AED's USD peg making Dubai a dollar-economy asset — are still in place.
+Past performance does not predict future returns. But the structural drivers, population growth of 100,000+ per year, constrained freehold land supply, and AED's USD peg making Dubai a dollar-economy asset, are still in place.
 
-Forward appreciation estimates (2026–2028) from consensus analyst views: 5–15% for prime communities, 0–8% for secondary locations. Modelling zero appreciation is the conservative base case; the bull case models 10–20%.
+Forward appreciation estimates (2026-2028) from consensus analyst views: 5-15% for prime communities, 0-8% for secondary locations. Modelling zero appreciation is the conservative base case; the bull case models 10-20%.
 
 **Component 3: Currency Return**
 
-The AED is pegged to the USD at AED 3.6725/USD since 1997. For dollar-economy investors (US, Gulf) there is no currency risk. For euro, sterling, and ruble investors, the AED-USD peg means Dubai property is a USD asset. The EUR/USD and GBP/USD depreciation versus the dollar since 2021 has added 15–25% additional return for European investors in their home currency terms.
+The AED is pegged to the USD at AED 3.6725/USD since 1997. For dollar-economy investors (US, Gulf) there is no currency risk. For euro, sterling, and ruble investors, the AED-USD peg means Dubai property is a USD asset. The EUR/USD and GBP/USD depreciation versus the dollar since 2021 has added 15-25% additional return for European investors in their home currency terms.
 
 **Total Return Scenarios (10-Year Hold)**
 
-Scenario A — Yield focus, no appreciation (conservative):
+Scenario A, Yield focus, no appreciation (conservative):
 - Net yield: 4.5%/year × 10 years = 45% total yield
 - Capital appreciation: 0%
 - Total return: 45% on invested capital
 
-Scenario B — Balanced (base case):
+Scenario B, Balanced (base case):
 - Net yield: 4.5%/year × 10 years = 45%
 - Capital appreciation: 40% over 10 years
 - Total return: 85% on invested capital (annualised: 6.3%)
 
-Scenario C — Appreciation play (bull case):
+Scenario C, Appreciation play (bull case):
 - Net yield: 4.5%/year × 10 years = 45%
 - Capital appreciation: 80% over 10 years
 - Total return: 125% on invested capital (annualised: 8.5%)
@@ -1126,13 +1126,13 @@ Leverage amplifies both gains and losses. If the property appreciates 50%, the e
 **Key Metrics for Property Selection**
 
 1. **Price-to-rent ratio**: Lower is better. Dubai Marina: 18x (moderate). JVC: 12x (attractive). Downtown: 20x (less efficient for pure yield).
-2. **Capital-value density**: Properties priced AED 1,500–2,500/sqft in high-demand locations offer the best combination of yield and appreciation potential.
-3. **Liquidity**: Can you sell within 3–6 months if needed? Measure transaction volume in your target building/community.
+2. **Capital-value density**: Properties priced AED 1,500-2,500/sqft in high-demand locations offer the best combination of yield and appreciation potential.
+3. **Liquidity**: Can you sell within 3-6 months if needed? Measure transaction volume in your target building/community.
 4. **Developer delivery track record**: Off-plan in communities from developers with poor track records introduces completion risk that undermines calculated returns.
 
 **The 2026 Outlook**
 
-Dubai's transaction volumes reached record highs in 2024 and 2025. Supply pipeline is substantial: 60,000–80,000 units are expected to complete annually in 2025–2027. This creates a risk: if demand cannot absorb supply, secondary-market prices and yields soften. Mitigation: focus on undersupplied product types (luxury villas, marina-view apartments) rather than categories with oversupply risk (studio apartments in satellite communities where large off-plan pipelines are completing).`,
+Dubai's transaction volumes reached record highs in 2024 and 2025. Supply pipeline is substantial: 60,000-80,000 units are expected to complete annually in 2025-2027. This creates a risk: if demand cannot absorb supply, secondary-market prices and yields soften. Mitigation: focus on undersupplied product types (luxury villas, marina-view apartments) rather than categories with oversupply risk (studio apartments in satellite communities where large off-plan pipelines are completing).`,
   },
 
   {
@@ -1143,18 +1143,18 @@ Dubai's transaction volumes reached record highs in 2024 and 2025. Supply pipeli
     titleKey: "guide_marketOutlook_title",
     descriptionKey: "guide_marketOutlook_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Dubai Hills Estate"],
-    body: `Dubai's property market in 2026 is operating at an elevated but not irrational level. Transaction volumes, price appreciation, and developer launches have all hit records in the preceding 24 months — driven by a structural shift in who moves to Dubai and why. This guide provides a balanced assessment of where the market sits and where it's heading.
+    body: `Dubai's property market in 2026 is operating at an elevated but not irrational level. Transaction volumes, price appreciation, and developer launches have all hit records in the preceding 24 months, driven by a structural shift in who moves to Dubai and why. This guide provides a balanced assessment of where the market sits and where it's heading.
 
 **The Structural Shift Behind the Run-Up**
 
-The 2020–2026 Dubai property cycle is different from previous Dubai cycles (2003–2008, 2012–2014) for one fundamental reason: the buyers are end-users and long-term investors, not speculative flippers.
+The 2020-2026 Dubai property cycle is different from previous Dubai cycles (2003-2008, 2012-2014) for one fundamental reason: the buyers are end-users and long-term investors, not speculative flippers.
 
-In 2024 and 2025, 60–65% of Dubai residential transactions were for owner-occupation or long-term tenanted investment — versus 35–40% in the 2012–2014 cycle. This means the market is not relying on a "greater fool" to sustain prices. Buyers are staying.
+In 2024 and 2025, 60-65% of Dubai residential transactions were for owner-occupation or long-term tenanted investment, versus 35-40% in the 2012-2014 cycle. This means the market is not relying on a "greater fool" to sustain prices. Buyers are staying.
 
 Why are people buying? Three primary forces:
-1. **Population growth**: Dubai's population grew from 3.1M (2019) to 3.8M (2025) — 700,000 additional residents requiring housing.
-2. **Wealth migration**: Russia, EU, UK, India, and China have all experienced net wealth emigration since 2020. Dubai is the primary beneficiary, receiving estimated $4–6 billion/year in inbound HNW capital.
-3. **Business relocation**: 10,000+ companies relocated or established UAE entities in 2022–2025, bringing employees who need housing.
+1. **Population growth**: Dubai's population grew from 3.1M (2019) to 3.8M (2025), 700,000 additional residents requiring housing.
+2. **Wealth migration**: Russia, EU, UK, India, and China have all experienced net wealth emigration since 2020. Dubai is the primary beneficiary, receiving estimated $4-6 billion/year in inbound HNW capital.
+3. **Business relocation**: 10,000+ companies relocated or established UAE entities in 2022-2025, bringing employees who need housing.
 
 **Price Performance: What the Data Shows**
 
@@ -1165,13 +1165,13 @@ Dubai residential prices (average price/sqft across all units) have increased ap
 - 2024: +12%
 - 2025: +9%
 
-Cumulative 5-year appreciation: approximately 90–95% for the broad market. Premium sub-segments (Palm Jumeirah villas, Downtown super-prime) have appreciated 120–160%.
+Cumulative 5-year appreciation: approximately 90-95% for the broad market. Premium sub-segments (Palm Jumeirah villas, Downtown super-prime) have appreciated 120-160%.
 
-The rate of appreciation is decelerating. 2025's +9% was the slowest pace since 2021. This is not a red flag — it represents a market transitioning from rapid re-pricing to more sustainable annual appreciation.
+The rate of appreciation is decelerating. 2025's +9% was the slowest pace since 2021. This is not a red flag, it represents a market transitioning from rapid re-pricing to more sustainable annual appreciation.
 
 **Supply vs. Demand: The Critical Variable**
 
-Supply is the key risk in 2026 and beyond. Estimates suggest 50,000–75,000 residential units will complete in Dubai annually in 2025–2027, up from 30,000–40,000 in 2022–2023.
+Supply is the key risk in 2026 and beyond. Estimates suggest 50,000-75,000 residential units will complete in Dubai annually in 2025-2027, up from 30,000-40,000 in 2022-2023.
 
 Counter-argument: Dubai absorbed 40,000+ units/year in 2023 and 2024 without price correction. Binayah's data shows that luxury and community villas remain structurally undersupplied despite the large pipeline. The oversupply risk is concentrated in:
 - Studio and 1BR apartments in suburban communities (JVC, Dubai South, Dubai Industrial City) where large off-plan pipelines are completing simultaneously
@@ -1190,35 +1190,35 @@ Counter-argument: Dubai absorbed 40,000+ units/year in 2023 and 2024 without pri
 **The Interest Rate Variable**
 
 UAE mortgage rates are tied to EIBOR (Emirates Interbank Offered Rate), which follows US Fed Funds rate. The Fed's rate cycle matters for Dubai:
-- High rates (2022–2024): Squeezed mortgage affordability, but Dubai's cash-heavy buyer base buffered the impact
-- If US rates decline in 2025–2026: Lower UAE mortgage rates could stimulate demand and sustain/accelerate appreciation
-- Risk: If US rates stay high or increase, mortgage demand softens — cash buyers dominate anyway
+- High rates (2022-2024): Squeezed mortgage affordability, but Dubai's cash-heavy buyer base buffered the impact
+- If US rates decline in 2025-2026: Lower UAE mortgage rates could stimulate demand and sustain/accelerate appreciation
+- Risk: If US rates stay high or increase, mortgage demand softens, cash buyers dominate anyway
 
 **International Comparison: Is Dubai Still Good Value?**
 
 Price/sqft comparison (luxury apartments, central locations, 2026):
-- London: AED 6,000–14,000/sqft
-- New York: AED 7,000–18,000/sqft
-- Paris: AED 4,000–9,000/sqft
-- Singapore: AED 5,000–12,000/sqft
-- Dubai: AED 1,500–3,500/sqft
+- London: AED 6,000-14,000/sqft
+- New York: AED 7,000-18,000/sqft
+- Paris: AED 4,000-9,000/sqft
+- Singapore: AED 5,000-12,000/sqft
+- Dubai: AED 1,500-3,500/sqft
 
-On a price-per-sqft basis, Dubai remains 50–80% cheaper than comparable global alpha cities — despite the 5-year run-up. The yield gap reinforces this: London prime yields 2–3%, New York 3–4%, Dubai 4.5–6.5%. The relative value argument is intact.
+On a price-per-sqft basis, Dubai remains 50-80% cheaper than comparable global alpha cities, despite the 5-year run-up. The yield gap reinforces this: London prime yields 2-3%, New York 3-4%, Dubai 4.5-6.5%. The relative value argument is intact.
 
 **Risks to Watch**
 
-1. **Oversupply in budget segment**: Studio and 1BR apartments in satellite communities. If supply materially exceeds demand, price corrections of 10–20% in specific sub-markets are possible.
+1. **Oversupply in budget segment**: Studio and 1BR apartments in satellite communities. If supply materially exceeds demand, price corrections of 10-20% in specific sub-markets are possible.
 2. **Oil price**: UAE economy is diversified but oil still matters for GCC regional sentiment and government spending.
 3. **Regional geopolitical risk**: Dubai has been remarkably resilient to MENA conflicts, but it's not immune.
 4. **Developer insolvency**: With 200+ developers active in the off-plan market, quality varies enormously. A significant developer default would cause sentiment damage broader than the specific project.
 
 **Conclusion: Buy, Hold, or Rent?**
 
-For end-users: The lifestyle case for Dubai in 2026 is compelling. Buy in your price range in a community that suits your life — don't time the market.
+For end-users: The lifestyle case for Dubai in 2026 is compelling. Buy in your price range in a community that suits your life, don't time the market.
 
-For yield investors: The best opportunities are in mid-market properties (Business Bay, JLT, Al Jaddaf) where gross yields of 6.5–8% are achievable with lower capital required than prime.
+For yield investors: The best opportunities are in mid-market properties (Business Bay, JLT, Al Jaddaf) where gross yields of 6.5-8% are achievable with lower capital required than prime.
 
-For capital growth investors: Luxury villas and prime water-facing apartments continue to have structural support. The 2026–2028 outlook is more modest than 2021–2024, but 5–12% annual appreciation in selected segments is the consensus expectation.`,
+For capital growth investors: Luxury villas and prime water-facing apartments continue to have structural support. The 2026-2028 outlook is more modest than 2021-2024, but 5-12% annual appreciation in selected segments is the consensus expectation.`,
   },
 
   {
@@ -1246,7 +1246,7 @@ For non-Muslim expatriates: the default Sharia rules may be entirely contrary to
 
 **The 2021 Federal Law Change: A Critical Update**
 
-Federal Decree Law No. 41 of 2022 on Civil Personal Status (effective 2023) provides that **non-Muslim expatriates can opt for their home country's inheritance law** to govern their UAE estate — including Dubai real estate — if they register a Will or statutory declaration with the UAE authorities.
+Federal Decree Law No. 41 of 2022 on Civil Personal Status (effective 2023) provides that **non-Muslim expatriates can opt for their home country's inheritance law** to govern their UAE estate, including Dubai real estate, if they register a Will or statutory declaration with the UAE authorities.
 
 This is a fundamental change. Previously, the only option for non-Muslims to avoid Sharia succession was through corporate structures. Now, direct registration of a Will applying home-country law is available.
 
@@ -1256,7 +1256,7 @@ Non-Muslim expatriates should register a Will with the DIFC Wills Service Centre
 - Applies to all freehold property in Dubai (and optionally other emirates)
 - Can apply home-country law OR DIFC's own succession framework (based on English law)
 - Is drafted in English
-- Cost: AED 10,000–15,000 for registration (including legal fees)
+- Cost: AED 10,000-15,000 for registration (including legal fees)
 - Expedited probate processing: DIFC Court processes UAE property probate significantly faster than Sharia courts (weeks vs. months)
 
 For Russian nationals: Russia is a civil law jurisdiction with forced heirship rules. A DIFC Will can distribute your Dubai property according to your wishes, overriding the Sharia default.
@@ -1267,7 +1267,7 @@ For Chinese nationals: China's inheritance law allows testamentary freedom for f
 
 **Corporate Structures for Estate Planning**
 
-Before the 2022 law change, the most common estate planning tool was holding Dubai property through an offshore company (BVI, Cayman, Guernsey) or UAE free zone entity (DIFC, RAK ICC). Transferring company shares does not trigger UAE succession law — the property stays in the company and the shares pass under the company's jurisdiction law.
+Before the 2022 law change, the most common estate planning tool was holding Dubai property through an offshore company (BVI, Cayman, Guernsey) or UAE free zone entity (DIFC, RAK ICC). Transferring company shares does not trigger UAE succession law, the property stays in the company and the shares pass under the company's jurisdiction law.
 
 This remains relevant for:
 - Properties where the offshore holding structure has other advantages (multiple shareholders, complex ownership)
@@ -1281,13 +1281,13 @@ If an expatriate dies without a registered Will, the default process is:
 2. The court applies Sharia rules (for any property in the UAE, regardless of owner's religion, absent a Will)
 3. The court issues a succession certificate listing the heirs and their shares
 4. DLD then processes the title transfer to the heirs
-5. Each heir must accept their portion — property cannot be consolidated without unanimous heir consent
+5. Each heir must accept their portion, property cannot be consolidated without unanimous heir consent
 
-The process takes 6–18 months without a Will; 2–6 months with a DIFC registered Will.
+The process takes 6-18 months without a Will; 2-6 months with a DIFC registered Will.
 
 **No Inheritance Tax**
 
-The UAE charges no inheritance tax, no estate duty, and no capital gains tax on death. The transferred asset value is the current market value of the property — no tax is triggered by the transfer. This is a material benefit versus the UK (40% IHT above nil-rate band) or France (IFI wealth tax and inheritance taxes).
+The UAE charges no inheritance tax, no estate duty, and no capital gains tax on death. The transferred asset value is the current market value of the property, no tax is triggered by the transfer. This is a material benefit versus the UK (40% IHT above nil-rate band) or France (IFI wealth tax and inheritance taxes).
 
 **Practical Recommendations**
 
@@ -1295,9 +1295,9 @@ The UAE charges no inheritance tax, no estate duty, and no capital gains tax on 
 2. **Consider a UAE POA alongside the Will**: If you become incapacitated (not deceased), a UAE Power of Attorney allows someone to act on your behalf without requiring court intervention.
 3. **Inform your heirs**: Many overseas owners of Dubai property have not informed their family that they own it. Your heirs need to know about the asset and ideally where the title deed and Will are held.
 4. **Review every 5 years**: Family circumstances change (divorce, new children, deaths among your heirs). Your Will should be updated to reflect current reality.
-5. **Get domicile advice in your home jurisdiction**: For UK-domiciled individuals, worldwide assets (including Dubai) are subject to UK IHT. For US citizens, worldwide estate tax applies. The Dubai property's treatment in your home-country estate depends on your home law — not UAE law.
+5. **Get domicile advice in your home jurisdiction**: For UK-domiciled individuals, worldwide assets (including Dubai) are subject to UK IHT. For US citizens, worldwide estate tax applies. The Dubai property's treatment in your home-country estate depends on your home law, not UAE law.
 
-The good news: Dubai's legal infrastructure has matured significantly. The 2022 Federal Law change and the DIFC Wills Service Centre make proper non-Muslim succession planning accessible and relatively affordable. Do not leave Dubai property intestate — the consequences for your family are avoidable.`,
+The good news: Dubai's legal infrastructure has matured significantly. The 2022 Federal Law change and the DIFC Wills Service Centre make proper non-Muslim succession planning accessible and relatively affordable. Do not leave Dubai property intestate, the consequences for your family are avoidable.`,
   },
 ];
 

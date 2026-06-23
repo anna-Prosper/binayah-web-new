@@ -109,7 +109,7 @@ export default async function AdminInquiriesPage() {
                   <tr key={String(row._id)} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-3.5 text-gray-500 whitespace-nowrap text-xs">{formatDate(row.createdAt)}</td>
                     <td className="px-5 py-3.5 font-medium text-gray-900 whitespace-nowrap">
-                      {(row.name as string) || <span className="text-gray-300">—</span>}
+                      {(row.name as string) || <span className="text-gray-300">, </span>}
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex flex-col gap-1">
@@ -123,7 +123,7 @@ export default async function AdminInquiriesPage() {
                             {row.phone as string}
                           </a>
                         )}
-                        {!row.email && !row.phone && <span className="text-gray-300">—</span>}
+                        {!row.email && !row.phone && <span className="text-gray-300">, </span>}
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
@@ -131,18 +131,18 @@ export default async function AdminInquiriesPage() {
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
                           {row.source as string}
                         </span>
-                      ) : <span className="text-gray-300">—</span>}
+                      ) : <span className="text-gray-300">, </span>}
                     </td>
                     <td className="px-5 py-3.5">
                       {row.type ? (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                           {row.type as string}
                         </span>
-                      ) : <span className="text-gray-300">—</span>}
+                      ) : <span className="text-gray-300">, </span>}
                     </td>
                     <td className="px-5 py-3.5 text-gray-600 max-w-xs">
                       <span className="line-clamp-2 break-words">
-                        {(row.message as string) || <span className="text-gray-300">—</span>}
+                        {(row.message as string) || <span className="text-gray-300">, </span>}
                       </span>
                     </td>
                   </tr>

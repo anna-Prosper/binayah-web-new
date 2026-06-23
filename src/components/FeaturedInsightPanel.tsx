@@ -67,7 +67,7 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
   };
 
   const handleWhatsApp = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(`${article.title} — ${buildShareUrl("whatsapp")}`)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(`${article.title}, ${buildShareUrl("whatsapp")}`)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

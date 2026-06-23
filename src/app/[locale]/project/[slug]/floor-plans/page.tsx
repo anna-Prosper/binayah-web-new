@@ -56,7 +56,7 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
   const jsonLd = {
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
-    name:        `${project.name} — Floor Plans`,
+    name:        `${project.name}, Floor Plans`,
     url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}/floor-plans`,
     description: `Floor plans and unit configurations for ${project.name}`,
     address: {

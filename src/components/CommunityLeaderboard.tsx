@@ -45,7 +45,7 @@ function getMetricValue(row: LeaderboardRow, metric: MetricKey): number {
 }
 
 function formatMetric(value: number, metric: MetricKey): string {
-  if (value === 0) return "—";
+  if (value === 0) return ", ";
   switch (metric) {
     case "sales": return value.toLocaleString();
     case "ppsf": return `${value.toLocaleString()}`;

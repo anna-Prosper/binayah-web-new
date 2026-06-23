@@ -30,7 +30,7 @@ const questions: QuestionDef[] = [
   {
     id: "purpose",
     question: "What's your goal?",
-    subtitle: "This shapes everything — from location to ROI focus.",
+    subtitle: "This shapes everything, from location to ROI focus.",
     icon: Home,
     options: ["Buy to live in", "Buy to invest", "Buy to flip", "Rent a home", "Rent commercial"],
     popular: ["Buy to live in", "Buy to invest"],
@@ -46,7 +46,7 @@ const questions: QuestionDef[] = [
   {
     id: "areas",
     question: "Which areas interest you?",
-    subtitle: "Select all that appeal — or pick 'No preference'.",
+    subtitle: "Select all that appeal, or pick 'No preference'.",
     icon: MapPin,
     options: [
       "Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "Business Bay",
@@ -60,10 +60,10 @@ const questions: QuestionDef[] = [
     subtitle: "We'll find the best value within your range.",
     icon: Wallet,
     options: [
-      "Under AED 500K", "AED 500K – 1M", "AED 1M – 2M", "AED 2M – 5M",
-      "AED 5M – 10M", "AED 10M+",
+      "Under AED 500K", "AED 500K - 1M", "AED 1M - 2M", "AED 2M - 5M",
+      "AED 5M - 10M", "AED 10M+",
     ],
-    popular: ["AED 1M – 2M", "AED 2M – 5M"],
+    popular: ["AED 1M - 2M", "AED 2M - 5M"],
   },
   {
     id: "bedrooms",

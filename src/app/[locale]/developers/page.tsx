@@ -17,13 +17,13 @@ const titles: Record<string, string> = {
   he: "מפתחי נדל\"ן בדובאי | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
-  fr: "Découvrez les meilleurs promoteurs immobiliers de Dubaï — Emaar, DAMAC, Nakheel, Meraas, Aldar et plus. Trouvez des projets sur plan et prêts par promoteur.",
-  en: "Browse top Dubai real estate developers — Emaar, DAMAC, Nakheel, Meraas, Aldar and more. Find off-plan and ready projects by developer.",
-  ru: "Изучите ведущих застройщиков Дубая — Emaar, DAMAC, Nakheel, Meraas, Aldar и других. Найдите новостройки и готовые проекты от застройщика.",
-  ar: "تصفح كبار مطوري العقارات في دبي — إعمار، داماك، نخيل، مراس، الدار والمزيد. اعثر على مشاريع على الخارطة وجاهزة.",
-  zh: "浏览迪拜顶级房产开发商——Emaar、DAMAC、Nakheel、Meraas、Aldar等。按开发商查找期房和现房项目。",
-  vi: "Duyệt qua các nhà phát triển bất động sản hàng đầu tại Dubai — Emaar, DAMAC, Nakheel, Meraas, Aldar và nhiều hơn nữa. Tìm các dự án đang triển khai và đã hoàn thành từ nhà phát triển.",
-  he: "עיין במפתחי הנדל\"ן המובילים בדובאי — Emaar, DAMAC, Nakheel, Meraas, Aldar ועוד. מצא פרויקטים בתכנון ובביצוע על ידי מפתח.",
+  fr: "Découvrez les meilleurs promoteurs immobiliers de Dubaï, Emaar, DAMAC, Nakheel, Meraas, Aldar et plus. Trouvez des projets sur plan et prêts par promoteur.",
+  en: "Browse top Dubai real estate developers, Emaar, DAMAC, Nakheel, Meraas, Aldar and more. Find off-plan and ready projects by developer.",
+  ru: "Изучите ведущих застройщиков Дубая, Emaar, DAMAC, Nakheel, Meraas, Aldar и других. Найдите новостройки и готовые проекты от застройщика.",
+  ar: "تصفح كبار مطوري العقارات في دبي, إعمار، داماك، نخيل، مراس، الدار والمزيد. اعثر على مشاريع على الخارطة وجاهزة.",
+  zh: "浏览迪拜顶级房产开发商, , Emaar、DAMAC、Nakheel、Meraas、Aldar等。按开发商查找期房和现房项目。",
+  vi: "Duyệt qua các nhà phát triển bất động sản hàng đầu tại Dubai, Emaar, DAMAC, Nakheel, Meraas, Aldar và nhiều hơn nữa. Tìm các dự án đang triển khai và đã hoàn thành từ nhà phát triển.",
+  he: "עיין במפתחי הנדל\"ן המובילים בדובאי, Emaar, DAMAC, Nakheel, Meraas, Aldar ועוד. מצא פרויקטים בתכנון ובביצוע על ידי מפתח.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

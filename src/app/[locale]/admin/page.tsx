@@ -145,7 +145,7 @@ export default async function AdminLandingPage() {
                 {card.icon}
               </div>
               <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 tabular-nums">
-                {card.count != null ? card.count.toLocaleString() : "—"}
+                {card.count != null ? card.count.toLocaleString() : ", "}
               </div>
               <div className="font-semibold text-gray-800 text-sm mb-1">{card.label}</div>
               <div className="text-gray-400 text-xs flex-1">{card.description}</div>
@@ -161,7 +161,7 @@ export default async function AdminLandingPage() {
 
         {/* User Action Stats — last 30 days */}
         <div className="mt-10">
-          <h3 className="text-base font-semibold text-gray-700 mb-4">User Actions — Last 30 Days</h3>
+          <h3 className="text-base font-semibold text-gray-700 mb-4">User Actions, Last 30 Days</h3>
           <UserActionsStrip stats={[
             { key: "whatsapp", label: "WhatsApp Clicks", color: "#25D366", value: trackStats["whatsapp"] ?? 0 },
             { key: "phone", label: "Phone Clicks", color: "#D4A847", value: trackStats["phone"] ?? 0 },

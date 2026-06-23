@@ -66,7 +66,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
             {t("floorPlansLabel")}
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            {project.name} — {t("floorPlans")}
+            {project.name}, {t("floorPlans")}
           </h1>
           {project.community && (
             <p className="text-muted-foreground mt-1">
@@ -118,7 +118,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
                   {t("floorPlansLabel")}
                 </p>
                 <h2 className="text-base sm:text-lg font-bold text-foreground leading-tight">
-                  {project.name} — {t("floorPlans")}
+                  {project.name}, {t("floorPlans")}
                 </h2>
               </div>
               {project.floorPlanPdfUrl && (
@@ -230,7 +230,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
                   <p className="text-sm font-semibold text-foreground">{ut}</p>
                   {project.unitSizeMin && project.unitSizeMax && (
                     <p className="text-[10px] text-muted-foreground mt-0.5">
-                      {Number(project.unitSizeMin).toLocaleString()}–{Number(project.unitSizeMax).toLocaleString()} sqft
+                      {Number(project.unitSizeMin).toLocaleString()}-{Number(project.unitSizeMax).toLocaleString()} sqft
                     </p>
                   )}
                 </div>
@@ -248,7 +248,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
             When evaluating an off-plan unit in Dubai, the floor plan is your primary reference
             before the physical space is built. Beyond total area, examine the ratio of living space
             to bedrooms, kitchen positioning relative to the living area, and the balcony or terrace
-            area — which significantly affects lifestyle value and resale potential.
+            area, which significantly affects lifestyle value and resale potential.
           </p>
           <p>
             For investment buyers, units with efficient layouts and lower wastage ratios tend to

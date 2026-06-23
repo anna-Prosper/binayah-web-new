@@ -692,10 +692,10 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                             <ScoreBadge score={c.investmentScore} />
                           </div>
                           <div className="grid grid-cols-2 gap-2 text-xs">
-                            <div><p className="text-muted-foreground">{t("yield")}</p><p className="font-bold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : "—"}</p></div>
-                            <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-bold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
-                            <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : "—"}</p></div>
-                            <div><p className="text-muted-foreground">{t("avgRentYr")}</p><p className="font-semibold text-foreground">{c.avgRentPrice > 0 ? AED(c.avgRentPrice, true) : "—"}</p></div>
+                            <div><p className="text-muted-foreground">{t("yield")}</p><p className="font-bold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : ", "}</p></div>
+                            <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-bold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : ", "}</p></div>
+                            <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : ", "}</p></div>
+                            <div><p className="text-muted-foreground">{t("avgRentYr")}</p><p className="font-semibold text-foreground">{c.avgRentPrice > 0 ? AED(c.avgRentPrice, true) : ", "}</p></div>
                           </div>
                         </button>
                       ))}
@@ -712,7 +712,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="font-bold text-foreground">{selectedArea} — {t("investmentProfile")}</h3>
+                        <h3 className="font-bold text-foreground">{selectedArea}, {t("investmentProfile")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">{t("relativeScores")}</p>
                       </div>
                       <button onClick={() => setSelectedArea(null)} className="text-xs text-muted-foreground hover:text-foreground">{t("close")} &times;</button>
@@ -868,9 +868,9 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                               <td className="px-4 py-3 font-medium text-foreground">
                                 <div className="flex items-center gap-2"><span className="text-xs text-muted-foreground w-4">{i + 1}</span>{c.area}</div>
                               </td>
-                              <td className="px-4 py-3">{c.avgPricePerSqft > 0 ? <span className="font-semibold text-foreground">{c.avgPricePerSqft.toLocaleString()}</span> : <span className="text-muted-foreground/40">—</span>}</td>
-                              <td className="px-4 py-3 text-muted-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : <span className="text-muted-foreground/40">—</span>}</td>
-                              <td className="px-4 py-3">{c.rentalYield > 0 ? <span className={`font-semibold ${c.rentalYield >= 7 ? "text-emerald-600" : c.rentalYield >= 5 ? "text-amber-600" : "text-foreground"}`}>{c.rentalYield}%</span> : <span className="text-muted-foreground/40">—</span>}</td>
+                              <td className="px-4 py-3">{c.avgPricePerSqft > 0 ? <span className="font-semibold text-foreground">{c.avgPricePerSqft.toLocaleString()}</span> : <span className="text-muted-foreground/40">, </span>}</td>
+                              <td className="px-4 py-3 text-muted-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice, true) : <span className="text-muted-foreground/40">, </span>}</td>
+                              <td className="px-4 py-3">{c.rentalYield > 0 ? <span className={`font-semibold ${c.rentalYield >= 7 ? "text-emerald-600" : c.rentalYield >= 5 ? "text-amber-600" : "text-foreground"}`}>{c.rentalYield}%</span> : <span className="text-muted-foreground/40">, </span>}</td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-2">
                                   <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden"><div className="h-full rounded-full bg-primary" style={{ width: `${Math.min((c.totalListings / (sorted[0]?.totalListings || 1)) * 100, 100)}%` }} /></div>
@@ -1147,16 +1147,16 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                   </div>
                                 </td>
                                 <td className="px-4 py-3 text-muted-foreground text-xs">
-                                  {row.totalValue > 0 ? AED(row.totalValue, true) : <span className="text-muted-foreground/40">—</span>}
+                                  {row.totalValue > 0 ? AED(row.totalValue, true) : <span className="text-muted-foreground/40">, </span>}
                                 </td>
                                 <td className="px-4 py-3 text-muted-foreground text-xs">
-                                  {row.avgPrice > 0 ? AED(row.avgPrice, true) : <span className="text-muted-foreground/40">—</span>}
+                                  {row.avgPrice > 0 ? AED(row.avgPrice, true) : <span className="text-muted-foreground/40">, </span>}
                                 </td>
                                 <td className="px-4 py-3">
                                   {row.avgPpsf > 0 ? (
                                     <span className="font-semibold text-foreground text-xs">{row.avgPpsf.toLocaleString()}</span>
                                   ) : (
-                                    <span className="text-muted-foreground/40">—</span>
+                                    <span className="text-muted-foreground/40">, </span>
                                   )}
                                 </td>
                               </tr>
@@ -1222,7 +1222,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                     {b.name}
                                   </div>
                                 </td>
-                                <td className="px-4 py-3 text-muted-foreground text-xs">{b.area ?? "—"}</td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">{b.area ?? ", "}</td>
                                 <td className="px-4 py-3">
                                   <div className="flex items-center gap-2">
                                     <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
@@ -1234,12 +1234,12 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                     <span className="text-foreground font-semibold text-xs">{(b.sales ?? 0).toLocaleString()}</span>
                                   </div>
                                 </td>
-                                <td className="px-4 py-3 text-muted-foreground text-xs">{(b.units ?? 0) > 0 ? (b.units).toLocaleString() : <span className="text-muted-foreground/40">—</span>}</td>
+                                <td className="px-4 py-3 text-muted-foreground text-xs">{(b.units ?? 0) > 0 ? (b.units).toLocaleString() : <span className="text-muted-foreground/40">, </span>}</td>
                                 <td className="px-4 py-3">
                                   {(b.avgPpsf ?? 0) > 0 ? (
                                     <span className="font-semibold text-foreground text-xs">{Math.round(b.avgPpsf / 10.764).toLocaleString()}</span>
                                   ) : (
-                                    <span className="text-muted-foreground/40">—</span>
+                                    <span className="text-muted-foreground/40">, </span>
                                   )}
                                 </td>
                               </tr>
@@ -1477,9 +1477,9 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
               return (
                 <div className="grid grid-cols-2 gap-3 mb-5">
                   {[
-                    { label: t("priceSqft"), value: comm.avgPricePerSqft > 0 ? `AED ${comm.avgPricePerSqft.toLocaleString()}` : "—" },
-                    { label: t("rentalYield"), value: comm.rentalYield > 0 ? `${comm.rentalYield}%` : "—" },
-                    { label: t("investmentScore"), value: comm.investmentScore > 0 ? `${comm.investmentScore}/100` : "—" },
+                    { label: t("priceSqft"), value: comm.avgPricePerSqft > 0 ? `AED ${comm.avgPricePerSqft.toLocaleString()}` : ", " },
+                    { label: t("rentalYield"), value: comm.rentalYield > 0 ? `${comm.rentalYield}%` : ", " },
+                    { label: t("investmentScore"), value: comm.investmentScore > 0 ? `${comm.investmentScore}/100` : ", " },
                     { label: t("offPlan"), value: `${comm.offPlanCount} of ${comm.totalListings}` },
                   ].map((item) => (
                     <div key={item.label} className="bg-muted/30 rounded-xl p-3">

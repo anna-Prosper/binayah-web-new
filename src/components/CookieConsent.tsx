@@ -49,7 +49,7 @@ export default function CookieConsent() {
           setConsentCookie(legacy);
           return;
         }
-      } catch { /* localStorage disabled — fall through */ }
+      } catch { /* localStorage disabled, fall through */ }
 
       const timer = setTimeout(() => setVisible(true), 1500);
       return () => clearTimeout(timer);

@@ -29,7 +29,7 @@ export default function ChunkReloadGuard() {
     const reloadOnce = () => {
       try {
         const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
-        if (Date.now() - last < RELOAD_COOLDOWN_MS) return; // already reloaded — don't loop
+        if (Date.now() - last < RELOAD_COOLDOWN_MS) return; // already reloaded, don't loop
         sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
       } catch {
         /* sessionStorage unavailable — fall through to a single reload */

@@ -31,10 +31,10 @@ function formatDate(dateStr?: string | null) {
 }
 
 const LABEL: Record<string, { overline: string; h1: string; sub: string }> = {
-  en: { overline: "Project Guides", h1: "Project Guides", sub: "In-depth guides for Dubai's top off-plan projects — lifestyle, location, and investment insights." },
-  ru: { overline: "Гайды по проектам", h1: "Гайды по проектам", sub: "Подробные гайды по ведущим офф-план проектам Дубая — стиль жизни, локация, инвестиции." },
+  en: { overline: "Project Guides", h1: "Project Guides", sub: "In-depth guides for Dubai's top off-plan projects, lifestyle, location, and investment insights." },
+  ru: { overline: "Гайды по проектам", h1: "Гайды по проектам", sub: "Подробные гайды по ведущим офф-план проектам Дубая, стиль жизни, локация, инвестиции." },
   ar: { overline: "أدلة المشاريع", h1: "أدلة المشاريع", sub: "أدلة متعمقة لأفضل المشاريع على الخارطة في دبي." },
-  zh: { overline: "项目指南", h1: "项目指南", sub: "迪拜顶级期房项目深度指南——生活方式、地理位置与投资洞察。" },
+  zh: { overline: "项目指南", h1: "项目指南", sub: "迪拜顶级期房项目深度指南, , 生活方式、地理位置与投资洞察。" },
   vi: { overline: "Hướng dẫn dự án", h1: "Hướng dẫn dự án", sub: "Hướng dẫn chuyên sâu về các dự án off-plan hàng đầu Dubai." },
 };
 

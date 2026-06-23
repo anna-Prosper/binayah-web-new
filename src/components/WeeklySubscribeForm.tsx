@@ -56,7 +56,7 @@ const BUDGET_STEP = 100_000;
 const STATIC_KPI_TILES = [
   { area: "Dubai Marina", ppsf: "1,580", change: "+2.4%", up: true },
   { area: "Downtown Dubai", ppsf: "2,140", change: "+1.8%", up: true },
-  { area: "JVC", ppsf: "940", change: "–0.3%", up: false },
+  { area: "JVC", ppsf: "940", change: "-0.3%", up: false },
 ];
 
 function formatBudget(value: number): string {
@@ -374,7 +374,7 @@ function BudgetSlider({
         <span
           className={`text-xs font-mono tabular-nums ${isPulse ? "text-[hsl(40,20%,95%)]" : "text-foreground"}`}
         >
-          {isDefault ? t("anyBudget") : `${formatBudget(currentMin)} — ${formatBudget(currentMax)}`}
+          {isDefault ? t("anyBudget") : `${formatBudget(currentMin)}, ${formatBudget(currentMax)}`}
         </span>
         {!isDefault && (
           <button
@@ -499,7 +499,7 @@ function ConfirmationPending({
         : "940",
       change: marketStats?.yoyChange
         ? `${marketStats.yoyChange > 0 ? "+" : ""}${(marketStats.yoyChange * 0.6 - 0.8).toFixed(1)}%`
-        : "–0.3%",
+        : "-0.3%",
       up: marketStats ? (marketStats.yoyChange ?? 0) >= 0.5 : false,
       live: !!marketStats,
     },

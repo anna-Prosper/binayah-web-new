@@ -397,11 +397,11 @@ function aggregateDevelopers(projects: Project[]): DeveloperStats[] {
 }
 
 function formatLatestLaunch(dateStr: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return ", ";
   try {
     return new Date(dateStr).toLocaleDateString("en-AE", { month: "short", year: "numeric" });
   } catch {
-    return "—";
+    return ", ";
   }
 }
 
@@ -473,7 +473,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
 
   const handleWhatsApp = () => {
     const params = new URLSearchParams({ utm_source: "whatsapp", utm_medium: "share", utm_campaign: "pulse-emirate-dubai" });
-    window.open(`https://wa.me/?text=${encodeURIComponent(`Dubai Market Report — ${shareUrl}?${params}`)}`, "_blank", "noopener");
+    window.open(`https://wa.me/?text=${encodeURIComponent(`Dubai Market Report, ${shareUrl}?${params}`)}`, "_blank", "noopener");
   };
 
   const txData = marketData?.transactions;
@@ -484,7 +484,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
   const offPlanCount = projects.filter((p) => (p.status ?? "").toLowerCase().includes("launch") || (p.status ?? "").toLowerCase().includes("off")).length;
   const offPlanSharePct = projects.length > 0 ? Math.round((offPlanCount / projects.length) * 100) : marketStats?.summary.offPlanShare ?? 0;
 
-  const mostActive = txData?.byArea?.[0]?.area ?? matrix.sort((a, b) => b.totalListings - a.totalListings)[0]?.area ?? "—";
+  const mostActive = txData?.byArea?.[0]?.area ?? matrix.sort((a, b) => b.totalListings - a.totalListings)[0]?.area ?? ", ";
 
   const sortedByPpsf = [...matrix].sort((a, b) => b.avgPricePerSqft - a.avgPricePerSqft);
   const sortedByYield = [...matrix].sort((a, b) => b.rentalYield - a.rentalYield);
@@ -578,7 +578,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           <motion.div variants={fadeUp}>
             <KpiCard
               label={t("kpiTxYtd")}
-              value={txData?.summary.totalTransactions ? txData.summary.totalTransactions.toLocaleString() : "—"}
+              value={txData?.summary.totalTransactions ? txData.summary.totalTransactions.toLocaleString() : ", "}
               sub={t("kpiYtd")}
               icon={BarChart3}
               gold
@@ -587,7 +587,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           <motion.div variants={fadeUp}>
             <KpiCard
               label={t("kpiAvgPpsf")}
-              value={txData?.summary.avgPpsf ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : "—"}
+              value={txData?.summary.avgPpsf ? `AED ${txData.summary.avgPpsf.toLocaleString()}` : ", "}
               sub={t("kpiActualSold")}
               icon={Activity}
             />
@@ -595,7 +595,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           <motion.div variants={fadeUp}>
             <KpiCard
               label={t("kpiAvgYield")}
-              value={marketStats?.summary.avgYield ? `${marketStats.summary.avgYield.toFixed(1)}%` : "—"}
+              value={marketStats?.summary.avgYield ? `${marketStats.summary.avgYield.toFixed(1)}%` : ", "}
               sub={t("kpiGross")}
               icon={Percent}
             />
@@ -603,7 +603,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           <motion.div variants={fadeUp}>
             <KpiCard
               label={t("kpiYoy")}
-              value="—"
+              value=", "
               sub={t("kpiYoyNote")}
               icon={TrendingUp}
             />
@@ -619,7 +619,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
           <motion.div variants={fadeUp}>
             <KpiCard
               label={t("kpiCommunities")}
-              value={matrix.length > 0 ? matrix.length.toLocaleString() : "—"}
+              value={matrix.length > 0 ? matrix.length.toLocaleString() : ", "}
               sub={t("kpiTracked")}
               icon={Globe}
             />
@@ -705,7 +705,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 <HighlightCard
                   eyebrow={t("highlightBestYield")}
                   title={bestYield.area}
-                  value={bestYield.rentalYield > 0 ? `${bestYield.rentalYield.toFixed(1)}%` : "—"}
+                  value={bestYield.rentalYield > 0 ? `${bestYield.rentalYield.toFixed(1)}%` : ", "}
                   sub={t("highlightGrossYield")}
                 />
               )}
@@ -713,7 +713,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 <HighlightCard
                   eyebrow={t("highlightFastestGrowth")}
                   title={fastestGrowth.area}
-                  value={fastestGrowth.investmentScore > 0 ? `${fastestGrowth.investmentScore}/100` : "—"}
+                  value={fastestGrowth.investmentScore > 0 ? `${fastestGrowth.investmentScore}/100` : ", "}
                   sub={t("highlightInvestScore")}
                 />
               )}
@@ -721,7 +721,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 <HighlightCard
                   eyebrow={t("highlightBestValue")}
                   title={bestValue.area}
-                  value={bestValue.avgPricePerSqft > 0 ? `AED ${bestValue.avgPricePerSqft.toLocaleString()}` : "—"}
+                  value={bestValue.avgPricePerSqft > 0 ? `AED ${bestValue.avgPricePerSqft.toLocaleString()}` : ", "}
                   sub={t("highlightPerSqft")}
                 />
               )}
@@ -781,7 +781,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                 <HighlightCard
                   eyebrow={t("devBestYield")}
                   title={devBestYield.developer}
-                  value={devBestYield.avgStartingPrice > 0 ? AED(devBestYield.avgStartingPrice) : "—"}
+                  value={devBestYield.avgStartingPrice > 0 ? AED(devBestYield.avgStartingPrice) : ", "}
                   sub={t("devAvgStartingPrice")}
                 />
               )}
@@ -845,7 +845,7 @@ export default function DubaiEmirateClient({ marketStats, marketData, areasData,
                             </span>
                           </td>
                           <td className="px-4 py-3 tabular-nums text-xs" style={{ color: PULSE_TEXT_MUTED }}>
-                            {dev.avgStartingPrice > 0 ? AED(dev.avgStartingPrice) : "—"}
+                            {dev.avgStartingPrice > 0 ? AED(dev.avgStartingPrice) : ", "}
                           </td>
                           <td className="px-4 py-3 text-xs" style={{ color: PULSE_TEXT_MUTED }}>
                             {formatLatestLaunch(dev.latestLaunch)}

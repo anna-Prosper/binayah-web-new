@@ -121,7 +121,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     ...(project.videoUrl ? {
       video: {
         "@type": "VideoObject",
-        name: `${project.name} – Project Video`,
+        name: `${project.name} - Project Video`,
         description: project.shortOverview || `Video overview of ${project.name} by ${project.developerName || "developer"} in ${project.community || project.city || "Dubai"}.`,
         thumbnailUrl: project.videoThumbnail || project.featuredImage,
         contentUrl: project.videoUrl,

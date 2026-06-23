@@ -102,7 +102,7 @@ export default function PulseEmirateNav() {
                 color: "hsl(168, 35%, 22%)",
                 letterSpacing: "0.06em",
               }}
-              aria-label={`${t(id as "abuDhabi" | "sharjah" | "rak" | "ajman")} — ${t("comingSoonTooltip")}`}
+              aria-label={`${t(id as "abuDhabi" | "sharjah" | "rak" | "ajman")}, ${t("comingSoonTooltip")}`}
             >
               {t(id as "abuDhabi" | "sharjah" | "rak" | "ajman")}
               <span

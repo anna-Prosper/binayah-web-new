@@ -2,7 +2,7 @@
 import { renderLandingOg, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/landingOg";
 
 export const runtime = "edge";
-export const alt = "Property for Sale in Dubai — Binayah";
+export const alt = "Property for Sale in Dubai, Binayah";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

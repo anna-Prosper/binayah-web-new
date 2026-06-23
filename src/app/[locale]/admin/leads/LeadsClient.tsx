@@ -368,7 +368,7 @@ function LeadRow({
     lead.project?.name ||
     lead.community ||
     (lead.intent && lead.intent.length ? lead.intent.join(", ") : "") ||
-    "—";
+    ", ";
 
   return (
     <tr className={`hover:bg-gray-50 transition cursor-pointer ${selected ? "bg-emerald-50/50" : ""}`} onClick={onOpen}>

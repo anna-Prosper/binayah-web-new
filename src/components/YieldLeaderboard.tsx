@@ -70,12 +70,12 @@ export default function YieldLeaderboard({ rows }: Props) {
 
           {/* Rent/sqft */}
           <p className="text-xs text-muted-foreground text-right w-16 tabular-nums">
-            {row.avgRentPerSqft > 0 ? row.avgRentPerSqft.toFixed(0) : "—"}
+            {row.avgRentPerSqft > 0 ? row.avgRentPerSqft.toFixed(0) : ", "}
           </p>
 
           {/* Sale/sqft */}
           <p className="text-xs text-muted-foreground text-right w-16 tabular-nums">
-            {row.avgSalePerSqft > 0 ? row.avgSalePerSqft.toLocaleString() : "—"}
+            {row.avgSalePerSqft > 0 ? row.avgSalePerSqft.toLocaleString() : ", "}
           </p>
 
           {/* Yield */}
@@ -86,7 +86,7 @@ export default function YieldLeaderboard({ rows }: Props) {
               fontVariantNumeric: "tabular-nums",
             }}
           >
-            {row.yieldPct > 0 ? `${row.yieldPct.toFixed(1)}%` : "—"}
+            {row.yieldPct > 0 ? `${row.yieldPct.toFixed(1)}%` : ", "}
           </p>
         </div>
       ))}

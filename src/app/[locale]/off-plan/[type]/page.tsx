@@ -59,7 +59,7 @@ function titleFor(typeLabel: string, locale: string): string {
 }
 function descFor(typeLabel: string, locale: string): string {
   switch (locale) {
-    case "ru": return `Новостройки (off-plan) — ${typeLabel.toLowerCase()} в Дубае. Гибкие планы рассрочки от ведущих застройщиков, высокий потенциал доходности.`;
+    case "ru": return `Новостройки (off-plan), ${typeLabel.toLowerCase()} в Дубае. Гибкие планы рассрочки от ведущих застройщиков, высокий потенциал доходности.`;
     case "ar": return `${typeLabel} على الخارطة في دبي من كبار المطوّرين. خطط سداد مرنة وإمكانية عائد مرتفع قبل التسليم.`;
     case "zh": return `迪拜期房${typeLabel}，来自顶级开发商。灵活付款计划，交房前高增值潜力。`;
     case "vi": return `${typeLabel} off-plan tại Dubai từ các chủ đầu tư hàng đầu. Kế hoạch thanh toán linh hoạt, tiềm năng tăng giá cao.`;
@@ -88,10 +88,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "Capital Gains Tax" },
       { n: "100%", label: "Escrow-Protected" },
     ],
-    faqHeading: "Off-Plan {type} in Dubai — FAQs",
+    faqHeading: "Off-Plan {type} in Dubai, FAQs",
     faqs: [
       { question: "Can foreigners buy off-plan {type} in Dubai?", answer: "Yes. All nationalities can buy off-plan {typeLower} on a freehold basis in Dubai's designated areas. You sign a Sales & Purchase Agreement (SPA) and the developer registers an Oqood (initial off-plan title) with the Dubai Land Department. No UAE residency is required, and full freehold ownership transfers to you on handover." },
-      { question: "How do off-plan payment plans work in Dubai?", answer: "Off-plan {typeLower} are sold on construction-linked payment plans — typically a 10–20% down payment on booking, staged installments during construction, and the balance on handover. Many projects also offer post-handover plans that spread payments over 1–3 years after you receive the keys." },
+      { question: "How do off-plan payment plans work in Dubai?", answer: "Off-plan {typeLower} are sold on construction-linked payment plans, typically a 10-20% down payment on booking, staged installments during construction, and the balance on handover. Many projects also offer post-handover plans that spread payments over 1-3 years after you receive the keys." },
       { question: "Are off-plan payments protected?", answer: "Yes. Dubai law (RERA) requires every off-plan project to deposit buyer payments into a regulated escrow account. Funds are released to the developer only as construction milestones are verified, protecting your money if a project is delayed." },
       { question: "Is off-plan a good investment in Dubai?", answer: "Off-plan {typeLower} are usually priced below ready units and let you lock in today's price while paying in installments. Buyers benefit from capital appreciation through the construction period, and Dubai's 0% capital-gains and property tax means gains are kept in full." },
       { question: "What fees apply when buying off-plan in Dubai?", answer: "Budget for the 4% Dubai Land Department registration fee, an Oqood registration fee (around AED 3,000) and any developer admin charges. There is no annual property tax. VAT does not apply to residential homes." },
@@ -108,10 +108,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "Impôt sur les plus-values" },
       { n: "100%", label: "Protégé par séquestre" },
     ],
-    faqHeading: "{type} sur plan à Dubai — FAQ",
+    faqHeading: "{type} sur plan à Dubai, FAQ",
     faqs: [
       { question: "Les étrangers peuvent-ils acheter des {typeLower} sur plan à Dubai ?", answer: "Oui. Toutes les nationalités peuvent acheter des {typeLower} sur plan en pleine propriété dans les zones désignées de Dubai. Vous signez un contrat de vente (SPA) et le promoteur enregistre un Oqood (titre initial sur plan) auprès du Dubai Land Department. Aucune résidence requise, et la pleine propriété vous est transférée à la livraison." },
-      { question: "Comment fonctionnent les plans de paiement sur plan à Dubai ?", answer: "Les {typeLower} sur plan sont vendus avec des plans de paiement liés à la construction — généralement un acompte de 10 à 20 % à la réservation, des versements échelonnés pendant la construction et le solde à la livraison. De nombreux projets proposent aussi des plans post-livraison étalés sur 1 à 3 ans après la remise des clés." },
+      { question: "Comment fonctionnent les plans de paiement sur plan à Dubai ?", answer: "Les {typeLower} sur plan sont vendus avec des plans de paiement liés à la construction, généralement un acompte de 10 à 20 % à la réservation, des versements échelonnés pendant la construction et le solde à la livraison. De nombreux projets proposent aussi des plans post-livraison étalés sur 1 à 3 ans après la remise des clés." },
       { question: "Les paiements sur plan sont-ils protégés ?", answer: "Oui. La loi de Dubai (RERA) impose que chaque projet sur plan dépose les paiements des acheteurs sur un compte séquestre réglementé. Les fonds ne sont versés au promoteur qu'à mesure que les étapes de construction sont validées, protégeant votre argent en cas de retard." },
       { question: "Le sur plan est-il un bon investissement à Dubai ?", answer: "Les {typeLower} sur plan sont généralement moins chers que les biens livrés et permettent de bloquer le prix d'aujourd'hui tout en payant par versements. Les acheteurs profitent de la plus-value pendant la construction, et l'absence d'impôt sur les plus-values et la propriété à Dubai signifie que les gains sont conservés en totalité." },
       { question: "Quels frais s'appliquent lors d'un achat sur plan à Dubai ?", answer: "Prévoyez les frais d'enregistrement de 4 % du Dubai Land Department, des frais d'enregistrement Oqood (environ 3 000 AED) et d'éventuels frais administratifs du promoteur. Il n'y a pas d'impôt foncier annuel. La TVA ne s'applique pas aux logements résidentiels." },
@@ -128,10 +128,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "Налог на прирост капитала" },
       { n: "100%", label: "Защита через эскроу" },
     ],
-    faqHeading: "{type} в новостройках Дубая — частые вопросы",
+    faqHeading: "{type} в новостройках Дубая, частые вопросы",
     faqs: [
       { question: "Могут ли иностранцы покупать {typeLower} в новостройках Дубая?", answer: "Да. Граждане любых стран могут покупать {typeLower} в новостройках в полную собственность (freehold) в специально отведённых районах Дубая. Вы подписываете договор купли-продажи (SPA), а застройщик регистрирует Oqood (первичный титул на стадии строительства) в Земельном департаменте Дубая. Резидентство ОАЭ не требуется, полная собственность переходит к вам при передаче объекта." },
-      { question: "Как работают планы рассрочки в новостройках Дубая?", answer: "Off-plan {typeLower} продаются по планам, привязанным к ходу строительства — обычно 10–20% первоначальный взнос при бронировании, поэтапные платежи во время строительства и остаток при передаче. Многие проекты также предлагают планы с оплатой после передачи ключей на срок 1–3 года." },
+      { question: "Как работают планы рассрочки в новостройках Дубая?", answer: "Off-plan {typeLower} продаются по планам, привязанным к ходу строительства, обычно 10-20% первоначальный взнос при бронировании, поэтапные платежи во время строительства и остаток при передаче. Многие проекты также предлагают планы с оплатой после передачи ключей на срок 1-3 года." },
       { question: "Защищены ли платежи в новостройках?", answer: "Да. Закон Дубая (RERA) требует, чтобы каждый проект на стадии строительства размещал платежи покупателей на регулируемом эскроу-счёте. Средства передаются застройщику только по мере подтверждения этапов строительства, что защищает ваши деньги при задержках." },
       { question: "Выгодно ли инвестировать в новостройки Дубая?", answer: "Off-plan {typeLower} обычно стоят дешевле готовых объектов и позволяют зафиксировать сегодняшнюю цену, оплачивая в рассрочку. Покупатели получают прирост стоимости за период строительства, а нулевой налог на прирост капитала и недвижимость в Дубае означает, что прибыль остаётся у вас полностью." },
       { question: "Какие сборы возникают при покупке в новостройке Дубая?", answer: "Заложите 4% сбор за регистрацию в Земельном департаменте Дубая, сбор за регистрацию Oqood (около 3 000 AED) и возможные административные сборы застройщика. Ежегодного налога на недвижимость нет. НДС не применяется к жилой недвижимости." },
@@ -148,10 +148,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "ضريبة الأرباح الرأسمالية" },
       { n: "100%", label: "محمي بحساب ضمان" },
     ],
-    faqHeading: "{type} على الخارطة في دبي — الأسئلة الشائعة",
+    faqHeading: "{type} على الخارطة في دبي, الأسئلة الشائعة",
     faqs: [
       { question: "هل يمكن للأجانب شراء {type} على الخارطة في دبي؟", answer: "نعم. يمكن لجميع الجنسيات شراء العقارات على الخارطة بنظام التملك الحر في المناطق المخصصة في دبي. توقّع اتفاقية بيع وشراء (SPA) ويسجّل المطوّر «أوقود» (سند ملكية مبدئي للعقار على الخارطة) لدى دائرة الأراضي والأملاك في دبي. لا تُشترط الإقامة في الإمارات، وتنتقل إليك الملكية الكاملة عند التسليم." },
-      { question: "كيف تعمل خطط السداد على الخارطة في دبي؟", answer: "تُباع العقارات على الخارطة بخطط سداد مرتبطة بمراحل البناء — عادةً دفعة أولى بنسبة 10–20% عند الحجز، وأقساط مرحلية أثناء البناء، والرصيد عند التسليم. كما تقدّم مشاريع كثيرة خطط ما بعد التسليم تمتد من سنة إلى ثلاث سنوات بعد استلام المفاتيح." },
+      { question: "كيف تعمل خطط السداد على الخارطة في دبي؟", answer: "تُباع العقارات على الخارطة بخطط سداد مرتبطة بمراحل البناء, عادةً دفعة أولى بنسبة 10-20% عند الحجز، وأقساط مرحلية أثناء البناء، والرصيد عند التسليم. كما تقدّم مشاريع كثيرة خطط ما بعد التسليم تمتد من سنة إلى ثلاث سنوات بعد استلام المفاتيح." },
       { question: "هل المدفوعات على الخارطة محمية؟", answer: "نعم. يفرض قانون دبي (RERA) على كل مشروع على الخارطة إيداع مدفوعات المشترين في حساب ضمان (إسكرو) خاضع للرقابة. ولا تُفرَج الأموال للمطوّر إلا مع التحقق من إنجاز مراحل البناء، مما يحمي أموالك في حال تأخّر المشروع." },
       { question: "هل الشراء على الخارطة استثمار جيد في دبي؟", answer: "غالبًا ما تكون أسعار العقارات على الخارطة أقل من الجاهزة، وتتيح لك تثبيت سعر اليوم مع السداد بالأقساط. يستفيد المشترون من ارتفاع رأس المال خلال فترة البناء، وانعدام ضريبة الأرباح الرأسمالية والعقارات في دبي يعني الاحتفاظ بالأرباح بالكامل." },
       { question: "ما الرسوم المترتبة عند الشراء على الخارطة في دبي؟", answer: "احسب رسوم تسجيل بنسبة 4% لدائرة الأراضي والأملاك في دبي، ورسوم تسجيل «أوقود» (نحو 3,000 درهم)، وأي رسوم إدارية للمطوّر. لا توجد ضريبة عقارية سنوية، ولا تُطبَّق ضريبة القيمة المضافة على المساكن السكنية." },
@@ -168,10 +168,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "资本利得税" },
       { n: "100%", label: "托管账户保护" },
     ],
-    faqHeading: "迪拜期房{type} — 常见问题",
+    faqHeading: "迪拜期房{type}, 常见问题",
     faqs: [
       { question: "外国人可以在迪拜购买期房{type}吗？", answer: "可以。所有国籍人士均可在迪拜指定区域以永久产权（freehold）方式购买期房。您签署买卖协议（SPA），开发商向迪拜土地局登记 Oqood（期房初始产权）。无需阿联酋居留身份，交房时完整产权即转移给您。" },
-      { question: "迪拜期房的付款计划如何运作？", answer: "期房{type}按与施工进度挂钩的付款计划销售——通常预订时支付 10–20% 首付，施工期间分期付款，交房时支付尾款。许多项目还提供交房后付款计划，在收房后 1–3 年内分摊付款。" },
+      { question: "迪拜期房的付款计划如何运作？", answer: "期房{type}按与施工进度挂钩的付款计划销售, , 通常预订时支付 10-20% 首付，施工期间分期付款，交房时支付尾款。许多项目还提供交房后付款计划，在收房后 1-3 年内分摊付款。" },
       { question: "期房付款受保护吗？", answer: "受保护。迪拜法律（RERA）要求每个期房项目将购房款存入受监管的托管（escrow）账户。只有在施工里程碑得到核实后，资金才会拨付给开发商，从而在项目延期时保护您的资金。" },
       { question: "期房在迪拜是好的投资吗？", answer: "期房{type}通常定价低于现房，可让您锁定当前价格并分期付款。买家可在施工期间获得资本增值，而迪拜 0% 的资本利得税和房产税意味着收益可全额保留。" },
       { question: "在迪拜购买期房需要支付哪些费用？", answer: "请预留迪拜土地局 4% 的登记费、Oqood 登记费（约 3,000 迪拉姆）以及开发商的行政费用。没有年度房产税，住宅物业不征收增值税。" },
@@ -188,10 +188,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "Thuế lãi vốn" },
       { n: "100%", label: "Bảo vệ qua ký quỹ" },
     ],
-    faqHeading: "{type} off-plan tại Dubai — Câu hỏi thường gặp",
+    faqHeading: "{type} off-plan tại Dubai, Câu hỏi thường gặp",
     faqs: [
       { question: "Người nước ngoài có được mua {typeLower} off-plan tại Dubai không?", answer: "Có. Mọi quốc tịch đều có thể mua bất động sản off-plan theo hình thức sở hữu vĩnh viễn (freehold) tại các khu vực được chỉ định ở Dubai. Bạn ký Hợp đồng Mua bán (SPA) và chủ đầu tư đăng ký Oqood (giấy chứng nhận sở hữu off-plan ban đầu) với Sở Đất đai Dubai. Không cần thường trú tại UAE, và quyền sở hữu đầy đủ được chuyển cho bạn khi bàn giao." },
-      { question: "Kế hoạch thanh toán off-plan tại Dubai hoạt động thế nào?", answer: "Bất động sản off-plan được bán theo kế hoạch thanh toán gắn với tiến độ xây dựng — thường là trả trước 10–20% khi đặt chỗ, các đợt theo tiến độ trong quá trình xây dựng và phần còn lại khi bàn giao. Nhiều dự án còn có kế hoạch sau bàn giao kéo dài 1–3 năm sau khi nhận nhà." },
+      { question: "Kế hoạch thanh toán off-plan tại Dubai hoạt động thế nào?", answer: "Bất động sản off-plan được bán theo kế hoạch thanh toán gắn với tiến độ xây dựng, thường là trả trước 10-20% khi đặt chỗ, các đợt theo tiến độ trong quá trình xây dựng và phần còn lại khi bàn giao. Nhiều dự án còn có kế hoạch sau bàn giao kéo dài 1-3 năm sau khi nhận nhà." },
       { question: "Các khoản thanh toán off-plan có được bảo vệ không?", answer: "Có. Luật Dubai (RERA) yêu cầu mọi dự án off-plan gửi tiền thanh toán của người mua vào tài khoản ký quỹ (escrow) được quản lý. Tiền chỉ được giải ngân cho chủ đầu tư khi các mốc xây dựng được xác minh, bảo vệ tiền của bạn nếu dự án chậm tiến độ." },
       { question: "Off-plan có phải khoản đầu tư tốt tại Dubai không?", answer: "Bất động sản off-plan thường có giá thấp hơn nhà có sẵn và cho phép bạn chốt giá hôm nay trong khi trả góp. Người mua hưởng lợi từ tăng giá trong giai đoạn xây dựng, và mức thuế lãi vốn và thuế bất động sản 0% của Dubai nghĩa là lợi nhuận được giữ trọn vẹn." },
       { question: "Mua off-plan tại Dubai phải trả những phí gì?", answer: "Hãy dự trù phí đăng ký 4% của Sở Đất đai Dubai, phí đăng ký Oqood (khoảng 3.000 AED) và các phí hành chính của chủ đầu tư. Không có thuế bất động sản hằng năm, và VAT không áp dụng cho nhà ở." },
@@ -208,10 +208,10 @@ const CONTENT: Record<string, LandingContent> = {
       { n: "0%", label: "מס רווחי הון" },
       { n: "100%", label: "מוגן בנאמנות" },
     ],
-    faqHeading: "{type} על הנייר בדובאי — שאלות נפוצות",
+    faqHeading: "{type} על הנייר בדובאי, שאלות נפוצות",
     faqs: [
       { question: "האם זרים יכולים לקנות {type} על הנייר בדובאי?", answer: "כן. כל הלאומים יכולים לרכוש נכסים על הנייר בבעלות מלאה (freehold) באזורים המיועדים בדובאי. חותמים על הסכם מכר (SPA) והיזם רושם Oqood (רישום בעלות ראשוני לנכס על הנייר) ברשות המקרקעין של דובאי. אין צורך בתושבות באיחוד, והבעלות המלאה עוברת אליכם במסירה." },
-      { question: "כיצד פועלים מסלולי התשלום על הנייר בדובאי?", answer: "נכסים על הנייר נמכרים במסלולי תשלום הצמודים להתקדמות הבנייה — בדרך כלל מקדמה של 10–20% בהזמנה, תשלומים מדורגים במהלך הבנייה והיתרה במסירה. פרויקטים רבים מציעים גם מסלולים שלאחר המסירה הנפרסים על פני 1–3 שנים לאחר קבלת המפתחות." },
+      { question: "כיצד פועלים מסלולי התשלום על הנייר בדובאי?", answer: "נכסים על הנייר נמכרים במסלולי תשלום הצמודים להתקדמות הבנייה, בדרך כלל מקדמה של 10-20% בהזמנה, תשלומים מדורגים במהלך הבנייה והיתרה במסירה. פרויקטים רבים מציעים גם מסלולים שלאחר המסירה הנפרסים על פני 1-3 שנים לאחר קבלת המפתחות." },
       { question: "האם התשלומים על הנייר מוגנים?", answer: "כן. חוק דובאי (RERA) מחייב כל פרויקט על הנייר להפקיד את תשלומי הרוכשים בחשבון נאמנות (escrow) מפוקח. הכספים משוחררים ליזם רק עם אימות אבני הדרך בבנייה, מה שמגן על כספכם במקרה של עיכוב." },
       { question: "האם רכישה על הנייר היא השקעה טובה בדובאי?", answer: "נכסים על הנייר מתומחרים בדרך כלל מתחת לנכסים מוכנים ומאפשרים לנעול את מחיר היום תוך תשלום בפריסה. הרוכשים נהנים מעליית ערך לאורך תקופת הבנייה, ומס רווחי ההון והנכס של 0% בדובאי משמעו שהרווחים נשמרים במלואם." },
       { question: "אילו עמלות חלות ברכישה על הנייר בדובאי?", answer: "תכננו את אגרת הרישום של 4% לרשות המקרקעין של דובאי, אגרת רישום Oqood (כ-AED 3,000) וכל עמלות ניהול של היזם. אין מס רכוש שנתי, ומע\"מ אינו חל על דירות מגורים." },

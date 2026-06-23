@@ -23,7 +23,7 @@ const CONTENT = {
     heroLabel: "NOW ACCEPTING CRYPTO",
     h1a: "Buy Dubai Property",
     h1b: "with Cryptocurrency",
-    heroDesc: "Binayah Properties facilitates legal, DLD-compliant cryptocurrency real estate transactions — off-plan and secondary market. Full guidance from consultation to title deed.",
+    heroDesc: "Binayah Properties facilitates legal, DLD-compliant cryptocurrency real estate transactions, off-plan and secondary market. Full guidance from consultation to title deed.",
     heroCta: "Free Consultation",
     heroCtaArrow: "→",
     stats: [
@@ -39,26 +39,26 @@ const CONTENT = {
       { n: "01", title: "Choose Your Property", body: "Browse 3,000+ listings and off-plan projects. Our agents shortlist properties matching your budget and investment goals." },
       { n: "02", title: "Legal & KYC Review", body: "We verify your crypto source documentation (AML/KYC) and confirm crypto acceptance with the developer or seller." },
       { n: "03", title: "Secure Transfer", body: "Funds are transferred via a licensed crypto exchange or direct wallet transfer, converted to AED at the agreed rate for DLD registration." },
-      { n: "04", title: "Title Deed Issued", body: "The property is registered at the Dubai Land Department in your name. You receive the official title deed — full legal ownership." },
+      { n: "04", title: "Title Deed Issued", body: "The property is registered at the Dubai Land Department in your name. You receive the official title deed, full legal ownership." },
     ],
     whyTitle: "Why Dubai for Crypto Real Estate",
     whyPoints: [
       { title: "VARA Legal Framework", body: "Dubai's Virtual Assets Regulatory Authority (VARA) provides a clear, enforceable legal framework for crypto property transactions." },
       { title: "0% Tax", body: "No capital gains tax, property tax or income tax in the UAE. Your crypto-to-property investment grows completely tax-free." },
       { title: "DLD Registration", body: "Every transaction is registered with the Dubai Land Department. Your ownership is documented with an official government title deed." },
-      { title: "No Nationality Restrictions", body: "All nationalities welcome — including Russian, Chinese, European and GCC. Crypto is borderless, ideal for international investors." },
+      { title: "No Nationality Restrictions", body: "All nationalities welcome, including Russian, Chinese, European and GCC. Crypto is borderless, ideal for international investors." },
       { title: "10-Year Golden Visa", body: "Invest AED 2M+ (≈ $545K) in property and qualify for a UAE Golden Visa. Payable with cryptocurrency." },
-      { title: "5–10% Rental Yields", body: "Among the world's highest rental returns. Off-plan prices in key areas have risen 40–60% since 2021." },
+      { title: "5-10% Rental Yields", body: "Among the world's highest rental returns. Off-plan prices in key areas have risen 40-60% since 2021." },
     ],
     faqTitle: "Frequently Asked Questions",
     faqs: [
-      { q: "Is buying property in Dubai with cryptocurrency legal?", a: "Yes. The UAE's Virtual Assets Regulatory Authority (VARA) provides a clear legal framework. Multiple Dubai developers and the DLD facilitate crypto purchases. Transactions must comply with AML/KYC requirements — there are no legal barriers for foreign buyers." },
+      { q: "Is buying property in Dubai with cryptocurrency legal?", a: "Yes. The UAE's Virtual Assets Regulatory Authority (VARA) provides a clear legal framework. Multiple Dubai developers and the DLD facilitate crypto purchases. Transactions must comply with AML/KYC requirements, there are no legal barriers for foreign buyers." },
       { q: "Which cryptocurrencies are accepted?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) and BNB. USDT is most popular because it eliminates price volatility risk during the transaction period." },
       { q: "Does the DLD transfer require AED conversion?", a: "Yes. The DLD records transactions in AED. Your crypto is converted at an agreed exchange rate on the transaction date, via a licensed UAE exchange or through the developer. Your Binayah agent handles the full coordination." },
       { q: "Are there any taxes on crypto property purchases?", a: "No capital gains tax, no income tax, no wealth tax. The only costs are the DLD transfer fee (4% of the AED value) and the agency fee (~2%). No taxes on the crypto gains themselves." },
       { q: "What is the minimum investment?", a: "Studios start from AED 500,000 (≈$136K or ₿2). For a 10-year UAE Golden Visa, the minimum property value is AED 2,000,000 (≈$545K)." },
       { q: "Can Russian citizens buy Dubai property with crypto?", a: "Absolutely. No restrictions for Russian nationals. Cryptocurrency is especially convenient given international banking constraints. We handle the full process including AML documentation." },
-      { q: "How long does the purchase process take?", a: "Off-plan: 2–4 weeks from agreement to booking confirmation. Secondary market: 3–6 weeks for full transfer. The crypto transfer itself takes 1–3 business days once documents are in order." },
+      { q: "How long does the purchase process take?", a: "Off-plan: 2-4 weeks from agreement to booking confirmation. Secondary market: 3-6 weeks for full transfer. The crypto transfer itself takes 1-3 business days once documents are in order." },
       { q: "Which areas are best for crypto real estate investment?", a: "Dubai Marina, Downtown Dubai, Business Bay, Palm Jumeirah and JVC are top picks. Off-plan projects by Emaar, DAMAC and Sobha accept crypto for initial down payments with flexible payment plans." },
     ],
     ctaTitle: "Ready to Invest?",
@@ -76,7 +76,7 @@ const CONTENT = {
     heroLabel: "ПРИНИМАЕМ КРИПТОВАЛЮТУ",
     h1a: "Купить недвижимость в Дубае",
     h1b: "за криптовалюту",
-    heroDesc: "Binayah Properties оформляет юридически чистые сделки с недвижимостью в Дубае за криптовалюту — новостройки и вторичный рынок. Полное сопровождение на русском языке.",
+    heroDesc: "Binayah Properties оформляет юридически чистые сделки с недвижимостью в Дубае за криптовалюту, новостройки и вторичный рынок. Полное сопровождение на русском языке.",
     heroCta: "Бесплатная консультация",
     heroCtaArrow: "→",
     stats: [
@@ -96,22 +96,22 @@ const CONTENT = {
     ],
     whyTitle: "Почему Дубай для крипто-инвестиций",
     whyPoints: [
-      { title: "Правовая база VARA", body: "Управление виртуальными активами ОАЭ (VARA) регулирует криптовалютные операции. Дубай — один из самых крипто-дружественных городов мира." },
+      { title: "Правовая база VARA", body: "Управление виртуальными активами ОАЭ (VARA) регулирует криптовалютные операции. Дубай, один из самых крипто-дружественных городов мира." },
       { title: "0% налогов", body: "Нет налога на прирост капитала, налога на имущество и подоходного налога. Инвестиции растут без налоговой нагрузки." },
       { title: "Регистрация в DLD", body: "Все сделки регистрируются в Земельном департаменте Дубая. Вы получаете официальный правоустанавливающий документ государственного образца." },
-      { title: "Для граждан России", body: "Никаких ограничений для российских граждан. Криптовалюта — удобный инструмент в условиях международных банковских ограничений." },
-      { title: "Золотая виза на 10 лет", body: "Инвестируйте от 2 млн AED (≈$545 тыс.) — получите 10-летнюю Золотую визу ОАЭ. Оплата криптовалютой доступна." },
-      { title: "5–10% доходность", body: "Один из лучших показателей аренды в мире. Новостройки в ключевых районах выросли на 40–60% с 2021 года." },
+      { title: "Для граждан России", body: "Никаких ограничений для российских граждан. Криптовалюта, удобный инструмент в условиях международных банковских ограничений." },
+      { title: "Золотая виза на 10 лет", body: "Инвестируйте от 2 млн AED (≈$545 тыс.), получите 10-летнюю Золотую визу ОАЭ. Оплата криптовалютой доступна." },
+      { title: "5-10% доходность", body: "Один из лучших показателей аренды в мире. Новостройки в ключевых районах выросли на 40-60% с 2021 года." },
     ],
     faqTitle: "Частые вопросы",
     faqs: [
       { q: "Законно ли покупать недвижимость в Дубае за криптовалюту?", a: "Да. Управление виртуальными активами ОАЭ (VARA) обеспечивает чёткую правовую базу. Несколько застройщиков Дубая и DLD уже принимают криптовалюту. Сделки соответствуют требованиям AML/KYC." },
-      { q: "Какие криптовалюты принимаются?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) и BNB. Наиболее популярен USDT — стейблкоин, который исключает волатильность в период оформления." },
+      { q: "Какие криптовалюты принимаются?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) и BNB. Наиболее популярен USDT, стейблкоин, который исключает волатильность в период оформления." },
       { q: "Нужно ли конвертировать криптовалюту в дирхамы?", a: "Да. DLD регистрирует сделки в дирхамах. Криптовалюта конвертируется по согласованному курсу через лицензированную биржу ОАЭ. Конвертацию организует ваш агент Binayah." },
-      { q: "Какие налоги при покупке за криптовалюту?", a: "В ОАЭ нет налога на прирост капитала, подоходного налога и налога на богатство. Разовый сбор DLD — 4%, агентская комиссия — около 2%." },
-      { q: "Минимальная сумма инвестиций?", a: "Студии от 500 000 AED (~$136 тыс. или ₿2 по текущему курсу). Для 10-летней Золотой визы — от 2 000 000 AED (~$545 тыс.)." },
-      { q: "Могут ли граждане России купить недвижимость за криптовалюту?", a: "Да. Ограничений для российских граждан нет. Криптовалюта — особенно удобный способ оплаты с учётом международных банковских ограничений. Мы берём на себя все документы включая AML." },
-      { q: "Сколько времени занимает сделка?", a: "Новостройки: 2–4 недели до подтверждения бронирования. Вторичный рынок: 3–6 недель до полного переоформления. Сам перевод криптовалюты — 1–3 рабочих дня." },
+      { q: "Какие налоги при покупке за криптовалюту?", a: "В ОАЭ нет налога на прирост капитала, подоходного налога и налога на богатство. Разовый сбор DLD, 4%, агентская комиссия, около 2%." },
+      { q: "Минимальная сумма инвестиций?", a: "Студии от 500 000 AED (~$136 тыс. или ₿2 по текущему курсу). Для 10-летней Золотой визы, от 2 000 000 AED (~$545 тыс.)." },
+      { q: "Могут ли граждане России купить недвижимость за криптовалюту?", a: "Да. Ограничений для российских граждан нет. Криптовалюта, особенно удобный способ оплаты с учётом международных банковских ограничений. Мы берём на себя все документы включая AML." },
+      { q: "Сколько времени занимает сделка?", a: "Новостройки: 2-4 недели до подтверждения бронирования. Вторичный рынок: 3-6 недель до полного переоформления. Сам перевод криптовалюты, 1-3 рабочих дня." },
       { q: "Лучшие районы Дубая для крипто-инвестиций?", a: "Дубай Марина, Даунтаун, Бизнес-Бей, Пальма Джумейра и JVC. Застройщики Emaar, DAMAC и Sobha принимают криптовалюту в качестве первоначального взноса." },
     ],
     ctaTitle: "Готовы инвестировать?",
@@ -129,7 +129,7 @@ const CONTENT = {
     heroLabel: "نقبل العملات المشفرة",
     h1a: "اشترِ عقارات دبي",
     h1b: "بالبيتكوين والعملات المشفرة",
-    heroDesc: "تُيسّر بناية للعقارات معاملات عقارية متوافقة قانونيًا بالعملات المشفرة في دبي — المشاريع على الخارطة والسوق الثانوية. خدمة كاملة باللغة العربية.",
+    heroDesc: "تُيسّر بناية للعقارات معاملات عقارية متوافقة قانونيًا بالعملات المشفرة في دبي, المشاريع على الخارطة والسوق الثانوية. خدمة كاملة باللغة العربية.",
     heroCta: "استشارة مجانية",
     heroCtaArrow: "←",
     stats: [
@@ -145,15 +145,15 @@ const CONTENT = {
       { n: "١", title: "اختر عقارك", body: "أكثر من 3,000 عقار ومشروع على الخارطة. يختار وكلاؤنا العقارات المناسبة لميزانيتك وأهدافك الاستثمارية." },
       { n: "٢", title: "الفحص القانوني", body: "نتحقق من وثائق مصدر العملة المشفرة (AML/KYC) وننسق مع المطوّر أو البائع لتأكيد القبول." },
       { n: "٣", title: "معاملة آمنة", body: "تُحوَّل الأموال عبر بورصة مرخّصة أو من المحفظة مباشرةً، وتُحوَّل إلى درهم بالسعر المتفق عليه." },
-      { n: "٤", title: "استلام سند الملكية", body: "يُسجَّل العقار في دائرة الأراضي والأملاك باسمك. تحصل على سند الملكية الرسمي — ملكية قانونية كاملة." },
+      { n: "٤", title: "استلام سند الملكية", body: "يُسجَّل العقار في دائرة الأراضي والأملاك باسمك. تحصل على سند الملكية الرسمي, ملكية قانونية كاملة." },
     ],
     whyTitle: "لماذا دبي للاستثمار بالعملات المشفرة",
     whyPoints: [
       { title: "الإطار القانوني VARA", body: "توفّر هيئة تنظيم الأصول الافتراضية إطارًا قانونيًا واضحًا. دبي من أكثر مدن العالم ودًّا للعملات المشفرة." },
       { title: "0% ضرائب", body: "لا ضريبة على مكاسب رأس المال، لا ضريبة عقارية، لا ضريبة دخل. استثمارك ينمو خاليًا من الضرائب." },
       { title: "تسجيل DLD رسمي", body: "جميع المعاملات مسجّلة في دائرة الأراضي والأملاك. ملكيتك موثّقة بسند رسمي حكومي." },
-      { title: "مفتوح لجميع الجنسيات", body: "لا قيود على أي جنسية. العملة المشفرة وسيلة دفع بلا حدود — مثالية للمستثمرين الدوليين." },
-      { title: "إقامة ذهبية 10 سنوات", body: "استثمر 2 مليون درهم أو أكثر واحصل على تأشيرة ذهبية — مع إمكانية الدفع بالعملات المشفرة." },
+      { title: "مفتوح لجميع الجنسيات", body: "لا قيود على أي جنسية. العملة المشفرة وسيلة دفع بلا حدود, مثالية للمستثمرين الدوليين." },
+      { title: "إقامة ذهبية 10 سنوات", body: "استثمر 2 مليون درهم أو أكثر واحصل على تأشيرة ذهبية, مع إمكانية الدفع بالعملات المشفرة." },
       { title: "عائد 5-10%", body: "من أعلى عوائد الإيجار في العالم. ارتفعت أسعار المشاريع على الخارطة 40-60% منذ 2021." },
     ],
     faqTitle: "الأسئلة الشائعة",
@@ -181,7 +181,7 @@ const CONTENT = {
     heroLabel: "现已接受加密货币",
     h1a: "用加密货币",
     h1b: "购买迪拜房产",
-    heroDesc: "Binayah Properties为您办理迪拜合法合规的加密货币房产交易——期房项目与现房二手市场，提供全程中文服务。",
+    heroDesc: "Binayah Properties为您办理迪拜合法合规的加密货币房产交易, , 期房项目与现房二手市场，提供全程中文服务。",
     heroCta: "免费咨询",
     heroCtaArrow: "→",
     stats: [
@@ -197,7 +197,7 @@ const CONTENT = {
       { n: "01", title: "选择房产", body: "浏览3,000多套房源和期房项目。我们的经纪人根据您的预算和投资目标为您筛选最优选择。" },
       { n: "02", title: "法律与合规审查", body: "核实加密货币来源文件（AML/KYC），并与开发商或卖家确认接受加密货币付款。" },
       { n: "03", title: "安全交易", body: "通过持牌加密货币交易所或直接钱包转账完成付款，按约定汇率兑换为迪拉姆进行DLD登记。" },
-      { n: "04", title: "产权证书签发", body: "房产在迪拜土地局（DLD）以您的名义登记，您将收到官方产权证书——完全合法的所有权。" },
+      { n: "04", title: "产权证书签发", body: "房产在迪拜土地局（DLD）以您的名义登记，您将收到官方产权证书, , 完全合法的所有权。" },
     ],
     whyTitle: "为什么选择迪拜进行加密货币房产投资",
     whyPoints: [
@@ -233,7 +233,7 @@ const CONTENT = {
     heroLabel: "HIỆN CHẤP NHẬN TIỀN ĐIỆN TỬ",
     h1a: "Mua bất động sản Dubai",
     h1b: "bằng Tiền điện tử",
-    heroDesc: "Binayah Properties hỗ trợ các giao dịch bất động sản bằng tiền điện tử hợp pháp, tuân thủ DLD — off-plan và thị trường thứ cấp. Hướng dẫn trọn gói từ tư vấn đến sổ đỏ.",
+    heroDesc: "Binayah Properties hỗ trợ các giao dịch bất động sản bằng tiền điện tử hợp pháp, tuân thủ DLD, off-plan và thị trường thứ cấp. Hướng dẫn trọn gói từ tư vấn đến sổ đỏ.",
     heroCta: "Tư vấn miễn phí",
     heroCtaArrow: "→",
     stats: [
@@ -249,26 +249,26 @@ const CONTENT = {
       { n: "01", title: "Chọn bất động sản của bạn", body: "Khám phá hơn 3.000 tin đăng và dự án off-plan. Các chuyên viên của chúng tôi chọn lọc bất động sản phù hợp với ngân sách và mục tiêu đầu tư của bạn." },
       { n: "02", title: "Xét duyệt pháp lý & KYC", body: "Chúng tôi xác minh tài liệu nguồn gốc tiền điện tử của bạn (AML/KYC) và xác nhận việc chấp nhận tiền điện tử với chủ đầu tư hoặc người bán." },
       { n: "03", title: "Chuyển khoản an toàn", body: "Vốn được chuyển qua sàn giao dịch tiền điện tử được cấp phép hoặc chuyển khoản ví trực tiếp, chuyển đổi sang AED theo tỷ giá thỏa thuận để đăng ký DLD." },
-      { n: "04", title: "Cấp sổ đỏ", body: "Bất động sản được đăng ký tại Sở Đất đai Dubai dưới tên bạn. Bạn nhận sổ đỏ chính thức — quyền sở hữu hợp pháp đầy đủ." },
+      { n: "04", title: "Cấp sổ đỏ", body: "Bất động sản được đăng ký tại Sở Đất đai Dubai dưới tên bạn. Bạn nhận sổ đỏ chính thức, quyền sở hữu hợp pháp đầy đủ." },
     ],
     whyTitle: "Vì sao chọn Dubai cho bất động sản tiền điện tử",
     whyPoints: [
       { title: "Khung pháp lý VARA", body: "Cơ quan Quản lý Tài sản Ảo của Dubai (VARA) cung cấp khung pháp lý rõ ràng, có thể thực thi cho các giao dịch bất động sản bằng tiền điện tử." },
       { title: "0% thuế", body: "Không thuế lãi vốn, thuế bất động sản hay thuế thu nhập tại UAE. Khoản đầu tư tiền điện tử thành bất động sản của bạn tăng trưởng hoàn toàn miễn thuế." },
       { title: "Đăng ký DLD", body: "Mọi giao dịch được đăng ký với Sở Đất đai Dubai. Quyền sở hữu của bạn được ghi nhận bằng sổ đỏ chính thức của chính phủ." },
-      { title: "Không hạn chế quốc tịch", body: "Chào đón mọi quốc tịch — bao gồm Nga, Trung Quốc, châu Âu và GCC. Tiền điện tử không biên giới, lý tưởng cho nhà đầu tư quốc tế." },
+      { title: "Không hạn chế quốc tịch", body: "Chào đón mọi quốc tịch, bao gồm Nga, Trung Quốc, châu Âu và GCC. Tiền điện tử không biên giới, lý tưởng cho nhà đầu tư quốc tế." },
       { title: "Golden Visa 10 năm", body: "Đầu tư 2 triệu AED+ (≈ 545K USD) vào bất động sản và đủ điều kiện nhận Golden Visa UAE. Có thể thanh toán bằng tiền điện tử." },
-      { title: "Lợi suất cho thuê 5–10%", body: "Trong số lợi suất cho thuê cao nhất thế giới. Giá off-plan tại các khu vực chính đã tăng 40–60% kể từ năm 2021." },
+      { title: "Lợi suất cho thuê 5-10%", body: "Trong số lợi suất cho thuê cao nhất thế giới. Giá off-plan tại các khu vực chính đã tăng 40-60% kể từ năm 2021." },
     ],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
-      { q: "Mua bất động sản tại Dubai bằng tiền điện tử có hợp pháp không?", a: "Có. Cơ quan Quản lý Tài sản Ảo của UAE (VARA) cung cấp khung pháp lý rõ ràng. Nhiều chủ đầu tư Dubai và DLD hỗ trợ mua bằng tiền điện tử. Giao dịch phải tuân thủ yêu cầu AML/KYC — không có rào cản pháp lý cho người mua nước ngoài." },
+      { q: "Mua bất động sản tại Dubai bằng tiền điện tử có hợp pháp không?", a: "Có. Cơ quan Quản lý Tài sản Ảo của UAE (VARA) cung cấp khung pháp lý rõ ràng. Nhiều chủ đầu tư Dubai và DLD hỗ trợ mua bằng tiền điện tử. Giao dịch phải tuân thủ yêu cầu AML/KYC, không có rào cản pháp lý cho người mua nước ngoài." },
       { q: "Những loại tiền điện tử nào được chấp nhận?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) và BNB. USDT phổ biến nhất vì loại bỏ rủi ro biến động giá trong giai đoạn giao dịch." },
       { q: "Chuyển nhượng DLD có yêu cầu chuyển đổi sang AED không?", a: "Có. DLD ghi nhận giao dịch bằng AED. Tiền điện tử của bạn được chuyển đổi theo tỷ giá thỏa thuận vào ngày giao dịch, qua sàn giao dịch UAE được cấp phép hoặc qua chủ đầu tư. Chuyên viên Binayah xử lý toàn bộ việc phối hợp." },
       { q: "Có bất kỳ loại thuế nào trên giao dịch mua bất động sản bằng tiền điện tử không?", a: "Không thuế lãi vốn, không thuế thu nhập, không thuế tài sản. Chi phí duy nhất là phí chuyển nhượng DLD (4% giá trị AED) và phí môi giới (~2%). Không có thuế trên chính lãi tiền điện tử." },
       { q: "Khoản đầu tư tối thiểu là bao nhiêu?", a: "Studio khởi điểm từ 500.000 AED (≈136K USD hoặc ₿2). Để nhận Golden Visa UAE 10 năm, giá trị bất động sản tối thiểu là 2.000.000 AED (≈545K USD)." },
       { q: "Công dân Nga có thể mua bất động sản Dubai bằng tiền điện tử không?", a: "Hoàn toàn được. Không có hạn chế cho công dân Nga. Tiền điện tử đặc biệt tiện lợi do các hạn chế ngân hàng quốc tế. Chúng tôi xử lý toàn bộ quy trình bao gồm tài liệu AML." },
-      { q: "Quy trình mua mất bao lâu?", a: "Off-plan: 2–4 tuần từ thỏa thuận đến xác nhận đặt chỗ. Thị trường thứ cấp: 3–6 tuần cho chuyển nhượng đầy đủ. Bản thân việc chuyển tiền điện tử mất 1–3 ngày làm việc khi giấy tờ đã đầy đủ." },
+      { q: "Quy trình mua mất bao lâu?", a: "Off-plan: 2-4 tuần từ thỏa thuận đến xác nhận đặt chỗ. Thị trường thứ cấp: 3-6 tuần cho chuyển nhượng đầy đủ. Bản thân việc chuyển tiền điện tử mất 1-3 ngày làm việc khi giấy tờ đã đầy đủ." },
       { q: "Khu vực nào tốt nhất cho đầu tư bất động sản tiền điện tử?", a: "Dubai Marina, Downtown Dubai, Business Bay, Palm Jumeirah và JVC là những lựa chọn hàng đầu. Các dự án off-plan của Emaar, DAMAC và Sobha chấp nhận tiền điện tử cho khoản trả trước ban đầu với kế hoạch thanh toán linh hoạt." },
     ],
     ctaTitle: "Sẵn sàng đầu tư?",
@@ -285,7 +285,7 @@ const CONTENT = {
     "heroLabel": "מקבלים כעת קריפטו",
     "h1a": "קניית נכס בדובאי",
     "h1b": "עם מטבעות קריפטו",
-    "heroDesc": "Binayah Properties מאפשרת עסקאות נדל\"ן בקריפטו, חוקיות ובהתאם ל-DLD — על הנייר ובשוק המשני. ליווי מלא מהייעוץ הראשוני ועד לשטר הבעלות.",
+    "heroDesc": "Binayah Properties מאפשרת עסקאות נדל\"ן בקריפטו, חוקיות ובהתאם ל-DLD, על הנייר ובשוק המשני. ליווי מלא מהייעוץ הראשוני ועד לשטר הבעלות.",
     "heroCta": "ייעוץ חינם",
     "heroCtaArrow": "←",
     "stats": [
@@ -335,7 +335,7 @@ const CONTENT = {
       {
         "n": "04",
         "title": "הנפקת שטר בעלות",
-        "body": "הנכס נרשם במחלקת הקרקעות של דובאי (DLD) על שמכם. אתם מקבלים את שטר הבעלות הרשמי — בעלות חוקית מלאה."
+        "body": "הנכס נרשם במחלקת הקרקעות של דובאי (DLD) על שמכם. אתם מקבלים את שטר הבעלות הרשמי, בעלות חוקית מלאה."
       }
     ],
     "whyTitle": "למה דובאי לנדל\"ן בקריפטו",
@@ -354,22 +354,22 @@ const CONTENT = {
       },
       {
         "title": "ללא הגבלות לאום",
-        "body": "כל הלאומים מתקבלים בברכה — כולל רוסים, סינים, אירופאים ומדינות המפרץ. קריפטו הוא חוצה גבולות, אידיאלי למשקיעים בינלאומיים."
+        "body": "כל הלאומים מתקבלים בברכה, כולל רוסים, סינים, אירופאים ומדינות המפרץ. קריפטו הוא חוצה גבולות, אידיאלי למשקיעים בינלאומיים."
       },
       {
         "title": "Golden Visa ל-10 שנים",
         "body": "השקיעו 2 מיליון AED ומעלה (כ-545 אלף דולר) בנכס וזכאותכם ל-Golden Visa של איחוד האמירויות. ניתן לתשלום בקריפטו."
       },
       {
-        "title": "תשואות שכירות של 5–10%",
-        "body": "בין התשואות הגבוהות בעולם. מחירי נכסים על הנייר באזורים מרכזיים עלו ב-40–60% מאז 2021."
+        "title": "תשואות שכירות של 5-10%",
+        "body": "בין התשואות הגבוהות בעולם. מחירי נכסים על הנייר באזורים מרכזיים עלו ב-40-60% מאז 2021."
       }
     ],
     "faqTitle": "שאלות נפוצות",
     "faqs": [
       {
         "q": "האם קניית נכס בדובאי עם קריפטו חוקית?",
-        "a": "כן. רשות הנכסים הווירטואליים (VARA) של איחוד האמירויות מספקת מסגרת משפטית ברורה. יזמים רבים בדובאי וה-DLD מאפשרים רכישות בקריפטו. העסקאות חייבות לעמוד בדרישות AML/KYC — אין מחסומים משפטיים לרוכשים זרים."
+        "a": "כן. רשות הנכסים הווירטואליים (VARA) של איחוד האמירויות מספקת מסגרת משפטית ברורה. יזמים רבים בדובאי וה-DLD מאפשרים רכישות בקריפטו. העסקאות חייבות לעמוד בדרישות AML/KYC, אין מחסומים משפטיים לרוכשים זרים."
       },
       {
         "q": "אילו מטבעות קריפטו מתקבלים?",
@@ -393,7 +393,7 @@ const CONTENT = {
       },
       {
         "q": "כמה זמן לוקח תהליך הרכישה?",
-        "a": "על הנייר: 2–4 שבועות מההסכמה ועד לאישור ההזמנה. שוק משני: 3–6 שבועות להעברה מלאה. העברת הקריפטו עצמה לוקחת 1–3 ימי עסקים לאחר שהמסמכים מסודרים."
+        "a": "על הנייר: 2-4 שבועות מההסכמה ועד לאישור ההזמנה. שוק משני: 3-6 שבועות להעברה מלאה. העברת הקריפטו עצמה לוקחת 1-3 ימי עסקים לאחר שהמסמכים מסודרים."
       },
       {
         "q": "אילו אזורים הכי טובים להשקעת נדל\"ן בקריפטו?",

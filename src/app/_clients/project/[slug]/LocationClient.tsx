@@ -102,7 +102,7 @@ export default function LocationClient({ serverProject }: { serverProject: any }
             Location & Neighbourhood
           </p>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            {project.name} — Location
+            {project.name}, Location
           </h1>
           {project.community && (
             <p className="text-muted-foreground mt-1">

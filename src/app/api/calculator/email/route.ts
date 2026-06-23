@@ -201,12 +201,12 @@ export async function POST(req: NextRequest) {
   try {
     await sendMail({
       to: email,
-      subject: `Your Dubai Investment Report — ${calc?.community ?? "Dubai"}`,
+      subject: `Your Dubai Investment Report, ${calc?.community ?? "Dubai"}`,
       html: buildEmailHtml(name, calc),
     });
   } catch (err) {
     console.error("[calculator/email] sendMail failed:", err);
-    return NextResponse.json({ message: "Failed to send email — please try again" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to send email, please try again" }, { status: 500 });
   }
 
   // Log lead to binayah-api as a calculator-lead (fire-and-forget, non-blocking)

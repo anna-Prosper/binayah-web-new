@@ -82,7 +82,7 @@ interface BinayahArticle {
 const AED = (n: number) => {
   if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `AED ${(n / 1_000).toFixed(0)}K`;
-  return n > 0 ? `AED ${n.toLocaleString()}` : "—";
+  return n > 0 ? `AED ${n.toLocaleString()}` : ", ";
 };
 
 // ── Main Component ─────────────────────────────────────────────────────────
@@ -271,7 +271,7 @@ export default function TrendingClient({
             <StatCard
               icon={TrendingUp}
               label={t("avgPpsf")}
-              value={latest.avgPpsf > 0 ? `AED ${latest.avgPpsf.toLocaleString()}` : "—"}
+              value={latest.avgPpsf > 0 ? `AED ${latest.avgPpsf.toLocaleString()}` : ", "}
             />
           </div>
           <p className="text-xs text-muted-foreground mt-3">
@@ -381,8 +381,8 @@ export default function TrendingClient({
                   <span className="text-lg font-bold text-emerald-600">{c.rentalYield}%</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs mt-3">
-                  <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice) : "—"}</p></div>
-                  <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("avgSale")}</p><p className="font-semibold text-foreground">{c.avgSalePrice > 0 ? AED(c.avgSalePrice) : ", "}</p></div>
+                  <div><p className="text-muted-foreground">{t("priceSqft")}</p><p className="font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : ", "}</p></div>
                 </div>
               </div>
             ))}
@@ -420,8 +420,8 @@ export default function TrendingClient({
                     <td className="px-4 py-3 text-right">
                       <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${c.investmentScore >= 70 ? "bg-emerald-100 text-emerald-700" : c.investmentScore >= 45 ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500"}`}>{c.investmentScore}/100</span>
                     </td>
-                    <td className="px-4 py-3 text-right text-sm font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : "—"}</td>
-                    <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : "—"}</td>
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-foreground">{c.avgPricePerSqft > 0 ? `AED ${c.avgPricePerSqft.toLocaleString()}` : ", "}</td>
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-600">{c.rentalYield > 0 ? `${c.rentalYield}%` : ", "}</td>
                   </tr>
                 ))}
               </tbody>
@@ -450,8 +450,8 @@ export default function TrendingClient({
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-xs mt-3">
                   <div><p className="text-muted-foreground">{t("colSales")}</p><p className="font-bold text-foreground">{area.count.toLocaleString()}</p></div>
-                  <div><p className="text-muted-foreground">{t("colAvgPrice")}</p><p className="font-semibold text-foreground">{area.avgPrice > 0 ? AED(area.avgPrice) : "—"}</p></div>
-                  <div><p className="text-muted-foreground">{t("colAedSqft")}</p><p className="font-semibold text-foreground">{area.avgPpsf > 0 ? area.avgPpsf.toLocaleString() : "—"}</p></div>
+                  <div><p className="text-muted-foreground">{t("colAvgPrice")}</p><p className="font-semibold text-foreground">{area.avgPrice > 0 ? AED(area.avgPrice) : ", "}</p></div>
+                  <div><p className="text-muted-foreground">{t("colAedSqft")}</p><p className="font-semibold text-foreground">{area.avgPpsf > 0 ? area.avgPpsf.toLocaleString() : ", "}</p></div>
                 </div>
               </div>
             ))}
@@ -661,7 +661,7 @@ function LaunchCard({ project, t }: {
       </div>
       <p className="font-bold text-foreground leading-snug">{project.name}</p>
       <p className="text-xs text-muted-foreground">
-        {devName !== "—" ? `${devName} · ` : ""}{commName}
+        {devName !== ", " ? `${devName} · ` : ""}{commName}
       </p>
       {project.startingPrice && project.startingPrice > 0 && (
         <p className="text-sm font-semibold text-primary">
@@ -681,7 +681,7 @@ function LaunchCard({ project, t }: {
 }
 
 function extractName(val: string | { name?: string } | undefined): string {
-  if (!val) return "—";
+  if (!val) return ", ";
   if (typeof val === "string") return val;
-  return val.name ?? "—";
+  return val.name ?? ", ";
 }

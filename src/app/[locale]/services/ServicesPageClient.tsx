@@ -31,9 +31,9 @@ const additionalServices = [
   { icon: Building2, title: "Off-Plan Investment Advisory", desc: "Expert guidance on the best off-plan opportunities with high ROI potential across Dubai's emerging communities.", link: "/off-plan" },
   { icon: TrendingUp, title: "AI Property Valuation", desc: "Get an instant, AI-driven property valuation based on real-time market data and comparable transactions.", link: "/valuation" },
   { icon: Home, title: "Resale Properties", desc: "Access premium secondary market listings across 50+ communities with dedicated buyer representation.", link: "/buy" },
-  { icon: Key, title: "Rental Services", desc: "Whether you're a tenant looking for a home or a landlord listing a property — we match you perfectly.", link: "/rent" },
+  { icon: Key, title: "Rental Services", desc: "Whether you're a tenant looking for a home or a landlord listing a property, we match you perfectly.", link: "/rent" },
   { icon: FileText, title: "Mortgage Advisory", desc: "Pre-approval assistance, rate comparison from 12+ banks, and end-to-end mortgage processing support.", link: "/contact" },
-  { icon: Handshake, title: "Golden Visa Assistance", desc: "Complete support for property-linked Golden Visa applications — from eligibility to approval.", link: "/contact" },
+  { icon: Handshake, title: "Golden Visa Assistance", desc: "Complete support for property-linked Golden Visa applications, from eligibility to approval.", link: "/contact" },
 ];
 
 const processSteps = [
@@ -45,9 +45,9 @@ const processSteps = [
 
 const faqs = [
   { q: "What is included in your property management service?", a: "Our comprehensive service covers tenant sourcing, rent collection, maintenance coordination, financial reporting, legal compliance, and 24/7 emergency support. We handle everything so you can enjoy passive income." },
-  { q: "How much do you charge for property management?", a: "Our management fees are competitive and transparent — typically 5-8% of annual rental income depending on the property type and service tier. No hidden fees, no surprises." },
+  { q: "How much do you charge for property management?", a: "Our management fees are competitive and transparent, typically 5-8% of annual rental income depending on the property type and service tier. No hidden fees, no surprises." },
   { q: "Can you help with off-plan properties I haven't received yet?", a: "Absolutely. We offer pre-handover snagging inspections, coordinate the property transfer process, and can have your property market-ready for tenants immediately after handover." },
-  { q: "Do you assist international investors?", a: "Yes, over 60% of our clients are international. We handle everything remotely — from purchase to management — with multi-language support in English, Arabic, Russian, and Chinese." },
+  { q: "Do you assist international investors?", a: "Yes, over 60% of our clients are international. We handle everything remotely, from purchase to management, with multi-language support in English, Arabic, Russian, and Chinese." },
   { q: "What areas do you cover?", a: "We operate across all major Dubai communities including Marina, Downtown, Palm Jumeirah, JBR, Business Bay, JVC, Dubai Hills, and many more. Contact us for coverage in Abu Dhabi and other emirates." },
   { q: "How quickly can you find a tenant?", a: "On average, we secure quality tenants within 2-3 weeks thanks to our multi-platform marketing, professional photography, and extensive database of pre-qualified tenants." },
 ];
@@ -251,7 +251,7 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
             {[
-              { icon: Shield, title: "RERA Certified", desc: "Reg. No. 1162 — fully licensed and regulated", color: "#D4A847" },
+              { icon: Shield, title: "RERA Certified", desc: "Reg. No. 1162, fully licensed and regulated", color: "#D4A847" },
               { icon: Globe, title: "Multilingual Team", desc: "Support in English, Arabic, Russian & Chinese", color: "#D4A847" },
               { icon: Clock, title: "24/7 Support", desc: "Round-the-clock emergency maintenance response", color: "#D4A847" },
               { icon: CheckCircle2, title: "Zero Hidden Fees", desc: "Transparent pricing with no surprises", color: "#D4A847" },

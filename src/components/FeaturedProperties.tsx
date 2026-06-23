@@ -44,7 +44,7 @@ const FeaturedProperties = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7">
           {(projects || []).map((p, i) => {
             const sizeRange = p.unitSizeMin && p.unitSizeMax
-              ? `${p.unitSizeMin}–${p.unitSizeMax} sqft`
+              ? `${p.unitSizeMin}-${p.unitSizeMax} sqft`
               : null;
 
             return (

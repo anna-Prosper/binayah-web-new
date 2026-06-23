@@ -25,7 +25,7 @@ export async function generateMetadata({
   const c = findBuyCommunity(community);
   if (!c) notFound();
   const title = `Off-Plan Projects in ${c.name}, Dubai | New Launches | Binayah`;
-  const full = `${localizeCommunityText(c.shortIntro, locale)} Off-plan & new-launch projects in ${c.name} with flexible payment plans — Binayah.`;
+  const full = `${localizeCommunityText(c.shortIntro, locale)} Off-plan & new-launch projects in ${c.name} with flexible payment plans, Binayah.`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
   return {
@@ -48,7 +48,7 @@ const LABELS = {
   en: { home: "Home", offplan: "Off-Plan", offplanIn: "Off-Plan Projects in", dubai: "Dubai", eyebrow: "NEW LAUNCHES" },
   ru: { home: "Главная", offplan: "Новостройки", offplanIn: "Новостройки в", dubai: "Дубае", eyebrow: "НОВЫЕ ПРОЕКТЫ" },
   ar: { home: "الرئيسية", offplan: "على الخارطة", offplanIn: "مشاريع على الخارطة في", dubai: "دبي", eyebrow: "إطلاقات جديدة" },
-  zh: { home: "首页", offplan: "期房", offplanIn: "期房项目 —", dubai: "迪拜", eyebrow: "新楼盘" },
+  zh: { home: "首页", offplan: "期房", offplanIn: "期房项目, ", dubai: "迪拜", eyebrow: "新楼盘" },
   vi: { home: "Trang chủ", offplan: "Off-Plan", offplanIn: "Dự án Off-Plan tại", dubai: "Dubai", eyebrow: "DỰ ÁN MỚI" },
   he: { home: "בית", offplan: "על הנייר", offplanIn: "פרויקטים על הנייר ב", dubai: "דובאי", eyebrow: "השקות חדשות" },
 } as const;

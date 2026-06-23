@@ -71,7 +71,7 @@ export default async function PulseConfirmPage({ params }: Props) {
                     {[
                       { area: "Dubai Marina", ppsf: "1,580", change: "+2.4%", up: true },
                       { area: "Downtown", ppsf: "2,140", change: "+1.8%", up: true },
-                      { area: "JVC", ppsf: "940", change: "–0.3%", up: false },
+                      { area: "JVC", ppsf: "940", change: "-0.3%", up: false },
                     ].map((tile) => (
                       <div
                         key={tile.area}

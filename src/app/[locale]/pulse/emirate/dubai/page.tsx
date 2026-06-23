@@ -20,13 +20,13 @@ const TITLES: Record<string, string> = {
   he: "דו\"ח שוק דובאי | Binayah Properties",
 };
 const DESCS: Record<string, string> = {
-  fr: "Analyse immobilière de Dubaï en direct — transactions YTD, prix moyen au pied carré, rendement locatif, leaders communautaires, classement des promoteurs et points forts de l'investissement.",
-  en: "Live Dubai real estate analytics — transactions YTD, average PPSF, rental yield, community leaders, developer rankings, and investment highlights.",
-  ru: "Актуальная аналитика рынка недвижимости Дубая — сделки за год, средняя цена за кв. фут, доходность аренды, лидеры районов и рейтинг застройщиков.",
-  ar: "تحليلات عقارات دبي الحية — المعاملات حتى الآن، متوسط السعر، عوائد الإيجار، أبرز المجتمعات والمطورين.",
-  zh: "迪拜房地产实时分析数据——年度交易量、平均每平方英尺价格、租金回报率、社区排名及开发商排名。",
-  vi: "Phân tích bất động sản Dubai trực tiếp — giao dịch từ đầu năm, giá trung bình mỗi foot vuông, lợi suất cho thuê, cộng đồng dẫn đầu, xếp hạng nhà phát triển và điểm nổi bật đầu tư.",
-  he: "אנליטיקה חיה של נדל\"ן בדובאי — עסקאות מתחילת השנה, מחיר ממוצע למ\"ר, תשואת שכירות, קהילות מובילות, דירוגי מפתחים והדגשים להשקעה.",
+  fr: "Analyse immobilière de Dubaï en direct, transactions YTD, prix moyen au pied carré, rendement locatif, leaders communautaires, classement des promoteurs et points forts de l'investissement.",
+  en: "Live Dubai real estate analytics, transactions YTD, average PPSF, rental yield, community leaders, developer rankings, and investment highlights.",
+  ru: "Актуальная аналитика рынка недвижимости Дубая, сделки за год, средняя цена за кв. фут, доходность аренды, лидеры районов и рейтинг застройщиков.",
+  ar: "تحليلات عقارات دبي الحية, المعاملات حتى الآن، متوسط السعر، عوائد الإيجار، أبرز المجتمعات والمطورين.",
+  zh: "迪拜房地产实时分析数据, , 年度交易量、平均每平方英尺价格、租金回报率、社区排名及开发商排名。",
+  vi: "Phân tích bất động sản Dubai trực tiếp, giao dịch từ đầu năm, giá trung bình mỗi foot vuông, lợi suất cho thuê, cộng đồng dẫn đầu, xếp hạng nhà phát triển và điểm nổi bật đầu tư.",
+  he: "אנליטיקה חיה של נדל\"ן בדובאי, עסקאות מתחילת השנה, מחיר ממוצע למ\"ר, תשואת שכירות, קהילות מובילות, דירוגי מפתחים והדגשים להשקעה.",
 };
 
 export async function generateMetadata({
