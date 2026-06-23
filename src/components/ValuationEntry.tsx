@@ -120,7 +120,6 @@ const ValuationEntry = () => {
                 { label: "Fair value",         value: "AED 2,850,000 – 3,100,000", highlight: true  },
                 { label: "Suggested list",     value: "AED 2,950,000 – 3,150,000", highlight: false },
                 { label: "Quick-sale range",   value: "AED 2,650,000 – 2,850,000", highlight: false },
-                { label: "Confidence",         value: "High",                       highlight: false },
               ].map((row) => (
                 <div key={row.label} className="flex items-center justify-between px-6 py-3.5">
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">

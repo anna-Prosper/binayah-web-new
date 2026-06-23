@@ -134,23 +134,13 @@ const ValuationCTA = () => {
               className="rounded-2xl p-8 sm:p-10 border border-white/[0.08] backdrop-blur-sm"
               style={{ background: "rgba(255,255,255,0.025)" }}
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center mb-6">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
                   <span className="text-white/40 text-xs font-medium tracking-wider uppercase">
                     {t("sampleLabel")}
                   </span>
                 </div>
-                <span
-                  className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full"
-                  style={{
-                    color: "hsl(168 80% 40%)",
-                    background: "hsla(168, 80%, 40%, 0.1)",
-                    border: "1px solid hsla(168, 80%, 40%, 0.2)",
-                  }}
-                >
-                  {t("highConfidence")}
-                </span>
               </div>
 
               <div className="flex items-center gap-3 mb-5 pb-5 border-b border-white/[0.06]">
