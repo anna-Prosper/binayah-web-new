@@ -239,7 +239,7 @@ export default async function HomePage({ params }: Props) {
 
   try {
     const [projectsRes, saleRes, rentalRes, articlesRes] = await Promise.all([
-      serverFetch(serverApiUrl("/api/projects?limit=4")),
+      serverFetch(serverApiUrl("/api/projects?limit=4&sort=smart")),
       serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Sale")),
       serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Rent")),
       serverFetch(serverApiUrl("/api/news?limit=3")),

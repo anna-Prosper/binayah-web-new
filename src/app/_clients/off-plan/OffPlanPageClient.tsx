@@ -70,7 +70,7 @@ export default function OffPlanPageClient({
     loadingRef.current = true;
     setLoading(true);
     try {
-      const res = await fetch(apiUrl(`/api/projects?limit=${batchSize}&skip=${projectsLengthRef.current}`));
+      const res = await fetch(apiUrl(`/api/projects?limit=${batchSize}&skip=${projectsLengthRef.current}&sort=smart`));
       const newProjects: Project[] = await res.json();
       if (newProjects.length === 0) {
         hasMoreRef.current = false;

@@ -375,7 +375,7 @@ export default async function TopProjectsPage({ params }: Props) {
   // Fetch latest off-plan projects from API
   let projects: any[] = [];
   try {
-    const res = await serverFetch(serverApiUrl("/api/projects?status=Off-Plan&limit=12&sort=newest"), 8000);
+    const res = await serverFetch(serverApiUrl("/api/projects?status=Off-Plan&limit=12&sort=smart"), 8000);
     if (res.ok) projects = await res.json();
   } catch { /* serve page without live projects */ }
 
