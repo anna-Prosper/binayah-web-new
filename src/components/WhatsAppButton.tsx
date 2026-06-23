@@ -6,7 +6,10 @@ import { Phone, MessageCircle, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { trackLead } from "@/lib/track";
 
-const WA_POPUP_KEY = "binayah_wa_popup_dismissed";
+const WA_POPUP_KEY = "binayah_wa_popup_ts";
+const POPUP_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
+const POPUP_SHOW_DELAY = 4000;
+const POPUP_AUTO_HIDE = 7000;
 
 function trackClick(action: "whatsapp" | "phone" | "chat-open") {
   trackLead(action, { entityType: "global", entitySlug: typeof window !== "undefined" ? window.location.pathname : null });
@@ -17,14 +20,22 @@ const WhatsAppButton = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem(WA_POPUP_KEY)) return;
-    const timer = setTimeout(() => setShowPopup(true), 4000);
-    return () => clearTimeout(timer);
+    const last = localStorage.getItem(WA_POPUP_KEY);
+    if (last && Date.now() - Number(last) < POPUP_TTL_MS) return;
+
+    const show = setTimeout(() => setShowPopup(true), POPUP_SHOW_DELAY);
+    return () => clearTimeout(show);
   }, []);
+
+  useEffect(() => {
+    if (!showPopup) return;
+    const hide = setTimeout(() => setShowPopup(false), POPUP_AUTO_HIDE);
+    return () => clearTimeout(hide);
+  }, [showPopup]);
 
   const dismissPopup = () => {
     setShowPopup(false);
-    sessionStorage.setItem(WA_POPUP_KEY, "1");
+    localStorage.setItem(WA_POPUP_KEY, String(Date.now()));
   };
 
   return (
