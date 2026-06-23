@@ -279,10 +279,12 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   // we open it directly on click instead of showing the larger-QR modal —
   // saves the user from having to scan the QR with another device.
   const hasDirectPermit = Boolean(project.permitUrl);
-  // Only show the QR when MongoDB has a stored regulator-issued image
-  // (project.qrCode). If absent, hide entirely — don't synthesize a QR
-  // that just encodes the project page URL (misleading; not the real permit).
-  const hasStoredQr = Boolean(project.qrCode && project.qrCode.startsWith("http"));
+  // Use the real regulator-issued QR image from MongoDB, or fall back to the
+  // dummy placeholder so the QR slot is always visible.
+  const qrSrc = (project.qrCode && project.qrCode.startsWith("http"))
+    ? project.qrCode
+    : "/assets/dummy-qr.svg";
+  const hasStoredQr = true;
 
   // Sub-page H1 suffix — each dedicated URL gets its own unique H1 for SEO
   const h1Suffix: string | null =
@@ -520,7 +522,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                           aria-label={t("regulatoryPermit")}
                         >
                           <NextImage
-                            src={project.qrCode}
+                            src={qrSrc}
                             alt="Regulatory Permit QR"
                             width={80}
                             height={80}
@@ -535,7 +537,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                           title="Regulatory Permit"
                         >
                           <NextImage
-                            src={project.qrCode}
+                            src={qrSrc}
                             alt="Regulatory Permit QR"
                             width={80}
                             height={80}
@@ -2688,7 +2690,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                 {hasStoredQr && (() => {
                   const QrInner = (
                     <NextImage
-                      src={project.qrCode}
+                      src={qrSrc}
                       alt="Regulatory Permit QR"
                       width={100}
                       height={100}
@@ -2880,7 +2882,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               <div className="w-48 h-48 sm:w-56 sm:h-56">
                 {hasStoredQr && (
                   <NextImage
-                    src={project.qrCode}
+                    src={qrSrc}
                     alt="Regulatory Permit QR"
                     width={400}
                     height={400}
