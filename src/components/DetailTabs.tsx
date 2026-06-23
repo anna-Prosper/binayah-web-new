@@ -25,7 +25,7 @@ export function DetailTabs<T extends string>({ tabs, active, onChange, animate =
     <>
       {tabs.map((tab) => {
         const isActive = active === tab.id;
-        const cls = `flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-center ${
+        const cls = `flex-shrink-0 sm:flex-1 relative px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-center ${
           isActive ? "text-white shadow-md" : "text-muted-foreground hover:text-foreground hover:bg-card/50"
         }`;
         const style = isActive ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined;
@@ -50,7 +50,7 @@ export function DetailTabs<T extends string>({ tabs, active, onChange, animate =
     </>
   );
 
-  const wrapperClass = `flex gap-1 sm:gap-1.5 bg-muted/50 p-1 sm:p-1.5 rounded-2xl border border-border/50 ${className}`.trim();
+  const wrapperClass = `flex gap-1 sm:gap-1.5 bg-muted/50 p-1 sm:p-1.5 rounded-2xl border border-border/50 overflow-x-auto scrollbar-hide ${className}`.trim();
 
   if (animate) {
     return (
