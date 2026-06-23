@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Building2, Users, Award, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const StatsSection = () => {
   const t = useTranslations("home.sections.stats");
@@ -87,6 +88,25 @@ const StatsSection = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* Team photo */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.3 }}
+        className="mt-12 sm:mt-16 relative rounded-2xl overflow-hidden shadow-xl"
+        style={{ aspectRatio: "16/7" }}
+      >
+        <Image
+          src="/assets/team.webp"
+          alt="Binayah Properties team"
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, 1152px"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+      </motion.div>
     </div>
   </section>
   );

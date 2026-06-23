@@ -57,7 +57,7 @@ const FeaturedPropertiesClient = ({
   const viewAllHref = tab === "sale" ? "/buy" : "/rent";
 
   return (
-    <section id="sale" className="py-8 sm:py-20 bg-background scroll-mt-20">
+    <section id="sale" className="py-8 sm:py-12 bg-background scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
