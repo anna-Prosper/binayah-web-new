@@ -80,11 +80,11 @@ export default function AboutPage() {
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
               <NextImage
-                src="/assets/dubai-hero.webp"
-                alt="Dubai skyline"
+                src="/assets/team.webp"
+                alt="Binayah Properties team"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                className="object-cover object-top"
               />
             </div>
           </motion.div>

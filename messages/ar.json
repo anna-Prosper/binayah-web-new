@@ -1614,7 +1614,10 @@
     "reraNotice": "رقم التسجيل لدى RERA: 1162، هيئة تنظيم العقارات بدبي",
     "sentTitle": "تم استلام الاستفسار!",
     "sentMessage": "سيتواصل معك فريقنا خلال 24 ساعة.",
-    "sendAnother": "أرسل استفسارًا آخر"
+    "sendAnother": "أرسل استفسارًا آخر",
+    "freeConsult": "استشارة مجانية",
+    "yearsExperience": "20+ سنة في دبي",
+    "emaarPartner": "شريك إعمار"
   },
   "newsletter": {
     "title": "كن في صدارة السوق",

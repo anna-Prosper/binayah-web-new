@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2, RotateCcw } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2, RotateCcw, Award, Gift, Building2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
@@ -91,16 +91,19 @@ const InquirySection = () => {
               {t("subtitle")}
             </p>
 
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Clock className="h-3.5 w-3.5 text-accent" />
-                <span>{t("response24h")}</span>
-              </div>
-              <div className="w-px h-3.5 bg-border" />
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Shield className="h-3.5 w-3.5 text-accent" />
-                <span>{t("reraLicensed")}</span>
-              </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 mb-8">
+              {([
+                [Clock,     t("response24h")],
+                [Shield,    t("reraLicensed")],
+                [Gift,      t("freeConsult")],
+                [Award,     t("yearsExperience")],
+                [Building2, t("emaarPartner")],
+              ] as [React.ElementType, string][]).map(([Icon, label]) => (
+                <div key={label} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Icon className="h-3.5 w-3.5 text-accent flex-shrink-0" />
+                  <span>{label}</span>
+                </div>
+              ))}
             </div>
 
             <div className="space-y-4">
