@@ -103,9 +103,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {/* Inventory first — surface real listings + off-plan projects right after the
             hero, before the valuation tool (visitors come to browse properties). */}
         <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
-        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
-
         <ValuationStrip />
+        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
         <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
