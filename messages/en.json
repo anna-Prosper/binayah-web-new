@@ -238,10 +238,12 @@
         "titleItalic": "Since 2007",
         "titleMobile": "Trusted in Dubai",
         "subtitle": "Trusted by thousands of buyers, sellers, and investors across Dubai since 2007.",
-        "propertiesListed": "Properties Listed",
-        "happyClients": "Happy Clients",
-        "industryAwards": "Years of Experience",
-        "communitiesCovered": "Communities Covered"
+        "propertiesListed": "Listed",
+        "happyClients": "Clients",
+        "industryAwards": "Industry Awards",
+        "communitiesCovered": "Communities Covered",
+        "sold": "Sold",
+        "yearsExperience": "Years Experience"
       },
       "whatWeOffer": {
         "label": "What We Offer",
@@ -364,15 +366,15 @@
       },
       "team": {
         "label": "Our Team",
-        "heading": "Almost two decades shaping Dubai's",
-        "headingAccent": "real estate",
-        "headingEnd": "market.",
-        "photoCaption": "RERA-certified specialists with deep Dubai market expertise",
+        "heading": "The team behind",
+        "headingAccent": "Dubai's trusted",
+        "headingEnd": "property partner",
+        "photoCaption": "The Binayah team — RERA-certified, Dubai-born expertise",
         "photoBadge": "Our Team",
         "quote": "Almost two decades of Dubai property expertise, distilled into every home we represent.",
-        "p1": "Welcome to Binayah Properties — an award-winning Dubai real estate agency trusted by investors, end-users and global developers for nearly two decades.",
-        "p2": "Our portfolio covers luxury apartments, villas, townhouses and off-plan projects across Dubai's most sought-after communities — from Downtown and Dubai Marina to Palm Jumeirah, Dubai Hills and Emaar Beachfront.",
-        "p3": "As a RERA-certified brokerage and recognised Emaar partner, Binayah connects clients worldwide with premium investment opportunities backed by transparent pricing and full-service property management.",
+        "p1": "Since 2007, Binayah Properties has grown from a boutique brokerage into one of Dubai's most trusted property consultancies — and it's the people who make the difference.",
+        "p2": "Our multilingual advisors live and breathe Dubai real estate, guiding buyers, sellers and investors through off-plan launches, luxury resale, leasing and full property management.",
+        "p3": "RERA-certified and relentlessly client-first, we pair deep local knowledge with honest, transparent advice — so you always know exactly where you stand.",
         "cta1": "Our Story",
         "cta2": "View Properties"
       }

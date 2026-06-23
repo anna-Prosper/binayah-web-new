@@ -245,9 +245,11 @@
         "titleMobile": "迪拜优选房产机构",
         "subtitle": "自 2007 年以来，深受数千位迪拜买家、业主及投资者信赖。",
         "propertiesListed": "在售房源",
-        "happyClients": "服务客户",
-        "industryAwards": "年从业经验",
-        "communitiesCovered": "覆盖社区"
+        "happyClients": "客户",
+        "industryAwards": "行业奖项",
+        "communitiesCovered": "覆盖社区",
+        "sold": "已售",
+        "yearsExperience": "年经验"
       },
       "whatWeOffer": {
         "label": "服务领域",
@@ -370,15 +372,15 @@
       },
       "team": {
         "label": "我们的团队",
-        "heading": "近二十年塑造迪拜",
-        "headingAccent": "房地产",
-        "headingEnd": "市场。",
-        "photoCaption": "持RERA认证的专业人员，深耕迪拜市场",
+        "heading": "值得信赖的迪拜",
+        "headingAccent": "房产伙伴",
+        "headingEnd": "背后的团队",
+        "photoCaption": "Binayah 团队 —— RERA 认证，深耕迪拜的专业实力",
         "photoBadge": "我们的团队",
         "quote": "近二十年的迪拜房地产专业知识，融入我们代理的每一处房产。",
-        "p1": "欢迎来到Binayah Properties——一家屡获殊荣的迪拜房地产公司，近二十年来深受全球投资者和开发商的信赖。",
-        "p2": "我们的投资组合涵盖迪拜最受欢迎社区的豪华公寓、别墅、联排别墅和期房项目。",
-        "p3": "作为RERA认证经纪商和公认的Emaar合作伙伴，Binayah为全球客户提供迪拜优质房地产投资机会。",
+        "p1": "自2007年以来，Binayah Properties 已从一家精品中介成长为迪拜最值得信赖的房地产咨询机构之一——而这一切都离不开我们的团队。",
+        "p2": "我们的多语言顾问每天深耕迪拜房地产市场，为买家、卖家和投资者提供期房、豪华转售、租赁及全方位物业管理服务。",
+        "p3": "作为 RERA 认证机构，我们始终以客户为先，将深厚的本地市场知识与诚实透明的建议相结合——让您始终清楚自己的处境。",
         "cta1": "我们的故事",
         "cta2": "查看房产"
       }

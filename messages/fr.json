@@ -238,10 +238,12 @@
         "titleItalic": "Agence",
         "titleMobile": "Agence de Premier Plan à Dubai",
         "subtitle": "Fait confiance par des milliers d'acheteurs, de vendeurs et d'investisseurs à Dubai depuis 2007.",
-        "propertiesListed": "Biens Listés",
-        "happyClients": "Clients Satisfaits",
-        "industryAwards": "Années d'Expérience",
-        "communitiesCovered": "Quartiers Couverts"
+        "propertiesListed": "Annoncés",
+        "happyClients": "Clients",
+        "industryAwards": "Prix du secteur",
+        "communitiesCovered": "Quartiers Couverts",
+        "sold": "Vendus",
+        "yearsExperience": "Ans d'expérience"
       },
       "whatWeOffer": {
         "label": "Ce que nous offrons",
@@ -364,15 +366,15 @@
       },
       "team": {
         "label": "Notre équipe",
-        "heading": "Presque deux décennies à façonner le marché",
-        "headingAccent": "immobilier",
-        "headingEnd": "de Dubaï.",
-        "photoCaption": "Spécialistes certifiés RERA avec une expertise approfondie du marché de Dubaï",
+        "heading": "L'équipe derrière",
+        "headingAccent": "le partenaire immobilier",
+        "headingEnd": "de confiance à Dubaï",
+        "photoCaption": "L'équipe Binayah — expertise certifiée RERA, née à Dubaï",
         "photoBadge": "Notre équipe",
         "quote": "Presque deux décennies d'expertise immobilière à Dubaï, distillées dans chaque bien que nous représentons.",
-        "p1": "Bienvenue chez Binayah Properties — une agence immobilière primée à Dubaï, reconnue par les investisseurs et les développeurs depuis presque deux décennies.",
-        "p2": "Notre portefeuille couvre appartements de luxe, villas, maisons de ville et projets sur plan dans les quartiers les plus prisés de Dubaï.",
-        "p3": "En tant que courtier certifié RERA et partenaire reconnu d'Emaar, Binayah connecte ses clients avec les meilleures opportunités d'investissement immobilier à Dubaï.",
+        "p1": "Depuis 2007, Binayah Properties est passée d'une agence boutique à l'une des consultances immobilières les plus fiables de Dubaï — et ce sont les personnes qui font la différence.",
+        "p2": "Nos conseillers multilingues vivent l'immobilier de Dubaï au quotidien, accompagnant acheteurs, vendeurs et investisseurs dans les lancements sur plan, la revente de luxe, la location et la gestion locative complète.",
+        "p3": "Certifiés RERA et résolument tournés vers le client, nous associons une connaissance locale approfondie à des conseils honnêtes et transparents — pour que vous sachiez toujours exactement où vous en êtes.",
         "cta1": "Notre histoire",
         "cta2": "Voir les biens"
       }
