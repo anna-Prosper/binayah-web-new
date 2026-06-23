@@ -347,7 +347,8 @@
       "testimonials": {
         "label": "Отзывы клиентов",
         "title": "Что говорят",
-        "titleItalic": "наши клиенты", "googleReviews": "отзывов в Google"
+        "titleItalic": "наши клиенты",
+        "googleReviews": "отзывов в Google"
       },
       "offPlan": {
         "label": "Off-Plan",
@@ -1710,7 +1711,8 @@
     "ariaLabel": "Написать в WhatsApp",
     "whatsapp": "WhatsApp",
     "call": "Позвонить",
-    "liveChat": "Онлайн-чат"
+    "liveChat": "Онлайн-чат",
+    "popupText": "Привет — пообщайтесь с командой Binayah. Покупка, аренда, продажа или инвестиции? Мы поможем."
   },
   "scrollToTop": {
     "ariaLabel": "Наверх"

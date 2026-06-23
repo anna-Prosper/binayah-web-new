@@ -347,7 +347,8 @@
       "testimonials": {
         "label": "Đánh Giá Khách Hàng",
         "title": "Khách Hàng Của Chúng Tôi",
-        "titleItalic": "Nói Gì", "googleReviews": "đánh giá trên Google"
+        "titleItalic": "Nói Gì",
+        "googleReviews": "đánh giá trên Google"
       },
       "offPlan": {
         "label": "Off Plan",
@@ -1710,7 +1711,8 @@
     "ariaLabel": "Trò chuyện trên WhatsApp",
     "whatsapp": "WhatsApp",
     "call": "Gọi",
-    "liveChat": "Trò chuyện trực tiếp"
+    "liveChat": "Trò chuyện trực tiếp",
+    "popupText": "Xin chào — hãy trò chuyện với đội ngũ Binayah. Mua, thuê, bán hay đầu tư? Chúng tôi sẵn sàng giúp đỡ."
   },
   "scrollToTop": {
     "ariaLabel": "Cuộn lên đầu trang"

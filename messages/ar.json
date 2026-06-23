@@ -347,7 +347,8 @@
       "testimonials": {
         "label": "آراء عملائنا",
         "title": "ماذا يقول",
-        "titleItalic": "عملاؤنا", "googleReviews": "تقييم على Google"
+        "titleItalic": "عملاؤنا",
+        "googleReviews": "تقييم على Google"
       },
       "offPlan": {
         "label": "على الخارطة",
@@ -1710,7 +1711,8 @@
     "ariaLabel": "تواصل عبر واتساب",
     "whatsapp": "واتساب",
     "call": "اتصل",
-    "liveChat": "محادثة مباشرة"
+    "liveChat": "محادثة مباشرة",
+    "popupText": "مرحباً — تحدث مع فريق بناية. شراء، إيجار، بيع أو استثمار؟ يسعدنا مساعدتك."
   },
   "scrollToTop": {
     "ariaLabel": "الرجوع إلى الأعلى"

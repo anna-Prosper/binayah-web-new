@@ -353,7 +353,8 @@
       "testimonials": {
         "label": "客户口碑",
         "title": "客户",
-        "titleItalic": "心声", "googleReviews": "条 Google 评价"
+        "titleItalic": "心声",
+        "googleReviews": "条 Google 评价"
       },
       "offPlan": {
         "label": "期房",
@@ -1716,7 +1717,8 @@
     "ariaLabel": "WhatsApp 咨询",
     "whatsapp": "WhatsApp",
     "call": "电话",
-    "liveChat": "在线客服"
+    "liveChat": "在线客服",
+    "popupText": "您好 — 与Binayah团队交流。购买、租赁、出售或投资？我们随时为您提供帮助。"
   },
   "scrollToTop": {
     "ariaLabel": "返回顶部"

@@ -347,7 +347,8 @@
       "testimonials": {
         "label": "ביקורות לקוחות",
         "title": "מה הלקוחות שלנו",
-        "titleItalic": "אומרים", "googleReviews": "ביקורות ב-Google"
+        "titleItalic": "אומרים",
+        "googleReviews": "ביקורות ב-Google"
       },
       "offPlan": {
         "label": "Off Plan",
@@ -1710,7 +1711,8 @@
     "ariaLabel": "שוחח ב-WhatsApp",
     "whatsapp": "WhatsApp",
     "call": "התקשר",
-    "liveChat": "צ'אט חי"
+    "liveChat": "צ'אט חי",
+    "popupText": "שלום — שוחח עם צוות ביינייה. קנייה, השכרה, מכירה או השקעה? אנחנו כאן לעזור."
   },
   "scrollToTop": {
     "ariaLabel": "גלול לראש הדף"

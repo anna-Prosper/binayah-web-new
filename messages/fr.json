@@ -347,7 +347,8 @@
       "testimonials": {
         "label": "Avis des clients",
         "title": "Ce que nos clients",
-        "titleItalic": "disent", "googleReviews": "avis sur Google"
+        "titleItalic": "disent",
+        "googleReviews": "avis sur Google"
       },
       "offPlan": {
         "label": "Off Plan",
@@ -1716,7 +1717,8 @@
     "liveChat": "Chat en direct",
     "prefillServices": "Bonjour, je suis intéressé par vos services immobiliers",
     "prefillMoreInfo": "Bonjour, j'aimerais avoir plus d'informations",
-    "prefillSaved": "Bonjour, j'aimerais me renseigner sur {count} biens sauvegardés sur votre site web."
+    "prefillSaved": "Bonjour, j'aimerais me renseigner sur {count} biens sauvegardés sur votre site web.",
+    "popupText": "Bonjour — discutez avec l’équipe Binayah. Achat, location, vente ou investissement ? Nous pouvons vous aider."
   },
   "scrollToTop": {
     "ariaLabel": "Revenir en haut"

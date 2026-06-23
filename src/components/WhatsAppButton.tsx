@@ -49,7 +49,7 @@ const WhatsAppButton = () => {
               <X className="h-3.5 w-3.5" />
             </button>
             <p className="text-sm text-gray-700 leading-snug pr-4">
-              Hi — chat with the Binayah team. Buying, renting, selling or investing? We can help.
+              {t("popupText")}
             </p>
           </motion.div>
         )}

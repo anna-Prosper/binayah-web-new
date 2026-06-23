@@ -457,7 +457,7 @@ const HeroSection = () => {
           onto the section below. */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div className="absolute inset-x-0 -top-[20%] h-[140%] will-change-transform" style={{ y: imageY }}>
-          <Image src={heroImage} alt="Dubai skyline" fill className="object-cover" priority fetchPriority="high" sizes="100vw" />
+          <Image src={heroImage} alt="Dubai skyline" fill className="object-cover object-[center_65%]" priority fetchPriority="high" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
         </motion.div>
       </div>
