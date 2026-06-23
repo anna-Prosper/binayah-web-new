@@ -106,7 +106,6 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
 
         <ValuationStrip />
-        <StatsSection />
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
         <LazyMount minHeight={400}><WhatWeOffer /></LazyMount>
@@ -119,6 +118,7 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={320}><ListYourPropertySection /></LazyMount>
         <LazyMount minHeight={520}><ServicesSection /></LazyMount>
         {googleReviews && <LazyMount minHeight={600}><TestimonialsSection data={googleReviews} /></LazyMount>}
+        <LazyMount minHeight={600}><StatsSection /></LazyMount>
         <LazyMount minHeight={680}><InquirySection /></LazyMount>
         <LazyMount minHeight={520}><NewsSection articles={latestArticles} /></LazyMount>
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
