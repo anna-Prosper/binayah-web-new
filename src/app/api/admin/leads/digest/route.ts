@@ -40,7 +40,7 @@ function rowsHtml(leads: UnifiedLead[]): string {
       (l) => `
         <tr style="border-top:1px solid #eee">
           <td style="padding:8px;font-size:13px"><strong>${escape(l.name || "(no name)")}</strong></td>
-          <td style="padding:8px;font-size:12px;color:#555">${escape(l.email || l.phone || ", ")}</td>
+          <td style="padding:8px;font-size:12px;color:#555">${escape(l.email || l.phone || "-")}</td>
           <td style="padding:8px;font-size:12px;color:#555">${escape(l.source)}${l.community ? ` · ${escape(l.community)}` : ""}</td>
           <td style="padding:8px;font-size:11px;color:#888">${new Date(l.createdAt).toLocaleString("en-GB", { timeZone: "Asia/Dubai", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</td>
         </tr>`
@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
             <td style="width:8px"></td>
             <td style="padding:12px;background:#eff5fb;border-radius:8px"><div style="font-size:11px;color:#666">New last 7 days</div><div style="font-size:22px;font-weight:bold;color:#1d4ed8">${stats.last7Days}</div></td>
             <td style="width:8px"></td>
-            <td style="padding:12px;background:#fdf4e8;border-radius:8px"><div style="font-size:11px;color:#666">Avg first response</div><div style="font-size:22px;font-weight:bold;color:#a16207">${stats.avgTimeToContactMs ? formatDuration(stats.avgTimeToContactMs) : ", "}</div></td>
+            <td style="padding:12px;background:#fdf4e8;border-radius:8px"><div style="font-size:11px;color:#666">Avg first response</div><div style="font-size:22px;font-weight:bold;color:#a16207">${stats.avgTimeToContactMs ? formatDuration(stats.avgTimeToContactMs) : "-"}</div></td>
           </tr>
         </table>
 

@@ -104,7 +104,7 @@ const normalizeBedSuffix = (suffix: string) => {
 };
 
 const formatUnitTypes = (types: string[], sep = " · ") => {
-  if (!types?.length) return ", ";
+  if (!types?.length) return "-";
   const groups = new Map<string, number[]>();
   const standalone: string[] = [];
   for (const t of types) {
@@ -657,7 +657,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               const sqftToSqm = (sqft: number) => Math.round(sqft * 0.0929);
               const sizeValue = project.unitSizeMin && project.unitSizeMax
                 ? `${Number(project.unitSizeMin).toLocaleString()} - ${Number(project.unitSizeMax).toLocaleString()} sqft`
-                : ", ";
+                : "-";
               const sizeSub = project.unitSizeMin && project.unitSizeMax
                 ? `${sqftToSqm(Number(project.unitSizeMin)).toLocaleString()} - ${sqftToSqm(Number(project.unitSizeMax)).toLocaleString()} sqm`
                 : null;
@@ -676,7 +676,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
               const stats = [
                 project.developerName && { icon: Building2, label: t("developer"), value: project.developerName, sub: null },
                 project.startingPrice && { icon: Wallet, label: t("startingPrice"), value: formatPrice(project.startingPrice, { isProject: true }), sub: null, isCurrency: true },
-                unitTypesValue && unitTypesValue !== ", " && { icon: Bed, label: t("unitTypes"), value: unitTypesValue, sub: null },
+                unitTypesValue && unitTypesValue !== "-" && { icon: Bed, label: t("unitTypes"), value: unitTypesValue, sub: null },
                 hasSizeRange && { icon: Ruler, label: t("sizeRange"), value: sizeValue, sub: sizeSub },
                 (isReady || project.completionDate) && { icon: handoverIcon, label: isReady ? t("status") : t("handover"), value: handoverValue, sub: null },
                 hasPaymentData && { icon: CreditCard, label: t("paymentPlanLabel"), value: paymentCardValue!, sub: paymentCardSub, isPaymentPlan: true },
@@ -2182,7 +2182,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                                     <div>
                                       <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("bedsLabel")}</p>
                                       <p className="text-sm font-bold text-foreground">
-                                        {activeFp?.beds ?? ", "}{activeFp?.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                                        {activeFp?.beds ?? "-"}{activeFp?.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
                                       </p>
                                     </div>
                                   </div>
@@ -2226,9 +2226,9 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                                           className={`border-b border-border/30 last:border-0 cursor-pointer transition-colors ${i === activeFloorPlanTab ? "bg-accent/5" : "hover:bg-muted/30"}`}
                                         >
                                           <td className="px-4 py-3 font-semibold text-foreground">{fp.title}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.beds ?? ", "}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.baths ?? ", "}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.size ?? ", "}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.beds ?? "-"}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.baths ?? "-"}</td>
+                                          <td className="px-4 py-3 text-muted-foreground">{fp.size ?? "-"}</td>
                                         </tr>
                                       ))}
                                     </tbody>
@@ -2388,7 +2388,7 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
                     <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4">
                       {[
                         { label: "Unit Types", value: formatUnitTypes(project.unitTypes, ", "), icon: Bed },
-                        { label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} - ${Number(project.unitSizeMax).toLocaleString()} sqft` : ", ", icon: Ruler },
+                        { label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} - ${Number(project.unitSizeMax).toLocaleString()} sqft` : "-", icon: Ruler },
                       ].map(({ label, value, icon: Icon }) => (
                         <div key={label} className="p-3 sm:p-5 bg-muted/40 rounded-xl text-center hover:bg-muted/60 transition-colors">
                           <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1.5 sm:mb-2" />

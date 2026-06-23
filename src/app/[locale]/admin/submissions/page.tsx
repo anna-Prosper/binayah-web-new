@@ -137,7 +137,7 @@ export default async function AdminSubmissionsPage() {
                               {s.phone as string}
                             </a>
                           )}
-                          {!s.userEmail && !s.phone && <span className="text-gray-300">, </span>}
+                          {!s.userEmail && !s.phone && <span className="text-gray-300">-</span>}
                         </div>
                       </td>
                       <td className="px-5 py-3.5">
@@ -145,13 +145,13 @@ export default async function AdminSubmissionsPage() {
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                             {s.propertyType as string}
                           </span>
-                        ) : <span className="text-gray-300">, </span>}
+                        ) : <span className="text-gray-300">-</span>}
                       </td>
                       <td className="px-5 py-3.5 text-gray-700 whitespace-nowrap">
-                        {(s.community as string) || <span className="text-gray-300">, </span>}
+                        {(s.community as string) || <span className="text-gray-300">-</span>}
                       </td>
                       <td className="px-5 py-3.5 font-medium text-gray-900 whitespace-nowrap tabular-nums">
-                        {s.askingPrice ? `AED ${Number(s.askingPrice).toLocaleString()}` : <span className="text-gray-300">, </span>}
+                        {s.askingPrice ? `AED ${Number(s.askingPrice).toLocaleString()}` : <span className="text-gray-300">-</span>}
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.className}`}>
@@ -160,7 +160,7 @@ export default async function AdminSubmissionsPage() {
                       </td>
                       <td className="px-5 py-3.5 text-gray-600 max-w-xs">
                         <span className="line-clamp-2 break-words text-xs">
-                          {(s.description as string) || <span className="text-gray-300">, </span>}
+                          {(s.description as string) || <span className="text-gray-300">-</span>}
                         </span>
                       </td>
                     </tr>

@@ -144,9 +144,11 @@ export default async function AdminLandingPage() {
               <div className={`w-12 h-12 rounded-xl ${card.iconBg} flex items-center justify-center mb-5`}>
                 {card.icon}
               </div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 tabular-nums">
-                {card.count != null ? card.count.toLocaleString() : ", "}
-              </div>
+              {card.count != null && (
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 tabular-nums">
+                  {card.count.toLocaleString()}
+                </div>
+              )}
               <div className="font-semibold text-gray-800 text-sm mb-1">{card.label}</div>
               <div className="text-gray-400 text-xs flex-1">{card.description}</div>
               <div className="mt-5 flex items-center gap-1 text-sm font-medium" style={{ color: card.accent }}>

@@ -87,7 +87,7 @@ export default function DeveloperFilter({ value, onChange, options, placeholder,
                 {value === dev && <Check className="h-4 w-4 text-primary flex-shrink-0" />}
               </button>
             ))}
-            {filtered.length === 0 && <p className="px-3 py-3 text-xs text-muted-foreground text-center">, </p>}
+            {filtered.length === 0 && <p className="px-3 py-3 text-xs text-muted-foreground text-center">-</p>}
           </div>
         </div>
       )}

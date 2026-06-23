@@ -97,7 +97,7 @@ export default function PulseQuickTicker({ movers }: Props) {
                 className="text-2xl font-bold tabular-nums"
                 style={{ color: GOLD }}
               >
-                {m.ppsf > 0 ? m.ppsf.toLocaleString() : ", "}
+                {m.ppsf > 0 ? m.ppsf.toLocaleString() : "-"}
               </p>
               <p className="text-[10px] text-muted-foreground mt-0.5">{t("ppsf")}</p>
 

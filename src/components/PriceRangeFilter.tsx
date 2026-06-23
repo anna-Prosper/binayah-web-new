@@ -143,7 +143,7 @@ export default function PriceRangeFilter({ min, max, step = 50_000, value, onCha
             className="w-full min-w-0 bg-background border border-border rounded-lg pl-9 pr-2 py-1.5 text-[11px] text-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
           />
         </div>
-        <span className="text-xs text-muted-foreground">, </span>
+        <span className="text-xs text-muted-foreground">-</span>
         <div className="flex-1 relative">
           <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground pointer-events-none">{currency}</span>
           <input

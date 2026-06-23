@@ -158,11 +158,11 @@ export async function POST(req: NextRequest) {
           <tr><td><b>User</b></td><td>${session.user.name || ""} (${session.user.email})</td></tr>
           <tr><td><b>Type</b></td><td>${propertyType}, ${listingType}</td></tr>
           <tr><td><b>Community</b></td><td>${community}</td></tr>
-          <tr><td><b>Bedrooms</b></td><td>${bedrooms ?? ", "}</td></tr>
-          <tr><td><b>Area</b></td><td>${areaSqft ? areaSqft + " sqft" : ", "}</td></tr>
-          <tr><td><b>Asking Price</b></td><td>${askingPrice ? "AED " + Number(askingPrice).toLocaleString() : ", "}</td></tr>
+          <tr><td><b>Bedrooms</b></td><td>${bedrooms ?? "-"}</td></tr>
+          <tr><td><b>Area</b></td><td>${areaSqft ? areaSqft + " sqft" : "-"}</td></tr>
+          <tr><td><b>Asking Price</b></td><td>${askingPrice ? "AED " + Number(askingPrice).toLocaleString() : "-"}</td></tr>
           <tr><td><b>Phone</b></td><td>${phone}</td></tr>
-          <tr><td><b>Description</b></td><td>${description || ", "}</td></tr>
+          <tr><td><b>Description</b></td><td>${description || "-"}</td></tr>
         </table>
       `,
       text: `New submission: ${propertyType} in ${community} by ${session.user.email} (${phone})`,

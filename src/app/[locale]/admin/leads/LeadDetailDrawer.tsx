@@ -162,8 +162,8 @@ export default function LeadDetailDrawer({ leadId, onClose, onChange }: Props) {
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Contact</h3>
               <div className="space-y-1 text-sm">
                 <p><span className="text-gray-500 w-20 inline-block">Source:</span> {lead.source}{lead.channel ? ` / ${lead.channel}` : ""}</p>
-                <p><span className="text-gray-500 w-20 inline-block">Email:</span> {lead.email ? <a href={`mailto:${lead.email}`} className="text-emerald-700 hover:underline">{lead.email}</a> : ", "}</p>
-                <p><span className="text-gray-500 w-20 inline-block">Phone:</span> {lead.phone ? <a href={`tel:${lead.phone.replace(/\s+/g, "")}`} className="text-emerald-700 hover:underline">{lead.phone}</a> : ", "}</p>
+                <p><span className="text-gray-500 w-20 inline-block">Email:</span> {lead.email ? <a href={`mailto:${lead.email}`} className="text-emerald-700 hover:underline">{lead.email}</a> : "-"}</p>
+                <p><span className="text-gray-500 w-20 inline-block">Phone:</span> {lead.phone ? <a href={`tel:${lead.phone.replace(/\s+/g, "")}`} className="text-emerald-700 hover:underline">{lead.phone}</a> : "-"}</p>
                 {lead.community && <p><span className="text-gray-500 w-20 inline-block">Community:</span> {lead.community}</p>}
                 {lead.property?.title && <p><span className="text-gray-500 w-20 inline-block">Property:</span> {lead.property.title}</p>}
                 {lead.project?.name && <p><span className="text-gray-500 w-20 inline-block">Project:</span> {lead.project.name}</p>}

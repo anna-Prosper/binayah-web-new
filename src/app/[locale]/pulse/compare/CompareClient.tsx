@@ -132,10 +132,10 @@ function dldSearchTerm(name: string): string {
 const AED = (n: number) => {
   if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `AED ${(n / 1_000).toFixed(0)}K`;
-  return n > 0 ? `AED ${n.toLocaleString()}` : ", ";
+  return n > 0 ? `AED ${n.toLocaleString()}` : "-";
 };
 
-const pct = (n: number) => n > 0 ? `${n.toFixed(1)}%` : ", ";
+const pct = (n: number) => n > 0 ? `${n.toFixed(1)}%` : "-";
 
 function highlight(vals: (number | null)[], i: number): boolean {
   const filtered = vals.filter((v): v is number => v !== null && v > 0);
@@ -715,7 +715,7 @@ function CommunityTable({
           <tbody>
             <TableRow
               label={t("priceSqft")}
-              values={ppsfVals.map((v) => v > 0 ? `AED ${v.toLocaleString()}` : ", ")}
+              values={ppsfVals.map((v) => v > 0 ? `AED ${v.toLocaleString()}` : "-")}
               highlights={ppsfVals.map((v, i) => highlight(ppsfVals, i))}
             />
             <TableRow
@@ -725,12 +725,12 @@ function CommunityTable({
             />
             <TableRow
               label={t("txVolume")}
-              values={volVals.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={volVals.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={volVals.map((v, i) => highlight(volVals, i))}
             />
             <TableRow
               label={t("investScore")}
-              values={scoreVals.map((v) => v > 0 ? `${v}/100` : ", ")}
+              values={scoreVals.map((v) => v > 0 ? `${v}/100` : "-")}
               highlights={scoreVals.map((v, i) => highlight(scoreVals, i))}
             />
           </tbody>
@@ -774,17 +774,17 @@ function DeveloperTable({
           <tbody>
             <TableRow
               label={t("totalProjects")}
-              values={totalProjects.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={totalProjects.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={totalProjects.map((v, i) => highlight(totalProjects, i))}
             />
             <TableRow
               label={t("offPlanProjects")}
-              values={offPlanCounts.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={offPlanCounts.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={offPlanCounts.map((v, i) => highlight(offPlanCounts, i))}
             />
             <TableRow
               label={t("communitiesActive")}
-              values={rows.map((r) => r?.communities ? r.communities.length.toString() : ", ")}
+              values={rows.map((r) => r?.communities ? r.communities.length.toString() : "-")}
               highlights={rows.map((r, i) => {
                 const vals = rows.map((x) => x?.communities?.length ?? 0);
                 return highlight(vals, i);
@@ -829,22 +829,22 @@ function BuildingTable({
           <tbody>
             <TableRow
               label={t("bldSales12mo")}
-              values={salesVals.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={salesVals.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={salesVals.map((v, i) => highlight(salesVals, i))}
             />
             <TableRow
               label={t("bldRents")}
-              values={rentsVals.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={rentsVals.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={rentsVals.map((v, i) => highlight(rentsVals, i))}
             />
             <TableRow
               label={t("bldUnits")}
-              values={unitsVals.map((v) => v > 0 ? v.toLocaleString() : ", ")}
+              values={unitsVals.map((v) => v > 0 ? v.toLocaleString() : "-")}
               highlights={unitsVals.map((v, i) => highlight(unitsVals, i))}
             />
             <TableRow
               label={t("bldAvgPpsf")}
-              values={ppsfVals.map((v) => v > 0 ? `AED ${v.toLocaleString()}` : ", ")}
+              values={ppsfVals.map((v) => v > 0 ? `AED ${v.toLocaleString()}` : "-")}
               highlights={ppsfVals.map((v, i) => highlight(ppsfVals, i))}
             />
             <TableRow
@@ -854,12 +854,12 @@ function BuildingTable({
             />
             <TableRow
               label={t("bldMasterProject")}
-              values={buildings.map((b) => b.masterProject ?? ", ")}
+              values={buildings.map((b) => b.masterProject ?? "-")}
               highlights={buildings.map(() => false)}
             />
             <TableRow
               label={t("bldArea")}
-              values={buildings.map((b) => b.area ?? ", ")}
+              values={buildings.map((b) => b.area ?? "-")}
               highlights={buildings.map(() => false)}
             />
           </tbody>
@@ -881,7 +881,7 @@ function TableRow({
       <td className="px-4 py-3.5 text-xs font-semibold text-muted-foreground">{label}</td>
       {values.map((val, i) => (
         <td key={i} className={`px-4 py-3.5 text-right font-semibold ${highlights[i] ? "text-emerald-600" : "text-foreground"}`}>
-          {highlights[i] && val !== ", " ? (
+          {highlights[i] && val !== "-" ? (
             <span className="inline-flex items-center gap-1">
               <TrendingUp className="h-3 w-3 flex-shrink-0" />
               {val}

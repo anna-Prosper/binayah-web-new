@@ -44,7 +44,7 @@ type T = ReturnType<typeof useTranslations<"pulseDaily">>;
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 const AED = (n: number) => {
-  if (!n || n <= 0) return ", ";
+  if (!n || n <= 0) return "-";
   if (n >= 1_000_000_000) return `AED ${(n / 1_000_000_000).toFixed(1)}B`;
   if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `AED ${(n / 1_000).toFixed(0)}K`;
@@ -252,7 +252,7 @@ function HeadlineTiles({ data, prev, t }: { data: DailyData; prev: PrevDay | nul
           icon={Layers}
           label={t("medianPpsf")}
           value={data.medianPpsf ?? 0}
-          format={(n) => (data.medianPpsf ? `AED ${Math.round(n).toLocaleString()}` : ", ")}
+          format={(n) => (data.medianPpsf ? `AED ${Math.round(n).toLocaleString()}` : "-")}
           deltaPct={null}
           footnote={data.avgPpsf ? t("avgPpsfFootnote", { value: `AED ${data.avgPpsf.toLocaleString()}` }) : undefined}
           t={t}
