@@ -10,39 +10,28 @@ concurrency:
   group: deploy-beget
   cancel-in-progress: false
 
+# The Beget VPS (8.7G disk / 960MB RAM) physically cannot build this app in
+# place: `npm ci` (node_modules + npm cache, ~1.2G at once) overflows the disk
+# and the disk-full state crashes both the runner and the serving app (502).
+# So we build on a GitHub-hosted runner (plenty of disk/RAM) and ship only the
+# built artifact to the box, which just runs `next start` — no build footprint.
 jobs:
-  deploy:
-    runs-on: self-hosted
-    timeout-minutes: 30
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Swap MUST be active before `npm run build`, not after. Previously it was
-      # created in the deploy step that runs post-build, so the build itself ran
-      # without the extra headroom and OOM-thrashed the VPS until the runner lost
-      # communication. Ensure at least 2G swap up front.
-      - name: Ensure swap
-        run: |
-          set -e
-          # ~960MB RAM needs ~3G swap to build this app without thrashing to death.
-          # Two files (2G + 1G) because the disk is too small to resize the live
-          # 2G file safely (RAM can't hold its contents during swapoff).
-          ensure_swap() { # $1=path $2=size
-            if ! swapon --show | grep -q "$1"; then
-              [ -f "$1" ] || { fallocate -l "$2" "$1" && chmod 600 "$1" && mkswap "$1"; }
-              swapon "$1" || true
-              grep -q "$1" /etc/fstab || echo "$1 none swap sw 0 0" >> /etc/fstab
-            fi
-          }
-          ensure_swap /swapfile 2G
-          ensure_swap /swapfile2 1G
-          free -h || true
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-      # RU-specific public values are inline; all server secrets come from repo
-      # Actions secrets so a deploy never wipes Mongo/auth/admin config again.
-      # Values are written via printf + indirect expansion (${!k}) so special
-      # characters in secrets can't corrupt the .env.local.
+      # Build-time env. NEXT_PUBLIC_* are inlined into the bundle here; server
+      # secrets are written too (harmless at build) but are NOT shipped in the
+      # artifact (excluded below) — the box writes its own copy from secrets.
       - name: Write env
         env:
           ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
@@ -103,59 +92,128 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # VPS has 960MB RAM + 3GB swap. A 1536 heap cap let Node over-allocate
-          # past RAM into a swap-thrash that froze the runner. 1024 keeps the
-          # heap closer to physical RAM (more GC, but the machine stays
-          # responsive and the runner keeps its heartbeat). Paired with
-          # LOW_MEM_BUILD single-threaded generation below.
-          NODE_OPTIONS: '--max-old-space-size=1024'
-          # Disable webpack's 400MB+ filesystem cache — the 8.7GB disk can't
-          # hold it during the build (it overflowed and broke deploys).
-          DISABLE_WEBPACK_CACHE: '1'
-          # Force single-threaded static generation (see next.config.ts). The
-          # app grew enough that parallel page renders OOM-thrash this VPS and
-          # the runner loses communication. Single-threaded is slower but fits.
-          LOW_MEM_BUILD: '1'
-          # No telemetry network calls / extra work during the build.
           NEXT_TELEMETRY_DISABLED: '1'
 
-      - name: Swap & reload PM2
+      # Package everything `next start` needs at runtime: the built .next (minus
+      # the build-only webpack cache), public assets, configs, messages, source.
+      # Exclude node_modules (the box installs prod deps), .git, and .env.local
+      # (secrets are written fresh on the box — never shipped in an artifact).
+      - name: Package artifact
+        run: |
+          tar czf deploy.tgz \
+            --exclude='./.git' \
+            --exclude='./node_modules' \
+            --exclude='./.next/cache' \
+            --exclude='./.env.local' \
+            .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: deploy.tgz
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    timeout-minutes: 15
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: /tmp/binayah-deploy
+
+      # Server env written on the box from repo secrets (never travels in the
+      # artifact). This is what `next start` reads at runtime.
+      - name: Write env on box
+        env:
+          ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
+          ADMIN_PATH_TOKEN: ${{ secrets.ADMIN_PATH_TOKEN }}
+          ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_PASSWORD: ${{ secrets.BRIGHTDATA_PASSWORD }}
+          BRIGHTDATA_PROXY_URL: ${{ secrets.BRIGHTDATA_PROXY_URL }}
+          BRIGHTDATA_USERNAME: ${{ secrets.BRIGHTDATA_USERNAME }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_VERIFICATION_CODE: ${{ secrets.GOOGLE_VERIFICATION_CODE }}
+          HMAC_KEY: ${{ secrets.HMAC_KEY }}
+          INQUIRY_EMAIL: ${{ secrets.INQUIRY_EMAIL }}
+          LEADS_API_BASE_URL: ${{ secrets.LEADS_API_BASE_URL }}
+          LEADS_API_KEYS: ${{ secrets.LEADS_API_KEYS }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PROJECT_IMPORT_SECRET: ${{ secrets.PROJECT_IMPORT_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          WHATSAPP_API_BASE_URL: ${{ secrets.WHATSAPP_API_BASE_URL }}
+          WHATSAPP_API_KEY: ${{ secrets.WHATSAPP_API_KEY }}
+          WHATSAPP_GROUP_JID: ${{ secrets.WHATSAPP_GROUP_JID }}
+        run: |
+          {
+            echo "NEXT_PUBLIC_SITE_URL=https://binayah.ru"
+            echo "NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru"
+            echo "NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com"
+            echo "API_BASE_URL=https://binayah-api.onrender.com"
+            echo "NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811"
+            echo "NEXTAUTH_URL=https://binayah.ru"
+            echo "NEXT_DEFAULT_LOCALE=ru"
+            for k in ADMIN_EMAILS ADMIN_PATH_TOKEN ADMIN_SECRET \
+                     AWS_ACCESS_KEY_ID AWS_REGION AWS_S3_BUCKET AWS_SECRET_ACCESS_KEY \
+                     BRIGHTDATA_API_KEY BRIGHTDATA_PASSWORD BRIGHTDATA_PROXY_URL BRIGHTDATA_USERNAME \
+                     ENCRYPTION_KEY GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_VERIFICATION_CODE \
+                     HMAC_KEY INQUIRY_EMAIL LEADS_API_BASE_URL LEADS_API_KEYS MONGODB_URI \
+                     NEXTAUTH_SECRET OPENAI_API_KEY PROJECT_IMPORT_SECRET \
+                     SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
+                     WHATSAPP_API_BASE_URL WHATSAPP_API_KEY WHATSAPP_GROUP_JID; do
+              printf '%s=%s\n' "$k" "${!k}"
+            done
+          } > /tmp/binayah-deploy/.env.local
+
+      - name: Deploy to serve dir
         run: |
           set -e
-          # (Swap is ensured up front in the "Ensure swap" step before the build.)
-          # Copy build output to serve dir. Exclude .next/cache — it's the
-          # webpack build cache (can be 400MB+), only used at build time, never
-          # by `next start`. Shipping it to the small VPS disk filled it up and
-          # crash-looped the app ("no production build in .next"). The explicit
-          # rm guarantees it's gone even if an old copy lingers (rsync --exclude
-          # protects excluded paths from --delete).
+          rm -rf /tmp/binayah-stage && mkdir -p /tmp/binayah-stage
+          tar xzf /tmp/binayah-deploy/deploy.tgz -C /tmp/binayah-stage
           mkdir -p /var/www/binayah-ru
+          # Sync built output into the serve dir. Keep the box's own node_modules
+          # and .env.local; --delete drops stale build files from removed routes.
           rsync -a --delete \
             --exclude='.git' \
             --exclude='node_modules' \
+            --exclude='.env.local' \
             --exclude='.next/cache' \
-            ./ /var/www/binayah-ru/
+            /tmp/binayah-stage/ /var/www/binayah-ru/
+          cp /tmp/binayah-deploy/.env.local /var/www/binayah-ru/.env.local
           cd /var/www/binayah-ru
           rm -rf .next/cache
+          # Production deps only — small, fits easily; the box never builds.
           npm install --omit=dev --ignore-scripts 2>/dev/null || true
           pm2 reload binayah-ru 2>/dev/null || pm2 start npm --name binayah-ru -- start
           pm2 save
 
-      # The 8.7GB disk repeatedly filled up (npm cache regrows to ~600MB every
-      # build, plus the checkout's node_modules ~400MB) and that disk-full state
-      # is what kills the running app: nginx + next start can no longer write
-      # logs/cache and start returning 502. Prune hard after each deploy so the
-      # box sits well under 100% between runs. The served copy in
-      # /var/www/binayah-ru is untouched (it has its own --omit=dev install).
       - name: Reclaim disk
         if: always()
         run: |
+          rm -rf /tmp/binayah-deploy /tmp/binayah-stage 2>/dev/null || true
           npm cache clean --force 2>/dev/null || true
           rm -rf /root/.npm/_cacache /root/.npm/_logs/* 2>/dev/null || true
-          # CI scratch: the workspace node_modules is rebuilt by `npm ci` next run
-          rm -rf "$GITHUB_WORKSPACE/node_modules" 2>/dev/null || true
-          rm -rf "$RUNNER_WORKSPACE"/../.next/cache 2>/dev/null || true
-          find /opt/actions-runner/_diag -name '*.log' -mtime +1 -delete 2>/dev/null || true
-          apt-get clean 2>/dev/null || true
+          # Builds are off-box now, so the 960MB-RAM box no longer needs 3G of
+          # swap. Drop the extra 1G swapfile to give the disk real headroom
+          # (keep the 2G /swapfile as a runtime safety margin).
+          if swapon --show | grep -q /swapfile2; then
+            swapoff /swapfile2 2>/dev/null && rm -f /swapfile2 && sed -i '\#/swapfile2#d' /etc/fstab || true
+          fi
           journalctl --vacuum-size=20M 2>/dev/null || true
           df -h / | tail -1 || true
