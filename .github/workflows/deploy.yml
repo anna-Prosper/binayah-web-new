@@ -39,17 +39,63 @@ jobs:
           ensure_swap /swapfile2 1G
           free -h || true
 
+      # RU-specific public values are inline; all server secrets come from repo
+      # Actions secrets so a deploy never wipes Mongo/auth/admin config again.
+      # Values are written via printf + indirect expansion (${!k}) so special
+      # characters in secrets can't corrupt the .env.local.
       - name: Write env
+        env:
+          ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
+          ADMIN_PATH_TOKEN: ${{ secrets.ADMIN_PATH_TOKEN }}
+          ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          BRIGHTDATA_API_KEY: ${{ secrets.BRIGHTDATA_API_KEY }}
+          BRIGHTDATA_PASSWORD: ${{ secrets.BRIGHTDATA_PASSWORD }}
+          BRIGHTDATA_PROXY_URL: ${{ secrets.BRIGHTDATA_PROXY_URL }}
+          BRIGHTDATA_USERNAME: ${{ secrets.BRIGHTDATA_USERNAME }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_VERIFICATION_CODE: ${{ secrets.GOOGLE_VERIFICATION_CODE }}
+          HMAC_KEY: ${{ secrets.HMAC_KEY }}
+          INQUIRY_EMAIL: ${{ secrets.INQUIRY_EMAIL }}
+          LEADS_API_BASE_URL: ${{ secrets.LEADS_API_BASE_URL }}
+          LEADS_API_KEYS: ${{ secrets.LEADS_API_KEYS }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PROJECT_IMPORT_SECRET: ${{ secrets.PROJECT_IMPORT_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          WHATSAPP_API_BASE_URL: ${{ secrets.WHATSAPP_API_BASE_URL }}
+          WHATSAPP_API_KEY: ${{ secrets.WHATSAPP_API_KEY }}
+          WHATSAPP_GROUP_JID: ${{ secrets.WHATSAPP_GROUP_JID }}
         run: |
-          cat > .env.local << 'EOF'
-          NEXT_PUBLIC_SITE_URL=https://binayah.ru
-          NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru
-          NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com
-          API_BASE_URL=https://binayah-api.onrender.com
-          NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811
-          NEXTAUTH_URL=https://binayah.ru
-          NEXT_DEFAULT_LOCALE=ru
-          EOF
+          {
+            echo "NEXT_PUBLIC_SITE_URL=https://binayah.ru"
+            echo "NEXT_PUBLIC_RU_SITE_URL=https://binayah.ru"
+            echo "NEXT_PUBLIC_API_URL=https://binayah-api.onrender.com"
+            echo "API_BASE_URL=https://binayah-api.onrender.com"
+            echo "NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811"
+            echo "NEXTAUTH_URL=https://binayah.ru"
+            echo "NEXT_DEFAULT_LOCALE=ru"
+            for k in ADMIN_EMAILS ADMIN_PATH_TOKEN ADMIN_SECRET \
+                     AWS_ACCESS_KEY_ID AWS_REGION AWS_S3_BUCKET AWS_SECRET_ACCESS_KEY \
+                     BRIGHTDATA_API_KEY BRIGHTDATA_PASSWORD BRIGHTDATA_PROXY_URL BRIGHTDATA_USERNAME \
+                     ENCRYPTION_KEY GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_VERIFICATION_CODE \
+                     HMAC_KEY INQUIRY_EMAIL LEADS_API_BASE_URL LEADS_API_KEYS MONGODB_URI \
+                     NEXTAUTH_SECRET OPENAI_API_KEY PROJECT_IMPORT_SECRET \
+                     SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
+                     WHATSAPP_API_BASE_URL WHATSAPP_API_KEY WHATSAPP_GROUP_JID; do
+              printf '%s=%s\n' "$k" "${!k}"
+            done
+          } > .env.local
 
       - name: Install dependencies
         run: npm ci
@@ -96,12 +142,20 @@ jobs:
           pm2 save
 
       # The 8.7GB disk repeatedly filled up (npm cache regrows to ~600MB every
-      # build) and that disk-full state is what kills the runner. Prune caches
-      # after each deploy so the box stays healthy run-to-run.
+      # build, plus the checkout's node_modules ~400MB) and that disk-full state
+      # is what kills the running app: nginx + next start can no longer write
+      # logs/cache and start returning 502. Prune hard after each deploy so the
+      # box sits well under 100% between runs. The served copy in
+      # /var/www/binayah-ru is untouched (it has its own --omit=dev install).
       - name: Reclaim disk
         if: always()
         run: |
           npm cache clean --force 2>/dev/null || true
-          rm -rf /root/.npm/_logs/* 2>/dev/null || true
+          rm -rf /root/.npm/_cacache /root/.npm/_logs/* 2>/dev/null || true
+          # CI scratch: the workspace node_modules is rebuilt by `npm ci` next run
+          rm -rf "$GITHUB_WORKSPACE/node_modules" 2>/dev/null || true
           rm -rf "$RUNNER_WORKSPACE"/../.next/cache 2>/dev/null || true
+          find /opt/actions-runner/_diag -name '*.log' -mtime +1 -delete 2>/dev/null || true
+          apt-get clean 2>/dev/null || true
+          journalctl --vacuum-size=20M 2>/dev/null || true
           df -h / | tail -1 || true
