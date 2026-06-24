@@ -98,9 +98,12 @@ jobs:
       # the build-only webpack cache), public assets, configs, messages, source.
       # Exclude node_modules (the box installs prod deps), .git, and .env.local
       # (secrets are written fresh on the box — never shipped in an artifact).
+      # Write the tarball OUTSIDE the working dir — tarring '.' into a file in
+      # the same dir makes tar read its own growing output ("file changed as we
+      # read it" → exit 1).
       - name: Package artifact
         run: |
-          tar czf deploy.tgz \
+          tar czf "$RUNNER_TEMP/deploy.tgz" \
             --exclude='./.git' \
             --exclude='./node_modules' \
             --exclude='./.next/cache' \
@@ -111,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: deploy.tgz
+          path: ${{ runner.temp }}/deploy.tgz
           retention-days: 1
 
   deploy:
