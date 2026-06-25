@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- programmatic SEO component; data-driven English copy, like the other area/landing templates */
 // Server component (no "use client") so the stats + FAQs render in SSR HTML —
 // real, crawlable depth for community/area/off-plan-in templates, plus FAQPage
 // schema for rich results / AI answers. Renders nothing when there's no data.
