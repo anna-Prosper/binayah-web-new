@@ -1738,7 +1738,8 @@
     "whatsapp": "WhatsApp",
     "call": "电话",
     "liveChat": "在线客服",
-    "popupText": "正在寻找迪拜房产？我们的专家现在在线, 无论购买、租赁还是投资，我们都能为您找到完美选择。"
+    "popupText": "正在寻找迪拜房产？我们的专家现在在线, 无论购买、租赁还是投资，我们都能为您找到完美选择。",
+    "prefillGeneral": "您好，Binayah！👋 我想进一步了解您在迪拜的房产。"
   },
   "scrollToTop": {
     "ariaLabel": "返回顶部"

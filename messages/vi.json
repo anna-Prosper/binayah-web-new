@@ -1732,7 +1732,8 @@
     "whatsapp": "WhatsApp",
     "call": "Gọi",
     "liveChat": "Trò chuyện trực tiếp",
-    "popupText": "Bạn đang tìm bất động sản ở Dubai? Chuyên gia của chúng tôi đang trực tuyến, mua, thuê hay đầu tư, chúng tôi sẽ tìm được lựa chọn hoàn hảo."
+    "popupText": "Bạn đang tìm bất động sản ở Dubai? Chuyên gia của chúng tôi đang trực tuyến, mua, thuê hay đầu tư, chúng tôi sẽ tìm được lựa chọn hoàn hảo.",
+    "prefillGeneral": "Xin chào Binayah! 👋 Tôi muốn tìm hiểu thêm về các bất động sản của bạn ở Dubai."
   },
   "scrollToTop": {
     "ariaLabel": "Cuộn lên đầu trang"

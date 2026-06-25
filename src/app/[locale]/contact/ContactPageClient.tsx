@@ -12,10 +12,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
+import { waHref } from "@/lib/whatsapp";
 import { useTranslations, useLocale } from "next-intl";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const tWa = useTranslations("whatsapp");
   const locale = useLocale();
   const router = useRouter();
   const { toast } = useToast();
@@ -89,7 +91,7 @@ export default function ContactPage() {
                   {[
                     { icon: Phone, label: "Phone", value: "+971 54 998 8811", href: "tel:+971549988811" },
                     { icon: Mail, label: t("email"), value: "info@binayah.com", href: "mailto:info@binayah.com" },
-                    { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 54 998 8811", href: "https://wa.me/971549988811" },
+                    { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 54 998 8811", href: waHref(tWa("prefillGeneral"), "/contact") },
                     { icon: Clock, label: t("office"), value: t("hours"), href: undefined },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">

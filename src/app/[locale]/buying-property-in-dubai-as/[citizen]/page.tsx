@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText } from "@/lib/foreign-buyers";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
@@ -804,7 +805,7 @@ export default async function ForeignBuyerPage({
                 {c.ctaBtnSecondary}
               </Link>
               <a
-                href="https://wa.me/971549988811"
+                href={waHref(WA_DEFAULT_MESSAGE, "/buying-property-in-dubai-as")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-2 border-white/20 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"

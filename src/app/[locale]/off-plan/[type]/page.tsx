@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { BreadcrumbJsonLd, FAQJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { serverFetch, serverApiUrl } from "@/lib/api";
@@ -369,7 +370,7 @@ export default async function OffPlanTypePage({ params }: Props) {
                 {c.ctaBtn}
               </Link>
               <a
-                href="https://wa.me/971549988811"
+                href={waHref(WA_DEFAULT_MESSAGE, "/off-plan")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"

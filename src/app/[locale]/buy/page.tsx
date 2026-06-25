@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
@@ -389,7 +390,7 @@ export default async function BuyPage({ params }: Props) {
                   {c.ctaBtn}
                 </Link>
                 <a
-                  href="https://wa.me/971549988811"
+                  href={waHref(WA_DEFAULT_MESSAGE, "/buy")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border-2 border-white/30 text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-xl text-sm sm:text-base hover:bg-white/10 transition-all"
