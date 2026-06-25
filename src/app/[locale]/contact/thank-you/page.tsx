@@ -3,6 +3,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import GaLeadFire from "@/components/GaLeadFire";
 import { getTranslations } from "next-intl/server";
 
 // Dedicated thank-you page after a contact form submission. Lives at its
@@ -20,6 +21,7 @@ export default async function ContactThankYouPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <GaLeadFire source="contact-form" />
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-4 py-16">
         <div className="max-w-xl w-full text-center">

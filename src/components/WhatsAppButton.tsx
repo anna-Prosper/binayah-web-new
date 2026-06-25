@@ -6,6 +6,7 @@ import { Phone, MessageCircle, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { trackLead } from "@/lib/track";
 import { waHref } from "@/lib/whatsapp";
+import { trackCta, trackLead as ga4TrackLead } from "@/lib/gtag";
 
 const WA_POPUP_KEY = "binayah_wa_popup_ts";
 const POPUP_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
@@ -14,6 +15,12 @@ const POPUP_AUTO_HIDE = 7000;
 
 function trackClick(action: "whatsapp" | "phone" | "chat-open") {
   trackLead(action, { entityType: "global", entitySlug: typeof window !== "undefined" ? window.location.pathname : null });
+  if (action === "whatsapp") {
+    trackCta("whatsapp");
+    ga4TrackLead({ source: "whatsapp-button" });
+  } else if (action === "phone") {
+    trackCta("phone");
+  }
 }
 
 const WhatsAppButton = () => {

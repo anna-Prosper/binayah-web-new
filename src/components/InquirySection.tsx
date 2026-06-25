@@ -7,6 +7,7 @@ import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
+import { trackLead } from "@/lib/gtag";
 
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
@@ -39,6 +40,7 @@ const InquirySection = () => {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
+      trackLead({ source: "homepage-inquiry" });
       setForm({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
     } catch {
       setError(true);

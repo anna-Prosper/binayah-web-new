@@ -6,6 +6,7 @@ import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
+import { trackLead } from "@/lib/gtag";
 
 interface Props {
   open: boolean;
@@ -71,6 +72,7 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
+      trackLead({ source: "brochure-request", project: projectSlug });
     } catch {
       setError(true);
     } finally {
