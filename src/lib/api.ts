@@ -90,6 +90,32 @@ export const getRelatedProjects = cache(
 export const getListing = cache(async (slug: string) =>
   fetchJsonOr404(`/api/listings/${slug}`)
 );
+
+// DLD building data (avg ppsf/price, sales/units, room mix, recent transactions).
+// These endpoints require the API key, so fetch server-side with the x-api-key
+// header (never exposed to the browser).
+const DLD_HEADERS = (): Record<string, string> => ({ "x-api-key": process.env.API_KEY || "" });
+export const getDldBuilding = cache(async (slug: string): Promise<any | null> => {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/dld/buildings/${encodeURIComponent(slug)}`), 8000, DLD_HEADERS());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+});
+export const getDldBuildings = cache(
+  async (params: string): Promise<{ results: any[]; total: number; hasMore: boolean }> => {
+    try {
+      const res = await serverFetch(serverApiUrl(`/api/dld/buildings?${params}`), 10_000, DLD_HEADERS());
+      if (!res.ok) return { results: [], total: 0, hasMore: false };
+      const d = await res.json();
+      return { results: Array.isArray(d?.results) ? d.results : [], total: d?.total ?? 0, hasMore: !!d?.hasMore };
+    } catch {
+      return { results: [], total: 0, hasMore: false };
+    }
+  }
+);
 export const getNewsArticle = cache(async (slug: string, lang = "en") =>
   fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
 );

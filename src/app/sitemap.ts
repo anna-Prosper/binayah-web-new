@@ -107,7 +107,7 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [projects, listings, articles, communities, updates, developers, projectGuides] =
+  const [projects, listings, articles, communities, updates, developers, projectGuides, buildings] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
@@ -120,6 +120,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
       // Project guides (project_articles) — served at /construction-updates/{slug}
       fetchSlugs("/api/project-articles?limit=200"),
+      // DLD building pages — only those with recorded sales (non-thin). Direct
+      // DB read (no API 100-cap) like projects/listings.
+      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gt: 0 } }),
     ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -183,6 +186,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...updates.map((u) => withAlternates(`/construction-updates/${u.slug}`, 0.6, "weekly", u.lastmod ?? now)),
     ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
+    // DLD building pages — lean entries (no hreflang) to respect the sitemap size cap.
+    ...buildings.map((b) => plainEntry(`/building/${b.slug}`, 0.55, "monthly", b.lastmod ?? now)),
     // SEO content routes (compiled, not API-driven)
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
