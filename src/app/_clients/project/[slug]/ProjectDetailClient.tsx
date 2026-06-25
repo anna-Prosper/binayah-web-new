@@ -80,6 +80,9 @@ type FAQ = { question: string; answer: string };
 
 interface ProjectDetailClientProps {
   serverProject: any;
+  // Related projects fetched on the server so their links render in SSR HTML
+  // (crawlable). When provided, the client skips the in-browser fetch.
+  serverSimilar?: any[];
   defaultTab?: "overview" | "floor-plans" | "location" | "payment" | "faq";
 }
 
@@ -140,7 +143,7 @@ const attractionIcon = (type: string) => {
 };
 
 
-const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientProps) => {
+const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tE = useTranslations("enums");
@@ -199,14 +202,19 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
   const [enquirySending, setEnquirySending] = useState(false);
   const [enquiryError, setEnquiryError] = useState(false);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
-  const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>([]);
+  // Seed from the server-fetched related projects so their links are present in
+  // the SSR HTML (crawlable internal links). Show up to 6 for a richer graph.
+  const [similarProjects, setSimilarProjects] = useState<Array<{ _id: string; name: string; slug: string; community?: string; status?: string; startingPrice?: number; featuredImage?: string }>>(
+    Array.isArray(serverSimilar)
+      ? serverSimilar.filter((p) => p?.slug && p.slug !== serverProject.slug).slice(0, 6)
+      : []
+  );
 
-  // Fetch up to 4 real projects in the same community (or by the same
-  // developer if community is empty), excluding this project. The
-  // backend honours `community`, `q`, and `exclude` query params; if
-  // none match it falls back to the newest projects which is still
-  // better UX than the old hardcoded fake list.
+  // Fallback only: if the server didn't supply related projects, fetch them in
+  // the browser (same params the server uses). When SSR already provided them,
+  // skip the request entirely so the crawlable links stay stable.
   useEffect(() => {
+    if (Array.isArray(serverSimilar) && serverSimilar.length > 0) return;
     const params = new URLSearchParams();
     if (project.community) params.set("community", project.community);
     else if (project.developerName) params.set("q", project.developerName);
@@ -217,10 +225,11 @@ const ProjectDetailClient = ({ serverProject, defaultTab }: ProjectDetailClientP
       .then((arr: any[]) => {
         const filtered = (Array.isArray(arr) ? arr : [])
           .filter((p) => p.slug && p.slug !== project.slug)
-          .slice(0, 4);
+          .slice(0, 6);
         setSimilarProjects(filtered);
       })
       .catch(() => setSimilarProjects([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.community, project.developerName, project.slug]);
 
   // Seed the country code from the geo cookie (set by middleware from

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { getProject } from "@/lib/api";
+import { getProject, getRelatedProjects } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
@@ -64,6 +64,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
   if (!project) return notFound();
   const nonce = await getNonce();
+
+  // Related projects fetched server-side so the project↔project links render in
+  // SSR HTML (crawlable internal-link graph) instead of a client-only fetch.
+  const relatedProjects = await getRelatedProjects(
+    project.community || "",
+    project.developerName || "",
+    slug,
+    8
+  );
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae";
   const jsonLd: Record<string, unknown> = {
@@ -155,7 +164,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <ProjectDetailClient serverProject={project} />
+      <ProjectDetailClient serverProject={project} serverSimilar={relatedProjects} />
     </>
   );
 }

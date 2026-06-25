@@ -71,6 +71,22 @@ async function fetchJsonOr404<T = any>(path: string): Promise<T | null> {
 export const getProject = cache(async (slug: string) =>
   fetchJsonOr404(`/api/projects/${slug}`)
 );
+// Server-side "related projects" for internal-linking (same community, falling
+// back to same developer). Rendered in the project page's SSR HTML so the
+// project↔project links are crawlable and pass link equity — unlike a
+// client-only fetch. Mirrors the params the client carousel already used.
+export const getRelatedProjects = cache(
+  async (community: string, developerName: string, excludeSlug: string, limit = 8): Promise<any[]> => {
+    const params = new URLSearchParams();
+    if (community) params.set("community", community);
+    else if (developerName) params.set("q", developerName);
+    if (excludeSlug) params.set("exclude", excludeSlug);
+    params.set("limit", String(limit));
+    const raw = await fetchJsonOr404<any[]>(`/api/projects?${params.toString()}`);
+    const arr = Array.isArray(raw) ? raw : [];
+    return arr.filter((p) => p?.slug && p.slug !== excludeSlug).slice(0, limit);
+  }
+);
 export const getListing = cache(async (slug: string) =>
   fetchJsonOr404(`/api/listings/${slug}`)
 );

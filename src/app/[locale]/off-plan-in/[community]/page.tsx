@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
+import { getRelatedProjects } from "@/lib/api";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,11 @@ export default async function OffPlanInCommunityPage({
   const lp = locale === "en" ? "" : `/${locale}`;
   const apiCommunity = c.apiName ?? c.name;
 
+  // Server-fetch the community's off-plan projects so the hub renders crawlable
+  // links to each project (the SearchPageClient list below is client-only).
+  // This is the high-authority hub → project edge of the internal-link graph.
+  const communityProjects = await getRelatedProjects(apiCommunity, "", "", 24);
+
   const breadcrumbs = [
     { name: L.home, href: `${lp}/` },
     { name: L.offplan, href: `${lp}/off-plan` },
@@ -93,6 +99,23 @@ export default async function OffPlanInCommunityPage({
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
         <SearchPageClient defaultStatus="Off-Plan" defaultIntent="off-plan" defaultLocations={[apiCommunity]} syncUrl={false} />
       </div>
+
+      {/* SSR crawlable index of this community's off-plan projects — passes link
+          equity from the hub to each project page (the list above is client-only). */}
+      {communityProjects.length > 0 && (
+        <nav aria-label={`${L.offplanIn} ${c.name}`} className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+          <h2 className="text-lg font-bold text-foreground mb-3">{L.offplanIn} {c.name}</h2>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            {communityProjects.map((p: { slug: string; name: string }) => (
+              <li key={p.slug}>
+                <a href={`${lp}/project/${p.slug}`} className="hover:text-primary hover:underline transition-colors">
+                  {p.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <Footer />
       <WhatsAppButton />
