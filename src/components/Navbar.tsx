@@ -601,11 +601,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
               </div>
 
               <button
-                onClick={() => handleNav("/contact")}
+                onClick={() => handleNav("/list-your-property")}
                 className="hidden 2xl:flex px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
               >
-                {t("getInTouch")}
+                {t("listYourPropertyLink")}
               </button>
               <div className="hidden 2xl:block w-px h-5 bg-white/15" />
               <NotificationsBell />
@@ -892,14 +892,15 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 </button>
               </motion.div>
 
-              {/* Get in Touch CTA */}
+              {/* Primary CTA — capture seller/landlord supply (contact is covered
+                  by the sticky WhatsApp/Call bar + phone). */}
               <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.3 }} className="pt-4">
                 <button
-                  onClick={() => handleNav("/contact")}
+                  onClick={() => handleNav("/list-your-property")}
                   className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
                   style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                 >
-                  {t("getInTouch")}
+                  {t("listYourPropertyLink")}
                 </button>
               </motion.div>
             </div>
