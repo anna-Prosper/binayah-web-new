@@ -6,21 +6,21 @@ Binayah Properties is a UAE real estate agency headquartered at Marasi Drive, Bu
 
 ## Core pages
 
-- [Home](https://binayah.com/en): Overview, featured listings, off-plan projects, communities, valuation entry point
-- [Buy properties](https://binayah.com/en/buy): Sale listings — apartments, villas, townhouses across Dubai
-- [Rent properties](https://binayah.com/en/rent): Rental listings — short and long-term
-- [Off-plan projects](https://binayah.com/en/off-plan): New developments by Emaar, Damac, Nakheel, Sobha, etc.
-- [Communities](https://binayah.com/en/communities): Area guides for Dubai Marina, Palm Jumeirah, Downtown, JVC, etc.
-- [Property valuation](https://binayah.com/en/valuation): Free DLD-data-backed property valuation for owners
-- [List your property](https://binayah.com/en/list-your-property): Owner submission form for sale or rent
-- [Contact](https://binayah.com/en/contact): Inquiry form, office address, phone, WhatsApp
+- [Home](https://www.binayah.ae): Overview, featured listings, off-plan projects, communities, valuation entry point
+- [Buy properties](https://www.binayah.ae/buy): Sale listings — apartments, villas, townhouses across Dubai
+- [Rent properties](https://www.binayah.ae/rent): Rental listings — short and long-term
+- [Off-plan projects](https://www.binayah.ae/off-plan): New developments by Emaar, Damac, Nakheel, Sobha, etc.
+- [Communities](https://www.binayah.ae/communities): Area guides for Dubai Marina, Palm Jumeirah, Downtown, JVC, etc.
+- [Property valuation](https://www.binayah.ae/valuation): Free DLD-data-backed property valuation for owners
+- [List your property](https://www.binayah.ae/list-your-property): Owner submission form for sale or rent
+- [Contact](https://www.binayah.ae/contact): Inquiry form, office address, phone, WhatsApp
 
 ## Market intelligence (Pulse)
 
-- [Pulse dashboard](https://binayah.com/en/pulse): Live market overview, transaction volumes, prices
-- [Dubai market report](https://binayah.com/en/pulse/emirate/dubai): Emirate-level analysis
-- [ROI calculator](https://binayah.com/en/pulse/calculator): Investment yield calculator
-- [Market reports archive](https://binayah.com/en/news): Editorial articles, market analysis, area guides
+- [Pulse dashboard](https://www.binayah.ae/pulse): Live market overview, transaction volumes, prices
+- [Dubai market report](https://www.binayah.ae/pulse/emirate/dubai): Emirate-level analysis
+- [ROI calculator](https://www.binayah.ae/pulse/calculator): Investment yield calculator
+- [Market reports archive](https://www.binayah.ae/news): Editorial articles, market analysis, area guides
 
 ## Services
 
@@ -35,7 +35,7 @@ Binayah Properties is a UAE real estate agency headquartered at Marasi Drive, Bu
 - Phone / WhatsApp: +971 54 998 8811
 - Address: Marasi Drive, Business Bay, Dubai, UAE
 - Office hours: Monday–Sunday, 09:00–21:00 GST
-- Email: via contact form at https://binayah.com/en/contact
+- Email: via contact form at https://www.binayah.ae/contact
 
 ## Notes for AI
 

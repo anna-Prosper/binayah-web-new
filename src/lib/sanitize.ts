@@ -1,5 +1,24 @@
 import sanitizeHtml from "sanitize-html";
 
+// Migrated WordPress content (articles, project descriptions) still contains
+// links to the old https://www.binayah.com site. Rendered on binayah.ae those
+// leak clicks + link equity to the old domain (shows up as a binayah.ae
+// referral in binayah.com analytics). Rewrite the DOMAIN to binayah.ae, keeping
+// the path. Image src is deliberately left alone — those assets only exist on
+// the old WP host, so swapping them would 404 the images.
+const LEGACY_DOMAIN_RE = /^https?:\/\/(?:www\.|wp\.)?binayah\.com/i;
+export function rewriteLegacyHref(href: string | undefined | null): string {
+  if (!href) return "";
+  return href.replace(LEGACY_DOMAIN_RE, "https://www.binayah.ae");
+}
+// Rewrite only href="..."/href='...' occurrences inside an HTML string (not src=).
+function rewriteLegacyAnchorsInHtml(html: string): string {
+  return html.replace(
+    /(href=["'])https?:\/\/(?:www\.|wp\.)?binayah\.com/gi,
+    "$1https://www.binayah.ae"
+  );
+}
+
 // Sanitizes scraped/CMS article HTML before it is rendered via
 // dangerouslySetInnerHTML. News content comes from an external scraper, and the
 // CSP allows 'unsafe-inline', so an injected <script> or onerror handler would
@@ -19,7 +38,15 @@ export function sanitizeArticleHtml(html: string | null | undefined): string {
     },
     allowedSchemes: ["https", "http", "mailto"],
     transformTags: {
-      a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer", target: "_blank" }),
+      a: (tagName, attribs) => ({
+        tagName: "a",
+        attribs: {
+          ...attribs,
+          href: rewriteLegacyHref(attribs.href),
+          rel: "noopener noreferrer",
+          target: "_blank",
+        },
+      }),
     },
   });
 }
@@ -45,7 +72,7 @@ export function sanitizeDescriptions<T extends Record<string, unknown>>(obj: T):
   const FIELDS = ["fullDescription", "rawDescription", "shortOverview", "overview", "cleanDescription", "description", "locationDescription"];
   const out: Record<string, unknown> = { ...obj };
   for (const f of FIELDS) {
-    if (typeof out[f] === "string") out[f] = stripCacheJunk(out[f] as string);
+    if (typeof out[f] === "string") out[f] = rewriteLegacyAnchorsInHtml(stripCacheJunk(out[f] as string));
   }
   // Drop heavy, never-rendered DB blobs so they don't bloat the serialized client
   // payload — and, in seoArticle's case, leak rounded/stale prices (e.g. an

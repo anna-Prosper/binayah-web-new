@@ -752,7 +752,7 @@ const DEED_DUMMY_RESULT = {
     // renders if the dummy branch is shown, and should not name third-party
     // data vendors in customer-facing copy.
     sources: [
-        { url: "https://binayah.com", title: "Recent Dubai Marina market activity" },
+        { url: "https://www.binayah.ae", title: "Recent Dubai Marina market activity" },
     ],
 };
 // ─── Component ────────────────────────────────────────────────────────────────
