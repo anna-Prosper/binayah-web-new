@@ -7,6 +7,9 @@ import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
+import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
+import CommunityStatsBand from "@/components/CommunityStatsBand";
+import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
@@ -120,6 +123,17 @@ export default async function CommunityPage({
   // 2. Nothing found → 404
   if (!hasWiki && !hasDb) return notFound();
 
+  // Real market depth (DLD/listings stats + FAQs + schema) shared across all
+  // render branches so every community page is non-thin.
+  const pageCommunityName =
+    dbData?.community?.name ||
+    (communityInfoDoc as any)?.name ||
+    slug.replace(/-/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase());
+  const cStats = await getCommunityStats(pageCommunityName);
+  const cFaqs = buildCommunityFaqs(pageCommunityName, cStats);
+  const cNonce = await getNonce();
+  const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} nonce={cNonce} />;
+
   // 3. Both present → merged page
   if (hasWiki && hasDb) {
     const { community, projects } = dbData!;
@@ -159,12 +173,15 @@ export default async function CommunityPage({
     }));
 
     return (
-      <CommunityMergedDetailClient
-        community={serialized}
-        communityName={communityName}
-        projects={serializedProjects}
-        locale={locale}
-      />
+      <>
+        <CommunityMergedDetailClient
+          community={serialized}
+          communityName={communityName}
+          projects={serializedProjects}
+          locale={locale}
+        />
+        {statsBand}
+      </>
     );
   }
 
@@ -181,7 +198,7 @@ export default async function CommunityPage({
       priceRange: communityInfoDoc!.priceRange,
       sources: communityInfoDoc!.sources,
     };
-    return <CommunityInfoDetailClient community={serialized} locale={locale} />;
+    return <><CommunityInfoDetailClient community={serialized} locale={locale} />{statsBand}</>;
   }
 
   // 5. Only DB → existing CommunityDetailClient
@@ -191,12 +208,15 @@ export default async function CommunityPage({
     slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   return (
-    <CommunityDetailClient
-      slug={slug}
-      communityName={communityName}
-      communityDescription={community.description?.replace(/<[^>]*>/g, "") || ""}
-      communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
-      projects={projects || []}
-    />
+    <>
+      <CommunityDetailClient
+        slug={slug}
+        communityName={communityName}
+        communityDescription={community.description?.replace(/<[^>]*>/g, "") || ""}
+        communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
+        projects={projects || []}
+      />
+      {statsBand}
+    </>
   );
 }

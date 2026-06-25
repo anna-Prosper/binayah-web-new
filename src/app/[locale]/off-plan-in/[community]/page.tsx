@@ -8,6 +8,9 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
 import { getRelatedProjects } from "@/lib/api";
+import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
+import CommunityStatsBand from "@/components/CommunityStatsBand";
+import { getNonce } from "@/lib/nonce";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 
 export const dynamic = "force-dynamic";
@@ -72,6 +75,12 @@ export default async function OffPlanInCommunityPage({
   // This is the high-authority hub → project edge of the internal-link graph.
   const communityProjects = await getRelatedProjects(apiCommunity, "", "", 24);
 
+  // Real market depth: DLD + listings stats and data-driven FAQs (+ FAQPage
+  // schema) so the page isn't thin and earns rich results / AI citations.
+  const stats = await getCommunityStats(apiCommunity);
+  const faqs = buildCommunityFaqs(c.name, stats);
+  const nonce = await getNonce();
+
   const breadcrumbs = [
     { name: L.home, href: `${lp}/` },
     { name: L.offplan, href: `${lp}/off-plan` },
@@ -94,6 +103,9 @@ export default async function OffPlanInCommunityPage({
           <p className="text-primary-foreground/80 text-lg max-w-2xl">{localizeCommunityText(c.shortIntro, locale)}</p>
         </div>
       </section>
+
+      {/* Real market depth: DLD/listings stats snapshot + data-driven FAQs + schema */}
+      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} nonce={nonce} />
 
       {/* Off-plan projects pre-filtered to this community — clean URL, no query params */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
