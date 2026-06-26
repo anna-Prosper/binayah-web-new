@@ -54,6 +54,9 @@ const nextConfig: NextConfig = {
       // Redirect to /services to recover any backlink value.
       { source: "/downloads", destination: "/services", permanent: true },
       { source: "/downloads/", destination: "/services", permanent: true },
+      // Guides live at /pulse/guides — catch bare /guides (bookmarks, old links).
+      { source: "/guides", destination: "/pulse/guides", permanent: true },
+      { source: "/guides/:slug", destination: "/pulse/guides/:slug", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",

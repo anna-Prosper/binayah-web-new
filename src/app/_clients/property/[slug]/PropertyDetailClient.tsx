@@ -1474,20 +1474,20 @@ export default function PropertyDetailClient({
       {(() => {
         const guides = isRent
           ? [
-              { title: t("guideRentTenantRightsTitle"), desc: t("guideRentTenantRightsDesc"), icon: Shield, href: "/guides" },
-              { title: t("guideRentEjariTitle"), desc: t("guideRentEjariDesc"), icon: FileText, href: "/guides" },
-              { title: t("guideRentDewaTitle"), desc: t("guideRentDewaDesc"), icon: Zap, href: "/guides" },
-              { title: t("guideRentRentIncreaseTitle"), desc: t("guideRentRentIncreaseDesc"), icon: TrendingUp, href: "/guides" },
-              { title: t("guideRentMovingTitle"), desc: t("guideRentMovingDesc"), icon: Home, href: "/guides" },
-              { title: t("guideRentCommunityTitle"), desc: t("guideRentCommunityDesc"), icon: Compass, href: "/guides" },
+              { title: t("guideRentTenantRightsTitle"), desc: t("guideRentTenantRightsDesc"), icon: Shield, href: "/pulse/guides" },
+              { title: t("guideRentEjariTitle"), desc: t("guideRentEjariDesc"), icon: FileText, href: "/pulse/guides" },
+              { title: t("guideRentDewaTitle"), desc: t("guideRentDewaDesc"), icon: Zap, href: "/pulse/guides" },
+              { title: t("guideRentRentIncreaseTitle"), desc: t("guideRentRentIncreaseDesc"), icon: TrendingUp, href: "/pulse/guides" },
+              { title: t("guideRentMovingTitle"), desc: t("guideRentMovingDesc"), icon: Home, href: "/pulse/guides" },
+              { title: t("guideRentCommunityTitle"), desc: t("guideRentCommunityDesc"), icon: Compass, href: "/pulse/guides" },
             ]
           : [
-              { title: t("guideSaleHowToBuyTitle"), desc: t("guideSaleHowToBuyDesc"), icon: Home, href: "/guides" },
-              { title: t("guideSaleGoldenVisaTitle"), desc: t("guideSaleGoldenVisaDesc"), icon: Shield, href: "/guides" },
-              { title: t("guideSaleDldTitle"), desc: t("guideSaleDldDesc"), icon: FileText, href: "/guides" },
-              { title: t("guideSaleMortgageTitle"), desc: t("guideSaleMortgageDesc"), icon: TrendingUp, href: "/guides" },
-              { title: t("guideSaleOffPlanTitle"), desc: t("guideSaleOffPlanDesc"), icon: Compass, href: "/guides" },
-              { title: t("guideSaleFirstTimerTitle"), desc: t("guideSaleFirstTimerDesc"), icon: Star, href: "/guides" },
+              { title: t("guideSaleHowToBuyTitle"), desc: t("guideSaleHowToBuyDesc"), icon: Home, href: "/pulse/guides" },
+              { title: t("guideSaleGoldenVisaTitle"), desc: t("guideSaleGoldenVisaDesc"), icon: Shield, href: "/pulse/guides" },
+              { title: t("guideSaleDldTitle"), desc: t("guideSaleDldDesc"), icon: FileText, href: "/pulse/guides" },
+              { title: t("guideSaleMortgageTitle"), desc: t("guideSaleMortgageDesc"), icon: TrendingUp, href: "/pulse/guides" },
+              { title: t("guideSaleOffPlanTitle"), desc: t("guideSaleOffPlanDesc"), icon: Compass, href: "/pulse/guides" },
+              { title: t("guideSaleFirstTimerTitle"), desc: t("guideSaleFirstTimerDesc"), icon: Star, href: "/pulse/guides" },
             ];
         return (
           <section className="py-12 sm:py-16 border-t border-border/50">
@@ -1502,7 +1502,7 @@ export default function PropertyDetailClient({
                     <p className="text-[11px] text-muted-foreground mt-0.5">{t("propertyGuidesDesc")}</p>
                   </div>
                 </div>
-                <Link href="/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
+                <Link href="/pulse/guides" className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent/80 transition-colors">
                   {t("viewAll")} <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
@@ -1528,7 +1528,7 @@ export default function PropertyDetailClient({
                 ))}
               </div>
               <div className="sm:hidden text-center mt-3">
-                <Link href="/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
+                <Link href="/pulse/guides" className="inline-flex items-center gap-1.5 text-xs font-bold text-accent border border-accent/30 rounded-full px-4 py-2 hover:bg-accent/5 transition-colors">
                   {t("viewAllGuides")} <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
