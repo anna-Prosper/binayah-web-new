@@ -20,12 +20,12 @@ const titles: Record<string, string> = {
 };
 const descriptions: Record<string, string> = {
   en: "Buy, rent or invest in Dubai real estate — luxury apartments, villas & off-plan with flexible payment plans. RERA-certified, trusted since 2007.",
-  ru: "Найдите роскошные апартаменты, виллы и новостройки в Дубае. Более 2500 объектов недвижимости. Binayah Properties с 2007 года.",
-  ar: "اعثر على شقق فاخرة وفلل ومشاريع على الخارطة في دبي. موثوق من قبل آلاف المشترين والمستثمرين منذ عام 2007.",
-  zh: "在迪拜寻找豪华公寓、别墅和期房项目。自2007年以来深受数千名买家和投资者信赖。",
-  vi: "Tìm căn hộ sang trọng, biệt thự và dự án chưa hoàn thiện ở Dubai. Được hàng nghìn người mua và nhà đầu tư tin tưởng từ năm 2007.",
-  he: "מצאו דירות יוקרה, וילות ופרויקטים בתכנון בדובאי. אמון על ידי אלפי קונים ומשקיעים מאז 2007.",
-  fr: "Découvrez des appartements de luxe, des villas et des projets sur plan à Dubaï. La confiance de milliers d'acheteurs et d'investisseurs depuis 2007.",
+  ru: "Купить, арендовать или инвестировать в недвижимость Дубая — апартаменты, виллы и новостройки с гибкими планами оплаты. Сертификат RERA, нам доверяют с 2007 года.",
+  ar: "اشترِ أو استأجر أو استثمر في عقارات دبي — شقق فاخرة وفلل ومشاريع على الخارطة بخطط سداد مرنة. معتمدون من RERA وموثوقون منذ عام 2007.",
+  zh: "在迪拜购买、租赁或投资房地产——豪华公寓、别墅及期房项目，灵活付款计划。RERA 认证，自 2007 年值得信赖。",
+  vi: "Mua, thuê hoặc đầu tư bất động sản Dubai — căn hộ sang trọng, biệt thự và dự án off-plan với kế hoạch thanh toán linh hoạt. Chứng nhận RERA, uy tín từ 2007.",
+  he: "קנו, השכירו או השקיעו בנדל\"ן בדובאי — דירות יוקרה, וילות ופרויקטים על הנייר עם תוכניות תשלום גמישות. מוסמכים RERA ומהימנים מאז 2007.",
+  fr: "Achetez, louez ou investissez dans l'immobilier à Dubaï — appartements de luxe, villas et projets sur plan avec paiements flexibles. Certifié RERA depuis 2007.",
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

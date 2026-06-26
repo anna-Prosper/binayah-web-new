@@ -38,6 +38,52 @@ async function fetchSlugDatesFromDb(
   }
 }
 
+// Bedroom × type × community matrix URLs that ACTUALLY have listings — emitted
+// from a single grouped aggregation so the sitemap never contains empty (and
+// therefore self-noindexed) combos. Covers all four supported types. Secondary
+// collections lack propertyType, so they can't satisfy a type filter anyway —
+// the legacy `listings` collection is the authoritative source here.
+async function fetchMatrixCombos(): Promise<string[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return [];
+  const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
+  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+  const nameToSlug = new Map<string, string>();
+  for (const c of BUY_COMMUNITIES) {
+    nameToSlug.set(norm(c.name), c.slug);
+    const apiName = (c as { apiName?: string }).apiName;
+    if (apiName) nameToSlug.set(norm(apiName), c.slug);
+  }
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const rows = await client.db().collection("listings").aggregate([
+      { $match: { publishStatus: "published", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) }, bedrooms: { $gte: 0, $lte: 7 } } },
+      { $group: { _id: { c: "$community", t: "$propertyType", b: "$bedrooms", lt: "$listingType" }, n: { $sum: 1 } } },
+      { $match: { n: { $gte: 1 } } },
+    ]).toArray();
+    const urls = new Set<string>();
+    for (const r of rows as { _id: { c: string; t: string; b: number; lt: string } }[]) {
+      const slug = nameToSlug.get(norm(String(r._id.c || "")));
+      if (!slug) continue;
+      const typeSlug = TYPE_SLUG[r._id.t];
+      if (!typeSlug) continue;
+      const beds = r._id.b;
+      if (typeof beds !== "number" || beds < 0 || beds > 7) continue;
+      const bedToken = beds === 0 ? "studio" : `${beds}-bedroom`;
+      const txn = r._id.lt === "Rent" ? "rent" : r._id.lt === "Sale" ? "sale" : null;
+      if (!txn) continue;
+      urls.add(`/${bedToken}-${typeSlug}-for-${txn}-in-${slug}`);
+    }
+    return [...urls];
+  } catch {
+    return [];
+  } finally {
+    await client?.close();
+  }
+}
+
 const IS_RU = SITE_URL.includes("binayah.ru");
 
 function localeUrl(path: string, locale: string) {
@@ -125,6 +171,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gt: 0 } }),
     ]);
 
+  // Populated bedroom × type × community combos (all types) — data-driven.
+  const matrixCombos = await fetchMatrixCombos();
+
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
     withAlternates("/off-plan", 0.9, "daily", now),
@@ -193,15 +242,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
-    // Bedroom × type × community matrix (apartments — the dominant inventory).
-    // Empty combos self-noindex at the page level, so listing them is safe.
-    ...BUY_COMMUNITIES.flatMap((c) =>
-      ["studio", "1-bedroom", "2-bedroom", "3-bedroom"].flatMap((bed) =>
-        ["sale", "rent"].map((txn) =>
-          plainEntry(`/${bed}-apartments-for-${txn}-in-${c.slug}`, 0.6, "weekly", now)
-        )
-      )
-    ),
+    // Bedroom × type × community matrix — only combos that actually have
+    // listings (all four types), so no empty/self-noindexed URLs are submitted.
+    ...matrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];
