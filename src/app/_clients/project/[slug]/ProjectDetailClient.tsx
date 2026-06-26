@@ -2695,19 +2695,10 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                     </div>
                   ))}
                 </div>
-                {/* QR Code row — real or dummy QR if stored, otherwise an
-                    informational-only compliance notice (no fake permit). */}
-                {!hasStoredQr ? (
-                  <div className="mt-4 pt-4 border-t border-border/40 flex items-start gap-3">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-muted/50 border border-border/50 flex-shrink-0 inline-flex items-center justify-center">
-                      <Shield className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-foreground">{t("infoOnlyTitle")}</p>
-                      <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">{t("infoOnlyNote")}</p>
-                    </div>
-                  </div>
-                ) : (() => {
+                {/* QR Code row — shown only when a real or dummy QR is stored.
+                    When absent, no permit is shown; a quiet legal disclaimer
+                    is rendered as fine print near the footer instead. */}
+                {hasStoredQr && (() => {
                   const QrInner = (
                     <NextImage
                       src={qrSrc}
@@ -2923,6 +2914,14 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Quiet legal disclaimer — only when no regulator/dummy permit QR exists.
+          Kept as low-contrast fine print for compliance cover, not prominence. */}
+      {!hasStoredQr && (
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-6">
+          <p className="text-[10px] leading-relaxed text-muted-foreground/45">{t("infoOnlyNote")}</p>
+        </div>
+      )}
 
       <Footer />
       <div className="hidden lg:block">
