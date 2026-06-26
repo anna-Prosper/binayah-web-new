@@ -9,6 +9,17 @@ import { sanitizeDescriptions } from "@/lib/sanitize";
 
 export const revalidate = 1800;
 
+// Normalize any common YouTube/Vimeo URL form (watch / youtu.be / embed) so the
+// VideoObject can emit a proper embedUrl — what Google wants for hosted players.
+function youtubeId(u: string): string | null {
+  const m = String(u).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/i);
+  return m ? m[1] : null;
+}
+function vimeoId(u: string): string | null {
+  const m = String(u).match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  return m ? m[1] : null;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
@@ -81,8 +92,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   );
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae";
-  const jsonLd: Record<string, unknown> = {
-    "@context": "https://schema.org",
+  const ytId = project.videoUrl ? youtubeId(project.videoUrl) : null;
+  const vmId = project.videoUrl ? vimeoId(project.videoUrl) : null;
+  const realEstate: Record<string, unknown> = {
     "@type": "RealEstateListing",
     name: project.name,
     description: project.shortOverview || project.overview || undefined,
@@ -133,21 +145,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
         unitCode: project.unitSizeUnit === "sqm" ? "MTK" : "FTK",
       },
     } : {}),
-    ...(project.videoUrl ? {
-      video: {
-        "@type": "VideoObject",
-        name: `${project.name} - Project Video`,
-        description: project.shortOverview || `Video overview of ${project.name} by ${project.developerName || "developer"} in ${project.community || project.city || "Dubai"}.`,
-        thumbnailUrl: project.videoThumbnail || project.featuredImage,
-        contentUrl: project.videoUrl,
-        uploadDate: project.createdAt || new Date().toISOString(),
-      },
-    } : {}),
     ...(project.seo?.metaKeywords?.length ? {
       keywords: Array.isArray(project.seo.metaKeywords)
         ? project.seo.metaKeywords.join(", ")
         : project.seo.metaKeywords,
     } : {}),
+  };
+
+  // Top-level VideoObject node (Google detects standalone video rich results far
+  // more reliably than one nested inside RealEstateListing). embedUrl for
+  // YouTube/Vimeo, contentUrl for a direct file; auto-thumbnail for YouTube.
+  const videoNode: Record<string, unknown> | null = project.videoUrl ? {
+    "@type": "VideoObject",
+    name: `${project.name} - Project Video`,
+    description: project.shortOverview || `Video overview of ${project.name} by ${project.developerName || "developer"} in ${project.community || project.city || "Dubai"}.`,
+    thumbnailUrl: project.videoThumbnail || project.featuredImage || (ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : undefined),
+    uploadDate: project.createdAt || new Date().toISOString(),
+    ...(ytId
+      ? { embedUrl: `https://www.youtube.com/embed/${ytId}` }
+      : vmId
+        ? { embedUrl: `https://player.vimeo.com/video/${vmId}` }
+        : { contentUrl: project.videoUrl }),
+  } : null;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": videoNode ? [realEstate, videoNode] : [realEstate],
   };
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
