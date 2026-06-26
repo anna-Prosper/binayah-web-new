@@ -57,6 +57,9 @@ const nextConfig: NextConfig = {
       // Guides live at /pulse/guides — catch bare /guides (bookmarks, old links).
       { source: "/guides", destination: "/pulse/guides", permanent: true },
       { source: "/guides/:slug", destination: "/pulse/guides/:slug", permanent: true },
+      // Legal pages use full slugs — catch the short forms.
+      { source: "/privacy", destination: "/privacy-policy", permanent: true },
+      { source: "/terms", destination: "/terms-of-service", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",

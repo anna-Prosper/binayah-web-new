@@ -453,9 +453,9 @@ export default function SignInClient() {
 
           <p className="text-xs text-muted-foreground text-center">
             {t("legal")}{" "}
-            <a href="/privacy" className="underline hover:text-foreground">{t("privacyPolicy")}</a>
+            <a href="/privacy-policy" className="underline hover:text-foreground">{t("privacyPolicy")}</a>
             {" "}{t("and")}{" "}
-            <a href="/terms" className="underline hover:text-foreground">{t("termsOfService")}</a>.
+            <a href="/terms-of-service" className="underline hover:text-foreground">{t("termsOfService")}</a>.
           </p>
         </div>
       </div>
