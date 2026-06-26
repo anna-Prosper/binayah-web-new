@@ -1,21 +1,29 @@
 import sanitizeHtml from "sanitize-html";
 
-// Migrated WordPress content (articles, project descriptions) still contains
-// links to the old https://www.binayah.com site. Rendered on binayah.ae those
-// leak clicks + link equity to the old domain (shows up as a binayah.ae
-// referral in binayah.com analytics). Rewrite the DOMAIN to binayah.ae, keeping
-// the path. Image src is deliberately left alone — those assets only exist on
-// the old WP host, so swapping them would 404 the images.
+// Migrated WordPress content (articles, project descriptions) still references
+// the old binayah.com site. binayah.ae must not mention or depend on it:
+//  - LINKS (href) are rewritten to binayah.ae (keep the path).
+//  - IMAGES (src) that point at binayah.com are stripped entirely — those
+//    assets only live on the old host, which is being retired, so proxying or
+//    rewriting them would just break later. Removing them drops the mention and
+//    the dependency (article featured images live on S3 and are unaffected).
 const LEGACY_DOMAIN_RE = /^https?:\/\/(?:www\.|wp\.)?binayah\.com/i;
 export function rewriteLegacyHref(href: string | undefined | null): string {
   if (!href) return "";
   return href.replace(LEGACY_DOMAIN_RE, "https://www.binayah.ae");
 }
-// Rewrite only href="..."/href='...' occurrences inside an HTML string (not src=).
-function rewriteLegacyAnchorsInHtml(html: string): string {
-  return html.replace(
-    /(href=["'])https?:\/\/(?:www\.|wp\.)?binayah\.com/gi,
-    "$1https://www.binayah.ae"
+// Drop <img>/<source> tags whose src points at binayah.com (also unwrap an
+// otherwise-empty wrapping <figure>).
+function stripLegacyImages(html: string): string {
+  return html
+    .replace(/<(?:img|source)\b[^>]*\bsrc(?:set)?\s*=\s*["'][^"']*binayah\.com[^"']*["'][^>]*>/gi, "")
+    .replace(/<figure\b[^>]*>\s*(?:<figcaption\b[^>]*>.*?<\/figcaption>)?\s*<\/figure>/gi, "");
+}
+// Rewrite legacy href links + strip legacy images in one pass (for raw HTML
+// strings rendered via dangerouslySetInnerHTML, e.g. project descriptions).
+function cleanLegacyHtml(html: string): string {
+  return stripLegacyImages(
+    html.replace(/(href=["'])https?:\/\/(?:www\.|wp\.)?binayah\.com/gi, "$1https://www.binayah.ae")
   );
 }
 
@@ -25,7 +33,9 @@ function rewriteLegacyAnchorsInHtml(html: string): string {
 // otherwise execute (stored XSS). Allows safe formatting tags only.
 export function sanitizeArticleHtml(html: string | null | undefined): string {
   if (!html) return "";
-  return sanitizeHtml(html, {
+  // Drop binayah.com images first so the sanitized output never references the
+  // old host (links are rewritten via transformTags below).
+  return sanitizeHtml(stripLegacyImages(html), {
     allowedTags: [
       "h2", "h3", "h4", "h5", "h6", "p", "blockquote", "ul", "ol", "li",
       "strong", "b", "em", "i", "u", "s", "a", "img", "figure", "figcaption",
@@ -72,7 +82,7 @@ export function sanitizeDescriptions<T extends Record<string, unknown>>(obj: T):
   const FIELDS = ["fullDescription", "rawDescription", "shortOverview", "overview", "cleanDescription", "description", "locationDescription"];
   const out: Record<string, unknown> = { ...obj };
   for (const f of FIELDS) {
-    if (typeof out[f] === "string") out[f] = rewriteLegacyAnchorsInHtml(stripCacheJunk(out[f] as string));
+    if (typeof out[f] === "string") out[f] = cleanLegacyHtml(stripCacheJunk(out[f] as string));
   }
   // Drop heavy, never-rendered DB blobs so they don't bloat the serialized client
   // payload — and, in seoArticle's case, leak rounded/stale prices (e.g. an
