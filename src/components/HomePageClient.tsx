@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { ReactNode } from "react";
 // Above-the-fold: loaded eagerly
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -10,7 +11,6 @@ import DeferUntilIdle from "@/components/DeferUntilIdle";
 import type { GoogleReviewsData } from "@/lib/googleReviews";
 
 // Below-the-fold: code-split and lazy-loaded
-const FAQSection           = dynamic(() => import("@/components/FAQSection"));
 const MortgageCalculator   = dynamic(() => import("@/components/MortgageCalculator"));
 const CookieConsent        = dynamic(() => import("@/components/CookieConsent"));
 const PropertyComparison   = dynamic(() => import("@/components/PropertyComparison"));
@@ -89,9 +89,12 @@ interface HomePageClientProps {
   offPlanProjects?: OffPlanListing[];
   latestArticles?: Article[];
   googleReviews?: GoogleReviewsData | null;
+  // Server-rendered slots (real visible HTML, crawlable without JS).
+  introSlot?: ReactNode;
+  faqSlot?: ReactNode;
 }
 
-export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null, introSlot = null, faqSlot = null }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -99,6 +102,9 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {/* Above-the-fold: keep eager so LCP isn't gated on hydration */}
         <HeroSection />
         <AIPulseBanner />
+
+        {/* Server-rendered intro copy (real visible HTML, no client JS) */}
+        {introSlot}
 
         {/* Inventory first — surface real listings + off-plan projects right after the
             hero, before the valuation tool (visitors come to browse properties). */}
@@ -121,7 +127,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={680}><InquirySection /></LazyMount>
         <LazyMount minHeight={520}><NewsSection articles={latestArticles} /></LazyMount>
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
-        <LazyMount minHeight={400}><FAQSection /></LazyMount>
+        {/* Server-rendered FAQ (crawlable HTML, matches FAQPage schema, zero JS) */}
+        {faqSlot}
         <LazyMount minHeight={120}><NewsletterStrip /></LazyMount>
       </main>
       <LazyMount minHeight={0}><Footer /></LazyMount>

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 import { FAQJsonLd } from "@/components/JsonLd";
 import { getGoogleReviews } from "@/lib/googleReviews";
+import FAQSectionServer from "@/components/FAQSectionServer";
+import HomeIntro from "@/components/HomeIntro";
 
 export const revalidate = 300;
 
@@ -277,6 +279,8 @@ export default async function HomePage({ params }: Props) {
         offPlanProjects={projects.filter(Boolean)}
         latestArticles={articles.filter(Boolean)}
         googleReviews={googleReviews}
+        introSlot={<HomeIntro locale={locale} />}
+        faqSlot={<FAQSectionServer faqs={faqs} locale={locale} />}
       />
     </>
   );
