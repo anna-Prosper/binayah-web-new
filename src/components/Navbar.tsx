@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Phone, Menu, X, ChevronDown, ChevronRight, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
 import { usePathname, useRouter } from "@/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
@@ -304,7 +303,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
   return (
     <>
-      <motion.nav
+      <nav
         className="fixed sm:fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl shadow-lg max-sm:absolute"
         style={{ background: isSolid ? "linear-gradient(135deg, #0B3D2E, #1A7A5A)" : "transparent" }}
       >
@@ -331,9 +330,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${buyOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-                <AnimatePresence>
+                <>
                   {buyOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                    <div className="absolute top-full left-0 pt-2 z-[60] nav-dropdown">
                       <div className="min-w-[720px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <div className="grid grid-cols-3 gap-2 p-4">
                           {buyColumns.map((col) => (
@@ -353,9 +352,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           </button>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
 
               {/* ── RENT mega menu (2 columns) ─────────────────────────── */}
@@ -373,9 +372,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${rentOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-                <AnimatePresence>
+                <>
                   {rentOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                    <div className="absolute top-full left-0 pt-2 z-[60] nav-dropdown">
                       <div className="min-w-[500px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <div className="grid grid-cols-2 gap-2 p-4">
                           {rentColumns.map((col) => (
@@ -395,9 +394,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           </button>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
 
               {/* ── OFF-PLAN mega menu (2 columns) ─────────────────────── */}
@@ -415,9 +414,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${offPlanOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-                <AnimatePresence>
+                <>
                   {offPlanOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                    <div className="absolute top-full left-0 pt-2 z-[60] nav-dropdown">
                       <div className="min-w-[680px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <div className="grid grid-cols-3 gap-2 p-4">
                           {offPlanColumns.map((col) => (
@@ -437,9 +436,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           </button>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
 
               {/* ── СТАТЬИ mega menu (3 columns: guides + analytics) ───── */}
@@ -457,9 +456,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${guidesOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-                <AnimatePresence>
+                <>
                   {guidesOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                    <div className="absolute top-full left-0 pt-2 z-[60] nav-dropdown">
                       <div className="min-w-[680px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <div className="grid grid-cols-3 gap-2 p-4">
                           {guidesColumns.map((col) => (
@@ -479,9 +478,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           </button>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
 
               {/* ── ПРОДАТЬ small dropdown ──────────────────────────────── */}
@@ -499,9 +498,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${sellOpen ? "rotate-180" : ""}`} />
                   <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
-                <AnimatePresence>
+                <>
                   {sellOpen && (
-                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.15 }} className="absolute top-full left-0 pt-2 z-[60]">
+                    <div className="absolute top-full left-0 pt-2 z-[60] nav-dropdown">
                       <div className="min-w-[240px] rounded-lg overflow-hidden shadow-xl border border-white/10 backdrop-blur-xl" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                         <div className="p-2">
                           {sellColumns[0].links.map((link) => (
@@ -511,9 +510,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                           ))}
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
             </div>
 
@@ -584,19 +583,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 hover:bg-white/10 transition-colors">
                     <Phone className="h-4 w-4" />
                   </div>
-                  <AnimatePresence>
-                    {phoneHover && (
-                      <motion.span
-                        initial={{ opacity: 0, width: 0 }}
-                        animate={{ opacity: 1, width: "auto" }}
-                        exit={{ opacity: 0, width: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="hidden xl:block text-sm font-medium whitespace-nowrap overflow-hidden"
-                      >
-                        {t("phoneNumber")}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
+                  <span
+                    className={`hidden xl:block text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-200 ${phoneHover ? "max-w-[160px] opacity-100" : "max-w-0 opacity-0"}`}
+                  >
+                    {t("phoneNumber")}
+                  </span>
                 </a>
               </div>
 
@@ -665,17 +656,13 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             </div>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile fullscreen menu */}
-      <AnimatePresence>
+      <>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="lg:hidden fixed inset-0 z-[100] flex flex-col"
+          <div
+            className="lg:hidden fixed inset-0 z-[100] flex flex-col nav-drawer"
             style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
           >
             {/* Menu header bar */}
@@ -691,12 +678,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
             <div className="flex-1 overflow-y-auto px-4 pb-6 pt-2">
 
               {/* ── Account card ─────────────────────────────────────────── */}
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25 }}
-                className="mb-4"
-              >
+              <div className="mb-4">
                 {status === "loading" ? (
                   <div className="rounded-2xl bg-white/10 border border-white/15 p-4 animate-pulse h-20" />
                 ) : session?.user ? (
@@ -760,7 +742,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     </button>
                   </div>
                 )}
-              </motion.div>
+              </div>
 
               {/* ── Nav links (mega menus → accordions) ───────────────────── */}
               {([
@@ -770,11 +752,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 { key: "sell" as const, label: t("sell"), open: mobileSellOpen, links: mobileSellLinks, delay: 0.13 },
                 { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.16 },
               ]).map((section) => (
-                <motion.div
+                <div
                   key={section.key}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: section.delay, duration: 0.3 }}
                   className="border-b border-white/10"
                 >
                   <button
@@ -784,27 +763,22 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     {section.label}
                     <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${section.open ? "rotate-180" : ""}`} />
                   </button>
-                  <AnimatePresence>
-                    {section.open && (
-                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
-                        <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
-                          {section.links.map((link) => (
-                            <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] transition-colors min-h-[44px] flex items-center">
-                              {link.label}
-                            </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                  <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${section.open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                    <div className="overflow-hidden">
+                      <div className="pl-4 border-l-2 border-accent/40 ml-3 pb-3 space-y-0.5">
+                        {section.links.map((link) => (
+                          <button key={link.label} onClick={() => handleNav(link.href)} className="w-full text-left px-3 py-3 text-white/65 hover:text-white hover:bg-white/5 rounded-lg text-[13px] transition-colors min-h-[44px] flex items-center">
+                            {link.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
 
               {/* Saved Properties row */}
-              <motion.button
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.14, duration: 0.3 }}
+              <button
                 onClick={() => {
                   setMobileOpen(false);
                   setTimeout(() => handleFavoritesClick(), 50);
@@ -821,10 +795,10 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   )}
                 </span>
                 <ChevronRight className="h-4 w-4 text-white/40" />
-              </motion.button>
+              </button>
 
               {/* Mobile language switcher */}
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.3 }} className="pt-5 pb-2 border-b border-white/10">
+              <div className="pt-5 pb-2 border-b border-white/10">
                 <p className="px-2 pb-2 text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">{t("language")}</p>
                 <div className="grid grid-cols-2 gap-2">
                   {LANGUAGES_LIST.map((lang) => (
@@ -842,10 +816,10 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     </button>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
               {/* Currency */}
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.3 }} className="pt-4 flex items-center gap-3">
+              <div className="pt-4 flex items-center gap-3">
                 <button
                   title="Tap to cycle currency"
                   onClick={() => { const idx = CURRENCIES.indexOf(mobileCurrency); setMobileCurrency(CURRENCIES[(idx + 1) % CURRENCIES.length]); }}
@@ -855,10 +829,10 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   <span className="text-sm font-bold text-white uppercase tracking-wider">{mobileCurrency}</span>
                   <ChevronDown className="h-3.5 w-3.5 text-white/40" />
                 </button>
-              </motion.div>
+              </div>
 
               {/* Contact actions */}
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35, duration: 0.3 }} className="pt-4 border-t border-white/10 space-y-1">
+              <div className="pt-4 border-t border-white/10 space-y-1">
                 <a href="tel:+971549988811" className="flex items-center gap-3 px-2 py-3 text-white/80 text-sm hover:text-white transition-colors min-h-[48px]">
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                     <Phone className="h-[18px] w-[18px] text-white" />
@@ -890,11 +864,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                     <span className="text-[12px] text-white/50">{t("chatWithTeam")}</span>
                   </div>
                 </button>
-              </motion.div>
+              </div>
 
               {/* Primary CTA — capture seller/landlord supply (contact is covered
                   by the sticky WhatsApp/Call bar + phone). */}
-              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.3 }} className="pt-4">
+              <div className="pt-4">
                 <button
                   onClick={() => handleNav("/list-your-property")}
                   className="w-full py-3.5 rounded-xl text-sm font-semibold text-white"
@@ -902,11 +876,11 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 >
                   {t("listYourPropertyLink")}
                 </button>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </>
     </>
   );
 };

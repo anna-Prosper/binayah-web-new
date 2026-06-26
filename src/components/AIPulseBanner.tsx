@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Crown, Building2, Users, TrendingUp, Award, CalendarDays, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
@@ -28,10 +27,8 @@ const AIPulseBanner = () => {
     <section className="relative overflow-hidden hidden sm:block" style={{ background: "#0B3D2E" }}>
       {/* Animated gold sweep line */}
       <div className="absolute top-0 left-0 right-0 h-[2px]">
-        <motion.div
-          className="h-full bg-gradient-to-r from-transparent via-accent to-transparent"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        <div
+          className="h-full bg-gradient-to-r from-transparent via-accent to-transparent animate-banner-sweep"
           style={{ width: "50%" }}
         />
       </div>
@@ -45,11 +42,7 @@ const AIPulseBanner = () => {
               <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
                 <Crown className="h-[18px] w-[18px] text-accent" />
               </div>
-              <motion.div
-                className="absolute inset-0 rounded-lg border border-accent/40"
-                animate={{ scale: [1, 1.4], opacity: [0.5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
+              <div className="absolute inset-0 rounded-lg border border-accent/40 animate-banner-ping" />
             </div>
             <div>
               <p className="text-[11px] font-bold tracking-wider text-accent uppercase">{t("label")}</p>
@@ -65,13 +58,12 @@ const AIPulseBanner = () => {
                 <div key={stat.label} className="flex items-center gap-2.5 flex-shrink-0">
                   <stat.icon className={`h-4 w-4 flex-shrink-0 transition-colors duration-500 ${isActive ? "text-accent" : "text-white/50"}`} />
                   <div>
-                    <motion.p
-                      className="text-sm font-bold tabular-nums text-white"
-                      animate={{ color: isActive ? "#D4A847" : "#ffffff" }}
-                      transition={{ duration: 0.5 }}
+                    <p
+                      className="text-sm font-bold tabular-nums transition-colors duration-500"
+                      style={{ color: isActive ? "#D4A847" : "#ffffff" }}
                     >
                       {stat.value}{stat.suffix}
-                    </motion.p>
+                    </p>
                     <p className="text-[10px] text-white/50 hidden lg:block whitespace-nowrap">{stat.label}</p>
                   </div>
                 </div>

@@ -176,6 +176,41 @@
   animation-play-state: paused;
 }
 
+/* AI Pulse Banner — gold sweep line + pulse ring (CSS, replaces framer-motion) */
+@keyframes banner-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes banner-ping {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(1.4); opacity: 0;   }
+}
+.animate-banner-sweep { animation: banner-sweep 3s linear infinite; will-change: transform; }
+.animate-banner-ping  { animation: banner-ping 2s ease-out infinite; will-change: transform, opacity; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-banner-sweep, .animate-banner-ping { animation: none; }
+}
+
+/* Hero entrance reveals (CSS, replaces framer-motion mount animations) */
+@keyframes hero-fade-up-30 { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-fade-up-50 { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-line-grow { from { width: 0; } to { width: 3rem; } }
+.hero-fade-up { animation: hero-fade-up-30 1s cubic-bezier(0.22,1,0.36,1) both; }
+.hero-line    { animation: hero-line-grow .8s ease .3s both; }
+.hero-rise    { animation: hero-fade-up-50 .8s cubic-bezier(0.22,1,0.36,1) .5s both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up, .hero-line, .hero-rise { animation: none; }
+}
+
+/* Navbar — dropdowns + mobile drawer (CSS, replaces framer-motion) */
+@keyframes nav-dropdown-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes nav-drawer-in   { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+.nav-dropdown { animation: nav-dropdown-in .15s ease-out both; }
+.nav-drawer   { animation: nav-drawer-in .3s cubic-bezier(0.25,0.46,0.45,0.94) both; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown, .nav-drawer { animation: none; }
+}
+
 /* Hide floating action buttons when mobile nav is open */
 body.mobile-nav-open .fixed.bottom-4,
 body.mobile-nav-open .fixed.bottom-6,

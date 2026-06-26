@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Building2, ChevronDown, Loader2, MapPin, MessageCircle, Search, Sparkles, X, Zap } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -103,10 +102,35 @@ const HeroSection = () => {
   const suggestionSections = getSuggestionSections(smartSuggestions);
   const flatSuggestions = suggestionSections.flatMap((section) => section.items);
 
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  // Scroll-linked parallax (replaces framer-motion useScroll/useTransform).
+  // image drifts 0→10%, text 0→50% + fades out, as the hero scrolls past.
+  const imageParallaxRef = useRef<HTMLDivElement>(null);
+  const textParallaxRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = section.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -rect.top / (rect.height || 1)));
+      if (imageParallaxRef.current) imageParallaxRef.current.style.transform = `translateY(${p * 10}%)`;
+      if (textParallaxRef.current) {
+        textParallaxRef.current.style.transform = `translateY(${p * 50}%)`;
+        textParallaxRef.current.style.opacity = `${Math.max(0, 1 - p / 0.6)}`;
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   useEffect(() => {
     setPlaceholderIndex(0);
@@ -464,7 +488,7 @@ const HeroSection = () => {
           imageSizes="100vw"
           fetchPriority="high"
         />
-        <motion.div className="absolute inset-x-0 -top-[20%] h-[140%] will-change-transform" style={{ y: imageY }}>
+        <div ref={imageParallaxRef} className="absolute inset-x-0 -top-[20%] h-[140%] will-change-transform">
           {/* eslint-disable-next-line @next/next/no-img-element -- intentional: static pre-sized hero bypasses the optimizer for faster LCP */}
           <img
             src="/assets/dubai-hero-1280.webp"
@@ -477,7 +501,7 @@ const HeroSection = () => {
             className="absolute inset-0 w-full h-full object-cover object-[center_28%]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
-        </motion.div>
+        </div>
       </div>
 
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
@@ -486,18 +510,18 @@ const HeroSection = () => {
       </div>
 
       <div ref={searchRef} className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-14 pb-4 sm:pb-6">
-        <motion.div style={{ y: textY, opacity }}>
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} className="text-center mb-8 sm:mb-8">
-            <motion.div initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 0.8, delay: 0.3 }} className="h-[2px] bg-accent mx-auto mb-4 sm:mb-4" />
+        <div ref={textParallaxRef} className="will-change-transform">
+          <div className="text-center mb-8 sm:mb-8 hero-fade-up">
+            <div className="h-[2px] bg-accent mx-auto mb-4 sm:mb-4 w-12 hero-line" />
             <p className="hidden sm:block text-accent font-medium tracking-[0.4em] uppercase text-[10px] sm:text-sm mb-3 sm:mb-4">{t("companyName")}</p>
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[0.95] mb-3 sm:mb-4">
               {t("headline")}<br />
               <span className="font-light">{t("headlineSub")}</span>
             </h1>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }} className="sm:hidden w-full">
+        <div className="sm:hidden w-full hero-rise">
           <div className="flex gap-0.5 mb-0">
             {statusTabs.map((tab) => (
               <button
@@ -567,9 +591,9 @@ const HeroSection = () => {
               {isQuestion ? t("askAiCta") : t("searchCta")}
             </button>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }} className="hidden sm:block w-full max-w-5xl mx-auto">
+        <div className="hidden sm:block w-full max-w-5xl mx-auto hero-rise">
           <div className="flex justify-center gap-px mb-0">
             {statusTabs.map((tab) => (
               <button
@@ -920,7 +944,7 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
     </section>
