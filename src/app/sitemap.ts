@@ -326,6 +326,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...devCommunityCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     // Superlative (cheapest) pages.
     ...superlativeCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
+    // Area ranking pages.
+    withAlternates("/highest-yield-areas-in-dubai", 0.7, "weekly", now),
+    withAlternates("/most-affordable-areas-in-dubai", 0.7, "weekly", now),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];

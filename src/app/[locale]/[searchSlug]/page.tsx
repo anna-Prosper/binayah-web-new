@@ -11,6 +11,7 @@ import { getNonce } from "@/lib/nonce";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 import DevCommunityView, { parseDevCommunity, buildDevCommunityMeta, resolveDevCommunity } from "@/components/pseo/DevCommunityView";
 import SuperlativeView, { parseSuperlative, buildSuperlativeMeta } from "@/components/pseo/SuperlativeView";
+import AreaRankingView, { parseAreaRanking, buildAreaRankingMeta } from "@/components/pseo/AreaRankingView";
 
 export const revalidate = 1800;
 
@@ -50,6 +51,9 @@ function parse(slug: string): Parsed | null {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; searchSlug: string }> }): Promise<Metadata> {
   const { locale, searchSlug } = await params;
+  // Area ranking pages (highest-yield / most-affordable areas in Dubai).
+  const ar = parseAreaRanking(searchSlug);
+  if (ar) return buildAreaRankingMeta(ar.mode, locale, searchSlug);
   // Superlative pattern (/{cheapest|most-expensive}-{type}-in-{community}).
   const sup = parseSuperlative(searchSlug);
   if (sup) return buildSuperlativeMeta(sup, locale, searchSlug);
@@ -89,6 +93,8 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
 
   // Non-matrix patterns.
   if (!p) {
+    const ar = parseAreaRanking(searchSlug);
+    if (ar) return <AreaRankingView mode={ar.mode} locale={locale} searchSlug={searchSlug} />;
     const sup = parseSuperlative(searchSlug);
     if (sup && findBuyCommunity(sup.communitySlug)) {
       return <SuperlativeView parsed={sup} locale={locale} searchSlug={searchSlug} />;
