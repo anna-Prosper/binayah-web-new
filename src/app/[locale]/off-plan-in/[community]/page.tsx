@@ -7,7 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
-import { getRelatedProjects } from "@/lib/api";
+import { getRelatedProjects, getDldBuildings } from "@/lib/api";
 import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
@@ -81,6 +81,14 @@ export default async function OffPlanInCommunityPage({
   const faqs = buildCommunityFaqs(c.name, stats);
   const nonce = await getNonce();
 
+  // Real DLD buildings in this area → crawlable links to /building/[slug]
+  // (passes hub equity to the building pages). Hidden when the area name
+  // doesn't match DLD records.
+  const areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(apiCommunity)}&limit=12&sortBy=sales`)).results
+    .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
+    .slice(0, 12)
+    .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
+
   const breadcrumbs = [
     { name: L.home, href: `${lp}/` },
     { name: L.offplan, href: `${lp}/off-plan` },
@@ -105,7 +113,7 @@ export default async function OffPlanInCommunityPage({
       </section>
 
       {/* Real market depth: DLD/listings stats snapshot + data-driven FAQs + schema */}
-      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} nonce={nonce} />
+      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} buildings={areaBuildings} localePrefix={lp} nonce={nonce} />
 
       {/* Off-plan projects pre-filtered to this community — clean URL, no query params */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">

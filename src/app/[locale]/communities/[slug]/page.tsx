@@ -2,7 +2,7 @@ import CommunityDetailClient from "@/app/_clients/communities/[slug]/CommunityDe
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
 import CommunityMergedDetailClient from "@/app/_clients/communities/[slug]/CommunityMergedDetailClient";
 import { notFound } from "next/navigation";
-import { getCommunity } from "@/lib/api";
+import { getCommunity, getDldBuildings } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
@@ -132,7 +132,12 @@ export default async function CommunityPage({
   const cStats = await getCommunityStats(pageCommunityName);
   const cFaqs = buildCommunityFaqs(pageCommunityName, cStats);
   const cNonce = await getNonce();
-  const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} nonce={cNonce} />;
+  const cLp = locale === "en" ? "" : `/${locale}`;
+  const cBuildings = (await getDldBuildings(`area=${encodeURIComponent(pageCommunityName)}&limit=12&sortBy=sales`)).results
+    .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
+    .slice(0, 12)
+    .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
+  const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} buildings={cBuildings} localePrefix={cLp} nonce={cNonce} />;
 
   // 3. Both present → merged page
   if (hasWiki && hasDb) {

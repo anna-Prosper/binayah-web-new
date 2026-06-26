@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { getDldBuilding } from "@/lib/api";
+import { getDldBuilding, getDldBuildings } from "@/lib/api";
 import { fmtAed } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
 
@@ -39,6 +39,12 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   if (!b) return notFound();
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
+
+  // Sibling buildings in the same area → building↔building crawlable links.
+  const siblings = (await getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`)).results
+    .filter((x: { slug?: string; name?: string }) => x.slug && x.name && x.slug !== slug)
+    .slice(0, 12)
+    .map((x: { slug: string; name: string }) => ({ slug: x.slug, name: x.name }));
 
   const ppsf = toSqft(b.avgPpsf);
   const rb = b.roomTypeBreakdown || {};
@@ -168,6 +174,20 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
             Explore {b.area} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+
+        {/* Sibling buildings — building↔building internal links */}
+        {siblings.length > 0 && (
+          <nav aria-label={`Other buildings in ${b.area}`} className="mb-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Other buildings in {b.area}</h2>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+              {siblings.map((s) => (
+                <li key={s.slug}>
+                  <Link href={`${lp}/building/${s.slug}`} className="hover:text-primary hover:underline transition-colors">{s.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         {/* FAQs */}
         {faqs.length > 0 && (

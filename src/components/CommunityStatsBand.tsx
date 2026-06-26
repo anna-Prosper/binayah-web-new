@@ -2,6 +2,7 @@
 // Server component (no "use client") so the stats + FAQs render in SSR HTML —
 // real, crawlable depth for community/area/off-plan-in templates, plus FAQPage
 // schema for rich results / AI answers. Renders nothing when there's no data.
+import Link from "next/link";
 import { TrendingUp, Percent, Building2, LineChart } from "lucide-react";
 import { FAQJsonLd } from "@/components/JsonLd";
 import type { CommunityStat } from "@/lib/market";
@@ -11,12 +12,16 @@ interface Props {
   name: string;
   stats: CommunityStat | null;
   faqs: { question: string; answer: string }[];
+  // Real DLD buildings in this area — crawlable links that pass equity to the
+  // /building/[slug] pages. localePrefix keeps the link locale-correct.
+  buildings?: { slug: string; name: string }[];
+  localePrefix?: string;
   nonce?: string;
 }
 
-export default function CommunityStatsBand({ name, stats, faqs, nonce }: Props) {
+export default function CommunityStatsBand({ name, stats, faqs, buildings = [], localePrefix = "", nonce }: Props) {
   const hasStats = !!(stats && (stats.avgPricePerSqft || stats.rentalYield || stats.totalListings));
-  if (!hasStats && faqs.length === 0) return null;
+  if (!hasStats && faqs.length === 0 && buildings.length === 0) return null;
 
   const cards = stats
     ? [
@@ -50,6 +55,22 @@ export default function CommunityStatsBand({ name, stats, faqs, nonce }: Props) 
             Figures are indicative averages across current listings and Dubai Land Department transaction data for {name}; individual units vary.
           </p>
         </>
+      )}
+
+      {buildings.length > 0 && (
+        <nav aria-label={`Buildings in ${name}`} className="mt-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Top buildings in {name}</h2>
+          <p className="text-sm text-muted-foreground mb-4">Explore transaction history, prices and unit mix for individual buildings.</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            {buildings.map((b) => (
+              <li key={b.slug}>
+                <Link href={`${localePrefix}/building/${b.slug}`} className="hover:text-primary hover:underline transition-colors">
+                  {b.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       )}
 
       {faqs.length > 0 && (
