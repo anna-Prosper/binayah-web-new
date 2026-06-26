@@ -109,7 +109,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "abudhabioffplan.ae" },
     ],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 86400,
+    // Optimized listing/project thumbnails are content-stable (new photos get
+    // new S3 URLs), so cache them 30 days instead of 1 — fewer re-optimizations
+    // and better repeat-visit performance ("efficient cache lifetimes").
+    minimumCacheTTL: 2592000,
   },
   webpack: (config) => {
     // The self-hosted runner that builds binayah.ru has a tiny disk (8.7GB).
