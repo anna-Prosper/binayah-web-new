@@ -75,6 +75,37 @@ export async function getCachedSearch<T = any>(query: string): Promise<T | null>
   }
 }
 
+// Homepage data bundle (projects + sale/rent listings + news). The homepage
+// SSRs on every request and previously awaited 4 live Render calls (~2.4s each
+// when cold) via Promise.all — so the slowest dominated TTFB and capped mobile
+// LCP at ~2.4s+. Cache the whole bundle across requests so the SSR reads warm
+// data; the slow upstream is only paid in the background every `revalidate`.
+const _homepageUncached = async (): Promise<{
+  projects: unknown[] | null; sale: unknown[] | null; rental: unknown[] | null; articles: unknown[] | null;
+}> => {
+  const [p, s, r, a] = await Promise.all([
+    serverFetch(serverApiUrl("/api/projects?limit=4&sort=smart"), 20_000),
+    serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Sale"), 20_000),
+    serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Rent"), 20_000),
+    serverFetch(serverApiUrl("/api/news?limit=3"), 20_000),
+  ]);
+  const j = async (res: Response): Promise<unknown[] | null> => {
+    try { return res.ok ? await res.json() : null; } catch { return null; }
+  };
+  const out = { projects: await j(p), sale: await j(s), rental: await j(r), articles: await j(a) };
+  // Don't cache a total failure (cold Render) — let the next request retry.
+  if (!out.projects && !out.sale && !out.rental && !out.articles) throw new Error("homepage data unavailable");
+  return out;
+};
+const _homepageCached = unstable_cache(_homepageUncached, ["homepage-data"], { revalidate: 300 });
+export async function getHomepageData() {
+  try {
+    return await _homepageCached();
+  } catch {
+    return { projects: null, sale: null, rental: null, articles: null };
+  }
+}
+
 // ---------------------------------------------------------------------------
 // React.cache() helpers — dedupe the generateMetadata + page double-fetch.
 // Each helper is request-scoped: two callers in the same render tree get one

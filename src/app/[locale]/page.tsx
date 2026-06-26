@@ -1,5 +1,5 @@
 import HomePageClient from "@/components/HomePageClient";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { getHomepageData } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 import { FAQJsonLd } from "@/components/JsonLd";
@@ -234,38 +234,13 @@ const HOME_FAQS: Record<string, { question: string; answer: string }[]> = {
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   const faqs = HOME_FAQS[locale] || HOME_FAQS.en;
-  let saleListings = FALLBACK_LISTINGS as any[];
-  let rentalListings: any[] = [];
-  let projects = FALLBACK_PROJECTS as any[];
-  let articles = FALLBACK_ARTICLES as any[];
-
-  try {
-    const [projectsRes, saleRes, rentalRes, articlesRes] = await Promise.all([
-      serverFetch(serverApiUrl("/api/projects?limit=4&sort=smart")),
-      serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Sale")),
-      serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Rent")),
-      serverFetch(serverApiUrl("/api/news?limit=3")),
-    ]);
-
-    if (projectsRes.ok) {
-      const dbProjects = await projectsRes.json();
-      if (dbProjects.length > 0) projects = dbProjects;
-    }
-    if (saleRes.ok) {
-      const dbSales = await saleRes.json();
-      if (dbSales.length > 0) saleListings = dbSales;
-    }
-    if (rentalRes.ok) {
-      const dbRentals = await rentalRes.json();
-      if (dbRentals.length > 0) rentalListings = dbRentals;
-    }
-    if (articlesRes.ok) {
-      const dbArticles = await articlesRes.json();
-      if (dbArticles.length > 0) articles = dbArticles;
-    }
-  } catch (err) {
-    console.warn("[HomePage] API unavailable, using fallback data:", (err as Error).message);
-  }
+  // Cached across requests (5-min revalidate) so SSR doesn't wait on the slow
+  // Render API every load — that wait was the dominant TTFB/LCP cost.
+  const data = await getHomepageData();
+  const saleListings = (data.sale && data.sale.length > 0 ? data.sale : FALLBACK_LISTINGS) as any[];
+  const rentalListings = (data.rental ?? []) as any[];
+  const projects = (data.projects && data.projects.length > 0 ? data.projects : FALLBACK_PROJECTS) as any[];
+  const articles = (data.articles && data.articles.length > 0 ? data.articles : FALLBACK_ARTICLES) as any[];
 
   // Real Google reviews (null until Places API is enabled + GOOGLE_PLACE_ID set).
   const googleReviews = await getGoogleReviews();
