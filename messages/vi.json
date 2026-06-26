@@ -1104,7 +1104,9 @@
     "guideTitleDeedTitle": "Sổ đỏ và Oqood",
     "guideTitleDeedDesc": "Vì sao khác biệt này quan trọng cho bán lại và thị thực",
     "guideNonResidentTitle": "Mua khi không cư trú",
-    "guideNonResidentDesc": "Giấy ủy quyền, tài chính và tiến độ được giải thích"
+    "guideNonResidentDesc": "Giấy ủy quyền, tài chính và tiến độ được giải thích",
+    "infoOnlyTitle": "Chỉ để tham khảo",
+    "infoOnlyNote": "Trang này mang tính thông tin và không phải là quảng cáo hay lời chào bán. Các bất động sản được tiếp thị đều có giấy phép hợp lệ của Cục Đất đai Dubai (DLD). Vui lòng xác minh mọi thông tin với đội ngũ của chúng tôi."
   },
   "propertyDetail": {
     "backToProperties": "Quay lại Bất động sản",

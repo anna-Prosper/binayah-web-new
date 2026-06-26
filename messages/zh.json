@@ -1110,7 +1110,9 @@
     "guideTitleDeedTitle": "房产证与 Oqood 对比",
     "guideTitleDeedDesc": "为何这一差异对转售和签证至关重要",
     "guideNonResidentTitle": "非居民购房",
-    "guideNonResidentDesc": "授权书、融资与时间安排详解"
+    "guideNonResidentDesc": "授权书、融资与时间安排详解",
+    "infoOnlyTitle": "仅供参考",
+    "infoOnlyNote": "本页仅供参考，并非广告或出售要约。正式推广的房源均持有迪拜土地局（DLD）的有效许可。请向我们的团队核实所有信息。"
   },
   "propertyDetail": {
     "backToProperties": "返回房源列表",

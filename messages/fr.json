@@ -1105,7 +1105,9 @@
     "guideTitleDeedTitle": "Titre de propriété vs Oqood",
     "guideTitleDeedDesc": "Pourquoi cette différence est importante pour la revente et le visa",
     "guideNonResidentTitle": "Acheter en tant que non-résident",
-    "guideNonResidentDesc": "Procuration, financement et délais expliqués"
+    "guideNonResidentDesc": "Procuration, financement et délais expliqués",
+    "infoOnlyTitle": "À titre informatif uniquement",
+    "infoOnlyNote": "Cette page est informative et ne constitue ni une publicité ni une offre de vente. Les biens commercialisés affichent un permis valide du Dubai Land Department (DLD). Veuillez vérifier tous les détails auprès de notre équipe."
   },
   "propertyDetail": {
     "backToProperties": "Retour aux biens",

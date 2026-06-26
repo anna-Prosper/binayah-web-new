@@ -282,18 +282,18 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
     window.history.replaceState({}, "", tabUrls[id]);
   };
 
-  // QR code: use permitUrl from DB if available, otherwise project page URL
+  // QR code link: real permit document URL if present, otherwise the project page.
   const qrUrl = project.permitUrl || (origin ? `${origin}/project/${project.slug}` : `/project/${project.slug}`);
   // If permitUrl points to a real document (PDF or external regulator page),
-  // we open it directly on click instead of showing the larger-QR modal —
-  // saves the user from having to scan the QR with another device.
+  // we open it directly on click instead of showing the larger-QR modal.
   const hasDirectPermit = Boolean(project.permitUrl);
-  // Use the real regulator-issued QR image from MongoDB, or fall back to the
-  // dummy placeholder so the QR slot is always visible.
-  const qrSrc = (project.qrCode && project.qrCode.startsWith("http"))
-    ? project.qrCode
-    : "/assets/permit-qr.svg";
-  const hasStoredQr = true;
+  // QR source: 3-tier fallback. Prefer the real regulator-issued QR, then the
+  // dummy QR placeholder image. If neither exists we show NO QR — the UI renders
+  // a "for information only" compliance notice instead of a misleading permit.
+  const hasRealQr = Boolean(project.qrCode && project.qrCode.startsWith("http"));
+  const hasDummyQr = Boolean(project.dummyQrCode && project.dummyQrCode.startsWith("http"));
+  const hasStoredQr = hasRealQr || hasDummyQr;
+  const qrSrc = hasRealQr ? project.qrCode : hasDummyQr ? project.dummyQrCode : "";
 
   // Sub-page H1 suffix — each dedicated URL gets its own unique H1 for SEO
   const h1Suffix: string | null =
@@ -2695,8 +2695,19 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                     </div>
                   ))}
                 </div>
-                {/* QR Code row — only shown when a regulator-issued QR image is stored in MongoDB */}
-                {hasStoredQr && (() => {
+                {/* QR Code row — real or dummy QR if stored, otherwise an
+                    informational-only compliance notice (no fake permit). */}
+                {!hasStoredQr ? (
+                  <div className="mt-4 pt-4 border-t border-border/40 flex items-start gap-3">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-muted/50 border border-border/50 flex-shrink-0 inline-flex items-center justify-center">
+                      <Shield className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold text-foreground">{t("infoOnlyTitle")}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">{t("infoOnlyNote")}</p>
+                    </div>
+                  </div>
+                ) : (() => {
                   const QrInner = (
                     <NextImage
                       src={qrSrc}

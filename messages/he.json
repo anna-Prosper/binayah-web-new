@@ -1104,7 +1104,9 @@
     "guideTitleDeedTitle": "שטר בעלות מול Oqood",
     "guideTitleDeedDesc": "למה ההבדל הזה חשוב למכירה חוזרת ולוויזה",
     "guideNonResidentTitle": "רכישה כתושב חוץ",
-    "guideNonResidentDesc": "ייפוי כוח, מימון ולוחות זמנים בהסבר"
+    "guideNonResidentDesc": "ייפוי כוח, מימון ולוחות זמנים בהסבר",
+    "infoOnlyTitle": "למידע בלבד",
+    "infoOnlyNote": "עמוד זה הוא מידעי ואינו פרסומת או הצעה למכירה. נכסים המשווקים מציגים היתר תקף של רשות המקרקעין של דובאי (DLD). אנא ודאו את כל הפרטים מול הצוות שלנו."
   },
   "propertyDetail": {
     "backToProperties": "חזרה לנכסים",
