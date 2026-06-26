@@ -39,6 +39,28 @@ export const getMarketStats = cache(async (): Promise<MarketStatsResponse | null
 const norm = (s: string) =>
   s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
 
+// Marketing community name → the official DLD area name used in the buildings
+// dataset (the building filter is a contains-regex, so one canonical name is
+// enough). Only the communities whose marketing name differs from the DLD area
+// need an entry; everything else falls through unchanged. Verified to return
+// buildings against /api/dld/buildings?area=.
+const DLD_AREA_ALIASES: Record<string, string> = {
+  "downtown dubai": "Burj Khalifa",
+  "downtown": "Burj Khalifa",
+  "dubai hills estate": "Dubai Hills",
+  "mbr city": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "mohammed bin rashid city": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "meydan": "Meydan",
+  "jlt": "Jumeirah Lakes Towers",
+  "jumeirah lake towers": "Jumeirah Lakes Towers",
+  "jumeirah lakes towers": "Jumeirah Lakes Towers",
+};
+
+/** Map a community name to the DLD area name for building lookups (falls back to itself). */
+export function dldAreaFor(community: string): string {
+  return DLD_AREA_ALIASES[norm(community)] ?? community;
+}
+
 /** Find the stats row for a community name (tolerant of aliases/casing). */
 export const getCommunityStats = cache(async (community: string): Promise<CommunityStat | null> => {
   if (!community) return null;

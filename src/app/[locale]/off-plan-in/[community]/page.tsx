@@ -8,7 +8,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
 import { getRelatedProjects, getDldBuildings } from "@/lib/api";
-import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
+import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
@@ -84,7 +84,7 @@ export default async function OffPlanInCommunityPage({
   // Real DLD buildings in this area → crawlable links to /building/[slug]
   // (passes hub equity to the building pages). Hidden when the area name
   // doesn't match DLD records.
-  const areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(apiCommunity)}&limit=12&sortBy=sales`)).results
+  const areaBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(apiCommunity))}&limit=12&sortBy=sales`)).results
     .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
     .slice(0, 12)
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));

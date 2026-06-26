@@ -7,7 +7,7 @@ import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
-import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
+import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
 
@@ -133,7 +133,7 @@ export default async function CommunityPage({
   const cFaqs = buildCommunityFaqs(pageCommunityName, cStats);
   const cNonce = await getNonce();
   const cLp = locale === "en" ? "" : `/${locale}`;
-  const cBuildings = (await getDldBuildings(`area=${encodeURIComponent(pageCommunityName)}&limit=12&sortBy=sales`)).results
+  const cBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(pageCommunityName))}&limit=12&sortBy=sales`)).results
     .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
     .slice(0, 12)
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
