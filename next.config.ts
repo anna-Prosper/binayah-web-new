@@ -35,6 +35,13 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: securityHeaders,
       },
+      {
+        // Static assets (hero variants, logos, OG images) are content-stable —
+        // cache them aggressively at the edge/browser to fix "efficient cache
+        // lifetimes" and keep the preloaded LCP hero warm.
+        source: "/assets/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
   async redirects() {

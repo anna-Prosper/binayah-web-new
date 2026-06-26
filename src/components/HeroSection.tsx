@@ -6,7 +6,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { apiUrl } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { formatPropertyTypeLabel, normalizePropertyType } from "@/lib/property-types";
 import {
@@ -28,7 +27,6 @@ import {
   parseHomeSearchQuery,
 } from "@/lib/home-smart-search";
 
-const heroImage = "/assets/dubai-hero.webp";
 
 const statusTabs: HomeSearchTab[] = ["Buy", "Rent", "Off-Plan"];
 const popularLocations = [
@@ -456,8 +454,28 @@ const HeroSection = () => {
           with headroom so the scroll translate never exposes an edge or bleeds
           onto the section below. */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* LCP hero: served as pre-sized static webp (36–129KB) + preloaded, so
+            it bypasses the /_next/image optimizer's cold-generation latency
+            (was ~2s TTFB → the bulk of the mobile LCP "resource load delay"). */}
+        <link
+          rel="preload"
+          as="image"
+          imageSrcSet="/assets/dubai-hero-768.webp 768w, /assets/dubai-hero-1280.webp 1280w, /assets/dubai-hero-1920.webp 1920w"
+          imageSizes="100vw"
+          fetchPriority="high"
+        />
         <motion.div className="absolute inset-x-0 -top-[20%] h-[140%] will-change-transform" style={{ y: imageY }}>
-          <Image src={heroImage} alt="Dubai skyline" fill className="object-cover object-[center_28%]" priority fetchPriority="high" sizes="100vw" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- intentional: static pre-sized hero bypasses the optimizer for faster LCP */}
+          <img
+            src="/assets/dubai-hero-1280.webp"
+            srcSet="/assets/dubai-hero-768.webp 768w, /assets/dubai-hero-1280.webp 1280w, /assets/dubai-hero-1920.webp 1920w"
+            sizes="100vw"
+            alt="Dubai skyline"
+            fetchPriority="high"
+            decoding="async"
+            loading="eager"
+            className="absolute inset-0 w-full h-full object-cover object-[center_28%]"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
         </motion.div>
       </div>
