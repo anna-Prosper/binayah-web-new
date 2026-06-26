@@ -18,13 +18,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!project) notFound();
   const seo = project.seo || {};
 
-  // Tight title within Google's ~60-char SERP limit: project + area + brand.
-  // Starting price is in the description and RealEstateListing schema.
+  // Title with a price hook for CTR (project + area + "From AED …" + brand),
+  // kept within Google's ~60-char SERP limit.
   const rawName = String(project.name || "Off-Plan Project");
-  const projName = rawName.length > 42 ? `${rawName.slice(0, 41).trimEnd()}…` : rawName;
+  const projName = rawName.length > 38 ? `${rawName.slice(0, 37).trimEnd()}…` : rawName;
   const communityStr = project.community ? ` | ${project.community}` : "";
-  const titleFallback = `${projName}${communityStr} | Binayah`;
-  const descFallback = `${project.name} is an off-plan project${project.community ? ` in ${project.community}` : ""} by ${project.developerName || "a leading developer"} in Dubai.${project.startingPrice ? ` Starting from AED ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}.` : ""} Explore floor plans, payment plans and availability.`;
+  const priceNum = project.startingPrice
+    ? (project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice)
+    : 0;
+  const priceShort = priceNum >= 1_000_000
+    ? `AED ${(priceNum / 1_000_000).toFixed(priceNum >= 10_000_000 ? 0 : 1)}M`
+    : priceNum >= 1_000
+    ? `AED ${Math.round(priceNum / 1_000)}K`
+    : "";
+  const titleFallback = `${projName}${communityStr}${priceShort ? ` | From ${priceShort}` : ""} | Binayah`;
+  const descFallbackRaw = `${project.name}${project.community ? ` in ${project.community}` : ""}, Dubai by ${project.developerName || "a leading developer"}.${priceShort ? ` Off-plan from ${priceShort} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice — explore with Binayah.`;
+  const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
   // Migrated projects carry a legacy WordPress canonical (https://binayah.com/
   // projects/<slug>) in seo.canonicalUrl. Pointing the canonical at the old

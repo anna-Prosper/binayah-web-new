@@ -19,7 +19,7 @@ const titles: Record<string, string> = {
   fr: "Immobilier à Dubaï | Acheter, Louer & Investir | Binayah Properties",
 };
 const descriptions: Record<string, string> = {
-  en: "Find luxury apartments, villas and off-plan projects in Dubai. Trusted by thousands of buyers and investors since 2007.",
+  en: "Buy, rent or invest in Dubai real estate — luxury apartments, villas & off-plan with flexible payment plans. RERA-certified, trusted since 2007.",
   ru: "Найдите роскошные апартаменты, виллы и новостройки в Дубае. Более 2500 объектов недвижимости. Binayah Properties с 2007 года.",
   ar: "اعثر على شقق فاخرة وفلل ومشاريع على الخارطة في دبي. موثوق من قبل آلاف المشترين والمستثمرين منذ عام 2007.",
   zh: "在迪拜寻找豪华公寓、别墅和期房项目。自2007年以来深受数千名买家和投资者信赖。",
