@@ -704,17 +704,8 @@ const HeroSection = () => {
                       </button>
                     </span>
                   ))}
-                  {chipsMode && (
-                    <button
-                      type="button"
-                      onMouseDown={(e) => { e.preventDefault(); handleSearch(); }}
-                      className="ml-auto inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white transition-all hover:brightness-110 active:scale-95"
-                      style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
-                    >
-                      <Search className="h-3 w-3" />
-                      {t("searchCta")}
-                    </button>
-                  )}
+                  {/* Inline chips "Search" removed — the structured filter row below
+                      has the primary SEARCH button (Enter also submits). */}
                 </div>
               ) : null}
             </div>

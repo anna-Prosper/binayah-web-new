@@ -1,14 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serverApiUrl } from "@/lib/api";
 import { cookies } from "next/headers";
+import { isAdminSession } from "@/lib/admin-auth";
 
-// BFF proxy for admin panel — reads the httpOnly admin_secret cookie and
-// forwards requests to the Render API. The secret never touches browser JS.
+// BFF proxy for the admin panel → forwards to the Render API with the admin
+// secret (which never touches browser JS).
+//
+// Auth: accept EITHER the NextAuth admin session (same gate that lets the admin
+// load the page) OR the legacy admin_secret cookie. Previously this required
+// the cookie only, so a Google-authenticated admin whose 8h secret cookie had
+// expired got silent 401s (e.g. Chat Transcripts showing "- sessions").
 async function proxyAdmin(req: NextRequest, method: string) {
   const cookieStore = await cookies();
-  const secret = cookieStore.get("admin_secret")?.value;
-  if (!secret) {
+  const cookieSecret = cookieStore.get("admin_secret")?.value;
+
+  const authorized = !!cookieSecret || (await isAdminSession());
+  if (!authorized) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const secret = cookieSecret || process.env.ADMIN_SECRET || "";
+  if (!secret) {
+    return NextResponse.json({ error: "not_configured" }, { status: 503 });
   }
 
   const { searchParams } = req.nextUrl;
@@ -17,7 +30,12 @@ async function proxyAdmin(req: NextRequest, method: string) {
     return NextResponse.json({ error: "invalid path" }, { status: 400 });
   }
 
-  const upstream = serverApiUrl(path);
+  // Forward every query param except our own `path` (page, limit, filters…).
+  const forwarded = new URLSearchParams(searchParams);
+  forwarded.delete("path");
+  const qs = forwarded.toString();
+  const upstream = serverApiUrl(path) + (qs ? `?${qs}` : "");
+
   const headers: Record<string, string> = {
     "x-admin-secret": secret,
     "Content-Type": "application/json",

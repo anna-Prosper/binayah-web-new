@@ -251,7 +251,7 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
             {[
-              { icon: Shield, title: "RERA Certified", desc: "Reg. No. 1162, fully licensed and regulated", color: "#D4A847" },
+              { icon: Shield, title: "RERA Certified", desc: "Reg No. 1162, fully licensed and regulated", color: "#D4A847" },
               { icon: Globe, title: "Multilingual Team", desc: "Support in English, Arabic, Russian & Chinese", color: "#D4A847" },
               { icon: Clock, title: "24/7 Support", desc: "Round-the-clock emergency maintenance response", color: "#D4A847" },
               { icon: CheckCircle2, title: "Zero Hidden Fees", desc: "Transparent pricing with no surprises", color: "#D4A847" },
