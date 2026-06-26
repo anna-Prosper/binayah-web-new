@@ -1,6 +1,7 @@
 "use client";
 
 import { apiUrl } from "@/lib/api";
+import { waHref } from "@/lib/whatsapp";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -269,6 +270,12 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
+
+  // Every WhatsApp CTA on the project page appends the project URL for the agent
+  // (lead attribution). Uses the project's own number when set, else the company.
+  const projectUrl = origin ? `${origin}/project/${project.slug}` : undefined;
+  const projectWaNumber = project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811";
+  const waLink = (message: string) => waHref(message, projectUrl, projectWaNumber);
 
   const handleTabChange = (id: "overview" | "floor-plans" | "location" | "payment" | "faq") => {
     setActiveTab(id);
@@ -1210,7 +1217,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                                         </div>
                                         <a
                                           onClick={() => trackLead("whatsapp", leadEntity)}
-                                          href={`https://wa.me/${(project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}`}
+                                          href={waLink(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.03]"
@@ -1297,7 +1304,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                                 {/* CTA */}
                                 <a
                                   onClick={() => trackLead("whatsapp", leadEntity)}
-                                  href={`https://wa.me/${(project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`I'm interested in ${activeUnit?.name} at ${project.name}`)}`}
+                                  href={waLink(`I'm interested in ${activeUnit?.name} at ${project.name}`)}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-[1.02] transition-all duration-300"
@@ -2065,7 +2072,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                       matching target on the page. */}
                   <a
                     onClick={() => trackLead("whatsapp", leadEntity)}
-                    href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi, I'd like to schedule a video consultation about ${project.name}. When are you available?`)}`}
+                    href={waLink(`Hi, I'd like to schedule a video consultation about ${project.name}. When are you available?`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block rounded-2xl p-[2px] bg-gradient-to-r from-primary via-primary/60 to-accent transition-all duration-300 group hover:shadow-lg hover:shadow-primary/15 hover:scale-[1.01]"
@@ -2632,7 +2639,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                   )}
                   <a
                     onClick={() => trackLead("whatsapp", leadEntity)}
-                    href={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+                    href={waLink(`Hi, I'm interested in ${project.name}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/35 hover:scale-[1.02] active:scale-[0.98]"
@@ -2868,7 +2875,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
       {/* ───── STICKY MOBILE CTA BAR (shared 3-button component — labels live inside) ───── */}
       <DetailStickyCta
         entity={leadEntity}
-        whatsappUrl={`https://wa.me/${((project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811")).replace(/[^0-9]/g, "")}?text=Hi, I'm interested in ${encodeURIComponent(project.name)}`}
+        whatsappUrl={waLink(`Hi, I'm interested in ${project.name}`)}
         phone={(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}
       />
 

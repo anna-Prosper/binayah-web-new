@@ -1,7 +1,9 @@
 /* eslint-disable i18next/no-literal-string -- SEO content intentionally in English */
 "use client";
 
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { waHref } from "@/lib/whatsapp";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -39,9 +41,9 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
   ];
 
   const whatsappNum = project.whatsappNumber || "971559994111";
-  const whatsappMsg = encodeURIComponent(
-    `Hi, I'm interested in the payment plan for ${project.name}. Could you share the full schedule?`
-  );
+  const whatsappMsg = `Hi, I'm interested in the payment plan for ${project.name}. Could you share the full schedule?`;
+  const [pageUrl, setPageUrl] = useState<string | undefined>(undefined);
+  useEffect(() => { setPageUrl(window.location.href); }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -267,7 +269,7 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
             </p>
           </div>
           <a
-            href={`https://wa.me/${whatsappNum}?text=${whatsappMsg}`}
+            href={waHref(whatsappMsg, pageUrl, whatsappNum)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1ebe5d] transition-colors shrink-0"

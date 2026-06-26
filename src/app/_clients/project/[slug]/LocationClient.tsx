@@ -12,7 +12,8 @@ import Link from "next/link";
 import {
   MapPin, MessageCircle, Waves, Globe, Landmark, Compass, ArrowRight, Home,
 } from "lucide-react";
-import type React from "react";
+import React, { useState, useEffect } from "react";
+import { waHref } from "@/lib/whatsapp";
 
 const MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY || "";
 
@@ -67,9 +68,9 @@ export default function LocationClient({ serverProject }: { serverProject: any }
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${project.name} ${project.community || ""} Dubai`)}`;
 
   const whatsappNum = project.whatsappNumber || "971559994111";
-  const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to know more about the location of ${project.name}. Could you share details?`
-  );
+  const whatsappMsg = `Hi, I'd like to know more about the location of ${project.name}. Could you share details?`;
+  const [pageUrl, setPageUrl] = useState<string | undefined>(undefined);
+  useEffect(() => { setPageUrl(window.location.href); }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -191,7 +192,7 @@ export default function LocationClient({ serverProject }: { serverProject: any }
             </p>
           </div>
           <a
-            href={`https://wa.me/${whatsappNum}?text=${whatsappMsg}`}
+            href={waHref(whatsappMsg, pageUrl, whatsappNum)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1ebe5d] transition-colors shrink-0"
