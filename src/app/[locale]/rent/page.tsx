@@ -9,18 +9,12 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
-import { serverFetch, serverApiUrl } from "@/lib/api";
+import { getCachedSearch } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
 async function getInitialRentListings() {
-  try {
-    const res = await serverFetch(serverApiUrl("/api/search?intent=rent&pageSize=24"), 8000);
-    if (!res.ok) return null;
-    return res.json() as Promise<any>;
-  } catch {
-    return null;
-  }
+  return getCachedSearch("intent=rent&pageSize=24");
 }
 
 function rentCollectionItems(initialData: any): { url: string; name: string }[] {

@@ -9,21 +9,13 @@ import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
-import { serverFetch, serverApiUrl } from "@/lib/api";
+import { getCachedSearch } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
 async function getInitialBuyListings() {
-  try {
-    const res = await serverFetch(
-      serverApiUrl("/api/search?intent=buy&status=Secondary&pageSize=24"),
-      8000,
-    );
-    if (!res.ok) return null;
-    return res.json() as Promise<any>; // server-trusted API response
-  } catch {
-    return null;
-  }
+  // Cached + cold-start-tolerant so the grid is reliably in the SSR HTML.
+  return getCachedSearch("intent=buy&status=Secondary&pageSize=24");
 }
 
 const CONTENT = {

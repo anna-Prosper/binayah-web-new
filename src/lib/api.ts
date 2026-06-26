@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 /**
  * Returns the full API URL for a given path.
@@ -49,6 +50,29 @@ export async function serverFetch(
   headers?: Record<string, string>
 ): Promise<Response> {
   return fetch(url, { signal: AbortSignal.timeout(ms), headers });
+}
+
+// Cached /api/search for the default home grids (/buy, /rent, /off-plan). Those
+// pages are force-dynamic (SearchPageClient reads useSearchParams, so the grid
+// must render server-side per request) — but a per-request live fetch against
+// the Render API means a cold start can time out and leave crawlers with an
+// empty "Searching…" shell. Cache the response across requests (and use a
+// cold-start-tolerant timeout) so the inventory grid is reliably in the SSR
+// HTML. Throws on failure so a transient miss isn't cached as null.
+const _searchUncached = async (query: string): Promise<unknown> => {
+  const res = await fetch(serverApiUrl(`/api/search?${query}`), {
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!res.ok) throw new Error(`search ${res.status}`);
+  return res.json();
+};
+const _searchCached = unstable_cache(_searchUncached, ["home-search-grid"], { revalidate: 600 });
+export async function getCachedSearch<T = any>(query: string): Promise<T | null> {
+  try {
+    return (await _searchCached(query)) as T;
+  } catch {
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------------------
