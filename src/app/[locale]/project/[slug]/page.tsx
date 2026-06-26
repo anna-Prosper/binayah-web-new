@@ -35,15 +35,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const descFallbackRaw = `${project.name}${project.community ? ` in ${project.community}` : ""}, Dubai by ${project.developerName || "a leading developer"}.${priceShort ? ` Off-plan from ${priceShort} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice — explore with Binayah.`;
   const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
-  // Migrated projects carry a legacy WordPress canonical (https://binayah.com/
-  // projects/<slug>) in seo.canonicalUrl. Pointing the canonical at the old
-  // domain hands indexing + link equity to a site we no longer run. Only honor
-  // a stored canonical if it's on our own domain; otherwise compute the .ae URL.
+  // Always self-referential to the .ae URL. Migrated projects carry stale
+  // seo.canonicalUrl values — legacy binayah.com/projects/<slug> (the old WP
+  // path is now /dubai-projects/<slug>, so it 404s) or outdated .ae slugs —
+  // so honoring the stored value risks canonicalising to a non-existent URL.
   const path = `/project/${slug}`;
-  const canonicalUrl =
-    typeof seo.canonicalUrl === "string" && /(^|\/\/)([^/]*\.)?binayah\.ae/.test(seo.canonicalUrl)
-      ? seo.canonicalUrl
-      : makeCanonical(locale, path);
+  const canonicalUrl = makeCanonical(locale, path);
 
   return {
     title: seo.metaTitle || titleFallback,
