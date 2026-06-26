@@ -46,6 +46,8 @@ export default function ListingsPageClient({
   initialPage = 1,
   batchSize = 9,
   community,
+  propertyType,
+  bedrooms,
   headerSlot,
   emptyState,
 }: {
@@ -58,6 +60,10 @@ export default function ListingsPageClient({
   batchSize?: number;
   /** Restrict fetched listings to this community name. */
   community?: string;
+  /** Restrict fetched listings to this propertyType (e.g. "Apartment"). */
+  propertyType?: string;
+  /** Restrict fetched listings to this bedroom count (0 = studio). */
+  bedrooms?: string | number;
   /** Server-rendered SEO content slot, inserted between hero and listing grid. */
   headerSlot?: React.ReactNode;
   /** Custom node shown when there are no listings (replaces the default message). */
@@ -72,11 +78,15 @@ export default function ListingsPageClient({
   const [page, setPage] = useState(initialPage);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["listings", listingType, community ?? "", initialPage],
+    queryKey: ["listings", listingType, community ?? "", propertyType ?? "", String(bedrooms ?? ""), initialPage],
     queryFn: async ({ pageParam = initialListings.length }) => {
+      // Carry the same filters the SSR batch used, so load-more stays scoped
+      // (e.g. on /2-bedroom-apartments-for-sale-in-... pages).
       const communityParam = community ? `&community=${encodeURIComponent(community)}` : "";
+      const typeParam = propertyType ? `&propertyType=${encodeURIComponent(propertyType)}` : "";
+      const bedsParam = bedrooms !== undefined && bedrooms !== "" ? `&bedrooms=${encodeURIComponent(String(bedrooms))}` : "";
       const res = await fetch(
-        apiUrl(`/api/listings?listingType=${listingType}${communityParam}&limit=${batchSize}&skip=${pageParam}`)
+        apiUrl(`/api/listings?listingType=${listingType}${communityParam}${typeParam}${bedsParam}&limit=${batchSize}&skip=${pageParam}`)
       );
       if (!res.ok) throw new Error("fetch failed");
       return res.json() as Promise<Listing[]>;

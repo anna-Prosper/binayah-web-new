@@ -193,6 +193,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
+    // Bedroom × type × community matrix (apartments — the dominant inventory).
+    // Empty combos self-noindex at the page level, so listing them is safe.
+    ...BUY_COMMUNITIES.flatMap((c) =>
+      ["studio", "1-bedroom", "2-bedroom", "3-bedroom"].flatMap((bed) =>
+        ["sale", "rent"].map((txn) =>
+          plainEntry(`/${bed}-apartments-for-${txn}-in-${c.slug}`, 0.6, "weekly", now)
+        )
+      )
+    ),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];

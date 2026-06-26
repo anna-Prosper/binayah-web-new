@@ -1,0 +1,178 @@
+/* eslint-disable i18next/no-literal-string -- programmatic SEO matrix page; community copy localized via the community data, UI chrome via ListingsPageClient */
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
+import { serverApiUrl, serverFetch } from "@/lib/api";
+import { findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
+import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
+import CommunityStatsBand from "@/components/CommunityStatsBand";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { getNonce } from "@/lib/nonce";
+import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
+
+export const revalidate = 1800;
+
+const TYPES: Record<string, { canon: string; plural: string }> = {
+  apartment: { canon: "Apartment", plural: "apartments" },
+  apartments: { canon: "Apartment", plural: "apartments" },
+  villa: { canon: "Villa", plural: "villas" },
+  villas: { canon: "Villa", plural: "villas" },
+  townhouse: { canon: "Townhouse", plural: "townhouses" },
+  townhouses: { canon: "Townhouse", plural: "townhouses" },
+  penthouse: { canon: "Penthouse", plural: "penthouses" },
+  penthouses: { canon: "Penthouse", plural: "penthouses" },
+};
+
+// Strict parse: only "{studio|N-bedroom}-{type}s-for-{sale|rent}-in-{community}"
+// resolves; anything else returns null so the route 404s (never hijacks other
+// single-segment paths).
+interface Parsed { beds: number; bedsLabel: string; type: { canon: string; plural: string }; listingType: "Sale" | "Rent"; verb: string; communitySlug: string; }
+function parse(slug: string): Parsed | null {
+  const m = slug.match(/^(studio|(\d+)-bedroom)-(apartments?|villas?|townhouses?|penthouses?)-for-(sale|rent)-in-(.+)$/i);
+  if (!m) return null;
+  const bedsToken = m[1].toLowerCase();
+  const beds = bedsToken === "studio" ? 0 : parseInt(m[2], 10);
+  if (beds < 0 || beds > 7 || (bedsToken !== "studio" && !Number.isFinite(beds))) return null;
+  const type = TYPES[m[3].toLowerCase()];
+  if (!type) return null;
+  const listingType = m[4].toLowerCase() === "rent" ? "Rent" : "Sale";
+  return {
+    beds,
+    bedsLabel: beds === 0 ? "Studio" : `${beds}-Bedroom`,
+    type,
+    listingType,
+    verb: listingType === "Rent" ? "for Rent" : "for Sale",
+    communitySlug: m[5].toLowerCase(),
+  };
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; searchSlug: string }> }): Promise<Metadata> {
+  const { locale, searchSlug } = await params;
+  const p = parse(searchSlug);
+  if (!p) return {};
+  const c = findBuyCommunity(p.communitySlug);
+  if (!c) return {};
+  const title = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai | Binayah`;
+  const description = `Browse ${p.bedsLabel.toLowerCase()} ${p.type.canon.toLowerCase()}s ${p.verb.toLowerCase()} in ${c.name}, Dubai. ${c.priceRange ? `Price range ${c.priceRange}. ` : ""}${c.yield ? `Avg gross yield ${c.yield}. ` : ""}Live listings, prices and floor plans with Binayah.`.slice(0, 158);
+  const path = `/${searchSlug}`;
+
+  // Thin-content guard: only let Google index combos that actually have
+  // listings. Empty matrix pages stay crawlable (follow) but noindex.
+  let hasListings = false;
+  try {
+    const apiCommunity = c.apiName ?? c.name;
+    const res = await serverFetch(serverApiUrl(`/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}&countOnly=1`));
+    if (res.ok) hasListings = ((await res.json()).total ?? 0) > 0;
+  } catch { /* treat as empty → noindex */ }
+
+  return {
+    title,
+    description,
+    ...(hasListings ? {} : { robots: { index: false, follow: true } }),
+    alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
+    openGraph: { title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }] },
+  };
+}
+
+export default async function MatrixSearchPage({ params }: { params: Promise<{ locale: string; searchSlug: string }> }) {
+  const { locale, searchSlug } = await params;
+  const p = parse(searchSlug);
+  if (!p) notFound();
+  const c = findBuyCommunity(p.communitySlug);
+  if (!c) notFound();
+
+  const apiCommunity = c.apiName ?? c.name;
+  const lp = locale === "en" ? "" : `/${locale}`;
+  const BATCH = 9;
+
+  let initialListings: any[] = [];
+  let totalCount = 0;
+  try {
+    const base = `/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}`;
+    const [listRes, countRes] = await Promise.all([
+      serverFetch(serverApiUrl(`${base}&limit=${BATCH}`)),
+      serverFetch(serverApiUrl(`${base}&countOnly=1`)),
+    ]);
+    if (listRes.ok) initialListings = await listRes.json();
+    if (countRes.ok) totalCount = (await countRes.json()).total ?? 0;
+  } catch {
+    /* API down — render the page shell with stats/FAQ depth */
+  }
+
+  const stats = await getCommunityStats(apiCommunity);
+  const faqs = buildCommunityFaqs(c.name, stats);
+  const nonce = await getNonce();
+
+  const h1 = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai`;
+  const buyOrRent = p.listingType === "Rent" ? "Rent" : "Buy";
+  const breadcrumbs = [
+    { name: "Home", href: `${lp}/` },
+    { name: buyOrRent, href: `${lp}/${p.listingType === "Rent" ? "rent" : "buy"}` },
+    { name: c.name, href: `${lp}/${p.listingType === "Rent" ? "rent-property-in" : "buy-property-in"}/${c.slug}` },
+    { name: `${p.bedsLabel} ${p.type.canon}s`, href: `${lp}/${searchSlug}` },
+  ];
+
+  const seoBlock = (
+    <section className="bg-card border-b border-border">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{c.name}, Dubai</p>
+        <h1 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">{h1}</h1>
+        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">
+          {localizeCommunityText(c.shortIntro, locale)}
+        </p>
+        <div className="grid grid-cols-3 gap-4 max-w-xl">
+          <div>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Available</p>
+            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount > 0 ? `${totalCount}+` : "On request"}</p>
+          </div>
+          {c.priceRange && (
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price range</p>
+              <p className="text-sm sm:text-base font-bold text-foreground">{c.priceRange}</p>
+            </div>
+          )}
+          {c.yield && (
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Gross yield</p>
+              <p className="text-sm sm:text-base font-bold text-foreground">{c.yield}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+
+  const emptyState = (
+    <div className="max-w-xl mx-auto text-center py-16">
+      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">No {p.bedsLabel.toLowerCase()} {p.type.canon.toLowerCase()}s listed right now</h3>
+      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">We add matching homes in {c.name} regularly. Tell us what you&apos;re after and we&apos;ll alert you, or browse everything available in {c.name} today.</p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href={`${lp}/${p.listingType === "Rent" ? "rent-property-in" : "buy-property-in"}/${c.slug}`} className="font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
+          All {p.type.canon.toLowerCase()}s in {c.name}
+        </a>
+        <a href={`${lp}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">Get notified</a>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+      <ListingsPageClient
+        initialListings={initialListings}
+        totalCount={totalCount}
+        listingType={p.listingType}
+        title={h1}
+        subtitle={localizeCommunityText(c.shortIntro, locale)}
+        initialPage={1}
+        batchSize={BATCH}
+        community={apiCommunity}
+        propertyType={p.type.canon}
+        bedrooms={p.beds}
+        headerSlot={seoBlock}
+        emptyState={emptyState}
+      />
+      <CommunityStatsBand name={c.name} stats={stats} faqs={faqs} localePrefix={lp} nonce={nonce} />
+    </>
+  );
+}
