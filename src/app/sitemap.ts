@@ -121,6 +121,42 @@ async function fetchDevCommunityCombos(): Promise<string[]> {
   }
 }
 
+// Superlative pages (/cheapest-{type}-in-{community}) where the community has
+// >=3 for-sale listings of that type — enough to make a "ranked by price" page.
+async function fetchSuperlativeCombos(): Promise<string[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return [];
+  const TYPE_SLUG: Record<string, string> = { Apartment: "apartments", Villa: "villas", Townhouse: "townhouses", Penthouse: "penthouses" };
+  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+  const nameToSlug = new Map<string, string>();
+  for (const c of BUY_COMMUNITIES) {
+    nameToSlug.set(norm(c.name), c.slug);
+    const apiName = (c as { apiName?: string }).apiName;
+    if (apiName) nameToSlug.set(norm(apiName), c.slug);
+  }
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const rows = await client.db().collection("listings").aggregate([
+      { $match: { publishStatus: "published", listingType: "Sale", community: { $nin: [null, ""] }, propertyType: { $in: Object.keys(TYPE_SLUG) } } },
+      { $group: { _id: { c: "$community", t: "$propertyType" }, n: { $sum: 1 } } },
+      { $match: { n: { $gte: 3 } } },
+    ]).toArray();
+    const urls = new Set<string>();
+    for (const r of rows as { _id: { c: string; t: string } }[]) {
+      const cs = nameToSlug.get(norm(String(r._id.c || "")));
+      const ts = TYPE_SLUG[r._id.t];
+      if (cs && ts) urls.add(`/cheapest-${ts}-in-${cs}`);
+    }
+    return [...urls];
+  } catch {
+    return [];
+  } finally {
+    await client?.close();
+  }
+}
+
 const IS_RU = SITE_URL.includes("binayah.ru");
 
 function localeUrl(path: string, locale: string) {
@@ -212,6 +248,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const matrixCombos = await fetchMatrixCombos();
   // Developer × community combos (≥2 projects) — data-driven.
   const devCommunityCombos = await fetchDevCommunityCombos();
+  // Superlative (cheapest) combos — data-driven.
+  const superlativeCombos = await fetchSuperlativeCombos();
 
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
@@ -286,6 +324,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...matrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     // Developer × community pages.
     ...devCommunityCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
+    // Superlative (cheapest) pages.
+    ...superlativeCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];

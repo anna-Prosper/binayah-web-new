@@ -10,6 +10,7 @@ import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 import DevCommunityView, { parseDevCommunity, buildDevCommunityMeta, resolveDevCommunity } from "@/components/pseo/DevCommunityView";
+import SuperlativeView, { parseSuperlative, buildSuperlativeMeta } from "@/components/pseo/SuperlativeView";
 
 export const revalidate = 1800;
 
@@ -49,6 +50,9 @@ function parse(slug: string): Parsed | null {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; searchSlug: string }> }): Promise<Metadata> {
   const { locale, searchSlug } = await params;
+  // Superlative pattern (/{cheapest|most-expensive}-{type}-in-{community}).
+  const sup = parseSuperlative(searchSlug);
+  if (sup) return buildSuperlativeMeta(sup, locale, searchSlug);
   // Developer × community pattern (/{dev}-projects-in-{community}).
   const dc = parseDevCommunity(searchSlug);
   if (dc && !parse(searchSlug)) return buildDevCommunityMeta(dc.devSlug, dc.communitySlug, locale, searchSlug);
@@ -83,8 +87,12 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   const { locale, searchSlug } = await params;
   const p = parse(searchSlug);
 
-  // Developer × community pattern (only when it isn't a bedroom-matrix slug).
+  // Non-matrix patterns.
   if (!p) {
+    const sup = parseSuperlative(searchSlug);
+    if (sup && findBuyCommunity(sup.communitySlug)) {
+      return <SuperlativeView parsed={sup} locale={locale} searchSlug={searchSlug} />;
+    }
     const dc = parseDevCommunity(searchSlug);
     if (dc) {
       const r = await resolveDevCommunity(dc.devSlug, dc.communitySlug);
