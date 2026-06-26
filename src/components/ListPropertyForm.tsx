@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Loader2 } from "lucide-react";
@@ -18,6 +18,8 @@ export default function ListPropertyForm() {
   const [error, setError] = useState("");
 
   const [form, setForm] = useState({
+    name: "",
+    email: "",
     propertyType: "",
     listingType: "Sale",
     community: "",
@@ -29,6 +31,17 @@ export default function ListPropertyForm() {
   });
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  // Prefill contact details from the session when signed in (still editable).
+  useEffect(() => {
+    if (session?.user) {
+      setForm((f) => ({
+        ...f,
+        name: f.name || session.user?.name || "",
+        email: f.email || session.user?.email || "",
+      }));
+    }
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,10 +70,21 @@ export default function ListPropertyForm() {
         <CheckCircle2 className="h-14 w-14 text-primary" />
         <h2 className="text-2xl font-bold text-foreground">{t("success.title")}</h2>
         <p className="text-muted-foreground max-w-sm">{t("success.desc")}</p>
+        {!session?.user && (
+          <div className="mt-2 w-full max-w-sm rounded-xl border border-primary/15 bg-primary/5 p-4">
+            <p className="text-sm text-muted-foreground mb-3">{t("success.accountPrompt")}</p>
+            <button
+              onClick={() => router.push(`/signin?email=${encodeURIComponent(form.email)}`)}
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
+              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+            >
+              {t("success.createAccount")}
+            </button>
+          </div>
+        )}
         <button
           onClick={() => router.push("/")}
-          className="mt-4 px-6 py-2.5 rounded-xl text-sm font-semibold text-white"
-          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+          className="mt-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-foreground border border-border hover:bg-muted transition-colors"
         >
           {t("success.backHome")}
         </button>
@@ -70,13 +94,30 @@ export default function ListPropertyForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {session?.user && (
-        <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl border border-primary/10">
-          <div className="text-sm text-muted-foreground">
-            {t("submittingAs")} <span className="font-semibold text-foreground">{session.user.email}</span>
-          </div>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">{t("form.name")}</label>
+          <input
+            type="text"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+            required
+            placeholder={t("form.namePlaceholder")}
+            className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+          />
         </div>
-      )}
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">{t("form.email")}</label>
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => set("email", e.target.value)}
+            required
+            placeholder={t("form.emailPlaceholder")}
+            className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+          />
+        </div>
+      </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>

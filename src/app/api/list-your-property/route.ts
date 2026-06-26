@@ -22,6 +22,7 @@ const VALID_PROPERTY_TYPES = [
 ];
 
 const PHONE_RE = /^\+?[0-9 ()-]{7,20}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function isFiniteNonNegative(v: unknown): boolean {
   if (v === null || v === undefined) return true; // optional fields
@@ -49,15 +50,29 @@ export async function GET(_req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  // Public lead form: no auth required. We capture the lead from anyone and
+  // prompt them to create an account after submission.
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
   const { propertyType, listingType, community, bedrooms, areaSqft, askingPrice, description, phone } = body;
 
+  // Contact identity: prefer the signed-in session, else the form-provided
+  // name/email so a visitor can submit without an account.
+  const submitterEmail = (session?.user?.email || body.email || "").toLowerCase().trim();
+  const submitterName = (session?.user?.name || body.name || "").trim();
+  const userId = session?.user?.id ?? null;
+
   // Required field validation
   if (!propertyType || !listingType || !community || !phone) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+  // Contact details required so we can follow up on the lead
+  if (!submitterName) {
+    return NextResponse.json({ error: "Name is required" }, { status: 400 });
+  }
+  if (!submitterEmail || !EMAIL_RE.test(submitterEmail)) {
+    return NextResponse.json({ error: "A valid email is required" }, { status: 400 });
   }
 
   // Phone validation
@@ -90,10 +105,11 @@ export async function POST(req: NextRequest) {
   const client = await clientPromise;
   const col = client.db("binayah_web_new_dev").collection("property_submissions");
 
-  // Rate limit: max 5 submissions per hour per user
+  // Rate limit: max 5 submissions per hour per identity (user, else email)
   const oneHourAgo = new Date(Date.now() - 3_600_000);
+  const rlFilter = userId ? { userId } : { emailH: fieldHash(submitterEmail) };
   const recentCount = await col.countDocuments({
-    userId: session.user.id,
+    ...rlFilter,
     createdAt: { $gt: oneHourAgo },
   });
   if (recentCount >= 5) {
@@ -103,13 +119,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const rawEmail = (session.user.email || "").toLowerCase().trim();
+  const rawEmail = submitterEmail;
   const rawPhone = (phone || "").replace(/[\s\-.()]/g, "");
   const doc = {
-    userId: session.user.id,
+    userId,
     userEmail: encrypt(rawEmail),
     emailH: fieldHash(rawEmail),
-    userName: encrypt(session.user.name || ""),
+    userName: encrypt(submitterName),
     propertyType,
     listingType,
     community,
@@ -128,8 +144,8 @@ export async function POST(req: NextRequest) {
   notifyNewLead({
     source: "list-property",
     channel: "list-your-property",
-    name: session.user.name || undefined,
-    email: session.user.email || undefined,
+    name: submitterName || undefined,
+    email: submitterEmail || undefined,
     phone,
     community,
     message: `${listingType} ${propertyType}${bedrooms ? ` · ${bedrooms} BR` : ""}${askingPrice ? ` · asking AED ${Number(askingPrice).toLocaleString()}` : ""}`,
@@ -139,8 +155,8 @@ export async function POST(req: NextRequest) {
   const eventsCol = client.db("binayah_web_new_dev").collection("submission_events");
   await eventsCol.insertOne({
     submissionId: result.insertedId,
-    userId: session.user.id,
-    userEmail: session.user.email,
+    userId,
+    userEmail: submitterEmail,
     event: "created",
     at: new Date(),
   });
@@ -155,7 +171,7 @@ export async function POST(req: NextRequest) {
       html: `
         <h2>New Property Submission</h2>
         <table>
-          <tr><td><b>User</b></td><td>${session.user.name || ""} (${session.user.email})</td></tr>
+          <tr><td><b>User</b></td><td>${submitterName || ""} (${submitterEmail})${userId ? "" : " · guest"}</td></tr>
           <tr><td><b>Type</b></td><td>${propertyType}, ${listingType}</td></tr>
           <tr><td><b>Community</b></td><td>${community}</td></tr>
           <tr><td><b>Bedrooms</b></td><td>${bedrooms ?? "-"}</td></tr>
@@ -165,7 +181,7 @@ export async function POST(req: NextRequest) {
           <tr><td><b>Description</b></td><td>${description || "-"}</td></tr>
         </table>
       `,
-      text: `New submission: ${propertyType} in ${community} by ${session.user.email} (${phone})`,
+      text: `New submission: ${propertyType} in ${community} by ${submitterEmail} (${phone})`,
     }).catch(() => {});
   }
 

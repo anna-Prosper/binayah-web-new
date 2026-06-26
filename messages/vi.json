@@ -891,14 +891,20 @@
       "areaPlaceholder": "ví dụ: 1200",
       "pricePlaceholder": "ví dụ: 1500000",
       "descriptionPlaceholder": "Mô tả bất động sản của bạn...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "Họ và tên",
+      "namePlaceholder": "Tên của bạn",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "Gửi Bất Động Sản",
     "submitting": "Đang gửi...",
     "success": {
       "title": "Đã nhận được thông tin!",
       "desc": "Nhân viên của bạn sẽ xem xét bất động sản và liên hệ trong vòng 24 giờ.",
-      "backHome": "Quay về Trang Chủ"
+      "backHome": "Quay về Trang Chủ",
+      "accountPrompt": "Muốn theo dõi tin đăng và nhận cập nhật? Tạo tài khoản miễn phí.",
+      "createAccount": "Tạo tài khoản"
     },
     "errors": {
       "genericError": "Đã xảy ra lỗi. Vui lòng thử lại."

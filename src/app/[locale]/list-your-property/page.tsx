@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
-import { getServerSession } from "next-auth";
 
 interface Props { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -16,8 +15,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -25,8 +22,6 @@ import ListPropertyForm from "@/components/ListPropertyForm";
 import { getTranslations } from "next-intl/server";
 
 export default async function ListYourPropertyPage() {
-  const session = await getServerSession(authOptions);
-  if (!session) redirect("/signin?callbackUrl=/list-your-property");
   const t = await getTranslations("listProperty");
 
   return (

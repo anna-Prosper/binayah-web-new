@@ -891,14 +891,20 @@
       "areaPlaceholder": "напр. 1200",
       "pricePlaceholder": "напр. 1500000",
       "descriptionPlaceholder": "Расскажите о планировке, состоянии и особенностях объекта...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "Полное имя",
+      "namePlaceholder": "Ваше имя",
+      "email": "Эл. почта",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "Разместить объект",
     "submitting": "Отправка...",
     "success": {
       "title": "Заявка принята!",
       "desc": "Наш агент рассмотрит объект и свяжется с вами в течение 24 часов.",
-      "backHome": "На главную"
+      "backHome": "На главную",
+      "accountPrompt": "Хотите отслеживать своё объявление и получать обновления? Создайте бесплатный аккаунт.",
+      "createAccount": "Создать аккаунт"
     },
     "errors": {
       "genericError": "Что-то пошло не так. Повторите попытку."

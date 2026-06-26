@@ -891,14 +891,20 @@
       "areaPlaceholder": "مثال: 1200",
       "pricePlaceholder": "مثال: 1500000",
       "descriptionPlaceholder": "صف عقارك بإيجاز...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "الاسم الكامل",
+      "namePlaceholder": "اسمك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "إرسال العقار",
     "submitting": "جارٍ الإرسال...",
     "success": {
       "title": "تم استلام طلبك!",
       "desc": "سيراجع مستشارنا العقاري عقارك ويتواصل معك خلال 24 ساعة.",
-      "backHome": "العودة للرئيسية"
+      "backHome": "العودة للرئيسية",
+      "accountPrompt": "هل تريد متابعة إعلانك وتلقّي التحديثات؟ أنشئ حسابًا مجانيًا.",
+      "createAccount": "إنشاء حساب"
     },
     "errors": {
       "genericError": "حدث خطأ ما. يرجى المحاولة مجدداً."

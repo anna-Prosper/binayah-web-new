@@ -18,12 +18,14 @@ export default function SignInClient() {
   const resetSuccess = searchParams.get("reset") === "1";
   const verifiedSuccess = searchParams.get("verified") === "1";
   const verifyError = searchParams.get("error") === "verify";
+  const emailParam = searchParams.get("email") || "";
 
-  const [tab, setTab] = useState<Tab>("signin");
+  // Arriving from a lead form's "create account" prompt → open signup, prefilled.
+  const [tab, setTab] = useState<Tab>(emailParam ? "signup" : "signin");
   const [googleLoading, setGoogleLoading] = useState(false);
 
   // Sign-in form
-  const [siEmail, setSiEmail] = useState("");
+  const [siEmail, setSiEmail] = useState(emailParam);
   const [siPassword, setSiPassword] = useState("");
   const [siShowPw, setSiShowPw] = useState(false);
   const [siError, setSiError] = useState("");
@@ -31,7 +33,7 @@ export default function SignInClient() {
 
   // Sign-up form
   const [suName, setSuName] = useState("");
-  const [suEmail, setSuEmail] = useState("");
+  const [suEmail, setSuEmail] = useState(emailParam);
   const [suPassword, setSuPassword] = useState("");
   const [suShowPw, setSuShowPw] = useState(false);
   const [suError, setSuError] = useState("");

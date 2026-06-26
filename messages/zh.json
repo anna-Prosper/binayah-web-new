@@ -897,14 +897,20 @@
       "areaPlaceholder": "例如：1200",
       "pricePlaceholder": "例如：1500000",
       "descriptionPlaceholder": "简要描述您的房产…",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "全名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "提交委托",
     "submitting": "提交中…",
     "success": {
       "title": "委托已收到！",
       "desc": "专属顾问将审核您的房产，并在 24 小时内与您联系。",
-      "backHome": "返回首页"
+      "backHome": "返回首页",
+      "accountPrompt": "想跟踪您的房源并获取更新？创建一个免费账户。",
+      "createAccount": "创建账户"
     },
     "errors": {
       "genericError": "出错了，请重试。"

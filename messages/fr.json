@@ -892,14 +892,20 @@
       "areaPlaceholder": "ex. 1200",
       "pricePlaceholder": "ex. 1500000",
       "descriptionPlaceholder": "Décrivez votre bien...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "Nom complet",
+      "namePlaceholder": "Votre nom",
+      "email": "E-mail",
+      "emailPlaceholder": "vous@email.com"
     },
     "submit": "Soumettre un bien",
     "submitting": "En cours de soumission...",
     "success": {
       "title": "Soumission reçue !",
       "desc": "Votre agent examinera le bien et vous contactera dans les 24 heures.",
-      "backHome": "Retour à l'accueil"
+      "backHome": "Retour à l'accueil",
+      "accountPrompt": "Vous voulez suivre votre annonce et recevoir des mises à jour ? Créez un compte gratuit.",
+      "createAccount": "Créer un compte"
     },
     "errors": {
       "genericError": "Une erreur s'est produite. Veuillez réessayer."

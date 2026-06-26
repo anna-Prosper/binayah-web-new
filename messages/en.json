@@ -892,14 +892,20 @@
       "areaPlaceholder": "e.g. 1200",
       "pricePlaceholder": "e.g. 1500000",
       "descriptionPlaceholder": "Describe your property...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "Full name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "Submit Property",
     "submitting": "Submitting...",
     "success": {
       "title": "Submission received!",
       "desc": "Your agent will review the property and reach out within 24 hours.",
-      "backHome": "Back to Home"
+      "backHome": "Back to Home",
+      "accountPrompt": "Want to track your listing and get updates? Create a free account.",
+      "createAccount": "Create account"
     },
     "errors": {
       "genericError": "Something went wrong. Please try again."

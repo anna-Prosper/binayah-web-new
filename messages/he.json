@@ -891,14 +891,20 @@
       "areaPlaceholder": "לדוגמה, 1200",
       "pricePlaceholder": "לדוגמה, 1500000",
       "descriptionPlaceholder": "תאר את הנכס שלך...",
-      "phonePlaceholder": "+971 50 000 0000"
+      "phonePlaceholder": "+971 50 000 0000",
+      "name": "שם מלא",
+      "namePlaceholder": "השם שלך",
+      "email": "אימייל",
+      "emailPlaceholder": "you@email.com"
     },
     "submit": "שלח נכס",
     "submitting": "שולח...",
     "success": {
       "title": "הגשה התקבלה!",
       "desc": "הסוכן שלך יבדוק את הנכס וייצור קשר תוך 24 שעות.",
-      "backHome": "חזרה לדף הבית"
+      "backHome": "חזרה לדף הבית",
+      "accountPrompt": "רוצים לעקוב אחר המודעה ולקבל עדכונים? צרו חשבון בחינם.",
+      "createAccount": "יצירת חשבון"
     },
     "errors": {
       "genericError": "משהו השתבש. אנא נסה שוב."
