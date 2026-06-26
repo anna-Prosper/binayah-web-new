@@ -9,6 +9,7 @@ import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
+import DevCommunityView, { parseDevCommunity, buildDevCommunityMeta, resolveDevCommunity } from "@/components/pseo/DevCommunityView";
 
 export const revalidate = 1800;
 
@@ -48,6 +49,10 @@ function parse(slug: string): Parsed | null {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; searchSlug: string }> }): Promise<Metadata> {
   const { locale, searchSlug } = await params;
+  // Developer × community pattern (/{dev}-projects-in-{community}).
+  const dc = parseDevCommunity(searchSlug);
+  if (dc && !parse(searchSlug)) return buildDevCommunityMeta(dc.devSlug, dc.communitySlug, locale, searchSlug);
+
   const p = parse(searchSlug);
   if (!p) return {};
   const c = findBuyCommunity(p.communitySlug);
@@ -74,10 +79,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function MatrixSearchPage({ params }: { params: Promise<{ locale: string; searchSlug: string }> }) {
+export default async function PseoRouterPage({ params }: { params: Promise<{ locale: string; searchSlug: string }> }) {
   const { locale, searchSlug } = await params;
   const p = parse(searchSlug);
-  if (!p) notFound();
+
+  // Developer × community pattern (only when it isn't a bedroom-matrix slug).
+  if (!p) {
+    const dc = parseDevCommunity(searchSlug);
+    if (dc) {
+      const r = await resolveDevCommunity(dc.devSlug, dc.communitySlug);
+      if (r) return <DevCommunityView devSlug={dc.devSlug} communitySlug={dc.communitySlug} locale={locale} searchSlug={searchSlug} />;
+    }
+    notFound();
+  }
+
   const c = findBuyCommunity(p.communitySlug);
   if (!c) notFound();
 

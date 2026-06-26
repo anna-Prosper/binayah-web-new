@@ -84,6 +84,43 @@ async function fetchMatrixCombos(): Promise<string[]> {
   }
 }
 
+// Developer × community combos (/{dev}-projects-in-{community}) where the
+// developer has ≥2 projects in a (known) community — data-driven, so only
+// substantial pages are submitted.
+async function fetchDevCommunityCombos(): Promise<string[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return [];
+  const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+  const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const nameToSlug = new Map<string, string>();
+  for (const c of BUY_COMMUNITIES) {
+    nameToSlug.set(norm(c.name), c.slug);
+    const apiName = (c as { apiName?: string }).apiName;
+    if (apiName) nameToSlug.set(norm(apiName), c.slug);
+  }
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const rows = await client.db().collection("projects").aggregate([
+      { $match: { publishStatus: "published", developerName: { $nin: [null, ""] }, community: { $nin: [null, ""] } } },
+      { $group: { _id: { d: "$developerName", c: "$community" }, n: { $sum: 1 } } },
+      { $match: { n: { $gte: 2 } } },
+    ]).toArray();
+    const urls = new Set<string>();
+    for (const r of rows as { _id: { d: string; c: string } }[]) {
+      const cslug = nameToSlug.get(norm(String(r._id.c || "")));
+      const dslug = slugify(String(r._id.d || ""));
+      if (cslug && dslug) urls.add(`/${dslug}-projects-in-${cslug}`);
+    }
+    return [...urls];
+  } catch {
+    return [];
+  } finally {
+    await client?.close();
+  }
+}
+
 const IS_RU = SITE_URL.includes("binayah.ru");
 
 function localeUrl(path: string, locale: string) {
@@ -173,6 +210,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Populated bedroom × type × community combos (all types) — data-driven.
   const matrixCombos = await fetchMatrixCombos();
+  // Developer × community combos (≥2 projects) — data-driven.
+  const devCommunityCombos = await fetchDevCommunityCombos();
 
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
@@ -245,6 +284,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Bedroom × type × community matrix — only combos that actually have
     // listings (all four types), so no empty/self-noindexed URLs are submitted.
     ...matrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
+    // Developer × community pages.
+    ...devCommunityCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     ...FOREIGN_BUYERS.map((b) => withAlternates(`/buying-property-in-dubai-as/${b.slug}`, 0.7, "monthly", now)),
     ...CRYPTO_SLUGS.map((slug) => withAlternates(`/buy-with-crypto/${slug}`, 0.7, "monthly", now)),
   ];
