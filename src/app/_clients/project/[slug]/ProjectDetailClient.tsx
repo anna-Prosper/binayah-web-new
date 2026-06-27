@@ -2257,6 +2257,71 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                         </div>
                       </div>
                     );
+                  })() : (Array.isArray(project.unitTypes) && project.unitTypes.length > 0) ? (() => {
+                    // No uploaded floor-plan images — render the indicative
+                    // schematic card (one per unit type, derived from unitTypes
+                    // + size range), the "beautiful card" from before the tabs.
+                    const totalTypes = project.unitTypes.length;
+                    const baseSize = Number(project.unitSizeMin) || 400;
+                    const maxSize = Number(project.unitSizeMax) || 2500;
+                    const units = (project.unitTypes as string[]).map((ut, idx) => {
+                      const m = ut.match(/(\d+)/);
+                      const bedrooms = m ? parseInt(m[1], 10) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                      const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
+                      const unitSize = Math.round(baseSize + sizeStep * idx);
+                      return { name: ut, bedrooms, bathrooms: Math.max(1, bedrooms), unitSize, totalArea: unitSize + Math.round(unitSize * 0.08) };
+                    });
+                    const active = units[activeFloorPlanTab] ?? units[0];
+                    return (
+                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-4 border-b border-border/50 flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                            <FileText className="h-4 w-4 text-accent" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("floorPlansLabel")}</p>
+                            <h2 className="text-base sm:text-lg font-bold text-foreground leading-tight">{project.name}, {t("floorPlans")}</h2>
+                          </div>
+                        </div>
+                        <div className="px-4 sm:px-6 pt-4 flex gap-2 flex-wrap">
+                          {units.map((u, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setActiveFloorPlanTab(i)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${activeFloorPlanTab === i ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"}`}
+                            >
+                              {u.name}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4">
+                          <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-white border border-border/50 flex items-center justify-center p-4">
+                            <FloorPlanPlaceholder bedrooms={active?.bedrooms || 0} unitName={active?.name || ""} sqft={active?.unitSize || 0} />
+                          </div>
+                          <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
+                            <h3 className="font-bold text-foreground text-base">{active?.name}</h3>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
+                              {active?.bedrooms === 0 ? tEnum("Studio") : `${active?.bedrooms} ${t("bedsLabel")}`}{active?.bathrooms ? ` · ${active.bathrooms} ${t("bathsLabel")}` : ""}
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
+                              {`~${active?.totalArea.toLocaleString()} sqft`}
+                            </div>
+                            <a
+                              href={waLink(`I'd like the floor plan for ${active?.name} at ${project.name}`)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white"
+                              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                            >
+                              {t("requestFloorPlan")}
+                            </a>
+                          </div>
+                        </div>
+                        <p className="px-4 sm:px-6 pb-4 text-[11px] text-muted-foreground text-center sm:text-left">{t("floorPlanOnRequest")}</p>
+                      </div>
+                    );
                   })() : (
                     <div className="text-center py-12 text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
                   )}
