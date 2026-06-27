@@ -770,10 +770,13 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
               ]}
             />
 
-            {/* Unique per-sub-page SEO copy — only on dedicated sub-pages (defaultTab
-                set), so each URL has distinct main content vs the hub. */}
-            {defaultTab && defaultTab !== "overview" && (
-              <ProjectSeoBlock project={project} tab={defaultTab} paymentPlanLabel={paymentPlanPretty} />
+            {/* Unique per-sub-page SEO copy. Follows the visible tab (activeTab),
+                not the landing tab — tab switching uses history.replaceState (no
+                re-render), so keying off defaultTab left stale copy (e.g. floor-
+                plan text on the Payment tab). On SSR activeTab === defaultTab, so
+                each URL still renders its own distinct content for SEO. */}
+            {activeTab !== "overview" && (
+              <ProjectSeoBlock project={project} tab={activeTab} paymentPlanLabel={paymentPlanPretty} />
             )}
 
             {/* ─── OVERVIEW TAB ─── */}
