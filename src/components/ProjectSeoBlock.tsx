@@ -29,10 +29,12 @@ export function ProjectSeoBlock({
   const sizeMax = project?.unitSizeMax ? Number(project.unitSizeMax).toLocaleString() : null;
   const sizeRange = sizeMin && sizeMax ? `${sizeMin}-${sizeMax} sqft` : null;
   const handover = project?.completionDate ? String(project.completionDate) : null;
-  const locDesc =
-    typeof project?.locationDescription === "string" && project.locationDescription.trim()
-      ? project.locationDescription.trim().slice(0, 200)
-      : "";
+  // Editor-written copy from the DB takes precedence over the generated
+  // template when present (plain text; tags stripped defensively).
+  const stripTags = (s: unknown) => String(s ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const locationText = stripTags(project?.locationDescription);
+  const masterPlanText = stripTags(project?.masterPlanDescription);
+  const paymentText = stripTags(project?.paymentPlanDetails);
 
   const CONTENT: Record<SeoTab, { icon: React.ElementType; title: string; paras: string[] }> = {
     "floor-plans": {
@@ -47,7 +49,10 @@ export function ProjectSeoBlock({
       icon: MapPin,
       title: `${name} Location & Connectivity`,
       paras: [
-        `${name} is located in ${community}, Dubai, UAE.${locDesc ? ` ${locDesc}${locDesc.length >= 200 ? "…" : ""}` : " The community offers convenient access to major road links, retail, schools and leisure destinations across the city."}`,
+        locationText
+          ? `${name} is located in ${community}, Dubai. ${locationText}`
+          : `${name} is located in ${community}, Dubai, UAE. The community offers convenient access to major road links, retail, schools and leisure destinations across the city.`,
+        ...(masterPlanText ? [masterPlanText] : []),
         `In Dubai's property market, location is the single biggest driver of rental yield and capital appreciation. Well-connected communities with nearby transport, retail and amenities consistently outperform on tenant demand and price-per-sqft growth.`,
       ],
     },
@@ -55,7 +60,7 @@ export function ProjectSeoBlock({
       icon: CreditCard,
       title: `${name} Payment Plan & Buyer Costs`,
       paras: [
-        `${name}${dev} is sold on a construction-linked payment plan${paymentPlanLabel ? ` (${paymentPlanLabel})` : ""}, a down payment on booking, staged instalments during construction, and the balance on handover${handover ? ` (targeted for ${handover})` : ""}. All payments are held in a RERA-regulated escrow account that protects your funds throughout the build.`,
+        paymentText || `${name}${dev} is sold on a construction-linked payment plan${paymentPlanLabel ? ` (${paymentPlanLabel})` : ""}, a down payment on booking, staged instalments during construction, and the balance on handover${handover ? ` (targeted for ${handover})` : ""}. All payments are held in a RERA-regulated escrow account that protects your funds throughout the build.`,
         `Beyond the purchase price, budget for the one-time Dubai Land Department fee (4%), the Oqood off-plan registration (around AED 3,000) and standard agency fees. Dubai charges no annual property tax and no capital-gains tax, so investment returns are kept in full.`,
       ],
     },
