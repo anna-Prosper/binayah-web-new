@@ -16,7 +16,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
-import FloorPlanPlaceholder from "@/components/FloorPlanPlaceholder";
 import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
@@ -428,6 +427,331 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
     : isReadyProject
       ? { label: t("breadcrumbBuy"),   href: "/buy" }
       : { label: t("breadcrumbOffPlan"), href: "/off-plan" };
+
+  // Browse Units / Available Units — shared by the Overview and Floor Plans tabs.
+  // Shows real floor-plan images when present, otherwise a request CTA inside the
+  // image container (never a fake SVG schematic). Falsy when the project has no units.
+  const availableUnitsSection =
+                  ((project.unitTypes?.length ?? 0) > 0 || (project.unitsByType?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
+                    const hasMultiplePropertyTypes = (project.propertyTypes?.length ?? 0) > 1;
+                    // priceByType entries with a propertyType field (older schema)
+                    const filteredPriceByType: any[] = hasMultiplePropertyTypes
+                      ? (project.priceByType || []).filter((p: any) => p.propertyType === activePropertyType)
+                      : [];
+
+                    // basePrice: project.startingPrice for the first/main property type, 0 for others
+                    const buildUnitEntry = (ut: string, idx: number, sizeMin: number, sizeMax: number, totalTypes: number, activeType: string, basePrice: number) => {
+                      const bedroomMatch = ut.match(/(\d+)/);
+                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
+                      const bathrooms = Math.max(1, bedrooms);
+                      // priceByType entry — sizes stored as "Size: 756 - 2,207 Sq.ft"
+                      const priceEntry = (project.priceByType || []).find((p: any) => p.type === ut);
+                      const rawPBTMin = priceEntry?.priceMin || 0;
+                      const rawPBTMax = priceEntry?.priceMax || 0;
+                      const resolvedMin = rawPBTMin > 0 ? (rawPBTMin < 1_000 ? rawPBTMin * 1_000_000 : rawPBTMin) : 0;
+                      const resolvedMax = rawPBTMax > 0 ? (rawPBTMax < 1_000 ? rawPBTMax * 1_000_000 : rawPBTMax) : 0;
+
+                      // Price logic: use priceByType if available; otherwise first unit = starting range,
+                      // last unit = max range (if project.priceMax exists), all middle units = Contact Us.
+                      const isFirst = idx === 0;
+                      const isLast = idx === totalTypes - 1;
+                      const base = basePrice < 1_000 && basePrice > 0 ? basePrice * 1_000_000 : basePrice;
+                      let minPrice = 0, maxPrice = 0, contactUs = false;
+                      if (resolvedMin > 0) {
+                        minPrice = resolvedMin;
+                        maxPrice = resolvedMax || Math.round(resolvedMin * 1.25);
+                      } else if (isFirst && base > 0) {
+                        minPrice = base;
+                        maxPrice = Math.round(base * 1.2);
+                      } else if (isLast && base > 0 && totalTypes > 1) {
+                        const rawPMax = project.priceMax || 0;
+                        const normPMax = rawPMax > 0 ? (rawPMax < 1_000 ? rawPMax * 1_000_000 : rawPMax) : 0;
+                        if (normPMax > 0) {
+                          minPrice = Math.round(normPMax * 0.88);
+                          maxPrice = normPMax;
+                        } else {
+                          contactUs = true;
+                        }
+                      } else {
+                        contactUs = true;
+                      }
+
+                      // Size: distribute evenly across the sizeMin-sizeMax range
+                      const sizeStep = totalTypes > 1 ? (sizeMax - sizeMin) / (totalTypes - 1) : 0;
+                      const unitMinSize = Math.round(sizeMin + sizeStep * idx);
+                      const unitMaxSize = Math.round(unitMinSize + (sizeStep > 0 ? sizeStep * 0.8 : 200));
+                      const features = [
+                        tE("builtInWardrobes"),
+                        bedrooms >= 2 ? tE("maidsRoom") : null,
+                        tE("balcony"),
+                        bedrooms >= 3 ? tE("privateTerrace") : null,
+                        tE("centralAC"),
+                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? tE("privatePool") : null,
+                      ].filter(Boolean) as string[];
+                      return { name: ut, minPrice, maxPrice, contactUs, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
+                    };
+
+                    const unitData = (() => {
+                      if (hasMultiplePropertyTypes) {
+                        // unitsByType has per-property-type size ranges and unit type lists
+                        const ubt = (project.unitsByType || []).find((u: any) => u.propertyType === activePropertyType);
+                        if (ubt?.unitTypes?.length > 0) {
+                          const ubtPriceMin = ubt.priceMin || 0;
+                          const normUbtMin = ubtPriceMin > 0 ? (ubtPriceMin < 1_000 ? ubtPriceMin * 1_000_000 : ubtPriceMin) : 0;
+                          // startingPrice applies to the first/cheapest property type only
+                          const isFirstPropType = activePropertyType === project.propertyTypes?.[0];
+                          const basePrice = normUbtMin || (isFirstPropType ? (project.startingPrice || 0) : 0);
+                          const ubtSizeMin = ubt.sizeMin || Number(project.unitSizeMin) || 400;
+                          const ubtSizeMax = ubt.sizeMax || Number(project.unitSizeMax) || 2500;
+                          return (ubt.unitTypes as string[]).map((ut: string, idx: number) =>
+                            buildUnitEntry(ut, idx, ubtSizeMin, ubtSizeMax, ubt.unitTypes.length, activePropertyType, basePrice)
+                          );
+                        }
+                        // Fallback: priceByType entries that already carry a propertyType field
+                        if (filteredPriceByType.length > 0) {
+                          const fpBase = project.startingPrice || 0;
+                          return filteredPriceByType.map((p: any, idx: number) => {
+                            const sizeStr: string = p.size || "";
+                            const sizeParts = sizeStr.split("-").map((s: string) => parseInt(s.replace(/[^0-9]/g, ""))).filter(Boolean);
+                            return buildUnitEntry(p.type || "", idx, sizeParts[0] || 400, sizeParts[1] || sizeParts[0] || 2500, filteredPriceByType.length, activePropertyType, fpBase);
+                          });
+                        }
+                      }
+                      // Single property type: use unitTypes with project-level size range
+                      const totalTypes = project.unitTypes?.length ?? 0;
+                      const baseSize = Number(project.unitSizeMin) || 400;
+                      const topSize = Number(project.unitSizeMax) || 2500;
+                      return (project.unitTypes || []).map((ut: string, idx: number) =>
+                        buildUnitEntry(ut, idx, baseSize, topSize, totalTypes, "", project.startingPrice || 0)
+                      );
+                    })();
+
+                    const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, unitData.length - 1));
+                    const activeUnit = unitData[clampedUnitTab];
+                    return (
+                      <div className="rounded-3xl overflow-hidden">
+                        {/* Section header */}
+                        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("browseUnits")}</p>
+                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("availableUnits")}</h2>
+                          </div>
+                        </div>
+
+                        {/* Primary property type tabs — segmented control */}
+                        {hasMultiplePropertyTypes && (
+                          <div className="mb-5">
+                            <p className="text-xs uppercase tracking-widest font-bold text-foreground/70 mb-2.5 pl-0.5">{t("propertyTypeLabel")}</p>
+                            <div className="inline-flex w-full gap-1.5 p-1.5 bg-muted/50 rounded-2xl border border-border/30">
+                              {(project.propertyTypes as string[]).map((pt) => (
+                                <button
+                                  key={pt}
+                                  onClick={() => { setActivePropertyType(pt); setActiveUnitTab(0); }}
+                                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap focus:outline-none focus-visible:outline-none ${
+                                    activePropertyType === pt
+                                      ? "bg-white text-primary shadow-md shadow-black/8 border border-border/20"
+                                      : "text-muted-foreground hover:text-foreground"
+                                  }`}
+                                >
+                                  {pt.toLowerCase().includes("villa") || pt.toLowerCase().includes("townhouse") ? (
+                                    <Home className="w-3.5 h-3.5 flex-shrink-0" />
+                                  ) : pt.toLowerCase().includes("penthouse") ? (
+                                    <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
+                                  ) : (
+                                    <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                                  )}
+                                  <span className="truncate">{tEnum(pt)}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Secondary bedroom type tabs */}
+                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide">
+                          {unitData.map((unit, i) => (
+                            <button
+                              key={unit.name}
+                              onClick={() => setActiveUnitTab(i)}
+                              className={`flex-shrink-0 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap focus:outline-none focus-visible:outline-none ${
+                                clampedUnitTab === i
+                                  ? "text-white shadow-md shadow-primary/20"
+                                  : "bg-transparent text-muted-foreground border border-border hover:border-primary/40 hover:text-foreground"
+                              }`}
+                              style={clampedUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
+                            >
+                              {tBed(unit.name)}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Unit detail card */}
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={`${activePropertyType}-${clampedUnitTab}`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            className="bg-card rounded-3xl border border-border/50 overflow-hidden shadow-sm"
+                          >
+                            <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
+                              {/* Floor plan side */}
+                              {(() => {
+                                // Match floor plan: title match first, then fuzzy beds match, then index fallback
+                                const unitName = (activeUnit?.name || "").toLowerCase();
+                                const floorPlanImg =
+                                  project.floorPlans?.find((fp: any) =>
+                                    fp.title?.toLowerCase() === unitName
+                                  )?.image ||
+                                  project.floorPlans?.find((fp: any) =>
+                                    unitName && fp.title?.toLowerCase().includes(unitName.split(" ")[0])
+                                  )?.image ||
+                                  project.floorPlans?.[clampedUnitTab]?.image ||
+                                  project.floor_plans?.[clampedUnitTab] ||
+                                  null;
+                                return (
+                                  <div className="md:col-span-2 relative bg-muted/20 flex flex-col items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
+                                    {floorPlanImg ? (
+                                      <div className="flex flex-col w-full h-full">
+                                        <div className="relative flex-1 p-4" style={{ minHeight: 200 }}>
+                                          <NextImage
+                                            src={floorPlanImg as string}
+                                            alt={`${activeUnit?.name} floor plan`}
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 40vw"
+                                            className="object-contain"
+                                          />
+                                        </div>
+                                        <div className="px-4 pb-4">
+                                          <a
+                                            href={floorPlanImg as string}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            download
+                                            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-primary border border-primary/25 transition-all hover:bg-primary hover:text-white hover:border-transparent hover:shadow-md group"
+                                          >
+                                            <Download className="h-3.5 w-3.5 group-hover:translate-y-0.5 transition-transform" />
+                                            {t("downloadFloorPlan")}
+                                          </a>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+                                        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                          <FileText className="h-7 w-7 text-primary/60" />
+                                        </div>
+                                        <div>
+                                          <p className="font-semibold text-foreground text-sm">{t("floorPlanOnRequest")}</p>
+                                          <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
+                                        </div>
+                                        <a
+                                          onClick={() => trackLead("whatsapp", leadEntity)}
+                                          href={waLink(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.03]"
+                                          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                                        >
+                                          <MessageCircle className="h-4 w-4" />
+                                          {t("requestFloorPlan")}
+                                        </a>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+
+                              {/* Info side */}
+                              <div className="md:col-span-3 p-4 sm:p-6 md:p-8 flex flex-col justify-between gap-3 sm:gap-6">
+                                {/* Top: Title + status */}
+                                <div className="flex items-start justify-between gap-4">
+                                  <div>
+                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{tBed(activeUnit?.name)}</h3>
+                                    <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
+                                  </div>
+                                  <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                    {t("available")}
+                                  </span>
+                                </div>
+
+                                {/* Price card */}
+                                {activeUnit?.contactUs ? (
+                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("pricingLabel")}</p>
+                                    <p className="text-xl sm:text-2xl font-bold mt-1">{t("contactForPricing")}</p>
+                                    <p className="text-sm text-white/60 mt-1">{t("contactForPricingDesc")}</p>
+                                  </div>
+                                ) : clampedUnitTab === 0 ? (
+                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("startingFromLabel")}</p>
+                                    <p className="text-xl sm:text-3xl font-bold mt-1">
+                                      {formatPrice(activeUnit?.minPrice)}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
+                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("priceRangeLabel")}</p>
+                                    <p className="text-xl sm:text-3xl font-bold mt-1">
+                                      {formatPrice(activeUnit?.minPrice)} - {formatPrice(activeUnit?.maxPrice)}</p>
+                                  </div>
+                                )}
+
+                                {/* Stats */}
+                                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                                  {[
+                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? tE("studio") : activeUnit?.bedrooms, label: tE("bedroomsLabel") },
+                                    { icon: Users, value: activeUnit?.bathrooms, label: t("bathsLabel") },
+                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: tE("sqftLabel") },
+                                  ].map(({ icon: StatIcon, value, label }) => (
+                                    <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center border border-border/30 hover:border-primary/20 transition-all hover:shadow-sm group">
+                                      <StatIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary/60 group-hover:text-primary mx-auto mb-1.5 transition-colors" />
+                                      <p className="text-base sm:text-lg font-bold text-foreground">{value}</p>
+                                      <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{label}</p>
+                                    </div>
+                                  ))}
+                                </div>
+
+                                {/* Features */}
+                                <div>
+                                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">{t("keyFeatures")}</p>
+                                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                                    {activeUnit?.features.map((f, fi) => (
+                                      <motion.span
+                                        key={fi}
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: fi * 0.04 }}
+                                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-muted/50 text-foreground/80 rounded-full text-[11px] sm:text-xs font-medium border border-border/40 hover:border-primary/25 hover:bg-primary/[0.05] transition-all cursor-default"
+                                      >
+                                        {f}
+                                      </motion.span>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* CTA */}
+                                <a
+                                  onClick={() => trackLead("whatsapp", leadEntity)}
+                                  href={waLink(`I'm interested in ${activeUnit?.name} at ${project.name}`)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-[1.02] transition-all duration-300"
+                                >
+                                  <MessageCircle className="h-4 w-4" />
+                                  {t("enquireAboutUnit")}
+                                </a>
+                              </div>
+                            </div>
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })();
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -1003,326 +1327,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                   })()}
 
                   {/* Available Units */}
-                  {((project.unitTypes?.length ?? 0) > 0 || (project.unitsByType?.length ?? 0) > 0 || ((project.propertyTypes?.length ?? 0) > 1 && (project.priceByType?.length ?? 0) > 0)) && (() => {
-                    const hasMultiplePropertyTypes = (project.propertyTypes?.length ?? 0) > 1;
-                    // priceByType entries with a propertyType field (older schema)
-                    const filteredPriceByType: any[] = hasMultiplePropertyTypes
-                      ? (project.priceByType || []).filter((p: any) => p.propertyType === activePropertyType)
-                      : [];
-
-                    // basePrice: project.startingPrice for the first/main property type, 0 for others
-                    const buildUnitEntry = (ut: string, idx: number, sizeMin: number, sizeMax: number, totalTypes: number, activeType: string, basePrice: number) => {
-                      const bedroomMatch = ut.match(/(\d+)/);
-                      const bedrooms = bedroomMatch ? parseInt(bedroomMatch[1]) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                      const bathrooms = Math.max(1, bedrooms);
-                      // priceByType entry — sizes stored as "Size: 756 - 2,207 Sq.ft"
-                      const priceEntry = (project.priceByType || []).find((p: any) => p.type === ut);
-                      const rawPBTMin = priceEntry?.priceMin || 0;
-                      const rawPBTMax = priceEntry?.priceMax || 0;
-                      const resolvedMin = rawPBTMin > 0 ? (rawPBTMin < 1_000 ? rawPBTMin * 1_000_000 : rawPBTMin) : 0;
-                      const resolvedMax = rawPBTMax > 0 ? (rawPBTMax < 1_000 ? rawPBTMax * 1_000_000 : rawPBTMax) : 0;
-
-                      // Price logic: use priceByType if available; otherwise first unit = starting range,
-                      // last unit = max range (if project.priceMax exists), all middle units = Contact Us.
-                      const isFirst = idx === 0;
-                      const isLast = idx === totalTypes - 1;
-                      const base = basePrice < 1_000 && basePrice > 0 ? basePrice * 1_000_000 : basePrice;
-                      let minPrice = 0, maxPrice = 0, contactUs = false;
-                      if (resolvedMin > 0) {
-                        minPrice = resolvedMin;
-                        maxPrice = resolvedMax || Math.round(resolvedMin * 1.25);
-                      } else if (isFirst && base > 0) {
-                        minPrice = base;
-                        maxPrice = Math.round(base * 1.2);
-                      } else if (isLast && base > 0 && totalTypes > 1) {
-                        const rawPMax = project.priceMax || 0;
-                        const normPMax = rawPMax > 0 ? (rawPMax < 1_000 ? rawPMax * 1_000_000 : rawPMax) : 0;
-                        if (normPMax > 0) {
-                          minPrice = Math.round(normPMax * 0.88);
-                          maxPrice = normPMax;
-                        } else {
-                          contactUs = true;
-                        }
-                      } else {
-                        contactUs = true;
-                      }
-
-                      // Size: distribute evenly across the sizeMin-sizeMax range
-                      const sizeStep = totalTypes > 1 ? (sizeMax - sizeMin) / (totalTypes - 1) : 0;
-                      const unitMinSize = Math.round(sizeMin + sizeStep * idx);
-                      const unitMaxSize = Math.round(unitMinSize + (sizeStep > 0 ? sizeStep * 0.8 : 200));
-                      const features = [
-                        tE("builtInWardrobes"),
-                        bedrooms >= 2 ? tE("maidsRoom") : null,
-                        tE("balcony"),
-                        bedrooms >= 3 ? tE("privateTerrace") : null,
-                        tE("centralAC"),
-                        activeType.toLowerCase().includes("penthouse") || ut.toLowerCase().includes("penthouse") ? tE("privatePool") : null,
-                      ].filter(Boolean) as string[];
-                      return { name: ut, minPrice, maxPrice, contactUs, minSize: unitMinSize, maxSize: unitMaxSize, bedrooms, bathrooms, features, available: true };
-                    };
-
-                    const unitData = (() => {
-                      if (hasMultiplePropertyTypes) {
-                        // unitsByType has per-property-type size ranges and unit type lists
-                        const ubt = (project.unitsByType || []).find((u: any) => u.propertyType === activePropertyType);
-                        if (ubt?.unitTypes?.length > 0) {
-                          const ubtPriceMin = ubt.priceMin || 0;
-                          const normUbtMin = ubtPriceMin > 0 ? (ubtPriceMin < 1_000 ? ubtPriceMin * 1_000_000 : ubtPriceMin) : 0;
-                          // startingPrice applies to the first/cheapest property type only
-                          const isFirstPropType = activePropertyType === project.propertyTypes?.[0];
-                          const basePrice = normUbtMin || (isFirstPropType ? (project.startingPrice || 0) : 0);
-                          const ubtSizeMin = ubt.sizeMin || Number(project.unitSizeMin) || 400;
-                          const ubtSizeMax = ubt.sizeMax || Number(project.unitSizeMax) || 2500;
-                          return (ubt.unitTypes as string[]).map((ut: string, idx: number) =>
-                            buildUnitEntry(ut, idx, ubtSizeMin, ubtSizeMax, ubt.unitTypes.length, activePropertyType, basePrice)
-                          );
-                        }
-                        // Fallback: priceByType entries that already carry a propertyType field
-                        if (filteredPriceByType.length > 0) {
-                          const fpBase = project.startingPrice || 0;
-                          return filteredPriceByType.map((p: any, idx: number) => {
-                            const sizeStr: string = p.size || "";
-                            const sizeParts = sizeStr.split("-").map((s: string) => parseInt(s.replace(/[^0-9]/g, ""))).filter(Boolean);
-                            return buildUnitEntry(p.type || "", idx, sizeParts[0] || 400, sizeParts[1] || sizeParts[0] || 2500, filteredPriceByType.length, activePropertyType, fpBase);
-                          });
-                        }
-                      }
-                      // Single property type: use unitTypes with project-level size range
-                      const totalTypes = project.unitTypes?.length ?? 0;
-                      const baseSize = Number(project.unitSizeMin) || 400;
-                      const topSize = Number(project.unitSizeMax) || 2500;
-                      return (project.unitTypes || []).map((ut: string, idx: number) =>
-                        buildUnitEntry(ut, idx, baseSize, topSize, totalTypes, "", project.startingPrice || 0)
-                      );
-                    })();
-
-                    const clampedUnitTab = Math.min(activeUnitTab, Math.max(0, unitData.length - 1));
-                    const activeUnit = unitData[clampedUnitTab];
-                    return (
-                      <div className="rounded-3xl overflow-hidden">
-                        {/* Section header */}
-                        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                            <Home className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("browseUnits")}</p>
-                            <h2 className="text-lg sm:text-2xl font-bold text-foreground">{t("availableUnits")}</h2>
-                          </div>
-                        </div>
-
-                        {/* Primary property type tabs — segmented control */}
-                        {hasMultiplePropertyTypes && (
-                          <div className="mb-5">
-                            <p className="text-xs uppercase tracking-widest font-bold text-foreground/70 mb-2.5 pl-0.5">{t("propertyTypeLabel")}</p>
-                            <div className="inline-flex w-full gap-1.5 p-1.5 bg-muted/50 rounded-2xl border border-border/30">
-                              {(project.propertyTypes as string[]).map((pt) => (
-                                <button
-                                  key={pt}
-                                  onClick={() => { setActivePropertyType(pt); setActiveUnitTab(0); }}
-                                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 whitespace-nowrap focus:outline-none focus-visible:outline-none ${
-                                    activePropertyType === pt
-                                      ? "bg-white text-primary shadow-md shadow-black/8 border border-border/20"
-                                      : "text-muted-foreground hover:text-foreground"
-                                  }`}
-                                >
-                                  {pt.toLowerCase().includes("villa") || pt.toLowerCase().includes("townhouse") ? (
-                                    <Home className="w-3.5 h-3.5 flex-shrink-0" />
-                                  ) : pt.toLowerCase().includes("penthouse") ? (
-                                    <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
-                                  ) : (
-                                    <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
-                                  )}
-                                  <span className="truncate">{tEnum(pt)}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Secondary bedroom type tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-3 sm:pb-5 scrollbar-hide">
-                          {unitData.map((unit, i) => (
-                            <button
-                              key={unit.name}
-                              onClick={() => setActiveUnitTab(i)}
-                              className={`flex-shrink-0 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap focus:outline-none focus-visible:outline-none ${
-                                clampedUnitTab === i
-                                  ? "text-white shadow-md shadow-primary/20"
-                                  : "bg-transparent text-muted-foreground border border-border hover:border-primary/40 hover:text-foreground"
-                              }`}
-                              style={clampedUnitTab === i ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" } : undefined}
-                            >
-                              {tBed(unit.name)}
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Unit detail card */}
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={`${activePropertyType}-${clampedUnitTab}`}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                            className="bg-card rounded-3xl border border-border/50 overflow-hidden shadow-sm"
-                          >
-                            <div className="grid grid-cols-1 md:grid-cols-5 gap-0">
-                              {/* Floor plan side */}
-                              {(() => {
-                                // Match floor plan: title match first, then fuzzy beds match, then index fallback
-                                const unitName = (activeUnit?.name || "").toLowerCase();
-                                const floorPlanImg =
-                                  project.floorPlans?.find((fp: any) =>
-                                    fp.title?.toLowerCase() === unitName
-                                  )?.image ||
-                                  project.floorPlans?.find((fp: any) =>
-                                    unitName && fp.title?.toLowerCase().includes(unitName.split(" ")[0])
-                                  )?.image ||
-                                  project.floorPlans?.[clampedUnitTab]?.image ||
-                                  project.floor_plans?.[clampedUnitTab] ||
-                                  null;
-                                return (
-                                  <div className="md:col-span-2 relative bg-muted/20 flex flex-col items-center justify-center min-h-[180px] sm:min-h-[280px] md:min-h-[420px]">
-                                    {floorPlanImg ? (
-                                      <div className="flex flex-col w-full h-full">
-                                        <div className="relative flex-1 p-4" style={{ minHeight: 200 }}>
-                                          <NextImage
-                                            src={floorPlanImg as string}
-                                            alt={`${activeUnit?.name} floor plan`}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, 40vw"
-                                            className="object-contain"
-                                          />
-                                        </div>
-                                        <div className="px-4 pb-4">
-                                          <a
-                                            href={floorPlanImg as string}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            download
-                                            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-primary border border-primary/25 transition-all hover:bg-primary hover:text-white hover:border-transparent hover:shadow-md group"
-                                          >
-                                            <Download className="h-3.5 w-3.5 group-hover:translate-y-0.5 transition-transform" />
-                                            {t("downloadFloorPlan")}
-                                          </a>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
-                                        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-                                          <FileText className="h-7 w-7 text-primary/60" />
-                                        </div>
-                                        <div>
-                                          <p className="font-semibold text-foreground text-sm">{t("floorPlanOnRequest")}</p>
-                                          <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
-                                        </div>
-                                        <a
-                                          onClick={() => trackLead("whatsapp", leadEntity)}
-                                          href={waLink(`I'd like to see the floor plan for ${activeUnit?.name} at ${project.name}`)}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.03]"
-                                          style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                                        >
-                                          <MessageCircle className="h-4 w-4" />
-                                          {t("requestFloorPlan")}
-                                        </a>
-                                      </div>
-                                    )}
-                                  </div>
-                                );
-                              })()}
-
-                              {/* Info side */}
-                              <div className="md:col-span-3 p-4 sm:p-6 md:p-8 flex flex-col justify-between gap-3 sm:gap-6">
-                                {/* Top: Title + status */}
-                                <div className="flex items-start justify-between gap-4">
-                                  <div>
-                                    <h3 className="text-lg sm:text-3xl font-bold text-foreground">{tBed(activeUnit?.name)}</h3>
-                                    <p className="text-sm text-muted-foreground mt-1">{project.name}</p>
-                                  </div>
-                                  <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                    {t("available")}
-                                  </span>
-                                </div>
-
-                                {/* Price card */}
-                                {activeUnit?.contactUs ? (
-                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("pricingLabel")}</p>
-                                    <p className="text-xl sm:text-2xl font-bold mt-1">{t("contactForPricing")}</p>
-                                    <p className="text-sm text-white/60 mt-1">{t("contactForPricingDesc")}</p>
-                                  </div>
-                                ) : clampedUnitTab === 0 ? (
-                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("startingFromLabel")}</p>
-                                    <p className="text-xl sm:text-3xl font-bold mt-1">
-                                      {formatPrice(activeUnit?.minPrice)}
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <div className="rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-accent/20" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}>
-                                    <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/70 font-bold">{t("priceRangeLabel")}</p>
-                                    <p className="text-xl sm:text-3xl font-bold mt-1">
-                                      {formatPrice(activeUnit?.minPrice)} - {formatPrice(activeUnit?.maxPrice)}</p>
-                                  </div>
-                                )}
-
-                                {/* Stats */}
-                                <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                                  {[
-                                    { icon: Bed, value: activeUnit?.bedrooms === 0 ? tE("studio") : activeUnit?.bedrooms, label: tE("bedroomsLabel") },
-                                    { icon: Users, value: activeUnit?.bathrooms, label: t("bathsLabel") },
-                                    { icon: Ruler, value: `${activeUnit?.minSize?.toLocaleString()}`, label: tE("sqftLabel") },
-                                  ].map(({ icon: StatIcon, value, label }) => (
-                                    <div key={label} className="bg-muted/40 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center border border-border/30 hover:border-primary/20 transition-all hover:shadow-sm group">
-                                      <StatIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary/60 group-hover:text-primary mx-auto mb-1.5 transition-colors" />
-                                      <p className="text-base sm:text-lg font-bold text-foreground">{value}</p>
-                                      <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-0.5">{label}</p>
-                                    </div>
-                                  ))}
-                                </div>
-
-                                {/* Features */}
-                                <div>
-                                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">{t("keyFeatures")}</p>
-                                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                    {activeUnit?.features.map((f, fi) => (
-                                      <motion.span
-                                        key={fi}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: fi * 0.04 }}
-                                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-muted/50 text-foreground/80 rounded-full text-[11px] sm:text-xs font-medium border border-border/40 hover:border-primary/25 hover:bg-primary/[0.05] transition-all cursor-default"
-                                      >
-                                        {f}
-                                      </motion.span>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {/* CTA */}
-                                <a
-                                  onClick={() => trackLead("whatsapp", leadEntity)}
-                                  href={waLink(`I'm interested in ${activeUnit?.name} at ${project.name}`)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-semibold text-sm shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-[1.02] transition-all duration-300"
-                                >
-                                  <MessageCircle className="h-4 w-4" />
-                                  {t("enquireAboutUnit")}
-                                </a>
-                              </div>
-                            </div>
-                          </motion.div>
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })()}
+                  {availableUnitsSection}
 
                   {/* Brochure CTA — always collect email first, then deliver */}
                   <button
@@ -2108,8 +2113,8 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                   transition={{ duration: 0.3 }}
                   className="space-y-4 sm:space-y-8"
                 >
-                  {/* ───── FLOOR PLANS GALLERY ───── */}
-                  {(project.floorPlans?.length ?? 0) > 0 ? (() => {
+                  {/* ───── FLOOR PLANS — Browse Units (shared with Overview) ───── */}
+                  {availableUnitsSection || ((project.floorPlans?.length ?? 0) > 0 ? (() => {
                     const fps = (project.floorPlans as { title: string; type?: string; beds?: string; baths?: string; size?: string; image?: string; pdf?: string }[]);
                     const activeFp = fps[activeFloorPlanTab] ?? fps[0];
                     return (
@@ -2145,164 +2150,78 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                           ))}
                         </div>
 
-                        {/* Active floor plan */}
-                        <div className="p-4 sm:p-6">
-                          {activeFp?.image ? (
-                            <div className="flex flex-col sm:flex-row gap-4">
-                              {/* Image */}
-                              <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-muted border border-border/50">
-                                <NextImage
-                                  src={activeFp.image}
-                                  alt={activeFp.title}
-                                  fill
-                                  className="object-contain"
-                                  sizes="(max-width: 640px) 100vw, 50vw"
-                                />
-                              </div>
-                              {/* Specs alongside image */}
-                              <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
-                                <h3 className="font-bold text-foreground text-base">{activeFp.title}</h3>
-                                {activeFp.type && (
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <Building2 className="h-3.5 w-3.5 text-accent shrink-0" />
-                                    {activeFp.type}
-                                  </div>
-                                )}
-                                {activeFp.beds && (
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
-                                    {activeFp.beds} {t("bedsLabel")}
-                                    {activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
-                                  </div>
-                                )}
-                                {activeFp.size && (
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
-                                    {activeFp.size}
-                                  </div>
-                                )}
+                        {/* Active floor plan — real image, or a request CTA inside the container (never a fake SVG) */}
+                        <div className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4">
+                          <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-muted border border-border/50 flex items-center justify-center">
+                            {activeFp?.image ? (
+                              <NextImage
+                                src={activeFp.image}
+                                alt={activeFp.title}
+                                fill
+                                className="object-contain"
+                                sizes="(max-width: 640px) 100vw, 50vw"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+                                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                  <FileText className="h-7 w-7 text-primary/60" />
+                                </div>
+                                <div>
+                                  <p className="font-semibold text-foreground text-sm">{t("floorPlanOnRequest")}</p>
+                                  <p className="text-xs text-muted-foreground mt-1">{t("floorPlanOnRequestDesc")}</p>
+                                </div>
                                 <a
-                                  href={activeFp.image}
+                                  onClick={() => trackLead("whatsapp", leadEntity)}
+                                  href={waLink(`I'd like the floor plan for ${activeFp?.title} at ${project.name}`)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.03]"
+                                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                                 >
-                                  <ExternalLink className="h-3.5 w-3.5" />
-                                  {t("viewFullSize")}
+                                  <MessageCircle className="h-4 w-4" />
+                                  {t("requestFloorPlan")}
                                 </a>
                               </div>
-                            </div>
-                          ) : (
-                            /* No image — show the indicative SVG schematic card */
-                            (() => {
-                              const bedsNum = activeFp?.beds ? parseInt(String(activeFp.beds), 10) : 0;
-                              const sqft = activeFp?.size ? parseInt(String(activeFp.size).replace(/[^0-9]/g, ""), 10) || 0 : 0;
-                              return (
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                  <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-white border border-border/50 flex items-center justify-center p-4">
-                                    <FloorPlanPlaceholder bedrooms={isNaN(bedsNum) ? 0 : bedsNum} unitName={activeFp?.title || ""} sqft={isNaN(sqft) ? 0 : sqft} />
-                                  </div>
-                                  <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
-                                    <h3 className="font-bold text-foreground text-base">{activeFp?.title}</h3>
-                                    {activeFp?.beds && (
-                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                        <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
-                                        {activeFp.beds} {t("bedsLabel")}{activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
-                                      </div>
-                                    )}
-                                    {activeFp?.size && (
-                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                        <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
-                                        {activeFp.size}
-                                      </div>
-                                    )}
-                                    <a
-                                      href={waLink(`I'd like the floor plan for ${activeFp?.title} at ${project.name}`)}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="mt-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white"
-                                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                                    >
-                                      {t("requestFloorPlan")}
-                                    </a>
-                                  </div>
-                                </div>
-                              );
-                            })()
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })() : (() => {
-                    // No uploaded floor-plan images — render the indicative
-                    // schematic card (one per unit type, derived from unitTypes
-                    // + size range), the "beautiful card" from before the tabs.
-                    // Fall back to generic types when unitTypes is empty.
-                    const rawTypes = Array.isArray(project.unitTypes) && project.unitTypes.length > 0
-                      ? (project.unitTypes as string[])
-                      : ["Studio", "1 Bedroom", "2 Bedroom"];
-                    const totalTypes = rawTypes.length;
-                    const baseSize = Number(project.unitSizeMin) || 400;
-                    const maxSize = Number(project.unitSizeMax) || 2500;
-                    const units = rawTypes.map((ut, idx) => {
-                      const m = ut.match(/(\d+)/);
-                      const bedrooms = m ? parseInt(m[1], 10) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
-                      const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
-                      const unitSize = Math.round(baseSize + sizeStep * idx);
-                      return { name: ut, bedrooms, bathrooms: Math.max(1, bedrooms), unitSize, totalArea: unitSize + Math.round(unitSize * 0.08) };
-                    });
-                    const active = units[activeFloorPlanTab] ?? units[0];
-                    return (
-                      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-                        <div className="px-4 sm:px-6 py-4 border-b border-border/50 flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                            <FileText className="h-4 w-4 text-accent" />
+                            )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-accent">{t("floorPlansLabel")}</p>
-                            <h2 className="text-base sm:text-lg font-bold text-foreground leading-tight">{project.name}, {t("floorPlans")}</h2>
-                          </div>
-                        </div>
-                        <div className="px-4 sm:px-6 pt-4 flex gap-2 flex-wrap">
-                          {units.map((u, i) => (
-                            <button
-                              key={i}
-                              onClick={() => setActiveFloorPlanTab(i)}
-                              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${activeFloorPlanTab === i ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground hover:border-accent/40 hover:text-foreground"}`}
-                            >
-                              {u.name}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="p-4 sm:p-6 flex flex-col sm:flex-row gap-4">
-                          <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-white border border-border/50 flex items-center justify-center p-4">
-                            <FloorPlanPlaceholder bedrooms={active?.bedrooms || 0} unitName={active?.name || ""} sqft={active?.unitSize || 0} />
-                          </div>
+                          {/* Specs alongside */}
                           <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
-                            <h3 className="font-bold text-foreground text-base">{active?.name}</h3>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
-                              {active?.bedrooms === 0 ? tEnum("Studio") : `${active?.bedrooms} ${t("bedsLabel")}`}{active?.bathrooms ? ` · ${active.bathrooms} ${t("bathsLabel")}` : ""}
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
-                              {`~${active?.totalArea.toLocaleString()} sqft`}
-                            </div>
-                            <a
-                              href={waLink(`I'd like the floor plan for ${active?.name} at ${project.name}`)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white"
-                              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                            >
-                              {t("requestFloorPlan")}
-                            </a>
+                            <h3 className="font-bold text-foreground text-base">{activeFp.title}</h3>
+                            {activeFp.type && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Building2 className="h-3.5 w-3.5 text-accent shrink-0" />
+                                {activeFp.type}
+                              </div>
+                            )}
+                            {activeFp.beds && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
+                                {activeFp.beds} {t("bedsLabel")}
+                                {activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                              </div>
+                            )}
+                            {activeFp.size && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
+                                {activeFp.size}
+                              </div>
+                            )}
+                            {activeFp?.image && (
+                              <a
+                                href={activeFp.image}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5" />
+                                {t("viewFullSize")}
+                              </a>
+                            )}
                           </div>
                         </div>
-                        <p className="px-4 sm:px-6 pb-4 text-[11px] text-muted-foreground text-center sm:text-left">{t("floorPlanOnRequest")}</p>
                       </div>
                     );
-                  })()}
+                  })() : null)}
                 </motion.div>
               )}
 
