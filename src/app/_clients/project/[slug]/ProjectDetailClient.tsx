@@ -2261,14 +2261,18 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                         </div>
                       </div>
                     );
-                  })() : (Array.isArray(project.unitTypes) && project.unitTypes.length > 0) ? (() => {
+                  })() : (() => {
                     // No uploaded floor-plan images — render the indicative
                     // schematic card (one per unit type, derived from unitTypes
                     // + size range), the "beautiful card" from before the tabs.
-                    const totalTypes = project.unitTypes.length;
+                    // Fall back to generic types when unitTypes is empty.
+                    const rawTypes = Array.isArray(project.unitTypes) && project.unitTypes.length > 0
+                      ? (project.unitTypes as string[])
+                      : ["Studio", "1 Bedroom", "2 Bedroom"];
+                    const totalTypes = rawTypes.length;
                     const baseSize = Number(project.unitSizeMin) || 400;
                     const maxSize = Number(project.unitSizeMax) || 2500;
-                    const units = (project.unitTypes as string[]).map((ut, idx) => {
+                    const units = rawTypes.map((ut, idx) => {
                       const m = ut.match(/(\d+)/);
                       const bedrooms = m ? parseInt(m[1], 10) : ut.toLowerCase() === "studio" ? 0 : ut.toLowerCase() === "penthouse" ? 4 : 1;
                       const sizeStep = totalTypes > 1 ? (maxSize - baseSize) / (totalTypes - 1) : 0;
@@ -2326,9 +2330,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                         <p className="px-4 sm:px-6 pb-4 text-[11px] text-muted-foreground text-center sm:text-left">{t("floorPlanOnRequest")}</p>
                       </div>
                     );
-                  })() : (
-                    <div className="text-center py-12 text-sm text-muted-foreground">{t("floorPlanOnRequest")}</div>
-                  )}
+                  })()}
                 </motion.div>
               )}
 
