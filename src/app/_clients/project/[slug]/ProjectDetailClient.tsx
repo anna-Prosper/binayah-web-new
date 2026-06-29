@@ -302,12 +302,13 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
   const hasStoredQr = hasRealQr || hasDummyQr;
   const qrSrc = hasRealQr ? project.qrCode : hasDummyQr ? project.dummyQrCode : "";
 
-  // Sub-page H1 suffix — each dedicated URL gets its own unique H1 for SEO
+  // Sub-page H1 suffix — tracks activeTab so it clears when the user switches
+  // to Overview after arriving on a sub-page URL (defaultTab would stay stale).
   const h1Suffix: string | null =
-    defaultTab === "floor-plans" ? t("floorPlansLabel")
-    : defaultTab === "location"   ? t("locationLabel")
-    : defaultTab === "payment"    ? t("paymentPlanLabel")
-    : defaultTab === "faq"        ? t("faqLabel")
+    activeTab === "floor-plans" ? t("floorPlansLabel")
+    : activeTab === "location"   ? t("locationLabel")
+    : activeTab === "payment"    ? t("paymentPlanLabel")
+    : activeTab === "faq"        ? t("faqLabel")
     : null;
 
   // ── Canonical payment plan — ONE ordered source of truth used everywhere on
