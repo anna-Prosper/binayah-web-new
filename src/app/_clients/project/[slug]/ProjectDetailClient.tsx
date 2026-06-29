@@ -2193,70 +2193,42 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                               </div>
                             </div>
                           ) : (
-                            /* No image — show specs grid so content is never empty */
-                            <div className="space-y-4">
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                {(activeFp?.beds || activeFp?.baths) && (
-                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
-                                    <Bed className="h-5 w-5 text-accent shrink-0" />
-                                    <div>
-                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("bedsLabel")}</p>
-                                      <p className="text-sm font-bold text-foreground">
-                                        {activeFp?.beds ?? "-"}{activeFp?.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
-                                      </p>
-                                    </div>
+                            /* No image — show the indicative SVG schematic card */
+                            (() => {
+                              const bedsNum = activeFp?.beds ? parseInt(String(activeFp.beds), 10) : 0;
+                              const sqft = activeFp?.size ? parseInt(String(activeFp.size).replace(/[^0-9]/g, ""), 10) || 0 : 0;
+                              return (
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                  <div className="relative w-full sm:w-2/3 aspect-[4/3] rounded-xl overflow-hidden bg-white border border-border/50 flex items-center justify-center p-4">
+                                    <FloorPlanPlaceholder bedrooms={isNaN(bedsNum) ? 0 : bedsNum} unitName={activeFp?.title || ""} sqft={isNaN(sqft) ? 0 : sqft} />
                                   </div>
-                                )}
-                                {activeFp?.size && (
-                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
-                                    <Ruler className="h-5 w-5 text-accent shrink-0" />
-                                    <div>
-                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("sizeRange")}</p>
-                                      <p className="text-sm font-bold text-foreground">{activeFp.size}</p>
-                                    </div>
+                                  <div className="flex flex-col gap-3 sm:w-1/3 justify-center">
+                                    <h3 className="font-bold text-foreground text-base">{activeFp?.title}</h3>
+                                    {activeFp?.beds && (
+                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
+                                        {activeFp.beds} {t("bedsLabel")}{activeFp.baths ? ` · ${activeFp.baths} ${t("bathsLabel")}` : ""}
+                                      </div>
+                                    )}
+                                    {activeFp?.size && (
+                                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <Ruler className="h-3.5 w-3.5 text-accent shrink-0" />
+                                        {activeFp.size}
+                                      </div>
+                                    )}
+                                    <a
+                                      href={waLink(`I'd like the floor plan for ${activeFp?.title} at ${project.name}`)}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="mt-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white"
+                                      style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                                    >
+                                      {t("requestFloorPlan")}
+                                    </a>
                                   </div>
-                                )}
-                                {activeFp?.type && (
-                                  <div className="p-4 rounded-xl bg-muted/50 border border-border/50 flex items-center gap-3">
-                                    <Building2 className="h-5 w-5 text-accent shrink-0" />
-                                    <div>
-                                      <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground font-semibold">{t("propertyTypeLabel")}</p>
-                                      <p className="text-sm font-bold text-foreground">{activeFp.type}</p>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                              {/* All-units summary table */}
-                              {fps.length > 1 && (
-                                <div className="overflow-x-auto rounded-xl border border-border/50">
-                                  <table className="w-full text-sm">
-                                    <thead>
-                                      <tr className="border-b border-border/50 bg-muted/30">
-                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("floorPlansLabel")}</th>
-                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("bedsLabel")}</th>
-                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("bathsLabel")}</th>
-                                        <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-semibold">{t("sizeRange")}</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {fps.map((fp, i) => (
-                                        <tr
-                                          key={i}
-                                          onClick={() => setActiveFloorPlanTab(i)}
-                                          className={`border-b border-border/30 last:border-0 cursor-pointer transition-colors ${i === activeFloorPlanTab ? "bg-accent/5" : "hover:bg-muted/30"}`}
-                                        >
-                                          <td className="px-4 py-3 font-semibold text-foreground">{fp.title}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.beds ?? "-"}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.baths ?? "-"}</td>
-                                          <td className="px-4 py-3 text-muted-foreground">{fp.size ?? "-"}</td>
-                                        </tr>
-                                      ))}
-                                    </tbody>
-                                  </table>
                                 </div>
-                              )}
-                              <p className="text-xs text-muted-foreground text-center">{t("floorPlanOnRequest")}</p>
-                            </div>
+                              );
+                            })()
                           )}
                         </div>
                       </div>
