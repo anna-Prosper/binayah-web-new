@@ -2856,31 +2856,40 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
         </div>
       </div>
 
-      {/* ───── SIMILAR PROJECTS (real data) ───── */}
-      {similarProjects.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-          <SimilarItemsCarousel
-            title={t("similarProjects")}
-            items={similarProjects.map((p) => ({
-              key: p._id || p.slug,
-              title: p.name,
-              location: p.community || "",
-              statusLabel: p.status || "Off-Plan",
-              priceLabel: p.startingPrice ? formatPrice(p.startingPrice, { isProject: true }) : t("priceOnRequest"),
-              priceEyebrow: t("startingFrom"),
-              imageUrl: p.featuredImage,
-              href: `/project/${p.slug}`,
-            }))}
-          />
-        </div>
-      )}
+      {/* ───── SIMILAR PROJECTS + BUYER'S GUIDE (overview tab only) ───── */}
+      <AnimatePresence>
+        {activeTab === "overview" && (
+          <motion.div
+            key="overview-extras"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+          >
+            {similarProjects.length > 0 && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+                <SimilarItemsCarousel
+                  title={t("similarProjects")}
+                  items={similarProjects.map((p) => ({
+                    key: p._id || p.slug,
+                    title: p.name,
+                    location: p.community || "",
+                    statusLabel: p.status || "Off-Plan",
+                    priceLabel: p.startingPrice ? formatPrice(p.startingPrice, { isProject: true }) : t("priceOnRequest"),
+                    priceEyebrow: t("startingFrom"),
+                    imageUrl: p.featuredImage,
+                    href: `/project/${p.slug}`,
+                  }))}
+                />
+              </div>
+            )}
 
-      {/* Per-project testimonials intentionally omitted — Google reviews are
-          company-level, not project-specific, so we don't fabricate them here.
-          Real company reviews live on the homepage. */}
+            {/* Per-project testimonials intentionally omitted — Google reviews are
+                company-level, not project-specific, so we don't fabricate them here.
+                Real company reviews live on the homepage. */}
 
-      {/* ───── BUYER'S GUIDE ───── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
+            {/* ───── BUYER'S GUIDE ───── */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-12">
         <div className="flex items-center justify-between mb-5 sm:mb-6">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center">
@@ -2929,6 +2938,9 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
           </Link>
         </div>
       </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ───── FULL GALLERY MODAL (shared component) ───── */}
       <GalleryModal
