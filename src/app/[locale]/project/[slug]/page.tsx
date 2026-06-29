@@ -27,7 +27,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // page. Calling notFound() in generateMetadata makes Next return a proper 404
   // so Google drops the URL instead of parking it under "Excluded by noindex".
   if (!project) notFound();
-  const seo = project.seo || {};
+  const rawSeo = project.seo || {};
+  // Strip Yoast/RankMath WordPress import artifacts — fields that start with
+  // "Note: None of these options will be applied…" are placeholder noise, not
+  // real descriptions. Treat them as empty so the fallback kicks in.
+  const cleanSeo = (v: unknown) =>
+    typeof v === "string" && v.startsWith("Note: None of these options") ? "" : v;
+  const seo = {
+    ...rawSeo,
+    metaDescription:     cleanSeo(rawSeo.metaDescription),
+    ogDescription:       cleanSeo(rawSeo.ogDescription),
+    twitterDescription:  cleanSeo(rawSeo.twitterDescription),
+  };
 
   // Title with a price hook for CTR (project + area + "From AED …" + brand),
   // kept within Google's ~60-char SERP limit.
