@@ -317,7 +317,14 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
   const orderedPaymentSteps: { title: string; pct: number }[] = (() => {
     const raw = Array.isArray(project.paymentPlanSteps) ? project.paymentPlanSteps : [];
     const steps = raw
-      .map((s: any) => ({ title: String(s?.title || ""), pct: parseInt(String(s?.percentage ?? "").replace(/[^0-9]/g, "")) || 0 }))
+      .map((s: any) => {
+        // Take the FIRST number only. A value like "80/20%" is a plan summary,
+        // not one milestone — stripping all non-digits would yield 8020. Clamp
+        // to ≤100 so a single milestone can never exceed the whole price.
+        const first = String(s?.percentage ?? "").match(/\d+(?:\.\d+)?/);
+        const pct = first ? Math.min(100, parseFloat(first[0])) : 0;
+        return { title: String(s?.title || ""), pct };
+      })
       .filter((s) => s.pct > 0);
     const rank = (title: string) => {
       const x = title.toLowerCase();
