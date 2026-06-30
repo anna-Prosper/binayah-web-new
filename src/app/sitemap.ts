@@ -231,7 +231,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
-      fetchSlugDatesFromDb("projects", { slug: { $exists: true, $ne: "" } }),
+      fetchSlugDatesFromDb("projects", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
       fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
       fetchSlugs("/api/news?limit=1000&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
