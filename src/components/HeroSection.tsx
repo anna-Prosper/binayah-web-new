@@ -99,7 +99,7 @@ const HeroSection = () => {
   const activeIntent = normalizeTabToIntent(activeTab);
   const budgetOptions = getBudgetOptionsForIntent(activeIntent);
   const searchPlaceholders = getHomeSearchPlaceholderPool(activeIntent);
-  const suggestionSections = getSuggestionSections(smartSuggestions);
+  const suggestionSections = getSuggestionSections(smartSuggestions, chipsMode);
   const flatSuggestions = suggestionSections.flatMap((section) => section.items);
 
   // Scroll-linked parallax (replaces framer-motion useScroll/useTransform).
@@ -259,21 +259,21 @@ const HeroSection = () => {
         nextDraft.confidence = Math.max(0, (nextDraft.confidence ?? 0) - 0.12 * userRemovedKeys.current.size);
       }
 
+      // Chips mode = AI has a confident structured parse. We now keep the dropdown
+      // open and show the chips as a header above a compact suggestion list, so the
+      // user can still click straight through to a specific community/project.
+      const chipsActive = nextDraft.tags.length > 0 && (nextDraft.confidence ?? 0) >= 0.65 && !nextDraft.isQuestion;
+
       setSmartDraft(nextDraft);
       setParsedTags(nextDraft.tags);
       setIsQuestion(nextDraft.isQuestion);
       setSmartSuggestions(nextSuggestions);
-      setHighlightedSuggestion(countSuggestionItems(nextSuggestions) > 0 ? 0 : -1);
+      // In chips mode keep Enter bound to "run the structured search" (highlight -1).
+      // Otherwise pre-highlight the top suggestion for quick keyboard select.
+      setHighlightedSuggestion(!chipsActive && countSuggestionItems(nextSuggestions) > 0 ? 0 : -1);
       setIsSmartLoading(false);
       if (searchRef.current?.contains(document.activeElement)) {
         setShowSuggestions(true);
-      }
-
-      // Chips mode: suppress dropdown when AI has a confident structured parse.
-      // User sees removable chips and presses Enter/Search to execute.
-      const chipsActive = nextDraft.tags.length > 0 && (nextDraft.confidence ?? 0) >= 0.65 && !nextDraft.isQuestion;
-      if (chipsActive) {
-        setShowSuggestions(false);
       }
 
       // When zero project/listing results come back for a meaningful query,
@@ -286,7 +286,7 @@ const HeroSection = () => {
             const ciData = await ciRes.json() as { exists: boolean; data?: { name: string; slug: string } };
             if (ciData.exists && ciData.data?.slug) {
               setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug });
-              if (!chipsActive) setShowSuggestions(true);
+              setShowSuggestions(true);
             } else {
               setCommunityInfoResult(null);
             }
@@ -544,7 +544,7 @@ const HeroSection = () => {
                 value={smartSearch}
                 onChange={(event) => handleSmartInput(event.target.value)}
                 onKeyDown={handleInputKeyDown}
-                onFocus={() => { if (!chipsMode) setShowSuggestions(smartSearch.trim().length >= 2); }}
+                onFocus={() => setShowSuggestions(smartSearch.trim().length >= 2)}
                 placeholder={`Try: ${searchPlaceholders[placeholderIndex]}`}
                 className="w-full pl-10 pr-11 py-3.5 bg-white border border-white/30 rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-all shadow-sm"
               />
@@ -618,7 +618,7 @@ const HeroSection = () => {
                   <input
                     value={smartSearch}
                     onChange={(event) => handleSmartInput(event.target.value)}
-                    onFocus={() => { if (!chipsMode) setShowSuggestions(smartSearch.trim().length >= 2); }}
+                    onFocus={() => setShowSuggestions(smartSearch.trim().length >= 2)}
                     onKeyDown={handleInputKeyDown}
                     placeholder={`Try: ${searchPlaceholders[placeholderIndex]}`}
                     className="w-full pl-32 sm:pl-36 pr-14 py-4 bg-white border border-white/30 rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/50 transition-all shadow-sm"
@@ -635,9 +635,37 @@ const HeroSection = () => {
                   </div>
                 </div>
 
-                {showSuggestions && !chipsMode && parsedTags.length === 0 && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult) && (
+                {showSuggestions && (isSmartLoading || countSuggestionItems(smartSuggestions) > 0 || communityInfoResult || parsedTags.length > 0) && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-card backdrop-blur-xl rounded-2xl border border-border/60 shadow-2xl z-[9999] overflow-hidden">
                     <div className="max-h-[26rem] overflow-y-auto">
+                      {/* Chips header — shows how the AI parsed the query, above the
+                          jump-straight-there suggestion rows. Chips stay removable here. */}
+                      {parsedTags.length > 0 && (
+                        <div className="px-4 pt-3.5 pb-3 border-b border-border/30 bg-muted/20">
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">{smartDraft.summary || "Understood as"}</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {parsedTags.map((tag) => (
+                              <span
+                                key={tag.key}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold text-accent border border-accent/30"
+                                style={{ background: "rgba(212,168,71,0.1)" }}
+                              >
+                                <Zap className="h-2.5 w-2.5 flex-shrink-0" />
+                                <span className="opacity-60">{tag.label}:</span>
+                                <span>{tag.value}</span>
+                                <button
+                                  type="button"
+                                  onMouseDown={(e) => { e.preventDefault(); removeTag(tag.key); }}
+                                  className="ml-0.5 rounded-full p-0.5 hover:bg-accent/25 transition-colors"
+                                  aria-label={`Remove ${tag.label} filter`}
+                                >
+                                  <X className="h-2.5 w-2.5 text-accent/70" />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       {suggestionSections.map((section) => (
                         <div key={section.title} className="border-b border-border/30 last:border-b-0">
                           <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{section.title}</p>
@@ -725,7 +753,7 @@ const HeroSection = () => {
                     <MessageCircle className="h-3 w-3" /> {t("looksLikeQuestion")}
                   </span>
                 </div>
-              ) : parsedTags.length > 0 ? (
+              ) : parsedTags.length > 0 && !showSuggestions ? (
                 <div className="flex flex-wrap items-center gap-2 mt-3">
                   {parsedTags.map((tag) => (
                     <span
@@ -967,15 +995,25 @@ function renderSuggestionIcon(suggestion: HomeSearchSuggestion) {
   return <Search className="h-4 w-4 text-primary" />;
 }
 
-function getSuggestionSections(suggestions: HomeSearchSuggestionGroups) {
-  return [
-    { title: "Quick Search", items: suggestions.smart },
-    { title: "Communities", items: suggestions.communities },
-    { title: "Projects", items: suggestions.projects },
-    { title: "Developers", items: suggestions.developers },
-    { title: "Places", items: suggestions.places },
-    { title: "Ask AI", items: suggestions.askAi },
-  ].filter((section) => section.items.length > 0);
+function getSuggestionSections(suggestions: HomeSearchSuggestionGroups, compact = false) {
+  // Compact = chips mode: the AI already parsed the query into chips above, so we
+  // only need the few high-value "jump straight there" rows (specific projects /
+  // communities) plus the Ask-AI escape hatch — not the full Quick Search / Places set.
+  const sections = compact
+    ? [
+        { title: "Projects", items: suggestions.projects.slice(0, 3) },
+        { title: "Communities", items: suggestions.communities.slice(0, 3) },
+        { title: "Ask AI", items: suggestions.askAi },
+      ]
+    : [
+        { title: "Quick Search", items: suggestions.smart },
+        { title: "Communities", items: suggestions.communities },
+        { title: "Projects", items: suggestions.projects },
+        { title: "Developers", items: suggestions.developers },
+        { title: "Places", items: suggestions.places },
+        { title: "Ask AI", items: suggestions.askAi },
+      ];
+  return sections.filter((section) => section.items.length > 0);
 }
 
 function mapPlacePredictions(predictions: PlacePrediction[]) {
