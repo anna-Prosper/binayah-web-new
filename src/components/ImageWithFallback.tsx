@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const FALLBACK = "/assets/amenities-placeholder.webp";
+const FALLBACK = "/assets/property-placeholder-v2.webp";
 
 interface Props {
   src: string;

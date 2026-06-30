@@ -201,7 +201,7 @@ export default function DeveloperDetailClient({
                         src={
                           p.featuredImage ||
                           p.imageGallery?.[0] ||
-                          "/assets/amenities-placeholder.webp"
+                          "/assets/property-placeholder-v2.webp"
                         }
                         alt={p.name}
                         fill

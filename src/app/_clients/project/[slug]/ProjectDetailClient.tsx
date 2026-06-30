@@ -38,7 +38,7 @@ import { LocationSection } from "@/components/LocationSection";
 import { parseNearbyFromDescription, type NearbyItem as ParsedNearbyItem } from "@/lib/parseNearby";
 import { SimilarItemsCarousel } from "@/components/SimilarItemsCarousel";
 import { useCurrency, CurrencyPrice } from "@/context/CurrencyContext";
-const amenitiesPlaceholder = "/assets/amenities-placeholder.webp";
+const amenitiesPlaceholder = "/assets/property-placeholder-v2.webp";
 const videoThumbnail = "/assets/video-thumbnail.webp";
 
 /**
@@ -404,7 +404,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
     ? galleryUrls
     : project.featuredImage
       ? [project.featuredImage]
-      : ["/assets/amenities-placeholder.webp"];
+      : ["/assets/property-placeholder-v2.webp"];
   // Priority: 1) DB nearbyAttractions  2) parsed from locationDescription  3) empty
   const nearby: NearbyAttraction[] = (() => {
     const db = (project.nearbyAttractions as NearbyAttraction[] | null) || [];

@@ -745,7 +745,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <Image
-                        src={communityInfo.heroImage || "/assets/amenities-placeholder.webp"}
+                        src={communityInfo.heroImage || "/assets/property-placeholder-v2.webp"}
                         alt={communityInfo.name}
                         fill
                         sizes="384px"
@@ -793,7 +793,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   <Link href={`/communities/${dldBuilding.areaSlug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
                       <Image
-                        src="/assets/amenities-placeholder.webp"
+                        src="/assets/property-placeholder-v2.webp"
                         alt={dldBuilding.name}
                         fill
                         sizes="384px"

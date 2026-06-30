@@ -67,8 +67,8 @@ const FALLBACK_LISTINGS = [
     currency: "AED",
     community: "Dubai Marina",
     city: "Dubai",
-    featuredImage: "/assets/amenities-placeholder.webp",
-    imageGallery: ["/assets/amenities-placeholder.webp"],
+    featuredImage: "/assets/property-placeholder-v2.webp",
+    imageGallery: ["/assets/property-placeholder-v2.webp"],
   },
 ];
 
@@ -134,8 +134,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 3500000,
     currency: "AED",
     handover: "Q3 2026",
-    featuredImage: "/assets/amenities-placeholder.webp",
-    imageGallery: ["/assets/amenities-placeholder.webp"],
+    featuredImage: "/assets/property-placeholder-v2.webp",
+    imageGallery: ["/assets/property-placeholder-v2.webp"],
     propertyType: "Villa",
   },
 ];

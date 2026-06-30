@@ -36,7 +36,7 @@ function getLabel(p: SecondaryListing): string {
 }
 
 function getImage(p: SecondaryListing): string {
-  return p.featuredImage || p.imageGallery?.[0] || "/assets/amenities-placeholder.webp";
+  return p.featuredImage || p.imageGallery?.[0] || "/assets/property-placeholder-v2.webp";
 }
 
 const FeaturedPropertiesClient = ({

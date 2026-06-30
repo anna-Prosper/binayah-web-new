@@ -536,7 +536,7 @@ export default function PropertyDetailClient({
   }, [developerSlugForStats]);
 
   const allImages = [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[];
-  if (allImages.length === 0) allImages.push("/assets/amenities-placeholder.webp");
+  if (allImages.length === 0) allImages.push("/assets/property-placeholder-v2.webp");
 
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
   const prevImage = () => setCurrentImage((p) => (p - 1 + allImages.length) % allImages.length);

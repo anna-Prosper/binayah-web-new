@@ -16,7 +16,7 @@ interface Props {
   priority?: boolean;
 }
 
-const DEFAULT_FALLBACK = "/assets/amenities-placeholder.webp";
+const DEFAULT_FALLBACK = "/assets/property-placeholder-v2.webp";
 
 export default function CardImageCarousel({
   images,

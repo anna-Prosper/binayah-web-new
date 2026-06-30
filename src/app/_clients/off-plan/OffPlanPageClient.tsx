@@ -129,7 +129,7 @@ export default function OffPlanPageClient({
                 <Link href={p.slug === "__fallback__" ? "#" : `/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <NextImage
-                      src={p.featuredImage || p.imageGallery?.[0] || "/assets/amenities-placeholder.webp"}
+                      src={p.featuredImage || p.imageGallery?.[0] || "/assets/property-placeholder-v2.webp"}
                       alt={p.name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

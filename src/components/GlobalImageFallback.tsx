@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const FALLBACK = "/assets/amenities-placeholder.webp";
+const FALLBACK = "/assets/property-placeholder-v2.webp";
 const HANDLED = "data-fallback-applied";
 
 // Site-wide safety net for broken images. Catches the bubbling "error"
