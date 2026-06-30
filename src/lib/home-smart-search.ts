@@ -298,21 +298,44 @@ export function parseHomeSearchQuery(
     ? residualTokens.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
     : null;
 
+  // ── Filter-promotion gate ───────────────────────────────────────────────
+  // A candidate becomes a *hard filter* only when the user actually named it —
+  // not when the query is a short fragment that merely appears inside a longer
+  // name (e.g. "marina" inside "Marina 101"). Without this, a single generic
+  // word would silently lock the search to one project's developer / community
+  // / type and hide everything else. Fragments fall through as free-text `q`,
+  // which the result ranking surfaces by name relevance.
+  const queryNames = (candidate?: HomeSearchCandidate): boolean => {
+    if (!candidate) return false;
+    const name = normalizeSearchText(candidate.name);
+    if (!name) return false;
+    if (normalizedQuery === name || normalizedQuery.includes(name)) return true;
+    return name.includes(normalizedQuery) && normalizedQuery.length / name.length >= 0.8;
+  };
+  // Explicit signals parsed from the words themselves (not fuzzy entity
+  // matches). These justify treating a community match as intentional, e.g.
+  // "2 bedroom apartment in dubai marina".
+  const hasExplicitSignals = !!(propertyType || bedrooms || bathrooms || furnishing || budget.budgetLabel);
+  const appliedProject = matchedProject && queryNames(matchedProject.candidate) ? matchedProject : null;
+  const appliedLocation = matchedLocation && (hasExplicitSignals || queryNames(matchedLocation.candidate)) ? matchedLocation : null;
+
   const draft: HomeSearchDraft = {
     bathrooms,
     bedrooms,
     budgetLabel: budget.budgetLabel,
     budgetMax: budget.budgetMax,
     budgetMin: budget.budgetMin,
-    city: matchedLocation?.candidate.city || matchedProject?.candidate.city || city,
+    city: appliedLocation?.candidate.city || appliedProject?.candidate.city || city,
     confidence: 0,
-    developer: matchedDeveloper?.candidate.name || matchedProject?.candidate.developerName || null,
+    // Developer is only ever set from an explicit developer match — never
+    // inherited from a project, which over-narrows the search to one builder.
+    developer: matchedDeveloper?.candidate.name || null,
     furnishing,
     intent,
     isQuestion: false,
-    location: matchedLocation?.candidate.name || matchedProject?.candidate.community || null,
-    project: matchedProject?.candidate.name || null,
-    propertyType: matchedProject?.candidate.propertyType || propertyType,
+    location: appliedLocation?.candidate.name || appliedProject?.candidate.community || null,
+    project: appliedProject?.candidate.name || null,
+    propertyType: appliedProject?.candidate.propertyType || propertyType,
     building: detectedBuilding,
     summary: "Search properties",
     tags: [],
@@ -324,7 +347,7 @@ export function parseHomeSearchQuery(
   draft.isQuestion = questionMatch && structuredSignalCount < 3 && !searchMatch;
   draft.tags = buildHomeSearchTags(draft);
   draft.summary = buildHomeSearchSummary(draft, query);
-  draft.confidence = computeDraftConfidence(draft, structuredSignalCount, matchedProject, matchedDeveloper, matchedLocation);
+  draft.confidence = computeDraftConfidence(draft, structuredSignalCount, appliedProject, matchedDeveloper, appliedLocation);
 
   return draft;
 }
