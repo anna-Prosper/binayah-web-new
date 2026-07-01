@@ -132,6 +132,23 @@ export function buildMarketNote(name: string, s: CommunityStat | null, intent: "
   return `Tenants and investors in ${name} are seeing ${parts.join(" and ")}.`;
 }
 
+/**
+ * Data-driven fallback "About" paragraph for a community page whose DB record has
+ * no editorial description (the DB-only render branch). Uses real project count +
+ * DLD stats so the hero isn't left blank and the copy is factually unique.
+ */
+export function buildCommunitySummary(name: string, s: CommunityStat | null, projectCount: number): string {
+  let first = projectCount > 0
+    ? `${name} is a Dubai community with ${projectCount} ${projectCount === 1 ? "project" : "projects"} listed on Binayah`
+    : `${name} is a residential community in Dubai`;
+  const bits: string[] = [];
+  if (s?.avgPricePerSqft) bits.push(`average sale prices around AED ${s.avgPricePerSqft.toLocaleString("en-AE")} per sqft`);
+  if (s?.rentalYield) bits.push(`a gross rental yield of about ${s.rentalYield}%`);
+  if (bits.length) first += `, with ${bits.join(" and ")} based on the latest DLD and listing data`;
+  first += ".";
+  return `${first} Browse off-plan and ready properties for sale and rent in ${name} below.`;
+}
+
 export const fmtAed = (n: number | null | undefined): string =>
   !n || n <= 0
     ? "-"

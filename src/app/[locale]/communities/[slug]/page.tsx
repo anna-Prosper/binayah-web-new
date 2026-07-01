@@ -7,7 +7,7 @@ import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
-import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
+import { getCommunityStats, buildCommunityFaqs, dldAreaFor, buildCommunitySummary } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
 
@@ -217,7 +217,7 @@ export default async function CommunityPage({
       <CommunityDetailClient
         slug={slug}
         communityName={communityName}
-        communityDescription={community.description?.replace(/<[^>]*>/g, "") || ""}
+        communityDescription={community.description?.replace(/<[^>]*>/g, "") || buildCommunitySummary(communityName, cStats, (projects || []).length)}
         communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
         projects={projects || []}
       />
