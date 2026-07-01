@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
+import { buildDeveloperSummary } from "@/lib/developerSummary";
 import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -74,6 +75,10 @@ export default function DeveloperDetailClient({
   const cleanDescription = developer.description
     ? stripHtml(developer.description)
     : "";
+  // Fall back to a data-driven summary (project count, communities, price) when
+  // there's no editorial description — turns a ~50-word thin page into a useful,
+  // factually-unique one. Server-rendered, so it's crawlable.
+  const displayDescription = cleanDescription || buildDeveloperSummary(developer.name, projects);
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,9 +132,9 @@ export default function DeveloperDetailClient({
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
                 {developer.name}
               </h1>
-              {cleanDescription && (
+              {displayDescription && (
                 <p className="text-primary-foreground/70 max-w-2xl text-base leading-relaxed">
-                  {cleanDescription}
+                  {displayDescription}
                 </p>
               )}
 
