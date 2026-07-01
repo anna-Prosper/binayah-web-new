@@ -437,11 +437,14 @@ export function buildHomeSearchUrl(args: {
   if (budgetMin != null) params.set("budgetMin", String(budgetMin));
   if (budgetMax != null) params.set("budgetMax", String(budgetMax));
 
-  // Use the explicit building chip value as q if set; otherwise fall back to raw query
-  // when there are no structured signals that would conflict with free-text matching.
+  // Always carry the raw query as `q` (prefer the explicit building chip if set).
+  // Dropping it whenever a type/bed was inferred lost the specific intent — e.g.
+  // "Marina 101" became a generic "Dubai Marina apartments" search. The backend
+  // now separates recall from ranking (residualNameQuery), so a free-text query
+  // alongside structured filters only *ranks* — it never wrongly narrows — which
+  // makes the exact project (Marina 101) surface first.
   const rawQ = String(args.query ?? "").trim();
-  const hasStructuredSignals = !!(propertyType || bedrooms || budgetMin != null || budgetMax != null);
-  const qToSend = building || (!hasStructuredSignals ? rawQ : "");
+  const qToSend = building || rawQ;
   if (qToSend) params.set("q", qToSend);
 
   return `/search?${params.toString()}`;
