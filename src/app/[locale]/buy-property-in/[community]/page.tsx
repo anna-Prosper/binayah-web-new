@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
+import { getCommunityStats, buildMarketNote } from "@/lib/market";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
 
@@ -95,6 +96,9 @@ export default async function BuyInCommunityPage({
     console.warn("[BuyInCommunityPage] API unavailable:", (err as Error).message);
   }
 
+  // Sale-side DLD market note — diverges this page from its /rent-property-in twin.
+  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "buy");
+
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
     { name: L.home, href: `${localePrefix}/` },
@@ -111,6 +115,7 @@ export default async function BuyInCommunityPage({
         </h1>
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{localizeCommunityText(c.shortIntro, locale)}</p>
         <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{localizeCommunityText(c.why, locale)}</p>
+        {marketNote && <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{marketNote}</p>}
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>

@@ -107,6 +107,31 @@ export function buildCommunityFaqs(name: string, s: CommunityStat | null): { que
   return faqs;
 }
 
+/**
+ * A transaction-type-specific market sentence for the buy-/rent-property-in
+ * community pages, so the two (otherwise near-identical) templates diverge with
+ * real, distinct DLD data: sale metrics on Buy, rent metrics on Rent. Returns ""
+ * when there's no data to state.
+ */
+export function buildMarketNote(name: string, s: CommunityStat | null, intent: "buy" | "rent"): string {
+  if (!s) return "";
+  if (intent === "buy") {
+    const parts: string[] = [];
+    if (s.avgPricePerSqft) parts.push(`average sale prices around AED ${s.avgPricePerSqft.toLocaleString("en-AE")} per sqft`);
+    if (s.avgSalePrice) parts.push(`a typical asking price near AED ${s.avgSalePrice.toLocaleString("en-AE")}`);
+    if (!parts.length) return "";
+    return `Buyers in ${name} are seeing ${parts.join(" and ")}, based on the latest listing and Dubai Land Department (DLD) data.`;
+  }
+  const parts: string[] = [];
+  if (s.avgRentPrice) parts.push(`average rents around AED ${s.avgRentPrice.toLocaleString("en-AE")} per year`);
+  if (s.rentalYield) {
+    const src = s.yieldSource === "ejari" ? "DLD/Ejari contracts" : s.yieldSource === "listings" ? "current listings" : "market benchmarks";
+    parts.push(`a gross rental yield of about ${s.rentalYield}% (${src})`);
+  }
+  if (!parts.length) return "";
+  return `Tenants and investors in ${name} are seeing ${parts.join(" and ")}.`;
+}
+
 export const fmtAed = (n: number | null | undefined): string =>
   !n || n <= 0
     ? "-"
