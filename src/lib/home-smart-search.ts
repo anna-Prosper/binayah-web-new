@@ -603,7 +603,7 @@ function detectFurnishing(query: string) {
 }
 
 function detectBedrooms(query: string) {
-  if (/\bstudio\b/i.test(query)) return "Studio";
+  if (/\bstudios?\b/i.test(query)) return "Studio";
   const match = query.match(/\b(7\+|[1-7])\s*(?:bed(?:room)?s?|br|bdr|bhk)\b/i);
   return sanitizeDiscreteOption(match?.[1] || null, HOME_SEARCH_BEDROOM_OPTIONS);
 }
