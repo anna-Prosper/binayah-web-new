@@ -504,7 +504,11 @@ export function createGroupedHomeSearchSuggestions(args: {
     kind: "project" as const,
     parsed: {
       city: candidate.city ?? null,
-      developer: candidate.developerName ?? null,
+      // Do NOT inject the project's developer as a filter — picking a project is
+      // not choosing its builder. (Mirrors the parser's filter-promotion gate;
+      // otherwise clicking e.g. "Marina 101" would silently apply "Sheffield
+      // Holdings" and over-narrow the search.)
+      developer: null,
       intent: "off-plan" as const,
       location: candidate.community ?? null,
       project: candidate.name,

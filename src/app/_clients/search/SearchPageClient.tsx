@@ -268,7 +268,22 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
-  const skipInitialFetch = useRef(!!initialData);
+  // The SSR initialData reflects only the page's DEFAULT view (unfiltered on
+  // /search; the category defaults on /buy /rent /off-plan). Trust it — and skip
+  // the mount fetch — ONLY when the current state still equals those defaults.
+  // If the URL seeded ANY extra filter (e.g. arriving from the home search at
+  // /search?type=...&locations=...&developer=...), the SSR grid is stale and we
+  // MUST fetch on mount. Previously this ALWAYS skipped, so landing with filters
+  // showed the full unfiltered inventory instead of the filtered results.
+  const matchesSsrDefaults =
+    status === normalizeStatus(defaultStatus || null, (defaultIntent ?? "") as SearchIntent) &&
+    intent === ((defaultIntent ?? "") as SearchIntent) &&
+    type === String(normalizePropertyType(defaultType || "", "")) &&
+    selectedLocations.join("|") === (defaultLocations ?? []).join("|") &&
+    !beds && !baths && priceMin == null && priceMax == null && !developer &&
+    !furnishing && !completionYear && !q && (!sort || sort === "newest") &&
+    projectsPage <= 1 && listingsPage <= 1;
+  const skipInitialFetch = useRef(!!initialData && matchesSsrDefaults);
 
   // Reset pagination whenever a filter changes (skip first render so URL-seeded pages survive).
   const isInitialMount = useRef(true);
