@@ -12,6 +12,9 @@ import StatsSection from "@/components/StatsSection";
 import CommunitiesSection from "@/components/CommunitiesSection";
 import NewsSection from "@/components/NewsSection";
 import ListYourPropertySection from "@/components/ListYourPropertySection";
+import MarketDashboardIntro from "@/components/MarketDashboardIntro";
+import ROICalculatorIntro from "@/components/ROICalculatorIntro";
+import MortgageCalculatorIntro from "@/components/MortgageCalculatorIntro";
 
 export const revalidate = 300;
 
@@ -267,6 +270,9 @@ export default async function HomePage({ params }: Props) {
         communitiesSlot={<CommunitiesSection locale={locale} />}
         newsSlot={<NewsSection articles={articles.filter(Boolean)} locale={locale} />}
         listYourPropertySlot={<ListYourPropertySection locale={locale} />}
+        marketHeaderSlot={<MarketDashboardIntro locale={locale} />}
+        roiHeaderSlot={<ROICalculatorIntro locale={locale} />}
+        mortgageHeaderSlot={<MortgageCalculatorIntro locale={locale} />}
       />
     </>
   );

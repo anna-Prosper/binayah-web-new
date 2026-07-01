@@ -6,7 +6,7 @@ import { Calculator, TrendingUp, Percent, ChevronDown, MessageCircle } from "luc
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-const ROICalculator = () => {
+const ROICalculator = ({ hideHeading = false }: { hideHeading?: boolean } = {}) => {
   const t = useTranslations("roiCalculator");
   const [price, setPrice] = useState(2000000);
   const [annualRent, setAnnualRent] = useState(120000);
@@ -28,9 +28,10 @@ const ROICalculator = () => {
   const fmt = (n: number) => new Intl.NumberFormat("en-AE").format(Math.round(n));
 
   return (
-    <section className="py-12 sm:py-24 bg-background">
+    <section className={`${hideHeading ? "pt-0 pb-12 sm:pb-24" : "py-12 sm:py-24"} bg-background`}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        {/* Header */}
+        {/* Header — omitted when a server-rendered heading shell is shown above (SEO) */}
+        {!hideHeading && (
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-14">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
           <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
@@ -41,6 +42,7 @@ const ROICalculator = () => {
             {t("subtitle")}
           </p>
         </motion.div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
           {/* ── Inputs ── */}

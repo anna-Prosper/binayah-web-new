@@ -92,9 +92,13 @@ interface HomePageClientProps {
   communitiesSlot?: ReactNode;
   newsSlot?: ReactNode;
   listYourPropertySlot?: ReactNode;
+  // Server-rendered heading shells above deferred interactive tools.
+  marketHeaderSlot?: ReactNode;
+  roiHeaderSlot?: ReactNode;
+  mortgageHeaderSlot?: ReactNode;
 }
 
-export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], googleReviews = null, introSlot = null, faqSlot = null, servicesSlot = null, whatWeOfferSlot = null, statsSlot = null, communitiesSlot = null, newsSlot = null, listYourPropertySlot = null }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], googleReviews = null, introSlot = null, faqSlot = null, servicesSlot = null, whatWeOfferSlot = null, statsSlot = null, communitiesSlot = null, newsSlot = null, listYourPropertySlot = null, marketHeaderSlot = null, roiHeaderSlot = null, mortgageHeaderSlot = null }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -118,8 +122,11 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {/* Server-rendered communities grid (crawlable HTML, zero client JS) */}
         {communitiesSlot}
         <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
-        <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
-        <LazyMount minHeight={420}><ROICalculator /></LazyMount>
+        {/* Heading shell server-rendered; data-fetching widget stays deferred */}
+        {marketHeaderSlot}
+        <LazyMount minHeight={600}><MarketDashboard hideHeading /></LazyMount>
+        {roiHeaderSlot}
+        <LazyMount minHeight={420}><ROICalculator hideHeading /></LazyMount>
         <LazyMount minHeight={240}><ValuationCTA /></LazyMount>
         {/* Server-rendered "list your property" section (crawlable HTML, zero JS) */}
         {listYourPropertySlot}
@@ -131,7 +138,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={680}><InquirySection /></LazyMount>
         {/* Server-rendered news/blog cards (crawlable HTML, zero client JS) */}
         {newsSlot}
-        <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
+        {mortgageHeaderSlot}
+        <LazyMount minHeight={520}><MortgageCalculator hideHeading /></LazyMount>
         {/* Server-rendered FAQ (crawlable HTML, matches FAQPage schema, zero JS) */}
         {faqSlot}
         {/* Server-rendered intro copy near the page foot: keeps a plain-prose

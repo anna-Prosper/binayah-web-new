@@ -44,7 +44,7 @@ function AnimatedStat({ value, prefix = "", suffix = "", decimals = 0 }: {
   return <motion.span ref={ref}>{display}</motion.span>;
 }
 
-const MarketDashboard = () => {
+const MarketDashboard = ({ hideHeading = false }: { hideHeading?: boolean } = {}) => {
   const t = useTranslations("marketDashboard");
   const segmentNames = t.raw("segments") as Record<string, string>;
   const [tab, setTab] = useState<Tab>("prices");
@@ -66,8 +66,10 @@ const MarketDashboard = () => {
   };
 
   return (
-    <section className="py-10 sm:py-24 bg-muted/40">
+    <section className={`${hideHeading ? "pt-0 pb-10 sm:pb-24" : "py-10 sm:py-24"} bg-muted/40`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Header — omitted when a server-rendered heading shell is shown above (SEO) */}
+        {!hideHeading && (
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-6 sm:mb-10">
           <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-4 sm:mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
           <p className="font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-2 sm:mb-4" style={{ color: "#D4A847" }}>{t("label")}</p>
@@ -76,6 +78,7 @@ const MarketDashboard = () => {
             {t("dashboardSubtitle")}
           </p>
         </motion.div>
+        )}
 
         {loading || !data ? (
           <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">

@@ -12,9 +12,10 @@ function formatNumber(n: number) {
 interface MortgageCalculatorProps {
   initialPrice?: number;
   embedded?: boolean;
+  hideHeading?: boolean;
 }
 
-export default function MortgageCalculator({ initialPrice, embedded }: MortgageCalculatorProps) {
+export default function MortgageCalculator({ initialPrice, embedded, hideHeading = false }: MortgageCalculatorProps) {
   const t = useTranslations("mortgageCalculator");
   const clampedInitial = initialPrice
     ? Math.min(50000000, Math.max(300000, initialPrice))
@@ -133,8 +134,10 @@ export default function MortgageCalculator({ initialPrice, embedded }: MortgageC
   }
 
   return (
-    <section className="py-16 sm:py-24 bg-background">
+    <section className={`${hideHeading ? "pt-0 pb-16 sm:pb-24" : "py-16 sm:py-24"} bg-background`}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        {/* Header — omitted when a server-rendered heading shell is shown above (SEO) */}
+        {!hideHeading && (
         <div className="text-center mb-12">
           <div
             className="h-[2px] w-12 mx-auto mb-6"
@@ -153,6 +156,7 @@ export default function MortgageCalculator({ initialPrice, embedded }: MortgageC
             {t("subtitle")}
           </p>
         </div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Inputs */}
