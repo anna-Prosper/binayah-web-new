@@ -15,8 +15,8 @@ const MortgageCalculator   = dynamic(() => import("@/components/MortgageCalculat
 const CookieConsent        = dynamic(() => import("@/components/CookieConsent"));
 const PropertyComparison   = dynamic(() => import("@/components/PropertyComparison"));
 const ValuationStrip       = dynamic(() => import("@/components/ValuationStrip"));
-const StatsSection         = dynamic(() => import("@/components/StatsSection"));
-const WhatWeOffer          = dynamic(() => import("@/components/WhatWeOffer"));
+// StatsSection + WhatWeOffer are now Server Components rendered server-side and
+// passed in as slots (real crawlable HTML), so they're no longer imported here.
 const FeaturedPropertiesClient = dynamic(() => import("@/components/FeaturedPropertiesClient"));
 const CryptoBanner         = dynamic(() => import("@/components/CryptoBanner"));
 const OffPlanSectionClient = dynamic(() => import("@/components/OffPlanSectionClient"));
@@ -94,9 +94,11 @@ interface HomePageClientProps {
   introSlot?: ReactNode;
   faqSlot?: ReactNode;
   servicesSlot?: ReactNode;
+  whatWeOfferSlot?: ReactNode;
+  statsSlot?: ReactNode;
 }
 
-export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null, introSlot = null, faqSlot = null, servicesSlot = null }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null, introSlot = null, faqSlot = null, servicesSlot = null, whatWeOfferSlot = null, statsSlot = null }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -113,7 +115,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
-        <LazyMount minHeight={400}><WhatWeOffer /></LazyMount>
+        {/* Server-rendered "what we offer" grid (crawlable HTML, zero client JS) */}
+        {whatWeOfferSlot}
         <LazyMount minHeight={520}><CommunitiesSection /></LazyMount>
         <LazyMount minHeight={520}><PropertyMatcher /></LazyMount>
         <LazyMount minHeight={600}><MarketDashboard /></LazyMount>
@@ -123,7 +126,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {/* Server-rendered services section (crawlable HTML, zero client JS) */}
         {servicesSlot}
         {googleReviews && <LazyMount minHeight={600}><TestimonialsSection data={googleReviews} /></LazyMount>}
-        <LazyMount minHeight={600}><StatsSection /></LazyMount>
+        {/* Server-rendered stats + team band (crawlable HTML, zero client JS) */}
+        {statsSlot}
         <LazyMount minHeight={680}><InquirySection /></LazyMount>
         <LazyMount minHeight={520}><NewsSection articles={latestArticles} /></LazyMount>
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>

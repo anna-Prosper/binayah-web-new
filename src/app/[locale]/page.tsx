@@ -7,6 +7,8 @@ import { getGoogleReviews } from "@/lib/googleReviews";
 import FAQSectionServer from "@/components/FAQSectionServer";
 import HomeIntro from "@/components/HomeIntro";
 import ServicesSection from "@/components/ServicesSection";
+import WhatWeOffer from "@/components/WhatWeOffer";
+import StatsSection from "@/components/StatsSection";
 
 export const revalidate = 300;
 
@@ -258,6 +260,8 @@ export default async function HomePage({ params }: Props) {
         introSlot={<HomeIntro locale={locale} />}
         faqSlot={<FAQSectionServer faqs={faqs} locale={locale} />}
         servicesSlot={<ServicesSection locale={locale} />}
+        whatWeOfferSlot={<WhatWeOffer locale={locale} />}
+        statsSlot={<StatsSection locale={locale} />}
       />
     </>
   );

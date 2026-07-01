@@ -1,14 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/navigation";
 import { ArrowRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-const StatsSection = () => {
-  const t = useTranslations("home.sections.team");
-  const ts = useTranslations("home.sections.stats");
+// Server Component: real crawlable HTML, zero client JS. Former framer-motion
+// entrance animations were decorative and are dropped. Rendered server-side via
+// a slot in page.tsx (not gated by LazyMount).
+export default async function StatsSection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "home.sections.team" });
+  const ts = await getTranslations({ locale, namespace: "home.sections.stats" });
 
   const stats = [
     { value: "3,000+", label: ts("propertiesListed") },
@@ -26,12 +26,7 @@ const StatsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-16 items-center">
 
           {/* LEFT — label + heading + copy + CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <div>
             <div className="flex items-center gap-3 mb-5">
               <div className="h-[2px] w-8 flex-shrink-0" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
               <p className="text-[11px] font-bold tracking-[0.4em] uppercase" style={{ color: "#D4A847" }}>{t("label")}</p>
@@ -63,16 +58,10 @@ const StatsSection = () => {
                 {t("cta2")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </motion.div>
+          </div>
 
           {/* RIGHT — team photo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative"
-          >
+          <div className="relative">
             {/* offset gold accent for depth */}
             <div className="absolute -bottom-3 -right-3 w-24 h-24 rounded-2xl -z-0 hidden sm:block" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", opacity: 0.18 }} />
             <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] z-10">
@@ -88,28 +77,20 @@ const StatsSection = () => {
                 {t("photoCaption")}
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Stats strip — full-width band, 5 across */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-10 sm:mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40 [&>*:last-child]:col-span-2 sm:[&>*:last-child]:col-span-1"
-        >
+        <div className="mt-10 sm:mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40 [&>*:last-child]:col-span-2 sm:[&>*:last-child]:col-span-1">
           {stats.map((s) => (
             <div key={s.label} className="bg-background px-3 sm:px-4 py-5 sm:py-6 text-center">
               <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{s.value}</p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1.5 tracking-[0.12em] uppercase leading-tight">{s.label}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>
   );
-};
-
-export default StatsSection;
+}
