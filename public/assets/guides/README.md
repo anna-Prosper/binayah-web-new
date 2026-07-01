@@ -1,1 +1,1 @@
-Placeholder PDF — replace `dubai-investment-guide-2026.pdf` with the final designed guide (keep the same filename). It is the lead magnet served by the site-wide GuideDownloadPopup.
+`dubai-investment-guide-2026.pdf` is the lead magnet served by the site-wide GuideDownloadPopup. To refresh the guide, replace the file in place (keep the same filename) so the pop-up and its emailed download link keep working.
