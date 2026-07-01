@@ -26,7 +26,8 @@ const MarketDashboard      = dynamic(() => import("@/components/MarketDashboard"
 const ROICalculator        = dynamic(() => import("@/components/ROICalculator"));
 const ValuationCTA         = dynamic(() => import("@/components/ValuationCTA"));
 const ListYourPropertySection = dynamic(() => import("@/components/ListYourPropertySection"));
-const ServicesSection      = dynamic(() => import("@/components/ServicesSection"));
+// ServicesSection is now a Server Component rendered server-side and passed in
+// as `servicesSlot` (real crawlable HTML), so it's no longer imported here.
 const TestimonialsSection  = dynamic(() => import("@/components/TestimonialsSection"));
 const InquirySection       = dynamic(() => import("@/components/InquirySection"));
 const NewsSection          = dynamic(() => import("@/components/NewsSection"));
@@ -92,9 +93,10 @@ interface HomePageClientProps {
   // Server-rendered slots (real visible HTML, crawlable without JS).
   introSlot?: ReactNode;
   faqSlot?: ReactNode;
+  servicesSlot?: ReactNode;
 }
 
-export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null, introSlot = null, faqSlot = null }: HomePageClientProps) {
+export default function HomePageClient({ saleListings = [], rentalListings = [], offPlanProjects = [], latestArticles = [], googleReviews = null, introSlot = null, faqSlot = null, servicesSlot = null }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -118,7 +120,8 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={420}><ROICalculator /></LazyMount>
         <LazyMount minHeight={240}><ValuationCTA /></LazyMount>
         <LazyMount minHeight={320}><ListYourPropertySection /></LazyMount>
-        <LazyMount minHeight={520}><ServicesSection /></LazyMount>
+        {/* Server-rendered services section (crawlable HTML, zero client JS) */}
+        {servicesSlot}
         {googleReviews && <LazyMount minHeight={600}><TestimonialsSection data={googleReviews} /></LazyMount>}
         <LazyMount minHeight={600}><StatsSection /></LazyMount>
         <LazyMount minHeight={680}><InquirySection /></LazyMount>

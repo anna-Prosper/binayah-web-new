@@ -6,6 +6,7 @@ import { FAQJsonLd } from "@/components/JsonLd";
 import { getGoogleReviews } from "@/lib/googleReviews";
 import FAQSectionServer from "@/components/FAQSectionServer";
 import HomeIntro from "@/components/HomeIntro";
+import ServicesSection from "@/components/ServicesSection";
 
 export const revalidate = 300;
 
@@ -256,6 +257,7 @@ export default async function HomePage({ params }: Props) {
         googleReviews={googleReviews}
         introSlot={<HomeIntro locale={locale} />}
         faqSlot={<FAQSectionServer faqs={faqs} locale={locale} />}
+        servicesSlot={<ServicesSection locale={locale} />}
       />
     </>
   );

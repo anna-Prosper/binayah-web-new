@@ -1,12 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ClipboardCheck, BarChart3, Wallet, Users, Wrench, Star, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
-const ServicesSection = () => {
-  const t = useTranslations("home.sections.services");
+// Server Component: renders as real crawlable HTML in the initial payload with
+// zero client JS. The former framer-motion entrance animations were purely
+// decorative and are dropped; hover states are plain CSS (group-hover) and are
+// preserved. Rendered server-side (via a slot in page.tsx) instead of being
+// gated behind LazyMount's IntersectionObserver, so crawlers see it.
+export default async function ServicesSection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "home.sections.services" });
   const services = [
     { icon: ClipboardCheck, title: t("handover"), desc: t("handoverDesc"), popular: true },
     { icon: Wallet, title: t("rentCollection"), desc: t("rentCollectionDesc"), popular: true },
@@ -21,17 +23,9 @@ const ServicesSection = () => {
 
     <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
       {/* Desktop header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="hidden sm:block text-center mb-16"
-      >
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "3rem" }}
-          viewport={{ once: true }}
-          className="h-[2px] mx-auto mb-6"
+      <div className="hidden sm:block text-center mb-16">
+        <div
+          className="h-[2px] mx-auto mb-6 w-12"
           style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
         />
         <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>
@@ -43,7 +37,7 @@ const ServicesSection = () => {
         <p className="mt-5 text-white/60 max-w-lg mx-auto text-base">
           {t("subtitle")}
         </p>
-      </motion.div>
+      </div>
 
       {/* Mobile header */}
       <div className="sm:hidden flex items-center justify-between mb-4">
@@ -57,13 +51,9 @@ const ServicesSection = () => {
 
       {/* Desktop: full grid */}
       <div className="hidden sm:grid lg:grid-cols-3 sm:grid-cols-2 gap-5">
-        {services.map((s, i) => (
-          <motion.div
+        {services.map((s) => (
+          <div
             key={s.title}
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
             className={`group relative bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition-all duration-300 ${s.popular ? "bg-white/[0.07]" : ""}`}
           >
             <div className="w-12 h-12 rounded-xl bg-[#D4A847]/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-all duration-300 relative overflow-hidden">
@@ -72,19 +62,15 @@ const ServicesSection = () => {
             </div>
             <h3 className="font-bold text-lg mb-2 leading-snug">{s.title}</h3>
             <p className="text-sm text-white/60 leading-snug">{s.desc}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* Mobile: show first 4, compact cards */}
       <div className="sm:hidden grid grid-cols-2 gap-2.5">
-        {services.slice(0, 4).map((s, i) => (
-          <motion.div
+        {services.slice(0, 4).map((s) => (
+          <div
             key={s.title}
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
             className="group relative bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-300"
           >
             {s.popular && (
@@ -98,27 +84,20 @@ const ServicesSection = () => {
             </div>
             <h3 className="font-bold text-[11px] mb-0.5 leading-snug">{s.title}</h3>
             <p className="text-[10px] text-white/60 leading-snug line-clamp-2">{s.desc}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* View All Services button */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-5 sm:mt-10 text-center"
-      >
+      <div className="mt-5 sm:mt-10 text-center">
         <Link
           href="/services"
           className="inline-flex items-center gap-2 px-6 py-2.5 sm:py-3 rounded-full text-[12px] sm:text-sm font-bold transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] text-white border border-white/20 hover:border-white/40 bg-white/[0.06] hover:bg-white/10"
         >
           {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
         </Link>
-      </motion.div>
+      </div>
     </div>
   </section>
   );
-};
-
-export default ServicesSection;
+}
