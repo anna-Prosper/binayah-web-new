@@ -103,9 +103,6 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <HeroSection />
         <AIPulseBanner />
 
-        {/* Server-rendered intro copy (real visible HTML, no client JS) */}
-        {introSlot}
-
         {/* Inventory first — surface real listings + off-plan projects right after the
             hero, before the valuation tool (visitors come to browse properties). */}
         <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
@@ -129,6 +126,10 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         <LazyMount minHeight={520}><MortgageCalculator /></LazyMount>
         {/* Server-rendered FAQ (crawlable HTML, matches FAQPage schema, zero JS) */}
         {faqSlot}
+        {/* Server-rendered intro copy near the page foot: keeps a plain-prose
+            business-context paragraph in the initial HTML for non-JS crawlers
+            (LLM answer engines) without occupying prime above-the-fold space. */}
+        {introSlot}
         <LazyMount minHeight={120}><NewsletterStrip /></LazyMount>
       </main>
       <LazyMount minHeight={0}><Footer /></LazyMount>
