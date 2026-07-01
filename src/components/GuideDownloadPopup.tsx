@@ -1,27 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import { X, Download, CheckCircle2, BookOpen } from "lucide-react";
+import { Link, usePathname } from "@/navigation";
+import { X, Check, Mail, Phone, ArrowRight, Lock, CheckCircle2, Download } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { trackLead } from "@/lib/gtag";
 
 /**
- * Site-wide lead-magnet pop-up: offers a free downloadable PDF guide in exchange
- * for an email. Deliberately un-annoying — armed by a short dwell timer OR an early
- * scroll, capped to once per day, backs off 48h after a dismiss, and never returns
- * once the visitor converts.
+ * Site-wide lead-magnet pop-up: offers the free Dubai Property Investment Guide PDF
+ * in exchange for an email. Deliberately un-annoying — armed by a short dwell OR an
+ * early scroll, capped to once per day, backs off 48h after a dismiss, and never
+ * returns once the visitor converts.
  *
- * Frequency is stored in a single apex-scoped cookie (shared across www ⇄ apex and
- * subdomains, mirroring CookieConsent) so the state follows the user across the site.
+ * Layout mirrors the approved design mockup (Binayah Email Capture Modal): a two-column
+ * modal with a book-render visual on the left and the capture form on the right.
+ * Frequency lives in a single apex-scoped cookie (shared across www ⇄ apex, like
+ * CookieConsent) so the state follows the user across the site.
  */
 const COOKIE_KEY = "binayah_guide_popup";
 const H = 60 * 60; // one hour in seconds
 const MAXAGE = { seen: 24 * H, dismissed: 48 * H, done: 365 * 24 * H } as const;
 
-/** The lead magnet. Drop the designed PDF at public/assets/guides/…; same-origin URL. */
+/** The lead magnet + its cover render. Same-origin under /public. */
 const GUIDE_URL = "/assets/guides/dubai-investment-guide-2026.pdf";
+const GUIDE_COVER = "/assets/guides/guide-cover.webp";
 const GUIDE_NAME = "2026 Dubai Investment Guide";
 
 const SHOW_AFTER_MS = 8000; // dwell trigger
@@ -67,7 +70,7 @@ export default function GuideDownloadPopup() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
@@ -133,8 +136,9 @@ export default function GuideDownloadPopup() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name.trim() || "Guide download",
+          name: "Guide download",
           email: email.trim(),
+          phone: phone.trim(),
           type: "guide-download",
           source: "guide-popup",
           message: `Requested the free ${GUIDE_NAME} via the site pop-up.`,
@@ -157,108 +161,167 @@ export default function GuideDownloadPopup() {
 
   if (!visible) return null;
 
+  const perks = [t("perk1"), t("perk2"), t("perk3")];
+
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300"
+      style={{ background: "rgba(11,61,46,0.40)", backdropFilter: "blur(3px)" }}
       onClick={dismiss}
       role="dialog"
       aria-modal="true"
-      aria-label={t("title")}
+      aria-labelledby="ecm-title"
     >
       <div
-        className="relative w-full max-w-md rounded-2xl bg-card shadow-2xl border border-border/60 overflow-hidden animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-300"
+        className="relative w-full max-w-[640px] overflow-hidden rounded-[14px] bg-white shadow-2xl grid grid-cols-1 md:grid-cols-[1fr_1.15fr] animate-in slide-in-from-bottom-4 md:zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           aria-label={t("closeAria")}
           onClick={dismiss}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/10 hover:bg-black/20 text-white/80 hover:text-white flex items-center justify-center transition-colors z-10"
+          className="absolute top-3.5 right-3.5 z-[3] flex h-8 w-8 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
         >
-          <X className="h-4 w-4" />
+          <X className="h-[15px] w-[15px]" strokeWidth={2.2} />
         </button>
 
-        {sent ? (
-          <div className="p-8 text-center">
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-100 flex items-center justify-center mb-4">
-              <CheckCircle2 className="h-7 w-7 text-emerald-600" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">{t("successTitle")}</h3>
-            <p className="text-sm text-muted-foreground">{t("successBody")}</p>
-            <button
-              onClick={triggerDownload}
-              className="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white"
-              style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-            >
-              <Download className="h-4 w-4" />
-              {t("downloadNow")}
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="p-5 sm:p-6 text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-white/15 flex items-center justify-center">
-                  <BookOpen className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] font-semibold opacity-80">{t("eyebrow")}</p>
-                  <h3 className="text-lg sm:text-xl font-bold leading-tight">{t("title")}</h3>
-                </div>
+        {/* Left: guide book render */}
+        <div
+          className="relative hidden flex-col justify-end overflow-hidden p-[22px] md:flex"
+          style={{
+            backgroundColor: "#0d2519",
+            backgroundImage: `url("${GUIDE_COVER}")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <span
+            className="relative z-[1] self-start rounded-full px-2.5 py-[5px] text-[10px] uppercase tracking-[0.14em]"
+            style={{
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              color: "#E8D38A",
+              background: "rgba(212,168,71,0.14)",
+              border: "1px solid rgba(212,168,71,0.3)",
+            }}
+          >
+            {t("tag")}
+          </span>
+        </div>
+
+        {/* Right: form panel (or success) */}
+        <div className="flex flex-col px-8 py-7">
+          {sent ? (
+            <div className="flex flex-col items-center justify-center py-6 text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                <CheckCircle2 className="h-7 w-7 text-emerald-600" />
               </div>
-              <p className="mt-3 text-xs sm:text-sm text-white/80">{t("subtitle")}</p>
+              <h2 className="text-[20px] font-extrabold tracking-[-0.02em] text-[#0E1C22]">{t("successTitle")}</h2>
+              <p className="mt-2 text-[13px] leading-relaxed text-[#6B7782]">{t("successBody")}</p>
+              <button
+                onClick={triggerDownload}
+                className="mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white shadow-lg"
+                style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
+              >
+                <Download className="h-4 w-4" />
+                {t("downloadNow")}
+              </button>
             </div>
+          ) : (
+            <>
+              <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B8922F]">{t("eyebrow")}</div>
+              <h2 id="ecm-title" className="mt-2 text-[23px] font-extrabold leading-[1.12] tracking-[-0.02em] text-[#0E1C22]">
+                {t("title")}
+              </h2>
+              <p className="mt-2 text-[13px] leading-[1.5] text-[#6B7782]">{t("subtitle")}</p>
 
-            <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-3">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                placeholder={t("namePlaceholder")}
-              />
-              <input
-                type="email"
-                required
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all"
-                placeholder={t("emailPlaceholder")}
-              />
+              <ul className="my-4 flex flex-col gap-[7px]">
+                {perks.map((perk) => (
+                  <li key={perk} className="flex items-center gap-[9px] text-[13px] font-medium text-[#0E1C22]">
+                    <span
+                      className="flex h-[18px] w-[18px] flex-none items-center justify-center rounded-full"
+                      style={{ background: "rgba(26,122,90,0.12)", color: "#1A7A5A" }}
+                    >
+                      <Check className="h-[11px] w-[11px]" strokeWidth={3} />
+                    </span>
+                    {perk}
+                  </li>
+                ))}
+              </ul>
 
-              {error && (
-                <p className="text-sm text-red-600 text-center" role="alert">
-                  {t("error")}
-                </p>
-              )}
-              <button
-                type="submit"
-                disabled={sending}
-                className="w-full h-11 rounded-full text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all disabled:opacity-70"
-                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-              >
-                {sending ? (
-                  <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Download className="h-4 w-4" />
-                    {t("submit")}
-                  </>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label htmlFor="ecm-email" className="mb-1.5 block text-[12px] font-semibold text-[#0E1C22]">
+                    {t("emailLabel")}
+                  </label>
+                  <div className="relative">
+                    <Mail className="pointer-events-none absolute left-[13px] top-1/2 h-4 w-4 -translate-y-1/2 text-[#6B7782]" strokeWidth={2} />
+                    <input
+                      id="ecm-email"
+                      type="email"
+                      required
+                      autoFocus
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t("emailPlaceholder")}
+                      className="w-full rounded-lg border border-[#E4DFDA] bg-white py-3 pl-10 pr-3.5 text-[14px] text-[#0E1C22] outline-none transition-all placeholder:text-[#6B7782] focus:border-[#1A7A5A] focus:ring-[3px] focus:ring-[#1A7A5A]/[0.12]"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-3">
+                  <label htmlFor="ecm-phone" className="mb-1.5 block text-[12px] font-semibold text-[#0E1C22]">
+                    {t("phoneLabel")}
+                  </label>
+                  <div className="relative">
+                    <Phone className="pointer-events-none absolute left-[13px] top-1/2 h-4 w-4 -translate-y-1/2 text-[#6B7782]" strokeWidth={2} />
+                    <input
+                      id="ecm-phone"
+                      type="tel"
+                      autoComplete="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder={t("phonePlaceholder")}
+                      className="w-full rounded-lg border border-[#E4DFDA] bg-white py-3 pl-10 pr-3.5 text-[14px] text-[#0E1C22] outline-none transition-all placeholder:text-[#6B7782] focus:border-[#1A7A5A] focus:ring-[3px] focus:ring-[#1A7A5A]/[0.12]"
+                    />
+                  </div>
+                </div>
+
+                {error && (
+                  <p className="mt-2 text-[12px] font-medium text-[#E53E3E]" role="alert">
+                    {t("error")}
+                  </p>
                 )}
-              </button>
 
-              <button
-                type="button"
-                onClick={dismiss}
-                className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {t("dismiss")}
-              </button>
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="mt-3.5 inline-flex w-full items-center justify-center gap-2 rounded-lg px-5 py-[13px] text-[15px] font-bold text-white transition-all hover:brightness-105 disabled:opacity-70"
+                  style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 4px 15px rgba(212,168,71,0.3)" }}
+                >
+                  {sending ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  ) : (
+                    <>
+                      {t("submit")}
+                      <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                    </>
+                  )}
+                </button>
 
-              <p className="text-[10px] text-muted-foreground text-center leading-snug">{t("disclaimer")}</p>
-            </form>
-          </>
-        )}
+                <p className="mt-3.5 flex items-start gap-[7px] text-[11px] leading-[1.5] text-[#6B7782]">
+                  <Lock className="mt-px h-[13px] w-[13px] flex-none text-[#1A7A5A]" strokeWidth={2} />
+                  <span>
+                    {t("fineprint")}{" "}
+                    <Link href="/privacy" className="font-semibold text-[#1A7A5A] no-underline hover:underline">
+                      {t("privacy")}
+                    </Link>
+                    .
+                  </span>
+                </p>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
