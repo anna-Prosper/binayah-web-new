@@ -1,10 +1,7 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const FALLBACK_ARTICLES = [
   { slug: "best-offplan-under-2m", title: "Best Off-Plan Under AED 2 Million, Golden Visa Eligible", date: "9 Feb 2026", category: "Investment", image: "/assets/dubai-hero.webp" },
@@ -27,8 +24,12 @@ function formatDate(dateStr?: string) {
   catch { return dateStr; }
 }
 
-const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) => {
-  const t = useTranslations("home.sections.news");
+// Server Component: real crawlable HTML, zero client JS. Former framer-motion
+// entrance animations were decorative and are dropped. ImageWithFallback stays
+// a client leaf (renders its <img> server-side, hydrates only the onError
+// fallback). Rendered server-side via a slot in page.tsx (not gated by LazyMount).
+export default async function NewsSection({ articles: propArticles = [], locale }: { articles?: Article[]; locale: string }) {
+  const t = await getTranslations({ locale, namespace: "home.sections.news" });
   const articles = (propArticles.length > 0 ? propArticles : FALLBACK_ARTICLES.map((a, i) => ({
     _id: String(i), title: a.title, slug: a.slug, category: a.category,
     featuredImage: a.image, publishedAt: a.date
@@ -45,13 +46,8 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
       </div>
 
       {/* Desktop: centered header with View All */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="hidden sm:block text-center mb-14 relative"
-      >
-        <motion.div initial={{ width: 0 }} whileInView={{ width: "3rem" }} viewport={{ once: true }} className="h-[2px] mx-auto mb-6" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
+      <div className="hidden sm:block text-center mb-14 relative">
+        <div className="h-[2px] mx-auto mb-6 w-12" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
         <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>{t("blog")}</p>
         <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
           {t("title")}
@@ -59,19 +55,12 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
         <Link href="/news" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
           {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
         </Link>
-      </motion.div>
+      </div>
 
       {/* Mobile: swipable horizontal cards */}
       <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
-        {articles.map((a, i) => (
-          <motion.div
-            key={a.slug}
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            className="flex-shrink-0 w-[260px] snap-start"
-          >
+        {articles.map((a) => (
+          <div key={a.slug} className="flex-shrink-0 w-[260px] snap-start">
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-xl overflow-hidden border border-border/50">
               <div className="relative overflow-hidden aspect-[16/10]">
                 <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="260px" className="object-cover" />
@@ -82,20 +71,14 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
                 <h3 className="font-bold text-foreground text-xs leading-snug line-clamp-2">{a.title}</h3>
               </div>
             </Link>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* Desktop grid */}
       <div className="hidden sm:grid md:grid-cols-3 gap-7">
-        {articles.map((a, i) => (
-          <motion.div
-            key={a.slug}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.12 }}
-          >
+        {articles.map((a) => (
+          <div key={a.slug}>
             <Link href={`/news/${a.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20 h-full">
               <div className="relative overflow-hidden aspect-[16/10]">
                 <ImageWithFallback src={a.featuredImage || "/assets/dubai-hero.webp"} alt={a.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -106,12 +89,10 @@ const NewsSection = ({ articles: propArticles = [] }: { articles?: Article[] }) 
                 <h3 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{a.title}</h3>
               </div>
             </Link>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
   </section>
   );
-};
-
-export default NewsSection;
+}

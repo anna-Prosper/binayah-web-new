@@ -1,10 +1,7 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const communities = [
   { name: "Downtown Dubai", slug: "downtown-dubai", properties: "450+", image: "/assets/communities/downtown-dubai.webp" },
@@ -13,8 +10,11 @@ const communities = [
   { name: "Business Bay", slug: "business-bay", properties: "290+", image: "/assets/communities/business-bay.webp" },
 ];
 
-const CommunitiesSection = () => {
-  const t = useTranslations("home.sections.communities");
+// Server Component: real crawlable HTML, zero client JS. Former framer-motion
+// entrance animations were decorative and are dropped; hover states are pure
+// CSS. Rendered server-side via a slot in page.tsx (not gated by LazyMount).
+export default async function CommunitiesSection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "home.sections.communities" });
   return (
   <section id="communities" className="py-8 sm:py-20 bg-card scroll-mt-20">
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -30,19 +30,8 @@ const CommunitiesSection = () => {
       </div>
 
       {/* Desktop: centered header with View All */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="hidden sm:block text-center mb-14 relative"
-      >
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "3rem" }}
-          viewport={{ once: true }}
-          className="h-[2px] mx-auto mb-6"
-          style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }}
-        />
+      <div className="hidden sm:block text-center mb-14 relative">
+        <div className="h-[2px] mx-auto mb-6 w-12" style={{ background: "linear-gradient(90deg, #D4A847, #B8922F)" }} />
         <p className="font-semibold tracking-[0.4em] uppercase text-xs mb-4" style={{ color: "#D4A847" }}>
           {t("label")}
         </p>
@@ -52,19 +41,12 @@ const CommunitiesSection = () => {
         <Link href="/communities" className="group absolute right-0 bottom-0 flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all">
           {t("viewAll")} <ArrowUpRight className="h-4 w-4" />
         </Link>
-      </motion.div>
+      </div>
 
       {/* Mobile: horizontal scroll */}
       <div className="sm:hidden -mx-4 px-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
-        {communities.map((c, i) => (
-          <motion.div
-            key={c.name}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
-            className="flex-shrink-0 w-[72%] snap-center"
-          >
+        {communities.map((c) => (
+          <div key={c.name} className="flex-shrink-0 w-[72%] snap-center">
             <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[4/3]">
               <Image src={c.image} alt={c.name} fill sizes="72vw" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -76,20 +58,14 @@ const CommunitiesSection = () => {
                 </span>
               </div>
             </Link>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* Desktop grid */}
       <div className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {communities.map((c, i) => (
-          <motion.div
-            key={c.name}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-          >
+        {communities.map((c) => (
+          <div key={c.name}>
             <Link href={`/communities/${c.slug}`} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
               <Image src={c.image} alt={c.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -103,12 +79,10 @@ const CommunitiesSection = () => {
                 </div>
               </div>
             </Link>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
   </section>
   );
-};
-
-export default CommunitiesSection;
+}

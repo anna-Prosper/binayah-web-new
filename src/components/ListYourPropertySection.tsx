@@ -1,9 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { CheckCircle2, ArrowRight, Zap, Users, Camera, HeadphonesIcon, BarChart3 } from "lucide-react";
-import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { CheckCircle2, ArrowRight, Zap, Users, Camera, HeadphonesIcon } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 const PORTALS = [
   { name: "Property Finder", color: "#E84043", bg: "rgba(232,64,67,0.12)" },
@@ -20,20 +17,18 @@ const BENEFIT_ICONS = [
   { Icon: CheckCircle2, key: "feature5" },
 ];
 
-export default function ListYourPropertySection() {
-  const t = useTranslations("home.sections.listYourProperty");
+// Server Component: real crawlable HTML, zero client JS. Former framer-motion
+// entrance animations were decorative and are dropped; the live-portal dots use
+// the pure-CSS animate-pulse. Rendered server-side via a slot in page.tsx.
+export default async function ListYourPropertySection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "home.sections.listYourProperty" });
   return (
     <section className="py-16 sm:py-24 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
 
           {/* ── Left: copy ── */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
-          >
+          <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
               <Zap className="h-3.5 w-3.5 text-primary" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-primary">{t("label")}</span>
@@ -84,16 +79,10 @@ export default function ListYourPropertySection() {
               {t("cta")}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-          </motion.div>
+          </div>
 
           {/* ── Right: stats card ── */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: 0.1, ease: "easeOut" }}
-            className="relative"
-          >
+          <div className="relative">
             {/* Main card */}
             <div
               className="relative rounded-3xl overflow-hidden p-8 sm:p-10"
@@ -159,7 +148,7 @@ export default function ListYourPropertySection() {
                 <p className="text-[10px] text-white/70">{t("commissionOnly")}</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>

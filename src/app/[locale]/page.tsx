@@ -9,6 +9,9 @@ import HomeIntro from "@/components/HomeIntro";
 import ServicesSection from "@/components/ServicesSection";
 import WhatWeOffer from "@/components/WhatWeOffer";
 import StatsSection from "@/components/StatsSection";
+import CommunitiesSection from "@/components/CommunitiesSection";
+import NewsSection from "@/components/NewsSection";
+import ListYourPropertySection from "@/components/ListYourPropertySection";
 
 export const revalidate = 300;
 
@@ -255,13 +258,15 @@ export default async function HomePage({ params }: Props) {
         saleListings={saleListings.filter(Boolean)}
         rentalListings={rentalListings.filter(Boolean)}
         offPlanProjects={projects.filter(Boolean)}
-        latestArticles={articles.filter(Boolean)}
         googleReviews={googleReviews}
         introSlot={<HomeIntro locale={locale} />}
         faqSlot={<FAQSectionServer faqs={faqs} locale={locale} />}
         servicesSlot={<ServicesSection locale={locale} />}
         whatWeOfferSlot={<WhatWeOffer locale={locale} />}
         statsSlot={<StatsSection locale={locale} />}
+        communitiesSlot={<CommunitiesSection locale={locale} />}
+        newsSlot={<NewsSection articles={articles.filter(Boolean)} locale={locale} />}
+        listYourPropertySlot={<ListYourPropertySection locale={locale} />}
       />
     </>
   );
