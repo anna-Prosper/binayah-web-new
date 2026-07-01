@@ -1658,7 +1658,7 @@
     "close": "关闭 Cookie 提示"
   },
   "guidePopup": {
-    "tag": "免费 · 12 页 PDF",
+    "tag": "免费 PDF 指南",
     "eyebrow": "投资者资源",
     "title": "获取 2026 迪拜投资指南",
     "subtitle": "收益率、热门社区与楼花付款计划，浓缩为一份实用 PDF。留下邮箱，我们即刻发送。",
@@ -1672,11 +1672,11 @@
     "submit": "把指南发给我",
     "error": "请输入有效的邮箱地址。",
     "successTitle": "您的指南正在发送",
-    "successBody": "请查收邮箱——我们也已将下载链接发送给您。",
-    "downloadNow": "立即下载",
+    "successBody": "请查收邮箱——我们刚刚已将指南发送到您的邮箱。",
     "fineprint": "绝无垃圾邮件，只有指南和不定期的市场资讯。",
     "privacy": "隐私政策",
-    "closeAria": "关闭"
+    "closeAria": "关闭",
+    "done": "完成"
   },
   "favoritesDrawer": {
     "title": "我的收藏",

@@ -1654,7 +1654,7 @@
     "close": "Fermer la bannière de cookies"
   },
   "guidePopup": {
-    "tag": "Gratuit · PDF de 12 pages",
+    "tag": "Guide PDF gratuit",
     "eyebrow": "Ressource investisseur",
     "title": "Obtenez le guide d'investissement à Dubaï 2026",
     "subtitle": "Rendements, quartiers prometteurs et plans de paiement sur plan, réunis dans un PDF pratique. Laissez votre e-mail et nous vous l'envoyons.",
@@ -1668,11 +1668,11 @@
     "submit": "Envoyez-moi le guide",
     "error": "Veuillez saisir une adresse e-mail valide.",
     "successTitle": "Votre guide arrive",
-    "successBody": "Vérifiez votre boîte de réception — nous vous avons aussi envoyé le lien de téléchargement.",
-    "downloadNow": "Télécharger",
+    "successBody": "Vérifiez votre boîte de réception — nous venons de vous envoyer le guide par e-mail.",
     "fineprint": "Pas de spam, juste le guide et des actualités du marché occasionnelles.",
     "privacy": "Politique de confidentialité",
-    "closeAria": "Fermer"
+    "closeAria": "Fermer",
+    "done": "Terminé"
   },
   "favoritesDrawer": {
     "title": "Biens enregistrés",

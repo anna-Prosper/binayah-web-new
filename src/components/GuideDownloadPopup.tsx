@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Link, usePathname } from "@/navigation";
-import { X, Check, Mail, Phone, ArrowRight, Lock, CheckCircle2, Download } from "lucide-react";
+import { X, Check, Mail, Phone, ArrowRight, Lock, CheckCircle2 } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { trackLead } from "@/lib/gtag";
@@ -32,6 +32,12 @@ const SCROLL_TRIGGER = 0.35; // or scroll past 35% of the page
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Normalise to E.164-ish: strip everything but digits and keep a single leading "+". */
+function normalizePhone(input: string): string {
+  const digits = input.replace(/\D/g, "");
+  return digits ? `+${digits}` : "";
+}
+
 // Paths where a promo pop-up would be intrusive or redundant.
 const SUPPRESS = [/\/admin(\/|$)/, /\/privacy/, /\/terms/, /\/cookie/, /\/legal/, /\/list-your-property/, /\/contact/];
 
@@ -52,17 +58,6 @@ function writeCookie(value: keyof typeof MAXAGE) {
     ` Max-Age=${MAXAGE[value]};` +
     ` Path=/;` +
     ` SameSite=Lax${domainAttr}${window.location.protocol === "https:" ? "; Secure" : ""}`;
-}
-
-function triggerDownload() {
-  const a = document.createElement("a");
-  a.href = GUIDE_URL;
-  a.download = "";
-  a.target = "_blank";
-  a.rel = "noopener";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
 }
 
 export default function GuideDownloadPopup() {
@@ -151,7 +146,6 @@ export default function GuideDownloadPopup() {
       writeCookie("done"); // never show again
       setSent(true);
       trackLead({ source: "guide-popup" });
-      triggerDownload();
     } catch {
       setError(true);
     } finally {
@@ -217,12 +211,11 @@ export default function GuideDownloadPopup() {
               <h2 className="text-[20px] font-extrabold tracking-[-0.02em] text-[#0E1C22]">{t("successTitle")}</h2>
               <p className="mt-2 text-[13px] leading-relaxed text-[#6B7782]">{t("successBody")}</p>
               <button
-                onClick={triggerDownload}
-                className="mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white shadow-lg"
+                onClick={() => setVisible(false)}
+                className="mt-6 inline-flex items-center gap-2 rounded-lg px-8 py-3 text-sm font-bold text-white shadow-lg"
                 style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
               >
-                <Download className="h-4 w-4" />
-                {t("downloadNow")}
+                {t("done")}
               </button>
             </div>
           ) : (
@@ -277,9 +270,10 @@ export default function GuideDownloadPopup() {
                     <input
                       id="ecm-phone"
                       type="tel"
+                      inputMode="tel"
                       autoComplete="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => setPhone(normalizePhone(e.target.value))}
                       placeholder={t("phonePlaceholder")}
                       className="w-full rounded-lg border border-[#E4DFDA] bg-white py-3 pl-10 pr-3.5 text-[14px] text-[#0E1C22] outline-none transition-all placeholder:text-[#6B7782] focus:border-[#1A7A5A] focus:ring-[3px] focus:ring-[#1A7A5A]/[0.12]"
                     />

@@ -1652,7 +1652,7 @@
     "close": "Đóng thông báo cookie"
   },
   "guidePopup": {
-    "tag": "Miễn phí · PDF 12 trang",
+    "tag": "Cẩm nang PDF miễn phí",
     "eyebrow": "Tài nguyên nhà đầu tư",
     "title": "Nhận cẩm nang đầu tư Dubai 2026",
     "subtitle": "Lợi suất, khu vực tiềm năng và kế hoạch thanh toán dự án hình thành trong tương lai, gói gọn trong một PDF thực tế. Để lại email và chúng tôi sẽ gửi cho bạn.",
@@ -1666,11 +1666,11 @@
     "submit": "Gửi cẩm nang cho tôi",
     "error": "Vui lòng nhập địa chỉ email hợp lệ.",
     "successTitle": "Cẩm nang đang được gửi tới bạn",
-    "successBody": "Kiểm tra hộp thư — chúng tôi cũng đã gửi cho bạn liên kết tải xuống.",
-    "downloadNow": "Tải xuống ngay",
+    "successBody": "Kiểm tra hộp thư — chúng tôi vừa gửi cẩm nang cho bạn qua email.",
     "fineprint": "Không spam, chỉ có cẩm nang và tin tức thị trường thỉnh thoảng.",
     "privacy": "Chính sách bảo mật",
-    "closeAria": "Đóng"
+    "closeAria": "Đóng",
+    "done": "Xong"
   },
   "favoritesDrawer": {
     "title": "Bất động sản đã lưu",

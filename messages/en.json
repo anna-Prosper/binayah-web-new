@@ -1654,7 +1654,7 @@
     "close": "Close cookie banner"
   },
   "guidePopup": {
-    "tag": "Free · 12-page PDF",
+    "tag": "Free PDF guide",
     "eyebrow": "Investor Resource",
     "title": "Get the 2026 Dubai investment guide",
     "subtitle": "Yields, hotspot communities and off-plan payment plans, distilled into one practical PDF. Drop your email and we'll send it over.",
@@ -1668,11 +1668,11 @@
     "submit": "Send me the guide",
     "error": "Please enter a valid email address.",
     "successTitle": "Your guide is on the way",
-    "successBody": "Check your inbox — we've also emailed you the download link.",
-    "downloadNow": "Download now",
+    "successBody": "Check your inbox — we've just emailed you the guide.",
     "fineprint": "No spam, just the guide and the occasional market update.",
     "privacy": "Privacy Policy",
-    "closeAria": "Close"
+    "closeAria": "Close",
+    "done": "Done"
   },
   "favoritesDrawer": {
     "title": "Saved Properties",
