@@ -1653,6 +1653,21 @@
     "decline": "Decline",
     "close": "Close cookie banner"
   },
+  "guidePopup": {
+    "eyebrow": "Free download",
+    "title": "The 2026 Dubai Investment Guide",
+    "subtitle": "Yields, hotspots and payment plans — everything you need before you buy. Get the PDF free.",
+    "namePlaceholder": "Your name (optional)",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Send me the guide",
+    "dismiss": "Maybe later",
+    "error": "Please enter a valid email address.",
+    "successTitle": "Your guide is on the way",
+    "successBody": "Check your inbox — we've also emailed you the download link.",
+    "downloadNow": "Download now",
+    "disclaimer": "We'll email you the guide and occasional market updates. Unsubscribe anytime.",
+    "closeAria": "Close"
+  },
   "favoritesDrawer": {
     "title": "Saved Properties",
     "clearAll": "Clear all",

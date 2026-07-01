@@ -1653,6 +1653,21 @@
     "decline": "Refuser",
     "close": "Fermer la bannière de cookies"
   },
+  "guidePopup": {
+    "eyebrow": "Téléchargement gratuit",
+    "title": "Le Guide d'investissement à Dubaï 2026",
+    "subtitle": "Rendements, quartiers prometteurs et plans de paiement — tout ce qu'il faut savoir avant d'acheter. PDF gratuit.",
+    "namePlaceholder": "Votre nom (facultatif)",
+    "emailPlaceholder": "Saisissez votre e-mail",
+    "submit": "Envoyez-moi le guide",
+    "dismiss": "Plus tard",
+    "error": "Veuillez saisir une adresse e-mail valide.",
+    "successTitle": "Votre guide arrive",
+    "successBody": "Vérifiez votre boîte de réception — nous vous avons aussi envoyé le lien de téléchargement.",
+    "downloadNow": "Télécharger",
+    "disclaimer": "Nous vous enverrons le guide et des actualités du marché occasionnelles. Désabonnement à tout moment.",
+    "closeAria": "Fermer"
+  },
   "favoritesDrawer": {
     "title": "Biens enregistrés",
     "clearAll": "Tout effacer",

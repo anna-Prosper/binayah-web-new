@@ -1657,6 +1657,21 @@
     "decline": "拒绝",
     "close": "关闭 Cookie 提示"
   },
+  "guidePopup": {
+    "eyebrow": "免费下载",
+    "title": "2026 迪拜投资指南",
+    "subtitle": "收益率、热门区域与付款计划——购房前你需要了解的一切。免费获取 PDF。",
+    "namePlaceholder": "您的姓名（选填）",
+    "emailPlaceholder": "请输入您的邮箱",
+    "submit": "把指南发给我",
+    "dismiss": "以后再说",
+    "error": "请输入有效的邮箱地址。",
+    "successTitle": "您的指南正在发送",
+    "successBody": "请查收邮箱——我们也已将下载链接发送给您。",
+    "downloadNow": "立即下载",
+    "disclaimer": "我们会把指南及不定期的市场资讯发送给您。您可随时取消订阅。",
+    "closeAria": "关闭"
+  },
   "favoritesDrawer": {
     "title": "我的收藏",
     "clearAll": "全部清除",
