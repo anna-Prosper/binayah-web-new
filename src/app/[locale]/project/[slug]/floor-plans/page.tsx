@@ -5,6 +5,7 @@ import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
+import { getCommunityStats } from "@/lib/market";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
 export const revalidate = 1800;
@@ -47,6 +48,9 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
   const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
   if (!project) return notFound();
   const nonce = await getNonce();
+
+  // Community PPSF → indicative price per layout in the floor-plans SEO copy.
+  const seoStats = project.community ? await getCommunityStats(String(project.community)) : null;
 
   const status  = String(project.status || "").toLowerCase();
   const isRent  = /rent/i.test(status);
@@ -92,7 +96,7 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <ProjectDetailClient serverProject={project} defaultTab="floor-plans" />
+      <ProjectDetailClient serverProject={project} defaultTab="floor-plans" seoStats={seoStats} />
     </>
   );
 }

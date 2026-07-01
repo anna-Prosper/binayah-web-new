@@ -35,8 +35,10 @@ export function ProjectSeoBlock({
     Array.isArray(project?.unitTypes) && project.unitTypes.length > 0
       ? project.unitTypes.join(", ")
       : "a range of layouts";
-  const sizeMin = project?.unitSizeMin ? Number(project.unitSizeMin).toLocaleString() : null;
-  const sizeMax = project?.unitSizeMax ? Number(project.unitSizeMax).toLocaleString() : null;
+  const sizeMinNum = project?.unitSizeMin ? Number(project.unitSizeMin) : null;
+  const sizeMaxNum = project?.unitSizeMax ? Number(project.unitSizeMax) : null;
+  const sizeMin = sizeMinNum ? sizeMinNum.toLocaleString() : null;
+  const sizeMax = sizeMaxNum ? sizeMaxNum.toLocaleString() : null;
   const sizeRange = sizeMin && sizeMax ? `${sizeMin}-${sizeMax} sqft` : null;
   const handover = project?.completionDate ? String(project.completionDate) : null;
   // Editor-written copy from the DB takes precedence over the generated
@@ -52,12 +54,22 @@ export function ProjectSeoBlock({
     ? `As a pricing benchmark, homes in ${community} currently sell for around AED ${stats.avgPricePerSqft.toLocaleString("en-AE")} per sqft${stats.rentalYield ? ` at a gross rental yield of roughly ${stats.rentalYield}%` : ""}, based on the latest Dubai Land Department (DLD) and listing data — useful context for weighing ${name}'s price and rental potential.`
     : "";
 
+  // Community PPSF as a budgeting rule-of-thumb for the floor-plans page. We
+  // deliberately DON'T multiply by unitSizeMin/Max — those fields are unreliable
+  // (some hold plot/total areas), and stating an absurd absolute price would do
+  // more harm than good. Let the reader apply it to the real sizes shown below.
+  const ppsf = stats?.avgPricePerSqft;
+  const floorPriceNote = ppsf
+    ? `As a budgeting rule of thumb, homes in ${community} currently average about AED ${ppsf.toLocaleString("en-AE")} per sqft — apply that to a layout's built-up area below to gauge its likely price.`
+    : "";
+
   const CONTENT: Record<SeoTab, { icon: React.ElementType; title: string; paras: string[] }> = {
     "floor-plans": {
       icon: FileText,
       title: `${name} Floor Plans & Unit Sizes`,
       paras: [
         `${name}${dev} offers ${unitTypes}${sizeRange ? ` with built-up areas from ${sizeRange}` : ""} in ${community}, Dubai. The plans below show bedroom placement, living and dining areas, kitchen, bathrooms and balconies so you can compare layouts before construction completes.`,
+        ...(floorPriceNote ? [floorPriceNote] : []),
         `When reviewing an off-plan floor plan, look past total area: the living-to-bedroom ratio, kitchen position and balcony size drive both daily livability and resale value. Built dimensions may vary up to 5% from approved plans under UAE regulations.`,
       ],
     },
