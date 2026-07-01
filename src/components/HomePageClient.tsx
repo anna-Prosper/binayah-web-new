@@ -17,9 +17,14 @@ const PropertyComparison   = dynamic(() => import("@/components/PropertyComparis
 const ValuationStrip       = dynamic(() => import("@/components/ValuationStrip"));
 // StatsSection + WhatWeOffer are now Server Components rendered server-side and
 // passed in as slots (real crawlable HTML), so they're no longer imported here.
-const FeaturedPropertiesClient = dynamic(() => import("@/components/FeaturedPropertiesClient"));
+// Data-driven, high-SEO-value sections: server-render the HTML (ssr: true, the
+// App Router default — made explicit) so listings/projects are crawlable, while
+// next/dynamic still code-splits the JS chunk. No LazyMount gate. The loading
+// skeleton only shows during client-side navigation and preserves the CLS
+// reservation the LazyMount minHeight used to provide.
+const FeaturedPropertiesClient = dynamic(() => import("@/components/FeaturedPropertiesClient"), { ssr: true, loading: () => <div style={{ minHeight: 720 }} /> });
 const CryptoBanner         = dynamic(() => import("@/components/CryptoBanner"));
-const OffPlanSectionClient = dynamic(() => import("@/components/OffPlanSectionClient"));
+const OffPlanSectionClient = dynamic(() => import("@/components/OffPlanSectionClient"), { ssr: true, loading: () => <div style={{ minHeight: 720 }} /> });
 const PropertyMatcher      = dynamic(() => import("@/components/PropertyMatcher"));
 const MarketDashboard      = dynamic(() => import("@/components/MarketDashboard"));
 const ROICalculator        = dynamic(() => import("@/components/ROICalculator"));
@@ -100,9 +105,11 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
 
         {/* Inventory first — surface real listings + off-plan projects right after the
             hero, before the valuation tool (visitors come to browse properties). */}
-        <LazyMount minHeight={720}><FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} /></LazyMount>
+        {/* Server-rendered (ssr:true via dynamic) so listings are crawlable HTML */}
+        <FeaturedPropertiesClient saleListings={saleListings} rentalListings={rentalListings} />
         <ValuationStrip />
-        <LazyMount minHeight={720}><OffPlanSectionClient projects={offPlanProjects} /></LazyMount>
+        {/* Server-rendered (ssr:true via dynamic) so off-plan projects are crawlable */}
+        <OffPlanSectionClient projects={offPlanProjects} />
         <LazyMount minHeight={180}><CryptoBanner /></LazyMount>
 
         {/* Below-fold: defer hydration via IntersectionObserver — slashes initial TBT */}
