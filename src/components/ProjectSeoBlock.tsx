@@ -9,14 +9,24 @@ type SeoTab = "floor-plans" | "location" | "payment" | "faq";
  * chrome, so this block is what makes its main content distinct and indexable
  * rather than a near-duplicate of the hub.
  */
+// Minimal shape of the community market stats we weave into the copy — kept
+// local so this presentational block doesn't import the server-only market lib.
+interface SeoStats {
+  avgPricePerSqft?: number;
+  rentalYield?: number;
+  yieldSource?: string;
+}
+
 export function ProjectSeoBlock({
   project,
   tab,
   paymentPlanLabel,
+  stats,
 }: {
   project: any;
   tab: SeoTab;
   paymentPlanLabel?: string | null;
+  stats?: SeoStats | null;
 }) {
   const name = String(project?.name || "This project");
   const dev = project?.developerName ? ` by ${project.developerName}` : "";
@@ -36,6 +46,12 @@ export function ProjectSeoBlock({
   const masterPlanText = stripTags(project?.masterPlanDescription);
   const paymentText = stripTags(project?.paymentPlanDetails);
 
+  // Real DLD/listing market data for the community — unique per area, so it
+  // deepens the location copy beyond the shared template.
+  const marketNote = stats?.avgPricePerSqft
+    ? `As a pricing benchmark, homes in ${community} currently sell for around AED ${stats.avgPricePerSqft.toLocaleString("en-AE")} per sqft${stats.rentalYield ? ` at a gross rental yield of roughly ${stats.rentalYield}%` : ""}, based on the latest Dubai Land Department (DLD) and listing data — useful context for weighing ${name}'s price and rental potential.`
+    : "";
+
   const CONTENT: Record<SeoTab, { icon: React.ElementType; title: string; paras: string[] }> = {
     "floor-plans": {
       icon: FileText,
@@ -53,6 +69,7 @@ export function ProjectSeoBlock({
           ? `${name} is located in ${community}, Dubai. ${locationText}`
           : `${name} is located in ${community}, Dubai, UAE. The community offers convenient access to major road links, retail, schools and leisure destinations across the city.`,
         ...(masterPlanText ? [masterPlanText] : []),
+        ...(marketNote ? [marketNote] : []),
         `In Dubai's property market, location is the single biggest driver of rental yield and capital appreciation. Well-connected communities with nearby transport, retail and amenities consistently outperform on tenant demand and price-per-sqft growth.`,
       ],
     },

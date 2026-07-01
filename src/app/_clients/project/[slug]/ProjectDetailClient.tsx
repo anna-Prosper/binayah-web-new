@@ -84,6 +84,8 @@ interface ProjectDetailClientProps {
   // (crawlable). When provided, the client skips the in-browser fetch.
   serverSimilar?: any[];
   defaultTab?: "overview" | "floor-plans" | "location" | "payment" | "faq";
+  // Server-fetched community market stats, woven into the SEO copy (location).
+  seoStats?: { avgPricePerSqft?: number; rentalYield?: number; yieldSource?: string } | null;
 }
 
 const LANGUAGES = [
@@ -143,7 +145,7 @@ const attractionIcon = (type: string) => {
 };
 
 
-const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: ProjectDetailClientProps) => {
+const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStats }: ProjectDetailClientProps) => {
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tE = useTranslations("enums");
@@ -1108,7 +1110,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab }: Proje
                 plan text on the Payment tab). On SSR activeTab === defaultTab, so
                 each URL still renders its own distinct content for SEO. */}
             {activeTab !== "overview" && (
-              <ProjectSeoBlock project={project} tab={activeTab} paymentPlanLabel={paymentPlanPretty} />
+              <ProjectSeoBlock project={project} tab={activeTab} paymentPlanLabel={paymentPlanPretty} stats={seoStats} />
             )}
 
             {/* ─── OVERVIEW TAB ─── */}
