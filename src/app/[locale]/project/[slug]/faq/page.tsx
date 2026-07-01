@@ -21,9 +21,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const desc  = `Frequently asked questions about ${name}${dev}${comm}, Dubai. Pricing, payment plan, floor plans, developer, handover date, Golden Visa eligibility and more.`;
   const path  = `/project/${slug}/faq`;
 
+  // Only index when the project has real DB FAQs. Otherwise the page is the
+  // generic fallback Q&A (boilerplate shared across projects) — keep it
+  // crawlable (follow) but out of the index, like the [searchSlug] matrix.
+  const hasContent = ((project.faqs as Array<{ question?: string }> | null) || []).some(f => f?.question?.trim());
+
   return {
     title,
     description: desc,
+    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
     alternates:  { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },

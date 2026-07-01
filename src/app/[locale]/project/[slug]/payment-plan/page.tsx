@@ -22,9 +22,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const desc  = `View the full payment plan for ${name}${dev}${comm}${dp}. Milestone breakdown, starting price, DLD fees and buyer costs for this Dubai off-plan project.`;
   const path  = `/project/${slug}/payment-plan`;
 
+  // Only index when the project has a real payment plan (details/steps/summary).
+  // Otherwise the page is generic boilerplate — crawlable (follow) but noindex.
+  const hasContent = !!(
+    project.paymentPlanDetails ||
+    (Array.isArray(project.paymentPlanSteps) && project.paymentPlanSteps.length > 0) ||
+    (project.paymentPlanSummary && project.paymentPlanSummary !== "TBA")
+  );
+
   return {
     title,
     description: desc,
+    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
     alternates:  { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },

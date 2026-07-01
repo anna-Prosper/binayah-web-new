@@ -28,9 +28,19 @@ export async function generateMetadata({
   const full = `${localizeCommunityText(c.shortIntro, locale)} Avg yield ${c.yield}. Browse listings for sale in ${c.name} with Binayah.`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
+
+  // Zero-inventory guard: a community page with no listings for sale can't
+  // satisfy the query — keep it crawlable (follow) but noindex until it fills.
+  let hasListings = true;
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(c.apiName ?? c.name)}&countOnly=1`));
+    if (res.ok) hasListings = ((await res.json()).total ?? 0) > 0;
+  } catch { /* API down → treat as indexable; don't noindex on transient errors */ }
+
   return {
     title,
     description,
+    ...(hasListings ? {} : { robots: { index: false as const, follow: true } }),
     alternates: {
       canonical: makeCanonical(locale, `/buy-property-in/${c.slug}`),
       languages: altLangs(`/buy-property-in/${c.slug}`),

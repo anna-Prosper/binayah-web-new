@@ -24,9 +24,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const desc  = `Browse all floor plans for ${name}${dev}${comm}, Dubai. View unit configurations including ${unitStr}, exact sizes in sqft and sqm, and downloadable PDFs.`;
   const path  = `/project/${slug}/floor-plans`;
 
+  // Only index when there are real floor plans or a unit-size spec table.
+  // Otherwise it's template prose + a "request" CTA — crawlable (follow) but noindex.
+  const hasContent = !!(
+    (Array.isArray(project.floorPlans) && project.floorPlans.length > 0) ||
+    (Array.isArray(project.unitTypes) && project.unitTypes.length > 0 &&
+      (project.unitSizeMin != null || project.unitSizeMax != null))
+  );
+
   return {
     title,
     description: desc,
+    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
     alternates:  { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },

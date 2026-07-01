@@ -21,9 +21,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const desc  = `Explore the location of ${name}${dev}${comm}. View the map, nearby landmarks, transport links, schools, malls and community highlights in ${project.community || project.city || "Dubai"}.`;
   const path  = `/project/${slug}/location`;
 
+  // Only index when there's a real location write-up. Otherwise the page is
+  // generic template prose + market boilerplate — crawlable (follow) but noindex.
+  const hasContent = !!(
+    (project.locationDescription && String(project.locationDescription).trim()) ||
+    (Array.isArray(project.nearbyAttractions) && project.nearbyAttractions.length > 0)
+  );
+
   return {
     title,
     description: desc,
+    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
     alternates:  { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },
