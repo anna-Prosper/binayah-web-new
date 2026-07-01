@@ -38,6 +38,51 @@ async function fetchSlugDatesFromDb(
   }
 }
 
+// Projects for the sitemap, with per-sub-page indexability flags. The flags
+// MUST mirror the `robots: noindex` guards in each sub-page's generateMetadata
+// so we never submit a URL that self-noindexes (which GSC flags as "Submitted
+// URL marked noindex"). One query serves both the main /project/{slug} entries
+// and the four sub-pages.
+async function fetchProjectsForSitemap(): Promise<
+  { slug: string; lastmod?: Date; sub: { faq: boolean; payment: boolean; location: boolean; floorplans: boolean } }[]
+> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return [];
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const docs = await client.db().collection("projects").find(
+      { publishStatus: "published", slug: { $exists: true, $ne: "" } },
+      { projection: { _id: 0, slug: 1, updatedAt: 1, faqs: 1, paymentPlanDetails: 1, paymentPlanSteps: 1, paymentPlanSummary: 1, locationDescription: 1, nearbyAttractions: 1, floorPlans: 1, unitTypes: 1, unitSizeMin: 1, unitSizeMax: 1 } }
+    ).toArray();
+    return (docs as Record<string, unknown>[])
+      .filter((d) => d.slug)
+      .map((d) => {
+        const t = d.updatedAt ? new Date(d.updatedAt as string) : null;
+        const faqs = (d.faqs as Array<{ question?: string }> | undefined) || [];
+        const steps = d.paymentPlanSteps as unknown[] | undefined;
+        const nearby = d.nearbyAttractions as unknown[] | undefined;
+        const floorPlans = d.floorPlans as unknown[] | undefined;
+        const unitTypes = d.unitTypes as unknown[] | undefined;
+        return {
+          slug: d.slug as string,
+          lastmod: t && !isNaN(t.getTime()) ? t : undefined,
+          sub: {
+            faq: faqs.some((f) => f?.question?.trim()),
+            payment: !!(d.paymentPlanDetails || (Array.isArray(steps) && steps.length > 0) || (d.paymentPlanSummary && d.paymentPlanSummary !== "TBA")),
+            location: !!((d.locationDescription && String(d.locationDescription).trim()) || (Array.isArray(nearby) && nearby.length > 0)),
+            floorplans: !!((Array.isArray(floorPlans) && floorPlans.length > 0) || (Array.isArray(unitTypes) && unitTypes.length > 0 && (d.unitSizeMin != null || d.unitSizeMax != null))),
+          },
+        };
+      });
+  } catch {
+    return [];
+  } finally {
+    await client?.close();
+  }
+}
+
 // Bedroom × type × community matrix URLs that ACTUALLY have listings — emitted
 // from a single grouped aggregation so the sitemap never contains empty (and
 // therefore self-noindexed) combos. Covers all four supported types. Secondary
@@ -231,7 +276,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
-      fetchSlugDatesFromDb("projects", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
+      fetchProjectsForSitemap(),
       fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
       fetchSlugs("/api/news?limit=1000&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
@@ -297,14 +342,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dynamicPages: MetadataRoute.Sitemap = [
     ...projects.map((p) => withAlternates(`/project/${p.slug}`, 0.8, "weekly", p.lastmod ?? now)),
-    // Project sub-pages — each has unique metadata + a distinct SEO content block,
-    // so they're worth indexing as standalone topic pages. Lean entries (no
-    // hreflang alternates) to keep the sitemap under Vercel's 19 MB cap.
+    // Project sub-pages — only emit the ones with real content (their metadata
+    // self-noindexes when the backing field is empty, so submitting an empty one
+    // would trip a GSC "marked noindex" notice). Lean entries (no hreflang
+    // alternates) to keep the sitemap under Vercel's 19 MB cap.
     ...projects.flatMap((p) => [
-      plainEntry(`/project/${p.slug}/floor-plans`, 0.6, "weekly", p.lastmod ?? now),
-      plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now),
-      plainEntry(`/project/${p.slug}/payment-plan`, 0.6, "weekly", p.lastmod ?? now),
-      plainEntry(`/project/${p.slug}/faq`, 0.6, "weekly", p.lastmod ?? now),
+      ...(p.sub.floorplans ? [plainEntry(`/project/${p.slug}/floor-plans`, 0.6, "weekly", p.lastmod ?? now)] : []),
+      ...(p.sub.location ? [plainEntry(`/project/${p.slug}/location`, 0.6, "weekly", p.lastmod ?? now)] : []),
+      ...(p.sub.payment ? [plainEntry(`/project/${p.slug}/payment-plan`, 0.6, "weekly", p.lastmod ?? now)] : []),
+      ...(p.sub.faq ? [plainEntry(`/project/${p.slug}/faq`, 0.6, "weekly", p.lastmod ?? now)] : []),
     ]),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
