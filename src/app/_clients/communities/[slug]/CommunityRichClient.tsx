@@ -78,7 +78,10 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   if (e.faqs?.length) jsonLd.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: e.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) });
 
   const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6">{children}</h2>
+    <div className="mb-6">
+      <div className="h-1 w-10 rounded-full bg-accent mb-3" />
+      <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">{children}</h2>
+    </div>
   );
 
   const ProjectCard = ({ p }: { p: Project }) => (
@@ -134,7 +137,8 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{name}</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3">{name}</h1>
+          <p className="text-accent font-semibold tracking-[0.25em] uppercase text-[11px] sm:text-xs mb-3">Community Guide</p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 tracking-tight">{name}</h1>
           {e.tagline && <p className="text-white/80 max-w-2xl text-lg leading-relaxed mb-6">{e.tagline}</p>}
           {e.highlights?.length ? (
             <div className="flex flex-wrap gap-2.5">
@@ -151,19 +155,28 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-16">
         {/* Overview + Key facts */}
         {(overview || keyFactRows.length) && (
-          <section className="grid lg:grid-cols-3 gap-8 items-start">
+          <section className="grid lg:grid-cols-3 gap-10 items-start">
             <div className="lg:col-span-2">
               <SectionTitle>About {name}</SectionTitle>
-              {overview && <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{overview}</p>}
-              {e.targetBuyer && <p className="mt-4 text-sm text-muted-foreground"><span className="font-semibold text-foreground">Ideal for:</span> {e.targetBuyer}</p>}
+              {overview && (
+                <div className="space-y-4 text-[15px] leading-[1.75] text-muted-foreground">
+                  {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
+                </div>
+              )}
+              {e.targetBuyer && (
+                <div className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-primary/5 border border-primary/10 px-4 py-2.5 text-sm">
+                  <span className="font-semibold text-primary">Ideal for</span>
+                  <span className="text-muted-foreground">{e.targetBuyer}</span>
+                </div>
+              )}
             </div>
             {keyFactRows.length > 0 && (
-              <div className="bg-card rounded-2xl border border-border/50 p-6">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">At a glance</h3>
-                <dl className="space-y-3">
+              <div className="lg:sticky lg:top-24 rounded-2xl border border-border/60 bg-gradient-to-b from-card to-muted/20 p-6 shadow-sm">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-5">At a glance</h3>
+                <dl className="space-y-4">
                   {keyFactRows.map(([k, v]) => (
-                    <div key={k} className="flex justify-between gap-4 text-sm border-b border-border/40 pb-3 last:border-0 last:pb-0">
-                      <dt className="text-muted-foreground">{k}</dt>
+                    <div key={k} className="flex justify-between gap-6 text-sm border-b border-border/40 pb-4 last:border-0 last:pb-0">
+                      <dt className="text-muted-foreground whitespace-nowrap">{k}</dt>
                       <dd className="font-semibold text-foreground text-right">{v}</dd>
                     </div>
                   ))}
