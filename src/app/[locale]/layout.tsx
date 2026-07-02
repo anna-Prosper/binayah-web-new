@@ -21,6 +21,7 @@ import GuideDownloadPopup from "@/components/GuideDownloadPopup";
 import GlobalImageFallback from "@/components/GlobalImageFallback";
 import ChunkReloadGuard from "@/components/ChunkReloadGuard";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import AIChatWidget from "@/components/AIChatWidget";
 
 const GA_ID = "G-9FZKWX04K3";
 const CLARITY_ID = "wuee1w39pj";
@@ -204,6 +205,9 @@ export default async function LocaleLayout({
                   <ChunkReloadGuard />
                   {children}
                   <WhatsAppButton />
+                  {/* AI live-chat button — mounted globally so it appears on
+                      every page (not just home/services/property/project). */}
+                  <AIChatWidget />
                   <FavoritesDrawer />
                   <GlobalImageFallback />
                   <Analytics />

@@ -37,7 +37,6 @@ const InquirySection       = dynamic(() => import("@/components/InquirySection")
 const NewsletterStrip      = dynamic(() => import("@/components/NewsletterStrip"));
 const Footer               = dynamic(() => import("@/components/Footer"));
 const WhatsAppButton       = dynamic(() => import("@/components/WhatsAppButton"));
-const AIChatWidget         = dynamic(() => import("@/components/AIChatWidget"));
 const ScrollToTop          = dynamic(() => import("@/components/ScrollToTop"));
 
 interface SecondaryListing {
@@ -155,7 +154,6 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
           payload is already lazy-loaded via dynamic() so this doesn't
           impact LCP. */}
       <WhatsAppButton />
-      <AIChatWidget />
 
       {/* Non-essential overlays — defer until after page settles */}
       <DeferUntilIdle><ScrollToTop /></DeferUntilIdle>

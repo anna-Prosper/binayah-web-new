@@ -15,7 +15,6 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import AIChatWidget from "@/components/AIChatWidget";
 import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
@@ -2896,7 +2895,6 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
       <Footer />
       <div className="hidden lg:block">
         <WhatsAppButton />
-        <AIChatWidget />
       </div>
 
       <BrochureRequestModal

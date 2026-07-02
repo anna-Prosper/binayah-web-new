@@ -3,7 +3,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import AIChatWidget from "@/components/AIChatWidget";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -341,7 +340,6 @@ export default function ServicesPage() {
 
       <Footer />
       <WhatsAppButton />
-      <AIChatWidget />
     </div>
   );
 }
