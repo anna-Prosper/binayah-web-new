@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable i18next/no-literal-string -- content/SEO landing page; dynamic copy is English */
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
