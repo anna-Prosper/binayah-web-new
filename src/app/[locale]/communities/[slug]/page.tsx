@@ -1,13 +1,12 @@
-import CommunityDetailClient from "@/app/_clients/communities/[slug]/CommunityDetailClient";
+import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRichClient";
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
-import CommunityMergedDetailClient from "@/app/_clients/communities/[slug]/CommunityMergedDetailClient";
 import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings } from "@/lib/api";
 import clientPromise from "@/lib/mongodb";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
-import { getCommunityStats, buildCommunityFaqs, dldAreaFor, buildCommunitySummary } from "@/lib/market";
+import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
 
@@ -139,50 +138,20 @@ export default async function CommunityPage({
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
   const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} buildings={cBuildings} localePrefix={cLp} nonce={cNonce} />;
 
-  // 3. Both present → merged page
-  if (hasWiki && hasDb) {
-    const { community, projects } = dbData!;
-
-    const communityName =
-      community.name ||
-      slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
-
-    // Serialize wiki doc — strip _id (ObjectId) and scrapedAt (Date)
-    const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
-      slug: communityInfoDoc!.slug,
-      name: communityInfoDoc!.name,
-      location: communityInfoDoc!.location,
-      description: communityInfoDoc!.description,
-      developerName: communityInfoDoc!.developerName,
-      heroImage: communityInfoDoc!.heroImage,
-      amenities: communityInfoDoc!.amenities,
-      priceRange: communityInfoDoc!.priceRange,
-      sources: communityInfoDoc!.sources,
-    };
-
-    // Serialize projects — strip _id, Date fields and non-serializable types
-    const serializedProjects = (projects || []).map((p: any) => ({
-      slug: p.slug ?? null,
-      name: p.name ?? null,
-      developerName: p.developerName ?? null,
-      featuredImage: p.featuredImage ?? null,
-      imageGallery: Array.isArray(p.imageGallery) ? p.imageGallery : [],
-      status: p.status ?? null,
-      startingPrice: p.startingPrice ?? null,
-      currency: p.currency ?? null,
-      completionDate: p.completionDate
-        ? typeof p.completionDate === "string"
-          ? p.completionDate
-          : new Date(p.completionDate).toISOString()
-        : null,
-    }));
-
+  // 3. Any community with a DB record → unified rich landing page.
+  // dbData comes from the API as plain JSON (already serialization-safe).
+  if (hasDb) {
+    const d = dbData as any;
     return (
       <>
-        <CommunityMergedDetailClient
-          community={serialized}
-          communityName={communityName}
-          projects={serializedProjects}
+        <CommunityRichClient
+          community={d.community}
+          projects={d.projects || []}
+          forSale={d.forSale || []}
+          forRent={d.forRent || []}
+          counts={d.counts || { projects: (d.projects || []).length, forSale: 0, forRent: 0 }}
+          developers={d.developers || []}
+          nearby={d.nearby || []}
           locale={locale}
         />
         {statsBand}
@@ -190,38 +159,17 @@ export default async function CommunityPage({
     );
   }
 
-  // 4. Only wiki → existing CommunityInfoDetailClient
-  if (hasWiki) {
-    const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
-      slug: communityInfoDoc!.slug,
-      name: communityInfoDoc!.name,
-      location: communityInfoDoc!.location,
-      description: communityInfoDoc!.description,
-      developerName: communityInfoDoc!.developerName,
-      heroImage: communityInfoDoc!.heroImage,
-      amenities: communityInfoDoc!.amenities,
-      priceRange: communityInfoDoc!.priceRange,
-      sources: communityInfoDoc!.sources,
-    };
-    return <><CommunityInfoDetailClient community={serialized} locale={locale} />{statsBand}</>;
-  }
-
-  // 5. Only DB → existing CommunityDetailClient
-  const { community, projects } = dbData!;
-  const communityName =
-    community.name ||
-    slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
-
-  return (
-    <>
-      <CommunityDetailClient
-        slug={slug}
-        communityName={communityName}
-        communityDescription={community.description?.replace(/<[^>]*>/g, "") || buildCommunitySummary(communityName, cStats, (projects || []).length)}
-        communityImage={community.imageGallery?.[0] || community.featuredImage || ""}
-        projects={projects || []}
-      />
-      {statsBand}
-    </>
-  );
+  // 4. Only wiki (no DB record) → existing CommunityInfoDetailClient
+  const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
+    slug: communityInfoDoc!.slug,
+    name: communityInfoDoc!.name,
+    location: communityInfoDoc!.location,
+    description: communityInfoDoc!.description,
+    developerName: communityInfoDoc!.developerName,
+    heroImage: communityInfoDoc!.heroImage,
+    amenities: communityInfoDoc!.amenities,
+    priceRange: communityInfoDoc!.priceRange,
+    sources: communityInfoDoc!.sources,
+  };
+  return <><CommunityInfoDetailClient community={serialized} locale={locale} />{statsBand}</>;
 }
