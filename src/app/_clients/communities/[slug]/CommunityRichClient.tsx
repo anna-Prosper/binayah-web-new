@@ -59,10 +59,11 @@ export default function CommunityRichClient({ community, projects, forSale, forR
     : `https://maps.google.com/maps?q=${encodeURIComponent(name + ", Dubai")}&z=13&output=embed`;
   const overview = (e.overview || community.description || "").replace(/<[^>]*>/g, " ").trim();
   const kf = e.keyFacts || {};
-  const keyFactRows = [
+  const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
+  const keyFactRows = ([
     ["Developer", kf.developer], ["Community type", kf.communityType],
     ["Land area", kf.landArea], ["Property types", kf.propertyTypes], ["Handover", kf.handover],
-  ].filter(([, v]) => v) as [string, string][];
+  ] as [string, string | undefined][]).filter(([, v]) => !isPlaceholder(v)) as [string, string][];
 
   // JSON-LD: Place + FAQ + Breadcrumb
   const jsonLd: any[] = [
