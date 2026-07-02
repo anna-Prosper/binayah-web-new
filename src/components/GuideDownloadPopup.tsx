@@ -173,7 +173,7 @@ export default function GuideDownloadPopup() {
         <button
           aria-label={t("closeAria")}
           onClick={dismiss}
-          className="absolute top-3.5 right-3.5 z-[3] flex h-8 w-8 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+          className="absolute top-3.5 right-3.5 z-[10] flex h-8 w-8 items-center justify-center rounded-full bg-black/[0.06] text-[#0E1C22]/55 transition-colors hover:bg-black/[0.12] hover:text-[#0E1C22]"
         >
           <X className="h-[15px] w-[15px]" strokeWidth={2.2} />
         </button>
