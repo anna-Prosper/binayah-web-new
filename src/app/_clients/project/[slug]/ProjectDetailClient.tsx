@@ -2893,14 +2893,6 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
         )}
       </AnimatePresence>
 
-      {/* Quiet legal disclaimer — only when no regulator/dummy permit QR exists.
-          Kept as low-contrast fine print for compliance cover, not prominence. */}
-      {!hasStoredQr && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-6">
-          <p className="text-[10px] leading-relaxed text-muted-foreground/45">{t("infoOnlyNote")}</p>
-        </div>
-      )}
-
       <Footer />
       <div className="hidden lg:block">
         <WhatsAppButton />
