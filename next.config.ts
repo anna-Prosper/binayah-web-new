@@ -60,6 +60,16 @@ const nextConfig: NextConfig = {
       // Legal pages use full slugs — catch the short forms.
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
+      // Duplicate community docs — the same area exists as a thin bare slug and a
+      // content-bearing "-dubai" slug. 301 the thin duplicate to its canonical.
+      { source: "/communities/arjan", destination: "/communities/arjan-dubai", permanent: true },
+      { source: "/communities/downtown", destination: "/communities/downtown-dubai", permanent: true },
+      { source: "/communities/meydan", destination: "/communities/meydan-dubai", permanent: true },
+      { source: "/communities/the-valley", destination: "/communities/the-valley-dubai", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/arjan", destination: "/:locale/communities/arjan-dubai", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/downtown", destination: "/:locale/communities/downtown-dubai", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/meydan", destination: "/:locale/communities/meydan-dubai", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/the-valley", destination: "/:locale/communities/the-valley-dubai", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
