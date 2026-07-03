@@ -3,16 +3,17 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import Link from "next/link";
 import {
-  Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize,
-  Clock, CheckCircle2, TrendingUp, Layers, Landmark,
+  Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize, Clock,
+  CheckCircle2, TrendingUp, Landmark, Waves, UtensilsCrossed, Dumbbell,
+  ShoppingBag, Trees, Sparkles, Phone, ArrowRight, Layers,
 } from "lucide-react";
 
 // ---- shapes (all serialized from the API) ---------------------------------
-interface Pair { label?: string; value?: string; place?: string; time?: string; }
 interface Enrichment {
   tagline?: string; overview?: string;
   highlights?: { label: string; value: string }[];
@@ -44,10 +45,20 @@ interface Props {
   locale: string;
 }
 
+const WA = "https://wa.me/971549988811";
 const lp = (locale: string, path: string) => (locale === "en" ? path : `/${locale}${path}`);
 const year = (d?: string | null) => { if (!d) return null; const dt = new Date(d); return isNaN(dt.getTime()) ? d : dt.getFullYear(); };
+const projSlug = (name: string) => name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-");
+const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
 
-function projSlug(name: string) { return name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-"); }
+function amenityIcon(title: string) {
+  const t = title.toLowerCase();
+  if (/din|food|restaur|retail|shop|souk|mall/.test(t)) return /shop|retail|mall|souk/.test(t) ? ShoppingBag : UtensilsCrossed;
+  if (/fit|gym|wellness|spa|health|sport/.test(t)) return Dumbbell;
+  if (/beach|water|marina|pool|coast/.test(t)) return Waves;
+  if (/park|green|garden|nature|outdoor|recreat/.test(t)) return Trees;
+  return Sparkles;
+}
 
 export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale }: Props) {
   const e = community.enrichment || {};
@@ -56,24 +67,29 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const mapSrc = community.latitude && community.longitude
     ? `https://maps.google.com/maps?q=${community.latitude},${community.longitude}&z=13&output=embed`
     : `https://maps.google.com/maps?q=${encodeURIComponent(name + ", Dubai")}&z=13&output=embed`;
-  // Use the fuller of the AI overview vs the original community description, so a
-  // short AI overview never leaves the About section thin.
   const aiOverview = (e.overview || "").replace(/<[^>]*>/g, " ").trim();
   const dbDesc = (community.description || "").replace(/<[^>]*>/g, " ").trim();
   const overview = aiOverview.length >= dbDesc.length ? aiOverview : dbDesc;
   const kf = e.keyFacts || {};
-  const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
-  const keyFactRows = ([
-    ["Developer", kf.developer], ["Community type", kf.communityType],
-    ["Land area", kf.landArea], ["Property types", kf.propertyTypes], ["Handover", kf.handover],
+  const priceFrom = (e.highlights || []).find((h) => /price/i.test(h.label))?.value;
+
+  const glanceRows = ([
+    ["Developer", kf.developer], ["Community type", kf.communityType], ["Land area", kf.landArea],
+    ["Property types", kf.propertyTypes], ["Handover", kf.handover], ["Ideal for", e.targetBuyer],
   ] as [string, string | undefined][]).filter(([, v]) => !isPlaceholder(v)) as [string, string][];
 
-  // JSON-LD: Place + FAQ + Breadcrumb
+  // Hero stat blocks — data-derived (no fabrication).
+  const heroStats = ([
+    counts.projects ? { v: String(counts.projects), l: "Off-plan projects" } : null,
+    priceFrom ? { v: priceFrom, l: "Starting price" } : null,
+    !isPlaceholder(kf.landArea) ? { v: kf.landArea!, l: "Land area" } : null,
+    e.connectivity?.[0] ? { v: e.connectivity[0].time.replace(/[~\s]*/g, "").replace("minutes", "min").replace("min", " min"), l: `To ${e.connectivity[0].place}` } : null,
+  ].filter(Boolean) as { v: string; l: string }[]).slice(0, 4);
+
   const pageUrl = `https://www.binayah.ae${lp(locale, `/communities/${community.slug}`)}`;
   const jsonLd: any[] = [
     { "@context": "https://schema.org", "@type": "Place", name, description: overview.slice(0, 300),
-      url: pageUrl,
-      ...(community.featuredImage ? { image: community.featuredImage } : {}),
+      url: pageUrl, ...(community.featuredImage ? { image: community.featuredImage } : {}),
       address: { "@type": "PostalAddress", addressLocality: name, addressRegion: "Dubai", addressCountry: "AE" },
       containedInPlace: { "@type": "City", name: "Dubai", address: { "@type": "PostalAddress", addressCountry: "AE" } },
       hasMap: `https://www.google.com/maps/search/${encodeURIComponent(name + ", Dubai")}`,
@@ -86,10 +102,11 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   ];
   if (e.faqs?.length) jsonLd.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: e.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) });
 
-  const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <div className="mb-6">
-      <div className="h-1 w-10 rounded-full bg-accent mb-3" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">{children}</h2>
+  // Section header: gold eyebrow + editorial headline.
+  const SecHead = ({ eyebrow, title }: { eyebrow: string; title: string }) => (
+    <div className="mb-8 max-w-3xl">
+      <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">{eyebrow}</span>
+      <h2 className="text-2xl sm:text-3xl lg:text-[2.1rem] font-bold text-foreground tracking-tight leading-[1.15]">{title}</h2>
     </div>
   );
 
@@ -127,198 +144,215 @@ export default function CommunityRichClient({ community, projects, forSale, forR
     </Link>
   );
 
+  // In-page section nav
+  const navItems = [
+    ["about", "Overview"], ["location", "Location"], ["amenities", "Amenities"],
+    ["projects", "Projects"], ["invest", "Investment"], ["faqs", "FAQs"],
+  ] as [string, string][];
+
   return (
     <div className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative pt-24 pb-20 overflow-hidden">
+      {/* ===== Hero ===== */}
+      <section className="relative min-h-[78vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-foreground/30" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.96) 0%, rgba(11,61,46,0.65) 42%, rgba(14,28,34,0.25) 100%)" }} />
         </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">
-          <div className="flex items-center gap-2 text-sm text-white/60 mb-6">
-            <Link href={lp(locale, "/")} className="hover:text-white">Home</Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <Link href={lp(locale, "/communities")} className="hover:text-white">Communities</Link>
-            <ChevronRight className="h-3.5 w-3.5" />
+        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pb-12 pt-32">
+          <div className="flex items-center gap-2 text-sm text-white/55 mb-5">
+            <Link href={lp(locale, "/")} className="hover:text-white">Home</Link><ChevronRight className="h-3.5 w-3.5" />
+            <Link href={lp(locale, "/communities")} className="hover:text-white">Communities</Link><ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{name}</span>
           </div>
-          <p className="text-accent font-semibold tracking-[0.25em] uppercase text-[11px] sm:text-xs mb-3">Community Guide</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 tracking-tight">{name}</h1>
-          {e.tagline && <p className="text-white/80 max-w-2xl text-lg leading-relaxed mb-6">{e.tagline}</p>}
-          {e.highlights?.length ? (
-            <div className="flex flex-wrap gap-2.5">
-              {e.highlights.map((h, i) => (
-                <span key={i} className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-2 text-sm text-white">
-                  <span className="text-white/60">{h.label}:</span><span className="font-semibold">{h.value}</span>
-                </span>
+          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-accent mb-4">
+            Community Guide{kf.communityType && !isPlaceholder(kf.communityType) ? ` · ${kf.communityType}` : ""}
+          </span>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 tracking-tight leading-[0.98]">{name}</h1>
+          {e.tagline && <p className="text-white/80 max-w-2xl text-lg sm:text-xl leading-relaxed mb-8">{e.tagline}</p>}
+
+          {heroStats.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 max-w-3xl mb-8">
+              {heroStats.map((s, i) => (
+                <div key={i} className="bg-white/5 px-5 py-4">
+                  <div className="text-xl sm:text-2xl font-bold text-white leading-tight">{s.v}</div>
+                  <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-white/60 mt-1">{s.l}</div>
+                </div>
               ))}
             </div>
-          ) : null}
+          )}
+          <div className="flex flex-wrap gap-3">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-5 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
+              <Phone className="h-4 w-4" /> Talk to an Advisor
+            </a>
+            <a href="#projects" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+              Explore projects <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-16">
-        {/* Overview + Key facts — full-width so a short overview can't leave a
-            side gap; key facts sit below as a horizontal strip. */}
-        {(overview || keyFactRows.length) && (
-          <section>
-            <SectionTitle>About {name}</SectionTitle>
+      {/* ===== Sticky section nav ===== */}
+      <nav aria-label={`${name} sections`} className="sticky top-16 z-30 bg-background/90 backdrop-blur-md border-b border-border/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 overflow-x-auto scrollbar-hide">
+          {navItems.map(([id, label]) => (
+            <a key={id} href={`#${id}`} className="whitespace-nowrap px-4 py-3.5 text-sm font-medium text-muted-foreground hover:text-primary border-b-2 border-transparent hover:border-accent transition-colors">{label}</a>
+          ))}
+        </div>
+      </nav>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 space-y-20">
+        {/* ===== About + At a glance ===== */}
+        <section id="about" className="scroll-mt-28 grid lg:grid-cols-3 gap-10 items-start">
+          <div className="lg:col-span-2">
+            <SecHead eyebrow="About the community" title={e.tagline || `Welcome to ${name}`} />
             {overview && (
-              <div className="max-w-3xl space-y-4 text-[15px] leading-[1.75] text-muted-foreground">
+              <div className="space-y-4 text-[15px] leading-[1.8] text-muted-foreground">
                 {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
               </div>
             )}
-            {e.targetBuyer && (
-              <div className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-primary/5 border border-primary/10 px-4 py-2.5 text-sm">
-                <span className="font-semibold text-primary">Ideal for</span>
-                <span className="text-muted-foreground">{e.targetBuyer}</span>
-              </div>
-            )}
-            {keyFactRows.length > 0 && (
-              <div className="mt-8">
-                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-4">At a glance</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/60 bg-border/60">
-                  {keyFactRows.map(([k, v]) => (
-                    <div key={k} className="bg-card p-4 sm:p-5">
-                      <p className="text-[11px] text-muted-foreground mb-1.5">{k}</p>
-                      <p className="text-sm font-semibold text-foreground leading-snug">{v}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Location & connectivity */}
-        <section className="grid lg:grid-cols-2 gap-8 items-stretch">
-          <div>
-            <SectionTitle>Location &amp; connectivity</SectionTitle>
-            {e.connectivity?.length ? (
-              <ul className="space-y-3">
-                {e.connectivity.map((c, i) => (
-                  <li key={i} className="flex items-center justify-between bg-card rounded-xl border border-border/50 px-4 py-3">
-                    <span className="flex items-center gap-2 text-foreground"><MapPin className="h-4 w-4 text-primary" />{c.place}</span>
-                    <span className="flex items-center gap-1.5 text-sm text-muted-foreground"><Clock className="h-3.5 w-3.5" />{c.time}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : <p className="text-muted-foreground">{name} is well connected across Dubai.</p>}
           </div>
-          <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[280px]">
-            <iframe title={`Map of ${name}`} src={mapSrc} className="w-full h-full min-h-[280px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          {glanceRows.length > 0 && (
+            <aside className="lg:sticky lg:top-32 rounded-2xl border border-border/60 bg-gradient-to-b from-card to-muted/20 p-6 shadow-sm">
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-5">At a glance</h3>
+              <dl className="space-y-4">
+                {glanceRows.map(([k, v]) => (
+                  <div key={k} className="flex justify-between gap-5 text-sm border-b border-border/40 pb-4 last:border-0 last:pb-0">
+                    <dt className="text-muted-foreground whitespace-nowrap">{k}</dt>
+                    <dd className="font-semibold text-foreground text-right">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+                Speak to a Specialist
+              </a>
+            </aside>
+          )}
+        </section>
+
+        {/* ===== Location & connectivity ===== */}
+        <section id="location" className="scroll-mt-28">
+          <SecHead eyebrow="Location & connectivity" title="Minutes from everywhere that matters" />
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            <div>
+              {e.connectivity?.length ? (
+                <ul className="space-y-3">
+                  {e.connectivity.map((c, i) => (
+                    <li key={i} className="flex items-center justify-between bg-card rounded-xl border border-border/50 px-4 py-3.5">
+                      <span className="flex items-center gap-3 text-foreground font-medium"><span className="w-9 h-9 rounded-lg bg-primary/8 flex items-center justify-center"><MapPin className="h-4 w-4 text-primary" /></span>{c.place}</span>
+                      <span className="flex items-center gap-1.5 text-sm text-muted-foreground"><Clock className="h-3.5 w-3.5" />{c.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : <p className="text-muted-foreground">{name} is well connected across Dubai.</p>}
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[320px]">
+              <iframe title={`Map of ${name}, Dubai`} src={mapSrc} className="w-full h-full min-h-[320px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            </div>
           </div>
         </section>
 
-        {/* Amenities & lifestyle */}
+        {/* ===== Amenities & lifestyle ===== */}
         {(e.amenityCategories?.length || e.lifestyle) && (
-          <section>
-            <SectionTitle>Amenities &amp; lifestyle</SectionTitle>
-            {e.lifestyle && <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">{e.lifestyle}</p>}
+          <section id="amenities" className="scroll-mt-28">
+            <SecHead eyebrow="Amenities & lifestyle" title="Everything for a life well lived" />
+            {e.lifestyle && <p className="text-muted-foreground leading-relaxed mb-8 max-w-3xl -mt-2">{e.lifestyle}</p>}
             {e.amenityCategories?.length ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {e.amenityCategories.map((cat, i) => (
-                  <div key={i} className="bg-card rounded-2xl border border-border/50 p-5">
-                    <h3 className="font-bold text-foreground mb-3 flex items-center gap-2"><Layers className="h-4 w-4 text-primary" />{cat.title}</h3>
-                    <ul className="space-y-2">
-                      {cat.items.map((it, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground"><CheckCircle2 className="h-4 w-4 text-primary/70 mt-0.5 flex-shrink-0" />{it}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {e.amenityCategories.map((cat, i) => {
+                  const Icon = amenityIcon(cat.title);
+                  return (
+                    <div key={i} className="bg-card rounded-2xl border border-border/50 p-6 hover:shadow-md transition-shadow">
+                      <div className="w-11 h-11 rounded-xl bg-primary/8 flex items-center justify-center mb-4"><Icon className="h-5 w-5 text-primary" /></div>
+                      <h3 className="font-bold text-foreground mb-3">{cat.title}</h3>
+                      <ul className="space-y-2">
+                        {cat.items.map((it, j) => <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground"><CheckCircle2 className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />{it}</li>)}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+            {e.subCommunities?.length ? (
+              <div className="mt-8 flex flex-wrap gap-2.5">
+                <span className="text-sm font-semibold text-foreground mr-1 self-center flex items-center gap-1.5"><Layers className="h-4 w-4 text-accent" />Districts:</span>
+                {e.subCommunities.map((s, i) => <span key={i} className="rounded-lg bg-muted/60 border border-border/50 px-3 py-1.5 text-sm text-foreground">{s}</span>)}
               </div>
             ) : null}
           </section>
         )}
 
-        {/* Sub-communities */}
-        {e.subCommunities?.length ? (
-          <section>
-            <SectionTitle>Districts in {name}</SectionTitle>
-            <div className="flex flex-wrap gap-2.5">
-              {e.subCommunities.map((s, i) => (
-                <span key={i} className="rounded-xl bg-primary/8 border border-primary/15 text-primary px-4 py-2 text-sm font-medium">{s}</span>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {/* Off-plan projects */}
+        {/* ===== Featured off-plan launches ===== */}
         {projects.length > 0 && (
-          <section>
-            <SectionTitle>Off-plan projects in {name} ({counts.projects})</SectionTitle>
+          <section id="projects" className="scroll-mt-28">
+            <SecHead eyebrow={`Off-plan projects · ${counts.projects} available`} title={`Featured launches in ${name}`} />
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {projects.slice(0, 9).map((p) => <ProjectCard key={p.slug || p.name} p={p} />)}
+              {projects.slice(0, 6).map((p) => <ProjectCard key={p.slug || p.name} p={p} />)}
             </div>
-            {counts.projects > 9 && (
-              <Link href={lp(locale, `/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-6 text-primary font-semibold hover:underline">
+            {counts.projects > 6 && (
+              <Link href={lp(locale, `/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-7 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/40 transition-colors">
                 View all {counts.projects} projects <ChevronRight className="h-4 w-4" />
               </Link>
             )}
           </section>
         )}
 
-        {/* For sale */}
-        {forSale.length > 0 && (
-          <section>
-            <SectionTitle>Properties for sale in {name} ({counts.forSale})</SectionTitle>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {forSale.slice(0, 6).map((l) => <ListingCard key={l.slug} l={l} />)}
-            </div>
-            <Link href={lp(locale, `/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-6 text-primary font-semibold hover:underline">
-              View all for sale <ChevronRight className="h-4 w-4" />
-            </Link>
-          </section>
-        )}
-
-        {/* For rent */}
-        {forRent.length > 0 && (
-          <section>
-            <SectionTitle>Properties for rent in {name} ({counts.forRent})</SectionTitle>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {forRent.slice(0, 6).map((l) => <ListingCard key={l.slug} l={l} />)}
-            </div>
-            <Link href={lp(locale, `/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-6 text-primary font-semibold hover:underline">
-              View all for rent <ChevronRight className="h-4 w-4" />
-            </Link>
-          </section>
-        )}
-
-        {/* Investment + developers */}
-        {(e.investmentNote || developers.length > 0) && (
-          <section className="grid lg:grid-cols-2 gap-8">
-            {e.investmentNote && (
-              <div className="bg-primary/5 rounded-2xl border border-primary/15 p-6">
-                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2"><TrendingUp className="h-5 w-5 text-primary" />Investment outlook</h3>
-                <p className="text-muted-foreground leading-relaxed">{e.investmentNote}</p>
+        {/* ===== Secondary inventory ===== */}
+        {(forSale.length > 0 || forRent.length > 0) && (
+          <section className="scroll-mt-28 grid lg:grid-cols-2 gap-10">
+            {forSale.length > 0 && (
+              <div>
+                <SecHead eyebrow="Resale market" title={`For sale in ${name}`} />
+                <div className="grid sm:grid-cols-2 gap-5">{forSale.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
+                <Link href={lp(locale, `/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">View all {counts.forSale} for sale <ChevronRight className="h-4 w-4" /></Link>
               </div>
             )}
+            {forRent.length > 0 && (
+              <div>
+                <SecHead eyebrow="Rental market" title={`For rent in ${name}`} />
+                <div className="grid sm:grid-cols-2 gap-5">{forRent.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
+                <Link href={lp(locale, `/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">View all {counts.forRent} for rent <ChevronRight className="h-4 w-4" /></Link>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* ===== Investment outlook ===== */}
+        {(e.investmentNote || developers.length > 0) && (
+          <section id="invest" className="scroll-mt-28 rounded-3xl bg-primary text-primary-foreground p-8 sm:p-12" style={{ background: "linear-gradient(135deg, #0B3D2E, #12503B)" }}>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">Investment outlook</span>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">Why invest in {name}</h2>
+            {e.investmentNote && <p className="text-primary-foreground/80 leading-relaxed max-w-2xl mb-8">{e.investmentNote}</p>}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8">
+              <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{counts.projects}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Off-plan projects</div></div>
+              {priceFrom && <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{priceFrom}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Starting price</div></div>}
+              {developers.length > 0 && <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{developers.length}+</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Active developers</div></div>}
+              <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">2007</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Binayah since</div></div>
+            </div>
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+              <TrendingUp className="h-4 w-4" /> Speak to an investment advisor
+            </a>
             {developers.length > 0 && (
-              <div className="bg-card rounded-2xl border border-border/50 p-6">
-                <h3 className="font-bold text-foreground mb-3 flex items-center gap-2"><Landmark className="h-5 w-5 text-primary" />Developers active here</h3>
+              <div className="mt-8 pt-8 border-t border-white/15">
+                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary-foreground/50 mb-3 flex items-center gap-2"><Landmark className="h-4 w-4" />Developers active here</p>
                 <div className="flex flex-wrap gap-2">
-                  {developers.map((d) => (
-                    <Link key={d} href={lp(locale, `/developers/${projSlug(d)}`)} className="rounded-lg bg-muted/60 hover:bg-muted px-3 py-1.5 text-sm text-foreground transition-colors">{d}</Link>
-                  ))}
+                  {developers.map((d) => <Link key={d} href={lp(locale, `/developers/${projSlug(d)}`)} className="rounded-lg bg-white/10 hover:bg-white/20 px-3 py-1.5 text-sm text-white transition-colors">{d}</Link>)}
                 </div>
               </div>
             )}
           </section>
         )}
 
-        {/* FAQs */}
+        {/* ===== Good to know (FAQs) ===== */}
         {e.faqs?.length ? (
-          <section>
-            <SectionTitle>{name}: frequently asked questions</SectionTitle>
-            <div className="space-y-3">
+          <section id="faqs" className="scroll-mt-28">
+            <SecHead eyebrow="Frequently asked questions" title="Good to know" />
+            <div className="space-y-3 max-w-3xl">
               {e.faqs.map((f, i) => (
                 <details key={i} className="group bg-card rounded-2xl border border-border/50 p-5">
-                  <summary className="font-semibold text-foreground cursor-pointer list-none flex items-center justify-between">{f.q}<ChevronRight className="h-4 w-4 text-muted-foreground group-open:rotate-90 transition-transform" /></summary>
+                  <summary className="font-semibold text-foreground cursor-pointer list-none flex items-center justify-between gap-4">{f.q}<ChevronRight className="h-4 w-4 text-muted-foreground group-open:rotate-90 transition-transform flex-shrink-0" /></summary>
                   <p className="text-muted-foreground mt-3 leading-relaxed">{f.a}</p>
                 </details>
               ))}
@@ -326,10 +360,10 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           </section>
         ) : null}
 
-        {/* Nearby communities */}
+        {/* ===== Communities you may like ===== */}
         {nearby.length > 0 && (
-          <section>
-            <SectionTitle>Explore nearby communities</SectionTitle>
+          <section className="scroll-mt-28">
+            <SecHead eyebrow="Explore nearby" title="Communities you may like" />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
                 <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
@@ -343,7 +377,24 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         )}
       </div>
 
+      {/* ===== Final CTA band ===== */}
+      <section className="relative overflow-hidden py-16 sm:py-20" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">Ready to invest in {name}?</h2>
+          <p className="text-white/75 max-w-xl mx-auto mb-8">Our advisors have been matching clients with the right {name} homes and off-plan opportunities since 2007. Let&apos;s find yours.</p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+              <Phone className="h-4 w-4" /> Book a free consultation
+            </a>
+            <Link href={lp(locale, `/search?locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
+              Browse all {name} listings <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }
