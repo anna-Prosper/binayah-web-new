@@ -1,6 +1,6 @@
 import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRichClient";
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getCommunity, getDldBuildings } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
@@ -12,12 +12,25 @@ import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
+// Duplicate community docs — the same real area exists under a thin bare slug and
+// a content-bearing "-dubai" slug. 301 the thin duplicate to its canonical so the
+// two pages don't compete for the same term. (Determined by project coverage:
+// e.g. downtown-dubai has 49 projects vs downtown's 0.)
+const DUP_CANONICAL: Record<string, string> = {
+  "arjan": "arjan-dubai",
+  "downtown": "downtown-dubai",
+  "meydan": "meydan-dubai",
+  "the-valley": "the-valley-dubai",
+};
+const localePath = (locale: string, path: string) => (locale === "en" ? path : `/${locale}${path}`);
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
   const { slug, locale } = await params;
+  if (DUP_CANONICAL[slug]) permanentRedirect(localePath(locale, `/communities/${DUP_CANONICAL[slug]}`));
 
   const [wikiResult, dbResult] = await Promise.allSettled([
     getCommunityWiki(slug),
@@ -105,6 +118,7 @@ export default async function CommunityPage({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
+  if (DUP_CANONICAL[slug]) permanentRedirect(localePath(locale, `/communities/${DUP_CANONICAL[slug]}`));
 
   // 1. Fetch both sources in parallel
   const [wikiResult, dbResult] = await Promise.allSettled([
