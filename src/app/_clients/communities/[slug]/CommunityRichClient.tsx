@@ -56,7 +56,11 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const mapSrc = community.latitude && community.longitude
     ? `https://maps.google.com/maps?q=${community.latitude},${community.longitude}&z=13&output=embed`
     : `https://maps.google.com/maps?q=${encodeURIComponent(name + ", Dubai")}&z=13&output=embed`;
-  const overview = (e.overview || community.description || "").replace(/<[^>]*>/g, " ").trim();
+  // Use the fuller of the AI overview vs the original community description, so a
+  // short AI overview never leaves the About section thin.
+  const aiOverview = (e.overview || "").replace(/<[^>]*>/g, " ").trim();
+  const dbDesc = (community.description || "").replace(/<[^>]*>/g, " ").trim();
+  const overview = aiOverview.length >= dbDesc.length ? aiOverview : dbDesc;
   const kf = e.keyFacts || {};
   const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
   const keyFactRows = ([
