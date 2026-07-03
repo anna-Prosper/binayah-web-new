@@ -163,7 +163,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill className="object-cover" priority />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.96) 0%, rgba(11,61,46,0.65) 42%, rgba(14,28,34,0.25) 100%)" }} />
         </div>
-        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pb-12 pt-32">
+        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-28 sm:pb-14">
           <div className="flex items-center gap-2 text-sm text-white/55 mb-5">
             <Link href={lp(locale, "/")} className="hover:text-white">Home</Link><ChevronRight className="h-3.5 w-3.5" />
             <Link href={lp(locale, "/communities")} className="hover:text-white">Communities</Link><ChevronRight className="h-3.5 w-3.5" />
@@ -178,18 +178,18 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           {heroStats.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 max-w-3xl mb-8">
               {heroStats.map((s, i) => (
-                <div key={i} className="bg-white/5 px-5 py-4">
-                  <div className="text-xl sm:text-2xl font-bold text-white leading-tight">{s.v}</div>
+                <div key={i} className="bg-white/5 px-4 py-3.5 sm:px-5 sm:py-4">
+                  <div className="text-lg sm:text-2xl font-bold text-white leading-tight">{s.v}</div>
                   <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-white/60 mt-1">{s.l}</div>
                 </div>
               ))}
             </div>
           )}
-          <div className="flex flex-wrap gap-3">
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-5 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
               <Phone className="h-4 w-4" /> Talk to an Advisor
             </a>
-            <a href="#projects" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+            <a href="#projects" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
               Explore projects <ArrowRight className="h-4 w-4" />
             </a>
           </div>
@@ -205,9 +205,9 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 space-y-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 space-y-14 sm:space-y-20">
         {/* ===== About + At a glance ===== */}
-        <section id="about" className="scroll-mt-28 grid lg:grid-cols-3 gap-10 items-start">
+        <section id="about" className="scroll-mt-28 grid lg:grid-cols-3 gap-8 lg:gap-10 items-start">
           <div className="lg:col-span-2">
             <SecHead eyebrow="About the community" title={sh.about || e.tagline || `Welcome to ${name}`} />
             {overview && (
@@ -323,7 +323,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
 
         {/* ===== Investment outlook ===== */}
         {(e.investmentNote || developers.length > 0) && (
-          <section id="invest" className="scroll-mt-28 rounded-3xl bg-primary text-primary-foreground p-8 sm:p-12" style={{ background: "linear-gradient(135deg, #0B3D2E, #12503B)" }}>
+          <section id="invest" className="scroll-mt-28 rounded-3xl bg-primary text-primary-foreground p-6 sm:p-12" style={{ background: "linear-gradient(135deg, #0B3D2E, #12503B)" }}>
             <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">Investment outlook</span>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">{sh.investment || `Why invest in ${name}`}</h2>
             {e.investmentNote && <p className="text-primary-foreground/80 leading-relaxed max-w-2xl mb-8">{e.investmentNote}</p>}
