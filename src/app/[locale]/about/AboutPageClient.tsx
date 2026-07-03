@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { Award, Users, Building2, Globe, CheckCircle2 } from "lucide-react";
@@ -132,7 +131,6 @@ export default function AboutPage() {
     </section>
 
     <Footer />
-    <WhatsAppButton />
   </div>
   );
 }

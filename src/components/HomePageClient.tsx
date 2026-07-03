@@ -36,8 +36,6 @@ const TestimonialsSection  = dynamic(() => import("@/components/TestimonialsSect
 const InquirySection       = dynamic(() => import("@/components/InquirySection"));
 const NewsletterStrip      = dynamic(() => import("@/components/NewsletterStrip"));
 const Footer               = dynamic(() => import("@/components/Footer"));
-const WhatsAppButton       = dynamic(() => import("@/components/WhatsAppButton"));
-const ScrollToTop          = dynamic(() => import("@/components/ScrollToTop"));
 
 interface SecondaryListing {
   _id: string;
@@ -149,14 +147,10 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
       </main>
       <LazyMount minHeight={0}><Footer /></LazyMount>
 
-      {/* Primary support widgets — always mounted so Live Chat / WhatsApp
-          buttons elsewhere on the page have their handlers attached. JS
-          payload is already lazy-loaded via dynamic() so this doesn't
-          impact LCP. */}
-      <WhatsAppButton />
+      {/* Floating action buttons (WhatsApp / AI chat / scroll-to-top) are now
+          mounted once globally in [locale]/layout.tsx, so they're not here. */}
 
       {/* Non-essential overlays — defer until after page settles */}
-      <DeferUntilIdle><ScrollToTop /></DeferUntilIdle>
       <DeferUntilIdle><CookieConsent /></DeferUntilIdle>
       <DeferUntilIdle><PropertyComparison /></DeferUntilIdle>
     </div>

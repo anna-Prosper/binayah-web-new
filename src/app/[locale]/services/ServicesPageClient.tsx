@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -339,7 +338,6 @@ export default function ServicesPage() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

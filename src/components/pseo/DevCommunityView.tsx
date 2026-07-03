@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ArrowRight, Building2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getDeveloper } from "@/lib/api";
@@ -139,7 +138,6 @@ export default async function DevCommunityView({ devSlug, communitySlug, locale,
       <CommunityStatsBand name={community.name} stats={stats} faqs={faqs} localePrefix={lp} nonce={nonce} />
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

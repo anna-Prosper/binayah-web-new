@@ -4,7 +4,6 @@
 import { apiUrl, proxyUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
 import { useCurrency } from "@/context/CurrencyContext";
 import PropertyComparison from "@/components/PropertyComparison";
@@ -980,7 +979,6 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
       </section>
 
       {syncUrl && <Footer />}
-      {syncUrl && <WhatsAppButton />}
       <PropertyComparison />
     </div>
   );

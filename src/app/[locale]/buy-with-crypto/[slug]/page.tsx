@@ -5,7 +5,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, AE_URL } from "@/lib/site";
@@ -288,7 +287,6 @@ export default async function CryptoSpokePage({ params }: Props) {
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

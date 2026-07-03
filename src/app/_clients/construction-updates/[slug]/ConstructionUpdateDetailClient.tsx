@@ -6,7 +6,6 @@ import Image from "next/image";
 import { ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect, useRef } from "react";
@@ -296,7 +295,6 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
       </section>
 
       <Footer />
-      <WhatsAppButton />
 
       {showTop && (
         <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="fixed bottom-24 right-5 z-50 w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all" aria-label="Back to top">

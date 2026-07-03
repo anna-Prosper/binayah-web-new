@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import PulsePageClient from "@/app/_clients/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -108,7 +107,6 @@ export default async function PulsePage({ params }: { params: Promise<{ locale: 
       />
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

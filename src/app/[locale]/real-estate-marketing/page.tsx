@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -185,7 +184,6 @@ export default async function RealEstateMarketingPage({ params }: Props) {
         </section>
       </div>
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

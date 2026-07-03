@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
@@ -1270,7 +1269,6 @@ export default async function HudayriyatIslandPage({
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

@@ -17,7 +17,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ListPropertyForm from "@/components/ListPropertyForm";
 import { getTranslations } from "next-intl/server";
 
@@ -54,7 +53,6 @@ export default async function ListYourPropertyPage() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

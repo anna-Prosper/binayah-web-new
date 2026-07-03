@@ -4,7 +4,6 @@ import { authOptions } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import MarketReportsClient, { type SubscriptionData } from "./MarketReportsClient";
 
 export const dynamic = "force-dynamic";
@@ -56,7 +55,6 @@ export default async function MarketReportsPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <WhatsAppButton />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-24 pt-32">
         <div className="mb-8">

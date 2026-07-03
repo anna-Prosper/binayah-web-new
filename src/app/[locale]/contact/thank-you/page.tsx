@@ -2,7 +2,6 @@ import Link from "next/link";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import GaLeadFire from "@/components/GaLeadFire";
 import { getTranslations } from "next-intl/server";
 
@@ -74,7 +73,6 @@ export default async function ContactThankYouPage() {
         </div>
       </main>
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

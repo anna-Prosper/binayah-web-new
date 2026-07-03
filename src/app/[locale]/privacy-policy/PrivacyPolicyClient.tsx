@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -80,7 +79,6 @@ export default function PrivacyPolicyClient() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

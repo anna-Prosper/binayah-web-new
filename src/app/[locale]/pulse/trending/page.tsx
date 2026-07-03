@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import TrendingClient from "./TrendingClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -61,7 +60,6 @@ export default async function TrendingPage() {
       <PulseEmirateNav />
       <TrendingClient marketData={marketData} projects={projects} marketStats={marketStats} binayahNews={binayahNews} />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

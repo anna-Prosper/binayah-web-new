@@ -3,7 +3,6 @@
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
@@ -300,7 +299,6 @@ export default function ListingsPageClient({
       </section>
 
       <Footer />
-      <WhatsAppButton />
       <PropertyComparison />
     </div>
   );

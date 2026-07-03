@@ -5,7 +5,6 @@ import Link from "next/link";
 import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
 import { getDldBuilding, getDldBuildings } from "@/lib/api";
@@ -209,7 +208,6 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

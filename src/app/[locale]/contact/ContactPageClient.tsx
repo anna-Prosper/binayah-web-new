@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
@@ -153,7 +152,6 @@ export default function ContactPage() {
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

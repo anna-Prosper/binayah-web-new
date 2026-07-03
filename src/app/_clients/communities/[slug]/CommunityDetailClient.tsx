@@ -5,7 +5,6 @@
 import Navbar from "@/components/Navbar";
 import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { ArrowLeft, Building, CalendarDays, ChevronRight, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -104,7 +103,6 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

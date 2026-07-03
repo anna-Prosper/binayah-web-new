@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import Link from "next/link";
 import { BreadcrumbJsonLd, CollectionPageJsonLd, FAQJsonLd } from "@/components/JsonLd";
@@ -326,7 +325,6 @@ export default async function RentTypePage({ params }: Props) {
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

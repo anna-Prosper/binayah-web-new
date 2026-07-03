@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -604,7 +603,6 @@ export default async function TopProjectsPage({ params }: Props) {
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuidesClient from "./GuidesClient";
 import type { Metadata } from "next";
@@ -35,7 +34,6 @@ export default function GuidesPage() {
       <PulseEmirateNav />
       <GuidesClient />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

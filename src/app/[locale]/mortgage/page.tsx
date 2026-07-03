@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -556,7 +555,6 @@ export default async function MortgagePage({ params }: Props) {
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

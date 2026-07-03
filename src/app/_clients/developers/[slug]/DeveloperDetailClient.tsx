@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import { buildDeveloperSummary } from "@/lib/developerSummary";
 import { AedPrice } from "@/components/AedPrice";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -264,7 +263,6 @@ export default function DeveloperDetailClient({
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

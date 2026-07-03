@@ -3,7 +3,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -98,7 +97,6 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

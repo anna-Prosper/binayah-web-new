@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -73,7 +72,6 @@ export default function NewsPageClient({ articles }: { articles: Article[] }) {
         </div>
       </section>
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

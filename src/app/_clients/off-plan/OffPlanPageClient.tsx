@@ -3,7 +3,6 @@
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CardActions } from "@/components/PropertyActions";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -190,7 +189,6 @@ export default function OffPlanPageClient({
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

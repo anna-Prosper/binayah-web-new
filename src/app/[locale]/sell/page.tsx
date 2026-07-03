@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -702,7 +701,6 @@ export default async function SellPage({ params }: Props) {
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

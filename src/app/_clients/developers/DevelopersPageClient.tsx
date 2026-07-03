@@ -3,7 +3,6 @@
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -234,7 +233,6 @@ export default function DevelopersPageClient({
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

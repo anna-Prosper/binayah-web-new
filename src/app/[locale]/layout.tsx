@@ -22,6 +22,7 @@ import GlobalImageFallback from "@/components/GlobalImageFallback";
 import ChunkReloadGuard from "@/components/ChunkReloadGuard";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const GA_ID = "G-9FZKWX04K3";
 const CLARITY_ID = "wuee1w39pj";
@@ -208,6 +209,10 @@ export default async function LocaleLayout({
                   {/* AI live-chat button — mounted globally so it appears on
                       every page (not just home/services/property/project). */}
                   <AIChatWidget />
+                  {/* Scroll-to-top — global (was homepage-only). All floating
+                      action buttons are mounted here once, so no page double-
+                      mounts them and the stack is identical everywhere. */}
+                  <ScrollToTop />
                   <FavoritesDrawer />
                   <GlobalImageFallback />
                   <Analytics />

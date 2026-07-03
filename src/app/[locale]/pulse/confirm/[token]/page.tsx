@@ -2,7 +2,6 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Calendar, Mail } from "lucide-react";
 
@@ -37,7 +36,6 @@ export default async function PulseConfirmPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <WhatsAppButton />
 
       <main className="min-h-[80vh] flex items-center justify-center px-4 py-24">
         <div className="w-full max-w-md">

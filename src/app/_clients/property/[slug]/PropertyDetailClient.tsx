@@ -15,7 +15,6 @@ import Link from "next/link";
 import NextImage from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
@@ -1551,7 +1550,6 @@ export default function PropertyDetailClient({
 
       <Footer />
       <div className="hidden lg:block">
-        <WhatsAppButton />
       </div>
       <PropertyComparison />
     </div>

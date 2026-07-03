@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import CalculatorClient from "./CalculatorClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -59,7 +58,6 @@ export default async function CalculatorPage() {
       <PulseEmirateNav />
       <CalculatorClient marketStats={marketStats} marketData={marketData} />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

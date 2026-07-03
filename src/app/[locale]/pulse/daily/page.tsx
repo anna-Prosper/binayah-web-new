@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DailyClient from "./DailyClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -91,7 +90,6 @@ export default async function DailyPage() {
       <DailyClient initialData={initialData} />
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

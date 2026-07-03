@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { motion } from "framer-motion";
@@ -258,7 +257,6 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { TrendingUp, Percent } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { getMarketStats, fmtAed, type CommunityStat } from "@/lib/market";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
@@ -129,7 +128,6 @@ export default async function AreaRankingView({ mode, locale, searchSlug }: { mo
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import type { PropertyTypeLocale } from "@/lib/property-type-pages";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { findPropertyTypePage } from "@/lib/property-type-pages";
 
@@ -193,7 +192,6 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

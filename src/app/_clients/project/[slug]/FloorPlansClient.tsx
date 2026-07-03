@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { waHref } from "@/lib/whatsapp";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { ProjectSubNav } from "@/components/ProjectSubNav";
 import NextImage from "next/image";
@@ -309,7 +308,6 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
         </div>
       </main>
 
-      <WhatsAppButton />
       <Footer />
     </div>
   );

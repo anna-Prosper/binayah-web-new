@@ -4,7 +4,6 @@
 import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { DetailTabs } from "@/components/DetailTabs";
 import { LocationSection } from "@/components/LocationSection";
@@ -224,7 +223,6 @@ export default function LocationClient({ serverProject }: { serverProject: any }
         </div>
       </main>
 
-      <WhatsAppButton />
       <Footer />
     </div>
   );

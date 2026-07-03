@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
@@ -138,7 +137,6 @@ export default async function OffPlanInCommunityPage({
       )}
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

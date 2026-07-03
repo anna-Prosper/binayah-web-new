@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -585,7 +584,6 @@ function NewsDetailInner({
       )}
 
       <Footer />
-      <WhatsAppButton />
 
       {/* Back to top */}
       {showTop && (

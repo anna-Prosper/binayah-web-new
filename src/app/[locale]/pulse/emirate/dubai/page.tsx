@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DubaiEmirateClient from "./DubaiEmirateClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -188,7 +187,6 @@ export default async function DubaiEmiratePage() {
       />
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

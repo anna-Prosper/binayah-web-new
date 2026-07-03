@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
 import { PULSE_GUIDES, findGuide } from "@/lib/pulse-guides";
@@ -94,7 +93,6 @@ export default async function GuideDetailPage({ params }: Props) {
       <PulseEmirateNav />
       <GuideDetailClient guide={guide} />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

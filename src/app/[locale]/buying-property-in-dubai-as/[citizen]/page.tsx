@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText } from "@/lib/foreign-buyers";
@@ -818,7 +817,6 @@ export default async function ForeignBuyerPage({
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

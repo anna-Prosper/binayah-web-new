@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { waHref } from "@/lib/whatsapp";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { DetailTabs } from "@/components/DetailTabs";
 import { motion } from "framer-motion";
@@ -301,7 +300,6 @@ export default function PaymentPlanClient({ serverProject }: { serverProject: an
         </div>
       </main>
 
-      <WhatsAppButton />
       <Footer />
     </div>
   );

@@ -10,7 +10,6 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ProfileClient from "./ProfileClient";
 
 export default async function ProfilePage() {
@@ -22,7 +21,6 @@ export default async function ProfilePage() {
       <Navbar />
       <ProfileClient user={session.user} />
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }

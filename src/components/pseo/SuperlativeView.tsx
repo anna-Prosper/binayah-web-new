@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ArrowRight, BedDouble, Home } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getCachedSearch } from "@/lib/api";
@@ -143,7 +142,6 @@ export default async function SuperlativeView({ parsed, locale, searchSlug }: { 
       <CommunityStatsBand name={r.community.name} stats={stats} faqs={faqs} localePrefix={lp} nonce={nonce} />
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
