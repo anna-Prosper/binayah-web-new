@@ -32,22 +32,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
   const nonce = await getNonce();
-  // Pass locale so API returns translated title/body/excerpt when available
-  const article = await getNewsArticle(slug, locale);
+  // Fetch the article and the (heavy, independent) market snapshot in PARALLEL.
+  // These previously ran sequentially — article → related → market-stats —
+  // stacking API latency onto cold ISR renders (~8s). market-stats doesn't
+  // depend on the article, so it shouldn't be on the critical path after it.
+  const [article, marketStats] = await Promise.all([
+    getNewsArticle(slug, locale),
+    serverFetch(serverApiUrl('/api/market-stats'))
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null),
+  ]);
   // article.content is scraped HTML rendered via dangerouslySetInnerHTML — sanitize
   // server-side (CSP allows 'unsafe-inline', so injected scripts would execute).
   if (article?.content) article.content = sanitizeArticleHtml(article.content);
+  // Related news needs the article's category, so it runs after the article.
   let related: any[] = [];
   try {
     related = await getRelatedNews(slug, article.category, 3, locale);
   } catch {
     related = [];
   }
-  let marketStats: any = null;
-  try {
-    const r = await serverFetch(serverApiUrl('/api/market-stats'));
-    if (r.ok) marketStats = await r.json();
-  } catch {}
   return (
     <>
       <NewsDetailClient article={article} related={related} marketStats={marketStats} />
