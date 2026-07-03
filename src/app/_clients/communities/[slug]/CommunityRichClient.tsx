@@ -3,7 +3,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import Link from "next/link";
@@ -154,34 +153,33 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       </section>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-16">
-        {/* Overview + Key facts */}
+        {/* Overview + Key facts — full-width so a short overview can't leave a
+            side gap; key facts sit below as a horizontal strip. */}
         {(overview || keyFactRows.length) && (
-          <section className="grid lg:grid-cols-3 gap-10 items-start">
-            <div className="lg:col-span-2">
-              <SectionTitle>About {name}</SectionTitle>
-              {overview && (
-                <div className="space-y-4 text-[15px] leading-[1.75] text-muted-foreground">
-                  {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
-                </div>
-              )}
-              {e.targetBuyer && (
-                <div className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-primary/5 border border-primary/10 px-4 py-2.5 text-sm">
-                  <span className="font-semibold text-primary">Ideal for</span>
-                  <span className="text-muted-foreground">{e.targetBuyer}</span>
-                </div>
-              )}
-            </div>
+          <section>
+            <SectionTitle>About {name}</SectionTitle>
+            {overview && (
+              <div className="max-w-3xl space-y-4 text-[15px] leading-[1.75] text-muted-foreground">
+                {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
+              </div>
+            )}
+            {e.targetBuyer && (
+              <div className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-primary/5 border border-primary/10 px-4 py-2.5 text-sm">
+                <span className="font-semibold text-primary">Ideal for</span>
+                <span className="text-muted-foreground">{e.targetBuyer}</span>
+              </div>
+            )}
             {keyFactRows.length > 0 && (
-              <div className="lg:sticky lg:top-24 rounded-2xl border border-border/60 bg-gradient-to-b from-card to-muted/20 p-6 shadow-sm">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-5">At a glance</h3>
-                <dl className="space-y-4">
+              <div className="mt-8">
+                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-4">At a glance</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px rounded-2xl overflow-hidden border border-border/60 bg-border/60">
                   {keyFactRows.map(([k, v]) => (
-                    <div key={k} className="flex justify-between gap-6 text-sm border-b border-border/40 pb-4 last:border-0 last:pb-0">
-                      <dt className="text-muted-foreground whitespace-nowrap">{k}</dt>
-                      <dd className="font-semibold text-foreground text-right">{v}</dd>
+                    <div key={k} className="bg-card p-4 sm:p-5">
+                      <p className="text-[11px] text-muted-foreground mb-1.5">{k}</p>
+                      <p className="text-sm font-semibold text-foreground leading-snug">{v}</p>
                     </div>
                   ))}
-                </dl>
+                </div>
               </div>
             )}
           </section>
@@ -337,7 +335,6 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       </div>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
