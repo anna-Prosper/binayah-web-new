@@ -36,16 +36,29 @@ export async function generateMetadata({
     db?.community?.name ||
     slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
-  const rawDesc =
+  // Keyword-rich, unique meta description led by real data (project count +
+  // price), then a sentence of editorial context. Falls back through the
+  // enrichment so communities without a legacy description (JVC/MBR/Meydan)
+  // still get unique copy instead of boilerplate.
+  const enr = (db?.community?.enrichment || null) as any;
+  const priceFrom = (enr?.highlights || []).find((h: any) => /price/i.test(h?.label || ""))?.value as string | undefined;
+  const projCount: number = db?.counts?.projects || (Array.isArray(db?.projects) ? db!.projects.length : 0);
+  const baseDesc =
     (wiki as any)?.description ||
     db?.community?.description ||
+    enr?.overview ||
+    enr?.tagline ||
     "";
-  const stripped = rawDesc.replace(/<[^>]*>/g, "").trim();
-  const description = stripped
-    ? (stripped.length <= 160
-        ? stripped
-        : stripped.slice(0, stripped.lastIndexOf(" ", 157)).trimEnd() + "…")
-    : `Explore properties for sale and rent in ${name}, Dubai. Browse off-plan projects and secondary listings with Binayah Properties.`;
+  const stripped = baseDesc.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  const firstSentence = ((stripped.match(/^.*?[.!?](\s|$)/) || [stripped])[0] || stripped).trim();
+  const lead = projCount > 0
+    ? `${projCount} off-plan projects plus homes for sale & rent in ${name}, Dubai${priceFrom ? ` from ${priceFrom}` : ""}.`
+    : `Property for sale, rent & off-plan in ${name}, Dubai.`;
+  let description = `${lead} ${firstSentence}`.replace(/\s+/g, " ").trim();
+  if (description.length > 160) {
+    const cut = description.lastIndexOf(" ", 158);
+    description = description.slice(0, cut > 0 ? cut : 158).trimEnd() + "…";
+  }
 
   // Reject Wikipedia/Wikimedia-hosted images — they may go offline and signal
   // third-party content to social crawlers. Fall back to our branded OG image.
@@ -55,7 +68,7 @@ export async function generateMetadata({
       ? rawImage
       : DEFAULT_OG_IMAGE;
 
-  const title = `${name} Properties | Real Estate For Sale & Rent | Binayah`;
+  const title = `${name} Properties for Sale & Rent in Dubai | Binayah`;
 
   const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 

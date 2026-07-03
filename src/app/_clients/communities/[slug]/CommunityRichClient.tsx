@@ -69,9 +69,14 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   ] as [string, string | undefined][]).filter(([, v]) => !isPlaceholder(v)) as [string, string][];
 
   // JSON-LD: Place + FAQ + Breadcrumb
+  const pageUrl = `https://www.binayah.ae${lp(locale, `/communities/${community.slug}`)}`;
   const jsonLd: any[] = [
     { "@context": "https://schema.org", "@type": "Place", name, description: overview.slice(0, 300),
+      url: pageUrl,
+      ...(community.featuredImage ? { image: community.featuredImage } : {}),
       address: { "@type": "PostalAddress", addressLocality: name, addressRegion: "Dubai", addressCountry: "AE" },
+      containedInPlace: { "@type": "City", name: "Dubai", address: { "@type": "PostalAddress", addressCountry: "AE" } },
+      hasMap: `https://www.google.com/maps/search/${encodeURIComponent(name + ", Dubai")}`,
       ...(community.latitude && community.longitude ? { geo: { "@type": "GeoCoordinates", latitude: community.latitude, longitude: community.longitude } } : {}) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://www.binayah.ae/" },
@@ -130,7 +135,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       {/* Hero */}
       <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="absolute inset-0">
-          <ImageWithFallback src={hero} alt={name} fill className="object-cover" priority />
+          <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-foreground/30" />
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">
