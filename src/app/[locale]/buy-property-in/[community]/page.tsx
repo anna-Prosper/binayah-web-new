@@ -116,6 +116,13 @@ export default async function BuyInCommunityPage({
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{localizeCommunityText(c.shortIntro, locale)}</p>
         <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{localizeCommunityText(c.why, locale)}</p>
         {marketNote && <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{marketNote}</p>}
+        {/* Cross-link to the informational area guide — different intent (this
+            page = homes for sale; the guide = schools, transport, lifestyle) so
+            the two don't compete for the same query. */}
+        <p className="text-sm text-muted-foreground max-w-3xl mb-8">
+          For schools, transport and the full area overview, read the{" "}
+          <a href={`${localePrefix}/communities/${c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
+        </p>
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
+import { findBuyCommunity } from "@/lib/buy-communities";
 import Link from "next/link";
 import {
   Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize, Clock,
@@ -62,6 +63,10 @@ function amenityIcon(title: string) {
 }
 
 export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale }: Props) {
+  // This is the informational area guide. When the area also has transactional
+  // buy/rent/off-plan landing pages, cross-link to them (distinct intent) so the
+  // two page types complement rather than compete for the same query.
+  const isBuyCommunity = !!findBuyCommunity(community.slug);
   const e = community.enrichment || {};
   const sh = e.sectionHeadings || {};
   const name = community.name;
@@ -193,6 +198,14 @@ export default function CommunityRichClient({ community, projects, forSale, forR
               Explore projects <ArrowRight className="h-4 w-4" />
             </a>
           </div>
+          {isBuyCommunity && (
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-5 text-sm">
+              <span className="text-white/50">Ready to transact in {name}?</span>
+              <Link href={lp(locale, `/buy-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Buy →</Link>
+              <Link href={lp(locale, `/rent-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Rent →</Link>
+              <Link href={lp(locale, `/off-plan-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Off-plan →</Link>
+            </div>
+          )}
         </div>
       </section>
 
