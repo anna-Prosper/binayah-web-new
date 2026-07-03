@@ -28,7 +28,15 @@ export interface MarketStatsResponse {
 
 export const getMarketStats = cache(async (): Promise<MarketStatsResponse | null> => {
   try {
-    const res = await serverFetch(serverApiUrl("/api/market-stats"), 10_000);
+    // Cross-request cache: /api/market-stats is a heavy, site-wide, slow-moving
+    // endpoint. serverFetch() is uncached (Next defaults to no-store), so every
+    // render re-fetched it. Cache it in Next's data cache for an hour instead —
+    // fetched at most once/hour site-wide and reused everywhere. (React cache()
+    // dedupes within a single render; next.revalidate caches across requests.)
+    const res = await fetch(serverApiUrl("/api/market-stats"), {
+      signal: AbortSignal.timeout(10_000),
+      next: { revalidate: 3600 },
+    });
     if (!res.ok) return null;
     return (await res.json()) as MarketStatsResponse;
   } catch {

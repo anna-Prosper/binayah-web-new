@@ -1,11 +1,27 @@
 import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
-import { getNewsArticle, getRelatedNews, serverApiUrl, serverFetch } from "@/lib/api";
+import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
+import { getMarketStats } from "@/lib/market";
 import { canonical, altLangs, AE_URL } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
 
 export const revalidate = 3600;
+// Pre-render the most recent articles (the hot pages) at build so they never hit
+// a cold on-demand render; the long tail still renders on-demand and is cached
+// (dynamicParams defaults to true).
+export async function generateStaticParams() {
+  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
+  try {
+    const res = await fetch(serverApiUrl("/api/news?limit=24"), { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+    const items = (await res.json()) as Array<{ slug?: string }>;
+    const slugs = items.map((a) => a?.slug).filter((s): s is string => !!s);
+    return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+  } catch {
+    return [];
+  }
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
@@ -38,9 +54,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   // depend on the article, so it shouldn't be on the critical path after it.
   const [article, marketStats] = await Promise.all([
     getNewsArticle(slug, locale),
-    serverFetch(serverApiUrl('/api/market-stats'))
-      .then((r) => (r.ok ? r.json() : null))
-      .catch(() => null),
+    getMarketStats(), // cross-request cached (1h) — no longer a live call per render
   ]);
   // article.content is scraped HTML rendered via dangerouslySetInnerHTML — sanitize
   // server-side (CSP allows 'unsafe-inline', so injected scripts would execute).
