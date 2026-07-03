@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
+import { ArrowRight, ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -150,7 +150,30 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
               {/* Body */}
               {article.body && (
                 <div dir={isRtl ? "rtl" : "ltr"} className="prose prose-lg max-w-none prose-headings:text-foreground prose-headings:font-bold prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg prose-img:w-full prose-img:h-auto">
-                  <ReactMarkdown>{article.body}</ReactMarkdown>
+                  <ReactMarkdown
+                    components={{
+                      // Turn the in-article "View full details" project link into a
+                      // prominent gold call-to-action button.
+                      a: ({ href, children }) => {
+                        const isProject = typeof href === "string" && /\/project\//i.test(href);
+                        if (!isProject) {
+                          return <a href={href} className="text-primary no-underline hover:underline">{children}</a>;
+                        }
+                        return (
+                          <a
+                            href={href}
+                            className="not-prose group my-6 inline-flex items-center gap-2.5 rounded-xl px-6 py-3.5 text-[15px] font-bold text-accent-foreground no-underline transition-transform hover:scale-[1.02]"
+                            style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", boxShadow: "0 8px 22px rgba(212,168,71,0.32)" }}
+                          >
+                            {children}
+                            <ArrowRight className="h-4 w-4 flex-shrink-0 transition-transform group-hover:translate-x-0.5" />
+                          </a>
+                        );
+                      },
+                    }}
+                  >
+                    {article.body}
+                  </ReactMarkdown>
                 </div>
               )}
 
