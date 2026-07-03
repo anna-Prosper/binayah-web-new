@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binayah · Investment Guide Banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bny-primary: #0B3D2E;
+    --bny-primary-2: #1A7A5A;
+    --bny-gold: #D4A847;
+    --bny-gold-dark: #B8922F;
+    --bny-gold-light: #E8D38A;
+    --bny-ink: #0E1C22;
+    --bny-muted: #6B7782;
+    --bny-border: #E4DFDA;
+    --bny-gradient-gold: linear-gradient(to right, #D4A847, #B8922F);
+    --bny-font: 'Plus Jakarta Sans', -apple-system, 'Segoe UI', sans-serif;
+    --bny-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--bny-font);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(26,122,90,0.14), transparent 60%),
+      #EAE7E0;
+  }
+
+  /* ---------- Banner ---------- */
+  .bny-banner {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 880px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 90px rgba(4,20,15,0.28);
+  }
+
+  /* close button (X, top-right) */
+  .bny-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 6;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #F0EDE8;
+    color: #5A6670;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .14s ease, color .14s ease, transform .14s ease;
+  }
+  .bny-close:hover { background: #E4DFDA; color: var(--bny-ink); transform: rotate(90deg); }
+
+  /* left: cover */
+  .bny-cover {
+    position: relative;
+    flex: 0 0 42%;
+    max-width: 42%;
+    min-height: 560px;
+    background: #0c3a2c center / cover no-repeat;
+    background-image: url("assets/investment-guide-cover.png");
+    display: flex;
+    align-items: flex-end;
+    padding: 26px;
+  }
+  .bny-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6,26,20,0.55) 0%, transparent 42%);
+    pointer-events: none;
+  }
+  .bny-freebadge {
+    position: relative;
+    z-index: 2;
+    font-family: var(--bny-mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--bny-gold-light);
+    border: 1px solid rgba(232,211,138,0.5);
+    border-radius: 999px;
+    padding: 9px 20px;
+  }
+
+  /* right: form */
+  .bny-form-wrap {
+    flex: 1 1 58%;
+    max-width: 58%;
+    padding: 46px 46px 40px;
+  }
+  .bny-eyebrow {
+    font-family: var(--bny-mono);
+    font-size: 12px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--bny-gold-dark);
+  }
+  .bny-title {
+    margin: 14px 0 0;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--bny-ink);
+  }
+  .bny-lead {
+    margin: 14px 0 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--bny-muted);
+  }
+
+  .bny-checks { list-style: none; padding: 0; margin: 26px 0 30px; display: flex; flex-direction: column; gap: 14px; }
+  .bny-checks li { display: flex; align-items: center; gap: 14px; font-size: 15.5px; font-weight: 600; color: var(--bny-ink); }
+  .bny-tick {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(26,122,90,0.12); color: var(--bny-primary-2);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  .bny-label { font-size: 15px; font-weight: 700; color: var(--bny-ink); margin-bottom: 9px; }
+  .bny-field {
+    display: flex; align-items: center;
+    border: 1.5px solid var(--bny-border);
+    border-radius: 12px; padding: 0 18px;
+    transition: border-color .14s ease, box-shadow .14s ease;
+  }
+  .bny-field:focus-within { border-color: var(--bny-primary-2); box-shadow: 0 0 0 4px rgba(26,122,90,0.10); }
+  .bny-field svg { color: #8A949C; flex: none; }
+  .bny-field input {
+    border: none; outline: none; background: none; width: 100%;
+    padding: 15px 14px; font-family: var(--bny-font); font-size: 16px; color: var(--bny-ink);
+  }
+  .bny-field input::placeholder { color: #9AA3AB; }
+  .bny-field + .bny-label { margin-top: 18px; }
+
+  .bny-cta {
+    position: relative; margin-top: 26px; width: 100%;
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    font-family: var(--bny-font); font-size: 16.5px; font-weight: 700; color: #fff;
+    background: var(--bny-gradient-gold); border: none; border-radius: 12px;
+    padding: 17px 24px; cursor: pointer; overflow: hidden;
+    box-shadow: 0 12px 30px rgba(212,168,71,0.38);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .bny-cta:hover { transform: translateY(-1px); box-shadow: 0 16px 40px rgba(212,168,71,0.5); }
+
+  .bny-fine {
+    margin-top: 20px; display: flex; align-items: flex-start; gap: 9px;
+    font-size: 13px; line-height: 1.5; color: var(--bny-muted);
+  }
+  .bny-fine svg { color: var(--bny-primary-2); flex: none; margin-top: 1px; }
+  .bny-fine a { color: var(--bny-primary); font-weight: 700; text-decoration: none; }
+  .bny-fine a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .bny-cover { display: none; }
+    .bny-form-wrap { flex: 1 1 100%; max-width: 100%; padding: 44px 26px 32px; }
+    .bny-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============================================================
+       Binayah — Investment Guide Banner (clean HTML, no framework)
+       ============================================================ -->
+  <div class="bny-banner" id="bnyBanner">
+
+    <button type="button" class="bny-close" aria-label="Close" onclick="document.getElementById('bnyBanner').remove()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="bny-cover">
+      <span class="bny-freebadge">Free PDF Guide</span>
+    </div>
+
+    <div class="bny-form-wrap">
+      <div class="bny-eyebrow">Investor Resource</div>
+      <h2 class="bny-title">Get the 2026 Dubai investment guide</h2>
+      <p class="bny-lead">Yields, hotspot communities and off-plan payment plans, distilled into one practical PDF. Drop your email and we'll send it over.</p>
+
+      <ul class="bny-checks">
+        <li>
+          <span class="bny-tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Area-by-area rental yield benchmarks
+        </li>
+        <li>
+          <span class="bny-tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Golden Visa &amp; ownership essentials
+        </li>
+        <li>
+          <span class="bny-tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Off-plan vs. ready buyer's checklist
+        </li>
+      </ul>
+
+      <form onsubmit="return false;">
+        <div class="bny-label">Email address</div>
+        <label class="bny-field">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          <input type="email" name="email" placeholder="you@email.com" autocomplete="email" required>
+        </label>
+
+        <div class="bny-label">Phone number</div>
+        <label class="bny-field">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <input type="tel" name="phone" placeholder="+971 50 000 0000" autocomplete="tel">
+        </label>
+
+        <button type="submit" class="bny-cta">
+          Send me the guide
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+
+      <div class="bny-fine">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>No spam, just the guide and the occasional market update. <a href="#">Privacy Policy</a>.</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

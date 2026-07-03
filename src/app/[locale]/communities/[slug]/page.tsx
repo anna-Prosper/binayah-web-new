@@ -2,7 +2,7 @@ import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRich
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
 import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings } from "@/lib/api";
-import clientPromise from "@/lib/mongodb";
+import { getCommunityWiki } from "@/lib/community-wiki";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
@@ -20,11 +20,7 @@ export async function generateMetadata({
   const { slug, locale } = await params;
 
   const [wikiResult, dbResult] = await Promise.allSettled([
-    (async () => {
-      const client = await clientPromise;
-      const db = client.db("binayah_web_new_dev");
-      return db.collection("community_info_pages").findOne({ slug });
-    })(),
+    getCommunityWiki(slug),
     getCommunity(slug),
   ]);
 
@@ -112,18 +108,14 @@ export default async function CommunityPage({
 
   // 1. Fetch both sources in parallel
   const [wikiResult, dbResult] = await Promise.allSettled([
-    (async () => {
-      const client = await clientPromise;
-      const db = client.db("binayah_web_new_dev");
-      return db
-        .collection<CommunityInfoPage>("community_info_pages")
-        .findOne({ slug });
-    })(),
+    getCommunityWiki(slug),
     getCommunity(slug),
   ]);
 
   const communityInfoDoc =
-    wikiResult.status === "fulfilled" ? wikiResult.value : null;
+    wikiResult.status === "fulfilled"
+      ? (wikiResult.value as unknown as CommunityInfoPage | null)
+      : null;
   if (wikiResult.status === "rejected") {
     console.error(
       "[communities/slug] community_info_pages lookup failed:",

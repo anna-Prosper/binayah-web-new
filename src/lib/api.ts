@@ -201,9 +201,29 @@ export const getRelatedNews = cache(
 export const getDeveloper = cache(async (slug: string) =>
   fetchJsonOr404(`/api/developers/${slug}`)
 );
-export const getCommunity = cache(async (slug: string) =>
-  fetchJsonOr404(`/api/communities/${slug}`)
-);
+// Community landing bundle (community + projects + sale/rent + counts +
+// developers + nearby) from one alias-aware API call. The route renders
+// dynamically site-wide (root layout reads the CSP nonce via headers()), so the
+// page's `revalidate` never caches the HTML — wrap the upstream in
+// unstable_cache so repeat views read warm data instead of hitting Render +
+// Mongo every request. 404 (real miss) is cached; transient errors throw so a
+// cold-Render blip isn't cached as a 404 for 10 minutes.
+const _communityUncached = async (slug: string) => {
+  const res = await serverFetch(serverApiUrl(`/api/communities/${slug}`));
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`community ${res.status}`);
+  return res.json();
+};
+const _communityCached = unstable_cache(_communityUncached, ["community-landing"], {
+  revalidate: 600,
+});
+export const getCommunity = cache(async (slug: string) => {
+  try {
+    return await _communityCached(slug);
+  } catch {
+    return null;
+  }
+});
 export const getConstructionUpdate = cache(async (slug: string) =>
   fetchJsonOr404(`/api/construction-updates/${slug}`)
 );

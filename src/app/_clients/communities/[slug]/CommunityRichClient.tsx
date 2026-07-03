@@ -1,5 +1,7 @@
-"use client";
 /* eslint-disable i18next/no-literal-string -- content/SEO landing page; dynamic copy is English */
+// Server Component — purely presentational (native <details> accordion, CSS
+// sticky nav, no hooks/handlers), so it ships zero JS of its own. Client-only
+// children (Navbar, Footer, WhatsAppButton, ImageWithFallback) remain islands.
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
