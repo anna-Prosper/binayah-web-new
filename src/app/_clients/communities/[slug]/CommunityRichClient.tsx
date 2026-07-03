@@ -23,6 +23,7 @@ interface Enrichment {
   amenityCategories?: { title: string; items: string[] }[];
   subCommunities?: string[];
   targetBuyer?: string; investmentNote?: string;
+  sectionHeadings?: { about?: string; location?: string; amenities?: string; projects?: string; investment?: string; faqs?: string; nearby?: string };
   faqs?: { q: string; a: string }[];
 }
 interface Community {
@@ -62,6 +63,7 @@ function amenityIcon(title: string) {
 
 export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale }: Props) {
   const e = community.enrichment || {};
+  const sh = e.sectionHeadings || {};
   const name = community.name;
   const hero = community.featuredImage || community.imageGallery?.[0] || "/assets/dubai-hero.webp";
   const mapSrc = community.latitude && community.longitude
@@ -207,7 +209,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== About + At a glance ===== */}
         <section id="about" className="scroll-mt-28 grid lg:grid-cols-3 gap-10 items-start">
           <div className="lg:col-span-2">
-            <SecHead eyebrow="About the community" title={e.tagline || `Welcome to ${name}`} />
+            <SecHead eyebrow="About the community" title={sh.about || e.tagline || `Welcome to ${name}`} />
             {overview && (
               <div className="space-y-4 text-[15px] leading-[1.8] text-muted-foreground">
                 {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
@@ -234,7 +236,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
 
         {/* ===== Location & connectivity ===== */}
         <section id="location" className="scroll-mt-28">
-          <SecHead eyebrow="Location & connectivity" title="Minutes from everywhere that matters" />
+          <SecHead eyebrow="Location & connectivity" title={sh.location || "Minutes from everywhere that matters"} />
           <div className="grid lg:grid-cols-2 gap-8 items-stretch">
             <div>
               {e.connectivity?.length ? (
@@ -257,7 +259,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Amenities & lifestyle ===== */}
         {(e.amenityCategories?.length || e.lifestyle) && (
           <section id="amenities" className="scroll-mt-28">
-            <SecHead eyebrow="Amenities & lifestyle" title="Everything for a life well lived" />
+            <SecHead eyebrow="Amenities & lifestyle" title={sh.amenities || "Everything for a life well lived"} />
             {e.lifestyle && <p className="text-muted-foreground leading-relaxed mb-8 max-w-3xl -mt-2">{e.lifestyle}</p>}
             {e.amenityCategories?.length ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -287,7 +289,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Featured off-plan launches ===== */}
         {projects.length > 0 && (
           <section id="projects" className="scroll-mt-28">
-            <SecHead eyebrow={`Off-plan projects · ${counts.projects} available`} title={`Featured launches in ${name}`} />
+            <SecHead eyebrow={`Off-plan projects · ${counts.projects} available`} title={sh.projects || `Featured launches in ${name}`} />
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.slice(0, 6).map((p) => <ProjectCard key={p.slug || p.name} p={p} />)}
             </div>
@@ -323,7 +325,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {(e.investmentNote || developers.length > 0) && (
           <section id="invest" className="scroll-mt-28 rounded-3xl bg-primary text-primary-foreground p-8 sm:p-12" style={{ background: "linear-gradient(135deg, #0B3D2E, #12503B)" }}>
             <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">Investment outlook</span>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">Why invest in {name}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">{sh.investment || `Why invest in ${name}`}</h2>
             {e.investmentNote && <p className="text-primary-foreground/80 leading-relaxed max-w-2xl mb-8">{e.investmentNote}</p>}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8">
               <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{counts.projects}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Off-plan projects</div></div>
@@ -348,7 +350,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Good to know (FAQs) ===== */}
         {e.faqs?.length ? (
           <section id="faqs" className="scroll-mt-28">
-            <SecHead eyebrow="Frequently asked questions" title="Good to know" />
+            <SecHead eyebrow="Frequently asked questions" title={sh.faqs || "Good to know"} />
             <div className="space-y-3 max-w-3xl">
               {e.faqs.map((f, i) => (
                 <details key={i} className="group bg-card rounded-2xl border border-border/50 p-5">
@@ -363,7 +365,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Communities you may like ===== */}
         {nearby.length > 0 && (
           <section className="scroll-mt-28">
-            <SecHead eyebrow="Explore nearby" title="Communities you may like" />
+            <SecHead eyebrow="Explore nearby" title={sh.nearby || "Communities you may like"} />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
                 <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
