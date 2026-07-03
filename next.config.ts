@@ -70,6 +70,11 @@ const nextConfig: NextConfig = {
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/downtown", destination: "/:locale/communities/downtown-dubai", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/meydan", destination: "/:locale/communities/meydan-dubai", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/the-valley", destination: "/:locale/communities/the-valley-dubai", permanent: true },
+      // MBR City spelling-variant dupes → the content-bearing "mohammad" slug (69 projects).
+      { source: "/communities/mohd-bin-rashid-city", destination: "/communities/mohammad-bin-rashid-city", permanent: true },
+      { source: "/communities/mohammed-bin-rashid-city", destination: "/communities/mohammad-bin-rashid-city", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohd-bin-rashid-city", destination: "/:locale/communities/mohammad-bin-rashid-city", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohammed-bin-rashid-city", destination: "/:locale/communities/mohammad-bin-rashid-city", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
