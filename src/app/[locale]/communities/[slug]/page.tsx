@@ -135,10 +135,29 @@ export default async function CommunityPage({
   // 2. Nothing found → 404
   if (!hasWiki && !hasDb) return notFound();
 
-  // Real market depth (DLD/listings stats + FAQs + schema) shared across all
-  // render branches so every community page is non-thin.
+  // 3. Any community with a DB record → unified rich landing page.
+  // dbData comes from the API as plain JSON (already serialization-safe). The
+  // rich client already carries its own market context, FAQs and schema, so it
+  // does NOT need the separate stats band appended after it.
+  if (hasDb) {
+    const d = dbData as any;
+    return (
+      <CommunityRichClient
+        community={d.community}
+        projects={d.projects || []}
+        forSale={d.forSale || []}
+        forRent={d.forRent || []}
+        counts={d.counts || { projects: (d.projects || []).length, forSale: 0, forRent: 0 }}
+        developers={d.developers || []}
+        nearby={d.nearby || []}
+        locale={locale}
+      />
+    );
+  }
+
+  // Market-depth band (DLD stats + FAQs + top buildings) — only for the thin
+  // wiki-only fallback below, which lacks the rich client's own content.
   const pageCommunityName =
-    dbData?.community?.name ||
     (communityInfoDoc as any)?.name ||
     slug.replace(/-/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase());
   const cStats = await getCommunityStats(pageCommunityName);
@@ -150,27 +169,6 @@ export default async function CommunityPage({
     .slice(0, 12)
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
   const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} buildings={cBuildings} localePrefix={cLp} nonce={cNonce} />;
-
-  // 3. Any community with a DB record → unified rich landing page.
-  // dbData comes from the API as plain JSON (already serialization-safe).
-  if (hasDb) {
-    const d = dbData as any;
-    return (
-      <>
-        <CommunityRichClient
-          community={d.community}
-          projects={d.projects || []}
-          forSale={d.forSale || []}
-          forRent={d.forRent || []}
-          counts={d.counts || { projects: (d.projects || []).length, forSale: 0, forRent: 0 }}
-          developers={d.developers || []}
-          nearby={d.nearby || []}
-          locale={locale}
-        />
-        {statsBand}
-      </>
-    );
-  }
 
   // 4. Only wiki (no DB record) → existing CommunityInfoDetailClient
   const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
