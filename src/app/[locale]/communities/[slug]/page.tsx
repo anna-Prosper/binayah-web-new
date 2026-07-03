@@ -72,9 +72,16 @@ export async function generateMetadata({
 
   const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 
+  // Wiki-only pages (a scraped legacy stub with no DB community record — e.g.
+  // buildings, developers, whole cities mis-filed under /communities) carry no
+  // independent property value and largely reproduce third-party (Wikipedia)
+  // content. Keep them crawlable (follow) but out of the index.
+  const wikiOnly = !!wiki && !db?.community;
+
   return {
     title,
     description,
+    ...(wikiOnly ? { robots: { index: false as const, follow: true } } : {}),
     alternates: {
       canonical: canonicalUrl,
       languages: altLangs(`/communities/${slug}`),
