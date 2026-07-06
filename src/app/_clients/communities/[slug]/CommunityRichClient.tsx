@@ -215,7 +215,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       </section>
 
       {/* ===== Sticky section nav ===== */}
-      <nav aria-label={`${name} sections`} className="sticky top-16 z-30 bg-background/90 backdrop-blur-md border-b border-border/60">
+      <nav aria-label={`${name} sections`} className="sticky top-0 sm:top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 overflow-x-auto scrollbar-hide">
           {navItems.map(([id, label]) => (
             <a key={id} href={`#${id}`} className="whitespace-nowrap px-4 py-3.5 text-sm font-medium text-muted-foreground hover:text-primary border-b-2 border-transparent hover:border-accent transition-colors">{label}</a>
