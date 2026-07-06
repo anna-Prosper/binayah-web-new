@@ -5,7 +5,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { findBuyCommunity } from "@/lib/buy-communities";
@@ -414,7 +413,6 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       </section>
 
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 }
