@@ -91,9 +91,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <MapPin className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors not-italic leading-relaxed">
-                Mezzanine Floor, Liberty Building,<br />Al Quoz 3, Sheikh Zayed Road, Dubai
-              </a>
+              <a href="https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors leading-relaxed">{t("address")}</a>
             </li>
           </ul>
         </div>
