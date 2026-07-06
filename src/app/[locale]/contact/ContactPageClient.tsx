@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { motion } from "framer-motion";
-import { Phone, Mail, Clock, MessageCircle } from "lucide-react";
+import { Phone, Mail, Clock, MessageCircle, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -91,6 +91,7 @@ export default function ContactPage() {
                     { icon: Phone, label: "Phone", value: "+971 54 998 8811", href: "tel:+971549988811" },
                     { icon: Mail, label: t("email"), value: "info@binayah.com", href: "mailto:info@binayah.com" },
                     { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 54 998 8811", href: waHref(tWa("prefillGeneral"), "/contact") },
+                    { icon: MapPin, label: "Address", value: "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai", href: "https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai" },
                     { icon: Clock, label: t("office"), value: t("hours"), href: undefined },
                   ].map((c) => (
                     <div key={c.label} className="flex items-start gap-4">

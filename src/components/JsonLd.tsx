@@ -73,15 +73,16 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
     email: "info@binayah.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Marasi Drive",
-      addressLocality: "Business Bay",
+      streetAddress: "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road",
+      addressLocality: "Al Quoz",
       addressRegion: "Dubai",
       addressCountry: "AE",
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 25.1855,
-      longitude: 55.2666,
+      // Approximate — Liberty Building, Al Quoz 3, Sheikh Zayed Road. Verify pin.
+      latitude: 25.1466,
+      longitude: 55.2295,
     },
     foundingDate: "2007",
     numberOfEmployees: { "@type": "QuantitativeValue", value: 50 },
@@ -103,7 +104,7 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       { "@type": "City", name: "Dubai", addressCountry: "AE" },
       { "@type": "City", name: "Abu Dhabi", addressCountry: "AE" },
     ],
-    hasMap: "https://maps.google.com/?q=Business+Bay+Dubai",
+    hasMap: "https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai",
   };
 
   return (
