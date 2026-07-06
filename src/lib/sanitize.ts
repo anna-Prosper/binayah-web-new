@@ -31,12 +31,72 @@ function addLazyLoading(html: string): string {
   });
 }
 
+// Hosts the Next.js image optimizer is configured to accept (mirror of
+// next.config.ts images.remotePatterns). An inline <img> from any of these —
+// or a local/relative path — can be routed through /_next/image to gain AVIF/
+// WebP + a responsive srcset. Anything else (unknown host, SVG, data URI) is
+// left untouched so it can't 400 the optimizer and break the image.
+const OPTIMIZABLE_HOSTS = new Set([
+  "binayah.ae", "www.binayah.ae",
+  "binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com",
+  "binayah-media-456051253184-us-east-1-an.s3.amazonaws.com",
+  "binayah-images.s3.ap-south-1.amazonaws.com",
+  "sm-automation-5464.s3.ap-south-1.amazonaws.com",
+  "sm-automation-5464.s3.amazonaws.com",
+  "manage.tanamiproperties.com", "tanamiproperties.com",
+  "keyone.com", "www.keyone.com",
+  "stageproperties.com", "www.stageproperties.com",
+  "upload.wikimedia.org", "commons.wikimedia.org",
+  "cdn.prod.website-files.com", "www.modon.com",
+  "sherwoodsproperty.com", "abudhabioffplan.ae",
+  "lh3.googleusercontent.com",
+]);
+// Widths must be a subset of next.config images.deviceSizes (defaults), and
+// q=75 is the always-allowed default quality — both required or /_next/image 400s.
+const OPT_WIDTHS = [640, 828, 1080, 1200, 1920];
+// Body copy renders in a ~720px content column (matches ArticleBody's blocks).
+const OPT_SIZES = "(max-width: 768px) 100vw, 720px";
+
+function canOptimize(src: string): boolean {
+  if (!src || /^data:/i.test(src) || /\.svg(\?|$)/i.test(src)) return false;
+  if (/\/_next\/image/.test(src)) return false; // already optimized
+  if (src.startsWith("/") && !src.startsWith("//")) return true; // local/relative
+  try {
+    return OPTIMIZABLE_HOSTS.has(new URL(src).hostname);
+  } catch {
+    return false;
+  }
+}
+
+function optUrl(src: string, w: number): string {
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
+}
+
+// Route optimizable inline images through the Next optimizer for AVIF/WebP +
+// responsive srcset. Rebuilds only src/srcset/sizes; preserves alt/class/etc.
+// Runs on already-sanitized output, and only ever adds static attributes.
+function optimizeImages(html: string): string {
+  return html.replace(/<img\b([^>]*?)\/?>/gi, (full, attrs) => {
+    const srcM = attrs.match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+    if (!srcM || !canOptimize(srcM[1])) return full;
+    const src = srcM[1];
+    const rest = attrs
+      .replace(/\s*\bsrcset\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/\s*\bsizes\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/\s*\bsrc\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/\/\s*$/, "")
+      .trim();
+    const srcset = OPT_WIDTHS.map((w) => `${optUrl(src, w)} ${w}w`).join(", ");
+    return `<img src="${optUrl(src, 1200)}" srcset="${srcset}" sizes="${OPT_SIZES}"${rest ? " " + rest : ""}>`;
+  });
+}
+
 // Rewrite legacy href links + strip legacy images in one pass (for raw HTML
 // strings rendered via dangerouslySetInnerHTML, e.g. project descriptions).
 function cleanLegacyHtml(html: string): string {
-  return addLazyLoading(stripLegacyImages(
+  return addLazyLoading(optimizeImages(stripLegacyImages(
     html.replace(/(href=["'])https?:\/\/(?:www\.|wp\.)?binayah\.com/gi, "$1https://www.binayah.ae")
-  ));
+  )));
 }
 
 // Sanitizes scraped/CMS article HTML before it is rendered via
@@ -48,7 +108,7 @@ export function sanitizeArticleHtml(html: string | null | undefined): string {
   // Drop binayah.com images first so the sanitized output never references the
   // old host (links are rewritten via transformTags below). Lazy-load pass runs
   // last, on the sanitized (safe) output.
-  return addLazyLoading(sanitizeHtml(stripLegacyImages(html), {
+  return addLazyLoading(optimizeImages(sanitizeHtml(stripLegacyImages(html), {
     allowedTags: [
       "h2", "h3", "h4", "h5", "h6", "p", "blockquote", "ul", "ol", "li",
       "strong", "b", "em", "i", "u", "s", "a", "img", "figure", "figcaption",
@@ -71,7 +131,7 @@ export function sanitizeArticleHtml(html: string | null | undefined): string {
         },
       }),
     },
-  }));
+  })));
 }
 
 // Strips WordPress cache-plugin boilerplate that was scraped into project
