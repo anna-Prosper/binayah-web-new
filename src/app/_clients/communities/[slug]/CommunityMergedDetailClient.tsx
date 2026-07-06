@@ -61,6 +61,7 @@ export default function CommunityMergedDetailClient({
               src={heroImage}
               alt={name}
               fill
+              sizes="100vw"
               className="object-cover"
               priority
             />

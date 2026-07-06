@@ -98,7 +98,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
       {/* Full-bleed hero — identical to NewsDetailClient default */}
       <section className="relative w-full h-[480px] md:h-[620px] overflow-hidden flex items-end">
         <div className="absolute inset-0">
-          <Image src={article.heroImage?.url || FALLBACK_IMAGE} alt={article.heroImage?.alt ?? article.h1} fill className="object-cover" priority />
+          <Image src={article.heroImage?.url || FALLBACK_IMAGE} alt={article.heroImage?.alt ?? article.h1} fill sizes="100vw" className="object-cover" priority />
           <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
         </div>
         {/* Breadcrumb at top */}
@@ -244,7 +244,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                   <Link href={`${lp}/project/${article.projectSlug}`} className="group flex items-start gap-3 rounded-xl border border-border p-3 hover:border-primary/30 transition-colors">
                     {article.heroImage?.url && (
                       <div className="relative w-20 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                        <Image src={article.heroImage.url} alt={article.h1} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <Image src={article.heroImage.url} alt={article.h1} fill sizes="80px" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       </div>
                     )}
                     <div className="min-w-0 flex-1">

@@ -169,7 +169,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       {/* ===== Hero ===== */}
       <section className="relative min-h-[66vh] sm:min-h-[78vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill className="object-cover" priority />
+          <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill sizes="100vw" className="object-cover" priority />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.96) 0%, rgba(11,61,46,0.65) 42%, rgba(14,28,34,0.25) 100%)" }} />
         </div>
         <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-10 sm:pb-14">

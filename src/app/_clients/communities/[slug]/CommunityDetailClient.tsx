@@ -48,7 +48,7 @@ export default function CommunityDetailPage({ slug, communityName, communityDesc
       <Navbar />
       <section className="relative pt-24 pb-20 overflow-hidden">
         <div className="absolute inset-0">
-          <ImageWithFallback src={heroImage} alt={communityName} fill className="object-cover" priority />
+          <ImageWithFallback src={heroImage} alt={communityName} fill sizes="100vw" className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-foreground/30" />
         </div>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative pt-12">

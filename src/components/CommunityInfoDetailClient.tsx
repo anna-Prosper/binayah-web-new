@@ -46,6 +46,7 @@ export default function CommunityInfoDetailClient({ community, locale }: Props) 
               src={heroImage}
               alt={name}
               fill
+              sizes="100vw"
               className="object-cover"
               priority
             />

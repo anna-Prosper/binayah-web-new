@@ -23,7 +23,7 @@ interface UnitImagePlaceholderProps {
 
 const UnitImagePlaceholder = ({ bedrooms, unitName }: UnitImagePlaceholderProps) => {
   const image = unitImages[bedrooms] || (bedrooms >= 4 ? unitPenthouse : unit1br);
-  return <Image src={image} alt={unitName} fill className="object-cover" />;
+  return <Image src={image} alt={unitName} fill sizes="(max-width: 768px) 100vw, 400px" className="object-cover" />;
 };
 
 export default UnitImagePlaceholder;

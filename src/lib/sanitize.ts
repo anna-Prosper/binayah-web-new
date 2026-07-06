@@ -19,12 +19,24 @@ function stripLegacyImages(html: string): string {
     .replace(/<(?:img|source)\b[^>]*\bsrc(?:set)?\s*=\s*["'][^"']*binayah\.com[^"']*["'][^>]*>/gi, "")
     .replace(/<figure\b[^>]*>\s*(?:<figcaption\b[^>]*>.*?<\/figcaption>)?\s*<\/figure>/gi, "");
 }
+// Inline content images live inside stored CMS HTML rendered via
+// dangerouslySetInnerHTML, so they bypass next/image entirely (no AVIF/srcset).
+// At minimum, force native lazy-loading + async decoding on any <img> that
+// doesn't already set loading, so off-screen body images don't block render.
+// Runs on already-sanitized/cleaned output, so it only adds static attributes.
+function addLazyLoading(html: string): string {
+  return html.replace(/<img\b([^>]*?)\/?>/gi, (full, attrs) => {
+    if (/\bloading\s*=/i.test(attrs)) return full;
+    return `<img${attrs.replace(/\s+$/, "")} loading="lazy" decoding="async">`;
+  });
+}
+
 // Rewrite legacy href links + strip legacy images in one pass (for raw HTML
 // strings rendered via dangerouslySetInnerHTML, e.g. project descriptions).
 function cleanLegacyHtml(html: string): string {
-  return stripLegacyImages(
+  return addLazyLoading(stripLegacyImages(
     html.replace(/(href=["'])https?:\/\/(?:www\.|wp\.)?binayah\.com/gi, "$1https://www.binayah.ae")
-  );
+  ));
 }
 
 // Sanitizes scraped/CMS article HTML before it is rendered via
@@ -34,8 +46,9 @@ function cleanLegacyHtml(html: string): string {
 export function sanitizeArticleHtml(html: string | null | undefined): string {
   if (!html) return "";
   // Drop binayah.com images first so the sanitized output never references the
-  // old host (links are rewritten via transformTags below).
-  return sanitizeHtml(stripLegacyImages(html), {
+  // old host (links are rewritten via transformTags below). Lazy-load pass runs
+  // last, on the sanitized (safe) output.
+  return addLazyLoading(sanitizeHtml(stripLegacyImages(html), {
     allowedTags: [
       "h2", "h3", "h4", "h5", "h6", "p", "blockquote", "ul", "ol", "li",
       "strong", "b", "em", "i", "u", "s", "a", "img", "figure", "figcaption",
@@ -58,7 +71,7 @@ export function sanitizeArticleHtml(html: string | null | undefined): string {
         },
       }),
     },
-  });
+  }));
 }
 
 // Strips WordPress cache-plugin boilerplate that was scraped into project

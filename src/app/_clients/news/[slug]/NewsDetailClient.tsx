@@ -137,7 +137,7 @@ function NewsDetailInner({
         <div className="mt-12 sm:mt-16 px-4 sm:px-6">
           <div className="max-w-6xl mx-auto relative h-[480px] md:h-[620px] overflow-hidden rounded-2xl flex items-end">
             <div className="absolute inset-0">
-              <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
+              <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill sizes="100vw" className="object-cover transition-none" priority />
               <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
             </div>
             {/* Breadcrumb at top */}
@@ -196,14 +196,14 @@ function NewsDetailInner({
             {article.author && <span className="flex items-center gap-1.5 whitespace-nowrap"><User className="h-3.5 w-3.5 flex-shrink-0" /> {article.author}</span>}
           </div>
           <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-2">
-            <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
+            <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill sizes="100vw" className="object-cover transition-none" priority />
           </div>
         </div>
       ) : (
         /* ── FULL-BLEED HERO ── */
         <section className="relative w-full h-[480px] md:h-[620px] overflow-hidden flex items-end">
           <div className="absolute inset-0">
-            <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill className="object-cover transition-none" priority />
+            <ImageWithFallback src={article.featuredImage || FALLBACK_IMAGE} alt={article.title} fill sizes="100vw" className="object-cover transition-none" priority />
             <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/80 to-transparent" />
           </div>
           {/* Breadcrumb at top */}
@@ -353,6 +353,7 @@ function NewsDetailInner({
                             src={r.featuredImage || FALLBACK_IMAGE}
                             alt={r.title}
                             fill
+                            sizes="80px"
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
@@ -553,6 +554,7 @@ function NewsDetailInner({
                       src={r.featuredImage || FALLBACK_IMAGE}
                       alt={r.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {r.category && (

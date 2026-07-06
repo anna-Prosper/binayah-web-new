@@ -102,9 +102,9 @@ export default async function DubaiEmiratePage() {
             src="/assets/dubai-hero.webp"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover object-center"
             priority
-            unoptimized
           />
         </div>
         {/* Brand-green gradient — strong at left, eases at right so image breathes through */}
