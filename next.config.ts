@@ -87,6 +87,12 @@ const nextConfig: NextConfig = {
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/jvc", destination: "/:locale/communities/jumeirah-village-circle", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/akoya-damac-hills", destination: "/:locale/communities/damac-hills", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/impz-dubai", destination: "/:locale/communities/dubai-production-city", permanent: true },
+      // Batch-3 dupes: Port Rashid = Mina Rashid (mina=port); Arabian Ranches 1 =
+      // the original Arabian Ranches (empty dupe). 301 to the enriched canonical.
+      { source: "/communities/port-rashid", destination: "/communities/mina-rashid", permanent: true },
+      { source: "/communities/arabian-ranches-1", destination: "/communities/arabian-ranches", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/port-rashid", destination: "/:locale/communities/mina-rashid", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/arabian-ranches-1", destination: "/:locale/communities/arabian-ranches", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
