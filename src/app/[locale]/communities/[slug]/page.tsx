@@ -68,7 +68,11 @@ export async function generateMetadata({
     ? `https://www.binayah.ae/_next/image?url=${encodeURIComponent(usableImage)}&w=1200&q=72`
     : DEFAULT_OG_IMAGE;
 
-  const title = `${name} Properties for Sale & Rent in Dubai | Binayah`;
+  // Keep titles from overflowing Google's ~60-char display: long community
+  // names drop the "for Sale & Rent" phrase; short names keep the full keyword-
+  // rich form.
+  const fullTitle = `${name} Properties for Sale & Rent in Dubai | Binayah`;
+  const title = fullTitle.length > 65 ? `${name} Properties in Dubai | Binayah` : fullTitle;
 
   const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 
