@@ -78,6 +78,15 @@ const nextConfig: NextConfig = {
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/meydan-dubai", destination: "/:locale/communities/meydan", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohammad-bin-rashid-city", destination: "/:locale/communities/mohammed-bin-rashid-city", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohd-bin-rashid-city", destination: "/:locale/communities/mohammed-bin-rashid-city", permanent: true },
+      // JVC, Damac Hills and Dubai Production City have thin / legacy-name dupes
+      // (jvc; akoya = old Damac Hills name; impz = old Dubai Production City name)
+      // — 301 each to its enriched canonical page.
+      { source: "/communities/jvc", destination: "/communities/jumeirah-village-circle", permanent: true },
+      { source: "/communities/akoya-damac-hills", destination: "/communities/damac-hills", permanent: true },
+      { source: "/communities/impz-dubai", destination: "/communities/dubai-production-city", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/jvc", destination: "/:locale/communities/jumeirah-village-circle", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/akoya-damac-hills", destination: "/:locale/communities/damac-hills", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/impz-dubai", destination: "/:locale/communities/dubai-production-city", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
