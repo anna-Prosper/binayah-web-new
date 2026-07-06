@@ -94,6 +94,9 @@ export default function CommunityRichClient({ community, projects, forSale, forR
     !isPlaceholder(kf.landArea) ? { v: kf.landArea!, l: "Land area" } : null,
     e.connectivity?.[0] ? { v: e.connectivity[0].time.replace(/[~\s]*/g, "").replace("minutes", "min").replace("min", " min"), l: `To ${e.connectivity[0].place}` } : null,
   ].filter(Boolean) as { v: string; l: string }[]).slice(0, 4);
+  // Column count follows the number of real stats so there's never an empty
+  // trailing cell (static strings so Tailwind's JIT keeps them).
+  const heroCols = ({ 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4" } as Record<number, string>)[heroStats.length] ?? "sm:grid-cols-4";
 
   const pageUrl = `https://www.binayah.ae${lp(locale, `/communities/${community.slug}`)}`;
   const jsonLd: any[] = [
@@ -165,12 +168,12 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       <Navbar />
 
       {/* ===== Hero ===== */}
-      <section className="relative min-h-[78vh] flex items-end overflow-hidden">
+      <section className="relative min-h-[66vh] sm:min-h-[78vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <ImageWithFallback src={hero} alt={`${name} community in Dubai — properties for sale & rent`} fill className="object-cover" priority />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.96) 0%, rgba(11,61,46,0.65) 42%, rgba(14,28,34,0.25) 100%)" }} />
         </div>
-        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-28 sm:pb-14">
+        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-10 sm:pb-14">
           <div className="flex items-center gap-2 text-sm text-white/55 mb-5">
             <Link href={lp(locale, "/")} className="hover:text-white">Home</Link><ChevronRight className="h-3.5 w-3.5" />
             <Link href={lp(locale, "/communities")} className="hover:text-white">Communities</Link><ChevronRight className="h-3.5 w-3.5" />
@@ -183,9 +186,9 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           {e.tagline && <p className="text-white/80 max-w-2xl text-lg sm:text-xl leading-relaxed mb-8">{e.tagline}</p>}
 
           {heroStats.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 max-w-3xl mb-8">
+            <div className={`grid grid-cols-2 ${heroCols} gap-px rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md border border-white/20 max-w-3xl mb-8`}>
               {heroStats.map((s, i) => (
-                <div key={i} className="bg-white/5 px-4 py-3.5 sm:px-5 sm:py-4">
+                <div key={i} className={`bg-white/5 px-4 py-3.5 sm:px-5 sm:py-4${heroStats.length % 2 === 1 && i === heroStats.length - 1 ? " col-span-2 sm:col-span-1" : ""}`}>
                   <div className="text-lg sm:text-2xl font-bold text-white leading-tight">{s.v}</div>
                   <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-white/60 mt-1">{s.l}</div>
                 </div>
