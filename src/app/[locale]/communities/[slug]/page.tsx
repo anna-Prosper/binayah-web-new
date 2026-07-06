@@ -59,10 +59,14 @@ export async function generateMetadata({
   // Reject Wikipedia/Wikimedia-hosted images — they may go offline and signal
   // third-party content to social crawlers. Fall back to our branded OG image.
   const rawImage = (wiki as any)?.heroImage || db?.community?.featuredImage;
-  const image =
-    rawImage && !/(wikipedia|wikimedia)\.org/i.test(rawImage)
-      ? rawImage
-      : DEFAULT_OG_IMAGE;
+  const usableImage =
+    rawImage && !/(wikipedia|wikimedia)\.org/i.test(rawImage) ? rawImage : null;
+  // Our hero PNGs are 8-12 MB — over the size cap some social crawlers enforce
+  // (WhatsApp/Facebook), so previews can silently fail. Serve a resized ~1200px
+  // JPEG (~70 KB) via the Next image optimizer instead of the raw file.
+  const image = usableImage
+    ? `https://www.binayah.ae/_next/image?url=${encodeURIComponent(usableImage)}&w=1200&q=72`
+    : DEFAULT_OG_IMAGE;
 
   const title = `${name} Properties for Sale & Rent in Dubai | Binayah`;
 

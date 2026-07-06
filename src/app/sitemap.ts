@@ -354,9 +354,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
-    // Skip duplicate community slugs — they 301 to their "-dubai" canonical, so
-    // submitting them would trip a GSC "submitted URL is a redirect" notice.
-    ...communities.filter((c) => !["arjan", "downtown", "meydan", "the-valley", "mohd-bin-rashid-city", "mohammed-bin-rashid-city"].includes(c.slug)).map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
+    // Skip duplicate community slugs that 301 to their canonical — submitting a
+    // redirect trips a GSC "submitted URL is a redirect" notice. These are the
+    // redirect SOURCES: arjan/downtown/the-valley → "-dubai"; meydan-dubai and
+    // the MBR mis-spellings → the enriched meydan / mohammed-bin-rashid-city.
+    ...communities.filter((c) => !["arjan", "downtown", "the-valley", "meydan-dubai", "mohammad-bin-rashid-city", "mohd-bin-rashid-city"].includes(c.slug)).map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
     ...updates.map((u) => withAlternates(`/construction-updates/${u.slug}`, 0.6, "weekly", u.lastmod ?? now)),
     ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),

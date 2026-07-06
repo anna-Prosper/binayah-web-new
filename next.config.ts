@@ -60,21 +60,24 @@ const nextConfig: NextConfig = {
       // Legal pages use full slugs — catch the short forms.
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
-      // Duplicate community docs — the same area exists as a thin bare slug and a
-      // content-bearing "-dubai" slug. 301 the thin duplicate to its canonical.
+      // Duplicate community docs — the same area exists under multiple slugs.
+      // For arjan/downtown/the-valley the content lives on the "-dubai" slug, so
+      // 301 the thin bare slug to it.
       { source: "/communities/arjan", destination: "/communities/arjan-dubai", permanent: true },
       { source: "/communities/downtown", destination: "/communities/downtown-dubai", permanent: true },
-      { source: "/communities/meydan", destination: "/communities/meydan-dubai", permanent: true },
       { source: "/communities/the-valley", destination: "/communities/the-valley-dubai", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/arjan", destination: "/:locale/communities/arjan-dubai", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/downtown", destination: "/:locale/communities/downtown-dubai", permanent: true },
-      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/meydan", destination: "/:locale/communities/meydan-dubai", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/the-valley", destination: "/:locale/communities/the-valley-dubai", permanent: true },
-      // MBR City spelling-variant dupes → the content-bearing "mohammad" slug (69 projects).
-      { source: "/communities/mohd-bin-rashid-city", destination: "/communities/mohammad-bin-rashid-city", permanent: true },
-      { source: "/communities/mohammed-bin-rashid-city", destination: "/communities/mohammad-bin-rashid-city", permanent: true },
-      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohd-bin-rashid-city", destination: "/:locale/communities/mohammad-bin-rashid-city", permanent: true },
-      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohammed-bin-rashid-city", destination: "/:locale/communities/mohammad-bin-rashid-city", permanent: true },
+      // Meydan & MBR City are the reverse: the ENRICHED, content-bearing page lives
+      // on the clean/correct-spelling slug (meydan, mohammed-bin-rashid-city), so
+      // 301 the thin/mis-spelled duplicates TO it.
+      { source: "/communities/meydan-dubai", destination: "/communities/meydan", permanent: true },
+      { source: "/communities/mohammad-bin-rashid-city", destination: "/communities/mohammed-bin-rashid-city", permanent: true },
+      { source: "/communities/mohd-bin-rashid-city", destination: "/communities/mohammed-bin-rashid-city", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/meydan-dubai", destination: "/:locale/communities/meydan", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohammad-bin-rashid-city", destination: "/:locale/communities/mohammed-bin-rashid-city", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/communities/mohd-bin-rashid-city", destination: "/:locale/communities/mohammed-bin-rashid-city", permanent: true },
       {
         source: "/buy-property-in-:community",
         destination: "/buy-property-in/:community",
