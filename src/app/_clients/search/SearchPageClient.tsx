@@ -873,8 +873,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {projects.map((project, index) => (
-                      <motion.div key={project._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
-                        <Link href={`/project/${project.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                      <motion.div key={project._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }} className="h-full">
+                        <Link href={`/project/${project.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                           <div className="relative overflow-hidden aspect-[4/3]">
                             <CardImageCarousel
                               images={[project.featuredImage, ...(project.imageGallery || [])]}
@@ -888,13 +888,15 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                             </div>
                             <CardActions propertyId={project.slug} slug={project.slug} title={project.name} type="project" />
                           </div>
-                          <div className="p-4">
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
-                              {project.developerName && <span className="flex items-center gap-1"><Building className="h-3 w-3" />{project.developerName}</span>}
-                              {project.community && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{project.community}</span>}
+                          {/* flex-1 + fixed-height meta/title + mt-auto footer keeps every
+                              card the same height regardless of missing developer/date. */}
+                          <div className="p-4 flex flex-col flex-1">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5 min-h-[1.125rem]">
+                              {project.developerName && <span className="flex items-center gap-1 min-w-0"><Building className="h-3 w-3 shrink-0" /><span className="truncate">{project.developerName}</span></span>}
+                              {project.community && <span className="flex items-center gap-1 min-w-0"><MapPin className="h-3 w-3 shrink-0" /><span className="truncate">{project.community}</span></span>}
                             </div>
-                            <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{project.name}</h3>
-                            <div className="flex items-center justify-between border-t border-border pt-2.5">
+                            <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2 min-h-[2.5rem]">{project.name}</h3>
+                            <div className="mt-auto flex items-center justify-between border-t border-border pt-2.5">
                               <p className="text-xs font-bold text-primary">{fmtCurrency(project.startingPrice, { isProject: true })}</p>
                               {project.completionDate && <p className="text-[10px] text-muted-foreground flex items-center gap-1"><CalendarDays className="h-2.5 w-2.5" />{(() => { try { const date = new Date(project.completionDate || ""); return Number.isNaN(date.getTime()) ? project.completionDate : date.getFullYear(); } catch { return project.completionDate; } })()}</p>}
                             </div>
@@ -929,8 +931,8 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   )}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {listings.map((listing, index) => (
-                      <motion.div key={listing._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }}>
-                        <Link href={`/property/${listing.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                      <motion.div key={listing._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * 0.05, 0.3) }} className="h-full">
+                        <Link href={`/property/${listing.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                           <div className="relative overflow-hidden aspect-[4/3]">
                             <CardImageCarousel
                               images={[listing.featuredImage, ...(listing.images || [])]}
@@ -949,15 +951,17 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                             </div>
                             <CardActions propertyId={listing.slug} slug={listing.slug} title={listing.title} />
                           </div>
-                          <div className="p-4">
-                            {listing.community && <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5"><MapPin className="h-3 w-3" />{listing.community}{listing.city ? `, ${listing.city}` : ""}</p>}
-                            <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2">{listing.title}</h3>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
+                          {/* flex-1 + fixed-height location/title + mt-auto footer keeps
+                              every card the same height regardless of missing fields. */}
+                          <div className="p-4 flex flex-col flex-1">
+                            <p className="flex items-center gap-1 text-xs text-muted-foreground mb-1.5 min-h-[1.125rem] truncate">{listing.community && <><MapPin className="h-3 w-3 shrink-0" /><span className="truncate">{listing.community}{listing.city ? `, ${listing.city}` : ""}</span></>}</p>
+                            <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2 min-h-[2.5rem]">{listing.title}</h3>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2 min-h-[1.125rem]">
                               {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms === 0 ? "Studio" : listing.bedrooms}</span>}
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
                             </div>
-                            <div className="border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{fmtCurrency(listing.price, { fallback: t("priceOnRequest") })}</p></div>
+                            <div className="mt-auto border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{fmtCurrency(listing.price, { fallback: t("priceOnRequest") })}</p></div>
                           </div>
                         </Link>
                       </motion.div>
