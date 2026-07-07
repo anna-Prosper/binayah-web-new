@@ -25,6 +25,7 @@ import AIChatWidget from "@/components/AIChatWidget";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const GA_ID = "G-9FZKWX04K3";
+const GTM_ID = "GTM-PG6Z43HD";
 const CLARITY_ID = "wuee1w39pj";
 const LIVECHAT_LICENSE = "6313921";
 const PROD_HOSTS = new Set(["www.binayah.ae", "binayah.ae", "binayah.ru", "www.binayah.ru"]);
@@ -196,6 +197,17 @@ export default async function LocaleLayout({
         <link rel="dns-prefetch" href="https://sm-automation-5464.s3.ap-south-1.amazonaws.com" />
       </head>
       <body className={jakarta.className}>
+        {/* Google Tag Manager (noscript) — must be immediately after <body> */}
+        {isProdHost && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <OrganizationJsonLd nonce={nonce} />
         <WebSiteJsonLd nonce={nonce} />
         <NextIntlClientProvider messages={messages}>
@@ -221,6 +233,11 @@ export default async function LocaleLayout({
                   <GuideDownloadPopup />
                   {isProdHost && (
                     <>
+                      {/* Google Tag Manager — loads early so Tag Assistant detects
+                          the container and GTM can govern downstream tags/consent. */}
+                      <Script id="gtm-init" strategy="afterInteractive" nonce={nonce}>
+                        {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
+                      </Script>
                       <Script
                         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
                         strategy="lazyOnload"
