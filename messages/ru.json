@@ -2204,7 +2204,8 @@
     "trending": "Тренды",
     "compare": "Сравнить",
     "calculator": "Калькулятор",
-    "guides": "Гиды"
+    "guides": "Гиды",
+    "reports": "Отчёты"
   },
   "pulseTrending": {
     "label": "Рыночная аналитика",
@@ -2622,7 +2623,8 @@
     "rak": "Рас-эль-Хайма",
     "ajman": "Аджман",
     "comingSoon": "Скоро",
-    "daily": "Daily"
+    "daily": "Daily",
+    "reports": "Отчёты"
   },
   "pulseSentimentChip": {
     "bullish": "Bullish",

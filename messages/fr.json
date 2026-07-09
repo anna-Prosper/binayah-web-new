@@ -2210,7 +2210,8 @@
     "trending": "Tendance",
     "compare": "Comparer",
     "calculator": "Calculatrice",
-    "guides": "Guides"
+    "guides": "Guides",
+    "reports": "Rapports"
   },
   "pulseTrending": {
     "label": "Intelligence de marché",
@@ -2628,7 +2629,8 @@
     "rak": "Ras Al Khaimah",
     "ajman": "Ajman",
     "comingSoon": "Bientôt disponible",
-    "daily": "Quotidien"
+    "daily": "Quotidien",
+    "reports": "Rapports"
   },
   "pulseSentimentChip": {
     "bullish": "Optimiste",

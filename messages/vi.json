@@ -2204,7 +2204,8 @@
     "trending": "Xu hướng",
     "compare": "So sánh",
     "calculator": "Máy tính",
-    "guides": "Hướng dẫn"
+    "guides": "Hướng dẫn",
+    "reports": "Báo cáo"
   },
   "pulseTrending": {
     "label": "Thông tin thị trường",
@@ -2622,7 +2623,8 @@
     "rak": "Ras Al Khaimah",
     "ajman": "Ajman",
     "comingSoon": "Sắp ra mắt",
-    "daily": "Hàng ngày"
+    "daily": "Hàng ngày",
+    "reports": "Báo cáo"
   },
   "pulseSentimentChip": {
     "bullish": "Tăng giá",

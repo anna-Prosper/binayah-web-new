@@ -2204,7 +2204,8 @@
     "trending": "الرائج",
     "compare": "مقارنة",
     "calculator": "الآلة الحاسبة",
-    "guides": "الأدلة"
+    "guides": "الأدلة",
+    "reports": "التقارير"
   },
   "pulseTrending": {
     "label": "استخبارات السوق",
@@ -2622,7 +2623,8 @@
     "rak": "رأس الخيمة",
     "ajman": "عجمان",
     "comingSoon": "قريباً",
-    "daily": "Daily"
+    "daily": "Daily",
+    "reports": "التقارير"
   },
   "pulseSentimentChip": {
     "bullish": "Bullish",

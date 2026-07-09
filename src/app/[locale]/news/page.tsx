@@ -50,7 +50,8 @@ export default async function NewsPage({ params }: Props) {
   const { locale } = await params;
   let articles: any[] = [];
   try {
-    const res = await serverFetch(serverApiUrl(`/api/news?lang=${locale}`));
+    // Auto-generated weekly market reports live under /pulse/reports, not the news feed.
+    const res = await serverFetch(serverApiUrl(`/api/news?lang=${locale}&excludeCategory=Weekly%20Report`));
     if (res.ok) {
       articles = await res.json();
     }

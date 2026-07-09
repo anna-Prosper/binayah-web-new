@@ -4,11 +4,12 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { Activity, TrendingUp, BarChart2, Calculator, BookOpen } from "lucide-react";
+import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, FileText } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "overview", href: "/pulse", icon: Activity },
   { id: "trending", href: "/pulse/trending", icon: TrendingUp },
+  { id: "reports", href: "/pulse/reports", icon: FileText },
   { id: "compare", href: "/pulse/compare", icon: BarChart2 },
   { id: "calculator", href: "/pulse/calculator", icon: Calculator },
   { id: "guides", href: "/pulse/guides", icon: BookOpen },
@@ -62,7 +63,7 @@ export default function PulseSubNav() {
                 aria-current={active ? "page" : undefined}
               >
                 <Icon className="h-3.5 w-3.5 flex-shrink-0" />
-                {t(id as "overview" | "trending" | "compare" | "calculator" | "guides")}
+                {t(id as "overview" | "trending" | "reports" | "compare" | "calculator" | "guides")}
               </Link>
             );
           })}

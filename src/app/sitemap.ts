@@ -271,14 +271,16 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [projects, listings, articles, communities, updates, developers, projectGuides, buildings] =
+  const [projects, listings, articles, reports, communities, updates, developers, projectGuides, buildings] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
       fetchProjectsForSitemap(),
       fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
-      fetchSlugs("/api/news?limit=1000&fields=slug,updatedAt"),
+      // News feed excludes weekly market reports — those live under /pulse/reports.
+      fetchSlugs("/api/news?limit=1000&excludeCategory=Weekly%20Report&fields=slug,updatedAt"),
+      fetchSlugs("/api/news?limit=1000&category=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/construction-updates?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
@@ -311,6 +313,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     withAlternates("/contact", 0.5, "monthly", now),
     withAlternates("/valuation", 0.5, "monthly", now),
     withAlternates("/pulse", 0.7, "daily", now),
+    withAlternates("/pulse/reports", 0.7, "weekly", now),
     withAlternates("/pulse/guides", 0.6, "weekly", now),
     withAlternates("/pulse/calculator", 0.5, "monthly", now),
     withAlternates("/list-your-property", 0.5, "monthly", now),
@@ -354,6 +357,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]),
     ...listings.map((l) => withAlternates(`/property/${l.slug}`, 0.7, "weekly", l.lastmod ?? now)),
     ...articles.map((a) => withAlternates(`/news/${a.slug}`, 0.6, "weekly", a.lastmod ?? now)),
+    ...reports.map((r) => withAlternates(`/pulse/reports/${r.slug}`, 0.7, "weekly", r.lastmod ?? now)),
     // Skip duplicate community slugs that 301 to their canonical — submitting a
     // redirect trips a GSC "submitted URL is a redirect" notice. These are the
     // redirect SOURCES: arjan/downtown/the-valley → "-dubai"; meydan-dubai and

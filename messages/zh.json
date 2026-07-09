@@ -2210,7 +2210,8 @@
     "trending": "趋势",
     "compare": "对比",
     "calculator": "计算器",
-    "guides": "指南"
+    "guides": "指南",
+    "reports": "报告"
   },
   "pulseTrending": {
     "label": "市场情报",
@@ -2628,7 +2629,8 @@
     "rak": "哈伊马角",
     "ajman": "阿治曼",
     "comingSoon": "即将推出",
-    "daily": "Daily"
+    "daily": "Daily",
+    "reports": "报告"
   },
   "pulseSentimentChip": {
     "bullish": "Bullish",

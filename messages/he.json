@@ -2204,7 +2204,8 @@
     "trending": "מגמות",
     "compare": "השוואה",
     "calculator": "מחשבון",
-    "guides": "מדריכים"
+    "guides": "מדריכים",
+    "reports": "דוחות"
   },
   "pulseTrending": {
     "label": "מודיעין שוק",
@@ -2622,7 +2623,8 @@
     "rak": "Ras Al Khaimah",
     "ajman": "Ajman",
     "comingSoon": "בקרוב",
-    "daily": "יומי"
+    "daily": "יומי",
+    "reports": "דוחות"
   },
   "pulseSentimentChip": {
     "bullish": "שורי",
