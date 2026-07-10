@@ -9,7 +9,7 @@
 // shortIntro / why / vibe are localized (en/ru/ar/zh/vi). name, priceRange and
 // yield are language-neutral (proper nouns + numbers) and stay as plain strings.
 
-export type LocalizedText = { en: string; ru: string; ar: string; zh: string; vi: string; he: string };
+export type LocalizedText = { en: string; fr: string; ru: string; ar: string; zh: string; vi: string; he: string };
 
 export interface BuyCommunity {
   slug: string;
@@ -39,6 +39,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "高端滨水高层社区，迪拜租赁需求最旺盛的区域。资本增值型买家的首选。",
       vi: "Khu cao tầng ven biển cao cấp với nhu cầu thuê cao nhất Dubai. Lựa chọn mặc định cho người mua hướng tới tăng trưởng vốn.",
       he: "מגדלי יוקרה על קו המים עם הביקוש החזק ביותר לשכירות בדובאי. הבחירה המובנת מאליה עבור רוכשים המכוונים לצמיחת הון.",
+      fr: "Front de mer haut de gamme en tours prestigieuses, porté par la demande locative la plus profonde de Dubaï. Le choix par défaut des acheteurs en quête de plus-value.",
     },
     why: {
       en: "Dubai Marina remains Dubai's most internationally recognised address. Supply is structurally constrained, no new towers in the core, and occupancy in well-managed buildings exceeds 94%. Buyers pay a premium per sqft (AED 1,700-2,200) but get exceptional liquidity for resale and strong tenant demand from European and Russian renters.",
@@ -47,6 +48,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜码头依然是迪拜在国际上最知名的地址。供应在结构上受限, , 核心区无新塔楼, , 管理良好楼盘的入住率超过94%。买家支付较高的每平方英尺溢价（1,700-2,200迪拉姆），但可获得极佳的转售流动性以及来自欧洲和俄罗斯租客的强劲需求。",
       vi: "Dubai Marina vẫn là địa chỉ được quốc tế công nhận nhất của Dubai. Nguồn cung bị hạn chế về cấu trúc, không có tháp mới ở khu lõi, và tỷ lệ lấp đầy ở các tòa được quản lý tốt vượt 94%. Người mua trả mức giá cao trên mỗi sqft (1.700-2.200 AED) nhưng nhận được thanh khoản bán lại xuất sắc và nhu cầu thuê mạnh từ khách châu Âu và Nga.",
       he: "Dubai Marina נותרת הכתובת המוכרת ביותר בעולם בדובאי. ההיצע מוגבל מבחינה מבנית, אין מגדלים חדשים בלב האזור, ושיעור התפוסה בבניינים מנוהלים היטב עולה על 94%. הרוכשים משלמים פרמיה לכל רגל מרובעת (1,700-2,200 AED) אך מקבלים נזילות יוצאת דופן למכירה חוזרת וביקוש חזק משוכרים אירופאים ורוסים.",
+      fr: "Dubai Marina reste l'adresse dubaïote la plus reconnue à l'international. L'offre y est structurellement limitée, aucune nouvelle tour dans le cœur du quartier, et le taux d'occupation des immeubles bien gérés dépasse 94 %. Les acheteurs paient une prime au sqft (AED 1 700-2 200) mais bénéficient d'une liquidité exceptionnelle à la revente et d'une forte demande locative de la part des locataires européens et russes.",
     },
     priceRange: "AED 1.2M - 8M",
     yield: "5.5-6.5%",
@@ -57,6 +59,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "滨水奢华",
       vi: "Sang trọng ven biển",
       he: "יוקרה על קו המים",
+      fr: "Luxe en bord de mer",
     },
   },
   {
@@ -69,6 +72,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "标杆地段。哈利法塔景观，步行可达迪拜购物中心，尊贵地址坐拥最高房价。",
       vi: "Khu phố biểu tượng. Tầm nhìn Burj Khalifa, đi bộ tới Dubai Mall, những địa chỉ danh giá với mức giá cao nhất.",
       he: "אזור הפאר. נופים אל Burj Khalifa, Dubai Mall במרחק הליכה, כתובות יוקרה הזוכות למחירים הגבוהים ביותר.",
+      fr: "Le quartier trophée. Vues sur le Burj Khalifa, Dubai Mall à pied et adresses de prestige affichant les prix les plus élevés.",
     },
     why: {
       en: "Downtown is Dubai's premium core. Buyers here optimise for prestige and capital preservation rather than yield. Average price per sqft (AED 2,200-3,500) reflects the brand premium of Burj Khalifa-adjacent addresses. Resale liquidity is excellent and Dubai Mall's 80M+ annual visitors anchor commercial demand. Best fit: cash buyers with a long horizon.",
@@ -77,6 +81,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "市中心是迪拜的高端核心。这里的买家更看重声望与资本保值，而非收益率。每平方英尺均价（2,200-3,500迪拉姆）体现了毗邻哈利法塔地址的品牌溢价。转售流动性极佳，迪拜购物中心每年超8000万访客支撑商业需求。最适合：长期持有的现金买家。",
       vi: "Downtown là khu lõi cao cấp của Dubai. Người mua ở đây ưu tiên uy tín và bảo toàn vốn hơn là lợi suất. Giá trung bình mỗi sqft (2.200-3.500 AED) phản ánh mức cộng thêm thương hiệu của các địa chỉ cạnh Burj Khalifa. Thanh khoản bán lại tuyệt vời và hơn 80 triệu lượt khách mỗi năm của Dubai Mall neo giữ nhu cầu thương mại. Phù hợp nhất: người mua tiền mặt với tầm nhìn dài hạn.",
       he: "Downtown הוא הלב היוקרתי של דובאי. הרוכשים כאן ממקדים בפרסטיז'ה ובשימור הון יותר מאשר בתשואה. המחיר הממוצע לרגל מרובעת (2,200-3,500 AED) משקף את הפרמיה המותגית של כתובות הסמוכות ל-Burj Khalifa. נזילות המכירה החוזרת מצוינת, ולמעלה מ-80 מיליון מבקרים בשנה ב-Dubai Mall מעגנים את הביקוש המסחרי. המתאים ביותר: רוכשים במזומן עם אופק ארוך.",
+      fr: "Downtown est le cœur premium de Dubaï. Ici, les acheteurs privilégient le prestige et la préservation du capital plutôt que le rendement. Le prix moyen au sqft (AED 2 200-3 500) reflète la prime de marque des adresses voisines du Burj Khalifa. La liquidité à la revente est excellente et les plus de 80 millions de visiteurs annuels de Dubai Mall soutiennent la demande commerciale. Profil idéal : acheteurs comptant, sur un horizon long.",
     },
     priceRange: "AED 1.8M - 50M+",
     yield: "5.0-6.0%",
@@ -87,6 +92,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "标杆都会",
       vi: "Đô thị biểu tượng",
       he: "פאר עירוני",
+      fr: "Trophée urbain",
     },
   },
   {
@@ -99,6 +105,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "标志性人工岛。海滨别墅与标杆公寓，坐享全球顶级豪宅价位。",
       vi: "Hòn đảo nhân tạo biểu tượng. Biệt thự ven biển và căn hộ đẳng cấp với mức giá biểu tượng toàn cầu.",
       he: "אי מלאכותי איקוני. וילות על קו החוף ודירות ייחודיות הזוכות למחירי פאר ברמה עולמית.",
+      fr: "Île artificielle iconique. Villas en bord de plage et appartements signature affichant des prix trophées à l'échelle mondiale.",
     },
     why: {
       en: "Palm Jumeirah is one of the world's best-known addresses. Beachfront villas trade above AED 30M; signature apartments in The Royal Atlantis, One at Palm Jumeirah, and Five Palm command AED 4M+ for one-bedrooms. Demand is anchored by foreign capital seeking trophy assets. Yields are modest (4-5.5%) but appreciation has tracked global ultra-luxury benchmarks. Golden Visa is automatic given price points.",
@@ -107,6 +114,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "棕榈岛是全球最知名的地址之一。海滨别墅成交价超3000万迪拉姆；The Royal Atlantis、One at Palm Jumeirah 和 Five Palm 的标杆公寓一居室售价4百万迪拉姆起。需求由寻求顶级资产的外国资本支撑。收益率适中（4-5.5%），但增值表现紧跟全球超豪华基准。在此价位可自动获得黄金签证。",
       vi: "Palm Jumeirah là một trong những địa chỉ nổi tiếng nhất thế giới. Biệt thự ven biển giao dịch trên 30 triệu AED; căn hộ đẳng cấp tại The Royal Atlantis, One at Palm Jumeirah và Five Palm có giá từ 4 triệu AED cho căn một phòng ngủ. Nhu cầu được neo bởi dòng vốn nước ngoài tìm tài sản biểu tượng. Lợi suất khiêm tốn (4-5,5%) nhưng mức tăng giá bám sát chuẩn siêu sang toàn cầu. Golden Visa được cấp tự động ở mức giá này.",
       he: "Palm Jumeirah היא אחת הכתובות המוכרות ביותר בעולם. וילות על קו החוף נסחרות מעל 30 מיליון AED; דירות ייחודיות ב-The Royal Atlantis, ב-One at Palm Jumeirah וב-Five Palm נמכרות החל מ-4 מיליון AED לדירת חדר שינה. הביקוש מעוגן בהון זר המחפש נכסי פאר. התשואות צנועות (4-5.5%) אך עליית הערך עקבה אחר מדדי הסופר-יוקרה העולמיים. ה-Golden Visa ניתן אוטומטית בהינתן רמות המחיר הללו.",
+      fr: "Palm Jumeirah est l'une des adresses les plus connues au monde. Les villas en bord de plage se négocient au-delà de AED 30M ; les appartements signature du Royal Atlantis, de One at Palm Jumeirah et de Five Palm dépassent AED 4M pour un T2. La demande est portée par les capitaux étrangers en quête d'actifs trophées. Les rendements sont modestes (4-5,5 %) mais l'appréciation a suivi les références mondiales de l'ultra-luxe. Le Golden Visa est automatique compte tenu des niveaux de prix.",
     },
     priceRange: "AED 3M - 100M+",
     yield: "4.0-5.5%",
@@ -117,6 +125,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "标志性海滨",
       vi: "Ven biển biểu tượng",
       he: "קו חוף איקוני",
+      fr: "Bord de plage iconique",
     },
   },
   {
@@ -129,6 +138,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "紧邻市中心，价格却与码头区相当。在 Binayah 的成交数据中连续三个季度表现最稳定。",
       vi: "Sát Downtown với mức giá ngang Marina. Khu vực ổn định nhất trong dữ liệu giao dịch của Binayah ba quý liên tiếp.",
       he: "צמוד ל-Downtown במחיר של Marina. המבצע העקבי ביותר בנתוני העסקאות של Binayah שלושה רבעונים ברציפות.",
+      fr: "Voisin de Downtown au prix de la Marina. La valeur la plus régulière des données de transactions de Binayah, trois trimestres d'affilée.",
     },
     why: {
       en: "Business Bay benefits from Downtown proximity at materially lower entry points. A 1-bed in a mid-tier tower starts around AED 900K. Over 200 transactions per quarter create excellent secondary-market depth. Holding periods average 18 months, active liquidity, not speculative. Rental yields of 6.2-7.1% are among the best in central Dubai.",
@@ -137,6 +147,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "商业湾既享市中心的近便，入手价又明显更低。中端楼盘的一居室约90万迪拉姆起。每季度逾200宗成交带来极佳的二手市场深度。平均持有期18个月, , 活跃流动而非投机。6.2-7.1%的租金收益率位居迪拜中心区前列。",
       vi: "Business Bay hưởng lợi từ sự gần kề Downtown với mức giá vào thấp hơn đáng kể. Căn một phòng ngủ ở tòa tầm trung khởi điểm khoảng 900 nghìn AED. Hơn 200 giao dịch mỗi quý tạo độ sâu thị trường thứ cấp tuyệt vời. Thời gian nắm giữ trung bình 18 tháng, thanh khoản chủ động, không đầu cơ. Lợi suất thuê 6,2-7,1% thuộc nhóm tốt nhất khu trung tâm Dubai.",
       he: "Business Bay נהנה מקרבה ל-Downtown ברמות כניסה נמוכות משמעותית. דירת חדר שינה במגדל בדרג ביניים מתחילה סביב 900K AED. למעלה מ-200 עסקאות לרבעון יוצרות עומק מצוין בשוק המשני. תקופות ההחזקה הממוצעות הן 18 חודשים, נזילות פעילה, לא ספקולציה. תשואות שכירות של 6.2-7.1% הן מהטובות ביותר במרכז דובאי.",
+      fr: "Business Bay profite de la proximité de Downtown à des tickets d'entrée nettement plus bas. Un T2 dans une tour de milieu de gamme démarre autour de AED 900K. Plus de 200 transactions par trimestre offrent une excellente profondeur sur le marché secondaire. Les durées de détention avoisinent 18 mois, une liquidité active et non spéculative. Avec des rendements locatifs de 6,2-7,1 %, le quartier figure parmi les meilleurs du centre de Dubaï.",
     },
     priceRange: "AED 900K - 5M",
     yield: "6.2-7.1%",
@@ -147,6 +158,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "中央商务区",
       vi: "Khu trung tâm thương mại",
       he: "מרכז עסקים מרכזי",
+      fr: "Quartier central des affaires",
     },
   },
   {
@@ -159,6 +171,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜租金收益率最高的区域。收益型投资者的首选。",
       vi: "Lợi suất cho thuê cao nhất Dubai. Lựa chọn hàng đầu của nhà đầu tư hướng dòng tiền.",
       he: "תשואות השכירות הגבוהות ביותר בדובאי. הבחירה הראשונה של משקיע התשואה.",
+      fr: "Les rendements locatifs les plus élevés de Dubaï. Le premier choix de l'investisseur en quête de rendement.",
     },
     why: {
       en: "JVC offers the highest gross yields in Dubai (7.2-8.5%) at the lowest entry prices (AED 700-900/sqft). 25,000+ residential units provide tenant depth and easy resale. The trade-off is slower capital appreciation than waterfront communities. Ideal for cash-flow-focused investors building a Dubai income portfolio.",
@@ -167,6 +180,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "JVC 提供迪拜最高的毛收益率（7.2-8.5%），入手价却最低（每平方英尺700-900迪拉姆）。逾2.5万套住宅带来充足租客与便捷转售。代价是资本增值慢于滨水社区。最适合以现金流为核心、构建迪拜收益组合的投资者。",
       vi: "JVC mang lại lợi suất gộp cao nhất Dubai (7,2-8,5%) với giá vào thấp nhất (700-900 AED/sqft). Hơn 25.000 căn hộ tạo độ sâu khách thuê và bán lại dễ dàng. Đánh đổi là tốc độ tăng giá chậm hơn khu ven biển. Lý tưởng cho nhà đầu tư tập trung dòng tiền xây danh mục thu nhập tại Dubai.",
       he: "JVC מציעה את התשואות הגולמיות הגבוהות ביותר בדובאי (7.2-8.5%) במחירי הכניסה הנמוכים ביותר (700-900 AED לרגל מרובעת). למעלה מ-25,000 יחידות מגורים מספקות עומק שוכרים ומכירה חוזרת קלה. התמורה היא עליית ערך איטית יותר בהשוואה לקהילות שעל קו המים. אידיאלי למשקיעים המתמקדים בתזרים מזומנים הבונים תיק הכנסה בדובאי.",
+      fr: "JVC offre les rendements bruts les plus élevés de Dubaï (7,2-8,5 %) aux prix d'entrée les plus bas (AED 700-900/sqft). Plus de 25 000 logements résidentiels assurent une forte profondeur locative et une revente aisée. La contrepartie : une appréciation du capital plus lente que dans les quartiers en bord de mer. Idéal pour les investisseurs orientés cash-flow qui bâtissent un portefeuille de revenus à Dubaï.",
     },
     priceRange: "AED 550K - 1.8M",
     yield: "7.2-8.5%",
@@ -177,6 +191,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "适合家庭的中端市场",
       vi: "Tầm trung thân thiện gia đình",
       he: "מרכז שוק ביניים ידידותי למשפחות",
+      fr: "Milieu de gamme familial",
     },
   },
   {
@@ -189,6 +204,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Emaar 的旗舰家庭社区。高尔夫球场、顶级学校，以及迪拜中心区最均衡的生活方式。",
       vi: "Cộng đồng gia đình chủ lực của Emaar. Sân golf, trường học hàng đầu và phong cách sống cân bằng nhất khu trung tâm Dubai.",
       he: "קהילת המשפחות המובילה של Emaar. מגרש גולף, בתי ספר מהשורה הראשונה וסגנון החיים המאוזן ביותר במרכז דובאי.",
+      fr: "Le quartier familial phare d'Emaar. Golf, écoles réputées et le cadre de vie le plus équilibré du centre de Dubaï.",
     },
     why: {
       en: "Dubai Hills Estate combines Emaar build quality, Dubai Hills Mall, championship golf, and schools rated GEMS Excellent. Townhouses (AED 3-6M) and villas (AED 6-25M) sell to end-users rather than investors, which protects values. Apartment yields run 5.5-6.5%. Best fit: family buyers prioritising long-term lifestyle.",
@@ -197,6 +213,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜山庄汇集 Emaar 的建造品质、迪拜山庄购物中心、锦标级高尔夫，以及获 GEMS Excellent 评级的学校。联排别墅（300-600万迪拉姆）和别墅（600-2500万迪拉姆）多售予自住者而非投资者，从而稳固价值。公寓收益率5.5-6.5%。最适合：注重长期生活方式的家庭买家。",
       vi: "Dubai Hills Estate kết hợp chất lượng xây dựng Emaar, Dubai Hills Mall, sân golf đẳng cấp và trường học xếp hạng GEMS Excellent. Nhà phố (3-6 triệu AED) và biệt thự (6-25 triệu AED) bán cho người ở thực thay vì nhà đầu tư, giúp bảo vệ giá trị. Lợi suất căn hộ 5,5-6,5%. Phù hợp nhất: gia đình ưu tiên phong cách sống dài hạn.",
       he: "Dubai Hills Estate משלבת את איכות הבנייה של Emaar, את Dubai Hills Mall, גולף ברמת אליפות ובתי ספר בדירוג GEMS Excellent. בתי הטאון (3-6 מיליון AED) והווילות (6-25 מיליון AED) נמכרים למשתמשי קצה ולא למשקיעים, מה שמגן על הערך. תשואות הדירות נעות בין 5.5% ל-6.5%. ההתאמה הטובה ביותר: רוכשים משפחתיים שמעדיפים סגנון חיים לטווח ארוך.",
+      fr: "Dubai Hills Estate conjugue la qualité de construction Emaar, le Dubai Hills Mall, un golf de championnat et des écoles notées GEMS Excellent. Les maisons de ville (AED 3-6M) et les villas (AED 6-25M) se vendent à des occupants plutôt qu'à des investisseurs, ce qui protège les valeurs. Les rendements des appartements se situent entre 5,5 et 6,5 %. Profil idéal : familles privilégiant un cadre de vie sur le long terme.",
     },
     priceRange: "AED 1.5M - 25M",
     yield: "5.5-6.5%",
@@ -207,6 +224,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "家庭生活方式",
       vi: "Phong cách sống gia đình",
       he: "סגנון חיים משפחתי",
+      fr: "Art de vivre familial",
     },
   },
   {
@@ -219,6 +237,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "成熟的纯别墅社区。价值稳定，景观成熟，学区优质。",
       vi: "Cộng đồng chỉ biệt thự đã định hình. Giá trị ổn định, cảnh quan trưởng thành, vùng tuyển sinh trường tốt.",
       he: "קהילת וילות מבוססת ובלעדית. ערכים יציבים, נוף בוגר ואזור רישום חזק לבתי ספר.",
+      fr: "Quartier établi, exclusivement composé de villas. Valeurs stables, végétation mature, forte carte scolaire.",
     },
     why: {
       en: "Arabian Ranches is the gold-standard villa community for Dubai families. Phase 1 villas have appreciated quietly but consistently for 15+ years. Phase 3 launched at AED 3.5M+ for 4-bedroom layouts. Owner-occupier ratio is high, which creates pricing stability. Yields are modest (4.5-5.5%) but holding periods are typically 5+ years.",
@@ -227,6 +246,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "阿拉伯牧场是迪拜家庭别墅社区的黄金标准。一期别墅15年来低调而持续地升值。三期4卧户型起价350万迪拉姆。自住业主比例高，带来价格稳定。收益率适中（4.5-5.5%），但持有期通常5年以上。",
       vi: "Arabian Ranches là chuẩn mực vàng cho cộng đồng biệt thự của các gia đình Dubai. Biệt thự giai đoạn 1 tăng giá âm thầm nhưng đều đặn hơn 15 năm. Giai đoạn 3 mở bán từ 3,5 triệu AED cho mẫu 4 phòng ngủ. Tỷ lệ chủ sở hữu tự ở cao tạo sự ổn định giá. Lợi suất khiêm tốn (4,5-5,5%) nhưng thời gian nắm giữ thường trên 5 năm.",
       he: "Arabian Ranches היא קהילת הווילות בסטנדרט הזהב עבור משפחות דובאי. ערכן של וילות שלב 1 עלה בשקט אך בעקביות במשך יותר מ-15 שנה. שלב 3 הושק החל מ-3.5 מיליון AED לתצורות 4 חדרי שינה. שיעור הבעלים המתגוררים גבוה, מה שיוצר יציבות במחירים. התשואות צנועות (4.5%-5.5%) אך תקופות ההחזקה הן בדרך כלל 5 שנים ומעלה.",
+      fr: "Arabian Ranches est la référence absolue des quartiers de villas pour les familles de Dubaï. Les villas de la Phase 1 se sont appréciées discrètement mais régulièrement depuis plus de 15 ans. La Phase 3 a été lancée à partir de AED 3,5M pour les configurations 4 chambres. La part élevée de propriétaires occupants assure une stabilité des prix. Les rendements sont modestes (4,5-5,5 %) mais les durées de détention dépassent généralement 5 ans.",
     },
     priceRange: "AED 3M - 18M",
     yield: "4.5-5.5%",
@@ -237,6 +257,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "成熟别墅郊区",
       vi: "Ngoại ô biệt thự đã định hình",
       he: "פרבר וילות מבוסס",
+      fr: "Banlieue résidentielle de villas",
     },
   },
   {
@@ -249,6 +270,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "The Walk 海滨步道上的滨海公寓。全年旅游级短租需求旺盛。",
       vi: "Căn hộ ven biển tại The Walk. Nhu cầu thuê ngắn hạn cấp du lịch quanh năm.",
       he: "דירות על קו החוף ב-The Walk. ביקוש תיירותי להשכרה לטווח קצר לאורך כל השנה.",
+      fr: "Appartements en bord de plage sur The Walk. Demande locative courte durée de niveau touristique toute l'année.",
     },
     why: {
       en: "JBR's 40 towers along The Walk command persistent tourist demand. Short-term rental yields can reach 9-11% gross for furnished units (subject to Dubai Tourism license). Long-term yields run 6-7%. Capital appreciation has been steady but moderate, the entry premium is high (AED 1,800-2,400/sqft). Best fit: investors comfortable with active management of holiday-let units.",
@@ -257,6 +279,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "JBR 沿 The Walk 的40座塔楼吸引持续的旅游需求。带家具单元的短租毛收益率可达9-11%（须持迪拜旅游局执照）。长租收益率6-7%。资本增值稳健但温和, , 入手溢价较高（每平方英尺1,800-2,400迪拉姆）。最适合：愿意主动经营度假短租单元的投资者。",
       vi: "40 tòa tháp của JBR dọc The Walk duy trì nhu cầu du lịch bền bỉ. Lợi suất thuê ngắn hạn cho căn có nội thất có thể đạt 9-11% gộp (cần giấy phép của Sở Du lịch Dubai). Lợi suất dài hạn 6-7%. Tăng giá ổn định nhưng vừa phải, mức giá vào cao (1.800-2.400 AED/sqft). Phù hợp nhất: nhà đầu tư sẵn sàng vận hành chủ động các căn cho thuê nghỉ dưỡng.",
       he: "40 המגדלים של JBR לאורך The Walk נהנים מביקוש תיירותי מתמשך. תשואות ההשכרה לטווח קצר עשויות להגיע ל-9%-11% ברוטו ליחידות מרוהטות (בכפוף לרישיון של Dubai Tourism). תשואות לטווח ארוך נעות בין 6% ל-7%. עליית הערך הייתה יציבה אך מתונה, פרמיית הכניסה גבוהה (1,800-2,400 AED לרגל מרובע). ההתאמה הטובה ביותר: משקיעים שנוח להם עם ניהול אקטיבי של יחידות נופש.",
+      fr: "Les 40 tours de JBR le long de The Walk attirent une demande touristique constante. Les rendements en location courte durée peuvent atteindre 9-11 % bruts pour les biens meublés (sous réserve d'une licence Dubai Tourism). Les rendements longue durée s'établissent à 6-7 %. L'appréciation du capital a été régulière mais modérée, la prime d'entrée est élevée (AED 1 800-2 400/sqft). Profil idéal : investisseurs à l'aise avec la gestion active de locations saisonnières.",
     },
     priceRange: "AED 1.4M - 8M",
     yield: "6.0-7.0% (LT) / 9-11% (ST)",
@@ -267,6 +290,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "海滨旅游中心",
       vi: "Trung tâm du lịch ven biển",
       he: "מרכז תיירותי על קו החוף",
+      fr: "Pôle touristique en bord de plage",
     },
   },
   {
@@ -279,6 +303,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜国际金融中心。高端商务地址，高层设有可出租公寓。",
       vi: "Trung tâm Tài chính Quốc tế Dubai. Địa chỉ kinh doanh cao cấp với căn hộ cho thuê ở các tầng cao.",
       he: "Dubai International Financial Centre. כתובת העסקים היוקרתית, עם דירות להשכרה בקומות העליונות.",
+      fr: "Dubai International Financial Centre. L'adresse d'affaires premium, avec des appartements louables aux étages supérieurs.",
     },
     why: {
       en: "DIFC residential is small in volume but premium in positioning, buyers here are typically finance executives who work in the area or international owners who want a Dubai pied-à-terre. Yields are moderate (5-6%) but resale liquidity to the same buyer profile is strong. Limited supply protects values.",
@@ -287,6 +312,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "DIFC 的住宅体量不大，但定位高端, , 买家通常是在区域内工作的金融高管，或想在迪拜置一处落脚之所的国际业主。收益率适中（5-6%），但面向同类买家的转售流动性强。供应有限，价值得以保护。",
       vi: "Phân khúc nhà ở DIFC quy mô nhỏ nhưng định vị cao cấp, người mua thường là lãnh đạo tài chính làm việc trong khu vực hoặc chủ sở hữu quốc tế muốn có một chốn lui tới ở Dubai. Lợi suất vừa phải (5-6%) nhưng thanh khoản bán lại cho cùng nhóm khách rất mạnh. Nguồn cung hạn chế bảo vệ giá trị.",
       he: "המגזר המגורים ב-DIFC קטן בהיקפו אך יוקרתי במיצובו, הרוכשים כאן הם בדרך כלל בכירים בתחום הפיננסים שעובדים באזור או בעלים בינלאומיים המעוניינים בדירת פיד-א-טר בדובאי. התשואות מתונות (5%-6%) אך נזילות המכירה החוזרת לאותו פרופיל רוכשים חזקה. ההיצע המוגבל מגן על הערך.",
+      fr: "Le résidentiel du DIFC reste faible en volume mais premium par son positionnement : les acheteurs sont généralement des cadres de la finance qui travaillent dans le quartier ou des propriétaires internationaux en quête d'un pied-à-terre à Dubaï. Les rendements sont modérés (5-6 %) mais la liquidité à la revente auprès du même profil d'acheteurs est solide. L'offre limitée protège les valeurs.",
     },
     priceRange: "AED 1.8M - 15M",
     yield: "5.0-6.0%",
@@ -297,6 +323,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "金融区",
       vi: "Khu tài chính",
       he: "רובע פיננסי",
+      fr: "Quartier financier",
     },
   },
   {
@@ -309,6 +336,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Emaar 面向未来十年的滨水总体规划。相对市中心折价，适合耐心资本。",
       vi: "Quy hoạch tổng thể ven biển cho thập kỷ tới của Emaar. Mức chiết khấu so với Downtown dành cho dòng vốn kiên nhẫn.",
       he: "תוכנית האב לקו החוף של Emaar לעשור הקרוב. הנחה ביחס ל-Downtown עבור הון סבלני.",
+      fr: "Le plan directeur en bord de mer d'Emaar pour la décennie à venir. Une décote sur Downtown, pour les capitaux patients.",
     },
     why: {
       en: "Dubai Creek Harbour is in the middle innings of its development arc. Infrastructure is in, but transaction volume is still building. Current pricing represents a meaningful discount to mature waterfront communities, Marina-quality units trade 25-35% below Marina prices. Ideal for 5-7 year horizons; less suitable for liquidity-sensitive buyers.",
@@ -317,6 +345,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜溪港正处于开发周期的中段。基础设施已就位，但成交量仍在累积。当前价格相较成熟滨水社区有显著折让, , 码头同等品质单元成交价比码头区低25-35%。适合5-7年投资周期；不太适合对流动性敏感的买家。",
       vi: "Dubai Creek Harbour đang ở giữa chu kỳ phát triển. Hạ tầng đã hoàn thiện nhưng khối lượng giao dịch vẫn đang tích lũy. Giá hiện tại là mức chiết khấu đáng kể so với các khu ven biển đã trưởng thành, căn chất lượng tương đương Marina giao dịch thấp hơn giá Marina 25-35%. Lý tưởng cho tầm nhìn 5-7 năm; ít phù hợp với người mua nhạy cảm về thanh khoản.",
       he: "Dubai Creek Harbour נמצאת באמצע מסלול הפיתוח שלה. התשתיות קיימות, אך היקף העסקאות עדיין צובר תאוצה. התמחור הנוכחי מהווה הנחה משמעותית ביחס לקהילות חוף בוגרות, יחידות באיכות Marina נסחרות 25%-35% מתחת למחירי Marina. אידיאלי לאופק של 5-7 שנים; פחות מתאים לרוכשים רגישים לנזילות.",
+      fr: "Dubai Creek Harbour se trouve au milieu de son cycle de développement. Les infrastructures sont en place, mais les volumes de transactions montent encore en puissance. Les prix actuels représentent une décote significative par rapport aux quartiers en bord de mer arrivés à maturité : des biens de qualité comparable à la Marina se négocient 25-35 % en dessous des prix de la Marina. Idéal sur des horizons de 5 à 7 ans ; moins adapté aux acheteurs sensibles à la liquidité.",
     },
     priceRange: "AED 1.1M - 10M",
     yield: "5.5-6.5%",
@@ -327,6 +356,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "新兴滨水区",
       vi: "Khu ven biển mới nổi",
       he: "קו חוף מתפתח",
+      fr: "Bord de mer émergent",
     },
   },
   {
@@ -340,6 +370,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "穆罕默德·本·拉希德城。多元巨型片区，从 Meydan 别墅到 District One 大宅应有尽有。",
       vi: "Mohammed Bin Rashid City. Đại khu đa dạng với đủ loại, từ biệt thự Meydan đến dinh thự District One.",
       he: "MBR City. מגה-מתחם מגוון הכולל הכל, מווילות Meydan ועד אחוזות District One.",
+      fr: "Mohammed Bin Rashid City. Méga-quartier hétérogène, des villas de Meydan aux demeures de District One.",
     },
     why: {
       en: "MBR City is less a single community than a constellation: District One, Meydan, Sobha Hartland, Nad Al Sheba. Pricing varies dramatically (AED 1.2M apartments to AED 100M+ Lagoon mansions). The common factor is Sheikh Zayed Road proximity and a long development runway. Pick the sub-community carefully, homework matters more here than in mature districts.",
@@ -348,6 +379,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "MBR City 与其说是单一社区，不如说是一组星系：District One、Meydan、Sobha Hartland、Nad Al Sheba。价格差异极大（120万迪拉姆公寓至逾1亿迪拉姆的泻湖大宅）。共同点是紧邻谢赫扎耶德路以及漫长的开发周期。务必仔细挑选子社区, , 这里的功课比成熟片区更重要。",
       vi: "MBR City không hẳn là một cộng đồng đơn lẻ mà là một chòm sao: District One, Meydan, Sobha Hartland, Nad Al Sheba. Giá biến thiên rất lớn (căn hộ 1,2 triệu AED đến dinh thự ven phá hơn 100 triệu AED). Điểm chung là gần đường Sheikh Zayed và lộ trình phát triển dài. Hãy chọn tiểu khu cẩn thận, việc tìm hiểu ở đây quan trọng hơn các khu đã trưởng thành.",
       he: "MBR City הוא פחות קהילה אחת ויותר מקבץ של אזורים: District One, Meydan, Sobha Hartland ו-Nad Al Sheba. המחירים משתנים באופן דרמטי (דירות ב-1.2M AED ועד אחוזות לגונה ב-100M+ AED). המכנה המשותף הוא הקרבה ל-Sheikh Zayed Road ומסלול פיתוח ארוך טווח. בחרו את תת-הקהילה בקפידה, כאן עבודת ההכנה חשובה יותר מאשר באזורים בשלים.",
+      fr: "MBR City est moins un quartier unique qu'une constellation : District One, Meydan, Sobha Hartland, Nad Al Sheba. Les prix varient énormément (des appartements à AED 1,2M aux demeures de Lagoon à plus de AED 100M). Le point commun : la proximité de Sheikh Zayed Road et une longue marge de développement. Choisissez le sous-quartier avec soin, l'analyse préalable compte ici plus que dans les quartiers matures.",
     },
     priceRange: "AED 1.2M - 100M+",
     yield: "5.0-7.0%",
@@ -358,6 +390,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "多元巨型片区",
       vi: "Đại khu đa dạng",
       he: "מגה-מתחם מגוון",
+      fr: "Méga-quartier hétérogène",
     },
   },
   {
@@ -370,6 +403,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "特朗普品牌高尔夫社区。以别墅为主，并设有入手价具竞争力的公寓塔楼。",
       vi: "Cộng đồng golf thương hiệu Trump. Chủ đạo là biệt thự cùng các tháp căn hộ với giá vào cạnh tranh.",
       he: "קהילת גולף בִּמותג Trump. מובלת בווילות לצד מגדלי דירות במחירי כניסה תחרותיים.",
+      fr: "Quartier golfique de marque Trump. À dominante villas, avec des tours d'appartements à des tickets d'entrée compétitifs.",
     },
     why: {
       en: "Damac Hills clusters villas around a Trump International Golf Club course. Villa pricing (AED 3-10M) attracts upper-middle-market end-users; apartments in towers like Carson and Loreto trade more actively at AED 700-1,200K. The community is mature enough to have strong resale liquidity. Yields on apartments run 6.5-7.5%.",
@@ -378,6 +412,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "达马克山庄的别墅环绕特朗普国际高尔夫俱乐部球场布局。别墅价格（300-1000万迪拉姆）吸引中高端自住客；Carson、Loreto 等塔楼公寓以70万-120万迪拉姆更活跃成交。社区足够成熟，转售流动性强。公寓收益率6.5-7.5%。",
       vi: "Damac Hills bố trí biệt thự quanh sân Trump International Golf Club. Giá biệt thự (3-10 triệu AED) thu hút người ở thực phân khúc trung - cao cấp; căn hộ ở các tháp như Carson và Loreto giao dịch sôi động hơn ở mức 700 nghìn-1,2 triệu AED. Cộng đồng đủ trưởng thành để có thanh khoản bán lại mạnh. Lợi suất căn hộ 6,5-7,5%.",
       he: "DAMAC Hills מקבצת ווילות סביב מגרש Trump International Golf Club. מחירי הווילות (3-10M AED) מושכים משתמשי קצה מהמגזר הבינוני-גבוה; דירות במגדלים כמו Carson ו-Loreto נסחרות באופן פעיל יותר ב-700K-1,200K AED. הקהילה בשלה דיה כדי להציע נזילות מכירה חוזרת חזקה. התשואות על הדירות נעות בין 6.5%-7.5%.",
+      fr: "Damac Hills regroupe ses villas autour d'un parcours du Trump International Golf Club. Le prix des villas (AED 3-10M) séduit une clientèle d'occupants du haut du milieu de gamme ; les appartements de tours comme Carson et Loreto se négocient plus activement à AED 700-1 200K. Le quartier est suffisamment mature pour offrir une forte liquidité à la revente. Les rendements des appartements s'établissent entre 6,5 et 7,5 %.",
     },
     priceRange: "AED 700K - 12M",
     yield: "6.0-7.5%",
@@ -388,6 +423,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "高尔夫别墅社区",
       vi: "Cộng đồng biệt thự golf",
       he: "קהילת ווילות גולף",
+      fr: "Quartier golfique de villas",
     },
   },
   {
@@ -400,6 +436,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "“迪拜的比佛利山”。坐拥蒙哥马利高尔夫球场景观的定制大宅。超豪华标杆。",
       vi: "“Beverly Hills của Dubai”. Dinh thự thiết kế riêng nhìn ra sân golf Montgomerie. Chuẩn mực siêu sang.",
       he: "\"בוורלי הילס של דובאי\". אחוזות מותאמות אישית עם נוף למגרש הגולף Montgomerie. אמת המידה לאולטרה-יוקרה.",
+      fr: "Le « Beverly Hills de Dubaï ». Demeures sur mesure avec vues sur le golf Montgomerie. La référence de l'ultra-luxe.",
     },
     why: {
       en: "Emirates Hills is Dubai's most exclusive villa community. Custom-built mansions on plots of 10,000-35,000 sqft start around AED 25M and reach AED 200M+. No two villas are alike. Resale is private and slow, months to years on market, but values are exceptionally resilient. Investor relevance is limited; this is end-user territory for ultra-high-net-worth buyers.",
@@ -408,6 +445,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "翡翠山庄是迪拜最尊贵的别墅社区。占地10,000-35,000平方英尺的定制大宅起价约2500万迪拉姆，最高逾2亿迪拉姆。没有两栋别墅相同。转售私密且缓慢, , 在市数月乃至数年, , 但价值极具韧性。对投资者意义有限；这是面向超高净值自住客的领域。",
       vi: "Emirates Hills là cộng đồng biệt thự độc quyền nhất Dubai. Dinh thự xây theo yêu cầu trên lô đất 10.000-35.000 sqft khởi điểm khoảng 25 triệu AED và lên tới hơn 200 triệu AED. Không có hai căn giống nhau. Bán lại kín đáo và chậm, vài tháng đến vài năm trên thị trường, nhưng giá trị bền vững phi thường. Ý nghĩa với nhà đầu tư hạn chế; đây là địa hạt của người ở thực thuộc giới siêu giàu.",
       he: "Emirates Hills היא קהילת הווילות הבלעדית ביותר בדובאי. אחוזות הבנויות לפי הזמנה על מגרשים של 10,000-35,000 רגל מרובע מתחילות בכ-25M AED ומגיעות ל-200M+ AED. אין שתי ווילות זהות. המכירה החוזרת פרטית ואיטית, חודשים עד שנים בשוק, אך הערכים עמידים באופן יוצא דופן. הרלוונטיות למשקיעים מוגבלת; זהו תחום של משתמשי קצה מבעלי הון נטו גבוה במיוחד.",
+      fr: "Emirates Hills est le quartier de villas le plus exclusif de Dubaï. Les demeures construites sur mesure, sur des parcelles de 10 000 à 35 000 sqft, démarrent autour de AED 25M et atteignent plus de AED 200M. Aucune villa ne ressemble à une autre. La revente est privée et lente, de plusieurs mois à plusieurs années sur le marché, mais les valeurs sont exceptionnellement résilientes. L'intérêt pour l'investisseur est limité ; c'est un territoire d'occupants au patrimoine ultra-élevé.",
     },
     priceRange: "AED 25M - 200M+",
     yield: "3.0-4.0%",
@@ -418,6 +456,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "超豪华大宅",
       vi: "Dinh thự siêu sang",
       he: "אחוזות אולטרה-יוקרה",
+      fr: "Demeures ultra-luxe",
     },
   },
   {
@@ -430,6 +469,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "拥有迪拜之眼的岛屿，可眺望海景与码头区天际线。供应有限，定位高端。",
       vi: "Đảo Ain Dubai với tầm nhìn ra biển và đường chân trời Marina. Nguồn cung hạn chế, định vị cao cấp.",
       he: "האי של Ain Dubai עם נוף לים ולקו הרקיע של Marina. היצע מוגבל, מיצוב פרימיום.",
+      fr: "L'île d'Ain Dubai, avec vues sur la mer et la skyline de la Marina. Offre limitée, positionnement premium.",
     },
     why: {
       en: "Bluewaters' apartment supply is fixed (residence buildings 1-6 plus the Caesars-anchored Bluewaters Residences). This structural scarcity has driven persistent price appreciation, units have appreciated 30%+ since handover. Beachfront, Marina-skyline views, and walking distance to JBR explain the premium pricing (AED 2,200-3,500/sqft).",
@@ -438,6 +478,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "蓝水岛的公寓供应固定（住宅楼1-6座，外加凯撒酒店所在的 Bluewaters Residences）。这种结构性稀缺推动价格持续上涨, , 单元自交付以来增值逾30%。海滨、码头区天际线景观，以及步行可达 JBR，支撑了高端定价（每平方英尺2,200-3,500迪拉姆）。",
       vi: "Nguồn cung căn hộ tại Bluewaters cố định (các tòa 1-6 cùng Bluewaters Residences gắn với Caesars). Sự khan hiếm về cấu trúc này thúc đẩy tăng giá bền bỉ, các căn đã tăng hơn 30% kể từ khi bàn giao. Ven biển, tầm nhìn đường chân trời Marina và đi bộ tới JBR lý giải mức giá cao cấp (2.200-3.500 AED/sqft).",
       he: "היצע הדירות ב-Bluewaters קבוע (בנייני המגורים 1-6 בתוספת Bluewaters Residences שבעוגנו מלון Caesars). מחסור מבני זה הוביל לעליית מחירים מתמשכת, יחידות עלו בערכן ביותר מ-30% מאז המסירה. החזית הימית, הנוף לקו הרקיע של Marina ומרחק ההליכה ל-JBR מסבירים את התמחור הפרימיומי (2,200-3,500 AED לרגל מרובע).",
+      fr: "L'offre d'appartements de Bluewaters est figée (les immeubles résidentiels 1 à 6 ainsi que les Bluewaters Residences ancrées par Caesars). Cette rareté structurelle a entretenu une appréciation continue des prix : les biens se sont valorisés de plus de 30 % depuis la livraison. Le bord de plage, les vues sur la skyline de la Marina et la proximité à pied de JBR expliquent la prime tarifaire (AED 2 200-3 500/sqft).",
     },
     priceRange: "AED 2M - 18M",
     yield: "5.0-6.0%",
@@ -448,6 +489,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "海岛生活方式",
       vi: "Phong cách sống trên đảo",
       he: "אורח חיים על האי",
+      fr: "Art de vivre insulaire",
     },
   },
   {
@@ -460,6 +502,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "成熟的家庭郊区。独立别墅价格在更新的总体规划社区中难以企及。",
       vi: "Ngoại ô gia đình đã định hình. Biệt thự đơn lập với mức giá không có ở các khu quy hoạch mới hơn.",
       he: "פרבר משפחתי מבוסס. ווילות נפרדות במחירים שאינם זמינים בקהילות מתוכננות חדשות יותר.",
+      fr: "Banlieue familiale établie. Villas individuelles à des prix introuvables dans les plans directeurs plus récents.",
     },
     why: {
       en: "Mirdif offers genuine standalone villas, gardens, garages, no service charges on freehold plots, at AED 3-8M, prices that wouldn't buy you a townhouse in Dubai Hills. Trade-off is older infrastructure and longer commute to the city centre. Strong end-user demand from teachers, government workers, and long-term Dubai residents.",
@@ -468,6 +511,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "米尔迪夫提供真正的独栋别墅, , 花园、车库、永久产权地块免物业费, , 售价300-800万迪拉姆，这个价在迪拜山庄连联排都买不到。代价是基础设施较旧、通勤市中心更久。来自教师、公务员及长期迪拜居民的自住需求强劲。",
       vi: "Mirdif mang đến biệt thự đơn lập đúng nghĩa, sân vườn, gara, không phí dịch vụ trên lô sở hữu vĩnh viễn, với giá 3-8 triệu AED, mức giá không mua nổi một căn nhà phố ở Dubai Hills. Đánh đổi là hạ tầng cũ hơn và đi lại vào trung tâm lâu hơn. Nhu cầu người ở thực mạnh từ giáo viên, công chức và cư dân lâu năm tại Dubai.",
       he: "Mirdif מציעה ווילות עצמאיות אמיתיות, גינות, חניות, וללא דמי שירות על מגרשי בעלות מלאה (freehold), ב-3-8M AED, מחירים שלא יספיקו לקניית טאון-האוס ב-Dubai Hills. הפשרה היא תשתית ישנה יותר ונסיעה ארוכה יותר אל מרכז העיר. ביקוש חזק ממשתמשי קצה: מורים, עובדי מדינה ותושבי דובאי ותיקים.",
+      fr: "Mirdif propose de véritables villas individuelles, avec jardins, garages et sans charges de copropriété sur les parcelles en pleine propriété, à AED 3-8M, des prix qui ne vous offriraient même pas une maison de ville à Dubai Hills. La contrepartie : des infrastructures plus anciennes et un trajet plus long jusqu'au centre-ville. Forte demande d'occupants parmi les enseignants, les fonctionnaires et les résidents de longue date de Dubaï.",
     },
     priceRange: "AED 1.5M - 10M",
     yield: "5.0-6.5%",
@@ -478,6 +522,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "成熟郊区",
       vi: "Ngoại ô đã định hình",
       he: "פרבר מבוסס",
+      fr: "Résidentiel de banlieue établi",
     },
   },
   {
@@ -490,6 +535,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "植物主题别墅社区。60%绿化、可持续设计、超低密度。",
       vi: "Cộng đồng biệt thự chủ đề thực vật. 60% không gian xanh, thiết kế bền vững, mật độ siêu thấp.",
       he: "קהילת וילות בעלת אופי בוטני. 60% שטחים ירוקים, עיצוב בר-קיימא וצפיפות נמוכה במיוחד.",
+      fr: "Quartier de villas sur le thème botanique. 60 % d'espaces verts, conception durable, densité ultra-faible.",
     },
     why: {
       en: "Al Barari is a niche premium community known for landscape design (botanic gardens between every villa cluster). Volume is low, under 400 villas total, and resale is slow but commands premium pricing (AED 12M+ for 5-bedroom villas, AED 35M+ for The Reserve). Best fit: end-users seeking privacy, greenery, and a distinct identity.",
@@ -498,6 +544,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Al Barari 是以景观设计著称的小众高端社区（每组别墅之间皆有植物园）。体量小, , 全社区不足400栋别墅, , 转售缓慢但价格高端（5卧别墅1200万迪拉姆起，The Reserve 3500万迪拉姆起）。最适合：追求私密、绿意与独特身份的自住客。",
       vi: "Al Barari là cộng đồng cao cấp ngách nổi tiếng về thiết kế cảnh quan (vườn bách thảo giữa mỗi cụm biệt thự). Số lượng ít, tổng cộng dưới 400 căn, bán lại chậm nhưng giá cao cấp (từ 12 triệu AED cho biệt thự 5 phòng ngủ, từ 35 triệu AED cho The Reserve). Phù hợp nhất: người ở thực tìm sự riêng tư, cây xanh và bản sắc riêng.",
       he: "Al Barari היא קהילת יוקרה ייחודית הידועה בעיצוב הנוף שלה (גנים בוטניים בין כל מקבץ וילות). ההיצע נמוך, פחות מ-400 וילות בסך הכול, והמכירה החוזרת איטית אך משיגה מחירי פרמיום (החל מ-12 מיליון AED לווילות בנות 5 חדרי שינה, והחל מ-35 מיליון AED ל-The Reserve). ההתאמה הטובה ביותר: משתמשי קצה המחפשים פרטיות, ירק וזהות ייחודית.",
+      fr: "Al Barari est un quartier premium de niche reconnu pour son aménagement paysager (jardins botaniques entre chaque groupe de villas). Le volume est faible, moins de 400 villas au total, et la revente est lente mais commande des prix premium (plus de AED 12M pour les villas 5 chambres, plus de AED 35M pour The Reserve). Profil idéal : occupants en quête d'intimité, de verdure et d'une identité singulière.",
     },
     priceRange: "AED 5M - 50M",
     yield: "3.5-4.5%",
@@ -508,6 +555,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "植物园式奢华",
       vi: "Sang trọng giữa thiên nhiên",
       he: "יוקרה בוטנית",
+      fr: "Luxe botanique",
     },
   },
   {
@@ -521,6 +569,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "可达地铁的综合用途塔楼群。收益稳健、流动性深、通勤便利。",
       vi: "Cụm tháp đa chức năng có kết nối tàu điện ngầm. Lợi suất vững, thanh khoản cao, đi lại dễ.",
       he: "מקבץ מגדלים רב-תכליתי עם גישה לרכבת התחתית. תשואות יציבות, נזילות גבוהה ונסיעה נוחה.",
+      fr: "Ensemble de tours à usage mixte desservi par le métro. Rendements solides, forte liquidité, trajets faciles.",
     },
     why: {
       en: "JLT is the workhorse of Dubai apartment investing. 80+ towers around four artificial lakes, free zone status (DMCC), direct metro access, and Marina-adjacent. Entry prices (AED 800K-1.5M for one-bedrooms) and consistent 6.5-7.5% yields make it a default holding for income-focused portfolios. Tenant turnover is high but absorption is fast.",
@@ -529,6 +578,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "JLT 是迪拜公寓投资的中流砥柱。环绕四座人工湖的80余座塔楼，自贸区身份（DMCC），直达地铁，毗邻码头区。入手价（一居室80万-150万迪拉姆）与稳定的6.5-7.5%收益率，使其成为收益型组合的标配持有。租客流动性高但去化迅速。",
       vi: "JLT là trụ cột của đầu tư căn hộ Dubai. Hơn 80 tháp quanh bốn hồ nhân tạo, quy chế khu tự do (DMCC), kết nối tàu điện ngầm trực tiếp và sát Marina. Giá vào (800 nghìn-1,5 triệu AED cho căn một phòng ngủ) cùng lợi suất ổn định 6,5-7,5% khiến nơi đây thành tài sản mặc định cho danh mục hướng thu nhập. Khách thuê thay đổi nhiều nhưng hấp thụ nhanh.",
       he: "JLT הוא סוס העבודה של השקעות הדירות בדובאי. למעלה מ-80 מגדלים סביב ארבע אגמים מלאכותיים, מעמד אזור חופשי (DMCC), גישה ישירה לרכבת התחתית וקרבה ל-Marina. מחירי הכניסה (800 אלף-1.5 מיליון AED לדירות חדר שינה אחד) ותשואות עקביות של 6.5-7.5% הופכים אותו לנכס בסיסי בתיקים המתמקדים בהכנסה. תחלופת השוכרים גבוהה אך קצב ההשכרה מהיר.",
+      fr: "JLT est la valeur de fond de l'investissement en appartements à Dubaï. Plus de 80 tours autour de quatre lacs artificiels, un statut de zone franche (DMCC), un accès direct au métro et la proximité de la Marina. Les prix d'entrée (AED 800K-1,5M pour un T2) et des rendements réguliers de 6,5-7,5 % en font une valeur par défaut pour les portefeuilles orientés revenus. La rotation des locataires est élevée mais l'absorption est rapide.",
     },
     priceRange: "AED 750K - 4M",
     yield: "6.5-7.5%",
@@ -539,6 +589,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "通勤 / 商务",
       vi: "Đi làm / kinh doanh",
       he: "נסיעות לעבודה / עסקים",
+      fr: "Pendulaire / affaires",
     },
   },
   {
@@ -551,6 +602,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Nshama 的中端总体规划。配中央公园的可负担联排别墅。",
       vi: "Quy hoạch tổng thể tầm trung của Nshama. Nhà phố giá phải chăng với công viên trung tâm.",
       he: "תוכנית אב בסגמנט הביניים של Nshama. בתי טאון-האוס במחיר נגיש עם פארק מרכזי.",
+      fr: "Le plan directeur milieu de gamme de Nshama. Maisons de ville abordables, avec un parc central en équipement phare.",
     },
     why: {
       en: "Town Square positioned itself as Dubai's first genuinely affordable family masterplan, townhouses starting around AED 1.4M, apartments from AED 500K. Build quality is mid-tier but the central park (4 km of jogging tracks, retail, schools) anchors the community. Best fit: first-time buyers and yield investors targeting middle-income tenants.",
@@ -559,6 +611,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Town Square 定位为迪拜首个真正可负担的家庭总体规划, , 联排别墅约140万迪拉姆起，公寓50万迪拉姆起。建造品质中档，但中央公园（4公里跑道、商业、学校）是社区核心。最适合：首次购房者及面向中等收入租客的收益型投资者。",
       vi: "Town Square định vị là khu quy hoạch gia đình thực sự phải chăng đầu tiên của Dubai, nhà phố từ khoảng 1,4 triệu AED, căn hộ từ 500 nghìn AED. Chất lượng xây dựng tầm trung nhưng công viên trung tâm (4 km đường chạy bộ, bán lẻ, trường học) là hạt nhân của cộng đồng. Phù hợp nhất: người mua lần đầu và nhà đầu tư lợi suất nhắm khách thuê thu nhập trung bình.",
       he: "Town Square מיצב את עצמו כתוכנית האב המשפחתית הראשונה בדובאי שהיא באמת ברת-השגה, בתי טאון-האוס החל מכ-1.4 מיליון AED, ודירות החל מ-500 אלף AED. איכות הבנייה היא בדרג הביניים, אך הפארק המרכזי (4 ק\"מ של מסלולי ריצה, מסחר ובתי ספר) משמש עוגן לקהילה. ההתאמה הטובה ביותר: רוכשי דירה ראשונה ומשקיעי תשואה המכוונים לשוכרים בעלי הכנסה בינונית.",
+      fr: "Town Square s'est positionné comme le premier plan directeur familial véritablement abordable de Dubaï : maisons de ville à partir de AED 1,4M environ, appartements dès AED 500K. La qualité de construction est de milieu de gamme, mais le parc central (4 km de pistes de jogging, commerces, écoles) ancre le quartier. Profil idéal : primo-accédants et investisseurs en quête de rendement ciblant des locataires à revenus intermédiaires.",
     },
     priceRange: "AED 500K - 2.5M",
     yield: "6.5-7.5%",
@@ -569,6 +622,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "可负担家庭型",
       vi: "Gia đình giá hợp lý",
       he: "משפחתי במחיר נגיש",
+      fr: "Familial abordable",
     },
   },
   {
@@ -581,6 +635,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "Emaar 旗下 Emirates Living 的别墅社区。迪拜家庭的“入门别墅”之选。",
       vi: "Cộng đồng biệt thự của Emaar tại Emirates Living. Lựa chọn 'biệt thự khởi đầu' cho các gia đình Dubai.",
       he: "קהילת וילות של Emaar ב-Emirates Living. בחירת 'הווילה הראשונה' עבור משפחות בדובאי.",
+      fr: "Le quartier de villas d'Emaar à Emirates Living. Le choix « première villa » des familles de Dubaï.",
     },
     why: {
       en: "The Springs is the entry point into Emirates Living villa ownership. 2- and 3-bed townhouses (AED 2.5-4.5M) attract families upgrading from apartments. Mature infrastructure, JESS school catchment, and strong community feel. Resale is steady; values appreciate quietly. Lower per-sqft pricing than newer Emaar communities makes it a value pick.",
@@ -589,6 +644,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "The Springs 是进入 Emirates Living 别墅产权的入门之选。2-3卧联排别墅（250-450万迪拉姆）吸引由公寓升级的家庭。基础设施成熟、JESS 学区、社区氛围浓厚。转售平稳，价值低调上行。每平方英尺价格低于更新的 Emaar 社区，性价比突出。",
       vi: "The Springs là điểm khởi đầu để sở hữu biệt thự tại Emirates Living. Nhà phố 2-3 phòng ngủ (2,5-4,5 triệu AED) thu hút các gia đình nâng cấp từ căn hộ. Hạ tầng trưởng thành, vùng tuyển sinh trường JESS và cảm giác cộng đồng mạnh. Bán lại ổn định; giá trị tăng âm thầm. Giá mỗi sqft thấp hơn các khu Emaar mới hơn khiến nơi đây thành lựa chọn giá trị.",
       he: "The Springs היא נקודת הכניסה לבעלות על וילות ב-Emirates Living. בתי טאון-האוס בני 2 ו-3 חדרי שינה (2.5-4.5 מיליון AED) מושכים משפחות המשדרגות מדירות. תשתית בוגרת, אזור רישום לבית הספר JESS ותחושת קהילה חזקה. המכירה החוזרת יציבה; הערכים עולים בשקט. מחיר נמוך יותר לרגל רבועה בהשוואה לקהילות Emaar חדשות יותר הופך אותה לבחירה משתלמת.",
+      fr: "The Springs est la porte d'entrée vers la propriété d'une villa à Emirates Living. Les maisons de ville 2 et 3 chambres (AED 2,5-4,5M) séduisent les familles qui quittent un appartement pour monter en gamme. Infrastructures matures, carte scolaire de la JESS et fort esprit de communauté. La revente est régulière ; les valeurs s'apprécient discrètement. Un prix au sqft inférieur à celui des quartiers Emaar plus récents en fait un choix de valeur.",
     },
     priceRange: "AED 2.5M - 6M",
     yield: "5.5-6.5%",
@@ -599,6 +655,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "入门级家庭别墅",
       vi: "Biệt thự gia đình khởi điểm",
       he: "וילות משפחתיות לרמת כניסה",
+      fr: "Villas familiales d'entrée de gamme",
     },
   },
   {
@@ -611,6 +668,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "迪拜收益最高、入手最低的公寓。收益猎手的起点。",
       vi: "Căn hộ lợi suất cao nhất, giá vào thấp nhất Dubai. Điểm khởi đầu cho người săn lợi suất.",
       he: "הדירות בעלות התשואה הגבוהה ביותר ומחיר הכניסה הנמוך ביותר בדובאי. נקודת המוצא של ציידי התשואות.",
+      fr: "Les appartements aux rendements les plus élevés et aux tickets d'entrée les plus bas de Dubaï. Le point de départ des chasseurs de rendement.",
     },
     why: {
       en: "International City offers the lowest apartment entry prices in Dubai (AED 300-550K for studios and 1-bedrooms) and consequently the highest gross yields (8-10%). Trade-off is mid-tier finish quality, limited capital appreciation, and a tenant base that requires active management. Best fit: portfolio investors building yield-weighted holdings.",
@@ -619,6 +677,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "国际城提供迪拜最低的公寓入手价（开间和一居室30万-55万迪拉姆），因而毛收益率最高（8-10%）。代价是中档装修、资本增值有限，以及需要主动管理的租客群体。最适合：构建以收益为权重的组合型投资者。",
       vi: "International City có giá vào căn hộ thấp nhất Dubai (300-550 nghìn AED cho studio và căn một phòng ngủ) và do đó lợi suất gộp cao nhất (8-10%). Đánh đổi là chất lượng hoàn thiện tầm trung, tăng giá hạn chế và nhóm khách thuê cần quản lý chủ động. Phù hợp nhất: nhà đầu tư danh mục xây dựng tài sản trọng số theo lợi suất.",
       he: "International City מציעה את מחירי הכניסה הנמוכים ביותר לדירות בדובאי (300-550 אלף AED לסטודיו ולדירות חדר שינה אחד) ולפיכך את התשואות הברוטו הגבוהות ביותר (8-10%). הפשרה היא איכות גימור בדרג ביניים, עליית ערך מוגבלת ובסיס שוכרים הדורש ניהול אקטיבי. ההתאמה הטובה ביותר: משקיעי תיקים הבונים נכסים בדגש על תשואה.",
+      fr: "International City offre les prix d'entrée les plus bas de Dubaï pour un appartement (AED 300-550K pour les studios et les T2) et, par conséquent, les rendements bruts les plus élevés (8-10 %). La contrepartie : une qualité de finition de milieu de gamme, une appréciation du capital limitée et une clientèle locative qui exige une gestion active. Profil idéal : investisseurs en portefeuille construisant des positions pondérées par le rendement.",
     },
     priceRange: "AED 280K - 900K",
     yield: "8.0-10.0%",
@@ -629,6 +688,7 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       zh: "高收益价值",
       vi: "Giá trị lợi suất cao",
       he: "ערך בתשואה גבוהה",
+      fr: "Valeur à haut rendement",
     },
   },
 ];
