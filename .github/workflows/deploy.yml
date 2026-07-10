@@ -57,6 +57,7 @@ jobs:
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PROJECT_IMPORT_SECRET: ${{ secrets.PROJECT_IMPORT_SECRET }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -80,7 +81,7 @@ jobs:
                      ENCRYPTION_KEY GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_VERIFICATION_CODE \
                      HMAC_KEY INQUIRY_EMAIL LEADS_API_BASE_URL LEADS_API_KEYS MONGODB_URI \
                      NEXTAUTH_SECRET OPENAI_API_KEY PROJECT_IMPORT_SECRET \
-                     SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
+                     MAIL_FROM SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
                      WHATSAPP_API_BASE_URL WHATSAPP_API_KEY WHATSAPP_GROUP_JID; do
               printf '%s=%s\n' "$k" "${!k}"
             done
@@ -155,6 +156,7 @@ jobs:
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PROJECT_IMPORT_SECRET: ${{ secrets.PROJECT_IMPORT_SECRET }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -178,7 +180,7 @@ jobs:
                      ENCRYPTION_KEY GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_VERIFICATION_CODE \
                      HMAC_KEY INQUIRY_EMAIL LEADS_API_BASE_URL LEADS_API_KEYS MONGODB_URI \
                      NEXTAUTH_SECRET OPENAI_API_KEY PROJECT_IMPORT_SECRET \
-                     SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
+                     MAIL_FROM SMTP_HOST SMTP_PASS SMTP_PORT SMTP_SECURE SMTP_USER \
                      WHATSAPP_API_BASE_URL WHATSAPP_API_KEY WHATSAPP_GROUP_JID; do
               printf '%s=%s\n' "$k" "${!k}"
             done
