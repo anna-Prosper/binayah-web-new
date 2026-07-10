@@ -8,6 +8,33 @@ import { useTranslations } from "next-intl";
 import { waHref } from "@/lib/whatsapp";
 const binayahLogo = "/assets/binayah-logo.webp";
 
+// SEO deep links — distribute crawl equity from the sitewide footer to the
+// high-value programmatic pages (community + property-type landings). Names are
+// proper nouns / language-neutral; only the section headings are translated.
+// Slugs match BUY_COMMUNITIES and the /apartments|/villas|/townhouses routes.
+const FOOTER_COMMUNITIES: { name: string; slug: string }[] = [
+  { name: "Dubai Marina", slug: "dubai-marina" },
+  { name: "Downtown Dubai", slug: "downtown-dubai" },
+  { name: "Palm Jumeirah", slug: "palm-jumeirah" },
+  { name: "Business Bay", slug: "business-bay" },
+  { name: "Jumeirah Village Circle", slug: "jumeirah-village-circle" },
+  { name: "Dubai Hills Estate", slug: "dubai-hills-estate" },
+  { name: "Jumeirah Beach Residence", slug: "jumeirah-beach-residence" },
+  { name: "Dubai Creek Harbour", slug: "dubai-creek-harbour" },
+  { name: "Arabian Ranches", slug: "arabian-ranches" },
+  { name: "DIFC", slug: "difc" },
+  { name: "Jumeirah Lakes Towers", slug: "jumeirah-lakes-towers" },
+  { name: "MBR City", slug: "mbr-city" },
+];
+const FOOTER_TYPES: { name: string; href: string }[] = [
+  { name: "Apartments", href: "/apartments" },
+  { name: "Villas", href: "/villas" },
+  { name: "Townhouses", href: "/townhouses" },
+  { name: "Off-Plan", href: "/off-plan" },
+  { name: "Buy", href: "/buy" },
+  { name: "Rent", href: "/rent" },
+];
+
 const Footer = () => {
   const t = useTranslations("footer");
   const tWa = useTranslations("whatsapp");
@@ -93,6 +120,30 @@ const Footer = () => {
               </div>
               <a href="https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors leading-relaxed">{t("address")}</a>
             </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* SEO internal-linking row — deep links to popular community & type pages */}
+      <div className="border-t border-white/8 py-6 sm:py-8 grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-8">
+          <h4 className="font-semibold text-white mb-3 sm:mb-4 text-[10px] sm:text-xs uppercase tracking-[0.2em]">{t("popularCommunities")}</h4>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm text-white/50">
+            {FOOTER_COMMUNITIES.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/buy-property-in/${c.slug}`} className="hover:text-accent transition-colors">{c.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="md:col-span-4">
+          <h4 className="font-semibold text-white mb-3 sm:mb-4 text-[10px] sm:text-xs uppercase tracking-[0.2em]">{t("browseByType")}</h4>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm text-white/50">
+            {FOOTER_TYPES.map((tpe) => (
+              <li key={tpe.href}>
+                <Link href={tpe.href} className="hover:text-accent transition-colors">{tpe.name}</Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

@@ -13,7 +13,9 @@ const HOME_LABEL: Record<string, string> = {
   en: "Home", ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית",
 };
 
-export const dynamic = "force-dynamic";
+// Indexable article content — ISR like news/[slug]. No per-request state is
+// read, so an hourly-revalidated static render serves crawlers faster.
+export const revalidate = 3600;
 
 interface Props { params: Promise<{ slug: string; locale: string }> }
 

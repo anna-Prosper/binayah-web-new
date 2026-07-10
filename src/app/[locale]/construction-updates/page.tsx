@@ -3,7 +3,10 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+// Indexable content — cache with ISR like the rest of the content pages
+// (news/communities). No cookies/headers/searchParams are read, so a static
+// shell revalidated hourly gives crawlers a fast TTFB instead of a cold render.
+export const revalidate = 3600;
 
 interface Props { params: Promise<{ locale: string }> }
 

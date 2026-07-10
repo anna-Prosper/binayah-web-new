@@ -675,7 +675,9 @@
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",
     "ornNumber": "Reg No. 1162",
-    "address": "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai"
+    "address": "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai",
+    "popularCommunities": "אזורים פופולריים",
+    "browseByType": "עיון לפי סוג"
   },
   "lang": {
     "en": "אנגלית",
