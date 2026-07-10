@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -276,7 +277,7 @@ export default function CommunityMergedDetailClient({
                         src={
                           p.featuredImage ||
                           p.imageGallery?.[0] ||
-                          "/assets/property-placeholder-v2.webp"
+                          IMAGE_PLACEHOLDER
                         }
                         alt={p.name}
                         fill

@@ -1,8 +1,9 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { useEffect } from "react";
 
-const FALLBACK = "/assets/property-placeholder-v2.webp";
+const FALLBACK = IMAGE_PLACEHOLDER;
 const HANDLED = "data-fallback-applied";
 
 // Site-wide safety net for broken images. Catches the bubbling "error"

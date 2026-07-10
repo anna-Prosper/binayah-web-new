@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- property detail client has many locale-aware and industry-term strings */
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
@@ -534,7 +535,7 @@ export default function PropertyDetailClient({
   }, [developerSlugForStats]);
 
   const allImages = [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[];
-  if (allImages.length === 0) allImages.push("/assets/property-placeholder-v2.webp");
+  if (allImages.length === 0) allImages.push(IMAGE_PLACEHOLDER);
 
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
   const prevImage = () => setCurrentImage((p) => (p - 1 + allImages.length) % allImages.length);

@@ -1,3 +1,4 @@
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import HomePageClient from "@/components/HomePageClient";
 import { getHomepageData } from "@/lib/api";
 import type { Metadata } from "next";
@@ -76,8 +77,8 @@ const FALLBACK_LISTINGS = [
     currency: "AED",
     community: "Dubai Marina",
     city: "Dubai",
-    featuredImage: "/assets/property-placeholder-v2.webp",
-    imageGallery: ["/assets/property-placeholder-v2.webp"],
+    featuredImage: IMAGE_PLACEHOLDER,
+    imageGallery: [IMAGE_PLACEHOLDER],
   },
 ];
 
@@ -143,8 +144,8 @@ const FALLBACK_PROJECTS = [
     startingPrice: 3500000,
     currency: "AED",
     handover: "Q3 2026",
-    featuredImage: "/assets/property-placeholder-v2.webp",
-    imageGallery: ["/assets/property-placeholder-v2.webp"],
+    featuredImage: IMAGE_PLACEHOLDER,
+    imageGallery: [IMAGE_PLACEHOLDER],
     propertyType: "Villa",
   },
 ];
