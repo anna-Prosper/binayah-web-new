@@ -87,7 +87,7 @@ function ProfileClientInner({ user }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>(() => {
-    const tabParam = searchParams.get("tab");
+    const tabParam = searchParams?.get("tab");
     if (tabParam === "submissions" || tabParam === "subscriptions") return tabParam;
     return "saved";
   });
@@ -171,7 +171,7 @@ function ProfileClientInner({ user }: Props) {
 
   const switchTab = (tab: Tab) => {
     setActiveTab(tab);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
     params.set("tab", tab);
     router.replace(`?${params.toString()}`);
   };

@@ -27,8 +27,10 @@
         "./src/*"
       ]
     },
-    "noImplicitAny": false,
-    "strictNullChecks": false
+    // strictNullChecks is ON (catches null-crash bugs). noImplicitAny stays off for now:
+    // the remaining ~16 sites are untyped server-project data flowing through the oversized
+    // ProjectDetailClient — typing them belongs with splitting that file, not `: any` sprinkles.
+    "noImplicitAny": false
   },
   "include": [
     "next-env.d.ts",

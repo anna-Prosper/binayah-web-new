@@ -3,7 +3,17 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-import SharedValuationPage from "./shared/SharedValuationPage.jsx";
+import type { ComponentType, ReactNode } from "react";
+import SharedValuationPageRaw from "./shared/SharedValuationPage.jsx";
+
+// SharedValuationPage is an untyped .jsx module whose default-null props make TS
+// infer the Header/Footer prop types as `null | undefined`. Give it an explicit
+// contract so real components can be passed.
+const SharedValuationPage = SharedValuationPageRaw as ComponentType<{
+  Header?: ComponentType<{ extraItems?: ReactNode }>;
+  Footer?: ComponentType;
+  resolveApiUrl?: (path: string) => string;
+}>;
 
 // Valuation API calls always go through the same-origin Next.js routes under
 // /api/valuation/* — those routes proxy to VALUATION_API_BASE_URL (the

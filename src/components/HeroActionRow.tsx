@@ -28,7 +28,7 @@ export function HeroActionRow({ slug, title, type = "property", subscribable = f
         <SubscribeButton
           slug={slug}
           projectName={title}
-          projectImage={projectImage}
+          projectImage={projectImage ?? undefined}
           variant="hero"
         />
       )}

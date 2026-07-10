@@ -12,7 +12,7 @@ export default function ResetPasswordClient() {
   const router = useRouter();
   const params = useParams<{ locale?: string }>();
   const locale = params?.locale || "en";
-  const token = searchParams.get("token") || "";
+  const token = searchParams?.get("token") || "";
 
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");

@@ -22,7 +22,7 @@ export default function PulseSubNav() {
 
   // Normalise pathname — strip locale prefix e.g. /en/pulse/trending → /pulse/trending
   const localePrefixes = ["/en", "/ar", "/zh", "/ru"];
-  let normPath = pathname;
+  let normPath = pathname ?? "/";
   for (const prefix of localePrefixes) {
     if (normPath.startsWith(prefix + "/") || normPath === prefix) {
       normPath = normPath.slice(prefix.length) || "/";

@@ -237,7 +237,7 @@ function sanitizeParsedPayload(value: unknown): ParsedValuationPayload {
     unit: normalizeNullableText(safeValue.unit),
     area: normalizeNullableText(safeValue.area),
     city: normalizeNullableText(safeValue.city),
-    type: normalizePropertyTypeValue(safeValue.type),
+    type: normalizePropertyTypeValue(safeValue.type ?? null),
     beds: normalizeNullableText(safeValue.beds),
     maids: normalizeNullableText(safeValue.maids),
     size: normalizeNullableText(safeValue.size),

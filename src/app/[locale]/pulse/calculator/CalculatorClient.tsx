@@ -73,9 +73,9 @@ function CalculatorInner({
   const monthly = marketData?.transactions?.monthly ?? [];
 
   // ── Initialise from URL params ─────────────────────────────────────────
-  const defaultCommunity = searchParams.get("community") ?? (yieldByArea[0]?.area ?? "");
-  const defaultBudget = Number(searchParams.get("price") ?? 1_500_000);
-  const defaultDown = Number(searchParams.get("downpct") ?? 20);
+  const defaultCommunity = searchParams?.get("community") ?? (yieldByArea[0]?.area ?? "");
+  const defaultBudget = Number(searchParams?.get("price") ?? 1_500_000);
+  const defaultDown = Number(searchParams?.get("downpct") ?? 20);
 
   const [community, setCommunity] = useState(defaultCommunity);
   const [budget, setBudget] = useState(defaultBudget);

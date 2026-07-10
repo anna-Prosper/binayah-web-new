@@ -114,7 +114,7 @@ export default function ListingsPageClient({
     if (n <= 1) params.delete("page");
     else params.set("page", String(n));
     const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    router.replace(qs ? `${pathname}?${qs}` : (pathname ?? ""), { scroll: false });
   }, [router, pathname, searchParams]);
 
   const handleLoadMore = useCallback(async () => {

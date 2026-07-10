@@ -13,12 +13,12 @@ export default function SignInClient() {
   const t = useTranslations("signIn");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams?.get("callbackUrl") || "/";
 
-  const resetSuccess = searchParams.get("reset") === "1";
-  const verifiedSuccess = searchParams.get("verified") === "1";
-  const verifyError = searchParams.get("error") === "verify";
-  const emailParam = searchParams.get("email") || "";
+  const resetSuccess = searchParams?.get("reset") === "1";
+  const verifiedSuccess = searchParams?.get("verified") === "1";
+  const verifyError = searchParams?.get("error") === "verify";
+  const emailParam = searchParams?.get("email") || "";
 
   // Arriving from a lead form's "create account" prompt → open signup, prefilled.
   const [tab, setTab] = useState<Tab>(emailParam ? "signup" : "signin");

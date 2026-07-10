@@ -508,7 +508,7 @@ export async function GET() {
     topAreas,
   });
 
-  const nodeBuffer = await renderToBuffer(doc as React.ReactElement);
+  const nodeBuffer = await renderToBuffer(doc as Parameters<typeof renderToBuffer>[0]);
   // Slice produces a plain ArrayBuffer which satisfies the BodyInit type
   const buffer: ArrayBuffer = nodeBuffer.buffer.slice(
     nodeBuffer.byteOffset,
