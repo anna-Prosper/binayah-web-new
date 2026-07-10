@@ -2922,8 +2922,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         </div>
                       </div>
                       <div className="mb-3 flex flex-wrap gap-2 text-xs text-[#66706d]">
-                        <span className="rounded-full bg-[#f4efe7] px-2.5 py-1">{c.size}</span>
-                        <span className="rounded-full bg-[#f4efe7] px-2.5 py-1">{c.date}</span>
+                        {c.size && c.size !== "Not stated" && (<span className="rounded-full bg-[#f4efe7] px-2.5 py-1">{c.size}</span>)}
+                        {c.date && c.date !== "Not stated" && (<span className="rounded-full bg-[#f4efe7] px-2.5 py-1">{c.date}</span>)}
                       </div>
                       <p className={`text-sm leading-relaxed text-[#66706d] transition-all duration-500 select-none ${isLockedPreviewRow ? "blur-sm" : ""}`}>
                         {renderValuationRichText(c.reason, `comparable-mobile-${i}`)}
@@ -2956,8 +2956,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                         <td className="py-3 pr-4">
                           <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${c.type === "Sale" ? "bg-[#0B3D2E]/10 text-[#0B3D2E]" : "bg-[#D4A847]/15 text-[#B8922F]"}`}>{c.type}</span>
                         </td>
-                        <td className="py-3 pr-4 text-[#66706d]">{c.size}</td>
-                        <td className="py-3 pr-4 whitespace-nowrap text-[#66706d]">{c.date}</td>
+                        <td className="py-3 pr-4 text-[#66706d]">{c.size && c.size !== "Not stated" ? c.size : ""}</td>
+                        <td className="py-3 pr-4 whitespace-nowrap text-[#66706d]">{c.date && c.date !== "Not stated" ? c.date : ""}</td>
                         <td className="py-3 pr-4 whitespace-nowrap font-bold transition-all duration-500 select-none">
                           {isLockedPreviewRow ? (<MaskedComparablePrice currency={result.currency}/>) : (fmt(c.price, result.currency))}
                         </td>
