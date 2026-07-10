@@ -2,7 +2,7 @@ import HomePageClient from "@/components/HomePageClient";
 import { getHomepageData } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
-import { FAQJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, ReviewJsonLd } from "@/components/JsonLd";
 import { getGoogleReviews } from "@/lib/googleReviews";
 import FAQSectionServer from "@/components/FAQSectionServer";
 import HomeIntro from "@/components/HomeIntro";
@@ -257,6 +257,20 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <FAQJsonLd faqs={faqs} />
+      {/* Review/AggregateRating schema rendered server-side (the visible
+          testimonials are lazy-mounted client-side, so their own schema isn't
+          in the SSR HTML). Uses Google's real 4.4/149 aggregate. */}
+      {googleReviews && googleReviews.reviews.length > 0 && (
+        <ReviewJsonLd
+          reviews={googleReviews.reviews.map((r) => ({
+            author: r.author,
+            reviewBody: r.text,
+            ratingValue: r.ratingValue,
+          }))}
+          overallRating={googleReviews.rating}
+          ratingCount={googleReviews.total}
+        />
+      )}
       <HomePageClient
         saleListings={saleListings.filter(Boolean)}
         rentalListings={rentalListings.filter(Boolean)}

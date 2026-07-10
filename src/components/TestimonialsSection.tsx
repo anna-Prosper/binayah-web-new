@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { ReviewJsonLd } from "./JsonLd";
 import { useTranslations } from "next-intl";
 import type { GoogleReviewsData } from "@/lib/googleReviews";
 
@@ -26,13 +25,9 @@ const TestimonialsSection = ({ data }: { data?: GoogleReviewsData | null }) => {
 
   return (
     <section className="py-8 sm:py-24 bg-foreground text-background relative overflow-hidden">
-      <ReviewJsonLd
-        reviews={testimonials.map((tt) => ({
-          author: tt.name,
-          reviewBody: tt.text,
-          ratingValue: tt.rating,
-        }))}
-      />
+      {/* Review/AggregateRating JSON-LD is emitted server-side from the homepage
+          (page.tsx) so it's in the crawlable SSR HTML — this section is
+          lazy-mounted client-side, so its schema wouldn't be. */}
       {/* Decorative quote — desktop only */}
       <div className="absolute top-10 right-10 text-background/5 hidden sm:block">
         <Quote className="h-64 w-64" />

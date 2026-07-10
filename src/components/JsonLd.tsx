@@ -223,9 +223,15 @@ export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: s
 export function ReviewJsonLd({
   reviews,
   nonce,
+  overallRating,
+  ratingCount,
 }: {
   reviews: { author: string; reviewBody: string; ratingValue: number }[];
   nonce?: string;
+  /** Real profile average (e.g. Google's 4.4) — preferred over the sampled avg. */
+  overallRating?: number;
+  /** Real total review count (e.g. Google's 149) — preferred over reviews.length. */
+  ratingCount?: number;
 }) {
   const avg =
     reviews.reduce((sum, r) => sum + r.ratingValue, 0) / reviews.length;
@@ -234,11 +240,13 @@ export function ReviewJsonLd({
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
     name: "Binayah Properties",
+    // Same url as the main Organization node so Google consolidates the entity.
+    url: "https://www.binayah.ae",
     aggregateRating: {
       "@type": "AggregateRating",
-      ratingValue: avg.toFixed(1),
+      ratingValue: (overallRating && overallRating > 0 ? overallRating : avg).toFixed(1),
       bestRating: "5",
-      ratingCount: reviews.length.toString(),
+      ratingCount: (ratingCount && ratingCount > 0 ? ratingCount : reviews.length).toString(),
     },
     review: reviews.map((r) => ({
       "@type": "Review",
