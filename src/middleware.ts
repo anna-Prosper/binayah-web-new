@@ -42,11 +42,20 @@ const SCRIPT_ALLOWLIST = `${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`;
 // so dynamically-created script elements lack a nonce and CSP logs violations
 // even though strict-dynamic would eventually allow them via trust propagation.
 function buildCSP(nonce: string): string {
+  // IMPORTANT: script-src uses 'unsafe-inline' WITHOUT a nonce token. Per the
+  // CSP spec, once a nonce is present in script-src, browsers IGNORE
+  // 'unsafe-inline' — which blocked Next.js's own un-nonced inline hydration
+  // scripts and rendered every page blank. Next does not propagate a nonce onto
+  // its framework scripts in this setup, so the enforced policy relies on
+  // 'unsafe-inline' + the host allowlist (and object-src/base-uri/
+  // frame-ancestors/connect-src stay fully enforced). The nonce-based policy is
+  // kept in Report-Only below for monitoring.
+  void nonce;
   return [
     "default-src 'self'",
     isDev
-      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
-      : `script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${SCRIPT_ALLOWLIST}`,
+      ? `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${SCRIPT_ALLOWLIST}`
+      : `script-src 'self' 'unsafe-inline' ${SCRIPT_ALLOWLIST}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
