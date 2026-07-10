@@ -296,7 +296,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
   const [topBuildings, setTopBuildings] = useState<DldBuilding[]>([]);
   const [topBuildingsLoading, setTopBuildingsLoading] = useState(true);
   const [drawerCommunity, setDrawerCommunity] = useState<string | null>(null);
-  const [drawerBuildings, setDrawerBuildings] = useState<{ name: string; area: string; sales: number; avgPpsf: number; units: number }[]>([]);
+  const [drawerBuildings, setDrawerBuildings] = useState<{ slug?: string; name: string; area: string; sales: number; avgPpsf: number; units: number }[]>([]);
   const [drawerLoading, setDrawerLoading] = useState(false);
 
   useEffect(() => {
@@ -315,7 +315,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
     setDrawerBuildings([]);
     fetch(proxyUrl(`/api/dld/buildings?area=${encodeURIComponent(drawerCommunity)}&sortBy=sales&order=desc&limit=5`))
       .then((r) => r.ok ? r.json() : { results: [] })
-      .then((data: { results?: { name: string; area: string; sales: number; avgPpsf: number; units: number }[] }) => {
+      .then((data: { results?: { slug?: string; name: string; area: string; sales: number; avgPpsf: number; units: number }[] }) => {
         setDrawerBuildings(Array.isArray(data.results) ? data.results : []);
       })
       .catch(() => setDrawerBuildings([]))
@@ -1219,7 +1219,13 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                                 <td className="px-4 py-3 font-medium text-foreground">
                                   <div className="flex items-center gap-2">
                                     <Landmark className="h-3.5 w-3.5 text-muted-foreground/40 flex-shrink-0" />
-                                    {b.name}
+                                    {b.slug ? (
+                                      <Link href={`/building/${b.slug}`} className="hover:text-primary hover:underline transition-colors">
+                                        {b.name}
+                                      </Link>
+                                    ) : (
+                                      b.name
+                                    )}
                                   </div>
                                 </td>
                                 <td className="px-4 py-3 text-muted-foreground text-xs">{b.area ?? "-"}</td>
@@ -1506,7 +1512,11 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                     <div key={b.name} className="flex items-center justify-between bg-muted/20 rounded-xl px-3 py-2.5">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-xs text-muted-foreground w-4 flex-shrink-0">{i + 1}</span>
-                        <span className="text-sm font-medium text-foreground truncate">{b.name}</span>
+                        {b.slug ? (
+                          <Link href={`/building/${b.slug}`} className="text-sm font-medium text-foreground truncate hover:text-primary hover:underline transition-colors">{b.name}</Link>
+                        ) : (
+                          <span className="text-sm font-medium text-foreground truncate">{b.name}</span>
+                        )}
                       </div>
                       <div className="text-right flex-shrink-0 ml-2">
                         <p className="text-xs font-semibold text-foreground">{t("salesCount", { count: b.sales })}</p>
