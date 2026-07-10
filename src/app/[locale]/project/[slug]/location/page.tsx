@@ -66,7 +66,7 @@ export default async function LocationPage({ params }: { params: Promise<{ local
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
     name:        `${project.name}, Location`,
-    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}/location`,
+    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}/${locale}/project/${slug}/location`,
     description: `Location and neighbourhood guide for ${project.name}`,
     address: {
       "@type":        "PostalAddress",

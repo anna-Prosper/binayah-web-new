@@ -70,7 +70,7 @@ export default async function FloorPlansPage({ params }: { params: Promise<{ loc
     "@context": "https://schema.org",
     "@type":    "RealEstateListing",
     name:        `${project.name}, Floor Plans`,
-    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae"}/${locale}/project/${slug}/floor-plans`,
+    url:         `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae"}/${locale}/project/${slug}/floor-plans`,
     description: `Floor plans and unit configurations for ${project.name}`,
     address: {
       "@type":        "PostalAddress",

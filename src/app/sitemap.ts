@@ -38,6 +38,27 @@ async function fetchSlugDatesFromDb(
   }
 }
 
+// /property/{slug} pages resolve from three collections — the legacy `listings`
+// collection plus secondary_sales / secondary_rentals, which the search API
+// unions in. Reading only `listings` left every secondary listing (~280 live
+// pages) out of the sitemap. Dedupe by slug; legacy wins on collision.
+async function fetchAllListingSlugs(): Promise<{ slug: string; lastmod?: Date }[]> {
+  const filter = { publishStatus: "published", slug: { $exists: true, $ne: "" } };
+  const [legacy, sales, rentals] = await Promise.all([
+    fetchSlugDatesFromDb("listings", filter),
+    fetchSlugDatesFromDb("secondary_sales", filter),
+    fetchSlugDatesFromDb("secondary_rentals", filter),
+  ]);
+  const seen = new Set<string>();
+  const out: { slug: string; lastmod?: Date }[] = [];
+  for (const l of [...legacy, ...sales, ...rentals]) {
+    if (seen.has(l.slug)) continue;
+    seen.add(l.slug);
+    out.push(l);
+  }
+  return out;
+}
+
 // Projects for the sitemap, with per-sub-page indexability flags. The flags
 // MUST mirror the `robots: noindex` guards in each sub-page's generateMetadata
 // so we never submit a URL that self-noindexes (which GSC flags as "Submitted
@@ -277,7 +298,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // items regardless of ?limit=, so the sitemap would only include 100 of
       // 3000+ pages. MongoDB returns all published slugs with no cap.
       fetchProjectsForSitemap(),
-      fetchSlugDatesFromDb("listings", { publishStatus: "published", slug: { $exists: true, $ne: "" } }),
+      fetchAllListingSlugs(),
       // News feed excludes weekly market reports — those live under /pulse/reports.
       fetchSlugs("/api/news?limit=1000&excludeCategory=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/news?limit=1000&category=Weekly%20Report&fields=slug,updatedAt"),

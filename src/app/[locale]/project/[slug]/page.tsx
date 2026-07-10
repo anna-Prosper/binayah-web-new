@@ -102,7 +102,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
     8
   );
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://binayah.ae";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
   const ytId = project.videoUrl ? youtubeId(project.videoUrl) : null;
   const vmId = project.videoUrl ? vimeoId(project.videoUrl) : null;
   const realEstate: Record<string, unknown> = {
