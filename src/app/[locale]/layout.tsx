@@ -127,10 +127,12 @@ export async function generateMetadata({
     },
     icons: {
       icon: [
+        { url: "/favicon.ico", sizes: "any" },
         { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/icon.png" },
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
       ],
       apple: "/icon.png",
+      shortcut: "/favicon.ico",
     },
     openGraph: {
       title: titles[locale] || titles.en,
