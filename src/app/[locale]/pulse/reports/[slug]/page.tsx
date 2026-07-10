@@ -5,12 +5,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
+import WeeklyReportView, { type ReportData } from "@/components/WeeklyReportView";
 import { Link } from "@/navigation";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
 import { getNonce } from "@/lib/nonce";
-import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
-import { Calendar, Clock, ArrowLeft, FileText } from "lucide-react";
+import { canonical, altLangs, OG_LOCALE, AE_URL, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { Calendar, Clock, ArrowLeft, ArrowRight, FileText } from "lucide-react";
 
 export const revalidate = 3600;
 
@@ -25,8 +26,11 @@ interface ReportArticle {
   author?: string;
   readTime?: string;
   publishedAt?: string;
+  updatedAt?: string;
+  featuredImage?: string;
   metaTitle?: string;
   metaDescription?: string;
+  reportData?: ReportData | null;
 }
 
 async function getReport(slug: string, locale: string): Promise<ReportArticle | null> {
@@ -38,6 +42,24 @@ async function getReport(slug: string, locale: string): Promise<ReportArticle | 
     return data as ReportArticle;
   } catch {
     return null;
+  }
+}
+
+// Prev/next by publish date — internal linking + crawl continuity as the archive
+// grows. Uses the same list the hub renders (category "Weekly Report").
+async function getAdjacent(slug: string): Promise<{ prev?: { slug: string; title: string }; next?: { slug: string; title: string } }> {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/news?category=Weekly%20Report&limit=60`));
+    if (!res.ok) return {};
+    const items = (await res.json()) as { slug: string; title: string }[];
+    const idx = items.findIndex((a) => a.slug === slug); // list is newest-first
+    if (idx < 0) return {};
+    return {
+      next: idx > 0 ? { slug: items[idx - 1].slug, title: items[idx - 1].title } : undefined,
+      prev: idx < items.length - 1 ? { slug: items[idx + 1].slug, title: items[idx + 1].title } : undefined,
+    };
+  } catch {
+    return {};
   }
 }
 
@@ -60,6 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) return { title: "Not Found" };
   const title = article.metaTitle || `${article.title} | Binayah Properties`;
   const description = article.metaDescription || article.excerpt || "";
+  const ogImage = article.featuredImage || DEFAULT_OG_IMAGE;
   return {
     title,
     description,
@@ -70,8 +93,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       url: canonical(locale, `/pulse/reports/${slug}`),
       locale: OG_LOCALE[locale] ?? "en_AE",
-      images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }],
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
+    twitter: { card: "summary_large_image", title, description, images: [ogImage] },
   };
 }
 
@@ -85,9 +109,11 @@ function fmtDate(d?: string, locale = "en"): string {
 export default async function ReportDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   const nonce = await getNonce();
-  const article = await getReport(slug, locale);
+  const [article, adjacent] = await Promise.all([getReport(slug, locale), getAdjacent(slug)]);
   if (!article) notFound();
 
+  const rd = article.reportData;
+  const hasStructured = !!(rd && (rd.kpis || (rd.movers && rd.movers.length) || (rd.launches && rd.launches.length)));
   const contentHtml = article.content ? sanitizeArticleHtml(article.content) : "";
 
   return (
@@ -113,7 +139,9 @@ export default async function ReportDetailPage({ params }: Props) {
           <span>By {article.author || "Binayah Editorial"}</span>
         </div>
 
-        {contentHtml ? (
+        {hasStructured ? (
+          <WeeklyReportView data={rd!} locale={locale} />
+        ) : contentHtml ? (
           <div
             className="mt-8 prose prose-lg max-w-none
               prose-headings:text-foreground prose-headings:font-bold
@@ -131,6 +159,24 @@ export default async function ReportDetailPage({ params }: Props) {
         <div className="mt-14">
           <WeeklySubscribeForm source={`pulse-report:${slug}`} variant="card" />
         </div>
+
+        {/* Prev / next report — internal linking + crawl continuity */}
+        {(adjacent.prev || adjacent.next) && (
+          <nav className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {adjacent.prev ? (
+              <Link href={`/pulse/reports/${adjacent.prev.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground"><ArrowLeft className="h-3.5 w-3.5" /> Previous report</span>
+                <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.prev.title}</span>
+              </Link>
+            ) : <span />}
+            {adjacent.next && (
+              <Link href={`/pulse/reports/${adjacent.next.slug}`} locale={locale} className="group flex flex-col rounded-2xl border border-border/60 bg-card px-5 py-4 hover:border-primary/20 transition-colors sm:text-right">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground sm:justify-end">Next report <ArrowRight className="h-3.5 w-3.5" /></span>
+                <span className="mt-1 font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">{adjacent.next.title}</span>
+              </Link>
+            )}
+          </nav>
+        )}
       </article>
 
       <Footer />
@@ -139,20 +185,34 @@ export default async function ReportDetailPage({ params }: Props) {
         type="application/ld+json"
         nonce={nonce}
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: article.title,
-            description: article.excerpt,
-            datePublished: article.publishedAt,
-            author: { "@type": "Organization", name: article.author || "Binayah Editorial" },
-            publisher: {
-              "@type": "Organization",
-              name: "Binayah Properties",
-              logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` },
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: article.title,
+              description: article.excerpt,
+              image: [article.featuredImage || DEFAULT_OG_IMAGE],
+              datePublished: article.publishedAt,
+              dateModified: article.updatedAt || article.publishedAt,
+              author: { "@type": "Organization", name: article.author || "Binayah Editorial", url: AE_URL },
+              publisher: {
+                "@type": "Organization",
+                name: "Binayah Properties",
+                logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` },
+              },
+              mainEntityOfPage: { "@type": "WebPage", "@id": canonical(locale, `/pulse/reports/${slug}`) },
+              url: canonical(locale, `/pulse/reports/${slug}`),
             },
-            url: canonical(locale, `/pulse/reports/${slug}`),
-          }).replace(/</g, "\\u003c"),
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: `${AE_URL}/` },
+                { "@type": "ListItem", position: 2, name: "Market Reports", item: canonical(locale, "/pulse/reports") },
+                { "@type": "ListItem", position: 3, name: article.title },
+              ],
+            },
+          ]).replace(/</g, "\\u003c"),
         }}
       />
     </div>
