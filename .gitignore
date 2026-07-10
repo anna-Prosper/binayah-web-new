@@ -90,3 +90,6 @@ playwright-report/
 
 # stray data dumps
 binayah_website_new.*.json
+
+# runtime lock — never commit
+.claude/scheduled_tasks.lock
