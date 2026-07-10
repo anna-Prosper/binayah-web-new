@@ -5,6 +5,7 @@ import { PULSE_GUIDES } from "@/lib/pulse-guides";
 import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
+import { getAgents, isPublishableAgent } from "@/lib/agents";
 
 import { AE_URL, RU_URL, SITE_URL } from "@/lib/site";
 
@@ -319,6 +320,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Superlative (cheapest) combos — data-driven.
   const superlativeCombos = await fetchSuperlativeCombos();
 
+  // Agent profiles substantive enough to index (real bio + RERA BRN).
+  const publishableAgents = (await getAgents()).filter(isPublishableAgent);
+
   const staticPages: MetadataRoute.Sitemap = [
     withAlternates("/", 1.0, "daily", now),
     withAlternates("/off-plan", 0.9, "daily", now),
@@ -331,7 +335,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     withAlternates("/construction-updates", 0.7, "daily", now),
     withAlternates("/services", 0.6, "monthly", now),
     withAlternates("/about", 0.5, "monthly", now),
+    withAlternates("/team", 0.6, "weekly", now),
     withAlternates("/contact", 0.5, "monthly", now),
+    // Individual agent profiles — only those with a real bio + BRN (the rest are
+    // noindex until enriched, so they'd be "submitted URL marked noindex").
+    ...publishableAgents.map((a) => withAlternates(`/team/${a.slug}`, 0.4, "monthly", now)),
     withAlternates("/valuation", 0.5, "monthly", now),
     withAlternates("/pulse", 0.7, "daily", now),
     withAlternates("/pulse/reports", 0.7, "weekly", now),

@@ -94,6 +94,7 @@ const Footer = () => {
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
             <li><Link href="/services" className="hover:text-accent transition-colors">{t("links.services")}</Link></li>
             <li><Link href="/about" className="hover:text-accent transition-colors">{t("links.about")}</Link></li>
+            <li><Link href="/team" className="hover:text-accent transition-colors">{t("links.team")}</Link></li>
             <li><Link href="/news" className="hover:text-accent transition-colors">{t("links.news")}</Link></li>
             <li><Link href="/contact" className="hover:text-accent transition-colors">{t("links.contact")}</Link></li>
           </ul>

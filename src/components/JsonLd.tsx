@@ -382,3 +382,72 @@ export function RealEstateListingJsonLd({
     />
   );
 }
+
+// ── Agent Person schema ───────────────────────────────────────────────────
+export function PersonJsonLd({
+  name,
+  url,
+  jobTitle,
+  image,
+  email,
+  telephone,
+  description,
+  languages,
+  brn,
+  sameAs,
+  nonce,
+}: {
+  name: string;
+  url: string;
+  jobTitle?: string;
+  image?: string;
+  email?: string;
+  telephone?: string;
+  description?: string;
+  languages?: string[];
+  /** Real RERA Broker Registration Number, omitted when placeholder/blank. */
+  brn?: string;
+  sameAs?: string[];
+  nonce?: string;
+}) {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    // An individual agent is a Person who works for the RealEstateAgent agency.
+    "@type": "Person",
+    "@id": `${url}#person`,
+    name,
+    url,
+    worksFor: {
+      "@type": "RealEstateAgent",
+      name: "Binayah Properties",
+      url: "https://www.binayah.ae",
+    },
+  };
+  if (jobTitle) data.jobTitle = jobTitle;
+  if (image) data.image = image;
+  if (email) data.email = email;
+  if (telephone) data.telephone = telephone;
+  if (description) data.description = description;
+  if (languages && languages.length) data.knowsLanguage = languages;
+  if (sameAs && sameAs.length) data.sameAs = sameAs;
+  if (brn) {
+    data.hasCredential = {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "RERA Broker Registration (BRN)",
+      identifier: brn,
+      recognizedBy: {
+        "@type": "GovernmentOrganization",
+        name: "Dubai Land Department — Real Estate Regulatory Agency (RERA)",
+      },
+    };
+    data.identifier = { "@type": "PropertyValue", propertyID: "RERA BRN", value: brn };
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}
