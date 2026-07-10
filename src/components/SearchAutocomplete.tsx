@@ -10,6 +10,7 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HomeSearchSuggestion, HomeSearchSuggestionGroups } from "@/lib/home-smart-search";
 
@@ -51,6 +52,7 @@ export default function SearchAutocomplete({ value, onChange, onSubmit, placehol
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const router = useRouter();
 
   // Flatten suggestions in display order — used for keyboard navigation.
   // Built fresh every render; groups change only on fetch completion.
@@ -109,13 +111,20 @@ export default function SearchAutocomplete({ value, onChange, onSubmit, placehol
 
   const choose = useCallback(
     (item: HomeSearchSuggestion) => {
-      onChange(item.title);
-      onSubmit?.(item.title);
       setOpen(false);
       setActive(-1);
       inputRef.current?.blur();
+      // A concrete project links straight to its detail page — running it as a
+      // free-text search would let an incidental filter (e.g. a default Apartment
+      // type) hide it, especially for Commercial/Villa projects.
+      if (item.href) {
+        router.push(item.href);
+        return;
+      }
+      onChange(item.title);
+      onSubmit?.(item.title);
     },
-    [onChange, onSubmit]
+    [onChange, onSubmit, router]
   );
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

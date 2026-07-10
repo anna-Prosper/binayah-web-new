@@ -25,6 +25,7 @@ export interface HomeSearchCandidate {
   kind: "community" | "project" | "developer" | "place";
   name: string;
   propertyType?: string;
+  slug?: string;
   subtitle?: string;
 }
 
@@ -56,6 +57,9 @@ export interface HomeSearchDraft {
 
 export interface HomeSearchSuggestion {
   badge?: string;
+  // Direct destination for a concrete entity (a specific project). When present,
+  // selecting the suggestion navigates here instead of running a free-text search.
+  href?: string;
   id: string;
   kind: HomeSearchSuggestionKind;
   parsed?: Partial<HomeSearchDraft>;
@@ -503,6 +507,7 @@ export function createGroupedHomeSearchSuggestions(args: {
 
   const projects = (args.suggestions?.projects ?? []).slice(0, 4).map((candidate) => ({
     badge: candidate.propertyType ? formatPropertyTypeLabel(candidate.propertyType, candidate.propertyType) : "Project",
+    href: candidate.slug ? `/project/${candidate.slug}` : undefined,
     id: `project-${slugify(candidate.name)}`,
     kind: "project" as const,
     parsed: {
