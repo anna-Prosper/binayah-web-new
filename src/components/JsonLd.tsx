@@ -104,6 +104,39 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       { "@type": "City", name: "Dubai", addressCountry: "AE" },
       { "@type": "City", name: "Abu Dhabi", addressCountry: "AE" },
     ],
+    // E-E-A-T signals for a YMYL (real-estate) entity: regulatory credential,
+    // legal identity, expertise topics and a multilingual contact point.
+    legalName: "Binayah Properties L.L.C",
+    slogan: "Dubai's trusted property partner since 2007",
+    foundingLocation: { "@type": "Place", name: "Dubai, United Arab Emirates" },
+    knowsAbout: [
+      "Dubai real estate",
+      "Off-plan property investment",
+      "Property management",
+      "Dubai Land Department transactions",
+      "Golden Visa",
+      "Freehold property in Dubai",
+      "Buy-to-let rental yields",
+    ],
+    // RERA broker registration (ORN) — the Dubai regulator's authorisation to
+    // broker property. A core trust signal for a Dubai real-estate agency.
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "RERA Broker Registration (ORN)",
+      identifier: "1162",
+      recognizedBy: {
+        "@type": "GovernmentOrganization",
+        name: "Dubai Land Department — Real Estate Regulatory Agency (RERA)",
+      },
+    },
+    identifier: { "@type": "PropertyValue", propertyID: "RERA ORN", value: "1162" },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+971549988811",
+      contactType: "sales",
+      areaServed: "AE",
+      availableLanguage: ["English", "Arabic", "Russian", "French", "Chinese"],
+    },
     hasMap: "https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai",
   };
 
