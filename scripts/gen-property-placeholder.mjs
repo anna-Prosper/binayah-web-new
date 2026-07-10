@@ -5,6 +5,7 @@
 // missing-image fallback points to. Run: `node scripts/gen-property-placeholder.mjs`
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 
@@ -92,16 +93,42 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   </g>
 </svg>`;
 
-// Render an optimized WebP drop-in at the existing placeholder path. The SVG is
-// intentionally not written to public/ (it embeds the 63KB logo) — the WebP is
-// the shipped asset; re-run this script to regenerate it. Rendered at 2x
-// (2048x1024) so it stays crisp on retina and the large detail-page hero, while
-// flat vector art keeps the file tiny.
+// Render an optimized WebP (2x = 2048x1024, crisp on retina + the large
+// detail-page hero; flat vector art keeps it tiny). The SVG is intentionally not
+// written to public/ (it embeds the 63KB logo) — the WebP is the shipped asset.
+//
+// The filename carries a content hash so the URL changes whenever the design
+// changes. Static assets are served `immutable, max-age=1yr`, so reusing a
+// filename would leave every browser/CDN pinned to the stale bytes for a year.
+// A hashed name makes cache-busting automatic — this script rewrites the
+// IMAGE_PLACEHOLDER constant to the new URL, so a design change is one command.
 const SCALE = 2;
-const OUT_WEBP = path.join(ROOT, "public/assets/property-placeholder-v2.webp");
-await sharp(Buffer.from(svg), { density: 72 * SCALE })
+const buf = await sharp(Buffer.from(svg), { density: 72 * SCALE })
   .resize(W * SCALE, H * SCALE)
   .webp({ quality: 84, effort: 6 })
-  .toFile(OUT_WEBP);
-const st = fs.statSync(OUT_WEBP);
-console.log("wrote WebP:", OUT_WEBP, st.size, "bytes");
+  .toBuffer();
+const hash = crypto.createHash("sha256").update(buf).digest("hex").slice(0, 8);
+const filename = `property-placeholder.${hash}.webp`;
+const assetsDir = path.join(ROOT, "public/assets");
+
+// Drop previous placeholder builds (hashed + legacy) so only the current one ships.
+for (const f of fs.readdirSync(assetsDir)) {
+  if (/^property-placeholder(\.[0-9a-f]{8})?(-v\d+)?\.webp$/.test(f)) {
+    fs.rmSync(path.join(assetsDir, f));
+  }
+}
+fs.writeFileSync(path.join(assetsDir, filename), buf);
+
+// Rewrite the single source-of-truth constant to point at the new hashed URL.
+const imagesTs = path.join(ROOT, "src/lib/images.ts");
+const newUrl = `/assets/${filename}`;
+const before = fs.readFileSync(imagesTs, "utf8");
+const after = before.replace(
+  /(export const IMAGE_PLACEHOLDER = )"[^"]*";/,
+  `$1"${newUrl}";`
+);
+if (after === before) throw new Error("Could not rewrite IMAGE_PLACEHOLDER in src/lib/images.ts");
+fs.writeFileSync(imagesTs, after);
+
+console.log("wrote WebP:", filename, buf.length, "bytes");
+console.log("IMAGE_PLACEHOLDER ->", newUrl);

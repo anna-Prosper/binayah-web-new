@@ -7,4 +7,4 @@
  * re-versioned in one place. Regenerate the asset with
  * `node scripts/gen-property-placeholder.mjs`.
  */
-export const IMAGE_PLACEHOLDER = "/assets/property-placeholder-v2.webp";
+export const IMAGE_PLACEHOLDER = "/assets/property-placeholder.a1269bbc.webp";
