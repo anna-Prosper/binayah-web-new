@@ -286,7 +286,7 @@ function stripWhatsappSignature(message) {
             const t = line.trim();
             if (!t) return true;
             if (/^thank\s*you[,!.]?$/i.test(t)) return false;
-            if (/^[—\-•]?\s*binayah\s*team[.!]?$/i.test(t)) return false;
+            if (/^[—\-•]?\s*binayah\s*(?:team|ai)[.!]?$/i.test(t)) return false;
             return true;
         })
         .join("\n")
