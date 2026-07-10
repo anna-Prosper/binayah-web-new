@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Bed, Bath, Maximize, MapPin, ArrowUpRight } from "lucide-react";
@@ -36,7 +37,7 @@ function getLabel(p: SecondaryListing): string {
 }
 
 function getImage(p: SecondaryListing): string {
-  return p.featuredImage || p.imageGallery?.[0] || "/assets/property-placeholder-v2.webp";
+  return p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER;
 }
 
 const FeaturedPropertiesClient = ({

@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -179,7 +180,7 @@ function ListingsPageClientInner({
                   >
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <ImageWithFallback
-                        src={l.featuredImage || l.imageGallery?.[0] || "/assets/property-placeholder-v2.webp"}
+                        src={l.featuredImage || l.imageGallery?.[0] || IMAGE_PLACEHOLDER}
                         alt={l.name}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

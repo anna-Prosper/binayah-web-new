@@ -94,10 +94,13 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 
 // Render an optimized WebP drop-in at the existing placeholder path. The SVG is
 // intentionally not written to public/ (it embeds the 63KB logo) — the WebP is
-// the shipped asset; re-run this script to regenerate it.
+// the shipped asset; re-run this script to regenerate it. Rendered at 2x
+// (2048x1024) so it stays crisp on retina and the large detail-page hero, while
+// flat vector art keeps the file tiny.
+const SCALE = 2;
 const OUT_WEBP = path.join(ROOT, "public/assets/property-placeholder-v2.webp");
-await sharp(Buffer.from(svg), { density: 200 })
-  .resize(W, H)
+await sharp(Buffer.from(svg), { density: 72 * SCALE })
+  .resize(W * SCALE, H * SCALE)
   .webp({ quality: 84, effort: 6 })
   .toFile(OUT_WEBP);
 const st = fs.statSync(OUT_WEBP);

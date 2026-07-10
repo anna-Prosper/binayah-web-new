@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building, CalendarDays } from "lucide-react";
@@ -57,7 +58,7 @@ const OffPlanSection = () => {
                 <Link href={`/project/${p.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                   <div className="relative overflow-hidden aspect-[4/3]">
                     <Image
-                      src={p.featuredImage || p.imageGallery?.[0] || "/assets/property-placeholder-v2.webp"}
+                      src={p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER}
                       alt={p.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"

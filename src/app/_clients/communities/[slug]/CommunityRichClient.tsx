@@ -3,6 +3,7 @@
 // sticky nav, no hooks/handlers), so it ships zero JS of its own. Client-only
 // children (Navbar, Footer, WhatsAppButton, ImageWithFallback) remain islands.
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -124,7 +125,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const ProjectCard = ({ p }: { p: Project }) => (
     <Link href={lp(locale, `/project/${p.slug || projSlug(p.name)}`)} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
       <div className="relative overflow-hidden aspect-[4/3]">
-        <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || "/assets/property-placeholder-v2.webp"} alt={p.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+        <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER} alt={p.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
         {p.status && <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>}
       </div>
       <div className="p-5">
@@ -141,7 +142,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const ListingCard = ({ l }: { l: Listing }) => (
     <Link href={lp(locale, `/property/${l.slug}`)} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
       <div className="relative overflow-hidden aspect-[4/3]">
-        <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+        <ImageWithFallback src={l.featuredImage || IMAGE_PLACEHOLDER} alt={l.title || l.name || name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
       </div>
       <div className="p-5">
         <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
@@ -386,7 +387,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
                 <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
-                  <ImageWithFallback src={n.featuredImage || "/assets/property-placeholder-v2.webp"} alt={n.name} fill sizes="(max-width:768px) 50vw, 16vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <ImageWithFallback src={n.featuredImage || IMAGE_PLACEHOLDER} alt={n.name} fill sizes="(max-width:768px) 50vw, 16vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <span className="absolute bottom-2 left-2 right-2 text-white text-xs font-semibold leading-tight">{n.name}</span>
                 </Link>

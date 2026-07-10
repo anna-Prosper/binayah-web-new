@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -16,7 +17,7 @@ interface Props {
   priority?: boolean;
 }
 
-const DEFAULT_FALLBACK = "/assets/property-placeholder-v2.webp";
+const DEFAULT_FALLBACK = IMAGE_PLACEHOLDER;
 
 export default function CardImageCarousel({
   images,

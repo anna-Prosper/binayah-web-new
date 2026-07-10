@@ -1,9 +1,10 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Image from "next/image";
 import { useState } from "react";
 
-const FALLBACK = "/assets/property-placeholder-v2.webp";
+const FALLBACK = IMAGE_PLACEHOLDER;
 
 interface Props {
   src: string;

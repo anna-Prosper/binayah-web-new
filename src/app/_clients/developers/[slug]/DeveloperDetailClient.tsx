@@ -1,5 +1,6 @@
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Navbar from "@/components/Navbar";
 import { buildDeveloperSummary } from "@/lib/developerSummary";
 import { AedPrice } from "@/components/AedPrice";
@@ -205,7 +206,7 @@ export default function DeveloperDetailClient({
                         src={
                           p.featuredImage ||
                           p.imageGallery?.[0] ||
-                          "/assets/property-placeholder-v2.webp"
+                          IMAGE_PLACEHOLDER
                         }
                         alt={p.name}
                         fill

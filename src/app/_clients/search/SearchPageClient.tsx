@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- search client uses many industry terms and status values */
 "use client";
 
+import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl, proxyUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -759,7 +760,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <Image
-                        src={communityInfo.heroImage || "/assets/property-placeholder-v2.webp"}
+                        src={communityInfo.heroImage || IMAGE_PLACEHOLDER}
                         alt={communityInfo.name}
                         fill
                         sizes="384px"
@@ -807,7 +808,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   <Link href={`/communities/${dldBuilding.areaSlug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3] bg-muted flex items-center justify-center">
                       <Image
-                        src="/assets/property-placeholder-v2.webp"
+                        src={IMAGE_PLACEHOLDER}
                         alt={dldBuilding.name}
                         fill
                         sizes="384px"
