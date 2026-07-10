@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import { headers } from "next/headers";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { CSP_NONCE } from "@/lib/csp";
+import ProdAnalytics from "@/components/ProdAnalytics";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/JsonLd";
 import FavoritesDrawer from "@/components/FavoritesDrawer";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CompareProvider } from "@/context/CompareContext";
 import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
-import Script from "next/script";
 import "../globals.css";
 import Providers from "../providers";
 import { Analytics } from "@vercel/analytics/next";
@@ -24,11 +24,16 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import AIChatWidget from "@/components/AIChatWidget";
 import ScrollToTop from "@/components/ScrollToTop";
 
-const GA_ID = "G-9FZKWX04K3";
+// GTM container id — only used for the no-JS <noscript> fallback iframe below.
+// The JS-driven analytics (GTM/GA/Clarity/LiveChat) live in <ProdAnalytics>,
+// which host-gates them on the client so this layout stays statically cacheable.
 const GTM_ID = "GTM-PG6Z43HD";
-const CLARITY_ID = "wuee1w39pj";
-const LIVECHAT_LICENSE = "6313921";
-const PROD_HOSTS = new Set(["www.binayah.ae", "binayah.ae", "binayah.ru", "www.binayah.ru"]);
+
+// Prebuild all locales so next-intl static rendering can kick in (paired with
+// setRequestLocale in the layout + pages). Required for the ISR/edge cache.
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "cyrillic-ext"],
@@ -178,11 +183,15 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Enable next-intl static rendering — without this, getMessages()/getTranslations()
+  // read headers() to resolve the locale, which forces every route to render
+  // dynamically and disables the ISR/edge cache site-wide.
+  setRequestLocale(locale);
+
   const messages = await getMessages();
-  const requestHeaders = await headers();
-  const nonce = requestHeaders.get("x-nonce") ?? "";
-  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "";
-  const isProdHost = PROD_HOSTS.has(host);
+  // Static per-deploy nonce (see src/lib/csp.ts) — read as a constant, NOT from
+  // headers(), so this layout (and thus every page) can be statically cached.
+  const nonce = CSP_NONCE;
 
   return (
     <html
@@ -199,8 +208,11 @@ export default async function LocaleLayout({
         <link rel="dns-prefetch" href="https://sm-automation-5464.s3.ap-south-1.amazonaws.com" />
       </head>
       <body className={jakarta.className}>
-        {/* Google Tag Manager (noscript) — must be immediately after <body> */}
-        {isProdHost && (
+        {/* Google Tag Manager (noscript) — must be immediately after <body>.
+            Rendered unconditionally so the HTML stays static/cacheable; the
+            no-JS fallback only fires for JS-disabled clients (prod is the only
+            public host — staging/previews are SSO-protected). */}
+        {(
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
@@ -233,38 +245,9 @@ export default async function LocaleLayout({
                   <SpeedInsights />
                   <LiveChatBanner />
                   <GuideDownloadPopup />
-                  {isProdHost && (
-                    <>
-                      {/* Google Tag Manager — loads early so Tag Assistant detects
-                          the container and GTM can govern downstream tags/consent. */}
-                      <Script id="gtm-init" strategy="afterInteractive" nonce={nonce}>
-                        {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
-                      </Script>
-                      <Script
-                        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-                        strategy="lazyOnload"
-                        nonce={nonce}
-                      />
-                      <Script id="ga-init" strategy="lazyOnload" nonce={nonce}>
-                        {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_ID}');`}
-                      </Script>
-                      <Script id="clarity-init" strategy="lazyOnload" nonce={nonce}>
-                        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${CLARITY_ID}");`}
-                      </Script>
-                      <Script id="livechat-init" strategy="lazyOnload" nonce={nonce}>
-                        {`window.__lc = window.__lc || {};
-window.__lc.license = ${LIVECHAT_LICENSE};
-window.__lc.integration_name = "manual_channels";
-window.__lc.product_name = "livechat";
-window.__lc.asyncInit = true;
-(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e})(window,document,[].slice);
-(function(){var s=false;function go(){if(s)return;s=true;var w=window.LiveChatWidget;if(w&&w.init){w.init();}}['pointerdown','keydown','touchstart','scroll'].forEach(function(ev){window.addEventListener(ev,go,{once:true,passive:true});});setTimeout(go,5000);})();`}
-                      </Script>
-                    </>
-                  )}
+                  {/* Analytics (GTM/GA/Clarity/LiveChat) — host-gated on the
+                      client so this layout stays statically cacheable. */}
+                  <ProdAnalytics nonce={nonce} />
                 </SubscriptionsProvider>
               </CompareProvider>
             </FavoritesProvider>

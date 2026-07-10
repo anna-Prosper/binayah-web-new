@@ -1,15 +1,16 @@
-import { headers } from "next/headers";
+import { CSP_NONCE } from "./csp";
 
 /**
- * Reads the per-request CSP nonce set by middleware (x-nonce header). Server
- * components render inline <script> tags with this nonce so they satisfy the
- * nonce-based Content-Security-Policy. Returns "" if unavailable (e.g. a
- * statically-rendered context) so callers degrade gracefully instead of erroring.
+ * Returns the deploy's static CSP nonce (see src/lib/csp.ts). Server components
+ * render inline <script> tags with this nonce so they satisfy the nonce-based
+ * Content-Security-Policy.
+ *
+ * This intentionally does NOT read headers() anymore: doing so opted every
+ * route into dynamic rendering and disabled the ISR/edge cache site-wide. The
+ * nonce is now frozen per deployment, so a plain constant is correct and keeps
+ * pages statically cacheable. Kept async so the existing call sites
+ * (`await getNonce()`) don't need to change.
  */
 export async function getNonce(): Promise<string> {
-  try {
-    return (await headers()).get("x-nonce") ?? "";
-  } catch {
-    return "";
-  }
+  return CSP_NONCE;
 }

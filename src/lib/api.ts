@@ -47,9 +47,21 @@ export function proxyUrl(path: string): string {
 export async function serverFetch(
   url: string,
   ms = 8000,
-  headers?: Record<string, string>
+  headers?: Record<string, string>,
+  // Next 15 defaults fetch() to `no-store`, which opts the ENTIRE route into
+  // dynamic rendering (private, no-store) — so ISR-eligible detail pages
+  // (property/project/community/building) were never edge-cached. Tagging the
+  // fetch with a revalidate makes it cacheable so those routes become ISR. The
+  // route's own `export const revalidate` still governs the HTML cache window;
+  // force-dynamic pages override this back to no-store automatically. Pass
+  // `false` for genuinely per-request data (auth, admin, live streams).
+  revalidate: number | false = 3600
 ): Promise<Response> {
-  return fetch(url, { signal: AbortSignal.timeout(ms), headers });
+  return fetch(url, {
+    signal: AbortSignal.timeout(ms),
+    headers,
+    ...(revalidate === false ? { cache: "no-store" } : { next: { revalidate } }),
+  });
 }
 
 // Cached /api/search for the default home grids (/buy, /rent, /off-plan). Those

@@ -12,6 +12,14 @@ import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
+// Opt this dynamic route into ISR. Without a generateStaticParams, a [slug]
+// route is treated as fully dynamic (private, no-store) regardless of
+// `revalidate`. Returning [] prerenders nothing at build (keeping the build
+// light for the low-mem runner) while making every on-demand slug ISR-cached.
+export function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({
   params,
 }: {

@@ -4,7 +4,7 @@ import PulseEmirateNav from "@/components/PulseEmirateNav";
 import PulsePageClient from "@/app/_clients/pulse/PulsePageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { Activity } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -44,6 +44,7 @@ async function fetchJson(path: string) {
 
 export default async function PulsePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("pulse");
   const [marketStats, marketData, areasData, projectsData, binayahNews] = await Promise.all([
     fetchJson("/api/market-stats"),

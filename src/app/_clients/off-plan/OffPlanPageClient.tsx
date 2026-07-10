@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -29,7 +29,7 @@ interface Project {
   imageGallery?: string[];
 }
 
-export default function OffPlanPageClient({
+function OffPlanPageClientInner({
   initialProjects,
   totalCount,
   initialPage = 1,
@@ -190,5 +190,16 @@ export default function OffPlanPageClient({
 
       <Footer />
     </div>
+  );
+}
+
+// Suspense boundary for useSearchParams() — required once the host page is
+// statically prerendered (off-plan/abu-dhabi, /sharjah, etc.). SSR content
+// comes from server props, so this stays SEO-safe.
+export default function OffPlanPageClient(props: Parameters<typeof OffPlanPageClientInner>[0]) {
+  return (
+    <Suspense fallback={null}>
+      <OffPlanPageClientInner {...props} />
+    </Suspense>
   );
 }

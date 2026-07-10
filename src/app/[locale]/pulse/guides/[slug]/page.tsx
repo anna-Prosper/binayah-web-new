@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
 import { PULSE_GUIDES, findGuide } from "@/lib/pulse-guides";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
 
@@ -57,6 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GuideDetailPage({ params }: Props) {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const guide = findGuide(slug);
   if (!guide) notFound();
 

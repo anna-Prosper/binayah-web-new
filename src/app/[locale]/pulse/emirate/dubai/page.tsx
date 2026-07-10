@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DubaiEmirateClient from "./DubaiEmirateClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -75,7 +75,9 @@ async function fetchCommunityImage(slug: string): Promise<string | null> {
   }
 }
 
-export default async function DubaiEmiratePage() {
+export default async function DubaiEmiratePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("dubaiEmirate");
 
   const [marketStats, marketData, areasData, projectsData, communityImages] = await Promise.all([

@@ -4,7 +4,7 @@ import PulseEmirateNav from "@/components/PulseEmirateNav";
 import DailyClient from "./DailyClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { CalendarDays } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
@@ -14,6 +14,7 @@ interface Props { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("pulseDaily");
   return {
     title: t("metaTitle"),
@@ -44,7 +45,9 @@ async function fetchJson(path: string) {
   }
 }
 
-export default async function DailyPage() {
+export default async function DailyPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("pulseDaily");
 
   // Initial server fetch — defaults to today (Dubai time) on the API side.

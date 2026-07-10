@@ -9,6 +9,13 @@ import { sanitizeDescriptions } from "@/lib/sanitize";
 
 export const revalidate = 1800;
 
+// Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
+// (private, no-store) regardless of `revalidate`. Returning [] prerenders
+// nothing at build (light build) while making every slug ISR-cached on-demand.
+export function generateStaticParams() {
+  return [];
+}
+
 // Normalize any common YouTube/Vimeo URL form (watch / youtu.be / embed) so the
 // VideoObject can emit a proper embedUrl — what Google wants for hosted players.
 function youtubeId(u: string): string | null {

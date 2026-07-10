@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { useState, useRef, useCallback } from "react";
+import { Suspense, useState, useRef, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -20,7 +20,7 @@ interface Developer {
   projectCount?: number;
 }
 
-export default function DevelopersPageClient({
+function DevelopersPageClientInner({
   initialDevelopers,
   totalCount,
   initialPage = 1,
@@ -234,5 +234,15 @@ export default function DevelopersPageClient({
 
       <Footer />
     </div>
+  );
+}
+
+// Suspense boundary for useSearchParams() — required now that /developers is
+// statically prerendered. SSR content comes from server props, so SEO-safe.
+export default function DevelopersPageClient(props: Parameters<typeof DevelopersPageClientInner>[0]) {
+  return (
+    <Suspense fallback={null}>
+      <DevelopersPageClientInner {...props} />
+    </Suspense>
   );
 }

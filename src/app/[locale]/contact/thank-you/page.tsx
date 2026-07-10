@@ -3,7 +3,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GaLeadFire from "@/components/GaLeadFire";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 // Dedicated thank-you page after a contact form submission. Lives at its
 // own URL so analytics can register the conversion as a discrete page
@@ -15,7 +15,9 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function ContactThankYouPage() {
+export default async function ContactThankYouPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("contact.thankYou");
 
   return (

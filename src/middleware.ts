@@ -1,6 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
+import { CSP_NONCE } from "@/lib/csp";
 
 const GEO_LOCALE_MAP: Record<string, string> = {
   CN: "zh", TW: "zh", HK: "zh",
@@ -168,15 +169,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Generate a unique nonce for every page request. Set it as a request
-  // header so server components (layout.tsx) can read it via headers().
-  // Using getRandomValues — available in both Node.js and Edge runtimes.
-  const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+  // Static per-deploy nonce (see src/lib/csp.ts). Must be identical to the nonce
+  // baked into the (cacheable) HTML, so server components read the same constant
+  // instead of this header — a per-request nonce would force dynamic rendering
+  // and defeat the CDN cache. x-nonce is still forwarded for backwards compat.
+  const nonce = CSP_NONCE;
   const CSP = buildCSP(nonce);
   const reportCSP = buildCSPReportOnly(nonce);
 
-  // Forward nonce to the route handler by including it on the request headers
-  // that Next.js passes to server components.
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
   const requestWithNonce = new NextRequest(request.nextUrl, {

@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -36,7 +36,7 @@ interface Listing {
   imageGallery?: string[];
 }
 
-export default function ListingsPageClient({
+function ListingsPageClientInner({
   initialListings,
   totalCount,
   listingType,
@@ -301,5 +301,17 @@ export default function ListingsPageClient({
       <Footer />
       <PropertyComparison />
     </div>
+  );
+}
+
+// useSearchParams() requires a Suspense boundary above it once the host page is
+// statically prerendered (buy-property-in / rent-property-in). The initial grid
+// still SSRs from server props (empty searchParams at prerender), so this is
+// SEO-safe — only client-side URL-filter updates rerender under the boundary.
+export default function ListingsPageClient(props: Parameters<typeof ListingsPageClientInner>[0]) {
+  return (
+    <Suspense fallback={null}>
+      <ListingsPageClientInner {...props} />
+    </Suspense>
   );
 }

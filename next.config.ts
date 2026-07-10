@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
+import crypto from "node:crypto";
 import bundleAnalyzer from "@next/bundle-analyzer";
 import createNextIntlPlugin from "next-intl/plugin";
+
+// Per-deploy static CSP nonce (see src/lib/csp.ts). Derived deterministically
+// from the deploy's git SHA so every evaluation of this config in a single
+// build yields the same value, and it rotates on each deployment. Inlined into
+// all bundles (Edge middleware + server) via `env` below so the nonce in the
+// cached HTML always matches the nonce the middleware writes into the CSP header.
+const CSP_NONCE = crypto
+  .createHash("sha256")
+  .update(process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_DEPLOYMENT_ID || "binayah-local-dev")
+  .digest("base64")
+  .replace(/[+/=]/g, "")
+  .slice(0, 22);
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -20,6 +33,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Inline the per-deploy CSP nonce into every bundle (server + Edge middleware)
+  // so src/lib/csp.ts reads the same frozen value everywhere.
+  env: { CSP_NONCE },
   // The binayah.ru self-hosted runner is a ~960MB-RAM VPS. Next's default
   // multi-worker static generation runs several page renders in parallel and
   // spikes RAM until the kernel thrashes swap and the GitHub runner loses its
