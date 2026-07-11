@@ -17,7 +17,10 @@ interface Macro { yoyGrowth?: number | null; transactionsAnnual?: number | null;
 interface Mover { name: string; slug: string; ppsf: number; changePct: number; trend: "up" | "down" | "flat"; }
 interface Launch { name: string; slug: string; community: string; communitySlug: string; startingPrice: number; }
 export interface ReportData {
-  rangeLabel?: string; narrative?: string;
+  rangeLabel?: string;
+  narrative?: string;          // lead paragraph (also used for the meta description)
+  narrativeParas?: string[];   // full multi-paragraph analysis (SEO body copy)
+  outlook?: string;            // "what this means for buyers & investors"
   kpis?: Kpis | null; macro?: Macro | null;
   movers?: Mover[]; launches?: Launch[];
 }
@@ -57,16 +60,16 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
             <Stat label="Off-plan share" value={`${k.offPlanPct}%`} sub={`${k.readyPct}% ready`} />
             <Stat label="Median price" value={k.medianPpsf ? `AED ${k.medianPpsf.toLocaleString()}` : "—"} sub="per sqft" />
           </div>
-          {/* Highest deal — gold callout band */}
+          {/* Highest deal — gold gradient callout band */}
           {k.highestDeal && (
-            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl px-5 py-4 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-              <Award className="h-6 w-6 shrink-0" style={{ color: "#D4A847" }} />
+            <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl px-5 py-4 shadow-sm" style={{ background: "linear-gradient(135deg, #EAC873 0%, #D4A847 45%, #B8922F 100%)", color: "#0B3D2E" }}>
+              <Award className="h-6 w-6 shrink-0" style={{ color: "#0B3D2E" }} />
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">Highest deal this week</div>
-                <div className="text-xl font-extrabold" style={{ color: "#E8C068" }}>
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: "rgba(11,61,46,0.72)" }}>Highest deal this week</div>
+                <div className="text-xl font-extrabold" style={{ color: "#0B3D2E" }}>
                   {fmtAed(k.highestDeal)}
                   {(k.highestDealBuilding || k.highestDealArea) && (
-                    <span className="ml-2 text-base font-medium text-white/85">
+                    <span className="ml-2 text-base font-medium" style={{ color: "rgba(11,61,46,0.82)" }}>
                       — {[k.highestDealBuilding, k.highestDealArea].filter(Boolean).join(", ")}
                     </span>
                   )}
@@ -77,9 +80,13 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
         </section>
       )}
 
-      {/* Narrative */}
-      {data.narrative && (
-        <p className="text-lg leading-relaxed text-foreground/90 max-w-3xl">{data.narrative}</p>
+      {/* Narrative — full analysis (falls back to the single lead paragraph) */}
+      {(data.narrativeParas?.length ? data.narrativeParas : data.narrative ? [data.narrative] : []).length > 0 && (
+        <section className="max-w-3xl space-y-4">
+          {(data.narrativeParas?.length ? data.narrativeParas : [data.narrative!]).map((para, i) => (
+            <p key={i} className="text-lg leading-relaxed text-foreground/90">{para}</p>
+          ))}
+        </section>
       )}
 
       {/* Macro at a glance */}
@@ -152,6 +159,14 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
               );
             })}
           </div>
+        </section>
+      )}
+
+      {/* What this means — buyer/investor takeaway (SEO body copy) */}
+      {data.outlook && (
+        <section className="max-w-3xl">
+          <h2 className="text-xl font-bold text-foreground mb-4">What this means for buyers &amp; investors</h2>
+          <p className="text-lg leading-relaxed text-foreground/90">{data.outlook}</p>
         </section>
       )}
 

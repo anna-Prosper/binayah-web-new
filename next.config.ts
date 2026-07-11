@@ -78,6 +78,10 @@ const nextConfig: NextConfig = {
       // 301 the date-pattern report slug so only /pulse/reports/ is indexed.
       { source: "/news/market-report-:date(\\d{4}-\\d{2}-\\d{2})", destination: "/pulse/reports/market-report-:date", permanent: true },
       { source: "/:locale(ar|ru|zh|vi|he|fr)/news/market-report-:date(\\d{4}-\\d{2}-\\d{2})", destination: "/:locale/pulse/reports/market-report-:date", permanent: true },
+      // New SEO-friendly report slug (dubai-property-market-report-<date>): same
+      // /news → /pulse/reports canonicalisation.
+      { source: "/news/dubai-property-market-report-:date(\\d{4}-\\d{2}-\\d{2})", destination: "/pulse/reports/dubai-property-market-report-:date", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/news/dubai-property-market-report-:date(\\d{4}-\\d{2}-\\d{2})", destination: "/:locale/pulse/reports/dubai-property-market-report-:date", permanent: true },
       // Legal pages use full slugs — catch the short forms.
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
