@@ -2,12 +2,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight, Percent } from "lucide-react";
+import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight, Percent, Bed, Bath, Maximize } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { getDldBuilding, getDldBuildings } from "@/lib/api";
+import { getDldBuilding, getDldBuildings, serverApiUrl, serverFetch } from "@/lib/api";
 import { fmtAed } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
 
@@ -26,6 +27,29 @@ const toSqft = (ppsfSqm: number | null | undefined) =>
 
 interface TrendPoint { month: string; avgPpsf: number; avgPrice: number; count: number }
 interface BedRow { bedrooms: number; count: number; avgPrice: number; avgPpsf: number | null }
+interface BuildingListing { slug: string; title?: string; name?: string; price?: number; currency?: string; bedrooms?: number; bathrooms?: number; size?: number; sizeUnit?: string; featuredImage?: string; listingType?: string; _src?: string }
+
+// Single-sale months make the trend line jumpy and the 12-month % misleading.
+// Keep months with ≥2 sales when enough of them exist; otherwise use all months.
+function smoothTrend(trend: TrendPoint[]): { points: TrendPoint[]; smoothed: boolean } {
+  const solid = trend.filter((t) => t.count >= 2);
+  if (solid.length >= 4) return { points: solid, smoothed: solid.length !== trend.length };
+  return { points: trend, smoothed: false };
+}
+
+// Live inventory in this tower — precise structured match via the search API's
+// `building` param. Empty array (and a hidden section) on any failure.
+async function getBuildingListings(name: string): Promise<BuildingListing[]> {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/search?building=${encodeURIComponent(name)}&limit=6`), 12_000);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const rows: BuildingListing[] = Array.isArray(data?.results) ? data.results : [];
+    return rows.filter((l) => l.slug).slice(0, 6);
+  } catch {
+    return [];
+  }
+}
 
 const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const fmtMonth = (ym: string) => {
@@ -81,7 +105,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const b = await getDldBuilding(slug);
   if (!b) return { title: "Building Not Found" };
   const ppsf = toSqft(b.avgPpsf);
-  const trend: TrendPoint[] = Array.isArray(b.trend) ? b.trend : [];
+  const { points: trend } = smoothTrend(((Array.isArray(b.trend) ? b.trend : []) as TrendPoint[]).filter((t) => t.avgPpsf > 0));
   const first = trend[0], last = trend[trend.length - 1];
   const changePct = first && last && first.avgPpsf > 0 && trend.length > 1
     ? Math.round(((last.avgPpsf - first.avgPpsf) / first.avgPpsf) * 1000) / 10
@@ -104,14 +128,18 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Sibling buildings in the same area → building↔building crawlable links.
-  const siblings = (await getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`)).results
+  // Sibling buildings + live inventory in parallel.
+  const [siblingsRes, listings] = await Promise.all([
+    getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`),
+    getBuildingListings(b.name),
+  ]);
+  const siblings = siblingsRes.results
     .filter((x: { slug?: string; name?: string }) => x.slug && x.name && x.slug !== slug)
     .slice(0, 12)
     .map((x: { slug: string; name: string }) => ({ slug: x.slug, name: x.name }));
 
   const ppsf = toSqft(b.avgPpsf);
-  const trend: TrendPoint[] = (Array.isArray(b.trend) ? b.trend : []).filter((t: TrendPoint) => t.avgPpsf > 0);
+  const { points: trend, smoothed } = smoothTrend(((Array.isArray(b.trend) ? b.trend : []) as TrendPoint[]).filter((t) => t.avgPpsf > 0));
   const trendPts = trend.map((t) => ({ label: fmtMonth(t.month), value: toSqft(t.avgPpsf), count: t.count }));
   const first = trend[0], last = trend[trend.length - 1];
   const changePct = first && last && first.avgPpsf > 0 && trend.length > 1
@@ -223,7 +251,7 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
           <div className="mb-10">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1.5">Price trend in {b.name}</h2>
             <p className="text-sm text-muted-foreground mb-4">
-              Average sale price per sqft by month, last 12 months{changePct != null && (
+              Average sale price per sqft by month, last 12 months{smoothed ? " (single-sale months excluded)" : ""}{changePct != null && (
                 <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
                   {changePct > 0 ? "+" : ""}{changePct}%
                 </span>
@@ -308,6 +336,37 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* Live inventory in this tower — listing preview cards */}
+        {listings.length > 0 && (
+          <div className="mb-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1.5">Available now in {b.name}</h2>
+            <p className="text-sm text-muted-foreground mb-5">Current Binayah listings in this building.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {listings.map((l) => (
+                <Link key={l.slug} href={`${lp}/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || b.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                    {(l.listingType || l._src) && (
+                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                        {l.listingType === "Rent" || l._src === "rent" ? "For Rent" : "For Sale"}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
+                    <p className="text-sm font-bold text-primary mb-3">{l.price ? `AED ${l.price.toLocaleString("en-AE")}` : "Price on request"}</p>
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
+                      {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || "Studio"}</span>}
+                      {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
+                      {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString("en-AE")} {l.sizeUnit || "sqft"}</span> : null}
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         )}

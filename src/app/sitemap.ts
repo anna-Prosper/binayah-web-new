@@ -310,7 +310,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugs("/api/project-articles?limit=200"),
       // DLD building pages — only those with recorded sales (non-thin). Direct
       // DB read (no API 100-cap) like projects/listings.
-      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gt: 0 } }),
+      // Only substantial building pages (≥10 DLD sales) — a 1-2 sale tower has
+      // too little content to submit; it stays reachable via sibling links.
+      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 10 } }),
     ]);
 
   // Populated bedroom × type × community combos (all types) — data-driven.
