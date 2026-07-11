@@ -44,7 +44,7 @@ async function getBuildingListings(name: string): Promise<BuildingListing[]> {
     const res = await serverFetch(serverApiUrl(`/api/search?building=${encodeURIComponent(name)}&limit=6`), 12_000);
     if (!res.ok) return [];
     const data = await res.json();
-    const rows: BuildingListing[] = Array.isArray(data?.results) ? data.results : [];
+    const rows: BuildingListing[] = Array.isArray(data?.listings) ? data.listings : [];
     return rows.filter((l) => l.slug).slice(0, 6);
   } catch {
     return [];
