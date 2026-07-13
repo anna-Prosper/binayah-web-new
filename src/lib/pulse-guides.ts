@@ -16,6 +16,8 @@ export interface PulseGuide {
   relatedCommunities: string[];
   // FAQ pairs — rendered visibly and emitted as FAQPage JSON-LD
   faq?: { question: string; answer: string }[];
+  // Hero image (also used as the OG/social image). 16:9.
+  heroImage?: { url: string; alt: string };
 }
 
 // Deterministic, stable publish/update dates per guide (staggered so the set
@@ -40,6 +42,7 @@ export const PULSE_GUIDES: PulseGuide[] = [
     titleKey: "guide_bestAreas_title",
     descriptionKey: "guide_bestAreas_desc",
     relatedCommunities: ["Dubai Marina", "Business Bay", "Jumeirah Village Circle"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/best-areas-dubai-2026.png", alt: "Best Areas to Buy in Dubai 2026 — Binayah Dubai property guide" },
     faq: [
       { question: "Which Dubai area has the highest rental yield in 2026?", answer: "Jumeirah Village Circle (JVC) leads on gross yield, typically in the 7-8.5% range thanks to low entry prices. Premium waterfront areas like Dubai Marina trade yield for stronger capital growth." },
       { question: "Is Business Bay a good area to invest in?", answer: "Yes. Business Bay offers deep liquidity, gross yields around 6-7%, and lower entry prices than neighbouring Downtown, making it one of the most dependable performers in the market." },
@@ -87,6 +90,7 @@ The data is clear: the best area depends entirely on your objective. There is no
     titleKey: "guide_dubaiAbuDhabi_title",
     descriptionKey: "guide_dubaiAbuDhabi_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Business Bay"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/dubai-vs-abu-dhabi.png", alt: "Dubai vs Abu Dhabi: Where Should You Invest? — Binayah Dubai property guide" },
     faq: [
       { question: "Is it better to invest in Dubai or Abu Dhabi?", answer: "Dubai offers far greater liquidity and a wider yield range; Abu Dhabi offers steadier, government and corporate-driven demand with lower churn. Choose Dubai for flexibility and exit speed, Abu Dhabi for stability." },
       { question: "Can foreigners buy freehold property in both Dubai and Abu Dhabi?", answer: "Yes. Both emirates offer designated freehold zones to foreign nationals, with tax-free rental income." },
@@ -128,6 +132,7 @@ For first-time UAE investors, Dubai is the lower-risk choice, not because the as
     titleKey: "guide_creekHarbour_title",
     descriptionKey: "guide_creekHarbour_desc",
     relatedCommunities: ["Dubai Creek Harbour", "Downtown Dubai", "Business Bay"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/creek-harbour-guide.png", alt: "Dubai Creek Harbour: The Complete Investor Guide — Binayah Dubai property guide" },
     faq: [
       { question: "Is Dubai Creek Harbour a good investment?", answer: "It has major-district infrastructure but transaction volumes are still maturing, so it suits 5-7 year holds with higher upside and more illiquidity risk than established communities." },
       { question: "Who develops Dubai Creek Harbour?", answer: "It is master-developed by Emaar, the developer behind Downtown Dubai and Burj Khalifa." },
@@ -171,6 +176,7 @@ Creek Harbour is a conviction play on Dubai's urban expansion rather than a near
     titleKey: "guide_buyingForeigner_title",
     descriptionKey: "guide_buyingForeigner_desc",
     relatedCommunities: ["Dubai Marina", "Downtown Dubai", "Palm Jumeirah"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/buying-as-foreigner.png", alt: "How to Buy Property in Dubai as a Foreigner — Binayah Dubai property guide" },
     faq: [
       { question: "Can foreigners buy property in Dubai?", answer: "Yes. Foreign nationals can buy freehold property in designated areas of Dubai with full ownership rights." },
       { question: "Do I need to be a UAE resident to buy property in Dubai?", answer: "No. Non-residents can buy, and residency is not required. Buying property above AED 2 million can itself qualify you for a Golden Visa." },
@@ -225,6 +231,7 @@ The process is straightforward when you work with an agent and attorney who have
     titleKey: "guide_rentalYield_title",
     descriptionKey: "guide_rentalYield_desc",
     relatedCommunities: ["Jumeirah Village Circle", "Business Bay", "Dubai South"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/rental-yield-explained.png", alt: "Rental Yield Explained: Gross, Net, and Cash-on-Cash — Binayah Dubai property guide" },
     faq: [
       { question: "What is a good rental yield in Dubai?", answer: "Gross yields of 6-8% are considered strong. The citywide range runs from about 4.5% in prime areas to 8.5% in high-yield communities like JVC." },
       { question: "How is rental yield calculated?", answer: "Gross yield = annual rent divided by purchase price, times 100. Net yield subtracts service charges, maintenance, and management fees." },
@@ -278,6 +285,7 @@ Ask for net yield, not gross. If a developer or agent can't tell you the service
     titleKey: "guide_offPlanSecondary_title",
     descriptionKey: "guide_offPlanSecondary_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Dubai Creek Harbour"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/off-plan-vs-secondary.png", alt: "Off-Plan vs Secondary Market: Which Is Right for You? — Binayah Dubai property guide" },
     faq: [
       { question: "Is off-plan or secondary property better in Dubai?", answer: "Off-plan offers lower entry prices and flexible payment plans but carries delivery risk. Secondary (ready) property offers immediate rental income and no construction risk." },
       { question: "Can I get a mortgage on off-plan property?", answer: "Yes, though loan-to-value is typically lower for off-plan. Many buyers use the developer's payment plan instead during construction." },
@@ -338,6 +346,7 @@ If you are a first-time UAE investor: secondary is the lower-risk introduction. 
     titleKey: "guide_howToBuy_title",
     descriptionKey: "guide_howToBuy_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Business Bay"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/how-to-buy-property-in-dubai.png", alt: "How to Buy Property in Dubai: Step-by-Step Guide — Binayah Dubai property guide" },
     faq: [
       { question: "What are the steps to buy property in Dubai?", answer: "Agree terms and sign an MOU (Form F), pay a deposit (usually 10%), obtain a No Objection Certificate from the developer, then transfer ownership at the DLD trustee office." },
       { question: "How much deposit do I need to buy in Dubai?", answer: "Typically 10% of the purchase price at the MOU stage. Mortgage buyers also need a down payment, usually 20% or more for residents." },
@@ -401,6 +410,7 @@ Done in this order, with a competent RERA agent and a clear objective, the proce
     titleKey: "guide_dldFees_title",
     descriptionKey: "guide_dldFees_desc",
     relatedCommunities: ["Business Bay", "Downtown Dubai", "Dubai Marina"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/dld-fees-explained.png", alt: "DLD Fees Explained: Full Cost of Buying Property in Dubai — Binayah Dubai property guide" },
     faq: [
       { question: "How much is the DLD fee in Dubai?", answer: "The Dubai Land Department charges a 4% transfer fee on the property price, commonly paid by the buyer though it can be split by agreement." },
       { question: "What other fees apply when buying in Dubai?", answer: "Beyond the 4% DLD fee, expect a trustee/registration fee (around AED 4,000), agency commission (about 2%), and a title deed issuance fee." },
@@ -472,6 +482,7 @@ There is no annual property tax in the UAE. There is no stamp duty beyond the 4%
     titleKey: "guide_titleDeedOqood_title",
     descriptionKey: "guide_titleDeedOqood_desc",
     relatedCommunities: ["Dubai Creek Harbour", "Business Bay", "MBR City"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/title-deed-vs-oqood.png", alt: "Title Deed vs Oqood: What's the Difference? — Binayah Dubai property guide" },
     faq: [
       { question: "What is the difference between a title deed and an Oqood?", answer: "A title deed is issued for completed property confirming full ownership. An Oqood is the interim registration for off-plan property held with the DLD until handover." },
       { question: "When does an Oqood become a title deed?", answer: "On project completion and handover, the Oqood registration is converted into a full title deed once final payments and fees are settled." },
@@ -535,6 +546,7 @@ If either document doesn't verify, do not pay anything further until DLD confirm
     titleKey: "guide_ejari_title",
     descriptionKey: "guide_ejari_desc",
     relatedCommunities: ["Jumeirah Village Circle", "Business Bay", "Dubai Marina"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/ejari-process.png", alt: "Ejari Registration: How to Register Your Tenancy in Dubai — Binayah Dubai property guide" },
     faq: [
       { question: "What is Ejari and why is it required?", answer: "Ejari is the mandatory registration of tenancy contracts with RERA. It makes a lease legally enforceable and is needed to set up utilities and visas." },
       { question: "How do I register an Ejari?", answer: "Submit the tenancy contract, title deed copy, Emirates ID, and passport via the Ejari system or an approved typing centre. A certificate is issued on approval." },
@@ -605,6 +617,7 @@ Don't register a contract with terms that violate RERA rules (e.g., excessive de
     titleKey: "guide_noc_title",
     descriptionKey: "guide_noc_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/noc-certificate.png", alt: "NOC Certificate: Why Resale Deals Stall and How to Avoid It — Binayah Dubai property guide" },
     faq: [
       { question: "What is an NOC in Dubai property transactions?", answer: "A No Objection Certificate is issued by the developer confirming the seller has no outstanding service charges, allowing a sale to proceed to transfer." },
       { question: "How long does it take to get an NOC?", answer: "Typically 3-10 working days, depending on the developer, once outstanding service charges are cleared." },
@@ -688,6 +701,7 @@ Once Form F is signed, build a 30-45 day window into the closing timeline. NOC d
     titleKey: "guide_goldenVisa_title",
     descriptionKey: "guide_goldenVisa_desc",
     relatedCommunities: ["Palm Jumeirah", "Downtown Dubai", "Dubai Hills Estate"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/golden-visa-process.png", alt: "Golden Visa via Property: AED 2M Threshold Explained — Binayah Dubai property guide" },
     faq: [
       { question: "How much property do I need to buy for a UAE Golden Visa?", answer: "A property investment of at least AED 2 million qualifies you for a 10-year Golden Visa." },
       { question: "Can I get a Golden Visa with an off-plan or mortgaged property?", answer: "Yes. Off-plan and mortgaged properties can qualify provided the AED 2 million threshold and the lender/developer conditions are met." },
@@ -767,6 +781,7 @@ For property buyers at the AED 2M+ level, the Golden Visa converts a property pu
     titleKey: "guide_nonResident_title",
     descriptionKey: "guide_nonResident_desc",
     relatedCommunities: ["Dubai Marina", "Downtown Dubai", "Palm Jumeirah"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/buying-as-non-resident.png", alt: "Buying Property in Dubai as a Non-Resident — Binayah Dubai property guide" },
     faq: [
       { question: "Can non-residents buy property in Dubai?", answer: "Yes. Non-residents can buy freehold property without a residence visa and without being physically present, as purchases can be completed by power of attorney." },
       { question: "Can non-residents get a mortgage in Dubai?", answer: "Yes, though non-resident mortgages usually require a larger down payment (often 25-50%) and are offered by selected banks." },
@@ -875,6 +890,7 @@ Dubai is one of the most foreigner-friendly property markets in the world. The l
     titleKey: "guide_shortTermRental_title",
     descriptionKey: "guide_shortTermRental_desc",
     relatedCommunities: ["Dubai Marina", "Palm Jumeirah", "Downtown Dubai"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/short-term-rental-dubai.png", alt: "Short-Term Rental & Airbnb Guide Dubai — Binayah Dubai property guide" },
     faq: [
       { question: "Is short-term rental (Airbnb) legal in Dubai?", answer: "Yes. Short-term and holiday-home rentals are legal but must be licensed and registered with the Department of Economy and Tourism (DET)." },
       { question: "How much more can I earn with short-term rentals?", answer: "Well-located holiday homes can earn 20-40% more than long-term leases on a gross basis, though occupancy, management, and DET fees reduce net returns." },
@@ -955,6 +971,7 @@ For investors who want to maximise income from a Dubai property and are willing 
     titleKey: "guide_serviceCharges_title",
     descriptionKey: "guide_serviceCharges_desc",
     relatedCommunities: ["Business Bay", "Dubai Marina", "Palm Jumeirah"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/service-charges-explained.png", alt: "Service Charges in Dubai: The Complete Guide — Binayah Dubai property guide" },
     faq: [
       { question: "What are service charges in Dubai property?", answer: "Annual fees paid by owners for building maintenance, security, and shared amenities, set per square foot and regulated by RERA through the Mollak system." },
       { question: "How much are service charges in Dubai?", answer: "They vary widely, typically AED 10-30 per sqft per year, and are higher for amenity-rich towers and waterfront communities." },
@@ -1025,6 +1042,7 @@ Service charges are a real cost that can represent 1-3% of property value per ye
     titleKey: "guide_howToRent_title",
     descriptionKey: "guide_howToRent_desc",
     relatedCommunities: ["Dubai Marina", "JVC", "Business Bay"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/how-to-rent-in-dubai.png", alt: "How to Rent an Apartment in Dubai — Binayah Dubai property guide" },
     faq: [
       { question: "What documents do I need to rent in Dubai?", answer: "A valid passport, Emirates ID or visa, and typically post-dated cheques. The signed tenancy contract must then be registered via Ejari." },
       { question: "How are rent payments made in Dubai?", answer: "Rent is usually paid in 1-4 cheques per year. Fewer cheques often secure a better rate." },
@@ -1116,6 +1134,7 @@ Renewal is often better economics than moving: agent fee (5%), Ejari re-registra
     titleKey: "guide_propertyRoi_title",
     descriptionKey: "guide_propertyRoi_desc",
     relatedCommunities: ["JVC", "Business Bay", "Dubai Hills Estate"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/property-roi-dubai.png", alt: "Dubai Property ROI: Calculating Real Returns — Binayah Dubai property guide" },
     faq: [
       { question: "What ROI can I expect from Dubai property?", answer: "Gross rental ROI typically ranges 5-8.5% depending on community, before service charges and costs. Capital appreciation adds to total return in growth areas." },
       { question: "How do I calculate ROI on a Dubai property?", answer: "ROI = (annual rental income minus annual costs) divided by total purchase cost, times 100. Include service charges, management, and transaction fees for a net figure." },
@@ -1243,6 +1262,7 @@ Dubai's transaction volumes reached record highs in 2024 and 2025. Supply pipeli
     titleKey: "guide_marketOutlook_title",
     descriptionKey: "guide_marketOutlook_desc",
     relatedCommunities: ["Downtown Dubai", "Dubai Marina", "Dubai Hills Estate"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/dubai-market-outlook-2026.png", alt: "Dubai Real Estate Market Outlook 2026 — Binayah Dubai property guide" },
     faq: [
       { question: "What is the outlook for Dubai property in 2026?", answer: "The market is maturing with strong transaction volumes. Growth is expected to moderate from record highs toward more sustainable, community-specific performance." },
       { question: "Will Dubai property prices keep rising in 2026?", answer: "Prices in liquid, supply-constrained communities are expected to hold or grow, while areas with heavy new supply may see slower or flat growth." },
@@ -1334,6 +1354,7 @@ For capital growth investors: Luxury villas and prime water-facing apartments co
     titleKey: "guide_inheritance_title",
     descriptionKey: "guide_inheritance_desc",
     relatedCommunities: ["Palm Jumeirah", "Downtown Dubai", "Emirates Hills"],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/inheritance-dubai-property.png", alt: "Inheritance & Estate Planning for Dubai Property — Binayah Dubai property guide" },
     faq: [
       { question: "What happens to my Dubai property when I die?", answer: "Without a registered will, UAE courts may apply Sharia principles to asset distribution. A DIFC or Dubai Courts will lets you direct inheritance according to your wishes." },
       { question: "Can foreigners register a will for Dubai property?", answer: "Yes. Non-Muslim foreigners can register a will through the DIFC Wills Service Centre to cover UAE assets including property." },

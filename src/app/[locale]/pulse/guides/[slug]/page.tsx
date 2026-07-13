@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // the English page: non-EN pages are noindex,follow and canonicalise to EN.
   const enUrl = canonical("en", `/pulse/guides/${slug}`);
   const url = isEn ? enUrl : canonical(locale, `/pulse/guides/${slug}`);
+  const ogImage = guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`;
   return {
     title,
     description,
@@ -50,13 +51,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       locale: OG_LOCALE[locale] ?? "en_AE",
       siteName: "Binayah Properties",
-      images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }],
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`${AE_URL}/assets/og-image.webp`],
+      images: [ogImage],
     },
   };
 }
@@ -90,7 +91,7 @@ export default async function GuideDetailPage({ params }: Props) {
         headline={title}
         description={description}
         url={url}
-        imageUrl={`${AE_URL}/assets/og-image.webp`}
+        imageUrl={guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`}
         datePublished={published}
         dateModified={modified}
         wordCount={wordCount}

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { BookOpen, Clock, Eye, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useLocale } from "next-intl";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
 
@@ -62,8 +63,22 @@ function GuideCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col h-full bg-card border border-border/50 rounded-2xl p-5 hover:border-accent/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-150"
+      className="group flex flex-col h-full bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-accent/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-150"
     >
+      {/* Cover image */}
+      {guide.heroImage && (
+        <div className="relative w-full aspect-[16/9] overflow-hidden">
+          <Image
+            src={guide.heroImage.url}
+            alt={guide.heroImage.alt}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-300"
+          />
+        </div>
+      )}
+
+      <div className="flex flex-col flex-1 p-5">
       {/* Category pill */}
       <div className="flex items-center justify-between mb-4">
         <span className="text-[10px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-2.5 py-1 rounded-full">
@@ -95,6 +110,7 @@ function GuideCard({
       <div className="flex items-center gap-1.5 text-sm font-semibold text-accent group-hover:gap-2.5 transition-all mt-auto">
         {t("readMore")}
         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      </div>
       </div>
     </Link>
   );

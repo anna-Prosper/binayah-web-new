@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { PulseGuide } from "@/lib/pulse-guides";
 
 // ── Static curated related areas (Dubai focus) ─────────────────────────────
@@ -213,6 +214,25 @@ export default function GuideDetailClient({ guide }: { guide: PulseGuide }) {
           {t(guide.descriptionKey as Parameters<typeof t>[0])}
         </p>
       </motion.div>
+
+      {/* ── Hero image ───────────────────────────────────────── */}
+      {guide.heroImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-8 border border-border/40"
+        >
+          <Image
+            src={guide.heroImage.url}
+            alt={guide.heroImage.alt}
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+      )}
 
       {/* ── Divider ──────────────────────────────────────────── */}
       <div
