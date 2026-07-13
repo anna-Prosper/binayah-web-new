@@ -16,6 +16,16 @@ const CURATED_AREAS = [
   { name: "Jumeirah Village Circle", slug: "jvc" },
 ];
 
+const FAQ_TITLE: Record<string, string> = {
+  en: "Frequently Asked Questions",
+  ar: "الأسئلة الشائعة",
+  zh: "常见问题",
+  ru: "Частые вопросы",
+  vi: "Câu hỏi thường gặp",
+  he: "שאלות נפוצות",
+  fr: "Questions fréquentes",
+};
+
 // ── Simple markdown-lite renderer ─────────────────────────────────────────
 // Only supports: **bold**, paragraphs, # headings (lines starting with #),
 // table rows (| col | col |), and bullet lists (- item).
@@ -219,6 +229,29 @@ export default function GuideDetailClient({ guide }: { guide: PulseGuide }) {
       >
         {renderBody(guide.body)}
       </motion.article>
+
+      {/* ── FAQ ──────────────────────────────────────────────── */}
+      {guide.faq && guide.faq.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 pt-8 border-t border-border/40"
+        >
+          <h2 className="text-xl font-bold text-foreground mb-5">{FAQ_TITLE[locale] ?? FAQ_TITLE.en}</h2>
+          <div className="space-y-2">
+            {guide.faq.map((item, i) => (
+              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-accent/30 transition-colors">
+                <summary className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3.5 cursor-pointer list-none font-semibold text-sm text-foreground hover:text-accent transition-colors">
+                  <span>{item.question}</span>
+                  <span className="text-accent text-lg font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45">+</span>
+                </summary>
+                <div className="px-4 sm:px-5 pb-4 pt-1 text-sm text-muted-foreground leading-relaxed border-t border-border/30">{item.answer}</div>
+              </details>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* ── Related Communities ───────────────────────────────── */}
       {guide.relatedCommunities.length > 0 && (

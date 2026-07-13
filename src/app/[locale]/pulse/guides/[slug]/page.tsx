@@ -4,10 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
-import { PULSE_GUIDES, findGuide } from "@/lib/pulse-guides";
+import { PULSE_GUIDES, findGuide, guideDates } from "@/lib/pulse-guides";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
-import { canonical, altLangs, OG_LOCALE, AE_URL } from "@/lib/site";
+import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
+import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
 
 export const revalidate = 86400;
 
@@ -29,13 +29,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
   const title = `${t(guide.titleKey as Parameters<typeof t>[0])} | Dubai Pulse | Binayah`;
   const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
-  const url = canonical(locale, `/pulse/guides/${slug}`);
+  const isEn = locale === "en";
+  // Guide bodies are authored in English only. The non-English routes render a
+  // translated title over an English body, so we consolidate ranking signals on
+  // the English page: non-EN pages are noindex,follow and canonicalise to EN.
+  const enUrl = canonical("en", `/pulse/guides/${slug}`);
+  const url = isEn ? enUrl : canonical(locale, `/pulse/guides/${slug}`);
   return {
     title,
     description,
+    robots: isEn ? undefined : { index: false, follow: true },
     alternates: {
-      canonical: url,
-      languages: altLangs(`/pulse/guides/${slug}`),
+      canonical: isEn ? url : enUrl,
+      languages: isEn ? { en: enUrl, "x-default": enUrl } : undefined,
     },
     openGraph: {
       title,
@@ -69,6 +75,7 @@ export default async function GuideDetailPage({ params }: Props) {
 
   // Estimate word count from body
   const wordCount = guide.body.split(/\s+/).length;
+  const { published, modified } = guideDates(slug);
 
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
@@ -84,12 +91,13 @@ export default async function GuideDetailPage({ params }: Props) {
         description={description}
         url={url}
         imageUrl={`${AE_URL}/assets/og-image.webp`}
-        datePublished="2026-01-01"
-        dateModified="2026-06-01"
+        datePublished={published}
+        dateModified={modified}
         wordCount={wordCount}
         locale={locale}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      {guide.faq && guide.faq.length > 0 && <FAQJsonLd faqs={guide.faq} />}
       <Navbar />
       <PulseEmirateNav />
       <GuideDetailClient guide={guide} />
