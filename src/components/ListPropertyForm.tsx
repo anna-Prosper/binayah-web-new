@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useHoneypot } from "@/components/Honeypot";
 
 const PROPERTY_TYPES = ["Apartment", "Villa", "Townhouse", "Penthouse", "Office", "Retail", "Warehouse", "Land"];
 const LISTING_TYPES = ["Sale", "Rent"];
@@ -16,6 +17,7 @@ export default function ListPropertyForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   const [form, setForm] = useState({
     name: "",
@@ -51,7 +53,7 @@ export default function ListPropertyForm() {
       const res = await fetch("/api/list-your-property", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, hp }),
       });
       if (!res.ok) {
         const d = await res.json();
@@ -94,6 +96,7 @@ export default function ListPropertyForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {honeypotField}
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">{t("form.name")}</label>

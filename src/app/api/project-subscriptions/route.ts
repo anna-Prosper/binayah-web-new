@@ -6,6 +6,7 @@ import clientPromise from "@/lib/mongodb";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { notifyNewLead } from "@/lib/leads/notify";
+import { isHoneypotTripped } from "@/lib/honeypot";
 import { encrypt, fieldHash, decrypt } from "@/lib/encryption";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,6 +83,9 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
+
+  // Honeypot: bot filled the hidden field — fake success, drop silently.
+  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true, alreadySubscribed: false });
 
   const slug = (body.slug || "").trim();
   if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 });

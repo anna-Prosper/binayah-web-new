@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
+import { useHoneypot } from "@/components/Honeypot";
 import { waHref } from "@/lib/whatsapp";
 import { useTranslations, useLocale } from "next-intl";
 
@@ -22,6 +23,7 @@ export default function ContactPage() {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", message: "" });
   const [sending, setSending] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   // Seed country code from geo cookie (set by middleware from Vercel IP).
   useEffect(() => {
@@ -40,6 +42,7 @@ export default function ContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          hp,
           phone: form.phone ? `${form.countryCode} ${form.phone}` : "",
           inquiryType: "General",
           source: "contact-page",
@@ -117,6 +120,7 @@ export default function ContactPage() {
               <div className="bg-card rounded-2xl border border-border/50 p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-6">{t("formTitle")}</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {honeypotField}
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
                       <label className="text-sm font-medium text-foreground mb-1.5 block">{t("name")}</label>

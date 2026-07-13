@@ -6,6 +6,7 @@ import { X, Check, Mail, Phone, ArrowRight, Lock, CheckCircle2 } from "lucide-re
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { trackLead } from "@/lib/gtag";
+import { useHoneypot } from "@/components/Honeypot";
 
 /**
  * Site-wide lead-magnet pop-up: offers the free Dubai Property Investment Guide PDF
@@ -69,6 +70,7 @@ export default function GuideDownloadPopup() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
   const armedRef = useRef(false); // in-memory guard for cookie-less browsers / this page load
 
   const suppressed = SUPPRESS.some((re) => re.test(pathname || ""));
@@ -131,6 +133,7 @@ export default function GuideDownloadPopup() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          hp,
           name: "Guide download",
           email: email.trim(),
           phone: phone.trim(),
@@ -241,6 +244,7 @@ export default function GuideDownloadPopup() {
               </ul>
 
               <form onSubmit={handleSubmit}>
+                {honeypotField}
                 <div>
                   <label htmlFor="ecm-email" className="mb-1.5 block text-[12px] font-semibold text-[#0E1C22]">
                     {t("emailLabel")}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { isHoneypotTripped } from "@/lib/honeypot";
 
 export const runtime = "nodejs";
 
@@ -180,6 +181,9 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ message: "Invalid request body" }, { status: 400 });
   }
+
+  // Honeypot: bot filled the hidden field — fake success, drop silently.
+  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true });
 
   const { name, email, phone, calc } = body;
 

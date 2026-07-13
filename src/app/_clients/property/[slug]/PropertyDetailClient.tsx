@@ -4,6 +4,7 @@
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
+import { useHoneypot } from "@/components/Honeypot";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, BedDouble, Bath, Maximize, Phone, Mail, MessageCircle,
@@ -486,6 +487,7 @@ export default function PropertyDetailClient({
     message: "",
     email: "",
   });
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   useEffect(() => {
     const dial = dialFromIso(readGeoCountryCookie());
@@ -551,6 +553,7 @@ export default function PropertyDetailClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          hp,
           name: enquiryForm.name,
           phone: `${enquiryForm.countryCode}${enquiryForm.phone}`,
           email: enquiryForm.email,
@@ -1155,6 +1158,7 @@ export default function PropertyDetailClient({
                     </div>
                   ) : (
                     <form onSubmit={handleEnquirySubmit} className="space-y-3">
+                      {honeypotField}
                       <input type="text" required value={enquiryForm.name} onChange={e => setEnquiryForm(f => ({...f, name: e.target.value}))}
                         className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 outline-none"
                         placeholder={t("fullName")} />
@@ -1214,6 +1218,7 @@ export default function PropertyDetailClient({
                   </motion.div>
                 ) : (
                   <form onSubmit={handleEnquirySubmit} className="space-y-3 sm:space-y-4">
+                    {honeypotField}
                     <div>
                       <label className="text-xs font-semibold text-muted-foreground mb-1.5 block">{t("fullName")} *</label>
                       <input

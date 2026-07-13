@@ -6,10 +6,12 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
+import { useHoneypot } from "@/components/Honeypot";
 
 const NewsletterStrip = () => {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
   const { toast } = useToast();
   const t = useTranslations("newsletter");
 
@@ -21,7 +23,7 @@ const NewsletterStrip = () => {
       const res = await fetch(apiUrl("/api/market-report/subscribe"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), source: "newsletter-strip" }),
+        body: JSON.stringify({ hp, email: email.trim().toLowerCase(), source: "newsletter-strip" }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -47,6 +49,7 @@ const NewsletterStrip = () => {
           viewport={{ once: true }}
           className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6"
         >
+          {honeypotField}
           {/* Desktop: icon + text side by side */}
           <div className="hidden sm:flex items-center gap-3 flex-shrink-0">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">

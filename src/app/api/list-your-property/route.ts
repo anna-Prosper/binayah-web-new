@@ -6,6 +6,7 @@ import { ObjectId } from "mongodb";
 import { sendMail } from "@/lib/mailer";
 import { notifyNewLead } from "@/lib/leads/notify";
 import { encrypt, fieldHash } from "@/lib/encryption";
+import { isHoneypotTripped } from "@/lib/honeypot";
 
 const VALID_PROPERTY_TYPES = [
   "Apartment",
@@ -55,6 +56,8 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   const body = await req.json();
+  // Honeypot: bot filled the hidden field — fake success, drop silently.
+  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true });
   const { propertyType, listingType, community, bedrooms, areaSqft, askingPrice, description, phone } = body;
 
   // Contact identity: prefer the signed-in session, else the form-provided

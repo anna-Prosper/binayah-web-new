@@ -24,6 +24,7 @@ import {
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
+import { HoneypotInput } from "@/components/Honeypot";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -392,12 +393,13 @@ function NewsDetailInner({
                       const fd = new FormData(e.currentTarget);
                       const email = fd.get("email");
                       if (!email) return;
+                      const hp = String(fd.get("company_website") || "");
                       setSubState('loading');
                       try {
                         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/market-report/subscribe`, {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ email: String(email), source: 'news-article' }),
+                          body: JSON.stringify({ hp, email: String(email), source: 'news-article' }),
                         });
                         if (res.ok) {
                           setSubState('done');
@@ -410,6 +412,7 @@ function NewsDetailInner({
                     }}
                     className="space-y-2.5"
                   >
+                    <HoneypotInput />
                     <input
                       type="email"
                       name="email"

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { trackLead } from "@/lib/gtag";
+import { useHoneypot } from "@/components/Honeypot";
 
 const inputClasses =
   "w-full bg-background border border-border/80 rounded-xl px-4 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 transition-all duration-300 hover:border-border";
@@ -20,6 +21,7 @@ const InquirySection = () => {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   useEffect(() => {
     const dial = dialFromIso(readGeoCountryCookie());
@@ -36,7 +38,7 @@ const InquirySection = () => {
       const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
+        body: JSON.stringify({ ...form, hp, phone: `${form.countryCode} ${form.phone}`, source: "homepage-inquiry" }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
@@ -153,6 +155,7 @@ const InquirySection = () => {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="rounded-2xl p-6 sm:p-9 shadow-lg border border-border/60 bg-card/80 backdrop-blur-xl lg:mt-4 pb-10 sm:pb-9"
           >
+            {honeypotField}
             {sent && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}

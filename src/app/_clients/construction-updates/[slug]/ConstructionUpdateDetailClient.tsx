@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { HoneypotInput } from "@/components/Honeypot";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect, useRef } from "react";
@@ -286,12 +287,14 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                     const fd = new FormData(e.currentTarget);
                     const email = fd.get("email");
                     if (!email) return;
+                    const hp = String(fd.get("company_website") || "");
                     setSubState("loading");
                     try {
-                      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/market-report/subscribe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: String(email), source: "project-article" }) });
+                      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/market-report/subscribe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ hp, email: String(email), source: "project-article" }) });
                       setSubState(res.ok ? "done" : "error");
                     } catch { setSubState("error"); }
                   }} className="space-y-2.5">
+                    <HoneypotInput />
                     <input type="email" name="email" required placeholder={l.emailPlaceholder} className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all" />
                     <button type="submit" disabled={subState === "loading"} className="w-full px-4 py-2.5 rounded-xl text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
                       {subState === "loading" ? "..." : l.subscribe}

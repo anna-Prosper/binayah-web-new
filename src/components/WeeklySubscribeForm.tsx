@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { apiUrl } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { useHoneypot } from "@/components/Honeypot";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -635,6 +636,7 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [resending, setResending] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   function toggleChip<T extends string>(list: T[], val: T): T[] {
     return list.includes(val) ? list.filter((v) => v !== val) : [...list, val];
@@ -665,7 +667,7 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
       const res = await fetch(apiUrl("/api/market-report/subscribe"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, hp }),
       });
 
       const data = await res.json();
@@ -727,6 +729,7 @@ export default function WeeklySubscribeForm({ source, defaultAreas = [], default
 
   const formPanel = (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      {honeypotField}
       {/* Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>

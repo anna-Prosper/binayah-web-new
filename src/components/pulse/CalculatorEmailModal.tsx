@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { X, Mail, Send, Check, Loader2 } from "lucide-react";
+import { useHoneypot } from "@/components/Honeypot";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -35,6 +36,7 @@ export default function CalculatorEmailModal({ calcSnapshot, onClose }: Props) {
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   const AED = (n: number) => {
     if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(2)}M`;
@@ -53,7 +55,7 @@ export default function CalculatorEmailModal({ calcSnapshot, onClose }: Props) {
       const res = await fetch("/api/calculator/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, calc: calcSnapshot }),
+        body: JSON.stringify({ hp, name, email, phone, calc: calcSnapshot }),
       });
 
       if (!res.ok) {
@@ -150,6 +152,7 @@ export default function CalculatorEmailModal({ calcSnapshot, onClose }: Props) {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-3">
+                {honeypotField}
                 <div>
                   <label className="text-xs font-semibold text-foreground block mb-1">
                     {t("emailFieldName")} <span className="text-rose-500">*</span>

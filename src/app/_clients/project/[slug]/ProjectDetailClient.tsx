@@ -3,6 +3,7 @@
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
 import { waHref } from "@/lib/whatsapp";
+import { useHoneypot } from "@/components/Honeypot";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -199,6 +200,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   });
   const [activePropertyType, setActivePropertyType] = useState<string>(() => project.propertyTypes?.[0] ?? "");
   const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", unitType: "", message: "", contactMethod: "whatsapp" as "whatsapp" | "email" | "phone" });
+  const { value: hp, field: honeypotField } = useHoneypot();
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
   const [enquirySending, setEnquirySending] = useState(false);
   const [enquiryError, setEnquiryError] = useState(false);
@@ -374,6 +376,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          hp,
           name: enquiryForm.name,
           email: enquiryForm.email,
           phone: `${enquiryForm.countryCode} ${enquiryForm.phone}`,
@@ -2541,6 +2544,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                   </div>
                 ) : (
                   <form onSubmit={handleEnquirySubmit} className="space-y-3">
+                    {honeypotField}
                     <input
                       type="text" required
                       value={enquiryForm.name}

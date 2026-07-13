@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
 import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { trackLead } from "@/lib/gtag";
+import { useHoneypot } from "@/components/Honeypot";
 
 interface Props {
   open: boolean;
@@ -24,6 +25,7 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
+  const { value: hp, field: honeypotField } = useHoneypot();
 
   const hasBrochure = !!brochureUrl;
 
@@ -61,6 +63,7 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          hp,
           name: form.name,
           email: form.email,
           phone: `${form.countryCode} ${form.phone}`,
@@ -133,6 +136,7 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
             </div>
 
             <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-3">
+              {honeypotField}
               <input
                 type="text"
                 required

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Bookmark } from "lucide-react";
+import { HoneypotInput } from "@/components/Honeypot";
 
 type SubState = "idle" | "loading" | "done" | "error";
 
@@ -46,12 +47,13 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
             const fd = new FormData(e.currentTarget);
             const email = fd.get("email");
             if (!email) return;
+            const hp = String(fd.get("company_website") || "");
             setSubState("loading");
             try {
               const res = await fetch(`${apiUrl || ""}/api/market-report/subscribe`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: String(email), source: `property-type-${slug}` }),
+                body: JSON.stringify({ hp, email: String(email), source: `property-type-${slug}` }),
               });
               setSubState(res.ok ? "done" : "error");
             } catch {
@@ -60,6 +62,7 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
           }}
           className="space-y-2.5"
         >
+          <HoneypotInput />
           <input
             type="email"
             name="email"
