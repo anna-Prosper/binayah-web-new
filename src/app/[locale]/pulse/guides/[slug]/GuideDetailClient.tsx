@@ -3,10 +3,11 @@
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2 } from "lucide-react";
+import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { PulseGuide } from "@/lib/pulse-guides";
+import type { AreaStats } from "@/lib/area-stats";
 
 // ── Static curated related areas (Dubai focus) ─────────────────────────────
 // TODO: Replace with dynamic DLD data from /api/dld/areas?limit=3 when embedded
@@ -171,7 +172,60 @@ function renderInline(text: string): React.ReactNode {
 
 // ── Main Component ─────────────────────────────────────────────────────────
 
-export default function GuideDetailClient({ guide }: { guide: PulseGuide }) {
+const AED = (n: number) => {
+  if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2)}M`;
+  if (n >= 1000) return `AED ${Math.round(n).toLocaleString("en-AE")}`;
+  return `AED ${n}`;
+};
+
+const STATS_LABELS: Record<string, { title: string; ppsf: string; avg: string; yield: string; txns: string; bldgs: string; note: string }> = {
+  en: { title: "Live market snapshot", ppsf: "Avg price / sqft", avg: "Avg transaction price", yield: "Gross rental yield", txns: "Recent transactions", bldgs: "Buildings tracked", note: "Live Dubai Land Department transaction data. Average transaction price spans all unit types, so use price per sqft for like-for-like comparison." },
+  ru: { title: "Актуальные данные рынка", ppsf: "Цена за кв. фут", avg: "Средняя цена сделки", yield: "Валовая доходность", txns: "Недавние сделки", bldgs: "Зданий в базе", note: "Данные о сделках Земельного департамента Дубая. Средняя цена сделки включает все типы юнитов — для сравнения используйте цену за кв. фут." },
+  ar: { title: "لمحة سوقية حية", ppsf: "متوسط السعر / قدم²", avg: "متوسط سعر الصفقة", yield: "العائد الإيجاري الإجمالي", txns: "الصفقات الأخيرة", bldgs: "المباني المتتبعة", note: "بيانات صفقات دائرة الأراضي والأملاك بدبي. متوسط سعر الصفقة يشمل كل أنواع الوحدات، لذا استخدم السعر لكل قدم² للمقارنة." },
+  zh: { title: "实时市场快照", ppsf: "每平方英尺均价", avg: "平均成交价", yield: "毛租金收益率", txns: "近期成交", bldgs: "覆盖楼盘", note: "迪拜土地局实时成交数据。平均成交价涵盖所有户型，比较请以每平方英尺价格为准。" },
+  vi: { title: "Ảnh chụp thị trường trực tiếp", ppsf: "Giá TB / foot²", avg: "Giá giao dịch TB", yield: "Lợi suất cho thuê gộp", txns: "Giao dịch gần đây", bldgs: "Toà nhà theo dõi", note: "Dữ liệu giao dịch từ Sở Đất đai Dubai. Giá giao dịch trung bình gồm mọi loại căn, hãy dùng giá mỗi foot² để so sánh." },
+  he: { title: "תמונת שוק חיה", ppsf: "מחיר ממוצע / רגל²", avg: "מחיר עסקה ממוצע", yield: "תשואת שכירות ברוטו", txns: "עסקאות אחרונות", bldgs: "בניינים במעקב", note: "נתוני עסקאות מרשות המקרקעין של דובאי. מחיר העסקה הממוצע כולל כל סוגי היחידות — להשוואה השתמשו במחיר לרגל²." },
+  fr: { title: "Aperçu du marché en direct", ppsf: "Prix moyen / pied²", avg: "Prix de transaction moyen", yield: "Rendement locatif brut", txns: "Transactions récentes", bldgs: "Immeubles suivis", note: "Données de transactions du Dubai Land Department. Le prix moyen couvre tous les types de biens ; utilisez le prix au pied² pour comparer." },
+};
+
+function LiveAreaStats({ stats, locale }: { stats: AreaStats; locale: string }) {
+  const l = STATS_LABELS[locale] ?? STATS_LABELS.en;
+  const tiles: { label: string; value: string }[] = [];
+  if (stats.pricePerSqft) tiles.push({ label: l.ppsf, value: `AED ${stats.pricePerSqft.toLocaleString("en-AE")}` });
+  if (stats.grossYield) tiles.push({ label: l.yield, value: `${stats.grossYield}%` });
+  if (stats.avgPrice) tiles.push({ label: l.avg, value: AED(stats.avgPrice) });
+  if (stats.transactions) tiles.push({ label: l.txns, value: stats.transactions.toLocaleString("en-AE") });
+  if (stats.buildings) tiles.push({ label: l.bldgs, value: stats.buildings.toLocaleString("en-AE") });
+  if (tiles.length === 0) return null;
+  const updated = stats.updatedAt ? new Date(stats.updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.12 }}
+      className="mb-8 rounded-2xl border border-border/50 bg-card p-5 sm:p-6"
+    >
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-accent" />
+          {l.title}{stats.area ? ` — ${stats.area}` : ""}
+        </h2>
+        {updated && <span className="text-[11px] text-muted-foreground whitespace-nowrap">{updated}</span>}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {tiles.map((tile) => (
+          <div key={tile.label} className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
+            <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">{tile.value}</div>
+            <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{tile.label}</div>
+          </div>
+        ))}
+      </div>
+      <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">{l.note}</p>
+    </motion.div>
+  );
+}
+
+export default function GuideDetailClient({ guide, areaStats }: { guide: PulseGuide; areaStats?: AreaStats | null }) {
   const t = useTranslations("pulseGuides");
   const locale = useLocale();
 
@@ -233,6 +287,9 @@ export default function GuideDetailClient({ guide }: { guide: PulseGuide }) {
           />
         </motion.div>
       )}
+
+      {/* ── Live area stats (area guides only) ───────────────── */}
+      {areaStats && <LiveAreaStats stats={areaStats} locale={locale} />}
 
       {/* ── Divider ──────────────────────────────────────────── */}
       <div

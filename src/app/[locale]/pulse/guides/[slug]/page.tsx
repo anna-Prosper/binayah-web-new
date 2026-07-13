@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
 import { PULSE_GUIDES, findGuide, guideDates } from "@/lib/pulse-guides";
+import { getAreaStats } from "@/lib/area-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
@@ -78,6 +79,9 @@ export default async function GuideDetailPage({ params }: Props) {
   const wordCount = guide.body.split(/\s+/).length;
   const { published, modified } = guideDates(slug);
 
+  // Area investor guides render a live DLD stats panel.
+  const areaStats = guide.area ? await getAreaStats(guide.area) : null;
+
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: locale === "ru" ? "Аналитика" : locale === "ar" ? "تحليل السوق" : locale === "zh" ? "市场分析" : locale === "vi" ? "Phân tích thị trường" : locale === "he" ? "דופק השוק" : "Market Pulse", href: `${lp}/pulse` },
@@ -101,7 +105,7 @@ export default async function GuideDetailPage({ params }: Props) {
       {guide.faq && guide.faq.length > 0 && <FAQJsonLd faqs={guide.faq} />}
       <Navbar />
       <PulseEmirateNav />
-      <GuideDetailClient guide={guide} />
+      <GuideDetailClient guide={guide} areaStats={areaStats} />
       <Footer />
     </div>
   );
