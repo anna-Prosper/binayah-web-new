@@ -89,11 +89,19 @@ export async function generateMetadata({
   // independent property value and largely reproduce third-party (Wikipedia)
   // content. Keep them crawlable (follow) but out of the index.
   const wikiOnly = !!wiki && !db?.community;
+  // Also noindex DB-backed pages that are an empty shell — no editorial text
+  // AND no inventory (projects/sale/rent) — since they can't satisfy any query
+  // (e.g. a bare community record like mohammed-bin-rashid-city). Rich area
+  // guides with real descriptions stay indexed even when inventory is momentarily 0.
+  const hasInventory =
+    projCount > 0 || (db?.counts?.forSale || 0) > 0 || (db?.counts?.forRent || 0) > 0;
+  const emptyDbShell = !!db?.community && stripped.length < 200 && !hasInventory;
+  const noindex = wikiOnly || emptyDbShell;
 
   return {
     title,
     description,
-    ...(wikiOnly ? { robots: { index: false as const, follow: true } } : {}),
+    ...(noindex ? { robots: { index: false as const, follow: true } } : {}),
     alternates: {
       canonical: canonicalUrl,
       languages: altLangs(`/communities/${slug}`),
