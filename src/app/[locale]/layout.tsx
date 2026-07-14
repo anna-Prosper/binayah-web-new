@@ -139,6 +139,7 @@ export async function generateMetadata({
       apple: "/icon.png",
       shortcut: "/favicon.ico",
     },
+    manifest: "/site.webmanifest",
     openGraph: {
       title: titles[locale] || titles.en,
       description: descriptions[locale] || descriptions.en,
