@@ -146,6 +146,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
         { label: t("pulse"), href: "/pulse" },
         { label: t("communities"), href: "/communities" },
         { label: t("news"), href: "/news" },
+        { label: t("ourTeam"), href: "/team" },
       ],
     },
   ];
