@@ -3,15 +3,13 @@
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp } from "lucide-react";
+import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp, ChevronRight, List, BookOpen, Calendar, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { PulseGuide } from "@/lib/pulse-guides";
+import { PULSE_GUIDES, PulseGuide } from "@/lib/pulse-guides";
 import type { AreaStats } from "@/lib/area-stats";
 
 // ── Static curated related areas (Dubai focus) ─────────────────────────────
-// TODO: Replace with dynamic DLD data from /api/dld/areas?limit=3 when embedded
-// stats blocks are added in a future iteration (deferred per diff-cap constraint).
 const CURATED_AREAS = [
   { name: "Dubai Marina", slug: "dubai-marina" },
   { name: "Downtown Dubai", slug: "downtown-dubai" },
@@ -28,10 +26,32 @@ const FAQ_TITLE: Record<string, string> = {
   fr: "Questions fréquentes",
 };
 
-// ── Simple markdown-lite renderer ─────────────────────────────────────────
-// Only supports: **bold**, paragraphs, # headings (lines starting with #),
-// table rows (| col | col |), and bullet lists (- item).
+// Inline i18n for the few new UI labels (matches the STATS_LABELS/FAQ_TITLE
+// pattern — keeps the 7 message files untouched).
+const UI: Record<string, { onThisPage: string; relatedGuides: string; guideLabel: string }> = {
+  en: { onThisPage: "On this page", relatedGuides: "Related guides", guideLabel: "Guide" },
+  ru: { onThisPage: "На этой странице", relatedGuides: "Похожие руководства", guideLabel: "Руководство" },
+  ar: { onThisPage: "في هذه الصفحة", relatedGuides: "أدلة ذات صلة", guideLabel: "دليل" },
+  zh: { onThisPage: "本页内容", relatedGuides: "相关指南", guideLabel: "指南" },
+  vi: { onThisPage: "Trong trang này", relatedGuides: "Hướng dẫn liên quan", guideLabel: "Hướng dẫn" },
+  he: { onThisPage: "בעמוד זה", relatedGuides: "מדריכים קשורים", guideLabel: "מדריך" },
+  fr: { onThisPage: "Sur cette page", relatedGuides: "Guides connexes", guideLabel: "Guide" },
+};
 
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 60);
+}
+
+// ── Simple markdown-lite renderer ─────────────────────────────────────────
+// Supports: **bold**, paragraphs, # / ## / ### headings, | tables |, - bullets,
+// numbered lists. h1/h2 get slug ids + scroll-margin so the sidebar TOC can
+// deep-link to them beneath the sticky navbar.
 function renderBody(text: string): React.ReactNode[] {
   const lines = text.split("\n");
   const nodes: React.ReactNode[] = [];
@@ -40,16 +60,14 @@ function renderBody(text: string): React.ReactNode[] {
   while (i < lines.length) {
     const line = lines[i];
 
-    // Blank line
     if (line.trim() === "") {
       i++;
       continue;
     }
 
-    // Heading — h1 > h2 > h3 hierarchy: explicit size overrides
     if (line.startsWith("### ")) {
       nodes.push(
-        <h3 key={i} className="text-base font-bold text-foreground mt-6 mb-2">
+        <h3 key={i} className="text-lg font-bold text-foreground mt-7 mb-2">
           {line.slice(4)}
         </h3>
       );
@@ -57,25 +75,26 @@ function renderBody(text: string): React.ReactNode[] {
       continue;
     }
     if (line.startsWith("## ")) {
+      const txt = line.slice(3);
       nodes.push(
-        <h2 key={i} className="text-xl font-bold text-foreground mt-8 mb-3 leading-snug">
-          {line.slice(3)}
+        <h2 key={i} id={slugify(txt)} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-foreground mt-10 mb-3 leading-snug">
+          {txt}
         </h2>
       );
       i++;
       continue;
     }
     if (line.startsWith("# ")) {
+      const txt = line.slice(2);
       nodes.push(
-        <h2 key={i} className="text-2xl sm:text-3xl font-bold text-foreground mt-10 mb-4 leading-tight">
-          {line.slice(2)}
+        <h2 key={i} id={slugify(txt)} className="scroll-mt-24 text-2xl sm:text-3xl font-bold text-foreground mt-12 mb-4 leading-tight">
+          {txt}
         </h2>
       );
       i++;
       continue;
     }
 
-    // Table (lines starting with |)
     if (line.startsWith("|")) {
       const tableLines: string[] = [];
       while (i < lines.length && lines[i].startsWith("|")) {
@@ -83,11 +102,10 @@ function renderBody(text: string): React.ReactNode[] {
         i++;
       }
       if (tableLines.length > 0) {
-        const parseRow = (row: string) =>
-          row.split("|").map((c) => c.trim()).filter(Boolean);
+        const parseRow = (row: string) => row.split("|").map((c) => c.trim()).filter(Boolean);
         const [header, ...body] = tableLines;
         nodes.push(
-          <div key={`table-${i}`} className="overflow-x-auto my-5">
+          <div key={`table-${i}`} className="overflow-x-auto my-6">
             <table className="w-full text-sm border border-border/50 rounded-xl overflow-hidden">
               <thead>
                 <tr className="bg-muted/50">
@@ -100,7 +118,7 @@ function renderBody(text: string): React.ReactNode[] {
                 {body.map((row, ri) => (
                   <tr key={ri} className="border-t border-border/30">
                     {parseRow(row).map((cell, ci) => (
-                      <td key={ci} className="px-4 py-2.5 text-xs text-muted-foreground">{cell}</td>
+                      <td key={ci} className="px-4 py-2.5 text-[13px] text-muted-foreground">{cell}</td>
                     ))}
                   </tr>
                 ))}
@@ -112,7 +130,6 @@ function renderBody(text: string): React.ReactNode[] {
       continue;
     }
 
-    // Bullet list
     if (line.startsWith("- ")) {
       const items: string[] = [];
       while (i < lines.length && lines[i].startsWith("- ")) {
@@ -120,10 +137,10 @@ function renderBody(text: string): React.ReactNode[] {
         i++;
       }
       nodes.push(
-        <ul key={`ul-${i}`} className="my-3 space-y-1.5 pl-4">
+        <ul key={`ul-${i}`} className="my-4 space-y-2 pl-1">
           {items.map((item, ii) => (
-            <li key={ii} className="text-muted-foreground text-sm flex gap-2 before:content-['·'] before:text-accent before:font-bold">
-              {renderInline(item)}
+            <li key={ii} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed flex gap-2.5 before:content-['·'] before:text-accent before:font-bold before:text-lg before:leading-none before:mt-0.5">
+              <span>{renderInline(item)}</span>
             </li>
           ))}
         </ul>
@@ -131,7 +148,6 @@ function renderBody(text: string): React.ReactNode[] {
       continue;
     }
 
-    // Numbered list
     if (/^\d+\.\s/.test(line)) {
       const items: string[] = [];
       while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
@@ -139,9 +155,9 @@ function renderBody(text: string): React.ReactNode[] {
         i++;
       }
       nodes.push(
-        <ol key={`ol-${i}`} className="my-3 space-y-1.5 pl-4 list-decimal list-inside">
+        <ol key={`ol-${i}`} className="my-4 space-y-2 pl-5 list-decimal marker:text-accent marker:font-bold">
           {items.map((item, ii) => (
-            <li key={ii} className="text-muted-foreground text-sm">
+            <li key={ii} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed pl-1">
               {renderInline(item)}
             </li>
           ))}
@@ -150,9 +166,8 @@ function renderBody(text: string): React.ReactNode[] {
       continue;
     }
 
-    // Paragraph
     nodes.push(
-      <p key={i} className="text-muted-foreground leading-relaxed mb-4">
+      <p key={i} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed mb-4">
         {renderInline(line)}
       </p>
     );
@@ -163,15 +178,22 @@ function renderBody(text: string): React.ReactNode[] {
 }
 
 function renderInline(text: string): React.ReactNode {
-  // Handle **bold**
   const parts = text.split(/\*\*([^*]+)\*\*/g);
   return parts.map((part, i) =>
     i % 2 === 1 ? <strong key={i} className="font-semibold text-foreground">{part}</strong> : part
   );
 }
 
-// ── Main Component ─────────────────────────────────────────────────────────
+// Extract h1/h2 headings for the sidebar table of contents.
+function extracttoc(text: string): { id: string; title: string }[] {
+  return text
+    .split("\n")
+    .filter((l) => l.startsWith("# ") || l.startsWith("## "))
+    .map((l) => l.replace(/^#{1,2}\s/, ""))
+    .map((title) => ({ id: slugify(title), title }));
+}
 
+// ── Live area stats ────────────────────────────────────────────────────────
 const AED = (n: number) => {
   if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2)}M`;
   if (n >= 1000) return `AED ${Math.round(n).toLocaleString("en-AE")}`;
@@ -199,12 +221,7 @@ function LiveAreaStats({ stats, locale }: { stats: AreaStats; locale: string }) 
   if (tiles.length === 0) return null;
   const updated = stats.updatedAt ? new Date(stats.updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : null;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.12 }}
-      className="mb-8 rounded-2xl border border-border/50 bg-card p-5 sm:p-6"
-    >
+    <div className="mb-8 rounded-2xl border border-border/50 bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between gap-3 mb-4">
         <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-accent" />
@@ -221,193 +238,236 @@ function LiveAreaStats({ stats, locale }: { stats: AreaStats; locale: string }) 
         ))}
       </div>
       <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">{l.note}</p>
-    </motion.div>
+    </div>
   );
 }
 
-export default function GuideDetailClient({ guide, areaStats }: { guide: PulseGuide; areaStats?: AreaStats | null }) {
+// ── Main Component ─────────────────────────────────────────────────────────
+type Crumb = { name: string; href: string };
+
+export default function GuideDetailClient({
+  guide,
+  areaStats,
+  breadcrumbs = [],
+  published,
+}: {
+  guide: PulseGuide;
+  areaStats?: AreaStats | null;
+  breadcrumbs?: Crumb[];
+  published?: string;
+}) {
   const t = useTranslations("pulseGuides");
   const locale = useLocale();
+  const ui = UI[locale] ?? UI.en;
+
+  const title = t(guide.titleKey as Parameters<typeof t>[0]);
+  const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
+  const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<typeof t>[0]);
+  const toc = extracttoc(guide.body);
+  const publishedLabel = published
+    ? new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, { day: "numeric", month: "short", year: "numeric" })
+    : null;
+
+  const relatedGuides = PULSE_GUIDES.filter((g) => g.category === guide.category && g.slug !== guide.slug).slice(0, 4);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      {/* ── Back link ────────────────────────────────────────── */}
-      <Link
-        href={`/${locale}/pulse/guides`}
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        {t("backToGuides")}
-      </Link>
-
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mb-8"
-      >
-        <div className="flex items-center flex-wrap gap-3 mb-4">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-2.5 py-1 rounded-full">
-            {t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<typeof t>[0])}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-3.5 w-3.5" />
-            {guide.readTime}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Eye className="h-3.5 w-3.5" />
-            {guide.views.toLocaleString()} {t("views")}
-          </span>
+    <div className="bg-background">
+      {/* ── Hero band ────────────────────────────────────────── */}
+      <section className="relative w-full h-[340px] sm:h-[400px] md:h-[460px] overflow-hidden flex items-end">
+        <div className="absolute inset-0">
+          {guide.heroImage ? (
+            <Image src={guide.heroImage.url} alt={guide.heroImage.alt} fill sizes="100vw" className="object-cover" priority />
+          ) : (
+            <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-3">
-          {t(guide.titleKey as Parameters<typeof t>[0])}
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          {t(guide.descriptionKey as Parameters<typeof t>[0])}
-        </p>
-      </motion.div>
-
-      {/* ── Hero image ───────────────────────────────────────── */}
-      {guide.heroImage && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-8 border border-border/40"
-        >
-          <Image
-            src={guide.heroImage.url}
-            alt={guide.heroImage.alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="object-cover"
-            priority
-          />
-        </motion.div>
-      )}
-
-      {/* ── Live area stats (area guides only) ───────────────── */}
-      {areaStats && <LiveAreaStats stats={areaStats} locale={locale} />}
-
-      {/* ── Divider ──────────────────────────────────────────── */}
-      <div
-        className="h-[2px] w-16 rounded-full mb-8"
-        style={{ background: "hsl(43, 60%, 55%)" }}
-      />
-
-      {/* ── Body ─────────────────────────────────────────────── */}
-      <motion.article
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
-        className="prose-sm max-w-none"
-      >
-        {renderBody(guide.body)}
-      </motion.article>
-
-      {/* ── FAQ ──────────────────────────────────────────────── */}
-      {guide.faq && guide.faq.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 pt-8 border-t border-border/40"
-        >
-          <h2 className="text-xl font-bold text-foreground mb-5">{FAQ_TITLE[locale] ?? FAQ_TITLE.en}</h2>
-          <div className="space-y-2">
-            {guide.faq.map((item, i) => (
-              <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-accent/30 transition-colors">
-                <summary className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3.5 cursor-pointer list-none font-semibold text-sm text-foreground hover:text-accent transition-colors">
-                  <span>{item.question}</span>
-                  <span className="text-accent text-lg font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45">+</span>
-                </summary>
-                <div className="px-4 sm:px-5 pb-4 pt-1 text-sm text-muted-foreground leading-relaxed border-t border-border/30">{item.answer}</div>
-              </details>
-            ))}
+        {/* Breadcrumb */}
+        <div className="absolute top-0 inset-x-0 h-12 sm:h-14 z-10 flex items-center">
+          <div className="max-w-6xl mx-auto w-full px-4 sm:px-6">
+            <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70 overflow-hidden">
+              {breadcrumbs.map((b, i) => {
+                const last = i === breadcrumbs.length - 1;
+                return (
+                  <span key={b.href} className="flex items-center gap-1.5 min-w-0">
+                    {i > 0 && <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />}
+                    {last ? (
+                      <span className="text-white/90 truncate">{b.name}</span>
+                    ) : (
+                      <Link href={b.href} className="hover:text-white transition-colors whitespace-nowrap">{b.name}</Link>
+                    )}
+                  </span>
+                );
+              })}
+            </nav>
           </div>
-        </motion.div>
-      )}
+        </div>
 
-      {/* ── Related Communities ───────────────────────────────── */}
-      {guide.relatedCommunities.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 pt-8 border-t border-border/40"
-        >
-          <h2 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-accent" />
-            {t("relatedCommunities")}
-          </h2>
-          <div className="grid grid-cols-3 gap-3">
-            {guide.relatedCommunities.map((community) => (
-              <Link
-                key={community}
-                href={`/${locale}/communities`}
-                className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
+        {/* Title block */}
+        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <div className="flex items-center flex-wrap gap-x-4 gap-y-2 mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-accent text-accent-foreground px-3 py-1 rounded-lg">
+                {category}
+              </span>
+              <span className="flex items-center gap-1.5 text-xs text-white/70"><Clock className="h-3.5 w-3.5" /> {guide.readTime}</span>
+              {publishedLabel && <span className="flex items-center gap-1.5 text-xs text-white/70"><Calendar className="h-3.5 w-3.5" /> {publishedLabel}</span>}
+              <span className="flex items-center gap-1.5 text-xs text-white/70"><Eye className="h-3.5 w-3.5" /> {guide.views.toLocaleString()} {t("views")}</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight max-w-3xl">{title}</h1>
+            <p className="text-base sm:text-lg text-white/80 mt-3 max-w-2xl leading-relaxed">{description}</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Content + sidebar ────────────────────────────────── */}
+      <section className="py-8 sm:py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-14">
+            {/* Main */}
+            <div className="min-w-0">
+              {areaStats && <LiveAreaStats stats={areaStats} locale={locale} />}
+
+              <div className="h-[2px] w-16 rounded-full mb-8" style={{ background: "hsl(43, 60%, 55%)" }} />
+
+              <motion.article
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.15 }}
+                className="max-w-none"
               >
-                <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{community}</p>
-                <ExternalLink className="h-3 w-3 text-muted-foreground/40 mt-1.5 group-hover:text-accent transition-colors" />
-              </Link>
-            ))}
+                {renderBody(guide.body)}
+              </motion.article>
+
+              {/* FAQ */}
+              {guide.faq && guide.faq.length > 0 && (
+                <div className="mt-12 pt-8 border-t border-border/40">
+                  <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-5">{FAQ_TITLE[locale] ?? FAQ_TITLE.en}</h2>
+                  <div className="space-y-2">
+                    {guide.faq.map((item, i) => (
+                      <details key={i} className="group bg-card border border-border/50 rounded-2xl overflow-hidden hover:border-accent/30 transition-colors">
+                        <summary className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3.5 cursor-pointer list-none font-semibold text-sm text-foreground hover:text-accent transition-colors">
+                          <span>{item.question}</span>
+                          <span className="text-accent text-lg font-light flex-shrink-0 transition-transform duration-200 group-open:rotate-45">+</span>
+                        </summary>
+                        <div className="px-4 sm:px-5 pb-4 pt-1 text-sm text-muted-foreground leading-relaxed border-t border-border/30">{item.answer}</div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Related communities */}
+              {guide.relatedCommunities.length > 0 && (
+                <div className="mt-12 pt-8 border-t border-border/40">
+                  <h2 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-accent" />
+                    {t("relatedCommunities")}
+                  </h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {guide.relatedCommunities.map((community) => (
+                      <Link
+                        key={community}
+                        href={`/${locale}/communities`}
+                        className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
+                      >
+                        <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{community}</p>
+                        <ExternalLink className="h-3 w-3 text-muted-foreground/40 mt-1.5 group-hover:text-accent transition-colors" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Back link */}
+              <div className="mt-12">
+                <Link href={`/${locale}/pulse/guides`} className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+                  <ArrowLeft className="h-4 w-4" /> {t("backToGuides")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <aside className="lg:sticky lg:top-24 self-start space-y-5">
+              {/* Advisor CTA */}
+              <div className="rounded-2xl p-6 text-primary-foreground" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                <div className="w-10 h-10 rounded-xl bg-accent/90 flex items-center justify-center mb-4">
+                  <Phone className="h-5 w-5 text-accent-foreground" />
+                </div>
+                <h3 className="font-bold text-white mb-1.5">{t("ctaTitle")}</h3>
+                <p className="text-sm text-white/70 mb-4 leading-relaxed">{t("ctaSub")}</p>
+                <div className="space-y-2.5">
+                  <Link href={`/${locale}/contact`} className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity">
+                    {t("ctaContact")}
+                  </Link>
+                  <Link href={`/${locale}/pulse/calculator`} className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-white/10 text-white hover:bg-white/15 transition-colors">
+                    {t("ctaCalculator")} <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Table of contents */}
+              {toc.length > 1 && (
+                <div className="rounded-2xl border border-border/50 bg-card p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                    <List className="h-3.5 w-3.5 text-accent" />
+                    {ui.onThisPage}
+                  </h3>
+                  <nav className="space-y-1.5">
+                    {toc.map((h) => (
+                      <a key={h.id} href={`#${h.id}`} className="block text-sm text-muted-foreground hover:text-accent transition-colors leading-snug py-0.5 border-l-2 border-border/50 hover:border-accent pl-3">
+                        {h.title}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
+              {/* Related guides */}
+              {relatedGuides.length > 0 && (
+                <div className="rounded-2xl border border-border/50 bg-card p-5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                    <BookOpen className="h-3.5 w-3.5 text-accent" />
+                    {ui.relatedGuides}
+                  </h3>
+                  <div className="space-y-3">
+                    {relatedGuides.map((g) => (
+                      <Link key={g.slug} href={`/${locale}/pulse/guides/${g.slug}`} className="group block">
+                        <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">
+                          {t(g.titleKey as Parameters<typeof t>[0])}
+                        </p>
+                        <span className="flex items-center gap-1 text-[11px] text-muted-foreground mt-1">
+                          <Clock className="h-3 w-3" /> {g.readTime}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Popular areas */}
+              <div className="rounded-2xl border border-border/50 bg-card p-5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                  <Building2 className="h-3.5 w-3.5 text-accent" />
+                  {t("relatedAreas")}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {CURATED_AREAS.map((area) => (
+                    <Link
+                      key={area.slug}
+                      href={`/${locale}/communities/${area.slug}`}
+                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-muted/50 text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
+                    >
+                      {area.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </aside>
           </div>
-        </motion.div>
-      )}
-
-      {/* ── Related Areas footer ─────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-12 pt-8 border-t border-border/40"
-      >
-        <h2 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
-          <Building2 className="h-4 w-4 text-accent" />
-          {t("relatedAreas")}
-        </h2>
-        <div className="grid grid-cols-3 gap-3">
-          {CURATED_AREAS.map((area) => (
-            <Link
-              key={area.slug}
-              href={`/${locale}/communities/${area.slug}`}
-              className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
-            >
-              <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{area.name}</p>
-              <ExternalLink className="h-3 w-3 text-muted-foreground/40 mt-1.5 group-hover:text-accent transition-colors" />
-            </Link>
-          ))}
         </div>
-      </motion.div>
-
-      {/* ── CTA ──────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-10 bg-muted/30 border border-border/40 rounded-2xl p-6 text-center"
-      >
-        <h3 className="font-bold text-foreground mb-2">{t("ctaTitle")}</h3>
-        <p className="text-sm text-muted-foreground mb-4">{t("ctaSub")}</p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link
-            href={`/${locale}/contact`}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-sm hover:shadow-md transition-all"
-            style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-          >
-            {t("ctaContact")}
-          </Link>
-          <Link
-            href={`/${locale}/pulse/calculator`}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold border border-border/60 bg-card hover:border-accent/40 transition-all"
-          >
-            {t("ctaCalculator")}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-      </motion.div>
+      </section>
     </div>
   );
 }
