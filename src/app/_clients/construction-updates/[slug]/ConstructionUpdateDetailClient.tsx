@@ -287,7 +287,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                     const fd = new FormData(e.currentTarget);
                     const email = fd.get("email");
                     if (!email) return;
-                    const hp = String(fd.get("company_website") || "");
+                    const hp = String(fd.get("hp_check") || "");
                     setSubState("loading");
                     try {
                       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/market-report/subscribe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ hp, email: String(email), source: "project-article" }) });

@@ -47,7 +47,7 @@ export default function PropertyTypeSidebarNewsletter({ slug, apiUrl, messages }
             const fd = new FormData(e.currentTarget);
             const email = fd.get("email");
             if (!email) return;
-            const hp = String(fd.get("company_website") || "");
+            const hp = String(fd.get("hp_check") || "");
             setSubState("loading");
             try {
               const res = await fetch(`${apiUrl || ""}/api/market-report/subscribe`, {

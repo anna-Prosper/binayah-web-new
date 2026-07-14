@@ -2533,7 +2533,13 @@
     "guide_palmJumeirahInvestorGuide_title": "Palm Jumeirah Investor Guide",
     "guide_palmJumeirahInvestorGuide_desc": "Dubai's ultra-prime beachfront island — scarcity, trophy assets and the investment case for Palm Jumeirah, with live DLD figures.",
     "guide_dubaiHillsEstateGuide_title": "Dubai Hills Estate Investor Guide",
-    "guide_dubaiHillsEstateGuide_desc": "A green, golf-course family community by Emaar — the investment case across villas and apartments in Dubai Hills Estate, with live DLD data."
+    "guide_dubaiHillsEstateGuide_desc": "A green, golf-course family community by Emaar — the investment case across villas and apartments in Dubai Hills Estate, with live DLD data.",
+    "allGuides": "All",
+    "searchPlaceholder": "Search guides…",
+    "liveData": "Live data",
+    "noResults": "No guides match your search.",
+    "guidesWord": "guides",
+    "guidesWithLiveData": "with live Dubai Land Department market data"
   },
   "areas": {
     "heroLabel": "Explore Dubai",

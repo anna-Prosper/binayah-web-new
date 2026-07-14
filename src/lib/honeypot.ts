@@ -5,6 +5,6 @@
 export function isHoneypotTripped(body: unknown): boolean {
   if (!body || typeof body !== "object") return false;
   const b = body as Record<string, unknown>;
-  const candidates = [b.hp, b.company_website];
+  const candidates = [b.hp, b.hp_check];
   return candidates.some((v) => typeof v === "string" && v.trim().length > 0);
 }
