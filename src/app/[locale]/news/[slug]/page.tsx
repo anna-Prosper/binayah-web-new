@@ -56,6 +56,10 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
     getNewsArticle(slug, locale),
     getMarketStats(), // cross-request cached (1h) — no longer a live call per render
   ]);
+  // A slug may exist in one locale but not another (e.g. no Arabic translation) →
+  // getNewsArticle returns null. Bail to 404 before dereferencing it below; without
+  // this, prerendering such a locale crashed the whole build (reading .title of null).
+  if (!article) notFound();
   // article.content is scraped HTML rendered via dangerouslySetInnerHTML — sanitize
   // server-side (CSP allows 'unsafe-inline', so injected scripts would execute).
   if (article?.content) article.content = sanitizeArticleHtml(article.content);
