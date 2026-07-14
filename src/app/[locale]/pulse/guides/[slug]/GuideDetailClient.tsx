@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp, ChevronRight, List, BookOpen, Calendar, Phone } from "lucide-react";
+import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp, List, BookOpen, Calendar, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { PULSE_GUIDES, PulseGuide } from "@/lib/pulse-guides";
@@ -243,17 +243,13 @@ function LiveAreaStats({ stats, locale }: { stats: AreaStats; locale: string }) 
 }
 
 // ── Main Component ─────────────────────────────────────────────────────────
-type Crumb = { name: string; href: string };
-
 export default function GuideDetailClient({
   guide,
   areaStats,
-  breadcrumbs = [],
   published,
 }: {
   guide: PulseGuide;
   areaStats?: AreaStats | null;
-  breadcrumbs?: Crumb[];
   published?: string;
 }) {
   const t = useTranslations("pulseGuides");
@@ -281,27 +277,6 @@ export default function GuideDetailClient({
             <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
-        </div>
-
-        {/* Breadcrumb */}
-        <div className="absolute top-0 inset-x-0 h-12 sm:h-14 z-10 flex items-center">
-          <div className="max-w-6xl mx-auto w-full px-4 sm:px-6">
-            <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70 overflow-hidden">
-              {breadcrumbs.map((b, i) => {
-                const last = i === breadcrumbs.length - 1;
-                return (
-                  <span key={b.href} className="flex items-center gap-1.5 min-w-0">
-                    {i > 0 && <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />}
-                    {last ? (
-                      <span className="text-white/90 truncate">{b.name}</span>
-                    ) : (
-                      <Link href={b.href} className="hover:text-white transition-colors whitespace-nowrap">{b.name}</Link>
-                    )}
-                  </span>
-                );
-              })}
-            </nav>
-          </div>
         </div>
 
         {/* Title block */}

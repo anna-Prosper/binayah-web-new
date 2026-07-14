@@ -105,7 +105,7 @@ export default async function GuideDetailPage({ params }: Props) {
       {guide.faq && guide.faq.length > 0 && <FAQJsonLd faqs={guide.faq} />}
       <Navbar />
       <PulseEmirateNav />
-      <GuideDetailClient guide={guide} areaStats={areaStats} breadcrumbs={breadcrumbs} published={published} />
+      <GuideDetailClient guide={guide} areaStats={areaStats} published={published} />
       <Footer />
     </div>
   );
