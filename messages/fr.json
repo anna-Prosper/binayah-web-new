@@ -2436,6 +2436,14 @@
     "cashOnCash": "Rendement en espèces (Année 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "Guide d'investissement Sobha Hartland",
+    "guide_sobhaHartlandInvestorGuide_desc": "Investir à Sobha Hartland, Dubaï — prix, rendements locatifs, types de biens et principaux risques, avec des données de marché en direct du Dubai Land Department.",
+    "guide_meydanInvestorGuide_title": "Guide d'investissement Meydan",
+    "guide_meydanInvestorGuide_desc": "Investir à Meydan, Dubaï — prix, rendements locatifs, types de biens et principaux risques, avec des données de marché en direct du Dubai Land Department.",
+    "guide_damacHillsInvestorGuide_title": "Guide d'investissement Damac Hills",
+    "guide_damacHillsInvestorGuide_desc": "Investir à Damac Hills, Dubaï — prix, rendements locatifs, types de biens et principaux risques, avec des données de marché en direct du Dubai Land Department.",
+    "guide_arjanInvestorGuide_title": "Guide d'investissement Arjan",
+    "guide_arjanInvestorGuide_desc": "Investir à Arjan, Dubaï — prix, rendements locatifs, types de biens et principaux risques, avec des données de marché en direct du Dubai Land Department.",
     "label": "Base de connaissances",
     "title": "Investissement",
     "titleItalic": "Guides",

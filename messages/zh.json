@@ -2436,6 +2436,14 @@
     "cashOnCash": "Cash-on-Cash Return (Yr 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "Sobha Hartland 投资指南",
+    "guide_sobhaHartlandInvestorGuide_desc": "投资迪拜Sobha Hartland——价格、租金收益、房产类型与主要风险，附迪拜土地局实时市场数据。",
+    "guide_meydanInvestorGuide_title": "Meydan 投资指南",
+    "guide_meydanInvestorGuide_desc": "投资迪拜Meydan——价格、租金收益、房产类型与主要风险，附迪拜土地局实时市场数据。",
+    "guide_damacHillsInvestorGuide_title": "Damac Hills 投资指南",
+    "guide_damacHillsInvestorGuide_desc": "投资迪拜Damac Hills——价格、租金收益、房产类型与主要风险，附迪拜土地局实时市场数据。",
+    "guide_arjanInvestorGuide_title": "Arjan 投资指南",
+    "guide_arjanInvestorGuide_desc": "投资迪拜Arjan——价格、租金收益、房产类型与主要风险，附迪拜土地局实时市场数据。",
     "label": "知识库",
     "title": "投资",
     "titleItalic": "指南",

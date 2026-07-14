@@ -4625,6 +4625,210 @@ On tax and residency, Dubai remains compelling: there is **no annual property ta
 
 If you would like help shortlisting the right phase, product and price point in Dubai Hills Estate, our team can guide you through current listings, live Emaar off-plan terms, and a valuation on any unit you are considering.`,
   },
+  {
+    slug: "sobha-hartland-investor-guide",
+    category: "Deep Dive",
+    readTime: "8 min",
+    views: 3180,
+    titleKey: "guide_sobhaHartlandInvestorGuide_title",
+    descriptionKey: "guide_sobhaHartlandInvestorGuide_desc",
+    area: "Sobha Hartland",
+    relatedCommunities: ["Sobha Hartland", "Mohammed Bin Rashid City", "Meydan"],
+    faq: [
+      { question: "Is Sobha Hartland a good investment?", answer: "Sobha Hartland pairs a central Mohammed Bin Rashid City location — minutes from Downtown Dubai via Al Khail Road — with Sobha Realty's in-house build quality, which supports both rental demand and resale value. The live figures above show where its price per sqft and yield sit versus the citywide average." },
+      { question: "What property types are available in Sobha Hartland?", answer: "The community offers waterfront and greenery-facing apartments, townhouses and villas, from one-bedroom units to large family homes, across Sobha Hartland and the newer Sobha Hartland II with its Riverside Crescent towers." },
+      { question: "What are the risks of buying in Sobha Hartland?", answer: "It is a premium, single-developer community, so pricing sits above nearby budget areas and a steady off-plan pipeline can add supply. Focus on completed or near-handover stock and use the live transaction volume above to gauge liquidity." },
+    ],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/sobha-hartland-investor-guide.png", alt: "Sobha Hartland Investor Guide — Binayah Dubai property guide" },
+    body: `## Sobha Hartland at a Glance
+
+Sobha Hartland is one of Dubai's most established premium waterfront communities, set inside Mohammed Bin Rashid City along the Dubai Creek Canal. Developed and built end-to-end by Sobha Realty, its defining trait is craftsmanship: the developer's backward-integrated model — controlling design, engineering and construction in-house — has given the community a reputation for finish quality that holds its value on resale.
+
+The location is the other half of the story. Sitting between Downtown Dubai, Business Bay and Ras Al Khor, it delivers genuine city-centre proximity — minutes to Burj Khalifa via Al Khail Road — while keeping a green, low-traffic feel across its 8 million square feet of landscaping, parks and canal frontage.
+
+## Why Investors Look Here
+
+Sobha Hartland attracts a specific buyer: one who wants a central address with quality and greenery rather than the cheapest entry price. That profile supports steady end-user demand — families drawn by on-site international schools (Hartland International School, North London Collegiate School Dubai) and professionals wanting a short commute.
+
+For investors, the appeal is a blend of dependable rental demand and quality-led capital preservation. Premium, well-built stock in a central master community tends to hold tenants and resell more smoothly than commodity apartments in oversupplied fringe areas.
+
+## Property Types and Positioning
+
+The community spans:
+
+- **Apartments** — one to three-bedroom units with canal, park or skyline views, the core of the rental market.
+- **Townhouses and villas** — larger family homes in a landscaped, gated setting.
+- **Sobha Hartland II** — the newer phase, led by the Riverside Crescent towers, built around lagoons and beaches and still delivering off-plan inventory.
+
+Pricing sits in the mid-to-upper band for the MBR City area, reflecting the build quality and central location rather than a budget play.
+
+## Rental Yield and Demand
+
+As a premium central community, Sobha Hartland typically trades a little capital-growth-tilted versus the highest-yield budget areas — buyers pay for location and quality. The live market snapshot above shows the current price per sqft, average transaction price and gross rental yield from Dubai Land Department data, so you can see exactly where it sits against the citywide average of roughly 4.7% before committing.
+
+Demand is anchored by the schools, the canal-side lifestyle and the Downtown commute — a broad, resilient tenant base rather than a single segment.
+
+## Risks to Weigh
+
+The main considerations are a price point above nearby budget communities and an ongoing off-plan pipeline in Sobha Hartland II that can add supply in the short term. Both are manageable: favour completed or near-handover units, check the live transaction volume above for liquidity, and lean on Sobha's build quality as a differentiator when comparing similar-priced stock elsewhere in MBR City.
+
+## The Bottom Line
+
+Sobha Hartland is a quality-and-location play rather than a yield-maximisation one. For investors who want a central, green, well-built community with durable tenant demand and strong resale characteristics, it remains one of Mohammed Bin Rashid City's most dependable addresses. Use the live figures above to time your entry, and speak to our advisors about the specific towers and layouts renting fastest today.`,
+  },
+  {
+    slug: "meydan-investor-guide",
+    category: "Deep Dive",
+    readTime: "8 min",
+    views: 2940,
+    titleKey: "guide_meydanInvestorGuide_title",
+    descriptionKey: "guide_meydanInvestorGuide_desc",
+    area: "Meydan",
+    relatedCommunities: ["Meydan", "Mohammed Bin Rashid City", "Sobha Hartland"],
+    faq: [
+      { question: "Why do investors like Meydan?", answer: "Meydan combines a central Mohammed Bin Rashid City location — minutes from Downtown Dubai via Al Khail Road — with marquee lifestyle assets like the Meydan Racecourse and a deep off-plan pipeline across sub-districts such as Meydan Horizon and District 11. The live figures above show its current price and yield." },
+      { question: "What can you buy in Meydan?", answer: "Meydan spans contemporary apartments, townhouses and villas from a wide field of developers, with lagoon, canal and skyline views a recurring feature. Entry points range from accessible apartments to premium villas." },
+      { question: "What are the risks of investing in Meydan?", answer: "Meydan has a very active launch pipeline, so new supply can pressure short-term rents, and quality varies across developers. Check the live transaction volume above for liquidity and prioritise well-built projects from established names." },
+    ],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/meydan-investor-guide.png", alt: "Meydan Investor Guide — Binayah Dubai property guide" },
+    body: `## Meydan at a Glance
+
+Meydan is a prestigious district within Mohammed Bin Rashid City, built around the world-famous Meydan Racecourse — home of the Dubai World Cup — and The Track golf course. Its position, minutes from Downtown Dubai via Al Khail Road and Ras Al Khor Road, gives it an unusual combination for the price band: genuine central-city access alongside green, low-density space, waterfront canals and marquee sporting infrastructure.
+
+Over the past few years Meydan has shifted from a racing and events destination into one of the city's most active residential frontiers, with fast-expanding sub-districts including Meydan Horizon, District 11 and the areas feeding off the Meydan One masterplan.
+
+## Why Investors Look Here
+
+Meydan's draw is location plus lifestyle at a central address. Buyers get proximity to Downtown and Business Bay without Downtown pricing, wrapped in a community defined by the racecourse, cycling and running tracks, hotels and landscaped open space.
+
+That mix supports a broad tenant base — professionals wanting a short commute, families drawn to the green setting and schools, and lifestyle renters attracted to the canals and views. For investors, a deep and continuing off-plan pipeline also means genuine choice on entry price and payment plans.
+
+## Property Types and Positioning
+
+Meydan offers:
+
+- **Apartments** — from studios to larger layouts, many with lagoon, canal or skyline outlooks, forming the core rental market.
+- **Townhouses and villas** — family homes across the district's gated sub-communities.
+- **Off-plan launches** — a steady stream from a wide developer field, giving flexible payment structures for investors positioning early.
+
+Pricing spans an accessible-to-premium range depending on sub-district and product, giving investors more entry points than most central communities.
+
+## Rental Yield and Demand
+
+Meydan's central location supports dependable rental demand, while its ongoing supply keeps entry pricing competitive versus Downtown or Business Bay. The live market snapshot above shows the current price per sqft, average transaction price and gross rental yield from Dubai Land Department data — the fastest way to see where Meydan sits against the citywide average of about 4.7% today.
+
+Demand is underpinned by the commute, the lifestyle draw of the racecourse and canals, and a growing base of schools and retail as the masterplan matures.
+
+## Risks to Weigh
+
+The key risk is supply: Meydan has one of the more active launch pipelines in central Dubai, which can pressure short-term rents, and build quality varies across the many developers active here. Manage it by focusing on well-built projects from established names, checking the live transaction volume above for liquidity, and favouring completed or near-handover stock where you need immediate yield.
+
+## The Bottom Line
+
+Meydan offers a rare blend of central location, lifestyle amenities and a wide range of entry points, making it one of Mohammed Bin Rashid City's most flexible investment districts for both yield-focused and growth-focused buyers. Use the live figures above to gauge the current market, and talk to our advisors about which sub-districts and projects are performing best right now.`,
+  },
+  {
+    slug: "damac-hills-investor-guide",
+    category: "Deep Dive",
+    readTime: "8 min",
+    views: 2760,
+    titleKey: "guide_damacHillsInvestorGuide_title",
+    descriptionKey: "guide_damacHillsInvestorGuide_desc",
+    area: "Damac Hills",
+    relatedCommunities: ["Damac Hills", "Damac Hills 2", "Dubai Sports City"],
+    faq: [
+      { question: "Is Damac Hills good for investment?", answer: "Damac Hills is an established, golf-anchored community with a mature resale and rental market, a large central park and international schools — features that support steady family demand. The live figures above show its current price per sqft and gross rental yield versus the citywide average." },
+      { question: "What can you buy in Damac Hills?", answer: "The community spans luxury villas and townhouses framing the Trump International Golf Club plus a wide range of apartments, giving investors entry points from accessible units to premium golf-course homes." },
+      { question: "What are the risks in Damac Hills?", answer: "Damac Hills sits away from the coast and city centre, so it competes on space and amenities rather than central location, and single-developer communities can see concentrated new supply. Use the live transaction volume above to check liquidity before buying." },
+    ],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/damac-hills-investor-guide.png", alt: "Damac Hills Investor Guide — Binayah Dubai property guide" },
+    body: `## Damac Hills at a Glance
+
+Damac Hills is one of Dubai's best-known golf communities, built by Damac Properties in Dubailand around the Trump International Golf Club Dubai and a large central park. It has matured into a genuinely self-contained neighbourhood — international schools, retail, dining, sports facilities and the sprawling Damac Hills park with its skate park, stables, lakes and sports fields — well connected via Hessa Street, Al Qudra Road and Sheikh Zayed Road.
+
+That maturity matters for investors: unlike newer fringe launches, Damac Hills already has a deep resale and rental market, established amenities and a proven community management track record.
+
+## Why Investors Look Here
+
+Damac Hills sells a lifestyle — green, family-first, golf-course living — at pricing below the coastal and central hotspots. Its draw is space and amenities for the money, which anchors demand from families and end-users rather than short-term speculators.
+
+For investors, that translates into a stable, liquid market. A community with real schools, parks and years of resale history behaves more predictably than an off-plan-only district still building toward its first secondary trades.
+
+## Property Types and Positioning
+
+The community offers:
+
+- **Villas and townhouses** — the signature product, many framing the golf course, in a range of sizes and price points.
+- **Apartments** — a broad selection that widens the entry-level and rental market.
+- **Ongoing launches** — Damac continues to add phases, giving off-plan options alongside a liquid resale market.
+
+Pricing is mid-band for Dubai villas — a value proposition built on space, greenery and amenities rather than a central postcode.
+
+## Rental Yield and Demand
+
+As a family-oriented villa community, Damac Hills tends to attract longer-tenancy, end-user renters, which supports occupancy stability. The live market snapshot above shows the current price per sqft, average transaction price and gross rental yield from Dubai Land Department data, so you can compare it directly against the citywide average of roughly 4.7% before deciding.
+
+Demand is underpinned by the schools, the golf-course lifestyle, the central park and the community's established, amenity-rich feel.
+
+## Risks to Weigh
+
+The main trade-off is location: Damac Hills sits inland, away from the coast and central business districts, so it competes on space and amenities rather than commute. As a large single-developer community, it can also see concentrated new supply from later phases. Manage both by checking the live transaction volume above for liquidity and favouring well-located plots and completed stock with proven rental history.
+
+## The Bottom Line
+
+Damac Hills is a mature, liquid, family-focused golf community offering space and amenities at accessible villa pricing. For investors who want a stable, established market with dependable end-user demand rather than a speculative frontier, it remains one of Dubailand's most reliable addresses. Use the live figures above to benchmark it, and ask our advisors which clusters and product types are renting and reselling best today.`,
+  },
+  {
+    slug: "arjan-investor-guide",
+    category: "Deep Dive",
+    readTime: "7 min",
+    views: 2610,
+    titleKey: "guide_arjanInvestorGuide_title",
+    descriptionKey: "guide_arjanInvestorGuide_desc",
+    area: "Arjan",
+    relatedCommunities: ["Arjan", "Jumeirah Village Circle", "Dubai Science Park"],
+    faq: [
+      { question: "Why is Arjan popular with investors?", answer: "Arjan is one of Dubai's higher-yield affordable districts, offering low entry prices and strong rental demand near Miracle Garden and Butterfly Garden. The live figures above show its current gross rental yield versus the citywide average of about 4.7%." },
+      { question: "What can you buy in Arjan?", answer: "Arjan is primarily an apartment market — studios, one- and two-bedroom units from a range of developers — making it accessible for first-time buyers and yield-focused investors." },
+      { question: "What are the risks of buying in Arjan?", answer: "Arjan has an active development pipeline, so new supply can pressure rents, and building quality varies across developers. Check the live transaction volume above for liquidity and prioritise well-managed, well-built stock." },
+    ],
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/arjan-investor-guide.png", alt: "Arjan Investor Guide — Binayah Dubai property guide" },
+    body: `## Arjan at a Glance
+
+Arjan is a fast-growing residential district within Dubailand, best known to visitors for the Dubai Miracle Garden and Butterfly Garden on its doorstep. For investors, its identity is simpler: it is one of the city's accessible, higher-yield apartment markets, offering low entry prices and broad rental demand within easy reach of Sheikh Mohammed Bin Zayed Road and the wider new-Dubai growth belt.
+
+Neighbouring Jumeirah Village Circle and Dubai Science Park, Arjan has built up a self-contained everyday base of supermarkets, clinics, cafes and community retail as its towers have handed over.
+
+## Why Investors Look Here
+
+Arjan's appeal is yield and affordability. Like other more accessible communities, it favours rental return over prime capital growth — the entry price is low, the tenant pool is broad, and the numbers work for investors focused on cash flow.
+
+That makes it a natural fit for first-time buyers and for portfolio investors adding accessible, income-producing units rather than trophy assets.
+
+## Property Types and Positioning
+
+Arjan is predominantly an **apartment** market:
+
+- **Studios and one-bedroom units** — the core of the rental and entry-level market.
+- **Two-bedroom apartments** — for small families and sharers.
+- **Ongoing off-plan launches** — a steady pipeline from a range of developers, with flexible payment plans.
+
+Pricing sits firmly in the affordable band, which is exactly what drives the yield story.
+
+## Rental Yield and Demand
+
+Affordable communities like Arjan typically post some of the stronger gross rental yields in the city, because rents stay healthy while entry prices remain low. The live market snapshot above shows Arjan's current price per sqft, average transaction price and gross rental yield from Dubai Land Department data — the clearest way to see how far above the citywide average of roughly 4.7% it sits today.
+
+Demand is broad: value-seeking tenants, professionals priced out of central districts, and small families drawn by the accessible rents and improving amenities.
+
+## Risks to Weigh
+
+The main risk is supply. Arjan has an active development pipeline, so new handovers can pressure rents in the short term, and build quality varies across developers. Manage it by focusing on well-built, well-managed buildings, using the live transaction volume above to gauge liquidity, and prioritising stock with a proven rental track record.
+
+## The Bottom Line
+
+Arjan is a yield-first, affordability-led investment district — a practical choice for buyers who want income-producing apartments at an accessible entry point rather than prime capital growth. Use the live figures above to see exactly where its yields sit today, and talk to our advisors about which buildings are renting fastest and holding value best.`,
+  },
 ];
 
 export function findGuide(slug: string): PulseGuide | undefined {

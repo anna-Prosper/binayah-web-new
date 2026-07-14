@@ -2430,6 +2430,14 @@
     "cashOnCash": "תשואה על מזומן (שנה 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "מדריך למשקיע ב-Sobha Hartland",
+    "guide_sobhaHartlandInvestorGuide_desc": "השקעה ב-Sobha Hartland, דובאי — מחירים, תשואות שכירות, סוגי נכסים והסיכונים המרכזיים, עם נתוני שוק חיים מרשות המקרקעין של דובאי.",
+    "guide_meydanInvestorGuide_title": "מדריך למשקיע ב-Meydan",
+    "guide_meydanInvestorGuide_desc": "השקעה ב-Meydan, דובאי — מחירים, תשואות שכירות, סוגי נכסים והסיכונים המרכזיים, עם נתוני שוק חיים מרשות המקרקעין של דובאי.",
+    "guide_damacHillsInvestorGuide_title": "מדריך למשקיע ב-Damac Hills",
+    "guide_damacHillsInvestorGuide_desc": "השקעה ב-Damac Hills, דובאי — מחירים, תשואות שכירות, סוגי נכסים והסיכונים המרכזיים, עם נתוני שוק חיים מרשות המקרקעין של דובאי.",
+    "guide_arjanInvestorGuide_title": "מדריך למשקיע ב-Arjan",
+    "guide_arjanInvestorGuide_desc": "השקעה ב-Arjan, דובאי — מחירים, תשואות שכירות, סוגי נכסים והסיכונים המרכזיים, עם נתוני שוק חיים מרשות המקרקעין של דובאי.",
     "label": "בסיס ידע",
     "title": "השקעה",
     "titleItalic": "מדריכים",

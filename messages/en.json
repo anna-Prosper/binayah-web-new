@@ -2436,6 +2436,14 @@
     "cashOnCash": "Cash-on-Cash Return (Yr 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "Sobha Hartland Investor Guide",
+    "guide_sobhaHartlandInvestorGuide_desc": "Is Sobha Hartland a good investment? Prices, rental yields, property types and risks for this premium waterfront community in Mohammed Bin Rashid City, with live DLD data.",
+    "guide_meydanInvestorGuide_title": "Meydan Investor Guide",
+    "guide_meydanInvestorGuide_desc": "Investing in Meydan, Dubai — prices, rental yields, property types and risks for this central Mohammed Bin Rashid City district built around the racecourse, with live DLD data.",
+    "guide_damacHillsInvestorGuide_title": "Damac Hills Investor Guide",
+    "guide_damacHillsInvestorGuide_desc": "Is Damac Hills a good investment? Prices, yields, villas vs apartments and risks for Dubai's established golf-course community in Dubailand, with live DLD data.",
+    "guide_arjanInvestorGuide_title": "Arjan Investor Guide",
+    "guide_arjanInvestorGuide_desc": "Investing in Arjan, Dubai — one of the city's higher-yield affordable apartment districts. Prices, rental yields, property types and risks, with live DLD data.",
     "label": "Knowledge Base",
     "title": "Investment",
     "titleItalic": "Guides",

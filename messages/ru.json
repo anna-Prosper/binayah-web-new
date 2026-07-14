@@ -2430,6 +2430,14 @@
     "cashOnCash": "Cash-on-Cash Return (Yr 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "Sobha Hartland: гид для инвестора",
+    "guide_sobhaHartlandInvestorGuide_desc": "Инвестиции в Sobha Hartland, Дубай — цены, доходность аренды, типы недвижимости и ключевые риски, с актуальными данными Земельного департамента Дубая.",
+    "guide_meydanInvestorGuide_title": "Meydan: гид для инвестора",
+    "guide_meydanInvestorGuide_desc": "Инвестиции в Meydan, Дубай — цены, доходность аренды, типы недвижимости и ключевые риски, с актуальными данными Земельного департамента Дубая.",
+    "guide_damacHillsInvestorGuide_title": "Damac Hills: гид для инвестора",
+    "guide_damacHillsInvestorGuide_desc": "Инвестиции в Damac Hills, Дубай — цены, доходность аренды, типы недвижимости и ключевые риски, с актуальными данными Земельного департамента Дубая.",
+    "guide_arjanInvestorGuide_title": "Arjan: гид для инвестора",
+    "guide_arjanInvestorGuide_desc": "Инвестиции в Arjan, Дубай — цены, доходность аренды, типы недвижимости и ключевые риски, с актуальными данными Земельного департамента Дубая.",
     "label": "База знаний",
     "title": "Инвестиционные",
     "titleItalic": "гиды",

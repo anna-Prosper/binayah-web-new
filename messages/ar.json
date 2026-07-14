@@ -2430,6 +2430,14 @@
     "cashOnCash": "Cash-on-Cash Return (Yr 1)"
   },
   "pulseGuides": {
+    "guide_sobhaHartlandInvestorGuide_title": "دليل المستثمر في Sobha Hartland",
+    "guide_sobhaHartlandInvestorGuide_desc": "الاستثمار في Sobha Hartland، دبي — الأسعار وعوائد الإيجار وأنواع العقارات وأبرز المخاطر، مع بيانات سوقية حية من دائرة الأراضي والأملاك بدبي.",
+    "guide_meydanInvestorGuide_title": "دليل المستثمر في Meydan",
+    "guide_meydanInvestorGuide_desc": "الاستثمار في Meydan، دبي — الأسعار وعوائد الإيجار وأنواع العقارات وأبرز المخاطر، مع بيانات سوقية حية من دائرة الأراضي والأملاك بدبي.",
+    "guide_damacHillsInvestorGuide_title": "دليل المستثمر في Damac Hills",
+    "guide_damacHillsInvestorGuide_desc": "الاستثمار في Damac Hills، دبي — الأسعار وعوائد الإيجار وأنواع العقارات وأبرز المخاطر، مع بيانات سوقية حية من دائرة الأراضي والأملاك بدبي.",
+    "guide_arjanInvestorGuide_title": "دليل المستثمر في Arjan",
+    "guide_arjanInvestorGuide_desc": "الاستثمار في Arjan، دبي — الأسعار وعوائد الإيجار وأنواع العقارات وأبرز المخاطر، مع بيانات سوقية حية من دائرة الأراضي والأملاك بدبي.",
     "label": "قاعدة المعرفة",
     "title": "أدلة",
     "titleItalic": "الاستثمار",
