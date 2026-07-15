@@ -8,7 +8,7 @@ import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { Sparkles, TrendingUp, ArrowRight } from "lucide-react";
 import { CURATED_COMMUNITY_SLUGS, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
-import { getCommunityStats, buildCommunityFaqs, dldAreaFor, fmtAed } from "@/lib/market";
+import { getCommunityStats, dldAreaFor, fmtAed } from "@/lib/market";
 import { getDldBuildings } from "@/lib/api";
 import { getNonce } from "@/lib/nonce";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
@@ -31,6 +31,16 @@ const LABELS = {
   he: { kicker: "הערכת נכס חינם", worth: "כמה שווה הנכס שלי ב", benchmark: "מדד מחירי מכירה ב", affects: "מה משפיע על ערך הנכס שלכם ב", cta: "הערכת נכס חינם", ctaSub: "הערכת AI מיידית · ללא הרשמה", guideLink: "מדריך אזור {name}", buyLink: "נכסים למכירה ב{name}", bottomTitle: "קבלו הערכה חינם ב{name}", bottomBody: "גלו בכמה הדירה, הווילה או בית הטאון שלכם יכולים להימכר היום — מיידית, על בסיס נתוני עסקאות אמיתיים של רשות המקרקעין של דובאי. ללא התחייבות וללא הרשמה." },
   fr: { kicker: "Évaluation immobilière gratuite", worth: "Quelle est la valeur de mon bien à", benchmark: "Référence des prix de vente à", affects: "Ce qui influence la valeur de votre bien à", cta: "Évaluer mon bien gratuitement", ctaSub: "Estimation IA instantanée · Sans inscription", guideLink: "Guide du quartier {name}", buyLink: "Biens à vendre à {name}", bottomTitle: "Obtenez votre évaluation gratuite à {name}", bottomBody: "Découvrez le prix de vente possible de votre appartement, villa ou maison de ville aujourd'hui — instantanément, à partir des données réelles du Dubai Land Department. Sans engagement ni inscription." },
 } as const;
+
+const FAQ_T: Record<string, Record<string, string>> = {
+  en: { q1: "How much is my property worth in {name}?", a1pre: "Homes in {name} currently sell for around AED {ppsf} per square foot{priceClause}. ", a1: "Your exact value depends on the building, floor, view, size and condition. Get an instant, free estimate with Binayah's AI valuation, based on the latest DLD-registered sales for your property.", priceClause: ", with an average sale price near {price}", q2: "How is a property in {name} valued?", a2: "Binayah compares your unit against recent Dubai Land Department (DLD) transactions in {name} — same building or community, bedrooms and size — then adjusts for floor, view and condition. It takes under a minute and needs no registration.", q3: "Is the {name} valuation free?", a3: "Yes — it's completely free, needs no sign-up, and returns an estimate in under a minute. There's no obligation to sell or list with Binayah.", factors: "The biggest drivers of your specific value are the building, floor and view, unit size and layout, condition and upgrades, and how recent comparable sales in {name} have performed. Binayah's free valuation weighs all of these against live DLD data." },
+  ru: { q1: "Сколько стоит моя недвижимость в районе {name}?", a1pre: "Жильё в районе {name} сейчас продаётся примерно по AED {ppsf} за квадратный фут{priceClause}. ", a1: "Точная стоимость зависит от здания, этажа, вида, площади и состояния. Получите мгновенную бесплатную оценку с помощью ИИ-оценки Binayah на основе последних зарегистрированных в DLD сделок по вашей недвижимости.", priceClause: ", при средней цене продажи около {price}", q2: "Как оценивается недвижимость в районе {name}?", a2: "Binayah сравнивает вашу квартиру с недавними сделками Земельного департамента Дубая (DLD) в районе {name} — то же здание или комплекс, количество спален и площадь — а затем корректирует оценку с учётом этажа, вида и состояния. Это занимает меньше минуты и не требует регистрации.", q3: "Оценка в районе {name} бесплатна?", a3: "Да — это полностью бесплатно, не требует регистрации и выдаёт оценку менее чем за минуту. Никаких обязательств продавать или выставлять объект через Binayah нет.", factors: "Главные факторы, влияющие на стоимость именно вашего объекта, — это здание, этаж и вид, площадь и планировка квартиры, состояние и улучшения, а также динамика недавних сопоставимых сделок в районе {name}. Бесплатная оценка Binayah учитывает всё это на основе актуальных данных DLD." },
+  ar: { q1: "كم تبلغ قيمة عقاري في {name}؟", a1pre: "تُباع العقارات في {name} حاليًا بنحو AED {ppsf} للقدم المربعة{priceClause}. ", a1: "تعتمد القيمة الدقيقة على المبنى والطابق والإطلالة والمساحة والحالة. احصل على تقدير فوري ومجاني عبر التقييم بالذكاء الاصطناعي من Binayah، استنادًا إلى أحدث المبيعات المسجلة لدى دائرة الأراضي والأملاك (DLD) لعقارك.", priceClause: "، بمتوسط سعر بيع يقارب {price}", q2: "كيف يتم تقييم عقار في {name}؟", a2: "تقارن Binayah وحدتك بأحدث معاملات دائرة الأراضي والأملاك (DLD) في {name} — نفس المبنى أو المجتمع وعدد غرف النوم والمساحة — ثم تُعدّل النتيجة وفقًا للطابق والإطلالة والحالة. تستغرق العملية أقل من دقيقة ولا تتطلب أي تسجيل.", q3: "هل تقييم {name} مجاني؟", a3: "نعم — إنه مجاني تمامًا ولا يتطلب أي تسجيل ويقدّم تقديرًا في أقل من دقيقة. ولا يوجد أي التزام بالبيع أو بإدراج العقار مع Binayah.", factors: "أهم العوامل المؤثرة في قيمة عقارك تحديدًا هي المبنى والطابق والإطلالة، ومساحة الوحدة وتصميمها، والحالة والتحسينات، وأداء المبيعات المماثلة الأخيرة في {name}. يقيّم تقييم Binayah المجاني كل هذه العوامل مقابل بيانات DLD الحية." },
+  zh: { q1: "我在 {name} 的房产值多少钱？", a1pre: "{name} 的房产目前售价约为每平方英尺 AED {ppsf}{priceClause}。", a1: "您的确切价值取决于楼栋、楼层、景观、面积和房况。通过 Binayah 的 AI 估价，根据您房产最新的迪拜土地局（DLD）登记成交记录，即可获得即时的免费估价。", priceClause: "，平均成交价约为 {price}", q2: "{name} 的房产是如何估价的？", a2: "Binayah 将您的房源与 {name} 近期在迪拜土地局（DLD）登记的成交记录进行比对——相同楼栋或社区、卧室数量和面积——然后根据楼层、景观和房况进行调整。整个过程不到一分钟，且无需注册。", q3: "{name} 的估价免费吗？", a3: "是的——完全免费，无需注册，一分钟内即可返回估价。您没有义务通过 Binayah 出售或挂牌房产。", factors: "决定您房产具体价值的最主要因素是楼栋、楼层和景观，房源面积和户型，房况和翻新情况，以及 {name} 近期可比成交的表现。Binayah 的免费估价会结合实时 DLD 数据对所有这些因素进行权衡。" },
+  vi: { q1: "Bất động sản của tôi ở {name} trị giá bao nhiêu?", a1pre: "Nhà ở tại {name} hiện được bán với giá khoảng AED {ppsf} mỗi foot vuông{priceClause}. ", a1: "Giá trị chính xác của bạn phụ thuộc vào tòa nhà, tầng, hướng nhìn, diện tích và tình trạng. Nhận ước tính miễn phí tức thì bằng định giá AI của Binayah, dựa trên các giao dịch mới nhất đã đăng ký với DLD cho bất động sản của bạn.", priceClause: ", với giá bán trung bình gần {price}", q2: "Bất động sản ở {name} được định giá như thế nào?", a2: "Binayah so sánh căn hộ của bạn với các giao dịch gần đây của Sở Đất đai Dubai (DLD) tại {name} — cùng tòa nhà hoặc khu dân cư, số phòng ngủ và diện tích — rồi điều chỉnh theo tầng, hướng nhìn và tình trạng. Quá trình mất chưa đến một phút và không cần đăng ký.", q3: "Định giá tại {name} có miễn phí không?", a3: "Có — hoàn toàn miễn phí, không cần đăng ký và trả về ước tính trong chưa đầy một phút. Bạn không có nghĩa vụ phải bán hoặc đăng bán qua Binayah.", factors: "Những yếu tố lớn nhất quyết định giá trị cụ thể của bạn là tòa nhà, tầng và hướng nhìn, diện tích và bố cục căn hộ, tình trạng và nâng cấp, cùng với hiệu suất của các giao dịch tương đương gần đây tại {name}. Định giá miễn phí của Binayah cân nhắc tất cả những yếu tố này dựa trên dữ liệu DLD trực tiếp." },
+  he: { q1: "כמה שווה הנכס שלי ב{name}?", a1pre: "דירות ב{name} נמכרות כיום בכ-AED {ppsf} לרגל רבועה{priceClause}. ", a1: "השווי המדויק שלך תלוי בבניין, בקומה, בנוף, בשטח ובמצב. קבלו הערכת שווי מיידית וחינמית באמצעות הערכת ה-AI של Binayah, המבוססת על העסקאות האחרונות הרשומות ב-DLD עבור הנכס שלכם.", priceClause: ", עם מחיר מכירה ממוצע של כ-{price}", q2: "כיצד מוערך נכס ב{name}?", a2: "Binayah משווה את הנכס שלכם לעסקאות האחרונות של רשות המקרקעין של דובאי (DLD) ב{name} — אותו בניין או מתחם, מספר חדרי שינה ושטח — ולאחר מכן מבצעת התאמה לפי קומה, נוף ומצב. התהליך אורך פחות מדקה ואינו דורש הרשמה.", q3: "האם הערכת השווי ב{name} חינמית?", a3: "כן — היא חינמית לחלוטין, אינה דורשת הרשמה ומחזירה הערכה בפחות מדקה. אין כל התחייבות למכור או לפרסם את הנכס דרך Binayah.", factors: "הגורמים המשמעותיים ביותר לשווי הספציפי שלכם הם הבניין, הקומה והנוף, שטח הנכס והתכנון, המצב והשדרוגים, וכיצד ביצעו עסקאות דומות אחרונות ב{name}. הערכת השווי החינמית של Binayah שוקללת את כל אלה מול נתוני DLD בזמן אמת." },
+  fr: { q1: "Quelle est la valeur de mon bien à {name} ?", a1pre: "Les biens à {name} se vendent actuellement autour de AED {ppsf} le pied carré{priceClause}. ", a1: "Votre valeur exacte dépend de l'immeuble, de l'étage, de la vue, de la surface et de l'état. Obtenez une estimation instantanée et gratuite grâce à l'évaluation par IA de Binayah, basée sur les dernières ventes enregistrées au DLD pour votre bien.", priceClause: ", avec un prix de vente moyen proche de {price}", q2: "Comment un bien à {name} est-il évalué ?", a2: "Binayah compare votre bien aux transactions récentes du Département foncier de Dubaï (DLD) à {name} — même immeuble ou communauté, nombre de chambres et surface — puis ajuste selon l'étage, la vue et l'état. Cela prend moins d'une minute et ne nécessite aucune inscription.", q3: "L'évaluation à {name} est-elle gratuite ?", a3: "Oui — elle est entièrement gratuite, ne nécessite aucune inscription et fournit une estimation en moins d'une minute. Vous n'avez aucune obligation de vendre ou de mettre en vente avec Binayah.", factors: "Les principaux facteurs déterminant la valeur spécifique de votre bien sont l'immeuble, l'étage et la vue, la surface et l'agencement du bien, l'état et les rénovations, ainsi que la performance des ventes comparables récentes à {name}. L'évaluation gratuite de Binayah pondère tous ces éléments par rapport aux données DLD en temps réel." },
+};
 
 export async function generateMetadata({
   params,
@@ -86,18 +96,19 @@ export default async function PropertyValuationCommunityPage({
     .slice(0, 12)
     .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
 
-  // Seller-intent FAQs prepended to the generic price/yield FAQs.
-  const sellerFaqs = [
-    {
-      question: `How much is my property worth in ${c.name}?`,
-      answer: `${stats?.avgPricePerSqft ? `Homes in ${c.name} currently trade at around AED ${stats.avgPricePerSqft.toLocaleString("en-AE")} per square foot${stats.avgSalePrice ? `, with an average sale price near ${fmtAed(stats.avgSalePrice)}` : ""}. ` : ""}Your exact value depends on the building, floor, view, size and condition. Use Binayah's free AI valuation for an instant estimate based on the latest DLD-registered sales for your specific property.`,
-    },
-    {
-      question: `How is a property in ${c.name} valued?`,
-      answer: `Binayah's valuation compares your unit against recent Dubai Land Department (DLD) transactions in ${c.name} — same building or community, bedroom count and size — then adjusts for floor, view and condition. It takes under a minute and needs no registration.`,
-    },
+  // Localized seller FAQs, with real DLD figures interpolated per community.
+  const T = FAQ_T[locale] ?? FAQ_T.en;
+  const fill = (s: string) => s.replace(/\{name\}/g, c.name);
+  const priceClause = stats?.avgSalePrice ? T.priceClause.replace("{price}", fmtAed(stats.avgSalePrice)) : "";
+  const a1pre = stats?.avgPricePerSqft
+    ? fill(T.a1pre).replace("{ppsf}", stats.avgPricePerSqft.toLocaleString("en-AE")).replace("{priceClause}", priceClause)
+    : "";
+  const faqs = [
+    { question: fill(T.q1), answer: a1pre + fill(T.a1) },
+    { question: fill(T.q2), answer: fill(T.a2) },
+    { question: fill(T.q3), answer: fill(T.a3) },
   ];
-  const faqs = [...sellerFaqs, ...buildCommunityFaqs(c.name, stats)];
+  const factorsPara = fill(T.factors);
 
   const breadcrumbs = [
     { label: "Valuation", href: `${lp}/valuation` },
@@ -158,9 +169,7 @@ export default async function PropertyValuationCommunityPage({
             {localizeCommunityText(c.why, locale)}
           </p>
           <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">
-            The biggest drivers of your specific value are the building, floor and view, unit size and layout,
-            condition and upgrades, and how recent comparable sales in {c.name} have performed. Binayah's free
-            valuation weighs all of these against live DLD data.
+            {factorsPara}
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             <a href={`${lp}/communities/${c.slug}`} className="text-primary font-semibold hover:underline">
