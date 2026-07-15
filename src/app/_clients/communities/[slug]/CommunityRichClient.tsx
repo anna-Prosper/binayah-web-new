@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { findBuyCommunity } from "@/lib/buy-communities";
+import { guideForCommunity } from "@/lib/pulse-guides";
 import Link from "next/link";
 import {
   Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize, Clock,
@@ -84,6 +85,9 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const e = community.enrichment || {};
   const sh = e.sectionHeadings || {};
   const name = community.name;
+  // Backlink into the topical cluster: if this community has an investor guide,
+  // link out to it from the Investment section (closes the guide ↔ community loop).
+  const investorGuide = guideForCommunity(community.name, community.slug);
   const hero = community.featuredImage || community.imageGallery?.[0] || "/assets/dubai-hero.webp";
   const mapSrc = community.latitude && community.longitude
     ? `https://maps.google.com/maps?q=${community.latitude},${community.longitude}&z=13&output=embed`
@@ -474,6 +478,12 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
               <TrendingUp className="h-4 w-4" /> Speak to an investment advisor
             </a>
+            {investorGuide && (
+              <Link href={lp(locale, `/pulse/guides/${investorGuide.slug}`)} className="mt-4 flex items-center gap-2 text-sm font-semibold text-accent hover:text-white transition-colors w-fit">
+                Read the full {name} investor guide
+                <span aria-hidden>→</span>
+              </Link>
+            )}
             {developers.length > 0 && (
               <div className="mt-8 pt-8 border-t border-white/15">
                 <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary-foreground/50 mb-3 flex items-center gap-2"><Landmark className="h-4 w-4" />Developers active here</p>
