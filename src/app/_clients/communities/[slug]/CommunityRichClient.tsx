@@ -38,6 +38,15 @@ interface Project { slug: string; name: string; developerName?: string; featured
 interface Listing { slug: string; title?: string; name?: string; price?: number; currency?: string; bedrooms?: number; bathrooms?: number; size?: number; sizeUnit?: string; featuredImage?: string; community?: string; }
 interface Nearby { name: string; slug: string; featuredImage?: string; }
 
+export interface MarketSnapshot {
+  avgPpsfSqft: number | null;   // AED per sqft (already converted)
+  avgPrice: number | null;      // AED
+  sales12m: number | null;
+  grossYieldPct: number | null;
+  buildingCount: number | null;
+}
+export interface TopBuilding { slug: string; name: string; sales?: number }
+
 interface Props {
   community: Community;
   projects: Project[];
@@ -47,6 +56,8 @@ interface Props {
   developers: string[];
   nearby: Nearby[];
   locale: string;
+  market?: MarketSnapshot | null;
+  topBuildings?: TopBuilding[];
 }
 
 const WA = "https://wa.me/971549988811";
@@ -64,7 +75,7 @@ function amenityIcon(title: string) {
   return Sparkles;
 }
 
-export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale }: Props) {
+export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale, market, topBuildings = [] }: Props) {
   // This is the informational area guide. When the area also has transactional
   // buy/rent/off-plan landing pages, cross-link to them (distinct intent) so the
   // two page types complement rather than compete for the same query.
@@ -112,7 +123,25 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       { "@type": "ListItem", position: 3, name },
     ] },
   ];
-  if (e.faqs?.length) jsonLd.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: e.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) });
+  // Data-driven FAQs from live DLD market data — appended to the AI-written set
+  // (deduped by topic) so the FAQPage schema carries real, current numbers.
+  const dataFaqs: { q: string; a: string }[] = [];
+  if (market?.avgPpsfSqft) {
+    dataFaqs.push({
+      q: `What is the average price per square foot in ${name}?`,
+      a: `Based on Dubai Land Department transaction records, the average sale price in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")} per square foot${market.sales12m ? `, across ${market.sales12m.toLocaleString("en-AE")} sales in the last 12 months` : ""}.`,
+    });
+  }
+  if (market?.grossYieldPct) {
+    dataFaqs.push({
+      q: `What rental yield can investors expect in ${name}?`,
+      a: `Benchmarking DLD rental contracts against sale prices, ${name} returns an estimated ${market.grossYieldPct}% gross rental yield before service charges. Yields vary by building and unit type — see the top buildings below for tower-level data.`,
+    });
+  }
+  const aiFaqs = e.faqs || [];
+  const seenTopics = new Set(aiFaqs.map((f) => f.q.toLowerCase().replace(/[^a-z]/g, "").slice(0, 30)));
+  const allFaqs = [...aiFaqs, ...dataFaqs.filter((f) => !seenTopics.has(f.q.toLowerCase().replace(/[^a-z]/g, "").slice(0, 30)))];
+  if (allFaqs.length) jsonLd.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: allFaqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) });
 
   // Section header: gold eyebrow + editorial headline.
   const SecHead = ({ eyebrow, title }: { eyebrow: string; title: string }) => (
@@ -157,10 +186,13 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   );
 
   // In-page section nav
-  const navItems = [
-    ["about", "Overview"], ["location", "Location"], ["amenities", "Amenities"],
+  const hasMarket = !!(market && (market.avgPpsfSqft || market.sales12m));
+  const navItems = ([
+    ["about", "Overview"], ["location", "Location"],
+    ...(hasMarket ? [["market", "Market data"]] : []),
+    ["amenities", "Amenities"],
     ["projects", "Projects"], ["invest", "Investment"], ["faqs", "FAQs"],
-  ] as [string, string][];
+  ]) as [string, string][];
 
   return (
     <div className="min-h-screen bg-background">
@@ -274,6 +306,66 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           </div>
         </section>
 
+        {/* ===== Live market snapshot (DLD data) ===== */}
+        {hasMarket && (
+          <section id="market" className="scroll-mt-28">
+            <SecHead eyebrow="Live market data" title={`${name} property market snapshot`} />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40">
+              {market!.avgPpsfSqft ? (
+                <div className="bg-card px-4 py-5 sm:py-6 text-center">
+                  <TrendingUp className="h-4 w-4 mx-auto mb-2 text-accent" />
+                  <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">AED {market!.avgPpsfSqft.toLocaleString("en-AE")}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Avg price / sqft</p>
+                </div>
+              ) : null}
+              {market!.avgPrice ? (
+                <div className="bg-card px-4 py-5 sm:py-6 text-center">
+                  <Landmark className="h-4 w-4 mx-auto mb-2 text-accent" />
+                  <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums"><AedPrice value={market!.avgPrice} /></p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Avg sale price</p>
+                </div>
+              ) : null}
+              {market!.sales12m ? (
+                <div className="bg-card px-4 py-5 sm:py-6 text-center">
+                  <CheckCircle2 className="h-4 w-4 mx-auto mb-2 text-accent" />
+                  <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.sales12m.toLocaleString("en-AE")}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Sales, last 12 months</p>
+                </div>
+              ) : null}
+              {market!.grossYieldPct ? (
+                <div className="bg-card px-4 py-5 sm:py-6 text-center">
+                  <TrendingUp className="h-4 w-4 mx-auto mb-2 text-accent" />
+                  <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.grossYieldPct}%</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Est. gross yield</p>
+                </div>
+              ) : market!.buildingCount ? (
+                <div className="bg-card px-4 py-5 sm:py-6 text-center">
+                  <Building className="h-4 w-4 mx-auto mb-2 text-accent" />
+                  <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.buildingCount.toLocaleString("en-AE")}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Tracked buildings</p>
+                </div>
+              ) : null}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-3">Source: Dubai Land Department transaction records for {name}. Figures update as new transactions are registered.</p>
+
+            {topBuildings.length > 0 && (
+              <div className="mt-8">
+                <h3 className="font-bold text-foreground mb-1.5">Sold prices by building in {name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">Real DLD transaction history, price trends and unit-level pricing for the most active towers.</p>
+                <div className="flex flex-wrap gap-2">
+                  {topBuildings.map((tb) => (
+                    <Link key={tb.slug} href={lp(locale, `/building/${tb.slug}`)} className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors">
+                      <Building className="h-3.5 w-3.5 text-accent" />
+                      {tb.name}
+                      {tb.sales ? <span className="text-xs text-muted-foreground">{tb.sales.toLocaleString("en-AE")} sales</span> : null}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
         {/* ===== Amenities & lifestyle ===== */}
         {(e.amenityCategories?.length || e.lifestyle) && (
           <section id="amenities" className="scroll-mt-28">
@@ -311,6 +403,18 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.slice(0, 6).map((p) => <ProjectCard key={p.slug || p.name} p={p} />)}
             </div>
+            {projects.length > 6 && (
+              <nav aria-label={`All off-plan projects in ${name}`} className="mt-8">
+                <h3 className="text-sm font-bold text-foreground mb-3">More projects in {name}</h3>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+                  {projects.slice(6).map((p) => (
+                    <li key={p.slug || p.name}>
+                      <Link href={lp(locale, `/project/${p.slug || projSlug(p.name)}`)} className="hover:text-primary hover:underline transition-colors">{p.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
             {counts.projects > 6 && (
               <Link href={lp(locale, `/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-7 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/40 transition-colors">
                 View all {counts.projects} projects <ChevronRight className="h-4 w-4" />
@@ -366,11 +470,11 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         )}
 
         {/* ===== Good to know (FAQs) ===== */}
-        {e.faqs?.length ? (
+        {allFaqs.length ? (
           <section id="faqs" className="scroll-mt-28">
             <SecHead eyebrow="Frequently asked questions" title={sh.faqs || "Good to know"} />
             <div className="space-y-3 max-w-3xl">
-              {e.faqs.map((f, i) => (
+              {allFaqs.map((f, i) => (
                 <details key={i} className="group bg-card rounded-2xl border border-border/50 p-5">
                   <summary className="font-semibold text-foreground cursor-pointer list-none flex items-center justify-between gap-4">{f.q}<ChevronRight className="h-4 w-4 text-muted-foreground group-open:rotate-90 transition-transform flex-shrink-0" /></summary>
                   <p className="text-muted-foreground mt-3 leading-relaxed">{f.a}</p>

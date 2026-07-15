@@ -1,7 +1,7 @@
 import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRichClient";
 import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
 import { notFound } from "next/navigation";
-import { getCommunity, getDldBuildings } from "@/lib/api";
+import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
 import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
@@ -159,11 +159,34 @@ export default async function CommunityPage({
   if (!hasWiki && !hasDb) return notFound();
 
   // 3. Any community with a DB record → unified rich landing page.
-  // dbData comes from the API as plain JSON (already serialization-safe). The
-  // rich client already carries its own market context, FAQs and schema, so it
-  // does NOT need the separate stats band appended after it.
+  // dbData comes from the API as plain JSON (already serialization-safe).
   if (hasDb) {
     const d = dbData as any;
+    const communityName: string = d.community?.name || slug;
+
+    // Live DLD market snapshot + the area's most-active buildings — unique,
+    // fresh data per community and the community→building internal-link mesh.
+    // All best-effort: any miss renders the page without that section.
+    const dldAreaName = dldAreaFor(communityName);
+    const [dldArea, buildingsRes] = await Promise.all([
+      getDldArea(dldAreaName),
+      getDldBuildings(`area=${encodeURIComponent(dldAreaName)}&limit=8&sortBy=sales`),
+    ]);
+    const dldYield = dldArea?.slug ? await getDldAreaYield(dldArea.slug) : null;
+    const market = dldArea
+      ? {
+          avgPpsfSqft: dldArea.avgPpsf > 0 ? Math.round(dldArea.avgPpsf / 10.764) : null,
+          avgPrice: dldArea.avgPrice > 0 ? Math.round(dldArea.avgPrice) : null,
+          sales12m: dldYield?.salesSampleSize || null,
+          grossYieldPct: dldYield?.grossYieldPct ?? null,
+          buildingCount: dldArea.buildingCount || null,
+        }
+      : null;
+    const topBuildings = (buildingsRes.results || [])
+      .filter((b: { slug?: string; name?: string; sales?: number }) => b.slug && b.name && (b.sales || 0) >= 3)
+      .slice(0, 8)
+      .map((b: { slug: string; name: string; sales?: number }) => ({ slug: b.slug, name: b.name, sales: b.sales }));
+
     return (
       <CommunityRichClient
         community={d.community}
@@ -174,6 +197,8 @@ export default async function CommunityPage({
         developers={d.developers || []}
         nearby={d.nearby || []}
         locale={locale}
+        market={market}
+        topBuildings={topBuildings}
       />
     );
   }

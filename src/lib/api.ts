@@ -183,6 +183,27 @@ export const getDldBuildings = cache(
     }
   }
 );
+// DLD area aggregate (avg ppsf/price, building/sales counts) + 12m gross yield —
+// power the community pages' market-snapshot section.
+export const getDldArea = cache(async (slug: string): Promise<any | null> => {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/dld/areas?q=${encodeURIComponent(slug.replace(/-/g, " "))}&limit=1`), 8000, DLD_HEADERS());
+    if (!res.ok) return null;
+    const d = await res.json();
+    return Array.isArray(d?.results) && d.results[0] ? d.results[0] : null;
+  } catch {
+    return null;
+  }
+});
+export const getDldAreaYield = cache(async (slug: string): Promise<any | null> => {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/dld/areas/${encodeURIComponent(slug)}/yield`), 8000, DLD_HEADERS());
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+});
 export const getNewsArticle = cache(async (slug: string, lang = "en") =>
   fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
 );
