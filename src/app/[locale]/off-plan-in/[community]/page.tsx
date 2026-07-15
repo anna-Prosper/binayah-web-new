@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
-import { getRelatedProjects, getDldBuildings } from "@/lib/api";
+import { getRelatedProjects, getDldBuildings, serverApiUrl, serverFetch } from "@/lib/api";
 import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { getNonce } from "@/lib/nonce";
@@ -83,6 +83,16 @@ export default async function OffPlanInCommunityPage({
   // This is the high-authority hub → project edge of the internal-link graph.
   const communityProjects = await getRelatedProjects(apiCommunity, "", "", 24);
 
+  // When no projects exist for this community, load a sample from the wider
+  // Dubai off-plan market so the page still has substantive content.
+  let similarProjects: any[] = [];
+  if (communityProjects.length === 0) {
+    try {
+      const r = await serverFetch(serverApiUrl(`/api/projects?limit=6`));
+      if (r.ok) similarProjects = await r.json();
+    } catch { /* best-effort */ }
+  }
+
   // Real market depth: DLD + listings stats and data-driven FAQs (+ FAQPage
   // schema) so the page isn't thin and earns rich results / AI citations.
   const stats = await getCommunityStats(apiCommunity);
@@ -144,6 +154,40 @@ export default async function OffPlanInCommunityPage({
           </ul>
         </nav>
       )}
+
+      {/* When no community-specific projects exist, show Dubai-wide off-plan launches */}
+      {communityProjects.length === 0 && similarProjects.length > 0 && (
+        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14">
+          <h2 className="text-xl font-bold text-foreground mb-2">New Launches in Dubai</h2>
+          <p className="text-sm text-muted-foreground mb-6">No off-plan projects in {c.name} right now — explore new launches across Dubai.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {similarProjects.map((p: any) => (
+              <a key={p._id} href={`${lp}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
+                {p.featuredImage && (
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img src={p.featuredImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
+                )}
+                <div className="p-4">
+                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || "Off-Plan"}</p>
+                  <h3 className="font-bold text-foreground text-sm leading-snug mb-1 line-clamp-2">{p.name}</h3>
+                  <p className="text-xs text-muted-foreground mb-2">{p.community} · {p.developerName}</p>
+                  {p.startingPrice && <p className="text-sm font-semibold text-foreground">From AED {Number(p.startingPrice).toLocaleString()}</p>}
+                </div>
+              </a>
+            ))}
+          </div>
+          <div className="mt-6">
+            <a href={`${lp}/off-plan`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">View all off-plan in Dubai →</a>
+          </div>
+        </section>
+      )}
+
+      {/* Cross-link to the area guide — different intent (this page = buy off-plan; guide = lifestyle/transport) */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-8 text-sm text-muted-foreground">
+        For schools, transport and the full area overview, read the{" "}
+        <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
+      </div>
 
       <Footer />
     </div>
