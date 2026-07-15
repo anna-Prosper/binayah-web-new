@@ -27,16 +27,54 @@ const normName = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^
 const isIndexable = (b: { sales?: number; avgPrice?: number }) =>
   (b.sales || 0) >= 3 && (b.avgPrice || 0) > 0;
 
-// Map a DLD area to its community's hero image: the DLD name often differs
-// from the community name ("Burj Khalifa" = Downtown Dubai), so match each
-// community by its own DLD alias resolution, not just the slugified name.
-async function getAreaCommunityHero(dldArea: string): Promise<string | null> {
+// Raw DLD area → community slug, for areas whose official name has no textual
+// relation to the marketing name (audited 2026-07 against building counts).
+const DLD_TO_COMMUNITY_SLUG: Record<string, string> = {
+  "al barsha south fourth": "jumeirah-village-circle", // 55 buildings
+  "al barsha south fifth": "jvt",
+  "meydan one": "meydan", // 59 buildings
+  "burj khalifa": "downtown-dubai",
+  "palm deira": "dubai-islands",
+  "madinat al mataar": "dubai-south",
+  "silicon oasis": "dubai-silicon-oasis",
+  "nadd hessa": "dubai-silicon-oasis",
+  "jabal ali first": "jebel-ali",
+  "wadi al safa 5": "arabian-ranches-3",
+  "wadi al safa 3": "villanova", // Villanova / Dubailand belt
+  "al yelayiss 2": "town-square",
+  "madinat hind 4": "damac-hills-2",
+  "al hebiah fifth": "damac-lagoons",
+  "dubai hills": "dubai-hills-estate",
+  "hadaeq sheikh mohammed bin rashid": "mohammed-bin-rashid-city",
+  "marsa dubai": "dubai-marina",
+  "al thanyah fifth": "jlt",
+  "jumeirah lakes towers": "jlt",
+  "tecom site a": "barsha-heights-tecom",
+  "barsha heights": "barsha-heights-tecom",
+  "al jadaf": "al-jaddaf",
+  "arabian ranches i": "arabian-ranches",
+  "nad al sheba gardens": "nad-al-sheba",
+  "me aisem first": "jumeirah-golf-estates",
+  "me aisem second": "the-oasis-by-emaar",
+  "international city ph 1": "international-city-dubai",
+  "dubai land residence complex": "dubai-land-residence-complex-dlrc",
+  "dubai investment park second": "dubai-investment-park",
+};
+
+// Map a DLD area to its parent community: the DLD name often differs from the
+// community name ("Burj Khalifa" = Downtown Dubai), so try the explicit map,
+// then a name match, then each community's own DLD alias resolution. Powers the
+// hero image, og:image, the "About the area" section and the community link.
+async function resolveAreaCommunity(dldArea: string): Promise<{ name: string; slug: string; featuredImage: string } | null> {
   const idx = await getCommunitiesIndex();
   const target = normName(dldArea);
-  const hit =
+  const mappedSlug = DLD_TO_COMMUNITY_SLUG[target];
+  return (
+    (mappedSlug && idx.find((c) => c.slug === mappedSlug)) ||
     idx.find((c) => normName(c.name) === target) ||
-    idx.find((c) => normName(dldAreaFor(c.name)) === target);
-  return hit?.featuredImage || null;
+    idx.find((c) => normName(dldAreaFor(c.name)) === target) ||
+    null
+  );
 }
 
 export const revalidate = 86400;
@@ -147,9 +185,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const path = `/building/${slug}`;
   // Social preview: the parent community's hero (resized ~70KB JPEG via the
   // image optimizer — raw heroes are 8-12MB and get rejected by some crawlers).
-  const areaHero = await getAreaCommunityHero(b.area);
-  const ogImage = areaHero
-    ? `https://www.binayah.ae/_next/image?url=${encodeURIComponent(areaHero)}&w=1200&q=72`
+  const areaCommunity = await resolveAreaCommunity(b.area);
+  const ogImage = areaCommunity?.featuredImage
+    ? `https://www.binayah.ae/_next/image?url=${encodeURIComponent(areaCommunity.featuredImage)}&w=1200&q=72`
     : DEFAULT_OG_IMAGE;
   return {
     title: `${title} | Binayah`,
@@ -170,27 +208,40 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Sibling buildings + live inventory + parent community (for the hero image) in parallel.
-  const communitySlug = slugifyArea(b.area);
-  const [siblingsRes, listings, community] = await Promise.all([
+  // Resolve the parent community first (explicit DLD map → name → alias), then
+  // fetch siblings + live inventory + the community bundle in parallel.
+  const resolved = await resolveAreaCommunity(b.area);
+  const communitySlug = resolved?.slug || slugifyArea(b.area);
+  const [siblingsRes, listings, communityBundle] = await Promise.all([
     getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`),
     getBuildingListings(b.name),
     getCommunity(communitySlug),
   ]);
+  // getCommunity returns the landing bundle — the community doc is nested.
+  const parent = communityBundle?.community || null;
   const siblings = siblingsRes.results
     .filter((x: { slug?: string; name?: string }) => x.slug && x.name && x.slug !== slug)
     .slice(0, 9)
     .map((x: { slug: string; name: string; sales?: number; avgPrice?: number }) => ({ slug: x.slug, name: x.name, sales: x.sales, avgPrice: x.avgPrice }));
 
   // Hero image: a real listing photo in this tower → parent community photo
-  // (direct slug, then reverse DLD-alias lookup) → branded gradient.
-  const areaHero = await getAreaCommunityHero(b.area);
+  // (resolved doc, then index entry) → branded gradient.
   const heroImage: string | null =
     listings.find((l) => l.featuredImage)?.featuredImage ||
-    community?.featuredImage ||
-    community?.imageGallery?.[0] ||
-    areaHero ||
+    parent?.featuredImage ||
+    parent?.imageGallery?.[0] ||
+    resolved?.featuredImage ||
     null;
+
+  // "About the area" — the parent community's editorial overview (AI enrichment
+  // or legacy description), trimmed to ~2 sentences. Adds unique area context to
+  // every tower page (most valuable on lighter ones) + a crawlable link to the
+  // community guide.
+  const areaName: string = parent?.name || resolved?.name || b.area;
+  const areaOverviewRaw: string = ((parent?.enrichment as { overview?: string } | null)?.overview || parent?.description || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const areaAbout = areaOverviewRaw
+    ? (areaOverviewRaw.match(/^(?:[^.!?]*[.!?]){1,2}/) || [areaOverviewRaw.slice(0, 280)])[0].trim()
+    : "";
 
   const ppsf = toSqft(b.avgPpsf);
   const { points: trend, smoothed } = smoothTrend(((Array.isArray(b.trend) ? b.trend : []) as TrendPoint[]).filter((t) => t.avgPpsf > 0));
@@ -327,8 +378,8 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
             <Link href={`${lp}/search?q=${encodeURIComponent(b.name)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
               View listings <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
-              Explore {b.area} <ArrowRight className="h-4 w-4" />
+            <Link href={parent ? `${lp}/communities/${communitySlug}` : `${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+              Explore {areaName} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
@@ -493,6 +544,22 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
           <WeeklySubscribeForm source={`building:${slug}`} variant="card" defaultAreas={[communitySlug]} />
         </aside>
       </div>
+
+      {/* ── About the area — parent community's editorial context + guide link ── */}
+      {areaAbout && (
+        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+          <div className="rounded-3xl border border-border/50 bg-card p-6 sm:p-8">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] mb-2" style={{ color: "#B8922F" }}>About the area</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{b.name} is in {areaName}</h2>
+            <p className="text-muted-foreground leading-relaxed max-w-3xl">{areaAbout}</p>
+            {parent && (
+              <Link href={`${lp}/communities/${communitySlug}`} className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:underline">
+                Explore the {areaName} area guide <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* ── Related buildings ── */}
       {siblings.length > 0 && (

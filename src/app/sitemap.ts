@@ -324,9 +324,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugs("/api/project-articles?limit=200"),
       // DLD building pages — only those with recorded sales (non-thin). Direct
       // DB read (no API 100-cap) like projects/listings.
-      // Only substantial building pages (≥10 DLD sales) — a 1-2 sale tower has
-      // too little content to submit; it stays reachable via sibling links.
-      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 10 } }),
+      // Submit every INDEXABLE building page. This filter must mirror the
+      // isIndexable() guard in building/[slug]/page.tsx (≥3 sales AND a real
+      // avg price) so a noindexed URL is never submitted. Thinner towers stay
+      // reachable via sibling links and flip in automatically as DLD data grows.
+      fetchSlugDatesFromDb("dldbuildings", { slug: { $exists: true, $ne: "" }, sales: { $gte: 3 }, avgPrice: { $gt: 0 } }),
     ]);
 
   // Populated bedroom × type × community combos (all types) — data-driven.

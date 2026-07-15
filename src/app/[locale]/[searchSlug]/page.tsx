@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
-import { serverApiUrl, serverFetch } from "@/lib/api";
+import { serverApiUrl, serverFetch, getAreaSoldMatrix, findSoldCombo } from "@/lib/api";
 import { findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
 import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
@@ -65,20 +65,24 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!p) return {};
   const c = findBuyCommunity(p.communitySlug);
   if (!c) return {};
+  // Real DLD sold-price data for this bedroom×type combo (apartments/villas,
+  // sale only). Its presence makes the page data-rich even with no live listings.
+  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
   const title = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai | Binayah`;
-  const description = `Browse ${p.bedsLabel.toLowerCase()} ${p.type.canon.toLowerCase()}s ${p.verb.toLowerCase()} in ${c.name}, Dubai. ${c.priceRange ? `Price range ${c.priceRange}. ` : ""}${c.yield ? `Avg gross yield ${c.yield}. ` : ""}Live listings, prices and floor plans with Binayah.`.slice(0, 158);
+  const soldSentence = soldCombo ? `Median sold price AED ${soldCombo.medianPrice.toLocaleString("en-AE")} from ${soldCombo.count.toLocaleString("en-AE")} DLD transactions. ` : "";
+  const description = `Browse ${p.bedsLabel.toLowerCase()} ${p.type.canon.toLowerCase()}s ${p.verb.toLowerCase()} in ${c.name}, Dubai. ${soldSentence}${c.yield ? `Avg gross yield ${c.yield}. ` : ""}Live listings and DLD sold-price data with Binayah.`.slice(0, 158);
   const path = `/${searchSlug}`;
 
   // Thin-content guard: 404 matrix combos with zero inventory so Google drops
-  // the URL entirely (better than noindex which still wastes crawl budget).
-  // Only 404 on a confirmed 200+empty response — API errors leave the page live.
+  // the URL. BUT keep it when we have real DLD sold-price data for the combo —
+  // that alone makes it substantive. Only 404 on a confirmed 200+empty response.
   let confirmedEmpty = false;
   try {
     const apiCommunity = c.apiName ?? c.name;
     const res = await serverFetch(serverApiUrl(`/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}&countOnly=1`));
     if (res.ok) confirmedEmpty = ((await res.json()).total ?? 0) === 0;
   } catch { /* API down — don't 404 on transient errors */ }
-  if (confirmedEmpty) notFound();
+  if (confirmedEmpty && !soldCombo) notFound();
 
   return {
     title,

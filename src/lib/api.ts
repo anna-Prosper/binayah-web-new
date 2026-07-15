@@ -171,6 +171,26 @@ export const getDldBuilding = cache(async (slug: string): Promise<any | null> =>
     return null;
   }
 });
+export interface SoldCombo { type: "apartments" | "villas"; bedrooms: number; count: number; medianPrice: number; minPrice: number; maxPrice: number; pricePerSqft: number | null; }
+// DLD sold-price aggregates by bedroom × type for a community (real transactions,
+// gated to a minimum sample). Powers the data-backed matrix pages.
+export const getAreaSoldMatrix = cache(async (slug: string): Promise<SoldCombo[]> => {
+  try {
+    const res = await serverFetch(serverApiUrl(`/api/dld/areas/${encodeURIComponent(slug)}/matrix?min=12`), 10_000, DLD_HEADERS());
+    if (!res.ok) return [];
+    const d = await res.json();
+    return Array.isArray(d?.combos) ? (d.combos as SoldCombo[]) : [];
+  } catch {
+    return [];
+  }
+});
+/** Find the sold-price combo for a canonical property type + bedroom count. */
+export function findSoldCombo(combos: SoldCombo[], canonType: string, beds: number): SoldCombo | null {
+  const t = canonType === "Apartment" ? "apartments" : canonType === "Villa" ? "villas" : null;
+  if (!t) return null;
+  return combos.find((c) => c.type === t && c.bedrooms === beds) ?? null;
+}
+
 export const getDldBuildings = cache(
   async (params: string): Promise<{ results: any[]; total: number; hasMore: boolean }> => {
     try {
