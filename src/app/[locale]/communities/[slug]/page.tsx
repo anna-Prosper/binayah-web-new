@@ -2,7 +2,6 @@ import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRich
 import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
-import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { dldAreaFor } from "@/lib/market";
@@ -125,33 +124,13 @@ export default async function CommunityPage({
 }) {
   const { slug, locale } = await params;
 
-  // 1. Fetch both sources in parallel
-  const [wikiResult, dbResult] = await Promise.allSettled([
-    getCommunityWiki(slug),
-    getCommunity(slug),
-  ]);
-
-  const communityInfoDoc =
-    wikiResult.status === "fulfilled"
-      ? (wikiResult.value as unknown as CommunityInfoPage | null)
-      : null;
-  if (wikiResult.status === "rejected") {
-    console.error(
-      "[communities/slug] community_info_pages lookup failed:",
-      wikiResult.reason
-    );
-  }
-
-  const dbData = dbResult.status === "fulfilled" ? dbResult.value : null;
-  if (dbResult.status === "rejected") {
-    console.error("[communities/slug] DB community lookup failed:", dbResult.reason);
-  }
-
-  const hasWiki = !!communityInfoDoc;
+  // Only DB-backed communities render a page. Wiki-only slugs (no DB record)
+  // are already 404'd in generateMetadata before this component runs, so the
+  // wiki lookup that used to happen here has been removed. getCommunity swallows
+  // its own errors and returns null.
+  const dbData = await getCommunity(slug);
   const hasDb = !!(dbData?.community);
-
-  // 2. Nothing found → 404
-  if (!hasWiki && !hasDb) return notFound();
+  if (!hasDb) return notFound();
 
   // 3. Any community with a DB record → unified rich landing page.
   // dbData comes from the API as plain JSON (already serialization-safe).

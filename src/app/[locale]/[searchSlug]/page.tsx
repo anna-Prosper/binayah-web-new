@@ -136,6 +136,7 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   const stats = await getCommunityStats(apiCommunity);
   const faqs = buildCommunityFaqs(c.name, stats);
   const nonce = await getNonce();
+  const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
 
   const h1 = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai`;
   const buyOrRent = p.listingType === "Rent" ? "Rent" : "Buy";
@@ -172,6 +173,38 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
             </div>
           )}
         </div>
+
+        {soldCombo && (
+          <div className="mt-8 rounded-2xl border border-border/60 bg-background/60 p-5 sm:p-6 max-w-3xl">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-sm font-bold text-foreground">
+                {p.bedsLabel} {p.type.canon.toLowerCase()}s in {c.name} — DLD sold prices
+              </h2>
+              <span className="text-[11px] text-muted-foreground whitespace-nowrap">{soldCombo.count.toLocaleString("en-AE")} sales · last 24 months</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
+                <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {soldCombo.medianPrice.toLocaleString("en-AE")}</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">Median sold price</div>
+              </div>
+              <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
+                <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {(soldCombo.minPrice / 1_000_000).toFixed(1)}M–{(soldCombo.maxPrice / 1_000_000).toFixed(1)}M</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">Price range</div>
+              </div>
+              {soldCombo.pricePerSqft && (
+                <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
+                  <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {soldCombo.pricePerSqft.toLocaleString("en-AE")}</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">Avg price / sqft</div>
+                </div>
+              )}
+              <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
+                <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">{soldCombo.count.toLocaleString("en-AE")}</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">DLD transactions</div>
+              </div>
+            </div>
+            <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">Median of real Dubai Land Department sale transactions for {p.bedsLabel.toLowerCase()} {p.type.canon.toLowerCase()}s in {c.name} over the last 24 months.</p>
+          </div>
+        )}
       </div>
     </section>
   );

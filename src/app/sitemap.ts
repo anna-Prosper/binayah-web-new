@@ -121,6 +121,33 @@ const MATRIX_SLUGS = new Set<string>([
   "jumeirah-lakes-towers", "town-square", "the-springs", "international-city",
 ]);
 
+// Data-backed matrix combos (phase 2): bedroom × type sale pages the DLD
+// sold-price endpoint reports enough real transactions for. This is what makes
+// the matrix tail viable beyond the original 20 — every emitted URL renders a
+// median sold price from >=12 DLD transactions, so it's substantive even with
+// no live listings. Apartments/villas only (DLD's only residential type tags).
+async function fetchDldMatrixCombos(): Promise<string[]> {
+  const key = process.env.API_KEY;
+  if (!key) return [];
+  const bedToken = (b: number) => (b === 0 ? "studio" : `${b}-bedroom`);
+  const results = await Promise.all(
+    BUY_COMMUNITIES.map(async (c) => {
+      try {
+        const res = await serverFetch(serverApiUrl(`/api/dld/areas/${c.slug}/matrix?min=12`), 10_000, { "x-api-key": key });
+        if (!res.ok) return [] as string[];
+        const d = await res.json();
+        const combos = Array.isArray(d?.combos) ? (d.combos as { type: string; bedrooms: number }[]) : [];
+        return combos
+          .filter((x) => (x.type === "apartments" || x.type === "villas") && typeof x.bedrooms === "number" && x.bedrooms >= 0 && x.bedrooms <= 7)
+          .map((x) => `/${bedToken(x.bedrooms)}-${x.type}-for-sale-in-${c.slug}`);
+      } catch {
+        return [] as string[];
+      }
+    })
+  );
+  return [...new Set(results.flat())];
+}
+
 async function fetchMatrixCombos(): Promise<string[]> {
   const uri = process.env.MONGODB_URI;
   if (!uri) return [];
@@ -333,6 +360,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Populated bedroom × type × community combos (all types) — data-driven.
   const matrixCombos = await fetchMatrixCombos();
+  const dldMatrixCombos = await fetchDldMatrixCombos();
+  const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
   // Developer × community combos (≥2 projects) — data-driven.
   const devCommunityCombos = await fetchDevCommunityCombos();
   // Superlative (cheapest) combos — data-driven.
@@ -425,7 +454,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...CURATED_COMMUNITY_SLUGS.map((slug) => withAlternates(`/property-valuation/${slug}`, 0.7, "monthly", now)),
     // Bedroom × type × community matrix — only combos that actually have
     // listings (all four types), so no empty/self-noindexed URLs are submitted.
-    ...matrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
+    ...allMatrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     // Developer × community pages.
     ...devCommunityCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     // Superlative (cheapest) pages.
