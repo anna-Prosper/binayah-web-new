@@ -58,15 +58,43 @@ const DLD_AREA_ALIASES: Record<string, string> = {
   "dubai hills estate": "Dubai Hills",
   "mbr city": "Hadaeq Sheikh Mohammed Bin Rashid",
   "mohammed bin rashid city": "Hadaeq Sheikh Mohammed Bin Rashid",
+  "sobha hartland": "Hadaeq Sheikh Mohammed Bin Rashid",
   "meydan": "Meydan",
   "jlt": "Jumeirah Lakes Towers",
   "jumeirah lake towers": "Jumeirah Lakes Towers",
   "jumeirah lakes towers": "Jumeirah Lakes Towers",
+  // Verified against /api/dld/areas (2026-07): marketing name → official DLD area.
+  "dubai islands": "Palm Deira",
+  "the oasis by emaar": "Me'aisem Second",
+  "jumeirah golf estates": "Me'aisem First",
+  "nad al sheba": "Nad Al Sheba Gardens",
+  "damac hills 2": "Madinat Hind 4",
+  "damac island": "Madinat Hind 4",
+  "damac islands": "Madinat Hind 4",
+  "damac lagoons": "Al Hebiah Fifth",
+  "damac riverside": "Dubai Investment Park Second",
+  "jebel ali": "Jabal Ali First",
+  "jebel ali village": "Jabal Ali First",
+  "dubai silicon oasis": "Nadd Hessa",
+  "al jaddaf": "Al Jadaf",
+  "arabian ranches": "Arabian Ranches I",
+  "arabian ranches 3": "Wadi Al Safa 5",
+  "emaar beachfront": "Dubai Harbour",
+  "sports city dubai": "Dubai Sports City",
+  "international city dubai": "International City Ph 1",
+  "dubai land residence complex dlrc": "Dubai Land Residence Complex",
 };
 
-/** Map a community name to the DLD area name for building lookups (falls back to itself). */
+/**
+ * Map a community name to the DLD area name for building/area lookups.
+ * Falls back to stripping a marketing " Dubai" suffix / parentheses ("Motor
+ * City Dubai" → "Motor City", "… (DLRC)" → "…"), then the name itself.
+ */
 export function dldAreaFor(community: string): string {
-  return DLD_AREA_ALIASES[norm(community)] ?? community;
+  const aliased = DLD_AREA_ALIASES[norm(community)];
+  if (aliased) return aliased;
+  const stripped = community.replace(/\s*\([^)]*\)\s*$/, "").replace(/\s+Dubai$/i, "").trim();
+  return stripped || community;
 }
 
 /** Find the stats row for a community name (tolerant of aliases/casing). */
