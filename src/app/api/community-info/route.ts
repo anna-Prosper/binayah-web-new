@@ -15,6 +15,16 @@ async function ensureIndex() {
 
 let indexEnsured = false;
 
+// Slugs that must never be cached — non-community Wikipedia articles that users
+// have accidentally triggered by typing irrelevant queries.
+const BLOCKLIST = new Set([
+  "communities-in-dubai", "emaar-properties", "danube-dubai-metro", "dubai",
+  "burj-binghatti-jacob-co-residences", "dubai-creek-tower",
+  "dubai-international-terminal-3", "burj-vista", "marina-101", "sharjah",
+  "marina-106", "dubai-miracle-garden", "united-arab-emirates",
+  "emirates-airline", "al-wasl-fc",
+]);
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q")?.trim();
@@ -35,6 +45,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const slug = toSlug(q);
+    if (BLOCKLIST.has(slug)) return NextResponse.json({ exists: false });
     let cached: CommunityInfoPage | null = null;
 
     // 1. Try MongoDB cache — isolated so a DB outage doesn't block scraping

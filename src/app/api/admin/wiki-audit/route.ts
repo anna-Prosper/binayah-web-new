@@ -34,3 +34,18 @@ export async function GET(request: NextRequest) {
     wikiOnly,
   });
 }
+
+export async function DELETE(request: NextRequest) {
+  const secret = request.headers.get("x-admin-secret");
+  if (secret !== process.env.ADMIN_SECRET) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  const { slugs } = await request.json();
+  if (!Array.isArray(slugs) || slugs.length === 0) {
+    return NextResponse.json({ error: "slugs array required" }, { status: 400 });
+  }
+  const client = await clientPromise;
+  const db = client.db("binayah_web_new_dev");
+  const result = await db.collection("community_info_pages").deleteMany({ slug: { $in: slugs } });
+  return NextResponse.json({ deleted: result.deletedCount });
+}
