@@ -42,6 +42,16 @@ const FAQ_T: Record<string, Record<string, string>> = {
   fr: { q1: "Quelle est la valeur de mon bien à {name} ?", a1pre: "Les biens à {name} se vendent actuellement autour de AED {ppsf} le pied carré{priceClause}. ", a1: "Votre valeur exacte dépend de l'immeuble, de l'étage, de la vue, de la surface et de l'état. Obtenez une estimation instantanée et gratuite grâce à l'évaluation par IA de Binayah, basée sur les dernières ventes enregistrées au DLD pour votre bien.", priceClause: ", avec un prix de vente moyen proche de {price}", q2: "Comment un bien à {name} est-il évalué ?", a2: "Binayah compare votre bien aux transactions récentes du Département foncier de Dubaï (DLD) à {name} — même immeuble ou communauté, nombre de chambres et surface — puis ajuste selon l'étage, la vue et l'état. Cela prend moins d'une minute et ne nécessite aucune inscription.", q3: "L'évaluation à {name} est-elle gratuite ?", a3: "Oui — elle est entièrement gratuite, ne nécessite aucune inscription et fournit une estimation en moins d'une minute. Vous n'avez aucune obligation de vendre ou de mettre en vente avec Binayah.", factors: "Les principaux facteurs déterminant la valeur spécifique de votre bien sont l'immeuble, l'étage et la vue, la surface et l'agencement du bien, l'état et les rénovations, ainsi que la performance des ventes comparables récentes à {name}. L'évaluation gratuite de Binayah pondère tous ces éléments par rapport aux données DLD en temps réel." },
 };
 
+const META_T: Record<string, { title: string; desc: string; avg: string }> = {
+  en: { title: "{name} Property Valuation | What Is My {name} Property Worth? | Binayah", desc: "Free instant valuation for property in {name}, Dubai. See what your apartment or villa is worth from real DLD sale data{ppsfClause}. No sign-up.", avg: "avg" },
+  ru: { title: "Оценка недвижимости в {name} | Сколько стоит моя недвижимость? | Binayah", desc: "Бесплатная мгновенная оценка недвижимости в {name}, Дубай. Узнайте стоимость вашей квартиры или виллы по реальным данным DLD{ppsfClause}. Без регистрации.", avg: "в среднем" },
+  ar: { title: "تقييم عقارات {name} | كم تبلغ قيمة عقاري؟ | بناية", desc: "تقييم فوري مجاني للعقارات في {name}، دبي. اعرف قيمة شقتك أو فيلتك من بيانات مبيعات DLD الحقيقية{ppsfClause}. بدون تسجيل.", avg: "متوسط" },
+  zh: { title: "{name}房产估价 | 我的房产价值多少？| Binayah", desc: "{name}（迪拜）房产免费即时估价。基于DLD真实成交数据了解您的公寓或别墅价值{ppsfClause}。无需注册。", avg: "均价" },
+  vi: { title: "Định giá bất động sản {name} | Nhà tôi trị giá bao nhiêu? | Binayah", desc: "Định giá tức thì miễn phí cho bất động sản tại {name}, Dubai. Xem căn hộ hoặc biệt thự của bạn trị giá bao nhiêu từ dữ liệu bán hàng DLD thực tế{ppsfClause}. Không cần đăng ký.", avg: "trung bình" },
+  he: { title: "הערכת נכסים ב{name} | כמה שווה הנכס שלי? | Binayah", desc: "הערכת נכס מיידית וחינמית ב{name}, דובאי. גלו כמה שווה הדירה או הווילה שלכם לפי נתוני מכירות DLD אמיתיים{ppsfClause}. ללא הרשמה.", avg: "ממוצע" },
+  fr: { title: "Estimation immobilière {name} | Quelle est la valeur de mon bien ? | Binayah", desc: "Estimation immobilière instantanée et gratuite à {name}, Dubaï. Découvrez la valeur de votre appartement ou villa à partir des données de vente réelles du DLD{ppsfClause}. Sans inscription.", avg: "moy." },
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -52,9 +62,11 @@ export async function generateMetadata({
   const c = findBuyCommunity(community);
   if (!c) return {};
   const stats = await getCommunityStats(c.apiName ?? c.name);
-  const ppsf = stats?.avgPricePerSqft ? `AED ${stats.avgPricePerSqft.toLocaleString("en-AE")}/sqft` : c.priceRange;
-  const title = `${c.name} Property Valuation | What Is My ${c.name} Property Worth? | Binayah`;
-  const full = `Free instant valuation for property in ${c.name}, Dubai. See what your apartment or villa is worth from real DLD sale data${ppsf ? ` (avg ${ppsf})` : ""}. No sign-up.`;
+  const M = META_T[locale] ?? META_T.en;
+  const ppsfVal = stats?.avgPricePerSqft ? `AED ${stats.avgPricePerSqft.toLocaleString("en-AE")}/sqft` : (c.priceRange || "");
+  const ppsfClause = ppsfVal ? ` (${M.avg} ${ppsfVal})` : "";
+  const title = M.title.replace(/\{name\}/g, c.name);
+  const full = M.desc.replace(/\{name\}/g, c.name).replace("{ppsfClause}", ppsfClause);
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
   const path = `/property-valuation/${c.slug}`;
   // Index only when we have a real DLD price benchmark to show — otherwise the
