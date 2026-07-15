@@ -449,12 +449,27 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">Investment outlook</span>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">{sh.investment || `Why invest in ${name}`}</h2>
             {e.investmentNote && <p className="text-primary-foreground/80 leading-relaxed max-w-2xl mb-8">{e.investmentNote}</p>}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8">
-              <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{counts.projects}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Off-plan projects</div></div>
-              {priceFrom && <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{priceFrom}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Starting price</div></div>}
-              {developers.length > 0 && <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{developers.length}+</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Active developers</div></div>}
-              <div className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">2007</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">Binayah since</div></div>
-            </div>
+            {(() => {
+              // Pick the 4 STRONGEST available stats — a weak number ("1+
+              // developers", "3 projects") undermines an investment pitch, so
+              // small values are skipped in favour of live DLD market figures.
+              const tiles: { v: string; l: string }[] = [];
+              if (counts.projects >= 5) tiles.push({ v: String(counts.projects), l: "Off-plan projects" });
+              if (market?.grossYieldPct) tiles.push({ v: `${market.grossYieldPct}%`, l: "Est. gross yield" });
+              if (market?.sales12m && market.sales12m >= 20) tiles.push({ v: market.sales12m.toLocaleString("en-AE"), l: "Sales, last 12 months" });
+              if (priceFrom) tiles.push({ v: priceFrom, l: "Starting price" });
+              if (market?.avgPpsfSqft) tiles.push({ v: `AED ${market.avgPpsfSqft.toLocaleString("en-AE")}`, l: "Avg price / sqft" });
+              if (developers.length >= 3) tiles.push({ v: `${developers.length}+`, l: "Active developers" });
+              tiles.push({ v: "19+", l: "Years in Dubai" });
+              const shown = tiles.slice(0, 4);
+              return (
+                <div className={`grid grid-cols-2 ${shown.length >= 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8`}>
+                  {shown.map((t, i) => (
+                    <div key={i} className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{t.v}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">{t.l}</div></div>
+                  ))}
+                </div>
+              );
+            })()}
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
               <TrendingUp className="h-4 w-4" /> Speak to an investment advisor
             </a>
