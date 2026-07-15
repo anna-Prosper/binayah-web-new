@@ -16,16 +16,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data?.developer) return { title: "Developer Not Found" };
   const { developer } = data;
   const name = developer.name as string;
-  // Only index when the developer has a real description or at least one project.
-  // A page with neither is ~50 words of boilerplate — crawlable (follow) but noindex.
+  // A developer page with no description and no projects is blank boilerplate.
+  // Return 404 so Google drops the URL rather than parking it as noindex.
   const hasContent = !!(
     (developer.description && String(developer.description).trim()) ||
     (Array.isArray(data.projects) && data.projects.length > 0)
   );
+  if (!hasContent) notFound();
   return {
     title: `${name} Projects Dubai | Binayah Properties`,
     description: `Explore off-plan and ready projects by ${name} in Dubai. Find prices, payment plans and investment opportunities with Binayah Properties.`,
-    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
     alternates: {
       canonical: canonical(locale, `/developers/${slug}`),
       languages: altLangs(`/developers/${slug}`),

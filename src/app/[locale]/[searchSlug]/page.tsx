@@ -69,19 +69,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const description = `Browse ${p.bedsLabel.toLowerCase()} ${p.type.canon.toLowerCase()}s ${p.verb.toLowerCase()} in ${c.name}, Dubai. ${c.priceRange ? `Price range ${c.priceRange}. ` : ""}${c.yield ? `Avg gross yield ${c.yield}. ` : ""}Live listings, prices and floor plans with Binayah.`.slice(0, 158);
   const path = `/${searchSlug}`;
 
-  // Thin-content guard: only let Google index combos that actually have
-  // listings. Empty matrix pages stay crawlable (follow) but noindex.
-  let hasListings = false;
+  // Thin-content guard: 404 matrix combos with zero inventory so Google drops
+  // the URL entirely (better than noindex which still wastes crawl budget).
+  // Only 404 on a confirmed 200+empty response — API errors leave the page live.
+  let confirmedEmpty = false;
   try {
     const apiCommunity = c.apiName ?? c.name;
     const res = await serverFetch(serverApiUrl(`/api/listings?listingType=${p.listingType}&community=${encodeURIComponent(apiCommunity)}&propertyType=${encodeURIComponent(p.type.canon)}&bedrooms=${p.beds}&countOnly=1`));
-    if (res.ok) hasListings = ((await res.json()).total ?? 0) > 0;
-  } catch { /* treat as empty → noindex */ }
+    if (res.ok) confirmedEmpty = ((await res.json()).total ?? 0) === 0;
+  } catch { /* API down — don't 404 on transient errors */ }
+  if (confirmedEmpty) notFound();
 
   return {
     title,
     description,
-    ...(hasListings ? {} : { robots: { index: false, follow: true } }),
     alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph: { title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }] },
   };

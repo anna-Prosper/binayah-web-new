@@ -41,7 +41,13 @@ export function hasRealLicense(a: Agent): boolean {
  * we never publish a name-and-photo boilerplate page.
  */
 export function isPublishableAgent(a: Agent): boolean {
-  return bioText(a.bio).length >= 40;
+  // Index any agent with a bio of any length, a license number, or a photo —
+  // even a minimal profile ranks for "[Name] Binayah Properties" searches.
+  return (
+    bioText(a.bio).length > 0 ||
+    !!a.license?.trim() ||
+    !!a.photo?.trim()
+  );
 }
 
 function mapAgent(d: Record<string, unknown>): Agent {

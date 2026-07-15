@@ -84,19 +84,18 @@ export async function generateMetadata({
 
   const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 
-  // Wiki-only pages (a scraped legacy stub with no DB community record — e.g.
-  // buildings, developers, whole cities mis-filed under /communities) carry no
-  // independent property value and largely reproduce third-party (Wikipedia)
-  // content. Keep them crawlable (follow) but out of the index.
+  // Wiki-only pages have no DB record → no Binayah inventory, no editorial copy
+  // of our own — they duplicate Wikipedia verbatim. Return 404 so Google drops
+  // the URL and stops crawling it.
   const wikiOnly = !!wiki && !db?.community;
-  // Also noindex DB-backed pages that are an empty shell — no editorial text
-  // AND no inventory (projects/sale/rent) — since they can't satisfy any query
-  // (e.g. a bare community record like mohammed-bin-rashid-city). Rich area
-  // guides with real descriptions stay indexed even when inventory is momentarily 0.
+  if (wikiOnly) notFound();
+  // Noindex DB-backed pages that are an empty shell — no editorial text AND no
+  // inventory — since they can't satisfy any query. Rich area guides with real
+  // descriptions stay indexed even when inventory is momentarily 0.
   const hasInventory =
     projCount > 0 || (db?.counts?.forSale || 0) > 0 || (db?.counts?.forRent || 0) > 0;
   const emptyDbShell = !!db?.community && stripped.length < 200 && !hasInventory;
-  const noindex = wikiOnly || emptyDbShell;
+  const noindex = emptyDbShell;
 
   return {
     title,
