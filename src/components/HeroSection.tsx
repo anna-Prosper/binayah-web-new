@@ -84,7 +84,7 @@ const HeroSection = () => {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [highlightedSuggestion, setHighlightedSuggestion] = useState(-1);
   const [isSmartLoading, setIsSmartLoading] = useState(false);
-  const [communityInfoResult, setCommunityInfoResult] = useState<{ name: string; slug: string } | null>(null);
+  const [communityInfoResult, setCommunityInfoResult] = useState<{ name: string; slug: string; hasDbCommunity?: boolean } | null>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const smartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -285,7 +285,7 @@ const HeroSection = () => {
           if (ciRes.ok) {
             const ciData = await ciRes.json() as { exists: boolean; data?: { name: string; slug: string } };
             if (ciData.exists && ciData.data?.slug) {
-              setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug });
+              setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug, hasDbCommunity: !!ciData.hasDbCommunity });
               setShowSuggestions(true);
             } else {
               setCommunityInfoResult(null);
@@ -703,7 +703,7 @@ const HeroSection = () => {
                       ))}
 
                       {/* Community Information row — shown when project search returns zero results */}
-                      {communityInfoResult && (
+                      {communityInfoResult && communityInfoResult.hasDbCommunity && (
                         <div className="border-t border-border/30">
                           <p className="px-4 pt-3 pb-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{t("communityGuide")}</p>
                           <Link

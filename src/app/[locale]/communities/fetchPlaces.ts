@@ -96,20 +96,10 @@ export async function fetchPlaceCards(kind: PlaceKind): Promise<PlaceCard[]> {
     seen.add(c.slug);
   }
 
-  for (const w of wikiCommunities) {
-    if (!w.slug || seen.has(w.slug)) continue;
-    merged.push({
-      slug: w.slug,
-      name: w.name || w.slug,
-      description: w.description
-        ? w.description.replace(/<[^>]*>/g, "").slice(0, 200)
-        : undefined,
-      thumbnail: w.heroImage || undefined,
-      hasListings: false,
-      hasGuide: true,
-    });
-    seen.add(w.slug);
-  }
+  // Wiki-only entries (no DB community record) are excluded here because their
+  // /communities/[slug] pages now return 404 — they duplicate Wikipedia content
+  // with no Binayah inventory. Only DB-backed communities (with inventory) are
+  // listed; the wiki data enriches them above via the `wiki` lookup.
 
   return merged;
 }

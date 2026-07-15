@@ -235,7 +235,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
   const projectsSectionRef = useRef<HTMLDivElement | null>(null);
   const listingsSectionRef = useRef<HTMLDivElement | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string } | null>(null);
+  const [communityInfo, setCommunityInfo] = useState<{ name: string; slug: string; heroImage?: string; description?: string; hasDbCommunity?: boolean } | null>(null);
   const [communityLoading, setCommunityLoading] = useState(false);
   const [dldBuilding, setDldBuilding] = useState<{ name: string; area: string; areaSlug: string } | null>(null);
   const [relaxed, setRelaxed] = useState<{ field: string; from: string; to: string } | null>(null);
@@ -479,7 +479,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
         .then((r) => r.ok ? r.json() : null)
         .then(async (data) => {
           if (data?.exists && data?.data?.name && data?.data?.slug) {
-            setCommunityInfo({ name: data.data.name, slug: data.data.slug, heroImage: data.data.heroImage, description: data.data.description });
+            setCommunityInfo({ name: data.data.name, slug: data.data.slug, heroImage: data.data.heroImage, description: data.data.description, hasDbCommunity: !!data.hasDbCommunity });
             setDldBuilding(null);
           } else {
             setCommunityInfo(null);
@@ -757,6 +757,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                   <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-4 text-center">
                     {t("communityInfoFound", { name: communityInfo.name })}
                   </p>
+                  {communityInfo.hasDbCommunity ? (
                   <Link href={`/communities/${communityInfo.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-border/40 hover:border-primary/30 hover:-translate-y-0.5">
                     <div className="relative overflow-hidden aspect-[4/3]">
                       <Image
@@ -792,6 +793,28 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                       </div>
                     </div>
                   </Link>
+                  ) : (
+                  <div className="bg-card rounded-2xl overflow-hidden shadow-md border border-border/40">
+                    <div className="relative overflow-hidden aspect-[4/3]">
+                      <Image
+                        src={communityInfo.heroImage || IMAGE_PLACEHOLDER}
+                        alt={communityInfo.name}
+                        fill
+                        sizes="384px"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 25%, rgba(11,61,46,0.55) 65%, rgba(11,61,46,0.97) 100%)" }} />
+                      <div className="absolute bottom-5 left-5 right-5">
+                        <h3 className="text-white font-extrabold text-2xl leading-tight tracking-tight">{communityInfo.name}</h3>
+                      </div>
+                    </div>
+                    {communityInfo.description && (
+                      <div className="p-5">
+                        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{communityInfo.description}</p>
+                      </div>
+                    )}
+                  </div>
+                  )}
                 </motion.div>
               )}
 

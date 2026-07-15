@@ -47,8 +47,25 @@ export async function GET(request: NextRequest) {
       console.warn("[community-info] MongoDB cache lookup failed (will scrape anyway):", dbErr);
     }
 
+    // Check if a published DB community record exists for this slug. Used by
+    // the UI to decide whether /communities/[slug] is safe to link to (wikiOnly
+    // pages now return 404, so we only show the community link when a DB entry
+    // confirms the page will render).
+    let hasDbCommunity = false;
+    try {
+      const client = await clientPromise;
+      const db = client.db("binayah_web_new_dev");
+      const dbCommunity = await db.collection("communities").findOne(
+        { slug, publishStatus: "published" },
+        { projection: { _id: 1 } }
+      );
+      hasDbCommunity = !!dbCommunity;
+    } catch {
+      // Non-fatal — UI will just not show the link
+    }
+
     if (cached) {
-      return NextResponse.json({ exists: true, data: cached });
+      return NextResponse.json({ exists: true, hasDbCommunity, data: cached });
     }
 
     // 2. Always attempt scraping, even if MongoDB was unavailable
@@ -70,11 +87,11 @@ export async function GET(request: NextRequest) {
       );
       // Re-fetch to get the _id assigned by MongoDB
       const stored = await collection.findOne({ slug: scraped.slug });
-      return NextResponse.json({ exists: true, data: stored ?? scraped });
+      return NextResponse.json({ exists: true, hasDbCommunity, data: stored ?? scraped });
     } catch (writeErr) {
       console.error("[community-info] MongoDB write failed:", writeErr);
       // Still return the scraped data — persistence is best-effort
-      return NextResponse.json({ exists: true, data: scraped });
+      return NextResponse.json({ exists: true, hasDbCommunity, data: scraped });
     }
   } catch (err) {
     // Never return 500 — log and return exists: false
