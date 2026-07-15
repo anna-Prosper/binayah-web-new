@@ -218,6 +218,27 @@ export const getDldAreaYield = cache(async (slug: string): Promise<any | null> =
     return null;
   }
 });
+// Lightweight index of all communities (name/slug/hero) — used to map a DLD
+// area to its community hero image on building pages. Throws on transient
+// errors so a blip is never cached (same rationale as the DLD helpers above).
+const _communitiesIndexUncached = async () => {
+  const res = await serverFetch(serverApiUrl(`/api/communities/?limit=200`), 10_000, undefined, false);
+  if (!res.ok) throw new Error(`communities index ${res.status}`);
+  const d = await res.json();
+  return (Array.isArray(d) ? d : []).map((c: any) => ({
+    name: c?.name || "",
+    slug: c?.slug || "",
+    featuredImage: c?.featuredImage || "",
+  }));
+};
+const _communitiesIndexCached = unstable_cache(_communitiesIndexUncached, ["communities-index"], { revalidate: 3600 });
+export const getCommunitiesIndex = cache(async (): Promise<{ name: string; slug: string; featuredImage: string }[]> => {
+  try {
+    return await _communitiesIndexCached();
+  } catch {
+    return [];
+  }
+});
 export const getNewsArticle = cache(async (slug: string, lang = "en") =>
   fetchJsonOr404(`/api/news/${slug}?lang=${lang}`)
 );

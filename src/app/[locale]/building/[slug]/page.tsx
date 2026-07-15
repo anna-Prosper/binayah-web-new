@@ -10,13 +10,34 @@ import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { getDldBuilding, getDldBuildings, getCommunity, serverApiUrl, serverFetch } from "@/lib/api";
-import { fmtAed } from "@/lib/market";
+import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { getDldBuilding, getDldBuildings, getCommunity, getCommunitiesIndex, serverApiUrl, serverFetch } from "@/lib/api";
+import { fmtAed, dldAreaFor } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
 
 const WA = "https://wa.me/971549988811";
 const slugifyArea = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const normName = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
+
+// A page is indexable once it carries real market substance. Metadata is
+// recomputed on every ISR revalidate (24h) from live DLD data, so as the daily
+// import accumulates sales for a thin tower, its page flips to indexable
+// automatically — no manual action needed. (Sitemap submission has a higher
+// bar, ≥10 sales, so a noindexed URL is never submitted.)
+const isIndexable = (b: { sales?: number; avgPrice?: number }) =>
+  (b.sales || 0) >= 3 && (b.avgPrice || 0) > 0;
+
+// Map a DLD area to its community's hero image: the DLD name often differs
+// from the community name ("Burj Khalifa" = Downtown Dubai), so match each
+// community by its own DLD alias resolution, not just the slugified name.
+async function getAreaCommunityHero(dldArea: string): Promise<string | null> {
+  const idx = await getCommunitiesIndex();
+  const target = normName(dldArea);
+  const hit =
+    idx.find((c) => normName(c.name) === target) ||
+    idx.find((c) => normName(dldAreaFor(c.name)) === target);
+  return hit?.featuredImage || null;
+}
 
 export const revalidate = 86400;
 
@@ -124,11 +145,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = `${b.name} — Sold Prices & Transactions | ${b.area}, Dubai`;
   const description = `${b.name}, ${b.area}: ${b.sales ? `${b.sales.toLocaleString("en-AE")} DLD sales` : "DLD sold-price data"}${ppsf ? `, avg AED ${ppsf.toLocaleString("en-AE")}/sqft` : ""}${changePct != null ? ` (${changePct > 0 ? "+" : ""}${changePct}%${sinceLabel(trend) ? ` since ${sinceLabel(trend)}` : ""})` : ""}${b.areaYield?.grossYieldPct ? `, ~${b.areaYield.grossYieldPct}% gross yield` : ""}. Real transactions, price trend & unit mix.`;
   const path = `/building/${slug}`;
+  // Social preview: the parent community's hero (resized ~70KB JPEG via the
+  // image optimizer — raw heroes are 8-12MB and get rejected by some crawlers).
+  const areaHero = await getAreaCommunityHero(b.area);
+  const ogImage = areaHero
+    ? `https://www.binayah.ae/_next/image?url=${encodeURIComponent(areaHero)}&w=1200&q=72`
+    : DEFAULT_OG_IMAGE;
   return {
     title: `${title} | Binayah`,
     description,
+    // Thin towers (few recorded sales) noindex until the daily DLD import gives
+    // them substance — then this flips to indexable on the next revalidate.
+    ...(isIndexable(b) ? {} : { robots: { index: false as const, follow: true } }),
     alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
-    openGraph: { title, description, type: "website", url: makeCanonical(locale, path) },
+    openGraph: { title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: ogImage, width: 1200, height: 630, alt: `${b.name}, ${b.area}` }] },
+    twitter: { card: "summary_large_image", title, description, images: [ogImage] },
   };
 }
 
@@ -151,11 +182,14 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
     .slice(0, 9)
     .map((x: { slug: string; name: string; sales?: number; avgPrice?: number }) => ({ slug: x.slug, name: x.name, sales: x.sales, avgPrice: x.avgPrice }));
 
-  // Hero image: a real listing photo in this tower → parent community photo → branded gradient.
+  // Hero image: a real listing photo in this tower → parent community photo
+  // (direct slug, then reverse DLD-alias lookup) → branded gradient.
+  const areaHero = await getAreaCommunityHero(b.area);
   const heroImage: string | null =
     listings.find((l) => l.featuredImage)?.featuredImage ||
     community?.featuredImage ||
     community?.imageGallery?.[0] ||
+    areaHero ||
     null;
 
   const ppsf = toSqft(b.avgPpsf);
