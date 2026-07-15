@@ -2,6 +2,7 @@ import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRich
 import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
+import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { dldAreaFor } from "@/lib/market";

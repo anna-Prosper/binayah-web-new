@@ -283,7 +283,7 @@ const HeroSection = () => {
           const ciRes = await fetch(`/api/community-info?q=${encodeURIComponent(trimmed)}`, { cache: "no-store" });
           if (smartRequestRef.current !== requestId) return; // stale
           if (ciRes.ok) {
-            const ciData = await ciRes.json() as { exists: boolean; data?: { name: string; slug: string } };
+            const ciData = await ciRes.json() as { exists: boolean; hasDbCommunity?: boolean; data?: { name: string; slug: string } };
             if (ciData.exists && ciData.data?.slug) {
               setCommunityInfoResult({ name: ciData.data.name, slug: ciData.data.slug, hasDbCommunity: !!ciData.hasDbCommunity });
               setShowSuggestions(true);
