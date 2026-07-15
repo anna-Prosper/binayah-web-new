@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "يمكنك تجربة مبنى قريب أو عدد غرف مختلف، أو طلب تقييم يدوي من فريقنا المعتمد لدى RERA باستخدام مقارنات خارج السوق ونشاط الوكلاء الأخير.",
     "insufficientDataTryAnother": "جرّب عقاراً آخر",
     "insufficientDataRequestManual": "اطلب تقييماً يدوياً",
-    "insufficientDataDirectContact": "أو تواصل معنا مباشرة:"
+    "insufficientDataDirectContact": "أو تواصل معنا مباشرة:",
+    "refinementKicker": "حسّن تقديرك",
+    "refinementTitleBedrooms": "كم عدد غرف النوم؟",
+    "refinementTitleGeneric": "بعض التفاصيل الإضافية",
+    "refinementBedroomsLabel": "غرف النوم",
+    "refinementClose": "إغلاق",
+    "refinementCityLabel": "المدينة",
+    "refinementCitySelectPlaceholder": "اختر المدينة",
+    "refinementCommunityLabel": "المنطقة",
+    "refinementCommunityPlaceholder": "مثال: Dubai Marina",
+    "refinementBuildingLabel": "المبنى / المشروع",
+    "refinementBuildingPlaceholder": "مثال: Marina Gate",
+    "refinementEditManually": "الإدخال يدويًا",
+    "refinementRunValuation": "احسب التقييم",
+    "refinementWorking": "جارٍ التقييم…"
   },
   "contact": {
     "title": "تواصل معنا",

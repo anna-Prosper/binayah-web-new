@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "Bạn có thể thử một tòa nhà gần đó hoặc số lượng phòng ngủ khác, hoặc yêu cầu đội ngũ được chứng nhận RERA của chúng tôi thực hiện định giá thủ công bằng cách sử dụng các giao dịch ngoài thị trường và hoạt động đại lý gần đây.",
     "insufficientDataTryAnother": "Thử một bất động sản khác",
     "insufficientDataRequestManual": "Yêu cầu định giá thủ công",
-    "insufficientDataDirectContact": "Hoặc liên hệ trực tiếp với chúng tôi:"
+    "insufficientDataDirectContact": "Hoặc liên hệ trực tiếp với chúng tôi:",
+    "refinementKicker": "Tinh chỉnh ước tính",
+    "refinementTitleBedrooms": "Bao nhiêu phòng ngủ?",
+    "refinementTitleGeneric": "Thêm vài chi tiết",
+    "refinementBedroomsLabel": "Phòng ngủ",
+    "refinementClose": "Đóng",
+    "refinementCityLabel": "Thành phố",
+    "refinementCitySelectPlaceholder": "Chọn thành phố",
+    "refinementCommunityLabel": "Khu vực",
+    "refinementCommunityPlaceholder": "ví dụ: Dubai Marina",
+    "refinementBuildingLabel": "Tòa nhà / Dự án",
+    "refinementBuildingPlaceholder": "ví dụ: Marina Gate",
+    "refinementEditManually": "Nhập thủ công",
+    "refinementRunValuation": "Chạy định giá",
+    "refinementWorking": "Đang định giá…"
   },
   "contact": {
     "title": "Liên hệ với chúng tôi",

@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "You can try a nearby building or different bedroom count, or ask our RERA-certified team for a manual valuation using off-market comps and recent agency activity.",
     "insufficientDataTryAnother": "Try a different property",
     "insufficientDataRequestManual": "Request a manual valuation",
-    "insufficientDataDirectContact": "Or reach us directly:"
+    "insufficientDataDirectContact": "Or reach us directly:",
+    "refinementKicker": "Refine your estimate",
+    "refinementTitleBedrooms": "How many bedrooms?",
+    "refinementTitleGeneric": "A few more details",
+    "refinementBedroomsLabel": "Bedrooms",
+    "refinementClose": "Close",
+    "refinementCityLabel": "City",
+    "refinementCitySelectPlaceholder": "Select a city",
+    "refinementCommunityLabel": "Community / Area",
+    "refinementCommunityPlaceholder": "e.g. Dubai Marina",
+    "refinementBuildingLabel": "Building / Project",
+    "refinementBuildingPlaceholder": "e.g. Marina Gate",
+    "refinementEditManually": "Edit manually",
+    "refinementRunValuation": "Run valuation",
+    "refinementWorking": "Valuing…"
   },
   "contact": {
     "title": "Contact Us",

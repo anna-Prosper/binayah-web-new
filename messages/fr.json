@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "Vous pouvez essayer un bâtiment à proximité ou un nombre de chambres différent, ou demander à notre équipe certifiée RERA une évaluation manuelle en utilisant des comparables hors marché et l'activité récente des agences.",
     "insufficientDataTryAnother": "Essayez un autre bien",
     "insufficientDataRequestManual": "Demander une évaluation manuelle",
-    "insufficientDataDirectContact": "Ou contactez-nous directement :"
+    "insufficientDataDirectContact": "Ou contactez-nous directement :",
+    "refinementKicker": "Affinez votre estimation",
+    "refinementTitleBedrooms": "Combien de chambres ?",
+    "refinementTitleGeneric": "Quelques détails de plus",
+    "refinementBedroomsLabel": "Chambres",
+    "refinementClose": "Fermer",
+    "refinementCityLabel": "Ville",
+    "refinementCitySelectPlaceholder": "Sélectionnez une ville",
+    "refinementCommunityLabel": "Quartier",
+    "refinementCommunityPlaceholder": "ex. Dubai Marina",
+    "refinementBuildingLabel": "Immeuble / Projet",
+    "refinementBuildingPlaceholder": "ex. Marina Gate",
+    "refinementEditManually": "Saisir manuellement",
+    "refinementRunValuation": "Lancer l'estimation",
+    "refinementWorking": "Estimation…"
   },
   "contact": {
     "title": "Contactez-nous",

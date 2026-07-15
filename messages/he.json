@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "תוכל לנסות בניין סמוך או מספר חדרי שינה שונה, או לבקש מהצוות המוסמך שלנו על ידי RERA הערכה ידנית באמצעות השוואות מחוץ לשוק ופעילות סוכנות עדכנית.",
     "insufficientDataTryAnother": "נסה נכס אחר",
     "insufficientDataRequestManual": "בקש הערכה ידנית",
-    "insufficientDataDirectContact": "או פנו אלינו ישירות:"
+    "insufficientDataDirectContact": "או פנו אלינו ישירות:",
+    "refinementKicker": "דייקו את ההערכה",
+    "refinementTitleBedrooms": "כמה חדרי שינה?",
+    "refinementTitleGeneric": "עוד כמה פרטים",
+    "refinementBedroomsLabel": "חדרי שינה",
+    "refinementClose": "סגירה",
+    "refinementCityLabel": "עיר",
+    "refinementCitySelectPlaceholder": "בחרו עיר",
+    "refinementCommunityLabel": "אזור",
+    "refinementCommunityPlaceholder": "לדוגמה: Dubai Marina",
+    "refinementBuildingLabel": "בניין / פרויקט",
+    "refinementBuildingPlaceholder": "לדוגמה: Marina Gate",
+    "refinementEditManually": "הזנה ידנית",
+    "refinementRunValuation": "הפעלת הערכה",
+    "refinementWorking": "מעריך…"
   },
   "contact": {
     "title": "צור קשר",

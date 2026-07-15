@@ -609,7 +609,21 @@
     "insufficientDataNextSteps": "您可以尝试附近的楼盘或不同的卧室数量,或请我们的RERA认证团队基于场外成交和近期中介活动进行人工估价。",
     "insufficientDataTryAnother": "尝试其他房产",
     "insufficientDataRequestManual": "申请人工估价",
-    "insufficientDataDirectContact": "或直接联系我们:"
+    "insufficientDataDirectContact": "或直接联系我们:",
+    "refinementKicker": "完善您的估价",
+    "refinementTitleBedrooms": "几间卧室？",
+    "refinementTitleGeneric": "还需一些信息",
+    "refinementBedroomsLabel": "卧室",
+    "refinementClose": "关闭",
+    "refinementCityLabel": "城市",
+    "refinementCitySelectPlaceholder": "选择城市",
+    "refinementCommunityLabel": "社区 / 区域",
+    "refinementCommunityPlaceholder": "例如 Dubai Marina",
+    "refinementBuildingLabel": "楼盘 / 项目",
+    "refinementBuildingPlaceholder": "例如 Marina Gate",
+    "refinementEditManually": "手动输入",
+    "refinementRunValuation": "开始估价",
+    "refinementWorking": "估价中…"
   },
   "contact": {
     "title": "联系我们",

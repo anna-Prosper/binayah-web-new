@@ -603,7 +603,21 @@
     "insufficientDataNextSteps": "Попробуйте соседнее здание или другое количество спален, или попросите нашу сертифицированную RERA команду подготовить ручную оценку по непубличным сделкам и недавней агентской активности.",
     "insufficientDataTryAnother": "Попробовать другой объект",
     "insufficientDataRequestManual": "Запросить ручную оценку",
-    "insufficientDataDirectContact": "Или свяжитесь напрямую:"
+    "insufficientDataDirectContact": "Или свяжитесь напрямую:",
+    "refinementKicker": "Уточните оценку",
+    "refinementTitleBedrooms": "Сколько спален?",
+    "refinementTitleGeneric": "Ещё несколько деталей",
+    "refinementBedroomsLabel": "Спальни",
+    "refinementClose": "Закрыть",
+    "refinementCityLabel": "Город",
+    "refinementCitySelectPlaceholder": "Выберите город",
+    "refinementCommunityLabel": "Район",
+    "refinementCommunityPlaceholder": "например, Dubai Marina",
+    "refinementBuildingLabel": "Здание / проект",
+    "refinementBuildingPlaceholder": "например, Marina Gate",
+    "refinementEditManually": "Ввести вручную",
+    "refinementRunValuation": "Оценить",
+    "refinementWorking": "Оцениваем…"
   },
   "contact": {
     "title": "Связаться с нами",
