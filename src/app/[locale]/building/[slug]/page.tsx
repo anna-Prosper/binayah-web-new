@@ -59,6 +59,15 @@ const DLD_TO_COMMUNITY_SLUG: Record<string, string> = {
   "international city ph 1": "international-city-dubai",
   "dubai land residence complex": "dubai-land-residence-complex-dlrc",
   "dubai investment park second": "dubai-investment-park",
+  // Second pass (coverage audit 2026-07): high-building-count raw DLD areas.
+  "al wasl": "city-walk-dubai",                       // 29 bld — City Walk sits in Al Wasl
+  "al merkadh": "mohammed-bin-rashid-city",           // 75 bld — MBR City district
+  "al barshaa south third": "arjan-dubai",            // 65 bld — Arjan's official name (DLD double-a spelling)
+  "al barsha south third": "arjan-dubai",
+  "al hebiah fourth": "sports-city-dubai",            // 66 bld — Dubai Sports City district
+  "madinat dubai almelaheyah": "dubai-maritime-city", // 34 bld — Maritime City
+  "al khairan first": "dubai-creek-harbour",          // 41 bld — Creek Harbour district
+  "al warsan first": "international-city-dubai",      // International City
 };
 
 // Map a DLD area to its parent community: the DLD name often differs from the
