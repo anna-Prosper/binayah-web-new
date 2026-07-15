@@ -42,6 +42,7 @@ export interface MarketSnapshot {
   avgPpsfSqft: number | null;   // AED per sqft (already converted)
   avgPrice: number | null;      // AED
   sales12m: number | null;
+  salesSince?: string | null;  // real coverage start (e.g. "Jan 2026") when < a full year
   grossYieldPct: number | null;
   buildingCount: number | null;
 }
@@ -129,7 +130,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   if (market?.avgPpsfSqft) {
     dataFaqs.push({
       q: `What is the average price per square foot in ${name}?`,
-      a: `Based on Dubai Land Department transaction records, the average sale price in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")} per square foot${market.sales12m ? `, across ${market.sales12m.toLocaleString("en-AE")} sales in the last 12 months` : ""}.`,
+      a: `Based on Dubai Land Department transaction records, the average sale price in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")} per square foot${market.sales12m ? `, across ${market.sales12m.toLocaleString("en-AE")} recorded sales${market.salesSince ? ` since ${market.salesSince}` : " in the last 12 months"}` : ""}.`,
     });
   }
   if (market?.grossYieldPct) {
@@ -329,7 +330,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <CheckCircle2 className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.sales12m.toLocaleString("en-AE")}</p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Sales, last 12 months</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{market!.salesSince ? `Sales since ${market!.salesSince}` : "Sales, last 12 months"}</p>
                 </div>
               ) : null}
               {market!.grossYieldPct ? (
@@ -456,7 +457,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
               const tiles: { v: string; l: string }[] = [];
               if (counts.projects >= 5) tiles.push({ v: String(counts.projects), l: "Off-plan projects" });
               if (market?.grossYieldPct) tiles.push({ v: `${market.grossYieldPct}%`, l: "Est. gross yield" });
-              if (market?.sales12m && market.sales12m >= 20) tiles.push({ v: market.sales12m.toLocaleString("en-AE"), l: "Sales, last 12 months" });
+              if (market?.sales12m && market.sales12m >= 20) tiles.push({ v: market.sales12m.toLocaleString("en-AE"), l: market.salesSince ? `Sales since ${market.salesSince}` : "Sales, last 12 months" });
               if (priceFrom) tiles.push({ v: priceFrom, l: "Starting price" });
               if (market?.avgPpsfSqft) tiles.push({ v: `AED ${market.avgPpsfSqft.toLocaleString("en-AE")}`, l: "Avg price / sqft" });
               if (developers.length >= 3) tiles.push({ v: `${developers.length}+`, l: "Active developers" });

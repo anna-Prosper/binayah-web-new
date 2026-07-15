@@ -173,11 +173,21 @@ export default async function CommunityPage({
       getDldBuildings(`area=${encodeURIComponent(dldAreaName)}&limit=8&sortBy=sales`),
     ]);
     const dldYield = dldArea?.slug ? await getDldAreaYield(dldArea.slug) : null;
+    // The DLD dataset starts ~Jan 2026, so a "12-month" sample can cover far
+    // fewer months — label the count with its real coverage start instead.
+    let salesSince: string | null = null;
+    if (dldYield?.coverageStart) {
+      const cs = new Date(dldYield.coverageStart);
+      if (!isNaN(cs.getTime()) && Date.now() - cs.getTime() < 330 * 24 * 3600 * 1000) {
+        salesSince = cs.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+      }
+    }
     const market = dldArea
       ? {
           avgPpsfSqft: dldArea.avgPpsf > 0 ? Math.round(dldArea.avgPpsf / 10.764) : null,
           avgPrice: dldArea.avgPrice > 0 ? Math.round(dldArea.avgPrice) : null,
           sales12m: dldYield?.salesSampleSize || null,
+          salesSince,
           grossYieldPct: dldYield?.grossYieldPct ?? null,
           buildingCount: dldArea.buildingCount || null,
         }

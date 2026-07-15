@@ -62,6 +62,11 @@ const fmtMonth = (ym: string) => {
   const [y, m] = ym.split("-").map(Number);
   return `${MONTH_SHORT[(m || 1) - 1]} ${String(y).slice(2)}`;
 };
+const sinceLabel = (trend: TrendPoint[]): string | null => {
+  if (!trend.length) return null;
+  const [y, m] = trend[0].month.split("-").map(Number);
+  return `${["January","February","March","April","May","June","July","August","September","October","November","December"][(m||1)-1]} ${y}`;
+};
 const bedLabel = (b: number) => (b === 0 ? "Studio" : `${b} Bed`);
 
 // ── Server-rendered price-trend chart (zero client JS) ───────────────────────
@@ -117,7 +122,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ? Math.round(((last.avgPpsf - first.avgPpsf) / first.avgPpsf) * 1000) / 10
     : null;
   const title = `${b.name} — Sold Prices & Transactions | ${b.area}, Dubai`;
-  const description = `${b.name}, ${b.area}: ${b.sales ? `${b.sales.toLocaleString("en-AE")} DLD sales` : "DLD sold-price data"}${ppsf ? `, avg AED ${ppsf.toLocaleString("en-AE")}/sqft` : ""}${changePct != null ? ` (${changePct > 0 ? "+" : ""}${changePct}% over 12 months)` : ""}${b.areaYield?.grossYieldPct ? `, ~${b.areaYield.grossYieldPct}% gross yield` : ""}. Real transactions, price trend & unit mix.`;
+  const description = `${b.name}, ${b.area}: ${b.sales ? `${b.sales.toLocaleString("en-AE")} DLD sales` : "DLD sold-price data"}${ppsf ? `, avg AED ${ppsf.toLocaleString("en-AE")}/sqft` : ""}${changePct != null ? ` (${changePct > 0 ? "+" : ""}${changePct}%${sinceLabel(trend) ? ` since ${sinceLabel(trend)}` : ""})` : ""}${b.areaYield?.grossYieldPct ? `, ~${b.areaYield.grossYieldPct}% gross yield` : ""}. Real transactions, price trend & unit mix.`;
   const path = `/building/${slug}`;
   return {
     title: `${title} | Binayah`,
@@ -191,7 +196,7 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   );
   if (trend.length > 1 && changePct != null) {
     paras.push(
-      `Over the last 12 months, ${trendSales.toLocaleString("en-AE")} sale${trendSales === 1 ? "" : "s"} completed in ${b.name}, with the average price per square foot moving from AED ${toSqft(first!.avgPpsf).toLocaleString("en-AE")} to AED ${toSqft(last!.avgPpsf).toLocaleString("en-AE")} (${changePct > 0 ? "+" : ""}${changePct}%). ${changePct > 3 ? "That upward drift suggests sellers currently hold pricing power here." : changePct < -3 ? "That softening can open negotiating room for buyers." : "Prices have held broadly steady, a sign of a balanced market in the tower."}`
+      `Since ${sinceLabel(trend) || "the start of available records"}, ${trendSales.toLocaleString("en-AE")} sale${trendSales === 1 ? "" : "s"} completed in ${b.name}, with the average price per square foot moving from AED ${toSqft(first!.avgPpsf).toLocaleString("en-AE")} to AED ${toSqft(last!.avgPpsf).toLocaleString("en-AE")} (${changePct > 0 ? "+" : ""}${changePct}%). ${changePct > 3 ? "That upward drift suggests sellers currently hold pricing power here." : changePct < -3 ? "That softening can open negotiating room for buyers." : "Prices have held broadly steady, a sign of a balanced market in the tower."}`
     );
   }
   if (yieldPct) {
@@ -202,7 +207,7 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
 
   const faqs = [
     b.avgPrice && { question: `What is the average price in ${b.name}?`, answer: `The average recorded sale price in ${b.name}, ${b.area} is ${fmtAed(b.avgPrice)}${ppsf ? `, around AED ${ppsf.toLocaleString("en-AE")} per square foot` : ""}, based on Dubai Land Department transaction data.` },
-    changePct != null && { question: `Are prices in ${b.name} going up or down?`, answer: `Average sale prices in ${b.name} have ${changePct > 0.5 ? "risen" : changePct < -0.5 ? "eased" : "held steady"} ${changePct > 0 ? "+" : ""}${changePct}% per square foot over the last 12 months, across ${trendSales.toLocaleString("en-AE")} DLD-recorded sales.` },
+    changePct != null && { question: `Are prices in ${b.name} going up or down?`, answer: `Average sale prices in ${b.name} have ${changePct > 0.5 ? "risen" : changePct < -0.5 ? "eased" : "held steady"} ${changePct > 0 ? "+" : ""}${changePct}% per square foot since ${sinceLabel(trend) || "records began"}, across ${trendSales.toLocaleString("en-AE")} DLD-recorded sales.` },
     yieldPct && { question: `What rental yield can I expect in ${b.name}?`, answer: `Based on average ${b.area} residential rents against sale prices in the building, a typical unit in ${b.name} yields roughly ${yieldPct}% gross per year, before service charges and fees.` },
     b.sales && { question: `How many properties have sold in ${b.name}?`, answer: `${b.sales.toLocaleString("en-AE")} sales have been recorded in ${b.name} according to DLD data${b.units ? `, across approximately ${b.units.toLocaleString("en-AE")} units` : ""}.` },
     roomMix.length > 0 && { question: `What unit types are available in ${b.name}?`, answer: `${b.name} offers ${roomMix.map((r) => r.label.toLowerCase()).join(", ")} units. Contact Binayah for current availability and pricing.` },
@@ -327,7 +332,7 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
             <section id="trend" className="scroll-mt-32">
               <SectionEyebrow eyebrow="Price trend" title={`Price trend in ${b.name}`} className="mb-3" />
               <p className="text-sm text-muted-foreground mb-5">
-                Average sale price per sqft by month, last 12 months{smoothed ? " (single-sale months excluded)" : ""}
+                Average sale price per sqft by month since {sinceLabel(trend) || "records began"}{smoothed ? " (single-sale months excluded)" : ""}
                 {changePct != null && (
                   <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
                     {changePct > 0 ? "+" : ""}{changePct}% <TrendingUp className={`h-3.5 w-3.5 ${changePct < -0.5 ? "rotate-180" : ""}`} />
