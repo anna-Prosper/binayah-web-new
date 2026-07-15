@@ -9,6 +9,7 @@ import { getAreaStats } from "@/lib/area-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
+import { getGuideTranslation, isGuideLocaleTranslated, TRANSLATED_GUIDE_LOCALES } from "@/lib/guide-i18n";
 
 export const revalidate = 86400;
 
@@ -31,19 +32,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${t(guide.titleKey as Parameters<typeof t>[0])} | Dubai Pulse | Binayah`;
   const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
   const isEn = locale === "en";
-  // Guide bodies are authored in English only. The non-English routes render a
-  // translated title over an English body, so we consolidate ranking signals on
-  // the English page: non-EN pages are noindex,follow and canonicalise to EN.
-  const enUrl = canonical("en", `/pulse/guides/${slug}`);
-  const url = isEn ? enUrl : canonical(locale, `/pulse/guides/${slug}`);
+  // A guide is indexable in English, and in any locale whose bodies+FAQs are
+  // fully translated (see @/lib/guide-i18n). Locales that render a translated
+  // title over an English body stay noindex,follow and canonicalise to EN so we
+  // don't index near-duplicate pages. Translated locales get a self-canonical
+  // and full hreflang linking EN + every translated locale.
+  const path = `/pulse/guides/${slug}`;
+  const enUrl = canonical("en", path);
+  const indexable = isEn || isGuideLocaleTranslated(locale);
+  const url = indexable ? canonical(locale, path) : enUrl;
+  const languages: Record<string, string> = { en: enUrl, "x-default": enUrl };
+  for (const l of TRANSLATED_GUIDE_LOCALES) languages[l] = canonical(l, path);
   const ogImage = guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`;
   return {
     title,
     description,
-    robots: isEn ? undefined : { index: false, follow: true },
+    robots: indexable ? undefined : { index: false, follow: true },
     alternates: {
-      canonical: isEn ? url : enUrl,
-      languages: isEn ? { en: enUrl, "x-default": enUrl } : undefined,
+      canonical: url,
+      languages: indexable ? languages : undefined,
     },
     openGraph: {
       title,
@@ -75,8 +82,14 @@ export default async function GuideDetailPage({ params }: Props) {
   const url = canonical(locale, `/pulse/guides/${slug}`);
   const lp = locale === "en" ? "" : `/${locale}`;
 
+  // Use the fully-translated body/FAQ where available; otherwise the English body.
+  const translation = locale !== "en" ? await getGuideTranslation(locale, slug) : null;
+  const body = translation?.body || guide.body;
+  const faq = translation?.faq && translation.faq.length > 0 ? translation.faq : guide.faq;
+  const localizedGuide = translation ? { ...guide, body, faq } : guide;
+
   // Estimate word count from body
-  const wordCount = guide.body.split(/\s+/).length;
+  const wordCount = body.split(/\s+/).length;
   const { published, modified } = guideDates(slug);
 
   // Area investor guides render a live DLD stats panel.
@@ -102,10 +115,10 @@ export default async function GuideDetailPage({ params }: Props) {
         locale={locale}
       />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      {guide.faq && guide.faq.length > 0 && <FAQJsonLd faqs={guide.faq} />}
+      {faq && faq.length > 0 && <FAQJsonLd faqs={faq} />}
       <Navbar />
       <PulseEmirateNav />
-      <GuideDetailClient guide={guide} areaStats={areaStats} published={published} />
+      <GuideDetailClient guide={localizedGuide} areaStats={areaStats} published={published} />
       <Footer />
     </div>
   );
