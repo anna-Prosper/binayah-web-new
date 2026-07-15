@@ -36,8 +36,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title,
     description: desc,
-    ...(hasContent ? {} : { robots: { index: false as const, follow: true } }),
-    alternates:  { canonical: makeCanonical(locale, path), languages: altLangs(path) },
+    alternates: hasContent
+      ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
+      : { canonical: makeCanonical(locale, `/project/${slug}`) },
     openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },
   };
