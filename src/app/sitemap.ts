@@ -110,6 +110,17 @@ async function fetchProjectsForSitemap(): Promise<
 // therefore self-noindexed) combos. Covers all four supported types. Secondary
 // collections lack propertyType, so they can't satisfy a type filter anyway —
 // the legacy `listings` collection is the authoritative source here.
+// The original 20 community slugs. The bedroom×type matrix, superlative and
+// dev×community sitemap sets are held to these — the 38 communities added in
+// the 2026-07 catalog expansion contribute only their hub + off-plan-in pages
+// (live listing inventory is too thin to back a matrix long-tail).
+const MATRIX_SLUGS = new Set<string>([
+  "dubai-marina", "downtown-dubai", "palm-jumeirah", "business-bay", "jumeirah-village-circle",
+  "dubai-hills-estate", "arabian-ranches", "jumeirah-beach-residence", "difc", "dubai-creek-harbour",
+  "mbr-city", "damac-hills", "emirates-hills", "bluewaters-island", "mirdif", "al-barari",
+  "jumeirah-lakes-towers", "town-square", "the-springs", "international-city",
+]);
+
 async function fetchMatrixCombos(): Promise<string[]> {
   const uri = process.env.MONGODB_URI;
   if (!uri) return [];
@@ -117,6 +128,7 @@ async function fetchMatrixCombos(): Promise<string[]> {
   const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
   const nameToSlug = new Map<string, string>();
   for (const c of BUY_COMMUNITIES) {
+    if (!MATRIX_SLUGS.has(c.slug)) continue;
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
@@ -161,6 +173,7 @@ async function fetchDevCommunityCombos(): Promise<string[]> {
   const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   const nameToSlug = new Map<string, string>();
   for (const c of BUY_COMMUNITIES) {
+    if (!MATRIX_SLUGS.has(c.slug)) continue;
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);
@@ -197,6 +210,7 @@ async function fetchSuperlativeCombos(): Promise<string[]> {
   const norm = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
   const nameToSlug = new Map<string, string>();
   for (const c of BUY_COMMUNITIES) {
+    if (!MATRIX_SLUGS.has(c.slug)) continue;
     nameToSlug.set(norm(c.name), c.slug);
     const apiName = (c as { apiName?: string }).apiName;
     if (apiName) nameToSlug.set(norm(apiName), c.slug);

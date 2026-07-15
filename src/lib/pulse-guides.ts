@@ -2623,7 +2623,7 @@ The decision comes down to disciplined comparison: find the real price of the fl
   },
   {
     slug: "how-to-sell-property-in-dubai",
-    category: "HowTo",
+    category: "How To",
     readTime: "9 min",
     views: 3010,
     titleKey: "guide_howToSellPropertyInDubai_title",
@@ -2785,7 +2785,7 @@ If you would like a current valuation of your property and a compliant, permit-b
   },
   {
     slug: "power-of-attorney-property-dubai",
-    category: "Legal&Process",
+    category: "Legal & Process",
     readTime: "7 min",
     views: 1980,
     titleKey: "guide_powerOfAttorneyPropertyDubai_title",
@@ -2928,7 +2928,7 @@ Get the type right, keep the powers tight, route money through escrow and your o
   },
   {
     slug: "gifting-property-dubai",
-    category: "Legal&Process",
+    category: "Legal & Process",
     readTime: "7 min",
     views: 2230,
     titleKey: "guide_giftingPropertyDubai_title",
@@ -3178,7 +3178,7 @@ Before you accept or issue a renewal, run the official calculator, confirm the n
   },
   {
     slug: "snagging-handover-inspection",
-    category: "HowTo",
+    category: "How To",
     readTime: "8 min",
     views: 2470,
     titleKey: "guide_snaggingHandoverInspection_title",
@@ -6138,4 +6138,19 @@ Dubai's commission norms, around 2% plus VAT on sales and about 5% of annual ren
 
 export function findGuide(slug: string): PulseGuide | undefined {
   return PULSE_GUIDES.find((g) => g.slug === slug);
+}
+
+// Find the investor guide (a guide with an `area`) that matches a community, by
+// its name or slug — powers the community → guide backlink so the topical
+// cluster meshes bidirectionally with the community/project pages.
+const guideMatchKey = (s: string) =>
+  s.toLowerCase().replace(/\bdubai\b/g, "").replace(/[^a-z0-9]+/g, "");
+export function guideForCommunity(name: string, slug: string): PulseGuide | undefined {
+  const keys = new Set([guideMatchKey(name), guideMatchKey(slug)]);
+  return PULSE_GUIDES.find(
+    (g) =>
+      !!g.area &&
+      (keys.has(guideMatchKey(g.area)) ||
+        keys.has(guideMatchKey(g.slug.replace(/-(investor-)?guide$/, ""))))
+  );
 }
