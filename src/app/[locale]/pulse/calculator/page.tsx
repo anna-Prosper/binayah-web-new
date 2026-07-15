@@ -28,12 +28,40 @@ const translations: Record<string, { title: string; description: string }> = {
     title: "Máy tính đầu tư | Dubai Pulse | Binayah Properties",
     description: "Tính lợi nhuận tiềm năng, lợi suất cho thuê và giá trị dự kiến cho đầu tư bất động sản Dubai.",
   },
+  he: {
+    title: "מחשבון השקעות | דובאי פולס | Binayah Properties",
+    description: "חשב תשואות פוטנציאליות, תשואת שכירות וערך משוער להשקעה בנדל\"ן בדובאי.",
+  },
+  fr: {
+    title: "Calculateur d'investissement | Dubai Pulse | Binayah Properties",
+    description: "Calculez les rendements potentiels, le rendement locatif et la valeur projetée pour un investissement immobilier à Dubaï.",
+  },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = translations[locale] ?? translations.en;
-  return { title: t.title, description: t.description };
+  return {
+    title: t.title,
+    description: t.description,
+    alternates: {
+      canonical: locale === "ru"
+        ? `https://binayah.ru/ru/pulse/calculator`
+        : locale === "en"
+          ? `https://www.binayah.ae/pulse/calculator`
+          : `https://www.binayah.ae/${locale}/pulse/calculator`,
+      languages: {
+        en: "https://www.binayah.ae/pulse/calculator",
+        ru: "https://binayah.ru/ru/pulse/calculator",
+        ar: "https://www.binayah.ae/ar/pulse/calculator",
+        zh: "https://www.binayah.ae/zh/pulse/calculator",
+        vi: "https://www.binayah.ae/vi/pulse/calculator",
+        he: "https://www.binayah.ae/he/pulse/calculator",
+        fr: "https://www.binayah.ae/fr/pulse/calculator",
+        "x-default": "https://www.binayah.ae/pulse/calculator",
+      },
+    },
+  };
 }
 
 async function fetchJson(path: string) {

@@ -28,12 +28,40 @@ const translations: Record<string, { title: string; description: string }> = {
     title: "So sánh khu vực | Dubai Pulse | Binayah Properties",
     description: "So sánh các khu vực và chủ đầu tư Dubai song song về giá, lợi suất, khối lượng và hơn thế nữa.",
   },
+  he: {
+    title: "השוואת קהילות | דובאי פולס | Binayah Properties",
+    description: "השווה קהילות ויזמים בדובאי זה לצד זה על פי מחיר, תשואה, נפח ועוד.",
+  },
+  fr: {
+    title: "Comparaison de quartiers | Dubai Pulse | Binayah Properties",
+    description: "Comparez les quartiers et promoteurs de Dubaï côte à côte sur le prix, le rendement, le volume et plus encore.",
+  },
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = translations[locale] ?? translations.en;
-  return { title: t.title, description: t.description };
+  return {
+    title: t.title,
+    description: t.description,
+    alternates: {
+      canonical: locale === "ru"
+        ? `https://binayah.ru/ru/pulse/compare`
+        : locale === "en"
+          ? `https://www.binayah.ae/pulse/compare`
+          : `https://www.binayah.ae/${locale}/pulse/compare`,
+      languages: {
+        en: "https://www.binayah.ae/pulse/compare",
+        ru: "https://binayah.ru/ru/pulse/compare",
+        ar: "https://www.binayah.ae/ar/pulse/compare",
+        zh: "https://www.binayah.ae/zh/pulse/compare",
+        vi: "https://www.binayah.ae/vi/pulse/compare",
+        he: "https://www.binayah.ae/he/pulse/compare",
+        fr: "https://www.binayah.ae/fr/pulse/compare",
+        "x-default": "https://www.binayah.ae/pulse/compare",
+      },
+    },
+  };
 }
 
 async function fetchJson(path: string) {

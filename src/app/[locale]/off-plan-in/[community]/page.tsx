@@ -27,8 +27,18 @@ export async function generateMetadata({
   const { community, locale } = await params;
   const c = findBuyCommunity(community);
   if (!c) notFound();
-  const title = `Off-Plan Projects in ${c.name}, Dubai | New Launches | Binayah`;
-  const full = `${localizeCommunityText(c.shortIntro, locale)} Off-plan & new-launch projects in ${c.name} with flexible payment plans, Binayah.`;
+  const META: Record<string, { title: (n: string) => string; suffix: (n: string) => string }> = {
+    fr: { title: (n) => `Projets sur plan à ${n}, Dubaï | Nouveaux Lancements | Binayah`, suffix: (n) => ` Projets sur plan à ${n} avec plans de paiement flexibles, Binayah.` },
+    ru: { title: (n) => `Новостройки в ${n}, Дубай | Новые проекты | Binayah`, suffix: (n) => ` Новостройки и новые проекты в ${n} с гибкими условиями оплаты, Binayah.` },
+    ar: { title: (n) => `مشاريع على الخارطة في ${n}، دبي | إطلاقات جديدة | Binayah`, suffix: (n) => ` مشاريع على الخارطة في ${n} بخطط سداد مرنة، بناية للعقارات.` },
+    zh: { title: (n) => `迪拜${n}期房项目 | 新楼盘 | Binayah`, suffix: (n) => ` ${n}期房及新楼盘项目，灵活付款计划，Binayah。` },
+    vi: { title: (n) => `Dự án off-plan tại ${n}, Dubai | Mở bán mới | Binayah`, suffix: (n) => ` Dự án off-plan tại ${n} với kế hoạch thanh toán linh hoạt, Binayah.` },
+    he: { title: (n) => `פרויקטים על הנייר ב-${n}, דובאי | השקות חדשות | Binayah`, suffix: (n) => ` פרויקטים על הנייר ב-${n} עם תוכניות תשלום גמישות, Binayah.` },
+  };
+  const tmpl = META[locale];
+  const title = tmpl ? tmpl.title(c.name) : `Off-Plan Projects in ${c.name}, Dubai | New Launches | Binayah`;
+  const suffix = tmpl ? tmpl.suffix(c.name) : ` Off-plan & new-launch projects in ${c.name} with flexible payment plans, Binayah.`;
+  const full = `${localizeCommunityText(c.shortIntro, locale)}${suffix}`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
   // Pages with no community-specific projects now show Dubai-wide new launches
@@ -57,6 +67,7 @@ const LABELS = {
   zh: { home: "首页", offplan: "期房", offplanIn: "期房项目, ", dubai: "迪拜", eyebrow: "新楼盘" },
   vi: { home: "Trang chủ", offplan: "Off-Plan", offplanIn: "Dự án Off-Plan tại", dubai: "Dubai", eyebrow: "DỰ ÁN MỚI" },
   he: { home: "בית", offplan: "על הנייר", offplanIn: "פרויקטים על הנייר ב", dubai: "דובאי", eyebrow: "השקות חדשות" },
+  fr: { home: "Accueil", offplan: "Sur Plan", offplanIn: "Projets sur plan à", dubai: "Dubaï", eyebrow: "NOUVEAUX LANCEMENTS" },
 } as const;
 
 export default async function OffPlanInCommunityPage({

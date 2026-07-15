@@ -25,8 +25,18 @@ export async function generateMetadata({
   const { community, locale } = await params;
   const c = findBuyCommunity(community);
   if (!c) return {};
-  const title = `Rent Property in ${c.name}, Dubai | Apartments & Villas | Binayah`;
-  const full = `${localizeCommunityText(c.shortIntro, locale)} Browse apartments and villas for rent in ${c.name} with Binayah.`;
+  const META: Record<string, { title: (n: string) => string; suffix: (n: string) => string }> = {
+    fr: { title: (n) => `Louer un bien à ${n}, Dubaï | Appartements & Villas | Binayah`, suffix: (n) => ` Consultez les appartements et villas à louer à ${n} avec Binayah.` },
+    ru: { title: (n) => `Аренда недвижимости в ${n}, Дубай | Квартиры и виллы | Binayah`, suffix: (n) => ` Квартиры и виллы в аренду в ${n} на Binayah.` },
+    ar: { title: (n) => `استئجار عقار في ${n}، دبي | شقق وفيلات | Binayah`, suffix: (n) => ` تصفّح الشقق والفيلات للإيجار في ${n} مع بناية.` },
+    zh: { title: (n) => `迪拜${n}租房 | 公寓和别墅 | Binayah`, suffix: (n) => ` 在 Binayah 浏览${n}出租公寓和别墅。` },
+    vi: { title: (n) => `Thuê bất động sản tại ${n}, Dubai | Căn hộ & Biệt thự | Binayah`, suffix: (n) => ` Xem căn hộ và biệt thự cho thuê tại ${n} với Binayah.` },
+    he: { title: (n) => `השכרת נכס ב-${n}, דובאי | דירות ווילות | Binayah`, suffix: (n) => ` דירות ווילות להשכרה ב-${n} עם Binayah.` },
+  };
+  const tmpl = META[locale];
+  const title = tmpl ? tmpl.title(c.name) : `Rent Property in ${c.name}, Dubai | Apartments & Villas | Binayah`;
+  const suffix = tmpl ? tmpl.suffix(c.name) : ` Browse apartments and villas for rent in ${c.name} with Binayah.`;
+  const full = `${localizeCommunityText(c.shortIntro, locale)}${suffix}`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
@@ -60,6 +70,7 @@ const LABELS = {
   zh: { home: "首页", rent: "租赁", rentIn: "租赁房产, ", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forRent: "出租房产, ", emptyTitle: "该区域暂无在租房源", emptyBody: "我们会定期上架该社区的新租盘。告诉我们您的需求，一有合适房源即刻通知您, , 或浏览迪拜全城目前可租的房源。", browseAll: "浏览全部租盘", getNotified: "通知我" },
   vi: { home: "Trang chủ", rent: "Thuê", rentIn: "Thuê bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forRent: "Bất động sản cho thuê tại", emptyTitle: "Hiện chưa có tin cho thuê tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản cho thuê mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có, hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả cho thuê", getNotified: "Nhận thông báo" },
   he: { home: "בית", rent: "השכרה", rentIn: "השכרת נכס ב", dubai: "דובאי", priceRange: "טווח מחירים", grossYield: "תשואה ברוטו", listings: "מודעות", forRent: "נכסים להשכרה ב", emptyTitle: "אין כרגע נכסים להשכרה כאן", emptyBody: "אנו מוסיפים נכסים חדשים להשכרה בקהילה זו באופן קבוע. ספרו לנו מה אתם מחפשים ונעדכן אתכם ברגע שמתפרסם נכס, או גלו את ההיצע ברחבי דובאי היום.", browseAll: "עיון בכל הנכסים להשכרה", getNotified: "עדכנו אותי" },
+  fr: { home: "Accueil", rent: "Location", rentIn: "Louer un bien à", dubai: "Dubaï", priceRange: "Fourchette de prix", grossYield: "Rendement brut", listings: "Annonces", forRent: "Biens à louer à", emptyTitle: "Aucune location disponible pour le moment", emptyBody: "Nous ajoutons régulièrement de nouvelles locations dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les locations à Dubaï.", browseAll: "Voir toutes les locations", getNotified: "Être alerté" },
 } as const;
 
 export default async function RentInCommunityPage({

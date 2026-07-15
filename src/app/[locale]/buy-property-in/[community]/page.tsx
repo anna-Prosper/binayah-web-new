@@ -25,8 +25,18 @@ export async function generateMetadata({
   const { community, locale } = await params;
   const c = findBuyCommunity(community);
   if (!c) return {};
-  const title = `Buy Property in ${c.name}, Dubai | ${c.priceRange} | Binayah`;
-  const full = `${localizeCommunityText(c.shortIntro, locale)} Avg yield ${c.yield}. Browse listings for sale in ${c.name} with Binayah.`;
+  const META: Record<string, { title: (n: string, p: string) => string; suffix: (n: string, y: string) => string }> = {
+    fr: { title: (n, p) => `Acheter un bien à ${n}, Dubaï | ${p} | Binayah`, suffix: (n, y) => ` Rendement moyen ${y}. Annonces à la vente à ${n} avec Binayah.` },
+    ru: { title: (n, p) => `Купить недвижимость в ${n}, Дубай | ${p} | Binayah`, suffix: (n, y) => ` Средняя доходность ${y}. Объявления о продаже в ${n} на Binayah.` },
+    ar: { title: (n, p) => `شراء عقار في ${n}، دبي | ${p} | Binayah`, suffix: (n, y) => ` متوسط العائد ${y}. تصفّح قوائم البيع في ${n} مع بناية.` },
+    zh: { title: (n, p) => `迪拜${n}购房 | ${p} | Binayah`, suffix: (n, y) => ` 平均回报率 ${y}。在 Binayah 浏览${n}在售房源。` },
+    vi: { title: (n, p) => `Mua bất động sản tại ${n}, Dubai | ${p} | Binayah`, suffix: (n, y) => ` Lợi suất trung bình ${y}. Xem tin bán tại ${n} với Binayah.` },
+    he: { title: (n, p) => `קנייה ב-${n}, דובאי | ${p} | Binayah`, suffix: (n, y) => ` תשואה ממוצעת ${y}. נכסים למכירה ב-${n} עם Binayah.` },
+  };
+  const tmpl = META[locale];
+  const title = tmpl ? tmpl.title(c.name, c.priceRange) : `Buy Property in ${c.name}, Dubai | ${c.priceRange} | Binayah`;
+  const suffix = tmpl ? tmpl.suffix(c.name, c.yield) : ` Avg yield ${c.yield}. Browse listings for sale in ${c.name} with Binayah.`;
+  const full = `${localizeCommunityText(c.shortIntro, locale)}${suffix}`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
@@ -61,6 +71,7 @@ const LABELS = {
   zh: { home: "首页", buy: "购买", buyIn: "购买房产, ", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forSale: "在售房产, ", secondary: "二手市场", emptyTitle: "该区域暂无在售房源", emptyBody: "我们会定期上架该社区的新房源。告诉我们您的需求，一有合适房源即刻通知您, , 或浏览迪拜全城目前可选的房源。", browseAll: "浏览全部房源", getNotified: "通知我" },
   vi: { home: "Trang chủ", buy: "Mua", buyIn: "Mua bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forSale: "Bất động sản bán tại", secondary: "THỊ TRƯỜNG THỨ CẤP", emptyTitle: "Hiện chưa có tin đăng tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có, hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả bất động sản", getNotified: "Nhận thông báo" },
   he: { home: "בית", buy: "קנייה", buyIn: "קניית נכס ב", dubai: "דובאי", priceRange: "טווח מחירים", grossYield: "תשואה ברוטו", listings: "מודעות", forSale: "נכסים למכירה ב", secondary: "שוק משני", emptyTitle: "אין כרגע מודעות פעילות כאן", emptyBody: "אנו מוסיפים נכסים חדשים בקהילה זו באופן קבוע. ספרו לנו מה אתם מחפשים ונעדכן אתכם ברגע שיתפרסם נכס מתאים, או גלו את ההיצע ברחבי דובאי היום.", browseAll: "עיון בכל הנכסים", getNotified: "עדכנו אותי" },
+  fr: { home: "Accueil", buy: "Acheter", buyIn: "Acheter un bien à", dubai: "Dubaï", priceRange: "Fourchette de prix", grossYield: "Rendement brut", listings: "Annonces", forSale: "Biens à vendre à", secondary: "MARCHÉ SECONDAIRE", emptyTitle: "Aucune annonce active pour le moment", emptyBody: "Nous ajoutons régulièrement de nouveaux biens dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les propriétés à Dubaï.", browseAll: "Voir tous les biens", getNotified: "Être alerté" },
 } as const;
 
 export default async function BuyInCommunityPage({
