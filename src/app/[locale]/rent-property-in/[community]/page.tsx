@@ -30,22 +30,13 @@ export async function generateMetadata({
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
-  // Zero-inventory guard: try apiName first, then synonyms, so a name mismatch
-  // doesn't falsely noindex a page that actually has rental listings.
-  let hasListings = true;
-  try {
-    const namesToTry = [c.apiName ?? c.name, ...(c.synonyms ?? []).filter(s => s !== (c.apiName ?? c.name))];
-    for (const name of namesToTry) {
-      const res = await serverFetch(serverApiUrl(`/api/listings?listingType=Rent&community=${encodeURIComponent(name)}&countOnly=1`));
-      if (res.ok && ((await res.json()).total ?? 0) > 0) { hasListings = true; break; }
-      hasListings = false;
-    }
-  } catch { /* API down → treat as indexable; don't noindex on transient errors */ }
+  // Pages always have content (community copy + market stats + off-plan projects
+  // or Dubai-wide rentals when community-specific inventory is empty). All 58
+  // communities are real Dubai areas that deserve to be indexed.
 
   return {
     title,
     description,
-    ...(hasListings ? {} : { robots: { index: false as const, follow: true } }),
     alternates: {
       canonical: makeCanonical(locale, `/rent-property-in/${c.slug}`),
       languages: altLangs(`/rent-property-in/${c.slug}`),

@@ -31,18 +31,12 @@ export async function generateMetadata({
   const full = `${localizeCommunityText(c.shortIntro, locale)} Off-plan & new-launch projects in ${c.name} with flexible payment plans, Binayah.`;
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
-  // Zero-inventory guard: an off-plan hub with no projects can't satisfy the
-  // query — keep it crawlable (follow) but noindex until it fills. getRelatedProjects
-  // is cache()-wrapped, so this dedupes with the identical fetch in the page body.
-  let hasProjects = true;
-  try {
-    const projects = await getRelatedProjects(c.apiName ?? c.name, "", "", 24);
-    hasProjects = projects.length > 0;
-  } catch { /* API down → treat as indexable; don't noindex on transient errors */ }
+  // Pages with no community-specific projects now show Dubai-wide new launches
+  // as fallback content, so all 58 off-plan hubs have substantive content and
+  // deserve to be indexed.
   return {
     title,
     description,
-    ...(hasProjects ? {} : { robots: { index: false as const, follow: true } }),
     alternates: {
       canonical: makeCanonical(locale, `/off-plan-in/${c.slug}`),
       languages: altLangs(`/off-plan-in/${c.slug}`),
