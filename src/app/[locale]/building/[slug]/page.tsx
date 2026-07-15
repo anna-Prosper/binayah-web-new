@@ -2,15 +2,21 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight, Percent, Bed, Bath, Maximize } from "lucide-react";
+import { TrendingUp, Building2, LineChart, BadgeDollarSign, MapPin, ArrowRight, Percent, Bed, Bath, Maximize, ChevronRight, MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
 import { canonical as makeCanonical, altLangs } from "@/lib/site";
-import { getDldBuilding, getDldBuildings, serverApiUrl, serverFetch } from "@/lib/api";
+import { getDldBuilding, getDldBuildings, getCommunity, serverApiUrl, serverFetch } from "@/lib/api";
 import { fmtAed } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
+
+const WA = "https://wa.me/971549988811";
+const slugifyArea = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 export const revalidate = 86400;
 
@@ -128,15 +134,24 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Sibling buildings + live inventory in parallel.
-  const [siblingsRes, listings] = await Promise.all([
+  // Sibling buildings + live inventory + parent community (for the hero image) in parallel.
+  const communitySlug = slugifyArea(b.area);
+  const [siblingsRes, listings, community] = await Promise.all([
     getDldBuildings(`area=${encodeURIComponent(b.area)}&limit=13&sortBy=sales`),
     getBuildingListings(b.name),
+    getCommunity(communitySlug),
   ]);
   const siblings = siblingsRes.results
     .filter((x: { slug?: string; name?: string }) => x.slug && x.name && x.slug !== slug)
-    .slice(0, 12)
-    .map((x: { slug: string; name: string }) => ({ slug: x.slug, name: x.name }));
+    .slice(0, 9)
+    .map((x: { slug: string; name: string; sales?: number; avgPrice?: number }) => ({ slug: x.slug, name: x.name, sales: x.sales, avgPrice: x.avgPrice }));
+
+  // Hero image: a real listing photo in this tower → parent community photo → branded gradient.
+  const heroImage: string | null =
+    listings.find((l) => l.featuredImage)?.featuredImage ||
+    community?.featuredImage ||
+    community?.imageGallery?.[0] ||
+    null;
 
   const ppsf = toSqft(b.avgPpsf);
   const { points: trend, smoothed } = smoothTrend(((Array.isArray(b.trend) ? b.trend : []) as TrendPoint[]).filter((t) => t.avgPpsf > 0));
@@ -208,6 +223,27 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
     url: makeCanonical(locale, `/building/${slug}`),
   };
 
+  // Sticky sub-nav — only anchor sections that actually render.
+  const navItems = [
+    { id: "overview", label: "Overview" },
+    trendPts.length > 1 && { id: "trend", label: "Price trend" },
+    byBedrooms.length > 0 && { id: "units", label: "Unit types" },
+    txns.length > 0 && { id: "transactions", label: "Transactions" },
+    faqs.length > 0 && { id: "faqs", label: "FAQs" },
+  ].filter(Boolean) as { id: string; label: string }[];
+
+  // "At a glance" sidebar rows.
+  const glance = [
+    { label: "Community", value: b.area },
+    b.masterProject ? { label: "Master project", value: b.masterProject } : null,
+    b.units ? { label: "Total units", value: b.units.toLocaleString("en-AE") } : null,
+    b.propertyTypes?.length ? { label: "Property types", value: b.propertyTypes.join(", ") } : null,
+    b.avgPrice ? { label: "Avg sale price", value: fmtAed(b.avgPrice) } : null,
+    ppsf ? { label: "Avg price / sqft", value: `AED ${ppsf.toLocaleString("en-AE")}` } : null,
+    yieldPct ? { label: "Est. gross yield", value: `${yieldPct}%` } : null,
+    b.sales ? { label: "DLD sales recorded", value: b.sales.toLocaleString("en-AE") } : null,
+  ].filter(Boolean) as { label: string; value: string }[];
+
   return (
     <div className="min-h-screen bg-background">
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
@@ -215,204 +251,254 @@ export default async function BuildingPage({ params }: { params: Promise<{ slug:
       <script type="application/ld+json" nonce={nonce} dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <Navbar />
 
-      <section className="relative overflow-hidden pt-28 pb-12 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-3">Sold Prices · DLD Data</p>
-          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-3">{b.name}</h1>
-          <p className="flex items-center gap-2 text-primary-foreground/80 text-lg">
-            <MapPin className="h-4 w-4" style={{ color: "#D4A847" }} /> {b.area}, Dubai
+      {/* ── Hero (image-led: listing → community → gradient) ── */}
+      <section className={`relative flex items-end overflow-hidden text-white ${heroImage ? "min-h-[58vh] sm:min-h-[68vh]" : ""}`}>
+        {heroImage ? (
+          <ImageWithFallback src={heroImage} alt={`${b.name}, ${b.area}`} fill priority sizes="100vw" className="object-cover" />
+        ) : (
+          <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }} />
+        )}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,61,46,0.97) 0%, rgba(11,61,46,0.78) 38%, rgba(11,61,46,0.30) 72%, rgba(11,61,46,0.12) 100%)" }} />
+        {!heroImage && <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />}
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-8 sm:pb-12">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70 mb-5">
+            <Link href={`${lp}/`} className="hover:text-white transition-colors">Home</Link>
+            <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="hover:text-white transition-colors whitespace-nowrap">{b.area}</Link>
+            <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
+            <span className="text-white/90 truncate">{b.name}</span>
+          </nav>
+          <p className="text-accent font-bold tracking-[0.25em] uppercase text-[11px] sm:text-xs mb-3">Sold Prices · DLD Data</p>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] mb-3 max-w-3xl">{b.name}</h1>
+          <p className="flex items-center gap-2 text-white/85 text-base sm:text-lg mb-7">
+            <MapPin className="h-4 w-4 flex-shrink-0" style={{ color: "#D4A847" }} /> {b.area}, {b.city || "Dubai"}{b.masterProject ? ` · ${b.masterProject}` : ""}
           </p>
+          {/* Glass stat tiles */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md max-w-3xl">
+            {stats.map((s) => (
+              <div key={s.label} className="bg-white/[0.06] px-4 py-4 sm:py-5">
+                <s.icon className="h-4 w-4 mb-2" style={{ color: "#D4A847" }} />
+                <p className="text-lg sm:text-2xl font-bold tabular-nums leading-none">{s.value}</p>
+                <p className="text-[10px] text-white/70 mt-1.5 tracking-[0.08em] uppercase leading-tight">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-3 mt-6">
+            <Link href={`${lp}/search?q=${encodeURIComponent(b.name)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+              View listings <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+              Explore {b.area} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-10">
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40 mb-3">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-background px-4 py-5 sm:py-6 text-center">
-              <s.icon className="h-4 w-4 mx-auto mb-2" style={{ color: "#D4A847" }} />
-              <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{s.value}</p>
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{s.label}</p>
-            </div>
-          ))}
-        </div>
-        <p className="text-[11px] text-muted-foreground mb-8">Figures are from Dubai Land Department transaction records for {b.name}; individual units vary by floor, view and finish.{yieldPct ? ` Gross yield is estimated against average ${b.area} residential rents, before service charges.` : ""}</p>
-
-        {/* Narrative — data-driven SEO copy */}
-        <div className="mb-10 max-w-3xl space-y-4">
-          {paras.map((p, i) => (
-            <p key={i} className="text-base sm:text-lg text-foreground/85 leading-relaxed">{p}</p>
-          ))}
-        </div>
-
-        {/* Price trend */}
-        {trendPts.length > 1 && (
-          <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1.5">Price trend in {b.name}</h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Average sale price per sqft by month, last 12 months{smoothed ? " (single-sale months excluded)" : ""}{changePct != null && (
-                <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
-                  {changePct > 0 ? "+" : ""}{changePct}%
-                </span>
-              )}
-            </p>
-            <div className="rounded-2xl border border-border/50 bg-background p-4 sm:p-6">
-              <TrendChart points={trendPts} />
-            </div>
+      {/* ── Sticky section sub-nav ── */}
+      {navItems.length > 1 && (
+        <nav aria-label="Sections" className="sticky top-0 sm:top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-1 sm:gap-3 overflow-x-auto scrollbar-hide">
+            {navItems.map((n) => (
+              <a key={n.id} href={`#${n.id}`} className="flex-shrink-0 px-3 sm:px-4 py-3.5 text-sm font-medium text-muted-foreground hover:text-foreground border-b-2 border-transparent hover:border-accent whitespace-nowrap transition-colors">
+                {n.label}
+              </a>
+            ))}
           </div>
-        )}
+        </nav>
+      )}
 
-        {/* Price by bedroom */}
-        {byBedrooms.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Prices by unit type <span className="text-sm font-normal text-muted-foreground">(last 12 months)</span></h2>
-            <div className="overflow-x-auto rounded-2xl border border-border/50">
-              <table className="w-full text-sm">
-                <thead className="bg-accent/5 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-3">Unit type</th>
-                    <th className="px-4 py-3 text-right">Sales</th>
-                    <th className="px-4 py-3 text-right">Avg price</th>
-                    <th className="px-4 py-3 text-right">Avg AED/sqft</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/50">
-                  {byBedrooms.map((r) => (
-                    <tr key={r.bedrooms} className="hover:bg-accent/[0.03]">
-                      <td className="px-4 py-3 font-semibold text-foreground">{bedLabel(r.bedrooms)}</td>
-                      <td className="px-4 py-3 text-right tabular-nums">{r.count.toLocaleString("en-AE")}</td>
-                      <td className="px-4 py-3 text-right tabular-nums font-semibold text-foreground">{fmtAed(r.avgPrice)}</td>
-                      <td className="px-4 py-3 text-right tabular-nums">{r.avgPpsf ? `AED ${toSqft(r.avgPpsf).toLocaleString("en-AE")}` : "-"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Unit mix */}
-        {roomMix.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Unit mix in {b.name}</h2>
-            <div className="flex flex-wrap gap-2">
-              {roomMix.map((r) => (
-                <span key={r.label} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-background text-sm">
-                  <span className="font-semibold text-foreground">{r.label}</span>
-                  <span className="text-muted-foreground">{r.n!.toLocaleString("en-AE")}</span>
-                </span>
+      {/* ── Two-column body ── */}
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="lg:col-span-2 space-y-12 min-w-0">
+          {/* Overview / narrative */}
+          <section id="overview" className="scroll-mt-32">
+            <SectionEyebrow eyebrow="Market snapshot" title={`${b.name} — the numbers`} />
+            <div className="space-y-4">
+              {paras.map((p, i) => (
+                <p key={i} className="text-base sm:text-lg text-foreground/85 leading-relaxed">{p}</p>
               ))}
             </div>
-          </div>
-        )}
+            <p className="text-[11px] text-muted-foreground mt-5">Figures are from Dubai Land Department transaction records for {b.name}; individual units vary by floor, view and finish.{yieldPct ? ` Gross yield is estimated against average ${b.area} residential rents, before service charges.` : ""}</p>
+          </section>
 
-        {/* Recent transactions */}
-        {txns.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Recent sold prices in {b.name}</h2>
-            <div className="overflow-x-auto rounded-2xl border border-border/50">
-              <table className="w-full text-sm">
-                <thead className="bg-accent/5 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Type</th>
-                    <th className="px-4 py-3">Beds</th>
-                    <th className="px-4 py-3 text-right">Size (sqft)</th>
-                    <th className="px-4 py-3 text-right">Price</th>
-                    <th className="px-4 py-3 text-right">AED/sqft</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/50">
-                  {txns.map((t, i) => (
-                    <tr key={i} className="hover:bg-accent/[0.03]">
-                      <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{t.transactionDate ? new Date(t.transactionDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"}</td>
-                      <td className="px-4 py-3">{t.transactionType || t.propertyType || "-"}</td>
-                      <td className="px-4 py-3">{t.bedrooms ?? "-"}</td>
-                      <td className="px-4 py-3 text-right tabular-nums">{t.size ? Math.round(t.size * 10.764).toLocaleString("en-AE") : "-"}</td>
-                      <td className="px-4 py-3 text-right tabular-nums font-semibold text-foreground">{t.amount ? fmtAed(t.amount) : "-"}</td>
-                      <td className="px-4 py-3 text-right tabular-nums">{t.pricePerSqft ? `AED ${toSqft(t.pricePerSqft).toLocaleString("en-AE")}` : "-"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+          {/* Price trend */}
+          {trendPts.length > 1 && (
+            <section id="trend" className="scroll-mt-32">
+              <SectionEyebrow eyebrow="Price trend" title={`Price trend in ${b.name}`} className="mb-3" />
+              <p className="text-sm text-muted-foreground mb-5">
+                Average sale price per sqft by month, last 12 months{smoothed ? " (single-sale months excluded)" : ""}
+                {changePct != null && (
+                  <span className="ml-2 inline-flex items-center gap-1 font-bold" style={{ color: changePct > 0.5 ? "#1A7A5A" : changePct < -0.5 ? "#E53E3E" : "#6B7782" }}>
+                    {changePct > 0 ? "+" : ""}{changePct}% <TrendingUp className={`h-3.5 w-3.5 ${changePct < -0.5 ? "rotate-180" : ""}`} />
+                  </span>
+                )}
+              </p>
+              <div className="rounded-2xl border border-border/50 bg-card p-4 sm:p-6 shadow-sm">
+                <TrendChart points={trendPts} />
+              </div>
+            </section>
+          )}
 
-        {/* Live inventory in this tower — listing preview cards */}
-        {listings.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1.5">Available now in {b.name}</h2>
-            <p className="text-sm text-muted-foreground mb-5">Current Binayah listings in this building.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {listings.map((l) => (
-                <Link key={l.slug} href={`${lp}/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
-                  <div className="relative overflow-hidden aspect-[4/3]">
-                    <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || b.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    {(l.listingType || l._src) && (
-                      <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                        {l.listingType === "Rent" || l._src === "rent" ? "For Rent" : "For Sale"}
+          {/* Prices by unit type — cards + unit-mix chips */}
+          {byBedrooms.length > 0 && (
+            <section id="units" className="scroll-mt-32">
+              <SectionEyebrow eyebrow="Unit types" title="Prices by unit type" />
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                {byBedrooms.map((r) => (
+                  <div key={r.bedrooms} className="rounded-2xl border border-border/50 bg-card p-4 sm:p-5 hover:border-accent/40 transition-colors">
+                    <p className="text-xs font-bold tracking-[0.12em] uppercase text-accent-foreground" style={{ color: "#B8922F" }}>{bedLabel(r.bedrooms)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-foreground mt-2 tabular-nums leading-none">{fmtAed(r.avgPrice)}</p>
+                    <p className="text-xs text-muted-foreground mt-1.5 tabular-nums">{r.avgPpsf ? `AED ${toSqft(r.avgPpsf).toLocaleString("en-AE")}/sqft` : "avg sale price"}</p>
+                    <p className="text-[11px] text-muted-foreground mt-3 pt-3 border-t border-border/50">{r.count.toLocaleString("en-AE")} sale{r.count === 1 ? "" : "s"} · last 12 months</p>
+                  </div>
+                ))}
+              </div>
+              {roomMix.length > 0 && (
+                <div className="mt-5 rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-5">
+                  <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-3">Unit mix</p>
+                  <div className="flex flex-wrap gap-2">
+                    {roomMix.map((r) => (
+                      <span key={r.label} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/60 bg-background text-sm">
+                        <span className="font-semibold text-foreground">{r.label}</span>
+                        <span className="text-muted-foreground tabular-nums">{r.n!.toLocaleString("en-AE")}</span>
                       </span>
-                    )}
+                    ))}
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
-                    <p className="text-sm font-bold text-primary mb-3">{l.price ? `AED ${l.price.toLocaleString("en-AE")}` : "Price on request"}</p>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
-                      {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || "Studio"}</span>}
-                      {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
-                      {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString("en-AE")} {l.sizeUnit || "sqft"}</span> : null}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+                </div>
+              )}
+            </section>
+          )}
 
-        {/* Internal links / CTAs */}
-        <div className="flex flex-wrap gap-3 mb-10">
-          <Link href={`${lp}/search?q=${encodeURIComponent(b.name)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-            View listings in {b.name} <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border-2" style={{ borderColor: "#D4A847", color: "#B8922F" }}>
-            Explore {b.area} <ArrowRight className="h-4 w-4" />
-          </Link>
+          {/* Recent transactions */}
+          {txns.length > 0 && (
+            <section id="transactions" className="scroll-mt-32">
+              <SectionEyebrow eyebrow="Transactions" title="Recent sold prices" />
+              <div className="overflow-x-auto rounded-2xl border border-border/50 shadow-sm">
+                <table className="w-full text-sm">
+                  <thead className="bg-primary/[0.04] text-left text-[11px] uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-3.5 font-semibold">Date</th>
+                      <th className="px-4 py-3.5 font-semibold">Type</th>
+                      <th className="px-4 py-3.5 font-semibold">Beds</th>
+                      <th className="px-4 py-3.5 text-right font-semibold">Size (sqft)</th>
+                      <th className="px-4 py-3.5 text-right font-semibold">Price</th>
+                      <th className="px-4 py-3.5 text-right font-semibold">AED/sqft</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/50">
+                    {txns.map((t, i) => (
+                      <tr key={i} className="odd:bg-muted/20 hover:bg-accent/[0.04] transition-colors">
+                        <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{t.transactionDate ? new Date(t.transactionDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"}</td>
+                        <td className="px-4 py-3">{t.transactionType || t.propertyType || "-"}</td>
+                        <td className="px-4 py-3">{t.bedrooms ?? "-"}</td>
+                        <td className="px-4 py-3 text-right tabular-nums">{t.size ? Math.round(t.size * 10.764).toLocaleString("en-AE") : "-"}</td>
+                        <td className="px-4 py-3 text-right tabular-nums font-semibold text-foreground">{t.amount ? fmtAed(t.amount) : "-"}</td>
+                        <td className="px-4 py-3 text-right tabular-nums font-semibold" style={{ color: "#B8922F" }}>{t.pricePerSqft ? `AED ${toSqft(t.pricePerSqft).toLocaleString("en-AE")}` : "-"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
+          {/* Live inventory */}
+          {listings.length > 0 && (
+            <section className="scroll-mt-32">
+              <SectionEyebrow eyebrow="Live inventory" title={`Available now in ${b.name}`} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {listings.map((l) => (
+                  <Link key={l.slug} href={`${lp}/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
+                    <div className="relative overflow-hidden aspect-[4/3]">
+                      <ImageWithFallback src={l.featuredImage || "/assets/property-placeholder-v2.webp"} alt={l.title || l.name || b.name} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                      {(l.listingType || l._src) && (
+                        <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg text-white uppercase tracking-wider" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+                          {l.listingType === "Rent" || l._src === "rent" ? "For Rent" : "For Sale"}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
+                      <p className="text-sm font-bold text-primary mb-3">{l.price ? `AED ${l.price.toLocaleString("en-AE")}` : "Price on request"}</p>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
+                        {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || "Studio"}</span>}
+                        {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
+                        {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString("en-AE")} {l.sizeUnit || "sqft"}</span> : null}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
-        {/* Sibling buildings — building↔building internal links */}
-        {siblings.length > 0 && (
-          <nav aria-label={`Other buildings in ${b.area}`} className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Other buildings in {b.area}</h2>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
-              {siblings.map((s) => (
-                <li key={s.slug}>
-                  <Link href={`${lp}/building/${s.slug}`} className="hover:text-primary hover:underline transition-colors">{s.name}</Link>
-                </li>
+        {/* ── Sidebar ── */}
+        <aside className="lg:col-span-1 space-y-5">
+          <div className="rounded-2xl border border-border/50 bg-gradient-to-b from-card to-muted/20 p-6">
+            <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-accent mb-4">At a glance</p>
+            <dl className="space-y-3 text-sm">
+              {glance.map((g) => (
+                <div key={g.label} className="flex items-start justify-between gap-4 border-b border-border/40 pb-3 last:border-0 last:pb-0">
+                  <dt className="text-muted-foreground flex-shrink-0">{g.label}</dt>
+                  <dd className="font-semibold text-foreground text-right">{g.value}</dd>
+                </div>
               ))}
-            </ul>
-          </nav>
-        )}
-
-        {/* FAQs */}
-        {faqs.length > 0 && (
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">{b.name}: frequently asked questions</h2>
-            <div className="divide-y divide-border/60 rounded-2xl border border-border/50 overflow-hidden">
-              {faqs.map((f) => (
-                <details key={f.question} className="group bg-background">
-                  <summary className="cursor-pointer list-none px-4 sm:px-5 py-4 flex items-center justify-between gap-3 font-semibold text-sm text-foreground hover:bg-accent/5">
-                    {f.question}
-                    <span className="text-muted-foreground group-open:rotate-45 transition-transform text-lg leading-none">+</span>
-                  </summary>
-                  <div className="px-4 sm:px-5 pb-4 text-sm text-muted-foreground leading-relaxed">{f.answer}</div>
-                </details>
-              ))}
-            </div>
+            </dl>
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-white text-sm font-semibold transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+              <MessageCircle className="h-4 w-4" /> Talk to an advisor
+            </a>
           </div>
-        )}
+
+          <WeeklySubscribeForm source={`building:${slug}`} variant="card" defaultAreas={[communitySlug]} />
+        </aside>
       </div>
+
+      {/* ── Related buildings ── */}
+      {siblings.length > 0 && (
+        <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-12">
+          <SectionEyebrow eyebrow="Nearby" title={`Other buildings in ${b.area}`} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {siblings.map((s) => (
+              <Link key={s.slug} href={`${lp}/building/${s.slug}`} className="group flex items-center justify-between gap-3 rounded-2xl border border-border/50 bg-card px-5 py-4 hover:border-primary/20 hover:shadow-md transition-all">
+                <div className="min-w-0">
+                  <p className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">{s.name}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5 tabular-nums">
+                    {b.area}{s.sales ? ` · ${s.sales.toLocaleString("en-AE")} sales` : ""}{s.avgPrice ? ` · ${fmtAed(s.avgPrice)} avg` : ""}
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── FAQs ── */}
+      {faqs.length > 0 && (
+        <section id="faqs" className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14 scroll-mt-32">
+          <SectionEyebrow eyebrow="FAQ" title={`${b.name}: frequently asked questions`} />
+          <FaqAccordion faqs={faqs} variant="card" emitJsonLd={false} />
+        </section>
+      )}
+
+      {/* ── Closing CTA band ── */}
+      <section className="relative overflow-hidden text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
+        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3">Considering {b.name}?</h2>
+          <p className="text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">Get honest, DLD-backed guidance on pricing, yields and availability in {b.area} from Binayah&apos;s advisors — no pressure, just the numbers.</p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white shadow-lg transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+              <MessageCircle className="h-4 w-4" /> Talk to an advisor
+            </a>
+            <Link href={`${lp}/search?q=${encodeURIComponent(b.area)}`} className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-sm text-white border border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+              Explore {b.area} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
