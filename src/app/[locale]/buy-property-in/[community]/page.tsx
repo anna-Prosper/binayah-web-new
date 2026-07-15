@@ -30,12 +30,16 @@ export async function generateMetadata({
   // Clamp to ~158 chars on a word boundary so the meta description isn't truncated mid-word by Google.
   const description = full.length <= 158 ? full : full.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
-  // Zero-inventory guard: a community page with no listings for sale can't
-  // satisfy the query — keep it crawlable (follow) but noindex until it fills.
+  // Zero-inventory guard: try apiName first, then each synonym, so a name
+  // mismatch doesn't falsely noindex a page that actually has listings.
   let hasListings = true;
   try {
-    const res = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(c.apiName ?? c.name)}&countOnly=1`));
-    if (res.ok) hasListings = ((await res.json()).total ?? 0) > 0;
+    const namesToTry = [c.apiName ?? c.name, ...(c.synonyms ?? []).filter(s => s !== (c.apiName ?? c.name))];
+    for (const name of namesToTry) {
+      const res = await serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`));
+      if (res.ok && ((await res.json()).total ?? 0) > 0) { hasListings = true; break; }
+      hasListings = false;
+    }
   } catch { /* API down → treat as indexable; don't noindex on transient errors */ }
 
   return {
@@ -79,21 +83,43 @@ export default async function BuyInCommunityPage({
 
   let initialListings: any[] = [];
   let totalCount = 0;
-  const apiCommunity = c.apiName ?? c.name;
+  let apiCommunity = c.apiName ?? c.name;
 
   try {
-    const [listingsRes, countRes] = await Promise.all([
-      serverFetch(
-        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(apiCommunity)}&limit=${BATCH_SIZE}`)
-      ),
-      serverFetch(
-        serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(apiCommunity)}&countOnly=1`)
-      ),
-    ]);
-    if (listingsRes.ok) initialListings = await listingsRes.json();
-    if (countRes.ok) totalCount = (await countRes.json()).total ?? 0;
+    // Try primary name first, then synonyms — pick the first that returns listings.
+    const namesToTry = [apiCommunity, ...(c.synonyms ?? []).filter(s => s !== apiCommunity)];
+    for (const name of namesToTry) {
+      const [listingsRes, countRes] = await Promise.all([
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&limit=${BATCH_SIZE}`)),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&community=${encodeURIComponent(name)}&countOnly=1`)),
+      ]);
+      const count = countRes.ok ? ((await countRes.json()).total ?? 0) : 0;
+      if (count > 0) {
+        apiCommunity = name;
+        totalCount = count;
+        if (listingsRes.ok) initialListings = await listingsRes.json();
+        break;
+      }
+    }
   } catch (err) {
     console.warn("[BuyInCommunityPage] API unavailable:", (err as Error).message);
+  }
+
+  // When no secondary listings exist, load off-plan projects and a cross-community sample.
+  let offPlanProjects: any[] = [];
+  let similarListings: any[] = [];
+  if (totalCount === 0) {
+    try {
+      const [projRes, similarRes] = await Promise.all([
+        serverFetch(serverApiUrl(`/api/projects?community=${encodeURIComponent(c.name)}&limit=6`)),
+        serverFetch(serverApiUrl(`/api/listings?listingType=Sale&limit=6`)),
+      ]);
+      if (projRes.ok) offPlanProjects = await projRes.json();
+      if (similarRes.ok) {
+        const data = await similarRes.json();
+        similarListings = Array.isArray(data) ? data : (data.results ?? []);
+      }
+    } catch { /* best-effort */ }
   }
 
   // Sale-side DLD market note — diverges this page from its /rent-property-in twin.
@@ -121,7 +147,7 @@ export default async function BuyInCommunityPage({
             the two don't compete for the same query. */}
         <p className="text-sm text-muted-foreground max-w-3xl mb-4">
           For schools, transport and the full area overview, read the{" "}
-          <a href={`${localePrefix}/communities/${c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
+          <a href={`${localePrefix}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
         </p>
         {/* Seller funnel: owners in this community → free valuation (curated 20 only). */}
         {CURATED_COMMUNITY_SLUGS.includes(c.slug) && (
@@ -149,16 +175,78 @@ export default async function BuyInCommunityPage({
   );
 
   const emptyState = (
-    <div className="max-w-xl mx-auto text-center py-16">
-      <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center text-primary-foreground" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-      </div>
-      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{L.emptyTitle}</h3>
-      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">{L.emptyBody}</p>
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href={`${localePrefix}/buy`} className="font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
-          {L.browseAll}
-        </a>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      {/* Off-plan projects in this community */}
+      {offPlanProjects.length > 0 && (
+        <section className="mb-14">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Off-Plan Projects in {c.name}</h2>
+          <p className="text-sm text-muted-foreground mb-6">No secondary market listings right now — but these off-plan launches are open for purchase in {c.name}.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {offPlanProjects.map((p: any) => (
+              <a key={p._id} href={`${localePrefix}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
+                {p.featuredImage && (
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img src={p.featuredImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
+                )}
+                <div className="p-4">
+                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || "Off-Plan"}</p>
+                  <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-1 line-clamp-2">{p.name}</h3>
+                  <p className="text-xs text-muted-foreground mb-2">{p.developerName}</p>
+                  {p.startingPrice && (
+                    <p className="text-sm font-semibold text-foreground">From AED {Number(p.startingPrice).toLocaleString()}</p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+          <div className="mt-6">
+            <a href={`${localePrefix}/off-plan-in/${c.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+              View all off-plan in {c.name} →
+            </a>
+          </div>
+        </section>
+      )}
+
+      {/* Similar listings from other Dubai communities */}
+      {similarListings.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Properties Available in Dubai Right Now</h2>
+          <p className="text-sm text-muted-foreground mb-6">No resale listings in {c.name} at the moment — explore similar homes across Dubai.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {similarListings.map((l: any) => (
+              <a key={l._id} href={`${localePrefix}/listing/${l.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
+                {l.featuredImage && (
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img src={l.featuredImage} alt={l.title || l.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
+                )}
+                <div className="p-4">
+                  <p className="text-xs text-muted-foreground mb-1">{l.community}</p>
+                  <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-2 line-clamp-2">{l.title || l.name}</h3>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
+                    {l.bedrooms != null && <span>{l.bedrooms === 0 ? "Studio" : `${l.bedrooms} BR`}</span>}
+                    {l.size && <span>{Number(l.size).toLocaleString()} sqft</span>}
+                  </div>
+                  {l.price && (
+                    <p className="text-sm font-semibold text-foreground">AED {Number(l.price).toLocaleString()}</p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+          <div className="mt-6">
+            <a href={`${localePrefix}/buy`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+              {L.browseAll} →
+            </a>
+          </div>
+        </section>
+      )}
+
+      {/* Fallback CTA */}
+      <div className="text-center py-8 border-t border-border">
+        <h3 className="text-lg font-bold text-foreground mb-2">{L.emptyTitle}</h3>
+        <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">{L.emptyBody}</p>
         <a href={`${localePrefix}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">
           {L.getNotified}
         </a>
