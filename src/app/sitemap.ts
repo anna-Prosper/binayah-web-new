@@ -454,7 +454,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...CURATED_COMMUNITY_SLUGS.map((slug) => withAlternates(`/property-valuation/${slug}`, 0.7, "monthly", now)),
     // Bedroom × type × community matrix — only combos that actually have
     // listings (all four types), so no empty/self-noindexed URLs are submitted.
-    ...allMatrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
+    // Matrix pages are fully localized (title/H1/description/sold-price band in
+    // all 7 locales), so submit them WITH hreflang alternates.
+    ...allMatrixCombos.map((u) => withAlternates(u, 0.6, "weekly", now)),
     // Developer × community pages.
     ...devCommunityCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),
     // Superlative (cheapest) pages.

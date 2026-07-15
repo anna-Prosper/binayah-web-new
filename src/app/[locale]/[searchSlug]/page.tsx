@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch, getAreaSoldMatrix, findSoldCombo } from "@/lib/api";
 import { findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
+import { mx, bedsLabelL, typeLabelL, fillT } from "@/lib/matrix-i18n";
 import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -68,9 +69,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // Real DLD sold-price data for this bedroom×type combo (apartments/villas,
   // sale only). Its presence makes the page data-rich even with no live listings.
   const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
-  const title = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai | Binayah`;
-  const soldSentence = soldCombo ? `Median sold price AED ${soldCombo.medianPrice.toLocaleString("en-AE")} from ${soldCombo.count.toLocaleString("en-AE")} DLD transactions. ` : "";
-  const description = `Browse ${p.bedsLabel.toLowerCase()} ${p.type.canon.toLowerCase()}s ${p.verb.toLowerCase()} in ${c.name}, Dubai. ${soldSentence}${c.yield ? `Avg gross yield ${c.yield}. ` : ""}Live listings and DLD sold-price data with Binayah.`.slice(0, 158);
+  const M = mx(locale);
+  const bedsL = bedsLabelL(locale, p.beds);
+  const typeL = typeLabelL(locale, p.type.canon);
+  const verbL = p.listingType === "Rent" ? M.verbRent : M.verbSale;
+  const title = `${fillT(M.h1, { beds: bedsL, type: typeL, verb: verbL, community: c.name })} | Binayah`;
+  const soldSentence = soldCombo ? fillT(M.soldSentence, { median: soldCombo.medianPrice.toLocaleString("en-AE"), count: soldCombo.count.toLocaleString("en-AE") }) + " " : "";
+  const descLead = fillT(M.descLead, { beds: bedsL.toLowerCase(), type: typeL.toLowerCase(), verb: verbL.toLowerCase(), community: c.name });
+  const description = `${descLead} ${soldSentence}${M.descTail}`.slice(0, 158);
   const path = `/${searchSlug}`;
 
   // Thin-content guard: 404 matrix combos with zero inventory so Google drops
@@ -138,13 +144,16 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   const nonce = await getNonce();
   const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
 
-  const h1 = `${p.bedsLabel} ${p.type.canon}s ${p.verb} in ${c.name}, Dubai`;
-  const buyOrRent = p.listingType === "Rent" ? "Rent" : "Buy";
+  const M = mx(locale);
+  const bedsL = bedsLabelL(locale, p.beds);
+  const typeL = typeLabelL(locale, p.type.canon);
+  const verbL = p.listingType === "Rent" ? M.verbRent : M.verbSale;
+  const h1 = fillT(M.h1, { beds: bedsL, type: typeL, verb: verbL, community: c.name });
   const breadcrumbs = [
-    { name: "Home", href: `${lp}/` },
-    { name: buyOrRent, href: `${lp}/${p.listingType === "Rent" ? "rent" : "buy"}` },
+    { name: M.home, href: `${lp}/` },
+    { name: p.listingType === "Rent" ? M.rent : M.buy, href: `${lp}/${p.listingType === "Rent" ? "rent" : "buy"}` },
     { name: c.name, href: `${lp}/${p.listingType === "Rent" ? "rent-property-in" : "buy-property-in"}/${c.slug}` },
-    { name: `${p.bedsLabel} ${p.type.canon}s`, href: `${lp}/${searchSlug}` },
+    { name: `${bedsL} ${typeL}`, href: `${lp}/${searchSlug}` },
   ];
 
   const seoBlock = (
@@ -157,18 +166,18 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
         </p>
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Available</p>
-            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount > 0 ? `${totalCount}+` : "On request"}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{M.available}</p>
+            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount > 0 ? `${totalCount}+` : M.onRequest}</p>
           </div>
           {c.priceRange && (
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price range</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{M.priceRange}</p>
               <p className="text-sm sm:text-base font-bold text-foreground">{c.priceRange}</p>
             </div>
           )}
           {c.yield && (
             <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Gross yield</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{M.grossYield}</p>
               <p className="text-sm sm:text-base font-bold text-foreground">{c.yield}</p>
             </div>
           )}
@@ -178,31 +187,31 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
           <div className="mt-8 rounded-2xl border border-border/60 bg-background/60 p-5 sm:p-6 max-w-3xl">
             <div className="flex items-center justify-between gap-3 mb-4">
               <h2 className="text-sm font-bold text-foreground">
-                {p.bedsLabel} {p.type.canon.toLowerCase()}s in {c.name} — DLD sold prices
+                {bedsL} {typeL} · {M.soldTitle}
               </h2>
-              <span className="text-[11px] text-muted-foreground whitespace-nowrap">{soldCombo.count.toLocaleString("en-AE")} sales · last 24 months</span>
+              <span className="text-[11px] text-muted-foreground whitespace-nowrap">{soldCombo.count.toLocaleString("en-AE")} {M.salesWindow}</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
                 <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {soldCombo.medianPrice.toLocaleString("en-AE")}</div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">Median sold price</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{M.median}</div>
               </div>
               <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
                 <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {(soldCombo.minPrice / 1_000_000).toFixed(1)}M–{(soldCombo.maxPrice / 1_000_000).toFixed(1)}M</div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">Price range</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{M.priceRange}</div>
               </div>
               {soldCombo.pricePerSqft && (
                 <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
                   <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">AED {soldCombo.pricePerSqft.toLocaleString("en-AE")}</div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">Avg price / sqft</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">{M.ppsf}</div>
                 </div>
               )}
               <div className="rounded-xl bg-muted/40 border border-border/40 px-3 py-3">
                 <div className="text-lg sm:text-xl font-bold text-foreground leading-tight">{soldCombo.count.toLocaleString("en-AE")}</div>
-                <div className="text-[11px] text-muted-foreground mt-0.5">DLD transactions</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5">{M.txns}</div>
               </div>
             </div>
-            <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">Median of real Dubai Land Department sale transactions for {p.bedsLabel.toLowerCase()} {p.type.canon.toLowerCase()}s in {c.name} over the last 24 months.</p>
+            <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">{fillT(M.soldNote, { beds: bedsL.toLowerCase(), type: typeL.toLowerCase(), community: c.name })}</p>
           </div>
         )}
       </div>
@@ -211,13 +220,13 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
 
   const emptyState = (
     <div className="max-w-xl mx-auto text-center py-16">
-      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">No {p.bedsLabel.toLowerCase()} {p.type.canon.toLowerCase()}s listed right now</h3>
-      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">We add matching homes in {c.name} regularly. Tell us what you&apos;re after and we&apos;ll alert you, or browse everything available in {c.name} today.</p>
+      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">{fillT(M.emptyTitle, { beds: bedsL.toLowerCase(), type: typeL.toLowerCase() })}</h3>
+      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">{fillT(M.emptyBody, { community: c.name })}</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <a href={`${lp}/${p.listingType === "Rent" ? "rent-property-in" : "buy-property-in"}/${c.slug}`} className="font-bold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-all" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}>
-          All {p.type.canon.toLowerCase()}s in {c.name}
+          {fillT(M.allIn, { type: typeL.toLowerCase(), community: c.name })}
         </a>
-        <a href={`${lp}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">Get notified</a>
+        <a href={`${lp}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">{M.getNotified}</a>
       </div>
     </div>
   );
