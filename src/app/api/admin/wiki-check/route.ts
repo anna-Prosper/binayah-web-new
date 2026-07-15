@@ -15,9 +15,9 @@ export async function GET(req: NextRequest) {
   const dbCommunities = await db.collection("communities")
     .find({ publishStatus: "published" }, { projection: { slug: 1, _id: 0 } })
     .toArray();
-  const dbSlugs = new Set(dbCommunities.map((c) => (c as { slug: string }).slug));
+  const dbSlugs = new Set(dbCommunities.map((c) => (c as unknown as { slug: string }).slug));
   const annotated = docs.map((d) => {
-    const doc = d as { slug: string; name: string };
+    const doc = d as unknown as { slug: string; name: string };
     return { slug: doc.slug, name: doc.name, wikiOnly: !dbSlugs.has(doc.slug) };
   });
   return NextResponse.json({ total: docs.length, docs: annotated });
