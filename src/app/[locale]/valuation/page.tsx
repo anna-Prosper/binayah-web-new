@@ -56,6 +56,30 @@ const VALUATION_FAQS: Record<string, { question: string; answer: string }[]> = {
     { question: "迪拜房产价值多久变化一次？", answer: "数据根据DLD交易登记实时更新。自2021年以来，优质地区的年均增值率为15-25%。" },
     { question: "Binayah估价可用于贷款申请吗？", answer: "Binayah的在线估价适合了解市场行情，但不被银行接受为正式贷款估价。银行需要RICS认证评估师的报告，您的Binayah经纪人可为您推荐认可评估师。" },
   ],
+  vi: [
+    { question: "Công cụ định giá của Binayah chính xác đến mức nào?", answer: "Định giá bằng AI của Binayah sử dụng dữ liệu giao dịch thực tế đã đăng ký với DLD trong 6-12 tháng gần nhất cho chính tòa nhà và khu vực của bạn. Độ chính xác thường trong khoảng 5-10% so với giá trị thị trường thực tế. Với mục đích vay thế chấp hoặc pháp lý, nên có thẩm định trực tiếp đạt chuẩn RICS." },
+    { question: "Những yếu tố nào ảnh hưởng đến giá trị bất động sản ở Dubai?", answer: "Các yếu tố chính gồm: vị trí và khu vực (Downtown và Palm có mức giá cao hơn), tầng và tầm nhìn, tình trạng và cải tạo, diện tích và bố cục, tiện ích tòa nhà, cung-cầu thị trường, và khoảng cách đến tàu điện, trường học, mua sắm." },
+    { question: "Định giá có thực sự miễn phí không?", answer: "Có, hoàn toàn miễn phí và không cần đăng ký. Công cụ định giá của Binayah mang đến cho chủ nhà và nhà đầu tư thông tin thị trường tức thì, không ràng buộc và không phí." },
+    { question: "Giá bất động sản Dubai thay đổi thường xuyên như thế nào?", answer: "Giá trị được cập nhật theo thời gian thực dựa trên các giao dịch đăng ký với DLD. Thị trường đã tăng 15-25% mỗi năm ở các khu vực cao cấp kể từ năm 2021. Hãy dùng bảng điều khiển Market Pulse của Binayah để xem xu hướng hàng tháng theo khu vực." },
+    { question: "Tôi có thể dùng định giá Binayah cho hồ sơ vay thế chấp không?", answer: "Định giá trực tuyến miễn phí của Binayah hữu ích để nắm bắt thị trường nhưng không được chấp nhận là định giá chính thức cho mục đích vay. Ngân hàng yêu cầu thẩm định viên RICS hoặc được ngân hàng phê duyệt. Đại lý Binayah có thể giới thiệu bạn đến các thẩm định viên được công nhận." },
+    { question: "Giá trị bất động sản Dubai được đo lường như thế nào?", answer: "Bất động sản Dubai thường được định giá theo mỗi foot vuông (AED/sqft). Giá dao động đáng kể: Downtown Dubai và Palm Jumeirah từ 2.000-5.000+ AED/sqft, trong khi các khu như JVC và Dubai South từ 700-1.200 AED/sqft." },
+  ],
+  fr: [
+    { question: "Quelle est la précision de l'outil d'évaluation Binayah ?", answer: "L'évaluation par IA de Binayah utilise les données réelles de transactions enregistrées au DLD des 6 à 12 derniers mois pour votre immeuble et votre quartier. La précision se situe généralement à 5-10 % de la valeur de marché réelle. Pour un prêt hypothécaire ou à des fins juridiques, une expertise en personne certifiée RICS est recommandée." },
+    { question: "Quels facteurs influencent la valeur d'un bien à Dubaï ?", answer: "Les principaux facteurs sont : l'emplacement et le quartier (Downtown et Palm affichent une prime), l'étage et la vue, l'état et les rénovations, la surface et l'agencement, les équipements de l'immeuble, l'offre et la demande, et la proximité du métro, des écoles et des commerces." },
+    { question: "L'évaluation est-elle vraiment gratuite ?", answer: "Oui, entièrement gratuite et sans inscription. L'outil d'évaluation de Binayah offre aux propriétaires et investisseurs une information de marché instantanée, sans engagement ni frais." },
+    { question: "À quelle fréquence les prix de l'immobilier à Dubaï évoluent-ils ?", answer: "Les valeurs sont mises à jour en temps réel selon les enregistrements de transactions au DLD. Le marché a connu une appréciation annuelle de 15 à 25 % dans les zones prisées depuis 2021. Consultez le tableau de bord Market Pulse de Binayah pour les tendances mensuelles par quartier." },
+    { question: "Puis-je utiliser l'évaluation Binayah pour une demande de prêt ?", answer: "L'évaluation en ligne gratuite de Binayah est utile pour connaître le marché mais n'est pas acceptée comme évaluation formelle pour un prêt. Les banques exigent un expert agréé RICS ou approuvé par la banque. Votre agent Binayah peut vous orienter vers des experts accrédités." },
+    { question: "Comment mesure-t-on la valeur d'un bien à Dubaï ?", answer: "La valeur se calcule généralement au pied carré (AED/sqft). Les prix varient fortement : Downtown Dubai et Palm Jumeirah de 2 000 à 5 000+ AED/sqft, tandis que des zones comme JVC et Dubai South se situent entre 700 et 1 200 AED/sqft." },
+  ],
+  he: [
+    { question: "עד כמה מדויק כלי ההערכה של Binayah?", answer: "הערכת ה-AI של Binayah מסתמכת על נתוני עסקאות אמיתיים הרשומים ב-DLD מ-6-12 החודשים האחרונים עבור הבניין והאזור הספציפיים שלכם. הדיוק בדרך כלל בטווח של 5-10% מערך השוק בפועל. למשכנתא או לצרכים משפטיים מומלצת הערכה פרונטלית בהסמכת RICS." },
+    { question: "אילו גורמים משפיעים על ערך הנכס בדובאי?", answer: "הגורמים המרכזיים: מיקום ואזור (Downtown ו-Palm בפרמיה), קומה ונוף, מצב הנכס ושיפוצים, שטח ותכנון, מתקני הבניין, היצע וביקוש בשוק, וקרבה לרכבת התחתית, בתי ספר וקניות." },
+    { question: "האם ההערכה באמת חינם?", answer: "כן, חינם לחלוטין וללא הרשמה. כלי ההערכה של Binayah נועד להעניק לבעלים ולמשקיעים מודיעין שוק מיידי, ללא התחייבות וללא תשלום." },
+    { question: "באיזו תדירות משתנים מחירי הנדל\"ן בדובאי?", answer: "הערכים מתעדכנים בזמן אמת לפי רישומי עסקאות ב-DLD. השוק רשם עלייה שנתית של 15-25% באזורי היוקרה מאז 2021. השתמשו בלוח Market Pulse של Binayah למגמות חודשיות לפי אזור." },
+    { question: "האם ניתן להשתמש בהערכת Binayah לבקשת משכנתא?", answer: "ההערכה המקוונת החינמית של Binayah שימושית להיכרות עם השוק אך אינה מתקבלת כהערכה רשמית למשכנתא. הבנקים דורשים שמאי מוסמך RICS או מאושר בנק. סוכן Binayah יכול להפנות אתכם לשמאים מוסמכים." },
+    { question: "כיצד נמדד ערך הנכס בדובאי?", answer: "נכס בדובאי מוערך בדרך כלל לפי רגל רבועה (AED/sqft). המחירים משתנים מאוד: Downtown Dubai ו-Palm Jumeirah בטווח 2,000-5,000+ AED/sqft, בעוד אזורים כמו JVC ו-Dubai South בטווח 700-1,200 AED/sqft." },
+  ],
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -87,9 +111,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   const faqs = VALUATION_FAQS[locale] || VALUATION_FAQS.en;
+  // Describes the free AI valuation tool as a web app (price 0) — helps Google
+  // understand the interactive page beyond the FAQ.
+  const appLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Binayah AI Property Valuation",
+    url: canonical(locale, "/valuation"),
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web browser",
+    description: descriptions[locale] || descriptions.en,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "AED" },
+    provider: { "@type": "RealEstateAgent", name: "Binayah Properties", url: "https://www.binayah.ae" },
+    featureList: [
+      "Instant AI-powered property valuation",
+      "Based on real DLD transaction data",
+      "Free, no registration required",
+      "Dubai and UAE coverage",
+    ],
+    inLanguage: locale,
+  };
   return (
     <>
       <FAQJsonLd faqs={faqs} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd).replace(/</g, "\\u003c") }}
+      />
       <ValuationPage />
     </>
   );
