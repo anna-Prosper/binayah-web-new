@@ -1038,3 +1038,18 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
 export function findBuyCommunity(slug: string): BuyCommunity | undefined {
   return BUY_COMMUNITIES.find((c) => c.slug === slug);
 }
+
+// The original curated 20 — communities with full editorial copy + strong DLD
+// data depth. Used for the highest-quality programmatic surfaces (e.g. the
+// bedroom×type matrix and /property-valuation) where thin newer catalog entries
+// would dilute quality. Mirrors sitemap.ts MATRIX_SLUGS.
+export const CURATED_COMMUNITY_SLUGS: readonly string[] = [
+  "dubai-marina", "downtown-dubai", "palm-jumeirah", "business-bay", "jumeirah-village-circle",
+  "dubai-hills-estate", "arabian-ranches", "jumeirah-beach-residence", "difc", "dubai-creek-harbour",
+  "mbr-city", "damac-hills", "emirates-hills", "bluewaters-island", "mirdif", "al-barari",
+  "jumeirah-lakes-towers", "town-square", "the-springs", "international-city",
+];
+
+export const CURATED_COMMUNITIES: BuyCommunity[] = BUY_COMMUNITIES.filter((c) =>
+  CURATED_COMMUNITY_SLUGS.includes(c.slug)
+);

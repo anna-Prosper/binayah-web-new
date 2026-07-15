@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { MongoClient } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
-import { BUY_COMMUNITIES } from "@/lib/buy-communities";
+import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
 import { getAgents, isPublishableAgent } from "@/lib/agents";
@@ -419,6 +419,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
+    // Seller-intent valuation landing pages — only the curated 20 (real DLD price data).
+    ...CURATED_COMMUNITY_SLUGS.map((slug) => withAlternates(`/property-valuation/${slug}`, 0.7, "monthly", now)),
     // Bedroom × type × community matrix — only combos that actually have
     // listings (all four types), so no empty/self-noindexed URLs are submitted.
     ...matrixCombos.map((u) => plainEntry(u, 0.6, "weekly", now)),

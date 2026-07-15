@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ListingsPageClient from "@/app/_clients/rent/ListingsPageClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
-import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
+import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
 import { getCommunityStats, buildMarketNote } from "@/lib/market";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
@@ -119,10 +119,17 @@ export default async function BuyInCommunityPage({
         {/* Cross-link to the informational area guide — different intent (this
             page = homes for sale; the guide = schools, transport, lifestyle) so
             the two don't compete for the same query. */}
-        <p className="text-sm text-muted-foreground max-w-3xl mb-8">
+        <p className="text-sm text-muted-foreground max-w-3xl mb-4">
           For schools, transport and the full area overview, read the{" "}
           <a href={`${localePrefix}/communities/${c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
         </p>
+        {/* Seller funnel: owners in this community → free valuation (curated 20 only). */}
+        {CURATED_COMMUNITY_SLUGS.includes(c.slug) && (
+          <p className="text-sm text-muted-foreground max-w-3xl mb-8">
+            Own here already?{" "}
+            <a href={`${localePrefix}/property-valuation/${c.slug}`} className="text-primary font-semibold hover:underline">Get a free {c.name} property valuation →</a>
+          </p>
+        )}
         <div className="grid grid-cols-3 gap-4 max-w-xl">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>
