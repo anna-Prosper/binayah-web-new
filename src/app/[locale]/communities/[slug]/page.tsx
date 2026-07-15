@@ -1,14 +1,10 @@
 import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRichClient";
-import CommunityInfoDetailClient from "@/components/CommunityInfoDetailClient";
 import { notFound } from "next/navigation";
 import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
-import type { CommunityInfoPage } from "@/lib/communityScraper";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
-import { getCommunityStats, buildCommunityFaqs, dldAreaFor } from "@/lib/market";
-import CommunityStatsBand from "@/components/CommunityStatsBand";
-import { getNonce } from "@/lib/nonce";
+import { dldAreaFor } from "@/lib/market";
 
 export const revalidate = 3600;
 
@@ -36,22 +32,21 @@ export async function generateMetadata({
   const db = dbResult.status === "fulfilled" ? dbResult.value : null;
 
   const name =
-    (wiki as any)?.name ||
     db?.community?.name ||
+    (wiki as any)?.name ||
     slug.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   // Keyword-rich, unique meta description led by real data (project count +
-  // price), then a sentence of editorial context. Falls back through the
-  // enrichment so communities without a legacy description (JVC/MBR/Meydan)
-  // still get unique copy instead of boilerplate.
+  // price), then a sentence of editorial context. DB content wins; wiki is a
+  // last-resort fallback for communities with no curated copy yet.
   const enr = (db?.community?.enrichment || null) as any;
   const priceFrom = (enr?.highlights || []).find((h: any) => /price/i.test(h?.label || ""))?.value as string | undefined;
   const projCount: number = db?.counts?.projects || (Array.isArray(db?.projects) ? db!.projects.length : 0);
   const baseDesc =
-    (wiki as any)?.description ||
     db?.community?.description ||
     enr?.overview ||
     enr?.tagline ||
+    (wiki as any)?.description ||
     "";
   const stripped = baseDesc.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
   const firstSentence = ((stripped.match(/^.*?[.!?](\s|$)/) || [stripped])[0] || stripped).trim();
@@ -66,7 +61,7 @@ export async function generateMetadata({
 
   // Reject Wikipedia/Wikimedia-hosted images — they may go offline and signal
   // third-party content to social crawlers. Fall back to our branded OG image.
-  const rawImage = (wiki as any)?.heroImage || db?.community?.featuredImage;
+  const rawImage = db?.community?.featuredImage || (wiki as any)?.heroImage;
   const usableImage =
     rawImage && !/(wikipedia|wikimedia)\.org/i.test(rawImage) ? rawImage : null;
   // Our hero PNGs are 8-12 MB — over the size cap some social crawlers enforce
@@ -212,32 +207,7 @@ export default async function CommunityPage({
     );
   }
 
-  // Market-depth band (DLD stats + FAQs + top buildings) — only for the thin
-  // wiki-only fallback below, which lacks the rich client's own content.
-  const pageCommunityName =
-    (communityInfoDoc as any)?.name ||
-    slug.replace(/-/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase());
-  const cStats = await getCommunityStats(pageCommunityName);
-  const cFaqs = buildCommunityFaqs(pageCommunityName, cStats);
-  const cNonce = await getNonce();
-  const cLp = locale === "en" ? "" : `/${locale}`;
-  const cBuildings = (await getDldBuildings(`area=${encodeURIComponent(dldAreaFor(pageCommunityName))}&limit=12&sortBy=sales`)).results
-    .filter((b: { slug?: string; name?: string }) => b.slug && b.name)
-    .slice(0, 12)
-    .map((b: { slug: string; name: string }) => ({ slug: b.slug, name: b.name }));
-  const statsBand = <CommunityStatsBand name={pageCommunityName} stats={cStats} faqs={cFaqs} buildings={cBuildings} localePrefix={cLp} nonce={cNonce} />;
-
-  // 4. Only wiki (no DB record) → existing CommunityInfoDetailClient
-  const serialized: Omit<CommunityInfoPage, "scrapedAt"> = {
-    slug: communityInfoDoc!.slug,
-    name: communityInfoDoc!.name,
-    location: communityInfoDoc!.location,
-    description: communityInfoDoc!.description,
-    developerName: communityInfoDoc!.developerName,
-    heroImage: communityInfoDoc!.heroImage,
-    amenities: communityInfoDoc!.amenities,
-    priceRange: communityInfoDoc!.priceRange,
-    sources: communityInfoDoc!.sources,
-  };
-  return <><CommunityInfoDetailClient community={serialized} locale={locale} />{statsBand}</>;
+  // wikiOnly (wiki data but no DB record) is caught in generateMetadata and
+  // returns 404 before the page component runs. This path is unreachable.
+  return notFound();
 }
