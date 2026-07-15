@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { scrapeCommunityInfo, toSlug, type CommunityInfoPage } from "@/lib/communityScraper";
+import { BUY_COMMUNITIES } from "@/lib/buy-communities";
 
 // Ensure the slug unique index exists (idempotent — safe to call on every cold start)
 async function ensureIndex() {
@@ -46,47 +47,49 @@ export async function GET(request: NextRequest) {
   try {
     const slug = toSlug(q);
     if (BLOCKLIST.has(slug)) return NextResponse.json({ exists: false });
+
+    // Run cache lookup and DB community check in parallel.
     let cached: CommunityInfoPage | null = null;
-
-    // 1. Try MongoDB cache — isolated so a DB outage doesn't block scraping
-    try {
-      const client = await clientPromise;
-      const db = client.db("binayah_web_new_dev");
-      const collection = db.collection<CommunityInfoPage>("community_info_pages");
-      cached = await collection.findOne({ slug });
-    } catch (dbErr) {
-      console.warn("[community-info] MongoDB cache lookup failed (will scrape anyway):", dbErr);
-    }
-
-    // Check if a published DB community record exists for this slug. Used by
-    // the UI to decide whether /communities/[slug] is safe to link to (wikiOnly
-    // pages now return 404, so we only show the community link when a DB entry
-    // confirms the page will render).
     let hasDbCommunity = false;
     try {
       const client = await clientPromise;
       const db = client.db("binayah_web_new_dev");
-      const dbCommunity = await db.collection("communities").findOne(
-        { slug, publishStatus: "published" },
-        { projection: { _id: 1 } }
-      );
-      hasDbCommunity = !!dbCommunity;
-    } catch {
-      // Non-fatal — UI will just not show the link
+      const [cachedDoc, dbCommunityDoc] = await Promise.all([
+        db.collection<CommunityInfoPage>("community_info_pages").findOne({ slug }),
+        // Check if a published DB community record exists — used by the UI to
+        // decide whether /communities/[slug] is safe to link to.
+        db.collection("communities").findOne({ slug, publishStatus: "published" }, { projection: { _id: 1 } }),
+      ]);
+      cached = cachedDoc;
+      hasDbCommunity = !!dbCommunityDoc;
+    } catch (dbErr) {
+      console.warn("[community-info] MongoDB lookup failed (will continue):", dbErr);
     }
 
     if (cached) {
       return NextResponse.json({ exists: true, hasDbCommunity, data: cached });
     }
 
-    // 2. Always attempt scraping, even if MongoDB was unavailable
+    // Gate: only scrape Wikipedia for slugs that correspond to a known Dubai
+    // community. This prevents garbage accumulating when users type airline
+    // names, towers, football clubs, or other non-community queries that still
+    // mention "Dubai" in their Wikipedia articles.
+    const isKnownCommunity =
+      hasDbCommunity ||
+      BUY_COMMUNITIES.some((c) => c.slug === slug || c.communitySlug === slug);
+
+    if (!isKnownCommunity) {
+      return NextResponse.json({ exists: false });
+    }
+
+    // Scrape Wikipedia — only reached for real known communities without a cache hit.
     const scraped = await scrapeCommunityInfo(q);
 
     if (!scraped) {
       return NextResponse.json({ exists: false });
     }
 
-    // 3. Try to persist — best-effort; don't fail the request if writing fails
+    // Persist — best-effort; don't fail the request if writing fails.
     try {
       const client = await clientPromise;
       const db = client.db("binayah_web_new_dev");
@@ -96,16 +99,13 @@ export async function GET(request: NextRequest) {
         { $setOnInsert: scraped },
         { upsert: true }
       );
-      // Re-fetch to get the _id assigned by MongoDB
       const stored = await collection.findOne({ slug: scraped.slug });
       return NextResponse.json({ exists: true, hasDbCommunity, data: stored ?? scraped });
     } catch (writeErr) {
       console.error("[community-info] MongoDB write failed:", writeErr);
-      // Still return the scraped data — persistence is best-effort
       return NextResponse.json({ exists: true, hasDbCommunity, data: scraped });
     }
   } catch (err) {
-    // Never return 500 — log and return exists: false
     console.error("[community-info] Unhandled error:", err);
     return NextResponse.json({ exists: false });
   }
