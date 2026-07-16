@@ -69,9 +69,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const TEAM_L: Record<string, { crumb: string; heading: string; intro: string; empty: string }> = {
+  en: { crumb: "Our Team", heading: "Meet the Binayah team", intro: "RERA-certified property consultants who have helped clients buy, sell, rent and invest across Dubai since 2007. Get matched with a specialist for your area and budget.", empty: "Our team directory is being updated. Please check back shortly." },
+  fr: { crumb: "Notre équipe", heading: "Rencontrez l'équipe Binayah", intro: "Des conseillers immobiliers certifiés RERA qui aident leurs clients à acheter, vendre, louer et investir à Dubaï depuis 2007. Trouvez le spécialiste adapté à votre quartier et à votre budget.", empty: "Notre annuaire d'équipe est en cours de mise à jour. Merci de revenir bientôt." },
+  ru: { crumb: "Наша команда", heading: "Знакомьтесь с командой Binayah", intro: "Сертифицированные RERA консультанты по недвижимости, помогающие клиентам покупать, продавать, арендовать и инвестировать в Дубае с 2007 года. Подберём специалиста под ваш район и бюджет.", empty: "Каталог нашей команды обновляется. Пожалуйста, зайдите позже." },
+  ar: { crumb: "فريقنا", heading: "تعرّف على فريق بناية", intro: "مستشارو عقارات معتمدون من RERA ساعدوا العملاء على الشراء والبيع والإيجار والاستثمار في دبي منذ 2007. سنوصلك بمتخصص يناسب منطقتك وميزانيتك.", empty: "يتم تحديث دليل فريقنا. يرجى العودة قريبًا." },
+  zh: { crumb: "我们的团队", heading: "认识 Binayah 团队", intro: "自2007年以来，RERA认证的房产顾问帮助客户在迪拜买卖、租赁和投资。为您匹配适合您所在区域和预算的专家。", empty: "我们的团队目录正在更新中，请稍后再来查看。" },
+  vi: { crumb: "Đội ngũ của chúng tôi", heading: "Gặp gỡ đội ngũ Binayah", intro: "Các chuyên viên bất động sản được RERA chứng nhận đã giúp khách hàng mua, bán, cho thuê và đầu tư khắp Dubai từ năm 2007. Kết nối với chuyên gia phù hợp khu vực và ngân sách của bạn.", empty: "Danh bạ đội ngũ của chúng tôi đang được cập nhật. Vui lòng quay lại sau." },
+  he: { crumb: "הצוות שלנו", heading: "הכירו את צוות Binayah", intro: 'יועצי נדל"ן מוסמכי RERA שסייעו ללקוחות לקנות, למכור, להשכיר ולהשקיע ברחבי דובאי מאז 2007. נתאים לכם מומחה לאזור ולתקציב שלכם.', empty: "מדריך הצוות שלנו מתעדכן. אנא בדקו שוב בקרוב." },
+};
+
 export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
   const lp = locale === "en" ? "" : `/${locale}`;
+  const L = TEAM_L[locale] ?? TEAM_L.en;
   const agents = await getAgents();
 
   return (
@@ -79,14 +90,13 @@ export default async function TeamPage({ params }: Props) {
       <Navbar />
       <main className="flex-1">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
-          <Breadcrumbs items={[{ label: "Our Team", href: `${lp}/team` }]} />
+          <Breadcrumbs items={[{ label: L.crumb, href: `${lp}/team` }]} />
         </div>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">Meet the Binayah team</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">{L.heading}</h1>
           <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground leading-relaxed">
-            RERA-certified property consultants who have helped clients buy, sell, rent and invest across Dubai
-            since 2007. Get matched with a specialist for your area and budget.
+            {L.intro}
           </p>
         </section>
 
@@ -126,7 +136,7 @@ export default async function TeamPage({ params }: Props) {
             ))}
           </div>
           {agents.length === 0 && (
-            <p className="text-sm text-muted-foreground">Our team directory is being updated. Please check back shortly.</p>
+            <p className="text-sm text-muted-foreground">{L.empty}</p>
           )}
         </section>
       </main>

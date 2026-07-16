@@ -13,7 +13,15 @@ const TITLES: Record<string, string> = {
   he: "תנאי השירות | Binayah Properties",
 };
 
-const DESC = "Review the terms and conditions governing your use of the Binayah Properties website and services.";
+const DESCS: Record<string, string> = {
+  en: "Review the terms and conditions governing your use of the Binayah Properties website and services.",
+  fr: "Consultez les conditions générales régissant votre utilisation du site et des services de Binayah Properties.",
+  ru: "Ознакомьтесь с условиями использования веб-сайта и услуг Binayah Properties.",
+  ar: "اطّلع على الشروط والأحكام التي تحكم استخدامك لموقع وخدمات بناية للعقارات.",
+  zh: "查看管辖您使用 Binayah Properties 网站及服务的条款和条件。",
+  vi: "Xem lại các điều khoản và điều kiện điều chỉnh việc bạn sử dụng trang web và dịch vụ của Binayah Properties.",
+  he: "עיינו בתנאים וההגבלות החלים על השימוש שלכם באתר ובשירותים של Binayah Properties.",
+};
 
 // The terms document is published in English only. All locale variants set
 // canonical to the English URL so Google consolidates them rather than
@@ -28,7 +36,7 @@ export async function generateMetadata({
   const { locale } = await params;
   return {
     title: TITLES[locale] ?? TITLES.en,
-    description: DESC,
+    description: DESCS[locale] ?? DESCS.en,
     alternates: { canonical: EN_CANONICAL },
   };
 }

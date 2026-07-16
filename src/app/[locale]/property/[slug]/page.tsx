@@ -117,8 +117,8 @@ export default async function PropertyPage({
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const isRent = listing.listingType === "Rent";
   const breadcrumbs = [
-    { name: "Home", href: `${localePrefix}/` },
-    { name: isRent ? "Rent" : "Buy", href: `${localePrefix}/${isRent ? "rent" : "buy"}` },
+    { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
+    { name: isRent ? (locale === "fr" ? "Louer" : locale === "ru" ? "Аренда" : locale === "ar" ? "إيجار" : locale === "zh" ? "租房" : locale === "vi" ? "Thuê" : locale === "he" ? "השכרה" : "Rent") : (locale === "fr" ? "Acheter" : locale === "ru" ? "Купить" : locale === "ar" ? "شراء" : locale === "zh" ? "购买" : locale === "vi" ? "Mua" : locale === "he" ? "קנייה" : "Buy"), href: `${localePrefix}/${isRent ? "rent" : "buy"}` },
     { name: listing.name || listing.title, href: `${localePrefix}/property/${slug}` },
   ];
 

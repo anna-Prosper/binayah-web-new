@@ -754,7 +754,7 @@ export default async function ForeignBuyerPage({
         {/* Buying steps */}
         <section>
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
-            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : locale === "fr" ? "ÉTAPE PAR ÉTAPE" : locale === "he" ? "步骤详解" : "步骤详解"}
+            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : locale === "fr" ? "ÉTAPE PAR ÉTAPE" : locale === "he" ? "שלב אחר שלב" : "步骤详解"}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.stepsHeading}</h2>
           <p className="text-sm text-muted-foreground mb-8">{c.stepsSubheading}</p>

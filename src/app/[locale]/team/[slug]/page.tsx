@@ -81,13 +81,23 @@ export default async function AgentPage({ params }: Props) {
   if (!agent) notFound();
 
   const lp = locale === "en" ? "" : `/${locale}`;
+  const AL: Record<string, { email: string; about: string; specialties: string; browse: string; back: string }> = {
+    en: { email: "Email", about: "About", specialties: "Specialties", browse: "Browse properties for sale", back: "← All team members" },
+    fr: { email: "E-mail", about: "À propos", specialties: "Spécialités", browse: "Parcourir les biens à vendre", back: "← Tous les membres de l'équipe" },
+    ru: { email: "Эл. почта", about: "О консультанте", specialties: "Специализация", browse: "Смотреть объекты на продажу", back: "← Все члены команды" },
+    ar: { email: "البريد الإلكتروني", about: "نبذة", specialties: "التخصصات", browse: "تصفح العقارات المعروضة للبيع", back: "→ جميع أعضاء الفريق" },
+    zh: { email: "邮箱", about: "简介", specialties: "专长", browse: "浏览待售房源", back: "← 所有团队成员" },
+    vi: { email: "Email", about: "Giới thiệu", specialties: "Chuyên môn", browse: "Xem bất động sản đang bán", back: "← Tất cả thành viên" },
+    he: { email: "אימייל", about: "אודות", specialties: "התמחויות", browse: "עיון בנכסים למכירה", back: "→ כל חברי הצוות" },
+  };
+  const AGL = AL[locale] ?? AL.en;
   const bio = bioText(agent.bio);
   const phone = contactPhone(agent);
   const sameAs = [agent.social?.linkedin, agent.social?.instagram, agent.social?.facebook, agent.social?.twitter].filter(
     (u): u is string => !!u && /^https?:\/\//.test(u)
   );
   const crumbs = [
-    { label: "Our Team", href: `${lp}/team` },
+    { label: locale === "fr" ? "Notre équipe" : locale === "ru" ? "Наша команда" : locale === "ar" ? "فريقنا" : locale === "zh" ? "我们的团队" : locale === "vi" ? "Đội ngũ của chúng tôi" : locale === "he" ? "הצוות שלנו" : "Our Team", href: `${lp}/team` },
     { label: agent.name, href: `${lp}/team/${slug}` },
   ];
   const waMsg = `Hi, I'd like to speak with ${agent.name} about Dubai property.`;
@@ -127,7 +137,7 @@ export default async function AgentPage({ params }: Props) {
                     href={`mailto:${agent.email}`}
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted/40 transition-colors"
                   >
-                    <Mail className="h-4 w-4" /> Email
+                    <Mail className="h-4 w-4" /> {AGL.email}
                   </a>
                 )}
                 {phone && (
@@ -164,14 +174,14 @@ export default async function AgentPage({ params }: Props) {
 
               {bio && (
                 <div className="mt-6">
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground/80 mb-2">About</h2>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground/80 mb-2">{AGL.about}</h2>
                   <p className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line">{bio}</p>
                 </div>
               )}
 
               {agent.specialties && (
                 <div className="mt-6">
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground/80 mb-2">Specialties</h2>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground/80 mb-2">{AGL.specialties}</h2>
                   <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">{agent.specialties}</p>
                 </div>
               )}
@@ -181,13 +191,13 @@ export default async function AgentPage({ params }: Props) {
                   href={`${lp}/buy`}
                   className="inline-flex items-center rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted/40 transition-colors"
                 >
-                  Browse properties for sale
+                  {AGL.browse}
                 </Link>
                 <Link
                   href={`${lp}/team`}
                   className="inline-flex items-center rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted/40 transition-colors"
                 >
-                  ← All team members
+                  {AGL.back}
                 </Link>
               </div>
             </div>

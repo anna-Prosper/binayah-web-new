@@ -12,18 +12,39 @@ export const revalidate = 300;
 
 interface Props { params: Promise<{ locale: string }> }
 
+const PULSE_TITLE: Record<string, string> = {
+  en: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
+  fr: "Pouls du marché immobilier de Dubaï | Analyses en direct | Binayah",
+  ru: "Пульс рынка недвижимости Дубая | Аналитика в реальном времени | Binayah",
+  ar: "نبض سوق العقارات في دبي | تحليلات حية | بناية",
+  zh: "迪拜房地产市场脉搏 | 实时分析 | Binayah",
+  vi: "Nhịp đập thị trường bất động sản Dubai | Phân tích trực tiếp | Binayah",
+  he: 'דופק שוק הנדל"ן בדובאי | ניתוחים בזמן אמת | Binayah',
+};
+const PULSE_DESC: Record<string, string> = {
+  en: "Live Dubai real estate analytics, price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
+  fr: "Analyses en direct de l'immobilier à Dubaï : prix au pied carré, rendements locatifs, scores d'investissement, tendances des transactions, taux de change et indicateurs économiques.",
+  ru: "Аналитика недвижимости Дубая в реальном времени: цена за кв. фут, доходность аренды, инвестиционные оценки, тренды сделок, курсы валют и экономические показатели.",
+  ar: "تحليلات حية لعقارات دبي: السعر لكل قدم مربع، عوائد الإيجار، درجات الاستثمار، اتجاهات المعاملات، أسعار الصرف والمؤشرات الاقتصادية.",
+  zh: "迪拜房地产实时分析：每平方英尺价格、租金收益率、投资评分、成交趋势、汇率及经济指标。",
+  vi: "Phân tích bất động sản Dubai trực tiếp: giá mỗi foot vuông, lợi suất cho thuê, điểm đầu tư, xu hướng giao dịch, tỷ giá và chỉ số kinh tế.",
+  he: 'ניתוחים חיים של הנדל"ן בדובאי: מחיר לרגל רבועה, תשואות שכירות, ציוני השקעה, מגמות עסקאות, שערי מטבע ומדדים כלכליים.',
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const title = PULSE_TITLE[locale] ?? PULSE_TITLE.en;
+  const description = PULSE_DESC[locale] ?? PULSE_DESC.en;
   return {
-    title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
-    description: "Live Dubai real estate analytics, price per sqft, rental yields, investment scores, transaction trends, exchange rates, and economic indicators.",
+    title,
+    description,
     alternates: {
       canonical: canonical(locale, "/pulse"),
       languages: altLangs("/pulse"),
     },
     openGraph: {
-      title: "Dubai Real Estate Market Pulse | Live Analytics | Binayah",
-      description: "Live Dubai real estate analytics, price per sqft, rental yields, investment scores, transaction trends and economic indicators.",
+      title,
+      description,
       url: canonical(locale, "/pulse"),
       type: "website",
       locale: OG_LOCALE[locale] ?? "en_AE",

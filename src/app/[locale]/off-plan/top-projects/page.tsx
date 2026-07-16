@@ -88,6 +88,14 @@ const DEVELOPERS = [
 ];
 
 const CATEGORIES = {
+  fr: [
+    { label: "Meilleur pour la plus-value", dev: "Emaar Properties", why: "Les actifs de Downtown et Creek Harbour ont enregistré une plus-value de 40-60 % depuis 2021. La marque Emaar impose des primes à la revente." },
+    { label: "Meilleur pour le rendement locatif", dev: "Binghatti Developers", why: "Les projets Binghatti à Al Jaddaf et Business Bay atteignent régulièrement des rendements bruts de 7-9 %, parmi les plus élevés de Dubaï." },
+    { label: "Meilleur pour les familles", dev: "Sobha Realty", why: "Sobha Hartland II et MBR City offrent une vie de quartier, des écoles internationales et des espaces verts prisés des familles qui s'installent." },
+    { label: "Meilleur plan de paiement", dev: "DAMAC Properties", why: "Les plans de paiement post-livraison de DAMAC (jusqu'à 5 ans après la remise des clés) sont les plus avantageux du marché." },
+    { label: "Meilleure entrée abordable", dev: "Azizi Developments", why: "Des studios à partir de 500 000 AED dans des communautés établies. Azizi Riviera sur le Dubai Canal offre des vues sur le canal à des prix compétitifs." },
+    { label: "Meilleur design et finitions", dev: "Ellington Properties", why: "L'approche axée sur le design d'Ellington et ses finitions 5 étoiles positionnent les unités dans le haut de gamme du marché de la revente." },
+  ],
   he: [
     {
       "label": "הטוב ביותר לעליית ערך",

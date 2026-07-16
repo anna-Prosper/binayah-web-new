@@ -14,12 +14,29 @@ export const revalidate = 3600;
 
 interface Props { params: Promise<{ locale: string }> }
 
-const TITLE = "Dubai Market Reports — Weekly Property Insights | Binayah Properties";
-const DESCRIPTION =
-  "Binayah's weekly Dubai property market report: top-moving communities, rental yields, new project launches and the numbers that matter for buyers and investors.";
+const TITLES: Record<string, string> = {
+  en: "Dubai Market Reports — Weekly Property Insights | Binayah Properties",
+  fr: "Rapports de marché Dubaï — Analyses immobilières hebdomadaires | Binayah Properties",
+  ru: "Отчёты по рынку Дубая — еженедельная аналитика недвижимости | Binayah Properties",
+  ar: "تقارير سوق دبي — رؤى عقارية أسبوعية | بناية للعقارات",
+  zh: "迪拜市场报告 — 每周房产洞察 | Binayah Properties",
+  vi: "Báo cáo thị trường Dubai — Thông tin bất động sản hàng tuần | Binayah Properties",
+  he: 'דוחות שוק דובאי — תובנות נדל"ן שבועיות | Binayah Properties',
+};
+const DESCRIPTIONS: Record<string, string> = {
+  en: "Binayah's weekly Dubai property market report: top-moving communities, rental yields, new project launches and the numbers that matter for buyers and investors.",
+  fr: "Le rapport hebdomadaire de Binayah sur le marché immobilier de Dubaï : communautés les plus dynamiques, rendements locatifs, lancements de projets et les chiffres qui comptent pour acheteurs et investisseurs.",
+  ru: "Еженедельный отчёт Binayah по рынку недвижимости Дубая: самые активные районы, доходность аренды, запуски новых проектов и цифры, важные для покупателей и инвесторов.",
+  ar: "تقرير بناية الأسبوعي عن سوق العقارات في دبي: المجتمعات الأكثر حركة، عوائد الإيجار، إطلاق المشاريع الجديدة والأرقام المهمة للمشترين والمستثمرين.",
+  zh: "Binayah 每周迪拜房产市场报告：热门社区、租金收益率、新项目发布，以及买家和投资者关注的关键数据。",
+  vi: "Báo cáo hàng tuần của Binayah về thị trường bất động sản Dubai: các cộng đồng sôi động nhất, lợi suất cho thuê, dự án mới ra mắt và những con số quan trọng với người mua và nhà đầu tư.",
+  he: 'הדוח השבועי של Binayah על שוק הנדל"ן בדובאי: השכונות המובילות, תשואות שכירות, השקות פרויקטים חדשים והמספרים שחשובים לרוכשים ולמשקיעים.',
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const TITLE = TITLES[locale] ?? TITLES.en;
+  const DESCRIPTION = DESCRIPTIONS[locale] ?? DESCRIPTIONS.en;
   return {
     title: TITLE,
     description: DESCRIPTION,

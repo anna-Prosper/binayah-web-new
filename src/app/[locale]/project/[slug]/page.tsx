@@ -17,7 +17,7 @@ export function generateStaticParams() {
 }
 
 // Normalize any common YouTube/Vimeo URL form (watch / youtu.be / embed) so the
-// VideoObject can emit a proper embedUrl — what Google wants for hosted players.
+// VideoObject can emit a proper embedUrl â what Google wants for hosted players.
 function youtubeId(u: string): string | null {
   const m = String(u).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/i);
   return m ? m[1] : null;
@@ -30,13 +30,13 @@ function vimeoId(u: string): string | null {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
-  // Missing/delisted project → real 404 (status code), not a soft 200+noindex
+  // Missing/delisted project â real 404 (status code), not a soft 200+noindex
   // page. Calling notFound() in generateMetadata makes Next return a proper 404
   // so Google drops the URL instead of parking it under "Excluded by noindex".
   if (!project) notFound();
   const rawSeo = project.seo || {};
-  // Strip Yoast/RankMath WordPress import artifacts — fields that start with
-  // "Note: None of these options will be applied…" are placeholder noise, not
+  // Strip Yoast/RankMath WordPress import artifacts â fields that start with
+  // "Note: None of these options will be appliedâ¦" are placeholder noise, not
   // real descriptions. Treat them as empty so the fallback kicks in.
   const cleanSeo = (v: unknown) =>
     typeof v === "string" && v.startsWith("Note: None of these options") ? "" : v;
@@ -47,10 +47,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     twitterDescription:  cleanSeo(rawSeo.twitterDescription),
   };
 
-  // Title with a price hook for CTR (project + area + "From AED …" + brand),
+  // Title with a price hook for CTR (project + area + "From AED â¦" + brand),
   // kept within Google's ~60-char SERP limit.
   const rawName = String(project.name || "Off-Plan Project");
-  const projName = rawName.length > 38 ? `${rawName.slice(0, 37).trimEnd()}…` : rawName;
+  const projName = rawName.length > 38 ? `${rawName.slice(0, 37).trimEnd()}â¦` : rawName;
   const communityStr = project.community ? ` | ${project.community}` : "";
   const priceNum = project.startingPrice
     ? (project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice)
@@ -61,12 +61,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     ? `AED ${Math.round(priceNum / 1_000)}K`
     : "";
   const titleFallback = `${projName}${communityStr}${priceShort ? ` | From ${priceShort}` : ""} | Binayah`;
-  const descFallbackRaw = `${project.name}${project.community ? ` in ${project.community}` : ""}, Dubai by ${project.developerName || "a leading developer"}.${priceShort ? ` Off-plan from ${priceShort} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice — explore with Binayah.`;
-  const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "…";
+  const descFallbackRaw = `${project.name}${project.community ? ` in ${project.community}` : ""}, Dubai by ${project.developerName || "a leading developer"}.${priceShort ? ` Off-plan from ${priceShort} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice â explore with Binayah.`;
+  const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "â¦";
 
   // Always self-referential to the .ae URL. Migrated projects carry stale
-  // seo.canonicalUrl values — legacy binayah.com/projects/<slug> (the old WP
-  // path is now /dubai-projects/<slug>, so it 404s) or outdated .ae slugs —
+  // seo.canonicalUrl values â legacy binayah.com/projects/<slug> (the old WP
+  // path is now /dubai-projects/<slug>, so it 404s) or outdated .ae slugs â
   // so honoring the stored value risks canonicalising to a non-existent URL.
   const path = `/project/${slug}`;
   const canonicalUrl = makeCanonical(locale, path);
@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   if (!project) return notFound();
   const nonce = await getNonce();
 
-  // Related projects fetched server-side so the project↔project links render in
+  // Related projects fetched server-side so the projectâproject links render in
   // SSR HTML (crawlable internal-link graph) instead of a client-only fetch.
   const relatedProjects = await getRelatedProjects(
     project.community || "",
@@ -198,7 +198,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   const parentName  = isRentalHub ? "Rent" : isReadyHub ? "Buy" : "Off-Plan";
   const parentPath  = isRentalHub ? "/rent" : isReadyHub ? "/buy" : "/off-plan";
   const breadcrumbs = [
-    { name: "Home",          href: `${localePrefix}/` },
+    { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
     { name: parentName,      href: `${localePrefix}${parentPath}` },
     { name: project.name,    href: `${localePrefix}/project/${slug}` },
   ];
