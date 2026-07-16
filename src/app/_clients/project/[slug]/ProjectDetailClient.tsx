@@ -1557,7 +1557,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                             <div>
                               <h2 className="text-base sm:text-xl font-bold text-white">{t("paymentPlanLabel")}</h2>
                               <p className="text-[10px] sm:text-xs text-white/60">
-                                {t("forUnit")} {project.unitTypes![activeUnitTab]} · {formatPrice(unitPrice)}
+                                {t("forUnit")} {tBed(project.unitTypes![activeUnitTab])} · {formatPrice(unitPrice)}
                               </p>
                             </div>
                           </div>
