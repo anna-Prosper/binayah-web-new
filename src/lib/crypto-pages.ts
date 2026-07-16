@@ -2,7 +2,7 @@
 // Per-page copy lives in `locales`; shared UI chrome (steps, stats, buttons,
 // eyebrows) lives in CRYPTO_LABELS. 6 locales: en, ru, ar, zh, vi, he.
 
-export type CryptoLocale = "en" | "ru" | "ar" | "zh" | "vi" | "he";
+export type CryptoLocale = "en" | "ru" | "ar" | "zh" | "vi" | "he" | "fr";
 
 export interface CryptoPageLocale {
   metaTitle: string;
@@ -45,7 +45,8 @@ export const OG_LOCALE: Record<CryptoLocale, string> = {
   "ar": "ar_AE",
   "zh": "zh_CN",
   "vi": "vi_VN",
-  "he": "he_IL"
+  "he": "he_IL",
+  "fr": "fr_FR"
 };
 
 export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
@@ -426,6 +427,69 @@ export const CRYPTO_LABELS: Record<CryptoLocale, CryptoLabels> = {
         "body": "הנכס נרשם במחלקת הקרקעות של דובאי (DLD) על שמכם. אתם מקבלים את שטר הבעלות הרשמי, בעלות משפטית מלאה."
       }
     ]
+  },
+  "fr": {
+    "home": "Accueil",
+    "hub": "Acheter en crypto",
+    "heroCta": "Consultation gratuite",
+    "browseCta": "Parcourir les biens",
+    "ctaBtn": "Contacter un spécialiste",
+    "ctaWhatsApp": "Nous écrire sur WhatsApp",
+    "overviewEyebrow": "Aperçu",
+    "benefitsEyebrow": "Avantages",
+    "faqEyebrow": "FAQ",
+    "processEyebrow": "Processus",
+    "howTitle": "Comment ça marche",
+    "coinsLabel": "Cryptomonnaies acceptées",
+    "relatedTitle": "Autres façons d'acheter en crypto",
+    "coins": [
+      "Bitcoin (BTC)",
+      "Ethereum (ETH)",
+      "Tether (USDT)",
+      "USD Coin (USDC)",
+      "Ripple (XRP)",
+      "BNB"
+    ],
+    "stats": [
+      {
+        "n": "500+",
+        "label": "Transactions en crypto"
+      },
+      {
+        "n": "19+",
+        "label": "Ans à Dubaï"
+      },
+      {
+        "n": "3 000+",
+        "label": "Biens immobiliers"
+      },
+      {
+        "n": "0%",
+        "label": "Impôt sur les plus-values"
+      }
+    ],
+    "steps": [
+      {
+        "n": "01",
+        "title": "Choisissez votre bien",
+        "body": "Parcourez plus de 3 000 annonces et projets sur plan. Nos agents présélectionnent les biens correspondant à votre budget et à vos objectifs d'investissement."
+      },
+      {
+        "n": "02",
+        "title": "Vérification juridique et KYC",
+        "body": "Nous vérifions les justificatifs de provenance de votre crypto (AML/KYC) et confirmons l'acceptation de la crypto auprès du promoteur ou du vendeur."
+      },
+      {
+        "n": "03",
+        "title": "Transfert sécurisé",
+        "body": "Les fonds sont transférés via une plateforme d'échange agréée aux Émirats ou par virement direct depuis votre portefeuille, convertis en AED au taux convenu pour l'enregistrement au DLD."
+      },
+      {
+        "n": "04",
+        "title": "Émission du titre de propriété",
+        "body": "Le bien est enregistré auprès du Dubai Land Department à votre nom. Vous recevez le titre de propriété officiel, une pleine propriété juridique."
+      }
+    ]
   }
 };
 
@@ -497,6 +561,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "buy Dubai property with BTC",
           "Bitcoin to AED property purchase",
           "Dubai Golden Visa Bitcoin"
+        ]
+      },
+      "fr": {
+        "metaTitle": "Acheter un bien à Dubaï en Bitcoin (BTC) | Binayah",
+        "metaDesc": "Achetez un bien à Dubaï en Bitcoin. Convertissez vos BTC en AED via une plateforme agréée aux Émirats, enregistrement au DLD, titre de propriété et 0% d'impôt. 19+ ans, 3 000+ annonces.",
+        "heroLabel": "ACHETER EN BITCOIN",
+        "h1a": "Acheter un bien à Dubaï",
+        "h1b": "En Bitcoin (BTC)",
+        "heroDesc": "Transformez vos BTC en immobilier haut de gamme à Dubaï. Nous gérons la conversion BTC-AED via une plateforme agréée aux Émirats, l'enregistrement au DLD et votre titre de propriété de bout en bout.",
+        "breadcrumb": "Acheter en Bitcoin",
+        "introHeading": "L'immobilier de Dubaï, acheté en Bitcoin",
+        "introBody": [
+          "Les premiers détenteurs de Bitcoin et les grands portefeuilles BTC se diversifient vers des actifs tangibles, et l'immobilier de Dubaï est la destination privilégiée. Grâce au cadre des actifs virtuels de la VARA, les achats importants en BTC sont pleinement légaux : votre Bitcoin est converti en AED à un taux convenu via une plateforme agréée aux Émirats, puis le Dubai Land Department enregistre la propriété et émet votre titre de propriété à votre nom.",
+          "Contrairement à la vente d'un stablecoin, régler une maison à plusieurs millions de dirhams en BTC exige de bien choisir son moment : nous verrouillons un taux de conversion convenu afin que la volatilité entre l'offre et la clôture joue en votre faveur, et non contre vous. Avec 0% d'impôt sur les plus-values, sur le revenu et sur la propriété, les gains que vous avez accumulés en Bitcoin restent les vôtres. Binayah vous accompagne sur l'AML/KYC et la provenance des fonds, en sur plan ou dans le secondaire, de la première visite jusqu'aux clés."
+        ],
+        "whyTitle": "Pourquoi acheter un bien à Dubaï en Bitcoin",
+        "whyPoints": [
+          {
+            "title": "Régulé par la VARA, enregistré au DLD",
+            "body": "Les transactions en BTC relèvent du cadre des actifs virtuels de la VARA. Le Bitcoin est converti en AED via une plateforme agréée aux Émirats, et le DLD enregistre votre propriété et émet un titre de propriété officiel."
+          },
+          {
+            "title": "Verrouillez le taux BTC-AED",
+            "body": "Le Bitcoin est plus volatil que l'USDT ; pour les transactions importantes, nous convenons donc d'un taux de conversion BTC-AED fixe, protégeant votre achat des variations de prix entre la signature et le règlement au DLD."
+          },
+          {
+            "title": "0% d'impôt sur vos gains en BTC",
+            "body": "Dubaï ne prélève aucun impôt sur les plus-values, sur le revenu ni de taxe foncière annuelle. Le patrimoine que vous avez accumulé en Bitcoin se transforme en actif tangible et défiscalisé, avec des rendements locatifs de 5 à 10%."
+          },
+          {
+            "title": "Golden Visa pour les acheteurs en BTC",
+            "body": "Investissez 2 000 000 AED ou plus (environ 545 000 $ en BTC) et obtenez un Golden Visa de 10 ans pour vous et votre famille, ainsi qu'une résidence liée à votre bien à Dubaï."
+          }
+        ],
+        "faqTitle": "FAQ sur l'achat immobilier en Bitcoin",
+        "faqs": [
+          {
+            "q": "Puis-je vraiment acheter un bien à Dubaï directement en Bitcoin ?",
+            "a": "Oui. Dans le cadre de la VARA, votre BTC est converti en AED à un taux convenu via une plateforme agréée aux Émirats, puis le DLD enregistre le bien et émet votre titre de propriété. Les biens sur plan comme dans le secondaire sont pris en charge."
+          },
+          {
+            "q": "Comment la conversion BTC-AED est-elle gérée pour les gros achats ?",
+            "a": "Pour les transactions à plusieurs millions de dirhams, nous fixons le taux BTC-AED avec une plateforme agréée aux Émirats afin que la volatilité du Bitcoin entre l'offre et le règlement au DLD ne modifie pas votre prix. Les fonds sont convertis en AED pour l'enregistrement officiel."
+          },
+          {
+            "q": "Quels documents me faut-il pour l'AML/KYC en payant en BTC ?",
+            "a": "Vous fournirez une pièce d'identité et un justificatif de provenance de vos Bitcoins, tels que des relevés d'échange ou l'historique du portefeuille. Cela satisfait aux règles AML/KYC des Émirats avant que la plateforme agréée ne convertisse les BTC en AED."
+          },
+          {
+            "q": "Quels sont les coûts totaux d'un achat immobilier en Bitcoin ?",
+            "a": "Prévoyez des frais de transfert DLD de 4% plus environ 2% de frais d'agence, comme pour tout achat à Dubaï. Il n'y a aucun impôt supplémentaire, ni impôt sur les plus-values ni taxe foncière sur votre investissement."
+          },
+          {
+            "q": "Mon achat en Bitcoin peut-il me rendre éligible au Golden Visa ?",
+            "a": "Oui. Un bien d'une valeur de 2 000 000 AED ou plus (environ 545 000 $ en BTC) vous rend éligible à un Golden Visa de 10 ans. Les quartiers prisés des acheteurs en BTC incluent Dubai Marina, Downtown Dubai, Palm Jumeirah et JVC."
+          }
+        ],
+        "ctaTitle": "Prêt à acheter un bien à Dubaï en BTC ?",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur la conversion de votre Bitcoin en un bien à Dubaï. WhatsApp +971 54 998 8811 pour une consultation confidentielle, prête pour la provenance des fonds.",
+        "keywords": [
+          "acheter propriété dubaï bitcoin",
+          "immobilier dubaï bitcoin",
+          "acheter bien dubaï BTC",
+          "conversion BTC AED achat immobilier",
+          "Golden Visa Dubaï Bitcoin"
         ]
       },
       "ru": {
@@ -895,6 +1024,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "buy Dubai apartment with Ethereum"
         ]
       },
+      "fr": {
+        "metaTitle": "Acheter un bien à Dubaï en Ethereum | Binayah",
+        "metaDesc": "Achetez un bien à Dubaï en Ethereum (ETH). Convertissez vos ETH en AED à un taux convenu via une plateforme agréée aux Émirats, enregistrement au DLD, 0% d'impôt. Binayah, 19+ ans.",
+        "heroLabel": "Payer en Ethereum (ETH)",
+        "h1a": "Acheter un bien à Dubaï",
+        "h1b": "en Ethereum (ETH)",
+        "heroDesc": "Transformez vos gains en ETH en immobilier à Dubaï. Binayah accompagne les acheteurs crypto-natifs de l'ETH vers l'AED à un taux de conversion convenu via une plateforme agréée aux Émirats, avec des titres de propriété conformes à la VARA, enregistrés au DLD, et 0% d'impôt sur les plus-values.",
+        "breadcrumb": "Acheter en Ethereum",
+        "introHeading": "Diversifiez vos gains en ETH vers des actifs tangibles à Dubaï",
+        "introBody": [
+          "Les détenteurs d'Ethereum assis sur des gains accumulés sur plusieurs cycles se diversifient de plus en plus hors d'un actif volatil vers un bien tangible à Dubaï. L'ETH reste liquide 24h/24 et 7j/7, mais un appartement à la Marina ou une tour à Downtown rapporte un loyer, conserve sa valeur et donne droit à un titre de propriété. Binayah fait le pont entre les deux mondes, en convertissant l'ETH en AED à un taux convenu afin que le prix signé soit le prix payé.",
+          "Le cadre des Émirats rend l'opération limpide. La VARA régule les actifs virtuels, le DLD enregistre la propriété et émet votre titre de propriété, et il n'y a 0% d'impôt sur les plus-values, sur le revenu ni de taxe foncière. Une fois les vérifications AML/KYC de provenance des fonds effectuées, votre ETH devient un actif dubaïote pleinement enregistré, avec en prime un Golden Visa de 10 ans pour les achats de 2 000 000 AED ou plus."
+        ],
+        "whyTitle": "Pourquoi les détenteurs d'ETH achètent via Binayah",
+        "whyPoints": [
+          {
+            "title": "Taux ETH-AED convenu",
+            "body": "Le cours de l'ETH fluctue, mais pas votre transaction. Nous verrouillons un taux de conversion convenu à la signature et réglons via une plateforme agréée aux Émirats, de sorte que le gas et le timing réseau ne modifient jamais le montant en AED enregistré au DLD."
+          },
+          {
+            "title": "Un processus familier aux smart contracts",
+            "body": "Les acheteurs crypto-natifs apprécient un règlement clair et documenté. Notre flux reflète cette rigueur : fonds suivis on-chain, convertis en AED, et rattachés à un titre de propriété du DLD, sans étape opaque entre le portefeuille et la propriété."
+          },
+          {
+            "title": "0% d'impôt sur votre plus-value",
+            "body": "Placez vos gains en ETH dans un actif taxé à 0% sur les plus-values, le revenu et la propriété. Vous conservez l'appréciation, percevez des rendements locatifs de 5 à 10% et détenez un titre plutôt qu'un solde sur un écran."
+          },
+          {
+            "title": "Une rampe conforme, alignée sur la VARA",
+            "body": "Nous gérons l'AML et le KYC de provenance des fonds en amont pour que la conversion soit pleinement conforme. L'ETH est converti via une plateforme agréée en AED pour l'enregistrement au DLD, gardant l'ensemble de l'achat propre et prêt pour un audit."
+          }
+        ],
+        "faqTitle": "FAQ sur l'achat immobilier en Ethereum",
+        "faqs": [
+          {
+            "q": "Puis-je acheter un bien à Dubaï directement en ETH ?",
+            "a": "Oui. Votre ETH est converti en AED à un taux convenu via une plateforme agréée aux Émirats, puis l'achat est enregistré au DLD, qui émet le titre de propriété à votre nom."
+          },
+          {
+            "q": "Comment la volatilité de l'ETH est-elle gérée pendant la transaction ?",
+            "a": "Nous fixons un taux de conversion ETH-AED convenu à la signature. Une fois verrouillé, les variations de prix ultérieures, les frais de gas ou les délais réseau ne modifient pas le montant en AED enregistré au DLD."
+          },
+          {
+            "q": "Quels impôts s'appliquent lorsque j'achète en Ethereum ?",
+            "a": "Dubaï applique 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière. Les coûts d'achat standards sont des frais de transfert DLD de 4% et environ 2% de frais d'agence, que vous payiez en ETH ou en monnaie fiduciaire."
+          },
+          {
+            "q": "Dois-je prouver la provenance de mes ETH ?",
+            "a": "Oui. Une documentation AML et KYC de provenance des fonds est requise. Nous vous guidons pour vérifier l'origine de vos ETH afin que la conversion et l'enregistrement au DLD soient pleinement conformes."
+          },
+          {
+            "q": "Acheter en ETH peut-il me rendre éligible au Golden Visa ?",
+            "a": "Oui. Un achat de 2 000 000 AED ou plus (environ 545 000 $) donne droit au Golden Visa de 10 ans, qu'il soit financé par de l'ETH converti en AED ou en monnaie fiduciaire."
+          }
+        ],
+        "ctaTitle": "Convertissez vos ETH en un titre de propriété à Dubaï",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'un bien à Dubaï en Ethereum. Nous verrouillons votre taux, gérons la conformité et enregistrons votre titre de propriété au DLD. WhatsApp +971 54 998 8811.",
+        "keywords": [
+          "acheter propriété dubaï ethereum",
+          "immobilier dubaï ETH",
+          "conversion ETH AED achat immobilier",
+          "propriété crypto dubaï DLD",
+          "acheter appartement dubaï ethereum"
+        ]
+      },
       "ru": {
         "metaTitle": "Купить недвижимость в Дубае за Ethereum | Binayah",
         "metaDesc": "Покупка недвижимости в Дубае за Ethereum (ETH). Конвертация ETH в AED по согласованному курсу через лицензированную биржу ОАЭ, регистрация DLD, 0% налога.",
@@ -1289,6 +1483,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "USDT stablecoin property purchase",
           "buy Dubai property with stablecoin",
           "USDT to AED property Dubai"
+        ]
+      },
+      "fr": {
+        "metaTitle": "Acheter un bien à Dubaï en USDT | Binayah",
+        "metaDesc": "Achetez un bien à Dubaï en USDT (Tether). Ce stablecoin indexé sur le dollar signifie aucune volatilité, une conversion AED prévisible et un règlement rapide. Conforme à la VARA. 19+ ans.",
+        "heroLabel": "Paiements immobiliers en USDT (Tether)",
+        "h1a": "Acheter un bien à Dubaï",
+        "h1b": "en USDT (Tether)",
+        "heroDesc": "L'USDT est le moyen le plus populaire d'acheter de l'immobilier à Dubaï en crypto. En tant que stablecoin indexé sur le dollar, il élimine la volatilité des prix pendant votre transaction, offre une conversion AED prévisible et un règlement rapide. Binayah vous accompagne de l'offre au titre de propriété.",
+        "breadcrumb": "Acheter en USDT",
+        "introHeading": "Pourquoi l'USDT domine les achats immobiliers en crypto à Dubaï",
+        "introBody": [
+          "Le Tether (USDT) est le stablecoin de prédilection des acheteurs immobiliers à Dubaï, car chaque jeton est indexé sur le dollar américain. Contrairement au Bitcoin ou à l'Ether, sa valeur ne fluctue pas pendant que vous négociez, signez et enregistrez : le montant en AED que vous convenez aujourd'hui est le montant en AED que vous payez à la clôture. Cette stabilité rend l'USDT idéal pour les acomptes importants et les achats intégraux.",
+          "L'USDT circule sur des réseaux courants comme ERC-20 et TRC-20, avec un règlement en quelques minutes plutôt qu'en quelques jours. Pour les acheteurs russes et internationaux confrontés à des contraintes bancaires, il offre une voie rapide et fiable pour financer un achat. À la clôture, l'USDT est converti en AED à un taux convenu via une plateforme agréée aux Émirats afin que le DLD puisse enregistrer votre propriété."
+        ],
+        "whyTitle": "Pourquoi acheter un bien à Dubaï en USDT",
+        "whyPoints": [
+          {
+            "title": "Aucune volatilité des prix",
+            "body": "L'USDT est indexé 1:1 sur le dollar américain, sa valeur reste donc stable pendant la négociation, le contrat et l'enregistrement. Le prix que vous verrouillez est le prix que vous payez, protégeant les transactions importantes des variations du marché."
+          },
+          {
+            "title": "Conversion AED prévisible",
+            "body": "Votre USDT est converti en AED à un taux convenu via une plateforme agréée aux Émirats, vous offrant un coût clair et fixe. L'enregistrement au DLD et les frais de transfert de 4% reposent sur des chiffres transparents, sans surprise à la clôture."
+          },
+          {
+            "title": "Règlement rapide sur tous les réseaux",
+            "body": "Envoyez de l'USDT sur ERC-20 ou TRC-20 et les fonds sont crédités en quelques minutes, pas en quelques jours. Un règlement plus rapide signifie des offres plus rapides, des clôtures plus fluides et un réel avantage sur les annonces sur plan et secondaires très demandées."
+          },
+          {
+            "title": "Conçu pour les acheteurs internationaux",
+            "body": "Pour les acheteurs russes et internationaux confrontés à des restrictions bancaires, l'USDT offre une voie de financement fiable. Combiné au 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière des Émirats, il rend Dubaï exceptionnellement attractive."
+          }
+        ],
+        "faqTitle": "FAQ sur l'achat immobilier en USDT",
+        "faqs": [
+          {
+            "q": "Puis-je légalement acheter un bien à Dubaï en USDT ?",
+            "a": "Oui. Le cadre VARA de Dubaï régule les actifs virtuels. L'USDT est converti en AED à un taux convenu via une plateforme agréée aux Émirats, puis le DLD enregistre la propriété et émet le titre de propriété à votre nom."
+          },
+          {
+            "q": "Pourquoi l'USDT est-il préférable au Bitcoin pour l'immobilier ?",
+            "a": "L'USDT est un stablecoin indexé sur le dollar, il n'a donc aucune volatilité de prix pendant votre transaction. La valeur du Bitcoin peut fortement varier entre l'offre et la clôture, tandis que votre USDT conserve la valeur en AED convenue."
+          },
+          {
+            "q": "Quels réseaux USDT puis-je utiliser ?",
+            "a": "Le Tether fonctionne sur des réseaux courants dont l'ERC-20 (Ethereum) et le TRC-20 (Tron). Les deux sont largement acceptés ; le TRC-20 offre généralement des frais plus bas et une confirmation très rapide pour les gros transferts."
+          },
+          {
+            "q": "Quels sont les coûts totaux d'un achat en USDT ?",
+            "a": "Prévoyez des frais de transfert DLD de 4% plus environ 2% de frais d'agence, comme pour tout achat à Dubaï. Les vérifications AML/KYC de provenance des fonds s'appliquent, et les Émirats prélèvent 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière."
+          },
+          {
+            "q": "Un achat en USDT peut-il me rendre éligible au Golden Visa ?",
+            "a": "Oui. Achetez un bien d'une valeur de 2 000 000 AED ou plus (environ 545 000 USD) et vous pourrez demander le Golden Visa de 10 ans des Émirats, que vous ayez payé en USDT ou en monnaie fiduciaire."
+          }
+        ],
+        "ctaTitle": "Lancez votre achat immobilier en USDT dès aujourd'hui",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'immobilier à Dubaï en USDT. Avec 19+ ans et 3 000+ biens, nous gérons la conversion, l'AML/KYC et l'enregistrement au DLD. WhatsApp +971 54 998 8811.",
+        "keywords": [
+          "acheter propriété dubaï USDT",
+          "Tether immobilier dubaï",
+          "achat immobilier stablecoin USDT",
+          "acheter bien dubaï stablecoin",
+          "conversion USDT AED immobilier dubaï"
         ]
       },
       "ru": {
@@ -1687,6 +1946,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "VARA regulated crypto property purchase"
         ]
       },
+      "fr": {
+        "metaTitle": "Acheter un bien à Dubaï en USDC | Binayah",
+        "metaDesc": "Achetez un bien à Dubaï en USDC, le stablecoin dollar régulé et entièrement réservé de Circle. Transparent, conforme, audité. Titre de propriété du DLD, 0% d'impôt. Binayah, 19+ ans.",
+        "heroLabel": "Immobilier en USDC",
+        "h1a": "Acheter un bien à Dubaï",
+        "h1b": "en USDC (USD Coin)",
+        "heroDesc": "Réglez votre bien à Dubaï en USDC, le stablecoin dollar de Circle, régulé, entièrement réservé et audité de façon indépendante. Profitez d'une traçabilité AML/KYC limpide, d'une conversion AED prévisible et d'une volatilité nulle, puis devenez propriétaire avec un titre de propriété émis par le DLD.",
+        "breadcrumb": "USDC",
+        "introHeading": "Pourquoi payer un bien à Dubaï en USDC",
+        "introBody": [
+          "L'USDC est le stablecoin de l'investisseur soucieux de conformité. Émis par Circle et adossé 1:1 à des liquidités et à des bons du Trésor américain à court terme, il est entièrement réservé et vérifié par des attestations mensuelles. Cette transparence fait de l'USDC l'actif de règlement privilégié des acheteurs institutionnels et des entreprises qui ont besoin d'une provenance des fonds solide et prête pour un audit lors de l'acquisition d'un bien à Dubaï.",
+          "Dans le cadre VARA de Dubaï, l'USDC est converti en AED à un taux convenu via une plateforme agréée aux Émirats avant que le Dubai Land Department n'enregistre votre achat. Sans impôt sur les plus-values, sur le revenu ni taxe foncière aux Émirats, votre USDC va plus loin, et le titre de propriété à votre nom est exactement le même que celui que reçoit tout acheteur au comptant."
+        ],
+        "whyTitle": "Pourquoi les acheteurs choisissent l'USDC avec Binayah",
+        "whyPoints": [
+          {
+            "title": "Régulé et entièrement réservé",
+            "body": "L'USDC est émis par Circle, adossé 1:1 à des liquidités et à des bons du Trésor américain, et vérifié par des attestations régulières de tiers. Contrairement à des alternatives moins transparentes comme l'USDT, ses réserves sont prêtes pour un audit, idéales pour les acheteurs attentifs à la conformité."
+          },
+          {
+            "title": "Traçabilité AML/KYC limpide",
+            "body": "La transparence on-chain de l'USDC et le reporting de Circle créent un dossier de provenance des fonds solide. Nous gérons la documentation AML/KYC pour que votre enregistrement au DLD se déroule sans accroc et sans surprise de conformité."
+          },
+          {
+            "title": "Conversion AED prévisible",
+            "body": "Indexé 1:1 sur le dollar américain, l'USDC ne présente aucune volatilité de prix. Vos fonds sont convertis en AED à un taux convenu via une plateforme agréée aux Émirats, de sorte que le prix auquel vous vous engagez est le prix que vous payez."
+          },
+          {
+            "title": "Titre de propriété sécurisé du DLD",
+            "body": "Une fois le règlement en AED effectué, le Dubai Land Department enregistre la propriété et émet un titre de propriété à votre nom, la même protection juridique que tout achat au comptant classique."
+          }
+        ],
+        "faqTitle": "FAQ sur l'achat immobilier en USDC",
+        "faqs": [
+          {
+            "q": "Puis-je acheter un bien à Dubaï directement en USDC ?",
+            "a": "Oui. Dans le cadre VARA de Dubaï, votre USDC est converti en AED à un taux convenu via une plateforme agréée aux Émirats, puis le Dubai Land Department enregistre votre achat et émet un titre de propriété à votre nom."
+          },
+          {
+            "q": "Pourquoi choisir l'USDC plutôt que l'USDT pour l'immobilier ?",
+            "a": "L'USDC est émis par Circle, entièrement réservé et attesté de façon indépendante, offrant une transparence réglementaire plus forte. Les acheteurs soucieux de conformité et institutionnels le préfèrent souvent pour une provenance des fonds plus limpide et prête pour un audit."
+          },
+          {
+            "q": "Quels sont les coûts totaux d'un achat à Dubaï ?",
+            "a": "Prévoyez des frais de transfert DLD de 4% plus environ 2% de frais d'agence. Les Émirats prélèvent 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière, il n'y a donc aucun coût fiscal récurrent sur votre investissement."
+          },
+          {
+            "q": "Un achat en USDC peut-il donner droit au Golden Visa ?",
+            "a": "Oui. Acheter un bien d'une valeur de 2 000 000 AED ou plus (environ 545 000 USD) peut vous rendre éligible au Golden Visa de 10 ans des Émirats, que vous payiez en USDC ou au comptant."
+          },
+          {
+            "q": "À quels rendements locatifs puis-je m'attendre ?",
+            "a": "Dubaï offre de solides rendements locatifs de 5 à 10% dans les quartiers prisés comme Dubai Marina, Downtown Dubai, Business Bay, Palm Jumeirah et JVC, aussi bien en sur plan que dans le secondaire."
+          }
+        ],
+        "ctaTitle": "Achetez un bien à Dubaï en USDC dès aujourd'hui",
+        "ctaDesc": "Binayah accompagne les acheteurs depuis 19+ ans sur 3 000+ biens. Nos agents multilingues rendent le règlement en USDC simple et conforme. Écrivez-nous sur WhatsApp +971 54 998 8811.",
+        "keywords": [
+          "acheter propriété dubaï USDC",
+          "USDC immobilier dubaï",
+          "payer bien dubaï USD Coin",
+          "investissement immobilier stablecoin dubaï",
+          "achat immobilier crypto régulé VARA"
+        ]
+      },
       "ru": {
         "metaTitle": "Купить недвижимость в Дубае за USDC | Binayah",
         "metaDesc": "Купите недвижимость в Дубае за USDC, регулируемый стейблкоин Circle с полным резервом. Прозрачно, аудит, 0% налогов, титул DLD. Binayah, 19+ лет.",
@@ -2083,6 +2407,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "BTC ETH USDT off-plan Dubai"
         ]
       },
+      "fr": {
+        "metaTitle": "Acheter sur plan à Dubaï en crypto | Binayah",
+        "metaDesc": "Achetez un bien sur plan à Dubaï en BTC, ETH ou USDT. Payez les acomptes de réservation et les échéances en crypto via l'escrow du promoteur. 0% d'impôt, enregistré au DLD.",
+        "heroLabel": "Sur plan + Crypto",
+        "h1a": "Acheter un bien sur plan à Dubaï",
+        "h1b": "en cryptomonnaie",
+        "heroDesc": "Réservez des logements en construction chez Emaar, DAMAC et Sobha et payez votre acompte de réservation et vos échéances en BTC, ETH ou USDT, convertis en AED via des plateformes agréées aux Émirats.",
+        "breadcrumb": "Sur plan en crypto",
+        "introHeading": "L'immobilier sur plan à Dubaï, financé en crypto",
+        "introBody": [
+          "Les projets sur plan à Dubaï vous permettent de bloquer le prix d'aujourd'hui et de payer dans le temps, et la crypto rend cela encore plus simple. Votre acompte de réservation et vos paiements échelonnés peuvent être réglés en BTC, ETH ou USDT, convertis en AED à un taux convenu via une plateforme agréée avant que les fonds n'atteignent le compte séquestre (escrow) du promoteur.",
+          "Dans le cadre VARA de Dubaï, chaque paiement est conforme, traçable et protégé. Avec 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière, les acheteurs sur plan ont bénéficié d'une appréciation de 40 à 60% depuis 2021 tout en réglant les échéances de construction de façon numérique, avec la pleine propriété enregistrée au DLD via l'Oqood."
+        ],
+        "whyTitle": "Pourquoi acheter sur plan en crypto",
+        "whyPoints": [
+          {
+            "title": "Plans d'échéances flexibles",
+            "body": "Payez par étapes sur des plans de type 10/70/20, en réglant l'acompte de réservation et chaque échéance de construction en BTC, ETH ou USDT convertis en AED au taux convenu."
+          },
+          {
+            "title": "Prix d'entrée plus bas",
+            "body": "Les lancements sur plan démarrent sous la valeur du marché livré, votre crypto va donc plus loin et les premiers acheteurs ont vu une appréciation de 40 à 60% depuis 2021 avant la livraison."
+          },
+          {
+            "title": "Protection par l'escrow du promoteur",
+            "body": "Les fonds transitent par des comptes séquestres régulés liés à chaque projet, de sorte que vos échéances financées en crypto ne sont libérées qu'à mesure de l'avancement des travaux, en pleine conformité avec la VARA."
+          },
+          {
+            "title": "Les grands promoteurs le facilitent",
+            "body": "Emaar, DAMAC et Sobha acceptent les paiements convertis depuis la crypto, et Binayah organise l'échange, l'AML/KYC et l'enregistrement Oqood de bout en bout."
+          }
+        ],
+        "faqTitle": "FAQ sur l'achat sur plan en crypto",
+        "faqs": [
+          {
+            "q": "Puis-je payer un acompte de réservation sur plan en crypto ?",
+            "a": "Oui. Votre acompte de réservation peut être payé en BTC, ETH ou USDT, converti en AED à un taux convenu via une plateforme agréée aux Émirats avant qu'il n'atteigne le compte séquestre du promoteur."
+          },
+          {
+            "q": "Comment fonctionnent les paiements par échéances en crypto ?",
+            "a": "Chaque échéance de construction sur un plan de type 10/70/20 est convertie de la crypto vers l'AED au moment du paiement et libérée du séquestre à mesure que le projet atteint les étapes de construction convenues."
+          },
+          {
+            "q": "Quels promoteurs acceptent la crypto pour le sur plan ?",
+            "a": "Emaar, DAMAC et Sobha facilitent les paiements convertis depuis la crypto. Binayah coordonne la plateforme agréée, le transfert vers l'escrow et l'enregistrement Oqood du DLD pour vous."
+          },
+          {
+            "q": "Quels sont les coûts et les impôts ?",
+            "a": "Prévoyez des frais DLD/Oqood de 4% et environ 2% de frais d'agence. Dubaï applique 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière, votre appréciation reste donc entièrement la vôtre."
+          },
+          {
+            "q": "Un achat sur plan en crypto donne-t-il droit au Golden Visa ?",
+            "a": "Oui. Un bien d'une valeur de 2 000 000 AED ou plus (environ 545 000 $) vous rend éligible au Golden Visa de 10 ans, y compris les achats sur plan éligibles."
+          }
+        ],
+        "ctaTitle": "Lancez votre achat sur plan en crypto",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur le paiement des acomptes et échéances sur plan en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 54 998 8811.",
+        "keywords": [
+          "acheter sur plan dubaï crypto",
+          "propriété sur plan cryptomonnaie dubaï",
+          "payer échéances en crypto dubaï",
+          "Emaar DAMAC Sobha crypto sur plan",
+          "BTC ETH USDT sur plan dubaï"
+        ]
+      },
       "ru": {
         "metaTitle": "Off-Plan в Дубае за крипту | Binayah",
         "metaDesc": "Покупайте off-plan недвижимость в Дубае за BTC, ETH или USDT. Оплата депозита и рассрочки по этапам через escrow. 0% налога, регистрация DLD.",
@@ -2477,6 +2866,71 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           "crypto real estate Dubai",
           "Golden Visa property investment",
           "Dubai property Bitcoin USDT"
+        ]
+      },
+      "fr": {
+        "metaTitle": "De la crypto au Golden Visa des Émirats | Binayah",
+        "metaDesc": "Achetez un bien à Dubaï en BTC, ETH ou USDT à partir de 2 000 000 AED et obtenez un Golden Visa renouvelable de 10 ans aux Émirats. Enregistré au DLD, défiscalisé, famille incluse.",
+        "heroLabel": "Investissement immobilier en crypto",
+        "h1a": "Transformez votre crypto en un",
+        "h1b": "Golden Visa des Émirats de 10 ans",
+        "heroDesc": "Investissez 2 000 000 AED ou plus dans l'immobilier à Dubaï payé en cryptomonnaie et obtenez un Golden Visa renouvelable de 10 ans pour vous et votre famille, dans une juridiction à 0% d'impôt, avec un titre de propriété enregistré par le DLD.",
+        "breadcrumb": "Golden Visa en crypto",
+        "introHeading": "De la richesse en crypto à la résidence aux Émirats",
+        "introBody": [
+          "Dubaï vous permet de convertir des actifs numériques en une résidence de long terme sans sacrifier votre mode de vie. Achetez un bien d'une valeur de 2 000 000 AED ou plus, payez en BTC, ETH ou USDT, et la valeur est convertie en AED via une plateforme agréée aux Émirats afin que le DLD puisse enregistrer la vente et émettre votre titre de propriété à votre nom.",
+          "Cet achat éligible débloque le Golden Visa renouvelable de 10 ans. Il n'y a aucune obligation de séjour minimum, vous pouvez parrainer votre conjoint, vos enfants, vos parents et votre personnel de maison, et vous placez votre patrimoine dans une juridiction à 0% d'impôt sur les plus-values, sur le revenu et de taxe foncière."
+        ],
+        "whyTitle": "Pourquoi acheter un bien à Dubaï en crypto",
+        "whyPoints": [
+          {
+            "title": "Visa renouvelable de 10 ans",
+            "body": "Un seul achat éligible de 2 000 000 AED ou plus, livré ou sur plan, un ou plusieurs biens combinés, garantit un Golden Visa de 10 ans qui se renouvelle et n'impose aucune obligation de séjour minimum."
+          },
+          {
+            "title": "Payé en crypto, réglé en AED",
+            "body": "Payez en BTC, ETH ou USDT. Les fonds sont convertis en AED à un taux convenu via une plateforme agréée aux Émirats sous la VARA, de sorte que le DLD enregistre un titre propre et conforme."
+          },
+          {
+            "title": "0% d'impôt, rendements solides",
+            "body": "Les Émirats ne prélèvent aucun impôt sur les plus-values, sur le revenu ni de taxe foncière, et les quartiers prisés offrent des rendements locatifs de 5 à 10%, de sorte que vos gains en crypto génèrent à la fois des flux de trésorerie et une résidence."
+          },
+          {
+            "title": "Toute la famille couverte",
+            "body": "Le Golden Visa parraine votre conjoint, vos enfants, vos parents et votre personnel de maison, offrant aux personnes qui comptent le plus une résidence de long terme liée à un seul investissement."
+          }
+        ],
+        "faqTitle": "FAQ sur le Golden Visa via la crypto",
+        "faqs": [
+          {
+            "q": "Combien de crypto dois-je investir ?",
+            "a": "Il vous faut un bien d'une valeur d'au moins 2 000 000 AED (environ 545 000 USD). Vous pouvez payer l'équivalent en BTC, ETH ou USDT, et il peut s'agir d'un seul bien ou de plusieurs combinés pour atteindre le seuil."
+          },
+          {
+            "q": "Comment la crypto est-elle utilisée pour un achat enregistré au DLD ?",
+            "a": "Votre crypto est convertie en AED à un taux convenu via une plateforme agréée aux Émirats dans le cadre VARA. Le DLD enregistre ensuite l'achat en AED et émet votre titre de propriété."
+          },
+          {
+            "q": "Le bien doit-il être livré, ou peut-il être sur plan ?",
+            "a": "Les deux sont éligibles. Livré ou sur plan, et un ou plusieurs biens combinés, comptent pour le seuil de 2 000 000 AED du Golden Visa de 10 ans."
+          },
+          {
+            "q": "Quels documents et vérifications sont requis ?",
+            "a": "Vous fournissez des copies de passeport, une preuve de propriété de la crypto et la provenance des fonds pour l'AML/KYC, ainsi que le contrat de vente. La plateforme d'échange et le DLD gèrent la conversion et l'enregistrement."
+          },
+          {
+            "q": "Dois-je vivre aux Émirats pour conserver le visa ?",
+            "a": "Non. Le Golden Visa de 10 ans n'impose aucune obligation de séjour minimum, vous pouvez donc conserver la résidence tout en vivant et en travaillant partout dans le monde."
+          }
+        ],
+        "ctaTitle": "Convertissez votre crypto en Golden Visa",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah pour choisir un bien éligible et payer en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 54 998 8811.",
+        "keywords": [
+          "Golden Visa Émirats crypto",
+          "acheter propriété dubaï crypto",
+          "immobilier crypto dubaï",
+          "investissement immobilier Golden Visa",
+          "propriété dubaï Bitcoin USDT"
         ]
       },
       "ru": {

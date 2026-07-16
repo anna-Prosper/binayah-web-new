@@ -233,6 +233,61 @@ const CONTENT = {
     breadcrumbs: ["Home", "Services", "Property Management"],
   },
 
+  fr: {
+    metaTitle: "Gestion locative Dubaï | Services propriétaire sans souci | Binayah",
+    metaDesc: "Gestion locative professionnelle à Dubaï : sélection des locataires, encaissement des loyers, entretien, EJARI et reporting. Libérez votre temps, protégez votre investissement. Certifié RERA.",
+    heroLabel: "GESTION LOCATIVE",
+    h1: "Services de gestion locative à Dubaï",
+    heroDesc: "Laissez Binayah tout gérer, de la recherche du bon locataire à l'entretien mensuel et à l'encaissement des loyers. Notre équipe certifiée RERA protège votre investissement pendant que vous vous concentrez sur l'essentiel.",
+    heroCta: "Obtenez une consultation gratuite",
+    stats: [
+      { n: "19+", label: "Ans de gestion locative à Dubaï" },
+      { n: "RERA", label: "Équipe de gestion certifiée" },
+      { n: "95%", label: "Taux de fidélisation des locataires" },
+      { n: "48h", label: "Délai moyen de réponse aux locataires" },
+    ],
+    servicesTitle: "Ce qui est inclus",
+    services: [
+      { icon: "🏡", title: "Sélection et placement des locataires", body: "Vérification des antécédents, contrôle de l'emploi et examen de l'historique locatif. Nous ne plaçons que des locataires répondant aux critères de qualification stricts de Binayah." },
+      { icon: "💰", title: "Encaissement et reversement des loyers", body: "Encaissement mensuel des loyers, gestion des chèques et reversement direct sur votre compte. Reporting numérique complet avec confirmations de paiement." },
+      { icon: "🔧", title: "Entretien et réparations", body: "Coordination de l'entretien 24h/24 et 7j/7 avec notre réseau d'artisans agréés. Plans d'entretien préventif pour préserver la valeur du bien et limiter les coûts d'urgence." },
+      { icon: "📋", title: "EJARI et conformité légale", body: "Rédaction des contrats de location, enregistrement EJARI auprès du Dubai Land Department et pleine conformité aux lois locatives des Émirats (décret n° 33)." },
+      { icon: "📊", title: "Reporting mensuel", body: "Relevés mensuels détaillés couvrant les loyers perçus, les dépenses d'entretien et la performance du bien. Accessibles via votre portail propriétaire Binayah." },
+      { icon: "⚖️", title: "Règlement des litiges", body: "Médiation experte et accompagnement juridique pour les litiges locatifs. L'équipe formée RERA gère les expulsions, les négociations de renouvellement et les dépôts auprès du RDC." },
+    ],
+    plansTitle: "Formules de gestion",
+    plans: [
+      { name: "Standard", fee: "5 % / mois", features: ["Encaissement des loyers", "Enregistrement EJARI", "Communication avec le locataire", "Coordination de l'entretien de base", "Relevés mensuels"] },
+      { name: "Premium", fee: "8 % / mois", features: ["Tout ce qui est inclus dans Standard", "Photographie professionnelle + annonce", "Sélection et placement des locataires", "Réponse entretien 24h/24 et 7j/7", "Inspection trimestrielle du bien", "Gestionnaire de compte dédié"] },
+      { name: "Service complet", fee: "10 % / mois", features: ["Tout ce qui est inclus dans Premium", "Gestion de projets de rénovation", "Mise en service et gestion des services publics", "Révision annuelle du loyer de marché", "Traitement des litiges juridiques", "Portail propriétaire avec données en temps réel"] },
+    ],
+    whyTitle: "Pourquoi choisir Binayah pour la gestion locative",
+    whyPoints: [
+      { title: "Service de bout en bout", body: "Du logement vide au loyer perçu, nous gérons chaque étape pour vous. Idéal pour les investisseurs étrangers et les propriétaires occupés." },
+      { title: "Honoraires transparents", body: "Des honoraires simples, basés sur un pourcentage, sans frais cachés. Vous ne payez que lorsque le loyer est encaissé." },
+      { title: "Équipe certifiée RERA", body: "Tous les gestionnaires immobiliers sont agréés par l'agence de régulation immobilière de Dubaï (RERA). Pleine conformité légale à chaque étape." },
+      { title: "Réseau d'artisans agréés", body: "Artisans pré-approuvés pour la plomberie, l'électricité, la climatisation, le nettoyage et la peinture. Pas de devis gonflés, nous recourons à une mise en concurrence tarifaire." },
+      { title: "Accès au portail propriétaire", body: "Connectez-vous à tout moment pour consulter les paiements de loyer, l'historique d'entretien, les informations sur les locataires et les documents du bien." },
+      { title: "Communication proactive", body: "Vous êtes prévenu à l'avance des renouvellements de bail, des augmentations de loyer et de tout problème, avant qu'il ne devienne un souci." },
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      { question: "Combien coûte la gestion locative à Dubaï ?", answer: "Les honoraires de gestion locative de Binayah varient de 5 % à 10 % du loyer mensuel, selon le niveau de service. La gestion standard (encaissement des loyers, EJARI, entretien de base) démarre à 5 %/mois. La gestion en service complet, incluant la recherche de locataires, l'entretien 24h/24 et 7j/7 et l'accompagnement juridique, s'élève à 10 %/mois. Il n'y a aucuns frais initiaux." },
+      { question: "Qu'est-ce qui est inclus dans la gestion locative à Dubaï ?", answer: "Une formule de gestion locative en service complet comprend : la sélection et le placement des locataires, la rédaction du contrat de location, l'enregistrement EJARI, l'encaissement et le reversement des loyers, la coordination de l'entretien (urgent et planifié), les inspections trimestrielles du bien, le reporting financier mensuel et le règlement des litiges. Binayah gère l'intégralité de la relation propriétaire-locataire pour votre compte." },
+      { question: "Binayah peut-elle gérer mon bien si je réside à l'étranger ?", answer: "Oui, c'est l'un de nos cas d'usage les plus fréquents. Des investisseurs russes, européens, chinois et d'autres pays font confiance à Binayah pour gérer leurs investissements à Dubaï à distance. Vous recevez le loyer directement sur votre compte bancaire et des rapports mensuels par e-mail ou via notre portail propriétaire. Il n'est jamais nécessaire de vous rendre à Dubaï pour la gestion courante." },
+      { question: "En combien de temps Binayah peut-elle me trouver un locataire ?", answer: "Pour les biens correctement positionnés en prix, Binayah trouve généralement un locataire qualifié en 2 à 4 semaines. Nous publions sur Bayut, Propertyfinder, Dubizzle et dans notre propre base de locataires pré-qualifiés. Nos formules Premium et Service complet incluent une photographie professionnelle pour maximiser la performance de l'annonce." },
+      { question: "Qu'est-ce que l'EJARI et pourquoi est-il obligatoire ?", answer: "EJARI est le système officiel d'enregistrement des locations à Dubaï, exigé par le Dubai Land Department pour tous les contrats de location. Sans enregistrement EJARI, les locataires ne peuvent obtenir de visa de résidence aux Émirats, de raccordement aux services publics ni d'inscription scolaire. Il protège également le propriétaire et le locataire sur le plan juridique. Binayah prend en charge l'enregistrement EJARI dans toutes ses formules de gestion." },
+      { question: "Que se passe-t-il si un locataire ne paie pas son loyer ?", answer: "Binayah applique un processus d'escalade structuré : avis de rappel, mises en demeure formelles et, si nécessaire, procédures judiciaires devant le centre de règlement des litiges locatifs (RDC). La loi émirienne autorise les propriétaires à expulser les locataires défaillants, bien que la procédure prenne 3 à 6 mois. Notre sélection rigoureuse des locataires réduit considérablement le risque d'impayés." },
+      { question: "Puis-je passer chez Binayah si j'ai déjà un gestionnaire immobilier ?", answer: "Oui. Le changement est simple, nous reprenons la gestion au renouvellement du bail ou, dans certains cas, en cours de bail moyennant un préavis adéquat au gestionnaire actuel. Votre gestionnaire de compte Binayah prend en charge l'intégralité du processus de transition." },
+      { question: "Quels types de biens Binayah gère-t-elle ?", answer: "Nous gérons tous les types de biens résidentiels : studios, appartements de 1 à 5 chambres, maisons de ville, villas et penthouses. Des biens dans toutes les grandes communautés de Dubaï, notamment Dubai Marina, Downtown, Palm Jumeirah, JVC, Business Bay, Arabian Ranches, et bien d'autres." },
+    ],
+    ctaTitle: "Gérez plus intelligemment",
+    ctaDesc: "Obtenez une consultation gratuite avec notre équipe de gestion locative. Nous évaluerons votre bien, recommanderons la formule adaptée et prendrons le relais dès le premier jour.",
+    ctaBtn: "Consultation gratuite",
+    ctaWhatsApp: "Écrivez-nous sur WhatsApp",
+    breadcrumbs: ["Accueil", "Services", "Gestion locative"],
+  },
+
   ru: {
     metaTitle: "Управление недвижимостью в Дубае | Полный сервис | Binayah",
     metaDesc: "Профессиональное управление недвижимостью в Дубае: поиск арендаторов, сбор аренды, техническое обслуживание, EJARI и отчётность. RERA-сертифицированная команда.",
@@ -477,7 +532,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["إدارة العقارات دبي", "شركة إدارة عقارات دبي", "خدمات إدارة الإيجار دبي"]
       : locale === "zh"
       ? ["迪拜物业管理", "迪拜房产托管", "迪拜租赁管理"]
-      : locale === "vi" ? ["quản lý bất động sản dubai", "quản lý bất động sản dubai chuyên nghiệp", "dịch vụ quản lý cho thuê dubai"] : locale === "he" ? ["ניהול נכסים Dubai","מנהל נכסים Dubai","ניהול וילות Dubai","ניהול השכרות Dubai","שירותי בעל נכס Dubai"] : ["property management dubai", "dubai property manager", "villa management dubai", "rental management dubai", "landlord services dubai"],
+      : locale === "vi" ? ["quản lý bất động sản dubai", "quản lý bất động sản dubai chuyên nghiệp", "dịch vụ quản lý cho thuê dubai"] : locale === "fr" ? ["gestion locative dubaï", "gestion immobilière dubaï", "société de gestion locative dubaï", "services propriétaire dubaï"] : locale === "he" ? ["ניהול נכסים Dubai","מנהל נכסים Dubai","ניהול וילות Dubai","ניהול השכרות Dubai","שירותי בעל נכס Dubai"] : ["property management dubai", "dubai property manager", "villa management dubai", "rental management dubai", "landlord services dubai"],
   };
 }
 

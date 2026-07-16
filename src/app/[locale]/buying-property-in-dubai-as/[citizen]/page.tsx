@@ -184,6 +184,81 @@ const CONTENT = {
     },
   },
 
+  fr: {
+    heroLabel: "GUIDE DE L'ACHETEUR ÉTRANGER",
+    guideSuffix: "ressortissant",
+    guideFor: "Guide pour",
+    buyers: "acheteurs",
+    introBadge: "Acheter un bien immobilier à Dubaï",
+
+    statsLabels: {
+      tax: "Impôt sur les plus-values",
+      ownership: "Pleine propriété",
+      visa: "Seuil du Golden Visa",
+      yield: "Rendement locatif brut typique",
+    },
+    statsValues: {
+      tax: "0%",
+      ownership: "Toutes nationalités",
+      visa: "2 M AED",
+      yield: "5-8%",
+    },
+
+    stepsHeading: "Comment acheter un bien immobilier à Dubaï",
+    stepsSubheading: "Le processus d'achat standard en 5 étapes s'applique à toutes les nationalités, y compris les non-résidents.",
+    steps: [
+      { n: "01", title: "Convenir du prix et signer le MOU", body: "Négociez et signez un protocole d'accord (MOU / Form F) avec le vendeur. Votre agent le dépose auprès du Dubai Land Department." },
+      { n: "02", title: "Verser un acompte de garantie de 10%", body: "Un acompte de 10% (conservé en fiducie ou par l'agence immobilière) est versé à la signature du MOU. Il sécurise le bien et est perdu si vous vous rétractez." },
+      { n: "03", title: "Obtenir le NOC du promoteur", body: "Le promoteur délivre un certificat de non-objection (NOC) confirmant l'absence de charges de copropriété ou de paiements en souffrance sur le bien. Généralement 5 à 10 jours ouvrés." },
+      { n: "04", title: "Transfert au DLD et frais", body: "Les deux parties se présentent au bureau du fiduciaire du DLD (ou recourent à une procuration autorisée). Payez les frais de transfert du DLD de 4% plus les frais administratifs. Le titre de propriété est délivré le jour même." },
+      { n: "05", title: "Recevoir le titre de propriété", body: "Le DLD délivre un titre de propriété numérique et physique à votre nom. Vous êtes désormais le propriétaire légal. Les revenus locatifs sont entièrement exonérés d'impôt dès le premier jour." },
+    ],
+
+    whyHeading: "Pourquoi Dubaï pour",
+    legalHeading: "Statut juridique et droits de propriété",
+    financeHeading: "Options de financement",
+    taxHeading: "Implications fiscales",
+    repatHeading: "Rapatriement des fonds",
+    areasHeading: "Quartiers privilégiés",
+    areasIntro: "D'après les données de transactions de Binayah, les communautés les plus souvent choisies par les acheteurs",
+    areasOutro: "sont :",
+    areasCta: "Acheter un bien à",
+
+    faqHeading: "Questions fréquentes",
+    faqs: [
+      {
+        question: "Toute nationalité peut-elle acheter un bien en pleine propriété à Dubaï ?",
+        answer: "Oui. Toutes les nationalités peuvent acquérir des biens en pleine propriété dans les zones de pleine propriété désignées de Dubaï, plus de 60 communautés dont Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay et JVC. Il n'existe aucune restriction fondée sur la nationalité, la religion ou le statut de résidence. Vous recevez un titre de propriété du DLD conférant des droits de propriété complets.",
+      },
+      {
+        question: "Ai-je besoin d'un visa de résidence aux Émirats pour acheter un bien à Dubaï ?",
+        answer: "Non. Les non-résidents peuvent acheter, détenir et louer un bien à Dubaï sans aucun visa des Émirats. Un visa de résidence n'est pas requis pour l'achat. Si votre investissement atteint 750 000 AED ou plus, vous êtes éligible à un visa investisseur de 2 ans ; à partir de 2 000 000 AED, vous êtes éligible au Golden Visa des Émirats de 10 ans.",
+      },
+      {
+        question: "Quels sont les coûts totaux lors de l'achat d'un bien à Dubaï ?",
+        answer: "Frais de transfert du DLD : 4% du prix d'achat. Commission d'agence : généralement 2%. Frais administratifs du DLD : 580 AED. Frais du bureau du fiduciaire : 4 000 AED (pour les biens de plus de 500K AED). Frais d'enregistrement de l'hypothèque (le cas échéant) : 0,25% du montant du prêt. Les coûts totaux de transaction représentent environ 6 à 7% du prix d'achat.",
+      },
+      {
+        question: "Puis-je obtenir un prêt immobilier à Dubaï en tant que non-résident ?",
+        answer: "Oui. Les banques des Émirats proposent des prêts immobiliers aux non-résidents, généralement à un ratio prêt/valeur (LTV) de 40 à 50% (vous payez 50 à 60% en liquide). Vos justificatifs de revenus du pays d'origine, vos relevés bancaires et votre historique de crédit sont évalués. Les grandes banques internationales des Émirats (HSBC, Emirates NBD, Mashreq, Citibank) prêtent activement aux acheteurs étrangers. L'accord de principe prend 2 à 4 semaines.",
+      },
+      {
+        question: "Existe-t-il un impôt sur les revenus locatifs ou les plus-values à Dubaï ?",
+        answer: "Non. Dubaï ne prélève aucun impôt sur le revenu, aucun impôt sur les plus-values et aucun droit de succession sur les biens immobiliers. Les revenus locatifs sont entièrement exonérés d'impôt au niveau des Émirats. Votre pays d'origine peut imposer les revenus locatifs ou les plus-values de source étrangère, consultez la section fiscale spécifique à la nationalité ci-dessus et faites appel à un conseiller fiscal pour votre situation particulière.",
+      },
+    ],
+
+    ctaTitle: "Prêt à acheter à Dubaï ?",
+    ctaDesc: "Les agents de Binayah certifiés RERA travaillent chaque jour avec des acheteurs de toutes les nationalités. Nous prenons en charge la recherche de biens, les visites, la coordination juridique et la gestion après l'achat.",
+    ctaBtn: "Contactez notre équipe",
+    ctaBtnSecondary: "Parcourir les biens",
+
+    breadcrumbs: {
+      home: "Accueil",
+      guides: "Guides",
+    },
+  },
+
   ru: {
     heroLabel: "РУКОВОДСТВО ДЛЯ ИНОСТРАННЫХ ПОКУПАТЕЛЕЙ",
     guideSuffix: "гражданин",
@@ -502,6 +577,7 @@ export async function generateMetadata({
   const isZh = locale === "zh";
   const isVi = locale === "vi";
   const isHe = locale === "he";
+  const isFr = locale === "fr";
 
   const title = isRu
     ? `Покупка недвижимости в Дубае для граждан ${b.country === "Russian" ? "России" : b.country} | Binayah`
@@ -513,6 +589,8 @@ export async function generateMetadata({
     ? `Mua bất động sản tại Dubai cho công dân ${b.citizen} ${b.flag} | Hướng dẫn đầy đủ | Binayah`
     : isHe
     ? `קניית נדל"ן בדובאי לאזרחי ${b.citizen} ${b.flag} | מדריך מלא | Binayah`
+    : isFr
+    ? `Acheter un bien immobilier à Dubaï en tant que ressortissant ${b.citizen} ${b.flag} | Guide complet | Binayah`
     : `Buying Property in Dubai as a ${b.citizen} Citizen ${b.flag} | Complete Guide | Binayah`;
 
   const description = isRu
@@ -525,6 +603,8 @@ export async function generateMetadata({
     ? `Hướng dẫn đầy đủ cho công dân ${b.citizen} mua bất động sản tại Dubai: tình trạng pháp lý, lựa chọn tài chính, tác động thuế, quy tắc hồi hương vốn và khu vực ưa thích.`
     : isHe
     ? `מדריך מלא לאזרחי ${b.citizen} לרכישת נדל"ן בדובאי: מעמד משפטי, אפשרויות מימון, השלכות מס, כללי החזרת הון ושכונות מועדפות.`
+    : isFr
+    ? `Guide complet pour les ressortissants ${b.citizen} qui achètent un bien immobilier à Dubaï : statut juridique, options de financement, implications fiscales, règles de rapatriement et communautés privilégiées.`
     : `Complete guide for ${b.citizen} citizens buying property in Dubai: legal status, financing options, tax implications, repatriation rules, and preferred communities.`;
 
   const path = `/buying-property-in-dubai-as/${b.slug}`;
@@ -554,6 +634,8 @@ export async function generateMetadata({
         ? ["mua bất động sản dubai người nước ngoài", "bất động sản dubai freehold", "mua nhà dubai golden visa"]
         : locale === "he"
         ? ["קניית נדל\"ן בדובאי לזרים", "נדל\"ן freehold בדובאי", "קניית דירה בדובאי גולדן ויזה"]
+        : locale === "fr"
+        ? ["acheter un bien immobilier à dubaï étranger", "immobilier dubaï pleine propriété", "acheter un appartement à dubaï golden visa"]
         : [
             `buying property in dubai as ${b.citizen.toLowerCase()} citizen`,
             `dubai real estate ${b.citizen.toLowerCase()} buyer`,
@@ -621,6 +703,8 @@ export default async function ForeignBuyerPage({
                 ? `cho công dân ${b.citizen}`
                 : locale === "he"
                 ? `לאזרחי ${b.citizen}`
+                : locale === "fr"
+                ? `en tant que ressortissant ${b.citizen}`
                 : `, ${b.citizen}${c.guideSuffix}`}
             </span>
           </h1>
@@ -670,7 +754,7 @@ export default async function ForeignBuyerPage({
         {/* Buying steps */}
         <section>
           <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">
-            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : locale === "he" ? "步骤详解" : "步骤详解"}
+            {locale === "en" ? "STEP BY STEP" : locale === "ru" ? "ШАГ ЗА ШАГОМ" : locale === "ar" ? "خطوة بخطوة" : locale === "vi" ? "TỪNG BƯỚC" : locale === "fr" ? "ÉTAPE PAR ÉTAPE" : locale === "he" ? "步骤详解" : "步骤详解"}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{c.stepsHeading}</h2>
           <p className="text-sm text-muted-foreground mb-8">{c.stepsSubheading}</p>

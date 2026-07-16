@@ -231,6 +231,31 @@ const CONTENT = {
     breadcrumb: "Top Projects 2026",
     catLabel: "Category",
   },
+  fr: {
+    metaTitle: "Meilleurs projets sur plan à Dubaï 2026 | Nouveaux lancements | Binayah",
+    metaDesc: "Comparez les meilleurs projets sur plan de Dubaï pour 2026. Emaar, DAMAC, Sobha, Binghatti, ROI, plans de paiement, rendements et annonces en temps réel de Binayah Properties.",
+    heroLabel: "SUR PLAN DUBAÏ 2026",
+    h1: "Meilleurs projets sur plan",
+    h1sub: "à Dubaï 2026",
+    heroDesc: "Comparez les meilleurs promoteurs sur plan et les nouveaux projets de Dubaï. Nous classons selon le potentiel de ROI, la flexibilité du plan de paiement, la qualité de construction et le rendement locatif, avec des annonces en temps réel mises à jour quotidiennement.",
+    devTitle: "Comparaison des promoteurs",
+    devSubtitle: "Indicateurs clés des principaux promoteurs sur plan de Dubaï",
+    catTitle: "Le meilleur pour chaque type d'acheteur",
+    projectsTitle: "Derniers lancements sur plan",
+    fromLabel: "À partir de",
+    noPrice: "Prix sur demande",
+    viewAll: "Parcourir tous les projets sur plan",
+    faqs: [
+      { question: "Quel promoteur propose les meilleurs projets sur plan à Dubaï en 2026 ?", answer: "Emaar domine pour la plus-value à long terme (Downtown, Dubai Hills, Creek Harbour). Binghatti offre les rendements locatifs les plus élevés (7-9 %) dans les emplacements de milieu de gamme. DAMAC propose les plans de paiement post-livraison les plus flexibles. Sobha Realty est la mieux notée pour la qualité de construction et les communautés familiales. Le « meilleur » promoteur dépend entièrement de vos objectifs d'investissement, les acheteurs axés sur le ROI et les occupants privilégient des critères différents." },
+      { question: "Quel est le prix moyen d'un bien sur plan à Dubaï en 2026 ?", answer: "Les prix sur plan à Dubaï varient énormément selon l'emplacement et le promoteur. Entrée de gamme (JVC, Dubai South, Arjan) : 500 000-900 000 AED pour un studio/1 chambre. Milieu de gamme (Business Bay, Al Jaddaf, JBR) : 900 000 AED-2 M AED. Premium (Downtown, Dubai Marina, Palm) : 2 M-5 M AED. Ultra-luxe (Palm Jumeirah, DIFC, Bluewaters) : 5 M+ AED. La transaction sur plan moyenne à Dubaï en 2025 était d'environ 1,8 M AED." },
+      { question: "Quels plans de paiement les promoteurs sur plan de Dubaï proposent-ils en 2026 ?", answer: "Plan standard lié à la construction : 10 % à la réservation + 10 % à la signature du SPA + 30 % pendant la construction + 50 % à la livraison. Plans post-livraison étendus (DAMAC, certains projets Binghatti) : 40 % pendant la construction + 60 % sur 2-5 ans après la livraison. Le taux zéro est la norme, les plans de financement du promoteur ne comportent aucun intérêt supplémentaire. Certains promoteurs proposent des mensualités de 1 %." },
+      { question: "Quel ROI puis-je espérer d'un bien sur plan à Dubaï ?", answer: "Rendements locatifs typiques pour un bien sur plan à Dubaï après livraison : 5-9 % bruts selon l'emplacement et le promoteur. Plus-value (revente avant livraison) : potentiel de 10-40 % dans les marchés haussiers. Depuis 2021, les projets Emaar ont généré 40-70 % de plus-value entre le prix sur plan et la valeur de marché actuelle. Les performances passées varient, les emplacements de premier choix et les promoteurs établis ont historiquement surperformé." },
+      { question: "Acheter sur plan à Dubaï est-il sûr en 2026 ?", answer: "Dubaï dispose de l'une des meilleures protections au monde pour les acheteurs sur plan. La RERA oblige les promoteurs à placer les paiements des acheteurs sur des comptes séquestres (escrow) DLD cloisonnés, les fonds ne peuvent être utilisés qu'à l'atteinte des jalons de construction. Tous les projets doivent être enregistrés auprès de la RERA. Les promoteurs doivent déposer une garantie d'achèvement. Aucun promoteur réputé (Emaar, DAMAC, Sobha, Binghatti) n'a manqué de livrer un projet enregistré. Cependant, les promoteurs plus petits et les nouveaux venus présentent davantage de risques." },
+      { question: "Puis-je revendre un bien sur plan avant la livraison à Dubaï ?", answer: "Oui, une fois que vous avez payé 30-40 % de la valeur du bien (le seuil varie selon le promoteur). C'est ce qu'on appelle une transaction de « revente sur plan ». Binayah gère à la fois l'achat initial et la revente ultérieure, notre équipe sur plan suit les opportunités avant livraison sur l'ensemble des grands projets." },
+    ],
+    breadcrumb: "Meilleurs projets 2026",
+    catLabel: "Catégorie",
+  },
   ru: {
     metaTitle: "Лучшие новостройки Дубая 2026 | Сравнение застройщиков | Binayah",
     metaDesc: "Сравните лучшие новостройки Дубая 2026: Emaar, DAMAC, Sobha, Binghatti. ROI, планы рассрочки, доходность и актуальные объекты от Binayah Properties.",
@@ -358,7 +383,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["أفضل مشاريع على الخارطة دبي 2026", "مقارنة مطوّري دبي", "إعمار داماك سوبها دبي"]
       : locale === "zh"
       ? ["迪拜最佳期房2026", "迪拜开发商对比", "Emaar DAMAC Sobha迪拜"]
-      : locale === "vi" ? ["dự án off-plan tốt nhất dubai 2026", "emaar so với damac dubai", "so sánh chủ đầu tư dubai hàng đầu", "dự án mới dubai 2026"] : locale === "he" ? ["הפרויקטים הטובים ביותר לפני בנייה בדובאי 2026","אמאאר מול דמאק דובאי","השוואת מפתחי דובאי המובילים","השקה חדשה דובאי 2026"] : ["best off-plan projects dubai 2026", "emaar vs damac dubai", "top dubai developers comparison", "new launch dubai 2026"],
+      : locale === "vi" ? ["dự án off-plan tốt nhất dubai 2026", "emaar so với damac dubai", "so sánh chủ đầu tư dubai hàng đầu", "dự án mới dubai 2026"] : locale === "he" ? ["הפרויקטים הטובים ביותר לפני בנייה בדובאי 2026","אמאאר מול דמאק דובאי","השוואת מפתחי דובאי המובילים","השקה חדשה דובאי 2026"] : locale === "fr" ? ["meilleurs projets sur plan dubaï 2026", "emaar contre damac dubaï", "comparaison des principaux promoteurs de dubaï", "nouveau lancement dubaï 2026"] : ["best off-plan projects dubai 2026", "emaar vs damac dubai", "top dubai developers comparison", "new launch dubai 2026"],
   };
 }
 
@@ -379,8 +404,8 @@ export default async function TopProjectsPage({ params }: Props) {
   } catch { /* serve page without live projects */ }
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
-    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : locale === "he" ? "על הנייר" : "Off-Plan", href: `${lp}/off-plan` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : locale === "fr" ? "Accueil" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Новостройки" : locale === "ar" ? "على الخارطة" : locale === "zh" ? "期房" : locale === "vi" ? "Off-Plan" : locale === "he" ? "על הנייר" : locale === "fr" ? "Sur plan" : "Off-Plan", href: `${lp}/off-plan` },
     { name: c.breadcrumb, href: `${lp}/off-plan/top-projects` },
   ];
 
@@ -552,7 +577,7 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
             <h2 className="text-3xl font-bold text-foreground">
-              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "he" ? "שאלות נפוצות" : "Frequently Asked Questions"}
+              {locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "he" ? "שאלות נפוצות" : locale === "fr" ? "Questions fréquentes" : "Frequently Asked Questions"}
             </h2>
           </div>
           <div className="space-y-3">
@@ -577,10 +602,10 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="relative z-10">
             <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">Binayah Properties</p>
             <h2 className="text-3xl font-bold mb-4">
-              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : locale === "vi" ? "Tìm dự án Off-Plan hoàn hảo của bạn" : locale === "he" ? "מצא את פרויקט על הנייר המושלם שלך" : "Find Your Perfect Off-Plan Project"}
+              {locale === "ru" ? "Найдите идеальную новостройку" : locale === "ar" ? "ابحث عن مشروعك المثالي" : locale === "zh" ? "找到您理想的期房项目" : locale === "vi" ? "Tìm dự án Off-Plan hoàn hảo của bạn" : locale === "he" ? "מצא את פרויקט על הנייר המושלם שלך" : locale === "fr" ? "Trouvez votre projet sur plan idéal" : "Find Your Perfect Off-Plan Project"}
             </h2>
             <p className="text-primary-foreground/75 text-lg mb-10 max-w-xl mx-auto">
-              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : locale === "vi" ? "Các chuyên gia off-plan của chúng tôi sẽ kết nối bạn với dự án phù hợp cho mục tiêu đầu tư, ngân sách và thời gian của bạn." : locale === "he" ? "המומחים שלנו לנכסים על הנייר יתאימו לך את הפרויקט הנכון למטרות ההשקעה שלך, התקציב ולוח הזמנים." : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
+              {locale === "ru" ? "Наши специалисты по новостройкам помогут подобрать оптимальный объект под ваши инвестиционные цели." : locale === "ar" ? "يساعدك متخصصو بناية في اختيار المشروع المثالي لأهدافك الاستثمارية." : locale === "zh" ? "我们的期房专家将帮助您找到最符合投资目标的项目。" : locale === "vi" ? "Các chuyên gia off-plan của chúng tôi sẽ kết nối bạn với dự án phù hợp cho mục tiêu đầu tư, ngân sách và thời gian của bạn." : locale === "he" ? "המומחים שלנו לנכסים על הנייר יתאימו לך את הפרויקט הנכון למטרות ההשקעה שלך, התקציב ולוח הזמנים." : locale === "fr" ? "Nos spécialistes du sur plan vous mettront en relation avec le projet adapté à vos objectifs d'investissement, votre budget et votre calendrier." : "Our off-plan specialists will match you with the right project for your investment goals, budget, and timeline."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -588,7 +613,7 @@ export default async function TopProjectsPage({ params }: Props) {
                 className="font-bold px-8 py-4 rounded-xl text-base hover:opacity-90 transition-all"
                 style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)", color: "#fff" }}
               >
-                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : locale === "he" ? "קבלו ייעוץ מומחה" : "Get Expert Advice"} →
+                {locale === "ru" ? "Получить консультацию" : locale === "ar" ? "احصل على استشارة" : locale === "zh" ? "获取咨询" : locale === "vi" ? "Nhận tư vấn chuyên gia" : locale === "he" ? "קבלו ייעוץ מומחה" : locale === "fr" ? "Obtenir des conseils d'expert" : "Get Expert Advice"} →
               </Link>
               <Link
                 href={`${lp}/off-plan`}

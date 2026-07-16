@@ -135,6 +135,40 @@ const CONTENT = {
     ctaDesc: "Binayah Properties helps investors identify Golden Visa-qualifying properties and manage the full application process, from property selection to visa issuance.",
     ctaBtn: "Get Golden Visa Advice",
   },
+  fr: {
+    title: "Golden Visa des ÉAU par l'investissement immobilier | Résidence 10 ans | Binayah",
+    desc: "Obtenez un Golden Visa des ÉAU de 10 ans en investissant 2 M AED ou plus dans l'immobilier à Dubaï. Guide complet : éligibilité, procédure, documents et meilleurs biens pour être éligible. Consultation gratuite.",
+    h1: "Golden Visa des ÉAU",
+    h1sub: "Résidence de 10 ans par l'immobilier",
+    intro: "Le Golden Visa des ÉAU accorde une résidence renouvelable de 10 ans aux investisseurs immobiliers qui achètent pour 2 000 000 AED (environ 545 000 $) ou plus de biens immobiliers aux ÉAU. Contrairement aux visas parrainés par un employeur, le Golden Visa est auto-parrainé, renouvelable indéfiniment et inclut les membres de la famille.",
+    steps: [
+      { n: "01", title: "Acheter un bien de 2 M AED ou plus", body: "Achetez un ou plusieurs biens aux ÉAU d'une valeur cumulée de 2 000 000 AED ou plus. Le bien peut être sur plan (off-plan, avec au moins 50 % payés) ou une unité achevée et prête." },
+      { n: "02", title: "Obtenir le titre de propriété / OQOOD", body: "Pour les biens achevés : titre de propriété DLD. Pour les biens sur plan : enregistrement OQOOD (pré-titre de propriété enregistré par le promoteur). Les deux ouvrent droit au visa." },
+      { n: "03", title: "Déposer la demande via ICA ou GDRFA", body: "Soumettez votre demande de Golden Visa auprès de l'Autorité fédérale de l'identité, de la citoyenneté, des douanes et de la sécurité portuaire (ICA) ou de la GDRFA Dubaï. Binayah vous accompagne dans l'ensemble de la démarche." },
+      { n: "04", title: "Examen médical et Emirates ID", body: "Passez le test d'aptitude médicale des ÉAU. Recevez votre Emirates ID et le cachet du visa de résidence de 10 ans. La procédure prend généralement 2 à 4 semaines à compter de la demande." },
+    ],
+    benefits: [
+      { title: "Renouvelable 10 ans", body: "Le Golden Visa est valable 10 ans et renouvelable tant que vous conservez l'investissement immobilier éligible." },
+      { title: "Auto-parrainé", body: "Aucun employeur requis. Aucun parrain local nécessaire. Le visa est entièrement lié à votre propriété immobilière." },
+      { title: "Inclusion de la famille", body: "Le conjoint, les enfants (à tout âge), les parents et les employés de maison peuvent être parrainés au titre de votre Golden Visa." },
+      { title: "Entrées multiples", body: "Aucune durée de séjour minimale requise. Vous pouvez vivre où vous le souhaitez et entrer aux ÉAU un nombre illimité de fois sans restriction de visa." },
+      { title: "Liberté d'entreprise", body: "Les titulaires du Golden Visa peuvent créer des sociétés aux ÉAU sans partenaire local sur le mainland (100 % de propriété étrangère selon les nouvelles lois)." },
+      { title: "Accès à l'éducation", body: "Les enfants des titulaires du Golden Visa peuvent s'inscrire dans les écoles des ÉAU et fréquenter les meilleures écoles internationales de Dubaï." },
+    ],
+    faqs: [
+      { question: "Quel est l'investissement minimum pour un Golden Visa des ÉAU par l'immobilier ?", answer: "2 000 000 AED (environ 545 000 USD ou 500 000 EUR). Le bien peut se situer à Dubaï, Abu Dhabi ou tout autre émirat. Il peut être résidentiel ou commercial. Les biens sur plan sont éligibles si au moins 2 M AED ont été versés au promoteur (minimum 50 % du prix d'achat)." },
+      { question: "Puis-je utiliser un bien hypothéqué pour être éligible au Golden Visa ?", answer: "Oui, mais seule la part d'apport (equity) compte pour atteindre le seuil de 2 M AED. Si votre bien vaut 3 M AED mais que vous avez un crédit hypothécaire en cours de 1,5 M AED, seuls 1,5 M AED d'apport sont pris en compte. Il vous faudrait un bien ou un apport supplémentaire pour atteindre le seuil de 2 M AED." },
+      { question: "Les étrangers de toutes nationalités peuvent-ils obtenir le Golden Visa des ÉAU ?", answer: "Oui. Le Golden Visa des ÉAU est ouvert à toutes les nationalités. Il n'y a aucune restriction liée à la citoyenneté. Les Russes, les Européens, les Américains, les Chinois et toutes les autres nationalités sont éligibles au même titre, dès lors qu'ils atteignent le seuil d'investissement." },
+      { question: "Le Golden Visa m'oblige-t-il à résider aux ÉAU ?", answer: "Non. Aucune durée de séjour minimale n'est exigée pour le Golden Visa. Vous pouvez vivre hors des ÉAU et le visa reste valable. La seule condition est de conserver l'investissement immobilier éligible. Auparavant, les visas des ÉAU étaient annulés si vous restiez hors des ÉAU pendant 6 mois ; le Golden Visa a supprimé cette restriction." },
+      { question: "Quelle est la différence entre un Golden Visa et un visa immobilier classique des ÉAU ?", answer: "Un visa immobilier classique (aussi appelé visa investisseur) exige un bien de 750 000 AED et accorde une résidence renouvelable de 2 ans. Le Golden Visa exige 2 000 000 AED et accorde une résidence de 10 ans, sans obligation de séjour et avec des droits de parrainage familial élargis." },
+      { question: "Quels biens à Dubaï sont éligibles au Golden Visa ?", answer: "Tout bien en pleine propriété (freehold) aux ÉAU d'une valeur de 2 M AED ou plus. Appartements achevés, villas, maisons de ville (townhouses), penthouses, bureaux ou terrains sont tous éligibles. Le bien doit être enregistré auprès du Dubai Land Department (DLD). Plusieurs biens peuvent être cumulés pour atteindre le seuil." },
+      { question: "Combien de temps prend la demande de Golden Visa ?", answer: "La procédure prend environ 3 à 6 semaines, de l'achat du bien à la délivrance du visa. Enregistrement du bien : 1 à 3 jours. Traitement de la demande ICA/GDRFA : 5 à 10 jours ouvrés. Examen médical et Emirates ID : 5 à 10 jours ouvrés. Total : généralement 4 à 6 semaines pour les demandes simples." },
+      { question: "Les membres de ma famille peuvent-ils être parrainés au titre de mon Golden Visa ?", answer: "Oui. Votre conjoint, vos enfants (à tout âge, y compris les enfants adultes), vos parents et vos employés de maison peuvent être inclus comme personnes à charge au titre de votre Golden Visa. Chaque personne à charge bénéficie de la même résidence de 10 ans. Les enfants inclus comme personnes à charge conservent leur visa même après 18 ans tant qu'ils sont étudiants à temps plein." },
+    ],
+    ctaTitle: "Commencez votre parcours Golden Visa",
+    ctaDesc: "Binayah Properties aide les investisseurs à identifier les biens éligibles au Golden Visa et à gérer l'ensemble de la procédure de demande, de la sélection du bien à la délivrance du visa.",
+    ctaBtn: "Obtenir des conseils Golden Visa",
+  },
   ru: {
     title: "Золотая виза ОАЭ через недвижимость | 10 лет | Binayah",
     desc: "Получите 10-летнюю Золотую визу ОАЭ, инвестировав от 2 млн AED в недвижимость Дубая. Полное руководство: условия, процесс, документы. Бесплатная консультация.",
@@ -283,7 +317,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["التأشيرة الذهبية الإمارات", "تأشيرة ذهبية عقار دبي", "إقامة الإمارات عبر العقارات"]
       : locale === "zh"
       ? ["阿联酋黄金签证", "迪拜房产黄金签证", "阿联酋居住权房产"]
-      : locale === "vi" ? ["golden visa uae bất động sản", "golden visa dubai", "golden visa 2 triệu aed", "cư trú uae qua bất động sản"] : locale === "he" ? ["נכס ויזה זהב איחוד האמירויות","ויזה זהב דובאי","ויזה זהב 2 מיליון AED","תושבות איחוד האמירויות דרך נכס"] : ["uae golden visa property", "dubai golden visa", "golden visa 2 million aed", "uae residency through property"],
+      : locale === "vi" ? ["golden visa uae bất động sản", "golden visa dubai", "golden visa 2 triệu aed", "cư trú uae qua bất động sản"] : locale === "fr" ? ["golden visa eau immobilier", "golden visa dubaï", "golden visa 2 millions aed", "résidence eau par l'immobilier"] : locale === "he" ? ["נכס ויזה זהב איחוד האמירויות","ויזה זהב דובאי","ויזה זהב 2 מיליון AED","תושבות איחוד האמירויות דרך נכס"] : ["uae golden visa property", "dubai golden visa", "golden visa 2 million aed", "uae residency through property"],
   };
 }
 
@@ -293,7 +327,7 @@ export default async function GoldenVisaPage({ params }: Props) {
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "fr" ? "Accueil" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.h1, href: `${lp}/golden-visa` },
   ];
 
@@ -306,7 +340,7 @@ export default async function GoldenVisaPage({ params }: Props) {
       <section className="relative overflow-hidden pt-20 sm:pt-32 pb-10 sm:pb-16 text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "48px 48px" }} />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : locale === "vi" ? "GOLDEN VISA UAE" : locale === "he" ? "ויזת זהב של איחוד האמירויות" : "UAE GOLDEN VISA"}</p>
+          <p className="text-accent font-bold tracking-[0.4em] uppercase text-xs mb-4">🏅 {locale === "ru" ? "ЗОЛОТАЯ ВИЗА ОАЭ" : locale === "ar" ? "التأشيرة الذهبية الإماراتية" : locale === "zh" ? "阿联酋黄金签证" : locale === "vi" ? "GOLDEN VISA UAE" : locale === "fr" ? "GOLDEN VISA DES ÉAU" : locale === "he" ? "ויזת זהב של איחוד האמירויות" : "UAE GOLDEN VISA"}</p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-2">{c.h1}</h1>
           <p className="text-2xl font-light text-primary-foreground/70 mb-6">{c.h1sub}</p>
           <p className="text-primary-foreground/80 text-lg max-w-2xl mb-10">{c.intro}</p>
@@ -322,7 +356,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Process</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : locale === "vi" ? "Cách nhận Golden Visa" : locale === "he" ? "איך להשיג את ויזת הזהב" : "How to Get the Golden Visa"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Как получить Золотую визу" : locale === "ar" ? "كيفية الحصول على التأشيرة الذهبية" : locale === "zh" ? "如何获取黄金签证" : locale === "vi" ? "Cách nhận Golden Visa" : locale === "fr" ? "Comment obtenir le Golden Visa" : locale === "he" ? "איך להשיג את ויזת הזהב" : "How to Get the Golden Visa"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             {c.steps.map((s) => (
@@ -339,7 +373,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">Benefits</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : locale === "vi" ? "Lợi ích của Golden Visa" : locale === "he" ? "היתרונות של ויזת הזהב" : "Golden Visa Benefits"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Преимущества Золотой визы" : locale === "ar" ? "مزايا التأشيرة الذهبية" : locale === "zh" ? "黄金签证的优势" : locale === "vi" ? "Lợi ích của Golden Visa" : locale === "fr" ? "Avantages du Golden Visa" : locale === "he" ? "היתרונות של ויזת הזהב" : "Golden Visa Benefits"}</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {c.benefits.map((b) => (
@@ -360,7 +394,7 @@ export default async function GoldenVisaPage({ params }: Props) {
         <section>
           <div className="text-center mb-10">
             <p className="text-accent font-bold tracking-[0.35em] uppercase text-xs mb-3">FAQ</p>
-            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "he" ? "שאלות נפוצות" : "Frequently Asked Questions"}</h2>
+            <h2 className="text-3xl font-bold text-foreground">{locale === "ru" ? "Частые вопросы" : locale === "ar" ? "الأسئلة الشائعة" : locale === "zh" ? "常见问题" : locale === "vi" ? "Câu hỏi thường gặp" : locale === "fr" ? "Questions fréquentes" : locale === "he" ? "שאלות נפוצות" : "Frequently Asked Questions"}</h2>
           </div>
           <div className="space-y-3">
             {c.faqs.map((f, i) => (
@@ -387,7 +421,7 @@ export default async function GoldenVisaPage({ params }: Props) {
                 {c.ctaBtn}
               </Link>
               <Link href={`${lp}/search?budgetMin=2000000`} className="border-2 border-white/30 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/10 transition-all">
-                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : locale === "vi" ? "Xem bất động sản 2 triệu AED+" : locale === "he" ? "עיין בנכסים מעל 2 מיליון AED" : "Browse AED 2M+ Properties"}
+                {locale === "ru" ? "Объекты от 2 млн AED" : locale === "ar" ? "عقارات بـ 2M+ درهم" : locale === "zh" ? "200万迪拉姆以上房产" : locale === "vi" ? "Xem bất động sản 2 triệu AED+" : locale === "fr" ? "Parcourir les biens à 2 M AED et +" : locale === "he" ? "עיין בנכסים מעל 2 מיליון AED" : "Browse AED 2M+ Properties"}
               </Link>
             </div>
           </div>

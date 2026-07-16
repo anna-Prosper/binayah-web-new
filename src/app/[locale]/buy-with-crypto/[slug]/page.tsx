@@ -18,7 +18,7 @@ import {
 
 export const revalidate = 86400;
 
-const LOCALES: CryptoLocale[] = ["en", "ru", "ar", "zh", "vi", "he"];
+const LOCALES: CryptoLocale[] = ["en", "ru", "ar", "zh", "vi", "he", "fr"];
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>

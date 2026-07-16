@@ -11,7 +11,7 @@ import { Waves, Bike, Trophy, Trees, Anchor, Building2, MapPin, TrendingUp, Shie
 
 export const revalidate = 86400;
 
-type Locale = "en" | "ru" | "ar" | "zh" | "vi" | "he";
+type Locale = "en" | "ru" | "ar" | "zh" | "vi" | "he" | "fr";
 
 const HERO_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-hero.jpg";
 const AERIAL_IMG = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-aerial.jpg";
@@ -163,6 +163,104 @@ const LABELS: Record<Locale, {
     developerBadge: "Modon Properties · Government-Backed",
     developerSub: "84.5% owned by ADQ, Abu Dhabi's sovereign investment arm",
     freeholdBadge: "Freehold · All Nationalities",
+  },
+
+  fr: {
+    metaTitle: "Immobilier à vendre à Hudayriyat Island | Pleine propriété Abu Dhabi | Binayah",
+    metaDesc:
+      "Achetez un bien en pleine propriété à Hudayriyat Island, Abu Dhabi, villas à partir de 6M AED, appartements à partir de 2M AED. Promoteur soutenu par l'État, Modon. Frais de transfert de 2%. À 10 min du quartier d'affaires d'Abu Dhabi. Accompagnement expert par Binayah Properties.",
+    heroEyebrow: "Abu Dhabi · Île en pleine propriété · Par Modon Properties",
+    heroH1Line1: "Le Beverly Hills",
+    heroH1Line2: "d'Abu Dhabi",
+    heroSubtitle:
+      "Hudayriyat Island, plus de 3 000 hectares de vie côtière à l'urbanisme planifié, à 10 minutes du quartier d'affaires d'Abu Dhabi. Pleine propriété pour toutes les nationalités, frais de transfert de 2%, promoteur soutenu par l'État.",
+    trustSignals: ["Pleine propriété · Toutes nationalités", "Frais de transfert de 2%", "Éligible au Golden Visa", "Modon (soutenu par ADQ)"],
+    ctaPrimary: "Consultation d'investissement gratuite",
+    ctaSecondary: "Voir les communautés",
+    aboutEyebrow: "À propos de l'île",
+    aboutHeading: "Le projet côtier le plus ambitieux d'Abu Dhabi",
+    aboutPara1:
+      "Al Hudayriyat Island s'étend sur plus de 3 000 hectares au large de la côte ouest d'Abu Dhabi. Reliée au continent par le pont Hudayriyat, elle se trouve à seulement 10 minutes du quartier d'affaires de la capitale des Émirats, le front de mer en pleine propriété le plus proche d'Abu Dhabi. Développée par Modon Properties (détenue à 84,5% par l'État via ADQ), l'île est le projet phare de ville côtière d'Abu Dhabi.",
+    aboutPara2:
+      "Avec 16 km de plages naturelles, 2,25 millions de m² de parc, Surf Abu Dhabi (le plus grand bassin à vagues artificielles au monde) et 220 km d'infrastructures cyclables, Hudayriyat est la seule adresse des Émirats à réunir sport d'élite, art de vivre côtier et résidences en pleine propriété au sein d'une même île à l'urbanisme planifié.",
+    aboutMinistats: [
+      ["3 000+", "Hectares de superficie totale"],
+      ["16 km", "Plages naturelles"],
+      ["10-20 min", "En voiture jusqu'au quartier d'affaires d'Abu Dhabi"],
+      ["99", "Nationalités qui investissent"],
+    ],
+    amenitiesEyebrow: "Infrastructures de classe mondiale",
+    amenitiesHeading: "Conçu pour une vie côtière et active",
+    amenitiesSubheading:
+      "La seule adresse des Émirats où le surf, le vélodrome, 220 km de pistes cyclables et la vie en bord de mer coexistent dans un même plan directeur.",
+    communitiesEyebrow: "Communautés résidentielles",
+    communitiesHeading: "Trouvez votre communauté",
+    communitiesSubheading:
+      "Six communautés en pleine propriété par Modon, appartements à partir de 2M AED, demeures ultra-luxueuses jusqu'à plus de 80M AED.",
+    communitiesCta: "Obtenir disponibilités et prix",
+    communitiesStartingFrom: "À partir de",
+    communitiesHandover: "Livraison",
+    whyInvestEyebrow: "Argumentaire d'investissement",
+    whyInvestHeading: "Pourquoi les investisseurs choisissent Hudayriyat",
+    whyInvestSubheading:
+      "Le marché immobilier n°1 d'Abu Dhabi en valeur de transactions au T1 2026. Quatre avantages structurels qu'aucune autre île n'offre.",
+    tableHeaders: ["Critère", "Hudayriyat Island", "Moyenne de Dubaï"],
+    whyInvestCards: [
+      ["Promoteur soutenu par l'État", "Modon Properties est détenue à 84,5% par ADQ, le bras d'investissement souverain d'Abu Dhabi. La garantie de promoteur la plus solide des Émirats."],
+      ["Frais de transfert de 2%", "La moitié des 4% de Dubaï. Des coûts de transaction plus faibles améliorent le ROI net des investisseurs et réduisent les frictions à chaque revente."],
+      ["Pleine propriété, toutes nationalités", "Droits de propriété à 100%, sans restrictions. Les biens de plus de 2M AED vous rendent automatiquement éligible à la résidence Golden Visa des Émirats."],
+      ["10 minutes du centre-ville", "Via le pont Hudayriyat. 25 minutes de l'aéroport international d'Abu Dhabi. Le front de mer en pleine propriété le plus proche de la capitale des Émirats."],
+    ],
+    stats: [
+      ["11,97 Md AED", "Transactions T1 2026", "#1 à Abu Dhabi"],
+      ["40-50%", "Appréciation du capital", "Enregistrée par les premiers acheteurs"],
+      ["7-9%", "Rendement locatif brut", "Abu Dhabi côtier"],
+      ["2%", "Frais de transfert", "La moitié du taux de Dubaï"],
+    ],
+    faqEyebrow: "Questions fréquentes",
+    faqHeading: "Hudayriyat Island, FAQ immobilier",
+    faqSubheading: "Tout ce que les acheteurs et les investisseurs demandent avant de s'engager sur l'adresse à la croissance la plus rapide d'Abu Dhabi.",
+    faqs: [
+      {
+        question: "Les étrangers peuvent-ils acheter un bien à Hudayriyat Island ?",
+        answer:
+          "Oui. Hudayriyat Island est une zone de pleine propriété désignée, ouverte à toutes les nationalités. Vous obtenez des droits de propriété complets avec un titre de propriété des Émirats enregistré auprès du Département des municipalités et des transports d'Abu Dhabi. Les biens d'une valeur supérieure à 2 millions AED donnent droit au Golden Visa des Émirats (résidence renouvelable de 10 ans).",
+      },
+      {
+        question: "Quels sont les frais de transfert à Hudayriyat Island ?",
+        answer:
+          "Les frais de transfert immobilier à Abu Dhabi sont de 2% du prix d'achat, soit exactement la moitié des 4% de Dubaï. Cela réduit votre coût d'entrée et améliore le rendement net de l'investissement à chaque revente.",
+      },
+      {
+        question: "Quels types de biens sont disponibles ?",
+        answer:
+          "Hudayriyat Island propose : appartements (1-4 chambres, à partir de 2M AED) ; villas (3-8 chambres, à partir de 6M AED) ; villas de golf et maisons de ville (à partir de 4,25M AED) ; demeures de luxe (à partir de 25M AED) ; demeures ultra-luxueuses sur les hauteurs (41M AED+). Toutes sont développées par Modon Properties, promoteur soutenu par l'État.",
+      },
+      {
+        question: "Quels rendements locatifs puis-je espérer à Hudayriyat Island ?",
+        answer:
+          "Les biens côtiers d'Abu Dhabi génèrent généralement des rendements locatifs bruts de 7-9%. Les premiers acheteurs à Hudayriyat Island ont enregistré une appréciation du capital de 40-50% depuis le lancement de l'île en 2020. Le T1 2026 a enregistré 11,97 Md AED de transactions sur l'île, le plus élevé de toutes les zones d'Abu Dhabi.",
+      },
+      {
+        question: "À quelle distance se trouve Hudayriyat Island du centre-ville d'Abu Dhabi ?",
+        answer:
+          "10-20 minutes en voiture via le pont Hudayriyat. L'île se situe sur la côte ouest d'Abu Dhabi, face à Al Bateen. L'aéroport international d'Abu Dhabi est à environ 25-30 minutes. Une liaison métro/bus dédiée vers Surf Abu Dhabi est prévue dans le cadre du plan directeur de mobilité urbaine d'Abu Dhabi.",
+      },
+      {
+        question: "Hudayriyat Island est-elle un bon investissement par rapport à Dubaï ?",
+        answer:
+          "Hudayriyat Island offre un coût d'entrée plus faible vers une pleine propriété de haute qualité que les communautés comparables du front de mer de Dubaï, avec des frais de transfert de 2% contre 4% à Dubaï, des rendements bruts supérieurs (7-9% contre 5,5-7% à Dubaï) et une appréciation du capital documentée de 40-50% pour les premiers acheteurs. Le promoteur soutenu par l'État et le titre de propriété adossé au souverain éliminent entièrement le risque de livraison.",
+      },
+    ],
+    ctaEyebrow: "Parlez à un spécialiste",
+    ctaHeading: "Prêt à investir à Hudayriyat Island ?",
+    ctaBody:
+      "Notre équipe d'Abu Dhabi offre des conseils gratuits et sans engagement sur la disponibilité des unités, les plans de paiement et le ROI attendu dans les six communautés Modon, y compris les options hors marché.",
+    ctaPrimaryBtn: "Consultation gratuite",
+    trustFooter: ["19+ ans dans l'immobilier aux Émirats", "3 000+ biens", "Aucune commission pour les acheteurs", "Réglementé par la RERA"],
+    developerBadge: "Modon Properties · Soutenu par l'État",
+    developerSub: "Détenu à 84,5% par ADQ, le bras d'investissement souverain d'Abu Dhabi",
+    freeholdBadge: "Pleine propriété · Toutes nationalités",
   },
 
   ru: {
@@ -674,7 +772,7 @@ export async function generateMetadata({
       type: "website",
       url: makeCanonical(locale, "/hudayriyat-island"),
       siteName: "Binayah Properties",
-      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : locale === "he" ? "he_IL" : "en_AE",
+      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : locale === "he" ? "he_IL" : locale === "fr" ? "fr_FR" : "en_AE",
       images: [
         {
           url: OG_IMG,
@@ -852,6 +950,14 @@ const TABLE_ROWS_VI = [
   ["Ngưỡng Golden Visa", "2 triệu AED", "2 triệu AED"],
 ];
 
+const TABLE_ROWS_FR = [
+  ["Frais de transfert", "2%", "4%"],
+  ["Rendement locatif brut", "7-9%", "5.5-7%"],
+  ["Appréciation du capital", "40-50%", "15-25%"],
+  ["Risque promoteur", "Souverain (ADQ)", "Variable"],
+  ["Seuil Golden Visa", "2M AED", "2M AED"],
+];
+
 const TABLE_ROWS_HE = [
   ["דמי העברה", "2%", "4%"],
   ["תשואת שכירות ברוטו", "7-9%", "5.5-7%"],
@@ -866,6 +972,7 @@ function getTableRows(locale: Locale): string[][] {
   if (locale === "zh") return TABLE_ROWS_ZH;
   if (locale === "vi") return TABLE_ROWS_VI;
   if (locale === "he") return TABLE_ROWS_HE;
+  if (locale === "fr") return TABLE_ROWS_FR;
   return TABLE_ROWS_EN;
 }
 

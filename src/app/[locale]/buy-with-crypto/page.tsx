@@ -407,6 +407,59 @@ const CONTENT = {
     "browseCta": "עיון בנכסים",
     "breadcrumb": "קנייה עם קריפטו"
   },
+
+  fr: {
+    metaTitle: "Acheter un bien à Dubaï en Bitcoin et cryptomonnaie | Binayah",
+    metaDesc: "Achetez de l'immobilier à Dubaï en Bitcoin, Ethereum ou USDT. Transactions crypto légales et conformes au DLD. 0% d'impôt. Accompagnement expert de Binayah Properties.",
+    ogLocale: "fr_FR",
+    heroLabel: "NOUS ACCEPTONS LA CRYPTO",
+    h1a: "Acheter un bien à Dubaï",
+    h1b: "en cryptomonnaie",
+    heroDesc: "Binayah Properties facilite des transactions immobilières en cryptomonnaie légales et conformes au DLD, sur plan et sur le marché secondaire. Accompagnement complet de la consultation au titre de propriété.",
+    heroCta: "Consultation gratuite",
+    heroCtaArrow: "→",
+    stats: [
+      { n: "500+", label: "Transactions en crypto" },
+      { n: "19+", label: "Ans à Dubaï" },
+      { n: "3 000+", label: "Biens immobiliers" },
+      { n: "0%", label: "Impôt sur les plus-values" },
+    ],
+    coinsLabel: "Cryptomonnaies acceptées",
+    coins: ["Bitcoin (BTC)", "Ethereum (ETH)", "Tether (USDT)", "USD Coin (USDC)", "Ripple (XRP)", "BNB"],
+    howTitle: "Comment ça marche",
+    steps: [
+      { n: "01", title: "Choisissez votre bien", body: "Parcourez plus de 3 000 annonces et projets sur plan. Nos agents présélectionnent les biens correspondant à votre budget et à vos objectifs d'investissement." },
+      { n: "02", title: "Vérification juridique et KYC", body: "Nous vérifions les justificatifs de provenance de votre crypto (AML/KYC) et confirmons l'acceptation de la crypto auprès du promoteur ou du vendeur." },
+      { n: "03", title: "Transfert sécurisé", body: "Les fonds sont transférés via une plateforme d'échange agréée aux Émirats ou par virement direct depuis votre portefeuille, convertis en AED au taux convenu pour l'enregistrement au DLD." },
+      { n: "04", title: "Émission du titre de propriété", body: "Le bien est enregistré auprès du Dubai Land Department à votre nom. Vous recevez le titre de propriété officiel, une pleine propriété juridique." },
+    ],
+    whyTitle: "Pourquoi Dubaï pour l'immobilier en crypto",
+    whyPoints: [
+      { title: "Cadre juridique VARA", body: "L'autorité de régulation des actifs virtuels de Dubaï (VARA) offre un cadre juridique clair et applicable pour les transactions immobilières en crypto." },
+      { title: "0% d'impôt", body: "Aucun impôt sur les plus-values, taxe foncière ni impôt sur le revenu aux Émirats. Votre investissement crypto-vers-immobilier croît totalement défiscalisé." },
+      { title: "Enregistrement au DLD", body: "Chaque transaction est enregistrée auprès du Dubai Land Department. Votre propriété est documentée par un titre de propriété officiel du gouvernement." },
+      { title: "Aucune restriction de nationalité", body: "Toutes les nationalités bienvenues, y compris russe, chinoise, européenne et du CCG. La crypto est sans frontières, idéale pour les investisseurs internationaux." },
+      { title: "Golden Visa de 10 ans", body: "Investissez 2 M AED+ (≈ 545 K$) dans un bien et obtenez un Golden Visa des Émirats. Payable en cryptomonnaie." },
+      { title: "Rendements locatifs de 5 à 10%", body: "Parmi les rendements locatifs les plus élevés au monde. Les prix sur plan des quartiers clés ont augmenté de 40 à 60% depuis 2021." },
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      { q: "Acheter un bien à Dubaï en cryptomonnaie est-il légal ?", a: "Oui. L'autorité de régulation des actifs virtuels des Émirats (VARA) offre un cadre juridique clair. Plusieurs promoteurs de Dubaï et le DLD facilitent les achats en crypto. Les transactions doivent respecter les exigences AML/KYC, il n'y a aucun obstacle légal pour les acheteurs étrangers." },
+      { q: "Quelles cryptomonnaies sont acceptées ?", a: "Bitcoin (BTC), Ethereum (ETH), Tether (USDT), USD Coin (USDC), Ripple (XRP) et BNB. L'USDT est le plus populaire car il élimine le risque de volatilité des prix pendant la période de transaction." },
+      { q: "Le transfert au DLD nécessite-t-il une conversion en AED ?", a: "Oui. Le DLD enregistre les transactions en AED. Votre crypto est convertie à un taux convenu à la date de la transaction, via une plateforme agréée aux Émirats ou par le promoteur. Votre agent Binayah gère toute la coordination." },
+      { q: "Y a-t-il des impôts sur les achats immobiliers en crypto ?", a: "Aucun impôt sur les plus-values, aucun impôt sur le revenu, aucun impôt sur la fortune. Les seuls coûts sont les frais de transfert DLD (4% de la valeur en AED) et les frais d'agence (~2%). Aucun impôt sur les gains en crypto eux-mêmes." },
+      { q: "Quel est l'investissement minimum ?", a: "Les studios démarrent à 500 000 AED (≈136 K$ ou ₿2). Pour un Golden Visa des Émirats de 10 ans, la valeur minimale du bien est de 2 000 000 AED (≈545 K$)." },
+      { q: "Les citoyens russes peuvent-ils acheter un bien à Dubaï en crypto ?", a: "Absolument. Aucune restriction pour les ressortissants russes. La cryptomonnaie est particulièrement pratique compte tenu des contraintes bancaires internationales. Nous gérons tout le processus, y compris la documentation AML." },
+      { q: "Combien de temps prend le processus d'achat ?", a: "Sur plan : 2 à 4 semaines de l'accord à la confirmation de réservation. Marché secondaire : 3 à 6 semaines pour le transfert complet. Le transfert crypto lui-même prend 1 à 3 jours ouvrés une fois les documents en ordre." },
+      { q: "Quels quartiers sont les meilleurs pour l'investissement immobilier en crypto ?", a: "Dubai Marina, Downtown Dubai, Business Bay, Palm Jumeirah et JVC sont les premiers choix. Les projets sur plan d'Emaar, DAMAC et Sobha acceptent la crypto pour les acomptes initiaux avec des plans de paiement flexibles." },
+    ],
+    ctaTitle: "Prêt à investir ?",
+    ctaDesc: "Nos spécialistes de l'immobilier en crypto sont disponibles 7 jours sur 7. Obtenez une consultation personnalisée et une sélection de biens sur mesure.",
+    ctaBtn: "Contacter un spécialiste",
+    ctaWhatsApp: "Nous écrire sur WhatsApp",
+    browseCta: "Parcourir les biens",
+    breadcrumb: "Acheter en crypto",
+  },
 } as const;
 
 type Locale = keyof typeof CONTENT;
@@ -446,7 +499,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["شراء عقار بالبيتكوين دبي", "عقارات بالعملات المشفرة دبي", "استثمار عقاري بالكريبتو", "شراء شقة بالبيتكوين الإمارات"]
       : locale === "zh"
       ? ["用比特币购买迪拜房产", "迪拜加密货币购房", "比特币房产迪拜", "用USDT买迪拜房子"]
-      : locale === "vi" ? ["mua bất động sản dubai bitcoin", "bất động sản tiền điện tử dubai", "mua căn hộ dubai tiền điện tử", "bitcoin bất động sản uae", "mua bất động sản dubai usdt"] : locale === "he" ? ["לקנות נכס בדובאי ביטקוין","נדל\"ן קריפטו דובאי","לקנות דירה בדובאי במטבעות קריפטו","נכס ביטקוין איחוד האמירויות","את'ריום לקנות נכס בדובאי"] : ["buy property dubai bitcoin", "crypto real estate dubai", "buy dubai apartment cryptocurrency", "bitcoin property uae", "ethereum buy dubai property"],
+      : locale === "vi" ? ["mua bất động sản dubai bitcoin", "bất động sản tiền điện tử dubai", "mua căn hộ dubai tiền điện tử", "bitcoin bất động sản uae", "mua bất động sản dubai usdt"] : locale === "he" ? ["לקנות נכס בדובאי ביטקוין","נדל\"ן קריפטו דובאי","לקנות דירה בדובאי במטבעות קריפטו","נכס ביטקוין איחוד האמירויות","את'ריום לקנות נכס בדובאי"] : locale === "fr" ? ["acheter propriété dubaï bitcoin", "immobilier dubaï cryptomonnaie", "acheter appartement dubaï crypto", "bitcoin immobilier émirats", "ethereum acheter bien dubaï"] : ["buy property dubai bitcoin", "crypto real estate dubai", "buy dubai apartment cryptocurrency", "bitcoin property uae", "ethereum buy dubai property"],
   };
 }
 
@@ -461,7 +514,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : locale === "fr" ? "Accueil" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy-with-crypto` },
   ];
 
@@ -476,7 +529,7 @@ export default async function BuyWithCryptoPage({ params }: Props) {
         {/* Gold crypto banner as full hero background */}
         <Image
           src="/assets/crypto-banner.webp"
-          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : locale === "vi" ? "Tiền điện tử và đầu tư bất động sản Dubai" : locale === "he" ? "השקעה בנדל\"ן בדובאי ומטבעות קריפטוגרפיים" : "Cryptocurrency and Dubai real estate investment"}
+          alt={locale === "ru" ? "Криптовалюта и недвижимость Дубая" : locale === "ar" ? "العملات المشفرة والعقارات في دبي" : locale === "zh" ? "加密货币与迪拜房产投资" : locale === "vi" ? "Tiền điện tử và đầu tư bất động sản Dubai" : locale === "he" ? "השקעה בנדל\"ן בדובאי ומטבעות קריפטוגרפיים" : locale === "fr" ? "Cryptomonnaie et investissement immobilier à Dubaï" : "Cryptocurrency and Dubai real estate investment"}
           fill
           priority
           sizes="100vw"

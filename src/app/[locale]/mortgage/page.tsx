@@ -182,6 +182,68 @@ const CONTENT = {
     breadcrumb: "Mortgage Calculator",
   },
 
+  fr: {
+    metaTitle: "Calculateur de prêt immobilier Dubaï 2026 | Guide du crédit immobilier aux EAU | Binayah",
+    metaDesc: "Calculateur de prêt immobilier gratuit pour Dubaï. Comparez les taux de crédit immobilier aux EAU, les quotités de financement (LTV) pour résidents et non-résidents, les documents requis et les options bancaires. Conseils d'experts de Binayah.",
+    heroLabel: "PRÊT HYPOTHÉCAIRE & CRÉDIT IMMOBILIER",
+    h1: "Calculateur de prêt immobilier Dubaï",
+    h1sub: "& Guide du crédit immobilier aux EAU",
+    heroDesc: "Calculez vos mensualités instantanément. Consultez ensuite notre guide complet pour obtenir un prêt hypothécaire à Dubaï : taux, banques, quotités de financement (LTV) et tout ce que les expatriés doivent savoir.",
+    calcTitle: "Calculateur de prêt immobilier",
+    guideTitle: "Guide complet des prêts hypothécaires à Dubaï",
+    sections: [
+      {
+        title: "Qui peut obtenir un prêt hypothécaire à Dubaï ?",
+        body: "Les résidents des EAU comme les non-résidents (expatriés vivant à l'étranger) peuvent obtenir un prêt hypothécaire à Dubaï. Les résidents bénéficient généralement de quotités de financement (LTV) de 75 à 80 %, tandis que les non-résidents sont limités à 50-65 %. Les banques qui prêtent aux non-résidents incluent Emirates NBD, ADCB, ENBD, Mashreq et Dubai Islamic Bank. La valeur minimale du bien est généralement de 1 000 000 AED pour un financement destiné aux non-résidents.",
+      },
+      {
+        title: "Taux de crédit immobilier actuels aux EAU (2026)",
+        body: "Les taux de crédit immobilier aux EAU sont soit fixes, soit variables (indexés sur l'EIBOR, le taux interbancaire des Émirats). Les taux fixes sur 1 à 5 ans se situent généralement entre 3,99 % et 5,49 % par an. Les taux variables suivent l'EIBOR + 1,5-2,5 %. La plupart des emprunteurs optent pour un taux fixe pendant les 3 à 5 premières années afin de garantir la prévisibilité. Des prêts immobiliers islamiques (Murabaha/Ijara) sont également disponibles et structurellement compétitifs.",
+      },
+      {
+        title: "Exigences d'apport personnel",
+        body: "Réglementation des EAU (CBUAE) : pour les biens de moins de 5 M AED, les résidents doivent verser 20 % d'apport (première résidence), 30 % pour un investissement. Les non-résidents doivent verser 25-35 %. Pour les biens de plus de 5 M AED, 30 % (résidents) et 35-40 % (non-résidents). Les prêts sur plan exigent généralement 50 % d'apport ou un échéancier de paiement lié à l'avancement de la construction. Le financement par le promoteur peut réduire les besoins de trésorerie initiaux.",
+      },
+      {
+        title: "Documents requis",
+        body: "Salariés : passeport, visa (résidents), Emirates ID, relevés bancaires de 3 à 6 mois, bulletins de salaire, attestation d'employeur. Travailleurs indépendants : idem + états financiers audités sur 2 ans, licence commerciale. Non-résidents : passeport, relevés bancaires de 6 mois du pays d'origine, justificatif de revenus, rapport de solvabilité du pays d'origine. Certaines banques exigent également un rapport de solvabilité des EAU si vous avez déjà un historique financier dans le pays.",
+      },
+      {
+        title: "Coûts à prévoir",
+        body: "Au-delà de l'apport personnel : frais de dossier (0,5-1 % du prêt), frais d'enregistrement DLD (0,25 % de la valeur du prêt), frais d'évaluation du bien (2 500-3 500 AED), assurance habitation (0,1-0,2 %/an), assurance-vie (exigée par certaines banques, 0,1-0,3 %/an) et frais juridiques (5 000-10 000 AED pour l'acte hypothécaire). Prévoyez environ 3 à 5 % de la valeur du bien pour l'ensemble des frais de transaction.",
+      },
+      {
+        title: "Calendrier du prêt hypothécaire",
+        body: "Accord de principe : 2 à 5 jours ouvrés (après remise des documents). Approbation formelle : 7 à 14 jours (après l'évaluation du bien). Virement bancaire au vendeur/DLD : 1 à 2 jours après approbation. Total, de la demande au transfert : généralement 3 à 5 semaines pour les biens livrés. Les prêts sur plan peuvent prendre plus de temps car ils dépendent des étapes de la construction.",
+      },
+    ],
+    banksTitle: "Meilleures banques pour les prêts immobiliers à Dubaï",
+    banks: [
+      { name: "Emirates NBD", rate: "À partir de 3,99 %", note: "Leader du marché, solide programme pour expatriés" },
+      { name: "ADCB", rate: "À partir de 4,25 %", note: "Taux compétitifs, approbation rapide" },
+      { name: "Mashreq", rate: "À partir de 4,10 %", note: "Idéal pour les travailleurs indépendants" },
+      { name: "Dubai Islamic Bank", rate: "À partir de 4,05 %", note: "Financement islamique conforme à la charia" },
+      { name: "Abu Dhabi Commercial Bank", rate: "À partir de 4,30 %", note: "Solide programme pour non-résidents" },
+      { name: "HSBC UAE", rate: "À partir de 4,15 %", note: "Clientèle internationale, service premium" },
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      { question: "Puis-je obtenir un prêt hypothécaire à Dubaï en tant qu'expatrié ou non-résident ?", answer: "Oui. Les banques des EAU prêtent aussi bien aux expatriés résidents qu'aux non-résidents vivant à l'étranger. Les résidents peuvent emprunter jusqu'à 80 % de LTV (première résidence de moins de 5 M AED). Les non-résidents sont limités à 50-65 % de LTV et doivent disposer d'une valeur de bien minimale de 1 000 000 AED. Des banques comme Emirates NBD, ADCB et HSBC proposent des programmes de prêt spécifiques aux non-résidents." },
+      { question: "Quel est le taux de crédit immobilier actuel à Dubaï ?", answer: "En 2026, les taux de crédit immobilier à Dubaï vont d'environ 3,99 % à 5,49 % par an pour les produits à taux fixe (fixation de 1 à 5 ans). Les taux variables sont indexés sur l'EIBOR (actuellement ~5 %) plus une marge bancaire de 1,5-2,5 %. Le taux effectif global des prêts à taux variable se situe généralement entre 6,5 et 7,5 % par an. Les taux fixes offrent davantage de certitude pour la période initiale." },
+      { question: "Quel apport me faut-il pour un prêt immobilier à Dubaï ?", answer: "Règles de la Banque centrale des EAU : 20 % minimum pour les résidents achetant leur première résidence de moins de 5 M AED (80 % de LTV). 25-35 % pour les non-résidents à valeur de bien équivalente. 30 % pour les résidents achetant un bien d'investissement. Pour les biens de plus de 5 M AED, l'apport minimal est de 30 % (résidents) ou 35-40 % (non-résidents)." },
+      { question: "Quels documents dois-je fournir pour demander un prêt immobilier aux EAU ?", answer: "Les salariés doivent fournir : passeport, relevés bancaires de 3 à 6 mois, 3 derniers bulletins de salaire et attestation d'employeur. Les travailleurs indépendants doivent présenter 2 ans de comptes audités et une licence commerciale. Les non-résidents ajoutent un rapport de solvabilité et un justificatif de revenus de leur pays d'origine. Tous les documents doivent généralement dater de moins de 3 mois au moment de la demande." },
+      { question: "Vaut-il mieux choisir un taux fixe ou variable à Dubaï ?", answer: "Les taux fixes (généralement 3,99-5,49 % sur 1 à 5 ans) garantissent des mensualités stables et protègent contre les hausses de taux. Les taux variables (indexés sur l'EIBOR) peuvent être plus bas lorsque les taux baissent, mais créent de l'incertitude. La plupart des conseillers financiers recommandent de fixer le taux pendant les 3 à 5 premières années, en particulier pour une résidence principale où la maîtrise du budget est essentielle." },
+      { question: "Puis-je obtenir un prêt hypothécaire pour un bien sur plan à Dubaï ?", answer: "Les prêts sur plan existent mais sont moins courants. La plupart des acheteurs sur plan utilisent les échéanciers de paiement du promoteur (généralement 40-60 % pendant la construction + 40-60 % à la livraison). Certaines banques proposent des prêts liés à la construction qui débloquent les fonds par étapes. La LTV minimale est généralement de 50 %, ce qui nécessite un apport de 50 %." },
+      { question: "Combien de temps faut-il pour obtenir un accord de prêt à Dubaï ?", answer: "Accord de principe (également appelé accord préalable) : 2 à 5 jours ouvrés avec un dossier complet. Approbation formelle complète après l'évaluation du bien : 7 à 14 jours. L'ensemble du processus, de la demande au transfert des fonds, prend généralement 3 à 5 semaines pour les biens livrés." },
+      { question: "Quels sont tous les frais liés à l'obtention d'un prêt immobilier à Dubaï ?", answer: "Apport personnel (20-35 % de la valeur du bien) + frais de transfert DLD (4 % de la valeur du bien, généralement partagés entre acheteur et vendeur) + frais d'enregistrement de l'hypothèque DLD (0,25 % du prêt) + frais de dossier bancaires (0,5-1 % du prêt) + évaluation du bien (2 500-3 500 AED) + assurances. Coût total de la transaction au-delà du prix d'achat : environ 3 à 5 % de la valeur du bien." },
+    ],
+    ctaTitle: "Obtenez un accord de principe dès aujourd'hui",
+    ctaDesc: "Binayah collabore avec les meilleurs courtiers en prêts immobiliers des EAU. Nous vous mettons en relation avec la banque adaptée, préparons votre dossier et vous accompagnons jusqu'à l'approbation, sans frais supplémentaires.",
+    ctaBtn: "Parler à un spécialiste du crédit immobilier",
+    ctaWhatsApp: "Écrivez-nous sur WhatsApp",
+    breadcrumb: "Calculateur de prêt immobilier",
+  },
+
   ru: {
     metaTitle: "Ипотечный калькулятор Дубай 2026 | Кредит на жильё ОАЭ | Binayah",
     metaDesc: "Бесплатный ипотечный калькулятор для Дубая. Ставки, LTV для экспатов и нерезидентов, необходимые документы. Полное руководство от Binayah Properties.",
@@ -421,7 +483,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["حاسبة رهن عقاري دبي", "قرض عقاري دبي", "تمويل عقاري دبي", "رهن عقاري للأجانب دبي"]
       : locale === "zh"
       ? ["迪拜房贷计算器", "迪拜住房贷款", "迪拜按揭贷款", "阿联酋房贷外籍人士"]
-      : locale === "vi" ? ["máy tính vay thế chấp dubai", "vay mua nhà dubai", "lãi suất vay thế chấp uae", "vay thế chấp dubai người nước ngoài"] : locale === "he" ? ["מחשבון משכנתא Dubai","הלוואת דירה Dubai","ריביות משכנתא UAE","משכנתא Dubai לאקספטים","קניית נכס Dubai עם משכנתא"] : ["mortgage calculator dubai", "dubai home loan", "uae mortgage rates", "dubai mortgage expat", "buy property dubai mortgage"],
+      : locale === "vi" ? ["máy tính vay thế chấp dubai", "vay mua nhà dubai", "lãi suất vay thế chấp uae", "vay thế chấp dubai người nước ngoài"] : locale === "fr" ? ["calculateur prêt immobilier dubaï", "crédit immobilier dubaï", "taux hypothécaire eau", "prêt immobilier dubaï expatrié"] : locale === "he" ? ["מחשבון משכנתא Dubai","הלוואת דירה Dubai","ריביות משכנתא UAE","משכנתא Dubai לאקספטים","קניית נכס Dubai עם משכנתא"] : ["mortgage calculator dubai", "dubai home loan", "uae mortgage rates", "dubai mortgage expat", "buy property dubai mortgage"],
   };
 }
 
@@ -432,7 +494,7 @@ export default async function MortgagePage({ params }: Props) {
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const bcItems = [
-    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
+    { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "fr" ? "Accueil" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/mortgage` },
   ];
 
@@ -499,7 +561,7 @@ export default async function MortgagePage({ params }: Props) {
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4">
             {locale === "ru" ? "* Ставки актуальны на 2026 г. Условия зависят от профиля заёмщика." :
-             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." : locale === "he" ? "* שיעורים נכון ל-2026. התנאים תלויים בפרופיל הלווה ובסוג הנכס." : "* Rates as of 2026. Terms depend on borrower profile and property type."}
+             locale === "ar" ? "* المعدلات اعتبارًا من 2026. تتوقف الشروط على ملف المقترض." : locale === "zh" ? "* 利率截至2026年。条款因借款人状况而异。" : locale === "vi" ? "* Lãi suất tính đến năm 2026. Điều khoản phụ thuộc vào hồ sơ người vay và loại bất động sản." : locale === "fr" ? "* Taux en vigueur en 2026. Les conditions dépendent du profil de l'emprunteur et du type de bien." : locale === "he" ? "* שיעורים נכון ל-2026. התנאים תלויים בפרופיל הלווה ובסוג הנכס." : "* Rates as of 2026. Terms depend on borrower profile and property type."}
           </p>
         </section>
 
