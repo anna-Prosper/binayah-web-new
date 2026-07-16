@@ -24,12 +24,22 @@ export async function generateStaticParams() {
   );
 }
 
+const PULSE_SUFFIX: Record<string, string> = {
+  ru: "Дубай Пульс | Binayah Properties",
+  ar: "نبض دبي | بناية للعقارات",
+  zh: "迪拜脉搏 | Binayah Properties",
+  vi: "Dubai Pulse | Binayah Properties",
+  he: "דובאי פולס | Binayah Properties",
+  fr: "Dubai Pulse | Binayah Properties",
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const guide = findGuide(slug);
   if (!guide) return {};
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
-  const title = `${t(guide.titleKey as Parameters<typeof t>[0])} | Dubai Pulse | Binayah`;
+  const suffix = PULSE_SUFFIX[locale] ?? "Dubai Pulse | Binayah Properties";
+  const title = `${t(guide.titleKey as Parameters<typeof t>[0])} | ${suffix}`;
   const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
   const isEn = locale === "en";
   // A guide is indexable in English, and in any locale whose bodies+FAQs are
