@@ -150,6 +150,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   const t = useTranslations("projectDetail");
   const tCommon = useTranslations("common");
   const tE = useTranslations("enums");
+  const tFaq = useTranslations("projectFaq");
   const tEnum = (v: string | undefined | null) => {
     if (!v) return "";
     const key = v.toString().trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)).join("");
@@ -159,6 +160,9 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   const tBed = (raw: string | undefined | null) => {
     if (!raw) return "";
     const s = raw.trim();
+    // CMS placeholder values (stored literally as "Not specified", "TBA"…) — render
+    // a localized "On request" instead of leaking English on non-EN locales.
+    if (/^(not\s+specified|not\s+available|n\/?a|tba|tbd|unknown|none|-|—)$/i.test(s)) return tFaq("unitTypeTBD");
     if (/^studio$/i.test(s)) return tEnum("Studio");
     const m = s.match(/^(\d+)\s*\+?\s*(?:bedroom|br|bed)s?$/i);
     if (!m) return raw;
@@ -419,16 +423,30 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
     return [];
   })();
   const dbFaqs = ((project.faqs as FAQ[] | null) || []).filter(f => f.question?.trim());
-  const faqs = dbFaqs.length > 0 ? dbFaqs : [
-    { question: `What is the starting price of ${project.name}?`, answer: project.startingPrice ? `${project.name} starts from ${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}. Prices vary by unit type and floor. Contact us for the latest pricing and availability.` : `Please contact our team for the current pricing of ${project.name}. We'll share the latest price list and available units.` },
-    { question: `What floor plans are available at ${project.name}?`, answer: `${project.name} offers ${Array.isArray(project.unitTypes) && project.unitTypes.length > 0 ? project.unitTypes.join(", ") : "a range of unit types"}. Detailed floor plans with dimensions are available on request, contact us via WhatsApp or the inquiry form above.` },
-    { question: `Who is the developer of ${project.name}?`, answer: project.developerName ? `${project.name} is developed by ${project.developerName}, a leading real estate developer in Dubai. ${project.developerDescription ? project.developerDescription.slice(0, 120) + "…" : ""}` : `Please contact our team for developer information about ${project.name}.` },
-    { question: `When is the handover date for ${project.name}?`, answer: project.completionDate ? `The expected handover date for ${project.name} is ${project.completionDate}. Timelines are subject to construction progress and regulatory approvals.` : `Please contact our team for the latest handover timeline for ${project.name}.` },
-    { question: `What is the payment plan for ${project.name}?`, answer: project.paymentPlanSummary && project.paymentPlanSummary !== "TBA" ? project.paymentPlanSummary : `${project.name} offers a flexible payment plan designed for both end-users and investors, typically including a down payment on booking, installments during construction, and the balance on handover. Contact us for the full schedule.` },
-    { question: `Is ${project.name} eligible for UAE Golden Visa?`, answer: `Yes, purchasing a property at ${project.name} valued at AED 2 million or above qualifies for the UAE Golden Visa, granting 10-year renewable residency. Our team can guide you through the application process.` },
-    { question: `Where is ${project.name} located?`, answer: project.community ? `${project.name} is located in ${project.community}, ${project.city || "Dubai"}, ${project.country || "UAE"}. ${project.locationDescription ? project.locationDescription.slice(0, 150) + "…" : ""}` : `${project.name} is located in ${project.city || "Dubai"}, UAE. Contact us for detailed location and transport information.` },
-    { question: "Is mortgage financing available?", answer: "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50-80% depending on residency status. We can connect you with our banking partners for pre-approval." },
-  ];
+  // Generated fallback FAQs (when the project has no editorial FAQs). Localized
+  // via the projectFaq namespace so non-EN pages render native Q&A + FAQPage
+  // schema instead of English. Numbers/proper nouns stay verbatim.
+  const faqs = dbFaqs.length > 0 ? dbFaqs : (() => {
+    const nm = project.name;
+    const priceStr = project.startingPrice
+      ? `${project.currency || "AED"} ${(project.startingPrice < 1_000 ? project.startingPrice * 1_000_000 : project.startingPrice).toLocaleString("en-AE")}`
+      : "";
+    const realUnitTypes = (Array.isArray(project.unitTypes) ? (project.unitTypes as string[]) : [])
+      .filter((u) => u && !/^(not\s+specified|not\s+available|n\/?a|tba|tbd|unknown|none|-|—)\s*$/i.test(u.trim()));
+    const unitTypesText = realUnitTypes.length > 0 ? realUnitTypes.map(tBed).join(", ") : tFaq("unitTypesFallback");
+    const devDesc = project.developerDescription ? project.developerDescription.slice(0, 120) + "…" : "";
+    const locDesc = project.locationDescription ? project.locationDescription.slice(0, 150) + "…" : "";
+    return [
+      { question: tFaq("q1", { name: nm }), answer: project.startingPrice ? tFaq("a1_price", { name: nm, price: priceStr }) : tFaq("a1_noprice", { name: nm }) },
+      { question: tFaq("q2", { name: nm }), answer: tFaq("a2", { name: nm, unitTypes: unitTypesText }) },
+      { question: tFaq("q3", { name: nm }), answer: project.developerName ? tFaq("a3_dev", { name: nm, developer: project.developerName, devDesc }) : tFaq("a3_nodev", { name: nm }) },
+      { question: tFaq("q4", { name: nm }), answer: project.completionDate ? tFaq("a4_date", { name: nm, date: project.completionDate }) : tFaq("a4_nodate", { name: nm }) },
+      { question: tFaq("q5", { name: nm }), answer: project.paymentPlanSummary && project.paymentPlanSummary !== "TBA" ? project.paymentPlanSummary : tFaq("a5", { name: nm }) },
+      { question: tFaq("q6", { name: nm }), answer: tFaq("a6", { name: nm }) },
+      { question: tFaq("q7", { name: nm }), answer: project.community ? tFaq("a7_comm", { name: nm, community: project.community, city: project.city || "Dubai", country: project.country || "UAE", locDesc }) : tFaq("a7_nocomm", { name: nm, city: project.city || "Dubai" }) },
+      { question: tFaq("q8"), answer: tFaq("a8") },
+    ];
+  })();
   const hasPaymentInfo = project.downPayment || project.paymentPlanSummary || project.paymentPlanDetails;
 
   const projectStatus = (project.status || "").toLowerCase();

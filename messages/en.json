@@ -3037,5 +3037,29 @@
     "navFaqs": "FAQs",
     "priceOnRequest": "Price on request",
     "studio": "Studio"
+  },
+  "projectFaq": {
+    "q1": "What is the starting price of {name}?",
+    "a1_price": "{name} starts from {price}. Prices vary by unit type and floor. Contact us for the latest pricing and availability.",
+    "a1_noprice": "Please contact our team for the current pricing of {name}. We'll share the latest price list and available units.",
+    "q2": "What floor plans are available at {name}?",
+    "a2": "{name} offers {unitTypes}. Detailed floor plans with dimensions are available on request, contact us via WhatsApp or the inquiry form above.",
+    "unitTypesFallback": "a range of unit types",
+    "q3": "Who is the developer of {name}?",
+    "a3_dev": "{name} is developed by {developer}, a leading real estate developer in Dubai. {devDesc}",
+    "a3_nodev": "Please contact our team for developer information about {name}.",
+    "q4": "When is the handover date for {name}?",
+    "a4_date": "The expected handover date for {name} is {date}. Timelines are subject to construction progress and regulatory approvals.",
+    "a4_nodate": "Please contact our team for the latest handover timeline for {name}.",
+    "q5": "What is the payment plan for {name}?",
+    "a5": "{name} offers a flexible payment plan designed for both end-users and investors, typically including a down payment on booking, installments during construction, and the balance on handover. Contact us for the full schedule.",
+    "q6": "Is {name} eligible for UAE Golden Visa?",
+    "a6": "Yes, purchasing a property at {name} valued at AED 2 million or above qualifies for the UAE Golden Visa, granting 10-year renewable residency. Our team can guide you through the application process.",
+    "q7": "Where is {name} located?",
+    "a7_comm": "{name} is located in {community}, {city}, {country}. {locDesc}",
+    "a7_nocomm": "{name} is located in {city}, UAE. Contact us for detailed location and transport information.",
+    "q8": "Is mortgage financing available?",
+    "a8": "Yes, mortgage financing is available through major UAE banks for both residents and non-residents. Typical loan-to-value ratios range from 50-80% depending on residency status. We can connect you with our banking partners for pre-approval.",
+    "unitTypeTBD": "On request"
   }
 }

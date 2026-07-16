@@ -3035,5 +3035,29 @@
     "navFaqs": "FAQ",
     "priceOnRequest": "Prix sur demande",
     "studio": "Studio"
+  },
+  "projectFaq": {
+    "q1": "Quel est le prix de départ de {name} ?",
+    "a1_price": "{name} débute à partir de {price}. Les prix varient selon le type d'unité et l'étage. Contactez-nous pour connaître les derniers prix et disponibilités.",
+    "a1_noprice": "Veuillez contacter notre équipe pour connaître le prix actuel de {name}. Nous vous communiquerons la dernière liste de prix et les unités disponibles.",
+    "q2": "Quels plans d'étage sont disponibles à {name} ?",
+    "a2": "{name} propose {unitTypes}. Des plans d'étage détaillés avec dimensions sont disponibles sur demande ; contactez-nous via WhatsApp ou le formulaire de demande ci-dessus.",
+    "unitTypesFallback": "une gamme de types d'unités",
+    "q3": "Qui est le promoteur de {name} ?",
+    "a3_dev": "{name} est développé par {developer}, un promoteur immobilier de premier plan à Dubaï. {devDesc}",
+    "a3_nodev": "Veuillez contacter notre équipe pour obtenir des informations sur le promoteur de {name}.",
+    "q4": "Quelle est la date de livraison de {name} ?",
+    "a4_date": "La date de livraison prévue pour {name} est {date}. Les délais dépendent de l'avancement des travaux et des approbations réglementaires.",
+    "a4_nodate": "Veuillez contacter notre équipe pour connaître le dernier calendrier de livraison de {name}.",
+    "q5": "Quel est le plan de paiement pour {name} ?",
+    "a5": "{name} propose un plan de paiement flexible conçu à la fois pour les utilisateurs finaux et les investisseurs, comprenant généralement un acompte à la réservation, des versements pendant la construction et le solde à la livraison. Contactez-nous pour l'échéancier complet.",
+    "q6": "{name} est-il éligible au Golden Visa des Émirats arabes unis ?",
+    "a6": "Oui, l'achat d'un bien immobilier à {name} d'une valeur de 2 millions d'AED ou plus donne droit au Golden Visa des Émirats arabes unis, offrant une résidence renouvelable de 10 ans. Notre équipe peut vous accompagner tout au long de la procédure de demande.",
+    "q7": "Où se situe {name} ?",
+    "a7_comm": "{name} est situé à {community}, {city}, {country}. {locDesc}",
+    "a7_nocomm": "{name} est situé à {city}, aux Émirats arabes unis. Contactez-nous pour des informations détaillées sur l'emplacement et les transports.",
+    "q8": "Un financement hypothécaire est-il disponible ?",
+    "a8": "Oui, un financement hypothécaire est disponible auprès des principales banques des Émirats arabes unis, pour les résidents comme pour les non-résidents. Les ratios prêt-valeur habituels varient de 50-80 % selon le statut de résidence. Nous pouvons vous mettre en relation avec nos partenaires bancaires pour une pré-approbation.",
+    "unitTypeTBD": "Sur demande"
   }
 }

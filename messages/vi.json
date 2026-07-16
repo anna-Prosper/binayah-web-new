@@ -3029,5 +3029,29 @@
     "navFaqs": "Câu hỏi thường gặp",
     "priceOnRequest": "Giá theo yêu cầu",
     "studio": "Căn studio"
+  },
+  "projectFaq": {
+    "q1": "Giá khởi điểm của {name} là bao nhiêu?",
+    "a1_price": "{name} có giá từ {price}. Giá thay đổi tùy theo loại căn và tầng. Hãy liên hệ với chúng tôi để biết giá và tình trạng căn hộ mới nhất.",
+    "a1_noprice": "Vui lòng liên hệ đội ngũ của chúng tôi để biết giá hiện tại của {name}. Chúng tôi sẽ chia sẻ bảng giá mới nhất và các căn còn trống.",
+    "q2": "{name} có những mặt bằng nào?",
+    "a2": "{name} cung cấp {unitTypes}. Mặt bằng chi tiết kèm kích thước có sẵn theo yêu cầu, hãy liên hệ với chúng tôi qua WhatsApp hoặc biểu mẫu yêu cầu ở trên.",
+    "unitTypesFallback": "nhiều loại căn hộ",
+    "q3": "Chủ đầu tư của {name} là ai?",
+    "a3_dev": "{name} được phát triển bởi {developer}, một chủ đầu tư bất động sản hàng đầu tại Dubai. {devDesc}",
+    "a3_nodev": "Vui lòng liên hệ đội ngũ của chúng tôi để biết thông tin về chủ đầu tư của {name}.",
+    "q4": "Ngày bàn giao của {name} là khi nào?",
+    "a4_date": "Ngày bàn giao dự kiến của {name} là {date}. Thời gian có thể thay đổi tùy theo tiến độ xây dựng và các phê duyệt pháp lý.",
+    "a4_nodate": "Vui lòng liên hệ đội ngũ của chúng tôi để biết lịch bàn giao mới nhất của {name}.",
+    "q5": "Kế hoạch thanh toán của {name} như thế nào?",
+    "a5": "{name} cung cấp kế hoạch thanh toán linh hoạt được thiết kế cho cả người mua ở và nhà đầu tư, thường bao gồm khoản đặt cọc khi đặt chỗ, các đợt thanh toán trong quá trình xây dựng và phần còn lại khi bàn giao. Hãy liên hệ với chúng tôi để nhận lịch thanh toán đầy đủ.",
+    "q6": "{name} có đủ điều kiện cho Golden Visa của UAE không?",
+    "a6": "Có, việc mua bất động sản tại {name} trị giá từ AED 2 million trở lên đủ điều kiện nhận Golden Visa của UAE, cấp quyền cư trú gia hạn 10 năm. Đội ngũ của chúng tôi có thể hướng dẫn bạn qua quy trình nộp hồ sơ.",
+    "q7": "{name} nằm ở đâu?",
+    "a7_comm": "{name} tọa lạc tại {community}, {city}, {country}. {locDesc}",
+    "a7_nocomm": "{name} tọa lạc tại {city}, UAE. Hãy liên hệ với chúng tôi để biết thông tin chi tiết về vị trí và giao thông.",
+    "q8": "Có hỗ trợ vay thế chấp không?",
+    "a8": "Có, hỗ trợ vay thế chấp có sẵn thông qua các ngân hàng lớn của UAE cho cả cư dân và người không cư trú. Tỷ lệ cho vay trên giá trị tài sản thường dao động từ 50-80% tùy theo tình trạng cư trú. Chúng tôi có thể kết nối bạn với các đối tác ngân hàng để được phê duyệt trước.",
+    "unitTypeTBD": "Theo yêu cầu"
   }
 }
