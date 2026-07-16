@@ -8,6 +8,64 @@ import { dldAreaFor } from "@/lib/market";
 
 export const revalidate = 3600;
 
+// Locale-aware title + lead-sentence templates. The community name is a proper
+// noun kept verbatim; the surrounding phrasing is localized so each locale URL
+// carries a genuinely localized <title>/<meta description>. The DB's editorial
+// first sentence (English) is appended after the localized lead. Self-canonical
+// + hreflang kept for all 7 locales.
+const COMM_META: Record<
+  string,
+  {
+    titleFull: (n: string) => string;
+    titleShort: (n: string) => string;
+    leadProjects: (n: string, count: number, priceFrom: string) => string;
+    leadPlain: (n: string) => string;
+  }
+> = {
+  en: {
+    titleFull: (n) => `${n} Properties for Sale & Rent in Dubai | Binayah`,
+    titleShort: (n) => `${n} Properties in Dubai | Binayah`,
+    leadProjects: (n, c, p) => `${c} off-plan projects plus homes for sale & rent in ${n}, Dubai${p ? ` from ${p}` : ""}.`,
+    leadPlain: (n) => `Property for sale, rent & off-plan in ${n}, Dubai.`,
+  },
+  fr: {
+    titleFull: (n) => `Biens à vendre et à louer à ${n}, Dubaï | Binayah`,
+    titleShort: (n) => `Biens immobiliers à ${n}, Dubaï | Binayah`,
+    leadProjects: (n, c, p) => `${c} projets sur plan ainsi que des biens à vendre et à louer à ${n}, Dubaï${p ? ` à partir de ${p}` : ""}.`,
+    leadPlain: (n) => `Biens à vendre, à louer et sur plan à ${n}, Dubaï.`,
+  },
+  ru: {
+    titleFull: (n) => `Недвижимость на продажу и в аренду в ${n}, Дубай | Binayah`,
+    titleShort: (n) => `Недвижимость в ${n}, Дубай | Binayah`,
+    leadProjects: (n, c, p) => `${c} проектов на стадии строительства, а также жильё на продажу и в аренду в ${n}, Дубай${p ? ` от ${p}` : ""}.`,
+    leadPlain: (n) => `Недвижимость на продажу, в аренду и на стадии строительства в ${n}, Дубай.`,
+  },
+  ar: {
+    titleFull: (n) => `عقارات للبيع والإيجار في ${n}، دبي | بناية`,
+    titleShort: (n) => `عقارات في ${n}، دبي | بناية`,
+    leadProjects: (n, c, p) => `${c} مشاريع على الخارطة بالإضافة إلى منازل للبيع والإيجار في ${n}، دبي${p ? ` تبدأ من ${p}` : ""}.`,
+    leadPlain: (n) => `عقارات للبيع والإيجار وعلى الخارطة في ${n}، دبي.`,
+  },
+  zh: {
+    titleFull: (n) => `迪拜 ${n} 待售及出租房产 | Binayah`,
+    titleShort: (n) => `迪拜 ${n} 房产 | Binayah`,
+    leadProjects: (n, c, p) => `迪拜 ${n} 的 ${c} 个期房项目，以及待售和出租房源${p ? `，起价 ${p}` : ""}。`,
+    leadPlain: (n) => `迪拜 ${n} 的待售、出租及期房房源。`,
+  },
+  vi: {
+    titleFull: (n) => `Bất động sản bán & cho thuê tại ${n}, Dubai | Binayah`,
+    titleShort: (n) => `Bất động sản tại ${n}, Dubai | Binayah`,
+    leadProjects: (n, c, p) => `${c} dự án off-plan cùng nhà bán & cho thuê tại ${n}, Dubai${p ? ` từ ${p}` : ""}.`,
+    leadPlain: (n) => `Bất động sản bán, cho thuê & off-plan tại ${n}, Dubai.`,
+  },
+  he: {
+    titleFull: (n) => `נכסים למכירה ולהשכרה ב-${n}, דובאי | Binayah`,
+    titleShort: (n) => `נכסים ב-${n}, דובאי | Binayah`,
+    leadProjects: (n, c, p) => `${c} פרויקטים על הנייר ונכסים למכירה ולהשכרה ב-${n}, דובאי${p ? ` החל מ-${p}` : ""}.`,
+    leadPlain: (n) => `נכסים למכירה, להשכרה ועל הנייר ב-${n}, דובאי.`,
+  },
+};
+
 // Opt this dynamic route into ISR. Without a generateStaticParams, a [slug]
 // route is treated as fully dynamic (private, no-store) regardless of
 // `revalidate`. Returning [] prerenders nothing at build (keeping the build
@@ -50,9 +108,10 @@ export async function generateMetadata({
     "";
   const stripped = baseDesc.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
   const firstSentence = ((stripped.match(/^.*?[.!?](\s|$)/) || [stripped])[0] || stripped).trim();
+  const cm = COMM_META[locale] ?? COMM_META.en;
   const lead = projCount > 0
-    ? `${projCount} off-plan projects plus homes for sale & rent in ${name}, Dubai${priceFrom ? ` from ${priceFrom}` : ""}.`
-    : `Property for sale, rent & off-plan in ${name}, Dubai.`;
+    ? cm.leadProjects(name, projCount, priceFrom || "")
+    : cm.leadPlain(name);
   let description = `${lead} ${firstSentence}`.replace(/\s+/g, " ").trim();
   if (description.length > 160) {
     const cut = description.lastIndexOf(" ", 158);
@@ -74,8 +133,8 @@ export async function generateMetadata({
   // Keep titles from overflowing Google's ~60-char display: long community
   // names drop the "for Sale & Rent" phrase; short names keep the full keyword-
   // rich form.
-  const fullTitle = `${name} Properties for Sale & Rent in Dubai | Binayah`;
-  const title = fullTitle.length > 65 ? `${name} Properties in Dubai | Binayah` : fullTitle;
+  const fullTitle = cm.titleFull(name);
+  const title = fullTitle.length > 65 ? cm.titleShort(name) : fullTitle;
 
   const canonicalUrl = makeCanonical(locale, `/communities/${slug}`);
 

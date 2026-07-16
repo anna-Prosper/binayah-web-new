@@ -6,9 +6,12 @@ import { canonical, altLangs } from "@/lib/site";
 interface Props { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "listProperty" });
+  const title = `${t("heroTitle")} ${t("heroTitleItalic")} | Binayah Properties`;
+  const description = t("heroSubtitle");
   return {
-    title: "List Your Property in Dubai | Binayah Properties",
-    description: "Sell or rent your Dubai property with Binayah. RERA-certified agents, wide buyer network, full service from valuation to close.",
+    title,
+    description,
     alternates: {
       canonical: canonical(locale, "/list-your-property"),
       languages: altLangs("/list-your-property"),

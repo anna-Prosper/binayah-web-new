@@ -25,16 +25,33 @@ interface Props {
 
 const SITE = "https://www.binayah.ae";
 
+// Fallback role label + description template per locale. The agent name is a
+// proper noun kept verbatim; the surrounding phrasing is localized so each
+// locale URL carries a genuinely localized <title>/<meta>. When a real bio
+// exists it is used as-is (already authored in English).
+const AGENT_META: Record<
+  string,
+  { role: string; desc: (name: string, role: string) => string }
+> = {
+  en: { role: "Real Estate Agent", desc: (n, r) => `${n}, ${r}Dubai real estate agent at Binayah Properties. Contact for buying, selling, renting and investing in Dubai property.` },
+  fr: { role: "Agent immobilier", desc: (n, r) => `${n}, ${r}agent immobilier à Dubaï chez Binayah Properties. Contactez-le pour acheter, vendre, louer et investir dans l'immobilier à Dubaï.` },
+  ru: { role: "Агент по недвижимости", desc: (n, r) => `${n}, ${r}агент по недвижимости в Дубае в Binayah Properties. Свяжитесь для покупки, продажи, аренды и инвестиций в недвижимость Дубая.` },
+  ar: { role: "وكيل عقاري", desc: (n, r) => `${n}، ${r}وكيل عقاري في دبي لدى بناية للعقارات. تواصل معه للشراء والبيع والتأجير والاستثمار في عقارات دبي.` },
+  zh: { role: "房地产经纪人", desc: (n, r) => `${n}，${r}Binayah Properties 迪拜房地产经纪人。买房、卖房、租房及投资迪拜房产，欢迎联系。` },
+  vi: { role: "Chuyên viên BĐS", desc: (n, r) => `${n}, ${r}chuyên viên bất động sản Dubai tại Binayah Properties. Liên hệ để mua, bán, cho thuê và đầu tư BĐS Dubai.` },
+  he: { role: "סוכן נדל\"ן", desc: (n, r) => `${n}, ${r}סוכן נדל\"ן בדובאי ב-Binayah Properties. צרו קשר לקנייה, מכירה, השכרה והשקעה בנדל\"ן בדובאי.` },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const agent = await getAgent(slug);
   if (!agent) return { title: "Agent Not Found | Binayah Properties" };
   const bio = bioText(agent.bio);
+  const meta = AGENT_META[locale] ?? AGENT_META.en;
+  const position = agent.position || meta.role;
   const role = agent.position ? `${agent.position}, ` : "";
-  const title = `${agent.name} | ${agent.position || "Real Estate Agent"} | Binayah Properties`;
-  const description = bio
-    ? bio.slice(0, 155)
-    : `${agent.name}, ${role}Dubai real estate agent at Binayah Properties. Contact for buying, selling, renting and investing in Dubai property.`;
+  const title = `${agent.name} | ${position} | Binayah Properties`;
+  const description = bio ? bio.slice(0, 155) : meta.desc(agent.name, role);
   return {
     title,
     description,

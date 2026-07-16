@@ -20,11 +20,40 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+const TEAM_META: Record<string, { title: string; description: string }> = {
+  en: {
+    title: "Our Team | RERA-Certified Dubai Property Experts | Binayah",
+    description: "Meet the Binayah Properties team — RERA-certified real estate agents helping you buy, sell, rent and invest in Dubai since 2007.",
+  },
+  fr: {
+    title: "Notre équipe | Experts immobiliers certifiés RERA à Dubaï | Binayah",
+    description: "Rencontrez l'équipe Binayah Properties — des agents immobiliers certifiés RERA qui vous aident à acheter, vendre, louer et investir à Dubaï depuis 2007.",
+  },
+  ru: {
+    title: "Наша команда | Сертифицированные RERA эксперты по недвижимости Дубая | Binayah",
+    description: "Познакомьтесь с командой Binayah Properties — сертифицированные RERA агенты помогают покупать, продавать, арендовать и инвестировать в недвижимость Дубая с 2007 года.",
+  },
+  ar: {
+    title: "فريقنا | خبراء عقارات دبي المعتمدون من RERA | بناية",
+    description: "تعرّف على فريق بناية للعقارات — وكلاء عقاريون معتمدون من RERA يساعدونك في شراء وبيع وتأجير والاستثمار في عقارات دبي منذ 2007.",
+  },
+  zh: {
+    title: "我们的团队 | RERA 认证迪拜房产专家 | Binayah",
+    description: "认识 Binayah Properties 团队——自 2007 年起，RERA 认证房产顾问助您在迪拜买房、卖房、租房与投资。",
+  },
+  vi: {
+    title: "Đội ngũ của chúng tôi | Chuyên gia BĐS Dubai được RERA chứng nhận | Binayah",
+    description: "Gặp gỡ đội ngũ Binayah Properties — các chuyên viên BĐS được RERA chứng nhận, hỗ trợ bạn mua, bán, cho thuê và đầu tư tại Dubai từ năm 2007.",
+  },
+  he: {
+    title: "הצוות שלנו | מומחי נדל\"ן בדובאי בהסמכת RERA | Binayah",
+    description: "הכירו את צוות Binayah Properties — סוכני נדל\"ן מוסמכי RERA שמסייעים לכם לקנות, למכור, לשכור ולהשקיע בנדל\"ן בדובאי משנת 2007.",
+  },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = "Our Team | RERA-Certified Dubai Property Experts | Binayah";
-  const description =
-    "Meet the Binayah Properties team — RERA-certified real estate agents helping you buy, sell, rent and invest in Dubai since 2007.";
+  const { title, description } = TEAM_META[locale] ?? TEAM_META.en;
   return {
     title,
     description,
