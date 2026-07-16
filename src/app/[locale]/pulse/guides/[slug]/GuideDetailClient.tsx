@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PULSE_GUIDES, PulseGuide } from "@/lib/pulse-guides";
 import type { AreaStats } from "@/lib/area-stats";
+import NewsletterStrip from "@/components/NewsletterStrip";
 
 // ── Static curated related areas (Dubai focus) ─────────────────────────────
 const CURATED_AREAS = [
@@ -443,6 +444,9 @@ export default function GuideDetailClient({
           </div>
         </div>
       </section>
+
+      {/* Capture readers at the end of the guide (attributed to guide-footer) */}
+      <NewsletterStrip source="guide-footer" />
     </div>
   );
 }

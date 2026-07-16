@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { useHoneypot } from "@/components/Honeypot";
 
-const NewsletterStrip = () => {
+const NewsletterStrip = ({ source = "newsletter-strip" }: { source?: string } = {}) => {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { value: hp, field: honeypotField } = useHoneypot();
@@ -23,7 +23,7 @@ const NewsletterStrip = () => {
       const res = await fetch(apiUrl("/api/market-report/subscribe"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hp, email: email.trim().toLowerCase(), source: "newsletter-strip" }),
+        body: JSON.stringify({ hp, email: email.trim().toLowerCase(), source }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {

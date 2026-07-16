@@ -28,10 +28,15 @@ export default async function AdminLandingPage() {
   // Fetch counts
   const client = await clientPromise;
   const db = client.db("binayah_web_new_dev");
-  const [inquiryCount, submissionCount, subscriberCount, trackStats] = await Promise.all([
+  const [inquiryCount, submissionCount, subscriberCount, newsletterCount, trackStats] = await Promise.all([
     db.collection("inquiries").countDocuments(),
     db.collection("property_submissions").countDocuments(),
     db.collection("project_subscriptions").countDocuments(),
+    // Confirmed, still-subscribed newsletter (market-report) sign-ups.
+    db.collection("marketreportsubscriptions").countDocuments({
+      confirmedAt: { $ne: null },
+      unsubscribedAt: null,
+    }),
     db.collection("userevents").aggregate([
       { $group: { _id: "$action", count: { $sum: 1 } } },
     ]).toArray().then((rows) =>
@@ -107,6 +112,20 @@ export default async function AdminLandingPage() {
       icon: (
         <svg className="w-6 h-6 text-indigo-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+        </svg>
+      ),
+    },
+    {
+      href: "/admin/newsletter",
+      label: "Newsletter Subscribers",
+      description: "Confirmed weekly market-report sign-ups",
+      count: newsletterCount,
+      accent: "#0ea5e9",
+      bg: "bg-sky-50",
+      iconBg: "bg-sky-100",
+      icon: (
+        <svg className="w-6 h-6 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
         </svg>
       ),
     },
