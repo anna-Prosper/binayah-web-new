@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getDeveloper } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
+import { getDeveloperTranslation } from "@/lib/dev-i18n";
 
 export const revalidate = 3600;
 
@@ -87,7 +88,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DeveloperDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
 
   const data = await getDeveloper(slug);
 
@@ -95,10 +96,16 @@ export default async function DeveloperDetailPage({ params }: Props) {
 
   const { developer, projects } = data;
 
+  // Non-EN: supply the translated editorial description when one exists so the
+  // page renders native body copy (self-canonical + hreflang) instead of English.
+  const localizedDescription =
+    locale !== "en" ? await getDeveloperTranslation(locale, slug) : null;
+
   return (
     <DeveloperDetailClient
       developer={developer}
       projects={projects || []}
+      localizedDescription={localizedDescription}
     />
   );
 }

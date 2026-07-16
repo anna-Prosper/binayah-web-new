@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 
 interface Developer {
@@ -67,18 +67,27 @@ function stripHtml(html: string): string {
 export default function DeveloperDetailClient({
   developer,
   projects,
+  localizedDescription,
 }: {
   developer: Developer;
   projects: Project[];
+  // Native-language translation of the editorial description for non-EN locales
+  // (from the dev-i18n layer). Null when the locale is EN or has no translation.
+  localizedDescription?: string | null;
 }) {
   const t = useTranslations("developerDetail");
+  const locale = useLocale();
   const cleanDescription = developer.description
     ? stripHtml(developer.description)
     : "";
-  // Fall back to a data-driven summary (project count, communities, price) when
-  // there's no editorial description — turns a ~50-word thin page into a useful,
-  // factually-unique one. Server-rendered, so it's crawlable.
-  const displayDescription = cleanDescription || buildDeveloperSummary(developer.name, projects);
+  // Prefer the translated editorial description; else a locale-aware data-driven
+  // summary (project count, communities, price) so every locale carries native
+  // body copy instead of English. Server-rendered, so it's crawlable.
+  const displayDescription = localizedDescription
+    ? localizedDescription
+    : locale === "en"
+      ? cleanDescription || buildDeveloperSummary(developer.name, projects, "en")
+      : buildDeveloperSummary(developer.name, projects, locale) || cleanDescription;
 
   return (
     <div className="min-h-screen bg-background">
