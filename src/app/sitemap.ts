@@ -446,7 +446,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...buildings.map((b) => plainEntry(`/building/${b.slug}`, 0.55, "monthly", b.lastmod ?? now)),
     // SEO content routes (compiled, not API-driven). Guides are English-only
     // content, so we submit just the EN URL (non-EN routes are noindex).
-    ...PULSE_GUIDES.map((g) => plainEntry(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
+    // Guides are now fully translated in all 7 locales (body + FAQ), so submit
+    // them WITH hreflang alternates.
+    ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
