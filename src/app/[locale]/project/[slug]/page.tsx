@@ -162,9 +162,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
         value: true,
       })),
     } : {}),
-    ...(Array.isArray(project.unitTypes) && project.unitTypes.length > 0 ? {
-      numberOfBedrooms: project.unitTypes.join(", "),
-    } : {}),
+    ...((() => {
+      // Drop CMS placeholder values ("Not specified"/"TBA"…) so the schema never
+      // carries a meaningless numberOfBedrooms string.
+      const real = (Array.isArray(project.unitTypes) ? project.unitTypes : [])
+        .filter((u: string) => u && !/^(not\s+specified|not\s+available|n\/?a|tba|tbd|unknown|none|-|—)\s*$/i.test(String(u).trim()));
+      return real.length > 0 ? { numberOfBedrooms: real.join(", ") } : {};
+    })()),
     ...(project.unitSizeMin && project.unitSizeMax ? {
       floorSize: {
         "@type": "QuantitativeValue",

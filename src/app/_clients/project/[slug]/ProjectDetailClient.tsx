@@ -109,8 +109,12 @@ const normalizeBedSuffix = (suffix: string) => {
   return suffix;
 };
 
+// CMS placeholder values that mean "no real data" — must never render as content.
+const PLACEHOLDER_RE = /^(not\s+specified|not\s+available|n\/?a|tba|tbd|unknown|none|-|—)\s*$/i;
+
 const formatUnitTypes = (types: string[], sep = " · ") => {
-  if (!types?.length) return "-";
+  types = (types || []).filter((t) => t && !PLACEHOLDER_RE.test(t.trim()));
+  if (!types.length) return "-";
   const groups = new Map<string, number[]>();
   const standalone: string[] = [];
   for (const t of types) {
@@ -347,7 +351,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   const paymentPlanPretty: string | null =
     orderedPaymentSteps.length > 0
       ? orderedPaymentSteps.map((s) => s.pct).join(" - ") + "%"
-      : project.paymentPlanSummary && project.paymentPlanSummary !== "TBA"
+      : project.paymentPlanSummary && !PLACEHOLDER_RE.test(String(project.paymentPlanSummary).trim())
       ? String(project.paymentPlanSummary)
       : null;
 
@@ -441,7 +445,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
       { question: tFaq("q2", { name: nm }), answer: tFaq("a2", { name: nm, unitTypes: unitTypesText }) },
       { question: tFaq("q3", { name: nm }), answer: project.developerName ? tFaq("a3_dev", { name: nm, developer: project.developerName, devDesc }) : tFaq("a3_nodev", { name: nm }) },
       { question: tFaq("q4", { name: nm }), answer: project.completionDate ? tFaq("a4_date", { name: nm, date: project.completionDate }) : tFaq("a4_nodate", { name: nm }) },
-      { question: tFaq("q5", { name: nm }), answer: project.paymentPlanSummary && project.paymentPlanSummary !== "TBA" ? project.paymentPlanSummary : tFaq("a5", { name: nm }) },
+      { question: tFaq("q5", { name: nm }), answer: project.paymentPlanSummary && !PLACEHOLDER_RE.test(String(project.paymentPlanSummary).trim()) ? project.paymentPlanSummary : tFaq("a5", { name: nm }) },
       { question: tFaq("q6", { name: nm }), answer: tFaq("a6", { name: nm }) },
       { question: tFaq("q7", { name: nm }), answer: project.community ? tFaq("a7_comm", { name: nm, community: project.community, city: project.city || "Dubai", country: project.country || "UAE", locDesc }) : tFaq("a7_nocomm", { name: nm, city: project.city || "Dubai" }) },
       { question: tFaq("q8"), answer: tFaq("a8") },
@@ -2040,8 +2044,8 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                                   className="w-full h-11 rounded-xl bg-muted/30 border border-border/50 px-4 text-sm text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary/50 outline-none transition-all appearance-none"
                                 >
                                   <option value="">{t("selectUnitType")}</option>
-                                  {project.unitTypes?.map((ut) => (
-                                    <option key={ut} value={ut}>{ut}</option>
+                                  {project.unitTypes?.filter((ut: string) => ut && !PLACEHOLDER_RE.test(String(ut).trim())).map((ut: string) => (
+                                    <option key={ut} value={ut}>{tBed(ut)}</option>
                                   ))}
                                 </select>
                               </div>
@@ -2395,8 +2399,8 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4">
                       {[
-                        { label: "Unit Types", value: formatUnitTypes(project.unitTypes, ", "), icon: Bed },
-                        { label: "Size Range", value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} - ${Number(project.unitSizeMax).toLocaleString()} sqft` : "-", icon: Ruler },
+                        { label: t("unitTypes"), value: formatUnitTypes(project.unitTypes, ", "), icon: Bed },
+                        { label: t("sizeRange"), value: project.unitSizeMin && project.unitSizeMax ? `${Number(project.unitSizeMin).toLocaleString()} - ${Number(project.unitSizeMax).toLocaleString()} sqft` : "-", icon: Ruler },
                       ].map(({ label, value, icon: Icon }) => (
                         <div key={label} className="p-3 sm:p-5 bg-muted/40 rounded-xl text-center hover:bg-muted/60 transition-colors">
                           <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1.5 sm:mb-2" />

@@ -172,7 +172,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
                         {activeFp.type}
                       </div>
                     )}
-                    {activeFp.beds && (
+                    {activeFp.beds && !/^(not\s+specified|not\s+available|n\/?a|tba|tbd|unknown|none|-|—)\s*$/i.test(activeFp.beds.trim()) && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Bed className="h-3.5 w-3.5 text-accent shrink-0" />
                         {activeFp.beds} {t("bedsLabel")}
