@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
 import { getMarketStats } from "@/lib/market";
 import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 3600;
 // Pre-render the most recent articles (the hot pages) at build so they never hit
@@ -70,9 +72,23 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   } catch {
     related = [];
   }
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
+  const breadcrumbs = [
+    { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
+    { name: locale === "fr" ? "Actualités" : locale === "ru" ? "Новости" : locale === "ar" ? "الأخبار" : locale === "zh" ? "新闻" : locale === "vi" ? "Tin tức" : locale === "he" ? "חדשות" : "News", href: `${localePrefix}/news` },
+    { name: article.title, href: `${localePrefix}/news/${slug}` },
+  ];
+
   return (
     <>
-      <NewsDetailClient article={article} related={related} marketStats={marketStats} />
+      {/* NewsDetailClient reads useSearchParams() (a debug-only ?hero= layout
+          toggle). Without a Suspense boundary around it, Next.js can't SSR the
+          component at all — the ENTIRE tree, including the LCP hero image,
+          silently drops out of the server HTML and only renders after client
+          hydration. That was tanking mobile LCP across every article page. */}
+      <Suspense>
+        <NewsDetailClient article={article} related={related} marketStats={marketStats} />
+      </Suspense>
       <script
         type="application/ld+json"
         nonce={nonce}
@@ -83,12 +99,14 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
             headline: article.title,
             image: article.featuredImage || `${AE_URL}/assets/dubai-hero.webp`,
             datePublished: article.publishedAt,
+            ...(article.updatedAt ? { dateModified: article.updatedAt } : {}),
             author: { "@type": "Person", name: article.author || "Binayah Editorial" },
             publisher: { "@type": "Organization", name: "Binayah Properties", logo: { "@type": "ImageObject", url: `${AE_URL}/assets/binayah-logo.webp` } },
             url: canonical(locale, `/news/${slug}`),
           }).replace(/</g, "\\u003c"),
         }}
       />
+      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
     </>
   );
 }
