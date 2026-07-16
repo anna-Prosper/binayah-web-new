@@ -10,6 +10,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { findBuyCommunity } from "@/lib/buy-communities";
 import { guideForCommunity } from "@/lib/pulse-guides";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import {
   Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize, Clock,
@@ -77,7 +78,10 @@ function amenityIcon(title: string) {
   return Sparkles;
 }
 
-export default function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale, market, topBuildings = [] }: Props) {
+export default async function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale, market, topBuildings = [] }: Props) {
+  // Localized UI chrome (eyebrows, stat labels, CTAs). Per-community editorial
+  // content is already translated upstream in the enrichment object.
+  const t = await getTranslations({ locale, namespace: "communityRich" });
   // This is the informational area guide. When the area also has transactional
   // buy/rent/off-plan landing pages, cross-link to them (distinct intent) so the
   // two page types complement rather than compete for the same query.
@@ -99,16 +103,16 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   const priceFrom = (e.highlights || []).find((h) => /price/i.test(h.label))?.value;
 
   const glanceRows = ([
-    ["Developer", kf.developer], ["Community type", kf.communityType], ["Land area", kf.landArea],
-    ["Property types", kf.propertyTypes], ["Handover", kf.handover], ["Ideal for", e.targetBuyer],
+    [t("glDeveloper"), kf.developer], [t("glCommunityType"), kf.communityType], [t("glLandArea"), kf.landArea],
+    [t("glPropertyTypes"), kf.propertyTypes], [t("glHandover"), kf.handover], [t("glIdealFor"), e.targetBuyer],
   ] as [string, string | undefined][]).filter(([, v]) => !isPlaceholder(v)) as [string, string][];
 
   // Hero stat blocks — data-derived (no fabrication).
   const heroStats = ([
-    counts.projects ? { v: String(counts.projects), l: "Off-plan projects" } : null,
-    priceFrom ? { v: priceFrom, l: "Starting price" } : null,
-    !isPlaceholder(kf.landArea) ? { v: kf.landArea!, l: "Land area" } : null,
-    e.connectivity?.[0] ? { v: e.connectivity[0].time.replace(/[~\s]*/g, "").replace("minutes", "min").replace("min", " min"), l: `To ${e.connectivity[0].place}` } : null,
+    counts.projects ? { v: String(counts.projects), l: t("offPlanProjectsLabel") } : null,
+    priceFrom ? { v: priceFrom, l: t("startingPrice") } : null,
+    !isPlaceholder(kf.landArea) ? { v: kf.landArea!, l: t("glLandArea") } : null,
+    e.connectivity?.[0] ? { v: e.connectivity[0].time.replace(/[~\s]*/g, "").replace("minutes", "min").replace("min", " min"), l: t("toPlace", { place: e.connectivity[0].place }) } : null,
   ].filter(Boolean) as { v: string; l: string }[]).slice(0, 4);
   // Column count follows the number of real stats so there's never an empty
   // trailing cell (static strings so Tailwind's JIT keeps them).
@@ -130,14 +134,16 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   ];
   // Data-driven FAQs from live DLD market data — appended to the AI-written set
   // (deduped by topic) so the FAQPage schema carries real, current numbers.
+  // English only: these are generated at render time and aren't translated, so
+  // non-EN pages keep just the translated aiFaqs rather than mixing in English.
   const dataFaqs: { q: string; a: string }[] = [];
-  if (market?.avgPpsfSqft) {
+  if (locale === "en" && market?.avgPpsfSqft) {
     dataFaqs.push({
       q: `What is the average price per square foot in ${name}?`,
       a: `Based on Dubai Land Department transaction records, the average sale price in ${name} is around AED ${market.avgPpsfSqft.toLocaleString("en-AE")} per square foot${market.sales12m ? `, across ${market.sales12m.toLocaleString("en-AE")} recorded sales${market.salesSince ? ` since ${market.salesSince}` : " in the last 12 months"}` : ""}.`,
     });
   }
-  if (market?.grossYieldPct) {
+  if (locale === "en" && market?.grossYieldPct) {
     dataFaqs.push({
       q: `What rental yield can investors expect in ${name}?`,
       a: `Benchmarking DLD rental contracts against sale prices, ${name} returns an estimated ${market.grossYieldPct}% gross rental yield before service charges. Yields vary by building and unit type — see the top buildings below for tower-level data.`,
@@ -166,7 +172,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {p.developerName && <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-2"><Building className="h-3 w-3" /> {p.developerName}</p>}
         <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">{p.name}</h3>
         <div className="flex items-center justify-between border-t border-border pt-3">
-          <p className="text-sm font-bold text-primary">{p.startingPrice ? <AedPrice value={p.startingPrice} currency={p.currency} /> : "Price on request"}</p>
+          <p className="text-sm font-bold text-primary">{p.startingPrice ? <AedPrice value={p.startingPrice} currency={p.currency} /> : t("priceOnRequest")}</p>
           {year(p.completionDate) && <p className="text-xs text-muted-foreground flex items-center gap-1"><CalendarDays className="h-3 w-3" />{year(p.completionDate)}</p>}
         </div>
       </div>
@@ -180,9 +186,9 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       </div>
       <div className="p-5">
         <h3 className="font-semibold text-sm text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">{l.title || l.name}</h3>
-        <p className="text-sm font-bold text-primary mb-3">{l.price ? <AedPrice value={l.price} currency={l.currency} /> : "Price on request"}</p>
+        <p className="text-sm font-bold text-primary mb-3">{l.price ? <AedPrice value={l.price} currency={l.currency} /> : t("priceOnRequest")}</p>
         <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-3">
-          {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || "Studio"}</span>}
+          {l.bedrooms != null && <span className="flex items-center gap-1"><Bed className="h-3 w-3" />{l.bedrooms || t("studio")}</span>}
           {l.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{l.bathrooms}</span>}
           {l.size ? <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{l.size.toLocaleString()} {l.sizeUnit || "sqft"}</span> : null}
         </div>
@@ -193,10 +199,10 @@ export default function CommunityRichClient({ community, projects, forSale, forR
   // In-page section nav
   const hasMarket = !!(market && (market.avgPpsfSqft || market.sales12m));
   const navItems = ([
-    ["about", "Overview"], ["location", "Location"],
-    ...(hasMarket ? [["market", "Market data"]] : []),
-    ["amenities", "Amenities"],
-    ["projects", "Projects"], ["invest", "Investment"], ["faqs", "FAQs"],
+    ["about", t("navOverview")], ["location", t("navLocation")],
+    ...(hasMarket ? [["market", t("navMarket")]] : []),
+    ["amenities", t("navAmenities")],
+    ["projects", t("navProjects")], ["invest", t("navInvestment")], ["faqs", t("navFaqs")],
   ]) as [string, string][];
 
   return (
@@ -234,18 +240,18 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           )}
           <div className="flex flex-col sm:flex-row gap-3">
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-5 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
-              <Phone className="h-4 w-4" /> Talk to an Advisor
+              <Phone className="h-4 w-4" /> {t("talkAdvisor")}
             </a>
             <a href="#projects" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              Explore projects <ArrowRight className="h-4 w-4" />
+              {t("exploreProjects")} <ArrowRight className="h-4 w-4" />
             </a>
           </div>
           {isBuyCommunity && (
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-5 text-sm">
-              <span className="text-white/50">Ready to transact in {name}?</span>
-              <Link href={lp(locale, `/buy-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Buy →</Link>
-              <Link href={lp(locale, `/rent-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Rent →</Link>
-              <Link href={lp(locale, `/off-plan-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">Off-plan →</Link>
+              <span className="text-white/50">{t("readyTransact", { name })}</span>
+              <Link href={lp(locale, `/buy-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("buy")} →</Link>
+              <Link href={lp(locale, `/rent-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("rent")} →</Link>
+              <Link href={lp(locale, `/off-plan-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("offPlan")} →</Link>
             </div>
           )}
         </div>
@@ -264,7 +270,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== About + At a glance ===== */}
         <section id="about" className="scroll-mt-28 grid lg:grid-cols-3 gap-8 lg:gap-10 items-start">
           <div className="lg:col-span-2">
-            <SecHead eyebrow="About the community" title={sh.about || e.tagline || `Welcome to ${name}`} />
+            <SecHead eyebrow={t("ebAbout")} title={sh.about || e.tagline || t("welcomeTo", { name })} />
             {overview && (
               <div className="space-y-4 text-[15px] leading-[1.8] text-muted-foreground">
                 {overview.split(/\n{2,}/).map((para, i) => <p key={i}>{para.trim()}</p>)}
@@ -273,7 +279,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           </div>
           {glanceRows.length > 0 && (
             <aside className="lg:sticky lg:top-32 rounded-2xl border border-border/60 bg-gradient-to-b from-card to-muted/20 p-6 shadow-sm">
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-5">At a glance</h3>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-accent mb-5">{t("atGlance")}</h3>
               <dl className="space-y-4">
                 {glanceRows.map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-5 text-sm border-b border-border/40 pb-4 last:border-0 last:pb-0">
@@ -283,7 +289,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
                 ))}
               </dl>
               <a href={WA} target="_blank" rel="noopener noreferrer" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-                Speak to a Specialist
+                {t("speakSpecialist")}
               </a>
             </aside>
           )}
@@ -291,7 +297,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
 
         {/* ===== Location & connectivity ===== */}
         <section id="location" className="scroll-mt-28">
-          <SecHead eyebrow="Location & connectivity" title={sh.location || "Minutes from everywhere that matters"} />
+          <SecHead eyebrow={t("ebLocation")} title={sh.location || t("locationTitle")} />
           <div className="grid lg:grid-cols-2 gap-8 items-stretch">
             <div>
               {e.connectivity?.length ? (
@@ -303,7 +309,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
                     </li>
                   ))}
                 </ul>
-              ) : <p className="text-muted-foreground">{name} is well connected across Dubai.</p>}
+              ) : <p className="text-muted-foreground">{t("wellConnected", { name })}</p>}
             </div>
             <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[320px]">
               <iframe title={`Map of ${name}, Dubai`} src={mapSrc} className="w-full h-full min-h-[320px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
@@ -314,55 +320,55 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Live market snapshot (DLD data) ===== */}
         {hasMarket && (
           <section id="market" className="scroll-mt-28">
-            <SecHead eyebrow="Live market data" title={`${name} property market snapshot`} />
+            <SecHead eyebrow={t("ebMarket")} title={t("marketTitle", { name })} />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-border/50 bg-border/40">
               {market!.avgPpsfSqft ? (
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <TrendingUp className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">AED {market!.avgPpsfSqft.toLocaleString("en-AE")}</p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Avg price / sqft</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{t("avgPsf")}</p>
                 </div>
               ) : null}
               {market!.avgPrice ? (
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <Landmark className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums"><AedPrice value={market!.avgPrice} /></p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Avg sale price</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{t("avgSale")}</p>
                 </div>
               ) : null}
               {market!.sales12m ? (
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <CheckCircle2 className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.sales12m.toLocaleString("en-AE")}</p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{market!.salesSince ? `Sales since ${market!.salesSince}` : "Sales, last 12 months"}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{market!.salesSince ? t("salesSince", { month: market!.salesSince }) : t("salesLast12")}</p>
                 </div>
               ) : null}
               {market!.grossYieldPct ? (
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <TrendingUp className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.grossYieldPct}%</p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Est. gross yield</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{t("estYield")}</p>
                 </div>
               ) : market!.buildingCount ? (
                 <div className="bg-card px-4 py-5 sm:py-6 text-center">
                   <Building className="h-4 w-4 mx-auto mb-2 text-accent" />
                   <p className="text-lg sm:text-2xl font-bold text-foreground tabular-nums">{market!.buildingCount.toLocaleString("en-AE")}</p>
-                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">Tracked buildings</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 tracking-[0.1em] uppercase leading-tight">{t("trackedBuildings")}</p>
                 </div>
               ) : null}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-3">Source: Dubai Land Department transaction records for {name}. Figures update as new transactions are registered.</p>
+            <p className="text-[11px] text-muted-foreground mt-3">{t("dldSource", { name })}</p>
 
             {topBuildings.length > 0 && (
               <div className="mt-8">
-                <h3 className="font-bold text-foreground mb-1.5">Sold prices by building in {name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">Real DLD transaction history, price trends and unit-level pricing for the most active towers.</p>
+                <h3 className="font-bold text-foreground mb-1.5">{t("soldByBuilding", { name })}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t("soldByBuildingSub")}</p>
                 <div className="flex flex-wrap gap-2">
                   {topBuildings.map((tb) => (
                     <Link key={tb.slug} href={lp(locale, `/building/${tb.slug}`)} className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors">
                       <Building className="h-3.5 w-3.5 text-accent" />
                       {tb.name}
-                      {tb.sales ? <span className="text-xs text-muted-foreground">{tb.sales.toLocaleString("en-AE")} sales</span> : null}
+                      {tb.sales ? <span className="text-xs text-muted-foreground">{t("salesCount", { count: tb.sales.toLocaleString("en-AE") })}</span> : null}
                     </Link>
                   ))}
                 </div>
@@ -374,7 +380,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Amenities & lifestyle ===== */}
         {(e.amenityCategories?.length || e.lifestyle) && (
           <section id="amenities" className="scroll-mt-28">
-            <SecHead eyebrow="Amenities & lifestyle" title={sh.amenities || "Everything for a life well lived"} />
+            <SecHead eyebrow={t("ebAmenities")} title={sh.amenities || t("amenitiesTitle")} />
             {e.lifestyle && <p className="text-muted-foreground leading-relaxed mb-8 max-w-3xl -mt-2">{e.lifestyle}</p>}
             {e.amenityCategories?.length ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -394,7 +400,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             ) : null}
             {e.subCommunities?.length ? (
               <div className="mt-8 flex flex-wrap gap-2.5">
-                <span className="text-sm font-semibold text-foreground mr-1 self-center flex items-center gap-1.5"><Layers className="h-4 w-4 text-accent" />Districts:</span>
+                <span className="text-sm font-semibold text-foreground mr-1 self-center flex items-center gap-1.5"><Layers className="h-4 w-4 text-accent" />{t("districts")}</span>
                 {e.subCommunities.map((s, i) => <span key={i} className="rounded-lg bg-muted/60 border border-border/50 px-3 py-1.5 text-sm text-foreground">{s}</span>)}
               </div>
             ) : null}
@@ -404,13 +410,13 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Featured off-plan launches ===== */}
         {projects.length > 0 && (
           <section id="projects" className="scroll-mt-28">
-            <SecHead eyebrow={`Off-plan projects · ${counts.projects} available`} title={sh.projects || `Featured launches in ${name}`} />
+            <SecHead eyebrow={t("ebProjects", { count: counts.projects })} title={sh.projects || t("featuredLaunches", { name })} />
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.slice(0, 6).map((p) => <ProjectCard key={p.slug || p.name} p={p} />)}
             </div>
             {projects.length > 6 && (
               <nav aria-label={`All off-plan projects in ${name}`} className="mt-8">
-                <h3 className="text-sm font-bold text-foreground mb-3">More projects in {name}</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">{t("moreProjects", { name })}</h3>
                 <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
                   {projects.slice(6).map((p) => (
                     <li key={p.slug || p.name}>
@@ -422,7 +428,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
             )}
             {counts.projects > 6 && (
               <Link href={lp(locale, `/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-7 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/40 transition-colors">
-                View all {counts.projects} projects <ChevronRight className="h-4 w-4" />
+                {t("viewAllProjects", { count: counts.projects })} <ChevronRight className="h-4 w-4" />
               </Link>
             )}
           </section>
@@ -433,16 +439,16 @@ export default function CommunityRichClient({ community, projects, forSale, forR
           <section className="scroll-mt-28 grid lg:grid-cols-2 gap-10">
             {forSale.length > 0 && (
               <div>
-                <SecHead eyebrow="Resale market" title={`For sale in ${name}`} />
+                <SecHead eyebrow={t("ebResale")} title={t("forSaleIn", { name })} />
                 <div className="grid sm:grid-cols-2 gap-5">{forSale.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
-                <Link href={lp(locale, `/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">View all {counts.forSale} for sale <ChevronRight className="h-4 w-4" /></Link>
+                <Link href={lp(locale, `/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForSale", { count: counts.forSale })} <ChevronRight className="h-4 w-4" /></Link>
               </div>
             )}
             {forRent.length > 0 && (
               <div>
-                <SecHead eyebrow="Rental market" title={`For rent in ${name}`} />
+                <SecHead eyebrow={t("ebRental")} title={t("forRentIn", { name })} />
                 <div className="grid sm:grid-cols-2 gap-5">{forRent.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
-                <Link href={lp(locale, `/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">View all {counts.forRent} for rent <ChevronRight className="h-4 w-4" /></Link>
+                <Link href={lp(locale, `/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForRent", { count: counts.forRent })} <ChevronRight className="h-4 w-4" /></Link>
               </div>
             )}
           </section>
@@ -451,21 +457,21 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Investment outlook ===== */}
         {(e.investmentNote || developers.length > 0) && (
           <section id="invest" className="scroll-mt-28 rounded-3xl bg-primary text-primary-foreground p-6 sm:p-12" style={{ background: "linear-gradient(135deg, #0B3D2E, #12503B)" }}>
-            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">Investment outlook</span>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">{sh.investment || `Why invest in ${name}`}</h2>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.18em] text-accent mb-3">{t("ebInvest")}</span>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">{sh.investment || t("whyInvest", { name })}</h2>
             {e.investmentNote && <p className="text-primary-foreground/80 leading-relaxed max-w-2xl mb-8">{e.investmentNote}</p>}
             {(() => {
               // Pick the 4 STRONGEST available stats — a weak number ("1+
               // developers", "3 projects") undermines an investment pitch, so
               // small values are skipped in favour of live DLD market figures.
               const tiles: { v: string; l: string }[] = [];
-              if (counts.projects >= 5) tiles.push({ v: String(counts.projects), l: "Off-plan projects" });
-              if (market?.grossYieldPct) tiles.push({ v: `${market.grossYieldPct}%`, l: "Est. gross yield" });
-              if (market?.sales12m && market.sales12m >= 20) tiles.push({ v: market.sales12m.toLocaleString("en-AE"), l: market.salesSince ? `Sales since ${market.salesSince}` : "Sales, last 12 months" });
-              if (priceFrom) tiles.push({ v: priceFrom, l: "Starting price" });
-              if (market?.avgPpsfSqft) tiles.push({ v: `AED ${market.avgPpsfSqft.toLocaleString("en-AE")}`, l: "Avg price / sqft" });
-              if (developers.length >= 3) tiles.push({ v: `${developers.length}+`, l: "Active developers" });
-              tiles.push({ v: "19+", l: "Years in Dubai" });
+              if (counts.projects >= 5) tiles.push({ v: String(counts.projects), l: t("offPlanProjectsLabel") });
+              if (market?.grossYieldPct) tiles.push({ v: `${market.grossYieldPct}%`, l: t("estYield") });
+              if (market?.sales12m && market.sales12m >= 20) tiles.push({ v: market.sales12m.toLocaleString("en-AE"), l: market.salesSince ? t("salesSince", { month: market.salesSince }) : t("salesLast12") });
+              if (priceFrom) tiles.push({ v: priceFrom, l: t("startingPrice") });
+              if (market?.avgPpsfSqft) tiles.push({ v: `AED ${market.avgPpsfSqft.toLocaleString("en-AE")}`, l: t("avgPsf") });
+              if (developers.length >= 3) tiles.push({ v: `${developers.length}+`, l: t("activeDevelopers") });
+              tiles.push({ v: "19+", l: t("yearsInDubai") });
               const shown = tiles.slice(0, 4);
               return (
                 <div className={`grid grid-cols-2 ${shown.length >= 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8`}>
@@ -476,17 +482,17 @@ export default function CommunityRichClient({ community, projects, forSale, forR
               );
             })()}
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              <TrendingUp className="h-4 w-4" /> Speak to an investment advisor
+              <TrendingUp className="h-4 w-4" /> {t("speakInvestAdvisor")}
             </a>
             {investorGuide && (
               <Link href={lp(locale, `/pulse/guides/${investorGuide.slug}`)} className="mt-4 flex items-center gap-2 text-sm font-semibold text-accent hover:text-white transition-colors w-fit">
-                Read the full {name} investor guide
+                {t("readInvestorGuide", { name })}
                 <span aria-hidden>→</span>
               </Link>
             )}
             {developers.length > 0 && (
               <div className="mt-8 pt-8 border-t border-white/15">
-                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary-foreground/50 mb-3 flex items-center gap-2"><Landmark className="h-4 w-4" />Developers active here</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary-foreground/50 mb-3 flex items-center gap-2"><Landmark className="h-4 w-4" />{t("developersActive")}</p>
                 <div className="flex flex-wrap gap-2">
                   {developers.map((d) => <Link key={d} href={lp(locale, `/developers/${projSlug(d)}`)} className="rounded-lg bg-white/10 hover:bg-white/20 px-3 py-1.5 text-sm text-white transition-colors">{d}</Link>)}
                 </div>
@@ -498,7 +504,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Good to know (FAQs) ===== */}
         {allFaqs.length ? (
           <section id="faqs" className="scroll-mt-28">
-            <SecHead eyebrow="Frequently asked questions" title={sh.faqs || "Good to know"} />
+            <SecHead eyebrow={t("ebFaqs")} title={sh.faqs || t("goodToKnow")} />
             <div className="space-y-3 max-w-3xl">
               {allFaqs.map((f, i) => (
                 <details key={i} className="group bg-card rounded-2xl border border-border/50 p-5">
@@ -513,7 +519,7 @@ export default function CommunityRichClient({ community, projects, forSale, forR
         {/* ===== Communities you may like ===== */}
         {nearby.length > 0 && (
           <section className="scroll-mt-28">
-            <SecHead eyebrow="Explore nearby" title={sh.nearby || "Communities you may like"} />
+            <SecHead eyebrow={t("ebNearby")} title={sh.nearby || t("nearbyTitle")} />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
                 <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
@@ -530,14 +536,14 @@ export default function CommunityRichClient({ community, projects, forSale, forR
       {/* ===== Final CTA band ===== */}
       <section className="relative overflow-hidden py-16 sm:py-20" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">Ready to invest in {name}?</h2>
-          <p className="text-white/75 max-w-xl mx-auto mb-8">Our advisors have been matching clients with the right {name} homes and off-plan opportunities since 2007. Let&apos;s find yours.</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 tracking-tight">{t("readyInvest", { name })}</h2>
+          <p className="text-white/75 max-w-xl mx-auto mb-8">{t("ctaSub", { name })}</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-              <Phone className="h-4 w-4" /> Book a free consultation
+              <Phone className="h-4 w-4" /> {t("bookConsult")}
             </a>
             <Link href={lp(locale, `/search?locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
-              Browse all {name} listings <ArrowRight className="h-4 w-4" />
+              {t("browseAll", { name })} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

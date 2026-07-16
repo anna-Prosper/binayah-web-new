@@ -5,6 +5,7 @@ import { getCommunityWiki } from "@/lib/community-wiki";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { dldAreaFor } from "@/lib/market";
+import { getCommunityEnrichmentTranslation, mergeEnrichment } from "@/lib/community-i18n";
 
 export const revalidate = 3600;
 
@@ -81,13 +82,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
 
-  const [wikiResult, dbResult] = await Promise.allSettled([
+  const [wikiResult, dbResult, transResult] = await Promise.allSettled([
     getCommunityWiki(slug),
     getCommunity(slug),
+    locale !== "en" ? getCommunityEnrichmentTranslation(locale, slug) : Promise.resolve(null),
   ]);
 
   const wiki = wikiResult.status === "fulfilled" ? wikiResult.value : null;
   const db = dbResult.status === "fulfilled" ? dbResult.value : null;
+  const trans = transResult.status === "fulfilled" ? transResult.value : null;
 
   const name =
     db?.community?.name ||
@@ -96,12 +99,16 @@ export async function generateMetadata({
 
   // Keyword-rich, unique meta description led by real data (project count +
   // price), then a sentence of editorial context. DB content wins; wiki is a
-  // last-resort fallback for communities with no curated copy yet.
-  const enr = (db?.community?.enrichment || null) as any;
-  const priceFrom = (enr?.highlights || []).find((h: any) => /price/i.test(h?.label || ""))?.value as string | undefined;
+  // last-resort fallback for communities with no curated copy yet. For non-EN,
+  // overlay the translated enrichment so both the lead price and the editorial
+  // sentence are localized rather than English.
+  const enr = mergeEnrichment(db?.community?.enrichment, trans) as any;
+  const priceFrom = (enr?.highlights || []).find((h: any) => /price|prix|цен|سعر|价|giá|מחיר/i.test(h?.label || ""))?.value as string | undefined;
   const projCount: number = db?.counts?.projects || (Array.isArray(db?.projects) ? db!.projects.length : 0);
+  // Non-EN with a translation: lead with the translated overview/tagline instead
+  // of the English DB description. EN (or untranslated) keeps the DB description.
   const baseDesc =
-    db?.community?.description ||
+    (trans ? (enr?.overview || enr?.tagline) : db?.community?.description) ||
     enr?.overview ||
     enr?.tagline ||
     (wiki as any)?.description ||
@@ -196,6 +203,19 @@ export default async function CommunityPage({
   if (hasDb) {
     const d = dbData as any;
     const communityName: string = d.community?.name || slug;
+
+    // Non-EN: overlay the translated enrichment (overview, faqs, highlights,
+    // headings, amenities, connectivity, keyFacts…) so the whole rich body
+    // renders in the visitor's language. Field-by-field merge, English fallback.
+    if (locale !== "en") {
+      const trans = await getCommunityEnrichmentTranslation(locale, slug);
+      if (trans) {
+        d.community = {
+          ...d.community,
+          enrichment: mergeEnrichment(d.community?.enrichment, trans),
+        };
+      }
+    }
 
     // Live DLD market snapshot + the area's most-active buildings — unique,
     // fresh data per community and the community→building internal-link mesh.
