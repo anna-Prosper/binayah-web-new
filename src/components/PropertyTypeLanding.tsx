@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import type { PropertyTypeLocale } from "@/lib/property-type-pages";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
@@ -39,6 +39,9 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={c.faqs} />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      {/* Listings on this page are fetched client-side by the search client, so
+          the CollectionPage is emitted without per-item entries (name + desc + url). */}
+      <CollectionPageJsonLd name={c.h1} description={c.metaDesc} url={`${lp}/${slug}`} />
       <Navbar />
 
       {/* Hero + Stats */}

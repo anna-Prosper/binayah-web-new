@@ -284,12 +284,13 @@ export function CollectionPageJsonLd({
   name: string;
   description?: string;
   url: string;
-  items: { url: string; name: string }[];
+  /** Per-item entries. Omit for pages whose listings are fetched client-side —
+   *  the CollectionPage is still emitted, just without an ItemList. */
+  items?: { url: string; name: string }[];
   nonce?: string;
 }) {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
   const abs = (u: string) => (u.startsWith("http") ? u : `${base}${u}`);
-  if (!items || items.length === 0) return null;
 
   const data = {
     "@context": "https://schema.org",
@@ -297,16 +298,20 @@ export function CollectionPageJsonLd({
     name,
     ...(description ? { description } : {}),
     url: abs(url),
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: items.length,
-      itemListElement: items.map((it, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: abs(it.url),
-        name: it.name,
-      })),
-    },
+    ...(items && items.length
+      ? {
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: items.length,
+            itemListElement: items.map((it, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              url: abs(it.url),
+              name: it.name,
+            })),
+          },
+        }
+      : {}),
   };
 
   return (

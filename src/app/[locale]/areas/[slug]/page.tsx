@@ -6,5 +6,6 @@ export default async function AreaPage({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
-  redirect(`/${locale}/communities/${slug}`);
+  const lp = locale === "en" ? "" : `/${locale}`;
+  redirect(`${lp}/communities/${slug}`);
 }

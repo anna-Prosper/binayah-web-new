@@ -4,6 +4,8 @@ import { getDeveloper } from "@/lib/api";
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
 import { getDeveloperTranslation } from "@/lib/dev-i18n";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
@@ -89,6 +91,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DeveloperDetailPage({ params }: Props) {
   const { slug, locale } = await params;
+  const nonce = await getNonce();
 
   const data = await getDeveloper(slug);
 
@@ -101,11 +104,42 @@ export default async function DeveloperDetailPage({ params }: Props) {
   const localizedDescription =
     locale !== "en" ? await getDeveloperTranslation(locale, slug) : null;
 
+  const name = developer.name as string;
+  const devUrl = canonical(locale, `/developers/${slug}`);
+  const localePrefix = locale === "en" ? "" : `/${locale}`;
+
+  // Organization JSON-LD — the developer is a real-estate company.
+  const organization: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name,
+    url: devUrl,
+    ...(developer.logo ? { logo: developer.logo as string } : {}),
+    ...(developer.description && String(developer.description).trim()
+      ? { description: String(developer.description).trim() }
+      : {}),
+  };
+
+  // Home → Developers → {developer.name}, localized labels per locale.
+  const breadcrumbs = [
+    { name: locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${localePrefix}/` },
+    { name: locale === "fr" ? "Promoteurs" : locale === "ru" ? "Застройщики" : locale === "ar" ? "المطورون" : locale === "zh" ? "开发商" : locale === "vi" ? "Chủ đầu tư" : locale === "he" ? "יזמים" : "Developers", href: `${localePrefix}/developers` },
+    { name, href: `${localePrefix}/developers/${slug}` },
+  ];
+
   return (
-    <DeveloperDetailClient
-      developer={developer}
-      projects={projects || []}
-      localizedDescription={localizedDescription}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}
+      />
+      <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
+      <DeveloperDetailClient
+        developer={developer}
+        projects={projects || []}
+        localizedDescription={localizedDescription}
+      />
+    </>
   );
 }

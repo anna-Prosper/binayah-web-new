@@ -1,7 +1,8 @@
 import CommunitiesPageClient from "@/app/_clients/communities/CommunitiesPageClient";
 import { fetchPlaceCards } from "../communities/fetchPlaces";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { CollectionPageJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 3600;
 
@@ -40,11 +41,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: descriptions[locale] || descriptions.en,
       url: canonical(locale, "/areas"),
       type: "website",
+      locale: OG_LOCALE[locale] ?? "en_AE",
+      images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630 }],
     },
   };
 }
 
-export default async function AreasPage() {
+export default async function AreasPage({ params }: Props) {
+  const { locale } = await params;
   const merged = await fetchPlaceCards("area");
-  return <CommunitiesPageClient communities={merged} kind="area" />;
+  const items = merged
+    .filter((c) => c.slug && c.name)
+    .map((c) => ({ url: `/areas/${c.slug}`, name: c.name }));
+  return (
+    <>
+      <CollectionPageJsonLd
+        name={(titles[locale] || titles.en).split(" | ")[0]}
+        description={descriptions[locale] || descriptions.en}
+        url="/areas"
+        items={items}
+      />
+      <CommunitiesPageClient communities={merged} kind="area" />
+    </>
+  );
 }

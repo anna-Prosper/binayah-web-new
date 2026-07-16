@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { Mail, Phone, MessageCircle, ShieldCheck, Globe, MapPin } from "lucide-react";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
-import { PersonJsonLd } from "@/components/JsonLd";
+import { PersonJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getAgent, bioText, hasRealLicense, isPublishableAgent, type Agent } from "@/lib/agents";
 import { waHref } from "@/lib/whatsapp";
 
@@ -101,6 +101,13 @@ export default async function AgentPage({ params }: Props) {
     { label: agent.name, href: `${lp}/team/${slug}` },
   ];
   const waMsg = `Hi, I'd like to speak with ${agent.name} about Dubai property.`;
+  // Home → Our Team → {agent.name}. Reuse the localized crumbs labels/hrefs so
+  // the structured data matches the visible breadcrumb exactly.
+  const homeLabel = locale === "fr" ? "Accueil" : locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home";
+  const breadcrumbItems = [
+    { name: homeLabel, href: `${lp}/` },
+    ...crumbs.map((c) => ({ name: c.label, href: c.href })),
+  ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -218,6 +225,7 @@ export default async function AgentPage({ params }: Props) {
         brn={hasRealLicense(agent) ? agent.license : undefined}
         sameAs={sameAs.length ? sameAs : undefined}
       />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
     </div>
   );
 }
