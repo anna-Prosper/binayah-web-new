@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuidesClient from "./GuidesClient";
 import type { Metadata } from "next";
@@ -38,6 +39,7 @@ export default function GuidesPage() {
       <Navbar />
       <PulseEmirateNav />
       <GuidesClient />
+      <NewsletterStrip source="guides-index" />
       <Footer />
     </div>
   );

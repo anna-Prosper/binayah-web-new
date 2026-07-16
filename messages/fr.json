@@ -620,6 +620,7 @@
     "refinementWorking": "Estimation…"
   },
   "contact": {
+    "newsletterOptIn": "Envoyez-moi le rapport hebdomadaire gratuit de Binayah sur le marché immobilier de Dubaï — désinscription à tout moment.",
     "title": "Contactez-nous",
     "name": "Nom complet",
     "email": "E-mail",
@@ -1619,6 +1620,7 @@
     "watchVideo": "Regarder la vidéo"
   },
   "inquiry": {
+    "newsletterOptIn": "Envoyez-moi le rapport hebdomadaire gratuit de Binayah sur le marché immobilier de Dubaï — désinscription à tout moment.",
     "label": "Contactez-nous",
     "title": "Rapide",
     "titleItalic": "Consultation",

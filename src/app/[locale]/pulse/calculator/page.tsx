@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import CalculatorClient from "./CalculatorClient";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -85,6 +86,7 @@ export default async function CalculatorPage() {
       <Navbar />
       <PulseEmirateNav />
       <CalculatorClient marketStats={marketStats} marketData={marketData} />
+      <NewsletterStrip source="calculator-page" />
       <Footer />
     </div>
   );

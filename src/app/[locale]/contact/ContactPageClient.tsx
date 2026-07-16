@@ -23,6 +23,7 @@ export default function ContactPage() {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", message: "" });
   const [sending, setSending] = useState(false);
+  const [optIn, setOptIn] = useState(true);
   const { value: hp, field: honeypotField } = useHoneypot();
 
   // Seed country code from geo cookie (set by middleware from Vercel IP).
@@ -50,6 +51,19 @@ export default function ContactPage() {
         }),
       });
       if (!res.ok) throw new Error("Request failed");
+      // Newsletter opt-in — fire-and-forget so it never blocks the redirect.
+      if (optIn && form.email) {
+        fetch(apiUrl("/api/market-report/subscribe"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: form.email.trim().toLowerCase(),
+            name: form.name,
+            phone: form.phone ? `${form.countryCode} ${form.phone}` : "",
+            source: "contact-optin",
+          }),
+        }).catch(() => {});
+      }
       // Hard navigation to /contact/thank-you so analytics registers a
       // discrete conversion page view (GA4, Clarity, Vercel Analytics)
       // rather than a soft in-page toast that's invisible to tracking.
@@ -146,6 +160,15 @@ export default function ContactPage() {
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("message")}</label>
                     <textarea required rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t("messagePlaceholder")} />
                   </div>
+                  <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={optIn}
+                      onChange={(e) => setOptIn(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 rounded border-border text-accent focus:ring-accent/30"
+                    />
+                    <span className="text-xs text-muted-foreground leading-relaxed">{t("newsletterOptIn")}</span>
+                  </label>
                   <button type="submit" disabled={sending} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground py-3.5 rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-accent/20 disabled:opacity-50">
                     {sending ? t("sending") : t("send")}
                   </button>

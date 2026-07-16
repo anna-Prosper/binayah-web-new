@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import NextImage from "next/image";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
@@ -2896,6 +2897,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
         )}
       </AnimatePresence>
 
+      <NewsletterStrip source="project-detail" />
       <Footer />
       <div className="hidden lg:block">
       </div>

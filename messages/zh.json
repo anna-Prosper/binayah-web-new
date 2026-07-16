@@ -626,6 +626,7 @@
     "refinementWorking": "估价中…"
   },
   "contact": {
+    "newsletterOptIn": "给我发送 Binayah 免费的迪拜房产市场周报 —— 可随时取消订阅。",
     "title": "联系我们",
     "name": "姓名",
     "email": "邮箱",
@@ -1624,6 +1625,7 @@
     "watchVideo": "观看视频"
   },
   "inquiry": {
+    "newsletterOptIn": "给我发送 Binayah 免费的迪拜房产市场周报 —— 可随时取消订阅。",
     "label": "联系我们",
     "title": "快速",
     "titleItalic": "咨询",

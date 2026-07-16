@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
@@ -211,6 +212,7 @@ export default async function OffPlanInCommunityPage({
         <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{X.guideLink(c.name)}</a>
       </div>
 
+      <NewsletterStrip source="off-plan-community" />
       <Footer />
     </div>
   );

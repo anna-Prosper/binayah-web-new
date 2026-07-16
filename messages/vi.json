@@ -620,6 +620,7 @@
     "refinementWorking": "Đang định giá…"
   },
   "contact": {
+    "newsletterOptIn": "Gửi cho tôi báo cáo thị trường bất động sản Dubai hàng tuần miễn phí của Binayah — có thể hủy đăng ký bất cứ lúc nào.",
     "title": "Liên hệ với chúng tôi",
     "name": "Họ và tên",
     "email": "Email",
@@ -1618,6 +1619,7 @@
     "watchVideo": "Xem video"
   },
   "inquiry": {
+    "newsletterOptIn": "Gửi cho tôi báo cáo thị trường bất động sản Dubai hàng tuần miễn phí của Binayah — có thể hủy đăng ký bất cứ lúc nào.",
     "label": "Liên hệ",
     "title": "Tư vấn",
     "titleItalic": "Nhanh",

@@ -17,6 +17,7 @@ import Link from "next/link";
 import NextImage from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { DetailActions, CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
@@ -1554,6 +1555,7 @@ export default function PropertyDetailClient({
       {/* ── STICKY MOBILE CTA (shared 3-button component — labels live inside) ── */}
       <DetailStickyCta whatsappUrl={whatsappUrl} phone="+971549988811" entity={leadEntity} />
 
+      <NewsletterStrip source="property-detail" />
       <Footer />
       <div className="hidden lg:block">
       </div>

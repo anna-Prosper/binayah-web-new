@@ -4,6 +4,7 @@ import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
@@ -299,6 +300,7 @@ function ListingsPageClientInner({
         </div>
       </section>
 
+      <NewsletterStrip source="listings" />
       <Footer />
       <PropertyComparison />
     </div>

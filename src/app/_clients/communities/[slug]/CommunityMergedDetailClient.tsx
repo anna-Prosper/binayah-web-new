@@ -3,6 +3,7 @@
 import { IMAGE_PLACEHOLDER } from "@/lib/images";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { motion } from "framer-motion";
@@ -359,6 +360,7 @@ export default function CommunityMergedDetailClient({
         </div>
       </section>
 
+      <NewsletterStrip source="community" />
       <Footer />
     </div>
   );

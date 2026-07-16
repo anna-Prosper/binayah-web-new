@@ -620,6 +620,7 @@
     "refinementWorking": "Valuing…"
   },
   "contact": {
+    "newsletterOptIn": "Email me Binayah's free weekly Dubai market report — unsubscribe anytime.",
     "title": "Contact Us",
     "name": "Full Name",
     "email": "Email",
@@ -1619,6 +1620,7 @@
     "watchVideo": "Watch Video"
   },
   "inquiry": {
+    "newsletterOptIn": "Email me Binayah's free weekly Dubai market report — unsubscribe anytime.",
     "label": "Get In Touch",
     "title": "Quick",
     "titleItalic": "Consultation",

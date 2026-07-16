@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterStrip from "@/components/NewsletterStrip";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import SearchPageClient from "@/app/_clients/search/SearchPageClient";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
@@ -399,6 +400,7 @@ export default async function BuyPage({ params }: Props) {
         </aside>
       </div>
 
+      <NewsletterStrip source="buy-landing" />
       <Footer />
     </div>
   );

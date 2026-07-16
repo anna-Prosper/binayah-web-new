@@ -21,6 +21,7 @@ const InquirySection = () => {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [optIn, setOptIn] = useState(true);
   const { value: hp, field: honeypotField } = useHoneypot();
 
   useEffect(() => {
@@ -43,6 +44,19 @@ const InquirySection = () => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSent(true);
       trackLead({ source: "homepage-inquiry" });
+      // Newsletter opt-in — fire-and-forget so it never blocks the inquiry.
+      if (optIn && form.email) {
+        fetch(apiUrl("/api/market-report/subscribe"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: form.email.trim().toLowerCase(),
+            name: form.name,
+            phone: `${form.countryCode} ${form.phone}`,
+            source: "inquiry-optin",
+          }),
+        }).catch(() => {});
+      }
       setForm({ name: "", email: "", phone: "", countryCode: "+971", type: "", message: "" });
     } catch {
       setError(true);
@@ -260,6 +274,18 @@ const InquirySection = () => {
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`${inputClasses} resize-none`} placeholder={t("messagePlaceholder")} />
               </div>
             </div>
+
+            <label className="flex items-start gap-2.5 mb-5 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={optIn}
+                onChange={(e) => setOptIn(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-border/80 text-accent focus:ring-accent/30"
+              />
+              <span className="text-xs text-muted-foreground leading-relaxed">
+                {t("newsletterOptIn")}
+              </span>
+            </label>
 
             {error && (
               <p className="text-sm text-red-600 text-center -mt-1" role="alert">{tc("somethingWentWrong")}</p>
