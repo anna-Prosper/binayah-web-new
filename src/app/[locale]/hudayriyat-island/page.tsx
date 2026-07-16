@@ -5,7 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { Waves, Bike, Trophy, Trees, Anchor, Building2, MapPin, TrendingUp, Shield, Star, ArrowRight, Phone, ChevronRight, CheckCircle } from "lucide-react";
 
@@ -767,12 +767,12 @@ export async function generateMetadata({
       languages: altLangs("/hudayriyat-island"),
     },
     openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE",
       title: L.metaTitle,
       description: L.metaDesc,
       type: "website",
       url: makeCanonical(locale, "/hudayriyat-island"),
       siteName: "Binayah Properties",
-      locale: locale === "ar" ? "ar_AE" : locale === "zh" ? "zh_CN" : locale === "ru" ? "ru_RU" : locale === "vi" ? "vi_VN" : locale === "he" ? "he_IL" : locale === "fr" ? "fr_FR" : "en_AE",
       images: [
         {
           url: OG_IMG,

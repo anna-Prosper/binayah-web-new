@@ -10,7 +10,7 @@ import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import WeeklySubscribeForm from "@/components/WeeklySubscribeForm";
-import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
 import { getDldBuilding, getDldBuildings, getCommunity, getCommunitiesIndex, serverApiUrl, serverFetch } from "@/lib/api";
 import { fmtAed, dldAreaFor } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
@@ -393,7 +393,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     // them substance — then this flips to indexable on the next revalidate.
     ...(isIndexable(b) ? {} : { robots: { index: false as const, follow: true } }),
     alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
-    openGraph: { title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: ogImage, width: 1200, height: 630, alt: `${b.name}, ${b.area}` }] },
+    openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE", title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: ogImage, width: 1200, height: 630, alt: `${b.name}, ${b.area}` }] },
     twitter: { card: "summary_large_image", title, description, images: [ogImage] },
   };
 }

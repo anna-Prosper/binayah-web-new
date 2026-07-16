@@ -6,7 +6,7 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 import { BUY_COMMUNITIES, findBuyCommunity, localizeCommunityText } from "@/lib/buy-communities";
 import { getCommunityStats, buildMarketNote } from "@/lib/market";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
-import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 1800;
 
@@ -52,6 +52,7 @@ export async function generateMetadata({
       languages: altLangs(`/rent-property-in/${c.slug}`),
     },
     openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE",
       title,
       description,
       type: "website",

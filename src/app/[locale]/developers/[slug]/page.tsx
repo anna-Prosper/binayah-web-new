@@ -2,7 +2,7 @@ import DeveloperDetailClient from "@/app/_clients/developers/[slug]/DeveloperDet
 import { notFound } from "next/navigation";
 import { getDeveloper } from "@/lib/api";
 import type { Metadata } from "next";
-import { canonical, altLangs } from "@/lib/site";
+import { canonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getDeveloperTranslation } from "@/lib/dev-i18n";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
@@ -80,6 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: altLangs(`/developers/${slug}`),
     },
     openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE",
       title: m.title(name),
       description: m.og(name),
       url: canonical(locale, `/developers/${slug}`),

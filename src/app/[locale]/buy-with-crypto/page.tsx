@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
-import { canonical, altLangs, AE_URL } from "@/lib/site";
+import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import { CRYPTO_PAGES, CRYPTO_LABELS, type CryptoLocale } from "@/lib/crypto-pages";
 
 export const revalidate = 86400;
@@ -479,11 +479,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: c.metaDesc,
     alternates: { canonical: url, languages: altLangs("/buy-with-crypto") },
     openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE",
       title: c.metaTitle,
       description: c.metaDesc,
       url,
       type: "website",
-      locale: c.ogLocale,
       siteName: "Binayah Properties",
       images: [{ url: `${AE_URL}/assets/crypto-banner.webp`, width: 1200, height: 630, alt: c.h1a }],
     },

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getProject } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
@@ -36,7 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     alternates: hasContent
       ? { canonical: makeCanonical(locale, path), languages: altLangs(path) }
       : { canonical: makeCanonical(locale, `/project/${slug}`) },
-    openGraph:   { title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
+    openGraph:   {
+      locale: OG_LOCALE[locale] ?? "en_AE", title, description: desc, url: makeCanonical(locale, path), type: "website" as const },
     twitter:     { card: "summary_large_image" as const, title, description: desc },
   };
 }

@@ -9,7 +9,7 @@ import { getCommunityStats, buildCommunityFaqs } from "@/lib/market";
 import CommunityStatsBand from "@/components/CommunityStatsBand";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
-import { canonical as makeCanonical, altLangs, AE_URL } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import DevCommunityView, { parseDevCommunity, buildDevCommunityMeta, resolveDevCommunity } from "@/components/pseo/DevCommunityView";
 import SuperlativeView, { parseSuperlative, buildSuperlativeMeta } from "@/components/pseo/SuperlativeView";
 import AreaRankingView, { parseAreaRanking, buildAreaRankingMeta } from "@/components/pseo/AreaRankingView";
@@ -94,7 +94,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title,
     description,
     alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
-    openGraph: { title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }] },
+    openGraph: {
+      locale: OG_LOCALE[locale] ?? "en_AE", title, description, type: "website", url: makeCanonical(locale, path), images: [{ url: `${AE_URL}/assets/og-image.webp`, width: 1200, height: 630 }] },
   };
 }
 
