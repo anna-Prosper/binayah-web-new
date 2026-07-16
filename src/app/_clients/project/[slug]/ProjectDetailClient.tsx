@@ -69,6 +69,24 @@ function toMapEmbedSrc(rawUrl: string): string {
   } catch { /* invalid URL, fall through */ }
   return "";
 }
+
+/**
+ * Turn a stored YouTube/Vimeo URL (watch?v=, youtu.be/, /embed/ — with or
+ * without a ?si= share param — or vimeo.com/ID) into a canonical embed src.
+ * Returns "" when the URL isn't a recognised video so the caller can bail.
+ * The player is mounted on click (facade pattern) so a real <iframe> exists in
+ * the DOM matching the page's VideoObject schema — without it, Google finds the
+ * schema but no video on the page and can't index it.
+ */
+function toVideoEmbedSrc(rawUrl: string): string {
+  if (!rawUrl) return "";
+  const url = rawUrl.split(/\s+/)[0];
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/i);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0`;
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}?autoplay=1`;
+  return "";
+}
 import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
@@ -186,6 +204,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   const [activeImage, setActiveImage] = useState(0);
   const [descExpanded, setDescExpanded] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "floor-plans" | "location" | "payment" | "faq">(defaultTab ?? "overview");
   const { currency, setCurrency, format: formatPrice, rates: CURRENCY_RATES } = useCurrency();
   // priceRange is a freeform DB string (often "From AED 799,999"); localize a leading English
@@ -1419,15 +1438,38 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                     </div>
                   )}
 
-                  {/* Project Video Overview — only if valid embeddable URL */}
-                  {project.videoUrl && /youtube\.com\/watch|youtu\.be\/|youtube\.com\/embed|vimeo\.com\/\d/.test(project.videoUrl) && (
+                  {/* Project Video Overview — only if the stored URL resolves to a
+                      real YouTube/Vimeo embed. The thumbnail is a click-to-load
+                      facade (keeps YouTube's heavy iframe off first paint) that
+                      swaps in the actual <iframe> player on click — so there's a
+                      real video on the page matching the VideoObject schema
+                      (required for Google video indexing) and the play button
+                      actually plays instead of being decorative. */}
+                  {project.videoUrl && toVideoEmbedSrc(project.videoUrl) && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     className="bg-card rounded-2xl border border-border/50 overflow-hidden"
                   >
-                    <div className="relative aspect-video group cursor-pointer">
+                    {videoPlaying ? (
+                      <div className="relative aspect-video bg-black">
+                        <iframe
+                          src={toVideoEmbedSrc(project.videoUrl)}
+                          title={`${project.name} video overview`}
+                          className="absolute inset-0 w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        />
+                      </div>
+                    ) : (
+                    <button
+                      type="button"
+                      onClick={() => setVideoPlaying(true)}
+                      aria-label={`${t("discoverProject")} ${project.name}`}
+                      className="relative aspect-video group cursor-pointer block w-full text-left"
+                    >
                       <NextImage
                         src={project.imageGallery?.[0] || videoThumbnail}
                         alt={`${project.name} video overview`}
@@ -1448,7 +1490,8 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                         <h3 className="text-lg font-bold text-white">{t("discoverProject")} {project.name}</h3>
                         <p className="text-white/60 text-xs mt-1">{t("virtualTourDesc")}</p>
                       </div>
-                    </div>
+                    </button>
+                    )}
                   </motion.div>
                   )}
 

@@ -30,6 +30,9 @@ const GTAG = "https://www.googletagmanager.com https://www.google-analytics.com 
 const CLARITY = "https://www.clarity.ms https://*.clarity.ms";
 const LIVECHAT = "https://cdn.livechatinc.com https://*.livechatinc.com";
 const LIVECHAT_WSS = "wss://*.livechatinc.com";
+// Project/construction video overviews embed YouTube/Vimeo players (click-to-load
+// facade). Without these in frame-src the iframe is blocked by CSP.
+const VIDEO_EMBED = "https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com";
 
 const SCRIPT_ALLOWLIST = `${VERCEL_LIVE} ${GTAG} ${CLARITY} ${LIVECHAT}`;
 
@@ -62,7 +65,7 @@ function buildCSP(nonce: string): string {
     "media-src 'self' https:",
     // GA4 pings go to www.google.com/g/collect (not google-analytics.com)
   `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com https://www.google.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
-    `frame-src https://www.google.com https://maps.google.com https://www.googletagmanager.com ${VERCEL_LIVE} ${LIVECHAT}`,
+    `frame-src https://www.google.com https://maps.google.com https://www.googletagmanager.com ${VIDEO_EMBED} ${VERCEL_LIVE} ${LIVECHAT}`,
     "frame-ancestors 'self'",
     "object-src 'none'",
     "base-uri 'self'",
@@ -86,7 +89,7 @@ function buildCSPReportOnly(nonce: string): string {
     "media-src 'self' https:",
     // GA4 pings go to www.google.com/g/collect (not google-analytics.com)
   `connect-src 'self' https://binayah-api.onrender.com https://api.openai.com https://binayah-news-scraper.onrender.com https://www.google.com ${VERCEL_LIVE} ${VERCEL_LIVE_WSS} ${GTAG} ${CLARITY} ${LIVECHAT} ${LIVECHAT_WSS}`,
-    `frame-src https://www.google.com https://maps.google.com https://www.googletagmanager.com ${VERCEL_LIVE} ${LIVECHAT}`,
+    `frame-src https://www.google.com https://maps.google.com https://www.googletagmanager.com ${VIDEO_EMBED} ${VERCEL_LIVE} ${LIVECHAT}`,
     "frame-ancestors 'self'",
     "object-src 'none'",
     "base-uri 'self'",
