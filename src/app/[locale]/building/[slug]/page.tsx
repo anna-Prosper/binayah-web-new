@@ -189,8 +189,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const changePct = first && last && first.avgPpsf > 0 && trend.length > 1
     ? Math.round(((last.avgPpsf - first.avgPpsf) / first.avgPpsf) * 1000) / 10
     : null;
-  const title = `${b.name} — Sold Prices & Transactions | ${b.area}, Dubai`;
-  const description = `${b.name}, ${b.area}: ${b.sales ? `${b.sales.toLocaleString("en-AE")} DLD sales` : "DLD sold-price data"}${ppsf ? `, avg AED ${ppsf.toLocaleString("en-AE")}/sqft` : ""}${changePct != null ? ` (${changePct > 0 ? "+" : ""}${changePct}%${sinceLabel(trend) ? ` since ${sinceLabel(trend)}` : ""})` : ""}${b.areaYield?.grossYieldPct ? `, ~${b.areaYield.grossYieldPct}% gross yield` : ""}. Real transactions, price trend & unit mix.`;
+  const BL: Record<string, { soldTitle: string; sales: (n: string) => string; soldData: string; avg: (p: string) => string; since: (l: string) => string; yieldF: (y: number) => string; tail: string }> = {
+    en: { soldTitle: "Sold Prices & Transactions", sales: (n) => `${n} DLD sales`, soldData: "DLD sold-price data", avg: (p) => `, avg AED ${p}/sqft`, since: (l) => ` since ${l}`, yieldF: (y) => `, ~${y}% gross yield`, tail: ". Real transactions, price trend & unit mix." },
+    fr: { soldTitle: "Prix de vente et transactions", sales: (n) => `${n} ventes DLD`, soldData: "données de prix de vente DLD", avg: (p) => `, moy. ${p} AED/pi²`, since: (l) => ` depuis ${l}`, yieldF: (y) => `, rendement brut ~${y} %`, tail: ". Transactions réelles, tendance des prix et répartition des unités." },
+    ru: { soldTitle: "Цены продаж и сделки", sales: (n) => `${n} сделок DLD`, soldData: "данные о ценах продаж DLD", avg: (p) => `, в среднем ${p} AED/фут²`, since: (l) => ` с ${l}`, yieldF: (y) => `, валовая доходность ~${y}%`, tail: ". Реальные сделки, динамика цен и структура юнитов." },
+    ar: { soldTitle: "أسعار البيع والمعاملات", sales: (n) => `${n} صفقة (DLD)`, soldData: "بيانات أسعار البيع من DLD", avg: (p) => `، متوسط ${p} درهم/قدم²`, since: (l) => ` منذ ${l}`, yieldF: (y) => `، عائد إجمالي ~${y}%`, tail: ". معاملات حقيقية واتجاه الأسعار وتوزيع الوحدات." },
+    zh: { soldTitle: "成交价与交易记录", sales: (n) => `${n} 笔 DLD 成交`, soldData: "DLD 成交价数据", avg: (p) => `，均价 AED ${p}/平方英尺`, since: (l) => ` 自 ${l}`, yieldF: (y) => `，毛收益率约 ${y}%`, tail: "。真实成交、价格走势与户型分布。" },
+    vi: { soldTitle: "Giá bán và giao dịch", sales: (n) => `${n} giao dịch DLD`, soldData: "dữ liệu giá bán DLD", avg: (p) => `, TB ${p} AED/foot²`, since: (l) => ` từ ${l}`, yieldF: (y) => `, lợi suất gộp ~${y}%`, tail: ". Giao dịch thực tế, xu hướng giá và cơ cấu căn hộ." },
+    he: { soldTitle: "מחירי מכירה ועסקאות", sales: (n) => `${n} עסקאות DLD`, soldData: 'נתוני מחירי מכירה של DLD', avg: (p) => `, ממוצע ${p} AED/רגל²`, since: (l) => ` מאז ${l}`, yieldF: (y) => `, תשואה ברוטו ~${y}%`, tail: ". עסקאות אמיתיות, מגמת מחירים ותמהיל יחידות." },
+  };
+  const bl = BL[locale] ?? BL.en;
+  const sl = sinceLabel(trend);
+  const title = `${b.name} — ${bl.soldTitle} | ${b.area}, Dubai`;
+  const description = `${b.name}, ${b.area}: ${b.sales ? bl.sales(b.sales.toLocaleString("en-AE")) : bl.soldData}${ppsf ? bl.avg(ppsf.toLocaleString("en-AE")) : ""}${changePct != null ? ` (${changePct > 0 ? "+" : ""}${changePct}%${sl ? bl.since(sl) : ""})` : ""}${b.areaYield?.grossYieldPct ? bl.yieldF(b.areaYield.grossYieldPct) : ""}${bl.tail}`;
   const path = `/building/${slug}`;
   // Social preview: the parent community's hero (resized ~70KB JPEG via the
   // image optimizer — raw heroes are 8-12MB and get rejected by some crawlers).

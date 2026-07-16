@@ -35,8 +35,19 @@ export async function generateMetadata({
   const name = rawName.length > 45 ? `${rawName.slice(0, 44).trimEnd()}…` : rawName;
   const titleFallback = `${name} | ${listing.community || "Dubai"} | Binayah`;
 
+  const PR_L: Record<string, { forSale: string; forRent: string; inW: string; studio: string; bed: (n: number) => string; listedAt: string; tail: string }> = {
+    en: { forSale: "for sale", forRent: "for rent", inW: "in", studio: "Studio", bed: (n) => `${n} bedroom`, listedAt: "Listed at", tail: ". View photos, floor plans and contact agent." },
+    fr: { forSale: "à vendre", forRent: "à louer", inW: "à", studio: "Studio", bed: (n) => `${n} chambre${n > 1 ? "s" : ""}`, listedAt: "Au prix de", tail: ". Photos, plans et coordonnées de l'agent." },
+    ru: { forSale: "на продажу", forRent: "в аренду", inW: "в", studio: "Студия", bed: (n) => `${n}-комн.`, listedAt: "Цена", tail: ". Фото, планировки и контакт агента." },
+    ar: { forSale: "للبيع", forRent: "للإيجار", inW: "في", studio: "استوديو", bed: (n) => `${n} غرفة نوم`, listedAt: "السعر", tail: ". صور ومخططات وتواصل مع الوكيل." },
+    zh: { forSale: "出售", forRent: "出租", inW: "位于", studio: "开间", bed: (n) => `${n}室`, listedAt: "售价", tail: "。查看照片、户型图并联系经纪人。" },
+    vi: { forSale: "để bán", forRent: "cho thuê", inW: "tại", studio: "Studio", bed: (n) => `${n} phòng ngủ`, listedAt: "Giá niêm yết", tail: ". Xem ảnh, mặt bằng và liên hệ đại lý." },
+    he: { forSale: "למכירה", forRent: "להשכרה", inW: "ב", studio: "סטודיו", bed: (n) => `${n} חדרים`, listedAt: "מחיר", tail: ". תמונות, תוכניות וקשר עם הסוכן." },
+  };
+  const prl = PR_L[locale] ?? PR_L.en;
+  const isRentL = String(listing.listingType || "sale").toLowerCase() === "rent";
   const descFallback = seo.metaDescription ||
-    `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} for ${listing.listingType || "sale"} in ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? "Studio" : `${listing.bedrooms} bedroom`}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. Listed at ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}` : ""}. View photos, floor plans and contact agent.`;
+    `${formatPropertyTypeLabel(listing.propertyType, listing.propertyType || "Property")} ${isRentL ? prl.forRent : prl.forSale} ${prl.inW} ${listing.community || "Dubai"}${listing.bedrooms != null ? `, ${listing.bedrooms === 0 ? prl.studio : prl.bed(listing.bedrooms)}` : ""}${listing.size ? `, ${listing.size} ${listing.sizeUnit || "sqft"}` : ""}${listing.price ? `. ${prl.listedAt} ${listing.currency || "AED"} ${Math.round(listing.price).toLocaleString("en-AE")}` : ""}${prl.tail}`;
 
   return {
     title: seo.metaTitle || titleFallback,

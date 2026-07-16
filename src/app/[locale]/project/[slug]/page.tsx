@@ -60,8 +60,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     : priceNum >= 1_000
     ? `AED ${Math.round(priceNum / 1_000)}K`
     : "";
-  const titleFallback = `${projName}${communityStr}${priceShort ? ` | From ${priceShort}` : ""} | Binayah`;
-  const descFallbackRaw = `${project.name}${project.community ? ` in ${project.community}` : ""}, Dubai by ${project.developerName || "a leading developer"}.${priceShort ? ` Off-plan from ${priceShort} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice â explore with Binayah.`;
+  const PJ: Record<string, { from: string; dev: string; desc: (n: string, c: string, d: string, p: string) => string }> = {
+    en: { from: "From", dev: "a leading developer", desc: (n, c, d, p) => `${n}${c ? ` in ${c}` : ""}, Dubai by ${d}.${p ? ` Off-plan from ${p} with flexible payment plans.` : ""} Floor plans, prices, handover dates & expert advice — explore with Binayah.` },
+    fr: { from: "À partir de", dev: "un promoteur de premier plan", desc: (n, c, d, p) => `${n}${c ? ` à ${c}` : ""}, Dubaï, par ${d}.${p ? ` Sur plan à partir de ${p} avec plans de paiement flexibles.` : ""} Plans, prix, dates de livraison et conseils d'experts — à découvrir avec Binayah.` },
+    ru: { from: "от", dev: "ведущего застройщика", desc: (n, c, d, p) => `${n}${c ? ` в ${c}` : ""}, Дубай, от ${d}.${p ? ` Новостройка от ${p} с гибкими планами оплаты.` : ""} Планировки, цены, даты сдачи и советы экспертов — узнайте с Binayah.` },
+    ar: { from: "من", dev: "مطوّر رائد", desc: (n, c, d, p) => `${n}${c ? ` في ${c}` : ""}، دبي، من ${d}.${p ? ` على الخارطة ابتداءً من ${p} مع خطط سداد مرنة.` : ""} مخططات وأسعار ومواعيد التسليم ونصائح الخبراء — اكتشفها مع بناية.` },
+    zh: { from: "起价", dev: "知名开发商", desc: (n, c, d, p) => `${n}${c ? `，位于${c}` : ""}，迪拜，由${d}开发。${p ? `期房，${p}起，付款计划灵活。` : ""} 户型图、价格、交付日期及专家建议——尽在 Binayah。` },
+    vi: { from: "Từ", dev: "một chủ đầu tư hàng đầu", desc: (n, c, d, p) => `${n}${c ? ` tại ${c}` : ""}, Dubai, bởi ${d}.${p ? ` Off-plan từ ${p} với kế hoạch thanh toán linh hoạt.` : ""} Mặt bằng, giá, ngày bàn giao và tư vấn chuyên gia — khám phá cùng Binayah.` },
+    he: { from: "החל מ-", dev: "יזם מוביל", desc: (n, c, d, p) => `${n}${c ? ` ב-${c}` : ""}, דובאי, מאת ${d}.${p ? ` על הנייר החל מ-${p} עם תוכניות תשלום גמישות.` : ""} תוכניות, מחירים, מועדי מסירה וייעוץ מומחים — גלו עם Binayah.` },
+  };
+  const pj = PJ[locale] ?? PJ.en;
+  const titleFallback = `${projName}${communityStr}${priceShort ? ` | ${pj.from} ${priceShort}` : ""} | Binayah`;
+  const descFallbackRaw = pj.desc(project.name, project.community || "", project.developerName || pj.dev, priceShort);
   const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "â¦";
 
   // Always self-referential to the .ae URL. Migrated projects carry stale
