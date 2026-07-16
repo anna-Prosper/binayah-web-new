@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import NewsDetailClient from "@/app/_clients/news/[slug]/NewsDetailClient";
 import { getNewsArticle, getRelatedNews, serverApiUrl } from "@/lib/api";
 import { getMarketStats } from "@/lib/market";
-import { canonical, altLangs, AE_URL } from "@/lib/site";
+import { canonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
 
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: article.metaDescription || article.excerpt,
       type: "article",
       url: canonical(locale, `/news/${slug}`),
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
+      locale: OG_LOCALE[locale] ?? "en_AE",
       ...(article.featuredImage ? { images: [article.featuredImage] } : {}),
     },
   };

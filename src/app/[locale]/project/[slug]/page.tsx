@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getProject, getRelatedProjects } from "@/lib/api";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
       url: makeCanonical(locale, path),
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
+      locale: OG_LOCALE[locale] ?? "en_AE",
     },
     twitter: {
       card: "summary_large_image",

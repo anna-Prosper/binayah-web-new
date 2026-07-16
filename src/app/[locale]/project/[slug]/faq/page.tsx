@@ -82,11 +82,17 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
-      />
+      {/* Only emit FAQPage schema when the page is self-canonical (real DB FAQs).
+          When there are no DB FAQs the metadata canonicals to the parent project,
+          so emitting rich-result schema on a declared-non-canonical page would be
+          contradictory — the boilerplate Q&A still renders for users. */}
+      {dbFaqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
+        />
+      )}
       <BreadcrumbJsonLd items={breadcrumbs} />
       <ProjectDetailClient serverProject={project} defaultTab="faq" />
     </>

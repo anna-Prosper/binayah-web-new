@@ -3,7 +3,7 @@ import PropertyDetailClient from "@/app/_clients/property/[slug]/PropertyDetailC
 import { getListing } from "@/lib/api";
 import { formatPropertyTypeLabel } from "@/lib/property-types";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
-import { canonical as makeCanonical, altLangs } from "@/lib/site";
+import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 1800;
@@ -42,7 +42,10 @@ export async function generateMetadata({
     title: seo.metaTitle || titleFallback,
     description: descFallback,
     alternates: {
-      canonical: seo.canonicalUrl || makeCanonical(locale, `/property/${slug}`),
+      // Always self-referential. Migrated listings carry stale seo.canonicalUrl
+      // values (legacy binayah.com paths that now 404), so honoring the stored
+      // value risks canonicalising to a dead URL — same rationale as project/[slug].
+      canonical: makeCanonical(locale, `/property/${slug}`),
       languages: altLangs(`/property/${slug}`),
     },
     openGraph: {
@@ -51,7 +54,7 @@ export async function generateMetadata({
       // opengraph-image.tsx serves the dynamic branded OG image (price/beds/photo overlay).
       type: "website",
       url: makeCanonical(locale, `/property/${slug}`),
-      locale: locale === "ar" ? "ar_AE" : locale === "ru" ? "ru_RU" : locale === "zh" ? "zh_CN" : locale === "vi" ? "vi_VN" : locale === "he" ? "en_AE" : "en_AE",
+      locale: OG_LOCALE[locale] ?? "en_AE",
     },
     twitter: {
       card: "summary_large_image",
