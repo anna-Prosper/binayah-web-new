@@ -65,7 +65,7 @@ export default async function SuperlativeView({ parsed, locale, searchSlug }: { 
   const nonce = await getNonce();
   const { listings, total } = await fetchListings(r.apiCommunity, r.type.canon, r.mode);
   const stats = await getCommunityStats(r.apiCommunity);
-  const faqs = buildCommunityFaqs(r.community.name, stats);
+  const faqs = buildCommunityFaqs(r.community.name, stats, locale);
 
   const label = r.mode === "cheapest" ? "Cheapest" : "Most Expensive";
   const h1 = `${label} ${r.type.canon}s in ${r.community.name}, Dubai`;

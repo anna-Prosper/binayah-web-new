@@ -73,6 +73,23 @@ const LABELS = {
   fr: { home: "Accueil", rent: "Location", rentIn: "Louer un bien à", dubai: "Dubaï", priceRange: "Fourchette de prix", grossYield: "Rendement brut", listings: "Annonces", forRent: "Biens à louer à", emptyTitle: "Aucune location disponible pour le moment", emptyBody: "Nous ajoutons régulièrement de nouvelles locations dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les locations à Dubaï.", browseAll: "Voir toutes les locations", getNotified: "Être alerté" },
 } as const;
 
+// Localized cross-link + empty-state copy (numbers/brand names stay verbatim).
+type CxStr = {
+  offTitle: (n: string) => string; offBody: (n: string) => string;
+  offBadge: string; from: string; viewAllOff: (n: string) => string;
+  similarTitle: string; similarBody: (n: string) => string;
+  studio: string; br: string; sqft: string; perYr: string;
+};
+const CX: Record<string, CxStr> = {
+  en: { offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No rentals right now — but these new launches in ${n} are open for purchase with flexible payment plans.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Rentals Available in Dubai Right Now", similarBody: (n) => `No rentals in ${n} at the moment — explore similar options across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft", perYr: "/ yr" },
+  fr: { offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune location pour le moment — mais ces nouveaux lancements à ${n} sont ouverts à l'achat avec des plans de paiement flexibles.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Locations disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune location à ${n} pour le moment — explorez des options similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²", perYr: "/ an" },
+  ar: { offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد عقارات للإيجار حالياً — لكن هذه الإطلاقات الجديدة في ${n} متاحة للشراء بخطط سداد مرنة.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات للإيجار متاحة في دبي الآن", similarBody: (n) => `لا توجد عقارات للإيجار في ${n} حالياً — استكشف خيارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²", perYr: "/ سنة" },
+  zh: { offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无租盘——但${n}的这些新楼盘正在开放购买，并提供灵活付款计划。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前可租房源", similarBody: (n) => `${n}目前暂无租盘——探索迪拜各地的类似选择。`, studio: "开间", br: "室", sqft: "平方英尺", perYr: "/年" },
+  vi: { offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có bất động sản cho thuê — nhưng các dự án mới tại ${n} đang mở bán với kế hoạch thanh toán linh hoạt.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản cho thuê có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có bất động sản cho thuê tại ${n} — khám phá các lựa chọn tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²", perYr: "/ năm" },
+  he: { offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע נכסים להשכרה — אך השקות חדשות אלו ב-${n} פתוחות לרכישה עם תוכניות תשלום גמישות.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים להשכרה זמינים בדובאי כעת", similarBody: (n) => `אין כרגע נכסים להשכרה ב-${n} — גלו אפשרויות דומות ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²", perYr: "/ שנה" },
+  ru: { offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объектов в аренду — но эти новые проекты в ${n} открыты для покупки с гибкими планами оплаты.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная аренда в Дубае сейчас", similarBody: (n) => `Сейчас нет объектов в аренду в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут", perYr: "/ год" },
+} as const;
+
 export default async function RentInCommunityPage({
   params,
 }: {
@@ -82,6 +99,7 @@ export default async function RentInCommunityPage({
   const c = findBuyCommunity(community);
   if (!c) notFound();
   const L = LABELS[(locale as keyof typeof LABELS)] ?? LABELS.en;
+  const X = CX[locale] ?? CX.en;
 
   let initialListings: any[] = [];
   let totalCount = 0;
@@ -124,7 +142,7 @@ export default async function RentInCommunityPage({
   }
 
   // Rent-side DLD market note — diverges this page from its /buy-property-in twin.
-  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "rent");
+  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "rent", locale);
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
@@ -165,8 +183,8 @@ export default async function RentInCommunityPage({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
       {offPlanProjects.length > 0 && (
         <section className="mb-14">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Off-Plan Projects in {c.name}</h2>
-          <p className="text-sm text-muted-foreground mb-6">No rentals right now — but these new launches in {c.name} are open for purchase with flexible payment plans.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.offTitle(c.name)}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{X.offBody(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {offPlanProjects.map((p: any) => (
               <a key={p._id} href={`${localePrefix}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
@@ -176,11 +194,11 @@ export default async function RentInCommunityPage({
                   </div>
                 )}
                 <div className="p-4">
-                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || "Off-Plan"}</p>
+                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || X.offBadge}</p>
                   <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-1 line-clamp-2">{p.name}</h3>
                   <p className="text-xs text-muted-foreground mb-2">{p.developerName}</p>
                   {p.startingPrice && (
-                    <p className="text-sm font-semibold text-foreground">From AED {Number(p.startingPrice).toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-foreground">{X.from} AED {Number(p.startingPrice).toLocaleString()}</p>
                   )}
                 </div>
               </a>
@@ -188,7 +206,7 @@ export default async function RentInCommunityPage({
           </div>
           <div className="mt-6">
             <a href={`${localePrefix}/off-plan-in/${c.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
-              View all off-plan in {c.name} →
+              {X.viewAllOff(c.name)}
             </a>
           </div>
         </section>
@@ -196,8 +214,8 @@ export default async function RentInCommunityPage({
 
       {similarListings.length > 0 && (
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Rentals Available in Dubai Right Now</h2>
-          <p className="text-sm text-muted-foreground mb-6">No rentals in {c.name} at the moment — explore similar options across Dubai.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.similarTitle}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{X.similarBody(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {similarListings.map((l: any) => (
               <a key={l._id} href={`${localePrefix}/listing/${l.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
@@ -210,11 +228,11 @@ export default async function RentInCommunityPage({
                   <p className="text-xs text-muted-foreground mb-1">{l.community}</p>
                   <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-2 line-clamp-2">{l.title || l.name}</h3>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-                    {l.bedrooms != null && <span>{l.bedrooms === 0 ? "Studio" : `${l.bedrooms} BR`}</span>}
-                    {l.size && <span>{Number(l.size).toLocaleString()} sqft</span>}
+                    {l.bedrooms != null && <span>{l.bedrooms === 0 ? X.studio : `${l.bedrooms} ${X.br}`}</span>}
+                    {l.size && <span>{Number(l.size).toLocaleString()} {X.sqft}</span>}
                   </div>
                   {l.price && (
-                    <p className="text-sm font-semibold text-foreground">AED {Number(l.price).toLocaleString()} / yr</p>
+                    <p className="text-sm font-semibold text-foreground">AED {Number(l.price).toLocaleString()} {X.perYr}</p>
                   )}
                 </div>
               </a>

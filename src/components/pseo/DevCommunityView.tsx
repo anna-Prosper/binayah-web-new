@@ -64,7 +64,7 @@ export default async function DevCommunityView({ devSlug, communitySlug, locale,
   const lp = locale === "en" ? "" : `/${locale}`;
   const nonce = await getNonce();
   const stats = await getCommunityStats(apiCommunity);
-  const faqs = buildCommunityFaqs(community.name, stats);
+  const faqs = buildCommunityFaqs(community.name, stats, locale);
 
   const h1 = `${developerName} Projects in ${community.name}, Dubai`;
   const breadcrumbs = [

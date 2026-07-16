@@ -5,6 +5,7 @@ import { applyTranslation } from "@/lib/applyTranslation";
 import { sanitizeDescriptions } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
+import { commIn, byDev, faqMeta, crumbParents, leafLabel } from "@/lib/project-subpage-i18n";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
 export const revalidate = 1800;
@@ -15,10 +16,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!project) notFound();
 
   const name  = String(project.name || "Project");
-  const comm  = project.community ? ` in ${project.community}` : "";
-  const dev   = project.developerName ? ` by ${project.developerName}` : "";
-  const title = `${name} FAQ, Common Questions Answered${comm} | Binayah`;
-  const desc  = `Frequently asked questions about ${name}${dev}${comm}, Dubai. Pricing, payment plan, floor plans, developer, handover date, Golden Visa eligibility and more.`;
+  const comm  = project.community ? commIn(locale, String(project.community)) : "";
+  const dev   = project.developerName ? byDev(locale, String(project.developerName)) : "";
+  const { title, desc } = faqMeta(locale, { name, comm, dev });
   const path  = `/project/${slug}/faq`;
 
   // Only index when the project has real DB FAQs. Otherwise the page is the
@@ -46,7 +46,8 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   const status  = String(project.status || "").toLowerCase();
   const isRent  = /rent/i.test(status);
   const isReady = /ready|complet/i.test(status);
-  const parentLabel = isRent ? "Rent" : isReady ? "Buy" : "Off-Plan";
+  const cp = crumbParents(locale);
+  const parentLabel = isRent ? cp.rent : isReady ? cp.buy : cp.offplan;
   const parentHref  = isRent ? "/rent" : isReady ? "/buy" : "/off-plan";
   const lp = locale === "en" ? "" : `/${locale}`;
 
@@ -74,10 +75,10 @@ export default async function FaqPage({ params }: { params: Promise<{ locale: st
   };
 
   const breadcrumbs = [
-    { name: "Home",       href: `${lp}/` },
-    { name: parentLabel,  href: `${lp}${parentHref}` },
-    { name: project.name, href: `${lp}/project/${slug}` },
-    { name: "FAQ",        href: `${lp}/project/${slug}/faq` },
+    { name: cp.home,                   href: `${lp}/` },
+    { name: parentLabel,               href: `${lp}${parentHref}` },
+    { name: project.name,              href: `${lp}/project/${slug}` },
+    { name: leafLabel(locale, "faq"),  href: `${lp}/project/${slug}/faq` },
   ];
 
   return (

@@ -140,7 +140,7 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
   }
 
   const stats = await getCommunityStats(apiCommunity);
-  const faqs = buildCommunityFaqs(c.name, stats);
+  const faqs = buildCommunityFaqs(c.name, stats, locale);
   const nonce = await getNonce();
   const soldCombo = p.listingType === "Sale" ? findSoldCombo(await getAreaSoldMatrix(c.slug), p.type.canon, p.beds) : null;
 

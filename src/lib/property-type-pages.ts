@@ -11,7 +11,8 @@ export interface PropertyTypePage {
   ar: PropertyTypeLocale;
   zh: PropertyTypeLocale;
   vi: PropertyTypeLocale;
-  he?: PropertyTypeLocale;
+  fr: PropertyTypeLocale;
+  he?: PropertyTypeLocale; // attached at module load from ptp-he.json
 }
 
 export interface PropertyTypeLocale {
@@ -55,6 +56,29 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "Browse All Apartments",
       keywords: ["apartments for sale dubai", "dubai apartments", "buy apartment dubai", "apartments for rent dubai", "studio apartment dubai"],
+    },
+    fr: {
+      metaTitle: "Appartements à vendre et à louer à Dubaï | Studios à 4 chambres | Binayah",
+      metaDesc: "Parcourez les appartements de Dubaï : studios, 1, 2, 3 et 4 chambres à vendre et à louer. Annonces vérifiées à Marina, Downtown, JVC, Business Bay.",
+      h1: "Appartements à Dubaï",
+      h1sub: "Studios à 4 chambres | Vente et location",
+      heroDesc: "Le marché des appartements de Dubaï s'étend des studios à 350 000 AED à JVC aux résidences en hauteur à plus de 20 M AED à Downtown. Parcourez plus de 2 500 annonces vérifiées avec la recherche IA de Binayah.",
+      stats: [{ n: "2 500+", label: "Appartements listés" }, { n: "350 000 AED", label: "Prix d'entrée" }, { n: "5-8 %", label: "Rendement locatif moyen" }, { n: "60+", label: "Communautés" }],
+      highlights: [
+        { title: "Studio et 1 chambre", body: "Appartements d'entrée de gamme à Dubaï de 350 000 à 700 000 AED. JVC, Dubai South et Arjan offrent les meilleurs rendements (6-9 %) pour les investisseurs locatifs." },
+        { title: "2 et 3 chambres", body: "Le segment le plus liquide. Les familles et les couples expatriés animent la demande à Marina, JLT, Business Bay et Dubai Hills. Prix typique : 900 000 à 2,5 M AED." },
+        { title: "Luxe 3 chambres et plus", body: "Les résidences à étage complet et les penthouses à Downtown, Palm Jumeirah et DIFC démarrent à 3 M AED et affichent d'excellents antécédents de plus-value." },
+      ],
+      areas: ["Dubai Marina", "Downtown Dubai", "Jumeirah Village Circle", "Business Bay", "Dubai Hills Estate", "Jumeirah Lake Towers", "Palm Jumeirah", "Al Jaddaf"],
+      faqs: [
+        { question: "Quel est le prix moyen d'un appartement à Dubaï ?", answer: "Les studios démarrent à 350 000-500 000 AED dans les communautés périphériques comme JVC et Dubai South. Les appartements 1 chambre vont de 500 000 à 1,2 M AED. Les 2 chambres coûtent de 900 000 à 2,5 M AED. Les 2 chambres de Downtown et Palm Jumeirah démarrent à plus de 2,5 M AED. Le prix moyen au pied carré pour les appartements à l'échelle de la ville était d'environ 1 450 AED au T1 2026." },
+        { question: "Quels sont les meilleurs quartiers pour acheter un appartement à Dubaï ?", answer: "Pour le rendement locatif (6-9 %) : JVC, Dubai South, Al Jaddaf, Business Bay. Pour la plus-value : Downtown Dubai, Palm Jumeirah, Dubai Marina. Pour les familles : Dubai Hills Estate, Arabian Ranches, Mirdif. Pour les petits budgets : Dubai South, Arjan, International City." },
+        { question: "Les étrangers peuvent-ils acheter un appartement à Dubaï ?", answer: "Oui. Toutes les nationalités peuvent acheter des appartements en pleine propriété dans les zones freehold désignées de Dubaï, couvrant plus de 60 communautés dont Dubai Marina, Downtown, JVC, Business Bay et Palm Jumeirah. Aucune restriction, aucun investissement minimum (sauf pour un Golden Visa), pleine propriété avec titre de propriété." },
+        { question: "Quelles sont les charges de copropriété typiques pour les appartements de Dubaï ?", answer: "Les charges de service à Dubaï vont de 8 à 25 AED par pied carré et par an selon l'immeuble. Un appartement de 1 000 pieds carrés dans un immeuble moyen coûte de 8 000 à 12 000 AED par an. Les immeubles haut de gamme (DIFC, Downtown, Palm) peuvent dépasser 20 000 AED par an. Les charges sont payées par le propriétaire, pas par le locataire." },
+        { question: "Vaut-il mieux acheter ou louer un appartement à Dubaï ?", answer: "Dans la plupart des communautés de Dubaï, l'achat est financièrement plus avantageux si vous prévoyez de rester 3 ans ou plus. Le point d'équilibre achat/location aux prix et taux hypothécaires actuels se situe généralement entre 18 et 30 mois. Pour des séjours plus courts ou une flexibilité maximale, la location est plus judicieuse. Le ratio loyer/prix à Dubaï est généralement de 5 à 8 %, ce qui en fait l'un des marchés locatifs les plus attractifs au monde." },
+      ],
+      ctaSearch: "Voir tous les appartements",
+      keywords: ["appartements à vendre dubaï", "appartements dubaï", "acheter appartement dubaï", "appartements à louer dubaï", "studio dubaï"],
     },
     ru: {
       metaTitle: "Квартиры в Дубае | Студии и 1-4BR | Продажа и аренда | Binayah",
@@ -177,6 +201,29 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "Browse All Villas",
       keywords: ["villas for sale dubai", "villa dubai", "buy villa dubai", "villas for rent dubai", "luxury villa dubai"],
     },
+    fr: {
+      metaTitle: "Villas à vendre et à louer à Dubaï | Du luxe au familial | Binayah",
+      metaDesc: "Parcourez les villas de Dubaï : villas individuelles de 3 à 7 chambres, jumelées et maisons de ville à vendre et à louer. Arabian Ranches, Palm, Dubai Hills.",
+      h1: "Villas à Dubaï",
+      h1sub: "3-7 chambres | Communautés sécurisées",
+      heroDesc: "Le marché des villas de Dubaï s'étend des maisons familiales à 2 M AED à Arabian Ranches aux domaines ultra-luxueux de plus de 100 M AED sur Palm Jumeirah et Emirates Hills. Trouvez votre maison idéale avec Binayah.",
+      stats: [{ n: "800+", label: "Villas listées" }, { n: "2 M AED", label: "Prix d'entrée" }, { n: "4-6 %", label: "Rendement locatif moyen" }, { n: "25+", label: "Communautés de villas" }],
+      highlights: [
+        { title: "Villas familiales", body: "Les villas de 3 à 5 chambres dans les communautés sécurisées comme Arabian Ranches, Jumeirah Golf Estates et DAMAC Hills démarrent à 2-5 M AED. Ces communautés offrent écoles, parcs et clubs." },
+        { title: "Villas en bord de mer", body: "Les villas signature de Palm Jumeirah (15-80 M AED et plus) et les propriétés de Dubai Creek Harbour offrent un accès direct à la mer ou à la crique. La catégorie d'actifs la plus recherchée et la moins liquide de Dubaï." },
+        { title: "Villas de golf et de loisirs", body: "Les communautés de Jumeirah Golf Estates, Trump International et Jumeirah Golf Club offrent des villas avec vue directe sur le fairway ou le parcours, de 5 à 20 M AED." },
+      ],
+      areas: ["Arabian Ranches", "Palm Jumeirah", "Dubai Hills Estate", "Jumeirah Golf Estates", "DAMAC Hills", "Mudon", "Mirdif", "Al Barari"],
+      faqs: [
+        { question: "Quel est le prix moyen d'une villa à Dubaï ?", answer: "Les villas 3 chambres dans les communautés établies (Arabian Ranches, DAMAC Hills) démarrent à 2-3,5 M AED. Les villas 4-5 chambres vont de 3,5 à 8 M AED. Les villas en bord de mer (Palm Jumeirah, Jumeirah Bay) vont de 15 à 80 M AED. Les méga-villas d'Emirates Hills peuvent dépasser 200 M AED." },
+        { question: "Quelles sont les meilleures communautés de villas à Dubaï ?", answer: "Vie familiale : Arabian Ranches (3 phases), Dubai Hills Estate, Mudon. Communautés de golf : Jumeirah Golf Estates, DAMAC Hills. Luxe/bord de mer : Palm Jumeirah, Emirates Hills. Rapport qualité-prix : Town Square, Akoya Oxygen, The Springs." },
+        { question: "Les étrangers peuvent-ils acheter une villa à Dubaï ?", answer: "Oui. Les étrangers peuvent acheter des villas dans les zones freehold de Dubaï, qui incluent la plupart des communautés de villas. Il n'y a aucune restriction de nationalité. Certaines communautés de plan directeur comme Jumeirah et Al Wasl sont en bail emphytéotique (pas en pleine propriété) ; votre conseiller Binayah le précisera avant l'achat." },
+        { question: "Quelles sont les charges de service pour les villas de Dubaï ?", answer: "Les charges de service des villas vont de 2 à 8 AED par pied carré de terrain et par an, selon la communauté. Arabian Ranches est en moyenne à 3-5 AED/pied carré ; DAMAC Hills à 4-6 AED/pied carré. Les charges couvrent la sécurité, l'aménagement paysager, les piscines et l'entretien de la communauté." },
+        { question: "Acheter une villa à Dubaï est-il un bon investissement ?", answer: "Les prix des villas de Dubaï ont augmenté de 35 à 60 % dans les communautés prime depuis 2021, portés par la demande de style de vie post-pandémie des acheteurs européens, russes et chinois. Les rendements locatifs de 4 à 6 % sont inférieurs à ceux des appartements, mais les villas attirent des locataires de longue durée (baux de 2 à 3 ans), réduisant le risque de vacance. L'offre de villas est plus contrainte que celle des appartements, ce qui soutient les prix planchers." },
+      ],
+      ctaSearch: "Voir toutes les villas",
+      keywords: ["villas à vendre dubaï", "villa dubaï", "acheter villa dubaï", "villas à louer dubaï", "villa de luxe dubaï"],
+    },
     ru: {
       metaTitle: "Виллы в Дубае | Продажа и аренда | 3-7 спален | Binayah",
       metaDesc: "Виллы в Дубае, отдельностоящие и таунхаусы с 3-7 спальнями на продажу и в аренду. Arabian Ranches, Пальма, Dubai Hills. Binayah Properties.",
@@ -297,6 +344,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "Browse Penthouses",
       keywords: ["penthouses dubai", "penthouse for sale dubai", "luxury penthouse dubai", "dubai sky penthouse"],
     },
+    fr: {
+      metaTitle: "Penthouses à vendre à Dubaï | Résidences de luxe en hauteur | Binayah",
+      metaDesc: "Penthouses exclusifs à Dubaï : Downtown, Marina, Palm Jumeirah. Résidences à étage complet, piscines privées, vues panoramiques. Spécialistes du luxe Binayah.",
+      h1: "Penthouses à Dubaï",
+      h1sub: "Luxe à étage complet | Piscines privées et vues",
+      heroDesc: "Les penthouses de Dubaï représentent le summum de la vie urbaine : piscines à débordement privées, vues panoramiques sur les gratte-ciel et intimité inégalée en hauteur. Parcourez le portefeuille exclusif de penthouses de Binayah.",
+      stats: [{ n: "3 M AED", label: "Prix d'entrée" }, { n: "4 000+", label: "Pieds carrés moyens" }, { n: "50 M+ AED", label: "Ultra-luxe" }, { n: "DIFC, Marina, Downtown", label: "Meilleurs emplacements" }],
+      highlights: [
+        { title: "Penthouses en hauteur", body: "Résidences penthouse à étage complet à Downtown Dubai et Dubai Marina (30e-80e étages) avec vues panoramiques à 360°. 5-25 M AED. Accès par ascenseur privé, systèmes domotiques." },
+        { title: "Penthouses avec piscine privée", body: "Penthouses sur les toits avec piscines à débordement compactes ou de taille standard à Palm Jumeirah, Jumeirah Bay Island et Downtown. 10-50 M AED et plus." },
+        { title: "Penthouses de marque", body: "Les penthouses de marque Four Seasons, Armani, Bulgari et Address affichent les primes les plus élevées (20-200 M AED) et conservent le mieux leur valeur dans les marchés baissiers." },
+      ],
+      areas: ["Downtown Dubai", "Dubai Marina", "Palm Jumeirah", "DIFC", "Jumeirah Bay Island", "Business Bay", "Bluewaters Island"],
+      faqs: [
+        { question: "Quelle est la fourchette de prix des penthouses à Dubaï ?", answer: "Les prix des penthouses de Dubaï vont de 3 M AED pour les unités 3 chambres aux étages supérieurs d'immeubles de milieu de gamme à plus de 200 M AED pour les palais de marque à étage complet sur Palm Jumeirah et au DIFC. La fourchette idéale pour les penthouses d'investissement est de 5 à 20 M AED à Downtown Dubai et Dubai Marina." },
+        { question: "Qu'est-ce qui distingue un penthouse d'un appartement classique à Dubaï ?", answer: "Les penthouses occupent généralement les 1 à 3 étages supérieurs d'un immeuble avec des plateaux plus grands (4 000-15 000+ pieds carrés), des plafonds plus hauts (3,5-6 m), des terrasses privées sur le toit, des ascenseurs privés dédiés et des vues panoramiques. Les charges de service sont généralement 2 à 3 fois plus élevées que celles des appartements standard." },
+        { question: "Les penthouses de Dubaï sont-ils un bon investissement ?", answer: "Les penthouses haut de gamme dans les immeubles de marque ou emblématiques ont surperformé le marché immobilier général de Dubaï depuis 2021, avec une plus-value de 50 à 100 % pour les bons actifs. Cependant, le marché est étroit (offre et acheteurs limités), ce qui ralentit les reventes. Les penthouses sont avant tout une réserve de patrimoine plutôt qu'un investissement de rendement." },
+        { question: "Quels immeubles ont les meilleurs penthouses à Dubaï ?", answer: "Address Sky View, Armani Hotel Residences, Four Seasons Private Residences, 1/JBR, Como Residences sur Palm Jumeirah et les développements ultra-prime de XXI Century affichent constamment les prix les plus élevés et la plus forte demande à la revente." },
+      ],
+      ctaSearch: "Voir les penthouses",
+      keywords: ["penthouses dubaï", "penthouse à vendre dubaï", "penthouse de luxe dubaï", "penthouse en hauteur dubaï"],
+    },
     ru: {
       metaTitle: "Пентхаусы в Дубае | Люксовые апартаменты | Binayah",
       metaDesc: "Эксклюзивные пентхаусы в Дубае, Даунтаун, Марина, Пальма. Полноэтажные резиденции, частные бассейны, панорамные виды.",
@@ -409,6 +478,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "Browse Offices",
       keywords: ["offices for sale dubai", "office rent dubai", "commercial property dubai", "difc office", "business bay office"],
+    },
+    fr: {
+      metaTitle: "Bureaux à vendre et à louer à Dubaï | Immobilier commercial | Binayah",
+      metaDesc: "Bureaux commerciaux à Dubaï : DIFC, Business Bay, JLT, Downtown. Bureaux aménagés et bruts à vendre et à louer. Spécialistes de l'immobilier commercial Binayah.",
+      h1: "Bureaux à Dubaï",
+      h1sub: "Vente et location | Du DIFC à Business Bay",
+      heroDesc: "Le marché des bureaux commerciaux de Dubaï propose des bureaux aménagés de catégorie A au DIFC à partir de 200 AED/pied carré de loyer, jusqu'aux espaces bruts pour aménagements sur mesure. Parcourez les annonces commerciales vérifiées de Binayah.",
+      stats: [{ n: "80 AED/pied carré", label: "Loyer d'entrée/an" }, { n: "1 500 AED/pied carré", label: "Prix de vente d'entrée" }, { n: "6-9 %", label: "Rendement commercial" }, { n: "DIFC, JLT, BBay", label: "Meilleurs emplacements" }],
+      highlights: [
+        { title: "Bureaux aménagés", body: "Bureaux de catégorie A prêts à emménager avec informatique, cloisons et climatisation. Bureaux aménagés au DIFC : 160-280 AED/pied carré/an. Business Bay : 80-130 AED/pied carré/an." },
+        { title: "Bruts et gros œuvre", body: "Bureaux bruts non aménagés pour aménagement sur mesure. 1 500-3 000 AED/pied carré à l'achat. Un aménagement initial plus léger offre de la flexibilité aux entreprises en croissance." },
+        { title: "Bureaux en zone franche", body: "Les bureaux du DIFC, DMCC, Jebel Ali Free Zone et Dubai South ouvrent droit à 100 % de propriété étrangère, zéro impôt sur les sociétés et rapatriement intégral des bénéfices." },
+      ],
+      areas: ["DIFC", "Business Bay", "Jumeirah Lake Towers", "Downtown Dubai", "Dubai Internet City", "Dubai Media City", "Deira"],
+      faqs: [
+        { question: "Quels sont les prix des bureaux commerciaux à Dubaï ?", answer: "Loyer de bureau à Dubaï : DIFC catégorie A 160-280 AED/pied carré/an ; Business Bay 80-130 AED/pied carré/an ; JLT 60-100 AED/pied carré/an. À l'achat : bureaux DIFC 2 500-5 000 AED/pied carré ; Business Bay 1 500-2 500 AED/pied carré." },
+        { question: "Quelle est la procédure pour qu'une entreprise loue un bureau à Dubaï ?", answer: "Vous avez besoin d'une licence commerciale des Émirats pour louer légalement un bureau. Pour les entreprises du continent : licence DED + contrat de location + enregistrement Ejari. Pour les entreprises en zone franche : l'autorité de la zone franche délivre la licence et est généralement le bailleur. Le DIFC dispose de sa propre autorité (DIFCA) et d'un système juridique de common law." },
+        { question: "Les étrangers peuvent-ils posséder des bureaux commerciaux à Dubaï ?", answer: "Oui. Les étrangers peuvent acheter des bureaux commerciaux en pleine propriété dans les zones désignées. Les bureaux en zone franche (DIFC, DMCC, JLT) permettent 100 % de propriété étrangère sans partenaire local requis, avec zéro impôt sur les sociétés." },
+        { question: "Quelles sont les conditions types de bail commercial à Dubaï ?", answer: "Les baux commerciaux à Dubaï durent généralement 1 à 3 ans, payés par chèques postdatés (1 à 4 chèques par an). Les préavis sont de 90 jours. Le DIFC opère sous la common law anglaise avec des structures de bail plus sophistiquées. Les charges de service sont distinctes et s'élèvent généralement à 15-35 AED/pied carré/an." },
+      ],
+      ctaSearch: "Voir les bureaux",
+      keywords: ["bureaux à vendre dubaï", "location bureau dubaï", "immobilier commercial dubaï", "bureau difc", "bureau business bay"],
     },
     ru: {
       metaTitle: "Офисы в Дубае | Продажа и аренда | Коммерческая недвижимость | Binayah",
@@ -523,6 +614,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "Browse Townhouses",
       keywords: ["townhouses for sale dubai", "townhouse dubai", "buy townhouse dubai", "townhouse rent dubai"],
     },
+    fr: {
+      metaTitle: "Maisons de ville à vendre et à louer à Dubaï | Vie familiale | Binayah",
+      metaDesc: "Maisons de ville à Dubaï : logements mitoyens et jumelés de 2 à 5 chambres à JVC, Town Square, Arabian Ranches. Meilleur rapport qualité-prix que les villas.",
+      h1: "Maisons de ville à Dubaï",
+      h1sub: "2-5 chambres | Vie en communauté",
+      heroDesc: "Les maisons de ville de Dubaï offrent l'équilibre parfait : plus d'espace et d'intimité que les appartements, meilleur rapport qualité-prix que les villas individuelles. De 1 à 5 M AED dans plus de 30 communautés établies.",
+      stats: [{ n: "1 M AED", label: "Prix d'entrée" }, { n: "1 800-3 500", label: "Pieds carrés moyens" }, { n: "5-7 %", label: "Rendement locatif" }, { n: "30+", label: "Communautés" }],
+      highlights: [
+        { title: "Maisons familiales abordables", body: "Maisons de ville de 3-4 chambres à partir de 1-2 M AED à JVC, Town Square et Mudon. Jardin privé, parking, piscine communautaire : tout ce dont une famille a besoin au prix d'un appartement." },
+        { title: "Maisons de ville haut de gamme", body: "Maisons de ville de 4-5 chambres à Dubai Hills Estate, Emaar South et Arabian Ranches 3, de 2,5 à 5 M AED. Prestations supérieures, équipements communautaires haut de gamme." },
+        { title: "Maisons de ville d'investissement", body: "Les maisons de ville offrent régulièrement des rendements locatifs bruts de 5 à 7 %. Les unités de 3 chambres à JVC et Town Square se louent de 80 000 à 120 000 AED/an, offrant un revenu solide par rapport au prix d'achat." },
+      ],
+      areas: ["Jumeirah Village Circle", "Town Square", "Arabian Ranches", "Dubai Hills Estate", "Mudon", "DAMAC Hills 2", "Emaar South", "Al Furjan"],
+      faqs: [
+        { question: "Quel est le prix d'une maison de ville à Dubaï ?", answer: "Les prix des maisons de ville de Dubaï vont de 1 à 1,8 M AED pour les unités 2-3 chambres dans les communautés économiques (Town Square, DAMAC Hills 2) à 2,5-5 M AED pour les maisons de ville haut de gamme de 4-5 chambres à Dubai Hills Estate et Arabian Ranches. La plupart des maisons de ville sur plan proposent des plans de paiement avec 20 à 40 % d'apport." },
+        { question: "Quelle est la différence entre une maison de ville et une villa à Dubaï ?", answer: "Les maisons de ville partagent un ou deux murs avec les unités voisines (jumelées ou en rangée). Les villas sont des structures entièrement individuelles. Les maisons de ville sont généralement 20 à 40 % moins chères que les villas comparables de la même communauté et proposées sur des terrains plus petits (1 000-3 000 pieds carrés contre 5 000-15 000+ pieds carrés pour les villas)." },
+        { question: "Quelles communautés de maisons de ville offrent les meilleurs rendements locatifs à Dubaï ?", answer: "JVC (Jumeirah Village Circle) : 5,5-7 % brut. Town Square : 5-6,5 % brut. DAMAC Hills 2 : 5-7 %. Mudon : 5,5-6,5 %. Les rendements sont généralement plus élevés dans les communautés plus récentes ou périphériques où les prix d'achat sont plus bas par rapport aux loyers réalisables." },
+        { question: "Les maisons de ville sont-elles un bon investissement à Dubaï en 2026 ?", answer: "Oui. Les maisons de ville de Dubaï ont connu une plus-value de 30 à 50 % depuis 2021 dans les communautés établies. L'offre de biens de vie en communauté (maisons de ville et villas confondues) reste bien inférieure à la demande, notamment de la part des familles avec enfants s'installant à Dubaï. La demande locative de maisons familiales de 3-4 chambres est structurellement sous-approvisionnée." },
+      ],
+      ctaSearch: "Voir les maisons de ville",
+      keywords: ["maisons de ville à vendre dubaï", "maison de ville dubaï", "acheter maison de ville dubaï", "maison de ville à louer dubaï"],
+    },
     ru: {
       metaTitle: "Таунхаусы в Дубае | Продажа и аренда | Семейное жильё | Binayah",
       metaDesc: "Таунхаусы в Дубае, 2-5 спален в JVC, Town Square, Arabian Ranches. Больше пространства, чем в квартире, выгоднее, чем вилла.",
@@ -635,6 +748,27 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ctaSearch: "Browse Warehouses",
       keywords: ["warehouse for rent dubai", "warehouse for sale dubai", "industrial property dubai", "al quoz warehouse"],
     },
+    fr: {
+      metaTitle: "Entrepôts à vendre et à louer à Dubaï | Immobilier industriel | Binayah",
+      metaDesc: "Entrepôts industriels à Dubaï : Al Quoz, Jebel Ali, Dubai South, DIC. Espaces de logistique, stockage et fabrication à louer et à acheter. Binayah commercial.",
+      h1: "Entrepôts à Dubaï",
+      h1sub: "Industriel et logistique | D'Al Quoz à Jebel Ali",
+      heroDesc: "Le statut de plateforme logistique de Dubaï en fait l'un des marchés de l'immobilier industriel les plus actifs du Moyen-Orient. Des entrepôts à partir de 60 AED/pied carré de loyer à Al Quoz jusqu'à 35 AED/pied carré à Jebel Ali Free Zone.",
+      stats: [{ n: "35 AED/pied carré", label: "Loyer à partir de/an" }, { n: "400 AED/pied carré", label: "Achat à partir de" }, { n: "7-10 %", label: "Rendement industriel" }, { n: "Jebel Ali FZ", label: "Plus grand pôle" }],
+      highlights: [
+        { title: "Entrepôts de stockage standard", body: "Al Quoz et Dubai Investment Park proposent des entrepôts standard de 5 000 à 50 000 pieds carrés avec 6-9 m de hauteur libre, quais de chargement et bureaux en mezzanine. Loyer : 50-80 AED/pied carré/an." },
+        { title: "Entrepôts en zone franche", body: "Les entrepôts de Jebel Ali Free Zone (JAFZA) et de Dubai South Free Zone permettent 100 % de propriété étrangère, la réexportation sans droits de douane et un accès direct au port et à l'aéroport. Loyer : 35-55 AED/pied carré/an." },
+        { title: "Stockage frigorifique et spécialisé", body: "Les entrepôts à température contrôlée et pharmaceutiques d'Al Quoz et de Dubai Industrial Park affichent une prime de 20 à 40 % sur les loyers d'entrepôts standard en raison de l'investissement d'aménagement." },
+      ],
+      areas: ["Al Quoz", "Jebel Ali Free Zone", "Dubai Industrial Park", "Dubai South", "Dubai Investment Park", "Ras Al Khor", "Al Qusais"],
+      faqs: [
+        { question: "Quels sont les loyers des entrepôts industriels à Dubaï ?", answer: "Al Quoz : 50-80 AED/pied carré/an pour les entrepôts standard. DIP (Dubai Investment Park) : 40-60 AED/pied carré/an. Jebel Ali Free Zone : 35-55 AED/pied carré/an. Dubai South : 30-50 AED/pied carré/an. Les entrepôts spécialisés ou frigorifiques affichent une prime de 20 à 40 %." },
+        { question: "Les entreprises étrangères peuvent-elles posséder des entrepôts à Dubaï ?", answer: "Dans les zones franches (Jebel Ali, Dubai South, Dubai Airport Free Zone) : oui, 100 % de propriété étrangère sans partenaire local requis. Dans les zones du continent (Al Quoz, DIP) : la réglementation commerciale des Émirats s'applique ; les entreprises étrangères utilisent généralement une structure d'agent local ou une SARL avec un partenaire émirati, bien que la réforme du Code des sociétés autorise désormais 100 % de propriété étrangère pour la plupart des activités." },
+        { question: "Quelle est la superficie minimale d'un entrepôt à louer à Dubaï ?", answer: "Les superficies minimales d'entrepôt à Dubaï démarrent généralement à 2 000-3 000 pieds carrés dans les anciens bâtiments d'Al Quoz. La plupart des parcs logistiques modernes (DIP, Dubai South) exigent des engagements minimaux de 10 000-25 000 pieds carrés. Les opportunités de sous-location dans les entrepôts établis peuvent proposer des unités plus petites." },
+      ],
+      ctaSearch: "Voir les entrepôts",
+      keywords: ["entrepôt à louer dubaï", "entrepôt à vendre dubaï", "immobilier industriel dubaï", "entrepôt al quoz"],
+    },
     ru: {
       metaTitle: "Склады в Дубае | Аренда и продажа | Промышленная недвижимость | Binayah",
       metaDesc: "Промышленные склады в Дубае, Аль-Куз, Джебель Али, Дубай Саут. Логистика, хранение и производство для аренды и покупки.",
@@ -743,6 +877,28 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       ],
       ctaSearch: "Browse Land & Plots",
       keywords: ["land for sale dubai", "plot for sale dubai", "freehold land dubai", "buy land dubai", "residential plot dubai"],
+    },
+    fr: {
+      metaTitle: "Terrains et parcelles à vendre à Dubaï | Pleine propriété | Binayah",
+      metaDesc: "Terrains résidentiels et commerciaux à vendre à Dubaï. Parcelles en pleine propriété à Jumeirah, MBR City, Tilal Al Ghaf, Al Barari. Approbation GFA, titre propre.",
+      h1: "Terrains à vendre à Dubaï",
+      h1sub: "Parcelles résidentielles et commerciales | Pleine propriété",
+      heroDesc: "Le marché foncier de Dubaï offre de rares parcelles en pleine propriété dans des communautés établies et émergentes. Construisez votre villa sur mesure ou développez un projet commercial sur l'une des toiles urbaines les plus dynamiques au monde.",
+      stats: [{ n: "200 AED/pied carré", label: "Entrée résidentiel" }, { n: "400 AED/pied carré", label: "Emplacements premium" }, { n: "3 000+", label: "Parcelle min (pieds carrés)" }, { n: "MBR City", label: "Plus grande offre" }],
+      highlights: [
+        { title: "Parcelles résidentielles", body: "Construisez votre villa sur mesure sur un terrain en pleine propriété à Jumeirah, Al Barari, Nad Al Sheba et Mohammed Bin Rashid City (MBR). Prix de 200 AED/pied carré à 1 000 AED/pied carré dans les zones prime en bord de mer." },
+        { title: "Commercial et usage mixte", body: "Parcelles de développement à Business Bay, Dubai South et Jebel Ali pour des projets commerciaux, résidentiels ou à usage mixte. Généralement vendues avec des autorisations de GFA (surface de plancher brute) approuvées." },
+        { title: "Terrains industriels", body: "Parcelles à zonage industriel à Al Quoz, Dubai Investment Park et Dubai South pour l'entreposage ou la fabrication. À partir de 50 AED/pied carré avec droits d'usufruit de longue durée." },
+      ],
+      areas: ["Jumeirah", "Mohammed Bin Rashid City", "Al Barari", "Tilal Al Ghaf", "Nad Al Sheba", "Dubai Hills Estate", "Hatta", "Dubai South"],
+      faqs: [
+        { question: "Les étrangers peuvent-ils acheter un terrain à Dubaï ?", answer: "Oui, dans les zones freehold désignées. Les étrangers peuvent acheter des terrains en pleine propriété dans des zones telles que MBR City, Jumeirah Village Circle, Business Bay, Dubai South et d'autres. Principales exceptions : Jumeirah (le quartier résidentiel traditionnel) et certaines zones anciennes sont en bail emphytéotique. Vérifiez toujours le statut de pleine propriété avant l'achat." },
+        { question: "Quelle est la procédure d'achat d'un terrain à Dubaï ?", answer: "1) Convenir du prix et des conditions avec le vendeur. 2) Signer un protocole d'accord (MOU) et verser un acompte de 10 %. 3) NOC du promoteur (si terrain de plan directeur). 4) S'assurer que la parcelle dispose d'un ratio GFA/FAR approuvé (coefficient d'occupation des sols). 5) Transfert au DLD avec des frais de transfert de 4 %. 6) Déposer une demande auprès de la municipalité de Dubaï ou de l'autorité compétente pour le permis de construire." },
+        { question: "Que puis-je construire sur un terrain en pleine propriété à Dubaï ?", answer: "Les autorisations d'usage dépendent de la classification de zonage (résidentiel, commercial, usage mixte, industriel). Résidentiel R+1 ou R+2 dans la plupart des communautés de villas. MBR City autorise R+3 à R+5 sur certaines parcelles. Vérifiez toujours la GFA approuvée et les exigences de recul avant l'achat." },
+        { question: "Quel est le prix au pied carré d'un terrain à Dubaï ?", answer: "Il varie énormément selon l'emplacement. Terrain résidentiel : 200-400 AED/pied carré (périphérie), 500-1 000 AED/pied carré (Jumeirah/bord de mer prime). Terrain commercial : 400-2 000 AED/pied carré (Business Bay, abords du DIFC). Industriel/logistique : 50-150 AED/pied carré." },
+      ],
+      ctaSearch: "Voir les terrains et parcelles",
+      keywords: ["terrain à vendre dubaï", "parcelle à vendre dubaï", "terrain pleine propriété dubaï", "acheter terrain dubaï", "parcelle résidentielle dubaï"],
     },
     ru: {
       metaTitle: "Земельные участки в Дубае | Продажа фрихолд | Binayah",

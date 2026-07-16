@@ -74,6 +74,25 @@ const LABELS = {
   fr: { home: "Accueil", buy: "Acheter", buyIn: "Acheter un bien à", dubai: "Dubaï", priceRange: "Fourchette de prix", grossYield: "Rendement brut", listings: "Annonces", forSale: "Biens à vendre à", secondary: "MARCHÉ SECONDAIRE", emptyTitle: "Aucune annonce active pour le moment", emptyBody: "Nous ajoutons régulièrement de nouveaux biens dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les propriétés à Dubaï.", browseAll: "Voir tous les biens", getNotified: "Être alerté" },
 } as const;
 
+// Localized cross-link + empty-state copy (numbers/brand names stay verbatim).
+type CxStr = {
+  guidePre: string; guideLink: (n: string) => string;
+  ownPre: string; ownLink: (n: string) => string;
+  offTitle: (n: string) => string; offBody: (n: string) => string;
+  offBadge: string; from: string; viewAllOff: (n: string) => string;
+  similarTitle: string; similarBody: (n: string) => string;
+  studio: string; br: string; sqft: string;
+};
+const CX: Record<string, CxStr> = {
+  en: { guidePre: "For schools, transport and the full area overview, read the", guideLink: (n) => `${n} community guide →`, ownPre: "Own here already?", ownLink: (n) => `Get a free ${n} property valuation →`, offTitle: (n) => `Off-Plan Projects in ${n}`, offBody: (n) => `No secondary market listings right now — but these off-plan launches are open for purchase in ${n}.`, offBadge: "Off-Plan", from: "From", viewAllOff: (n) => `View all off-plan in ${n} →`, similarTitle: "Properties Available in Dubai Right Now", similarBody: (n) => `No resale listings in ${n} at the moment — explore similar homes across Dubai.`, studio: "Studio", br: "BR", sqft: "sqft" },
+  fr: { guidePre: "Pour les écoles, les transports et l'aperçu complet du quartier, consultez le", guideLink: (n) => `guide du quartier ${n} →`, ownPre: "Déjà propriétaire ici ?", ownLink: (n) => `Obtenez une estimation gratuite à ${n} →`, offTitle: (n) => `Projets sur plan à ${n}`, offBody: (n) => `Aucune annonce sur le marché secondaire pour le moment — mais ces lancements sur plan sont ouverts à l'achat à ${n}.`, offBadge: "Sur Plan", from: "À partir de", viewAllOff: (n) => `Voir tout le sur plan à ${n} →`, similarTitle: "Biens disponibles à Dubaï en ce moment", similarBody: (n) => `Aucune annonce de revente à ${n} pour le moment — explorez des biens similaires à Dubaï.`, studio: "Studio", br: "ch.", sqft: "pi²" },
+  ar: { guidePre: "للمدارس والمواصلات ونظرة كاملة على المنطقة، اطّلع على", guideLink: (n) => `دليل منطقة ${n} →`, ownPre: "تملك عقاراً هنا بالفعل؟", ownLink: (n) => `احصل على تقييم مجاني لعقارك في ${n} →`, offTitle: (n) => `مشاريع على الخارطة في ${n}`, offBody: (n) => `لا توجد قوائم في السوق الثانوي حالياً — لكن هذه الإطلاقات على الخارطة متاحة للشراء في ${n}.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllOff: (n) => `عرض كل المشاريع على الخارطة في ${n} →`, similarTitle: "عقارات متاحة في دبي الآن", similarBody: (n) => `لا توجد قوائم إعادة بيع في ${n} حالياً — استكشف عقارات مماثلة في جميع أنحاء دبي.`, studio: "استوديو", br: "غرفة", sqft: "قدم²" },
+  zh: { guidePre: "了解学校、交通和完整的区域概览，请阅读", guideLink: (n) => `${n}社区指南 →`, ownPre: "已在此拥有房产？", ownLink: (n) => `获取${n}免费房产估值 →`, offTitle: (n) => `${n}期房项目`, offBody: (n) => `目前暂无二手市场房源——但${n}的这些期房楼盘正在开放购买。`, offBadge: "期房", from: "起价", viewAllOff: (n) => `查看${n}全部期房 →`, similarTitle: "迪拜当前在售房产", similarBody: (n) => `${n}目前暂无转售房源——探索迪拜各地的类似房产。`, studio: "开间", br: "室", sqft: "平方英尺" },
+  vi: { guidePre: "Về trường học, giao thông và tổng quan khu vực, hãy đọc", guideLink: (n) => `hướng dẫn khu vực ${n} →`, ownPre: "Đã sở hữu bất động sản ở đây?", ownLink: (n) => `Nhận định giá miễn phí tại ${n} →`, offTitle: (n) => `Dự án off-plan tại ${n}`, offBody: (n) => `Hiện chưa có tin thị trường thứ cấp — nhưng các dự án off-plan này đang mở bán tại ${n}.`, offBadge: "Off-Plan", from: "Từ", viewAllOff: (n) => `Xem tất cả off-plan tại ${n} →`, similarTitle: "Bất động sản có sẵn tại Dubai ngay bây giờ", similarBody: (n) => `Hiện chưa có tin bán lại tại ${n} — khám phá các bất động sản tương tự trên khắp Dubai.`, studio: "Studio", br: "PN", sqft: "foot²" },
+  he: { guidePre: "לבתי ספר, תחבורה וסקירת האזור המלאה, קראו את", guideLink: (n) => `מדריך האזור ${n} →`, ownPre: "כבר יש לכם נכס כאן?", ownLink: (n) => `קבלו הערכת שווי חינם ב-${n} →`, offTitle: (n) => `פרויקטים על הנייר ב-${n}`, offBody: (n) => `אין כרגע מודעות בשוק המשני — אך השקות אלו על הנייר פתוחות לרכישה ב-${n}.`, offBadge: "על הנייר", from: "החל מ-", viewAllOff: (n) => `צפו בכל הפרויקטים על הנייר ב-${n} →`, similarTitle: "נכסים זמינים בדובאי כעת", similarBody: (n) => `אין כרגע מודעות יד שנייה ב-${n} — גלו נכסים דומים ברחבי דובאי.`, studio: "סטודיו", br: 'חד״ש', sqft: "רגל²" },
+  ru: { guidePre: "Школы, транспорт и полный обзор района — читайте", guideLink: (n) => `гид по району ${n} →`, ownPre: "Уже владеете здесь?", ownLink: (n) => `Получите бесплатную оценку недвижимости в ${n} →`, offTitle: (n) => `Новостройки в ${n}`, offBody: (n) => `Сейчас нет объявлений на вторичном рынке — но эти новостройки открыты для покупки в ${n}.`, offBadge: "Новостройка", from: "от", viewAllOff: (n) => `Все новостройки в ${n} →`, similarTitle: "Доступная недвижимость в Дубае сейчас", similarBody: (n) => `Сейчас нет объявлений о перепродаже в ${n} — посмотрите похожие варианты по Дубаю.`, studio: "Студия", br: "спальни", sqft: "кв. фут" },
+} as const;
+
 export default async function BuyInCommunityPage({
   params,
 }: {
@@ -83,6 +102,7 @@ export default async function BuyInCommunityPage({
   const c = findBuyCommunity(community);
   if (!c) notFound();
   const L = LABELS[(locale as keyof typeof LABELS)] ?? LABELS.en;
+  const X = CX[locale] ?? CX.en;
 
   let initialListings: any[] = [];
   let totalCount = 0;
@@ -126,7 +146,7 @@ export default async function BuyInCommunityPage({
   }
 
   // Sale-side DLD market note — diverges this page from its /rent-property-in twin.
-  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "buy");
+  const marketNote = buildMarketNote(c.name, await getCommunityStats(apiCommunity), "buy", locale);
 
   const localePrefix = locale === "en" ? "" : `/${locale}`;
   const breadcrumbs = [
@@ -149,14 +169,14 @@ export default async function BuyInCommunityPage({
             page = homes for sale; the guide = schools, transport, lifestyle) so
             the two don't compete for the same query. */}
         <p className="text-sm text-muted-foreground max-w-3xl mb-4">
-          For schools, transport and the full area overview, read the{" "}
-          <a href={`${localePrefix}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
+          {X.guidePre}{" "}
+          <a href={`${localePrefix}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{X.guideLink(c.name)}</a>
         </p>
         {/* Seller funnel: owners in this community → free valuation (curated 20 only). */}
         {CURATED_COMMUNITY_SLUGS.includes(c.slug) && (
           <p className="text-sm text-muted-foreground max-w-3xl mb-8">
-            Own here already?{" "}
-            <a href={`${localePrefix}/property-valuation/${c.slug}`} className="text-primary font-semibold hover:underline">Get a free {c.name} property valuation →</a>
+            {X.ownPre}{" "}
+            <a href={`${localePrefix}/property-valuation/${c.slug}`} className="text-primary font-semibold hover:underline">{X.ownLink(c.name)}</a>
           </p>
         )}
         <div className="grid grid-cols-3 gap-4 max-w-xl">
@@ -182,8 +202,8 @@ export default async function BuyInCommunityPage({
       {/* Off-plan projects in this community */}
       {offPlanProjects.length > 0 && (
         <section className="mb-14">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Off-Plan Projects in {c.name}</h2>
-          <p className="text-sm text-muted-foreground mb-6">No secondary market listings right now — but these off-plan launches are open for purchase in {c.name}.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.offTitle(c.name)}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{X.offBody(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {offPlanProjects.map((p: any) => (
               <a key={p._id} href={`${localePrefix}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
@@ -193,11 +213,11 @@ export default async function BuyInCommunityPage({
                   </div>
                 )}
                 <div className="p-4">
-                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || "Off-Plan"}</p>
+                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || X.offBadge}</p>
                   <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-1 line-clamp-2">{p.name}</h3>
                   <p className="text-xs text-muted-foreground mb-2">{p.developerName}</p>
                   {p.startingPrice && (
-                    <p className="text-sm font-semibold text-foreground">From AED {Number(p.startingPrice).toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-foreground">{X.from} AED {Number(p.startingPrice).toLocaleString()}</p>
                   )}
                 </div>
               </a>
@@ -205,7 +225,7 @@ export default async function BuyInCommunityPage({
           </div>
           <div className="mt-6">
             <a href={`${localePrefix}/off-plan-in/${c.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
-              View all off-plan in {c.name} →
+              {X.viewAllOff(c.name)}
             </a>
           </div>
         </section>
@@ -214,8 +234,8 @@ export default async function BuyInCommunityPage({
       {/* Similar listings from other Dubai communities */}
       {similarListings.length > 0 && (
         <section className="mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">Properties Available in Dubai Right Now</h2>
-          <p className="text-sm text-muted-foreground mb-6">No resale listings in {c.name} at the moment — explore similar homes across Dubai.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{X.similarTitle}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{X.similarBody(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {similarListings.map((l: any) => (
               <a key={l._id} href={`${localePrefix}/listing/${l.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
@@ -228,8 +248,8 @@ export default async function BuyInCommunityPage({
                   <p className="text-xs text-muted-foreground mb-1">{l.community}</p>
                   <h3 className="font-bold text-foreground text-sm sm:text-base leading-snug mb-2 line-clamp-2">{l.title || l.name}</h3>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground mb-2">
-                    {l.bedrooms != null && <span>{l.bedrooms === 0 ? "Studio" : `${l.bedrooms} BR`}</span>}
-                    {l.size && <span>{Number(l.size).toLocaleString()} sqft</span>}
+                    {l.bedrooms != null && <span>{l.bedrooms === 0 ? X.studio : `${l.bedrooms} ${X.br}`}</span>}
+                    {l.size && <span>{Number(l.size).toLocaleString()} {X.sqft}</span>}
                   </div>
                   {l.price && (
                     <p className="text-sm font-semibold text-foreground">AED {Number(l.price).toLocaleString()}</p>

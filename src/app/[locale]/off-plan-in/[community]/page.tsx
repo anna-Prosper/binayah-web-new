@@ -70,6 +70,22 @@ const LABELS = {
   fr: { home: "Accueil", offplan: "Sur Plan", offplanIn: "Projets sur plan à", dubai: "Dubaï", eyebrow: "NOUVEAUX LANCEMENTS" },
 } as const;
 
+// Localized fallback + cross-link copy (numbers/brand names stay verbatim).
+type CxStr = {
+  newLaunches: string; noProjects: (n: string) => string;
+  offBadge: string; from: string; viewAllDubai: string;
+  guidePre: string; guideLink: (n: string) => string;
+};
+const CX: Record<string, CxStr> = {
+  en: { newLaunches: "New Launches in Dubai", noProjects: (n) => `No off-plan projects in ${n} right now — explore new launches across Dubai.`, offBadge: "Off-Plan", from: "From", viewAllDubai: "View all off-plan in Dubai →", guidePre: "For schools, transport and the full area overview, read the", guideLink: (n) => `${n} community guide →` },
+  fr: { newLaunches: "Nouveaux lancements à Dubaï", noProjects: (n) => `Aucun projet sur plan à ${n} pour le moment — explorez les nouveaux lancements à Dubaï.`, offBadge: "Sur Plan", from: "À partir de", viewAllDubai: "Voir tout le sur plan à Dubaï →", guidePre: "Pour les écoles, les transports et l'aperçu complet du quartier, consultez le", guideLink: (n) => `guide du quartier ${n} →` },
+  ar: { newLaunches: "إطلاقات جديدة في دبي", noProjects: (n) => `لا توجد مشاريع على الخارطة في ${n} حالياً — استكشف الإطلاقات الجديدة في جميع أنحاء دبي.`, offBadge: "على الخارطة", from: "ابتداءً من", viewAllDubai: "عرض كل المشاريع على الخارطة في دبي →", guidePre: "للمدارس والمواصلات ونظرة كاملة على المنطقة، اطّلع على", guideLink: (n) => `دليل منطقة ${n} →` },
+  zh: { newLaunches: "迪拜新楼盘", noProjects: (n) => `${n}目前暂无期房项目——探索迪拜各地的新楼盘。`, offBadge: "期房", from: "起价", viewAllDubai: "查看迪拜全部期房 →", guidePre: "了解学校、交通和完整的区域概览，请阅读", guideLink: (n) => `${n}社区指南 →` },
+  vi: { newLaunches: "Dự án mới tại Dubai", noProjects: (n) => `Hiện chưa có dự án off-plan tại ${n} — khám phá các dự án mới trên khắp Dubai.`, offBadge: "Off-Plan", from: "Từ", viewAllDubai: "Xem tất cả off-plan tại Dubai →", guidePre: "Về trường học, giao thông và tổng quan khu vực, hãy đọc", guideLink: (n) => `hướng dẫn khu vực ${n} →` },
+  he: { newLaunches: "השקות חדשות בדובאי", noProjects: (n) => `אין כרגע פרויקטים על הנייר ב-${n} — גלו השקות חדשות ברחבי דובאי.`, offBadge: "על הנייר", from: "החל מ-", viewAllDubai: "צפו בכל הפרויקטים על הנייר בדובאי →", guidePre: "לבתי ספר, תחבורה וסקירת האזור המלאה, קראו את", guideLink: (n) => `מדריך האזור ${n} →` },
+  ru: { newLaunches: "Новые проекты в Дубае", noProjects: (n) => `Сейчас нет проектов на стадии строительства в ${n} — посмотрите новые проекты по Дубаю.`, offBadge: "Новостройка", from: "от", viewAllDubai: "Все новостройки в Дубае →", guidePre: "Школы, транспорт и полный обзор района — читайте", guideLink: (n) => `гид по району ${n} →` },
+} as const;
+
 export default async function OffPlanInCommunityPage({
   params,
 }: {
@@ -79,6 +95,7 @@ export default async function OffPlanInCommunityPage({
   const c = findBuyCommunity(community);
   if (!c) notFound();
   const L = LABELS[(locale as keyof typeof LABELS)] ?? LABELS.en;
+  const X = CX[locale] ?? CX.en;
   const isRtl = locale === "ar" || locale === "he";
   const lp = locale === "en" ? "" : `/${locale}`;
   const apiCommunity = c.apiName ?? c.name;
@@ -101,7 +118,7 @@ export default async function OffPlanInCommunityPage({
   // Real market depth: DLD + listings stats and data-driven FAQs (+ FAQPage
   // schema) so the page isn't thin and earns rich results / AI citations.
   const stats = await getCommunityStats(apiCommunity);
-  const faqs = buildCommunityFaqs(c.name, stats);
+  const faqs = buildCommunityFaqs(c.name, stats, locale);
   const nonce = await getNonce();
 
   // Real DLD buildings in this area → crawlable links to /building/[slug]
@@ -163,8 +180,8 @@ export default async function OffPlanInCommunityPage({
       {/* When no community-specific projects exist, show Dubai-wide off-plan launches */}
       {communityProjects.length === 0 && similarProjects.length > 0 && (
         <section className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-14">
-          <h2 className="text-xl font-bold text-foreground mb-2">New Launches in Dubai</h2>
-          <p className="text-sm text-muted-foreground mb-6">No off-plan projects in {c.name} right now — explore new launches across Dubai.</p>
+          <h2 className="text-xl font-bold text-foreground mb-2">{X.newLaunches}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{X.noProjects(c.name)}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {similarProjects.map((p: any) => (
               <a key={p._id} href={`${lp}/project/${p.slug}`} className="group block rounded-2xl overflow-hidden border border-border bg-card hover:shadow-lg transition-shadow">
@@ -174,24 +191,24 @@ export default async function OffPlanInCommunityPage({
                   </div>
                 )}
                 <div className="p-4">
-                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || "Off-Plan"}</p>
+                  <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-1">{p.status || X.offBadge}</p>
                   <h3 className="font-bold text-foreground text-sm leading-snug mb-1 line-clamp-2">{p.name}</h3>
                   <p className="text-xs text-muted-foreground mb-2">{p.community} · {p.developerName}</p>
-                  {p.startingPrice && <p className="text-sm font-semibold text-foreground">From AED {Number(p.startingPrice).toLocaleString()}</p>}
+                  {p.startingPrice && <p className="text-sm font-semibold text-foreground">{X.from} AED {Number(p.startingPrice).toLocaleString()}</p>}
                 </div>
               </a>
             ))}
           </div>
           <div className="mt-6">
-            <a href={`${lp}/off-plan`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">View all off-plan in Dubai →</a>
+            <a href={`${lp}/off-plan`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">{X.viewAllDubai}</a>
           </div>
         </section>
       )}
 
       {/* Cross-link to the area guide — different intent (this page = buy off-plan; guide = lifestyle/transport) */}
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 pb-8 text-sm text-muted-foreground">
-        For schools, transport and the full area overview, read the{" "}
-        <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{c.name} community guide →</a>
+        {X.guidePre}{" "}
+        <a href={`${lp}/communities/${c.communitySlug ?? c.slug}`} className="text-primary font-semibold hover:underline">{X.guideLink(c.name)}</a>
       </div>
 
       <Footer />

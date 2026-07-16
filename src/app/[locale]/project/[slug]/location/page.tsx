@@ -6,6 +6,7 @@ import { sanitizeDescriptions } from "@/lib/sanitize";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getNonce } from "@/lib/nonce";
 import { getCommunityStats } from "@/lib/market";
+import { commIn, byDev, locationMeta, crumbParents, leafLabel } from "@/lib/project-subpage-i18n";
 import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClient";
 
 export const revalidate = 1800;
@@ -16,10 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!project) notFound();
 
   const name = String(project.name || "Project");
-  const comm = project.community ? ` in ${project.community}` : "";
-  const dev  = project.developerName ? ` by ${project.developerName}` : "";
-  const title = `${name} Location & Neighbourhood${comm}, Dubai | Binayah`;
-  const desc  = `Explore the location of ${name}${dev}${comm}. View the map, nearby landmarks, transport links, schools, malls and community highlights in ${project.community || project.city || "Dubai"}.`;
+  const comm = project.community ? commIn(locale, String(project.community)) : "";
+  const dev  = project.developerName ? byDev(locale, String(project.developerName)) : "";
+  const area = String(project.community || project.city || "Dubai");
+  const { title, desc } = locationMeta(locale, { name, comm, dev, area });
   const path  = `/project/${slug}/location`;
 
   // Only index when there's a real location write-up. Otherwise the page is
@@ -52,15 +53,16 @@ export default async function LocationPage({ params }: { params: Promise<{ local
   const status  = String(project.status || "").toLowerCase();
   const isRent  = /rent/i.test(status);
   const isReady = /ready|complet/i.test(status);
-  const parentLabel = isRent ? "Rent" : isReady ? "Buy" : "Off-Plan";
+  const cp = crumbParents(locale);
+  const parentLabel = isRent ? cp.rent : isReady ? cp.buy : cp.offplan;
   const parentHref  = isRent ? "/rent" : isReady ? "/buy" : "/off-plan";
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
-    { name: "Home",      href: `${lp}/` },
-    { name: parentLabel, href: `${lp}${parentHref}` },
-    { name: project.name, href: `${lp}/project/${slug}` },
-    { name: "Location",  href: `${lp}/project/${slug}/location` },
+    { name: cp.home,                        href: `${lp}/` },
+    { name: parentLabel,                    href: `${lp}${parentHref}` },
+    { name: project.name,                   href: `${lp}/project/${slug}` },
+    { name: leafLabel(locale, "location"),  href: `${lp}/project/${slug}/location` },
   ];
 
   const jsonLd = {
