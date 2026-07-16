@@ -6,7 +6,7 @@
 export type GuideTranslation = { body: string; faq: { question: string; answer: string }[] };
 
 // Locales with complete guide-body translations (indexable, self-canonical).
-export const TRANSLATED_GUIDE_LOCALES: string[] = ["ru", "ar"];
+export const TRANSLATED_GUIDE_LOCALES: string[] = ["ru", "ar", "zh"];
 
 // Lazy per-locale loaders — only the requested locale's JSON is loaded, keeping
 // it off the client bundle (the page is a server component and passes the
@@ -14,6 +14,7 @@ export const TRANSLATED_GUIDE_LOCALES: string[] = ["ru", "ar"];
 const LOADERS: Record<string, () => Promise<Record<string, GuideTranslation>>> = {
   ru: () => import("./ru.json").then((m) => m.default as unknown as Record<string, GuideTranslation>),
   ar: () => import("./ar.json").then((m) => m.default as unknown as Record<string, GuideTranslation>),
+  zh: () => import("./zh.json").then((m) => m.default as unknown as Record<string, GuideTranslation>),
 };
 
 export function isGuideLocaleTranslated(locale: string): boolean {
