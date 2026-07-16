@@ -9,6 +9,14 @@ import { getNonce } from "@/lib/nonce";
 
 export const revalidate = 3600;
 
+// Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
+// (private, no-store) regardless of `revalidate` — so every crawl hit was a
+// cold, uncached render + live API fetch. Returning [] prerenders nothing at
+// build while making every slug ISR-cached on-demand.
+export function generateStaticParams() {
+  return [];
+}
+
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
 }

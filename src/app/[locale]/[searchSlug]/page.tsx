@@ -16,6 +16,14 @@ import AreaRankingView, { parseAreaRanking, buildAreaRankingMeta } from "@/compo
 
 export const revalidate = 1800;
 
+// Opt into ISR. Without generateStaticParams a [searchSlug] route is fully
+// dynamic (private, no-store) regardless of `revalidate` — so every crawl hit
+// on these pSEO pages was a cold, uncached render + live API fetch. Returning []
+// prerenders nothing at build while making every slug ISR-cached on-demand.
+export function generateStaticParams() {
+  return [];
+}
+
 const TYPES: Record<string, { canon: string; plural: string }> = {
   apartment: { canon: "Apartment", plural: "apartments" },
   apartments: { canon: "Apartment", plural: "apartments" },

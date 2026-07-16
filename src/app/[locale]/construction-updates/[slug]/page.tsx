@@ -17,6 +17,14 @@ const HOME_LABEL: Record<string, string> = {
 // read, so an hourly-revalidated static render serves crawlers faster.
 export const revalidate = 3600;
 
+// Required to actually get ISR: without generateStaticParams a [slug] route is
+// fully dynamic (private, no-store) regardless of `revalidate`, so every crawl
+// hit was a cold, uncached render + live API fetch. Returning [] prerenders
+// nothing at build while making every slug ISR-cached on-demand.
+export function generateStaticParams() {
+  return [];
+}
+
 interface Props { params: Promise<{ slug: string; locale: string }> }
 
 async function fetchArticle(slug: string, locale: string) {

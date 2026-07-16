@@ -10,6 +10,15 @@ import ProjectDetailClient from "@/app/_clients/project/[slug]/ProjectDetailClie
 
 export const revalidate = 1800;
 
+// Opt into ISR. Without generateStaticParams a [slug] route is fully dynamic
+// (private, no-store) regardless of `revalidate` — so every crawl hit was a
+// cold, uncached render + live API fetch (~1.5-2s TTFB). Returning [] prerenders
+// nothing at build while making every slug ISR-cached on-demand, matching the
+// parent /project/[slug]/page.tsx.
+export function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const project = sanitizeDescriptions(applyTranslation(await getProject(slug), locale));
