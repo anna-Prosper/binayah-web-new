@@ -83,6 +83,15 @@ export default async function AdminNewsletterPage() {
   // Mailable list: confirmed, still-subscribed, and readable.
   const mailable = subs.filter((s) => s.status === "confirmed" && s.readable && s.email).map((s) => s.email);
 
+  // Where sign-ups come from — one row per capture surface (source tag).
+  const bySource = Object.entries(
+    subs.reduce<Record<string, number>>((acc, s) => {
+      const key = s.source || "unknown";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {})
+  ).sort((a, b) => b[1] - a[1]);
+
   const stat = (label: string, value: number, tone = "text-gray-900") => (
     <div className="bg-white rounded-xl border border-gray-200 px-4 py-3">
       <div className={`text-2xl font-bold tabular-nums ${tone}`}>{value.toLocaleString()}</div>
@@ -115,6 +124,20 @@ export default async function AdminNewsletterPage() {
           {stat("Unsubscribed", counts.unsubscribed, "text-gray-500")}
           {stat("Total", counts.total)}
         </div>
+
+        {bySource.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Sign-ups by source</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {bySource.map(([src, n]) => (
+                <div key={src} className="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                  <div className="text-xl font-bold tabular-nums text-sky-700">{n.toLocaleString()}</div>
+                  <div className="text-xs text-gray-500 mt-0.5 truncate" title={src}>{src}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {counts.unreadable > 0 && (
           <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
