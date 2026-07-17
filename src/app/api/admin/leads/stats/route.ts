@@ -17,10 +17,8 @@ function parseDate(value: string | null, endOfDay = false): Date | undefined {
 // pipeline funnel + conversion rates, top communities, top properties,
 // avg time-to-first-contact. Auth: NextAuth admin-allowlist.
 export async function GET(req: NextRequest) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "read");
+  if (!auth.ok) return auth.response;
   try {
     const sp = req.nextUrl.searchParams;
     const from = parseDate(sp.get("from"));

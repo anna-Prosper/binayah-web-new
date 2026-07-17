@@ -48,10 +48,8 @@ function parseDate(value: string | null, endOfDay = false): Date | undefined {
 //   &sort=createdAt:desc       // or createdAt:asc | updatedAt:desc
 //   &page=1&limit=50
 export async function GET(req: NextRequest) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "read");
+  if (!auth.ok) return auth.response;
 
   const sp = req.nextUrl.searchParams;
   const sortRaw = sp.get("sort");

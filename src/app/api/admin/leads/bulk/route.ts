@@ -40,14 +40,12 @@ interface BulkBody {
 }
 
 export async function POST(req: NextRequest) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "write");
+  if (!auth.ok) return auth.response;
   const session = await getServerSession(authOptions);
   const author =
     session?.user?.email ||
-    (auth.via === "api-key" ? "api-key" : "unknown@binayah");
+    (auth.via === "api-key" ? `api-key:${auth.keyId}` : "unknown@binayah");
 
   let body: BulkBody;
   try {

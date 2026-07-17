@@ -43,10 +43,8 @@ function csvCell(v: unknown): string {
 // Hard-capped at 10K rows to keep memory bounded; for larger exports use
 // repeated calls with date-range slicing.
 export async function GET(req: NextRequest) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "read");
+  if (!auth.ok) return auth.response;
 
   const sp = req.nextUrl.searchParams;
   const filters: LeadsListFilters = {

@@ -42,10 +42,8 @@ export async function GET(
   req: NextRequest,
   ctx: { params: Promise<{ id: string }> }
 ) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "read");
+  if (!auth.ok) return auth.response;
   const { id } = await ctx.params;
   const source = parseSource(req.nextUrl.searchParams.get("source"));
   if (!source) return NextResponse.json({ error: "Invalid source" }, { status: 400 });
@@ -63,14 +61,12 @@ export async function PATCH(
   req: NextRequest,
   ctx: { params: Promise<{ id: string }> }
 ) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "write");
+  if (!auth.ok) return auth.response;
   const session = await getServerSession(authOptions);
   const author =
     session?.user?.email ||
-    (auth.via === "api-key" ? "api-key" : "unknown@binayah");
+    (auth.via === "api-key" ? `api-key:${auth.keyId}` : "unknown@binayah");
 
   const { id } = await ctx.params;
   const source = parseSource(req.nextUrl.searchParams.get("source"));
@@ -119,14 +115,12 @@ export async function DELETE(
   req: NextRequest,
   ctx: { params: Promise<{ id: string }> }
 ) {
-  const auth = await isLeadsApiAuthorized(req);
-  if (!auth.ok) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await isLeadsApiAuthorized(req, "write");
+  if (!auth.ok) return auth.response;
   const session = await getServerSession(authOptions);
   const author =
     session?.user?.email ||
-    (auth.via === "api-key" ? "api-key" : "unknown@binayah");
+    (auth.via === "api-key" ? `api-key:${auth.keyId}` : "unknown@binayah");
 
   const { id } = await ctx.params;
   const source = parseSource(req.nextUrl.searchParams.get("source"));
