@@ -621,8 +621,10 @@ export default async function PropertyManagementPage({ params }: Props) {
                 style={i === 1 ? { background: "linear-gradient(135deg, #0B3D2E08, #1A7A5A12)" } : {}}
               >
                 {i === 1 && <div className="text-xs font-bold text-primary tracking-widest uppercase mb-3">Most Popular</div>}
-                <h3 className="text-xl font-bold text-foreground mb-1">{plan.name}</h3>
-                <p className="text-2xl font-black text-primary mb-5">{plan.fee}</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">{plan.name}</h3>
+                {/* Fee percentages hidden pending confirmation of real pricing.
+                    The `fee` values remain in the per-locale plan data so they
+                    can be re-enabled here once the correct figures are set. */}
                 <ul className="space-y-2">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
