@@ -6,6 +6,7 @@ import type { LeadSource, LeadStatus, LeadsListResponse, UnifiedLead } from "@/l
 import { LEAD_STATUSES } from "@/lib/leads/types";
 import LeadDetailDrawer from "./LeadDetailDrawer";
 import LeadsStatsStrip from "./LeadsStatsStrip";
+import LeadsApiUsagePanel from "./LeadsApiUsagePanel";
 
 const SOURCES: { value: LeadSource; label: string; color: string }[] = [
   { value: "inquiry", label: "Inquiry", color: "bg-emerald-100 text-emerald-700" },
@@ -169,6 +170,8 @@ export default function LeadsClient() {
 
       {/* Stats summary strip */}
       <LeadsStatsStrip />
+
+      <LeadsApiUsagePanel />
 
       {/* Source counts */}
       {data?.counts && (
