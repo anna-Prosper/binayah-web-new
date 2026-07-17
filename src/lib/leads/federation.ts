@@ -7,7 +7,7 @@
 
 import type { Collection, Document } from "mongodb";
 import clientPromise from "@/lib/mongodb";
-import { decrypt, fieldHash } from "@/lib/encryption";
+import { tryDecrypt as safeDecrypt, fieldHash } from "@/lib/encryption";
 import type {
   LeadSource,
   LeadStatus,
@@ -52,6 +52,15 @@ function normalizeNotes(n: unknown): LeadNote[] {
     }));
 }
 
+// Decrypt a stored PII field WITHOUT ever throwing. A value that was encrypted
+// with a key not in the current ring (e.g. a rotated/foreign key — some older
+// newsletter/pulse emails are like this) returns "" instead of throwing. This
+// is critical: the mappers run over a whole batch, so a single unreadable field
+// must not blow up and wipe out an entire lead source from the list.
+function dec(v: unknown): string {
+  return typeof v === "string" ? (safeDecrypt(v) ?? "") : "";
+}
+
 // ── Source mappers ───────────────────────────────────────────────────────────
 
 function mapInquiry(doc: Document): UnifiedLead {
@@ -60,10 +69,10 @@ function mapInquiry(doc: Document): UnifiedLead {
     id: `inquiry:${doc._id}`,
     source: "inquiry",
     channel,
-    name: decrypt(doc.name as string) || "",
-    email: doc.email ? decrypt(doc.email as string) : undefined,
-    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
-    message: doc.message ? decrypt(doc.message as string) : undefined,
+    name: dec(doc.name as string) || "",
+    email: doc.email ? dec(doc.email as string) : undefined,
+    phone: doc.phone ? dec(doc.phone as string) : undefined,
+    message: doc.message ? dec(doc.message as string) : undefined,
     property: doc.propertySlug
       ? { slug: doc.propertySlug, title: doc.propertyTitle }
       : undefined,
@@ -89,9 +98,9 @@ function mapNewsletter(doc: Document): UnifiedLead {
     id: `newsletter:${doc._id}`,
     source: "newsletter",
     channel: String(doc.source || "newsletter"),
-    name: decrypt(doc.name as string) || "",
-    email: doc.email ? decrypt(doc.email as string) : undefined,
-    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
+    name: dec(doc.name as string) || "",
+    email: doc.email ? dec(doc.email as string) : undefined,
+    phone: doc.phone ? dec(doc.phone as string) : undefined,
     intent: Array.isArray(doc.intents) ? doc.intents : undefined,
     budget:
       doc.budgetMin != null || doc.budgetMax != null
@@ -107,9 +116,9 @@ function mapNewsletter(doc: Document): UnifiedLead {
 }
 
 function mapListProperty(doc: Document): UnifiedLead {
-  const name = decrypt(doc.userName as string) || decrypt(doc.ownerName as string) || decrypt(doc.name as string) || "";
-  const email = decrypt((doc.userEmail || doc.ownerEmail || doc.email) as string) || undefined;
-  const phone = decrypt((doc.phone || doc.ownerPhone) as string) || undefined;
+  const name = dec(doc.userName as string) || dec(doc.ownerName as string) || dec(doc.name as string) || "";
+  const email = dec((doc.userEmail || doc.ownerEmail || doc.email) as string) || undefined;
+  const phone = dec((doc.phone || doc.ownerPhone) as string) || undefined;
   const community = doc.community || doc.location || undefined;
   const message = [
     doc.listingType ? `For: ${doc.listingType}` : null,
@@ -117,7 +126,7 @@ function mapListProperty(doc: Document): UnifiedLead {
     doc.bedrooms != null ? `Beds: ${doc.bedrooms}` : null,
     doc.areaSqft ? `Area: ${doc.areaSqft} sqft` : null,
     doc.askingPrice ? `Asking: AED ${Number(doc.askingPrice).toLocaleString()}` : null,
-    doc.description ? `Notes: ${decrypt(doc.description as string)}` : null,
+    doc.description ? `Notes: ${dec(doc.description as string)}` : null,
   ]
     .filter(Boolean)
     .join(" | ");
@@ -143,9 +152,9 @@ function mapProjectSubscribe(doc: Document): UnifiedLead {
     id: `project-subscribe:${doc._id}`,
     source: "project-subscribe",
     channel: "project-watch",
-    name: decrypt(doc.name as string) || decrypt(doc.userName as string) || "",
-    email: doc.email ? decrypt(doc.email as string) : undefined,
-    phone: doc.phone ? decrypt(doc.phone as string) : undefined,
+    name: dec(doc.name as string) || dec(doc.userName as string) || "",
+    email: doc.email ? dec(doc.email as string) : undefined,
+    phone: doc.phone ? dec(doc.phone as string) : undefined,
     project: doc.slug ? { slug: doc.slug, name: doc.projectName } : undefined,
     pageUrl: doc.slug ? `/project/${doc.slug}` : undefined,
     status: normalizeStatus(doc.status),
@@ -278,7 +287,18 @@ async function fetchSource(
     const sortKey = filters.sort?.startsWith("updatedAt") ? "updatedAt" : "createdAt";
     const sortDir = filters.sort?.endsWith(":asc") ? 1 : -1;
     const docs = await col.find(filter).sort({ [sortKey]: sortDir }).limit(hardLimit).toArray();
-    return docs.map(meta.mapper);
+    // Map each doc in isolation: a mapper that throws on one malformed/unreadable
+    // doc must only drop that row, never the whole source (which is what made the
+    // newsletter count show 3 but render 0 rows).
+    const out: UnifiedLead[] = [];
+    for (const d of docs) {
+      try {
+        out.push(meta.mapper(d));
+      } catch (err) {
+        console.error(`[leads] map ${source} ${d._id} failed:`, (err as Error).message);
+      }
+    }
+    return out;
   } catch {
     return [];
   }
