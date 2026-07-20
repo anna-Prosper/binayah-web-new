@@ -4,10 +4,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
-import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { motion } from "framer-motion";
 import { Phone, Mail, Clock, MessageCircle, MapPin } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/api";
@@ -25,14 +24,6 @@ export default function ContactPage() {
   const [sending, setSending] = useState(false);
   const [optIn, setOptIn] = useState(true);
   const { value: hp, field: honeypotField } = useHoneypot();
-
-  // Seed country code from geo cookie (set by middleware from Vercel IP).
-  useEffect(() => {
-    const dial = dialFromIso(readGeoCountryCookie());
-    if (dial && dial !== "+971") {
-      setForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
-    }
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

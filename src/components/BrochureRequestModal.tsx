@@ -5,7 +5,6 @@ import { X, FileText, Send, CheckCircle2 } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
-import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { trackLead } from "@/lib/gtag";
 import { useHoneypot } from "@/components/Honeypot";
 
@@ -28,13 +27,6 @@ export default function BrochureRequestModal({ open, onClose, projectName, proje
   const { value: hp, field: honeypotField } = useHoneypot();
 
   const hasBrochure = !!brochureUrl;
-
-  useEffect(() => {
-    const dial = dialFromIso(readGeoCountryCookie());
-    if (dial && dial !== "+971") {
-      setForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
-    }
-  }, []);
 
   useEffect(() => {
     if (!open) return;

@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, ArrowRight, Clock, Shield, ChevronDown, CheckCircle2, RotateCcw, Award, Gift, Building2 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
-import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { trackLead } from "@/lib/gtag";
 import { useHoneypot } from "@/components/Honeypot";
 
@@ -23,13 +22,6 @@ const InquirySection = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [optIn, setOptIn] = useState(true);
   const { value: hp, field: honeypotField } = useHoneypot();
-
-  useEffect(() => {
-    const dial = dialFromIso(readGeoCountryCookie());
-    if (dial && dial !== "+971") {
-      setForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
-    }
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

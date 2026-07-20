@@ -91,7 +91,6 @@ import UnitImagePlaceholder from "@/components/UnitImagePlaceholder";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
-import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import BrochureRequestModal from "@/components/BrochureRequestModal";
 
 type NearbyAttraction = { name: string; type: string; distance: string };
@@ -263,15 +262,6 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.community, project.developerName, project.slug]);
 
-  // Seed the country code from the geo cookie (set by middleware from
-  // Vercel's x-vercel-ip-country). Only fires once on mount and only if the
-  // user hasn't already typed a phone — never override an active edit.
-  useEffect(() => {
-    const dial = dialFromIso(readGeoCountryCookie());
-    if (dial && dial !== "+971") {
-      setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
-    }
-  }, []);
   const [showMoreEnquiry, setShowMoreEnquiry] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
   const [origin, setOrigin] = useState("");

@@ -39,7 +39,6 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCurrency, SUPPORTED_CURRENCIES } from "@/context/CurrencyContext";
 import CountryCodeSelect from "@/components/CountryCodeSelect";
-import { dialFromIso, readGeoCountryCookie } from "@/lib/country-codes";
 import { parseNearbyFromDescription } from "@/lib/parseNearby";
 
 const MortgageCalculator = dynamic(() => import("@/components/MortgageCalculator"));
@@ -489,13 +488,6 @@ export default function PropertyDetailClient({
     email: "",
   });
   const { value: hp, field: honeypotField } = useHoneypot();
-
-  useEffect(() => {
-    const dial = dialFromIso(readGeoCountryCookie());
-    if (dial && dial !== "+971") {
-      setEnquiryForm((f) => (f.phone ? f : { ...f, countryCode: dial }));
-    }
-  }, []);
 
   // Track property view on mount
   useEffect(() => {
