@@ -21,13 +21,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ListPropertyForm from "@/components/ListPropertyForm";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
+import { ServiceJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export default async function ListYourPropertyPage() {
   const t = await getTranslations("listProperty");
+  const locale = await getLocale();
+  const lp = locale === "en" ? "" : `/${locale}`;
+  const homeLabel = ({ ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית", fr: "Accueil" } as Record<string, string>)[locale] || "Home";
 
   return (
     <div className="min-h-screen bg-background">
+      <ServiceJsonLd
+        name={`${t("heroTitle")} ${t("heroTitleItalic")} | Binayah Properties`}
+        description={t("heroSubtitle")}
+        url={canonical(locale, "/list-your-property")}
+        serviceType="Property Listing"
+      />
+      <BreadcrumbJsonLd items={[{ name: homeLabel, href: `${lp}/` }, { name: t("heroTitle"), href: `${lp}/list-your-property` }]} />
       <Navbar />
 
       <section

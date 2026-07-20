@@ -2,7 +2,7 @@
 import { ValuationPage } from "@/components/valuation";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
-import { FAQJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -135,9 +135,13 @@ export default async function Page({ params }: Props) {
     ],
     inLanguage: locale,
   };
+  const lp = locale === "en" ? "" : `/${locale}`;
+  const homeLabel = ({ ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית", fr: "Accueil" } as Record<string, string>)[locale] || "Home";
+  const valLabel = ({ ru: "Оценка недвижимости", ar: "تقييم العقارات", zh: "房产估价", vi: "Định giá bất động sản", he: "הערכת שווי נכס", fr: "Estimation immobilière" } as Record<string, string>)[locale] || "Property Valuation";
   return (
     <>
       <FAQJsonLd faqs={faqs} />
+      <BreadcrumbJsonLd items={[{ name: homeLabel, href: `${lp}/` }, { name: valLabel, href: `${lp}/valuation` }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd).replace(/</g, "\\u003c") }}

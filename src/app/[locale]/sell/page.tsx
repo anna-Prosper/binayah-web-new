@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 86400;
@@ -362,7 +362,7 @@ const CONTENT = {
 
   ar: {
     metaTitle: "بيع عقارات دبي | سريع واحترافي | بناية للعقارات",
-    metaDesc: "بِع عقارك في دبي مع بناية للعقارات. وكلاء معتمدون من RERA، تقييم احترافي، خبرة تزيد على 17 عامًا. تقييم سوقي مجاني.",
+    metaDesc: "بِع عقارك في دبي مع بناية للعقارات. وكلاء معتمدون من RERA، تقييم احترافي، خبرة تزيد على 19 عامًا. تقييم سوقي مجاني.",
     heroLabel: "بِع بثقة",
     h1: "بيع عقارك في دبي",
     heroDesc: "تتولى بناية للعقارات بيع العقارات في دبي منذ عام 2007. فريق معتمد من RERA، تسويق احترافي، ونتائج سريعة, مع خدمة متكاملة من التقييم إلى نقل الملكية. خدمة كاملة باللغة العربية.",
@@ -566,6 +566,12 @@ export default async function SellPage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.q, answer: f.a }))} />
       <BreadcrumbJsonLd items={breadcrumbs} />
+      <ServiceJsonLd
+        name={c.metaTitle}
+        description={c.metaDesc}
+        url={canonical(locale, "/sell")}
+        serviceType="Real Estate Sales"
+      />
       <Navbar />
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
