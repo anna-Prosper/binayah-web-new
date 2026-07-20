@@ -2,7 +2,7 @@
 import ServicesPageClient from "./ServicesPageClient";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -106,13 +106,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
   const faqs = SERVICES_FAQS[locale] || SERVICES_FAQS.en;
-  const lp = locale === "en" ? "" : `/${locale}`;
-  const homeLabel = ({ ru: "Главная", ar: "الرئيسية", zh: "首页", vi: "Trang chủ", he: "בית", fr: "Accueil" } as Record<string, string>)[locale] || "Home";
-  const servicesLabel = ({ ru: "Услуги", ar: "الخدمات", zh: "服务", vi: "Dịch vụ", he: "שירותים", fr: "Services" } as Record<string, string>)[locale] || "Services";
+  // Note: the visible <Breadcrumbs> inside ServicesPageClient already emits the
+  // BreadcrumbList JSON-LD, so we don't add another here (avoids a duplicate).
   return (
     <>
       <FAQJsonLd faqs={faqs} />
-      <BreadcrumbJsonLd items={[{ name: homeLabel, href: `${lp}/` }, { name: servicesLabel, href: `${lp}/services` }]} />
       <ServicesPageClient />
     </>
   );
