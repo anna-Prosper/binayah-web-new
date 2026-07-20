@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string -- localized copy comes from the T map; the only inline literals are the "404" numeral and the phone number, which are not translatable strings */
 import Link from "next/link";
 import { Home, Search, Phone } from "lucide-react";
 import { getLocale } from "next-intl/server";
