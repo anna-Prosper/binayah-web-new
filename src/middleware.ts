@@ -3,16 +3,6 @@ import { routing } from "@/i18n/routing";
 import { NextRequest, NextResponse } from "next/server";
 import { CSP_NONCE } from "@/lib/csp";
 
-const GEO_LOCALE_MAP: Record<string, string> = {
-  CN: "zh", TW: "zh", HK: "zh",
-  RU: "ru", BY: "ru", KZ: "ru", UA: "ru", KG: "ru", MD: "ru", TJ: "ru", UZ: "ru", AM: "ru", AZ: "ru",
-  AE: "ar", SA: "ar", EG: "ar", QA: "ar", KW: "ar", BH: "ar", OM: "ar",
-  JO: "ar", LB: "ar", IQ: "ar", SY: "ar", YE: "ar", LY: "ar", TN: "ar", DZ: "ar", MA: "ar",
-  IL: "he",
-  VN: "vi",
-  FR: "fr",
-};
-
 const LOCALE_COOKIE = "BINAYAH_LOCALE";
 // Separate cookie for binayah.ru so .ae locale preference doesn't bleed over
 const RU_LOCALE_COOKIE = "BINAYAH_LOCALE_RU";
@@ -122,26 +112,6 @@ function getDomainLocale(host: string | null): string | null {
   return DOMAIN_LOCALE_MAP[host.toLowerCase()] ?? null;
 }
 
-// Pick the highest-q-weighted supported locale from Accept-Language.
-// "en" is the implicit default — returned as-is so caller can short-circuit
-// without an unnecessary redirect.
-const SUPPORTED_LOCALES = new Set<string>(routing.locales);
-function pickAcceptLanguage(header: string | null): string | null {
-  if (!header) return null;
-  const ranked = header
-    .split(",")
-    .map((part) => {
-      const [tag, qPart] = part.trim().split(";");
-      const q = qPart?.startsWith("q=") ? parseFloat(qPart.slice(2)) : 1;
-      return { lang: tag.toLowerCase().slice(0, 2), q: Number.isFinite(q) ? q : 0 };
-    })
-    .sort((a, b) => b.q - a.q);
-  for (const { lang } of ranked) {
-    if (SUPPORTED_LOCALES.has(lang)) return lang;
-  }
-  return null;
-}
-
 function applySecurityHeaders(response: NextResponse, request: NextRequest) {
   for (const [k, v] of Object.entries(SECURITY_HEADERS)) response.headers.set(k, v);
   const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
@@ -149,14 +119,6 @@ function applySecurityHeaders(response: NextResponse, request: NextRequest) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
   return response;
-}
-
-function setLocaleCookie(response: NextResponse, locale: string) {
-  response.cookies.set(LOCALE_COOKIE, locale, {
-    maxAge: COOKIE_MAX_AGE,
-    path: "/",
-    sameSite: "lax",
-  });
 }
 
 function setGeoCookie(response: NextResponse, request: NextRequest) {
@@ -227,60 +189,45 @@ export function middleware(request: NextRequest) {
   }
 
   // --- binayah.ae / Vercel ---
+  // Localized (prefixed) URL — serve it as-is. We deliberately do NOT pin a
+  // locale cookie just because a visitor landed on a /xx URL (e.g. arriving from
+  // a Google result or a shared link). Auto-pinning trapped visitors in that
+  // language for a year and meant an English searcher who once opened a /he page
+  // was force-redirected to Hebrew on every later click. The locale cookie is
+  // now written ONLY when the user explicitly picks a language in the switcher
+  // (see Navbar `switchLocale`). hreflang tells Google which version to surface
+  // per market, so no server-side language redirect is needed or desirable
+  // (auto-redirecting by Accept-Language/IP is a documented Google anti-pattern).
   if (prefixMatch) {
     const response = intlMiddleware(requestWithNonce);
-    setLocaleCookie(response, prefixMatch[1]);
     applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
 
+  // Unprefixed (canonical English) URL. The ONLY language redirect we still
+  // perform is a convenience for a RETURNING visitor who EXPLICITLY chose a
+  // non-English language: send the bare homepage to their language. It is
+  // homepage-only and cookie-only (never Accept-Language or IP geo), so:
+  //   • Googlebot — which carries no cookie — always gets the English homepage,
+  //   • deep URLs are always served in their own language at 200 (the language
+  //     in the URL is intentional, e.g. an English search result stays English).
   const savedLocale = request.cookies.get(LOCALE_COOKIE)?.value;
-
-  if (savedLocale === "en") {
-    const response = intlMiddleware(requestWithNonce);
-    setLocaleCookie(response, "en");
-    applySecurityHeaders(withCSP(response), request);
-    setGeoCookie(response, request);
-    return response;
-  }
-
-  if (savedLocale && savedLocale !== "en" && routing.locales.includes(savedLocale as (typeof routing.locales)[number])) {
+  if (
+    pathname === "/" &&
+    savedLocale &&
+    savedLocale !== "en" &&
+    routing.locales.includes(savedLocale as (typeof routing.locales)[number])
+  ) {
     const url = request.nextUrl.clone();
-    url.pathname = `/${savedLocale}${pathname === "/" ? "" : pathname}`;
+    url.pathname = `/${savedLocale}`;
     const response = NextResponse.redirect(url);
-    applySecurityHeaders(withCSP(response), request);
-    setGeoCookie(response, request);
-    return response;
-  }
-
-  // Browser preference (Accept-Language) takes priority over IP geo.
-  const acceptLang = pickAcceptLanguage(request.headers.get("accept-language"));
-  if (acceptLang && acceptLang !== "en") {
-    const url = request.nextUrl.clone();
-    url.pathname = `/${acceptLang}${pathname === "/" ? "" : pathname}`;
-    const response = NextResponse.redirect(url);
-    setLocaleCookie(response, acceptLang);
-    applySecurityHeaders(withCSP(response), request);
-    setGeoCookie(response, request);
-    return response;
-  }
-
-  const country = acceptLang === "en" ? "" : (request.headers.get("x-vercel-ip-country") ?? "");
-  const geoLocale = GEO_LOCALE_MAP[country.toUpperCase()];
-
-  if (geoLocale && geoLocale !== "en") {
-    const url = request.nextUrl.clone();
-    url.pathname = `/${geoLocale}${pathname === "/" ? "" : pathname}`;
-    const response = NextResponse.redirect(url);
-    setLocaleCookie(response, geoLocale);
     applySecurityHeaders(withCSP(response), request);
     setGeoCookie(response, request);
     return response;
   }
 
   const response = intlMiddleware(requestWithNonce);
-  setLocaleCookie(response, "en");
   applySecurityHeaders(withCSP(response), request);
   setGeoCookie(response, request);
   return response;
