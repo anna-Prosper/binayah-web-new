@@ -4,7 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
-import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
+import { FAQJsonLd, BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 export const revalidate = 86400;
@@ -350,7 +350,7 @@ const CONTENT = {
     heroDesc: "دع بناية تتولى كل شيء, من إيجاد المستأجر المناسب إلى الصيانة الشهرية وتحصيل الإيجار. فريقنا المعتمد من RERA يحمي استثمارك بينما أنت تنصرف لما يهمّك.",
     heroCta: "استشارة مجانية",
     stats: [
-      { n: "+17", label: "عامًا في إدارة عقارات دبي" },
+      { n: "+19", label: "عامًا في إدارة عقارات دبي" },
       { n: "RERA", label: "اعتماد" },
       { n: "95%", label: "معدل الاحتفاظ بالمستأجرين" },
       { n: "48س", label: "متوسط وقت الاستجابة" },
@@ -552,6 +552,13 @@ export default async function PropertyManagementPage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={c.faqs.map(f => ({ question: f.question, answer: f.answer }))} />
       <BreadcrumbJsonLd items={bcItems} />
+      <ServiceJsonLd
+        name={c.metaTitle}
+        description={c.metaDesc}
+        url={canonical(locale, "/services/property-management")}
+        serviceType="Property Management"
+        plans={c.plans.map((p) => ({ name: p.name }))}
+      />
       <Navbar />
 
       {/* Hero */}

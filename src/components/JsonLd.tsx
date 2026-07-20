@@ -197,6 +197,59 @@ export function BreadcrumbJsonLd({ items, nonce }: { items: { name: string; href
   );
 }
 
+export function ServiceJsonLd({
+  name,
+  description,
+  url,
+  serviceType,
+  areaServed = "Dubai",
+  plans,
+  nonce,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  serviceType: string;
+  areaServed?: string;
+  plans?: { name: string }[];
+  nonce?: string;
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType,
+    name,
+    description,
+    url,
+    areaServed: { "@type": "City", name: areaServed },
+    provider: {
+      "@type": "RealEstateAgent",
+      name: "Binayah Properties",
+      url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae",
+    },
+    ...(plans && plans.length
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: serviceType,
+            itemListElement: plans.map((p) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name: p.name },
+            })),
+          },
+        }
+      : {}),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}
+
 export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: string }[]; nonce?: string }) {
   const data = {
     "@context": "https://schema.org",

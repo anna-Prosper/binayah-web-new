@@ -9,13 +9,15 @@ import { getTranslations } from "next-intl/server";
 // gated behind LazyMount's IntersectionObserver, so crawlers see it.
 export default async function ServicesSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "home.sections.services" });
+  const lp = locale === "en" ? "" : `/${locale}`;
+  const PM = `${lp}/services/property-management`;
   const services = [
-    { icon: ClipboardCheck, title: t("handover"), desc: t("handoverDesc"), popular: true },
-    { icon: Wallet, title: t("rentCollection"), desc: t("rentCollectionDesc"), popular: true },
-    { icon: Home, title: t("sellProperty"), desc: t("sellPropertyDesc"), popular: false },
-    { icon: BarChart3, title: t("marketing"), desc: t("marketingDesc") },
-    { icon: Users, title: t("tenantManagement"), desc: t("tenantManagementDesc") },
-    { icon: Wrench, title: t("maintenance"), desc: t("maintenanceDesc") },
+    { icon: ClipboardCheck, title: t("handover"), desc: t("handoverDesc"), popular: true, href: PM },
+    { icon: Wallet, title: t("rentCollection"), desc: t("rentCollectionDesc"), popular: true, href: PM },
+    { icon: Home, title: t("sellProperty"), desc: t("sellPropertyDesc"), popular: false, href: `${lp}/sell` },
+    { icon: BarChart3, title: t("marketing"), desc: t("marketingDesc"), href: `${lp}/list-your-property` },
+    { icon: Users, title: t("tenantManagement"), desc: t("tenantManagementDesc"), href: PM },
+    { icon: Wrench, title: t("maintenance"), desc: t("maintenanceDesc"), href: PM },
   ];
   return (
   <section id="services" className="py-10 sm:py-24 text-white relative overflow-hidden scroll-mt-20" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
@@ -52,9 +54,10 @@ export default async function ServicesSection({ locale }: { locale: string }) {
       {/* Desktop: full grid */}
       <div className="hidden sm:grid lg:grid-cols-3 sm:grid-cols-2 gap-5">
         {services.map((s) => (
-          <div
+          <Link
             key={s.title}
-            className={`group relative bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition-all duration-300 ${s.popular ? "bg-white/[0.07]" : ""}`}
+            href={s.href}
+            className={`group relative block bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition-all duration-300 ${s.popular ? "bg-white/[0.07]" : ""}`}
           >
             <div className="w-12 h-12 rounded-xl bg-[#D4A847]/20 flex items-center justify-center mb-4 group-hover:scale-105 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }} />
@@ -62,16 +65,17 @@ export default async function ServicesSection({ locale }: { locale: string }) {
             </div>
             <h3 className="font-bold text-lg mb-2 leading-snug">{s.title}</h3>
             <p className="text-sm text-white/60 leading-snug">{s.desc}</p>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* Mobile: show first 4, compact cards */}
       <div className="sm:hidden grid grid-cols-2 gap-2.5">
         {services.slice(0, 4).map((s) => (
-          <div
+          <Link
             key={s.title}
-            className="group relative bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-300"
+            href={s.href}
+            className="group relative block bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition-all duration-300"
           >
             {s.popular && (
               <span className="absolute -top-1.5 right-2 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[7px] font-bold uppercase tracking-wider bg-[#D4A847] text-[#0B3D2E]">
@@ -84,14 +88,14 @@ export default async function ServicesSection({ locale }: { locale: string }) {
             </div>
             <h3 className="font-bold text-[11px] mb-0.5 leading-snug">{s.title}</h3>
             <p className="text-[10px] text-white/60 leading-snug line-clamp-2">{s.desc}</p>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* View All Services button */}
       <div className="mt-5 sm:mt-10 text-center">
         <Link
-          href="/services"
+          href={`${lp}/services`}
           className="inline-flex items-center gap-2 px-6 py-2.5 sm:py-3 rounded-full text-[12px] sm:text-sm font-bold transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] text-white border border-white/20 hover:border-white/40 bg-white/[0.06] hover:bg-white/10"
         >
           {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
