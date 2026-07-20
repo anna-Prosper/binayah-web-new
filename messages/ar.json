@@ -3028,7 +3028,11 @@
     "navInvestment": "الاستثمار",
     "navFaqs": "الأسئلة الشائعة",
     "priceOnRequest": "السعر عند الطلب",
-    "studio": "استوديو"
+    "studio": "استوديو",
+    "navWithin": "المجتمعات",
+    "ebWithin": "استكشف المنطقة",
+    "withinTitle": "المجتمعات في {name}",
+    "viewCommunity": "عرض المجتمع"
   },
   "projectFaq": {
     "q1": "ما هو السعر الابتدائي لـ {name}؟",

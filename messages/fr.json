@@ -3034,7 +3034,11 @@
     "navInvestment": "Investissement",
     "navFaqs": "FAQ",
     "priceOnRequest": "Prix sur demande",
-    "studio": "Studio"
+    "studio": "Studio",
+    "navWithin": "Communautés",
+    "ebWithin": "Explorer la zone",
+    "withinTitle": "Communautés à {name}",
+    "viewCommunity": "Voir la communauté"
   },
   "projectFaq": {
     "q1": "Quel est le prix de départ de {name} ?",

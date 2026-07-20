@@ -1,6 +1,6 @@
 import CommunityRichClient from "@/app/_clients/communities/[slug]/CommunityRichClient";
 import { notFound } from "next/navigation";
-import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield } from "@/lib/api";
+import { getCommunity, getDldBuildings, getDldArea, getDldAreaYield, getCommunitiesIndex } from "@/lib/api";
 import { getCommunityWiki } from "@/lib/community-wiki";
 import type { Metadata } from "next";
 import { canonical as makeCanonical, altLangs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/site";
@@ -8,6 +8,17 @@ import { dldAreaFor } from "@/lib/market";
 import { getCommunityEnrichmentTranslation, mergeEnrichment } from "@/lib/community-i18n";
 
 export const revalidate = 3600;
+
+// Curated area → sub-communities map. Turns a large master-development area page
+// (e.g. Dubailand) into a proper area overview that links to the communities
+// inside it. Only slugs with a live /communities/[slug] page render — the list
+// is resolved against the communities index at request time and order is kept.
+const AREA_SUBCOMMUNITIES: Record<string, string[]> = {
+  dubailand: [
+    "arabian-ranches-3", "mudon", "villanova", "majan", "town-square",
+    "arjan", "living-legends", "falcon-city", "wadi-al-safa",
+  ],
+};
 
 // Locale-aware title + lead-sentence templates. The community name is a proper
 // noun kept verbatim; the surrounding phrasing is localized so each locale URL
@@ -250,6 +261,20 @@ export default async function CommunityPage({
       .slice(0, 8)
       .map((b: { slug: string; name: string; sales?: number }) => ({ slug: b.slug, name: b.name, sales: b.sales }));
 
+    // Curated sub-communities inside this area (area-overview pages). Resolve the
+    // slugs to cards from the cached communities index, preserving curated order
+    // and dropping any that don't have a live page.
+    const childSlugs = AREA_SUBCOMMUNITIES[slug] ?? [];
+    let childCommunities: { name: string; slug: string; featuredImage?: string }[] = [];
+    if (childSlugs.length) {
+      const index = await getCommunitiesIndex();
+      const bySlug = new Map(index.map((c) => [c.slug, c]));
+      childCommunities = childSlugs
+        .map((s) => bySlug.get(s))
+        .filter((c): c is { name: string; slug: string; featuredImage: string } => !!c)
+        .map((c) => ({ name: c.name, slug: c.slug, featuredImage: c.featuredImage }));
+    }
+
     return (
       <CommunityRichClient
         community={d.community}
@@ -259,6 +284,7 @@ export default async function CommunityPage({
         counts={d.counts || { projects: (d.projects || []).length, forSale: 0, forRent: 0 }}
         developers={d.developers || []}
         nearby={d.nearby || []}
+        childCommunities={childCommunities}
         locale={locale}
         market={market}
         topBuildings={topBuildings}

@@ -3034,7 +3034,11 @@
     "navInvestment": "投资",
     "navFaqs": "常见问题",
     "priceOnRequest": "价格面议",
-    "studio": "开间公寓"
+    "studio": "开间公寓",
+    "navWithin": "社区",
+    "ebWithin": "探索区域",
+    "withinTitle": "{name}内的社区",
+    "viewCommunity": "查看社区"
   },
   "projectFaq": {
     "q1": "{name} 的起始价格是多少？",

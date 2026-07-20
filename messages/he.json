@@ -3028,7 +3028,11 @@
     "navInvestment": "השקעה",
     "navFaqs": "שאלות נפוצות",
     "priceOnRequest": "מחיר לפי בקשה",
-    "studio": "סטודיו"
+    "studio": "סטודיו",
+    "navWithin": "קהילות",
+    "ebWithin": "גלה את האזור",
+    "withinTitle": "קהילות ב-{name}",
+    "viewCommunity": "צפה בקהילה"
   },
   "projectFaq": {
     "q1": "מהו מחיר הפתיחה של {name}?",

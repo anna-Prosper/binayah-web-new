@@ -58,6 +58,10 @@ interface Props {
   counts: { projects: number; forSale: number; forRent: number };
   developers: string[];
   nearby: Nearby[];
+  // Curated sub-communities that sit INSIDE this area (e.g. Majan, Mudon within
+  // Dubailand). Renders a "Communities within {name}" hub — distinct from the
+  // geo-proximity `nearby` list — turning an area page into a proper area overview.
+  childCommunities?: Nearby[];
   locale: string;
   market?: MarketSnapshot | null;
   topBuildings?: TopBuilding[];
@@ -78,7 +82,7 @@ function amenityIcon(title: string) {
   return Sparkles;
 }
 
-export default async function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, locale, market, topBuildings = [] }: Props) {
+export default async function CommunityRichClient({ community, projects, forSale, forRent, counts, developers, nearby, childCommunities = [], locale, market, topBuildings = [] }: Props) {
   // Localized UI chrome (eyebrows, stat labels, CTAs). Per-community editorial
   // content is already translated upstream in the enrichment object.
   const t = await getTranslations({ locale, namespace: "communityRich" });
@@ -202,6 +206,7 @@ export default async function CommunityRichClient({ community, projects, forSale
     ["about", t("navOverview")], ["location", t("navLocation")],
     ...(hasMarket ? [["market", t("navMarket")]] : []),
     ["amenities", t("navAmenities")],
+    ...(childCommunities.length > 0 ? [["communities", t("navWithin")]] : []),
     ["projects", t("navProjects")], ["invest", t("navInvestment")], ["faqs", t("navFaqs")],
   ]) as [string, string][];
 
@@ -515,6 +520,25 @@ export default async function CommunityRichClient({ community, projects, forSale
             </div>
           </section>
         ) : null}
+
+        {/* ===== Communities within this area (curated sub-communities) ===== */}
+        {childCommunities.length > 0 && (
+          <section id="communities" className="scroll-mt-28">
+            <SecHead eyebrow={t("ebWithin")} title={t("withinTitle", { name })} />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
+              {childCommunities.map((n) => (
+                <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-2xl overflow-hidden aspect-[16/10] border border-border/50">
+                  <ImageWithFallback src={n.featuredImage || IMAGE_PLACEHOLDER} alt={n.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                    <span className="block text-white text-sm sm:text-base font-bold leading-tight">{n.name}</span>
+                    <span className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-medium text-white/85">{t("viewCommunity")} <ChevronRight className="h-3 w-3" /></span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ===== Communities you may like ===== */}
         {nearby.length > 0 && (

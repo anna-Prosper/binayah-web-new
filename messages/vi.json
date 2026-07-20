@@ -3028,7 +3028,11 @@
     "navInvestment": "Đầu tư",
     "navFaqs": "Câu hỏi thường gặp",
     "priceOnRequest": "Giá theo yêu cầu",
-    "studio": "Căn studio"
+    "studio": "Căn studio",
+    "navWithin": "Khu vực",
+    "ebWithin": "Khám phá khu vực",
+    "withinTitle": "Các khu trong {name}",
+    "viewCommunity": "Xem khu vực"
   },
   "projectFaq": {
     "q1": "Giá khởi điểm của {name} là bao nhiêu?",
