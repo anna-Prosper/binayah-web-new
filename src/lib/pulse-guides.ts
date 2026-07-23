@@ -6154,7 +6154,7 @@ Dubai's commission norms, around 2% plus VAT on sales and about 5% of annual ren
       { question: "Palm Jebel Ali vs Palm Jumeirah — which is better?", answer: "Palm Jumeirah is the proven, fully mature asset with deep resale and rental markets and immediate lifestyle value, but you buy at today's premium prices. Palm Jebel Ali is roughly twice the size, still under construction, and offers earlier off-plan entry with more upside if it delivers — at the cost of time and construction risk. Income and certainty favour Jumeirah; long-term growth potential favours Jebel Ali." },
       { question: "Can foreigners buy property on Palm Jebel Ali?", answer: "Yes. Palm Jebel Ali is freehold, so foreign nationals can own outright. A purchase at or above AED 2 million can also qualify the buyer for the 10-year UAE Golden Visa." },
     ],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-investor-guide.png", alt: "Palm Jebel Ali Investor Guide — aerial view of the palm island with beachfront villas, Binayah Dubai property guide" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-investor-guide-real.jpg", alt: "Palm Jebel Ali Investor Guide — aerial view of the palm island with beachfront villas, Binayah Dubai property guide" },
     body: `## Palm Jebel Ali at a Glance
 
 Palm Jebel Ali is Nakheel's second — and far larger — man-made palm island, sitting on Dubai's southwestern coast. Where Palm Jumeirah reshaped the city's shoreline in the 2000s, Palm Jebel Ali is conceived at roughly twice the scale: a masterplan spanning seven fronds that is set to add around 13.4 kilometres of new coastline to the emirate. First announced in the mid-2000s, the project stalled through the downturn and sat largely dormant for over a decade before Nakheel formally relaunched it in 2023.
@@ -6209,7 +6209,7 @@ For buyers who fit that profile, the decision comes down to frond, plot and conf
     titleKey: "guide_pjaVsPalmJumeirah_title",
     descriptionKey: "guide_pjaVsPalmJumeirah_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah", "Dubai Marina"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-vs-palm-jumeirah.png", alt: "Palm Jebel Ali vs Palm Jumeirah — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-vs-palm-jumeirah-real.jpg", alt: "Palm Jebel Ali vs Palm Jumeirah — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "Is Palm Jebel Ali bigger than Palm Jumeirah?", answer: "Yes. Palm Jebel Ali is Nakheel's second and much larger palm island — roughly twice the size of Palm Jumeirah. It is designed with 7 fronds and is expected to add on the order of 13.4 km of new coastline, versus the original's compact, fully built layout." },
       { question: "Which is a better investment, Palm Jebel Ali or Palm Jumeirah?", answer: "It depends on your goal. Palm Jumeirah is a mature, liquid, income-producing market you can enter and exit easily. Palm Jebel Ali is an off-plan, capital-growth play for long-horizon buyers willing to wait for handover from around 2027. Neither is objectively 'better' — it comes down to timeline, budget and risk appetite." },
@@ -6276,7 +6276,7 @@ For a deeper look at pricing, phases, payment plans and the investment case for 
     titleKey: "guide_pjaPaymentPlans_title",
     descriptionKey: "guide_pjaPaymentPlans_desc",
     relatedCommunities: ["Palm Jebel Ali", "Jebel Ali", "Palm Jumeirah"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-payment-plans.png", alt: "Palm Jebel Ali Payment Plans & How to Buy — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-payment-plans-real.jpg", alt: "Palm Jebel Ali Payment Plans & How to Buy — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "What's the payment plan for Palm Jebel Ali?", answer: "Palm Jebel Ali uses construction-linked off-plan payment plans: a booking deposit at reservation (commonly around 20%), staged instalments paid as the build hits defined milestones, and a balance due on or around handover. Some Nakheel releases include a post-handover portion. Exact percentages vary by release and villa collection, so confirm the live schedule for your specific unit." },
       { question: "How much deposit do I need?", answer: "The booking deposit to secure a unit is commonly around 20% of the price, though this varies by release. On a villa launched from roughly AED 18M, that points to a sizeable up-front commitment. You then fund the rest gradually through construction-linked instalments rather than paying it all at booking." },
@@ -6356,7 +6356,7 @@ Ready to go deeper on the island itself, the villa collections and the investmen
     titleKey: "guide_pjaHandoverTimeline_title",
     descriptionKey: "guide_pjaHandoverTimeline_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah", "Dubai Islands"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-handover-timeline.png", alt: "Palm Jebel Ali Handover & Completion Timeline — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-handover-timeline-real.jpg", alt: "Palm Jebel Ali Handover & Completion Timeline — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "When will Palm Jebel Ali be completed?", answer: "There is no single completion date. Palm Jebel Ali is a mega-masterplan of roughly seven fronds with 80-plus planned hotels and resorts, and Nakheel has guided delivery in phases across the late 2020s and into the 2030s. Full build-out is a decade-plus programme, so treat any single 'completion year' as indicative and confirm the timeline for your specific phase at reservation." },
       { question: "When is the first handover on Palm Jebel Ali?", answer: "Nakheel has guided the earliest handovers — for the first villa releases, the Beach Villas and Coral Collection — from around 2027 onward. This is an indicative window that depends on construction progress and approvals, not a fixed date, so verify the current handover date for the exact unit and frond you are buying." },
@@ -6426,7 +6426,7 @@ For the full investment case — pricing, positioning and who the island suits �
     titleKey: "guide_pjaMasterplan_title",
     descriptionKey: "guide_pjaMasterplan_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-masterplan.png", alt: "Palm Jebel Ali Masterplan, Fronds & Map — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-masterplan-real.jpg", alt: "Palm Jebel Ali Masterplan, Fronds & Map — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "How big is Palm Jebel Ali?", answer: "Palm Jebel Ali is reported to be roughly twice the size of Palm Jumeirah, adding around 13.4 km of new coastline to Dubai. As with any mega-masterplan, treat these figures as planned rather than final." },
       { question: "How many fronds does Palm Jebel Ali have?", answer: "The masterplan is reported to feature seven fronds, plus a central trunk and an enclosing crescent breakwater — more fronds than Palm Jumeirah, which helps spread a larger population across more waterfront plots." },
@@ -6497,7 +6497,7 @@ For the investment angle — pricing, phasing, payment plans and how to think ab
     titleKey: "guide_pjaVillas_title",
     descriptionKey: "guide_pjaVillas_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah", "Dubai Marina"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-villas.png", alt: "Palm Jebel Ali Villas & Beachfront Homes — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-villas-real.jpg", alt: "Palm Jebel Ali Villas & Beachfront Homes — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "How much are Palm Jebel Ali villas?", answer: "Indicative starting prices are around AED 18M for the Beach Villas, rising to roughly AED 30M and up for the larger Coral Collection homes — and well into the tens of millions for prime frond positions. Prices are launch-phase and vary by size, position and facade, so confirm current figures with Nakheel or a registered broker before committing." },
       { question: "How many bedrooms do Palm Jebel Ali villas have?", answer: "The opening villa collections broadly span 5, 6 and 7 bedrooms. Beach Villas are typically configured as 5 and 6-bedroom homes, while the Coral Collection leans to larger 6 and 7-bedroom layouts. Exact configurations vary by unit and release phase." },
@@ -6554,7 +6554,7 @@ Buyers wanting a lower entry point should note that apartments and townhouses ar
     titleKey: "guide_pjaGoldenVisa_title",
     descriptionKey: "guide_pjaGoldenVisa_desc",
     relatedCommunities: ["Palm Jebel Ali", "Jebel Ali", "Palm Jumeirah"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-golden-visa.png", alt: "Palm Jebel Ali & the UAE Golden Visa — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-golden-visa-real.jpg", alt: "Palm Jebel Ali & the UAE Golden Visa — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "Does buying on Palm Jebel Ali get me a Golden Visa?", answer: "In almost every case, yes. The property route to the Golden Visa requires at least AED 2,000,000 of freehold UAE real estate, and Palm Jebel Ali villas start from roughly AED 18 million — far above the threshold. The purchase itself clears the value test; the remaining steps are documentation and application. Final approval always rests with the UAE authorities." },
       { question: "What's the minimum for a property Golden Visa?", answer: "AED 2,000,000 of freehold real estate registered in your name. With a mortgage, only the equity portion you actually hold counts toward that figure. Given Palm Jebel Ali pricing, both the total value and any realistic equity stake sit well above the minimum." },
@@ -6635,7 +6635,7 @@ For the wider investment picture, read the **Palm Jebel Ali Investor Guide**, an
     titleKey: "guide_pjaLocation_title",
     descriptionKey: "guide_pjaLocation_desc",
     relatedCommunities: ["Palm Jebel Ali", "Jebel Ali", "Dubai South"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-location.png", alt: "Palm Jebel Ali Location & Connectivity — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-location-real.jpg", alt: "Palm Jebel Ali Location & Connectivity — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "Where is Palm Jebel Ali located?", answer: "Palm Jebel Ali is a man-made island district on Dubai's far southwestern coast, set off Sheikh Zayed Road within the Jebel Ali area. It sits south and west of central Dubai, close to Dubai South, Expo City and Al Maktoum International Airport." },
       { question: "How far is Palm Jebel Ali from Dubai Marina and Downtown?", answer: "Dubai Marina and JBR are roughly 25–30 minutes away by car, while Downtown Dubai is around 40–45 minutes. Both figures are approximate and depend heavily on traffic, as the whole route runs along Sheikh Zayed Road." },
@@ -6696,7 +6696,7 @@ If you are weighing Palm Jebel Ali on the numbers, the **Palm Jebel Ali Investor
     titleKey: "guide_pjaRentalYield_title",
     descriptionKey: "guide_pjaRentalYield_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah", "Dubai Marina"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-rental-yield.png", alt: "Palm Jebel Ali Rental Yield & ROI Potential — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-rental-yield-real.jpg", alt: "Palm Jebel Ali Rental Yield & ROI Potential — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "What rental yield does Palm Jebel Ali offer?", answer: "There is no rental market yet, because the island is off-plan and nothing has been handed over. Once completed, expect modest gross yields in line with prime Dubai villas — very roughly 4–6%, and often at the lower end for ultra-prime trophy homes where prices are high relative to achievable rent. Treat any figure quoted today as an estimate, since no completed comparables exist." },
       { question: "Is Palm Jebel Ali good for rental income?", answer: "Not primarily. It is a capital-growth play rather than an income play. Ultra-prime villas produce lower yields than apartments, and there is no income available before handover. Investors focused on monthly cash flow are usually better served by a well-located apartment elsewhere in Dubai." },
@@ -6757,7 +6757,7 @@ Palm Jebel Ali rewards a different investor: one buying appreciation, scarcity a
     titleKey: "guide_pjaVsDubaiIslands_title",
     descriptionKey: "guide_pjaVsDubaiIslands_desc",
     relatedCommunities: ["Palm Jebel Ali", "Dubai Islands", "Palm Jumeirah"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-vs-dubai-islands.png", alt: "Palm Jebel Ali vs Dubai Islands — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/palm-jebel-ali-vs-dubai-islands-real.jpg", alt: "Palm Jebel Ali vs Dubai Islands — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "Palm Jebel Ali or Dubai Islands — which is better?", answer: "Neither is universally better; they suit different mandates. Palm Jebel Ali is the trophy, villa-first, capital-growth play for ultra-prime buyers with a long horizon. Dubai Islands is the more accessible, apartment-inclusive, yield-and-access play. Your budget, timeline and whether you want income or prestige decide the winner." },
       { question: "Which is cheaper to buy into?", answer: "Dubai Islands, by a wide margin. Its apartments have been marketed from roughly AED 1.2M–2M, while Palm Jebel Ali launched villa-first from around AED 18M. If a lower entry point matters, Dubai Islands is the clear route. Figures are indicative and shift by phase." },
@@ -6827,7 +6827,7 @@ For a deeper look at the trophy option, read our **Palm Jebel Ali Investor Guide
     titleKey: "guide_pjaNakheelDeveloper_title",
     descriptionKey: "guide_pjaNakheelDeveloper_desc",
     relatedCommunities: ["Palm Jebel Ali", "Palm Jumeirah", "Dubai Islands"],
-    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/nakheel-palm-jebel-ali-developer.png", alt: "Nakheel & Palm Jebel Ali: Developer Track Record — Palm Jebel Ali guide by Binayah" },
+    heroImage: { url: "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/guide-images/nakheel-palm-jebel-ali-developer-real.jpg", alt: "Nakheel & Palm Jebel Ali: Developer Track Record — Palm Jebel Ali guide by Binayah" },
     faq: [
       { question: "Who is building Palm Jebel Ali?", answer: "Palm Jebel Ali is being developed by Nakheel, the government-linked master-developer behind Palm Jumeirah, Jumeirah Village Circle (JVC), Discovery Gardens, Ibn Battuta Mall and the ongoing Dubai Islands. Nakheel now sits within the Dubai Holding group." },
       { question: "Is Nakheel a reliable developer?", answer: "Nakheel has a strong delivery record — it built and handed over Palm Jumeirah, multiple villa and apartment communities, and major retail destinations. It faced a serious debt restructuring during the 2008-2009 crisis but recovered, resumed delivery and consolidated under Dubai Holding. No developer is risk-free, but by Dubai standards Nakheel is a comparatively well-backed choice." },
