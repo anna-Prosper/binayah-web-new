@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
@@ -123,9 +121,7 @@ export default async function PalmJebelAliPage({ params }: { params: Promise<{ l
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
       <FAQJsonLd faqs={FAQS_FOR_SCHEMA} nonce={nonce} />
-      <Navbar />
       <PalmJebelAliClient />
-      <Footer />
     </>
   );
 }
