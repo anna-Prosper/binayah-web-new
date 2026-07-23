@@ -2,10 +2,98 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Anchor, Waves, UtensilsCrossed, ShoppingBag, HeartPulse, Trees, Building2, Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { GalleryModal } from "@/components/GalleryModal";
 import { FaqAccordion, type FaqItem } from "@/components/FaqAccordion";
 import { waHref } from "@/lib/whatsapp";
+
+const TICKER_ITEMS = [
+  "Dubai's Second Palm",
+  "16 Fronds",
+  "110km of New Coastline",
+  "Freehold for All Nationalities",
+  "Nakheel Master Developer",
+  "Villas from AED 18.5M",
+];
+
+// Diagonal light sweep on hover — used on the gold CTA buttons. Parent needs
+// `group relative overflow-hidden`; this only paints the moving highlight.
+function Shine() {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute top-0 left-0 h-full w-1/4 -skew-x-12 bg-white/40 blur-sm -translate-x-[300%] transition-transform duration-700 ease-out group-hover:translate-x-[400%]"
+    />
+  );
+}
+
+function Marquee() {
+  const reduceMotion = useReducedMotion();
+  const loop = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  return (
+    <div className="overflow-hidden border-y border-white/10 bg-[#051820] py-4 sm:py-5">
+      <motion.div
+        className="flex gap-10 sm:gap-16 whitespace-nowrap w-max"
+        animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
+        transition={reduceMotion ? undefined : { duration: 26, ease: "linear", repeat: Infinity }}
+      >
+        {loop.map((t, i) => (
+          <span key={i} className="text-white/40 text-xs sm:text-sm uppercase tracking-[0.3em] flex items-center gap-10 sm:gap-16 flex-shrink-0">
+            {t}
+            <span className="text-[#C9A26A]">•</span>
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+// Subtle cursor-driven 3D tilt for the residence panels — kept to a few
+// degrees so it reads as tactile polish rather than a gimmick.
+function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reduceMotion || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    ref.current.style.transform = `perspective(1200px) rotateY(${px * 4}deg) rotateX(${-py * 4}deg) scale(1.015)`;
+  };
+  const reset = () => {
+    if (ref.current) ref.current.style.transform = "";
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={reset}
+      className={`transition-transform duration-300 ease-out will-change-transform ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Faint film-grain over the whole viewport — cheap way to keep flat dark
+// gradients from reading as sterile/digital. Fixed + low opacity + overlay
+// blend so it never competes with text legibility.
+function GrainOverlay() {
+  return (
+    <div
+      aria-hidden
+      className="fixed inset-0 z-[60] pointer-events-none opacity-[0.035] mix-blend-overlay"
+      style={{
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        backgroundSize: "180px 180px",
+      }}
+    />
+  );
+}
 
 const NAV_LINKS = [
   { href: "#residences", label: "Residences" },
@@ -71,10 +159,11 @@ function SiteHeader({ waLink }: { waLink: string }) {
           href={waLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#06232E]"
+          className="group relative overflow-hidden inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#06232E]"
           style={{ background: "linear-gradient(to right, #C9A26A, #A8814A)" }}
         >
           <MessageCircle className="h-3.5 w-3.5" /> Enquire
+          <Shine />
         </a>
       </div>
     </header>
@@ -237,18 +326,37 @@ function CountUp({ target, suffix = "", duration = 1400 }: { target: number; suf
 }
 
 function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const { ref, visible } = useRevealOnScroll<HTMLDivElement>();
+  const reduceMotion = useReducedMotion();
+  if (reduceMotion) return <div className={className}>{children}</div>;
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"} ${className}`}
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
+const heroStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+const heroItem: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+};
+const galleryStagger: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
+const galleryItem: Variants = {
+  hidden: { opacity: 0, y: 20, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
+
 export default function PalmJebelAliClient() {
+  const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImgRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
@@ -298,32 +406,41 @@ export default function PalmJebelAliClient() {
         </div>
 
         <div ref={heroTextRef} className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pb-28 sm:pb-28 w-full will-change-transform">
-          <p className="text-[#C9A26A] text-xs sm:text-sm font-semibold uppercase tracking-[0.4em] mb-5">Palm Jebel Ali</p>
-          <h1 className="text-white font-bold leading-[0.95] text-4xl sm:text-6xl lg:text-8xl mb-6 max-w-4xl">
-            The second palm.
-            <br />
-            <span className="font-light">Twice the shoreline.</span>
-          </h1>
-          <p className="text-white/75 text-base sm:text-xl max-w-xl mb-9 leading-relaxed">
-            16 fronds. 110 kilometres of new coastline. A private island city rising off Dubai&apos;s southern shore, and the first villas are already under construction.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a
-              href={waHref(WA_MESSAGE, PAGE_URL)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-[#06232E] transition-transform hover:scale-[1.03]"
-              style={{ background: "linear-gradient(to right, #C9A26A, #A8814A)" }}
-            >
-              Register your interest <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="tel:+971549988811"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-white border border-white/30 hover:bg-white/10 transition-colors"
-            >
-              <Phone className="h-4 w-4" /> Speak with Binayah
-            </a>
-          </div>
+          <motion.div
+            variants={reduceMotion ? undefined : heroStagger}
+            initial={reduceMotion ? undefined : "hidden"}
+            animate={reduceMotion ? undefined : "show"}
+          >
+            <motion.p variants={reduceMotion ? undefined : heroItem} className="text-[#C9A26A] text-xs sm:text-sm font-semibold uppercase tracking-[0.4em] mb-5">
+              Palm Jebel Ali
+            </motion.p>
+            <motion.h1 variants={reduceMotion ? undefined : heroItem} className="text-white font-bold leading-[0.95] text-4xl sm:text-6xl lg:text-8xl mb-6 max-w-4xl">
+              The second palm.
+              <br />
+              <span className="font-light">Twice the shoreline.</span>
+            </motion.h1>
+            <motion.p variants={reduceMotion ? undefined : heroItem} className="text-white/75 text-base sm:text-xl max-w-xl mb-9 leading-relaxed">
+              16 fronds. 110 kilometres of new coastline. A private island city rising off Dubai&apos;s southern shore, and the first villas are already under construction.
+            </motion.p>
+            <motion.div variants={reduceMotion ? undefined : heroItem} className="flex flex-wrap gap-4">
+              <a
+                href={waHref(WA_MESSAGE, PAGE_URL)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative overflow-hidden inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-[#06232E] transition-transform hover:scale-[1.03]"
+                style={{ background: "linear-gradient(to right, #C9A26A, #A8814A)" }}
+              >
+                Register your interest <ArrowRight className="h-4 w-4" />
+                <Shine />
+              </a>
+              <a
+                href="tel:+971549988811"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-white border border-white/30 hover:bg-white/10 transition-colors"
+              >
+                <Phone className="h-4 w-4" /> Speak with Binayah
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
@@ -358,6 +475,8 @@ export default function PalmJebelAliClient() {
           </p>
         </Reveal>
       </section>
+
+      <Marquee />
 
       {/* ── FRONDS / MASTER PLAN STORY ── */}
       <section className="bg-[#0E3B45] py-20 sm:py-32">
@@ -426,7 +545,7 @@ export default function PalmJebelAliClient() {
             facts: ["1–4 bedroom apartments & 4–5 bedroom townhouses", "Sea-facing, resort-style low-rise blocks", "Handover phased toward 2030"],
           },
         ].map((r) => (
-          <div key={r.label} className="relative min-h-[70vh] group overflow-hidden">
+          <TiltCard key={r.label} className="relative min-h-[70vh] group overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element -- external S3 CDN */}
             <img src={r.img} alt={r.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
@@ -441,7 +560,7 @@ export default function PalmJebelAliClient() {
                 ))}
               </ul>
             </div>
-          </div>
+          </TiltCard>
         ))}
       </section>
 
@@ -454,10 +573,17 @@ export default function PalmJebelAliClient() {
           </h2>
         </Reveal>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
+          initial={reduceMotion ? undefined : "hidden"}
+          whileInView={reduceMotion ? undefined : "show"}
+          viewport={{ once: true, margin: "-80px" }}
+          variants={reduceMotion ? undefined : galleryStagger}
+        >
           {GALLERY_IMAGES.map((img, i) => (
-            <button
+            <motion.button
               key={img}
+              variants={reduceMotion ? undefined : galleryItem}
               onClick={() => { setGalleryIndex(i); setGalleryOpen(true); }}
               className={`relative overflow-hidden rounded-xl group ${i === 0 ? "col-span-2 row-span-2" : ""}`}
               style={{ aspectRatio: i === 0 ? "1 / 1" : "1 / 1" }}
@@ -465,9 +591,9 @@ export default function PalmJebelAliClient() {
               {/* eslint-disable-next-line @next/next/no-img-element -- external S3 CDN */}
               <img src={img} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
       </section>
       <GalleryModal open={galleryOpen} onClose={() => setGalleryOpen(false)} images={GALLERY_IMAGES} activeIndex={galleryIndex} onChange={setGalleryIndex} title="Palm Jebel Ali" />
 
@@ -540,10 +666,15 @@ export default function PalmJebelAliClient() {
                 { pct: "20%", label: "On handover", emphasize: true },
               ].map((s) => (
                 <div key={s.label} className="relative z-10 flex flex-col items-center gap-4 flex-1">
-                  <div
-                    className={`w-2.5 h-2.5 rounded-full ${s.emphasize ? "" : "bg-white/30"}`}
-                    style={s.emphasize ? { background: "#C9A26A", boxShadow: "0 0 0 6px rgba(201,162,106,0.15)" } : undefined}
-                  />
+                  <div className="relative w-2.5 h-2.5">
+                    {s.emphasize && (
+                      <span className="absolute inset-0 rounded-full bg-[#C9A26A] opacity-50 animate-ping" />
+                    )}
+                    <div
+                      className={`relative w-2.5 h-2.5 rounded-full ${s.emphasize ? "" : "bg-white/30"}`}
+                      style={s.emphasize ? { background: "#C9A26A" } : undefined}
+                    />
+                  </div>
                   <p className={`text-2xl sm:text-4xl font-bold ${s.emphasize ? "text-[#C9A26A]" : "text-white"}`}>{s.pct}</p>
                   <p className="text-white/50 text-xs sm:text-sm text-center">{s.label}</p>
                 </div>
@@ -604,16 +735,18 @@ export default function PalmJebelAliClient() {
               href={waHref(WA_MESSAGE, PAGE_URL)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-[#06232E] transition-transform hover:scale-[1.03]"
+              className="group relative overflow-hidden inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-[#06232E] transition-transform hover:scale-[1.03]"
               style={{ background: "linear-gradient(to right, #C9A26A, #A8814A)" }}
             >
               Request Palm Jebel Ali pricing <ArrowRight className="h-4 w-4" />
+              <Shine />
             </a>
           </Reveal>
         </div>
       </section>
 
       <SiteFooter />
+      <GrainOverlay />
     </div>
   );
 }
