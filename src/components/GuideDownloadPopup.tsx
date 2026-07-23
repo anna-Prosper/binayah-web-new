@@ -40,7 +40,7 @@ function normalizePhone(input: string): string {
 }
 
 // Paths where a promo pop-up would be intrusive or redundant.
-const SUPPRESS = [/\/admin(\/|$)/, /\/privacy/, /\/terms/, /\/cookie/, /\/legal/, /\/list-your-property/, /\/contact/];
+const SUPPRESS = [/\/admin(\/|$)/, /\/privacy/, /\/terms/, /\/cookie/, /\/legal/, /\/list-your-property/, /\/contact/, /\/palm-jebel-ali/];
 
 function readCookie(): string | null {
   if (typeof document === "undefined") return null;
