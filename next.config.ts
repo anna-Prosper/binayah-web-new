@@ -85,6 +85,10 @@ const nextConfig: NextConfig = {
       // Legal pages use full slugs — catch the short forms.
       { source: "/privacy", destination: "/privacy-policy", permanent: true },
       { source: "/terms", destination: "/terms-of-service", permanent: true },
+      // Palm Jebel Ali showcase moved to its own standalone site/repo/Vercel
+      // project (anna-Prosper/palm-jebel-ali) — 301 the old in-site route.
+      { source: "/palm-jebel-ali", destination: "https://palm-jebel-ali-prosper3.vercel.app", permanent: true },
+      { source: "/:locale(ar|ru|zh|vi|he|fr)/palm-jebel-ali", destination: "https://palm-jebel-ali-prosper3.vercel.app", permanent: true },
       // Duplicate community docs — the same area exists under multiple slugs.
       // For arjan/downtown/the-valley the content lives on the "-dubai" slug, so
       // 301 the thin bare slug to it.

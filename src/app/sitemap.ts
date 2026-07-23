@@ -395,7 +395,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     withAlternates("/list-your-property", 0.5, "monthly", now),
     withAlternates("/buy-with-crypto", 0.8, "monthly", now),
     withAlternates("/hudayriyat-island", 0.9, "monthly", now),
-    withAlternates("/palm-jebel-ali", 0.9, "monthly", now),
     withAlternates("/sell", 0.8, "monthly", now),
     withAlternates("/services/property-management", 0.8, "monthly", now),
     withAlternates("/mortgage", 0.8, "monthly", now),
