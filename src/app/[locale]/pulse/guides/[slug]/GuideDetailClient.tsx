@@ -111,7 +111,7 @@ function renderBody(text: string): React.ReactNode[] {
               <thead>
                 <tr className="bg-muted/50">
                   {parseRow(header).map((cell, ci) => (
-                    <th key={ci} className="px-4 py-2.5 text-left text-xs font-bold text-foreground">{cell}</th>
+                    <th key={ci} className="px-4 py-2.5 text-left text-xs font-bold text-foreground">{renderInline(cell)}</th>
                   ))}
                 </tr>
               </thead>
@@ -119,7 +119,7 @@ function renderBody(text: string): React.ReactNode[] {
                 {body.map((row, ri) => (
                   <tr key={ri} className="border-t border-border/30">
                     {parseRow(row).map((cell, ci) => (
-                      <td key={ci} className="px-4 py-2.5 text-[13px] text-muted-foreground">{cell}</td>
+                      <td key={ci} className="px-4 py-2.5 text-[13px] text-muted-foreground">{renderInline(cell)}</td>
                     ))}
                   </tr>
                 ))}
