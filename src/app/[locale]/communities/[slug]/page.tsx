@@ -18,6 +18,9 @@ const AREA_SUBCOMMUNITIES: Record<string, string[]> = {
     "arabian-ranches-3", "mudon", "villanova", "majan", "town-square",
     "arjan", "living-legends", "falcon-city", "wadi-al-safa",
   ],
+  "jebel-ali": [
+    "palm-jebel-ali", "jebel-ali-village", "downtown-jebel-ali",
+  ],
 };
 
 // Locale-aware title + lead-sentence templates. The community name is a proper
