@@ -485,8 +485,9 @@ export default async function CommunityRichClient({ community, projects, forSale
               if (developers.length >= 3) tiles.push({ v: `${developers.length}+`, l: t("activeDevelopers") });
               tiles.push({ v: "19+", l: t("yearsInDubai") });
               const shown = tiles.slice(0, 4);
+              const colClass = shown.length >= 4 ? "sm:grid-cols-4" : shown.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2";
               return (
-                <div className={`grid grid-cols-2 ${shown.length >= 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8`}>
+                <div className={`grid grid-cols-2 ${colClass} gap-px rounded-2xl overflow-hidden bg-white/10 border border-white/15 mb-8`}>
                   {shown.map((t, i) => (
                     <div key={i} className="bg-white/5 px-5 py-5"><div className="text-2xl font-bold text-accent">{t.v}</div><div className="text-[11px] uppercase tracking-wider text-primary-foreground/60 mt-1">{t.l}</div></div>
                   ))}

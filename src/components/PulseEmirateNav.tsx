@@ -40,7 +40,7 @@ export default function PulseEmirateNav() {
 
   return (
     <nav
-      className="sticky top-[80px] z-30 w-full bg-background/95 backdrop-blur-sm border-b border-border/50"
+      className="sticky top-10 sm:top-12 z-30 w-full bg-background/95 backdrop-blur-sm border-b border-border/50"
       aria-label={t("navLabel")}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

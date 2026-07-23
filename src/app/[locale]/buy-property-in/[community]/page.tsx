@@ -180,7 +180,7 @@ export default async function BuyInCommunityPage({
             <a href={`${localePrefix}/property-valuation/${c.slug}`} className="text-primary font-semibold hover:underline">{X.ownLink(c.name)}</a>
           </p>
         )}
-        <div className="grid grid-cols-3 gap-4 max-w-xl">
+        <div className={`grid ${totalCount > 0 ? "grid-cols-3" : "grid-cols-2"} gap-4 max-w-xl`}>
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>
             <p className="text-sm sm:text-base font-bold text-foreground">{c.priceRange}</p>
@@ -189,10 +189,12 @@ export default async function BuyInCommunityPage({
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.grossYield}</p>
             <p className="text-sm sm:text-base font-bold text-foreground">{c.yield}</p>
           </div>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
-            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount > 0 ? `${totalCount}+` : totalCount}</p>
-          </div>
+          {totalCount > 0 && (
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
+              <p className="text-sm sm:text-base font-bold text-foreground">{`${totalCount}+`}</p>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -268,12 +270,20 @@ export default async function BuyInCommunityPage({
       )}
 
       {/* Fallback CTA */}
-      <div className="text-center py-8 border-t border-border">
-        <h3 className="text-lg font-bold text-foreground mb-2">{L.emptyTitle}</h3>
-        <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">{L.emptyBody}</p>
-        <a href={`${localePrefix}/contact`} className="border-2 border-border text-foreground font-bold px-6 py-3 rounded-xl text-sm hover:bg-muted transition-all">
-          {L.getNotified}
-        </a>
+      <div className="mt-6 rounded-3xl border border-border bg-gradient-to-b from-muted/40 to-card px-6 py-12 sm:py-14 text-center">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0" /><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></svg>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{L.emptyTitle}</h3>
+        <p className="text-sm text-muted-foreground mb-7 max-w-md mx-auto leading-relaxed">{L.emptyBody}</p>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <a href={`${localePrefix}/contact`} className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+            {L.getNotified}
+          </a>
+          <a href={`${localePrefix}/buy`} className="inline-flex items-center gap-2 rounded-xl border-2 border-border px-6 py-3 text-sm font-bold text-foreground hover:bg-muted transition-all">
+            {L.browseAll} →
+          </a>
+        </div>
       </div>
     </div>
   );
