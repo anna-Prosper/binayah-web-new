@@ -24,6 +24,27 @@ export function isGuideLocaleTranslated(locale: string): boolean {
   return TRANSLATED_GUIDE_LOCALES.includes(locale);
 }
 
+// Which of the translated locales actually contain THIS guide. The detail page
+// indexes a non-English locale only when the specific guide exists in that
+// locale's JSON — so a newly-added English-only guide is noindex→EN in the
+// other locales instead of being indexed with an English body under a
+// translated URL (wrong-language duplicate). Existing guides that ARE fully
+// translated behave exactly as before.
+export async function translatedLocalesForGuide(slug: string): Promise<string[]> {
+  const out: string[] = [];
+  for (const l of TRANSLATED_GUIDE_LOCALES) {
+    const loader = LOADERS[l];
+    if (!loader) continue;
+    try {
+      const map = await loader();
+      if (map[slug]) out.push(l);
+    } catch {
+      /* ignore a missing/broken locale file */
+    }
+  }
+  return out;
+}
+
 export async function getGuideTranslation(
   locale: string,
   slug: string

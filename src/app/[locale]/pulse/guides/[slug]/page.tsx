@@ -9,7 +9,7 @@ import { getAreaStats } from "@/lib/area-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
-import { getGuideTranslation, isGuideLocaleTranslated, TRANSLATED_GUIDE_LOCALES } from "@/lib/guide-i18n";
+import { getGuideTranslation, translatedLocalesForGuide } from "@/lib/guide-i18n";
 
 export const revalidate = 86400;
 
@@ -49,10 +49,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // and full hreflang linking EN + every translated locale.
   const path = `/pulse/guides/${slug}`;
   const enUrl = canonical("en", path);
-  const indexable = isEn || isGuideLocaleTranslated(locale);
+  // Only the locales that actually have THIS guide translated are indexable /
+  // advertised via hreflang — a new English-only guide stays noindex→EN elsewhere.
+  const translatedLocales = await translatedLocalesForGuide(slug);
+  const indexable = isEn || translatedLocales.includes(locale);
   const url = indexable ? canonical(locale, path) : enUrl;
   const languages: Record<string, string> = { en: enUrl, "x-default": enUrl };
-  for (const l of TRANSLATED_GUIDE_LOCALES) languages[l] = canonical(l, path);
+  for (const l of translatedLocales) languages[l] = canonical(l, path);
   const ogImage = guide.heroImage?.url ?? `${AE_URL}/assets/og-image.webp`;
   return {
     title,

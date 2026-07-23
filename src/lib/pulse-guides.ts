@@ -29,10 +29,14 @@ export function guideDates(slug: string): { published: string; modified: string 
   const idx = PULSE_GUIDES.findIndex((g) => g.slug === slug);
   const i = idx < 0 ? 0 : idx;
   const base = new Date("2025-09-15T00:00:00Z");
-  const published = new Date(base.getTime() + i * 6 * 86_400_000)
-    .toISOString()
-    .slice(0, 10);
-  return { published, modified: "2026-07-01" };
+  const modified = "2026-07-01";
+  // Stagger publish dates, but never past the last content refresh — otherwise
+  // high-index guides (e.g. newly appended ones) get a future datePublished,
+  // which Google flags on Article schema.
+  const computed = new Date(base.getTime() + i * 6 * 86_400_000);
+  const cap = new Date(`${modified}T00:00:00Z`);
+  const published = (computed > cap ? cap : computed).toISOString().slice(0, 10);
+  return { published, modified };
 }
 
 export const PULSE_GUIDES: PulseGuide[] = [
@@ -6133,6 +6137,67 @@ Because these figures are market norms rather than fixed rates, commission can b
 ## The Bottom Line
 
 Dubai's commission norms, around 2% plus VAT on sales and about 5% of annual rent on leases, are straightforward once you understand the framework and the RERA forms behind them. The key protection is simple: work with a registered agent who holds a valid BRN and documents everything properly. Binayah's agents are RERA-registered and happy to walk you through the numbers and forms before you commit. Get in touch for clear, upfront advice.`,
+  },
+  {
+    slug: "palm-jebel-ali-investor-guide",
+    category: "Deep Dive",
+    readTime: "8 min",
+    views: 2870,
+    titleKey: "guide_palmJebelAliInvestorGuide_title",
+    descriptionKey: "guide_palmJebelAliInvestorGuide_desc",
+    relatedCommunities: ["Palm Jebel Ali", "Jebel Ali", "Palm Jumeirah", "Dubai Marina"],
+    faq: [
+      { question: "Is Palm Jebel Ali a good investment?", answer: "It can be, for buyers with a long horizon and appetite for off-plan risk. The thesis rests on genuine scarcity of beachfront, Nakheel's track record with Palm Jumeirah, and early entry into a landmark masterplan before the island matures. Against that, weigh a multi-year handover, a very high entry price and limited resale liquidity until the community is built out. It suits a capital-growth play, not an income buyer." },
+      { question: "How much do Palm Jebel Ali villas cost?", answer: "The first-launched Beach Villas and Coral Collection homes — broadly 5 to 7 bedrooms — start from around AED 18 million, with larger units and prime frond positions running well into the tens of millions. Pricing varies with frond, plot, view and configuration, so treat these as indicative ranges rather than fixed figures." },
+      { question: "When is Palm Jebel Ali handover?", answer: "Nakheel has guided that early phases hand over from around 2027 onward. As with any off-plan project of this scale, delivery dates depend on construction progress and can move, so build a long horizon into your plan." },
+      { question: "Palm Jebel Ali vs Palm Jumeirah — which is better?", answer: "Palm Jumeirah is the proven, fully mature asset with deep resale and rental markets and immediate lifestyle value, but you buy at today's premium prices. Palm Jebel Ali is roughly twice the size, still under construction, and offers earlier off-plan entry with more upside if it delivers — at the cost of time and construction risk. Income and certainty favour Jumeirah; long-term growth potential favours Jebel Ali." },
+      { question: "Can foreigners buy property on Palm Jebel Ali?", answer: "Yes. Palm Jebel Ali is freehold, so foreign nationals can own outright. A purchase at or above AED 2 million can also qualify the buyer for the 10-year UAE Golden Visa." },
+    ],
+    body: `## Palm Jebel Ali at a Glance
+
+Palm Jebel Ali is Nakheel's second — and far larger — man-made palm island, sitting on Dubai's southwestern coast. Where Palm Jumeirah reshaped the city's shoreline in the 2000s, Palm Jebel Ali is conceived at roughly twice the scale: a masterplan spanning seven fronds that is set to add around 13.4 kilometres of new coastline to the emirate. First announced in the mid-2000s, the project stalled through the downturn and sat largely dormant for over a decade before Nakheel formally relaunched it in 2023.
+
+That relaunch matters for how you read the opportunity. This is not a mature community with live Dubai Land Department price and yield data to underwrite — it is an early-stage, off-plan landmark. There is no live stats panel on this guide for exactly that reason: the island is still being built, and any per-sqft or yield figure would be speculative. What follows is a qualitative read on what is actually being sold today, the case for buying early, and the risks a buyer should weigh honestly before committing tens of millions of dirhams to a project that will take years to deliver.
+
+## The Investment Case
+
+The core argument for Palm Jebel Ali is scarcity. Genuine beachfront in Dubai is finite, and the emirate has built its global brand partly on trophy waterfront addresses. A second palm — larger than the first, with more frond frontage and a fresh masterplan — creates a new pool of that scarce product at a moment when the original Palm Jumeirah has already repriced upward over its long run.
+
+Nakheel's track record is central here. Palm Jumeirah took years to mature, and early buyers who held through the cycle saw substantial long-run appreciation as the island filled out, amenities arrived and the address cemented itself. The bet on Palm Jebel Ali is, in essence, that a similar arc could repeat: buy into the early off-plan phase of a landmark before it is built out, and capture the appreciation as the island matures from construction site to established community. This is a capital-growth thesis first and foremost — not an income play. There is no rental yield until homes complete and the community becomes lettable, likely several years out.
+
+## What's Launched & Pricing
+
+The first product released is firmly at the ultra-prime end. Nakheel opened sales with beachfront villas — marketed as "Beach Villas" and the "Coral Collection" — in configurations broadly spanning five to seven bedrooms, set directly on the fronds. Entry pricing has run from around AED 18 million, with larger homes and the most sought-after frond and view positions rising well into the tens of millions.
+
+Treat those numbers as ranges, not fixed price tags. Final pricing depends heavily on the frond, the plot size, the orientation and sea view, and the specific villa collection and configuration. What is consistent is the positioning: this is a high-net-worth product, sold at a premium that reflects both the beachfront scarcity and the early-entry, buy-before-it-exists nature of the purchase. Payment is structured through developer payment plans tied to construction milestones, which spreads the outlay but also commits the buyer over a multi-year build.
+
+## Location & Connectivity
+
+Palm Jebel Ali sits on the far southwestern stretch of Dubai's coast, beyond the established New Dubai core. That location cuts both ways. On one hand, it places the island within reach of Dubai Marina and JBR — roughly 25 to 30 minutes by road depending on traffic and the exact frond — so it is not isolated from the city's existing waterfront lifestyle hubs.
+
+On the other, its real strategic logic points southwest, toward Dubai's next growth corridor. The island is well placed for Al Maktoum International Airport (Dubai World Central), Expo City and the wider Dubai South development zone — the area the city has earmarked for major long-term expansion. For a buyer thinking in the same multi-year horizon as the construction timeline, that positioning is part of the thesis: as the southwest corridor builds out, an early-mover beachfront address there could benefit. The trade-off today is distance from Downtown, DIFC and the central business districts, which remain a longer drive away.
+
+## Palm Jebel Ali vs Palm Jumeirah
+
+The natural comparison is with the original. Palm Jumeirah is the finished article: a fully delivered, globally recognised community with deep resale and rental markets, established hotels, retail and dining, and immediate lifestyle value. You can inspect a real villa or apartment, see the actual view, and let it out from day one — but you buy at today's mature-market premium.
+
+Palm Jebel Ali is the earlier, larger, unfinished bet. It is roughly double the size, still under construction, and priced as an off-plan entry into something that does not yet physically exist as a lived-in community. The upside is the potential appreciation as it matures, plus first-mover choice of frond and plot. The cost is time and construction risk. Put simply: if you want certainty, liquidity and income now, Palm Jumeirah is the safer asset; if you want long-term growth potential and can carry the risk and the wait, Palm Jebel Ali is the more aggressive play.
+
+## Risks to Weigh
+
+Honesty about the downside is essential at this price point:
+
+- **Long handover horizon and construction risk.** Early phases are guided from around 2027, and large off-plan projects can slip. Your capital is committed for years before you hold a finished home.
+- **Very high entry price.** From around AED 18 million upward, this is a high-net-worth commitment with a correspondingly narrow buyer pool at resale.
+- **Limited resale liquidity until the island matures.** Until the community is built out and occupied, secondary demand is thin, and exiting early may be difficult or require a discount.
+- **Distance from central Dubai.** The southwestern location is a bet on the future growth corridor, not on established central convenience.
+- **Payment-plan commitment.** Milestone-linked plans spread the cost but lock you into a multi-year obligation tied to the developer's delivery.
+
+## Who It's For
+
+Palm Jebel Ali is best suited to a specific buyer: a high-net-worth investor or end-user with a genuinely long horizon, comfortable with off-plan construction risk, who wants early entry into a landmark beachfront masterplan and is buying primarily for capital growth and trophy ownership rather than near-term rental income. It is not the right asset for anyone who needs yield now, wants liquidity, or is uncomfortable committing large sums to a home that will not complete for years.
+
+For buyers who fit that profile, the decision comes down to frond, plot and configuration — and to timing the entry before the island matures. Binayah's advisory team can walk through the current launch phases, pricing bands and payment structures, and help sense-check a specific unit against the wider Dubai waterfront market before you commit.`,
   },
 ];
 
