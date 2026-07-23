@@ -303,9 +303,9 @@ export default async function CommunityRichClient({ community, projects, forSale
         {/* ===== Location & connectivity ===== */}
         <section id="location" className="scroll-mt-28">
           <SecHead eyebrow={t("ebLocation")} title={sh.location || t("locationTitle")} />
-          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-            <div>
-              {e.connectivity?.length ? (
+          {e.connectivity?.length ? (
+            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+              <div>
                 <ul className="space-y-3">
                   {e.connectivity.map((c, i) => (
                     <li key={i} className="flex items-center justify-between bg-card rounded-xl border border-border/50 px-4 py-3.5">
@@ -314,12 +314,19 @@ export default async function CommunityRichClient({ community, projects, forSale
                     </li>
                   ))}
                 </ul>
-              ) : <p className="text-muted-foreground">{t("wellConnected", { name })}</p>}
+              </div>
+              <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[320px]">
+                <iframe title={`Map of ${name}, Dubai`} src={mapSrc} className="w-full h-full min-h-[320px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              </div>
             </div>
-            <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[320px]">
-              <iframe title={`Map of ${name}, Dubai`} src={mapSrc} className="w-full h-full min-h-[320px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          ) : (
+            <div>
+              <p className="text-muted-foreground mb-5 max-w-2xl">{t("wellConnected", { name })}</p>
+              <div className="rounded-2xl overflow-hidden border border-border/50 min-h-[360px] sm:min-h-[420px]">
+                <iframe title={`Map of ${name}, Dubai`} src={mapSrc} className="w-full h-full min-h-[360px] sm:min-h-[420px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* ===== Live market snapshot (DLD data) ===== */}
