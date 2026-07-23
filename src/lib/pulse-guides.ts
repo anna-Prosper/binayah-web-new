@@ -6145,6 +6145,7 @@ Dubai's commission norms, around 2% plus VAT on sales and about 5% of annual ren
     views: 2870,
     titleKey: "guide_palmJebelAliInvestorGuide_title",
     descriptionKey: "guide_palmJebelAliInvestorGuide_desc",
+    area: "Palm Jebel Ali",
     relatedCommunities: ["Palm Jebel Ali", "Jebel Ali", "Palm Jumeirah", "Dubai Marina"],
     faq: [
       { question: "Is Palm Jebel Ali a good investment?", answer: "It can be, for buyers with a long horizon and appetite for off-plan risk. The thesis rests on genuine scarcity of beachfront, Nakheel's track record with Palm Jumeirah, and early entry into a landmark masterplan before the island matures. Against that, weigh a multi-year handover, a very high entry price and limited resale liquidity until the community is built out. It suits a capital-growth play, not an income buyer." },
