@@ -169,7 +169,8 @@ export default async function PseoRouterPage({ params }: { params: Promise<{ loc
     <section className="bg-card border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{c.name}, Dubai</p>
-        <h1 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">{h1}</h1>
+        {/* h2, not h1 — the listings hero above already carries the page's single h1. */}
+        <h2 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">{h1}</h2>
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">
           {localizeCommunityText(c.shortIntro, locale)}
         </p>

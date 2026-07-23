@@ -11,8 +11,8 @@ import { motion } from "framer-motion";
 import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { Suspense, useCallback, useMemo, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -75,7 +75,6 @@ function ListingsPageClientInner({
   const { format: fmtCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [page, setPage] = useState(initialPage);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
@@ -110,14 +109,18 @@ function ListingsPageClientInner({
     return [...initialListings, ...fetched];
   }, [data, initialListings]);
 
-  // Sync ?page=N into URL on load-more without scroll-jumping
+  // Sync ?page=N into URL on load-more without scroll-jumping.
+  // Reads the live query string instead of useSearchParams(): that hook forces
+  // the whole subtree out of the static prerender, which left every
+  // buy-property-in / rent-property-in page with an EMPTY server-rendered body
+  // (no <h1>, no copy). This only ever runs from a click, so window is defined.
   const writePageToUrl = useCallback((n: number) => {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
     if (n <= 1) params.delete("page");
     else params.set("page", String(n));
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : (pathname ?? ""), { scroll: false });
-  }, [router, pathname, searchParams]);
+  }, [router, pathname]);
 
   const handleLoadMore = useCallback(async () => {
     if (!hasNextPage || isFetchingNextPage) return;
@@ -307,14 +310,11 @@ function ListingsPageClientInner({
   );
 }
 
-// useSearchParams() requires a Suspense boundary above it once the host page is
-// statically prerendered (buy-property-in / rent-property-in). The initial grid
-// still SSRs from server props (empty searchParams at prerender), so this is
-// SEO-safe — only client-side URL-filter updates rerender under the boundary.
+// Previously this wrapped the tree in <Suspense fallback={null}> to satisfy
+// useSearchParams(). On a statically prerendered page that made Next emit the
+// *fallback* — i.e. nothing — so the served HTML had no <h1> and no body copy
+// at all. useSearchParams() is gone (see writePageToUrl), so the page now
+// prerenders in full and is server-rendered for crawlers.
 export default function ListingsPageClient(props: Parameters<typeof ListingsPageClientInner>[0]) {
-  return (
-    <Suspense fallback={null}>
-      <ListingsPageClientInner {...props} />
-    </Suspense>
-  );
+  return <ListingsPageClientInner {...props} />;
 }

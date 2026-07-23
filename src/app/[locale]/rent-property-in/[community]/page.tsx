@@ -156,28 +156,34 @@ export default async function RentInCommunityPage({
     <section className="bg-card border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <p className="text-xs uppercase tracking-[0.3em] text-accent font-semibold mb-3">{localizeCommunityText(c.vibe, locale)}</p>
-        <h1 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
+        {/* h2, not h1 — the listings hero above already carries the page's single h1. */}
+        <h2 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
           {L.rentIn} {c.name}, {L.dubai}
-        </h1>
+        </h2>
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{localizeCommunityText(c.shortIntro, locale)}</p>
         <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{localizeCommunityText(c.why, locale)}</p>
         {marketNote && <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{marketNote}</p>}
-        <div className={`grid ${totalCount > 0 ? "grid-cols-3" : "grid-cols-2"} gap-4 max-w-xl`}>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.priceRange}</p>
-            <p className="text-sm sm:text-base font-bold text-foreground">{c.priceRange}</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.grossYield}</p>
-            <p className="text-sm sm:text-base font-bold text-foreground">{c.yield}</p>
-          </div>
-          {totalCount > 0 && (
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
-              <p className="text-sm sm:text-base font-bold text-foreground">{`${totalCount}+`}</p>
+        {/* Only render stats that actually have a value — a blank "Price range"
+            or a "Listings 0" reads as broken rather than informative. */}
+        {(() => {
+          const stats = [
+            c.priceRange ? { l: L.priceRange, v: c.priceRange } : null,
+            c.yield ? { l: L.grossYield, v: c.yield } : null,
+            totalCount > 0 ? { l: L.listings, v: `${totalCount}+` } : null,
+          ].filter(Boolean) as { l: string; v: string }[];
+          if (!stats.length) return null;
+          const cols = stats.length === 3 ? "grid-cols-3" : stats.length === 2 ? "grid-cols-2" : "grid-cols-1";
+          return (
+            <div className={`grid ${cols} gap-4 max-w-xl`}>
+              {stats.map((s) => (
+                <div key={s.l}>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{s.l}</p>
+                  <p className="text-sm sm:text-base font-bold text-foreground">{s.v}</p>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+          );
+        })()}
       </div>
     </section>
   );
