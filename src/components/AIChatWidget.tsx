@@ -3,22 +3,40 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Headset } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
 // Lazy-load react-markdown (~110KB) — only fetched when first message renders.
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
-import { proxyUrl } from "@/lib/api";
-import { useTranslations } from "next-intl";
+import { proxyUrl, apiUrl } from "@/lib/api";
+import { useTranslations, useLocale } from "next-intl";
 
 const binayahLogo = "/assets/binayah-logo.webp";
 
-type Msg = { role: "user" | "assistant" | "system"; content: string };
+// Phone captured once per browser session so we don't re-ask on every open.
+const CHAT_PHONE_KEY = "binayah_chat_phone";
 
-// Idle timer + warning banner live in <LiveChatBanner /> mounted at the
-// root layout — it works on every page, not just where AIChatWidget is.
+// Chrome for the phone gate + human-handoff, localized inline (the AI itself
+// answers in the user's language; this keeps the wrapper UI localized too
+// without threading new keys through all 7 message files).
+type Chrome = {
+  gateTitle: string; gateSubtitle: string; phonePlaceholder: string;
+  startChat: string; invalidPhone: string; talkToPerson: string;
+  connectingAgent: string; agentRequested: string;
+};
+const CHROME: Record<string, Chrome> = {
+  en: { gateTitle: "Before we begin", gateSubtitle: "Leave your phone number so our team can follow up in case the chat drops.", phonePlaceholder: "Your phone number", startChat: "Start chat", invalidPhone: "Please enter a valid phone number", talkToPerson: "Talk to a person", connectingAgent: "Connecting you to a Binayah agent — I'll keep helping here while you wait.", agentRequested: "Agent requested" },
+  ru: { gateTitle: "Прежде чем начать", gateSubtitle: "Оставьте номер телефона, чтобы наша команда связалась с вами, если чат прервётся.", phonePlaceholder: "Ваш номер телефона", startChat: "Начать чат", invalidPhone: "Введите корректный номер телефона", talkToPerson: "Связаться с человеком", connectingAgent: "Подключаю вас к агенту Binayah — я продолжу помогать, пока вы ждёте.", agentRequested: "Запрошен агент" },
+  ar: { gateTitle: "قبل أن نبدأ", gateSubtitle: "اترك رقم هاتفك ليتواصل فريقنا معك في حال انقطعت المحادثة.", phonePlaceholder: "رقم هاتفك", startChat: "ابدأ المحادثة", invalidPhone: "يرجى إدخال رقم هاتف صحيح", talkToPerson: "التحدث مع شخص", connectingAgent: "نصلك بأحد وكلاء Binayah — سأستمر في مساعدتك هنا أثناء الانتظار.", agentRequested: "تم طلب وكيل" },
+  zh: { gateTitle: "开始之前", gateSubtitle: "请留下您的电话号码，以便在聊天中断时我们的团队能与您联系。", phonePlaceholder: "您的电话号码", startChat: "开始聊天", invalidPhone: "请输入有效的电话号码", talkToPerson: "联系真人", connectingAgent: "正在为您接通 Binayah 顾问，等待期间我会继续为您提供帮助。", agentRequested: "已请求顾问" },
+  vi: { gateTitle: "Trước khi bắt đầu", gateSubtitle: "Để lại số điện thoại để đội ngũ của chúng tôi liên hệ nếu cuộc trò chuyện bị gián đoạn.", phonePlaceholder: "Số điện thoại của bạn", startChat: "Bắt đầu trò chuyện", invalidPhone: "Vui lòng nhập số điện thoại hợp lệ", talkToPerson: "Nói chuyện với người thật", connectingAgent: "Đang kết nối bạn với nhân viên Binayah — tôi vẫn ở đây hỗ trợ trong khi bạn chờ.", agentRequested: "Đã yêu cầu nhân viên" },
+  he: { gateTitle: "לפני שנתחיל", gateSubtitle: "השאירו מספר טלפון כדי שהצוות שלנו יחזור אליכם אם הצ'אט יתנתק.", phonePlaceholder: "מספר הטלפון שלך", startChat: "התחלת צ'אט", invalidPhone: "אנא הזינו מספר טלפון תקין", talkToPerson: "לדבר עם נציג", connectingAgent: "מחבר אתכם לנציג Binayah — אמשיך לעזור כאן בזמן ההמתנה.", agentRequested: "נציג התבקש" },
+  fr: { gateTitle: "Avant de commencer", gateSubtitle: "Laissez votre numéro de téléphone pour que notre équipe puisse vous recontacter si le chat se coupe.", phonePlaceholder: "Votre numéro de téléphone", startChat: "Démarrer le chat", invalidPhone: "Veuillez saisir un numéro de téléphone valide", talkToPerson: "Parler à une personne", connectingAgent: "Connexion à un agent Binayah — je continue de vous aider ici en attendant.", agentRequested: "Agent demandé" },
+};
+
+type Msg = { role: "user" | "assistant" | "system"; content: string };
 
 const CHAT_URL = proxyUrl("/api/chat");
 
@@ -93,34 +111,39 @@ async function streamChat({
   let buffer = "";
   let done = false;
 
+  // Robust SSE parse: split on newlines, process every COMPLETE line, and keep
+  // the final (possibly partial) line in `buffer` for the next read. The old
+  // parser rebuffered on JSON errors and could drop a delta mid-stream — that
+  // was the cause of the dropped/merged characters (e.g. "рый день", missing
+  // spaces) in non-latin replies where tokens split across chunk boundaries.
+  const handleLine = (raw: string) => {
+    const line = raw.endsWith("\r") ? raw.slice(0, -1) : raw;
+    if (!line.startsWith("data: ")) return;
+    const jsonStr = line.slice(6);
+    if (jsonStr === "[DONE]") { done = true; return; }
+    try {
+      const content = JSON.parse(jsonStr)?.choices?.[0]?.delta?.content;
+      if (content) onDelta(content);
+    } catch {
+      /* a genuinely malformed complete line — skip it, never rebuffer */
+    }
+  };
+
   while (!done) {
     const { done: readerDone, value } = await reader.read();
     if (readerDone) break;
     buffer += decoder.decode(value, { stream: true });
-
-    let newlineIndex: number;
-    while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
-      let line = buffer.slice(0, newlineIndex);
-      buffer = buffer.slice(newlineIndex + 1);
-      if (line.endsWith("\r")) line = line.slice(0, -1);
-      if (line.startsWith(":") || line.trim() === "") continue;
-      if (!line.startsWith("data: ")) continue;
-      const jsonStr = line.slice(6).trim();
-      if (jsonStr === "[DONE]") { done = true; break; }
-      try {
-        const parsed = JSON.parse(jsonStr);
-        const content = parsed.choices?.[0]?.delta?.content;
-        if (content) onDelta(content);
-      } catch {
-        buffer = line + "\n" + buffer;
-        break;
-      }
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? ""; // last item may be an incomplete line
+    for (const line of lines) {
+      handleLine(line);
+      if (done) break;
     }
   }
+  // Flush any trailing complete line left in the buffer at stream end.
+  if (!done && buffer) handleLine(buffer);
   onDone();
 }
-
-type ChatMode = "ai" | "human";
 
 type LiveChatApi = {
   call: (cmd: string, arg?: unknown) => void;
@@ -135,86 +158,103 @@ function getLiveChat(): LiveChatApi | undefined {
 
 const AIChatWidget = () => {
   const t = useTranslations("aiChat");
+  const locale = useLocale();
+  const L = CHROME[locale] ?? CHROME.en;
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<ChatMode>("ai");
-  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
+  const [phoneReady, setPhoneReady] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [phoneErr, setPhoneErr] = useState(false);
+  const [submittingPhone, setSubmittingPhone] = useState(false);
+  const [humanRequested, setHumanRequested] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // Append a system divider message and flip back to AI mode.
-  const endHumanChat = (reason: "manual" | "timeout") => {
-    const text = reason === "timeout"
-      ? t("liveChatEndedInactivity")
-      : t("liveChatEnded");
-    setMessages((prev) => [...prev, { role: "system", content: text }]);
-    setMode("ai");
-    setEndConfirmOpen(false);
-  };
   const scrollRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const sendRef = useRef<((text?: string) => Promise<void>) | null>(null);
+  const pendingQuestionRef = useRef<string | null>(null);
 
-  // Drive LiveChat's standard widget based on our mode. CSS (globals.css)
-  // hides LiveChat's container by default; we toggle body.livechat-visible
-  // to show it in human mode AND call its SDK to maximize the chat panel.
+  // Phone is captured once per browser session.
   useEffect(() => {
-    if (typeof document === "undefined") return;
-    document.body.classList.toggle("livechat-visible", mode === "human");
+    if (typeof window !== "undefined" && sessionStorage.getItem(CHAT_PHONE_KEY)) setPhoneReady(true);
+  }, []);
 
+  // Summon a real agent: open LiveChat (its own window) but DON'T hide the AI —
+  // the visitor keeps chatting with the AI here while an agent connects.
+  useEffect(() => {
+    if (!humanRequested || typeof document === "undefined") return;
+    document.body.classList.add("livechat-visible");
     const apply = () => {
       const lc = getLiveChat();
       if (!lc?.call) return false;
-      if (mode === "human") {
-        lc.call("maximize");
-      } else {
-        lc.call("hide");
-      }
+      lc.call("maximize");
       return true;
     };
     if (apply()) return;
-    // LiveChat loads async via lazyOnload — retry until the API attaches.
-    const interval = setInterval(() => {
-      if (apply()) clearInterval(interval);
-    }, 500);
-    const timeout = setTimeout(() => clearInterval(interval), 10_000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [mode]);
+    const interval = setInterval(() => { if (apply()) clearInterval(interval); }, 400);
+    const timeout = setTimeout(() => clearInterval(interval), 12_000);
+    return () => { clearInterval(interval); clearTimeout(timeout); };
+  }, [humanRequested]);
 
-  // Safety net: ensure body class is removed if the widget unmounts mid-chat.
+  // Safety net: drop the body class if the widget unmounts mid-chat.
   useEffect(() => () => {
-    if (typeof document !== "undefined") {
-      document.body.classList.remove("livechat-visible");
-    }
+    if (typeof document !== "undefined") document.body.classList.remove("livechat-visible");
   }, []);
-
-  // Inactivity timer + auto-end live in LiveChatBanner (mounted in root
-  // layout). When that timer fires it hides LiveChat directly, which our
-  // mode-driven effect picks up via SDK visibility events the next time
-  // this widget mounts. The divider message append still happens here
-  // only when AIChatWidget is open AND end is triggered from inside it.
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  // Keep sendRef pointing to the latest send closure so external triggers work
+  // Keep sendRef pointing at the latest send closure so external triggers work.
   useEffect(() => { sendRef.current = send; });
 
-  // Listen for external trigger (e.g., hero search "Ask AI")
+  // External triggers (hero, sticky CTA, property/project, navbar mobile).
   useEffect(() => {
     const handler = (e: CustomEvent) => {
       setOpen(true);
-      if (e.detail?.question) {
-        // Use ref-based call so we always get the current send function
-        setTimeout(() => sendRef.current?.(e.detail.question), 100);
+      const q = e.detail?.question;
+      if (!q) return;
+      if (typeof window !== "undefined" && sessionStorage.getItem(CHAT_PHONE_KEY)) {
+        setTimeout(() => sendRef.current?.(q), 100);
+      } else {
+        pendingQuestionRef.current = q; // send once the phone gate is passed
       }
     };
-    window.addEventListener("open-ai-chat" as any, handler);
-    return () => window.removeEventListener("open-ai-chat" as any, handler);
+    window.addEventListener("open-ai-chat" as never, handler as EventListener);
+    return () => window.removeEventListener("open-ai-chat" as never, handler as EventListener);
   }, []);
+
+  function requestHuman() {
+    if (humanRequested) { getLiveChat()?.call?.("maximize"); return; }
+    setHumanRequested(true);
+    setMessages((prev) => [...prev, { role: "system", content: L.connectingAgent }]);
+  }
+
+  async function submitPhone(e: React.FormEvent) {
+    e.preventDefault();
+    const raw = phone.trim();
+    if (!/^\+?[\d\s\-().]{7,}$/.test(raw)) { setPhoneErr(true); return; }
+    setPhoneErr(false);
+    setSubmittingPhone(true);
+    // Best-effort lead capture — save as an inquiry (fires the team WhatsApp
+    // alert + shows in /admin/leads). Never block the chat on this.
+    try {
+      await fetch(apiUrl("/api/inquiries"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "AI Chat visitor", phone: raw, inquiryType: "ai-chat", source: "ai-chat",
+          message: `Started the AI chat on ${typeof window !== "undefined" ? window.location.pathname : ""}`,
+          hp: "",
+        }),
+      });
+    } catch { /* non-blocking */ }
+    if (typeof window !== "undefined") sessionStorage.setItem(CHAT_PHONE_KEY, raw);
+    setSubmittingPhone(false);
+    setPhoneReady(true);
+    const q = pendingQuestionRef.current;
+    pendingQuestionRef.current = null;
+    if (q) setTimeout(() => sendRef.current?.(q), 100);
+  }
 
   const send = async (directText?: string) => {
     const text = (directText ?? input).trim();
@@ -249,24 +289,16 @@ const AIChatWidget = () => {
           setMessages((prev) => [...prev, { role: "assistant", content: msg || t("errorGeneric") }]);
           setIsLoading(false);
         },
-        onHandoff: () => {
-          // Switch the AI bubble to Live Agent mode after the user reads the
-          // handoff message. Insert a system divider so the AI conversation
-          // shows when the live session started AND its 30-min auto-end rule.
-          setTimeout(() => {
-            setMessages((prev) => [
-              ...prev,
-              { role: "system", content: t("liveChatStarted") },
-            ]);
-            setMode("human");
-          }, 1500);
-        },
+        // AI decided to bring in a human — open LiveChat but keep the AI here.
+        onHandoff: () => setTimeout(() => requestHuman(), 1200),
       });
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: t("errorGeneric") }]);
       setIsLoading(false);
     }
   };
+
+  const showTalk = phoneReady && !humanRequested && messages.some((m) => m.role === "assistant");
 
   return (
     <>
@@ -297,212 +329,173 @@ const AIChatWidget = () => {
             {/* Header */}
             <div className="px-5 py-4 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
-              {mode === "ai" ? (
-                <div className="flex items-center gap-3">
-                  <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
-                  <div>
-                    <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+              <div className="flex items-center gap-3">
+                <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+                  {humanRequested ? (
+                    <p className="text-white/70 text-xs flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      {L.agentRequested}
+                    </p>
+                  ) : (
                     <p className="text-white/60 text-xs">{t("subtitle")}</p>
-                  </div>
+                  )}
                 </div>
-              ) : (
-                <div className="flex items-center gap-3">
+                {showTalk && (
                   <button
                     type="button"
-                    onClick={() => setEndConfirmOpen(true)}
-                    className="flex items-center gap-1.5 text-white/90 hover:text-white text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                    aria-label={t("backToAI")}
+                    onClick={requestHuman}
+                    className="flex items-center gap-1.5 text-white text-[11px] font-semibold px-2.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors flex-shrink-0"
+                    aria-label={L.talkToPerson}
                   >
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                    {t("backToAI")}
+                    <Headset className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{L.talkToPerson}</span>
                   </button>
-                  <div className="flex-1 text-right">
-                    <p className="text-white font-bold text-sm tracking-wide flex items-center justify-end gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      {t("liveAgent")}
-                    </p>
-                    <p className="text-white/60 text-[11px]">{t("connectedViaLiveChat")}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Live Agent — LiveChat opens via its own SDK; this panel acts as
-                the "back" control and status display. The actual chat surface
-                is rendered by LiveChat's widget (maximized when mode === "human"). */}
-            {mode === "human" && (
-              <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center bg-secondary/30">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-                  <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-                  </svg>
-                </div>
-                <p className="text-sm font-semibold text-foreground mb-1">{t("chatWithLiveAgent")}</p>
-                <p className="text-xs text-muted-foreground mb-4 max-w-[260px]">
-                  {t("liveAgentPanelDesc")}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => getLiveChat()?.call?.("maximize")}
-                  className="text-xs font-semibold px-4 py-2 rounded-full text-white"
-                  style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                >
-                  {t("openLiveChat")}
-                </button>
+                )}
               </div>
-            )}
+            </div>
 
-            {/* AI Messages */}
-            <div
-              ref={scrollRef}
-              className="flex-1 overflow-y-auto p-4 space-y-3"
-              style={{ display: mode === "ai" ? undefined : "none" }}
-            >
-              {messages.length === 0 && (
-                <div className="text-center py-8">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}><Bot className="h-7 w-7" style={{ color: "#1A7A5A" }} /></div>
-                  <p className="text-sm font-semibold text-foreground mb-1">{t("greeting")}</p>
-                  <p className="text-xs text-muted-foreground">{t("placeholder")}</p>
-                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                    {[t("suggestions.bestAreas"), t("suggestions.offPlanROI"), t("suggestions.goldenVisa")].map((q) => (
-                      <button
-                        key={q}
-                        onClick={() => { setInput(q); }}
-                        className="text-xs px-4 py-2 rounded-full border transition-all hover:scale-105 font-medium" style={{ borderColor: "rgba(11,61,46,0.2)", color: "#0B3D2E", background: "rgba(11,61,46,0.05)" }}
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
+            {!phoneReady ? (
+              /* ── Phone gate — required before the chat starts ── */
+              <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 text-center">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}>
+                  <MessageCircle className="h-7 w-7" style={{ color: "#1A7A5A" }} />
                 </div>
-              )}
-              {messages.map((m, i) => {
-                if (m.role === "system") {
-                  return (
-                    <div key={i} className="flex items-center gap-3 py-2 my-1">
-                      <span className="flex-1 h-px bg-border" />
-                      <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium whitespace-nowrap">
-                        {m.content}
-                      </span>
-                      <span className="flex-1 h-px bg-border" />
-                    </div>
-                  );
-                }
-                return (
-                <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                  {m.role === "assistant" && (
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
-                      <Bot className="h-3.5 w-3.5" style={{ color: "#1A7A5A" }} />
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-[75%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                      m.role === "user"
-                        ? "rounded-br-md text-white"
-                        : "bg-secondary text-foreground rounded-bl-md"
-                    }`}
-                    style={
-                      m.role === "user"
-                        ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }
-                        : undefined
-                    }
+                <p className="text-sm font-semibold text-foreground mb-1">{L.gateTitle}</p>
+                <p className="text-xs text-muted-foreground mb-4 max-w-[280px]">{L.gateSubtitle}</p>
+                <form onSubmit={submitPhone} className="w-full max-w-[300px]">
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    autoFocus
+                    value={phone}
+                    onChange={(e) => { setPhone(e.target.value); if (phoneErr) setPhoneErr(false); }}
+                    placeholder={L.phonePlaceholder}
+                    className="w-full bg-white border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                    style={{ borderColor: phoneErr ? "#dc2626" : "#e5e7eb", "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
+                  />
+                  {phoneErr && <p className="text-[11px] text-red-600 mt-1.5 text-left">{L.invalidPhone}</p>}
+                  <button
+                    type="submit"
+                    disabled={submittingPhone || !phone.trim()}
+                    className="w-full mt-3 py-2.5 rounded-xl text-sm font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
+                    style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
                   >
-                    {m.role === "assistant" ? (
-                      <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0 prose-headings:my-1 prose-headings:text-sm">
-                        <ReactMarkdown>{m.content}</ReactMarkdown>
+                    {submittingPhone ? "…" : L.startChat}
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <>
+                {/* AI Messages */}
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {messages.length === 0 && (
+                    <div className="text-center py-8">
+                      <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.08), rgba(26,122,90,0.12))", border: "1px solid rgba(11,61,46,0.15)" }}><Bot className="h-7 w-7" style={{ color: "#1A7A5A" }} /></div>
+                      <p className="text-sm font-semibold text-foreground mb-1">{t("greeting")}</p>
+                      <p className="text-xs text-muted-foreground">{t("placeholder")}</p>
+                      <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                        {[t("suggestions.bestAreas"), t("suggestions.offPlanROI"), t("suggestions.goldenVisa")].map((q) => (
+                          <button
+                            key={q}
+                            onClick={() => { setInput(q); }}
+                            className="text-xs px-4 py-2 rounded-full border transition-all hover:scale-105 font-medium" style={{ borderColor: "rgba(11,61,46,0.2)", color: "#0B3D2E", background: "rgba(11,61,46,0.05)" }}
+                          >
+                            {q}
+                          </button>
+                        ))}
                       </div>
-                    ) : m.content}
-                  </div>
-                  {m.role === "user" && (
-                    <div className="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <User className="h-3.5 w-3.5 text-accent" />
+                    </div>
+                  )}
+                  {messages.map((m, i) => {
+                    if (m.role === "system") {
+                      return (
+                        <div key={i} className="flex items-center gap-3 py-2 my-1">
+                          <span className="flex-1 h-px bg-border" />
+                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium whitespace-nowrap">
+                            {m.content}
+                          </span>
+                          <span className="flex-1 h-px bg-border" />
+                        </div>
+                      );
+                    }
+                    return (
+                    <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                      {m.role === "assistant" && (
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
+                          <Bot className="h-3.5 w-3.5" style={{ color: "#1A7A5A" }} />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[75%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                          m.role === "user"
+                            ? "rounded-br-md text-white"
+                            : "bg-secondary text-foreground rounded-bl-md"
+                        }`}
+                        style={
+                          m.role === "user"
+                            ? { background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }
+                            : undefined
+                        }
+                      >
+                        {m.role === "assistant" ? (
+                          <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0 prose-headings:my-1 prose-headings:text-sm">
+                            <ReactMarkdown>{m.content}</ReactMarkdown>
+                          </div>
+                        ) : m.content}
+                      </div>
+                      {m.role === "user" && (
+                        <div className="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <User className="h-3.5 w-3.5 text-accent" />
+                        </div>
+                      )}
+                    </div>
+                    );
+                  })}
+                  {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
+                    <div className="flex gap-2">
+                      <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
+                        <Bot className="h-3.5 w-3.5" style={{ color: "#1A7A5A" }} />
+                      </div>
+                      <div className="bg-secondary px-4 py-3 rounded-2xl rounded-bl-md">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                          <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
-                );
-              })}
-              {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
-                <div className="flex gap-2">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, rgba(11,61,46,0.15), rgba(26,122,90,0.2))", border: "1px solid rgba(11,61,46,0.2)" }}>
-                    <Bot className="h-3.5 w-3.5" style={{ color: "#1A7A5A" }} />
-                  </div>
-                  <div className="bg-secondary px-4 py-3 rounded-2xl rounded-bl-md">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
 
-            {/* Input — AI mode only; LiveChat iframe has its own input */}
-            <div className="border-t border-border p-3" style={{ display: mode === "ai" ? undefined : "none" }}>
-              <form
-                onSubmit={(e) => { e.preventDefault(); send(); }}
-                className="flex gap-2"
-              >
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={t("placeholder")}
-                  className="flex-1 bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all" style={{ "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
-                />
-                <button
-                  id="chat-send-btn"
-                  type="submit"
-                  disabled={!input.trim() || isLoading}
-                  className="w-10 h-10 disabled:opacity-50 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-                >
-                  <Send className="h-4 w-4 text-primary-foreground" />
-                </button>
-              </form>
-            </div>
+                {/* Input */}
+                <div className="border-t border-border p-3">
+                  <form
+                    onSubmit={(e) => { e.preventDefault(); send(); }}
+                    className="flex gap-2"
+                  >
+                    <input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={t("placeholder")}
+                      className="flex-1 bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all" style={{ "--tw-ring-color": "rgba(11,61,46,0.2)" } as React.CSSProperties}
+                    />
+                    <button
+                      id="chat-send-btn"
+                      type="submit"
+                      disabled={!input.trim() || isLoading}
+                      className="w-10 h-10 disabled:opacity-50 rounded-xl flex items-center justify-center transition-all hover:scale-105" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
+                    >
+                      <Send className="h-4 w-4 text-primary-foreground" />
+                    </button>
+                  </form>
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Top banner + idle timer are now owned by the standalone
-          LiveChatBanner component mounted in [locale]/layout.tsx so it
-          works on every page, not just where AIChatWidget is mounted. */}
-
-      {/* End-live-chat confirmation modal */}
-      {endConfirmOpen && (
-        <div
-          className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center px-4"
-          onClick={() => setEndConfirmOpen(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-base font-bold text-gray-900 mb-2">End live chat?</h3>
-            <p className="text-sm text-gray-600 mb-5">
-              You&apos;re currently chatting with a live agent. Going back to the AI assistant will end the live session.
-            </p>
-            <div className="flex gap-2 justify-end">
-              <button
-                type="button"
-                onClick={() => setEndConfirmOpen(false)}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100"
-              >
-                Stay in chat
-              </button>
-              <button
-                type="button"
-                onClick={() => endHumanChat("manual")}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}
-              >
-                End & return to AI
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
