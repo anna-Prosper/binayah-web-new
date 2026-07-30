@@ -1,6 +1,6 @@
 "use client";
 
-import { IMAGE_PLACEHOLDER } from "@/lib/images";
+import { IMAGE_PLACEHOLDER, dedupeImages } from "@/lib/images";
 import { apiUrl } from "@/lib/api";
 import { waHref } from "@/lib/whatsapp";
 import { useHoneypot } from "@/components/Honeypot";
@@ -419,11 +419,10 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
 
 
 
-  const galleryUrls = [...new Set(
+  const galleryUrls = dedupeImages(
     (project.imageGallery || [])
       .map((item: any) => (typeof item === "object" && item.url ? item.url : item))
-      .filter(Boolean)
-  )];
+  );
   const images: string[] = galleryUrls.length
     ? galleryUrls
     : project.featuredImage

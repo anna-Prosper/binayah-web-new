@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- property detail client has many locale-aware and industry-term strings */
 "use client";
 
-import { IMAGE_PLACEHOLDER } from "@/lib/images";
+import { IMAGE_PLACEHOLDER, dedupeImages } from "@/lib/images";
 import { useTranslations } from "next-intl";
 import { apiUrl } from "@/lib/api";
 import { useHoneypot } from "@/components/Honeypot";
@@ -529,12 +529,11 @@ export default function PropertyDetailClient({
       .catch(() => {});
   }, [developerSlugForStats]);
 
-  // De-duplicate: the featured image is usually also the first gallery image,
-  // and some imported galleries carry repeat URLs — without this the preview
-  // thumbnails, the "Gallery (N)" count and the modal all show duplicates.
-  const allImages = [...new Set(
-    [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[]
-  )];
+  // De-duplicate by filename (not full URL): the featured image is usually also
+  // in the gallery, and some imported galleries carry the same photo twice under
+  // different paths / watermark variants — without this the preview thumbnails,
+  // the "Gallery (N)" count and the modal all show duplicates.
+  const allImages = dedupeImages([listing.featuredImage, ...(listing.images || [])]);
   if (allImages.length === 0) allImages.push(IMAGE_PLACEHOLDER);
 
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
