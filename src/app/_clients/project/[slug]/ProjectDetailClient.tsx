@@ -419,9 +419,11 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
 
 
 
-  const galleryUrls = (project.imageGallery || [])
-    .map((item: any) => (typeof item === "object" && item.url ? item.url : item))
-    .filter(Boolean);
+  const galleryUrls = [...new Set(
+    (project.imageGallery || [])
+      .map((item: any) => (typeof item === "object" && item.url ? item.url : item))
+      .filter(Boolean)
+  )];
   const images: string[] = galleryUrls.length
     ? galleryUrls
     : project.featuredImage

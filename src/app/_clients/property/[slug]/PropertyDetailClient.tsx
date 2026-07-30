@@ -529,7 +529,12 @@ export default function PropertyDetailClient({
       .catch(() => {});
   }, [developerSlugForStats]);
 
-  const allImages = [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[];
+  // De-duplicate: the featured image is usually also the first gallery image,
+  // and some imported galleries carry repeat URLs — without this the preview
+  // thumbnails, the "Gallery (N)" count and the modal all show duplicates.
+  const allImages = [...new Set(
+    [listing.featuredImage, ...(listing.images || [])].filter(Boolean) as string[]
+  )];
   if (allImages.length === 0) allImages.push(IMAGE_PLACEHOLDER);
 
   const nextImage = () => setCurrentImage((p) => (p + 1) % allImages.length);
