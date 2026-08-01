@@ -183,7 +183,11 @@ export async function POST(req: NextRequest) {
   }
 
   // Honeypot: bot filled the hidden field — fake success, drop silently.
-  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true });
+  // Logged so a false-positive (autofill of the hidden field) is visible.
+  if (isHoneypotTripped(body)) {
+    console.warn(`[honeypot] calculator-email tripped — dropped. hasEmail=${!!body.email}`);
+    return NextResponse.json({ ok: true });
+  }
 
   const { name, email, phone, calc } = body;
 

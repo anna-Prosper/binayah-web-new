@@ -56,8 +56,32 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   const body = await req.json();
-  // Honeypot: bot filled the hidden field — fake success, drop silently.
-  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true });
+  // Honeypot: hidden field was filled. Rather than silently dropping (a false
+  // positive — e.g. browser autofill of the hidden field — would lose a real
+  // seller lead invisibly), persist it FLAGGED as spam and skip notifications.
+  if (isHoneypotTripped(body)) {
+    try {
+      const client = await clientPromise;
+      const rawEmail = (body.email || "").toLowerCase().trim();
+      const rawPhone = String(body.phone || "").replace(/[\s\-.()]/g, "");
+      await client.db("binayah_web_new_dev").collection("property_submissions").insertOne({
+        userId: null,
+        userEmail: rawEmail ? encrypt(rawEmail) : null,
+        emailH: rawEmail ? fieldHash(rawEmail) : undefined,
+        userName: body.name ? encrypt(String(body.name)) : null,
+        propertyType: body.propertyType ?? null,
+        listingType: body.listingType ?? null,
+        community: body.community ?? null,
+        phone: body.phone ? encrypt(String(body.phone)) : null,
+        phoneH: rawPhone ? fieldHash(rawPhone) : undefined,
+        status: "under_review",
+        spam: true,
+        createdAt: new Date(),
+      });
+    } catch (e) { console.error("Honeypot seller-lead save failed:", e); }
+    console.warn(`[honeypot] list-your-property tripped — saved flagged, notifications skipped. hasEmail=${!!body.email} hasPhone=${!!body.phone}`);
+    return NextResponse.json({ ok: true });
+  }
   const { propertyType, listingType, community, bedrooms, areaSqft, askingPrice, description, phone } = body;
 
   // Contact identity: prefer the signed-in session, else the form-provided

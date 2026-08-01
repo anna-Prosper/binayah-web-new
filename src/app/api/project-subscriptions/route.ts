@@ -85,7 +85,11 @@ export async function POST(req: NextRequest) {
   }
 
   // Honeypot: bot filled the hidden field — fake success, drop silently.
-  if (isHoneypotTripped(body)) return NextResponse.json({ ok: true, alreadySubscribed: false });
+  // Logged so a false-positive (autofill of the hidden field) is visible.
+  if (isHoneypotTripped(body)) {
+    console.warn(`[honeypot] project-subscription tripped — dropped. slug=${body.slug || "?"} hasEmail=${!!body.email}`);
+    return NextResponse.json({ ok: true, alreadySubscribed: false });
+  }
 
   const slug = (body.slug || "").trim();
   if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 });
