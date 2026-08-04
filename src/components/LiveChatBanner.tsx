@@ -22,9 +22,10 @@ const HUMAN_WARNING_MS = 25 * 60 * 1000;
 
 /**
  * Renders a fixed top-of-viewport banner with a Back-to-AI button + status +
- * inactivity warning whenever LiveChat is visibly open (maximized or
- * minimized). Mounted in the root layout so it works on every page,
- * independent of AIChatWidget's state.
+ * inactivity warning whenever the LiveChat window is actually open
+ * (visibility "maximized"). The idle minimized launcher bubble does NOT count.
+ * Mounted in the root layout so it works on every page, independent of
+ * AIChatWidget's state.
  */
 export default function LiveChatBanner() {
   const t = useTranslations("liveChat");
@@ -44,7 +45,13 @@ export default function LiveChatBanner() {
       if (!lc) return;
       try {
         const visibility = (lc.get?.("state") as { visibility?: string } | undefined)?.visibility;
-        if (mounted) setOpen(visibility === "maximized" || visibility === "minimized");
+        // Only "maximized" (the chat window actually open) counts as an active
+        // live session. "minimized" is just the idle launcher bubble, which
+        // LiveChat shows by default once it auto-inits (on first pointerdown/
+        // scroll or after 5s) — treating that as "connected" made the full
+        // "Live agent" banner pop up on every page the moment a user clicked
+        // anything (e.g. opening an image gallery).
+        if (mounted) setOpen(visibility === "maximized");
       } catch {
         /* state may not be ready yet */
       }
@@ -52,7 +59,7 @@ export default function LiveChatBanner() {
 
     const onVisibility = (payload?: unknown) => {
       const v = (payload as { visibility?: string })?.visibility;
-      if (mounted) setOpen(v === "maximized" || v === "minimized");
+      if (mounted) setOpen(v === "maximized");
     };
 
     const wireUp = () => {
