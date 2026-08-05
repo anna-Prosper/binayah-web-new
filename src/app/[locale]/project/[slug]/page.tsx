@@ -70,6 +70,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     he: { from: "החל מ-", dev: "יזם מוביל", desc: (n, c, d, p) => `${n}${c ? ` ב-${c}` : ""}, דובאי, מאת ${d}.${p ? ` על הנייר החל מ-${p} עם תוכניות תשלום גמישות.` : ""} תוכניות, מחירים, מועדי מסירה וייעוץ מומחים — גלו עם Binayah.` },
   };
   const pj = PJ[locale] ?? PJ.en;
+  // Guard against malformed stored SEO titles from legacy imports — an old
+  // generator emitted `${name} | ${community}, Dubai` with an empty community,
+  // leaving a dangling "| , Dubai" (empty segment). Collapse empty segments and
+  // trim stray leading/trailing separators so a bad stored title never renders.
+  const sanitizeTitle = (s: string) =>
+    s
+      .replace(/\s*\|\s*,/g, ",") // "X | , Dubai" -> "X, Dubai"
+      .replace(/\|\s*\|/g, "|")  // "X |  | Y"   -> "X | Y"
+      .replace(/\s{2,}/g, " ")
+      .replace(/^\s*[|,]\s*/, "")
+      .replace(/\s*\|\s*$/, "")
+      .trim();
   const titleFallback = `${projName}${communityStr}${priceShort ? ` | ${pj.from} ${priceShort}` : ""} | Binayah`;
   const descFallbackRaw = pj.desc(project.name, project.community || "", project.developerName || pj.dev, priceShort);
   const descFallback = descFallbackRaw.length <= 158 ? descFallbackRaw : descFallbackRaw.slice(0, 157).replace(/\s+\S*$/, "") + "â¦";
@@ -82,14 +94,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const canonicalUrl = makeCanonical(locale, path);
 
   return {
-    title: seo.metaTitle || titleFallback,
+    title: sanitizeTitle(seo.metaTitle || titleFallback),
     description: seo.metaDescription || descFallback,
     alternates: {
       canonical: canonicalUrl,
       languages: altLangs(path),
     },
     openGraph: {
-      title: seo.ogTitle || seo.metaTitle || titleFallback,
+      title: sanitizeTitle(seo.ogTitle || seo.metaTitle || titleFallback),
       description: seo.ogDescription || seo.metaDescription || descFallback,
       // opengraph-image.tsx serves the dynamic branded OG image (price/completion/photo overlay).
       type: "website",
@@ -98,7 +110,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.twitterTitle || seo.metaTitle || titleFallback,
+      title: sanitizeTitle(seo.twitterTitle || seo.metaTitle || titleFallback),
       description: seo.twitterDescription || seo.metaDescription || descFallback,
     },
   };
