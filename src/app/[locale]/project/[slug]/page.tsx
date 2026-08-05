@@ -33,7 +33,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   // Missing/delisted project â real 404 (status code), not a soft 200+noindex
   // page. Calling notFound() in generateMetadata makes Next return a proper 404
   // so Google drops the URL instead of parking it under "Excluded by noindex".
-  if (!project) notFound();
+  // Missing/delisted project → return minimal noindex metadata and let the page
+  // COMPONENT call notFound(): calling notFound() inside generateMetadata renders
+  // the not-found UI with a soft HTTP 200, while the component's notFound() sets
+  // a real 404 status.
+  if (!project) return { title: "Project not found | Binayah", robots: { index: false, follow: false } };
   const rawSeo = project.seo || {};
   // Strip Yoast/RankMath WordPress import artifacts â fields that start with
   // "Note: None of these options will be appliedâ¦" are placeholder noise, not
