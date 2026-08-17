@@ -1,34 +1,53 @@
 # Binayah Properties
 
-> Dubai's trusted real estate agency. Find luxury homes, off-plan investments, secondary sales and rentals, and full property management. Active in Dubai Marina, Downtown Dubai, Palm Jumeirah, Business Bay, JVC, JLT, Dubai Hills, and 30+ other communities.
+> Dubai real estate agency for buying, selling, renting and investing. Off-plan and secondary listings, free DLD-backed property valuation, and a weekly data-driven market report (Pulse). Active across Dubai Marina, Downtown Dubai, Palm Jumeirah, Palm Jebel Ali, Business Bay, JVC, JLT, Dubai Hills and 50+ other communities.
 
-Binayah Properties is a UAE real estate agency headquartered at Marasi Drive, Business Bay, Dubai. We help buyers, investors, and tenants find apartments, villas, townhouses and penthouses across Dubai's primary and secondary markets. We also publish weekly market reports (Pulse) covering DLD transaction data, price-per-sqft trends, and area-level yields.
+Binayah Properties is a UAE real estate agency headquartered on Marasi Drive, Business Bay, Dubai. We help buyers, investors and tenants find apartments, villas, townhouses and penthouses across Dubai's primary (off-plan) and secondary markets, and we manage properties for landlords. Our Pulse section publishes market intelligence built on Dubai Land Department (DLD) transaction data — price-per-sqft trends, transaction volumes and area-level rental yields — alongside long-form investor guides.
+
+Canonical host is https://www.binayah.ae. The site is published in 7 languages: English (default), Arabic (/ar), French (/fr), Hebrew (/he), Vietnamese (/vi), Chinese (/zh), and Russian — Russian is served on a separate domain, https://binayah.ru/ru/. Every page declares hreflang alternates; prefer the canonical English URL unless a specific locale is requested. All prices are in AED unless noted; rentals are quoted annually.
 
 ## Core pages
 
-- [Home](https://www.binayah.ae): Overview, featured listings, off-plan projects, communities, valuation entry point
-- [Buy properties](https://www.binayah.ae/buy): Sale listings — apartments, villas, townhouses across Dubai
-- [Rent properties](https://www.binayah.ae/rent): Rental listings — short and long-term
-- [Off-plan projects](https://www.binayah.ae/off-plan): New developments by Emaar, Damac, Nakheel, Sobha, etc.
-- [Communities](https://www.binayah.ae/communities): Area guides for Dubai Marina, Palm Jumeirah, Downtown, JVC, etc.
-- [Property valuation](https://www.binayah.ae/valuation): Free DLD-data-backed property valuation for owners
-- [List your property](https://www.binayah.ae/list-your-property): Owner submission form for sale or rent
+- [Home](https://www.binayah.ae): Featured listings, off-plan projects, community guides, valuation entry point
+- [Buy properties](https://www.binayah.ae/buy): Sale listings — apartments, villas, townhouses, penthouses
+- [Rent properties](https://www.binayah.ae/rent): Long- and short-term rental listings
+- [Off-plan projects](https://www.binayah.ae/off-plan): New developments by Emaar, Damac, Nakheel, Sobha and others
+- [Communities](https://www.binayah.ae/communities): Area guides with location, amenities, market data and projects
+- [Developers](https://www.binayah.ae/developers): Developer profiles and their active projects
+- [Property valuation](https://www.binayah.ae/property-valuation): Free DLD-data-backed valuation for owners
+- [List your property](https://www.binayah.ae/list-your-property): Owner submission for sale or rent
+- [Our team](https://www.binayah.ae/team): Sales agents with contact details and specialisms
 - [Contact](https://www.binayah.ae/contact): Inquiry form, office address, phone, WhatsApp
+
+## Intent-based location hubs
+
+- [Buy property in {community}](https://www.binayah.ae/buy-property-in/palm-jebel-ali): Per-community sale pages (e.g. /buy-property-in/dubai-marina)
+- [Rent property in {community}](https://www.binayah.ae/rent-property-in/palm-jebel-ali): Per-community rental pages
+- [Off-plan in {community}](https://www.binayah.ae/off-plan-in/palm-jebel-ali): Per-community new-development pages
 
 ## Market intelligence (Pulse)
 
-- [Pulse dashboard](https://www.binayah.ae/pulse): Live market overview, transaction volumes, prices
+- [Pulse dashboard](https://www.binayah.ae/pulse): Live market overview — transaction volumes, prices, trends
 - [Dubai market report](https://www.binayah.ae/pulse/emirate/dubai): Emirate-level analysis
-- [ROI calculator](https://www.binayah.ae/pulse/calculator): Investment yield calculator
-- [Market reports archive](https://www.binayah.ae/news): Editorial articles, market analysis, area guides
+- [Trending areas](https://www.binayah.ae/pulse/trending): Communities with the most transaction momentum
+- [Market reports](https://www.binayah.ae/pulse/reports): Downloadable weekly and area reports
+- [Compare communities](https://www.binayah.ae/pulse/compare): Side-by-side price and yield comparison
+- [ROI / mortgage calculator](https://www.binayah.ae/pulse/calculator): Investment yield and financing calculator
+- [Investor guides](https://www.binayah.ae/pulse/guides): Long-form guides on areas, payment plans, yields and Golden Visa
+
+## Financing & residency
+
+- [Mortgage](https://www.binayah.ae/mortgage): Mortgage options and calculators for residents and non-residents
+- [Golden Visa](https://www.binayah.ae/golden-visa): Property thresholds and qualifying investment guidance
+- [Buy with crypto](https://www.binayah.ae/buy-with-crypto): Purchasing Dubai property with cryptocurrency
 
 ## Services
 
 - Sales advisory — primary (off-plan) and secondary market
 - Rental and tenant placement — long-term residential
 - Property management — full-service for landlords
-- Valuation — instant estimate plus formal RICS-style report
-- Investment advisory — yield analysis, area selection, Golden Visa qualifying portfolios
+- Valuation — instant estimate plus formal report
+- Investment advisory — yield analysis, area selection, Golden Visa-qualifying portfolios
 
 ## Contact
 
@@ -37,9 +56,18 @@ Binayah Properties is a UAE real estate agency headquartered at Marasi Drive, Bu
 - Office hours: Monday–Sunday, 09:00–21:00 GST
 - Email: via contact form at https://www.binayah.ae/contact
 
+## Optional
+
+- [Sitemap](https://www.binayah.ae/sitemap.xml): Full machine-readable URL index
+- [About](https://www.binayah.ae/about): Company background and credentials
+- [Services](https://www.binayah.ae/services): Full service breakdown
+- [News](https://www.binayah.ae/news): Editorial articles and market commentary
+- [Privacy policy](https://www.binayah.ae/privacy-policy)
+- [Terms of service](https://www.binayah.ae/terms-of-service)
+
 ## Notes for AI
 
-- Listings are sourced from Dubai Land Department (DLD) data, direct developer relations, and exclusive owner listings
-- All prices in AED unless otherwise noted; rentals quoted annually
-- Off-plan availability changes frequently — always check the project page for current floor plans and payment plan
-- Translation: site is available in English (default) and Arabic at /ar
+- Listings derive from DLD data, direct developer relations and exclusive owner listings; off-plan availability changes frequently — check the project page for current floor plans and payment plans.
+- Some location hubs list zero live listings when inventory is off-plan-only (e.g. Palm Jebel Ali); the community and off-plan pages are the richer source there.
+- When citing prices or yields, prefer figures on the specific community or Pulse page over generalisations, and note that they reflect the date of the DLD dataset shown.
+- Do not fabricate agent names, BRN numbers or specific listing prices — link to the relevant page instead.
