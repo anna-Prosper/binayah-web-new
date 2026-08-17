@@ -1,4 +1,6 @@
-import { redirect } from "next/navigation";
+// Locale-aware redirect: the callbackUrl was already locale-correct, but the
+// "/signin" target itself was bare and resolved to the DEFAULT locale.
+import { redirect } from "@/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
@@ -24,7 +26,11 @@ export default async function MarketReportsPage({ params }: Props) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
-    redirect(`/signin?callbackUrl=/${locale}/account/market-reports`);
+    const callbackUrl =
+      locale === "en" ? "/account/market-reports" : `/${locale}/account/market-reports`;
+    // `return` keeps TS narrowing `session` below; next-intl's redirect is typed
+    // to return `never`, but only a direct call in tail position narrows here.
+    return redirect({ href: `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`, locale });
   }
 
   const t = await getTranslations("weeklyReport");

@@ -11,7 +11,8 @@ import { AedPrice } from "@/components/AedPrice";
 import { findBuyCommunity } from "@/lib/buy-communities";
 import { guideForCommunity } from "@/lib/pulse-guides";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import {
   Building, CalendarDays, ChevronRight, MapPin, Bed, Bath, Maximize, Clock,
   CheckCircle2, TrendingUp, Landmark, Waves, UtensilsCrossed, Dumbbell,
@@ -68,7 +69,6 @@ interface Props {
 }
 
 const WA = "https://wa.me/971549988811";
-const lp = (locale: string, path: string) => (locale === "en" ? path : `/${locale}${path}`);
 const year = (d?: string | null) => { if (!d) return null; const dt = new Date(d); return isNaN(dt.getTime()) ? d : dt.getFullYear(); };
 const projSlug = (name: string) => name.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-");
 const isPlaceholder = (v?: string) => !v || /^(n\/?a|tba|tbd|not specified|not available|unknown|-)$/i.test(v.trim());
@@ -122,7 +122,7 @@ export default async function CommunityRichClient({ community, projects, forSale
   // trailing cell (static strings so Tailwind's JIT keeps them).
   const heroCols = ({ 1: "sm:grid-cols-1", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-4" } as Record<number, string>)[heroStats.length] ?? "sm:grid-cols-4";
 
-  const pageUrl = `https://www.binayah.ae${lp(locale, `/communities/${community.slug}`)}`;
+  const pageUrl = `https://www.binayah.ae${`/communities/${community.slug}`}`;
   const jsonLd: any[] = [
     { "@context": "https://schema.org", "@type": "Place", name, description: overview.slice(0, 300),
       url: pageUrl, ...(community.featuredImage ? { image: community.featuredImage } : {}),
@@ -167,7 +167,7 @@ export default async function CommunityRichClient({ community, projects, forSale
   );
 
   const ProjectCard = ({ p }: { p: Project }) => (
-    <Link href={lp(locale, `/project/${p.slug || projSlug(p.name)}`)} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
+    <Link href={`/project/${p.slug || projSlug(p.name)}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
       <div className="relative overflow-hidden aspect-[4/3]">
         <ImageWithFallback src={p.featuredImage || p.imageGallery?.[0] || IMAGE_PLACEHOLDER} alt={p.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
         {p.status && <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-accent text-accent-foreground uppercase tracking-wider">{p.status}</span>}
@@ -184,7 +184,7 @@ export default async function CommunityRichClient({ community, projects, forSale
   );
 
   const ListingCard = ({ l }: { l: Listing }) => (
-    <Link href={lp(locale, `/property/${l.slug}`)} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
+    <Link href={`/property/${l.slug}`} className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-border/50 hover:border-primary/20">
       <div className="relative overflow-hidden aspect-[4/3]">
         <ImageWithFallback src={l.featuredImage || IMAGE_PLACEHOLDER} alt={l.title || l.name || name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
       </div>
@@ -223,8 +223,8 @@ export default async function CommunityRichClient({ community, projects, forSale
         </div>
         <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-10 sm:pb-14">
           <div className="flex items-center gap-2 text-sm text-white/55 mb-5">
-            <Link href={lp(locale, "/")} className="hover:text-white">Home</Link><ChevronRight className="h-3.5 w-3.5" />
-            <Link href={lp(locale, "/communities")} className="hover:text-white">Communities</Link><ChevronRight className="h-3.5 w-3.5" />
+            <Link href={"/"} className="hover:text-white">Home</Link><ChevronRight className="h-3.5 w-3.5" />
+            <Link href={"/communities"} className="hover:text-white">Communities</Link><ChevronRight className="h-3.5 w-3.5" />
             <span className="text-white">{name}</span>
           </div>
           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-accent mb-4">
@@ -254,9 +254,9 @@ export default async function CommunityRichClient({ community, projects, forSale
           {isBuyCommunity && (
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-5 text-sm">
               <span className="text-white/50">{t("readyTransact", { name })}</span>
-              <Link href={lp(locale, `/buy-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("buy")} →</Link>
-              <Link href={lp(locale, `/rent-property-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("rent")} →</Link>
-              <Link href={lp(locale, `/off-plan-in/${community.slug}`)} className="font-semibold text-white hover:text-accent transition-colors">{t("offPlan")} →</Link>
+              <Link href={`/buy-property-in/${community.slug}`} className="font-semibold text-white hover:text-accent transition-colors">{t("buy")} →</Link>
+              <Link href={`/rent-property-in/${community.slug}`} className="font-semibold text-white hover:text-accent transition-colors">{t("rent")} →</Link>
+              <Link href={`/off-plan-in/${community.slug}`} className="font-semibold text-white hover:text-accent transition-colors">{t("offPlan")} →</Link>
             </div>
           )}
         </div>
@@ -377,7 +377,7 @@ export default async function CommunityRichClient({ community, projects, forSale
                 <p className="text-sm text-muted-foreground mb-4">{t("soldByBuildingSub")}</p>
                 <div className="flex flex-wrap gap-2">
                   {topBuildings.map((tb) => (
-                    <Link key={tb.slug} href={lp(locale, `/building/${tb.slug}`)} className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors">
+                    <Link key={tb.slug} href={`/building/${tb.slug}`} className="inline-flex items-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors">
                       <Building className="h-3.5 w-3.5 text-accent" />
                       {tb.name}
                       {tb.sales ? <span className="text-xs text-muted-foreground">{t("salesCount", { count: tb.sales.toLocaleString("en-AE") })}</span> : null}
@@ -432,14 +432,14 @@ export default async function CommunityRichClient({ community, projects, forSale
                 <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
                   {projects.slice(6).map((p) => (
                     <li key={p.slug || p.name}>
-                      <Link href={lp(locale, `/project/${p.slug || projSlug(p.name)}`)} className="hover:text-primary hover:underline transition-colors">{p.name}</Link>
+                      <Link href={`/project/${p.slug || projSlug(p.name)}`} className="hover:text-primary hover:underline transition-colors">{p.name}</Link>
                     </li>
                   ))}
                 </ul>
               </nav>
             )}
             {counts.projects > 6 && (
-              <Link href={lp(locale, `/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 mt-7 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/40 transition-colors">
+              <Link href={`/search?status=Off-Plan&intent=off-plan&locations=${encodeURIComponent(name)}`} className="inline-flex items-center gap-2 mt-7 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-primary/40 transition-colors">
                 {t("viewAllProjects", { count: counts.projects })} <ChevronRight className="h-4 w-4" />
               </Link>
             )}
@@ -453,14 +453,14 @@ export default async function CommunityRichClient({ community, projects, forSale
               <div>
                 <SecHead eyebrow={t("ebResale")} title={t("forSaleIn", { name })} />
                 <div className="grid sm:grid-cols-2 gap-5">{forSale.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
-                <Link href={lp(locale, `/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForSale", { count: counts.forSale })} <ChevronRight className="h-4 w-4" /></Link>
+                <Link href={`/search?status=Secondary&intent=buy&locations=${encodeURIComponent(name)}`} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForSale", { count: counts.forSale })} <ChevronRight className="h-4 w-4" /></Link>
               </div>
             )}
             {forRent.length > 0 && (
               <div>
                 <SecHead eyebrow={t("ebRental")} title={t("forRentIn", { name })} />
                 <div className="grid sm:grid-cols-2 gap-5">{forRent.slice(0, 4).map((l) => <ListingCard key={l.slug} l={l} />)}</div>
-                <Link href={lp(locale, `/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForRent", { count: counts.forRent })} <ChevronRight className="h-4 w-4" /></Link>
+                <Link href={`/search?status=Secondary&intent=rent&locations=${encodeURIComponent(name)}`} className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:underline">{t("viewAllForRent", { count: counts.forRent })} <ChevronRight className="h-4 w-4" /></Link>
               </div>
             )}
           </section>
@@ -498,7 +498,7 @@ export default async function CommunityRichClient({ community, projects, forSale
               <TrendingUp className="h-4 w-4" /> {t("speakInvestAdvisor")}
             </a>
             {investorGuide && (
-              <Link href={lp(locale, `/pulse/guides/${investorGuide.slug}`)} className="mt-4 flex items-center gap-2 text-sm font-semibold text-accent hover:text-white transition-colors w-fit">
+              <Link href={`/pulse/guides/${investorGuide.slug}`} className="mt-4 flex items-center gap-2 text-sm font-semibold text-accent hover:text-white transition-colors w-fit">
                 {t("readInvestorGuide", { name })}
                 <span aria-hidden>→</span>
               </Link>
@@ -507,7 +507,7 @@ export default async function CommunityRichClient({ community, projects, forSale
               <div className="mt-8 pt-8 border-t border-white/15">
                 <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-primary-foreground/50 mb-3 flex items-center gap-2"><Landmark className="h-4 w-4" />{t("developersActive")}</p>
                 <div className="flex flex-wrap gap-2">
-                  {developers.map((d) => <Link key={d} href={lp(locale, `/developers/${projSlug(d)}`)} className="rounded-lg bg-white/10 hover:bg-white/20 px-3 py-1.5 text-sm text-white transition-colors">{d}</Link>)}
+                  {developers.map((d) => <Link key={d} href={`/developers/${projSlug(d)}`} className="rounded-lg bg-white/10 hover:bg-white/20 px-3 py-1.5 text-sm text-white transition-colors">{d}</Link>)}
                 </div>
               </div>
             )}
@@ -535,7 +535,7 @@ export default async function CommunityRichClient({ community, projects, forSale
             <SecHead eyebrow={t("ebWithin")} title={t("withinTitle", { name })} />
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
               {childCommunities.map((n) => (
-                <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-2xl overflow-hidden aspect-[16/10] border border-border/50">
+                <Link key={n.slug} href={`/communities/${n.slug}`} className="group relative rounded-2xl overflow-hidden aspect-[16/10] border border-border/50">
                   <ImageWithFallback src={n.featuredImage || IMAGE_PLACEHOLDER} alt={n.name} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
@@ -554,7 +554,7 @@ export default async function CommunityRichClient({ community, projects, forSale
             <SecHead eyebrow={t("ebNearby")} title={sh.nearby || t("nearbyTitle")} />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {nearby.map((n) => (
-                <Link key={n.slug} href={lp(locale, `/communities/${n.slug}`)} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
+                <Link key={n.slug} href={`/communities/${n.slug}`} className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-border/50">
                   <ImageWithFallback src={n.featuredImage || IMAGE_PLACEHOLDER} alt={n.name} fill sizes="(max-width:768px) 50vw, 16vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <span className="absolute bottom-2 left-2 right-2 text-white text-xs font-semibold leading-tight">{n.name}</span>
@@ -574,7 +574,7 @@ export default async function CommunityRichClient({ community, projects, forSale
             <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
               <Phone className="h-4 w-4" /> {t("bookConsult")}
             </a>
-            <Link href={lp(locale, `/search?locations=${encodeURIComponent(name)}`)} className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
+            <Link href={`/search?locations=${encodeURIComponent(name)}`} className="inline-flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/25 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
               {t("browseAll", { name })} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { usePathname, Link } from "@/navigation";
 import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, Globe, CalendarDays, FileText } from "lucide-react";
 
@@ -28,7 +28,6 @@ const COMING_SOON_ITEMS = [
 
 export default function PulseEmirateNav() {
   const t = useTranslations("pulseEmirateNav");
-  const locale = useLocale();
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -53,7 +52,6 @@ export default function PulseEmirateNav() {
               <Link
                 key={id}
                 href={href}
-                locale={locale}
                 className={`relative flex items-center gap-1.5 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-all min-h-[44px] flex-shrink-0 border-b-2 ${
                   active
                     ? "text-foreground"
@@ -78,7 +76,6 @@ export default function PulseEmirateNav() {
               <Link
                 key={id}
                 href={href}
-                locale={locale}
                 className={`relative flex items-center gap-1.5 px-4 py-3.5 text-sm font-medium whitespace-nowrap transition-all min-h-[44px] flex-shrink-0 border-b-2 ${
                   active
                     ? "text-foreground"

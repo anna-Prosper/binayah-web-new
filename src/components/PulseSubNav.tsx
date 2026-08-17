@@ -1,9 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { useLocale } from "next-intl";
+// next-intl's usePathname returns the pathname WITHOUT the locale prefix, and
+// Link adds the prefix back on output — so this file no longer hand-strips it.
+import { Link, usePathname } from "@/navigation";
 import { Activity, TrendingUp, BarChart2, Calculator, BookOpen, FileText } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -17,18 +17,9 @@ const NAV_ITEMS = [
 
 export default function PulseSubNav() {
   const t = useTranslations("pulseSubNav");
-  const locale = useLocale();
-  const pathname = usePathname();
-
-  // Normalise pathname — strip locale prefix e.g. /en/pulse/trending → /pulse/trending
-  const localePrefixes = ["/en", "/ar", "/zh", "/ru"];
-  let normPath = pathname ?? "/";
-  for (const prefix of localePrefixes) {
-    if (normPath.startsWith(prefix + "/") || normPath === prefix) {
-      normPath = normPath.slice(prefix.length) || "/";
-      break;
-    }
-  }
+  // Already locale-stripped by next-intl (the old hand-rolled version only knew
+  // en/ar/zh/ru, so the fr, he and vi tabs never highlighted as active).
+  const normPath = usePathname() ?? "/";
 
   const isActive = (href: string) => {
     if (href === "/pulse") {
@@ -49,7 +40,7 @@ export default function PulseSubNav() {
             return (
               <Link
                 key={id}
-                href={`/${locale}${href}`}
+                href={href}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all min-h-[44px] flex-shrink-0 ${
                   active
                     ? "text-white shadow-sm"

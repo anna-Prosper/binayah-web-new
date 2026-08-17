@@ -3,7 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Bell, BellRing, BellOff, Check, Loader2, TrendingUp, Building2, Sparkles } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// Locale-aware router: next/navigation's router.push takes a bare path, which
+// localePrefix "as-needed" resolves to the DEFAULT locale, kicking non-English
+// users into English mid-flow. This variant keeps them in their locale.
+import { useRouter } from "@/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProjectSubscriptions } from "@/hooks/useProjectSubscriptions";
 import { useTranslations } from "next-intl";

@@ -11,6 +11,11 @@ import { Building2, Search, Loader2 } from "lucide-react";
 import { Link } from "@/navigation";
 import NextImage from "next/image";
 import { useState, useRef, useCallback } from "react";
+// Intentional pair: Next's usePathname INCLUDES the locale segment and this
+// router.replace pushes that exact pathname straight back (pagination sync only,
+// never a cross-page navigation). Swapping in next-intl's locale-stripping
+// usePathname here would drop the prefix and bounce the user into English.
+// eslint-disable-next-line no-restricted-imports
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 

@@ -6,6 +6,10 @@ import { Phone, Mail, MapPin } from "lucide-react";
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import Image from "next/image";
+// Intentional: this pathname is sent to a sales agent as a WhatsApp reference
+// link, so it must be the REAL URL including the locale segment. next-intl's
+// usePathname strips that prefix, which would send the wrong link.
+// eslint-disable-next-line no-restricted-imports
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { waHref } from "@/lib/whatsapp";

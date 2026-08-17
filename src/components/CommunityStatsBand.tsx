@@ -2,6 +2,12 @@
 // Server component (no "use client") so the stats + FAQs render in SSR HTML —
 // real, crawlable depth for community/area/off-plan-in templates, plus FAQPage
 // schema for rich results / AI answers. Renders nothing when there's no data.
+// Intentional: the `lp` prefix in this file also feeds BreadcrumbJsonLd/FAQJsonLd,
+// which concatenates href onto the site origin to emit absolute SEO URLs and never
+// passes through next-intl. Switching to the locale-aware Link would require
+// stripping `lp` from the hrefs, which would silently emit English canonical
+// breadcrumb URLs on every localized page. Keep the manual prefix here.
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import { TrendingUp, Percent, Building2, LineChart } from "lucide-react";
 import { FAQJsonLd } from "@/components/JsonLd";

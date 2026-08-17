@@ -102,11 +102,13 @@ export default async function ReportsPage({ params }: Props) {
           <p className="text-muted-foreground py-16 text-center">The first weekly report is on its way — check back soon.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* No `locale` prop on Link below — it already resolves the active
+                locale, and forcing it emitted "/en/…" on the default locale,
+                which localePrefix "as-needed" is meant to omit. */}
             {reports.map((r) => (
               <Link
                 key={r.slug}
                 href={`/pulse/reports/${r.slug}`}
-                locale={locale}
                 className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20"
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-muted">

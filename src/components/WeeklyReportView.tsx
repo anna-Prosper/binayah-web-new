@@ -3,7 +3,8 @@
 // branded KPI tiles, a ranked movers table and project cards. Purely
 // presentational (no hooks), so it ships zero JS. Falls back to prose content
 // (rendered by the page) when reportData is absent.
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import { TrendingUp, TrendingDown, Minus, Building2, Award, ArrowRight, Landmark } from "lucide-react";
 
 interface Kpis {
@@ -31,7 +32,6 @@ function fmtAed(n: number): string {
   if (n >= 1e3) return `AED ${Math.round(n / 1e3)}K`;
   return `AED ${Math.round(n).toLocaleString()}`;
 }
-const lp = (locale: string, path: string) => (locale === "en" ? path : `/${locale}${path}`);
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
@@ -43,7 +43,7 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
   );
 }
 
-export default function WeeklyReportView({ data, locale }: { data: ReportData; locale: string }) {
+export default function WeeklyReportView({ data }: { data: ReportData }) {
   const k = data.kpis;
   const movers = data.movers || [];
   const launches = data.launches || [];
@@ -115,7 +115,7 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>{i + 1}</div>
                   <div className="min-w-0 flex-1">
                     <div className="font-semibold text-foreground truncate">
-                      {m.slug ? <Link href={lp(locale, `/communities/${m.slug}`)} className="hover:text-primary transition-colors">{m.name}</Link> : m.name}
+                      {m.slug ? <Link href={`/communities/${m.slug}`} className="hover:text-primary transition-colors">{m.name}</Link> : m.name}
                     </div>
                     <div className="mt-1.5 h-1.5 w-full max-w-[220px] rounded-full bg-muted overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${Math.max(8, Math.round((m.ppsf / maxPpsf) * 100))}%`, background: "linear-gradient(90deg, #1A7A5A, #0B3D2E)" }} />
@@ -153,7 +153,7 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
                 </>
               );
               return l.slug ? (
-                <Link key={i} href={lp(locale, `/project/${l.slug}`)} className="group block rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all">{inner}</Link>
+                <Link key={i} href={`/project/${l.slug}`} className="group block rounded-2xl border border-border/60 bg-card p-5 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all">{inner}</Link>
               ) : (
                 <div key={i} className="rounded-2xl border border-border/60 bg-card p-5">{inner}</div>
               );
@@ -174,7 +174,7 @@ export default function WeeklyReportView({ data, locale }: { data: ReportData; l
       <section className="rounded-2xl px-6 py-8 text-center text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
         <h2 className="text-2xl font-bold mb-2">Want tailored advice?</h2>
         <p className="text-white/75 max-w-xl mx-auto mb-5">Our advisors can brief you on any community or project in this report — pricing, yields and the right time to move.</p>
-        <Link href={lp(locale, "/contact")} className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
+        <Link href={"/contact"} className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
           Talk to our team <ArrowRight className="h-4 w-4" />
         </Link>
       </section>

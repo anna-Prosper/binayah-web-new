@@ -10,7 +10,10 @@ import {
   Search,
   Sparkles,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+// Locale-aware router: suggestion hrefs are bare (e.g. "/project/<slug>" from
+// home-smart-search), which localePrefix "as-needed" resolves to the DEFAULT
+// locale — picking a suggestion kicked non-English users into English.
+import { useRouter } from "@/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HomeSearchSuggestion, HomeSearchSuggestionGroups } from "@/lib/home-smart-search";
 

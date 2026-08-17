@@ -3,7 +3,8 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, Clock } from "lucide-react";
@@ -38,7 +39,6 @@ const LABEL: Record<string, { overline: string; h1: string; sub: string }> = {
 };
 
 export default function ConstructionUpdatesClient({ articles, locale }: { articles: ProjectArticle[]; locale: string }) {
-  const lp = locale === "en" ? "" : `/${locale}`;
   const isRtl = locale === "ar" || locale === "he";
   const label = LABEL[locale] ?? LABEL.en;
 
@@ -67,7 +67,7 @@ export default function ConstructionUpdatesClient({ articles, locale }: { articl
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
               {articles.map((a, i) => (
                 <motion.div key={a._id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: Math.min(i * 0.06, 0.3) }} className="h-full">
-                  <Link href={`${lp}/construction-updates/${a.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
+                  <Link href={`/construction-updates/${a.slug}`} className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/50 hover:border-primary/20">
                     <div className="relative overflow-hidden aspect-[16/10]">
                       <Image
                         src={a.heroImage?.url || FALLBACK_IMAGE}

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter, useParams } from "next/navigation";
-// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
-// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
-// readers back into English. This variant prefixes hrefs with the active locale.
-import { Link } from "@/navigation";
+import { useSearchParams } from "next/navigation";
+// Locale-aware Link/router (next-intl): both prefix the active locale themselves.
+// Plain next/link + next/navigation emit bare paths, which localePrefix
+// "as-needed" resolves to the DEFAULT locale, dropping non-English users into
+// English. The push below passes a bare "/signin" precisely because this router
+// adds the prefix — hand-building `/${locale}/signin` would double it.
+import { Link, useRouter } from "@/navigation";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -13,8 +15,6 @@ export default function ResetPasswordClient() {
   const t = useTranslations("resetPassword");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const params = useParams<{ locale?: string }>();
-  const locale = params?.locale || "en";
   const token = searchParams?.get("token") || "";
 
   const [password, setPassword] = useState("");
@@ -79,7 +79,7 @@ export default function ResetPasswordClient() {
         setLoading(false);
         return;
       }
-      router.push(`/${locale}/signin?reset=1`);
+      router.push("/signin?reset=1");
     } catch {
       setError(t("errors.networkError"));
       setLoading(false);

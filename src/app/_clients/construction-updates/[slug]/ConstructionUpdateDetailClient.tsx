@@ -1,7 +1,8 @@
 /* eslint-disable i18next/no-literal-string */
 "use client";
 
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { ArrowRight, ArrowUp, Bookmark, Calendar, CalendarCheck, ChevronRight, Clock, Facebook, Linkedin, Link as LinkIcon, MessageCircle, TrendingUp, Twitter, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -58,7 +59,6 @@ function formatDate(dateStr?: string | null) {
 }
 
 export default function ProjectArticleDetailClient({ article, locale }: { article: ProjectArticle; locale: string }) {
-  const lp = locale === "en" ? "" : `/${locale}`;
   const isRtl = locale === "ar" || locale === "he" || article.dir === "rtl";
   const l = LABELS[locale] ?? LABELS.en;
   const [progress, setProgress] = useState(0);
@@ -67,7 +67,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
   const [copied, setCopied] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : `https://www.binayah.ae${lp}/construction-updates/${article.slug}`;
+  const shareUrl = typeof window !== "undefined" ? window.location.href : `https://www.binayah.ae/construction-updates/${article.slug}`;
   const shareText = encodeURIComponent(article.h1);
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
@@ -114,9 +114,9 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
         {/* Breadcrumb at top */}
         <div className="absolute top-0 left-0 right-0 h-12 sm:h-16 flex items-center px-4 sm:px-6 z-10">
           <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/70">
-            <Link href={`${lp}/`} className="hover:text-white transition-colors whitespace-nowrap">{l.home}</Link>
+            <Link href={`/`} className="hover:text-white transition-colors whitespace-nowrap">{l.home}</Link>
             <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
-            <Link href={`${lp}/construction-updates`} className="hover:text-white transition-colors whitespace-nowrap">{l.back}</Link>
+            <Link href={`/construction-updates`} className="hover:text-white transition-colors whitespace-nowrap">{l.back}</Link>
             <ChevronRight className="h-3 w-3 flex-shrink-0 text-white/40" />
             <span className="text-white/90 truncate">{article.h1}</span>
           </nav>
@@ -246,7 +246,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
                 </div>
                 <h3 className="text-lg font-bold mb-1.5">{l.investmentTitle}</h3>
                 <p className="text-sm text-primary-foreground/75 leading-relaxed mb-4">{l.investmentDesc}</p>
-                <Link href={`${lp}/contact`} className="block w-full text-center px-4 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors">
+                <Link href={`/contact`} className="block w-full text-center px-4 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors">
                   {l.bookConsultation}
                 </Link>
               </div>
@@ -255,7 +255,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
               {article.projectSlug && (
                 <div>
                   <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">{l.thisProject}</p>
-                  <Link href={`${lp}/project/${article.projectSlug}`} className="group flex items-start gap-3 rounded-xl border border-border p-3 hover:border-primary/30 transition-colors">
+                  <Link href={`/project/${article.projectSlug}`} className="group flex items-start gap-3 rounded-xl border border-border p-3 hover:border-primary/30 transition-colors">
                     {article.heroImage?.url && (
                       <div className="relative w-20 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                         <Image src={article.heroImage.url} alt={article.h1} fill sizes="80px" className="object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -325,7 +325,7 @@ export default function ProjectArticleDetailClient({ article, locale }: { articl
               <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(article.h1)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1fbf58] transition-colors">
                 <MessageCircle className="h-4 w-4" /> {l.ctaWhatsApp}
               </a>
-              <Link href={`${lp}/contact`} className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors">
+              <Link href={`/contact`} className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors">
                 <CalendarCheck className="h-4 w-4" /> {l.bookConsultation}
               </Link>
             </div>

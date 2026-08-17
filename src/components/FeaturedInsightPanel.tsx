@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ExternalLink, Share2, Copy, CheckCheck } from "lucide-react";
+import { Link } from "@/navigation";
 import { useState } from "react";
 
 export interface InsightArticle {
@@ -55,6 +56,9 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
     });
     return `${article.url}?${params.toString()}`;
   };
+
+  // Relative url ⇒ one of our own articles; absolute ⇒ external headline.
+  const isInternalArticle = article.url.startsWith("/");
 
   const handleCopy = async () => {
     try {
@@ -169,16 +173,30 @@ export default function FeaturedInsightPanel({ article, ogParams }: Props) {
               {t("shareX")}
             </button>
 
-            <a
-              href={buildShareUrl("direct")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-auto flex items-center gap-1 text-[11px] font-semibold hover:text-accent transition-colors"
-              style={{ color: "hsl(43, 55%, 55%)" }}
-            >
-              {t("readMore")}
-              <ExternalLink className="h-3 w-3" />
-            </a>
+            {/* article.url is our own /news/<slug> for Binayah articles and an
+                absolute URL for external headlines. Internal ones go through the
+                locale-aware Link so a Russian reader stays on the Russian
+                article; external ones keep the new-tab anchor. */}
+            {isInternalArticle ? (
+              <Link
+                href={buildShareUrl("direct")}
+                className="ml-auto flex items-center gap-1 text-[11px] font-semibold hover:text-accent transition-colors"
+                style={{ color: "hsl(43, 55%, 55%)" }}
+              >
+                {t("readMore")}
+              </Link>
+            ) : (
+              <a
+                href={buildShareUrl("direct")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto flex items-center gap-1 text-[11px] font-semibold hover:text-accent transition-colors"
+                style={{ color: "hsl(43, 55%, 55%)" }}
+              >
+                {t("readMore")}
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
           </div>
         </div>
       </div>

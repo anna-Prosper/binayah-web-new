@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// Locale-aware router: next/navigation's router.push takes a bare path, which
+// localePrefix "as-needed" resolves to the DEFAULT locale, kicking non-English
+// users into English mid-flow. This variant keeps them in their locale.
+import { useRouter } from "@/navigation";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useHoneypot } from "@/components/Honeypot";

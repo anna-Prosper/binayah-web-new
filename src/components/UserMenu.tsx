@@ -2,7 +2,10 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+// Locale-aware router: next/navigation's router.push takes a bare path, which
+// localePrefix "as-needed" resolves to the DEFAULT locale, kicking non-English
+// users into English mid-flow. This variant keeps them in their locale.
+import { useRouter } from "@/navigation";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
 // readers back into English. This variant prefixes hrefs with the active locale.

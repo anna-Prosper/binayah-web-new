@@ -76,6 +76,36 @@
   "overrides": [
     {
       "files": [
+        "src/app/_clients/**/*.tsx",
+        "src/app/_clients/**/*.ts",
+        "src/components/**/*.tsx",
+        "src/components/**/*.ts"
+      ],
+      "excludedFiles": [
+        "src/app/**/admin/**",
+        "src/components/**/admin/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "next/link",
+                "message": "Use `import { Link } from '@/navigation'` — next/link emits bare hrefs that resolve to the default locale."
+              },
+              {
+                "name": "next/navigation",
+                "importNames": ["useRouter", "redirect", "permanentRedirect", "usePathname"],
+                "message": "Use the locale-aware equivalent from '@/navigation'. (useSearchParams/useParams are fine from next/navigation.)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
         "src/app/**/admin/**/*.{ts,tsx}"
       ],
       "rules": {

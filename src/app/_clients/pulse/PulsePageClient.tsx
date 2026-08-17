@@ -1373,19 +1373,27 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {mixedNews.map((item) => {
                     const timeLabel = relativeTime(item.publishedAt);
+                    // This list mixes our own /news/<slug> articles with external
+                    // headlines. Internal ones must go through the locale-aware
+                    // Link (a bare href resolves to the default locale, sending a
+                    // Russian reader to the English article) and stay in-tab;
+                    // external ones remain plain anchors opening in a new tab.
+                    const isInternal = item.url.startsWith("/");
+                    const cardClass =
+                      "group bg-card border border-border/50 rounded-xl p-4 hover:border-accent/40 hover:shadow-md transition-all flex flex-col gap-3";
+                    const CardTag = isInternal ? Link : "a";
+                    const cardProps = isInternal
+                      ? { href: item.url }
+                      : { href: item.url, target: "_blank", rel: "noopener noreferrer" };
                     return (
-                      <a
-                        key={item.url}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group bg-card border border-border/50 rounded-xl p-4 hover:border-accent/40 hover:shadow-md transition-all flex flex-col gap-3"
-                      >
+                      <CardTag key={item.url} {...cardProps} className={cardClass}>
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full">{item.source}</span>
                           <div className="flex items-center gap-1.5">
                             <span className="text-[10px] text-muted-foreground/60">{timeLabel}</span>
-                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-accent transition-colors" />
+                            {!isInternal && (
+                              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-accent transition-colors" />
+                            )}
                           </div>
                         </div>
                         <p className="text-sm font-semibold text-foreground leading-snug line-clamp-3 group-hover:text-accent transition-colors">{item.title}</p>
@@ -1396,7 +1404,7 @@ export default function PulsePageClient({ marketStats, marketData, areasData, pr
                             {new Date(item.publishedAt).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
                           </p>
                         </div>
-                      </a>
+                      </CardTag>
                     );
                   })}
                 </div>

@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import { TrendingUp } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { serverApiUrl, serverFetch } from "@/lib/api";
@@ -65,7 +66,6 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
   }));
 
   const t = await getTranslations({ locale, namespace: "common.sidebar" });
-  const lp = locale === "en" ? "" : `/${locale}`;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
   // ── Market snapshot rows (yield omitted — the hero already owns it as a range;
@@ -103,7 +103,7 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
         <h3 className="text-lg font-bold mb-1.5">{t("consultTitle")}</h3>
         <p className="text-sm text-primary-foreground/75 leading-relaxed mb-4">{t("consultDesc")}</p>
         <Link
-          href={`${lp}/contact`}
+          href={`/contact`}
           className="block w-full text-center px-4 py-2.5 rounded-xl bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90 transition-colors"
         >
           {t("consultCta")}
@@ -131,7 +131,7 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
           <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-foreground mb-4">{t("guidesLabel")}</p>
           <div className="space-y-2.5">
             {guides.map((g) => (
-              <Link key={g.slug} href={`${lp}/pulse/guides/${g.slug}`} className="group flex items-start gap-3 rounded-xl border border-border/50 p-3 hover:border-primary/30 transition-colors">
+              <Link key={g.slug} href={`/pulse/guides/${g.slug}`} className="group flex items-start gap-3 rounded-xl border border-border/50 p-3 hover:border-primary/30 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <TrendingUp className="h-4 w-4 text-primary" />
                 </div>

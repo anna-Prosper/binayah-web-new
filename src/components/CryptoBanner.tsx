@@ -2,16 +2,16 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself, so hrefs stay bare here.
+import { Link } from "@/navigation";
 const cryptoBg = "/assets/crypto-banner.webp";
 
 const CryptoBanner = () => {
   const t = useTranslations("home.crypto");
   const tCommon = useTranslations("common");
-  const locale = useLocale();
-  const cryptoHref = `${locale === "en" ? "" : `/${locale}`}/buy-with-crypto`;
+  const cryptoHref = "/buy-with-crypto";
   return (
   <section className="relative overflow-hidden">
     <div className="relative h-[130px] sm:h-[200px] lg:h-[240px]">

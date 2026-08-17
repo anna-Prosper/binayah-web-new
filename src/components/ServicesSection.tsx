@@ -1,5 +1,6 @@
 import { ClipboardCheck, BarChart3, Wallet, Users, Wrench, Star, Home, ArrowRight } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link prefixes the active locale itself — hrefs stay bare.
+import { Link } from "@/navigation";
 import { getTranslations } from "next-intl/server";
 
 // Server Component: renders as real crawlable HTML in the initial payload with
@@ -9,13 +10,12 @@ import { getTranslations } from "next-intl/server";
 // gated behind LazyMount's IntersectionObserver, so crawlers see it.
 export default async function ServicesSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "home.sections.services" });
-  const lp = locale === "en" ? "" : `/${locale}`;
-  const PM = `${lp}/services/property-management`;
+  const PM = `/services/property-management`;
   const services = [
     { icon: ClipboardCheck, title: t("handover"), desc: t("handoverDesc"), popular: true, href: PM },
     { icon: Wallet, title: t("rentCollection"), desc: t("rentCollectionDesc"), popular: true, href: PM },
-    { icon: Home, title: t("sellProperty"), desc: t("sellPropertyDesc"), popular: false, href: `${lp}/sell` },
-    { icon: BarChart3, title: t("marketing"), desc: t("marketingDesc"), href: `${lp}/list-your-property` },
+    { icon: Home, title: t("sellProperty"), desc: t("sellPropertyDesc"), popular: false, href: `/sell` },
+    { icon: BarChart3, title: t("marketing"), desc: t("marketingDesc"), href: `/list-your-property` },
     { icon: Users, title: t("tenantManagement"), desc: t("tenantManagementDesc"), href: PM },
     { icon: Wrench, title: t("maintenance"), desc: t("maintenanceDesc"), href: PM },
   ];
@@ -95,7 +95,7 @@ export default async function ServicesSection({ locale }: { locale: string }) {
       {/* View All Services button */}
       <div className="mt-5 sm:mt-10 text-center">
         <Link
-          href={`${lp}/services`}
+          href={`/services`}
           className="inline-flex items-center gap-2 px-6 py-2.5 sm:py-3 rounded-full text-[12px] sm:text-sm font-bold transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] text-white border border-white/20 hover:border-white/40 bg-white/[0.06] hover:bg-white/10"
         >
           {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />

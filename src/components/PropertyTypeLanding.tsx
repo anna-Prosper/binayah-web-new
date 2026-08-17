@@ -1,5 +1,11 @@
 /* eslint-disable i18next/no-literal-string -- content from data file */
 import React from "react";
+// Intentional: the `lp` prefix in this file also feeds BreadcrumbJsonLd/FAQJsonLd,
+// which concatenates href onto the site origin to emit absolute SEO URLs and never
+// passes through next-intl. Switching to the locale-aware Link would require
+// stripping `lp` from the hrefs, which would silently emit English canonical
+// breadcrumb URLs on every localized page. Keep the manual prefix here.
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import type { PropertyTypeLocale } from "@/lib/property-type-pages";
 import { FAQJsonLd, BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";

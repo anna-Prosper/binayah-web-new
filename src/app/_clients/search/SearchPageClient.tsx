@@ -22,7 +22,12 @@ import PriceRangeFilter from "@/components/PriceRangeFilter";
 import PriceFilter from "@/components/PriceFilter";
 import DeveloperFilter from "@/components/DeveloperFilter";
 import FilterSheet from "@/components/FilterSheet";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+// Locale-aware router: the bare "/search?…" pushes below resolved to the DEFAULT
+// locale under localePrefix "as-needed", so filtering on /ru/search threw the
+// user back to the English page. useSearchParams has no next-intl equivalent and
+// is locale-agnostic anyway, so it stays on next/navigation.
+import { useRouter } from "@/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {

@@ -2,7 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Target, TrendingUp, Sparkles, ArrowRight, FileText } from "lucide-react";
-import { useRouter } from "next/navigation";
+// Locale-aware router: next/navigation's router.push takes a bare path, which
+// localePrefix "as-needed" resolves to the DEFAULT locale, kicking non-English
+// users into English mid-flow. This variant keeps them in their locale.
+import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 
 export default function ValuationBanner() {

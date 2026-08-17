@@ -15,6 +15,11 @@ import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "luc
 import { Link } from "@/navigation";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useCallback, useMemo, useState } from "react";
+// Intentional pair: Next's usePathname INCLUDES the locale segment and this
+// router.replace pushes that exact pathname straight back (pagination sync only,
+// never a cross-page navigation). Swapping in next-intl's locale-stripping
+// usePathname here would drop the prefix and bounce the user into English.
+// eslint-disable-next-line no-restricted-imports
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useInfiniteQuery } from "@tanstack/react-query";
