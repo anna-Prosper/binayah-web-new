@@ -92,14 +92,16 @@ export async function getCachedSearch<T = any>(query: string): Promise<T | null>
 // when cold) via Promise.all — so the slowest dominated TTFB and capped mobile
 // LCP at ~2.4s+. Cache the whole bundle across requests so the SSR reads warm
 // data; the slow upstream is only paid in the background every `revalidate`.
-const _homepageUncached = async (): Promise<{
+const _homepageUncached = async (locale: string = "en"): Promise<{
   projects: unknown[] | null; sale: unknown[] | null; rental: unknown[] | null; articles: unknown[] | null;
 }> => {
   const [p, s, r, a] = await Promise.all([
     serverFetch(serverApiUrl("/api/projects?limit=4&sort=smart"), 20_000),
     serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Sale"), 20_000),
     serverFetch(serverApiUrl("/api/listings?limit=6&listingType=Rent"), 20_000),
-    serverFetch(serverApiUrl("/api/news?limit=3"), 20_000),
+    // Only /api/news serves translations; projects and listings have no `lang`
+    // support, so they are intentionally fetched once regardless of locale.
+    serverFetch(serverApiUrl(`/api/news?limit=3&lang=${encodeURIComponent(locale)}`), 20_000),
   ]);
   const j = async (res: Response): Promise<unknown[] | null> => {
     try { return res.ok ? await res.json() : null; } catch { return null; }
@@ -110,9 +112,13 @@ const _homepageUncached = async (): Promise<{
   return out;
 };
 const _homepageCached = unstable_cache(_homepageUncached, ["homepage-data"], { revalidate: 300 });
-export async function getHomepageData() {
+// `locale` is part of the cache key (unstable_cache keys on the arguments), so
+// each locale gets its own bundle. Without it the first locale to warm the cache
+// served its article titles to every other locale — the Russian homepage showed
+// English headlines under Russian chrome.
+export async function getHomepageData(locale: string = "en") {
   try {
-    return await _homepageCached();
+    return await _homepageCached(locale);
   } catch {
     return { projects: null, sale: null, rental: null, articles: null };
   }

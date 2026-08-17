@@ -256,7 +256,7 @@ export default async function HomePage({ params }: Props) {
   const faqs = HOME_FAQS[locale] || HOME_FAQS.en;
   // Cached across requests (5-min revalidate) so SSR doesn't wait on the slow
   // Render API every load — that wait was the dominant TTFB/LCP cost.
-  const data = await getHomepageData();
+  const data = await getHomepageData(locale);
   const saleListings = (data.sale && data.sale.length > 0 ? data.sale : FALLBACK_LISTINGS) as any[];
   const rentalListings = (data.rental ?? []) as any[];
   const projects = (data.projects && data.projects.length > 0 ? data.projects : FALLBACK_PROJECTS) as any[];
