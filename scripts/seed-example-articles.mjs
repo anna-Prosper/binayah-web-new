@@ -3,8 +3,13 @@
  * Run: node scripts/seed-example-articles.mjs
  */
 
-const API_BASE = process.env.API_BASE_URL || "https://binayah-api.onrender.com";
-const ADMIN_SECRET = "secret";
+const API_BASE = process.env.API_BASE_URL || "http://localhost:3001";
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+if (!ADMIN_SECRET) {
+  console.error("ADMIN_SECRET env var is required. Refusing to run.");
+  process.exit(1);
+}
 
 const articles = [
   // ── EXAMPLE A: Short, punchy — chart + quote + bullet list ───────────────

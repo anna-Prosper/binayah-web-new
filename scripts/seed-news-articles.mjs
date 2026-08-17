@@ -1,11 +1,17 @@
 /**
  * Seeds 3 sample structured news articles into the DB via the API upsert endpoint.
- * Run: node scripts/seed-news-articles.mjs
- * Requires: API_BASE_URL env var or defaults to https://binayah-api.onrender.com
+ * Run: ADMIN_SECRET=... node scripts/seed-news-articles.mjs
+ * Requires: ADMIN_SECRET. API_BASE_URL defaults to localhost — set it explicitly
+ * to target a remote environment.
  */
 
-const API_BASE = process.env.API_BASE_URL || "https://binayah-api.onrender.com";
-const ADMIN_SECRET = "secret";
+const API_BASE = process.env.API_BASE_URL || "http://localhost:3001";
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+if (!ADMIN_SECRET) {
+  console.error("ADMIN_SECRET env var is required. Refusing to run.");
+  process.exit(1);
+}
 
 const articles = [
   // ── ARTICLE 1: Full-featured (many block types) ──────────────────────────

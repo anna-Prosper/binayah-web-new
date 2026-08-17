@@ -25,8 +25,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { useTranslations } from "next-intl";
 import ArticleBody, { type ArticleBlock } from "@/components/ArticleBody";
 import { HoneypotInput } from "@/components/Honeypot";
-import { useState, useEffect, useRef, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 
 interface Article {
   _id: string;
@@ -122,9 +121,18 @@ function NewsDetailInner({
     }
   };
 
-  const searchParams = useSearchParams();
-  const containedHero = searchParams?.get("hero") === "contained";
-  const boxedHero = searchParams?.get("hero") === "boxed";
+  // The ?hero= preview toggle is read after mount, NOT via useSearchParams():
+  // that hook forced the whole article body out of the static prerender, so
+  // every /news/{slug} page was served with an empty body — no <h1>, no copy.
+  // ?hero= never appears on a canonical/indexed URL, so SSR always renders the
+  // default full-bleed hero (with its h1) and crawlers get the real article.
+  const [heroVariant, setHeroVariant] = useState<"contained" | "boxed" | null>(null);
+  useEffect(() => {
+    const h = new URLSearchParams(window.location.search).get("hero");
+    if (h === "contained" || h === "boxed") setHeroVariant(h);
+  }, []);
+  const containedHero = heroVariant === "contained";
+  const boxedHero = heroVariant === "boxed";
 
   return (
     <div className="min-h-screen bg-background">
@@ -605,10 +613,8 @@ function NewsDetailInner({
   );
 }
 
+// No Suspense wrapper: useSearchParams() is gone (see heroVariant), so the
+// article body prerenders in full and is server-rendered for crawlers.
 export default function NewsDetailClient(props: Parameters<typeof NewsDetailInner>[0]) {
-  return (
-    <Suspense fallback={null}>
-      <NewsDetailInner {...props} />
-    </Suspense>
-  );
+  return <NewsDetailInner {...props} />;
 }

@@ -7,8 +7,8 @@ import { motion } from "framer-motion";
 import { Building2, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { Suspense, useState, useRef, useCallback } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState, useRef, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 interface Developer {
@@ -35,7 +35,6 @@ function DevelopersPageClientInner({
   const tSearch = useTranslations("search");
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(initialPage);
@@ -47,12 +46,14 @@ function DevelopersPageClientInner({
   // Sync ?page=N into URL without scroll-jumping. Drops the param when
   // searching so back-button after a search returns to page 1.
   const writePageToUrl = useCallback((n: number) => {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    // window.location.search, not useSearchParams(): that hook forced this page
+    // out of the static prerender. Runs only on a click, so window is defined.
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
     if (n <= 1) params.delete("page");
     else params.set("page", String(n));
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : (pathname ?? ""), { scroll: false });
-  }, [router, pathname, searchParams]);
+  }, [router, pathname]);
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore || search) return;
@@ -237,12 +238,8 @@ function DevelopersPageClientInner({
   );
 }
 
-// Suspense boundary for useSearchParams() — required now that /developers is
-// statically prerendered. SSR content comes from server props, so SEO-safe.
+// No Suspense wrapper: useSearchParams() is gone (see writePageToUrl), so the
+// page prerenders in full instead of serving an empty fallback body.
 export default function DevelopersPageClient(props: Parameters<typeof DevelopersPageClientInner>[0]) {
-  return (
-    <Suspense fallback={null}>
-      <DevelopersPageClientInner {...props} />
-    </Suspense>
-  );
+  return <DevelopersPageClientInner {...props} />;
 }

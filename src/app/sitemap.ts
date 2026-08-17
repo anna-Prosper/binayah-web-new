@@ -334,7 +334,7 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [projects, listings, articles, reports, communities, updates, developers, projectGuides, buildings] =
+  const [projects, listings, articles, reports, communities, developers, projectGuides, buildings] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
       // items regardless of ?limit=, so the sitemap would only include 100 of
@@ -345,10 +345,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchSlugs("/api/news?limit=1000&excludeCategory=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/news?limit=1000&category=Weekly%20Report&fields=slug,updatedAt"),
       fetchSlugs("/api/communities?limit=500&fields=slug,updatedAt"),
-      fetchSlugs("/api/construction-updates?limit=500&fields=slug,updatedAt"),
       fetchSlugs("/api/developers?limit=500&fields=slug,updatedAt"),
-      // Project guides (project_articles) — served at /construction-updates/{slug}
-      fetchSlugs("/api/project-articles?limit=200"),
+      // Project guides (project_articles) — the ONLY data the /construction-updates/{slug}
+      // route renders. The old /api/construction-updates source was removed: those
+      // slugs (project slugs) have no page and returned ~980 soft-404s in the sitemap.
+      fetchSlugs("/api/project-articles?limit=1000"),
       // DLD building pages — only those with recorded sales (non-thin). Direct
       // DB read (no API 100-cap) like projects/listings.
       // Submit every INDEXABLE building page. This filter must mirror the
@@ -439,7 +440,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // redirect SOURCES: arjan/downtown/the-valley → "-dubai"; meydan-dubai and
     // the MBR mis-spellings → the enriched meydan / mohammed-bin-rashid-city.
     ...communities.filter((c) => !["arjan", "downtown", "the-valley", "meydan-dubai", "mohammad-bin-rashid-city", "mohd-bin-rashid-city", "jvc", "akoya-damac-hills", "impz-dubai", "port-rashid", "arabian-ranches-1"].includes(c.slug)).map((c) => withAlternates(`/communities/${c.slug}`, 0.7, "monthly", c.lastmod ?? now)),
-    ...updates.map((u) => withAlternates(`/construction-updates/${u.slug}`, 0.6, "weekly", u.lastmod ?? now)),
     ...projectGuides.map((g) => withAlternates(`/construction-updates/${g.slug}`, 0.6, "weekly", g.lastmod ?? now)),
     ...developers.map((d) => withAlternates(`/developers/${d.slug}`, 0.6, "monthly", d.lastmod ?? now)),
     // DLD building pages — lean entries (no hreflang) to respect the sitemap size cap.

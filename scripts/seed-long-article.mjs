@@ -1,4 +1,10 @@
-const API_BASE = process.env.API_BASE_URL || "https://binayah-api.onrender.com";
+const API_BASE = process.env.API_BASE_URL || "http://localhost:3001";
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+if (!ADMIN_SECRET) {
+  console.error("ADMIN_SECRET env var is required. Refusing to run.");
+  process.exit(1);
+}
 
 const article = {
   slug: "dubai-real-estate-complete-guide-2026",
@@ -338,7 +344,7 @@ const article = {
 
 const res = await fetch(`${API_BASE}/api/news/upsert`, {
   method: "POST",
-  headers: { "Content-Type": "application/json", "x-admin-secret": "secret" },
+  headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
   body: JSON.stringify(article),
 });
 const data = await res.json();

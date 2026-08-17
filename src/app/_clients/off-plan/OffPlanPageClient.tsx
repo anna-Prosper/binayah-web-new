@@ -11,8 +11,8 @@ import { motion } from "framer-motion";
 import { Building, CalendarDays, MapPin, Loader2 } from "lucide-react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { Suspense, useState, useEffect, useRef, useCallback } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 interface Project {
@@ -46,7 +46,6 @@ function OffPlanPageClientInner({
   const { format: fmtCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(initialPage);
@@ -58,12 +57,15 @@ function OffPlanPageClientInner({
   // Sync ?page=N into the URL without scroll-jumping. router.replace keeps
   // the URL in lock-step with state so back-button returns to the right page.
   const writePageToUrl = useCallback((n: number) => {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    // window.location.search, not useSearchParams(): that hook forced this page
+    // out of the static prerender, so it was served with an EMPTY body (no h1).
+    // Runs only on a click, so window is defined.
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
     if (n <= 1) params.delete("page");
     else params.set("page", String(n));
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : (pathname ?? ""), { scroll: false });
-  }, [router, pathname, searchParams]);
+  }, [router, pathname]);
 
   const loadMore = useCallback(async () => {
     if (loadingRef.current || !hasMoreRef.current) return;
@@ -194,13 +196,9 @@ function OffPlanPageClientInner({
   );
 }
 
-// Suspense boundary for useSearchParams() — required once the host page is
-// statically prerendered (off-plan/abu-dhabi, /sharjah, etc.). SSR content
-// comes from server props, so this stays SEO-safe.
+// No Suspense wrapper: useSearchParams() is gone (see writePageToUrl), so the
+// page prerenders in full — statically prerendered hosts (off-plan/abu-dhabi,
+// /sharjah, etc.) no longer serve an empty <Suspense fallback={null}> body.
 export default function OffPlanPageClient(props: Parameters<typeof OffPlanPageClientInner>[0]) {
-  return (
-    <Suspense fallback={null}>
-      <OffPlanPageClientInner {...props} />
-    </Suspense>
-  );
+  return <OffPlanPageClientInner {...props} />;
 }
