@@ -1,10 +1,10 @@
-/* eslint-disable i18next/no-literal-string -- market-report copy is English */
 // Server component — renders the weekly market report's structured data as
 // branded KPI tiles, a ranked movers table and project cards. Purely
 // presentational (no hooks), so it ships zero JS. Falls back to prose content
 // (rendered by the page) when reportData is absent.
 // Locale-aware Link prefixes the active locale itself — hrefs stay bare.
 import { Link } from "@/navigation";
+import { getTranslations } from "next-intl/server";
 import { TrendingUp, TrendingDown, Minus, Building2, Award, ArrowRight, Landmark } from "lucide-react";
 
 interface Kpis {
@@ -43,7 +43,8 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
   );
 }
 
-export default function WeeklyReportView({ data }: { data: ReportData }) {
+export default async function WeeklyReportView({ data, locale }: { data: ReportData; locale: string }) {
+  const t = await getTranslations({ locale, namespace: "weeklyReport" });
   const k = data.kpis;
   const movers = data.movers || [];
   const launches = data.launches || [];
@@ -55,17 +56,17 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
       {k && (
         <section>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <Stat label="Weekly deals" value={k.deals.toLocaleString()} sub="residential sales" />
-            <Stat label="Sales volume" value={fmtAed(k.volume)} sub="total value" />
-            <Stat label="Off-plan share" value={`${k.offPlanPct}%`} sub={`${k.readyPct}% ready`} />
-            <Stat label="Median price" value={k.medianPpsf ? `AED ${k.medianPpsf.toLocaleString()}` : "—"} sub="per sqft" />
+            <Stat label={t("weeklyDeals")} value={k.deals.toLocaleString()} sub={t("residentialSales")} />
+            <Stat label={t("salesVolume")} value={fmtAed(k.volume)} sub={t("totalValue")} />
+            <Stat label={t("offPlanShare")} value={`${k.offPlanPct}%`} sub={t("readySub", { pct: k.readyPct })} />
+            <Stat label={t("medianPrice")} value={k.medianPpsf ? `AED ${k.medianPpsf.toLocaleString()}` : "—"} sub={t("perSqftLabel")} />
           </div>
           {/* Highest deal — gold gradient callout band */}
           {k.highestDeal && (
             <div className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl px-5 py-4 shadow-sm" style={{ background: "linear-gradient(135deg, #EAC873 0%, #D4A847 45%, #B8922F 100%)", color: "#0B3D2E" }}>
               <Award className="h-6 w-6 shrink-0" style={{ color: "#0B3D2E" }} />
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: "rgba(11,61,46,0.72)" }}>Highest deal this week</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: "rgba(11,61,46,0.72)" }}>{t("highestDeal")}</div>
                 <div className="text-xl font-extrabold" style={{ color: "#0B3D2E" }}>
                   {fmtAed(k.highestDeal)}
                   {(k.highestDealBuilding || k.highestDealArea) && (
@@ -92,11 +93,11 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
       {/* Macro at a glance */}
       {data.macro && (data.macro.yoyGrowth != null || data.macro.transactionsAnnual != null || data.macro.newSupplyUnits != null) && (
         <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">The market at a glance</h2>
+          <h2 className="text-xl font-bold text-foreground mb-4">{t("marketAtGlance")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {data.macro.yoyGrowth != null && <Stat label="YoY price growth" value={`${data.macro.yoyGrowth > 0 ? "+" : ""}${data.macro.yoyGrowth}%`} />}
-            {data.macro.transactionsAnnual != null && <Stat label="Annual transactions" value={Number(data.macro.transactionsAnnual).toLocaleString()} sub={data.macro.transactionsYear ? String(data.macro.transactionsYear) : undefined} />}
-            {data.macro.newSupplyUnits != null && <Stat label="New units expected" value={Number(data.macro.newSupplyUnits).toLocaleString()} sub={data.macro.newSupplyYear ? String(data.macro.newSupplyYear) : undefined} />}
+            {data.macro.yoyGrowth != null && <Stat label={t("yoyGrowth")} value={`${data.macro.yoyGrowth > 0 ? "+" : ""}${data.macro.yoyGrowth}%`} />}
+            {data.macro.transactionsAnnual != null && <Stat label={t("annualTransactions")} value={Number(data.macro.transactionsAnnual).toLocaleString()} sub={data.macro.transactionsYear ? String(data.macro.transactionsYear) : undefined} />}
+            {data.macro.newSupplyUnits != null && <Stat label={t("newUnitsExpected")} value={Number(data.macro.newSupplyUnits).toLocaleString()} sub={data.macro.newSupplyYear ? String(data.macro.newSupplyYear) : undefined} />}
           </div>
         </section>
       )}
@@ -104,8 +105,8 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
       {/* Top movers — ranked rows */}
       {movers.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold text-foreground mb-1.5">Top-moving communities</h2>
-          <p className="text-sm text-muted-foreground mb-5">Average sale price per sqft over the last 30 days, with month-on-month change (DLD data).</p>
+          <h2 className="text-xl font-bold text-foreground mb-1.5">{t("topMoving")}</h2>
+          <p className="text-sm text-muted-foreground mb-5">{t("topMovingSub")}</p>
           <div className="space-y-2.5">
             {movers.map((m, i) => {
               const Icon = m.trend === "up" ? TrendingUp : m.trend === "down" ? TrendingDown : Minus;
@@ -122,9 +123,9 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="font-bold text-foreground tabular-nums">AED {m.ppsf.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/sqft</span></div>
+                    <div className="font-bold text-foreground tabular-nums">AED {m.ppsf.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">{t("perSqft")}</span></div>
                     <div className="mt-0.5 inline-flex items-center gap-1 text-xs font-bold" style={{ color: badgeColor }}>
-                      <Icon className="h-3.5 w-3.5" />{m.changePct > 0 ? "+" : ""}{m.changePct}% MoM
+                      <Icon className="h-3.5 w-3.5" />{m.changePct > 0 ? "+" : ""}{m.changePct}% {t("mom")}
                     </div>
                   </div>
                 </div>
@@ -137,18 +138,18 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
       {/* New launches — project cards */}
       {launches.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold text-foreground mb-5">New project launches</h2>
+          <h2 className="text-xl font-bold text-foreground mb-5">{t("newLaunches")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {launches.map((l, i) => {
               const inner = (
                 <>
                   <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-accent" style={{ color: "#B8922F" }}>
-                    <Building2 className="h-3.5 w-3.5" /> New launch
+                    <Building2 className="h-3.5 w-3.5" /> {t("newLaunchBadge")}
                   </div>
                   <h3 className="mt-2 font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">{l.name}</h3>
                   {l.community && <p className="mt-1 text-xs text-muted-foreground flex items-center gap-1"><Landmark className="h-3 w-3" />{l.community}</p>}
                   <div className="mt-3 border-t border-border pt-3 text-sm font-bold text-primary">
-                    {l.startingPrice > 0 ? `From ${fmtAed(l.startingPrice)}` : "Price on request"}
+                    {l.startingPrice > 0 ? t("fromPrice", { price: fmtAed(l.startingPrice) }) : t("priceOnRequest")}
                   </div>
                 </>
               );
@@ -165,17 +166,17 @@ export default function WeeklyReportView({ data }: { data: ReportData }) {
       {/* What this means — buyer/investor takeaway (SEO body copy) */}
       {data.outlook && (
         <section className="max-w-3xl">
-          <h2 className="text-xl font-bold text-foreground mb-4">What this means for buyers &amp; investors</h2>
+          <h2 className="text-xl font-bold text-foreground mb-4">{t("whatThisMeans")}</h2>
           <p className="text-lg leading-relaxed text-foreground/90">{data.outlook}</p>
         </section>
       )}
 
       {/* CTA band */}
       <section className="rounded-2xl px-6 py-8 text-center text-white" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
-        <h2 className="text-2xl font-bold mb-2">Want tailored advice?</h2>
-        <p className="text-white/75 max-w-xl mx-auto mb-5">Our advisors can brief you on any community or project in this report — pricing, yields and the right time to move.</p>
+        <h2 className="text-2xl font-bold mb-2">{t("ctaTitle")}</h2>
+        <p className="text-white/75 max-w-xl mx-auto mb-5">{t("ctaBody")}</p>
         <Link href={"/contact"} className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02]" style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}>
-          Talk to our team <ArrowRight className="h-4 w-4" />
+          {t("ctaButton")} <ArrowRight className="h-4 w-4" />
         </Link>
       </section>
     </div>

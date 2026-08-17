@@ -140,7 +140,7 @@ export default async function ReportDetailPage({ params }: Props) {
         </div>
 
         {hasStructured ? (
-          <WeeklyReportView data={rd!} />
+          <WeeklyReportView data={rd!} locale={locale} />
         ) : contentHtml ? (
           <div
             className="mt-8 prose prose-lg max-w-none
