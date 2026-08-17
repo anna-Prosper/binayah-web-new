@@ -5,7 +5,10 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { TrendingUp, BarChart3, PieChart as PieIcon, Loader2 } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 
 type Tab = "prices" | "yields" | "transactions";

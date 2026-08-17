@@ -9,7 +9,10 @@ import { CardActions } from "@/components/PropertyActions";
 import PropertyComparison from "@/components/PropertyComparison";
 import { motion } from "framer-motion";
 import { BedDouble, Bath, MapPin, Loader2, Maximize2, Building, Hash } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";

@@ -3,7 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Phone, Menu, X, ChevronDown, ChevronRight, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
 import { usePathname, useRouter } from "@/navigation";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";

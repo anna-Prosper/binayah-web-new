@@ -9,7 +9,10 @@ import Footer from "@/components/Footer";
 import { DetailBreadcrumb } from "@/components/DetailBreadcrumb";
 import { ProjectSubNav } from "@/components/ProjectSubNav";
 import NextImage from "next/image";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import {
   FileText, Download, ExternalLink, Bed, Ruler,
   Building2, MessageCircle,

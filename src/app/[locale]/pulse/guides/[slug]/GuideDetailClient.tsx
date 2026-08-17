@@ -4,7 +4,10 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, TrendingUp, List, BookOpen, Calendar, Phone } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { PULSE_GUIDES, PulseGuide } from "@/lib/pulse-guides";
 import type { AreaStats } from "@/lib/area-stats";

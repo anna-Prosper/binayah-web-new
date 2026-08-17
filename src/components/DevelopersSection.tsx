@@ -2,7 +2,10 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building2 } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
+// localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
+// readers back into English. This variant prefixes hrefs with the active locale.
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
