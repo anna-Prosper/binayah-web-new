@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+// Locale-aware Link: plain next/link emitted bare "/news/<slug>" hrefs, so the
+// related-article links dropped the reader back into English.
+import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";

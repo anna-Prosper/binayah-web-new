@@ -1,5 +1,7 @@
 import { ArrowUpRight, Calendar } from "lucide-react";
-import Link from "next/link";
+// Locale-aware Link: plain next/link emitted bare "/news/<slug>" hrefs, so the
+// homepage news cards sent non-English readers to the English article.
+import { Link } from "@/navigation";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { getTranslations } from "next-intl/server";
 

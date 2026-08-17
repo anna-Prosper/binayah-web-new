@@ -3,7 +3,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import Link from "next/link";
+// Locale-aware Link: plain next/link emitted bare "/news/<slug>" hrefs, so every
+// article card on a non-default locale sent the reader to the English article.
+import { Link } from "@/navigation";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
