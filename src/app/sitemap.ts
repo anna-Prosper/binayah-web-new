@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { MongoClient } from "mongodb";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
+import { OFFERS, isExpired } from "@/lib/offers";
 import { BUY_COMMUNITIES, CURATED_COMMUNITY_SLUGS } from "@/lib/buy-communities";
 import { FOREIGN_BUYERS } from "@/lib/foreign-buyers";
 import { CRYPTO_SLUGS } from "@/lib/crypto-pages";
@@ -279,6 +280,13 @@ function localeAlt(base: string, prefix: string, path: string) {
   return path === "/" ? `${base}/${prefix}` : `${base}/${prefix}${path}`;
 }
 
+// English-only pages (e.g. /offers). The route renders the same English copy at
+// every locale, so emitting hreflang alternates would advertise translations
+// that don't exist. Submit the canonical English URL alone instead.
+function enOnly(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
+  return { url: `${AE_URL}${path}`, lastModified, changeFrequency, priority };
+}
+
 function withAlternates(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], lastModified: Date): MetadataRoute.Sitemap[number] {
   return {
     url: IS_RU ? `${RU_URL}/ru${path}` : `${AE_URL}${path}`,
@@ -449,6 +457,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Guides are now fully translated in all 7 locales (body + FAQ), so submit
     // them WITH hreflang alternates.
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
+    // Promotional offers — English-only, and expired ones are dropped so the
+    // sitemap never advertises a closed promotion.
+    enOnly("/offers", 0.6, "weekly", now),
+    ...OFFERS.filter((o) => !isExpired(o)).map((o) => enOnly(`/offers/${o.slug}`, 0.8, "daily", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
