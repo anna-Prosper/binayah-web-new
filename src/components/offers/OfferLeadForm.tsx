@@ -85,8 +85,12 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
     );
   }
 
+  // NB: no width utility here. The phone row needs its own widths, and a `w-full`
+  // baked into this string collides with `flex-1` (both emit `width`, and which
+  // one wins depends on stylesheet order, not on the className order) — that
+  // collision collapsed the phone input to its 34px min-content width.
   const inputClass =
-    "w-full rounded-xl border border-border/60 bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50";
+    "rounded-xl border border-border/60 bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50";
 
   return (
     <form
@@ -110,7 +114,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           placeholder="Full name"
           autoComplete="name"
-          className={inputClass}
+          className={`${inputClass} w-full`}
         />
         <input
           required
@@ -119,7 +123,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           placeholder="Email address"
           autoComplete="email"
-          className={inputClass}
+          className={`${inputClass} w-full`}
         />
         <div className="flex gap-2">
           <input
@@ -145,7 +149,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           value={form.budget}
           onChange={(e) => setForm({ ...form, budget: e.target.value })}
           aria-label="Budget"
-          className={`${inputClass} ${form.budget ? "" : "text-muted-foreground/70"}`}
+          className={`${inputClass} w-full ${form.budget ? "" : "text-muted-foreground/70"}`}
         >
           <option value="">Budget range (optional)</option>
           {BUDGETS.map((b) => (
