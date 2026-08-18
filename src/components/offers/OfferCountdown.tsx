@@ -42,30 +42,43 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
   }, [target]);
 
   const isLight = tone === "light";
-  const boxBg = isLight ? "rgba(255,255,255,0.12)" : "rgba(11,61,46,0.06)";
-  const boxBorder = isLight ? "rgba(255,255,255,0.22)" : "rgba(11,61,46,0.14)";
+  // Glassy on the dark hero, inked on light sections. The gold hairline at the
+  // top of each cell ties the timer to the offer badge without shouting.
+  const boxBg = isLight
+    ? "linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.07) 100%)"
+    : "linear-gradient(180deg, rgba(11,61,46,0.07) 0%, rgba(11,61,46,0.03) 100%)";
+  const boxBorder = isLight ? "rgba(255,255,255,0.20)" : "rgba(11,61,46,0.12)";
   const numColor = isLight ? "#FFFFFF" : "#0B3D2E";
-  const labelColor = isLight ? "rgba(255,255,255,0.72)" : "rgba(11,61,46,0.62)";
+  const labelColor = isLight ? "rgba(255,255,255,0.66)" : "rgba(11,61,46,0.58)";
 
   // Pre-hydration and invalid dates render a stable skeleton of the same size,
   // so the surrounding layout doesn't shift when the timer starts.
+  const cell = (v: string, l: string, key: string) => (
+    <div
+      key={key}
+      className="relative flex min-w-[74px] flex-col items-center overflow-hidden rounded-xl px-3 py-3 backdrop-blur-sm"
+      style={{ background: boxBg, border: `1px solid ${boxBorder}` }}
+    >
+      <span
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,71,0.85), transparent)" }}
+      />
+      <span
+        className="text-[28px] font-extrabold tabular-nums leading-none tracking-tight"
+        style={{ color: numColor }}
+      >
+        {v}
+      </span>
+      <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.16em]" style={{ color: labelColor }}>
+        {l}
+      </span>
+    </div>
+  );
+
   if (left === null) {
     return (
       <div className="flex gap-2.5" aria-hidden="true">
-        {["Days", "Hours", "Mins", "Secs"].map((l) => (
-          <div
-            key={l}
-            className="flex min-w-[68px] flex-col items-center rounded-xl px-3 py-2.5"
-            style={{ background: boxBg, border: `1px solid ${boxBorder}` }}
-          >
-            <span className="text-2xl font-extrabold tabular-nums leading-none" style={{ color: numColor }}>
-              --
-            </span>
-            <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: labelColor }}>
-              {l}
-            </span>
-          </div>
-        ))}
+        {["Days", "Hours", "Mins", "Secs"].map((l) => cell("--", l, l))}
       </div>
     );
   }
@@ -99,20 +112,7 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
       aria-live="off"
       aria-label={`Offer closes in ${days} days, ${hours} hours, ${minutes} minutes`}
     >
-      {cells.map(([v, l]) => (
-        <div
-          key={l}
-          className="flex min-w-[68px] flex-col items-center rounded-xl px-3 py-2.5"
-          style={{ background: boxBg, border: `1px solid ${boxBorder}` }}
-        >
-          <span className="text-2xl font-extrabold tabular-nums leading-none" style={{ color: numColor }}>
-            {v}
-          </span>
-          <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: labelColor }}>
-            {l}
-          </span>
-        </div>
-      ))}
+      {cells.map(([v, l]) => cell(v, l, l))}
     </div>
   );
 }

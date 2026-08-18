@@ -95,12 +95,17 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-sm"
+      className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-6 shadow-lg sm:p-8"
     >
-      <h3 className="text-xl font-bold text-foreground">
+      {/* Gold cap ties the form to the offer badge and the countdown. */}
+      <span
+        className="absolute inset-x-0 top-0 h-1"
+        style={{ background: "linear-gradient(90deg, #EAC873, #D4A847, #B8922F)" }}
+      />
+      <h3 className="text-[1.35rem] font-extrabold tracking-[-0.01em] text-foreground">
         {heading ?? (expired ? "Get early access to the next offer" : "Check which units qualify")}
       </h3>
-      <p className="mt-1.5 text-sm text-muted-foreground">
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         {subheading ??
           (expired
             ? "Promotions like this move fast. We'll notify you before the next one goes live."

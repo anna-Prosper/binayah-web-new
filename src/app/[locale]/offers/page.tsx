@@ -5,6 +5,7 @@ import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import Reveal from "@/components/offers/Reveal";
 import { OFFERS, isExpired } from "@/lib/offers";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
@@ -58,15 +59,35 @@ export default async function OffersIndexPage({ params }: Props) {
         nonce={nonce}
       />
 
-      <section className="pt-28 pb-14" style={{ background: `linear-gradient(145deg, #0A3529 0%, ${GREEN} 55%, #0F4A36 100%)` }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: GOLD }}>
-            Current promotions
+      <section
+        className="relative overflow-hidden pb-20 pt-32"
+        style={{ background: `linear-gradient(150deg, #072A20 0%, ${GREEN} 52%, #0F4A36 100%)` }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(85% 75% at 12% 100%, rgba(212,168,71,0.18) 0%, transparent 58%)" }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="hero-fade-up flex items-center gap-3">
+            <span className="h-px w-8" style={{ background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: GOLD }}>
+              Current promotions
+            </span>
           </div>
-          <h1 className="mt-3 max-w-3xl text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-tight text-white">
-            Dubai property offers, explained properly
+          <h1 className="hero-rise mt-5 max-w-3xl text-[2.6rem] font-extrabold leading-[1.06] tracking-[-0.02em] text-white sm:text-[3.4rem]">
+            Dubai property offers,{" "}
+            <span
+              style={{
+                background: `linear-gradient(135deg, #EAC873, ${GOLD_DEEP})`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              explained properly
+            </span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-white/75">
+          <p className="hero-rise mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
             Developer promotions move fast and the terms are rarely spelled out. Here is what each one actually
             changes for a buyer — the payment structure, the waivers and the small print.
           </p>
@@ -79,55 +100,85 @@ export default async function OffersIndexPage({ params }: Props) {
         ) : (
           <>
             {live.length > 0 && (
-              <div className="grid gap-5 md:grid-cols-2">
-                {live.map((o) => (
-                  <Link
-                    key={o.slug}
-                    href={`/offers/${o.slug}`}
-                    className="group overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-xl"
-                  >
-                    <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                      <img
-                        src={o.heroImage}
-                        alt={o.shortName}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <span
-                        className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
-                        style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_DEEP})`, color: GREEN }}
+              // A lone promotion runs full-width with the image beside the copy —
+              // a single card in a 2-up grid leaves half the row empty.
+              <div className={live.length === 1 ? "" : "grid gap-6 md:grid-cols-2"}>
+                {live.map((o, i) => {
+                  const solo = live.length === 1;
+                  return (
+                    <Reveal key={o.slug} delay={i * 90}>
+                      <Link
+                        href={`/offers/${o.slug}`}
+                        className={`group block h-full overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/25 hover:shadow-2xl ${
+                          solo ? "md:grid md:grid-cols-2 md:items-stretch" : ""
+                        }`}
                       >
-                        <Clock className="h-3 w-3" /> {o.eyebrow}
-                      </span>
-                    </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                        <Tag className="h-3.5 w-3.5" /> {o.developer}
-                      </div>
-                      <h2 className="mt-2 text-xl font-bold leading-snug text-foreground group-hover:text-primary transition-colors">
-                        {o.h1}
-                      </h2>
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{o.subtitle}</p>
-                      <div className="mt-4 flex items-center gap-3">
-                        {o.highlights.slice(0, 3).map((h) => (
-                          <div key={h.label} className="text-center">
-                            <div className="text-lg font-extrabold" style={{ color: GOLD_DEEP }}>
-                              {h.value}
-                            </div>
-                            <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                              {h.label}
-                            </div>
+                        <div
+                          className={`relative overflow-hidden bg-muted ${solo ? "aspect-[16/10] md:aspect-auto md:h-full md:min-h-[340px]" : "aspect-[16/9]"}`}
+                        >
+                          <img
+                            src={o.heroImage}
+                            alt={o.shortName}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <span
+                            className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
+                            style={{ background: `linear-gradient(135deg, #EAC873, ${GOLD_DEEP})`, color: GREEN }}
+                          >
+                            <Clock className="h-3 w-3" /> {o.eyebrow}
+                          </span>
+                        </div>
+
+                        <div className={solo ? "flex flex-col justify-center p-8 lg:p-10" : "p-6"}>
+                          <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                            <Tag className="h-3.5 w-3.5" /> {o.developer}
                           </div>
-                        ))}
-                      </div>
-                      <span
-                        className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold"
-                        style={{ color: GOLD_DEEP }}
-                      >
-                        See the terms <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                          <h2
+                            className={`mt-2.5 font-extrabold leading-snug tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary ${
+                              solo ? "text-2xl lg:text-[1.75rem]" : "text-xl"
+                            }`}
+                          >
+                            {o.h1}
+                          </h2>
+                          <p
+                            className={`mt-3 text-sm leading-relaxed text-muted-foreground ${solo ? "" : "line-clamp-2"}`}
+                          >
+                            {o.subtitle}
+                          </p>
+
+                          <div className="mt-6 flex items-center gap-6">
+                            {o.highlights.slice(0, 3).map((h) => (
+                              <div key={h.label}>
+                                <div
+                                  className={`font-extrabold leading-none ${solo ? "text-2xl" : "text-lg"}`}
+                                  style={{
+                                    background: `linear-gradient(135deg, ${GOLD}, ${GOLD_DEEP})`,
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                    backgroundClip: "text",
+                                  }}
+                                >
+                                  {h.value}
+                                </div>
+                                <div className="mt-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                                  {h.label}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <span
+                            className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold"
+                            style={{ color: GOLD_DEEP }}
+                          >
+                            See the terms
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </span>
+                        </div>
+                      </Link>
+                    </Reveal>
+                  );
+                })}
               </div>
             )}
 

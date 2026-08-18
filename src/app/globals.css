@@ -260,3 +260,54 @@ body.livechat-visible [id^="lc-widget-"] {
 body.livechat-visible #chat-widget-container {
   z-index: 2147483640 !important;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   Offer landing pages (/offers/<slug>)
+   CSS-only, matching the hero/nav convention above — no JS motion
+   library. Every animation is disabled under prefers-reduced-motion.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Scroll reveal — element starts shifted/transparent, .is-in is applied by
+   an IntersectionObserver (see components/offers/Reveal.tsx). */
+.ofr-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1);
+}
+.ofr-reveal.is-in { opacity: 1; transform: none; }
+
+/* Gold sheen that sweeps across the offer badge — signals "live promotion"
+   without the aggressive pulsing of a typical countdown banner. */
+@keyframes ofr-sheen {
+  0%   { transform: translateX(-120%); }
+  55%  { transform: translateX(220%); }
+  100% { transform: translateX(220%); }
+}
+.ofr-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+  animation: ofr-sheen 4.5s ease-in-out infinite;
+}
+
+/* The payment-timeline rail draws itself once the section scrolls in. */
+@keyframes ofr-rail { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.ofr-rail { transform-origin: left center; }
+.ofr-reveal.is-in .ofr-rail { animation: ofr-rail 1.1s cubic-bezier(0.22,1,0.36,1) .15s both; }
+
+/* Slow zoom on the hero photograph — adds depth without moving the copy. */
+@keyframes ofr-kenburns { from { transform: scale(1.06); } to { transform: scale(1); } }
+.ofr-kenburns { animation: ofr-kenburns 14s ease-out both; }
+
+/* Sticky offer bar slides down once the hero CTA scrolls out of view. */
+@keyframes ofr-bar-in { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: none; } }
+.ofr-bar-in { animation: ofr-bar-in .35s cubic-bezier(0.22,1,0.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ofr-reveal { opacity: 1; transform: none; transition: none; }
+  .ofr-sheen::after,
+  .ofr-reveal.is-in .ofr-rail,
+  .ofr-kenburns,
+  .ofr-bar-in { animation: none; }
+}
