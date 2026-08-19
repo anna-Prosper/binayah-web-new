@@ -83,7 +83,7 @@ export const OFFERS: Offer[] = [
     subtitle:
       "Secure a Sobha home for a fifth of its value today and defer the balance until you collect the keys — with the 4% DLD registration fee waived.",
     heroImage:
-      "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/seo/hudayriyat-island-hero.jpg",
+      "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-payment-plan-hero.webp",
     // Placeholder window — update both fields when the promotion actually runs.
     deadline: "2026-09-30T23:59:59+04:00",
     windowLabel: "Ends 30 September 2026",
