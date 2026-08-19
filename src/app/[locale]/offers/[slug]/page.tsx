@@ -193,31 +193,77 @@ export default async function OfferPage({ params }: Props) {
             </div>
           </div>
 
-          {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ───────────── */}
-          <div style={{ borderTop: "1px solid rgba(212,168,71,0.22)", background: "rgba(7,42,32,0.46)", backdropFilter: "blur(8px)" }}>
-            <div className="mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
+          {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ─────────────
+              Settles from translucent (photo still reads through the top) to
+              solid GREEN_DK at the bottom, so the band hands off to whatever
+              section follows without a tonal step. */}
+          <div
+            className="relative"
+            style={{
+              background: `linear-gradient(to bottom, rgba(7,42,32,0.34) 0%, rgba(7,42,32,0.80) 58%, ${GREEN_DK} 100%)`,
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            {/* Gold hairline, brightest mid-span and fading out at both ends —
+                an edge-to-edge rule reads like a table border. */}
+            <span
+              className="pointer-events-none absolute inset-x-0 top-0 h-px"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.42) 20%, rgba(234,200,115,0.85) 50%, rgba(212,168,71,0.42) 80%, transparent 100%)",
+              }}
+            />
+            {/* Warm pool of light spilling down from the hairline. */}
+            <span
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "radial-gradient(68% 130% at 50% 0%, rgba(212,168,71,0.13) 0%, transparent 62%)" }}
+            />
+
+            <div className="relative mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
               {offer.highlights.map((h, i) => (
-                <div
-                  key={h.label}
-                  className="px-3 py-7 text-center"
-                  style={{
-                    borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,0.08)",
-                    borderTop: i > 1 ? "1px solid rgba(255,255,255,0.08)" : "none",
-                  }}
-                >
+                <div key={h.label} className="relative px-4 py-8 text-center sm:py-9">
+                  {/* Separators taper away at their ends instead of ruling the
+                      full cell. Two columns on mobile, four from lg — so cell 2
+                      only takes a left rule once the row goes 4-up. */}
+                  {i !== 0 && (
+                    <span
+                      className={`pointer-events-none absolute inset-y-5 left-0 w-px ${i % 2 === 0 ? "hidden lg:block" : ""}`}
+                      style={{
+                        background:
+                          "linear-gradient(to bottom, transparent, rgba(255,255,255,0.16) 50%, transparent)",
+                      }}
+                    />
+                  )}
+                  {i > 1 && (
+                    <span
+                      className="pointer-events-none absolute inset-x-6 top-0 h-px lg:hidden"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.14) 50%, transparent)",
+                      }}
+                    />
+                  )}
+
                   <div
-                    className="text-[2.1rem] font-extrabold leading-none tracking-tight sm:text-[2.6rem]"
+                    className="text-[2.3rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
                     style={{
-                      background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
+                      background: `linear-gradient(140deg, #F6DFA8 0%, ${GOLD_LT} 40%, ${GOLD_DEEP} 100%)`,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
+                      filter: "drop-shadow(0 3px 16px rgba(212,168,71,0.30))",
                     }}
                   >
                     {h.value}
                   </div>
-                  <div className="mt-2 text-sm font-bold text-white">{h.label}</div>
-                  {h.detail && <div className="mt-1 text-xs leading-snug text-white/50">{h.detail}</div>}
+                  <div className="mt-3 text-[11px] font-bold uppercase tracking-[0.13em] text-white sm:text-xs">
+                    {h.label}
+                  </div>
+                  {h.detail && (
+                    <div className="mx-auto mt-2 max-w-[30ch] text-[12px] leading-relaxed text-white/45">
+                      {h.detail}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -295,9 +341,17 @@ export default async function OfferPage({ params }: Props) {
         className="relative overflow-hidden"
         style={{ background: `linear-gradient(155deg, ${GREEN_DK} 0%, ${GREEN} 48%, #0F4A36 100%)` }}
       >
+        {/* Gold bloom, dropped below the top edge — centred at 0% it peaked
+            exactly on the seam with the hero band, which has no such glow. */}
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(90% 70% at 85% 0%, rgba(212,168,71,0.14) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(90% 70% at 85% 20%, rgba(212,168,71,0.14) 0%, transparent 60%)" }}
+        />
+        {/* Painted last so it levels the diagonal AND the bloom back to
+            GREEN_DK at y=0, matching the band above exactly. */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-28"
+          style={{ background: `linear-gradient(to bottom, ${GREEN_DK} 0%, transparent 100%)` }}
         />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-2">
           {offer.worked && (
