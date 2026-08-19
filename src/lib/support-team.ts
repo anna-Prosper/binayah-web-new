@@ -12,15 +12,15 @@ export interface SupportMember {
 const S3 = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/team-support";
 
 export const SUPPORT_TEAM: SupportMember[] = [
-  { role: "General Manager", slug: "general-manager", photo: `${S3}/general-manager.jpg` },
-  { role: "Property Manager", slug: "property-manager", photo: `${S3}/property-manager.jpg` },
-  { role: "Admin Coordinator", slug: "admin-coordinator", photo: `${S3}/admin-coordinator.jpg` },
-  { role: "Admin Coordinator", slug: "admin-coordinator-2", photo: `${S3}/admin-coordinator-2.jpg` },
-  { role: "Accountant", slug: "accountant", photo: `${S3}/accountant.jpg` },
-  { role: "Social Media Manager", slug: "social-media-manager", photo: `${S3}/social-media-manager.jpg` },
-  { role: "AI Specialist", slug: "ai-specialist", photo: `${S3}/ai-specialist.jpg` },
-  { role: "IT Support", slug: "it-support", photo: `${S3}/it-support.jpg` },
-  { role: "Photographer", slug: "photographer", photo: `${S3}/photographer.jpg` },
-  { role: "Driver", slug: "driver", photo: `${S3}/driver.jpg` },
-  { role: "Driver", slug: "driver-2", photo: `${S3}/driver-2.jpg` },
+  { role: "General Manager", slug: "general-manager", photo: `${S3}/general-manager.jpg?v=1787145756` },
+  { role: "Property Manager", slug: "property-manager", photo: `${S3}/property-manager.jpg?v=1787145756` },
+  { role: "Admin Coordinator", slug: "admin-coordinator", photo: `${S3}/admin-coordinator.jpg?v=1787145756` },
+  { role: "Admin Coordinator", slug: "admin-coordinator-2", photo: `${S3}/admin-coordinator-2.jpg?v=1787145756` },
+  { role: "Accountant", slug: "accountant", photo: `${S3}/accountant.jpg?v=1787145756` },
+  { role: "Social Media Manager", slug: "social-media-manager", photo: `${S3}/social-media-manager.jpg?v=1787145756` },
+  { role: "AI Specialist", slug: "ai-specialist", photo: `${S3}/ai-specialist.jpg?v=1787145756` },
+  { role: "IT Support", slug: "it-support", photo: `${S3}/it-support.jpg?v=1787145756` },
+  { role: "Photographer", slug: "photographer", photo: `${S3}/photographer.jpg?v=1787145756` },
+  { role: "Driver", slug: "driver", photo: `${S3}/driver.jpg?v=1787145756` },
+  { role: "Driver", slug: "driver-2", photo: `${S3}/driver-2.jpg?v=1787145756` },
 ];
