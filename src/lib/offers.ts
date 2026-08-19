@@ -179,7 +179,7 @@ export function getOffer(slug: string): Offer | undefined {
 }
 
 /** True when the promotion window has closed. */
-export function isExpired(offer: Offer, now: Date = new Date()): boolean {
+export function isExpired(offer: { deadline: string }, now: Date = new Date()): boolean {
   const end = new Date(offer.deadline).getTime();
   return Number.isFinite(end) && now.getTime() > end;
 }

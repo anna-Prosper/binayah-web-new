@@ -10,7 +10,8 @@ import OfferCountdown from "@/components/offers/OfferCountdown";
 import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
-import { OFFERS, getOffer, isExpired } from "@/lib/offers";
+import { isExpired } from "@/lib/offers";
+import { loadOffer } from "@/lib/offers-data";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles } from "lucide-react";
@@ -21,14 +22,17 @@ export const revalidate = 3600;
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
+// Same shape as the project route: prerender nothing at build, but returning []
+// still opts the route into ISR rather than leaving it fully dynamic. An offer
+// added to Mongo therefore gets its page on first request — no redeploy — and is
+// then cached for the `revalidate` window above.
 export function generateStaticParams() {
-  const locales = ["en", "ru", "ar", "zh", "vi", "he", "fr"];
-  return locales.flatMap((locale) => OFFERS.map((o) => ({ locale, slug: o.slug })));
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const offer = getOffer(slug);
+  const offer = await loadOffer(slug);
   if (!offer) return { title: "Not Found" };
   const path = `/offers/${slug}`;
   return {
@@ -79,7 +83,7 @@ function Eyebrow({ children, onDark = false }: { children: React.ReactNode; onDa
 
 export default async function OfferPage({ params }: Props) {
   const { locale, slug } = await params;
-  const offer = getOffer(slug);
+  const offer = await loadOffer(slug);
   if (!offer) notFound();
 
   const nonce = await getNonce();

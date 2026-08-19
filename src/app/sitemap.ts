@@ -342,6 +342,35 @@ async function fetchSlugs(path: string): Promise<{ slug: string; lastmod?: Date 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
+// Published offers straight from Mongo, so an offer added to the DB appears in
+// the sitemap on the next revalidate without a redeploy. `deadline` comes along
+// because expired promotions must never be submitted. Falls back to the bundled
+// array when the DB is unreachable (the sitemap still has to build).
+async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string; lastmod?: Date }[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const docs = await client
+      .db()
+      .collection("offers")
+      .find({ published: true }, { projection: { _id: 0, slug: 1, deadline: 1, updatedAt: 1 } })
+      .toArray();
+    if (!docs.length) return [];
+    return (docs as unknown as { slug: string; deadline: string; updatedAt?: Date }[]).map((d) => ({
+      slug: d.slug,
+      deadline: d.deadline,
+      lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
+    }));
+  } catch {
+    return OFFERS.map((o) => ({ slug: o.slug, deadline: o.deadline }));
+  } finally {
+    await client?.close();
+  }
+}
+
   const [projects, listings, articles, reports, communities, developers, projectGuides, buildings] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
@@ -368,6 +397,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
   // Populated bedroom × type × community combos (all types) — data-driven.
+  const offers = await fetchOffersForSitemap();
   const matrixCombos = await fetchMatrixCombos();
   const dldMatrixCombos = await fetchDldMatrixCombos();
   const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
@@ -460,7 +490,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Promotional offers — English-only, and expired ones are dropped so the
     // sitemap never advertises a closed promotion.
     enOnly("/offers", 0.75, "weekly", now),
-    ...OFFERS.filter((o) => !isExpired(o)).map((o) => enOnly(`/offers/${o.slug}`, 0.8, "daily", now)),
+    ...offers
+      .filter((o) => !isExpired(o))
+      .map((o) => enOnly(`/offers/${o.slug}`, 0.8, "daily", o.lastmod ?? now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
