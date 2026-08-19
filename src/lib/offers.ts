@@ -56,8 +56,9 @@ export interface Offer {
   keywords: string;
   /** 3–4 headline numbers rendered as the stat band under the hero. */
   highlights: OfferHighlight[];
-  /** Payment-plan breakdown rendered as a horizontal timeline. */
-  timeline: OfferTimelineStep[];
+  /** Payment-plan breakdown rendered as a horizontal timeline. Omit entirely
+   *  to drop the section — some offers are better told without a staged rail. */
+  timeline?: OfferTimelineStep[];
   /** "The offer in detail" bullet rows. */
   eligibility: OfferEligibility[];
   /** Why-it-matters cards: [heading, body]. */
@@ -97,26 +98,6 @@ export const OFFERS: Offer[] = [
       { value: "80%", label: "On handover", detail: "Deferred until you take possession" },
       { value: "4%", label: "DLD fee waived", detail: "Worth AED 200,000 on a AED 5M home" },
       { value: "20%", label: "NOC on resale", detail: "On selected promotional units" },
-    ],
-    timeline: [
-      {
-        stage: "On booking",
-        share: "20%",
-        description:
-          "A single upfront commitment, with the first segments typically falling within 90 days of reservation.",
-      },
-      {
-        stage: "During construction",
-        share: "0%",
-        description:
-          "No construction-linked instalments. Your capital stays liquid while the project is built.",
-      },
-      {
-        stage: "On handover",
-        share: "80%",
-        description:
-          "The balance falls due when the home is complete and ready for possession.",
-      },
     ],
     eligibility: [
       { label: "Eligible price band", value: "Properties from AED 5 million" },

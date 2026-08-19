@@ -90,7 +90,8 @@
     "megaSellServices": "Услуги",
     "sell": "Продать",
     "megaOffPlanAreas": "Популярные районы",
-    "ourTeam": "Наша команда"
+    "ourTeam": "Наша команда",
+    "offers": "Акции"
   },
   "common": {
     "viewAll": "Смотреть все",
@@ -687,7 +688,8 @@
       "news": "Новости",
       "contact": "Контакты",
       "developers": "Застройщики",
-      "team": "Наша команда"
+      "team": "Наша команда",
+      "offers": "Акции и планы оплаты"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",

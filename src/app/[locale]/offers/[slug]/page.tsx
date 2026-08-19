@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, FAQJsonLd, OfferJsonLd } from "@/components/JsonLd";
 import OfferCountdown from "@/components/offers/OfferCountdown";
 import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
@@ -13,7 +13,7 @@ import Reveal from "@/components/offers/Reveal";
 import { OFFERS, getOffer, isExpired } from "@/lib/offers";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
-import { Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, AlertCircle, Building2, Sparkles } from "lucide-react";
+import { Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles } from "lucide-react";
 
 // Offers are time-sensitive: revalidate hourly so an expiry flips over promptly
 // without waiting for a redeploy.
@@ -98,6 +98,16 @@ export default async function OfferPage({ params }: Props) {
       <StickyOfferBar title={offer.h1} deadline={offer.deadline} expired={expired} />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
       <FAQJsonLd faqs={offer.faqs} nonce={nonce} />
+      <OfferJsonLd
+        name={offer.h1}
+        description={offer.metaDescription}
+        url={`/offers/${offer.slug}`}
+        image={offer.heroImage}
+        seller={offer.developer}
+        validThrough={offer.deadline}
+        category="Real Estate Payment Plan"
+        nonce={nonce}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative flex min-h-[92vh] items-end overflow-hidden">
@@ -112,7 +122,7 @@ export default async function OfferPage({ params }: Props) {
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to bottom, rgba(7,42,32,0.30) 0%, rgba(7,42,32,0.52) 38%, rgba(7,42,32,0.88) 74%, ${GREEN_DK} 100%)`,
+            background: `linear-gradient(to bottom, rgba(7,42,32,0.12) 0%, rgba(7,42,32,0.30) 38%, rgba(7,42,32,0.68) 74%, rgba(7,42,32,0.92) 100%)`,
           }}
         />
         <div
@@ -124,13 +134,15 @@ export default async function OfferPage({ params }: Props) {
           <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 sm:px-6">
             <div className="max-w-3xl">
               <div className="hero-fade-up flex flex-wrap items-center gap-2.5">
-                <span
-                  className={`relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] ${expired ? "" : "ofr-sheen"}`}
-                  style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
-                >
-                  <Clock className="h-3.5 w-3.5" />
-                  {expired ? "Offer closed" : offer.eyebrow}
-                </span>
+                {!expired && (
+                  <span
+                    className="ofr-sheen relative inline-flex items-center gap-1.5 overflow-hidden rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em]"
+                    style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
+                  >
+                    <Clock className="h-3.5 w-3.5" />
+                    {offer.eyebrow}
+                  </span>
+                )}
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
                   <Building2 className="h-3.5 w-3.5" />
                   {offer.developer}
@@ -148,13 +160,15 @@ export default async function OfferPage({ params }: Props) {
                 {offer.subtitle}
               </p>
 
-              <div className="hero-rise mt-9">
-                <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
-                  {!expired && <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />}
-                  {expired ? "This promotion has ended" : offer.windowLabel}
+              {!expired && (
+                <div className="hero-rise mt-9">
+                  <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
+                    <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
+                    {offer.windowLabel}
+                  </div>
+                  <OfferCountdown deadline={offer.deadline} tone="light" />
                 </div>
-                <OfferCountdown deadline={offer.deadline} tone="light" />
-              </div>
+              )}
 
               <div className="hero-rise mt-9 flex flex-wrap gap-3">
                 <a
@@ -166,7 +180,7 @@ export default async function OfferPage({ params }: Props) {
                     boxShadow: "0 8px 34px rgba(212,168,71,0.38)",
                   }}
                 >
-                  {expired ? "Join the waitlist" : "Check eligible units"}
+                  {"Check eligible units"}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
@@ -180,7 +194,7 @@ export default async function OfferPage({ params }: Props) {
           </div>
 
           {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ───────────── */}
-          <div style={{ borderTop: "1px solid rgba(212,168,71,0.22)", background: "rgba(7,42,32,0.55)", backdropFilter: "blur(8px)" }}>
+          <div style={{ borderTop: "1px solid rgba(212,168,71,0.22)", background: "rgba(7,42,32,0.46)", backdropFilter: "blur(8px)" }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
               {offer.highlights.map((h, i) => (
                 <div
@@ -211,26 +225,8 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── EXPIRED NOTICE ───────────────────────────────────────────────── */}
-      {expired && (
-        <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-          <div
-            className="flex items-start gap-3 rounded-2xl px-5 py-4"
-            style={{ background: "rgba(212,168,71,0.10)", border: "1px solid rgba(212,168,71,0.32)" }}
-          >
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
-            <div>
-              <p className="text-sm font-bold text-foreground">This promotion has closed.</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                The terms below are kept for reference. Register your interest and we&apos;ll contact you before the
-                next release opens.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── PAYMENT TIMELINE ─────────────────────────────────────────────── */}
+      {/* ── PAYMENT TIMELINE — only for offers that define one ───────────── */}
+      {!!offer.timeline?.length && (
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
         <Reveal>
           <Eyebrow>How the plan works</Eyebrow>
@@ -292,6 +288,7 @@ export default async function OfferPage({ params }: Props) {
           </div>
         </Reveal>
       </section>
+      )}
 
       {/* ── WORKED EXAMPLE + ELIGIBILITY (dark) ──────────────────────────── */}
       <section
@@ -475,12 +472,10 @@ export default async function OfferPage({ params }: Props) {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
           <Reveal>
             <h2 className="text-3xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.9rem] sm:leading-[1.08]">
-              {expired ? "Be first to hear about the next one" : "Find out which homes qualify"}
+              Find out which homes qualify
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">
-              {expired
-                ? "Developer promotions open and close within days. We'll tell you before the next release goes live."
-                : "Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today."}
+              Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today.
             </p>
 
             {!expired && (
@@ -499,7 +494,7 @@ export default async function OfferPage({ params }: Props) {
                   boxShadow: "0 8px 34px rgba(212,168,71,0.36)",
                 }}
               >
-                {expired ? "Join the waitlist" : "Request eligible units"}
+                {"Request eligible units"}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <a

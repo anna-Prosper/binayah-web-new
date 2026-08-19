@@ -48,7 +48,7 @@ export default function StickyOfferBar({ title, deadline, expired = false }: Pro
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
         <div className="min-w-0 flex-1">
           <div className="text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: "#D4A847" }}>
-            {expired ? "Promotion closed" : "Limited-time offer"}
+            {expired ? "Enquire now" : "Limited-time offer"}
           </div>
           <div className="truncate text-sm font-semibold text-white">{title}</div>
         </div>

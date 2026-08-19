@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Phone, Menu, X, ChevronDown, ChevronRight, Globe, MessageCircle, Banknote, Heart } from "lucide-react";
+import { Phone, Menu, X, ChevronDown, ChevronRight, Globe, MessageCircle, Banknote, Heart, Tag } from "lucide-react";
 import { usePathname, useRouter } from "@/navigation";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
@@ -518,6 +518,17 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   )}
                 </>
               </div>
+
+              {/* ── OFFERS — flat link, no dropdown. A real <Link> so the hub
+                     gets a crawlable sitewide href; the mega-menu triggers
+                     have to stay buttons because they open panels. ───────── */}
+              <Link
+                href="/offers"
+                className="relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-white/80 hover:text-white transition-colors uppercase tracking-[0.15em] group whitespace-nowrap"
+              >
+                {t("offers")}
+                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+              </Link>
             </div>
 
             {/* Desktop right cluster */}
@@ -780,6 +791,19 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                   </div>
                 </div>
               ))}
+
+              {/* ── Offers row — flat, mirrors the desktop top-level link ── */}
+              <Link
+                href="/offers"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center justify-between px-3 py-4 text-white/90 hover:text-white text-[15px] uppercase tracking-[0.15em] font-medium border-b border-white/10 hover:bg-white/5 rounded-lg transition-colors min-h-[44px]"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Tag className="h-4 w-4 text-accent" />
+                  {t("offers")}
+                </span>
+                <ChevronRight className="h-4 w-4 text-white/40" />
+              </Link>
 
               {/* Saved Properties row */}
               <button

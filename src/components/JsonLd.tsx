@@ -509,3 +509,65 @@ export function PersonJsonLd({
     />
   );
 }
+
+/**
+ * schema.org/Offer for a promotional payment-plan landing page.
+ *
+ * Deliberately price-free: these promotions are payment *terms* on a range of
+ * units, not a single priced product, and inventing a `price` to satisfy rich
+ * results would be a structured-data violation. `validThrough` is the field
+ * that actually earns its keep — it lets Google retire the promo from results
+ * once the window closes.
+ */
+export function OfferJsonLd({
+  name,
+  description,
+  url,
+  image,
+  seller,
+  validThrough,
+  category,
+  nonce,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  image?: string;
+  /** Developer running the promotion, e.g. "Sobha Realty". */
+  seller?: string;
+  /** ISO 8601 deadline; drives promo expiry in search results. */
+  validThrough?: string;
+  category?: string;
+  nonce?: string;
+}) {
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://www.binayah.ae";
+  const abs = (u: string) => (u.startsWith("http") ? u : `${base}${u}`);
+
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Offer",
+    name,
+    description,
+    url: abs(url),
+    ...(image ? { image: abs(image) } : {}),
+    ...(validThrough ? { validThrough } : {}),
+    ...(category ? { category } : {}),
+    availability: "https://schema.org/LimitedAvailability",
+    areaServed: { "@type": "Place", name: "Dubai, United Arab Emirates" },
+    ...(seller ? { seller: { "@type": "Organization", name: seller } } : {}),
+    offeredBy: {
+      "@type": "RealEstateAgent",
+      name: "Binayah Properties",
+      url: base,
+      telephone: "+971-54-998-8811",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
+    />
+  );
+}

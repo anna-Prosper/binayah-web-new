@@ -90,7 +90,8 @@
     "megaSellServices": "الخدمات",
     "sell": "بيع",
     "megaOffPlanAreas": "المناطق الشائعة",
-    "ourTeam": "فريقنا"
+    "ourTeam": "فريقنا",
+    "offers": "العروض"
   },
   "common": {
     "viewAll": "عرض الكل",
@@ -687,7 +688,8 @@
       "news": "الأخبار",
       "contact": "اتصل بنا",
       "developers": "المطورون",
-      "team": "فريقنا"
+      "team": "فريقنا",
+      "offers": "العروض وخطط السداد"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Link } from "@/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import Reveal from "@/components/offers/Reveal";
 import { OFFERS, isExpired } from "@/lib/offers";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
@@ -35,6 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       url: makeCanonical(locale, "/offers"),
       locale: OG_LOCALE[locale] ?? "en_AE",
+      ...(OFFERS[0] ? { images: [{ url: OFFERS[0].heroImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: TITLE,
+      description: DESC,
+      ...(OFFERS[0] ? { images: [OFFERS[0].heroImage] } : {}),
     },
   };
 }
@@ -44,9 +51,9 @@ export default async function OffersIndexPage({ params }: Props) {
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Live offers first, expired ones kept below for reference and SEO.
+  // Once an offer's window passes it drops off the hub entirely — no "closed"
+  // badges, no past-promotions rail. The sitemap already excludes them.
   const live = OFFERS.filter((o) => !isExpired(o));
-  const past = OFFERS.filter((o) => isExpired(o));
 
   return (
     <div className="min-h-screen bg-background">
@@ -56,6 +63,15 @@ export default async function OffersIndexPage({ params }: Props) {
           { name: "Home", href: `${lp}/` },
           { name: "Offers", href: `${lp}/offers` },
         ]}
+        nonce={nonce}
+      />
+      {/* ItemList over the live offers — gives the hub a crawlable inventory
+          instead of a page Google has to infer from anchor text alone. */}
+      <CollectionPageJsonLd
+        name={TITLE}
+        description={DESC}
+        url="/offers"
+        items={live.map((o) => ({ url: `/offers/${o.slug}`, name: o.h1 }))}
         nonce={nonce}
       />
 
@@ -95,7 +111,7 @@ export default async function OffersIndexPage({ params }: Props) {
       </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
-        {live.length === 0 && past.length === 0 ? (
+        {live.length === 0 ? (
           <p className="text-muted-foreground">No promotions are running right now. Check back shortly.</p>
         ) : (
           <>
@@ -182,35 +198,6 @@ export default async function OffersIndexPage({ params }: Props) {
               </div>
             )}
 
-            {past.length > 0 && (
-              <div className="mt-14">
-                <h2 className="text-lg font-bold text-foreground">Past promotions</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Kept for reference. Register on any of these to hear about the next release.
-                </p>
-                <div className="mt-5 space-y-2.5">
-                  {past.map((o) => (
-                    <Link
-                      key={o.slug}
-                      href={`/offers/${o.slug}`}
-                      className="group flex items-center justify-between gap-4 rounded-xl border border-border/60 bg-card px-5 py-4 transition-colors hover:border-primary/30"
-                    >
-                      <div className="min-w-0">
-                        <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                          {o.developer}
-                        </div>
-                        <div className="mt-0.5 truncate font-semibold text-foreground group-hover:text-primary transition-colors">
-                          {o.h1}
-                        </div>
-                      </div>
-                      <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
-                        Closed
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
         )}
       </section>

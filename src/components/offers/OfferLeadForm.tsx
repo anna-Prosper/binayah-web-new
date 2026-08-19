@@ -73,13 +73,9 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
     return (
       <div className="rounded-2xl border border-border/60 bg-card p-8 text-center">
         <CheckCircle2 className="mx-auto h-11 w-11" style={{ color: "#1A7A5A" }} />
-        <h3 className="mt-4 text-xl font-bold text-foreground">
-          {expired ? "You're on the list" : "Request received"}
-        </h3>
+        <h3 className="mt-4 text-xl font-bold text-foreground">Request received</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          {expired
-            ? "We'll be in touch as soon as the next release opens."
-            : "One of our advisors will confirm the qualifying units and send the full terms shortly."}
+          One of our advisors will confirm the qualifying units and send the full terms shortly.
         </p>
       </div>
     );
@@ -103,13 +99,10 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
         style={{ background: "linear-gradient(90deg, #EAC873, #D4A847, #B8922F)" }}
       />
       <h3 className="text-[1.35rem] font-extrabold tracking-[-0.01em] text-foreground">
-        {heading ?? (expired ? "Get early access to the next offer" : "Check which units qualify")}
+        {heading ?? "Check which units qualify"}
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        {subheading ??
-          (expired
-            ? "Promotions like this move fast. We'll notify you before the next one goes live."
-            : "Tell us your budget and we'll come back with the eligible homes and full written terms.")}
+        {subheading ?? "Tell us your budget and we'll come back with the eligible homes and full written terms."}
       </p>
 
       <div className="mt-5 space-y-3">
@@ -178,7 +171,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           </>
         ) : (
           <>
-            {expired ? "Notify me" : "Request eligible units"} <ArrowRight className="h-4 w-4" />
+            {"Request eligible units"} <ArrowRight className="h-4 w-4" />
           </>
         )}
       </button>

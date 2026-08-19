@@ -90,7 +90,8 @@
     "megaArticlesAnalytics": "Analytique",
     "megaSellServices": "Services",
     "megaOffPlanAreas": "Quartiers populaires",
-    "ourTeam": "Notre équipe"
+    "ourTeam": "Notre équipe",
+    "offers": "Offres"
   },
   "common": {
     "viewAll": "Voir tout",
@@ -688,7 +689,8 @@
       "news": "Actualités",
       "contact": "Contact",
       "developers": "Promoteurs",
-      "team": "Notre équipe"
+      "team": "Notre équipe",
+      "offers": "Offres et plans de paiement"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",

@@ -38,6 +38,7 @@ const FOOTER_TYPES: { name: string; href: string }[] = [
   { name: "Villas", href: "/villas" },
   { name: "Townhouses", href: "/townhouses" },
   { name: "Off-Plan", href: "/off-plan" },
+  { name: "Offers", href: "/offers" },
   { name: "Buy", href: "/buy" },
   { name: "Rent", href: "/rent" },
 ];
@@ -90,6 +91,7 @@ const Footer = () => {
             <li><Link href="/buy" className="hover:text-accent transition-colors">{t("links.buy")}</Link></li>
             <li><Link href="/rent" className="hover:text-accent transition-colors">{t("links.rent")}</Link></li>
             <li><Link href="/off-plan" className="hover:text-accent transition-colors">{t("links.offPlan")}</Link></li>
+            <li><Link href="/offers" className="hover:text-accent transition-colors">{t("links.offers")}</Link></li>
             <li><Link href="/communities" className="hover:text-accent transition-colors">{t("links.communities")}</Link></li>
             <li><Link href="/developers" className="hover:text-accent transition-colors">{t("links.developers")}</Link></li>
             <li><Link href="/valuation" className="hover:text-accent transition-colors">{t("links.valuation")}</Link></li>

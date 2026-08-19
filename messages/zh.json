@@ -90,7 +90,8 @@
     "megaSellServices": "服务",
     "sell": "出售",
     "megaOffPlanAreas": "热门区域",
-    "ourTeam": "我们的团队"
+    "ourTeam": "我们的团队",
+    "offers": "优惠"
   },
   "common": {
     "viewAll": "查看全部",
@@ -693,7 +694,8 @@
       "news": "资讯",
       "contact": "联系我们",
       "developers": "开发商",
-      "team": "我们的团队"
+      "team": "我们的团队",
+      "offers": "优惠与付款计划"
     },
     "phoneNumber": "+971 54 998 8811",
     "email": "info@binayah.com",

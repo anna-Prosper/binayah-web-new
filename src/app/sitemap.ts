@@ -459,7 +459,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
     // Promotional offers — English-only, and expired ones are dropped so the
     // sitemap never advertises a closed promotion.
-    enOnly("/offers", 0.6, "weekly", now),
+    enOnly("/offers", 0.75, "weekly", now),
     ...OFFERS.filter((o) => !isExpired(o)).map((o) => enOnly(`/offers/${o.slug}`, 0.8, "daily", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
