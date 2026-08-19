@@ -103,7 +103,7 @@ export default async function OfferPage({ params }: Props) {
         title={offer.h1}
         deadline={offer.deadline}
         expired={expired}
-        hideCountdown={offer.hideCountdown}
+        hideDeadline={offer.hideDeadline}
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
       <FAQJsonLd faqs={offer.faqs} nonce={nonce} />
@@ -169,13 +169,13 @@ export default async function OfferPage({ params }: Props) {
                 {offer.subtitle}
               </p>
 
-              {!expired && (
+              {!expired && !offer.hideDeadline && (
                 <div className="hero-rise mt-9">
                   <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
                     <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
                     {offer.windowLabel}
                   </div>
-                  {!offer.hideCountdown && <OfferCountdown deadline={offer.deadline} tone="light" />}
+                  {!offer.hideDeadline && <OfferCountdown deadline={offer.deadline} tone="light" />}
                 </div>
               )}
 
@@ -541,7 +541,7 @@ export default async function OfferPage({ params }: Props) {
               Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today.
             </p>
 
-            {!expired && !offer.hideCountdown && (
+            {!expired && !offer.hideDeadline && (
               <div className="mt-9 flex justify-center">
                 <OfferCountdown deadline={offer.deadline} tone="light" />
               </div>

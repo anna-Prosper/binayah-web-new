@@ -51,10 +51,11 @@ export interface Offer {
   deadline: string;
   /** Human-readable window, e.g. "8–9 August 2026". */
   windowLabel: string;
-  /** Suppress the live countdown everywhere (hero, sticky bar, closing CTA).
-   *  For offers with a soft or provisional end date, where a ticking clock
-   *  would overstate how firm the deadline is. `deadline` still drives expiry. */
-  hideCountdown?: boolean;
+  /** Suppress every deadline mention the template emits: the countdown, the
+   *  window label and the "limited-time" chrome. For offers whose end date is
+   *  provisional, where advertising a window would overstate how firm it is.
+   *  `deadline` still drives expiry — the offer just doesn't advertise it. */
+  hideDeadline?: boolean;
   metaTitle: string;
   metaDescription: string;
   keywords: string;
@@ -83,7 +84,7 @@ export const OFFERS: Offer[] = [
     slug: "sobha-20-80-payment-plan",
     shortName: "Sobha 20:80",
     developer: "Sobha Realty",
-    eyebrow: "Limited-time payment plan",
+    eyebrow: "Sobha payment plan",
     h1: "Sobha 20:80 Payment Plan: Pay 20% Now, 80% on Handover",
     subtitle:
       "Secure a Sobha home for a fifth of its value today and defer the balance until you collect the keys — with the 4% DLD registration fee waived.",
@@ -92,10 +93,10 @@ export const OFFERS: Offer[] = [
     // Placeholder window — update both fields when the promotion actually runs.
     deadline: "2026-09-30T23:59:59+04:00",
     windowLabel: "Ends 30 September 2026",
-    hideCountdown: true,
+    hideDeadline: true,
     metaTitle: "Sobha 20:80 Payment Plan | 20% Now, 80% on Handover + 4% DLD Waiver",
     metaDescription:
-      "Pay 20% now and 80% on handover on selected Sobha homes above AED 5M, with the 4% DLD fee waived and 20% NOC on resale. Limited-time offer — check eligible units.",
+      "Pay 20% now and 80% on handover on selected Sobha homes above AED 5M, with the 4% DLD fee waived and 20% NOC on resale. Check which units qualify.",
     keywords:
       "Sobha 20:80 payment plan, Sobha 80 20 payment plan, Sobha Realty offer, DLD waiver Dubai, post-handover payment plan Dubai, Sobha Sanctuary villas, off-plan payment plan Dubai, Dubai property offer",
     highlights: [
@@ -127,8 +128,8 @@ export const OFFERS: Offer[] = [
     bodyParagraphs: [
       "A 20:80 plan is one of the most buyer-friendly structures in off-plan real estate. Instead of spreading payments across a long ladder of construction milestones, it front-loads a single 20% commitment and pushes the remaining balance to completion.",
       "That distinction matters most at the premium end of the market. On a AED 5 million home, a conventional plan can require well over AED 2 million before handover. Under this structure the same purchase opens at AED 1 million, with the 4% DLD fee — normally another AED 200,000 — waived entirely.",
-      "It is worth separating this promotion from Sobha's standard lineup. The developer also runs everyday possession-linked plans, including 20:80 and 40:60 structures, on selected advanced-construction projects. Those are not time-bound in the same way. What defines this offer is the combination of a limited window, the fee waiver and the resale NOC on qualifying units.",
-      "Eligible inventory moves quickly and specific qualifying units depend on live availability, so the practical first step is confirming which homes qualify before the window closes.",
+      "It is worth separating this promotion from Sobha's standard lineup. The developer also runs everyday possession-linked plans, including 20:80 and 40:60 structures, on selected advanced-construction projects. What defines this offer is the combination of the deferred structure, the fee waiver and the resale NOC on qualifying units.",
+      "Eligible inventory is limited and specific qualifying units depend on live availability, so the practical first step is confirming which homes qualify.",
     ],
     worked: {
       heading: "What this looks like on a AED 5M home",
@@ -169,9 +170,9 @@ export const OFFERS: Offer[] = [
           "No. Sobha runs standard possession-linked plans, including 20:80 and 40:60 structures, on selected projects year-round. This is a separate time-limited promotion that pairs the deferred structure with the DLD waiver and resale NOC.",
       },
       {
-        question: "What happens after the offer window closes?",
+        question: "Is the 20:80 plan available on every Sobha property?",
         answer:
-          "The promotional terms lapse and qualifying units revert to their standard payment plans. Register your interest and we will tell you when the next release opens.",
+          "No. It applies to selected units above AED 5 million, subject to availability and developer approval. Send us your budget and we will confirm which homes currently qualify.",
       },
     ],
     disclaimer:
