@@ -10,6 +10,8 @@ interface Props {
   title: string;
   deadline: string;
   expired?: boolean;
+  /** Offer-level opt-out — see Offer.hideCountdown. */
+  hideCountdown?: boolean;
 }
 
 /**
@@ -18,7 +20,7 @@ interface Props {
  * page. Hidden on small screens, where the site already renders floating
  * call/chat buttons and a second bar would crowd them out.
  */
-export default function StickyOfferBar({ title, deadline, expired = false }: Props) {
+export default function StickyOfferBar({ title, deadline, expired = false, hideCountdown = false }: Props) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function StickyOfferBar({ title, deadline, expired = false }: Pro
           <div className="truncate text-sm font-semibold text-white">{title}</div>
         </div>
 
-        {!expired && (
+        {!expired && !hideCountdown && (
           <div className="shrink-0 scale-90">
             <OfferCountdown deadline={deadline} tone="light" />
           </div>

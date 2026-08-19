@@ -51,6 +51,10 @@ export interface Offer {
   deadline: string;
   /** Human-readable window, e.g. "8–9 August 2026". */
   windowLabel: string;
+  /** Suppress the live countdown everywhere (hero, sticky bar, closing CTA).
+   *  For offers with a soft or provisional end date, where a ticking clock
+   *  would overstate how firm the deadline is. `deadline` still drives expiry. */
+  hideCountdown?: boolean;
   metaTitle: string;
   metaDescription: string;
   keywords: string;
@@ -88,6 +92,7 @@ export const OFFERS: Offer[] = [
     // Placeholder window — update both fields when the promotion actually runs.
     deadline: "2026-09-30T23:59:59+04:00",
     windowLabel: "Ends 30 September 2026",
+    hideCountdown: true,
     metaTitle: "Sobha 20:80 Payment Plan | 20% Now, 80% on Handover + 4% DLD Waiver",
     metaDescription:
       "Pay 20% now and 80% on handover on selected Sobha homes above AED 5M, with the 4% DLD fee waived and 20% NOC on resale. Limited-time offer — check eligible units.",

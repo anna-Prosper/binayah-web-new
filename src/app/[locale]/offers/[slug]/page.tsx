@@ -99,7 +99,12 @@ export default async function OfferPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <StickyOfferBar title={offer.h1} deadline={offer.deadline} expired={expired} />
+      <StickyOfferBar
+        title={offer.h1}
+        deadline={offer.deadline}
+        expired={expired}
+        hideCountdown={offer.hideCountdown}
+      />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
       <FAQJsonLd faqs={offer.faqs} nonce={nonce} />
       <OfferJsonLd
@@ -170,7 +175,7 @@ export default async function OfferPage({ params }: Props) {
                     <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
                     {offer.windowLabel}
                   </div>
-                  <OfferCountdown deadline={offer.deadline} tone="light" />
+                  {!offer.hideCountdown && <OfferCountdown deadline={offer.deadline} tone="light" />}
                 </div>
               )}
 
@@ -536,7 +541,7 @@ export default async function OfferPage({ params }: Props) {
               Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today.
             </p>
 
-            {!expired && (
+            {!expired && !offer.hideCountdown && (
               <div className="mt-9 flex justify-center">
                 <OfferCountdown deadline={offer.deadline} tone="light" />
               </div>
