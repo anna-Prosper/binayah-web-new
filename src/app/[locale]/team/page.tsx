@@ -7,6 +7,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { getAgents } from "@/lib/agents";
+import { SUPPORT_TEAM } from "@/lib/support-team";
 
 export const revalidate = 3600;
 
@@ -69,14 +70,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const TEAM_L: Record<string, { crumb: string; heading: string; intro: string; empty: string }> = {
-  en: { crumb: "Our Team", heading: "Meet the Binayah team", intro: "RERA-certified property consultants who have helped clients buy, sell, rent and invest across Dubai since 2007. Get matched with a specialist for your area and budget.", empty: "Our team directory is being updated. Please check back shortly." },
-  fr: { crumb: "Notre équipe", heading: "Rencontrez l'équipe Binayah", intro: "Des conseillers immobiliers certifiés RERA qui aident leurs clients à acheter, vendre, louer et investir à Dubaï depuis 2007. Trouvez le spécialiste adapté à votre quartier et à votre budget.", empty: "Notre annuaire d'équipe est en cours de mise à jour. Merci de revenir bientôt." },
-  ru: { crumb: "Наша команда", heading: "Знакомьтесь с командой Binayah", intro: "Сертифицированные RERA консультанты по недвижимости, помогающие клиентам покупать, продавать, арендовать и инвестировать в Дубае с 2007 года. Подберём специалиста под ваш район и бюджет.", empty: "Каталог нашей команды обновляется. Пожалуйста, зайдите позже." },
-  ar: { crumb: "فريقنا", heading: "تعرّف على فريق بناية", intro: "مستشارو عقارات معتمدون من RERA ساعدوا العملاء على الشراء والبيع والإيجار والاستثمار في دبي منذ 2007. سنوصلك بمتخصص يناسب منطقتك وميزانيتك.", empty: "يتم تحديث دليل فريقنا. يرجى العودة قريبًا." },
-  zh: { crumb: "我们的团队", heading: "认识 Binayah 团队", intro: "自2007年以来，RERA认证的房产顾问帮助客户在迪拜买卖、租赁和投资。为您匹配适合您所在区域和预算的专家。", empty: "我们的团队目录正在更新中，请稍后再来查看。" },
-  vi: { crumb: "Đội ngũ của chúng tôi", heading: "Gặp gỡ đội ngũ Binayah", intro: "Các chuyên viên bất động sản được RERA chứng nhận đã giúp khách hàng mua, bán, cho thuê và đầu tư khắp Dubai từ năm 2007. Kết nối với chuyên gia phù hợp khu vực và ngân sách của bạn.", empty: "Danh bạ đội ngũ của chúng tôi đang được cập nhật. Vui lòng quay lại sau." },
-  he: { crumb: "הצוות שלנו", heading: "הכירו את צוות Binayah", intro: 'יועצי נדל"ן מוסמכי RERA שסייעו ללקוחות לקנות, למכור, להשכיר ולהשקיע ברחבי דובאי מאז 2007. נתאים לכם מומחה לאזור ולתקציב שלכם.', empty: "מדריך הצוות שלנו מתעדכן. אנא בדקו שוב בקרוב." },
+const TEAM_L: Record<string, { crumb: string; heading: string; intro: string; empty: string; supportHeading: string; supportIntro: string }> = {
+  en: { crumb: "Our Team", heading: "Meet the Binayah team", intro: "RERA-certified property consultants who have helped clients buy, sell, rent and invest across Dubai since 2007. Get matched with a specialist for your area and budget.", empty: "Our team directory is being updated. Please check back shortly.", supportHeading: "Operations & Support", supportIntro: "The people behind the scenes keeping every deal, viewing and handover running smoothly." },
+  fr: { crumb: "Notre équipe", heading: "Rencontrez l'équipe Binayah", intro: "Des conseillers immobiliers certifiés RERA qui aident leurs clients à acheter, vendre, louer et investir à Dubaï depuis 2007. Trouvez le spécialiste adapté à votre quartier et à votre budget.", empty: "Notre annuaire d'équipe est en cours de mise à jour. Merci de revenir bientôt.", supportHeading: "Opérations et support", supportIntro: "Les personnes en coulisses qui font que chaque transaction, visite et remise se déroule sans accroc." },
+  ru: { crumb: "Наша команда", heading: "Знакомьтесь с командой Binayah", intro: "Сертифицированные RERA консультанты по недвижимости, помогающие клиентам покупать, продавать, арендовать и инвестировать в Дубае с 2007 года. Подберём специалиста под ваш район и бюджет.", empty: "Каталог нашей команды обновляется. Пожалуйста, зайдите позже.", supportHeading: "Операции и поддержка", supportIntro: "Люди за кулисами, благодаря которым каждая сделка, просмотр и передача проходят гладко." },
+  ar: { crumb: "فريقنا", heading: "تعرّف على فريق بناية", intro: "مستشارو عقارات معتمدون من RERA ساعدوا العملاء على الشراء والبيع والإيجار والاستثمار في دبي منذ 2007. سنوصلك بمتخصص يناسب منطقتك وميزانيتك.", empty: "يتم تحديث دليل فريقنا. يرجى العودة قريبًا.", supportHeading: "العمليات والدعم", supportIntro: "الفريق خلف الكواليس الذي يضمن سير كل صفقة ومعاينة وتسليم بسلاسة." },
+  zh: { crumb: "我们的团队", heading: "认识 Binayah 团队", intro: "自2007年以来，RERA认证的房产顾问帮助客户在迪拜买卖、租赁和投资。为您匹配适合您所在区域和预算的专家。", empty: "我们的团队目录正在更新中，请稍后再来查看。", supportHeading: "运营与支持", supportIntro: "幕后团队，确保每一笔交易、看房与交接顺利进行。" },
+  vi: { crumb: "Đội ngũ của chúng tôi", heading: "Gặp gỡ đội ngũ Binayah", intro: "Các chuyên viên bất động sản được RERA chứng nhận đã giúp khách hàng mua, bán, cho thuê và đầu tư khắp Dubai từ năm 2007. Kết nối với chuyên gia phù hợp khu vực và ngân sách của bạn.", empty: "Danh bạ đội ngũ của chúng tôi đang được cập nhật. Vui lòng quay lại sau.", supportHeading: "Vận hành & hỗ trợ", supportIntro: "Những người phía sau giúp mọi giao dịch, buổi xem nhà và bàn giao diễn ra suôn sẻ." },
+  he: { crumb: "הצוות שלנו", heading: "הכירו את צוות Binayah", intro: 'יועצי נדל"ן מוסמכי RERA שסייעו ללקוחות לקנות, למכור, להשכיר ולהשקיע ברחבי דובאי מאז 2007. נתאים לכם מומחה לאזור ולתקציב שלכם.', empty: "מדריך הצוות שלנו מתעדכן. אנא בדקו שוב בקרוב.", supportHeading: "תפעול ותמיכה", supportIntro: "האנשים שמאחורי הקלעים שדואגים שכל עסקה, סיור ומסירה יתנהלו בצורה חלקה." },
 };
 
 export default async function TeamPage({ params }: Props) {
@@ -139,6 +140,38 @@ export default async function TeamPage({ params }: Props) {
             <p className="text-sm text-muted-foreground">{L.empty}</p>
           )}
         </section>
+
+        {/* Operations & support — role-labelled, no individual pages (nothing
+            extra for crawlers to index); the sales agents above are the
+            indexable, linkable profiles. */}
+        {SUPPORT_TEAM.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-20 border-t border-border/50 pt-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">{L.supportHeading}</h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground leading-relaxed">{L.supportIntro}</p>
+            <ul className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 list-none p-0">
+              {SUPPORT_TEAM.map((m) => (
+                <li
+                  key={m.slug}
+                  className="rounded-2xl border border-border/60 bg-card overflow-hidden"
+                >
+                  <div className="relative aspect-[4/5] bg-muted/30 overflow-hidden">
+                    <Image
+                      src={m.photo}
+                      alt={m.role}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <p className="font-semibold text-sm sm:text-base text-foreground leading-tight">{m.role}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">Binayah Properties</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
       <Footer />
     </div>
