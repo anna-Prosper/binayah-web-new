@@ -325,14 +325,6 @@ export default async function OfferPage({ params }: Props) {
         </Reveal>
 
         <Reveal delay={80} className="relative mt-14">
-          {/* Rail behind the cards — draws itself as the section reveals. */}
-          <div className="pointer-events-none absolute inset-x-0 top-[52px] hidden md:block">
-            <div
-              className="ofr-rail h-[3px] rounded-full"
-              style={{ background: `linear-gradient(90deg, ${GREEN} 0%, ${GOLD} 55%, ${GOLD_DEEP} 100%)`, opacity: 0.30 }}
-            />
-          </div>
-
           <div
             className={`grid gap-5 ${
               offer.timeline.length === 2
@@ -344,6 +336,22 @@ export default async function OfferPage({ params }: Props) {
           >
             {offer.timeline.map((step, i) => (
               <div key={step.stage} className="relative">
+                {/* Connector to the NEXT node — node centre to node centre, so
+                    the run terminates at the last step instead of trailing off
+                    to the edge of the row. 26px = half a 52px node; 46px = that
+                    plus the 20px grid gap. */}
+                {i < offer.timeline!.length - 1 && (
+                  <span
+                    className="ofr-rail pointer-events-none absolute hidden h-[3px] rounded-full md:block"
+                    style={{
+                      left: "26px",
+                      right: "-46px",
+                      top: "25px",
+                      background: `linear-gradient(90deg, ${GREEN} 0%, ${GOLD} 55%, ${GOLD_DEEP} 100%)`,
+                      opacity: 0.30,
+                    }}
+                  />
+                )}
                 {/* Node sits on the rail */}
                 <div className="relative z-10 mb-6 flex justify-center md:justify-start">
                   <div
@@ -400,7 +408,18 @@ export default async function OfferPage({ params }: Props) {
           className="pointer-events-none absolute inset-x-0 top-0 h-28"
           style={{ background: `linear-gradient(to bottom, ${GREEN_DK} 0%, transparent 100%)` }}
         />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-2">
+        {/* Levelling the tone removed the seam but also removed the boundary:
+            against the hero's stat band this section read as one continuous
+            panel. Same gold rule the band opens with — punctuation rather than
+            an accidental join. */}
+        <span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.30) 22%, rgba(234,200,115,0.60) 50%, rgba(212,168,71,0.30) 78%, transparent 100%)",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pb-20 pt-24 sm:px-6 sm:pb-28 sm:pt-36 lg:grid-cols-2">
           {offer.worked && (
             <Reveal>
               <Eyebrow onDark>The maths</Eyebrow>
