@@ -289,8 +289,8 @@ export default async function OfferPage({ params }: Props) {
             Your money, staged
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            A conventional off-plan plan spreads payments across construction milestones. This one front-loads a
-            single commitment and defers the rest.
+            {offer.timelineIntro ??
+              "A conventional off-plan plan spreads payments across construction milestones. This one front-loads a single commitment and defers the rest."}
           </p>
         </Reveal>
 
@@ -303,7 +303,15 @@ export default async function OfferPage({ params }: Props) {
             />
           </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
+          <div
+            className={`grid gap-5 ${
+              offer.timeline.length === 2
+                ? "md:grid-cols-2"
+                : offer.timeline.length >= 4
+                  ? "md:grid-cols-4"
+                  : "md:grid-cols-3"
+            }`}
+          >
             {offer.timeline.map((step, i) => (
               <div key={step.stage} className="relative">
                 {/* Node sits on the rail */}

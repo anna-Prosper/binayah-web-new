@@ -64,6 +64,10 @@ export interface Offer {
   /** Payment-plan breakdown rendered as a horizontal timeline. Omit entirely
    *  to drop the section — some offers are better told without a staged rail. */
   timeline?: OfferTimelineStep[];
+  /** Lead-in under the timeline heading. The default describes a front-loaded
+   *  plan, which is wrong for an even split, so any non-20:80 structure should
+   *  set its own. */
+  timelineIntro?: string;
   /** "The offer in detail" bullet rows. */
   eligibility: OfferEligibility[];
   /** Why-it-matters cards: [heading, body]. */
