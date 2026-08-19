@@ -419,16 +419,21 @@ export default async function OfferPage({ params }: Props) {
               "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.30) 22%, rgba(234,200,115,0.60) 50%, rgba(212,168,71,0.30) 78%, transparent 100%)",
           }}
         />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pb-20 pt-24 sm:px-6 sm:pb-28 sm:pt-36 lg:grid-cols-2">
+        <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-24 sm:px-6 sm:pb-28 sm:pt-36">
           {offer.worked && (
-            <Reveal>
-              <Eyebrow onDark>The maths</Eyebrow>
-              <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
-                {offer.worked.heading}
-              </h2>
+            <Reveal className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+              <div>
+                <Eyebrow onDark>The maths</Eyebrow>
+                <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
+                  {offer.worked.heading}
+                </h2>
+                {offer.worked.footnote && (
+                  <p className="mt-5 max-w-md text-xs leading-relaxed text-white/40">{offer.worked.footnote}</p>
+                )}
+              </div>
 
               <div
-                className="mt-7 overflow-hidden rounded-2xl"
+                className="overflow-hidden rounded-2xl"
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
               >
                 {offer.worked.rows.map(([label, value], i) => {
@@ -454,18 +459,34 @@ export default async function OfferPage({ params }: Props) {
                   );
                 })}
               </div>
-              {offer.worked.footnote && (
-                <p className="mt-3.5 text-xs leading-relaxed text-white/40">{offer.worked.footnote}</p>
-              )}
             </Reveal>
           )}
+        </div>
+      </section>
 
-          <Reveal delay={100}>
+      {/* ── ELIGIBILITY — its own section. Sharing a row with the worked example
+             squeezed both into half-width columns and read as one block; a
+             deeper ground plus the gold rule separates them without breaking the
+             page's dark/light alternation. ──────────────────────────────────── */}
+      <section
+        className="relative overflow-hidden"
+        style={{ background: `linear-gradient(180deg, #06231B 0%, ${GREEN_DK} 100%)` }}
+      >
+        <span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.30) 22%, rgba(234,200,115,0.60) 50%, rgba(212,168,71,0.30) 78%, transparent 100%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+          <Reveal>
             <Eyebrow onDark>The offer in detail</Eyebrow>
             <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
               What qualifies
             </h2>
-            <div className="mt-7 space-y-2.5">
+            {/* Full width now, so the rows run two-up instead of a narrow stack. */}
+            <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
               {offer.eligibility.map((e) => (
                 <div
                   key={e.label}
