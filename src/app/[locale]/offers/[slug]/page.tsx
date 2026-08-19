@@ -61,6 +61,10 @@ const GOLD = "#D4A847";
 const GOLD_LT = "#EAC873";
 const GOLD_DEEP = "#B8922F";
 const GREEN = "#0B3D2E";
+/** The one dark ground the homepage uses for every dark section (ServicesSection,
+ *  WhatWeOffer). The offer page had three different bespoke gradients, which is
+ *  what made its sections read as unrelated slabs. */
+const DARK_SECTION = "linear-gradient(135deg, #0B3D2E, #1A7A5A)";
 const GREEN_DK = "#072A20";
 
 /** Small gold-ruled eyebrow used to open every section. */
@@ -233,16 +237,10 @@ export default async function OfferPage({ params }: Props) {
           </div>
 
           {/* ── HIGHLIGHT BAND — flush to the hero, gold-ruled ─────────────
-              Settles from translucent (photo still reads through the top) to
-              solid GREEN_DK at the bottom, so the band hands off to whatever
-              section follows without a tonal step. */}
-          <div
-            className="relative"
-            style={{
-              background: `linear-gradient(to bottom, rgba(7,42,32,0.34) 0%, rgba(7,42,32,0.80) 58%, ${GREEN_DK} 100%)`,
-              backdropFilter: "blur(10px)",
-            }}
-          >
+              Opaque light ground. It reads as its own band between the hero
+              photograph and the dark sections below, and it is what gives the
+              page its dark / light / dark rhythm. */}
+          <div className="relative bg-card">
             {/* Gold hairline, brightest mid-span and fading out at both ends —
                 an edge-to-edge rule reads like a table border. */}
             <span
@@ -252,10 +250,11 @@ export default async function OfferPage({ params }: Props) {
                   "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.42) 20%, rgba(234,200,115,0.85) 50%, rgba(212,168,71,0.42) 80%, transparent 100%)",
               }}
             />
-            {/* Warm pool of light spilling down from the hairline. */}
+            {/* Warm wash spilling down from the hairline — far lighter than the
+                dark version needed, or it turns muddy against the light ground. */}
             <span
               className="pointer-events-none absolute inset-0"
-              style={{ background: "radial-gradient(68% 130% at 50% 0%, rgba(212,168,71,0.13) 0%, transparent 62%)" }}
+              style={{ background: "radial-gradient(68% 130% at 50% 0%, rgba(212,168,71,0.10) 0%, transparent 60%)" }}
             />
 
             <div className="relative mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
@@ -269,7 +268,7 @@ export default async function OfferPage({ params }: Props) {
                       className={`pointer-events-none absolute inset-y-5 left-0 w-px ${i % 2 === 0 ? "hidden lg:block" : ""}`}
                       style={{
                         background:
-                          "linear-gradient(to bottom, transparent, rgba(255,255,255,0.16) 50%, transparent)",
+                          "linear-gradient(to bottom, transparent, rgba(11,61,46,0.16) 50%, transparent)",
                       }}
                     />
                   )}
@@ -278,7 +277,7 @@ export default async function OfferPage({ params }: Props) {
                       className="pointer-events-none absolute inset-x-6 top-0 h-px lg:hidden"
                       style={{
                         background:
-                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.14) 50%, transparent)",
+                          "linear-gradient(90deg, transparent, rgba(11,61,46,0.14) 50%, transparent)",
                       }}
                     />
                   )}
@@ -286,20 +285,19 @@ export default async function OfferPage({ params }: Props) {
                   <div
                     className="text-[2.3rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
                     style={{
-                      background: `linear-gradient(140deg, #F6DFA8 0%, ${GOLD_LT} 40%, ${GOLD_DEEP} 100%)`,
+                      background: `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
-                      filter: "drop-shadow(0 3px 16px rgba(212,168,71,0.30))",
                     }}
                   >
                     {h.value}
                   </div>
-                  <div className="mt-3 text-[11px] font-bold uppercase tracking-[0.13em] text-white sm:text-xs">
+                  <div className="mt-3 text-[11px] font-bold uppercase tracking-[0.13em] text-foreground sm:text-xs">
                     {h.label}
                   </div>
                   {h.detail && (
-                    <div className="mx-auto mt-2 max-w-[30ch] text-[12px] leading-relaxed text-white/45">
+                    <div className="mx-auto mt-2 max-w-[30ch] text-[12px] leading-relaxed text-muted-foreground">
                       {h.detail}
                     </div>
                   )}
@@ -312,7 +310,8 @@ export default async function OfferPage({ params }: Props) {
 
       {/* ── PAYMENT TIMELINE — only for offers that define one ───────────── */}
       {!!offer.timeline?.length && (
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>How the plan works</Eyebrow>
           <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
@@ -388,38 +387,20 @@ export default async function OfferPage({ params }: Props) {
             ))}
           </div>
         </Reveal>
+        </div>
       </section>
       )}
 
       {/* ── WORKED EXAMPLE + ELIGIBILITY (dark) ──────────────────────────── */}
       <section
-        className="relative overflow-hidden"
-        style={{ background: `linear-gradient(155deg, ${GREEN_DK} 0%, ${GREEN} 48%, #0F4A36 100%)` }}
+        className="relative overflow-hidden text-white"
+        style={{ background: DARK_SECTION }}
       >
-        {/* Gold bloom, dropped below the top edge — centred at 0% it peaked
-            exactly on the seam with the hero band, which has no such glow. */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{ background: "radial-gradient(90% 70% at 85% 20%, rgba(212,168,71,0.14) 0%, transparent 60%)" }}
         />
-        {/* Painted last so it levels the diagonal AND the bloom back to
-            GREEN_DK at y=0, matching the band above exactly. */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-28"
-          style={{ background: `linear-gradient(to bottom, ${GREEN_DK} 0%, transparent 100%)` }}
-        />
-        {/* Levelling the tone removed the seam but also removed the boundary:
-            against the hero's stat band this section read as one continuous
-            panel. Same gold rule the band opens with — punctuation rather than
-            an accidental join. */}
-        <span
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.30) 22%, rgba(234,200,115,0.60) 50%, rgba(212,168,71,0.30) 78%, transparent 100%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-24 sm:px-6 sm:pb-28 sm:pt-36">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-24">
           {offer.worked && (
             <Reveal className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
               <div>
@@ -464,25 +445,14 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── ELIGIBILITY — its own section. Sharing a row with the worked example
-             squeezed both into half-width columns and read as one block; a
-             deeper ground plus the gold rule separates them without breaking the
-             page's dark/light alternation. ──────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: `linear-gradient(180deg, #06231B 0%, ${GREEN_DK} 100%)` }}
-      >
-        <span
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.30) 22%, rgba(234,200,115,0.60) 50%, rgba(212,168,71,0.30) 78%, transparent 100%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      {/* ── ELIGIBILITY — light, so it doesn't stack two dark slabs against the
+             worked example above it. bg-card against the page's bg-background is
+             the same light-on-light step the homepage uses. ──────────────────── */}
+      <section className="bg-card py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <Eyebrow onDark>The offer in detail</Eyebrow>
-            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
+            <Eyebrow>The offer in detail</Eyebrow>
+            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
               What qualifies
             </h2>
             {/* Full width now, so the rows run two-up instead of a narrow stack. */}
@@ -490,13 +460,14 @@ export default async function OfferPage({ params }: Props) {
               {offer.eligibility.map((e) => (
                 <div
                   key={e.label}
-                  className="flex items-start gap-3.5 rounded-xl px-5 py-4 transition-colors"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.10)" }}
+                  className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-background px-5 py-4 transition-colors"
                 >
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD }} />
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
                   <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">{e.label}</div>
-                    <div className="mt-1 text-sm font-semibold text-white">{e.value}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      {e.label}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-foreground">{e.value}</div>
                   </div>
                 </div>
               ))}
@@ -506,7 +477,8 @@ export default async function OfferPage({ params }: Props) {
       </section>
 
       {/* ── WHY IT MATTERS ───────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>Why it matters</Eyebrow>
           <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
@@ -531,11 +503,12 @@ export default async function OfferPage({ params }: Props) {
             </Reveal>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ── LONG-FORM + FORM ─────────────────────────────────────────────── */}
-      <section id="enquire" className="scroll-mt-24" style={{ background: "rgba(11,61,46,0.04)" }}>
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.1fr_1fr]">
+      <section id="enquire" className="scroll-mt-24 bg-card py-14 sm:py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
           <Reveal>
             <Eyebrow>The detail</Eyebrow>
             <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
@@ -573,7 +546,8 @@ export default async function OfferPage({ params }: Props) {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>Questions</Eyebrow>
           <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
@@ -599,12 +573,13 @@ export default async function OfferPage({ params }: Props) {
             </Reveal>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ── CLOSING CTA ──────────────────────────────────────────────────── */}
       <section
         className="relative overflow-hidden"
-        style={{ background: `linear-gradient(160deg, ${GREEN_DK} 0%, ${GREEN} 50%, #0F4A36 100%)` }}
+        style={{ background: DARK_SECTION }}
       >
         <div
           className="pointer-events-none absolute inset-0"
