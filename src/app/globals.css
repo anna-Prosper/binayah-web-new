@@ -291,6 +291,23 @@ body.livechat-visible #chat-widget-container {
   animation: ofr-sheen 4.5s ease-in-out infinite;
 }
 
+/* "Live promotion" dot for offers with no published end date. Without a
+   countdown beneath it the window label is a lone line of muted text, so it
+   becomes a pill instead and this carries the sense that the offer is running
+   now — the job the ticking digits used to do. */
+@keyframes ofr-live-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: .45; transform: scale(.78); }
+}
+.ofr-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #EAC873;
+  box-shadow: 0 0 0 4px rgba(212,168,71,0.15);
+  animation: ofr-live-pulse 2.4s ease-in-out infinite;
+}
+
 /* The payment-timeline rail draws itself once the section scrolls in. */
 @keyframes ofr-rail { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .ofr-rail { transform-origin: left center; }
@@ -307,6 +324,7 @@ body.livechat-visible #chat-widget-container {
 @media (prefers-reduced-motion: reduce) {
   .ofr-reveal { opacity: 1; transform: none; transition: none; }
   .ofr-sheen::after,
+  .ofr-live-dot,
   .ofr-reveal.is-in .ofr-rail,
   .ofr-kenburns,
   .ofr-bar-in { animation: none; }

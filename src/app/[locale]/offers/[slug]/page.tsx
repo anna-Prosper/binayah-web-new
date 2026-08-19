@@ -174,11 +174,38 @@ export default async function OfferPage({ params }: Props) {
 
               {!expired && !offer.hideDeadline && (
                 <div className="hero-rise mt-9">
-                  <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
-                    <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
-                    {offer.windowLabel || DEFAULT_WINDOW_LABEL}
-                  </div>
-                  {showCountdown && <OfferCountdown deadline={offer.deadline} tone="light" />}
+                  {showCountdown ? (
+                    // Caption above the digits — deliberately quiet so it doesn't
+                    // compete with the countdown it introduces.
+                    <>
+                      <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
+                        <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
+                        {offer.windowLabel || DEFAULT_WINDOW_LABEL}
+                      </div>
+                      <OfferCountdown deadline={offer.deadline} tone="light" />
+                    </>
+                  ) : (
+                    // Nothing beneath it, so the label has to hold the slot on its
+                    // own: a gold-ruled pill with a live dot rather than a stray
+                    // line of muted caption text.
+                    <span
+                      className="inline-flex items-center gap-3 rounded-full py-2.5 pl-4 pr-5 backdrop-blur-sm"
+                      style={{
+                        border: "1px solid rgba(212,168,71,0.36)",
+                        background:
+                          "linear-gradient(135deg, rgba(212,168,71,0.18) 0%, rgba(212,168,71,0.05) 100%)",
+                        boxShadow: "0 8px 28px rgba(0,0,0,0.20)",
+                      }}
+                    >
+                      <span className="ofr-live-dot shrink-0" />
+                      <span
+                        className="text-[11.5px] font-bold uppercase tracking-[0.16em]"
+                        style={{ color: "#F2E0B5" }}
+                      >
+                        {offer.windowLabel || DEFAULT_WINDOW_LABEL}
+                      </span>
+                    </span>
+                  )}
                 </div>
               )}
 
