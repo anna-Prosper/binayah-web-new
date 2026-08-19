@@ -15,6 +15,7 @@ export const SUPPORT_TEAM: SupportMember[] = [
   { role: "General Manager", slug: "general-manager", photo: `${S3}/general-manager.jpg` },
   { role: "Property Manager", slug: "property-manager", photo: `${S3}/property-manager.jpg` },
   { role: "Admin Coordinator", slug: "admin-coordinator", photo: `${S3}/admin-coordinator.jpg` },
+  { role: "Admin Coordinator", slug: "admin-coordinator-2", photo: `${S3}/admin-coordinator-2.jpg` },
   { role: "Accountant", slug: "accountant", photo: `${S3}/accountant.jpg` },
   { role: "Social Media Manager", slug: "social-media-manager", photo: `${S3}/social-media-manager.jpg` },
   { role: "AI Specialist", slug: "ai-specialist", photo: `${S3}/ai-specialist.jpg` },
