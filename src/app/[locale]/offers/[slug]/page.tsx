@@ -10,7 +10,7 @@ import OfferCountdown from "@/components/offers/OfferCountdown";
 import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
-import { isExpired } from "@/lib/offers";
+import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
@@ -88,6 +88,8 @@ export default async function OfferPage({ params }: Props) {
 
   const nonce = await getNonce();
   const expired = isExpired(offer);
+  // No published end date → show the label, but never a ticking clock.
+  const showCountdown = !offer.hideDeadline && hasDeadline(offer);
   const lp = locale === "en" ? "" : `/${locale}`;
 
   const breadcrumbs = [
@@ -104,6 +106,7 @@ export default async function OfferPage({ params }: Props) {
         deadline={offer.deadline}
         expired={expired}
         hideDeadline={offer.hideDeadline}
+        showCountdown={showCountdown}
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
       <FAQJsonLd faqs={offer.faqs} nonce={nonce} />
@@ -173,9 +176,9 @@ export default async function OfferPage({ params }: Props) {
                 <div className="hero-rise mt-9">
                   <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
                     <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
-                    {offer.windowLabel}
+                    {offer.windowLabel || DEFAULT_WINDOW_LABEL}
                   </div>
-                  {!offer.hideDeadline && <OfferCountdown deadline={offer.deadline} tone="light" />}
+                  {showCountdown && <OfferCountdown deadline={offer.deadline} tone="light" />}
                 </div>
               )}
 
@@ -549,7 +552,7 @@ export default async function OfferPage({ params }: Props) {
               Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today.
             </p>
 
-            {!expired && !offer.hideDeadline && (
+            {!expired && showCountdown && (
               <div className="mt-9 flex justify-center">
                 <OfferCountdown deadline={offer.deadline} tone="light" />
               </div>

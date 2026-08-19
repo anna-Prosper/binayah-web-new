@@ -12,6 +12,9 @@ interface Props {
   expired?: boolean;
   /** Offer-level opt-out — see Offer.hideDeadline. */
   hideDeadline?: boolean;
+  /** False when the offer has no published end date, so there's nothing to
+   *  count down to. */
+  showCountdown?: boolean;
 }
 
 /**
@@ -20,7 +23,7 @@ interface Props {
  * page. Hidden on small screens, where the site already renders floating
  * call/chat buttons and a second bar would crowd them out.
  */
-export default function StickyOfferBar({ title, deadline, expired = false, hideDeadline = false }: Props) {
+export default function StickyOfferBar({ title, deadline, expired = false, hideDeadline = false, showCountdown = true }: Props) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -55,7 +58,7 @@ export default function StickyOfferBar({ title, deadline, expired = false, hideD
           <div className="truncate text-sm font-semibold text-white">{title}</div>
         </div>
 
-        {!expired && !hideDeadline && (
+        {!expired && showCountdown && (
           <div className="shrink-0 scale-90">
             <OfferCountdown deadline={deadline} tone="light" />
           </div>

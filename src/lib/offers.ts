@@ -47,9 +47,14 @@ export interface Offer {
   /** One-sentence promise, shown under the H1. */
   subtitle: string;
   heroImage: string;
-  /** ISO 8601 with explicit +04:00 offset. Drives countdown + expiry state. */
+  /** ISO 8601 with explicit +04:00 offset. Drives the countdown and the expiry
+   *  state. Leave EMPTY when the developer hasn't published an end date: the
+   *  offer then shows `windowLabel` (defaulting to "Limited time offer") with no
+   *  countdown, and never expires — better than inventing a date that would
+   *  silently retire a live promotion. */
   deadline: string;
-  /** Human-readable window, e.g. "8–9 August 2026". */
+  /** Human-readable window, e.g. "8–9 August 2026". Falls back to
+   *  DEFAULT_WINDOW_LABEL when empty. */
   windowLabel: string;
   /** Suppress every deadline mention the template emits: the countdown, the
    *  window label and the "limited-time" chrome. For offers whose end date is
@@ -188,7 +193,16 @@ export function getOffer(slug: string): Offer | undefined {
   return OFFERS.find((o) => o.slug === slug);
 }
 
-/** True when the promotion window has closed. */
+/** Shown when an offer has no published end date. */
+export const DEFAULT_WINDOW_LABEL = "Limited time offer";
+
+/** True when this offer has a real, parseable end date. */
+export function hasDeadline(offer: { deadline?: string }): boolean {
+  return Number.isFinite(new Date(offer.deadline ?? "").getTime());
+}
+
+/** True when the promotion window has closed. An offer with no deadline never
+ *  expires — `new Date("")` is NaN, so the finite check below is false. */
 export function isExpired(offer: { deadline: string }, now: Date = new Date()): boolean {
   const end = new Date(offer.deadline).getTime();
   return Number.isFinite(end) && now.getTime() > end;
