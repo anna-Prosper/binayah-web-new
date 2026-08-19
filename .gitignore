@@ -94,3 +94,5 @@ binayah_website_new.*.json
 # runtime lock — never commit
 .claude/scheduled_tasks.lock
 _incoming/
+/Agents /
+/BACK OFFICE/
