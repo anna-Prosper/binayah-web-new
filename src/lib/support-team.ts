@@ -12,6 +12,7 @@ export interface SupportMember {
 const S3 = "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/team-support";
 
 export const SUPPORT_TEAM: SupportMember[] = [
+  { role: "Head of Sales", slug: "general-manager", photo: `${S3}/general-manager.jpg?v=1787145756` },
   { role: "Property Manager", slug: "property-manager", photo: `${S3}/property-manager.jpg?v=1787145756` },
   { role: "Admin Coordinator", slug: "admin-coordinator", photo: `${S3}/admin-coordinator.jpg?v=1787145756` },
   { role: "Admin Coordinator", slug: "admin-coordinator-2", photo: `${S3}/admin-coordinator-2.jpg?v=1787145756` },

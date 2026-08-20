@@ -5,8 +5,10 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { MessageCircle, Phone, Mail, Globe } from "lucide-react";
 import { canonical, altLangs, OG_LOCALE, DEFAULT_OG_IMAGE } from "@/lib/site";
 import { getAgents } from "@/lib/agents";
+import { waHref } from "@/lib/whatsapp";
 import { SUPPORT_TEAM } from "@/lib/support-team";
 
 export const revalidate = 3600;
@@ -113,38 +115,87 @@ export default async function TeamPage({ params }: Props) {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mb-6">{L.salesHeading}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {sortedAgents.map((a) => (
-              <Link
-                key={a.slug}
-                href={`${lp}/team/${a.slug}`}
-                className="group rounded-2xl border border-border/60 bg-card overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all"
-              >
-                <div className="relative aspect-[4/5] bg-muted/30 overflow-hidden">
-                  {a.photo ? (
-                    <Image
-                      src={a.photo}
-                      alt={a.name}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-3xl font-semibold text-muted-foreground/40">
-                      {a.name.charAt(0)}
+            {sortedAgents.map((a) => {
+              const tel = (a.mobile || "").replace(/[^\d+]/g, "");
+              const waMsg = `Hi ${a.name}! 👋 I found your profile on Binayah and I'd like to discuss a property in Dubai.`;
+              return (
+                <div
+                  key={a.slug}
+                  className="group flex flex-col rounded-2xl border border-border/60 bg-card overflow-hidden hover:border-primary/40 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  {/* Photo → profile */}
+                  <Link href={`${lp}/team/${a.slug}`} className="relative aspect-[4/5] block bg-muted/30 overflow-hidden">
+                    {a.photo ? (
+                      <Image
+                        src={a.photo}
+                        alt={a.name}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-3xl font-semibold text-muted-foreground/40">
+                        {a.name.charAt(0)}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
+                    {a.position && (
+                      <span
+                        className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em] text-white shadow-md"
+                        style={{ background: "linear-gradient(135deg, #D4A847, #B8922F)" }}
+                      >
+                        {a.position}
+                      </span>
+                    )}
+                    <h3 className="absolute bottom-2.5 left-3 right-3 text-white font-bold text-sm sm:text-base leading-tight drop-shadow-md">
+                      {a.name}
+                    </h3>
+                  </Link>
+
+                  {/* Body: languages + contact */}
+                  <div className="p-3 sm:p-4 flex flex-col gap-3 flex-1">
+                    {a.languages && a.languages.length > 0 && (
+                      <p className="flex items-start gap-1.5 text-[11px] leading-snug text-muted-foreground">
+                        <Globe className="h-3.5 w-3.5 mt-px shrink-0 text-primary/70" />
+                        <span>{a.languages.join(" · ")}</span>
+                      </p>
+                    )}
+                    <div className="mt-auto flex items-center gap-2">
+                      {tel && (
+                        <a
+                          href={waHref(waMsg, undefined, a.mobile)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`WhatsApp ${a.name}`}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold text-white transition-transform hover:scale-[1.02]"
+                          style={{ background: "linear-gradient(135deg, #25D366, #1DA851)" }}
+                        >
+                          <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                        </a>
+                      )}
+                      {tel && (
+                        <a
+                          href={`tel:${tel}`}
+                          aria-label={`Call ${a.name}`}
+                          className="grid place-items-center h-8 w-8 shrink-0 rounded-lg border border-border/70 text-primary hover:bg-primary/8 transition-colors"
+                        >
+                          <Phone className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {a.email && (
+                        <a
+                          href={`mailto:${a.email}`}
+                          aria-label={`Email ${a.name}`}
+                          className="grid place-items-center h-8 w-8 shrink-0 rounded-lg border border-border/70 text-primary hover:bg-primary/8 transition-colors"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                        </a>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
-                <div className="p-3 sm:p-4">
-                  <h2 className="font-semibold text-sm sm:text-base text-foreground leading-tight group-hover:text-primary transition-colors">
-                    {a.name}
-                  </h2>
-                  {a.position && <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground">{a.position}</p>}
-                  {a.languages && a.languages.length > 0 && (
-                    <p className="mt-2 text-[11px] text-muted-foreground/70">{a.languages.join(" · ")}</p>
-                  )}
-                </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
           {sortedAgents.length === 0 && (
             <p className="text-sm text-muted-foreground">{L.empty}</p>
