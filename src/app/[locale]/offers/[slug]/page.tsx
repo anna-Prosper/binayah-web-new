@@ -199,19 +199,24 @@ export default async function OfferPage({ params }: Props) {
                 </span>
               </div>
 
+              {/* Mobile size dropped from 2.6rem: at that size a headline this
+                  long (offer.h1 is data-driven, so length varies) ran to 4-5
+                  lines and pushed the countdown/CTAs down into the global fixed
+                  WhatsApp bar at the very bottom of the first mobile viewport.
+                  sm:/lg: unchanged — desktop had room and looked right. */}
               <h1
-                className="hero-rise mt-6 text-[2.6rem] font-extrabold leading-[1.04] tracking-[-0.02em] text-white sm:text-[3.4rem] lg:text-[4.1rem]"
+                className="hero-rise mt-5 text-[1.9rem] font-extrabold leading-[1.12] tracking-[-0.01em] text-white sm:mt-6 sm:text-[3.4rem] sm:leading-[1.04] sm:tracking-[-0.02em] lg:text-[4.1rem]"
                 style={{ textShadow: "0 2px 40px rgba(0,0,0,0.35)" }}
               >
                 {offer.h1}
               </h1>
 
-              <p className="hero-rise mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">
+              <p className="hero-rise mt-4 max-w-2xl text-[15px] leading-relaxed text-white/80 sm:mt-6 sm:text-lg lg:text-xl">
                 {offer.subtitle}
               </p>
 
               {!expired && !offer.hideDeadline && (
-                <div className="hero-rise mt-9">
+                <div className="hero-rise mt-6 sm:mt-9">
                   {showCountdown ? (
                     // Caption above the digits — deliberately quiet so it doesn't
                     // compete with the countdown it introduces.
@@ -247,7 +252,7 @@ export default async function OfferPage({ params }: Props) {
                 </div>
               )}
 
-              <div className="hero-rise mt-9 flex flex-wrap gap-3">
+              <div className="hero-rise mt-6 flex flex-wrap gap-3 sm:mt-9">
                 <a
                   href="#enquire"
                   className="group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.03]"
@@ -447,6 +452,28 @@ export default async function OfferPage({ params }: Props) {
           )}
         </div>
       </section>
+      )}
+
+      {/* ── SEAM ORNAMENT — the community section (bg-background) and the
+             timeline section right after it (bg-card) are both light, so their
+             join was a bare horizontal line. A small badge straddling the
+             boundary (negative margin pulls it up onto the seam, positive
+             z-index keeps it above both) turns that into a deliberate beat
+             instead of an accidental one, and doubles as "lifestyle → money"
+             visual shorthand: sparkle (the offer) becomes a key (the deal). ── */}
+      {!!offer.timeline?.length && (
+      <div className="relative z-10 -mb-6 flex justify-center">
+        <span
+          className="flex h-12 w-12 items-center justify-center rounded-full border-4"
+          style={{
+            background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`,
+            borderColor: "var(--background, #fff)",
+            boxShadow: "0 6px 20px rgba(212,168,71,0.35)",
+          }}
+        >
+          <KeyRound className="h-5 w-5" style={{ color: GREEN }} />
+        </span>
+      </div>
       )}
 
       {/* ── PAYMENT TIMELINE — a standing section: every offer should carry a
