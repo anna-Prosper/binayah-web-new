@@ -683,7 +683,7 @@ export default async function OfferPage({ params }: Props) {
             </h2>
           </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {offer.valueProps.map(([heading, body], i) => (
               <Reveal key={heading} delay={i * 90}>
                 <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
@@ -792,7 +792,13 @@ export default async function OfferPage({ params }: Props) {
             )}
           </Reveal>
 
-          <Reveal delay={100} className="lg:sticky lg:top-28 lg:self-start">
+          {/* Was lg:sticky lg:top-28 lg:self-start — the text column grew (a
+              second paragraph split by an inline photo) while the form stayed
+              short, so "self-start" pinned it to the top and left a tall dead
+              gap underneath. Centering it in the row removes that gap; the
+              form still sits beside the text, it just no longer chases the
+              scroll position. */}
+          <Reveal delay={100} className="lg:self-center">
             <OfferLeadForm offerSlug={offer.slug} offerName={offer.shortName} expired={expired} />
           </Reveal>
         </div>

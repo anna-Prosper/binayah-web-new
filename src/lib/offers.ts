@@ -133,14 +133,14 @@ export const OFFERS: Offer[] = [
     "shortName": "Sobha 20:80 Payment Plan",
     "developer": "Sobha Realty",
     "eyebrow": "Ends Sunday — 4 days only",
-    "h1": "Own a Sobha Home from AED 1.8M: Pay 20% Now, 80% on Handover",
-    "subtitle": "Entry starts at AED 1.8M for a one-bedroom at Sobha Central — no AED 5M floor there. Pay 20% during construction and 80% on completion across Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Book with 2% before Sunday.",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-payment-plan-hero.webp",
+    "h1": "Own an Ultra-Luxury Sobha Home for 20% — the Other 80% Waits Until Handover",
+    "subtitle": "A first for the UAE. AED 360,000 secures a AED 1.8 million home; the remaining AED 1.44 million falls due only when you collect the keys. The full 4% DLD fee is waived, and the plan runs across five Sobha communities.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
-    "metaDescription": "Own a Sobha home from AED 1.8M — 20% during construction, 80% on handover. One-beds at Sobha Central qualify, no AED 5M minimum. Closes 23 August.",
+    "metaDescription": "Own a Sobha home from AED 1.8M — 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
     "highlights": [
       {
@@ -154,9 +154,9 @@ export const OFFERS: Offer[] = [
         "detail": "Deferred until the unit is ready"
       },
       {
-        "value": "Up to 4%",
-        "label": "DLD waiver",
-        "detail": "2% or 4% by project; 100% registration fee on two"
+        "value": "100%",
+        "label": "DLD fee waived",
+        "detail": "The full 4% registration fee, covered"
       },
       {
         "value": "AED 1.8M",
@@ -166,78 +166,271 @@ export const OFFERS: Offer[] = [
     ],
     "timeline": [
       {
-        "stage": "On booking",
+        "stage": "Today",
         "share": "2%",
-        "description": "Paid inside the offer window, with the unit booked or PR-approved. This is the first part of the 20%, not an additional charge."
+        "description": "Booking amount, paid to reserve the unit."
       },
       {
-        "stage": "Across construction",
-        "share": "20%",
-        "description": "The full first tranche over the build period, booking amount included. Benefits are extended once 10% is paid alongside the registration fee and Booking Form."
+        "stage": "Within 10 days",
+        "share": "8%",
+        "description": "Second instalment."
       },
       {
-        "stage": "On completion",
+        "stage": "Within 3 months",
+        "share": "10%",
+        "description": "Completes the 20%."
+      },
+      {
+        "stage": "On handover",
         "share": "80%",
-        "description": "The balance falls due when the unit is finished and ready to hand over."
+        "description": "The balance, payable when the unit is ready."
       }
     ],
-    "timelineIntro": "The split is 20% across construction and 80% on completion. What the flyer doesn't spell out is where the 2% booking sits: it is not an extra payment on top, it is the first slice of that 20%, and it has to land inside the four-day window for the terms to hold.",
+    "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "eligibility": [
       {
-        "label": "Sobha Elwood",
-        "value": "20:80 plan, 2% DLD waiver and a 2% furniture voucher. AED 5M minimum unit value."
+        "label": "Entry price",
+        "value": "From AED 1.8M for a one-bedroom at Sobha Central."
       },
       {
-        "label": "Sobha Sanctuary — Courtyard & Garden Villas",
-        "value": "20:80 plan, 2% DLD waiver and a 2-year service charge waiver. AED 5M minimum unit value."
+        "label": "Payment structure",
+        "value": "20% across three instalments, 80% on handover."
       },
       {
-        "label": "Sobha Sanctuary — Estate Villas",
-        "value": "20:80 plan and a 4% DLD waiver. AED 5M minimum unit value."
-      },
-      {
-        "label": "Sobha Central — 1-bedroom apartments",
-        "value": "20:80 plan, 2% DLD waiver and a 2-year service charge waiver. From AED 1.8M, with no minimum unit value."
-      },
-      {
-        "label": "Sobha Central — 2 & 3-bedroom and retail",
-        "value": "20:80 plan and a 4% DLD waiver. No minimum unit value."
-      },
-      {
-        "label": "Sobha Siniya Island",
-        "value": "20:80 plan and a 100% registration fee waiver. AED 5M minimum unit value."
-      },
-      {
-        "label": "Downtown Umm Al Quwain",
-        "value": "20:80 plan and a 100% registration fee waiver. AED 5M minimum unit value."
+        "label": "DLD fee",
+        "value": "The full 4% waived."
       },
       {
         "label": "To secure the terms",
         "value": "Unit booked or PR-approved with the 2% booking amount paid inside the offer window."
+      },
+      {
+        "label": "To release the benefits",
+        "value": "Payment of 10%, the applicable registration fee and execution of the Booking Form."
+      },
+      {
+        "label": "Resale and mortgage",
+        "value": "Permitted at completion."
+      },
+      {
+        "label": "Not applicable to",
+        "value": "Cancellations, swaps, upgrades, downgrades and re-bookings."
       }
     ],
+    "projects": [
+      {
+        "name": "Sobha Elwood",
+        "terms": "20:80 plan, 2% DLD waiver and a 2% furniture voucher.",
+        "links": [
+          {
+            "label": "Sobha Elwood at Dubailand",
+            "href": "/project/sobha-elwood-at-dubailand"
+          }
+        ],
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-elwood.webp"
+      },
+      {
+        "name": "Sobha Sanctuary",
+        "terms": "Courtyard & Garden villas: 20:80, 2% DLD waiver, 2-year service charge waiver. Estate villas: 20:80 and a 4% DLD waiver.",
+        "links": [
+          {
+            "label": "The Woods",
+            "href": "/project/the-woods-sobha-sanctuary"
+          },
+          {
+            "label": "The Grove",
+            "href": "/project/the-grove-at-sobha-sanctuary"
+          },
+          {
+            "label": "The Greens",
+            "href": "/project/the-greens-at-sobha-sanctuary"
+          }
+        ],
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-serenity-at-sobha-sanctuary/gallery/the-woods-serenity-at-sobha-sanctuary-gallery_1-hd.webp"
+      },
+      {
+        "name": "Sobha Central",
+        "terms": "1-beds from AED 1.8M: 20:80, 2% DLD waiver, 2-year service charge waiver. 2 & 3-beds and retail: 20:80 and a 4% DLD waiver.",
+        "links": [
+          {
+            "label": "The Pinnacle",
+            "href": "/project/the-pinnacle-at-sobha-central"
+          },
+          {
+            "label": "The Mirage",
+            "href": "/project/the-mirage-at-sobha-central"
+          },
+          {
+            "label": "The Serene",
+            "href": "/project/the-serene-at-sobha-central-by-sobha-group"
+          },
+          {
+            "label": "The Eden",
+            "href": "/project/the-eden-at-sobha-central"
+          }
+        ],
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-central.webp"
+      },
+      {
+        "name": "Sobha Siniya Island",
+        "terms": "20:80 plan and a 100% registration fee waiver.",
+        "links": [
+          {
+            "label": "Siniyah Island by Sobha",
+            "href": "/project/siniyah-island-by-sobha-realty"
+          },
+          {
+            "label": "Aquamarine Beach Residences",
+            "href": "/project/beach-residences-at-sobha-siniya-island"
+          }
+        ],
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-siniya-island.webp"
+      },
+      {
+        "name": "Downtown Umm Al Quwain",
+        "terms": "20:80 plan and a 100% registration fee waiver.",
+        "links": [
+          {
+            "label": "The Coastal City",
+            "href": "/project/sobha-downtown-umm-al-quwain-the-coastal-city"
+          },
+          {
+            "label": "Sobha Aquamont",
+            "href": "/project/sobha-aquamont-downtown-umm-al-quwain"
+          }
+        ],
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-downtown-umm-al-quwain.webp"
+      }
+    ],
+    "amenities": {
+      "heading": "What you are buying into",
+      "items": [
+        "50% green and open spaces",
+        "Approximately 800,000 sq ft of green parks",
+        "9+ km wellness and cycling loops",
+        "Beach-style lagoons",
+        "Lazy rivers",
+        "Zen gardens",
+        "Meditation lawns",
+        "Co-working spaces",
+        "Community hubs",
+        "Pet therapy gardens",
+        "Farmers' market-style spaces",
+        "Community malls"
+      ],
+      "icons": [
+        "Trees",
+        "TreePalm",
+        "Bike",
+        "Waves",
+        "Droplets",
+        "Flower2",
+        "Sun",
+        "Laptop",
+        "Users",
+        "PawPrint",
+        "ShoppingBasket",
+        "Store"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
+        "alt": "Sobha villa exterior with private pool at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-elwood-at-dubailand/gallery/4.webp",
+        "alt": "Sobha Elwood clubhouse and landscaped gardens"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-elwood-at-dubailand/gallery/9.webp",
+        "alt": "Sobha Elwood community amenities"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-sobha-sanctuary/gallery/the-woods-sobha-sanctuary-gallery_1-hd.webp",
+        "alt": "The Woods at Sobha Sanctuary villas"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-serenity-at-sobha-sanctuary/gallery/the-woods-serenity-at-sobha-sanctuary-gallery_2-hd.webp",
+        "alt": "Sobha Sanctuary parkland and pathways"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_1-hd.webp",
+        "alt": "Sobha Central residential tower and pool deck"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_3-hd.webp",
+        "alt": "Sobha Central landscaped courtyard"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-siniya-island.webp",
+        "alt": "Sobha Siniya Island waterfront masterplan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/gallery-siniya-2.webp",
+        "alt": "Sobha Siniya Island beachfront residences"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-downtown-umm-al-quwain.webp",
+        "alt": "Downtown Umm Al Quwain coastal skyline"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/gallery-uaq-2.webp",
+        "alt": "Downtown Umm Al Quwain waterfront promenade"
+      }
+    ],
+    "investment": {
+      "heading": "A Tier 1 build, held for the long run.",
+      "items": [
+        {
+          "title": "Tier 1 developer",
+          "text": "Sobha designs, builds and delivers in-house."
+        },
+        {
+          "title": "Growth corridor",
+          "text": "Positioned in an appreciating district."
+        },
+        {
+          "title": "Rental demand",
+          "text": "Stable yields and a quality tenant profile."
+        },
+        {
+          "title": "Long-term value",
+          "text": "Built to hold, not to flip."
+        }
+      ],
+      "icons": [
+        "Building2",
+        "TrendingUp",
+        "Coins",
+        "ShieldCheck"
+      ]
+    },
+    "ctaLabel": "See qualifying units",
+    "whatsappLabel": "WhatsApp us now",
+    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan — 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
     "valueProps": [
       [
-        "Sobha Central starts at AED 1.8M",
-        "The AED 5 million minimum applies to Elwood, Sanctuary, Siniya Island and Downtown Umm Al Quwain. It does not apply to Sobha Central, where a one-bedroom apartment gets the same 20:80 structure from AED 1.8 million — the lowest entry point anywhere in this campaign, and roughly a third of the floor everywhere else."
+        "Entry starts at AED 1.8 million",
+        "A one-bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million — the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
       ],
       [
-        "The incentive stacks differ by project",
-        "This is not one blanket offer. Elwood adds a 2% furniture voucher; Sanctuary's Courtyard and Garden villas and Central's one-beds add a two-year service charge waiver; Estate villas and Central's larger units carry the full 4% DLD waiver; Siniya Island and Downtown Umm Al Quwain waive the registration fee entirely."
+        "AED 360,000 secures an AED 1.8M home",
+        "Twenty per cent is all that leaves your pocket before handover — AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within ten days and 10% within three months. The remaining AED 1.44 million is deferred until the unit is ready."
       ],
       [
-        "Four days, and the clock is the constraint",
-        "The plan is only held by a booking or PR approval with the 2% amount paid inside the window. Benefits are then extended on payment of 10% plus the applicable registration fee and execution of the Booking Form."
+        "Resell or mortgage at completion",
+        "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
       ]
     ],
     "bodyParagraphs": [
       "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community — 20% across the construction period and 80% on handover — but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
-      "The most useful detail for buyers is the price floor, because it is not universal. An AED 5 million minimum unit value applies to Sobha Elwood, Sobha Sanctuary, Sobha Siniya Island and Downtown Umm Al Quwain. It does not apply to Sobha Central, where one-bedroom apartments start at AED 1.8 million on the same deferred structure. For anyone who looked at a 20:80 plan before and assumed it was out of reach, Central is where that assumption breaks.",
+      "The number that matters most is the entry price: AED 1.8 million for a one-bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred-payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
       "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one-bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two- and three-bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one-beds add a two-year service charge waiver.",
       "The terms are held by action inside the window, not by intent. A unit must be booked or PR-approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings, so it is worth confirming the exact position on any unit already under discussion."
     ],
     "worked": {
-      "heading": "What it takes to secure a AED 1.8M unit",
+      "heading": "What it takes to secure a AED 1.8M one-bed at Sobha Central",
       "rows": [
         [
           "Purchase price",
@@ -256,11 +449,11 @@ export const OFFERS: Offer[] = [
           "AED 360,000"
         ],
         [
-          "Balance on completion (80%)",
+          "Balance on handover (80%)",
           "AED 1,440,000"
         ]
       ],
-      "footnote": "Illustrative on a AED 1.8M unit, and excludes the applicable registration fee, agency and trustee costs. The AED 5M minimum does not apply to Sobha Central. DLD waivers of 2% or 4%, or a full registration fee waiver, apply by project as set out above."
+      "footnote": "Figures shown on the AED 1.8M entry price for a one-bedroom at Sobha Central."
     },
     "faqs": [
       {
@@ -269,11 +462,15 @@ export const OFFERS: Offer[] = [
       },
       {
         "question": "What is the cheapest unit on the 20:80 plan?",
-        "answer": "AED 1.8 million, for a one-bedroom apartment at Sobha Central. Central is the one project in this campaign with no AED 5 million minimum, which is why the entry point sits so far below the rest."
+        "answer": "AED 1.8 million, for a one-bedroom apartment at Sobha Central. That is the entry point for the campaign; the same 20:80 structure then runs up through apartments, townhouses and villas across the other four projects."
       },
       {
-        "question": "Does the AED 5 million minimum apply to every project?",
-        "answer": "No. The AED 5 million minimum unit value applies to Sobha Elwood, Sobha Sanctuary, Sobha Siniya Island and Downtown Umm Al Quwain. It does not apply to Sobha Central, where one-bedroom apartments qualify for the 20:80 plan."
+        "question": "Which unit types qualify?",
+        "answer": "Apartments, townhouses, retail units and villas. Sobha Central covers one, two and three-bedroom apartments plus retail; Sanctuary covers Courtyard, Garden and Estate villas; Elwood, Siniya Island and Downtown Umm Al Quwain each carry their own inventory. Message us on WhatsApp and we will send you the current list."
+      },
+      {
+        "question": "Can I resell or mortgage before I pay the 80%?",
+        "answer": "The unit can be resold or mortgaged at completion, once the construction period has run. Sobha properties have historically appreciated 20 to 50% by handover depending on unit type, so the deferred balance is often settled against a higher valuation than the purchase price."
       },
       {
         "question": "How much of the DLD fee is waived?",
@@ -289,10 +486,10 @@ export const OFFERS: Offer[] = [
       },
       {
         "question": "Can I apply this to a unit I have already booked?",
-        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings. If you have a unit under discussion already, ask us to confirm its exact position before you rely on these terms."
+        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings. If you already have a unit under discussion, message us on WhatsApp and we will confirm exactly where it stands."
       }
     ],
-    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers, vouchers and minimum unit values vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage."
+    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers and vouchers vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage."
   },
   {
     "slug": "damac-lagoons-riverside-1950-offer",
