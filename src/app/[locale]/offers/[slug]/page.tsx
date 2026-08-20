@@ -364,7 +364,17 @@ export default async function OfferPage({ params }: Props) {
              for the rest (offer.amenities.items). bg-background so it steps off
              the bg-card highlight band above it. ─────────────────────────────── */}
       {!!(offer.amenities?.stats?.length || offer.amenities?.items?.length) && (
-      <section className="bg-background py-14 sm:py-24">
+      <section className="relative bg-background py-14 sm:py-24">
+        {/* Green hairline — same fade-in/peak/fade-out shape as the gold one atop
+            the highlight band, but green so the seam reads as "back to the
+            brand" rather than another gold rule stacked on the one above it. */}
+        <span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              `linear-gradient(90deg, transparent 0%, rgba(11,61,46,0.15) 20%, ${GREEN} 50%, rgba(11,61,46,0.15) 80%, transparent 100%)`,
+          }}
+        />
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <div className="text-center">
