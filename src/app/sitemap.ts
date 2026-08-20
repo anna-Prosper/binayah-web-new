@@ -487,8 +487,9 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
     // Guides are now fully translated in all 7 locales (body + FAQ), so submit
     // them WITH hreflang alternates.
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
-    // Promotional offers — English-only, and expired ones are dropped so the
-    // sitemap never advertises a closed promotion.
+    // Promotional offers — expired ones are dropped so the sitemap never
+    // advertises a closed promotion. Switches to withAlternates once the
+    // per-locale `translations` are populated.
     enOnly("/offers", 0.75, "weekly", now),
     ...offers
       .filter((o) => !isExpired(o))

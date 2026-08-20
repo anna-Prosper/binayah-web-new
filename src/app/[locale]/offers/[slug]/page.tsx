@@ -1,4 +1,5 @@
-/* eslint-disable i18next/no-literal-string -- English-only promotional landing pages */
+/* eslint-disable i18next/no-literal-string -- section chrome; offer copy is
+   translated per-locale in the document's `translations` map, not via messages */
 /* eslint-disable @next/next/no-img-element -- verified real-estate CDN images */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -12,6 +13,7 @@ import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
 import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
+import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles } from "lucide-react";
@@ -32,7 +34,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const offer = await loadOffer(slug);
+  const offer = applyTranslation(await loadOffer(slug), locale);
   if (!offer) return { title: "Not Found" };
   const path = `/offers/${slug}`;
   return {
@@ -87,7 +89,7 @@ function Eyebrow({ children, onDark = false }: { children: React.ReactNode; onDa
 
 export default async function OfferPage({ params }: Props) {
   const { locale, slug } = await params;
-  const offer = await loadOffer(slug);
+  const offer = applyTranslation(await loadOffer(slug), locale);
   if (!offer) notFound();
 
   const nonce = await getNonce();
@@ -476,33 +478,62 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── WHY IT MATTERS ───────────────────────────────────────────────── */}
-      <section className="bg-background py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <Eyebrow>Why it matters</Eyebrow>
-          <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
-            What actually changes for a buyer
-          </h2>
-        </Reveal>
+      {/* ── WHY IT MATTERS — the charcoal treatment from ValuationCTA on the
+             homepage: same ground, teal + gold corner glows, faint grid, and
+             white/[0.03] tiles. ─────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden py-14 sm:py-24">
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(135deg, #1A1F2E 0%, #0F1218 50%, #0D1015 100%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] opacity-[0.22]"
+          style={{ background: "radial-gradient(circle, hsl(168 100% 20%) 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -right-40 bottom-0 h-[520px] w-[520px] opacity-[0.18]"
+          style={{ background: "radial-gradient(circle, hsl(43 60% 40%) 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {offer.valueProps.map(([heading, body], i) => (
-            <Reveal key={heading} delay={i * 90}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
-                <span
-                  className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                  style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-                />
-                <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD_DEEP }}>
-                  0{i + 1}
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow onDark>Why it matters</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.7rem] sm:leading-[1.1]">
+              What actually changes for a{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+              >
+                buyer
+              </span>
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {offer.valueProps.map(([heading, body], i) => (
+              <Reveal key={heading} delay={i * 90}>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
+                  <span
+                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                    style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+                  />
+                  <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD }}>
+                    0{i + 1}
+                  </div>
+                  <h3 className="mt-3 text-lg font-bold leading-snug text-white">{heading}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/55">{body}</p>
                 </div>
-                <h3 className="mt-3 text-lg font-bold leading-snug text-foreground">{heading}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{body}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

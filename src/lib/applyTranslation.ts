@@ -5,8 +5,10 @@
  * `translations[locale]` holds non-en overrides (e.g. `translations.ar.name`).
  * Missing / empty / empty-array translation values fall back to English.
  *
- * Safe for strings, string arrays, and shallow nested objects (e.g. `seo`,
- * `faqs[]` of `{question, answer}`). Does NOT mutate the input.
+ * Safe for strings, string arrays, shallow nested objects (e.g. `seo`,
+ * `faqs[]` of `{question, answer}`) and tuple arrays (e.g. `[heading, body]`,
+ * which stay arrays rather than collapsing to {0,1} objects). Does NOT mutate
+ * the input.
  */
 export function applyTranslation<T extends Record<string, any>>(
   doc: T | null | undefined,
@@ -28,6 +30,19 @@ export function applyTranslation<T extends Record<string, any>>(
       const base = Array.isArray(merged[key]) ? merged[key] : [];
       if (tv.length && typeof tv[0] === "object" && tv[0] !== null) {
         merged[key] = tv.map((item: any, i: number) => {
+          // Tuple-shaped entries — e.g. an offer's valueProps: [heading, body],
+          // or worked.rows: [label, value] — must stay ARRAYS. Arrays are
+          // typeof "object", so without this they fall into the spread below and
+          // come back as {0: …, 1: …}; any `[a, b] = item` downstream then throws
+          // "object is not iterable". Merge positionally instead, so a missing
+          // element still falls back to English.
+          if (Array.isArray(item)) {
+            const barr: any[] = Array.isArray(base[i]) ? base[i] : [];
+            const len = Math.max(barr.length, item.length);
+            const merged: any[] = [];
+            for (let j = 0; j < len; j++) merged.push(hasContent(item[j]) ? item[j] : barr[j]);
+            return merged;
+          }
           const bitem = base[i] && typeof base[i] === "object" ? base[i] : {};
           const out: any = { ...bitem };
           for (const k of Object.keys(item)) {

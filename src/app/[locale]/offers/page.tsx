@@ -8,6 +8,7 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/JsonLd";
 import Reveal from "@/components/offers/Reveal";
 import { isExpired } from "@/lib/offers";
 import { loadOffers } from "@/lib/offers-data";
+import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { ArrowRight, Clock, Tag } from "lucide-react";
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   // OG image comes from whichever offer the hub is actually leading with, so a
   // DB-managed offer doesn't share a stale card image from the bundled array.
-  const [lead] = await loadOffers();
+  const [lead] = (await loadOffers()).map((o) => applyTranslation(o, locale)!);
   return {
     title: TITLE,
     description: DESC,
@@ -57,7 +58,9 @@ export default async function OffersIndexPage({ params }: Props) {
 
   // Once an offer's window passes it drops off the hub entirely — no "closed"
   // badges, no past-promotions rail. The sitemap already excludes them.
-  const live = (await loadOffers()).filter((o) => !isExpired(o));
+  const live = (await loadOffers())
+    .map((o) => applyTranslation(o, locale)!)
+    .filter((o) => !isExpired(o));
 
   return (
     <div className="min-h-screen bg-background">
