@@ -23,7 +23,7 @@ const GREEN = "#0B3D2E";
 
 const TITLE = "Dubai Property Offers & Payment Plans | Binayah Properties";
 const DESC =
-  "Current developer promotions on Dubai property — deferred payment plans, DLD fee waivers and limited-release incentives, with the terms explained in plain English.";
+  "Current developer promotions on Dubai property: deferred payment plans, DLD fee waivers and limited-release incentives, with the terms explained in plain English.";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -112,7 +112,7 @@ export default async function OffersIndexPage({ params }: Props) {
           </h1>
           <p className="hero-rise mt-6 max-w-2xl text-lg leading-relaxed text-white/70">
             Developer promotions move fast and the terms are rarely spelled out. Here is what each one actually
-            changes for a buyer — the payment structure, the waivers and the small print.
+            changes for a buyer: the payment structure, the waivers and the small print.
           </p>
         </div>
       </section>

@@ -144,15 +144,15 @@ export const OFFERS: Offer[] = [
     "slug": "sobha-20-80-payment-plan",
     "shortName": "Sobha 20:80 Payment Plan",
     "developer": "Sobha Realty",
-    "eyebrow": "Ends Sunday — 4 days only",
-    "h1": "Ultra-Luxury Sobha Home — Only 20% Before Handover",
+    "eyebrow": "Ends Sunday, 4 days only",
+    "h1": "Ultra-Luxury Sobha Home: Only 20% Before Handover",
     "subtitle": "Ultra-luxury from a Tier 1 developer, for a fifth of your own money.",
     "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
-    "metaDescription": "Own a Sobha home from AED 1.8M — 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
+    "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
     "highlights": [
       {
@@ -173,7 +173,7 @@ export const OFFERS: Offer[] = [
       {
         "value": "AED 1.8M",
         "label": "Entry price",
-        "detail": "Lowest 20:80 entry — a one-bed at Sobha Central"
+        "detail": "Lowest 20:80 entry, a one-bed at Sobha Central"
       }
     ],
     "timeline": [
@@ -488,15 +488,15 @@ export const OFFERS: Offer[] = [
     },
     "ctaLabel": "See qualifying units",
     "whatsappLabel": "WhatsApp us now",
-    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan — 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
+    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan: 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
     "valueProps": [
       [
         "Entry starts at AED 1.8 million",
-        "A one-bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million — the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
+        "A one-bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million, the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
       ],
       [
         "AED 360,000 secures an AED 1.8M home",
-        "Twenty per cent is all that leaves your pocket before handover — AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within ten days and 10% within three months. The remaining AED 1.44 million is deferred until the unit is ready."
+        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within ten days and 10% within three months. The remaining AED 1.44 million is deferred until the unit is ready."
       ],
       [
         "Resell or mortgage at completion",
@@ -504,7 +504,7 @@ export const OFFERS: Offer[] = [
       ]
     ],
     "bodyParagraphs": [
-      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community — 20% across the construction period and 80% on handover — but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
+      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community (20% across the construction period and 80% on handover), but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
       "The number that matters most is the entry price: AED 1.8 million for a one-bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred-payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
       "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one-bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two- and three-bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one-beds add a two-year service charge waiver.",
       "The terms are held by action inside the window, not by intent. A unit must be booked or PR-approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re-bookings, so it is worth confirming the exact position on any unit already under discussion."
@@ -538,7 +538,7 @@ export const OFFERS: Offer[] = [
     "faqs": [
       {
         "question": "When does the Sobha 20:80 payment plan close?",
-        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR-approved with the 2% booking amount paid before then. Talk to us early — we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
+        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR-approved with the 2% booking amount paid before then. Talk to us early: we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
       },
       {
         "question": "What is the cheapest unit on the 20:80 plan?",

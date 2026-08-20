@@ -163,7 +163,7 @@ export default async function OfferPage({ params }: Props) {
       <section className="relative flex min-h-[92vh] items-end overflow-hidden">
         <img
           src={offer.heroImage}
-          alt={`${offer.developer} — ${offer.shortName} offer`}
+          alt={`${offer.developer} ${offer.shortName} offer`}
           className="ofr-kenburns absolute inset-0 h-full w-full object-cover"
           fetchPriority="high"
         />
@@ -549,7 +549,7 @@ export default async function OfferPage({ params }: Props) {
             }`}
           >
             {offer.timeline.map((step, i) => (
-              <div key={step.stage} className="relative">
+              <div key={step.stage} className="relative flex flex-col">
                 {/* Connector to the NEXT node — node centre to node centre, so
                     the run terminates at the last step instead of trailing off
                     to the edge of the row. 26px = half a 52px node; 46px = that
@@ -580,7 +580,7 @@ export default async function OfferPage({ params }: Props) {
                   </div>
                 </div>
 
-                <div className="group h-full rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
+                <div className="group flex-1 rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
                   <div
                     className="text-[2.4rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[3.2rem]"
                     style={{
