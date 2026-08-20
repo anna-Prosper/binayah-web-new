@@ -100,7 +100,19 @@ export interface Offer {
    *  `icons` is a parallel array of lucide icon names — positional, so it lives
    *  on the English base and merges through to every locale unchanged. Any name
    *  the map doesn't know falls back to a check mark. */
-  amenities?: { heading: string; items: string[]; icons?: string[] };
+  amenities?: {
+    heading: string;
+    /** Lede stats shown as a highlighted band above the icon-grid cards —
+     *  e.g. "50%" / "Green & open space". Separate from `items` because a
+     *  stat needs its number and its label as distinct strings, not one
+     *  sentence to parse apart at render time. Omit for a flat checklist. */
+    stats?: { value: string; label: string; icon?: string }[];
+    items: string[];
+    icons?: string[];
+    /** Divider heading between the stat band and the icon-grid cards. Falls
+     *  back to DEFAULT_MASTERPLAN_HEADING when a locale hasn't translated it. */
+    masterplanHeading?: string;
+  };
   /** Photo strip rendered as a mosaic with a click-through lightbox. `alt` text
    *  is English-only presentation copy, not offer content, so it isn't
    *  translated per locale. */
@@ -133,8 +145,8 @@ export const OFFERS: Offer[] = [
     "shortName": "Sobha 20:80 Payment Plan",
     "developer": "Sobha Realty",
     "eyebrow": "Ends Sunday — 4 days only",
-    "h1": "Own an Ultra-Luxury Sobha Home for 20% — the Other 80% Waits Until Handover",
-    "subtitle": "A first for the UAE. AED 360,000 secures a AED 1.8 million home; the remaining AED 1.44 million falls due only when you collect the keys. The full 4% DLD fee is waived, and the plan runs across five Sobha communities.",
+    "h1": "Ultra-Luxury Sobha Home — Only 20% Before Handover",
+    "subtitle": "Ultra-luxury from a Tier 1 developer, for a fifth of your own money.",
     "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
@@ -303,11 +315,26 @@ export const OFFERS: Offer[] = [
       }
     ],
     "amenities": {
-      "heading": "What you are buying into",
+      "heading": "Half of it is green.",
+      "stats": [
+        {
+          "value": "50%",
+          "label": "Green & open space",
+          "icon": "Leaf"
+        },
+        {
+          "value": "800,000",
+          "label": "Sq ft green parks",
+          "icon": "Trees"
+        },
+        {
+          "value": "9+ km",
+          "label": "Wellness & cycling loops",
+          "icon": "Bike"
+        }
+      ],
+      "masterplanHeading": "Inside the masterplan",
       "items": [
-        "50% green and open spaces",
-        "Approximately 800,000 sq ft of green parks",
-        "9+ km wellness and cycling loops",
         "Beach-style lagoons",
         "Lazy rivers",
         "Zen gardens",
@@ -319,9 +346,6 @@ export const OFFERS: Offer[] = [
         "Community malls"
       ],
       "icons": [
-        "Trees",
-        "TreePalm",
-        "Bike",
         "Waves",
         "Droplets",
         "Flower2",
@@ -649,6 +673,10 @@ export function getOffer(slug: string): Offer | undefined {
 
 /** Shown when an offer has no published end date. */
 export const DEFAULT_WINDOW_LABEL = "Limited time offer";
+
+/** Divider heading between an amenity band's stats and its icon-grid cards,
+ *  when the offer hasn't set its own. */
+export const DEFAULT_MASTERPLAN_HEADING = "Inside the masterplan";
 
 /** True when this offer has a real, parseable end date. */
 export function hasDeadline(offer: { deadline?: string }): boolean {

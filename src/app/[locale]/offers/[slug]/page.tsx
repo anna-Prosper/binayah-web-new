@@ -12,7 +12,7 @@ import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import OfferGallery from "@/components/offers/OfferGallery";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
-import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL } from "@/lib/offers";
+import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL, DEFAULT_MASTERPLAN_HEADING } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
@@ -22,7 +22,7 @@ import {
   Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles,
   Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
   ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
-  Repeat2, Ban, KeyRound, TrendingUp, Coins,
+  Repeat2, Ban, KeyRound, TrendingUp, Coins, Leaf,
 } from "lucide-react";
 
 // Offers are time-sensitive: revalidate hourly so an expiry flips over promptly
@@ -79,7 +79,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 const ICONS: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
   ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
-  Repeat2, Ban, KeyRound, Building2, Sparkles, CheckCircle2, TrendingUp, Coins, ShieldCheck,
+  Repeat2, Ban, KeyRound, Building2, Sparkles, CheckCircle2, TrendingUp, Coins, ShieldCheck, Leaf,
 };
 
 const GOLD = "#D4A847";
@@ -352,11 +352,110 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
+      {/* ── COMMUNITY — moved up from after the gallery: the lifestyle case now
+             lands right after the hero/stat band, before the payment mechanics,
+             instead of two-thirds down the page. Two parts: a highlighted stat
+             band (offer.amenities.stats), then a divider and a plain icon-grid
+             for the rest (offer.amenities.items). bg-background so it steps off
+             the bg-card highlight band above it. ─────────────────────────────── */}
+      {!!(offer.amenities?.stats?.length || offer.amenities?.items?.length) && (
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <div className="text-center">
+              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                The community
+              </div>
+              <span
+                className="mx-auto mt-4 block h-px w-14"
+                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+              />
+              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                {offer.amenities!.heading}
+              </h2>
+            </div>
+          </Reveal>
+
+          {!!offer.amenities?.stats?.length && (
+            <Reveal delay={70}>
+              <div
+                className={`mt-12 grid gap-4 ${
+                  offer.amenities.stats.length === 2
+                    ? "sm:grid-cols-2"
+                    : offer.amenities.stats.length >= 4
+                      ? "sm:grid-cols-4"
+                      : "sm:grid-cols-3"
+                }`}
+              >
+                {offer.amenities.stats.map((stat) => {
+                  const Icon = ICONS[stat.icon ?? ""] ?? CheckCircle2;
+                  return (
+                    <div
+                      key={stat.label}
+                      className="flex flex-col items-center gap-2.5 rounded-2xl border border-border/60 px-6 py-8 text-center"
+                    >
+                      <Icon className="h-7 w-7" style={{ color: GOLD_DEEP }} />
+                      <div className="text-3xl font-extrabold tracking-[-0.02em]" style={{ color: GOLD_DEEP }}>
+                        {stat.value}
+                      </div>
+                      <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-foreground">
+                        {stat.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Reveal>
+          )}
+
+          {!!offer.amenities?.items?.length && (
+            <>
+              <Reveal delay={110}>
+                <div className="mt-14 flex items-center justify-center gap-4 sm:gap-6">
+                  <span
+                    className="h-px flex-1 max-w-24"
+                    style={{ background: `linear-gradient(90deg, transparent, rgba(212,168,71,0.5))` }}
+                  />
+                  <span className="shrink-0 text-lg font-bold text-foreground sm:text-xl">
+                    {offer.amenities.masterplanHeading ?? DEFAULT_MASTERPLAN_HEADING}
+                  </span>
+                  <span
+                    className="h-px flex-1 max-w-24"
+                    style={{ background: `linear-gradient(90deg, rgba(212,168,71,0.5), transparent)` }}
+                  />
+                </div>
+              </Reveal>
+              <Reveal delay={140}>
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  {offer.amenities.items.map((it, i) => {
+                    const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
+                    return (
+                      <div
+                        key={it}
+                        className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 px-5 py-7 text-center"
+                      >
+                        <Icon className="h-6 w-6" style={{ color: GOLD_DEEP }} />
+                        <span className="text-[13px] font-bold uppercase leading-snug tracking-[0.04em] text-foreground">
+                          {it}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Reveal>
+            </>
+          )}
+        </div>
+      </section>
+      )}
+
       {/* ── PAYMENT TIMELINE — a standing section: every offer should carry a
              timeline. The guard is a safety net for a document missing one, not
-             an invitation to omit it. ───────────────────────────────────────── */}
+             an invitation to omit it. bg-card now (was bg-background) because
+             the community band directly above it took bg-background — moved up
+             from later in the page, see below. ───────────────────────────────── */}
       {!!offer.timeline?.length && (
-      <section className="bg-background py-14 sm:py-24">
+      <section className="bg-card py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>How the plan works</Eyebrow>
@@ -603,42 +702,6 @@ export default async function OfferPage({ params }: Props) {
           </Reveal>
           <Reveal delay={80} className="mt-10">
             <OfferGallery images={offer.gallery} title={offer.shortName} />
-          </Reveal>
-        </div>
-      </section>
-      )}
-
-      {/* ── AMENITIES — bg-card so it steps off the projects section above and
-             the charcoal one below. ─────────────────────────────────────────── */}
-      {!!offer.amenities?.items?.length && (
-      <section className="bg-card py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <Reveal>
-            <div className="text-center">
-              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                The community
-              </div>
-              <span
-                className="mx-auto mt-4 block h-px w-14"
-                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
-              />
-              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
-                {offer.amenities.heading}
-              </h2>
-            </div>
-          </Reveal>
-          <Reveal delay={80}>
-            <ul className="mt-12 grid gap-x-10 gap-y-5 sm:grid-cols-2">
-              {offer.amenities.items.map((it, i) => {
-                const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
-                return (
-                  <li key={it} className="flex items-start gap-3.5 text-sm leading-relaxed text-foreground">
-                    <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
-                    {it}
-                  </li>
-                );
-              })}
-            </ul>
           </Reveal>
         </div>
       </section>
