@@ -10,6 +10,7 @@ import { isExpired } from "@/lib/offers";
 import { loadOffers } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { getTranslations } from "next-intl/server";
 import { getNonce } from "@/lib/nonce";
 import { ArrowRight, Clock, Tag } from "lucide-react";
 
@@ -58,6 +59,10 @@ export default async function OffersIndexPage({ params }: Props) {
 
   // Once an offer's window passes it drops off the hub entirely — no "closed"
   // badges, no past-promotions rail. The sitemap already excludes them.
+  const [tCrumb, tNav] = await Promise.all([
+    getTranslations({ locale, namespace: "breadcrumbs" }),
+    getTranslations({ locale, namespace: "nav" }),
+  ]);
   const live = (await loadOffers())
     .map((o) => applyTranslation(o, locale)!)
     .filter((o) => !isExpired(o));
@@ -67,8 +72,8 @@ export default async function OffersIndexPage({ params }: Props) {
       <Navbar />
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", href: `${lp}/` },
-          { name: "Offers", href: `${lp}/offers` },
+          { name: tCrumb("home"), href: `${lp}/` },
+          { name: tNav("offers"), href: `${lp}/offers` },
         ]}
         nonce={nonce}
       />

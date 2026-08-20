@@ -16,6 +16,7 @@ import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL, DEFAULT_MASTERPLAN_HEADIN
 import { loadOffer } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
+import { getTranslations } from "next-intl/server";
 import { getNonce } from "@/lib/nonce";
 import { waHref } from "@/lib/whatsapp";
 import {
@@ -130,9 +131,16 @@ export default async function OfferPage({ params }: Props) {
   );
   const lp = locale === "en" ? "" : `/${locale}`;
 
+  // Breadcrumb labels are chrome, not offer content, so they come from the
+  // message catalogue rather than the Mongo document. Left in English they
+  // showed as "Home / Offers" in every locale's rich result.
+  const [tCrumb, tNav] = await Promise.all([
+    getTranslations({ locale, namespace: "breadcrumbs" }),
+    getTranslations({ locale, namespace: "nav" }),
+  ]);
   const breadcrumbs = [
-    { name: "Home", href: `${lp}/` },
-    { name: "Offers", href: `${lp}/offers` },
+    { name: tCrumb("home"), href: `${lp}/` },
+    { name: tNav("offers"), href: `${lp}/offers` },
     { name: offer.shortName, href: `${lp}/offers/${offer.slug}` },
   ];
 
@@ -147,7 +155,7 @@ export default async function OfferPage({ params }: Props) {
         showCountdown={showCountdown}
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
-      <FAQJsonLd faqs={offer.faqs} nonce={nonce} />
+      <FAQJsonLd faqs={offer.faqs} nonce={nonce} inLanguage={locale} />
       <OfferJsonLd
         name={offer.h1}
         description={offer.metaDescription}
@@ -156,6 +164,7 @@ export default async function OfferPage({ params }: Props) {
         seller={offer.developer}
         validThrough={offer.deadline}
         category="Real Estate Payment Plan"
+        inLanguage={locale}
         nonce={nonce}
       />
 

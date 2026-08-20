@@ -250,10 +250,21 @@ export function ServiceJsonLd({
   );
 }
 
-export function FAQJsonLd({ faqs, nonce }: { faqs: { question: string; answer: string }[]; nonce?: string }) {
+export function FAQJsonLd({
+  faqs,
+  nonce,
+  inLanguage,
+}: {
+  faqs: { question: string; answer: string }[];
+  nonce?: string;
+  /** BCP-47 tag for the page's locale. Without it a localized FAQ block is
+   *  ambiguous to crawlers that reach the JSON-LD before the <html lang>. */
+  inLanguage?: string;
+}) {
   const data = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    ...(inLanguage ? { inLanguage } : {}),
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -528,11 +539,14 @@ export function OfferJsonLd({
   validThrough,
   category,
   nonce,
+  inLanguage,
 }: {
   name: string;
   description: string;
   url: string;
   image?: string;
+  /** BCP-47 tag for the page's locale. */
+  inLanguage?: string;
   /** Developer running the promotion, e.g. "Sobha Realty". */
   seller?: string;
   /** ISO 8601 deadline; drives promo expiry in search results. */
@@ -549,6 +563,7 @@ export function OfferJsonLd({
     name,
     description,
     url: abs(url),
+    ...(inLanguage ? { inLanguage } : {}),
     ...(image ? { image: abs(image) } : {}),
     ...(validThrough ? { validThrough } : {}),
     ...(category ? { category } : {}),

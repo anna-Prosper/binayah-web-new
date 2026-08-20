@@ -19,9 +19,9 @@ interface Props {
 }
 
 const BUDGETS = [
-  "AED 5M – 7M",
-  "AED 7M – 10M",
-  "AED 10M – 15M",
+  "AED 5M - 7M",
+  "AED 7M - 10M",
+  "AED 10M - 15M",
   "AED 15M+",
   "Not sure yet",
 ];
