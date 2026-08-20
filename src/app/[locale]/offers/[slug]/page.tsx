@@ -310,7 +310,9 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── PAYMENT TIMELINE — only for offers that define one ───────────── */}
+      {/* ── PAYMENT TIMELINE — a standing section: every offer should carry a
+             timeline. The guard is a safety net for a document missing one, not
+             an invitation to omit it. ───────────────────────────────────────── */}
       {!!offer.timeline?.length && (
       <section className="bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">

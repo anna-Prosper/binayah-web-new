@@ -66,8 +66,11 @@ export interface Offer {
   keywords: string;
   /** 3–4 headline numbers rendered as the stat band under the hero. */
   highlights: OfferHighlight[];
-  /** Payment-plan breakdown rendered as a horizontal timeline. Omit entirely
-   *  to drop the section — some offers are better told without a staged rail. */
+  /** Payment-plan breakdown rendered as a horizontal timeline. EVERY offer
+   *  should define one — the staged rail is a standing section, not an optional
+   *  flourish. Still typed optional because the data comes from MongoDB and the
+   *  shape can't be guaranteed at compile time; if it's absent the section
+   *  simply doesn't render, which is a content gap to fix, not a design choice. */
   timeline?: OfferTimelineStep[];
   /** Lead-in under the timeline heading. The default describes a front-loaded
    *  plan, which is wrong for an even split, so any non-20:80 structure should
