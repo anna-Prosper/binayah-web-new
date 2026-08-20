@@ -487,13 +487,13 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
     // Guides are now fully translated in all 7 locales (body + FAQ), so submit
     // them WITH hreflang alternates.
     ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
-    // Promotional offers — expired ones are dropped so the sitemap never
-    // advertises a closed promotion. Switches to withAlternates once the
-    // per-locale `translations` are populated.
-    enOnly("/offers", 0.75, "weekly", now),
+    // Promotional offers — fully translated in all 7 locales via each document's
+    // `translations` map, so they carry hreflang alternates. Expired ones are
+    // dropped so the sitemap never advertises a closed promotion.
+    withAlternates("/offers", 0.75, "weekly", now),
     ...offers
       .filter((o) => !isExpired(o))
-      .map((o) => enOnly(`/offers/${o.slug}`, 0.8, "daily", o.lastmod ?? now)),
+      .map((o) => withAlternates(`/offers/${o.slug}`, 0.8, "daily", o.lastmod ?? now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),
