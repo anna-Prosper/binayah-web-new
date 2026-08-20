@@ -592,20 +592,28 @@ export default async function OfferPage({ params }: Props) {
              the charcoal one below. ─────────────────────────────────────────── */}
       {!!offer.amenities?.items?.length && (
       <section className="bg-card py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <Reveal>
-            <Eyebrow>The community</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
-              {offer.amenities.heading}
-            </h2>
+            <div className="text-center">
+              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                The community
+              </div>
+              <span
+                className="mx-auto mt-4 block h-px w-14"
+                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+              />
+              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                {offer.amenities.heading}
+              </h2>
+            </div>
           </Reveal>
           <Reveal delay={80}>
-            <ul className="mt-10 grid gap-x-8 gap-y-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-12 grid gap-x-10 gap-y-5 sm:grid-cols-2">
               {offer.amenities.items.map((it, i) => {
                 const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
                 return (
-                  <li key={it} className="flex items-start gap-3 text-sm leading-relaxed text-foreground">
-                    <Icon className="mt-0.5 h-[18px] w-[18px] shrink-0" style={{ color: GOLD_DEEP }} />
+                  <li key={it} className="flex items-start gap-3.5 text-sm leading-relaxed text-foreground">
+                    <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
                     {it}
                   </li>
                 );
