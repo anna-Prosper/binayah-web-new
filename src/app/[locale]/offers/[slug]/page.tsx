@@ -17,7 +17,12 @@ import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
 import { getNonce } from "@/lib/nonce";
 import { waHref } from "@/lib/whatsapp";
-import { Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles } from "lucide-react";
+import {
+  Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles,
+  Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
+  ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
+  Repeat2, Ban, KeyRound,
+} from "lucide-react";
 
 // Offers are time-sensitive: revalidate hourly so an expiry flips over promptly
 // without waiting for a redeploy.
@@ -67,6 +72,14 @@ function WhatsAppIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** Icon names an offer can reference, resolved by name so the data stays plain
+ *  JSON. Unknown names fall back to a check mark. */
+const ICONS: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+  Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
+  ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
+  Repeat2, Ban, KeyRound, Building2, Sparkles, CheckCircle2,
+};
 
 const GOLD = "#D4A847";
 const GOLD_LT = "#EAC873";
@@ -489,12 +502,16 @@ export default async function OfferPage({ params }: Props) {
             </h2>
             {/* Full width now, so the rows run two-up instead of a narrow stack. */}
             <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
-              {offer.eligibility.map((e) => (
+              {offer.eligibility.map((e, i) => (
                 <div
                   key={e.label}
                   className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-background px-5 py-4 transition-colors"
                 >
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
+                  {(() => {
+                    const T = [Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, Ban];
+                    const Icon = T[i] ?? CheckCircle2;
+                    return <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />;
+                  })()}
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                       {e.label}
@@ -584,12 +601,15 @@ export default async function OfferPage({ params }: Props) {
           </Reveal>
           <Reveal delay={80}>
             <ul className="mt-10 grid gap-x-8 gap-y-3.5 sm:grid-cols-2 lg:grid-cols-3">
-              {offer.amenities.items.map((it) => (
-                <li key={it} className="flex items-start gap-3 text-sm leading-relaxed text-foreground">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
-                  {it}
-                </li>
-              ))}
+              {offer.amenities.items.map((it, i) => {
+                const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
+                return (
+                  <li key={it} className="flex items-start gap-3 text-sm leading-relaxed text-foreground">
+                    <Icon className="mt-0.5 h-[18px] w-[18px] shrink-0" style={{ color: GOLD_DEEP }} />
+                    {it}
+                  </li>
+                );
+              })}
             </ul>
           </Reveal>
         </div>

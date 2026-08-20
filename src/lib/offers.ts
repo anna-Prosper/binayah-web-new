@@ -96,8 +96,11 @@ export interface Offer {
   /** Participating projects, linked through to their own pages. Drives the
    *  reader from the terms into real inventory instead of dead-ending. */
   projects?: OfferProject[];
-  /** Community and lifestyle features, rendered as a checklist band. */
-  amenities?: { heading: string; items: string[] };
+  /** Community and lifestyle features, rendered as a checklist band.
+   *  `icons` is a parallel array of lucide icon names — positional, so it lives
+   *  on the English base and merges through to every locale unchanged. Any name
+   *  the map doesn't know falls back to a check mark. */
+  amenities?: { heading: string; items: string[]; icons?: string[] };
   /** Call-to-action labels. Translatable, because the template's own strings
    *  would otherwise stay English on every localised page. */
   ctaLabel?: string;
