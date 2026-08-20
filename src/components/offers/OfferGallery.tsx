@@ -81,7 +81,7 @@ export default function OfferGallery({ images, title }: { images: OfferGalleryIm
 
       <button
         onClick={() => launch(0)}
-        className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-foreground transition-colors hover:text-primary sm:hidden"
+        className="mt-4 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border/60 px-5 text-sm font-bold text-foreground transition-colors hover:text-primary sm:hidden"
       >
         <Expand className="h-4 w-4" /> View all {images.length} photos
       </button>

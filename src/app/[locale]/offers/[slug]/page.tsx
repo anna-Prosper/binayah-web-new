@@ -332,7 +332,7 @@ export default async function OfferPage({ params }: Props) {
                   )}
 
                   <div
-                    className="text-[2.3rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
+                    className="text-[1.9rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.9rem]"
                     style={{
                       background: `linear-gradient(140deg, ${GOLD} 0%, ${GOLD_DEEP} 58%, #96751D 100%)`,
                       WebkitBackgroundClip: "text",
@@ -407,10 +407,10 @@ export default async function OfferPage({ params }: Props) {
                   return (
                     <div
                       key={stat.label}
-                      className="flex flex-col items-center gap-2.5 rounded-2xl border border-border/60 px-6 py-8 text-center"
+                      className="flex flex-col items-center gap-2 rounded-2xl border border-border/60 px-5 py-6 text-center sm:gap-2.5 sm:px-6 sm:py-8"
                     >
                       <Icon className="h-7 w-7" style={{ color: GOLD_DEEP }} />
-                      <div className="text-3xl font-extrabold tracking-[-0.02em]" style={{ color: GOLD_DEEP }}>
+                      <div className="text-[1.75rem] font-extrabold tracking-[-0.02em] sm:text-3xl" style={{ color: GOLD_DEEP }}>
                         {stat.value}
                       </div>
                       <div className="text-[11px] font-bold uppercase tracking-[0.12em] text-foreground">
@@ -441,13 +441,13 @@ export default async function OfferPage({ params }: Props) {
                 </div>
               </Reveal>
               <Reveal delay={140}>
-                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {offer.amenities.items.map((it, i) => {
                     const Icon = ICONS[offer.amenities?.icons?.[i] ?? ""] ?? CheckCircle2;
                     return (
                       <div
                         key={it}
-                        className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 px-5 py-7 text-center"
+                        className="flex flex-col items-center justify-center gap-2.5 rounded-2xl border border-border/60 px-3 py-5 text-center sm:gap-3 sm:px-5 sm:py-7"
                       >
                         <Icon className="h-6 w-6" style={{ color: GOLD_DEEP }} />
                         <span className="text-[13px] font-bold uppercase leading-snug tracking-[0.04em] text-foreground">
@@ -496,7 +496,7 @@ export default async function OfferPage({ params }: Props) {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>How the plan works</Eyebrow>
-          <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+          <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
             Your money, staged
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -549,7 +549,7 @@ export default async function OfferPage({ params }: Props) {
 
                 <div className="group h-full rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
                   <div
-                    className="text-[3.2rem] font-extrabold leading-none tracking-[-0.03em]"
+                    className="text-[2.4rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[3.2rem]"
                     style={{
                       background:
                         step.share === "0%"
@@ -670,7 +670,7 @@ export default async function OfferPage({ params }: Props) {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <Eyebrow>Where it applies</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
               Choose your community
             </h2>
           </Reveal>
@@ -704,7 +704,7 @@ export default async function OfferPage({ params }: Props) {
                         <Link
                           key={l.href}
                           href={l.href}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3.5 py-1.5 text-[12px] font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                          className="inline-flex items-center gap-1.5 min-h-[40px] rounded-full border border-border/60 px-4 py-2.5 text-[12px] font-semibold sm:min-h-0 sm:py-1.5 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                         >
                           {l.label}
                           <ArrowRight className="h-3 w-3" />
@@ -733,7 +733,7 @@ export default async function OfferPage({ params }: Props) {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <Eyebrow>See it for yourself</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
               Inside the communities
             </h2>
           </Reveal>
@@ -772,7 +772,7 @@ export default async function OfferPage({ params }: Props) {
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <Eyebrow onDark>Why it matters</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.7rem] sm:leading-[1.1]">
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
               What actually changes for a{" "}
               <span
                 className="bg-clip-text text-transparent"
@@ -909,7 +909,7 @@ export default async function OfferPage({ params }: Props) {
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <Reveal>
           <Eyebrow>Before you commit</Eyebrow>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+          <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
             Frequently asked questions
           </h2>
         </Reveal>
@@ -946,7 +946,7 @@ export default async function OfferPage({ params }: Props) {
         />
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
           <Reveal>
-            <h2 className="text-3xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.9rem] sm:leading-[1.08]">
+            <h2 className="text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.9rem] sm:leading-[1.08] sm:tracking-[-0.02em]">
               Find out which homes qualify
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">
