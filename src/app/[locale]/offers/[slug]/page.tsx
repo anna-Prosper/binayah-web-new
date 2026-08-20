@@ -480,6 +480,82 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
+      {/* ── PARTICIPATING PROJECTS — the terms above are abstract until the
+             reader can open the actual community. bg-background keeps the
+             light/dark alternation going after the bg-card section above. ──── */}
+      {!!offer.projects?.length && (
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>Where it applies</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+              The projects in this offer
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            {offer.projects.map((pr, i) => (
+              <Reveal key={pr.name} delay={i * 70}>
+                <div className="group h-full rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
+                  <div className="flex items-start gap-3">
+                    <Building2 className="mt-1 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-bold leading-snug text-foreground">{pr.name}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pr.terms}</p>
+                    </div>
+                  </div>
+
+                  {pr.links?.length ? (
+                    <div className="mt-5 flex flex-wrap gap-2 pl-8">
+                      {pr.links.map((l) => (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3.5 py-1.5 text-[12px] font-semibold text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                        >
+                          {l.label}
+                          <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-5 pl-8 text-[12px] font-semibold text-muted-foreground">
+                      Ask us for the current release
+                    </p>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* ── AMENITIES — bg-card so it steps off the projects section above and
+             the charcoal one below. ─────────────────────────────────────────── */}
+      {!!offer.amenities?.items?.length && (
+      <section className="bg-card py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>The community</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+              {offer.amenities.heading}
+            </h2>
+          </Reveal>
+          <Reveal delay={80}>
+            <ul className="mt-10 grid gap-x-8 gap-y-3.5 sm:grid-cols-2 lg:grid-cols-3">
+              {offer.amenities.items.map((it) => (
+                <li key={it} className="flex items-start gap-3 text-sm leading-relaxed text-foreground">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                  {it}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+      )}
+
       {/* ── WHY IT MATTERS — the charcoal treatment from ValuationCTA on the
              homepage: same ground, teal + gold corner glows, faint grid, and
              white/[0.03] tiles. ─────────────────────────────────────────────── */}

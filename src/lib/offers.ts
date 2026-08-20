@@ -31,6 +31,19 @@ export interface OfferFaq {
   answer: string;
 }
 
+/** A project the offer applies to, with links through to whatever pages exist. */
+export interface OfferProject {
+  /** Project name as the developer's own campaign material writes it. */
+  name: string;
+  /** What this specific project gets under the offer. */
+  terms: string;
+  /** Live project pages. Several when a masterplan has no single hub page and
+   *  is only represented by its individual towers or clusters; empty when we
+   *  have no page at all, which renders the card without a link rather than
+   *  pointing somewhere misleading. */
+  links?: { label: string; href: string }[];
+}
+
 export interface OfferEligibility {
   label: string;
   value: string;
@@ -78,6 +91,11 @@ export interface Offer {
   timelineIntro?: string;
   /** "The offer in detail" bullet rows. */
   eligibility: OfferEligibility[];
+  /** Participating projects, linked through to their own pages. Drives the
+   *  reader from the terms into real inventory instead of dead-ending. */
+  projects?: OfferProject[];
+  /** Community and lifestyle features, rendered as a checklist band. */
+  amenities?: { heading: string; items: string[] };
   /** Why-it-matters cards: [heading, body]. */
   valueProps: [string, string][];
   /** Long-form context paragraphs (SEO body copy). */
