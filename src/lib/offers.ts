@@ -96,6 +96,12 @@ export interface Offer {
   projects?: OfferProject[];
   /** Community and lifestyle features, rendered as a checklist band. */
   amenities?: { heading: string; items: string[] };
+  /** Call-to-action labels. Translatable, because the template's own strings
+   *  would otherwise stay English on every localised page. */
+  ctaLabel?: string;
+  whatsappLabel?: string;
+  /** Pre-typed WhatsApp message. Falls back to a line built from shortName. */
+  whatsappMessage?: string;
   /** Why-it-matters cards: [heading, body]. */
   valueProps: [string, string][];
   /** Long-form context paragraphs (SEO body copy). */
