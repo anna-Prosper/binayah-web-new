@@ -24,9 +24,14 @@ export default function OfferGallery({ images, title }: { images: OfferGalleryIm
 
   if (!images.length) return null;
 
-  const VISIBLE = 5;
+  // Hero tile + 4 in the top block, then a second row of 4 wide tiles. Nine
+  // visible instead of five: with a 20-image gallery, hiding 15 behind a
+  // "+N more" badge wasted most of the library.
+  const VISIBLE = 9;
   const shown = images.slice(0, VISIBLE);
   const hiddenCount = images.length - shown.length;
+  const topBlock = shown.slice(1, 5);   // 2x2 beside the hero tile
+  const secondRow = shown.slice(5);     // full-width strip beneath
 
   const launch = (i: number) => {
     setActiveIndex(i);
@@ -54,30 +59,51 @@ export default function OfferGallery({ images, title }: { images: OfferGalleryIm
           <span className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
         </button>
 
-        {shown.slice(1).map((img, i) => {
-          const idx = i + 1;
-          const isLast = idx === shown.length - 1;
-          return (
-            <button
-              key={img.src}
-              onClick={() => launch(idx)}
-              className="group relative col-span-1 row-span-1 hidden overflow-hidden rounded-2xl bg-muted sm:block"
-            >
-              <img
-                src={img.src}
-                alt={img.alt}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              {isLast && hiddenCount > 0 && (
-                <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-sm font-bold text-white backdrop-blur-[1px] sm:text-lg">
-                  +{hiddenCount} more
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {topBlock.map((img, i) => (
+          <button
+            key={img.src}
+            onClick={() => launch(i + 1)}
+            className="group relative col-span-1 row-span-1 hidden overflow-hidden rounded-2xl bg-muted sm:block"
+          >
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </button>
+        ))}
       </div>
+
+      {/* Second strip — hidden on mobile, where the single hero tile plus the
+          "view all" button is already the right amount of scroll. */}
+      {!!secondRow.length && (
+        <div className="mt-3 hidden gap-3 sm:grid sm:grid-cols-4">
+          {secondRow.map((img, i) => {
+            const idx = i + 5;
+            const isLast = i === secondRow.length - 1;
+            return (
+              <button
+                key={img.src}
+                onClick={() => launch(idx)}
+                className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {isLast && hiddenCount > 0 && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-lg font-bold text-white backdrop-blur-[1px]">
+                    +{hiddenCount} more
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <button
         onClick={() => launch(0)}

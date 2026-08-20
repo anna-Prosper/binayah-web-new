@@ -391,6 +391,39 @@ export default async function OfferPage({ params }: Props) {
             </div>
           </Reveal>
 
+          {/* Photo band — the four sections that follow this heading (stats,
+              masterplan, timeline, worked example, terms) are all type and
+              icons, so the middle of the page ran imageless. Three evenly
+              spaced picks from the gallery, skipping index 0 because that is
+              already the page hero. */}
+          {(() => {
+            const pool = (offer.gallery ?? []).slice(1);
+            if (pool.length < 3) return null;
+            const band = [0, 1, 2].map((k) => pool[Math.round((k * (pool.length - 1)) / 2)]);
+            return (
+              <Reveal delay={50}>
+                <div className="mt-10 grid grid-cols-3 gap-2 sm:mt-12 sm:gap-4">
+                  {band.map((img, i) => (
+                    <div
+                      key={img.src}
+                      className={`relative overflow-hidden rounded-xl bg-muted sm:rounded-2xl ${
+                        i === 1 ? "aspect-[3/4] sm:aspect-[4/5]" : "aspect-[3/4] sm:aspect-[4/5] sm:mt-8"
+                      }`}
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.alt}
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+            );
+          })()}
+
           {!!offer.amenities?.stats?.length && (
             <Reveal delay={70}>
               <div
@@ -868,11 +901,11 @@ export default async function OfferPage({ params }: Props) {
                   {/* A supporting photo breaks up the long-form copy roughly a third
                       of the way down, rather than leaving the reader on unbroken
                       text for six paragraphs. */}
-                  {i === 0 && (offer.gallery?.[0] ?? offer.heroImage) && (
+                  {i === 0 && (offer.gallery?.at(-1) ?? offer.heroImage) && (
                     <div className="overflow-hidden rounded-2xl">
                       <img
-                        src={offer.gallery?.[0]?.src ?? offer.heroImage}
-                        alt={offer.gallery?.[0]?.alt ?? offer.shortName}
+                        src={offer.gallery?.at(-1)?.src ?? offer.heroImage}
+                        alt={offer.gallery?.at(-1)?.alt ?? offer.shortName}
                         loading="lazy"
                         className="aspect-[16/10] w-full object-cover"
                       />
@@ -940,6 +973,21 @@ export default async function OfferPage({ params }: Props) {
         className="relative overflow-hidden"
         style={{ background: DARK_SECTION }}
       >
+        {/* Photograph under the green ground rather than a flat gradient slab —
+            heavily dimmed so the white headline keeps its contrast. */}
+        {(offer.gallery?.[1]?.src ?? offer.heroImage) && (
+          <img
+            src={offer.gallery?.[1]?.src ?? offer.heroImage}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.18]"
+          />
+        )}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(11,61,46,0.55) 0%, rgba(11,61,46,0.35) 50%, rgba(11,61,46,0.6) 100%)" }}
+        />
         <div
           className="pointer-events-none absolute inset-0"
           style={{ background: "radial-gradient(70% 90% at 50% 110%, rgba(212,168,71,0.22) 0%, transparent 62%)" }}

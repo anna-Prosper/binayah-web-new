@@ -360,47 +360,103 @@ export const OFFERS: Offer[] = [
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
-        "alt": "Sobha villa exterior with private pool at dusk"
+        "alt": "Sobha villa exterior with private pool"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-elwood-at-dubailand/gallery/4.webp",
-        "alt": "Sobha Elwood clubhouse and landscaped gardens"
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_13-hd.webp",
+        "alt": "Aerial view of the Sobha Sanctuary masterplan in Dubailand"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-elwood-at-dubailand/gallery/9.webp",
-        "alt": "Sobha Elwood community amenities"
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_11-hd.webp",
+        "alt": "Beach-style swimming lagoon at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/sobha-sanctuary-at-dubailand-featured-hd.webp",
+        "alt": "Kayaking on the lagoon beneath the waterfall at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_2-hd.webp",
+        "alt": "Zen garden and water feature at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_3-hd.webp",
+        "alt": "Central park and lake at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_8-hd.webp",
+        "alt": "Meditation and yoga lawn at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_10-hd.webp",
+        "alt": "Pet therapy garden and dog run at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_14-hd.webp",
+        "alt": "Dining and retail promenade at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_12-hd.webp",
+        "alt": "Sobha Sanctuary Mall at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_9-hd.webp",
+        "alt": "Town centre and sports courts at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-abode-at-sobha-sanctuary/featured.webp",
+        "alt": "The Woods Abode apartments at Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-grove-at-sobha-sanctuary/featured.webp",
+        "alt": "Waterfront homes at The Grove, Sobha Sanctuary"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-brooks-at-sobha-sanctuary/gallery/1.webp",
+        "alt": "Contemporary villa at The Brooks, Sobha Sanctuary"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-sobha-sanctuary/gallery/the-woods-sobha-sanctuary-gallery_1-hd.webp",
-        "alt": "The Woods at Sobha Sanctuary villas"
+        "alt": "The Woods at Sobha Sanctuary overlooking the lagoon"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-serenity-at-sobha-sanctuary/gallery/the-woods-serenity-at-sobha-sanctuary-gallery_2-hd.webp",
-        "alt": "Sobha Sanctuary parkland and pathways"
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-woods-serenity-at-sobha-sanctuary/gallery/the-woods-serenity-at-sobha-sanctuary-gallery_1-hd.webp",
+        "alt": "Parkland and walking trails at The Woods Serenity, Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_1-hd.webp",
-        "alt": "Sobha Central residential tower and pool deck"
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-central.webp",
+        "alt": "Sobha Central towers on Sheikh Zayed Road"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_3-hd.webp",
-        "alt": "Sobha Central landscaped courtyard"
+        "alt": "Sports pitch and parkland between the towers at Sobha Central"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_5-hd.webp",
+        "alt": "Elevated parkland and pool terraces at Sobha Central"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-pinnacle-at-sobha-central/gallery/5.webp",
+        "alt": "The Pinnacle at Sobha Central above the Dubai skyline at sunset"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-elwood.webp",
+        "alt": "Sobha Elwood villa with private pool"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-siniya-island.webp",
-        "alt": "Sobha Siniya Island waterfront masterplan"
+        "alt": "Bedroom with sea views at Sobha Siniya Island"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/gallery-siniya-2.webp",
-        "alt": "Sobha Siniya Island beachfront residences"
+        "alt": "Beachfront residences at Sobha Siniya Island"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-downtown-umm-al-quwain.webp",
-        "alt": "Downtown Umm Al Quwain coastal skyline"
+        "alt": "Beachfront and pool deck at Downtown Umm Al Quwain"
       },
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/gallery-uaq-2.webp",
-        "alt": "Downtown Umm Al Quwain waterfront promenade"
+        "alt": "Towers and shoreline at Downtown Umm Al Quwain"
       }
     ],
     "investment": {
