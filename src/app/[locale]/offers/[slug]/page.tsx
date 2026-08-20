@@ -21,7 +21,7 @@ import {
   Clock, ShieldCheck, CheckCircle2, Phone, ArrowRight, Building2, Sparkles,
   Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
   ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
-  Repeat2, Ban, KeyRound,
+  Repeat2, Ban, KeyRound, TrendingUp, Coins,
 } from "lucide-react";
 
 // Offers are time-sensitive: revalidate hourly so an expiry flips over promptly
@@ -78,7 +78,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 const ICONS: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Trees, TreePalm, Bike, Waves, Droplets, Flower2, Sun, Laptop, Users, PawPrint,
   ShoppingBasket, Store, Wallet, CalendarClock, BadgePercent, FileSignature,
-  Repeat2, Ban, KeyRound, Building2, Sparkles, CheckCircle2,
+  Repeat2, Ban, KeyRound, Building2, Sparkles, CheckCircle2, TrendingUp, Coins, ShieldCheck,
 };
 
 const GOLD = "#D4A847";
@@ -674,6 +674,48 @@ export default async function OfferPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── INVESTMENT CASE — centred stripe, lighter in weight than the value
+             props above it so the two don't compete. ────────────────────────── */}
+      {!!offer.investment?.items?.length && (
+      <section className="bg-background py-14 sm:py-24">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <Reveal>
+            <div className="text-center">
+              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                Why this one
+              </div>
+              <span
+                className="mx-auto mt-4 block h-px w-14"
+                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+              />
+              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                {offer.investment.heading}
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
+            {offer.investment.items.map((it, i) => {
+              const Icon = ICONS[offer.investment?.icons?.[i] ?? ""] ?? CheckCircle2;
+              return (
+                <Reveal key={it.title} delay={i * 70}>
+                  <div className="flex items-start gap-4">
+                    <Icon className="mt-0.5 h-7 w-7 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <div>
+                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-foreground">
+                        {it.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.text}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      )}
 
       {/* ── LONG-FORM + FORM ─────────────────────────────────────────────── */}
       <section id="enquire" className="scroll-mt-24 bg-card py-14 sm:py-24">

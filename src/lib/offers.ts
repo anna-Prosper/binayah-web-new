@@ -101,6 +101,9 @@ export interface Offer {
    *  on the English base and merges through to every locale unchanged. Any name
    *  the map doesn't know falls back to a check mark. */
   amenities?: { heading: string; items: string[]; icons?: string[] };
+  /** Investment case — a short "why this one" stripe under the value props.
+   *  `icons` is positional, same convention as amenities. */
+  investment?: { heading: string; items: { title: string; text: string }[]; icons?: string[] };
   /** Call-to-action labels. Translatable, because the template's own strings
    *  would otherwise stay English on every localised page. */
   ctaLabel?: string;
