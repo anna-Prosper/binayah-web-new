@@ -101,6 +101,10 @@ export interface Offer {
    *  on the English base and merges through to every locale unchanged. Any name
    *  the map doesn't know falls back to a check mark. */
   amenities?: { heading: string; items: string[]; icons?: string[] };
+  /** Photo strip rendered as a mosaic with a click-through lightbox. `alt` text
+   *  is English-only presentation copy, not offer content, so it isn't
+   *  translated per locale. */
+  gallery?: { src: string; alt: string }[];
   /** Investment case — a short "why this one" stripe under the value props.
    *  `icons` is positional, same convention as amenities. */
   investment?: { heading: string; items: { title: string; text: string }[]; icons?: string[] };

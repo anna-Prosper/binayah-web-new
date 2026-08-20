@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { BreadcrumbJsonLd, FAQJsonLd, OfferJsonLd } from "@/components/JsonLd";
 import OfferCountdown from "@/components/offers/OfferCountdown";
 import OfferLeadForm from "@/components/offers/OfferLeadForm";
+import OfferGallery from "@/components/offers/OfferGallery";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
 import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL } from "@/lib/offers";
@@ -534,7 +535,7 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <Eyebrow>Where it applies</Eyebrow>
             <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
-              The projects in this offer
+              Choose your community
             </h2>
           </Reveal>
 
@@ -584,6 +585,25 @@ export default async function OfferPage({ params }: Props) {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+      )}
+
+      {/* ── GALLERY — visual proof, right after the reader meets the specific
+             projects and before the lifestyle checklist. bg-card so it steps
+             off the bg-background projects section above it. ───────────────── */}
+      {!!offer.gallery?.length && (
+      <section className="bg-card py-14 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>See it for yourself</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
+              Inside the communities
+            </h2>
+          </Reveal>
+          <Reveal delay={80} className="mt-10">
+            <OfferGallery images={offer.gallery} title={offer.shortName} />
+          </Reveal>
         </div>
       </section>
       )}
@@ -731,20 +751,34 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <Eyebrow>The detail</Eyebrow>
             <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              Understanding the {offer.shortName} structure
+              What this means for you
             </h2>
             <div className="mt-7 space-y-5">
               {offer.bodyParagraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className={
-                    i === 0
-                      ? "text-lg leading-relaxed text-foreground/85"
-                      : "text-[15px] leading-relaxed text-muted-foreground"
-                  }
-                >
-                  {p}
-                </p>
+                <div key={i} className={i === 0 ? "space-y-5" : undefined}>
+                  <p
+                    className={
+                      i === 0
+                        ? "text-lg leading-relaxed text-foreground/85"
+                        : "text-[15px] leading-relaxed text-muted-foreground"
+                    }
+                  >
+                    {p}
+                  </p>
+                  {/* A supporting photo breaks up the long-form copy roughly a third
+                      of the way down, rather than leaving the reader on unbroken
+                      text for six paragraphs. */}
+                  {i === 0 && (offer.gallery?.[0] ?? offer.heroImage) && (
+                    <div className="overflow-hidden rounded-2xl">
+                      <img
+                        src={offer.gallery?.[0]?.src ?? offer.heroImage}
+                        alt={offer.gallery?.[0]?.alt ?? offer.shortName}
+                        loading="lazy"
+                        className="aspect-[16/10] w-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
             {offer.projectHref && (
@@ -768,9 +802,9 @@ export default async function OfferPage({ params }: Props) {
       <section className="bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <Reveal>
-          <Eyebrow>Questions</Eyebrow>
+          <Eyebrow>Before you commit</Eyebrow>
           <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.7rem] sm:leading-[1.1]">
-            Frequently asked
+            Frequently asked questions
           </h2>
         </Reveal>
 
