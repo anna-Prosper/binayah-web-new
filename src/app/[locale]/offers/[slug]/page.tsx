@@ -485,7 +485,7 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <Eyebrow>The offer in detail</Eyebrow>
             <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              What qualifies
+              The terms in full
             </h2>
             {/* Full width now, so the rows run two-up instead of a narrow stack. */}
             <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
@@ -524,7 +524,18 @@ export default async function OfferPage({ params }: Props) {
           <div className="mt-12 grid gap-5 md:grid-cols-2">
             {offer.projects.map((pr, i) => (
               <Reveal key={pr.name} delay={i * 70}>
-                <div className="group h-full rounded-2xl border border-border/60 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
+                <div className="group h-full overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
+                  {pr.image && (
+                    <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+                      <img
+                        src={pr.image}
+                        alt={pr.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="p-7">
                   <div className="flex items-start gap-3">
                     <Building2 className="mt-1 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
                     <div className="min-w-0">
@@ -551,6 +562,7 @@ export default async function OfferPage({ params }: Props) {
                       Message us for this release
                     </p>
                   )}
+                  </div>
                 </div>
               </Reveal>
             ))}

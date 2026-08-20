@@ -37,6 +37,8 @@ export interface OfferProject {
   name: string;
   /** What this specific project gets under the offer. */
   terms: string;
+  /** Card image — the project's own featured shot. */
+  image?: string;
   /** Live project pages. Several when a masterplan has no single hub page and
    *  is only represented by its individual towers or clusters; empty when we
    *  have no page at all, which renders the card without a link rather than
