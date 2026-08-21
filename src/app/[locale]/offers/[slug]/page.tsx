@@ -530,6 +530,113 @@ export default async function OfferPage({ params }: Props) {
       </section>
       )}
 
+      {/* ── WHY IT MATTERS — moved up from after the gallery, right after the
+             terms/projects and before the lifestyle section: the "why is this
+             good for me" case belongs closer to the terms that make it good
+             than two-thirds down the page. Charcoal treatment from
+             ValuationCTA on the homepage: same ground, teal + gold corner
+             glows, faint grid, and white/[0.03] tiles. ────────────────────── */}
+      <section className="relative overflow-hidden py-14 sm:py-24">
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(135deg, #1A1F2E 0%, #0F1218 50%, #0D1015 100%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] opacity-[0.22]"
+          style={{ background: "radial-gradient(circle, hsl(168 100% 20%) 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -right-40 bottom-0 h-[520px] w-[520px] opacity-[0.18]"
+          style={{ background: "radial-gradient(circle, hsl(43 60% 40%) 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow onDark>Why it matters</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+              What actually changes for a{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+              >
+                buyer
+              </span>
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            {offer.valueProps.map(([heading, body], i) => (
+              <Reveal key={heading} delay={i * 90}>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
+                  <span
+                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                    style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+                  />
+                  <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD }}>
+                    0{i + 1}
+                  </div>
+                  <h3 className="mt-3 text-lg font-bold leading-snug text-white">{heading}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/55">{body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── INVESTMENT CASE — centred stripe, lighter in weight than the value
+             props above it so the two don't compete. bg-card now (was
+             bg-background): it sits right before the COMMUNITY section
+             below, which is bg-background, so this needs to alternate
+             against it instead of matching it. ───────────────────────────── */}
+      {!!offer.investment?.items?.length && (
+      <section className="bg-card py-14 sm:py-24">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <Reveal>
+            <div className="text-center">
+              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+                Why this one
+              </div>
+              <span
+                className="mx-auto mt-4 block h-px w-14"
+                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
+              />
+              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
+                {offer.investment.heading}
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
+            {offer.investment.items.map((it, i) => {
+              const Icon = ICONS[offer.investment?.icons?.[i] ?? ""] ?? CheckCircle2;
+              return (
+                <Reveal key={it.title} delay={i * 70}>
+                  <div className="flex items-start gap-4">
+                    <Icon className="mt-0.5 h-7 w-7 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <div>
+                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-foreground">
+                        {it.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.text}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      )}
+
       {/* ── COMMUNITY — moved up from after the gallery: the lifestyle case now
              lands right after the hero/stat band, before the payment mechanics,
              instead of two-thirds down the page. Two parts: a highlighted stat
@@ -834,10 +941,13 @@ export default async function OfferPage({ params }: Props) {
       </section>
 
       {/* ── GALLERY — visual proof, right after the reader meets the specific
-             projects and before the lifestyle checklist. bg-card so it steps
-             off the bg-background projects section above it. ───────────────── */}
+             projects and before the lifestyle checklist. bg-background now
+             (was bg-card): the WHY IT MATTERS/INVESTMENT block that used to
+             sit right after this moved up above the community section, so
+             this now sits directly before the bg-card long-form section and
+             needs to alternate against it instead. ─────────────────────────── */}
       {!!offer.gallery?.length && (
-      <section className="bg-card py-14 sm:py-24">
+      <section className="bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <Eyebrow>See it for yourself</Eyebrow>
@@ -848,107 +958,6 @@ export default async function OfferPage({ params }: Props) {
           <Reveal delay={80} className="mt-10">
             <OfferGallery images={offer.gallery} title={offer.shortName} />
           </Reveal>
-        </div>
-      </section>
-      )}
-
-      {/* ── WHY IT MATTERS — the charcoal treatment from ValuationCTA on the
-             homepage: same ground, teal + gold corner glows, faint grid, and
-             white/[0.03] tiles. ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-14 sm:py-24">
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "linear-gradient(135deg, #1A1F2E 0%, #0F1218 50%, #0D1015 100%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] opacity-[0.22]"
-          style={{ background: "radial-gradient(circle, hsl(168 100% 20%) 0%, transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -right-40 bottom-0 h-[520px] w-[520px] opacity-[0.18]"
-          style={{ background: "radial-gradient(circle, hsl(43 60% 40%) 0%, transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow onDark>Why it matters</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              What actually changes for a{" "}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-              >
-                buyer
-              </span>
-            </h2>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            {offer.valueProps.map(([heading, body], i) => (
-              <Reveal key={heading} delay={i * 90}>
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.16] hover:bg-white/[0.05]">
-                  <span
-                    className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                    style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-                  />
-                  <div className="text-[11px] font-extrabold tabular-nums" style={{ color: GOLD }}>
-                    0{i + 1}
-                  </div>
-                  <h3 className="mt-3 text-lg font-bold leading-snug text-white">{heading}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/55">{body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INVESTMENT CASE — centred stripe, lighter in weight than the value
-             props above it so the two don't compete. ────────────────────────── */}
-      {!!offer.investment?.items?.length && (
-      <section className="bg-background py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <Reveal>
-            <div className="text-center">
-              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                Why this one
-              </div>
-              <span
-                className="mx-auto mt-4 block h-px w-14"
-                style={{ background: `linear-gradient(90deg, transparent, ${GOLD_DEEP}, transparent)` }}
-              />
-              <h2 className="mt-6 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.2]">
-                {offer.investment.heading}
-              </h2>
-            </div>
-          </Reveal>
-
-          <div className="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
-            {offer.investment.items.map((it, i) => {
-              const Icon = ICONS[offer.investment?.icons?.[i] ?? ""] ?? CheckCircle2;
-              return (
-                <Reveal key={it.title} delay={i * 70}>
-                  <div className="flex items-start gap-4">
-                    <Icon className="mt-0.5 h-7 w-7 shrink-0" style={{ color: GOLD_DEEP }} />
-                    <div>
-                      <h3 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-foreground">
-                        {it.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.text}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
         </div>
       </section>
       )}
