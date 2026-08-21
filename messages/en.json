@@ -1690,6 +1690,7 @@
     "phonePlaceholder": "+971 50 000 0000",
     "submit": "Send me the guide",
     "error": "Please enter a valid email address.",
+    "errorPhone": "Please enter a valid phone number.",
     "successTitle": "Your guide is on the way",
     "successBody": "Check your inbox — we've just emailed you the guide.",
     "fineprint": "No spam, just the guide and the occasional market update.",

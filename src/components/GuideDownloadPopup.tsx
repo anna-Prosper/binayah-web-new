@@ -32,6 +32,11 @@ const SHOW_AFTER_MS = 8000; // dwell trigger
 const SCROLL_TRIGGER = 0.35; // or scroll past 35% of the page
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** Loose E.164 sanity check: enough digits to dial, no more than the standard allows. */
+const phoneValid = (v: string) => {
+  const digits = v.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
+};
 
 /** Normalise to E.164-ish: strip everything but digits and keep a single leading "+". */
 function normalizePhone(input: string): string {
@@ -71,7 +76,7 @@ export default function GuideDownloadPopup() {
   const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<null | "email" | "phone" | "send">(null);
   const { value: hp, field: honeypotField } = useHoneypot();
   const armedRef = useRef(false); // in-memory guard for cookie-less browsers / this page load
 
@@ -125,11 +130,15 @@ export default function GuideDownloadPopup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!EMAIL_RE.test(email)) {
-      setError(true);
+      setError("email");
+      return;
+    }
+    if (!phoneValid(phone)) {
+      setError("phone");
       return;
     }
     setSending(true);
-    setError(false);
+    setError(null);
     try {
       const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
@@ -152,7 +161,7 @@ export default function GuideDownloadPopup() {
       setSent(true);
       trackLead({ source: "guide-popup" });
     } catch {
-      setError(true);
+      setError("send");
     } finally {
       setSending(false);
     }
@@ -260,7 +269,7 @@ export default function GuideDownloadPopup() {
                       autoFocus
                       autoComplete="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => { setEmail(e.target.value); setError(null); }}
                       placeholder={t("emailPlaceholder")}
                       className="w-full rounded-lg border border-[#E4DFDA] bg-white py-3 pl-10 pr-3.5 text-[14px] text-[#0E1C22] outline-none transition-all placeholder:text-[#6B7782] focus:border-[#1A7A5A] focus:ring-[3px] focus:ring-[#1A7A5A]/[0.12]"
                     />
@@ -276,10 +285,11 @@ export default function GuideDownloadPopup() {
                     <input
                       id="ecm-phone"
                       type="tel"
+                      required
                       inputMode="tel"
                       autoComplete="tel"
                       value={phone}
-                      onChange={(e) => setPhone(normalizePhone(e.target.value))}
+                      onChange={(e) => { setPhone(normalizePhone(e.target.value)); setError(null); }}
                       placeholder={t("phonePlaceholder")}
                       className="w-full rounded-lg border border-[#E4DFDA] bg-white py-3 pl-10 pr-3.5 text-[14px] text-[#0E1C22] outline-none transition-all placeholder:text-[#6B7782] focus:border-[#1A7A5A] focus:ring-[3px] focus:ring-[#1A7A5A]/[0.12]"
                     />
@@ -288,7 +298,7 @@ export default function GuideDownloadPopup() {
 
                 {error && (
                   <p className="mt-2 text-[12px] font-medium text-[#E53E3E]" role="alert">
-                    {t("error")}
+                    {t(error === "phone" ? "errorPhone" : "error")}
                   </p>
                 )}
 

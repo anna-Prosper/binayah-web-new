@@ -1688,6 +1688,7 @@
     "phonePlaceholder": "+971 50 000 0000",
     "submit": "Gửi cẩm nang cho tôi",
     "error": "Vui lòng nhập địa chỉ email hợp lệ.",
+    "errorPhone": "Vui lòng nhập số điện thoại hợp lệ.",
     "successTitle": "Cẩm nang đang được gửi tới bạn",
     "successBody": "Kiểm tra hộp thư — chúng tôi vừa gửi cẩm nang cho bạn qua email.",
     "fineprint": "Không spam, chỉ có cẩm nang và tin tức thị trường thỉnh thoảng.",

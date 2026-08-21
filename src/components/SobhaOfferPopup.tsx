@@ -39,6 +39,11 @@ const SHOW_AFTER_MS = 8000;
 const SCROLL_TRIGGER = 0.35;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** Loose E.164 sanity check: enough digits to dial, no more than the standard allows. */
+const phoneValid = (v: string) => {
+  const digits = v.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
+};
 
 /** Campaign palette, lifted from the campaign email so the two match. */
 const GOLD = "#c9a769";
@@ -94,7 +99,7 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
   const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<null | "email" | "phone" | "send">(null);
   const { value: hp, field: honeypotField } = useHoneypot();
   const armedRef = useRef(false);
 
@@ -148,11 +153,15 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!EMAIL_RE.test(email)) {
-      setError(true);
+      setError("email");
+      return;
+    }
+    if (!phoneValid(phone)) {
+      setError("phone");
       return;
     }
     setSending(true);
-    setError(false);
+    setError(null);
     try {
       const res = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
@@ -173,7 +182,7 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
       setSent(true);
       trackLead({ source: "sobha-2080-popup" });
     } catch {
-      setError(true);
+      setError("send");
     } finally {
       setSending(false);
     }
@@ -296,27 +305,32 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
               </p>
 
               {/* the offer's own terms, as in the email */}
+              {/* fixed 3-up: flex-wrap dropped the third item to its own line
+                  once a label ran long */}
               <div
-                className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-[3px] px-3.5 py-3"
+                className="mt-4 grid grid-cols-3 rounded-[3px] px-3 py-3"
                 style={{ background: CREAM, border: `1px solid ${LINE}` }}
               >
                 {[
                   ["From", "AED 1.8M"],
-                  ["Deferred", "80%"],
+                  ["Before handover", "20%"],
                   ["DLD fee", "Waived"],
                 ].map(([k, v], i) => (
-                  <div key={k} className="flex items-center gap-3">
-                    {i > 0 && <span className="h-6 w-px" style={{ background: LINE }} />}
-                    <div>
-                      <div
-                        className="text-[9px] font-bold uppercase tracking-[0.14em]"
-                        style={{ color: MUTED }}
-                      >
-                        {k}
-                      </div>
-                      <div className="text-[14px] leading-tight" style={{ fontFamily: SERIF, color: INK }}>
-                        {v}
-                      </div>
+                  <div
+                    key={k}
+                    className={i > 0 ? "pl-2 pr-0.5" : "pr-1.5"}
+                    style={i > 0 ? { borderLeft: `1px solid ${LINE}` } : undefined}
+                  >
+                    {/* two lines reserved so a wrapping label cannot knock its
+                        value off the baseline the other two sit on */}
+                    <div
+                      className="text-[9px] font-bold uppercase leading-[1.3] tracking-[0.07em]"
+                      style={{ color: MUTED, minHeight: "24px" }}
+                    >
+                      {k}
+                    </div>
+                    <div className="mt-0.5 whitespace-nowrap text-[13px] leading-tight" style={{ fontFamily: SERIF, color: INK }}>
+                      {v}
                     </div>
                   </div>
                 ))}
@@ -336,7 +350,7 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
                     autoComplete="email"
                     aria-label="Email address"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); setError(null); }}
                     placeholder="Your email address"
                     className={inputClass}
                     style={inputStyle}
@@ -351,12 +365,13 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
                   />
                   <input
                     type="tel"
+                    required
                     inputMode="tel"
                     autoComplete="tel"
-                    aria-label="Phone number (optional)"
+                    aria-label="Phone number"
                     value={phone}
-                    onChange={(e) => setPhone(normalizePhone(e.target.value))}
-                    placeholder="Phone (optional)"
+                    onChange={(e) => { setPhone(normalizePhone(e.target.value)); setError(null); }}
+                    placeholder="Phone number"
                     className={inputClass}
                     style={inputStyle}
                   />
@@ -364,7 +379,11 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
 
                 {error && (
                   <p className="mt-2 text-[12px] font-medium text-[#E53E3E]" role="alert">
-                    Please check your details and try again.
+                    {error === "phone"
+                      ? "Please enter a valid phone number."
+                      : error === "email"
+                        ? "Please enter a valid email address."
+                        : "Something went wrong. Please try again."}
                   </p>
                 )}
 

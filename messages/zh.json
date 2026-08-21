@@ -1694,6 +1694,7 @@
     "phonePlaceholder": "+971 50 000 0000",
     "submit": "把指南发给我",
     "error": "请输入有效的邮箱地址。",
+    "errorPhone": "请输入有效的电话号码。",
     "successTitle": "您的指南正在发送",
     "successBody": "请查收邮箱——我们刚刚已将指南发送到您的邮箱。",
     "fineprint": "绝无垃圾邮件，只有指南和不定期的市场资讯。",
