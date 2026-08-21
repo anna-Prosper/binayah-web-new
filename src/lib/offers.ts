@@ -249,7 +249,7 @@ export const OFFERS: Offer[] = [
       },
       {
         "label": "Incentives",
-        "value": "DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and the registration fee waived outright on Siniya Island and Downtown Umm Al Quwain."
+        "value": "DLD registration fee waivers of up to 4%, two-year service charge waivers, and furniture vouchers on selected communities."
       },
       {
         "label": "To secure the terms",
