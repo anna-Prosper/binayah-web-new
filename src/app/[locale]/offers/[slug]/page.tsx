@@ -384,10 +384,12 @@ export default async function OfferPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ── EXPLAINER — the first prose a reader hits, right after the numbers
-             and before the lifestyle/community sections. Answers "what is this
-             and why is it good" before anything else does. A distinct ground
-             (not bg-card, not bg-background) keeps it from reading as a
+      {/* ── EXPLAINER + TERMS — one combined section now: the prose ("what is
+             this, why is it good") and the terms grid used to be two separate
+             blocks that repeated the same facts in different shapes. Now it's
+             heading, highlight, a short intro, then the terms as a single
+             points list, with nothing said twice. A distinct ground (not
+             bg-card, not bg-background) keeps it from reading as a
              continuation of the highlight band above: a warm cream base, a
              faint gold diamond-lattice motif (the same geometric language as
              the developer's own marketing), and two soft corner glows. All
@@ -418,7 +420,7 @@ export default async function OfferPage({ params }: Props) {
               "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.5) 50%, transparent 100%)",
           }}
         />
-        <div className="relative mx-auto max-w-3xl px-4 sm:px-6">
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
           <Reveal>
             <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
               {offer.explainer.heading}
@@ -439,7 +441,7 @@ export default async function OfferPage({ params }: Props) {
               </div>
             )}
 
-            <div className="mt-6 space-y-5">
+            <div className="mt-6 max-w-2xl space-y-5">
               {offer.explainer.body.map((p, i) => (
                 <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                   {emphasizeStats(p)}
@@ -447,71 +449,37 @@ export default async function OfferPage({ params }: Props) {
               ))}
             </div>
 
-            {!!offer.explainer.waivers?.length && (
-              <div className="mt-6 rounded-2xl border border-border/50 bg-background/60 p-5 sm:p-6">
-                {offer.explainer.waiversIntro && (
-                  <p className="text-[15px] font-semibold text-foreground sm:text-base">
-                    {offer.explainer.waiversIntro}
-                  </p>
-                )}
-                <ul className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
-                  {offer.explainer.waivers.map((w) => (
-                    <li key={w} className="flex items-start gap-2.5 text-[14px] leading-snug text-foreground">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
-                      <span>{emphasizeStats(w)}</span>
-                    </li>
-                  ))}
+            {!!offer.eligibility?.length && (
+              <div className="mt-9 border-t border-border/50 pt-8">
+                <Eyebrow>The offer in detail</Eyebrow>
+                <h3 className="mt-3 text-lg font-bold tracking-[-0.01em] text-foreground sm:text-xl">
+                  Key terms
+                </h3>
+                <ul className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                  {offer.eligibility.map((e, i) => {
+                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
+                    const Icon = T[i] ?? CheckCircle2;
+                    return (
+                      <li key={e.label} className="flex items-start gap-3">
+                        <Icon className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                        <div>
+                          <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                            {e.label}
+                          </div>
+                          <div className="mt-1 text-[14px] font-semibold leading-relaxed text-foreground">
+                            {emphasizeStats(e.value)}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
-                {offer.explainer.waiversNote && (
-                  <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
-                    {offer.explainer.waiversNote}
-                  </p>
-                )}
               </div>
             )}
           </Reveal>
         </div>
       </section>
       )}
-
-      {/* ── ELIGIBILITY — moved up from below the payment mechanics: a reader
-             deciding whether to read on wants the terms and the community list
-             right after the explainer, not two-thirds down the page. bg-background
-             steps off the EXPLAINER tint above it. ──────────────────────────── */}
-      <section className="bg-background py-14 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow>The offer in detail</Eyebrow>
-            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              The terms in full
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-              One structure, five communities. The DLD, service charge and furniture terms below vary by project, see each one further down.
-            </p>
-            {/* Full width now, so the rows run two-up instead of a narrow stack. */}
-            <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
-              {offer.eligibility.map((e, i) => (
-                <div
-                  key={e.label}
-                  className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-card px-5 py-4 transition-colors"
-                >
-                  {(() => {
-                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
-                    const Icon = T[i] ?? CheckCircle2;
-                    return <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />;
-                  })()}
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                      {e.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-foreground">{e.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
 
       {/* ── PARTICIPATING PROJECTS — moved up alongside the terms above, right
              after the explainer. Cards are smaller than before (3-up on desktop,

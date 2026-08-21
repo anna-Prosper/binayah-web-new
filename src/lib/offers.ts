@@ -181,15 +181,7 @@ export const OFFERS: Offer[] = [
       "body": [
         "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes, often against a value that has already moved on from what you paid.",
         "Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range: apartments, townhouses and villas across all five projects qualify, not just the entry-level units."
-      ],
-      "waiversIntro": "On top of the deferred payment, each project layers its own incentives:",
-      "waivers": [
-        "DLD registration fee waivers of up to 4%",
-        "Two-year service charge waivers",
-        "A furniture voucher on Elwood",
-        "The registration fee waived outright on Siniya Island and Downtown Umm Al Quwain"
-      ],
-      "waiversNote": "Exactly which apply depends on the project and unit type, see the full breakdown below."
+      ]
     },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
     "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
@@ -246,15 +238,15 @@ export const OFFERS: Offer[] = [
       },
       {
         "label": "Entry price",
-        "value": "From AED 1.8M for a one-bedroom at Sobha Central."
+        "value": "From AED 1.8M for a one-bedroom at Sobha Central, though apartments, townhouses and villas across all five projects qualify too."
       },
       {
         "label": "Payment structure",
         "value": "20% across three instalments, 80% on handover."
       },
       {
-        "label": "DLD fee",
-        "value": "The full 4% waived."
+        "label": "Incentives",
+        "value": "DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and the registration fee waived outright on Siniya Island and Downtown Umm Al Quwain."
       },
       {
         "label": "To secure the terms",
