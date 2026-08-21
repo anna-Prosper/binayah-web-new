@@ -91,6 +91,13 @@ export interface Offer {
      *  plain heading + paragraphs explainer. */
     highlight?: string;
     body: string[];
+    /** Optional checklist rendered after the body paragraphs — for a list of
+     *  incentives/terms that reads better as bullets than as one dense
+     *  sentence. `waiversIntro` and `waiversNote` bracket it (lead-in line,
+     *  then a caveat), both optional. */
+    waiversIntro?: string;
+    waivers?: string[];
+    waiversNote?: string;
   };
   metaTitle: string;
   metaDescription: string;
@@ -173,9 +180,16 @@ export const OFFERS: Offer[] = [
       "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
       "body": [
         "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes, often against a value that has already moved on from what you paid.",
-        "Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range: apartments, townhouses and villas across all five projects qualify, not just the entry-level units.",
-        "On top of the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and on Siniya Island and Downtown Umm Al Quwain the registration fee waived outright. Exactly which apply depends on the project and unit type, see the full breakdown below."
-      ]
+        "Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range: apartments, townhouses and villas across all five projects qualify, not just the entry-level units."
+      ],
+      "waiversIntro": "On top of the deferred payment, each project layers its own incentives:",
+      "waivers": [
+        "DLD registration fee waivers of up to 4%",
+        "Two-year service charge waivers",
+        "A furniture voucher on Elwood",
+        "The registration fee waived outright on Siniya Island and Downtown Umm Al Quwain"
+      ],
+      "waiversNote": "Exactly which apply depends on the project and unit type, see the full breakdown below."
     },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
     "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
@@ -255,8 +269,8 @@ export const OFFERS: Offer[] = [
         "value": "Permitted at completion."
       },
       {
-        "label": "Not applicable to",
-        "value": "Cancellations, swaps, upgrades, downgrades and re-bookings."
+        "label": "Golden Visa",
+        "value": "Units priced above AED 2 million qualify for the property investor visa route."
       }
     ],
     "projects": [

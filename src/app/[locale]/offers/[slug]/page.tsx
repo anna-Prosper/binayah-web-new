@@ -93,6 +93,24 @@ const GREEN = "#0B3D2E";
 const DARK_SECTION = "linear-gradient(135deg, #0B3D2E, #1A7A5A)";
 const GREEN_DK = "#072A20";
 
+// Matches "AED 1.8 million", "AED 360,000", "20%", "5 million dirham", "20:80" —
+// the standalone figures a reader's eye should catch first in a paragraph of
+// offer copy. Offer text is authored in our own CMS, not user input, so
+// bolding via split/rejoin is safe without a sanitizer.
+const STAT_RE = /(AED\s[\d,.]+(?:\s?(?:million|billion))?|\d+(?:\.\d+)?%|\d+\s(?:million|billion)(?:\sdirham)?|20:80)/g;
+function emphasizeStats(text: string): React.ReactNode {
+  const parts = text.split(STAT_RE);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-bold text-foreground">
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
+  );
+}
+
 /** Small gold-ruled eyebrow used to open every section. */
 function Eyebrow({ children, onDark = false }: { children: React.ReactNode; onDark?: boolean }) {
   return (
@@ -416,18 +434,41 @@ export default async function OfferPage({ params }: Props) {
               >
                 <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
                 <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
-                  {offer.explainer.highlight}
+                  {emphasizeStats(offer.explainer.highlight)}
                 </p>
               </div>
             )}
 
-            <div className="mt-5 space-y-4">
+            <div className="mt-6 space-y-5">
               {offer.explainer.body.map((p, i) => (
                 <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                  {p}
+                  {emphasizeStats(p)}
                 </p>
               ))}
             </div>
+
+            {!!offer.explainer.waivers?.length && (
+              <div className="mt-6 rounded-2xl border border-border/50 bg-background/60 p-5 sm:p-6">
+                {offer.explainer.waiversIntro && (
+                  <p className="text-[15px] font-semibold text-foreground sm:text-base">
+                    {offer.explainer.waiversIntro}
+                  </p>
+                )}
+                <ul className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                  {offer.explainer.waivers.map((w) => (
+                    <li key={w} className="flex items-start gap-2.5 text-[14px] leading-snug text-foreground">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                      <span>{emphasizeStats(w)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {offer.explainer.waiversNote && (
+                  <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+                    {offer.explainer.waiversNote}
+                  </p>
+                )}
+              </div>
+            )}
           </Reveal>
         </div>
       </section>
@@ -455,7 +496,7 @@ export default async function OfferPage({ params }: Props) {
                   className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-card px-5 py-4 transition-colors"
                 >
                   {(() => {
-                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, Ban];
+                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
                     const Icon = T[i] ?? CheckCircle2;
                     return <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />;
                   })()}
