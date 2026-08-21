@@ -17,7 +17,7 @@ import Providers from "../providers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import LiveChatBanner from "@/components/LiveChatBanner";
-import GuideDownloadPopup from "@/components/GuideDownloadPopup";
+import CampaignPopup from "@/components/CampaignPopup";
 import GlobalImageFallback from "@/components/GlobalImageFallback";
 import ChunkReloadGuard from "@/components/ChunkReloadGuard";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -245,7 +245,7 @@ export default async function LocaleLayout({
                   <Analytics />
                   <SpeedInsights />
                   <LiveChatBanner />
-                  <GuideDownloadPopup />
+                  <CampaignPopup />
                   {/* Analytics (GTM/GA/Clarity/LiveChat) — host-gated on the
                       client so this layout stays statically cacheable. */}
                   <ProdAnalytics nonce={nonce} />

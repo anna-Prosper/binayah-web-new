@@ -26,8 +26,9 @@ const COOKIE_KEY = "binayah_sobha_2080_popup";
 const H = 60 * 60;
 const MAXAGE = { seen: 24 * H, dismissed: 48 * H, done: 365 * 24 * H } as const;
 
-/** Hard stop: the offer's own deadline (Gulf time). */
-const OFFER_ENDS = new Date("2026-08-24T00:00:00+04:00");
+/** Hard stop: the offer's own deadline (Gulf time). Exported so the campaign
+ *  switch in CampaignPopup uses exactly the same instant. */
+export const OFFER_ENDS = new Date("2026-08-24T00:00:00+04:00");
 const DEADLINE_LABEL = "23 August";
 
 const PANEL_IMAGE =
