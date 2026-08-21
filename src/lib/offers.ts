@@ -201,17 +201,17 @@ export const OFFERS: Offer[] = [
         "description": "Booking amount, paid to reserve the unit."
       },
       {
-        "stage": "Within 10 days",
+        "stage": "Within 7 days",
         "share": "8%",
         "description": "Second instalment."
       },
       {
-        "stage": "Within 3 months",
+        "stage": "Within 15 days",
         "share": "10%",
         "description": "Completes the 20%."
       },
       {
-        "stage": "On handover",
+        "stage": "On completion",
         "share": "80%",
         "description": "The balance, payable when the unit is ready."
       }
@@ -514,7 +514,7 @@ export const OFFERS: Offer[] = [
       ],
       [
         "AED 360,000 secures an AED 1.8M home",
-        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within ten days and 10% within three months. The remaining AED 1.44 million is deferred until the unit is ready."
+        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within 7 days and 10% within 15 days. The remaining AED 1.44 million is deferred until the unit is ready."
       ],
       [
         "Resell or mortgage at completion",
