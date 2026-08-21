@@ -12,7 +12,7 @@ import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import OfferGallery from "@/components/offers/OfferGallery";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
-import { isExpired, hasDeadline, DEFAULT_WINDOW_LABEL, DEFAULT_MASTERPLAN_HEADING } from "@/lib/offers";
+import { isExpired, hasDeadline, computeEyebrow, DEFAULT_WINDOW_LABEL, DEFAULT_MASTERPLAN_HEADING } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
@@ -199,7 +199,7 @@ export default async function OfferPage({ params }: Props) {
                     style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
                   >
                     <Clock className="h-3.5 w-3.5" />
-                    {offer.eyebrow}
+                    {computeEyebrow(offer)}
                   </span>
                 )}
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
@@ -365,6 +365,29 @@ export default async function OfferPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* ── EXPLAINER — the first prose a reader hits, right after the numbers
+             and before the lifestyle/community sections. Answers "what is this
+             and why is it good" before anything else does. bg-card, same ground
+             as the highlight band above it, so the two read as one block. ──── */}
+      {!!offer.explainer?.body?.length && (
+      <section className="bg-card pb-14 sm:pb-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <Reveal>
+            <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
+              {offer.explainer.heading}
+            </h2>
+            <div className="mt-5 space-y-4">
+              {offer.explainer.body.map((p, i) => (
+                <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+                  {p}
+                </p>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      )}
 
       {/* ── COMMUNITY — moved up from after the gallery: the lifestyle case now
              lands right after the hero/stat band, before the payment mechanics,
@@ -708,7 +731,7 @@ export default async function OfferPage({ params }: Props) {
              reader can open the actual community. bg-background keeps the
              light/dark alternation going after the bg-card section above. ──── */}
       {!!offer.projects?.length && (
-      <section className="bg-background py-14 sm:py-24">
+      <section id="projects" className="scroll-mt-24 bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
             <Eyebrow>Where it applies</Eyebrow>

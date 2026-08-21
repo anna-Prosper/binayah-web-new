@@ -76,6 +76,15 @@ export interface Offer {
    *  provisional, where advertising a window would overstate how firm it is.
    *  `deadline` still drives expiry — the offer just doesn't advertise it. */
   hideDeadline?: boolean;
+  /** When true, the hero badge ignores the literal `eyebrow` string and
+   *  instead renders a live "Ends <weekday>, N days only" computed from
+   *  `deadline` on every request — so a badge advertising a day count never
+   *  drifts stale as the window ticks down. Requires a real `deadline`. */
+  dayCountEyebrow?: boolean;
+  /** Short "what is this and why it's good" block rendered right under the
+   *  hero highlight band — the first thing a reader sees after the numbers,
+   *  before the lifestyle/community sections further down the page. */
+  explainer?: { heading: string; body: string[] };
   metaTitle: string;
   metaDescription: string;
   keywords: string;
@@ -145,12 +154,21 @@ export const OFFERS: Offer[] = [
     "shortName": "Sobha 20:80 Payment Plan",
     "developer": "Sobha Realty",
     "eyebrow": "Ends Sunday, 4 days only",
+    "dayCountEyebrow": true,
     "h1": "Ultra-Luxury Sobha Home: Only 20% Before Handover",
     "subtitle": "Ultra-luxury from a Tier 1 developer, for a fifth of your own money.",
     "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
+    "explainer": {
+      "heading": "The 20:80 plan is back — across all five Sobha communities",
+      "body": [
+        "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes — often against a value that has already moved on from what you paid.",
+        "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5-million-dirham unit. Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range — apartments, townhouses and villas across all five projects qualify, not just the entry-level units.",
+        "On top of the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and on Siniya Island and Downtown Umm Al Quwain the registration fee waived outright. Exactly which apply depends on the project and unit type — see the full breakdown below."
+      ]
+    },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
     "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
@@ -737,6 +755,20 @@ export const DEFAULT_MASTERPLAN_HEADING = "Inside the masterplan";
 /** True when this offer has a real, parseable end date. */
 export function hasDeadline(offer: { deadline?: string }): boolean {
   return Number.isFinite(new Date(offer.deadline ?? "").getTime());
+}
+
+/** Live "Ends <weekday>, N days only" label for `dayCountEyebrow` offers,
+ *  recomputed on every request rather than baked into the stored `eyebrow`
+ *  string, so a "4 days only" badge doesn't keep saying that after the
+ *  window has shrunk. Falls back to the stored `eyebrow` otherwise. */
+export function computeEyebrow(offer: Offer, now: Date = new Date()): string {
+  if (!offer.dayCountEyebrow || !hasDeadline(offer)) return offer.eyebrow;
+  const end = new Date(offer.deadline);
+  const diffDays = Math.ceil((end.getTime() - now.getTime()) / 86_400_000);
+  const weekday = end.toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Dubai" });
+  if (diffDays <= 0) return "Ends today";
+  if (diffDays === 1) return `Ends ${weekday}, 1 day only`;
+  return `Ends ${weekday}, ${diffDays} days only`;
 }
 
 /** True when the promotion window has closed. An offer with no deadline never
