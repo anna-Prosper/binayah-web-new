@@ -84,7 +84,14 @@ export interface Offer {
   /** Short "what is this and why it's good" block rendered right under the
    *  hero highlight band — the first thing a reader sees after the numbers,
    *  before the lifestyle/community sections further down the page. */
-  explainer?: { heading: string; body: string[] };
+  explainer?: {
+    heading: string;
+    /** One-line standout stat, rendered as a bordered callout above the body
+     *  copy — e.g. a sales record or a relaxed eligibility rule. Omit for a
+     *  plain heading + paragraphs explainer. */
+    highlight?: string;
+    body: string[];
+  };
   metaTitle: string;
   metaDescription: string;
   keywords: string;
@@ -162,11 +169,12 @@ export const OFFERS: Offer[] = [
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
     "explainer": {
-      "heading": "The 20:80 plan is back — across all five Sobha communities",
+      "heading": "The 20:80 plan is back, across all five Sobha communities",
+      "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
       "body": [
-        "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes — often against a value that has already moved on from what you paid.",
-        "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5-million-dirham unit. Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range — apartments, townhouses and villas across all five projects qualify, not just the entry-level units.",
-        "On top of the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and on Siniya Island and Downtown Umm Al Quwain the registration fee waived outright. Exactly which apply depends on the project and unit type — see the full breakdown below."
+        "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes, often against a value that has already moved on from what you paid.",
+        "Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range: apartments, townhouses and villas across all five projects qualify, not just the entry-level units.",
+        "On top of the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, two-year service charge waivers, a furniture voucher on Elwood, and on Siniya Island and Downtown Umm Al Quwain the registration fee waived outright. Exactly which apply depends on the project and unit type, see the full breakdown below."
       ]
     },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
@@ -218,6 +226,10 @@ export const OFFERS: Offer[] = [
     ],
     "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "eligibility": [
+      {
+        "label": "Communities",
+        "value": "All five: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain."
+      },
       {
         "label": "Entry price",
         "value": "From AED 1.8M for a one-bedroom at Sobha Central."

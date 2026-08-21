@@ -368,15 +368,39 @@ export default async function OfferPage({ params }: Props) {
 
       {/* ── EXPLAINER — the first prose a reader hits, right after the numbers
              and before the lifestyle/community sections. Answers "what is this
-             and why is it good" before anything else does. bg-card, same ground
-             as the highlight band above it, so the two read as one block. ──── */}
+             and why is it good" before anything else does. A distinct tinted
+             ground (not bg-card, not bg-background) plus a top hairline keeps
+             it from reading as a continuation of the highlight band above. ── */}
       {!!offer.explainer?.body?.length && (
-      <section className="bg-card pb-14 sm:pb-24">
+      <section className="relative overflow-hidden py-14 sm:py-20" style={{ background: "linear-gradient(180deg, rgba(212,168,71,0.07) 0%, rgba(212,168,71,0.02) 55%, transparent 100%)" }}>
+        <span
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, rgba(212,168,71,0.5) 50%, transparent 100%)",
+          }}
+        />
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <Reveal>
             <h2 className="text-xl font-extrabold tracking-[-0.01em] text-foreground sm:text-2xl">
               {offer.explainer.heading}
             </h2>
+
+            {offer.explainer.highlight && (
+              <div
+                className="mt-5 flex items-start gap-3 rounded-2xl px-5 py-4"
+                style={{
+                  background: "linear-gradient(135deg, rgba(212,168,71,0.14), rgba(212,168,71,0.05))",
+                  border: `1px solid rgba(212,168,71,0.35)`,
+                }}
+              >
+                <Sparkles className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
+                <p className="text-sm font-semibold leading-relaxed text-foreground sm:text-[15px]">
+                  {offer.explainer.highlight}
+                </p>
+              </div>
+            )}
+
             <div className="mt-5 space-y-4">
               {offer.explainer.body.map((p, i) => (
                 <p key={i} className="text-[15px] leading-relaxed text-muted-foreground sm:text-base">
@@ -385,6 +409,110 @@ export default async function OfferPage({ params }: Props) {
               ))}
             </div>
           </Reveal>
+        </div>
+      </section>
+      )}
+
+      {/* ── ELIGIBILITY — moved up from below the payment mechanics: a reader
+             deciding whether to read on wants the terms and the community list
+             right after the explainer, not two-thirds down the page. bg-background
+             steps off the EXPLAINER tint above it. ──────────────────────────── */}
+      <section className="bg-background py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>The offer in detail</Eyebrow>
+            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
+              The terms in full
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
+              One structure, five communities. The DLD, service charge and furniture terms below vary by project, see each one further down.
+            </p>
+            {/* Full width now, so the rows run two-up instead of a narrow stack. */}
+            <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
+              {offer.eligibility.map((e, i) => (
+                <div
+                  key={e.label}
+                  className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-card px-5 py-4 transition-colors"
+                >
+                  {(() => {
+                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, Ban];
+                    const Icon = T[i] ?? CheckCircle2;
+                    return <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />;
+                  })()}
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      {e.label}
+                    </div>
+                    <div className="mt-1 text-sm font-semibold text-foreground">{e.value}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── PARTICIPATING PROJECTS — moved up alongside the terms above, right
+             after the explainer. Cards are smaller than before (3-up on desktop,
+             tighter padding and type) since this now reads as a quick reference
+             rather than the page's visual centrepiece. bg-card steps off the
+             bg-background section above it. ─────────────────────────────────── */}
+      {!!offer.projects?.length && (
+      <section id="projects" className="scroll-mt-24 bg-card py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <Eyebrow>Where it applies</Eyebrow>
+            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
+              Choose your community
+            </h2>
+          </Reveal>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {offer.projects.map((pr, i) => (
+              <Reveal key={pr.name} delay={i * 60}>
+                <div className="group h-full overflow-hidden rounded-xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-lg">
+                  {pr.image && (
+                    <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                      <img
+                        src={pr.image}
+                        alt={pr.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5">
+                  <div className="flex items-start gap-2.5">
+                    <Building2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
+                    <div className="min-w-0">
+                      <h3 className="text-[15px] font-bold leading-snug text-foreground">{pr.name}</h3>
+                      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{pr.terms}</p>
+                    </div>
+                  </div>
+
+                  {pr.links?.length ? (
+                    <div className="mt-4 flex flex-wrap gap-1.5 pl-[26px]">
+                      {pr.links.map((l) => (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          className="inline-flex items-center gap-1 min-h-[36px] rounded-full border border-border/60 px-3 py-2 text-[11px] font-semibold sm:min-h-0 sm:py-1 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                        >
+                          {l.label}
+                          <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-4 pl-[26px] text-[11px] font-semibold text-muted-foreground">
+                      Message us for this release
+                    </p>
+                  )}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
       )}
@@ -691,104 +819,6 @@ export default async function OfferPage({ params }: Props) {
           )}
         </div>
       </section>
-
-      {/* ── ELIGIBILITY — light, so it doesn't stack two dark slabs against the
-             worked example above it. bg-card against the page's bg-background is
-             the same light-on-light step the homepage uses. ──────────────────── */}
-      <section className="bg-card py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow>The offer in detail</Eyebrow>
-            <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              The terms in full
-            </h2>
-            {/* Full width now, so the rows run two-up instead of a narrow stack. */}
-            <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
-              {offer.eligibility.map((e, i) => (
-                <div
-                  key={e.label}
-                  className="flex items-start gap-3.5 rounded-xl border border-border/60 bg-background px-5 py-4 transition-colors"
-                >
-                  {(() => {
-                    const T = [Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, Ban];
-                    const Icon = T[i] ?? CheckCircle2;
-                    return <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />;
-                  })()}
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                      {e.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-foreground">{e.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── PARTICIPATING PROJECTS — the terms above are abstract until the
-             reader can open the actual community. bg-background keeps the
-             light/dark alternation going after the bg-card section above. ──── */}
-      {!!offer.projects?.length && (
-      <section id="projects" className="scroll-mt-24 bg-background py-14 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <Reveal>
-            <Eyebrow>Where it applies</Eyebrow>
-            <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              Choose your community
-            </h2>
-          </Reveal>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-2">
-            {offer.projects.map((pr, i) => (
-              <Reveal key={pr.name} delay={i * 70}>
-                <div className="group h-full overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl">
-                  {pr.image && (
-                    <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                      <img
-                        src={pr.image}
-                        alt={pr.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-7">
-                  <div className="flex items-start gap-3">
-                    <Building2 className="mt-1 h-5 w-5 shrink-0" style={{ color: GOLD_DEEP }} />
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-bold leading-snug text-foreground">{pr.name}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pr.terms}</p>
-                    </div>
-                  </div>
-
-                  {pr.links?.length ? (
-                    <div className="mt-5 flex flex-wrap gap-2 pl-8">
-                      {pr.links.map((l) => (
-                        <Link
-                          key={l.href}
-                          href={l.href}
-                          className="inline-flex items-center gap-1.5 min-h-[40px] rounded-full border border-border/60 px-4 py-2.5 text-[12px] font-semibold sm:min-h-0 sm:py-1.5 text-foreground transition-colors hover:border-primary/30 hover:text-primary"
-                        >
-                          {l.label}
-                          <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="mt-5 pl-8 text-[12px] font-semibold text-muted-foreground">
-                      Message us for this release
-                    </p>
-                  )}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
 
       {/* ── GALLERY — visual proof, right after the reader meets the specific
              projects and before the lifestyle checklist. bg-card so it steps

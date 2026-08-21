@@ -42,34 +42,37 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
   }, [target]);
 
   const isLight = tone === "light";
-  // Glassy on the dark hero, inked on light sections. The gold hairline at the
-  // top of each cell ties the timer to the offer badge without shouting.
+  // Solid, higher-contrast panel — a gold-tinted glass on the dark hero
+  // instead of the near-transparent white that read as barely-there against a
+  // busy photo. The gold hairline at the top of each cell still ties the
+  // timer to the offer badge.
   const boxBg = isLight
-    ? "linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.07) 100%)"
+    ? "linear-gradient(180deg, rgba(11,61,46,0.62) 0%, rgba(7,42,32,0.78) 100%)"
     : "linear-gradient(180deg, rgba(11,61,46,0.07) 0%, rgba(11,61,46,0.03) 100%)";
-  const boxBorder = isLight ? "rgba(255,255,255,0.20)" : "rgba(11,61,46,0.12)";
+  const boxBorder = isLight ? "rgba(212,168,71,0.5)" : "rgba(11,61,46,0.12)";
+  const boxShadow = isLight ? "0 10px 30px rgba(0,0,0,0.35)" : undefined;
   const numColor = isLight ? "#FFFFFF" : "#0B3D2E";
-  const labelColor = isLight ? "rgba(255,255,255,0.66)" : "rgba(11,61,46,0.58)";
+  const labelColor = isLight ? "rgba(255,255,255,0.82)" : "rgba(11,61,46,0.58)";
 
   // Pre-hydration and invalid dates render a stable skeleton of the same size,
   // so the surrounding layout doesn't shift when the timer starts.
   const cell = (v: string, l: string, key: string) => (
     <div
       key={key}
-      className="relative flex min-w-[74px] flex-col items-center overflow-hidden rounded-xl px-3 py-3 backdrop-blur-sm"
-      style={{ background: boxBg, border: `1px solid ${boxBorder}` }}
+      className="relative flex min-w-[74px] flex-col items-center overflow-hidden rounded-2xl px-3.5 py-3.5 backdrop-blur-sm sm:min-w-[92px] sm:px-5 sm:py-5"
+      style={{ background: boxBg, border: `1.5px solid ${boxBorder}`, boxShadow }}
     >
       <span
-        className="absolute inset-x-0 top-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,71,0.85), transparent)" }}
+        className="absolute inset-x-0 top-0 h-[2px]"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,71,0.9), transparent)" }}
       />
       <span
-        className="text-[28px] font-extrabold tabular-nums leading-none tracking-tight"
+        className="text-[32px] font-extrabold tabular-nums leading-none tracking-tight sm:text-[44px]"
         style={{ color: numColor }}
       >
         {v}
       </span>
-      <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.16em]" style={{ color: labelColor }}>
+      <span className="mt-2 text-[10px] font-bold uppercase tracking-[0.16em] sm:text-[11px]" style={{ color: labelColor }}>
         {l}
       </span>
     </div>
@@ -77,7 +80,7 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
 
   if (left === null) {
     return (
-      <div className="flex gap-2.5" aria-hidden="true">
+      <div className="flex gap-2.5 sm:gap-3.5" aria-hidden="true">
         {["Days", "Hours", "Mins", "Secs"].map((l) => cell("--", l, l))}
       </div>
     );
