@@ -525,6 +525,35 @@ export default async function OfferPage({ params }: Props) {
                 </div>
               </Reveal>
             ))}
+
+            {/* A 6th card, deliberately not another community: five projects
+                in a 3-up grid leave one cell empty on the last row, and a gold
+                developer-credibility card reads as an intentional close to
+                the grid rather than a gap. Previews the fuller INVESTMENT
+                CASE section right after this one. */}
+            {!!offer.investment?.items?.length && (
+              <Reveal delay={offer.projects.length * 60}>
+                <div
+                  className="group flex h-full flex-col justify-center overflow-hidden rounded-xl p-6"
+                  style={{
+                    background: `linear-gradient(135deg, ${GREEN} 0%, #123A2C 100%)`,
+                    border: "1px solid rgba(212,168,71,0.32)",
+                  }}
+                >
+                  <ShieldCheck className="h-5 w-5" style={{ color: GOLD }} />
+                  <h3 className="mt-3 text-[15px] font-bold text-white">Why {offer.developer}</h3>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-white/65">{offer.investment.heading}</p>
+                  <ul className="mt-4 space-y-2">
+                    {offer.investment.items.slice(0, 3).map((it) => (
+                      <li key={it.title} className="flex items-center gap-2 text-[12px] font-semibold text-white/85">
+                        <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
+                        {it.title}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            )}
           </div>
         </div>
       </section>
