@@ -124,6 +124,15 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
       if (scrolled >= SCROLL_TRIGGER) show();
     };
 
+    // Warm the panel image while the dwell timer runs. It is a CSS
+    // background-image on an element that does not exist until the pop-up
+    // mounts, so without this the fetch only starts once the pop-up is already
+    // on screen — measured at ~800ms of empty panel on production. Costs
+    // nothing when the pop-up never opens: the request is only issued here,
+    // after the suppression and cookie checks have passed.
+    const warm = new Image();
+    warm.src = PANEL_IMAGE;
+
     const timer = setTimeout(show, SHOW_AFTER_MS);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
