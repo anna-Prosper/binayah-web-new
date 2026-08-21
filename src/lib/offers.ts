@@ -537,6 +537,10 @@ export const OFFERS: Offer[] = [
       [
         "Resell or mortgage at completion",
         "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
+      ],
+      [
+        "Waivers worth thousands, on top of the split",
+        "Beyond the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, a two year service charge waiver, and a furniture voucher on Elwood. On the AED 1.8 million entry unit at Sobha Central, the 2% DLD waiver alone is AED 36,000 back in your pocket."
       ]
     ],
     "bodyParagraphs": [

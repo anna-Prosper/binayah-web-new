@@ -390,29 +390,13 @@ export default async function OfferPage({ params }: Props) {
              heading, highlight, a short intro, then the terms as a single
              points list, with nothing said twice. A distinct ground (not
              bg-card, not bg-background) keeps it from reading as a
-             continuation of the highlight band above: a warm cream base, a
-             faint gold diamond-lattice motif (the same geometric language as
-             the developer's own marketing), and two soft corner glows. All
-             CSS/SVG, no bitmap, so it stays crisp at any zoom and costs
-             nothing to load. ─────────────────────────────────────────────── */}
+             continuation of the highlight band above: a warm gold-to-cream
+             gradient, same palette as the rest of the page, no pattern. ──── */}
       {!!offer.explainer?.body?.length && (
-      <section className="relative overflow-hidden py-14 sm:py-20" style={{ background: "#FBF8F1" }}>
-        <span
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 0L64 32L32 64L0 32Z' fill='none' stroke='%23D4A847' stroke-opacity='0.16' stroke-width='1'/%3E%3C/svg%3E")`,
-            backgroundSize: "64px 64px",
-          }}
-        />
-        <span
-          className="pointer-events-none absolute -left-32 -top-32 h-[420px] w-[420px] rounded-full opacity-70"
-          style={{ background: "radial-gradient(circle, rgba(212,168,71,0.20) 0%, transparent 70%)" }}
-        />
-        <span
-          className="pointer-events-none absolute -bottom-40 -right-24 h-[380px] w-[380px] rounded-full opacity-60"
-          style={{ background: "radial-gradient(circle, rgba(11,61,46,0.10) 0%, transparent 70%)" }}
-        />
+      <section
+        className="relative overflow-hidden py-14 sm:py-20"
+        style={{ background: "linear-gradient(180deg, #F7EFDC 0%, #FBF8F1 45%, #FBF8F1 100%)" }}
+      >
         <span
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
