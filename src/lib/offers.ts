@@ -179,8 +179,7 @@ export const OFFERS: Offer[] = [
       "heading": "The 20:80 plan is back, across all five Sobha communities",
       "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
       "body": [
-        "For four days only, from 20 to 23 August 2026, Sobha's 20:80 payment plan is open again across every one of its Dubai and Siniya Island communities: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain. Pay just 20% of the price while it's being built, defer the remaining 80% to handover, then resell or mortgage the unit once it completes, often against a value that has already moved on from what you paid.",
-        "Entry starts from AED 1.8 million for a one-bedroom at Sobha Central, and the same 20:80 structure runs straight through the rest of the range: apartments, townhouses and villas across all five projects qualify, not just the entry-level units."
+        "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
       ]
     },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
@@ -233,6 +232,10 @@ export const OFFERS: Offer[] = [
     "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "eligibility": [
       {
+        "label": "Offer window",
+        "value": "Four days only, 20 to 23 August 2026."
+      },
+      {
         "label": "Communities",
         "value": "All five: Elwood, Sanctuary, Central, Siniya Island and Downtown Umm Al Quwain."
       },
@@ -258,7 +261,7 @@ export const OFFERS: Offer[] = [
       },
       {
         "label": "Resale and mortgage",
-        "value": "Permitted at completion."
+        "value": "Permitted at completion, often against a value that has already moved on from what you paid."
       },
       {
         "label": "Golden Visa",

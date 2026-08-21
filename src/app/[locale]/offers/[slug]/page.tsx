@@ -441,7 +441,7 @@ export default async function OfferPage({ params }: Props) {
                 </h3>
                 <ul className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
                   {offer.eligibility.map((e, i) => {
-                    const T = [Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
+                    const T = [Clock, Building2, Wallet, CalendarClock, BadgePercent, FileSignature, KeyRound, Repeat2, ShieldCheck];
                     const Icon = T[i] ?? CheckCircle2;
                     return (
                       <li key={e.label} className="flex items-start gap-3">
