@@ -242,7 +242,7 @@ export const OFFERS: Offer[] = [
       },
       {
         "label": "Payment structure",
-        "value": "20% across three instalments, 80% on handover."
+        "value": "20% across three instalments (2% booking, 8% within 7 days, 10% within 15 days), 80% on completion."
       },
       {
         "label": "Incentives",
