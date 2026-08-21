@@ -178,6 +178,8 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           hp,
+          pageTitle: typeof document !== "undefined" ? document.title : "",
+          pageUrl: typeof window !== "undefined" ? window.location.href : "",
           name: "Sobha 20/80 enquiry",
           email: email.trim(),
           phone: phone.trim(),

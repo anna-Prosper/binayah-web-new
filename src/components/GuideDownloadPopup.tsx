@@ -145,6 +145,8 @@ export default function GuideDownloadPopup() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           hp,
+          pageTitle: typeof document !== "undefined" ? document.title : "",
+          pageUrl: typeof window !== "undefined" ? window.location.href : "",
           name: "Guide download",
           email: email.trim(),
           phone: phone.trim(),
