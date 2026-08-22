@@ -176,6 +176,8 @@ export default function LeadDetailDrawer({ leadId, onClose, onChange }: Props) {
                     </a>
                   </p>
                 )}
+                {lead.country && <p><span className="text-gray-500 w-20 inline-block">Country:</span> {lead.country}</p>}
+                {lead.ip && <p><span className="text-gray-500 w-20 inline-block">IP:</span> <span className="font-mono text-xs">{lead.ip}</span></p>}
                 {lead.budget && (lead.budget.min || lead.budget.max) && (
                   <p>
                     <span className="text-gray-500 w-20 inline-block">Budget:</span>

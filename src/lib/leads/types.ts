@@ -43,6 +43,8 @@ export interface UnifiedLead {
   project?: { slug?: string; name?: string };
   pageUrl?: string;          // canonical URL of the related property or project page
   pageTitle?: string;        // document.title of the page the lead was captured on
+  ip?: string;               // req.ip as seen by the API (post trustProxy)
+  country?: string;          // resolved async from ip; may be absent even when ip is present
   intent?: string[];     // ["buy","rent","invest"] for newsletter subscribers
   budget?: { min?: number; max?: number };
   community?: string;

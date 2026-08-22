@@ -291,6 +291,7 @@ export default function LeadsClient() {
               <th className="px-4 py-3">Contact</th>
               <th className="px-4 py-3">Context</th>
               <th className="px-4 py-3">Page</th>
+              <th className="px-4 py-3">Location</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">When</th>
             </tr>
@@ -298,13 +299,13 @@ export default function LeadsClient() {
           <tbody className="divide-y divide-gray-100">
             {isLoading ? (
               <tr>
-                <td colSpan={8} className="text-center text-gray-500 py-12">
+                <td colSpan={9} className="text-center text-gray-500 py-12">
                   Loading leads…
                 </td>
               </tr>
             ) : leads.length === 0 ? (
               <tr>
-                <td colSpan={8} className="text-center text-gray-500 py-12">
+                <td colSpan={9} className="text-center text-gray-500 py-12">
                   No leads match these filters.
                 </td>
               </tr>
@@ -424,6 +425,16 @@ function LeadRow({
           >
             {lead.pageTitle || lead.pageUrl}
           </a>
+        ) : (
+          <span className="text-gray-300">&mdash;</span>
+        )}
+      </td>
+      <td className="px-4 py-3 text-gray-700">
+        {lead.country || lead.ip ? (
+          <>
+            {lead.country || <span className="text-gray-400">Unknown</span>}
+            {lead.ip && <p className="text-[10px] text-gray-400 mt-0.5 font-mono">{lead.ip}</p>}
+          </>
         ) : (
           <span className="text-gray-300">&mdash;</span>
         )}

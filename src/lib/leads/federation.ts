@@ -90,6 +90,8 @@ function mapInquiry(doc: Document): UnifiedLead {
               ? `/project/${channel.slice("brochure-request:".length)}`
               : undefined),
     pageTitle: (doc.pageTitle as string) || undefined,
+    ip: (doc.ip as string) || undefined,
+    country: (doc.country as string) || undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
     notes: normalizeNotes(doc.notes),

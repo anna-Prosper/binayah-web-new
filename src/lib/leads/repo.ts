@@ -99,6 +99,8 @@ function rawToUnified(source: LeadSource, doc: Record<string, unknown>): Unified
           : undefined,
         pageUrl: (doc.pageUrl as string) || undefined,
         pageTitle: (doc.pageTitle as string) || undefined,
+        ip: (doc.ip as string) || undefined,
+        country: (doc.country as string) || undefined,
       };
     case "newsletter": {
       const areas = Array.isArray(doc.areas) ? (doc.areas as string[]) : [];
