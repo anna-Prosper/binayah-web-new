@@ -103,6 +103,11 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
   const [error, setError] = useState<null | "email" | "phone" | "send">(null);
   const { value: hp, field: honeypotField } = useHoneypot();
   const armedRef = useRef(false);
+  // Synchronous re-entrancy guard for handleSubmit. `sending` (state) was
+  // tried first and failed: two requestSubmit() calls in the same tick both
+  // read the pre-render value of `sending`, so state alone let duplicates
+  // through. A ref mutates immediately, closing that window.
+  const submittingRef = useRef(false);
 
   const expired = Date.now() > OFFER_ENDS.getTime();
   const suppressed = expired || SUPPRESS.some((re) => re.test(pathname || ""));
@@ -162,6 +167,10 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Real re-entrancy guard — see submittingRef above for why state alone
+    // does not work here.
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     if (!EMAIL_RE.test(email)) {
       setError("email");
       return;
@@ -197,6 +206,7 @@ export default function SobhaOfferPopup({ forceOpen = false }: { forceOpen?: boo
       setError("send");
     } finally {
       setSending(false);
+      submittingRef.current = false;
     }
   };
 

@@ -42,6 +42,7 @@ export interface UnifiedLead {
   property?: { slug?: string; title?: string };
   project?: { slug?: string; name?: string };
   pageUrl?: string;          // canonical URL of the related property or project page
+  pageTitle?: string;        // document.title of the page the lead was captured on
   intent?: string[];     // ["buy","rent","invest"] for newsletter subscribers
   budget?: { min?: number; max?: number };
   community?: string;

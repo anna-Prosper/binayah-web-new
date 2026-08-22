@@ -76,15 +76,20 @@ function mapInquiry(doc: Document): UnifiedLead {
     property: doc.propertySlug
       ? { slug: doc.propertySlug, title: doc.propertyTitle }
       : undefined,
-    pageUrl: doc.propertySlug
-      ? `/property/${doc.propertySlug}`
-      : channel.startsWith("project-detail:")
-        ? `/project/${channel.slice("project-detail:".length)}`
-        : channel.startsWith("property-detail:")
-          ? `/property/${channel.slice("property-detail:".length)}`
-          : channel.startsWith("brochure-request:")
-            ? `/project/${channel.slice("brochure-request:".length)}`
-            : undefined,
+    // Real captured URL wins; the slug/channel-based guesses below only exist
+    // because leads recorded before pageUrl was captured have nothing else.
+    pageUrl:
+      (doc.pageUrl as string) ||
+      (doc.propertySlug
+        ? `/property/${doc.propertySlug}`
+        : channel.startsWith("project-detail:")
+          ? `/project/${channel.slice("project-detail:".length)}`
+          : channel.startsWith("property-detail:")
+            ? `/property/${channel.slice("property-detail:".length)}`
+            : channel.startsWith("brochure-request:")
+              ? `/project/${channel.slice("brochure-request:".length)}`
+              : undefined),
+    pageTitle: (doc.pageTitle as string) || undefined,
     status: normalizeStatus(doc.status),
     assignedTo: doc.assignedTo || undefined,
     notes: normalizeNotes(doc.notes),

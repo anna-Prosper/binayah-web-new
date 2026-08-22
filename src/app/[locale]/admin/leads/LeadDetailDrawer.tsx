@@ -168,6 +168,14 @@ export default function LeadDetailDrawer({ leadId, onClose, onChange }: Props) {
                 {lead.property?.title && <p><span className="text-gray-500 w-20 inline-block">Property:</span> {lead.property.title}</p>}
                 {lead.project?.name && <p><span className="text-gray-500 w-20 inline-block">Project:</span> {lead.project.name}</p>}
                 {lead.intent && lead.intent.length > 0 && <p><span className="text-gray-500 w-20 inline-block">Intent:</span> {lead.intent.join(", ")}</p>}
+                {lead.pageUrl && (
+                  <p>
+                    <span className="text-gray-500 w-20 inline-block">Page:</span>{" "}
+                    <a href={lead.pageUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline break-all">
+                      {lead.pageTitle || lead.pageUrl}
+                    </a>
+                  </p>
+                )}
                 {lead.budget && (lead.budget.min || lead.budget.max) && (
                   <p>
                     <span className="text-gray-500 w-20 inline-block">Budget:</span>

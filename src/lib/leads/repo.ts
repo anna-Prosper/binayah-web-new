@@ -97,6 +97,8 @@ function rawToUnified(source: LeadSource, doc: Record<string, unknown>): Unified
         property: doc.propertySlug
           ? { slug: doc.propertySlug as string, title: doc.propertyTitle as string }
           : undefined,
+        pageUrl: (doc.pageUrl as string) || undefined,
+        pageTitle: (doc.pageTitle as string) || undefined,
       };
     case "newsletter": {
       const areas = Array.isArray(doc.areas) ? (doc.areas as string[]) : [];

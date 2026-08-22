@@ -290,6 +290,7 @@ export default function LeadsClient() {
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Contact</th>
               <th className="px-4 py-3">Context</th>
+              <th className="px-4 py-3">Page</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">When</th>
             </tr>
@@ -297,13 +298,13 @@ export default function LeadsClient() {
           <tbody className="divide-y divide-gray-100">
             {isLoading ? (
               <tr>
-                <td colSpan={7} className="text-center text-gray-500 py-12">
+                <td colSpan={8} className="text-center text-gray-500 py-12">
                   Loading leads…
                 </td>
               </tr>
             ) : leads.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center text-gray-500 py-12">
+                <td colSpan={8} className="text-center text-gray-500 py-12">
                   No leads match these filters.
                 </td>
               </tr>
@@ -371,7 +372,7 @@ function LeadRow({
     lead.project?.name ||
     lead.community ||
     (lead.intent && lead.intent.length ? lead.intent.join(", ") : "") ||
-    ", ";
+    "";
 
   return (
     <tr className={`hover:bg-gray-50 transition cursor-pointer ${selected ? "bg-emerald-50/50" : ""}`} onClick={onOpen}>
@@ -409,7 +410,24 @@ function LeadRow({
           </a>
         )}
       </td>
-      <td className="px-4 py-3 text-gray-700 max-w-[260px] truncate">{context}</td>
+      <td className="px-4 py-3 text-gray-700 max-w-[260px] truncate">
+        {context || <span className="text-gray-300">&mdash;</span>}
+      </td>
+      <td className="px-4 py-3 text-gray-700 max-w-[220px]" onClick={(e) => e.stopPropagation()}>
+        {lead.pageUrl ? (
+          <a
+            href={lead.pageUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block truncate hover:underline"
+            title={lead.pageTitle || lead.pageUrl}
+          >
+            {lead.pageTitle || lead.pageUrl}
+          </a>
+        ) : (
+          <span className="text-gray-300">&mdash;</span>
+        )}
+      </td>
       <td className="px-4 py-3">
         <span
           className={`inline-block px-2 py-0.5 rounded-md text-xs font-medium border ${STATUS_COLOR[lead.status]}`}
