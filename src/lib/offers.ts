@@ -169,7 +169,7 @@ export const OFFERS: Offer[] = [
     "developer": "Sobha Realty",
     "eyebrow": "Ends Sunday, 4 days only",
     "dayCountEyebrow": true,
-    "h1": "Ultra Luxury Sobha Home: Only 20% Before Handover",
+    "h1": "Sobha 20:80 Offer: Only 20% Before Handover",
     "subtitle": "Ultra luxury from a Tier 1 developer, for a fifth of your own money.",
     "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
