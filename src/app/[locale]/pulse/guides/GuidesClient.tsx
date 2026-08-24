@@ -9,7 +9,7 @@ import { BookOpen, Clock, Eye, ArrowRight, Search, Activity, X } from "lucide-re
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import Image from "next/image";
-import { PULSE_GUIDES, type PulseGuide } from "@/lib/pulse-guides";
+import type { PulseGuide } from "@/lib/pulse-guides";
 
 // Curated filter order — most useful clusters first; only categories that
 // actually exist in the data are shown.
@@ -26,7 +26,7 @@ const CATEGORY_ORDER = [
 
 type Tx = ReturnType<typeof useTranslations<"pulseGuides">>;
 
-export default function GuidesClient() {
+export default function GuidesClient({ guides: allGuides }: { guides: PulseGuide[] }) {
   const t = useTranslations("pulseGuides");
   const locale = useLocale();
   const [active, setActive] = useState<string>("all");
@@ -35,25 +35,25 @@ export default function GuidesClient() {
   // Resolve translated title/description once so we can search and render.
   const guides = useMemo(
     () =>
-      PULSE_GUIDES.map((g) => ({
+      allGuides.map((g) => ({
         guide: g,
         title: t(g.titleKey as Parameters<Tx>[0]),
         description: t(g.descriptionKey as Parameters<Tx>[0]),
       })),
-    [t]
+    [t, allGuides]
   );
 
   const categories = useMemo(() => {
-    const present = new Set(PULSE_GUIDES.map((g) => g.category));
+    const present = new Set(allGuides.map((g) => g.category));
     const ordered = CATEGORY_ORDER.filter((c) => present.has(c));
     // append any category not in the curated list, just in case
     for (const c of present) if (!ordered.includes(c)) ordered.push(c);
     return ordered.map((c) => ({
       key: c,
       label: t(`category_${c.replace(/\s/g, "")}` as Parameters<Tx>[0]),
-      count: PULSE_GUIDES.filter((g) => g.category === c).length,
+      count: allGuides.filter((g) => g.category === c).length,
     }));
-  }, [t]);
+  }, [t, allGuides]);
 
   const q = query.trim().toLowerCase();
   const filtered = useMemo(
@@ -66,7 +66,7 @@ export default function GuidesClient() {
     [guides, active, q]
   );
 
-  const liveCount = PULSE_GUIDES.filter((g) => g.area).length;
+  const liveCount = allGuides.filter((g) => g.area).length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
@@ -86,7 +86,7 @@ export default function GuidesClient() {
         </h1>
         <p className="text-muted-foreground max-w-2xl text-base sm:text-lg">{t("subtitle")}</p>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-4 text-sm text-muted-foreground">
-          <span className="font-semibold text-foreground">{PULSE_GUIDES.length} {t("guidesWord")}</span>
+          <span className="font-semibold text-foreground">{allGuides.length} {t("guidesWord")}</span>
           {liveCount > 0 && (
             <>
               <span className="text-border">·</span>
@@ -130,7 +130,7 @@ export default function GuidesClient() {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <FilterPill label={t("allGuides")} count={PULSE_GUIDES.length} active={active === "all"} onClick={() => setActive("all")} />
+          <FilterPill label={t("allGuides")} count={allGuides.length} active={active === "all"} onClick={() => setActive("all")} />
           {categories.map((c) => (
             <FilterPill key={c.key} label={c.label} count={c.count} active={active === c.key} onClick={() => setActive(c.key)} />
           ))}

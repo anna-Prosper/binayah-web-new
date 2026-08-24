@@ -6,22 +6,26 @@ export const dynamic = "force-dynamic";
 /**
  * On-demand ISR revalidation.
  *
- * Offer pages render from MongoDB but are ISR-cached for an hour, so a document
- * edit is otherwise invisible until the window lapses — with no way to force it.
- * POST here after changing DB-backed content to publish it immediately.
+ * Offer and guide pages render from MongoDB but are ISR-cached (1h / 24h), so
+ * a document edit is otherwise invisible until the window lapses — with no
+ * way to force it. POST here after changing DB-backed content to publish it
+ * immediately.
  *
  *   curl -X POST https://www.binayah.ae/api/revalidate \
  *     -H "x-admin-secret: $ADMIN_SECRET" \
  *     -H "content-type: application/json" \
  *     -d '{"paths":["/offers","/offers/some-slug"]}'
  *
- * Omit `paths` to refresh the offers hub and every offer page.
+ * Omit `paths` to refresh the offers hub, every offer page, the guides hub
+ * and every guide page.
  */
 const DEFAULT_TARGETS: { path: string; type: "page" | "layout" }[] = [
   // Route-pattern form revalidates every dynamic instance — all locales, all
-  // slugs — which is what "an offer changed" almost always means.
+  // slugs — which is what "an offer/guide changed" almost always means.
   { path: "/[locale]/offers", type: "page" },
   { path: "/[locale]/offers/[slug]", type: "page" },
+  { path: "/[locale]/pulse/guides", type: "page" },
+  { path: "/[locale]/pulse/guides/[slug]", type: "page" },
 ];
 
 export async function POST(req: NextRequest) {

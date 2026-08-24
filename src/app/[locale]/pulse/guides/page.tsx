@@ -6,6 +6,7 @@ import GuidesClient from "./GuidesClient";
 import type { Metadata } from "next";
 import { canonical, altLangs } from "@/lib/site";
 import { getTranslations } from "next-intl/server";
+import { loadGuides } from "@/lib/guides-data";
 
 export const revalidate = 86400;
 
@@ -33,12 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function GuidesPage() {
+export default async function GuidesPage() {
+  const guides = await loadGuides();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <PulseEmirateNav />
-      <GuidesClient />
+      <GuidesClient guides={guides} />
       <NewsletterStrip source="guides-index" />
       <Footer />
     </div>

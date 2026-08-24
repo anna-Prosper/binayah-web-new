@@ -10,6 +10,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { AedPrice } from "@/components/AedPrice";
 import { findBuyCommunity } from "@/lib/buy-communities";
 import { guideForCommunity } from "@/lib/pulse-guides";
+import { loadGuides } from "@/lib/guides-data";
 import { getTranslations } from "next-intl/server";
 // Locale-aware Link prefixes the active locale itself — hrefs stay bare.
 import { Link } from "@/navigation";
@@ -95,7 +96,7 @@ export default async function CommunityRichClient({ community, projects, forSale
   const name = community.name;
   // Backlink into the topical cluster: if this community has an investor guide,
   // link out to it from the Investment section (closes the guide ↔ community loop).
-  const investorGuide = guideForCommunity(community.name, community.slug);
+  const investorGuide = guideForCommunity(community.name, community.slug, await loadGuides());
   const hero = community.featuredImage || community.imageGallery?.[0] || "/assets/dubai-hero.webp";
   const mapSrc = community.latitude && community.longitude
     ? `https://maps.google.com/maps?q=${community.latitude},${community.longitude}&z=13&output=embed`

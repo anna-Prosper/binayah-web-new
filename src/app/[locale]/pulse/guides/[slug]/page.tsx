@@ -4,7 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PulseEmirateNav from "@/components/PulseEmirateNav";
 import GuideDetailClient from "./GuideDetailClient";
-import { PULSE_GUIDES, findGuide, guideDates } from "@/lib/pulse-guides";
+import { guideDates } from "@/lib/pulse-guides";
+import { loadGuides, loadGuide } from "@/lib/guides-data";
 import { getAreaStats } from "@/lib/area-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
@@ -17,11 +18,14 @@ type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
-export async function generateStaticParams() {
-  const locales = ["en", "ar", "zh", "ru", "vi", "he", "fr"];
-  return locales.flatMap((locale) =>
-    PULSE_GUIDES.map((g) => ({ locale, slug: g.slug }))
-  );
+// Same tradeoff as the offers route: prerendering all 74 guides × 7 locales
+// (518 params) would mean generateMetadata + the page component each hitting
+// the API once per param during the build — hundreds of extra requests for a
+// build that used to read a bundled array with zero network calls. Returning
+// [] opts into on-demand ISR instead: a guide gets its page on first request
+// (no redeploy needed) and is then cached for the `revalidate` window below.
+export function generateStaticParams() {
+  return [];
 }
 
 const PULSE_SUFFIX: Record<string, string> = {
@@ -35,7 +39,7 @@ const PULSE_SUFFIX: Record<string, string> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const guide = findGuide(slug);
+  const guide = await loadGuide(slug);
   if (!guide) return {};
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
   const suffix = PULSE_SUFFIX[locale] ?? "Dubai Pulse | Binayah Properties";
@@ -86,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GuideDetailPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const guide = findGuide(slug);
+  const guide = await loadGuide(slug);
   if (!guide) notFound();
 
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
@@ -107,6 +111,9 @@ export default async function GuideDetailPage({ params }: Props) {
 
   // Area investor guides render a live DLD stats panel.
   const areaStats = guide.area ? await getAreaStats(guide.area) : null;
+
+  const allGuides = await loadGuides();
+  const relatedGuides = allGuides.filter((g) => g.category === guide.category && g.slug !== guide.slug).slice(0, 4);
 
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
@@ -131,7 +138,7 @@ export default async function GuideDetailPage({ params }: Props) {
       {faq && faq.length > 0 && <FAQJsonLd faqs={faq} />}
       <Navbar />
       <PulseEmirateNav />
-      <GuideDetailClient guide={localizedGuide} areaStats={areaStats} published={published} />
+      <GuideDetailClient guide={localizedGuide} areaStats={areaStats} published={published} relatedGuides={relatedGuides} />
       <Footer />
     </div>
   );

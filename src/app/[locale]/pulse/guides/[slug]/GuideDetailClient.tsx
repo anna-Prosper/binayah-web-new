@@ -9,7 +9,7 @@ import { Clock, Eye, ArrowLeft, ArrowRight, MapPin, ExternalLink, Building2, Tre
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import Image from "next/image";
-import { PULSE_GUIDES, PulseGuide } from "@/lib/pulse-guides";
+import type { PulseGuide } from "@/lib/pulse-guides";
 import type { AreaStats } from "@/lib/area-stats";
 import NewsletterStrip from "@/components/NewsletterStrip";
 
@@ -251,10 +251,12 @@ export default function GuideDetailClient({
   guide,
   areaStats,
   published,
+  relatedGuides,
 }: {
   guide: PulseGuide;
   areaStats?: AreaStats | null;
   published?: string;
+  relatedGuides: PulseGuide[];
 }) {
   const t = useTranslations("pulseGuides");
   const locale = useLocale();
@@ -267,8 +269,6 @@ export default function GuideDetailClient({
   const publishedLabel = published
     ? new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, { day: "numeric", month: "short", year: "numeric" })
     : null;
-
-  const relatedGuides = PULSE_GUIDES.filter((g) => g.category === guide.category && g.slug !== guide.slug).slice(0, 4);
 
   return (
     <div className="bg-background">

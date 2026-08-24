@@ -371,6 +371,30 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
   }
 }
 
+async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }[]> {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+  let client: MongoClient | null = null;
+  try {
+    client = new MongoClient(uri, { serverSelectionTimeoutMS: 10_000 });
+    await client.connect();
+    const docs = await client
+      .db()
+      .collection("guides")
+      .find({ published: true }, { projection: { _id: 0, slug: 1, updatedAt: 1 } })
+      .toArray();
+    if (!docs.length) return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+    return (docs as unknown as { slug: string; updatedAt?: Date }[]).map((d) => ({
+      slug: d.slug,
+      lastmod: d.updatedAt instanceof Date ? d.updatedAt : undefined,
+    }));
+  } catch {
+    return PULSE_GUIDES.map((g) => ({ slug: g.slug }));
+  } finally {
+    await client?.close();
+  }
+}
+
   const [projects, listings, articles, reports, communities, developers, projectGuides, buildings] =
     await Promise.all([
       // Use MongoDB directly for listings/projects — the API hard-caps at 100
@@ -398,6 +422,7 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
 
   // Populated bedroom × type × community combos (all types) — data-driven.
   const offers = await fetchOffersForSitemap();
+  const guides = await fetchGuidesForSitemap();
   const matrixCombos = await fetchMatrixCombos();
   const dldMatrixCombos = await fetchDldMatrixCombos();
   const allMatrixCombos = [...new Set([...matrixCombos, ...dldMatrixCombos])];
@@ -486,7 +511,7 @@ async function fetchOffersForSitemap(): Promise<{ slug: string; deadline: string
     // content, so we submit just the EN URL (non-EN routes are noindex).
     // Guides are now fully translated in all 7 locales (body + FAQ), so submit
     // them WITH hreflang alternates.
-    ...PULSE_GUIDES.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", now)),
+    ...guides.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", g.lastmod ?? now)),
     // Promotional offers — fully translated in all 7 locales via each document's
     // `translations` map, so they carry hreflang alternates. Expired ones are
     // dropped so the sitemap never advertises a closed promotion.

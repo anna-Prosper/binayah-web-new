@@ -6898,11 +6898,13 @@ export function findGuide(slug: string): PulseGuide | undefined {
 // Find the investor guide (a guide with an `area`) that matches a community, by
 // its name or slug — powers the community → guide backlink so the topical
 // cluster meshes bidirectionally with the community/project pages.
+// `guides` defaults to the static fallback array; callers with access to the
+// live (Mongo-backed) list via loadGuides() should pass that instead.
 const guideMatchKey = (s: string) =>
   s.toLowerCase().replace(/\bdubai\b/g, "").replace(/[^a-z0-9]+/g, "");
-export function guideForCommunity(name: string, slug: string): PulseGuide | undefined {
+export function guideForCommunity(name: string, slug: string, guides: PulseGuide[] = PULSE_GUIDES): PulseGuide | undefined {
   const keys = new Set([guideMatchKey(name), guideMatchKey(slug)]);
-  return PULSE_GUIDES.find(
+  return guides.find(
     (g) =>
       !!g.area &&
       (keys.has(guideMatchKey(g.area)) ||
