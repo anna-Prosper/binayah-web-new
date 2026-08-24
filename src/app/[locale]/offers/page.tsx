@@ -57,15 +57,19 @@ export default async function OffersIndexPage({ params }: Props) {
   const nonce = await getNonce();
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Once an offer's window passes it drops off the hub entirely — no "closed"
-  // badges, no past-promotions rail. The sitemap already excludes them.
+  // An offer stays on the hub after its window closes — a buyer who followed
+  // a link or bookmark shouldn't hit a gap where the card used to be. Its
+  // countdown/urgency badge just stops rendering (see the `!expired` guard
+  // below) rather than showing a stale "ends Sunday" on a deal that's over.
+  // The JSON-LD ItemList and the sitemap still only list live ones, so this
+  // doesn't change what search engines see as current.
   const [tCrumb, tNav] = await Promise.all([
     getTranslations({ locale, namespace: "breadcrumbs" }),
     getTranslations({ locale, namespace: "nav" }),
   ]);
-  const live = (await loadOffers())
-    .map((o) => applyTranslation(o, locale)!)
-    .filter((o) => !isExpired(o));
+  const offers = (await loadOffers()).map((o) => applyTranslation(o, locale)!);
+  const live = offers; // rendered as-is, expired and current alike
+  const liveForSeo = offers.filter((o) => !isExpired(o));
 
   return (
     <div className="min-h-screen bg-background">
@@ -77,13 +81,13 @@ export default async function OffersIndexPage({ params }: Props) {
         ]}
         nonce={nonce}
       />
-      {/* ItemList over the live offers — gives the hub a crawlable inventory
-          instead of a page Google has to infer from anchor text alone. */}
+      {/* ItemList over the still-open offers only — an expired promotion stays
+          on the hub for visiting buyers but shouldn't be crawlable as current. */}
       <CollectionPageJsonLd
         name={TITLE}
         description={DESC}
         url="/offers"
-        items={live.map((o) => ({ url: `/offers/${o.slug}`, name: o.h1 }))}
+        items={liveForSeo.map((o) => ({ url: `/offers/${o.slug}`, name: o.h1 }))}
         nonce={nonce}
       />
 
@@ -133,6 +137,7 @@ export default async function OffersIndexPage({ params }: Props) {
               <div className={live.length === 1 ? "" : "grid gap-6 md:grid-cols-2"}>
                 {live.map((o, i) => {
                   const solo = live.length === 1;
+                  const expired = isExpired(o);
                   return (
                     <Reveal key={o.slug} delay={i * 90}>
                       <Link
@@ -149,12 +154,17 @@ export default async function OffersIndexPage({ params }: Props) {
                             alt={o.shortName}
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
-                          <span
-                            className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
-                            style={{ background: `linear-gradient(135deg, #EAC873, ${GOLD_DEEP})`, color: GREEN }}
-                          >
-                            <Clock className="h-3 w-3" /> {o.eyebrow}
-                          </span>
+                          {/* The countdown/urgency badge only makes sense while the
+                              window is open — once it's closed, o.eyebrow ("Ends
+                              Sunday, 4 days only") would just be a stale claim. */}
+                          {!expired && (
+                            <span
+                              className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em]"
+                              style={{ background: `linear-gradient(135deg, #EAC873, ${GOLD_DEEP})`, color: GREEN }}
+                            >
+                              <Clock className="h-3 w-3" /> {o.eyebrow}
+                            </span>
+                          )}
                         </div>
 
                         <div className={solo ? "flex flex-col justify-center p-8 lg:p-10" : "p-6"}>
