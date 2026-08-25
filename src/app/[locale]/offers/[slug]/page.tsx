@@ -12,7 +12,7 @@ import OfferLeadForm from "@/components/offers/OfferLeadForm";
 import OfferGallery from "@/components/offers/OfferGallery";
 import StickyOfferBar from "@/components/offers/StickyOfferBar";
 import Reveal from "@/components/offers/Reveal";
-import { isExpired, hasDeadline, computeEyebrow, DEFAULT_WINDOW_LABEL, DEFAULT_MASTERPLAN_HEADING } from "@/lib/offers";
+import { isExpired, hasDeadline, eyebrowDayCount } from "@/lib/offers";
 import { loadOffer } from "@/lib/offers-data";
 import { applyTranslation } from "@/lib/applyTranslation";
 import { canonical as makeCanonical, altLangs, OG_LOCALE } from "@/lib/site";
@@ -139,23 +139,33 @@ export default async function OfferPage({ params }: Props) {
   // No published end date → show the label, but never a ticking clock.
   const showCountdown = !offer.hideDeadline && hasDeadline(offer);
 
-  // CTA labels live on the offer so they translate; the template's own strings
-  // would stay English on every localised page.
-  const ctaLabel = offer.ctaLabel ?? "Check eligible units";
-  const waLabel = offer.whatsappLabel ?? "Chat on WhatsApp";
+  // Section chrome (headings, eyebrows, CTA and form labels) is template copy,
+  // not offer content, so it comes from the message catalogue rather than the
+  // Mongo document — left inline it rendered in English on every localised
+  // page, breadcrumbs and rich results included.
+  const [tCrumb, tNav, t] = await Promise.all([
+    getTranslations({ locale, namespace: "breadcrumbs" }),
+    getTranslations({ locale, namespace: "nav" }),
+    getTranslations({ locale, namespace: "offerPage" }),
+  ]);
+
+  // "Ends Sunday, 3 days only" — recomputed per request and rendered through
+  // ICU so each language applies its own plural rules to the day count.
+  const dayCount = eyebrowDayCount(offer, locale);
+  const eyebrowLabel = !dayCount
+    ? offer.eyebrow
+    : dayCount.days <= 0
+      ? t("eyebrowEndsToday")
+      : t("eyebrowDaysLeft", { weekday: dayCount.weekday, days: dayCount.days });
+
+  // An offer may still override these per-locale from its own document.
+  const ctaLabel = offer.ctaLabel ?? t("defaultCta");
+  const waLabel = offer.whatsappLabel ?? t("defaultWhatsapp");
   const waLink = waHref(
     offer.whatsappMessage ?? `Hi Binayah! 👋 I'd like to know more about the ${offer.shortName}.`,
     makeCanonical(locale, `/offers/${offer.slug}`),
   );
   const lp = locale === "en" ? "" : `/${locale}`;
-
-  // Breadcrumb labels are chrome, not offer content, so they come from the
-  // message catalogue rather than the Mongo document. Left in English they
-  // showed as "Home / Offers" in every locale's rich result.
-  const [tCrumb, tNav] = await Promise.all([
-    getTranslations({ locale, namespace: "breadcrumbs" }),
-    getTranslations({ locale, namespace: "nav" }),
-  ]);
   const breadcrumbs = [
     { name: tCrumb("home"), href: `${lp}/` },
     { name: tNav("offers"), href: `${lp}/offers` },
@@ -217,7 +227,7 @@ export default async function OfferPage({ params }: Props) {
                     style={{ background: `linear-gradient(135deg, ${GOLD_LT}, ${GOLD_DEEP})`, color: GREEN }}
                   >
                     <Clock className="h-3.5 w-3.5" />
-                    {computeEyebrow(offer)}
+                    {eyebrowLabel}
                   </span>
                 )}
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm">
@@ -250,7 +260,7 @@ export default async function OfferPage({ params }: Props) {
                     <>
                       <div className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/55">
                         <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
-                        {offer.windowLabel || DEFAULT_WINDOW_LABEL}
+                        {offer.windowLabel || t("defaultWindowLabel")}
                       </div>
                       <OfferCountdown deadline={offer.deadline} tone="light" />
                     </>
@@ -272,7 +282,7 @@ export default async function OfferPage({ params }: Props) {
                         className="text-[11.5px] font-bold uppercase tracking-[0.16em]"
                         style={{ color: "#F2E0B5" }}
                       >
-                        {offer.windowLabel || DEFAULT_WINDOW_LABEL}
+                        {offer.windowLabel || t("defaultWindowLabel")}
                       </span>
                     </span>
                   )}
@@ -435,9 +445,9 @@ export default async function OfferPage({ params }: Props) {
 
             {!!offer.eligibility?.length && (
               <div className="mt-9 border-t border-border/50 pt-8">
-                <Eyebrow>The offer in detail</Eyebrow>
+                <Eyebrow>{t("detailEyebrow")}</Eyebrow>
                 <h3 className="mt-3 text-lg font-bold tracking-[-0.01em] text-foreground sm:text-xl">
-                  Key terms
+                  {t("detailHeading")}
                 </h3>
                 <ul className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
                   {offer.eligibility.map((e, i) => {
@@ -474,9 +484,9 @@ export default async function OfferPage({ params }: Props) {
       <section id="projects" className="scroll-mt-24 bg-card py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <Eyebrow>Where it applies</Eyebrow>
+            <Eyebrow>{t("whereEyebrow")}</Eyebrow>
             <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              Choose your community
+              {t("whereHeading")}
             </h2>
           </Reveal>
 
@@ -518,7 +528,7 @@ export default async function OfferPage({ params }: Props) {
                     </div>
                   ) : (
                     <p className="mt-4 pl-[26px] text-[11px] font-semibold text-muted-foreground">
-                      Message us for this release
+                      {t("messageUs")}
                     </p>
                   )}
                   </div>
@@ -541,7 +551,7 @@ export default async function OfferPage({ params }: Props) {
                   }}
                 >
                   <ShieldCheck className="h-5 w-5" style={{ color: GOLD }} />
-                  <h3 className="mt-3 text-[15px] font-bold text-white">Why {offer.developer}</h3>
+                  <h3 className="mt-3 text-[15px] font-bold text-white">{t("whyDeveloper", { developer: offer.developer })}</h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-white/65">{offer.investment.heading}</p>
                   <ul className="mt-4 space-y-2">
                     {offer.investment.items.slice(0, 3).map((it) => (
@@ -589,15 +599,21 @@ export default async function OfferPage({ params }: Props) {
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <Eyebrow onDark>Why it matters</Eyebrow>
+            <Eyebrow onDark>{t("whyItMattersEyebrow")}</Eyebrow>
             <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              What actually changes for a{" "}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
-              >
-                buyer
-              </span>
+              {/* Rich message rather than pre + accent halves: Chinese puts the
+                  highlighted word mid-sentence, so a fixed "{pre} {accent}"
+                  order rendered it as a fragment. */}
+              {t.rich("whyItMattersHeading", {
+                accent: (chunks) => (
+                  <span
+                    className="bg-clip-text text-transparent"
+                    style={{ backgroundImage: `linear-gradient(90deg, ${GOLD}, ${GOLD_DEEP})` }}
+                  >
+                    {chunks}
+                  </span>
+                ),
+              })}
             </h2>
           </Reveal>
 
@@ -632,7 +648,7 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <div className="text-center">
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                Why this one
+                {t("whyThisOne")}
               </div>
               <span
                 className="mx-auto mt-4 block h-px w-14"
@@ -688,7 +704,7 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <div className="text-center">
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-                The community
+                {t("communityEyebrow")}
               </div>
               <span
                 className="mx-auto mt-4 block h-px w-14"
@@ -774,7 +790,7 @@ export default async function OfferPage({ params }: Props) {
                     style={{ background: `linear-gradient(90deg, transparent, rgba(212,168,71,0.5))` }}
                   />
                   <span className="shrink-0 text-lg font-bold text-foreground sm:text-xl">
-                    {offer.amenities.masterplanHeading ?? DEFAULT_MASTERPLAN_HEADING}
+                    {offer.amenities.masterplanHeading ?? t("defaultMasterplanHeading")}
                   </span>
                   <span
                     className="h-px flex-1 max-w-24"
@@ -837,13 +853,12 @@ export default async function OfferPage({ params }: Props) {
       <section className="bg-card py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
-          <Eyebrow>How the plan works</Eyebrow>
+          <Eyebrow>{t("planEyebrow")}</Eyebrow>
           <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-            Your money, staged
+            {t("planHeading")}
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            {offer.timelineIntro ??
-              "A conventional off-plan plan spreads payments across construction milestones. This one front-loads a single commitment and defers the rest."}
+            {offer.timelineIntro ?? t("defaultTimelineIntro")}
           </p>
         </Reveal>
 
@@ -928,7 +943,7 @@ export default async function OfferPage({ params }: Props) {
           {offer.worked && (
             <Reveal className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
               <div>
-                <Eyebrow onDark>The maths</Eyebrow>
+                <Eyebrow onDark>{t("mathsEyebrow")}</Eyebrow>
                 <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-white sm:text-[2.1rem] sm:leading-[1.15]">
                   {offer.worked.heading}
                 </h2>
@@ -979,9 +994,9 @@ export default async function OfferPage({ params }: Props) {
       <section className="bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <Eyebrow>See it for yourself</Eyebrow>
+            <Eyebrow>{t("galleryEyebrow")}</Eyebrow>
             <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              Inside the communities
+              {t("galleryHeading")}
             </h2>
           </Reveal>
           <Reveal delay={80} className="mt-10">
@@ -995,9 +1010,9 @@ export default async function OfferPage({ params }: Props) {
       <section id="enquire" className="scroll-mt-24 bg-card py-14 sm:py-24">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr]">
           <Reveal>
-            <Eyebrow>The detail</Eyebrow>
+            <Eyebrow>{t("longformEyebrow")}</Eyebrow>
             <h2 className="mt-4 text-2xl font-extrabold tracking-[-0.02em] text-foreground sm:text-[2.1rem] sm:leading-[1.15]">
-              What this means for you
+              {t("longformHeading")}
             </h2>
             <div className="mt-7 space-y-5">
               {offer.bodyParagraphs.map((p, i) => (
@@ -1033,7 +1048,7 @@ export default async function OfferPage({ params }: Props) {
                 className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold hover:underline"
                 style={{ color: GOLD_DEEP }}
               >
-                View the project <ArrowRight className="h-4 w-4" />
+                {t("viewProject")} <ArrowRight className="h-4 w-4" />
               </Link>
             )}
           </Reveal>
@@ -1054,9 +1069,9 @@ export default async function OfferPage({ params }: Props) {
       <section className="bg-background py-14 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <Reveal>
-          <Eyebrow>Before you commit</Eyebrow>
+          <Eyebrow>{t("faqEyebrow")}</Eyebrow>
           <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-            Frequently asked questions
+            {t("faqHeading")}
           </h2>
         </Reveal>
 
@@ -1108,10 +1123,10 @@ export default async function OfferPage({ params }: Props) {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
           <Reveal>
             <h2 className="text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-white sm:text-[2.9rem] sm:leading-[1.08] sm:tracking-[-0.02em]">
-              Find out which homes qualify
+              {t("ctaHeading")}
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">
-              Eligible inventory is limited and moves quickly. Speak to an advisor and get the written terms today.
+              {t("ctaBody")}
             </p>
 
             {!expired && showCountdown && (
@@ -1153,10 +1168,10 @@ export default async function OfferPage({ params }: Props) {
 
             <div className="mt-11 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-xs text-white/50">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4" style={{ color: GOLD }} /> RERA-licensed brokerage
+                <ShieldCheck className="h-4 w-4" style={{ color: GOLD }} /> {t("trustRera")}
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Building2 className="h-4 w-4" style={{ color: GOLD }} /> Official {offer.developer} partner
+                <Building2 className="h-4 w-4" style={{ color: GOLD }} /> {t("trustPartner", { developer: offer.developer })}
               </span>
             </div>
 

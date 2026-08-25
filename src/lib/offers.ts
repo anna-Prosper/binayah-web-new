@@ -782,18 +782,25 @@ export function hasDeadline(offer: { deadline?: string }): boolean {
   return Number.isFinite(new Date(offer.deadline ?? "").getTime());
 }
 
-/** Live "Ends <weekday>, N days only" label for `dayCountEyebrow` offers,
- *  recomputed on every request rather than baked into the stored `eyebrow`
- *  string, so a "4 days only" badge doesn't keep saying that after the
- *  window has shrunk. Falls back to the stored `eyebrow` otherwise. */
-export function computeEyebrow(offer: Offer, now: Date = new Date()): string {
-  if (!offer.dayCountEyebrow || !hasDeadline(offer)) return offer.eyebrow;
+/** Live day count for a `dayCountEyebrow` offer, recomputed on every request
+ *  rather than baked into the stored `eyebrow` string — so a "4 days only"
+ *  badge doesn't keep saying that after the window has shrunk.
+ *
+ *  Returns the parts rather than a finished sentence: the wording and the
+ *  weekday name are locale-dependent, so the caller renders them through the
+ *  `offerPage` messages (which carry each language's own plural rules) instead
+ *  of receiving a hardcoded English string. `null` means "use offer.eyebrow".
+ */
+export function eyebrowDayCount(
+  offer: Offer,
+  locale: string,
+  now: Date = new Date(),
+): { days: number; weekday: string } | null {
+  if (!offer.dayCountEyebrow || !hasDeadline(offer)) return null;
   const end = new Date(offer.deadline);
-  const diffDays = Math.ceil((end.getTime() - now.getTime()) / 86_400_000);
-  const weekday = end.toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Dubai" });
-  if (diffDays <= 0) return "Ends today";
-  if (diffDays === 1) return `Ends ${weekday}, 1 day only`;
-  return `Ends ${weekday}, ${diffDays} days only`;
+  const days = Math.ceil((end.getTime() - now.getTime()) / 86_400_000);
+  const weekday = end.toLocaleDateString(locale, { weekday: "long", timeZone: "Asia/Dubai" });
+  return { days, weekday };
 }
 
 /** True when the promotion window has closed. An offer with no deadline never

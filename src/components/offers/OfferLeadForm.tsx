@@ -1,7 +1,6 @@
 "use client";
 
-/* eslint-disable i18next/no-literal-string -- English-only offer pages */
-
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 import { useHoneypot } from "@/components/Honeypot";
@@ -18,15 +17,12 @@ interface Props {
   subheading?: string;
 }
 
-const BUDGETS = [
-  "AED 5M - 7M",
-  "AED 7M - 10M",
-  "AED 10M - 15M",
-  "AED 15M+",
-  "Not sure yet",
-];
+// The AED bands are figures, not prose, so they stay verbatim in every
+// locale; only the "not sure" option is translated.
+const BUDGET_BANDS = ["AED 5M - 7M", "AED 7M - 10M", "AED 10M - 15M", "AED 15M+"];
 
 export default function OfferLeadForm({ offerSlug, offerName, expired = false, heading, subheading }: Props) {
+  const t = useTranslations("offerPage");
   const [form, setForm] = useState({ name: "", email: "", phone: "", countryCode: "+971", budget: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -49,7 +45,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           phone: `${form.countryCode} ${form.phone}`,
           type: "Off Plan",
           message: [
-            expired ? `Waitlist — ${offerName}` : `Offer enquiry — ${offerName}`,
+            expired ? `Waitlist: ${offerName}` : `Offer enquiry: ${offerName}`,
             form.budget ? `Budget: ${form.budget}` : "",
           ]
             .filter(Boolean)
@@ -73,9 +69,9 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
     return (
       <div className="rounded-2xl border border-border/60 bg-card p-8 text-center">
         <CheckCircle2 className="mx-auto h-11 w-11" style={{ color: "#1A7A5A" }} />
-        <h3 className="mt-4 text-xl font-bold text-foreground">Request received</h3>
+        <h3 className="mt-4 text-xl font-bold text-foreground">{t("formSuccessTitle")}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          One of our advisors will confirm the qualifying units and send the full terms shortly.
+          {t("formSuccessBody")}
         </p>
       </div>
     );
@@ -99,10 +95,10 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
         style={{ background: "linear-gradient(90deg, #EAC873, #D4A847, #B8922F)" }}
       />
       <h3 className="text-[1.35rem] font-extrabold tracking-[-0.01em] text-foreground">
-        {heading ?? "Check which units qualify"}
+        {heading ?? t("formHeading")}
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        {subheading ?? "Tell us your budget and we'll come back with the eligible homes and full written terms."}
+        {subheading ?? t("formSubheading")}
       </p>
 
       <div className="mt-5 space-y-3">
@@ -110,7 +106,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           required
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          placeholder="Full name"
+          placeholder={t("formName")}
           autoComplete="name"
           className={`${inputClass} w-full`}
         />
@@ -119,7 +115,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           type="email"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          placeholder="Email address"
+          placeholder={t("formEmail")}
           autoComplete="email"
           className={`${inputClass} w-full`}
         />
@@ -127,7 +123,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
           <input
             value={form.countryCode}
             onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
-            aria-label="Country code"
+            aria-label={t("formCountryCode")}
             // Fixed basis + no grow/shrink; the phone field takes the rest. Without
             // min-w-0 on the sibling, its default min-content width collapses the
             // input to ~34px inside this flex row.
@@ -138,7 +134,7 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
             type="tel"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            placeholder="Phone number"
+            placeholder={t("formPhone")}
             autoComplete="tel"
             className={`${inputClass} min-w-0 flex-1`}
           />
@@ -146,15 +142,16 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
         <select
           value={form.budget}
           onChange={(e) => setForm({ ...form, budget: e.target.value })}
-          aria-label="Budget"
+          aria-label={t("formBudgetAria")}
           className={`${inputClass} w-full ${form.budget ? "" : "text-muted-foreground/70"}`}
         >
-          <option value="">Budget range (optional)</option>
-          {BUDGETS.map((b) => (
+          <option value="">{t("formBudgetLabel")}</option>
+          {BUDGET_BANDS.map((b) => (
             <option key={b} value={b}>
               {b}
             </option>
           ))}
+          <option value="Not sure yet">{t("budgetNotSure")}</option>
         </select>
         {honeypotField}
       </div>
@@ -167,23 +164,23 @@ export default function OfferLeadForm({ offerSlug, offerName, expired = false, h
       >
         {sending ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Sending…
+            <Loader2 className="h-4 w-4 animate-spin" /> {t("formSending")}
           </>
         ) : (
           <>
-            {"Request eligible units"} <ArrowRight className="h-4 w-4" />
+            {t("formSubmit")} <ArrowRight className="h-4 w-4" />
           </>
         )}
       </button>
 
       {error && (
         <p className="mt-3 text-center text-sm" style={{ color: "#E53E3E" }}>
-          Something went wrong. Please try again, or call us on +971 54 998 8811.
+          {t("formError")}
         </p>
       )}
 
       <p className="mt-3 text-center text-[11px] leading-relaxed text-muted-foreground">
-        We&apos;ll only use your details to respond to this enquiry.
+        {t("formPrivacy")}
       </p>
     </form>
   );

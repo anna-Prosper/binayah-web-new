@@ -1,7 +1,6 @@
 "use client";
 
-/* eslint-disable i18next/no-literal-string -- English-only offer pages */
-
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -25,7 +24,8 @@ function parts(msLeft: number) {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function OfferCountdown({ deadline, expiredLabel = "This offer has closed", tone = "light" }: Props) {
+export default function OfferCountdown({ deadline, expiredLabel, tone = "light" }: Props) {
+  const t = useTranslations("offerPage");
   const target = new Date(deadline).getTime();
 
   // Starts null so server and first client render agree — computing the
@@ -81,7 +81,7 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
   if (left === null) {
     return (
       <div className="flex gap-2.5 sm:gap-3.5" aria-hidden="true">
-        {["Days", "Hours", "Mins", "Secs"].map((l) => cell("--", l, l))}
+        {(["countdownDays", "countdownHours", "countdownMins", "countdownSecs"] as const).map((k) => cell("--", t(k), k))}
       </div>
     );
   }
@@ -95,17 +95,17 @@ export default function OfferCountdown({ deadline, expiredLabel = "This offer ha
           color: isLight ? "#FFFFFF" : "#0B3D2E",
         }}
       >
-        {expiredLabel}
+        {expiredLabel ?? t("countdownExpired")}
       </div>
     );
   }
 
   const { days, hours, minutes, seconds } = parts(left);
   const cells: [string, string][] = [
-    [String(days), "Days"],
-    [pad(hours), "Hours"],
-    [pad(minutes), "Mins"],
-    [pad(seconds), "Secs"],
+    [String(days), t("countdownDays")],
+    [pad(hours), t("countdownHours")],
+    [pad(minutes), t("countdownMins")],
+    [pad(seconds), t("countdownSecs")],
   ];
 
   return (

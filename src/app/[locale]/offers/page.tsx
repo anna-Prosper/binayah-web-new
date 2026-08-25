@@ -63,9 +63,10 @@ export default async function OffersIndexPage({ params }: Props) {
   // below) rather than showing a stale "ends Sunday" on a deal that's over.
   // The JSON-LD ItemList and the sitemap still only list live ones, so this
   // doesn't change what search engines see as current.
-  const [tCrumb, tNav] = await Promise.all([
+  const [tCrumb, tNav, t] = await Promise.all([
     getTranslations({ locale, namespace: "breadcrumbs" }),
     getTranslations({ locale, namespace: "nav" }),
+    getTranslations({ locale, namespace: "offerPage" }),
   ]);
   const offers = (await loadOffers()).map((o) => applyTranslation(o, locale)!);
   const live = offers; // rendered as-is, expired and current alike
@@ -103,7 +104,7 @@ export default async function OffersIndexPage({ params }: Props) {
           <div className="hero-fade-up flex items-center gap-3">
             <span className="h-px w-8" style={{ background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
             <span className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: GOLD }}>
-              Current promotions
+              {t("hubEyebrow")}
             </span>
           </div>
           <h1 className="hero-rise mt-5 max-w-3xl text-[2.6rem] font-extrabold leading-[1.06] tracking-[-0.02em] text-white sm:text-[3.4rem]">
@@ -128,7 +129,7 @@ export default async function OffersIndexPage({ params }: Props) {
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
         {live.length === 0 ? (
-          <p className="text-muted-foreground">No promotions are running right now. Check back shortly.</p>
+          <p className="text-muted-foreground">{t("hubEmpty")}</p>
         ) : (
           <>
             {live.length > 0 && (
@@ -209,7 +210,7 @@ export default async function OffersIndexPage({ params }: Props) {
                             className="mt-7 inline-flex items-center gap-1.5 text-sm font-bold"
                             style={{ color: GOLD_DEEP }}
                           >
-                            See the terms
+                            {t("hubSeeTerms")}
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </span>
                         </div>
