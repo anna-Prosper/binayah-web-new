@@ -291,6 +291,13 @@ function stripWhatsappSignature(message) {
             return true;
         })
         .join("\n")
+        // The intake pipeline is shared with WhatsApp, where "just send the
+        // number" is a valid instruction. On the web there's a picker/buttons
+        // instead of a chat reply, so strip these chat-reply directives to
+        // avoid telling users to type a reply that has nowhere to go.
+        .replace(/(?:just\s+)?(?:send|reply(?:\s+with)?|type|text)\s+(?:me\s+)?(?:the\s+|a\s+)?(?:number|digit|studio)\b[^\n]*/gi, "")
+        .replace(/[ \t]{2,}/g, " ")
+        .replace(/[ \t]+([.?!,])/g, "$1")
         .replace(/\n{3,}/g, "\n\n")
         .trim();
 }
