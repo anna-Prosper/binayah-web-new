@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User, Headset } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 
 // Lazy-load react-markdown (~110KB) — only fetched when first message renders.
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
@@ -13,7 +12,6 @@ const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 import { proxyUrl, apiUrl } from "@/lib/api";
 import { useTranslations, useLocale } from "next-intl";
 
-const binayahLogo = "/assets/binayah-logo.webp";
 
 // Phone captured once per browser session so we don't re-ask on every open.
 const CHAT_PHONE_KEY = "binayah_chat_phone";
@@ -330,16 +328,21 @@ const AIChatWidget = () => {
             <div className="px-5 py-4 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #0B3D2E, #1A7A5A)" }}>
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, #D4A847, #B8922F, transparent)" }} />
               <div className="flex items-center gap-3">
-                <Image src={binayahLogo} alt="Binayah" height={28} width={85} className="h-7 w-auto brightness-0 invert" />
+                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 bg-white/15 border border-white/25">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-white font-bold text-sm tracking-wide">{t("title")}</p>
+                  <p className="text-white font-bold text-sm tracking-wide truncate">{t("title")}</p>
                   {humanRequested ? (
                     <p className="text-white/70 text-xs flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       {L.agentRequested}
                     </p>
                   ) : (
-                    <p className="text-white/60 text-xs">{t("subtitle")}</p>
+                    <p className="text-white/70 text-xs flex items-center gap-1.5 truncate">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                      {t("subtitle")}
+                    </p>
                   )}
                 </div>
                 {showTalk && (
