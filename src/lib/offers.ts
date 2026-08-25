@@ -168,20 +168,12 @@ export const OFFERS: Offer[] = [
     "shortName": "Sobha 20:80 Payment Plan",
     "developer": "Sobha Realty",
     "eyebrow": "Ends Sunday, 4 days only",
-    "dayCountEyebrow": true,
     "h1": "Sobha 20:80 Offer: Only 20% Before Handover",
     "subtitle": "Ultra luxury from a Tier 1 developer, for a fifth of your own money.",
     "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
-    "explainer": {
-      "heading": "The 20:80 plan is back, across all five Sobha communities",
-      "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
-      "body": [
-        "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
-      ]
-    },
     "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
     "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
@@ -207,29 +199,6 @@ export const OFFERS: Offer[] = [
         "detail": "Lowest 20:80 entry, a one bed at Sobha Central"
       }
     ],
-    "timeline": [
-      {
-        "stage": "Today",
-        "share": "2%",
-        "description": "Booking amount, paid to reserve the unit."
-      },
-      {
-        "stage": "Within 7 days",
-        "share": "8%",
-        "description": "Second instalment."
-      },
-      {
-        "stage": "Within 15 days",
-        "share": "10%",
-        "description": "Completes the 20%."
-      },
-      {
-        "stage": "On completion",
-        "share": "80%",
-        "description": "The balance, payable when the unit is ready."
-      }
-    ],
-    "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "eligibility": [
       {
         "label": "Offer window",
@@ -253,7 +222,7 @@ export const OFFERS: Offer[] = [
       },
       {
         "label": "To secure the terms",
-        "value": "Unit booked or PR approved with the 2% booking amount paid inside the offer window."
+        "value": "Unit booked or PR-approved with the 2% booking amount paid inside the offer window."
       },
       {
         "label": "To release the benefits",
@@ -268,6 +237,114 @@ export const OFFERS: Offer[] = [
         "value": "Units priced above AED 2 million qualify for the property investor visa route."
       }
     ],
+    "valueProps": [
+      [
+        "Entry starts at AED 1.8 million",
+        "A one bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million, the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
+      ],
+      [
+        "AED 360,000 secures an AED 1.8M home",
+        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within 7 days and 10% within 15 days. The remaining AED 1.44 million is deferred until the unit is ready."
+      ],
+      [
+        "Resell or mortgage at completion",
+        "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
+      ],
+      [
+        "Waivers worth thousands, on top of the split",
+        "Beyond the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, a two year service charge waiver, and a furniture voucher on Elwood. On the AED 1.8 million entry unit at Sobha Central, the 2% DLD waiver alone is AED 36,000 back in your pocket."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community (20% across the construction period and 80% on handover), but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
+      "The number that matters most is the entry price: AED 1.8 million for a one bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
+      "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two and three bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one beds add a two year service charge waiver.",
+      "The terms are held by action inside the window, not by intent. A unit must be booked or PR approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings, so it is worth confirming the exact position on any unit already under discussion."
+    ],
+    "worked": {
+      "heading": "What it takes to secure a AED 1.8M one bed at Sobha Central",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 1,800,000"
+        ],
+        [
+          "Booking amount, inside the offer window (2%)",
+          "AED 36,000"
+        ],
+        [
+          "Payable to extend the benefits (10%)",
+          "AED 180,000"
+        ],
+        [
+          "Total across construction (20%)",
+          "AED 360,000"
+        ],
+        [
+          "Balance on handover (80%)",
+          "AED 1,440,000"
+        ]
+      ],
+      "footnote": "Figures shown on the AED 1.8M entry price for a one bedroom at Sobha Central."
+    },
+    "faqs": [
+      {
+        "question": "When does the Sobha 20:80 payment plan close?",
+        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR approved with the 2% booking amount paid before then. Talk to us early: we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
+      },
+      {
+        "question": "What is the cheapest unit on the 20:80 plan?",
+        "answer": "AED 1.8 million, for a one bedroom apartment at Sobha Central. That is the entry point for the campaign; the same 20:80 structure then runs up through apartments, townhouses and villas across the other four projects."
+      },
+      {
+        "question": "Which unit types qualify?",
+        "answer": "Apartments, townhouses, retail units and villas. Sobha Central covers one, two and three bedroom apartments plus retail; Sanctuary covers Courtyard, Garden and Estate villas; Elwood, Siniya Island and Downtown Umm Al Quwain each carry their own inventory. Message us on WhatsApp and we will send you the current list."
+      },
+      {
+        "question": "Can I resell or mortgage before I pay the 80%?",
+        "answer": "The unit can be resold or mortgaged at completion, once the construction period has run. Sobha properties have historically appreciated 20 to 50% by handover depending on unit type, so the deferred balance is often settled against a higher valuation than the purchase price."
+      },
+      {
+        "question": "How much of the DLD fee is waived?",
+        "answer": "It depends on the project and the unit type. Sobha Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver. The Estate villas at Sanctuary and the two and three bedroom apartments and retail at Central carry 4%. Sobha Siniya Island and Downtown Umm Al Quwain waive the registration fee in full."
+      },
+      {
+        "question": "What do I have to pay to lock the offer in?",
+        "answer": "A 2% booking amount during the offer period, with the unit booked or PR approved. The benefits are then extended on payment of 10% plus the applicable registration fee and execution of the Booking Form."
+      },
+      {
+        "question": "Which projects are included?",
+        "answer": "Five: Sobha Elwood, Sobha Sanctuary (Courtyard and Garden villas, and Estate villas), Sobha Central (one bedroom apartments, and two and three bedroom apartments plus retail), Sobha Siniya Island, and Downtown Umm Al Quwain."
+      },
+      {
+        "question": "Can I apply this to a unit I have already booked?",
+        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. If you already have a unit under discussion, message us on WhatsApp and we will confirm exactly where it stands."
+      }
+    ],
+    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers and vouchers vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "timeline": [
+      {
+        "stage": "Today",
+        "share": "2%",
+        "description": "Booking amount, paid to reserve the unit."
+      },
+      {
+        "stage": "Within 7 days",
+        "share": "8%",
+        "description": "Second instalment."
+      },
+      {
+        "stage": "Within 15 days",
+        "share": "10%",
+        "description": "Completes the 20%."
+      },
+      {
+        "stage": "On completion",
+        "share": "80%",
+        "description": "The balance, payable when the unit is ready."
+      }
+    ],
+    "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "projects": [
       {
         "name": "Sobha Elwood",
@@ -396,6 +473,36 @@ export const OFFERS: Offer[] = [
         "Store"
       ]
     },
+    "ctaLabel": "See qualifying units",
+    "whatsappLabel": "WhatsApp us now",
+    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan: 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
+    "investment": {
+      "heading": "A Tier 1 build, held for the long run.",
+      "items": [
+        {
+          "title": "Tier 1 developer",
+          "text": "Sobha designs, builds and delivers in house."
+        },
+        {
+          "title": "Growth corridor",
+          "text": "Positioned in an appreciating district."
+        },
+        {
+          "title": "Rental demand",
+          "text": "Stable yields and a quality tenant profile."
+        },
+        {
+          "title": "Long term value",
+          "text": "Built to hold, not to flip."
+        }
+      ],
+      "icons": [
+        "Building2",
+        "TrendingUp",
+        "Coins",
+        "ShieldCheck"
+      ]
+    },
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
@@ -498,121 +605,14 @@ export const OFFERS: Offer[] = [
         "alt": "Towers and shoreline at Downtown Umm Al Quwain"
       }
     ],
-    "investment": {
-      "heading": "A Tier 1 build, held for the long run.",
-      "items": [
-        {
-          "title": "Tier 1 developer",
-          "text": "Sobha designs, builds and delivers in house."
-        },
-        {
-          "title": "Growth corridor",
-          "text": "Positioned in an appreciating district."
-        },
-        {
-          "title": "Rental demand",
-          "text": "Stable yields and a quality tenant profile."
-        },
-        {
-          "title": "Long term value",
-          "text": "Built to hold, not to flip."
-        }
-      ],
-      "icons": [
-        "Building2",
-        "TrendingUp",
-        "Coins",
-        "ShieldCheck"
+    "dayCountEyebrow": true,
+    "explainer": {
+      "heading": "The 20:80 plan is back, across all five Sobha communities",
+      "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
+      "body": [
+        "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
       ]
-    },
-    "ctaLabel": "See qualifying units",
-    "whatsappLabel": "WhatsApp us now",
-    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan: 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
-    "valueProps": [
-      [
-        "Entry starts at AED 1.8 million",
-        "A one bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million, the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
-      ],
-      [
-        "AED 360,000 secures an AED 1.8M home",
-        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within 7 days and 10% within 15 days. The remaining AED 1.44 million is deferred until the unit is ready."
-      ],
-      [
-        "Resell or mortgage at completion",
-        "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
-      ],
-      [
-        "Waivers worth thousands, on top of the split",
-        "Beyond the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, a two year service charge waiver, and a furniture voucher on Elwood. On the AED 1.8 million entry unit at Sobha Central, the 2% DLD waiver alone is AED 36,000 back in your pocket."
-      ]
-    ],
-    "bodyParagraphs": [
-      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community (20% across the construction period and 80% on handover), but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
-      "The number that matters most is the entry price: AED 1.8 million for a one bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
-      "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two and three bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one beds add a two year service charge waiver.",
-      "The terms are held by action inside the window, not by intent. A unit must be booked or PR approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings, so it is worth confirming the exact position on any unit already under discussion."
-    ],
-    "worked": {
-      "heading": "What it takes to secure a AED 1.8M one bed at Sobha Central",
-      "rows": [
-        [
-          "Purchase price",
-          "AED 1,800,000"
-        ],
-        [
-          "Booking amount, inside the offer window (2%)",
-          "AED 36,000"
-        ],
-        [
-          "Payable to extend the benefits (10%)",
-          "AED 180,000"
-        ],
-        [
-          "Total across construction (20%)",
-          "AED 360,000"
-        ],
-        [
-          "Balance on handover (80%)",
-          "AED 1,440,000"
-        ]
-      ],
-      "footnote": "Figures shown on the AED 1.8M entry price for a one bedroom at Sobha Central."
-    },
-    "faqs": [
-      {
-        "question": "When does the Sobha 20:80 payment plan close?",
-        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR approved with the 2% booking amount paid before then. Talk to us early: we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
-      },
-      {
-        "question": "What is the cheapest unit on the 20:80 plan?",
-        "answer": "AED 1.8 million, for a one bedroom apartment at Sobha Central. That is the entry point for the campaign; the same 20:80 structure then runs up through apartments, townhouses and villas across the other four projects."
-      },
-      {
-        "question": "Which unit types qualify?",
-        "answer": "Apartments, townhouses, retail units and villas. Sobha Central covers one, two and three bedroom apartments plus retail; Sanctuary covers Courtyard, Garden and Estate villas; Elwood, Siniya Island and Downtown Umm Al Quwain each carry their own inventory. Message us on WhatsApp and we will send you the current list."
-      },
-      {
-        "question": "Can I resell or mortgage before I pay the 80%?",
-        "answer": "The unit can be resold or mortgaged at completion, once the construction period has run. Sobha properties have historically appreciated 20 to 50% by handover depending on unit type, so the deferred balance is often settled against a higher valuation than the purchase price."
-      },
-      {
-        "question": "How much of the DLD fee is waived?",
-        "answer": "It depends on the project and the unit type. Sobha Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver. The Estate villas at Sanctuary and the two and three bedroom apartments and retail at Central carry 4%. Sobha Siniya Island and Downtown Umm Al Quwain waive the registration fee in full."
-      },
-      {
-        "question": "What do I have to pay to lock the offer in?",
-        "answer": "A 2% booking amount during the offer period, with the unit booked or PR approved. The benefits are then extended on payment of 10% plus the applicable registration fee and execution of the Booking Form."
-      },
-      {
-        "question": "Which projects are included?",
-        "answer": "Five: Sobha Elwood, Sobha Sanctuary (Courtyard and Garden villas, and Estate villas), Sobha Central (one bedroom apartments, and two and three bedroom apartments plus retail), Sobha Siniya Island, and Downtown Umm Al Quwain."
-      },
-      {
-        "question": "Can I apply this to a unit I have already booked?",
-        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. If you already have a unit under discussion, message us on WhatsApp and we will confirm exactly where it stands."
-      }
-    ],
-    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers and vouchers vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage."
+    }
   },
   {
     "slug": "damac-lagoons-riverside-1950-offer",
@@ -621,7 +621,7 @@ export const OFFERS: Offer[] = [
     "eyebrow": "DAMAC waterfront offer",
     "h1": "DAMAC Waterfront Homes from AED 1,950 a Month: 4% DLD Waiver, 4% Discount and a 50/50 Plan",
     "subtitle": "Own a branded waterfront home in DAMAC Lagoons or DAMAC Riverside from AED 1,950 a month, with the 4% DLD fee covered, 4% off the price and half the balance deferred to handover.",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/portofino-townhouse-villas-in-damac-lagoons/featured.webp",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/portofino-townhouse-villas-in-damac-lagoons/featured-hd-hd.webp",
     "deadline": "",
     "windowLabel": "Limited time offer",
     "hideDeadline": false,
@@ -662,7 +662,6 @@ export const OFFERS: Offer[] = [
         "description": "The balance falls due when the home is complete and ready for possession."
       }
     ],
-    "timelineIntro": "An even split rather than a front-loaded one: half the price is spread across the construction and holding period, and the other half is deferred until handover. That structure is what brings the monthly figure down to AED 1,950.",
     "eligibility": [
       {
         "label": "Communities",
@@ -762,7 +761,242 @@ export const OFFERS: Offer[] = [
       }
     ],
     "disclaimer": "Terms are set by the developer and apply to selected units only, subject to availability and developer approval. Monthly figures and savings shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "projectHref": "/developers/damac-properties"
+    "projectHref": "/developers/damac-properties",
+    "timelineIntro": "An even split rather than a front-loaded one: half the price is spread across the construction and holding period, and the other half is deferred until handover. That structure is what brings the monthly figure down to AED 1,950.",
+    "amenities": {
+      "heading": "Built around the water.",
+      "stats": [
+        {
+          "value": "45M",
+          "label": "Sq ft masterplan",
+          "icon": "Trees"
+        },
+        {
+          "value": "718K",
+          "label": "AED entry price",
+          "icon": "Wallet"
+        },
+        {
+          "value": "50/50",
+          "label": "Payment split",
+          "icon": "CalendarClock"
+        }
+      ],
+      "masterplanHeading": "Inside the masterplans",
+      "items": [
+        "Crystal swimmable lagoons",
+        "White sand beaches",
+        "Waterside clubhouse",
+        "Floating leisure decks",
+        "Retail promenade",
+        "Outdoor cinema",
+        "Sports courts",
+        "Community lawns",
+        "Waterfall features"
+      ],
+      "icons": [
+        "Waves",
+        "Sun",
+        "Building2",
+        "Droplets",
+        "Store",
+        "Sparkles",
+        "Bike",
+        "TreePalm",
+        "Flower2"
+      ]
+    },
+    "ctaLabel": "Check eligible homes",
+    "explainer": {
+      "heading": "Two waterfront masterplans, one offer",
+      "highlight": "A DAMAC waterfront home from AED 1,950 a month. The 4% DLD registration fee is covered, 4% comes off the price, and half the balance waits until handover.",
+      "body": [
+        "The offer runs across DAMAC Lagoons in Dubailand and DAMAC Riverside in Dubai Investments Park, on ready and near-ready homes rather than early-stage plots. Studios, apartments, townhouses and villas all qualify, from AED 718,000."
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/featured.webp",
+        "alt": "Aerial view of Valencia at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/featured-hd.webp",
+        "alt": "Canal and waterfront residences at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-lagoons-phase-ll-townhouses-for-sale/gallery/4.webp",
+        "alt": "Waterfall lagoon at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-riverside-views-azure-1/damac-riverside-views-azure-1-featured-hd.webp",
+        "alt": "Azure at DAMAC Riverside at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/5.webp",
+        "alt": "Beach-style swimmable lagoon at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/013_13-hd.webp",
+        "alt": "Lagoon and outdoor cinema at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/gallery/costa-brava-damac-lagoons-phase-2-gallery_1-hd.webp",
+        "alt": "Rope bridge over the swimmable lagoon at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/002_2-hd.webp",
+        "alt": "Canal-side promenade and pool at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/costa-brava-damac-lagoons-phase-2-featured-hd.webp",
+        "alt": "The Costa Brava cluster at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/004_4-hd.webp",
+        "alt": "Community lawn at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-lagoons-nice-villas-townhouse/gallery/damac-lagoons-nice-villas-townhouse-gallery_1-hd.webp",
+        "alt": "Kayaking on the lagoon at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/008_8-hd.webp",
+        "alt": "Water play area at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/santorini-at-damac-lagoons-by-damac-properties/gallery/6.webp",
+        "alt": "The Santorini cluster at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/012_12-hd.webp",
+        "alt": "Floating gardens at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/ibiza-at-damac-lagoons/gallery/5.webp",
+        "alt": "Ibiza waterfront promenade at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/003_3-hd.webp",
+        "alt": "Sports courts at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/lagoons-venice-featured-hd.webp",
+        "alt": "Venice villas at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-riverside-views-azure-1/gallery/damac-riverside-views-azure-1-gallery_1-hd.webp",
+        "alt": "Canal-side residences at DAMAC Riverside"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_8-hd.webp",
+        "alt": "Venice villa with a private pool at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/6.webp",
+        "alt": "Waterside pavilions at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_10-hd.webp",
+        "alt": "Waterfall pool at Venice, DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/3.webp",
+        "alt": "Pool deck and residences at Valencia, DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_11-hd.webp",
+        "alt": "Beach and waterfall at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-lagoons-nice-villas-townhouse/gallery/damac-lagoons-nice-villas-townhouse-gallery_5-hd.webp",
+        "alt": "Nice villas at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_13-hd.webp",
+        "alt": "Waterfront dining at DAMAC Lagoons"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/gallery/costa-brava-damac-lagoons-phase-2-gallery_7-hd.webp",
+        "alt": "Villa with a private pool at Costa Brava, DAMAC Lagoons"
+      }
+    ],
+    "investment": {
+      "heading": "Ready homes, not a construction site.",
+      "items": [
+        {
+          "title": "Ready and near-ready",
+          "text": "Buy an environment you can inspect and often move into."
+        },
+        {
+          "title": "Waterfront demand",
+          "text": "Lagoon and canal frontage rents at a premium."
+        },
+        {
+          "title": "Low monthly entry",
+          "text": "From AED 1,950 a month on a studio."
+        },
+        {
+          "title": "Golden Visa route",
+          "text": "Units above AED 2 million qualify for the investor visa."
+        }
+      ],
+      "icons": [
+        "Building2",
+        "TrendingUp",
+        "Coins",
+        "ShieldCheck"
+      ]
+    },
+    "projects": [
+      {
+        "name": "DAMAC Lagoons",
+        "terms": "A 45 million sq ft Mediterranean masterplan in Dubailand, built around crystal lagoons, white sand beaches and a waterside clubhouse. Themed clusters at varying stages of handover, several ready or near-ready with direct lagoon access.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/featured.webp",
+        "links": [
+          {
+            "label": "DAMAC Lagoons community",
+            "href": "/communities/damac-lagoons"
+          },
+          {
+            "label": "Venice at DAMAC Lagoons",
+            "href": "/project/lagoons-venice"
+          },
+          {
+            "label": "Costa Brava",
+            "href": "/project/costa-brava-damac-lagoons-phase-2"
+          },
+          {
+            "label": "Valencia",
+            "href": "/project/valencia-at-damac-lagoons"
+          }
+        ]
+      },
+      {
+        "name": "DAMAC Riverside",
+        "terms": "Set in Dubai Investments Park around a water canal with floating leisure decks and a retail promenade. Studios, one and two bedroom apartments and four and five bedroom townhouses, with Emirates Road linking it to Expo City and Al Maktoum airport.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/featured-hd.webp",
+        "links": [
+          {
+            "label": "DAMAC Riverside community",
+            "href": "/communities/damac-riverside"
+          },
+          {
+            "label": "DAMAC Riverside",
+            "href": "/project/damac-riverside-in-dubai"
+          },
+          {
+            "label": "Capri at Riverside Views",
+            "href": "/project/capri-1-by-damac-at-riverside-views-dubai"
+          },
+          {
+            "label": "Azure at Riverside Views",
+            "href": "/project/damac-riverside-views-azure-1"
+          }
+        ]
+      }
+    ],
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes."
   }
 ];
 
