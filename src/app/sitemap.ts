@@ -40,20 +40,20 @@ async function fetchSlugDatesFromDb(
   }
 }
 
-// /property/{slug} pages resolve from three collections — the legacy `listings`
-// collection plus secondary_sales / secondary_rentals, which the search API
-// unions in. Reading only `listings` left every secondary listing (~280 live
-// pages) out of the sitemap. Dedupe by slug; legacy wins on collision.
+// /property/{slug} pages are served from the live secondary_sales /
+// secondary_rentals feed. The legacy `listings` collection is deprecated (stale
+// inventory — e.g. already-removed villas) and is excluded from search, so we
+// no longer advertise its URLs here either; that lets Google de-index the old
+// pages instead of us re-submitting removed listings each crawl.
 async function fetchAllListingSlugs(): Promise<{ slug: string; lastmod?: Date }[]> {
   const filter = { publishStatus: "published", slug: { $exists: true, $ne: "" } };
-  const [legacy, sales, rentals] = await Promise.all([
-    fetchSlugDatesFromDb("listings", filter),
+  const [sales, rentals] = await Promise.all([
     fetchSlugDatesFromDb("secondary_sales", filter),
     fetchSlugDatesFromDb("secondary_rentals", filter),
   ]);
   const seen = new Set<string>();
   const out: { slug: string; lastmod?: Date }[] = [];
-  for (const l of [...legacy, ...sales, ...rentals]) {
+  for (const l of [...sales, ...rentals]) {
     if (seen.has(l.slug)) continue;
     seen.add(l.slug);
     out.push(l);
