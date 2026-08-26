@@ -50,9 +50,18 @@ export default async function InsightsPage({ params }: Props) {
   const { locale } = await params;
   let articles: any[] = [];
   try {
-    // 15s (not the 8s default): the Render API can cold-start, and an empty
-    // fetch here caches a stale "No articles" state for the whole hour.
-    const res = await serverFetch(serverApiUrl(`/api/project-articles?lang=${locale}&limit=100`), 15000);
+    // 15s (not the 8s default): the Render API can be briefly slow, and an
+    // empty fetch here caches a stale "No articles" state for the whole hour.
+    // `_c` is a manual cache-key buster — Vercel's Data Cache is shared across
+    // deployments, so a previously-cached EMPTY result would otherwise survive
+    // the fix; bump `_c` to force a fresh fetch. revalidate kept short (10min)
+    // so a transient empty self-heals quickly instead of sticking for an hour.
+    const res = await serverFetch(
+      serverApiUrl(`/api/project-articles?lang=${locale}&limit=100&_c=2`),
+      15000,
+      undefined,
+      600,
+    );
     if (res.ok) articles = await res.json();
   } catch (err) {
     console.warn("[InsightsPage] API unavailable:", (err as Error).message);
