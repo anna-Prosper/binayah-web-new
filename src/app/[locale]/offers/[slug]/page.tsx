@@ -491,9 +491,16 @@ export default async function OfferPage({ params }: Props) {
           </Reveal>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {offer.projects.map((pr, i) => (
+            {offer.projects.map((pr, i) => {
+              // Whole card is clickable → the project's primary page (falls back
+              // to the offer's enquiry form when the project has no link yet).
+              // A stretched overlay link covers the card so the secondary pill
+              // links still work without nesting <a> inside <a>.
+              const cardHref = pr.links?.[0]?.href || "#enquire";
+              return (
               <Reveal key={pr.name} delay={i * 60}>
-                <div className="group h-full overflow-hidden rounded-xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-lg">
+                <div className="group relative h-full cursor-pointer overflow-hidden rounded-xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-lg">
+                  <Link href={cardHref} aria-label={pr.name} className="absolute inset-0 z-[1]" />
                   {pr.image && (
                     <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                       <img
@@ -508,13 +515,13 @@ export default async function OfferPage({ params }: Props) {
                   <div className="flex items-start gap-2.5">
                     <Building2 className="mt-0.5 h-4 w-4 shrink-0" style={{ color: GOLD_DEEP }} />
                     <div className="min-w-0">
-                      <h3 className="text-[15px] font-bold leading-snug text-foreground">{pr.name}</h3>
+                      <h3 className="text-[15px] font-bold leading-snug text-foreground transition-colors group-hover:text-primary">{pr.name}</h3>
                       <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{pr.terms}</p>
                     </div>
                   </div>
 
                   {pr.links?.length ? (
-                    <div className="mt-4 flex flex-wrap gap-1.5 pl-[26px]">
+                    <div className="relative z-[2] mt-4 flex flex-wrap gap-1.5 pl-[26px]">
                       {pr.links.map((l) => (
                         <Link
                           key={l.href}
@@ -534,7 +541,8 @@ export default async function OfferPage({ params }: Props) {
                   </div>
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
 
             {/* A 6th card, deliberately not another community: five projects
                 in a 3-up grid leave one cell empty on the last row, and a gold
