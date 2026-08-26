@@ -49,25 +49,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function InsightsPage({ params }: Props) {
   const { locale } = await params;
   let articles: any[] = [];
-  let _dbg = "";
-  const _url = serverApiUrl(`/api/project-articles?lang=${locale}&limit=100&_c=3`);
   try {
-    const res = await serverFetch(_url, 15000, undefined, 600);
-    _dbg = `ok=${res.ok} status=${res.status}`;
+    // serverFetch carries the API key so the API's per-IP rate limit exempts
+    // this internal call (Vercel's shared egress IP was hitting the 100/min cap
+    // → 429 → this page silently rendered its empty "No articles" state).
+    // 15s timeout + short revalidate so any transient failure self-heals fast.
+    const res = await serverFetch(serverApiUrl(`/api/project-articles?lang=${locale}&limit=100`), 15000, undefined, 600);
     if (res.ok) {
       const data = await res.json();
       articles = Array.isArray(data) ? data : [];
-      _dbg += ` type=${Array.isArray(data) ? "array" : typeof data} len=${articles.length}`;
     }
   } catch (err) {
-    _dbg = `THREW: ${(err as Error).name}:${(err as Error).message}`;
     console.warn("[InsightsPage] API unavailable:", (err as Error).message);
   }
 
-  return (
-    <>
-      <div data-cu-debug={`${_dbg} | url=${_url}`} style={{ display: "none" }} />
-      <ConstructionUpdatesClient articles={articles} locale={locale} />
-    </>
-  );
+  return <ConstructionUpdatesClient articles={articles} locale={locale} />;
 }

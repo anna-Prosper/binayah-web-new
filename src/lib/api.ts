@@ -57,9 +57,14 @@ export async function serverFetch(
   // `false` for genuinely per-request data (auth, admin, live streams).
   revalidate: number | false = 3600
 ): Promise<Response> {
+  // Identify server-side ISR/SSR fetches to the API with the shared key so the
+  // API's per-IP rate limit exempts them — all these requests egress from a few
+  // Vercel IPs and would otherwise trip the 100/min cap and 429 (which silently
+  // emptied ISR pages like /construction-updates). Server-only env, never shipped.
+  const key = process.env.API_KEY;
   return fetch(url, {
     signal: AbortSignal.timeout(ms),
-    headers,
+    headers: { ...(key ? { "x-api-key": key } : {}), ...headers },
     ...(revalidate === false ? { cache: "no-store" } : { next: { revalidate } }),
   });
 }
