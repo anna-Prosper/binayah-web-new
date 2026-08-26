@@ -348,7 +348,7 @@ export default function GuideDetailClient({
                     {guide.relatedCommunities.map((community) => (
                       <Link
                         key={community}
-                        href={`/${locale}/communities`}
+                        href={`/${locale}/communities/${slugify(community)}`}
                         className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
                       >
                         <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{community}</p>
