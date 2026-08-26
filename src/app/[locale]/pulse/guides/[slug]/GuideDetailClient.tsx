@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
@@ -56,9 +57,55 @@ function slugify(s: string): string {
 // Supports: **bold**, paragraphs, # / ## / ### headings, | tables |, - bullets,
 // numbered lists. h1/h2 get slug ids + scroll-margin so the sidebar TOC can
 // deep-link to them beneath the sticky navbar.
-function renderBody(text: string): React.ReactNode[] {
+function escapeRe(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Auto-link community names in guide prose to their community page. Only the
+// FIRST mention of each community is linked (via the shared `seen` set) so the
+// copy isn't peppered with repeated links. The name set is the guide's own
+// relatedCommunities, so matches are intentional (no stray word linking).
+function linkCommunities(
+  text: string,
+  communities: string[],
+  locale: string,
+  seen: Set<string>,
+): React.ReactNode {
+  if (!communities?.length || !text) return text;
+  const names = [...new Set(communities.map((c) => c.trim()).filter(Boolean))]
+    .sort((a, b) => b.length - a.length); // longest first: "Dubai Marina" before "Dubai"
+  const rx = new RegExp(`\\b(${names.map(escapeRe).join("|")})\\b`, "gi");
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let k = 0;
+  while ((m = rx.exec(text)) !== null) {
+    const matched = m[0];
+    const canonical = names.find((n) => n.toLowerCase() === matched.toLowerCase()) || matched;
+    const key = canonical.toLowerCase();
+    if (seen.has(key)) continue; // already linked earlier — leave as plain text
+    seen.add(key);
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(
+      <Link
+        key={`c-${key}-${k++}`}
+        href={`/${locale}/communities/${slugify(canonical)}`}
+        className="font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
+      >
+        {matched}
+      </Link>,
+    );
+    last = m.index + matched.length;
+  }
+  if (out.length === 0) return text;
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
+function renderBody(text: string, communities: string[], locale: string): React.ReactNode[] {
   const lines = text.split("\n");
   const nodes: React.ReactNode[] = [];
+  const seen = new Set<string>();
   let i = 0;
 
   while (i < lines.length) {
@@ -72,7 +119,7 @@ function renderBody(text: string): React.ReactNode[] {
     if (line.startsWith("### ")) {
       nodes.push(
         <h3 key={i} className="text-lg font-bold text-foreground mt-7 mb-2">
-          {line.slice(4)}
+          {linkCommunities(line.slice(4), communities, locale, new Set())}
         </h3>
       );
       i++;
@@ -82,7 +129,7 @@ function renderBody(text: string): React.ReactNode[] {
       const txt = line.slice(3);
       nodes.push(
         <h2 key={i} id={slugify(txt)} className="scroll-mt-24 text-xl sm:text-2xl font-bold text-foreground mt-10 mb-3 leading-snug">
-          {txt}
+          {linkCommunities(txt, communities, locale, new Set())}
         </h2>
       );
       i++;
@@ -92,7 +139,7 @@ function renderBody(text: string): React.ReactNode[] {
       const txt = line.slice(2);
       nodes.push(
         <h2 key={i} id={slugify(txt)} className="scroll-mt-24 text-2xl sm:text-3xl font-bold text-foreground mt-12 mb-4 leading-tight">
-          {txt}
+          {linkCommunities(txt, communities, locale, new Set())}
         </h2>
       );
       i++;
@@ -114,7 +161,7 @@ function renderBody(text: string): React.ReactNode[] {
               <thead>
                 <tr className="bg-muted/50">
                   {parseRow(header).map((cell, ci) => (
-                    <th key={ci} className="px-4 py-2.5 text-left text-xs font-bold text-foreground">{renderInline(cell)}</th>
+                    <th key={ci} className="px-4 py-2.5 text-left text-xs font-bold text-foreground">{renderInline(cell, communities, locale, seen)}</th>
                   ))}
                 </tr>
               </thead>
@@ -122,7 +169,7 @@ function renderBody(text: string): React.ReactNode[] {
                 {body.map((row, ri) => (
                   <tr key={ri} className="border-t border-border/30">
                     {parseRow(row).map((cell, ci) => (
-                      <td key={ci} className="px-4 py-2.5 text-[13px] text-muted-foreground">{renderInline(cell)}</td>
+                      <td key={ci} className="px-4 py-2.5 text-[13px] text-muted-foreground">{renderInline(cell, communities, locale, seen)}</td>
                     ))}
                   </tr>
                 ))}
@@ -144,7 +191,7 @@ function renderBody(text: string): React.ReactNode[] {
         <ul key={`ul-${i}`} className="my-4 space-y-2 pl-1">
           {items.map((item, ii) => (
             <li key={ii} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed flex gap-2.5 before:content-['·'] before:text-accent before:font-bold before:text-lg before:leading-none before:mt-0.5">
-              <span>{renderInline(item)}</span>
+              <span>{renderInline(item, communities, locale, seen)}</span>
             </li>
           ))}
         </ul>
@@ -162,7 +209,7 @@ function renderBody(text: string): React.ReactNode[] {
         <ol key={`ol-${i}`} className="my-4 space-y-2 pl-5 list-decimal marker:text-accent marker:font-bold">
           {items.map((item, ii) => (
             <li key={ii} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed pl-1">
-              {renderInline(item)}
+              {renderInline(item, communities, locale, seen)}
             </li>
           ))}
         </ol>
@@ -172,7 +219,7 @@ function renderBody(text: string): React.ReactNode[] {
 
     nodes.push(
       <p key={i} className="text-[15px] sm:text-base text-muted-foreground leading-relaxed mb-4">
-        {renderInline(line)}
+        {renderInline(line, communities, locale, seen)}
       </p>
     );
     i++;
@@ -181,10 +228,12 @@ function renderBody(text: string): React.ReactNode[] {
   return nodes;
 }
 
-function renderInline(text: string): React.ReactNode {
+function renderInline(text: string, communities: string[], locale: string, seen: Set<string>): React.ReactNode {
   const parts = text.split(/\*\*([^*]+)\*\*/g);
   return parts.map((part, i) =>
-    i % 2 === 1 ? <strong key={i} className="font-semibold text-foreground">{part}</strong> : part
+    i % 2 === 1
+      ? <strong key={i} className="font-semibold text-foreground">{linkCommunities(part, communities, locale, seen)}</strong>
+      : <React.Fragment key={i}>{linkCommunities(part, communities, locale, seen)}</React.Fragment>
   );
 }
 
@@ -316,7 +365,7 @@ export default function GuideDetailClient({
                 transition={{ delay: 0.15 }}
                 className="max-w-none"
               >
-                {renderBody(guide.body)}
+                {renderBody(guide.body, guide.relatedCommunities, locale)}
               </motion.article>
 
               {/* FAQ */}
