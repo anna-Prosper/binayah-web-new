@@ -997,6 +997,450 @@ export const OFFERS: Offer[] = [
     ],
     "whatsappLabel": "Chat on WhatsApp",
     "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes."
+  },
+  {
+    "slug": "danube-deal-of-the-decade-20-10-back",
+    "amenities": {
+      "heading": "Furnished, and stacked with amenities.",
+      "stats": [
+        {
+          "value": "37",
+          "label": "Danube projects in Dubai",
+          "icon": "Building2"
+        },
+        {
+          "value": "1%",
+          "label": "Monthly while building",
+          "icon": "CalendarClock"
+        },
+        {
+          "value": "40%",
+          "label": "Deferred past handover",
+          "icon": "KeyRound"
+        }
+      ],
+      "masterplanHeading": "Inside a Danube tower",
+      "items": [
+        "Fully furnished units",
+        "Infinity pools",
+        "Sky gyms",
+        "Private cinemas",
+        "Co-working floors",
+        "Aquarium lounges",
+        "Rooftop jacuzzis",
+        "Sports courts",
+        "Children's play areas"
+      ],
+      "icons": [
+        "Sparkles",
+        "Waves",
+        "Bike",
+        "Sun",
+        "Laptop",
+        "Droplets",
+        "Flower2",
+        "TreePalm",
+        "Users"
+      ]
+    },
+    "bodyParagraphs": [
+      "Danube Properties has reopened its Deal of the Decade for a single weekend, 29 and 30 August 2026. The mechanism is straightforward: pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back as a credit note applied to your remaining balance. It is a rebate against what you owe rather than money in hand, and on a AED 1.5 million apartment it is worth AED 150,000.",
+      "What you choose after that is the pace. The 1% track releases the rebate immediately once the 20% and the fee are paid, then charges 1% of the property value each month until the building completes. The 0.5% track halves the monthly figure but holds the rebate back until you have paid 40%. Either way, 40% of the price is deferred until after handover, so most of the purchase falls due once the keys are in your hand.",
+      "Eleven projects sit outside those two tracks. Danube's 11:11 lineup, made up of Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3, runs a simpler 20:70 split: the rebate follows the 20%, and the remaining 70% is due on completion rather than spread monthly.",
+      "The rebates stack, which is where the offer gets interesting. A refundable AED 100,000 token adds another 1% on every project except Greenz. Immediate family buying together earn 2% on a combined AED 10 to 20 million, 3% from AED 20 to 30 million, and 4% above that. Paying the full price upfront swaps the whole structure for a flat 14% discount. We place the booking, handle the paperwork and secure developer approval on your behalf."
+    ],
+    "ctaLabel": "Check eligible units",
+    "dayCountEyebrow": false,
+    "deadline": "2026-08-30T23:59:59+04:00",
+    "developer": "Danube Properties",
+    "disclaimer": "Terms are set by Danube Properties and apply to selected units and projects only, subject to availability and developer approval. Rebate percentages, release timing and payment tracks vary by project and unit type, and the 11:11 lineup and Greenz carry their own structures as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "eligibility": [
+      {
+        "label": "Offer window",
+        "value": "Two days only, 29 and 30 August 2026."
+      },
+      {
+        "label": "What comes back",
+        "value": "A credit note worth 10% of the property value, set against your balance. It is a rebate, not a cash payment."
+      },
+      {
+        "label": "Down payment",
+        "value": "20% of the price, paid as 10% within 21 days and 10% within 60 days, plus the 4% DLD registration fee."
+      },
+      {
+        "label": "The 1% track",
+        "value": "The rebate is released once the 20% and the DLD fee are paid, then 1% a month until completion, with 40% after handover."
+      },
+      {
+        "label": "The 0.5% track",
+        "value": "0.5% a month until completion, with the rebate released only once you reach 40% plus the DLD fee, and 40% after handover."
+      },
+      {
+        "label": "The 11:11 lineup",
+        "value": "Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3 run a 20:70 structure instead: the rebate follows the 20%, and the remaining 70% falls due on completion."
+      },
+      {
+        "label": "Token rebate",
+        "value": "A refundable AED 100,000 token adds 1% on every Danube project except Greenz, where it becomes a two year service charge waiver instead."
+      },
+      {
+        "label": "Family purchases",
+        "value": "Spouses, parents and children buying together earn 2% on AED 10 to 20 million combined, 3% on AED 20 to 30 million, and 4% above AED 30 million."
+      },
+      {
+        "label": "Paying in full",
+        "value": "A flat 14% discount in place of the credit note structure."
+      },
+      {
+        "label": "Greenz",
+        "value": "Taking the post-handover structure at Greenz adds 5% to the unit value. Other Danube projects apply a 3% discount at handover instead."
+      }
+    ],
+    "explainer": {
+      "heading": "Pay 20%, and 10% comes back as a credit note",
+      "highlight": "A refundable AED 100,000 token adds another 1%. Families buying together add up to 4% more. Pay the whole price upfront instead and the discount is a flat 14%.",
+      "body": [
+        "Danube's Deal of the Decade returns for one weekend, 29 and 30 August 2026. Pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back to you as a credit note set against your remaining balance. From there you pick the pace: 1% a month with the rebate released straight away, or 0.5% a month with it released once you reach 40%."
+      ]
+    },
+    "eyebrow": "Weekend only, 29 to 30 August",
+    "faqs": [
+      {
+        "question": "When does the Danube Deal of the Decade close?",
+        "answer": "The weekend edition runs on 29 and 30 August 2026 only. To hold the terms the unit has to be booked inside those two days. Message us before the weekend and we will have the paperwork ready."
+      },
+      {
+        "question": "Is the 10% paid to me in cash?",
+        "answer": "No. It is a credit note, which means it is set against what you still owe on the property rather than paid out. It reduces your balance by 10% of the property value."
+      },
+      {
+        "question": "What is the difference between the 1% and 0.5% tracks?",
+        "answer": "Both start with the same 20%. On the 1% track the rebate is released as soon as that 20% and the DLD fee are paid, and you then pay 1% a month. On the 0.5% track the monthly figure halves, but the rebate is held until you have paid 40%."
+      },
+      {
+        "question": "Which projects are in the 11:11 lineup?",
+        "answer": "Fashionz 1, Sparklz, Viewz 1, Viewz 2, Oceanz 1, Oceanz 2, Oceanz 3, Oasiz 1, Oasiz 2, Elitz 2 and Elitz 3. These run a 20:70 structure rather than the 1% and 0.5% monthly tracks, with 70% due on completion."
+      },
+      {
+        "question": "Can the rebates be combined?",
+        "answer": "Yes. The 10% credit note is the base. A refundable AED 100,000 token adds 1% on every project except Greenz, and buying together with a spouse, parent or child adds 2% to 4% depending on the combined purchase value."
+      },
+      {
+        "question": "What happens if I pay the full price upfront?",
+        "answer": "The credit note structure is replaced by a flat 14% discount on the purchase price."
+      },
+      {
+        "question": "Is Greenz treated differently?",
+        "answer": "Yes. At Greenz the post-handover structure adds 5% to the unit value, and the AED 100,000 token buys a two year service charge waiver rather than the extra 1%. Other Danube projects apply a 3% discount at handover instead."
+      },
+      {
+        "question": "Do I still pay the DLD registration fee?",
+        "answer": "Yes. The 4% Dubai Land Department fee is payable alongside the 20% and is not waived under this offer. It is the trigger for releasing the rebate on the 1% track."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_6-hd.webp",
+        "alt": "Bayz 101 by Danube rising beside the Burj Khalifa at night"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "alt": "Oceanz by Danube on the Dubai Maritime City waterfront at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/diamondz-by-danube-at-jlt-dubai/gallery/diamondz-by-danube-at-jlt-dubai-gallery_5-hd.webp",
+        "alt": "Diamondz by Danube at Jumeirah Lake Towers"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/8.webp",
+        "alt": "The sky bridge at Viewz Residences, JLT"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fashionz-by-danube-at-jvt/featured.webp",
+        "alt": "Fashionz by Danube at Jumeirah Village Triangle at sunset"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_3-hd.webp",
+        "alt": "Sparklz by Danube at Al Furjan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-elitz-phase-2-at-jvc/featured.webp",
+        "alt": "Elitz by Danube at Jumeirah Village Circle"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A566F205D4A77BF5E5CFC1F84E92BA41.jpeg",
+        "alt": "The cantilevered pool deck at Shahrukhz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5310BE7DE3EB3D4DA777C550167DBB6.jpeg",
+        "alt": "Pool deck at Fashionz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/danube-sparklz-at-al-furjan-featured-hd.webp",
+        "alt": "Lagoon-style pool at Sparklz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sportz-by-danube/gallery/005_005_5-hd-hd.webp",
+        "alt": "Pool deck at Sportz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/timez-by-danube-at-dubai-silicon-oasis/gallery/timez-by-danube-at-dubai-silicon-oasis-gallery_8-hd.webp",
+        "alt": "Infinity pool over the Dubai skyline at Timez by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-2-at-jlt-dubai-by-danube-properties/gallery/1.webp",
+        "alt": "Pool terrace at Viewz 2, JLT"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "alt": "Sea-view balcony at Breez by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/oceanz-by-danube-at-dubai-maritime-city-featured-hd.webp",
+        "alt": "Sea-view living room at Oceanz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/4.webp",
+        "alt": "Open-plan living and kitchen at Viewz Residences"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5DC70A0B9ED0BDCF30D3084B400BB73.jpeg",
+        "alt": "Furnished bedroom at Fashionz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_6-hd.webp",
+        "alt": "Furnished living room at Sparklz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_7-hd.webp",
+        "alt": "Arrival lobby at Bayz 101"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_3-hd.webp",
+        "alt": "Residents' gym at Bayz 101"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_2-hd.webp",
+        "alt": "Aquarium corridor at Breez by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_4-hd.webp",
+        "alt": "Aquarium lounge at Breez by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/shahrukhz-by-danube/featured.webp",
+        "alt": "Private cinema at Shahrukhz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5B77F4ABEFB26D1CCC5E377785A5AB3.jpeg",
+        "alt": "Co-working floor at Shahrukhz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/opalz-tower-by-danube-properties/gallery/1.webp",
+        "alt": "Rooftop jacuzzi terrace at Opalz by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_1-hd.webp",
+        "alt": "Dubai Maritime City, home to Oceanz and Breez"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_3-hd.webp",
+        "alt": "Oceanz by Danube on the waterfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/serenz-by-danube/featured.webp",
+        "alt": "Serenz by Danube at night"
+      }
+    ],
+    "h1": "Pay 20%, Get 10% Back: Danube's Deal of the Decade",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_1-hd.webp",
+    "hideDeadline": false,
+    "highlights": [
+      {
+        "value": "20%",
+        "label": "Paid upfront",
+        "detail": "10% within 21 days, 10% within 60 days"
+      },
+      {
+        "value": "10%",
+        "label": "Back as credit",
+        "detail": "A credit note against what you still owe"
+      },
+      {
+        "value": "1%",
+        "label": "Per month",
+        "detail": "Monthly instalments while the tower builds"
+      },
+      {
+        "value": "40%",
+        "label": "After handover",
+        "detail": "The balance falls due once you have the keys"
+      }
+    ],
+    "investment": {
+      "heading": "Built for the deferred-payment buyer.",
+      "items": [
+        {
+          "title": "A low way in",
+          "text": "Danube studios start around AED 790,000."
+        },
+        {
+          "title": "Central locations",
+          "text": "Business Bay, JLT, Al Furjan and Maritime City."
+        },
+        {
+          "title": "A long runway",
+          "text": "1% a month, then 40% once you have the keys."
+        },
+        {
+          "title": "Golden Visa route",
+          "text": "Units above AED 2 million qualify for the investor visa."
+        }
+      ],
+      "icons": [
+        "Coins",
+        "Building2",
+        "TrendingUp",
+        "ShieldCheck"
+      ]
+    },
+    "keywords": "danube deal of the decade, danube pay 20 get 10 back, danube properties offer dubai, danube 1 percent monthly payment plan, danube credit note offer, danube 11:11 projects, dubai off plan payment plan, danube properties dubai",
+    "metaDescription": "Danube's Deal of the Decade, 29 to 30 August 2026: pay 20% and 10% of the property value returns as a credit note, then 1% a month and 40% after handover. Binayah places the booking.",
+    "metaTitle": "Danube Deal of the Decade | Pay 20%, Get 10% Back",
+    "projectHref": "/developers/danube-properties",
+    "projects": [
+      {
+        "name": "Fashionz by Danube",
+        "terms": "Jumeirah Village Triangle. Part of the 11:11 lineup, so the 20:70 structure applies with the rebate released after the 20%.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fashionz-by-danube-at-jvt/featured.webp",
+        "links": [
+          {
+            "label": "Fashionz by Danube",
+            "href": "/project/fashionz-by-danube-at-jvt"
+          }
+        ]
+      },
+      {
+        "name": "Sparklz by Danube",
+        "terms": "Al Furjan. Also in the 11:11 lineup, on the 20:70 structure with 70% due on completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_3-hd.webp",
+        "links": [
+          {
+            "label": "Sparklz by Danube",
+            "href": "/project/danube-sparklz-at-al-furjan"
+          }
+        ]
+      },
+      {
+        "name": "Oceanz by Danube",
+        "terms": "Dubai Maritime City, on the water. In the 11:11 lineup across all three towers.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "links": [
+          {
+            "label": "Oceanz by Danube",
+            "href": "/project/oceanz-by-danube-at-dubai-maritime-city"
+          }
+        ]
+      },
+      {
+        "name": "Viewz by Danube",
+        "terms": "Jumeirah Lake Towers, twin towers joined by a sky bridge. Both Viewz 1 and Viewz 2 sit in the 11:11 lineup.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/8.webp",
+        "links": [
+          {
+            "label": "Viewz Residences",
+            "href": "/project/viewz-residences-at-jlt-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Bayz 101",
+        "terms": "Business Bay, beside the Burj Khalifa. On the main tracks, so you choose between 1% and 0.5% a month.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/bayz-101-at-business-bay-dubai-featured-hd.webp",
+        "links": [
+          {
+            "label": "Bayz 101",
+            "href": "/project/bayz-101-at-business-bay-dubai"
+          }
+        ]
+      }
+    ],
+    "shortName": "Danube Deal of the Decade",
+    "subtitle": "A 10% credit note against your balance, 1% a month while it builds, and 40% deferred until after handover.",
+    "timeline": [
+      {
+        "share": "10%",
+        "stage": "Within 21 days",
+        "description": "The first half of the 20% down payment."
+      },
+      {
+        "share": "10%",
+        "stage": "Within 60 days",
+        "description": "Completes the 20%, alongside the 4% DLD fee."
+      },
+      {
+        "share": "1%",
+        "stage": "Every month",
+        "description": "Monthly instalments until construction completes."
+      },
+      {
+        "share": "40%",
+        "stage": "After handover",
+        "description": "The balance, deferred past completion."
+      }
+    ],
+    "timelineIntro": "Both tracks start at the same 20%. The 1% track releases your rebate as soon as that 20% and the DLD fee are paid; the 0.5% track holds it until you reach 40%.",
+    "valueProps": [
+      [
+        "10% back on a 20% commitment",
+        "Commit 20% and a tenth of the full property value returns to you as a credit note against the balance. On a AED 1.5 million apartment that is AED 150,000 off what you still owe, for a AED 300,000 down payment."
+      ],
+      [
+        "1% a month while it builds",
+        "After the 20%, the schedule drops to 1% of the property value each month until the tower completes. On that same AED 1.5 million unit it is AED 15,000 a month, closer to a rent cheque than a construction-linked instalment."
+      ],
+      [
+        "Rebates that stack",
+        "The 10% credit note is the floor, not the ceiling. A refundable AED 100,000 token adds 1%, and buying alongside a spouse, parent or child adds 2% to 4% depending on the combined value."
+      ],
+      [
+        "40% waits until after handover",
+        "Only 60% of the price is due before you hold the keys. The remaining 40% is spread past completion, so the unit can be occupied or let while the balance is still running."
+      ]
+    ],
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in Danube's Deal of the Decade: pay 20% and get 10% back as a credit note. Please send me the eligible projects and the numbers.",
+    "windowLabel": "Weekend edition, 29 to 30 August 2026",
+    "worked": {
+      "heading": "What the rebate is worth on an AED 1,500,000 apartment",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 1,500,000"
+        ],
+        [
+          "20% down payment",
+          "AED 300,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 60,000"
+        ],
+        [
+          "10% credit note",
+          "- AED 150,000"
+        ],
+        [
+          "Token rebate at 1%",
+          "- AED 15,000"
+        ],
+        [
+          "Total credited against your balance",
+          "= AED 165,000"
+        ]
+      ],
+      "footnote": "Illustrative, on a AED 1.5 million unit outside the 11:11 lineup and excluding Greenz. The exact figures depend on the project, the track you choose and the terms recorded in the signed SPA."
+    }
   }
 ];
 
