@@ -38,10 +38,10 @@ export default function GuidesClient({ guides: allGuides }: { guides: PulseGuide
     () =>
       allGuides.map((g) => ({
         guide: g,
-        title: guideTitle(g, t),
-        description: guideDescription(g, t),
+        title: guideTitle(g, t, locale),
+        description: guideDescription(g, t, locale),
       })),
-    [t, allGuides]
+    [t, locale, allGuides]
   );
 
   const categories = useMemo(() => {

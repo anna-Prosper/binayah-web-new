@@ -10,7 +10,7 @@ import { getAreaStats } from "@/lib/area-stats";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
-import { getGuideTranslation, translatedLocalesForGuide } from "@/lib/guide-i18n";
+import { resolveGuideBody, translatedLocalesForGuideDoc } from "@/lib/guide-i18n";
 import { guideTitle, guideDescription } from "@/lib/guide-text";
 
 export const revalidate = 86400;
@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!guide) return {};
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
   const suffix = PULSE_SUFFIX[locale] ?? "Dubai Pulse | Binayah Properties";
-  const title = `${guideTitle(guide, t)} | ${suffix}`;
-  const description = guideDescription(guide, t);
+  const title = `${guideTitle(guide, t, locale)} | ${suffix}`;
+  const description = guideDescription(guide, t, locale);
   const isEn = locale === "en";
   // A guide is indexable in English, and in any locale whose bodies+FAQs are
   // fully translated (see @/lib/guide-i18n). Locales that render a translated
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const enUrl = canonical("en", path);
   // Only the locales that actually have THIS guide translated are indexable /
   // advertised via hreflang — a new English-only guide stays noindex→EN elsewhere.
-  const translatedLocales = await translatedLocalesForGuide(slug);
+  const translatedLocales = await translatedLocalesForGuideDoc(guide);
   const indexable = isEn || translatedLocales.includes(locale);
   const url = indexable ? canonical(locale, path) : enUrl;
   const languages: Record<string, string> = { en: enUrl, "x-default": enUrl };
@@ -95,16 +95,28 @@ export default async function GuideDetailPage({ params }: Props) {
   if (!guide) notFound();
 
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
-  const title = guideTitle(guide, t);
-  const description = guideDescription(guide, t);
+  const title = guideTitle(guide, t, locale);
+  const description = guideDescription(guide, t, locale);
   const url = canonical(locale, `/pulse/guides/${slug}`);
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  // Use the fully-translated body/FAQ where available; otherwise the English body.
-  const translation = locale !== "en" ? await getGuideTranslation(locale, slug) : null;
-  const body = translation?.body || guide.body;
-  const faq = translation?.faq && translation.faq.length > 0 ? translation.faq : guide.faq;
-  const localizedGuide = translation ? { ...guide, body, faq } : guide;
+  // Translated body/FAQ where available — the document's own translations map
+  // first, then the bundled JSON, then English.
+  const { body, faq } = await resolveGuideBody(guide, locale);
+  // Narrow `translations` before it crosses to the client component. The client
+  // still needs this locale's title/description to render the heading, but the
+  // full map would put every other language's body into the browser payload —
+  // the same reason the bundled guide-i18n JSON is loaded server-side only. The
+  // resolved body/faq travel as their own fields.
+  const localeTr = guide.translations?.[locale];
+  const { translations: _all, ...guideForClient } = guide;
+  void _all;
+  const localizedGuide = {
+    ...guideForClient,
+    body,
+    faq,
+    translations: localeTr ? { [locale]: { title: localeTr.title, description: localeTr.description } } : undefined,
+  };
 
   // Estimate word count from body
   const wordCount = body.split(/\s+/).length;

@@ -3,6 +3,15 @@
 // Body text is English-only. Titles and descriptions are translated via i18n keys.
 // Stats are pulled from Binayah market data as of Q1 2026.
 
+/** The translatable half of a guide. `faq` merges positionally against the
+ *  English array, so keep the same length and order. */
+export interface GuideTranslationFields {
+  title?: string;
+  description?: string;
+  body?: string;
+  faq?: { question: string; answer: string }[];
+}
+
 export interface PulseGuide {
   slug: string;
   category: string; // Used as i18n key prefix: pulseGuides.category_{category}
@@ -24,6 +33,11 @@ export interface PulseGuide {
   createdAt?: string | Date;
   /** Curated rank, ascending. Also chronological: order 0 is the oldest guide. */
   order?: number;
+  /** Per-locale overrides, same convention as the offers collection: only the
+   *  fields that differ, anything omitted falls back to English. Reachable from
+   *  the DB, unlike the two bundled files the 74 migrated guides rely on
+   *  (messages/*.json for title, lib/guide-i18n/*.json for body + FAQ). */
+  translations?: Record<string, GuideTranslationFields>;
   // Body is English-only long-form content (600–1200 words)
   body: string;
   // Related community names (shown at bottom of guide page)

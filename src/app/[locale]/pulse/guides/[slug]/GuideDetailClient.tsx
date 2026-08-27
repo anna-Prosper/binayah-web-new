@@ -312,8 +312,8 @@ export default function GuideDetailClient({
   const locale = useLocale();
   const ui = UI[locale] ?? UI.en;
 
-  const title = guideTitle(guide, t);
-  const description = guideDescription(guide, t);
+  const title = guideTitle(guide, t, locale);
+  const description = guideDescription(guide, t, locale);
   const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<typeof t>[0]);
   const toc = extracttoc(guide.body);
   const publishedLabel = published
@@ -464,7 +464,7 @@ export default function GuideDetailClient({
                     {relatedGuides.map((g) => (
                       <Link key={g.slug} href={`/${locale}/pulse/guides/${g.slug}`} className="group block">
                         <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">
-                          {guideTitle(g, t)}
+                          {guideTitle(g, t, locale)}
                         </p>
                         <span className="flex items-center gap-1 text-[11px] text-muted-foreground mt-1">
                           <Clock className="h-3 w-3" /> {g.readTime}

@@ -5,6 +5,18 @@
 
 export type GuideTranslation = { body: string; faq: { question: string; answer: string }[] };
 
+/** Minimal guide shape these helpers need. Kept structural so callers can pass
+ *  a full PulseGuide without a circular import. */
+type TranslatableGuide = {
+  slug: string;
+  body: string;
+  faq?: { question: string; answer: string }[];
+  translations?: Record<
+    string,
+    { title?: string; description?: string; body?: string; faq?: { question: string; answer: string }[] }
+  >;
+};
+
 // Locales with complete guide-body translations (indexable, self-canonical).
 export const TRANSLATED_GUIDE_LOCALES: string[] = ["ru", "fr", "ar", "zh", "vi", "he"];
 
@@ -57,4 +69,50 @@ export async function getGuideTranslation(
   } catch {
     return null;
   }
+}
+
+
+/**
+ * Body + FAQ for a locale, preferring the guide document's own `translations`
+ * map over the bundled JSON.
+ *
+ * The 74 migrated guides carry their translations in lib/guide-i18n/*.json,
+ * which is compiled into the bundle — so a guide added to Mongo could not be
+ * translated without a deploy. A document-level map fixes that, and takes
+ * priority because it is the more specific source: if someone has translated a
+ * guide in the DB, that is the copy they want served.
+ */
+export async function resolveGuideBody(
+  guide: TranslatableGuide,
+  locale: string,
+): Promise<{ body: string; faq: { question: string; answer: string }[] | undefined }> {
+  if (locale === "en") return { body: guide.body, faq: guide.faq };
+
+  const fromDb = guide.translations?.[locale];
+  if (fromDb?.body?.trim()) {
+    // faq falls back per-item so a partly translated FAQ never drops a question.
+    const faq = fromDb.faq?.length
+      ? (guide.faq ?? []).map((en, i) => fromDb.faq?.[i] ?? en)
+      : guide.faq;
+    return { body: fromDb.body, faq };
+  }
+
+  const bundled = await getGuideTranslation(locale, guide.slug);
+  if (bundled?.body) {
+    return { body: bundled.body, faq: bundled.faq?.length ? bundled.faq : guide.faq };
+  }
+  return { body: guide.body, faq: guide.faq };
+}
+
+/**
+ * Which locales this guide is genuinely translated into, counting the document
+ * map as well as the bundled JSON. Drives indexability and hreflang: a locale
+ * only gets a self-canonical when its body is actually translated.
+ */
+export async function translatedLocalesForGuideDoc(guide: TranslatableGuide): Promise<string[]> {
+  const fromDb = Object.entries(guide.translations ?? {})
+    .filter(([l, t]) => TRANSLATED_GUIDE_LOCALES.includes(l) && t?.body?.trim())
+    .map(([l]) => l);
+  const fromBundle = await translatedLocalesForGuide(guide.slug);
+  return [...new Set([...fromDb, ...fromBundle])];
 }

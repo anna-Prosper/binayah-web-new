@@ -62,7 +62,7 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
   const tGuides = await getTranslations({ locale, namespace: "pulseGuides" });
   const guides: GuideItem[] = PULSE_GUIDES.slice(0, 4).map((g) => ({
     slug: g.slug,
-    title: guideTitle(g, tGuides),
+    title: guideTitle(g, tGuides, locale),
     readTime: g.readTime,
   }));
 
