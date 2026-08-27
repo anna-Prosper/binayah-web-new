@@ -513,12 +513,15 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     // them WITH hreflang alternates.
     ...guides.map((g) => withAlternates(`/pulse/guides/${g.slug}`, 0.7, "monthly", g.lastmod ?? now)),
     // Promotional offers — fully translated in all 7 locales via each document's
-    // `translations` map, so they carry hreflang alternates. Expired ones are
-    // dropped so the sitemap never advertises a closed promotion.
+    // `translations` map, so they carry hreflang alternates. Expired offers stay
+    // in the sitemap: the page keeps its rankings and its backlinks, and it
+    // simply stops making any claim about a date (no countdown, no window
+    // label, no validThrough). Only the crawl cadence drops, since a closed
+    // promotion is not changing daily any more.
     withAlternates("/offers", 0.75, "weekly", now),
-    ...offers
-      .filter((o) => !isExpired(o))
-      .map((o) => withAlternates(`/offers/${o.slug}`, 0.8, "daily", o.lastmod ?? now)),
+    ...offers.map((o) =>
+      withAlternates(`/offers/${o.slug}`, 0.8, isExpired(o) ? "monthly" : "daily", o.lastmod ?? now),
+    ),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/buy-property-in/${c.slug}`, 0.8, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/rent-property-in/${c.slug}`, 0.7, "weekly", now)),
     ...BUY_COMMUNITIES.map((c) => withAlternates(`/off-plan-in/${c.slug}`, 0.8, "weekly", now)),

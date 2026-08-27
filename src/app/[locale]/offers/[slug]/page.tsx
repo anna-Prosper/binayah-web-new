@@ -136,8 +136,14 @@ export default async function OfferPage({ params }: Props) {
 
   const nonce = await getNonce();
   const expired = isExpired(offer);
+  // A closed offer keeps its page, its sitemap entry and its rich result. What
+  // it loses is every claim about a date: no countdown, no window label, and no
+  // validThrough in the structured data — a validThrough in the past tells a
+  // crawler the promotion is dead, which is exactly what we do not want when
+  // the page is meant to keep ranking.
+  const hideDeadline = offer.hideDeadline || expired;
   // No published end date → show the label, but never a ticking clock.
-  const showCountdown = !offer.hideDeadline && hasDeadline(offer);
+  const showCountdown = !hideDeadline && hasDeadline(offer);
 
   // Section chrome (headings, eyebrows, CTA and form labels) is template copy,
   // not offer content, so it comes from the message catalogue rather than the
@@ -179,7 +185,7 @@ export default async function OfferPage({ params }: Props) {
         title={offer.h1}
         deadline={offer.deadline}
         expired={expired}
-        hideDeadline={offer.hideDeadline}
+        hideDeadline={hideDeadline}
         showCountdown={showCountdown}
       />
       <BreadcrumbJsonLd items={breadcrumbs} nonce={nonce} />
@@ -190,7 +196,7 @@ export default async function OfferPage({ params }: Props) {
         url={`/offers/${offer.slug}`}
         image={offer.heroImage}
         seller={offer.developer}
-        validThrough={offer.deadline}
+        validThrough={expired ? undefined : offer.deadline}
         category="Real Estate Payment Plan"
         inLanguage={locale}
         nonce={nonce}
@@ -252,7 +258,7 @@ export default async function OfferPage({ params }: Props) {
                 {offer.subtitle}
               </p>
 
-              {!expired && !offer.hideDeadline && (
+              {!hideDeadline && (
                 <div className="hero-rise mt-6 sm:mt-9">
                   {showCountdown ? (
                     // Caption above the digits — deliberately quiet so it doesn't

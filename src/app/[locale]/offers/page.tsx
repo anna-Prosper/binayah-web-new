@@ -61,8 +61,9 @@ export default async function OffersIndexPage({ params }: Props) {
   // a link or bookmark shouldn't hit a gap where the card used to be. Its
   // countdown/urgency badge just stops rendering (see the `!expired` guard
   // below) rather than showing a stale "ends Sunday" on a deal that's over.
-  // The JSON-LD ItemList and the sitemap still only list live ones, so this
-  // doesn't change what search engines see as current.
+  // It stays in the ItemList and the sitemap too, so the page keeps whatever
+  // ranking and links it earned; what changes is that it stops claiming a
+  // date anywhere, rather than disappearing.
   const [tCrumb, tNav, t] = await Promise.all([
     getTranslations({ locale, namespace: "breadcrumbs" }),
     getTranslations({ locale, namespace: "nav" }),
@@ -70,7 +71,6 @@ export default async function OffersIndexPage({ params }: Props) {
   ]);
   const offers = (await loadOffers()).map((o) => applyTranslation(o, locale)!);
   const live = offers; // rendered as-is, expired and current alike
-  const liveForSeo = offers.filter((o) => !isExpired(o));
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,13 +82,14 @@ export default async function OffersIndexPage({ params }: Props) {
         ]}
         nonce={nonce}
       />
-      {/* ItemList over the still-open offers only — an expired promotion stays
-          on the hub for visiting buyers but shouldn't be crawlable as current. */}
+      {/* ItemList over every offer, open or closed. A closed promotion keeps
+          its page and its place in the inventory; the date claims are what
+          come off, not the listing. */}
       <CollectionPageJsonLd
         name={TITLE}
         description={DESC}
         url="/offers"
-        items={liveForSeo.map((o) => ({ url: `/offers/${o.slug}`, name: o.h1 }))}
+        items={live.map((o) => ({ url: `/offers/${o.slug}`, name: o.h1 }))}
         nonce={nonce}
       />
 
