@@ -537,6 +537,7 @@ export function OfferJsonLd({
   image,
   seller,
   validThrough,
+  priceFrom,
   category,
   nonce,
   inLanguage,
@@ -551,6 +552,9 @@ export function OfferJsonLd({
   seller?: string;
   /** ISO 8601 deadline; drives promo expiry in search results. */
   validThrough?: string;
+  /** Lowest qualifying price in AED, emitted as a minPrice priceSpecification.
+   *  An Offer with no price at all is incomplete markup. */
+  priceFrom?: number;
   category?: string;
   nonce?: string;
 }) {
@@ -564,6 +568,17 @@ export function OfferJsonLd({
     description,
     url: abs(url),
     ...(inLanguage ? { inLanguage } : {}),
+    ...(priceFrom
+      ? {
+          priceCurrency: "AED",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: priceFrom,
+            priceCurrency: "AED",
+            valueAddedTaxIncluded: false,
+          },
+        }
+      : {}),
     ...(image ? { image: abs(image) } : {}),
     ...(validThrough ? { validThrough } : {}),
     ...(category ? { category } : {}),

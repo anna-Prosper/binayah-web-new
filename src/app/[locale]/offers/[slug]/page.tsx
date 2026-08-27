@@ -48,7 +48,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: offer.metaTitle,
     description: offer.metaDescription,
-    keywords: offer.keywords,
+    // No `keywords` meta: Google has ignored it since 2009 and Bing treats a
+    // stuffed one as a spam signal. The field stays on the offer document as
+    // internal targeting notes, but emitting it achieved nothing.
     alternates: { canonical: makeCanonical(locale, path), languages: altLangs(path) },
     openGraph: {
       title: offer.metaTitle,
@@ -197,6 +199,7 @@ export default async function OfferPage({ params }: Props) {
         image={offer.heroImage}
         seller={offer.developer}
         validThrough={expired ? undefined : offer.deadline}
+        priceFrom={offer.priceFrom}
         category="Real Estate Payment Plan"
         inLanguage={locale}
         nonce={nonce}

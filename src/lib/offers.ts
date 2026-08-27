@@ -102,6 +102,12 @@ export interface Offer {
   metaTitle: string;
   metaDescription: string;
   keywords: string;
+  /** Lowest qualifying price in AED, if the campaign publishes one. Drives the
+   *  priceSpecification in the Offer JSON-LD; omitted when there is no single
+   *  entry figure. Note this completes the markup rather than unlocking a rich
+   *  result: Google's price-bearing rich results are retail-oriented and a
+   *  property offer is not eligible for them. */
+  priceFrom?: number;
   /** 3–4 headline numbers rendered as the stat band under the hero. */
   highlights: OfferHighlight[];
   /** Payment-plan breakdown rendered as a horizontal timeline. EVERY offer
@@ -136,9 +142,8 @@ export interface Offer {
      *  back to DEFAULT_MASTERPLAN_HEADING when a locale hasn't translated it. */
     masterplanHeading?: string;
   };
-  /** Photo strip rendered as a mosaic with a click-through lightbox. `alt` text
-   *  is English-only presentation copy, not offer content, so it isn't
-   *  translated per locale. */
+  /** Gallery images. `src` lives only on the English base; `alt` is translated
+   *  per locale so image search and screen readers get the local language. */
   gallery?: { src: string; alt: string }[];
   /** Investment case — a short "why this one" stripe under the value props.
    *  `icons` is positional, same convention as amenities. */
@@ -174,8 +179,8 @@ export const OFFERS: Offer[] = [
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
-    "metaTitle": "Sobha 20:80 Payment Plan from AED 1.8M | 20% Now, 80% on Handover",
-    "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Closes 23 August. Speak to Binayah.",
+    "metaTitle": "Sobha 20:80 Offer from AED 1.8M | Pay 20% Now",
+    "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
     "highlights": [
       {
@@ -612,7 +617,8 @@ export const OFFERS: Offer[] = [
       "body": [
         "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
       ]
-    }
+    },
+    "priceFrom": 1800000
   },
   {
     "slug": "damac-lagoons-riverside-1950-offer",
@@ -625,8 +631,8 @@ export const OFFERS: Offer[] = [
     "deadline": "",
     "windowLabel": "Limited time offer",
     "hideDeadline": false,
-    "metaTitle": "DAMAC Waterfront Homes from AED 1,950/Month | 4% DLD Waiver + 50/50 Plan",
-    "metaDescription": "Branded DAMAC waterfront homes in Lagoons and Riverside from AED 1,950 a month, with a 4% DLD fee waiver, a 4% price discount and a 50/50 payment plan. Check which units qualify.",
+    "metaTitle": "DAMAC Waterfront Homes from AED 1,950 a Month",
+    "metaDescription": "Branded DAMAC waterfront homes at Lagoons and Riverside from AED 1,950 a month, with a 4% DLD waiver, 4% off the price and a 50/50 plan.",
     "keywords": "DAMAC Lagoons offer, DAMAC Riverside offer, DAMAC 50/50 payment plan, 4% DLD waiver Dubai, DAMAC waterfront homes, DAMAC Lagoons price, DAMAC Riverside price, Dubai waterfront property offer",
     "highlights": [
       {
@@ -996,7 +1002,8 @@ export const OFFERS: Offer[] = [
       }
     ],
     "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes."
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes.",
+    "priceFrom": 718000
   },
   {
     "slug": "danube-deal-of-the-decade-20-10-back",
@@ -1305,7 +1312,7 @@ export const OFFERS: Offer[] = [
       ]
     },
     "keywords": "danube deal of the decade, danube pay 20 get 10 back, danube properties offer dubai, danube 1 percent monthly payment plan, danube credit note offer, danube 11:11 projects, dubai off plan payment plan, danube properties dubai",
-    "metaDescription": "Danube's Deal of the Decade, 29 to 30 August 2026: pay 20% and 10% of the property value returns as a credit note, then 1% a month and 40% after handover. Binayah places the booking.",
+    "metaDescription": "Danube's Deal of the Decade, 29 to 30 August 2026: pay 20% and 10% returns as a credit note, then 1% a month and 40% after handover.",
     "metaTitle": "Danube Deal of the Decade | Pay 20%, Get 10% Back",
     "projectHref": "/developers/danube-properties",
     "projects": [
@@ -1440,7 +1447,8 @@ export const OFFERS: Offer[] = [
         ]
       ],
       "footnote": "Illustrative, on a AED 1.5 million unit outside the 11:11 lineup and excluding Greenz. The exact figures depend on the project, the track you choose and the terms recorded in the signed SPA."
-    }
+    },
+    "priceFrom": 790000
   }
 ];
 
