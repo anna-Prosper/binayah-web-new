@@ -18,6 +18,12 @@ export interface PulseGuide {
    *  guideTitle()/guideDescription() in lib/guide-text.ts for the order. */
   title?: string;
   description?: string;
+  /** Set by Mongo. For the 74 migrated guides this is synthetic — guideDates()
+   *  staggered it six days per array index — but for anything published since
+   *  it is a real publish date, and it is what orders the index. */
+  createdAt?: string | Date;
+  /** Curated rank, ascending. Also chronological: order 0 is the oldest guide. */
+  order?: number;
   // Body is English-only long-form content (600–1200 words)
   body: string;
   // Related community names (shown at bottom of guide page)
