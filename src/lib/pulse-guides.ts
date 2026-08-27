@@ -10,6 +10,14 @@ export interface PulseGuide {
   views: number; // Placeholder static
   titleKey: string; // i18n key in pulseGuides namespace
   descriptionKey: string; // i18n key in pulseGuides namespace
+  /** Self-describing title/description carried on the Mongo document. The 74
+   *  guides migrated from this file resolve their copy through the message
+   *  catalogue instead, which means a guide added to Mongo alone had no title
+   *  until a deploy shipped its keys — it rendered the raw key path on the
+   *  live page. These fields let a new guide stand on its own; see
+   *  guideTitle()/guideDescription() in lib/guide-text.ts for the order. */
+  title?: string;
+  description?: string;
   // Body is English-only long-form content (600–1200 words)
   body: string;
   // Related community names (shown at bottom of guide page)

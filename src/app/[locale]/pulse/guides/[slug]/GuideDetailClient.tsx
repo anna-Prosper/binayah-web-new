@@ -1,4 +1,5 @@
 "use client";
+import { guideTitle, guideDescription } from "@/lib/guide-text";
 
 import React from "react";
 import { useTranslations } from "next-intl";
@@ -311,8 +312,8 @@ export default function GuideDetailClient({
   const locale = useLocale();
   const ui = UI[locale] ?? UI.en;
 
-  const title = t(guide.titleKey as Parameters<typeof t>[0]);
-  const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
+  const title = guideTitle(guide, t);
+  const description = guideDescription(guide, t);
   const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<typeof t>[0]);
   const toc = extracttoc(guide.body);
   const publishedLabel = published
@@ -463,7 +464,7 @@ export default function GuideDetailClient({
                     {relatedGuides.map((g) => (
                       <Link key={g.slug} href={`/${locale}/pulse/guides/${g.slug}`} className="group block">
                         <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">
-                          {t(g.titleKey as Parameters<typeof t>[0])}
+                          {guideTitle(g, t)}
                         </p>
                         <span className="flex items-center gap-1 text-[11px] text-muted-foreground mt-1">
                           <Clock className="h-3 w-3" /> {g.readTime}

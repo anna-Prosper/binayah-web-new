@@ -11,6 +11,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQJsonLd } from "@/components/JsonLd";
 import { canonical, OG_LOCALE, AE_URL } from "@/lib/site";
 import { getGuideTranslation, translatedLocalesForGuide } from "@/lib/guide-i18n";
+import { guideTitle, guideDescription } from "@/lib/guide-text";
 
 export const revalidate = 86400;
 
@@ -43,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!guide) return {};
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
   const suffix = PULSE_SUFFIX[locale] ?? "Dubai Pulse | Binayah Properties";
-  const title = `${t(guide.titleKey as Parameters<typeof t>[0])} | ${suffix}`;
-  const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
+  const title = `${guideTitle(guide, t)} | ${suffix}`;
+  const description = guideDescription(guide, t);
   const isEn = locale === "en";
   // A guide is indexable in English, and in any locale whose bodies+FAQs are
   // fully translated (see @/lib/guide-i18n). Locales that render a translated
@@ -94,8 +95,8 @@ export default async function GuideDetailPage({ params }: Props) {
   if (!guide) notFound();
 
   const t = await getTranslations({ locale, namespace: "pulseGuides" });
-  const title = t(guide.titleKey as Parameters<typeof t>[0]);
-  const description = t(guide.descriptionKey as Parameters<typeof t>[0]);
+  const title = guideTitle(guide, t);
+  const description = guideDescription(guide, t);
   const url = canonical(locale, `/pulse/guides/${slug}`);
   const lp = locale === "en" ? "" : `/${locale}`;
 

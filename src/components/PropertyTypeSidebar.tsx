@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { serverApiUrl, serverFetch } from "@/lib/api";
 import PropertyTypeSidebarNewsletter from "@/components/PropertyTypeSidebarNewsletter";
 import { PULSE_GUIDES } from "@/lib/pulse-guides";
+import { guideTitle } from "@/lib/guide-text";
 
 
 
@@ -61,7 +62,7 @@ export default async function PropertyTypeSidebar({ locale, slug }: PropertyType
   const tGuides = await getTranslations({ locale, namespace: "pulseGuides" });
   const guides: GuideItem[] = PULSE_GUIDES.slice(0, 4).map((g) => ({
     slug: g.slug,
-    title: tGuides(g.titleKey as never),
+    title: guideTitle(g, tGuides),
     readTime: g.readTime,
   }));
 

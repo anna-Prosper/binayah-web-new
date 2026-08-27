@@ -1,4 +1,5 @@
 "use client";
+import { guideTitle, guideDescription } from "@/lib/guide-text";
 
 import { useMemo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
@@ -37,8 +38,8 @@ export default function GuidesClient({ guides: allGuides }: { guides: PulseGuide
     () =>
       allGuides.map((g) => ({
         guide: g,
-        title: t(g.titleKey as Parameters<Tx>[0]),
-        description: t(g.descriptionKey as Parameters<Tx>[0]),
+        title: guideTitle(g, t),
+        description: guideDescription(g, t),
       })),
     [t, allGuides]
   );
