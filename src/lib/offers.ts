@@ -1449,6 +1449,417 @@ export const OFFERS: Offer[] = [
       "footnote": "Illustrative, on a AED 1.5 million unit outside the 11:11 lineup and excluding Greenz. The exact figures depend on the project, the track you choose and the terms recorded in the signed SPA."
     },
     "priceFrom": 790000
+  },
+  {
+    "slug": "emaar-payment-plans-offer",
+    "amenities": {
+      "heading": "Master-planned, and finished.",
+      "stats": [
+        {
+          "value": "8",
+          "label": "Communities on a plan",
+          "icon": "Building2"
+        },
+        {
+          "value": "3 yrs",
+          "label": "Post-handover at Emaar South",
+          "icon": "CalendarClock"
+        },
+        {
+          "value": "2",
+          "label": "Off-plan mortgage partners",
+          "icon": "ShieldCheck"
+        }
+      ],
+      "masterplanHeading": "Inside an Emaar community",
+      "items": [
+        "Swimmable lagoons",
+        "Championship golf",
+        "Marina berths",
+        "Creek and beachfront",
+        "Community parks",
+        "Retail promenades",
+        "Schools and clinics",
+        "Pools and gyms",
+        "Cycling and running tracks"
+      ],
+      "icons": [
+        "Waves",
+        "TreePalm",
+        "Sun",
+        "Droplets",
+        "Flower2",
+        "Store",
+        "Users",
+        "Bike",
+        "Sparkles"
+      ]
+    },
+    "bodyParagraphs": [
+      "Emaar is not running one campaign. It is running four structures at once, and which one applies depends entirely on the community you buy in. The most common is 80/20: eighty per cent across the construction period and the remaining twenty on 100% construction completion. That covers The Cove at Dubai Creek Harbour, Park Horizon at Dubai Hills Estate, Seascape at Rashid Yachts & Marina and Fairway Villas at Emaar South.",
+      "Three communities go further and defer only a tenth. Seapoint at Emaar Beachfront, Emaar Beachfront itself and Alana at The Valley run 90/10, so ninety per cent is paid while the building goes up and the last ten per cent falls due at completion. That is a heavier construction-period commitment in exchange for a clean position at handover.",
+      "The outlier is Emaar South. It is the only one of the set on ready-to-move stock, and it inverts the structure completely: twenty-five per cent up front, then seventy-five per cent spread across three years after you have taken the keys. A three-year post-handover tail is unusual for Emaar, and it means the property can be occupied or let while most of the price is still outstanding.",
+      "Two things sit underneath all of it. Off-plan financing is arranged within the purchase through Emirates NBD and ADCB rather than left to the buyer afterwards, and UAE Nationals buying at Dubai Hills Estate have their own plan of equal 2.5% monthly instalments for a limited period. We place the booking, confirm which plan is attached to your unit and handle the paperwork."
+    ],
+    "ctaLabel": "Check eligible units",
+    "dayCountEyebrow": false,
+    "deadline": "",
+    "developer": "Emaar Properties",
+    "disclaimer": "Payment plans are set by Emaar Properties and are attached to specific releases and unit types, subject to availability and developer approval. Plans change between phases and the structure quoted here may not apply to the unit you are shown. Figures are illustrative and do not constitute financial advice or an offer to sell. The 4% Dubai Land Department registration fee is not waived under these plans. Confirm the plan, the schedule and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "eligibility": [
+      {
+        "label": "90/10",
+        "value": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley: 90% during construction, 10% on 100% construction completion."
+      },
+      {
+        "label": "80/20",
+        "value": "The Cove, Park Horizon, Seascape and Fairway Villas: 80% during construction, 20% on 100% construction completion."
+      },
+      {
+        "label": "25/75",
+        "value": "Emaar South, ready to move in: 25% up front and 75% spread over a three year post-handover plan."
+      },
+      {
+        "label": "UAE Nationals",
+        "value": "A separate plan at Dubai Hills Estate paid in equal 2.5% monthly instalments, for a limited period."
+      },
+      {
+        "label": "Mortgages",
+        "value": "Off-plan financing is arranged within the purchase through Emirates NBD and ADCB."
+      },
+      {
+        "label": "Entry price",
+        "value": "From AED 1.3M at The Cove, Dubai Creek Harbour."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "Units above AED 2 million qualify for the property investor visa route."
+      },
+      {
+        "label": "Availability",
+        "value": "Plans are tied to specific releases and change between phases. Confirm the plan attached to your unit before committing."
+      }
+    ],
+    "explainer": {
+      "heading": "Four plans, depending on what you are buying",
+      "highlight": "The Emaar South plan is the outlier: it is a ready-to-move home where 75% of the price is spread across three years after you have the keys. Emaar rarely defers that much, that long.",
+      "body": [
+        "Emaar is running several structures at once rather than a single campaign. Which one you get depends on the community. Off-plan financing is built into the process through Emirates NBD and ADCB, and UAE Nationals buying at Dubai Hills Estate have a separate plan of equal 2.5% monthly instalments."
+      ]
+    },
+    "eyebrow": "Live Emaar payment plans",
+    "faqs": [
+      {
+        "question": "Which Emaar communities are on the 90/10 plan?",
+        "answer": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley. You pay 90% across the construction period and the remaining 10% on 100% construction completion."
+      },
+      {
+        "question": "Which are on 80/20?",
+        "answer": "The Cove, Park Horizon, Seascape and Fairway Villas. 80% during construction, 20% on 100% construction completion."
+      },
+      {
+        "question": "What is different about Emaar South?",
+        "answer": "It is a ready-to-move-in plan rather than an off-plan one: 25% up front and 75% spread across a three year post-handover schedule. Emaar rarely defers that much for that long."
+      },
+      {
+        "question": "Is there a plan for UAE Nationals?",
+        "answer": "Yes. Emaar is running a separate plan at Dubai Hills Estate for Emirati buyers, paid in equal 2.5% monthly instalments, for a limited period."
+      },
+      {
+        "question": "Can I get a mortgage on an off-plan Emaar unit?",
+        "answer": "Emaar has off-plan financing built into the buying process through Emirates NBD and ADCB, so the mortgage is arranged alongside the reservation rather than separately afterwards."
+      },
+      {
+        "question": "Is the DLD fee waived?",
+        "answer": "No. These are payment structures rather than fee waivers, so the 4% Dubai Land Department registration fee is payable in the normal way."
+      },
+      {
+        "question": "Do these plans have an end date?",
+        "answer": "Emaar has not published one. The plans are attached to specific releases and change between phases, so the plan on your unit should be confirmed in writing before you commit."
+      },
+      {
+        "question": "What is the lowest entry price?",
+        "answer": "AED 1.3 million at The Cove, Dubai Creek Harbour, at the time of writing. Pricing moves between releases."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
+        "alt": "Seascape at Rashid Yachts & Marina from the air"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/featured.webp",
+        "alt": "The Cove at Dubai Creek Harbour on the waterfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/3.webp",
+        "alt": "The swimmable lagoon at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/6.webp",
+        "alt": "Park Horizon at Dubai Hills Estate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/featured.webp",
+        "alt": "The marina at Rashid Yachts & Marina"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/1.webp",
+        "alt": "Waterside townhouses at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/6.webp",
+        "alt": "Golf Views at Emaar South overlooking the course"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/gallery/1.webp",
+        "alt": "Waterfront residences at The Cove, Dubai Creek Harbour"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/7.webp",
+        "alt": "Landscaped waterway at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/featured.webp",
+        "alt": "Park Horizon towers at Dubai Hills Estate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/2.webp",
+        "alt": "Rashid Yachts & Marina and the Dubai skyline"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/10.webp",
+        "alt": "Lagoon deck at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/7.webp",
+        "alt": "The championship golf course at Dubai Hills Estate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fairway-villas-phase-3-at-emaar-south/gallery/1.webp",
+        "alt": "A Fairway Villa at Emaar South"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/8.webp",
+        "alt": "Streetscape at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/2.webp",
+        "alt": "Golf Views residences at Emaar South"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/9.webp",
+        "alt": "Villas at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/10.webp",
+        "alt": "Sea-view bedroom at Seascape"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/3.webp",
+        "alt": "Living room at Golf Views, Emaar South"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/11.webp",
+        "alt": "Sea-view interior at Seascape"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/4.webp",
+        "alt": "Interior at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/4.webp",
+        "alt": "Bedroom at Golf Views, Emaar South"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/6.webp",
+        "alt": "Living space at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/5.webp",
+        "alt": "Kitchen and dining at Golf Views, Emaar South"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/featured.webp",
+        "alt": "The entrance to The Valley by Emaar"
+      }
+    ],
+    "h1": "Emaar Payment Plans: 90/10, 80/20 and 25/75",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/2.webp",
+    "hideDeadline": true,
+    "highlights": [
+      {
+        "value": "90/10",
+        "label": "Seapoint and Alana",
+        "detail": "90% during construction, 10% on completion"
+      },
+      {
+        "value": "80/20",
+        "label": "Cove, Park Horizon, Seascape",
+        "detail": "80% during construction, 20% on completion"
+      },
+      {
+        "value": "25/75",
+        "label": "Emaar South, ready to move",
+        "detail": "75% spread across three years after handover"
+      },
+      {
+        "value": "2.5%",
+        "label": "Monthly, UAE Nationals",
+        "detail": "Equal instalments at Dubai Hills Estate"
+      }
+    ],
+    "investment": {
+      "heading": "The developer the market prices off.",
+      "items": [
+        {
+          "title": "Deep resale market",
+          "text": "Emaar stock is the most liquid in Dubai."
+        },
+        {
+          "title": "Delivered at scale",
+          "text": "Downtown, Dubai Hills, Creek Harbour, Beachfront."
+        },
+        {
+          "title": "Financing built in",
+          "text": "Emirates NBD and ADCB inside the purchase."
+        },
+        {
+          "title": "Golden Visa route",
+          "text": "Units above AED 2 million qualify for the investor visa."
+        }
+      ],
+      "icons": [
+        "TrendingUp",
+        "Building2",
+        "Coins",
+        "ShieldCheck"
+      ]
+    },
+    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, alana the valley payment plan, dubai off plan payment plan",
+    "metaDescription": "Emaar's current plans: 90/10 at Seapoint and Alana, 80/20 at The Cove, Park Horizon and Seascape, and 25/75 with a 3-year post-handover tail at Emaar South.",
+    "metaTitle": "Emaar Payment Plans | 90/10, 80/20 and 25/75",
+    "priceFrom": 1300000,
+    "projectHref": "/developers/emaar-properties",
+    "projects": [
+      {
+        "name": "The Cove",
+        "terms": "Dubai Creek Harbour, on the water. 80% during construction and 20% on 100% completion, from AED 1.3M.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/featured.webp",
+        "links": [
+          {
+            "label": "The Cove at Dubai Creek Harbour",
+            "href": "/project/the-cove-2-at-dubai-creek-harbour"
+          }
+        ]
+      },
+      {
+        "name": "Seascape",
+        "terms": "Rashid Yachts & Marina. 80% during construction, 20% on 100% completion, beside the superyacht berths.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
+        "links": [
+          {
+            "label": "Seascape at Rashid Yachts & Marina",
+            "href": "/project/seascape-at-rashid-yachts-marina-by-emaar"
+          }
+        ]
+      },
+      {
+        "name": "Park Horizon",
+        "terms": "Dubai Hills Estate, over the championship golf course. 80% during construction and 20% on 100% completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/6.webp",
+        "links": [
+          {
+            "label": "Park Horizon at Dubai Hills Estate",
+            "href": "/project/park-horizon-by-emaar-at-dubai-hills-estate"
+          }
+        ]
+      },
+      {
+        "name": "Alana",
+        "terms": "The Valley, built around a swimmable lagoon. On the 90/10 plan, so only a tenth is left at completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/3.webp",
+        "links": [
+          {
+            "label": "Alana at The Valley",
+            "href": "/project/alana-by-emaar-at-the-valley"
+          }
+        ]
+      },
+      {
+        "name": "Emaar South",
+        "terms": "Ready to move in, on the 25/75 plan with the balance spread across three years after handover.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/6.webp",
+        "links": [
+          {
+            "label": "Golf Views at Emaar South",
+            "href": "/project/golf-views-in-emaar-south"
+          }
+        ]
+      }
+    ],
+    "shortName": "Emaar Payment Plans",
+    "subtitle": "Pay up to 90% while it builds and the rest on completion, or move in now at Emaar South and spread 75% across three years after handover.",
+    "timeline": [
+      {
+        "share": "80%",
+        "stage": "During construction",
+        "description": "Paid across the build period on the milestone schedule."
+      },
+      {
+        "share": "20%",
+        "stage": "On 100% completion",
+        "description": "The balance falls due when construction is complete."
+      }
+    ],
+    "timelineIntro": "The 80/20 shown here is the most common structure. Seapoint, Emaar Beachfront and Alana defer only 10% instead of 20%, and Emaar South inverts the whole thing: 25% now, 75% after you move in.",
+    "valueProps": [
+      [
+        "Only 10% left at completion",
+        "On Seapoint, Emaar Beachfront and Alana the plan defers just a tenth of the price to handover. That suits a buyer who wants the payment behind them and the asset clean by the time keys are issued."
+      ],
+      [
+        "Or 75% after you move in",
+        "Emaar South runs the opposite structure on ready homes: pay a quarter, take the keys, and spread the remaining three quarters across three years. You can occupy or let the property while the balance is still running."
+      ],
+      [
+        "Financing inside the purchase",
+        "Emirates NBD and ADCB off-plan mortgages are arranged as part of the buying process rather than as a separate hunt afterwards, which shortens the gap between reservation and funding."
+      ],
+      [
+        "A flat plan for UAE Nationals",
+        "At Dubai Hills Estate, Emirati buyers pay in equal 2.5% monthly instalments for a limited period, so the schedule is a fixed monthly figure rather than milestone-linked lumps."
+      ]
+    ],
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'd like the Emaar payment plans: 90/10, 80/20 and the 25/75 at Emaar South. Please send me what is available and the plan on each.",
+    "windowLabel": "Current Emaar release",
+    "worked": {
+      "heading": "What 80/20 looks like on an AED 1,300,000 apartment",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 1,300,000"
+        ],
+        [
+          "80% during construction",
+          "AED 1,040,000"
+        ],
+        [
+          "20% on completion",
+          "AED 260,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 52,000"
+        ],
+        [
+          "Due before completion",
+          "= AED 1,092,000"
+        ]
+      ],
+      "footnote": "Illustrative, on the entry price at The Cove. The DLD fee is not waived under these plans. Exact figures depend on the unit, the release and the schedule recorded in the signed SPA."
+    }
   }
 ];
 
