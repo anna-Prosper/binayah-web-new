@@ -594,7 +594,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 onMouseEnter={() => setPhoneHover(true)}
                 onMouseLeave={() => setPhoneHover(false)}
               >
-                <a href="tel:+971549988811" className="flex items-center gap-2 text-white/80 hover:text-white transition-all">
+                <a href="tel:+971555099157" className="flex items-center gap-2 text-white/80 hover:text-white transition-all">
                   <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 hover:bg-white/10 transition-colors">
                     <Phone className="h-4 w-4" />
                   </div>
@@ -861,7 +861,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
 
               {/* Contact actions */}
               <div className="pt-4 border-t border-white/10 space-y-1">
-                <a href="tel:+971549988811" className="flex items-center gap-3 px-2 py-3 text-white/80 text-sm hover:text-white transition-colors min-h-[48px]">
+                <a href="tel:+971555099157" className="flex items-center gap-3 px-2 py-3 text-white/80 text-sm hover:text-white transition-colors min-h-[48px]">
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                     <Phone className="h-[18px] w-[18px] text-white" />
                   </div>

@@ -58,7 +58,7 @@ interface RelatedArticle {
 }
 
 const FALLBACK_IMAGE = "/assets/dubai-hero.webp";
-const WHATSAPP_NUMBER = "971549988811";
+const WHATSAPP_NUMBER = "971555099157";
 
 function formatDate(dateStr?: string) {
   if (!dateStr) return "";

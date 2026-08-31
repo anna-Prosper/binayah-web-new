@@ -63,11 +63,11 @@ export default async function LocaleNotFound() {
           <p className="text-xs text-muted-foreground">
             {t.help}{" "}
             <a
-              href="tel:+971549988811"
+              href="tel:+971555099157"
               className="text-[#1A7A5A] hover:underline inline-flex items-center gap-1"
             >
               <Phone className="h-3 w-3" />
-              +971 54 998 8811
+              +971 55 509 9157
             </a>
           </p>
         </div>

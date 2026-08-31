@@ -6,7 +6,7 @@ import { StickyMobileCta, type LeadEntity } from "./StickyMobileCta";
 export interface DetailStickyCtaProps {
   /** Pre-built WhatsApp deep link with the encoded `?text=` payload. */
   whatsappUrl: string;
-  /** Phone number used for the tel: link (no formatting required — e.g. "+971549988811"). */
+  /** Phone number used for the tel: link (no formatting required — e.g. "+971555099157"). */
   phone: string;
   /** Optional override for the Live Chat anchor target. */
   liveChatHref?: string;

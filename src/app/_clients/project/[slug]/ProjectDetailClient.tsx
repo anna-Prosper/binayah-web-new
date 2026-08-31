@@ -297,7 +297,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
   // Every WhatsApp CTA on the project page appends the project URL for the agent
   // (lead attribution). Uses the project's own number when set, else the company.
   const projectUrl = origin ? `${origin}/project/${project.slug}` : undefined;
-  const projectWaNumber = project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971549988811";
+  const projectWaNumber = project.whatsappNumber?.trim() || project.contactPhone?.trim() || "+971555099157";
   const waLink = (message: string) => waHref(message, projectUrl, projectWaNumber);
 
   const handleTabChange = (id: "overview" | "floor-plans" | "location" | "payment" | "faq") => {
@@ -2682,7 +2682,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
                   </a>
                   <a
                     onClick={() => trackLead("phone", leadEntity)}
-                    href={`tel:${(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}`}
+                    href={`tel:${(project.contactPhone && project.contactPhone.trim()) || "+971555099157"}`}
                     className="w-full flex items-center justify-center gap-2 py-3.5 text-white rounded-full text-sm font-bold transition-all duration-300 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98]"
                     style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}
                   >
@@ -2910,7 +2910,7 @@ const ProjectDetailClient = ({ serverProject, serverSimilar, defaultTab, seoStat
       <DetailStickyCta
         entity={leadEntity}
         whatsappUrl={waLink(`Hi, I'm interested in ${project.name}`)}
-        phone={(project.contactPhone && project.contactPhone.trim()) || "+971549988811"}
+        phone={(project.contactPhone && project.contactPhone.trim()) || "+971555099157"}
       />
 
       {/* QR Code Modal */}

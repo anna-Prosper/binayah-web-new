@@ -14,7 +14,7 @@
     "listYourProperty": "出售",
     "insights": "市场洞察",
     "company": "公司",
-    "phoneNumber": "+971 54 998 8811",
+    "phoneNumber": "+971 55 509 9157",
     "getInTouch": "立即联系",
     "myProfile": "我的账户",
     "saved": "我的收藏",
@@ -697,7 +697,7 @@
       "team": "我们的团队",
       "offers": "优惠与付款计划"
     },
-    "phoneNumber": "+971 54 998 8811",
+    "phoneNumber": "+971 55 509 9157",
     "email": "info@binayah.com",
     "ornNumber": "Reg No. 1162",
     "address": "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai",
@@ -1166,7 +1166,7 @@
     "interestedTitle": "对本房源感兴趣？",
     "interestedSubtitle": "联系我们的团队，预约看房或获取更多详情。",
     "whatsapp": "WhatsApp",
-    "callUs": "致电 +971 54 998 8811",
+    "callUs": "致电 +971 55 509 9157",
     "emailUs": "邮件咨询",
     "sendInquiry": "发送咨询",
     "sendInquiryBtn": "提交咨询",
@@ -2022,8 +2022,8 @@
         ]
       }
     },
-    "noMatches": "当前没有合适的匹配项，但我们的团队可以为您筛选选项。请通过WhatsApp或+971 54 998 8811联系我们。",
-    "errorGeneric": "抱歉，目前无法生成推荐。请重试或通过+971 54 998 8811联系我们。",
+    "noMatches": "当前没有合适的匹配项，但我们的团队可以为您筛选选项。请通过WhatsApp或+971 55 509 9157联系我们。",
+    "errorGeneric": "抱歉，目前无法生成推荐。请重试或通过+971 55 509 9157联系我们。",
     "errorBusy": "服务繁忙，请重试。"
   },
   "valuationBanner": {
@@ -3157,7 +3157,7 @@
     "formBudgetLabel": "预算范围（选填）",
     "formBudgetAria": "预算",
     "formSending": "发送中…",
-    "formError": "出了点问题。请重试，或致电 +971 54 998 8811。",
+    "formError": "出了点问题。请重试，或致电 +971 55 509 9157。",
     "formPrivacy": "我们仅使用您的信息回复此次咨询。",
     "formSuccessTitle": "已收到您的请求",
     "formSuccessBody": "我们的顾问将确认符合条件的房源，并尽快发送完整条款。",

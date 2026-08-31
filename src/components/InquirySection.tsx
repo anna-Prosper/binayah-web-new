@@ -58,7 +58,7 @@ const InquirySection = () => {
   };
 
   const contactItems = [
-    { icon: Phone, label: "+971 54 998 8811", href: "tel:+971549988811" },
+    { icon: Phone, label: "+971 55 509 9157", href: "tel:+971555099157" },
     { icon: Mail, label: "info@binayah.com", href: "mailto:info@binayah.com" },
   ];
 

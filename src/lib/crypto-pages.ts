@@ -554,7 +554,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Ready to Buy Dubai Property with BTC?",
-        "ctaDesc": "Talk to Binayah's multilingual team about converting your Bitcoin into a Dubai home. WhatsApp +971 54 998 8811 for a confidential, source-of-funds-ready consultation.",
+        "ctaDesc": "Talk to Binayah's multilingual team about converting your Bitcoin into a Dubai home. WhatsApp +971 55 509 9157 for a confidential, source-of-funds-ready consultation.",
         "keywords": [
           "buy property in Dubai with Bitcoin",
           "Dubai real estate Bitcoin",
@@ -619,7 +619,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Prêt à acheter un bien à Dubaï en BTC ?",
-        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur la conversion de votre Bitcoin en un bien à Dubaï. WhatsApp +971 54 998 8811 pour une consultation confidentielle, prête pour la provenance des fonds.",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur la conversion de votre Bitcoin en un bien à Dubaï. WhatsApp +971 55 509 9157 pour une consultation confidentielle, prête pour la provenance des fonds.",
         "keywords": [
           "acheter propriété dubaï bitcoin",
           "immobilier dubaï bitcoin",
@@ -684,7 +684,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Готовы купить недвижимость Дубая за BTC?",
-        "ctaDesc": "Обсудите с многоязычной командой Binayah конвертацию Bitcoin в дом в Дубае. WhatsApp +971 54 998 8811, конфиденциальная консультация с готовностью к подтверждению источника средств.",
+        "ctaDesc": "Обсудите с многоязычной командой Binayah конвертацию Bitcoin в дом в Дубае. WhatsApp +971 55 509 9157, конфиденциальная консультация с готовностью к подтверждению источника средств.",
         "keywords": [
           "купить недвижимость в Дубае за Bitcoin",
           "недвижимость Дубай Bitcoin",
@@ -749,7 +749,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "هل أنت مستعد لشراء عقار في دبي بعملة BTC؟",
-        "ctaDesc": "تحدث مع فريق Binayah متعدد اللغات حول تحويل Bitcoin إلى منزل في دبي. واتساب +971 54 998 8811 لاستشارة سرية وجاهزة لإثبات مصدر الأموال.",
+        "ctaDesc": "تحدث مع فريق Binayah متعدد اللغات حول تحويل Bitcoin إلى منزل في دبي. واتساب +971 55 509 9157 لاستشارة سرية وجاهزة لإثبات مصدر الأموال.",
         "keywords": [
           "شراء عقار في دبي بعملة Bitcoin",
           "عقارات دبي Bitcoin",
@@ -814,7 +814,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "准备好用BTC购买迪拜房产了吗？",
-        "ctaDesc": "联系Binayah多语言团队，了解如何将比特币转化为迪拜房产。WhatsApp +971 54 998 8811，提供保密且资金来源就绪的咨询。",
+        "ctaDesc": "联系Binayah多语言团队，了解如何将比特币转化为迪拜房产。WhatsApp +971 55 509 9157，提供保密且资金来源就绪的咨询。",
         "keywords": [
           "用比特币购买迪拜房产",
           "迪拜房产 比特币",
@@ -879,7 +879,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Sẵn sàng mua bất động sản Dubai bằng BTC?",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về việc đổi Bitcoin lấy nhà tại Dubai. WhatsApp +971 54 998 8811 để được tư vấn bảo mật, sẵn sàng chứng minh nguồn tiền.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về việc đổi Bitcoin lấy nhà tại Dubai. WhatsApp +971 55 509 9157 để được tư vấn bảo mật, sẵn sàng chứng minh nguồn tiền.",
         "keywords": [
           "mua bất động sản Dubai bằng Bitcoin",
           "bất động sản Dubai Bitcoin",
@@ -944,7 +944,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "מוכנים לקנות נכס בדובאי ב-BTC?",
-        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על המרת ה-Bitcoin שלכם לבית בדובאי. WhatsApp +971 54 998 8811 לייעוץ חסוי ומוכן למקור כספים.",
+        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על המרת ה-Bitcoin שלכם לבית בדובאי. WhatsApp +971 55 509 9157 לייעוץ חסוי ומוכן למקור כספים.",
         "keywords": [
           "קניית נכס בדובאי ב-Bitcoin",
           "נדל\"ן בדובאי Bitcoin",
@@ -1015,7 +1015,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Convert your ETH into a Dubai title deed",
-        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai property with Ethereum. We lock your rate, manage compliance, and register your DLD title deed. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai property with Ethereum. We lock your rate, manage compliance, and register your DLD title deed. WhatsApp +971 55 509 9157.",
         "keywords": [
           "buy property in Dubai with Ethereum",
           "Dubai real estate with ETH",
@@ -1080,7 +1080,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Convertissez vos ETH en un titre de propriété à Dubaï",
-        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'un bien à Dubaï en Ethereum. Nous verrouillons votre taux, gérons la conformité et enregistrons votre titre de propriété au DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'un bien à Dubaï en Ethereum. Nous verrouillons votre taux, gérons la conformité et enregistrons votre titre de propriété au DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "acheter propriété dubaï ethereum",
           "immobilier dubaï ETH",
@@ -1145,7 +1145,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Превратите ETH в титул собственности в Дубае",
-        "ctaDesc": "Обсудите с многоязычной командой Binayah покупку недвижимости в Дубае за Ethereum. Мы фиксируем курс, ведём комплаенс и регистрируем титул DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Обсудите с многоязычной командой Binayah покупку недвижимости в Дубае за Ethereum. Мы фиксируем курс, ведём комплаенс и регистрируем титул DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "купить недвижимость в Дубае за Ethereum",
           "недвижимость Дубая за ETH",
@@ -1210,7 +1210,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "حوّل ETH الخاص بك إلى سند ملكية في دبي",
-        "ctaDesc": "تحدث مع فريق Binayah متعدد اللغات حول شراء عقار في دبي بعملة Ethereum. نثبّت سعرك وندير الامتثال ونسجّل سند ملكية DLD. واتساب ‎+971 54 998 8811.",
+        "ctaDesc": "تحدث مع فريق Binayah متعدد اللغات حول شراء عقار في دبي بعملة Ethereum. نثبّت سعرك وندير الامتثال ونسجّل سند ملكية DLD. واتساب ‎+971 55 509 9157.",
         "keywords": [
           "شراء عقار في دبي بعملة Ethereum",
           "عقارات دبي بعملة ETH",
@@ -1275,7 +1275,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "将您的 ETH 转化为迪拜产权证",
-        "ctaDesc": "与 Binayah 多语言团队洽谈用以太坊在迪拜购房。我们锁定汇率、管理合规并注册 DLD 产权证。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "与 Binayah 多语言团队洽谈用以太坊在迪拜购房。我们锁定汇率、管理合规并注册 DLD 产权证。WhatsApp +971 55 509 9157。",
         "keywords": [
           "用以太坊在迪拜购房",
           "ETH 迪拜房产",
@@ -1340,7 +1340,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Biến ETH của bạn thành sổ đỏ tại Dubai",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về việc mua bất động sản Dubai bằng Ethereum. Chúng tôi khóa tỷ giá, quản lý tuân thủ và đăng ký sổ đỏ DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về việc mua bất động sản Dubai bằng Ethereum. Chúng tôi khóa tỷ giá, quản lý tuân thủ và đăng ký sổ đỏ DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "mua bất động sản Dubai bằng Ethereum",
           "bất động sản Dubai bằng ETH",
@@ -1405,7 +1405,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "הפכו את ה-ETH שלכם לשטר בעלות בדובאי",
-        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על רכישת נכס בדובאי ב-Ethereum. אנו נועלים את השער, מנהלים את הציות ורושמים את שטר הבעלות שלכם ב-DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על רכישת נכס בדובאי ב-Ethereum. אנו נועלים את השער, מנהלים את הציות ורושמים את שטר הבעלות שלכם ב-DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "קניית נכס בדובאי ב-Ethereum",
           "נדל\"ן בדובאי ב-ETH",
@@ -1476,7 +1476,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Start Your USDT Property Purchase Today",
-        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai real estate with USDT. With 19+ years and 3,000+ properties, we handle conversion, AML/KYC and DLD registration. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Talk to Binayah's multilingual team about buying Dubai real estate with USDT. With 19+ years and 3,000+ properties, we handle conversion, AML/KYC and DLD registration. WhatsApp +971 55 509 9157.",
         "keywords": [
           "buy property in Dubai with USDT",
           "Tether Dubai real estate",
@@ -1541,7 +1541,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Lancez votre achat immobilier en USDT dès aujourd'hui",
-        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'immobilier à Dubaï en USDT. Avec 19+ ans et 3 000+ biens, nous gérons la conversion, l'AML/KYC et l'enregistrement au DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur l'achat d'immobilier à Dubaï en USDT. Avec 19+ ans et 3 000+ biens, nous gérons la conversion, l'AML/KYC et l'enregistrement au DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "acheter propriété dubaï USDT",
           "Tether immobilier dubaï",
@@ -1606,7 +1606,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Начните покупку недвижимости за USDT сегодня",
-        "ctaDesc": "Свяжитесь с многоязычной командой Binayah о покупке недвижимости в Дубае за USDT. 19+ лет и 3000+ объектов: берём на себя конвертацию, AML/KYC и регистрацию в DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Свяжитесь с многоязычной командой Binayah о покупке недвижимости в Дубае за USDT. 19+ лет и 3000+ объектов: берём на себя конвертацию, AML/KYC и регистрацию в DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "купить недвижимость в Дубае за USDT",
           "Tether недвижимость Дубай",
@@ -1671,7 +1671,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "ابدأ شراء عقارك بعملة USDT اليوم",
-        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول شراء عقارات دبي بعملة USDT. بخبرة 19+ عاماً و3,000+ عقار، نتولى التحويل وAML/KYC وتسجيل DLD. واتساب +971 54 998 8811.",
+        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول شراء عقارات دبي بعملة USDT. بخبرة 19+ عاماً و3,000+ عقار، نتولى التحويل وAML/KYC وتسجيل DLD. واتساب +971 55 509 9157.",
         "keywords": [
           "شراء عقار في دبي بعملة USDT",
           "Tether عقارات دبي",
@@ -1736,7 +1736,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "立即开启您的 USDT 购房之旅",
-        "ctaDesc": "就用 USDT 购买迪拜房产联系 Binayah 多语种团队。凭借 17 年以上经验和 3,000+ 套房源，我们负责兑换、AML/KYC 和 DLD 登记。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "就用 USDT 购买迪拜房产联系 Binayah 多语种团队。凭借 17 年以上经验和 3,000+ 套房源，我们负责兑换、AML/KYC 和 DLD 登记。WhatsApp +971 55 509 9157。",
         "keywords": [
           "用 USDT 在迪拜买房",
           "Tether 迪拜房产",
@@ -1801,7 +1801,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Bắt đầu mua bất động sản bằng USDT ngay hôm nay",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về mua bất động sản Dubai bằng USDT. Hơn 19 năm và 3.000+ bất động sản, chúng tôi lo quy đổi, AML/KYC và đăng ký DLD. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về mua bất động sản Dubai bằng USDT. Hơn 19 năm và 3.000+ bất động sản, chúng tôi lo quy đổi, AML/KYC và đăng ký DLD. WhatsApp +971 55 509 9157.",
         "keywords": [
           "mua bất động sản Dubai bằng USDT",
           "Tether bất động sản Dubai",
@@ -1866,7 +1866,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "התחילו את רכישת הנכס שלכם ב-USDT היום",
-        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah על רכישת נדל\"ן בדובאי ב-USDT. עם 19+ שנים ו-3,000+ נכסים, אנו מטפלים בהמרה, ב-AML/KYC וברישום ה-DLD. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah על רכישת נדל\"ן בדובאי ב-USDT. עם 19+ שנים ו-3,000+ נכסים, אנו מטפלים בהמרה, ב-AML/KYC וברישום ה-DLD. WhatsApp ‎+971 55 509 9157.",
         "keywords": [
           "קניית נכס בדובאי ב-USDT",
           "Tether נדל\"ן דובאי",
@@ -1937,7 +1937,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Buy Dubai property with USDC today",
-        "ctaDesc": "Binayah has guided buyers for 19+ years across 3,000+ properties. Our multilingual agents make USDC settlement simple and compliant. Message us on WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah has guided buyers for 19+ years across 3,000+ properties. Our multilingual agents make USDC settlement simple and compliant. Message us on WhatsApp +971 55 509 9157.",
         "keywords": [
           "buy property in Dubai with USDC",
           "USDC real estate Dubai",
@@ -2002,7 +2002,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Achetez un bien à Dubaï en USDC dès aujourd'hui",
-        "ctaDesc": "Binayah accompagne les acheteurs depuis 19+ ans sur 3 000+ biens. Nos agents multilingues rendent le règlement en USDC simple et conforme. Écrivez-nous sur WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah accompagne les acheteurs depuis 19+ ans sur 3 000+ biens. Nos agents multilingues rendent le règlement en USDC simple et conforme. Écrivez-nous sur WhatsApp +971 55 509 9157.",
         "keywords": [
           "acheter propriété dubaï USDC",
           "USDC immobilier dubaï",
@@ -2067,7 +2067,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Купите недвижимость в Дубае за USDC сегодня",
-        "ctaDesc": "Binayah сопровождает покупателей более 19 лет, продав 3 000+ объектов. Наши многоязычные агенты делают расчёт в USDC простым и безопасным. Напишите нам в WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah сопровождает покупателей более 19 лет, продав 3 000+ объектов. Наши многоязычные агенты делают расчёт в USDC простым и безопасным. Напишите нам в WhatsApp +971 55 509 9157.",
         "keywords": [
           "купить недвижимость в Дубае за USDC",
           "недвижимость Дубай за USD Coin",
@@ -2132,7 +2132,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "اشترِ عقاراً في دبي بـ USDC اليوم",
-        "ctaDesc": "رافقت Binayah المشترين لأكثر من 17 عاماً عبر 3,000+ عقار. يجعل وكلاؤنا متعددو اللغات التسوية بـ USDC بسيطة ومتوافقة. راسلنا عبر WhatsApp +971 54 998 8811.",
+        "ctaDesc": "رافقت Binayah المشترين لأكثر من 17 عاماً عبر 3,000+ عقار. يجعل وكلاؤنا متعددو اللغات التسوية بـ USDC بسيطة ومتوافقة. راسلنا عبر WhatsApp +971 55 509 9157.",
         "keywords": [
           "شراء عقار في دبي بـ USDC",
           "عقارات دبي بـ USD Coin",
@@ -2197,7 +2197,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "立即用USDC购买迪拜房产",
-        "ctaDesc": "Binayah拥有19年以上经验，已成交3,000多套房产。我们的多语言团队让USDC结算简单又合规。通过WhatsApp +971 54 998 8811联系我们。",
+        "ctaDesc": "Binayah拥有19年以上经验，已成交3,000多套房产。我们的多语言团队让USDC结算简单又合规。通过WhatsApp +971 55 509 9157联系我们。",
         "keywords": [
           "用USDC在迪拜购房",
           "迪拜房产USD Coin",
@@ -2262,7 +2262,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Mua bất động sản Dubai bằng USDC ngay hôm nay",
-        "ctaDesc": "Binayah đồng hành cùng người mua hơn 19 năm với hơn 3.000 bất động sản. Đội ngũ đa ngôn ngữ giúp thanh toán USDC đơn giản và tuân thủ. Nhắn cho chúng tôi qua WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Binayah đồng hành cùng người mua hơn 19 năm với hơn 3.000 bất động sản. Đội ngũ đa ngôn ngữ giúp thanh toán USDC đơn giản và tuân thủ. Nhắn cho chúng tôi qua WhatsApp +971 55 509 9157.",
         "keywords": [
           "mua bất động sản Dubai bằng USDC",
           "bất động sản Dubai USD Coin",
@@ -2327,7 +2327,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "קנו נכס בדובאי ב-USDC היום",
-        "ctaDesc": "Binayah ליוותה רוכשים במשך 19+ שנים ב-3,000+ נכסים. הסוכנים הרב-לשוניים שלנו הופכים את הסליקה ב-USDC לפשוטה ותואמת. כתבו לנו ב-WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "Binayah ליוותה רוכשים במשך 19+ שנים ב-3,000+ נכסים. הסוכנים הרב-לשוניים שלנו הופכים את הסליקה ב-USDC לפשוטה ותואמת. כתבו לנו ב-WhatsApp ‎+971 55 509 9157.",
         "keywords": [
           "קניית נכס בדובאי ב-USDC",
           "USDC נדל\"ן דובאי",
@@ -2398,7 +2398,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Start Your Off-Plan Crypto Purchase",
-        "ctaDesc": "Talk to Binayah's multilingual team about paying off-plan deposits and milestones in crypto. 19+ years, 3,000+ properties. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Talk to Binayah's multilingual team about paying off-plan deposits and milestones in crypto. 19+ years, 3,000+ properties. WhatsApp +971 55 509 9157.",
         "keywords": [
           "buy off-plan Dubai with crypto",
           "off-plan property cryptocurrency Dubai",
@@ -2463,7 +2463,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Lancez votre achat sur plan en crypto",
-        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur le paiement des acomptes et échéances sur plan en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah sur le paiement des acomptes et échéances sur plan en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 55 509 9157.",
         "keywords": [
           "acheter sur plan dubaï crypto",
           "propriété sur plan cryptomonnaie dubaï",
@@ -2528,7 +2528,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Начните покупку off-plan за криптовалюту",
-        "ctaDesc": "Обсудите с многоязычной командой Binayah оплату депозитов и этапов off-plan криптой. 19+ лет, 3000+ объектов. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Обсудите с многоязычной командой Binayah оплату депозитов и этапов off-plan криптой. 19+ лет, 3000+ объектов. WhatsApp +971 55 509 9157.",
         "keywords": [
           "купить off-plan Дубай за крипту",
           "off-plan недвижимость криптовалюта Дубай",
@@ -2593,7 +2593,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "ابدأ شراءك على الخارطة بالكريبتو",
-        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول دفع العربون والأقساط على الخارطة بالكريبتو. 19+ عاماً و3000+ عقار. واتساب +971 54 998 8811.",
+        "ctaDesc": "تحدّث مع فريق Binayah متعدد اللغات حول دفع العربون والأقساط على الخارطة بالكريبتو. 19+ عاماً و3000+ عقار. واتساب +971 55 509 9157.",
         "keywords": [
           "شراء عقار على الخارطة بالكريبتو دبي",
           "عقار على الخارطة بالعملات الرقمية دبي",
@@ -2658,7 +2658,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "开启您的加密货币期房购置",
-        "ctaDesc": "就用加密货币支付期房订金和进度款，咨询 Binayah 多语种团队。19+ 年经验，3000+ 套房产。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "就用加密货币支付期房订金和进度款，咨询 Binayah 多语种团队。19+ 年经验，3000+ 套房产。WhatsApp +971 55 509 9157。",
         "keywords": [
           "加密货币购买迪拜期房",
           "迪拜期房数字货币支付",
@@ -2723,7 +2723,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Bắt đầu mua off-plan bằng crypto",
-        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về trả cọc và tiến độ off-plan bằng crypto. 19+ năm, 3.000+ bất động sản. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Trao đổi với đội ngũ đa ngôn ngữ của Binayah về trả cọc và tiến độ off-plan bằng crypto. 19+ năm, 3.000+ bất động sản. WhatsApp +971 55 509 9157.",
         "keywords": [
           "mua off-plan Dubai bằng crypto",
           "bất động sản off-plan tiền điện tử Dubai",
@@ -2788,7 +2788,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "התחילו את רכישת הקריפטו על הנייר שלכם",
-        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על תשלום פיקדונות ואבני דרך על הנייר בקריפטו. מעל 19 שנה, מעל 3,000 נכסים. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "דברו עם הצוות הרב-לשוני של Binayah על תשלום פיקדונות ואבני דרך על הנייר בקריפטו. מעל 19 שנה, מעל 3,000 נכסים. WhatsApp ‎+971 55 509 9157.",
         "keywords": [
           "קניית נכס על הנייר בדובאי בקריפטו",
           "נכס על הנייר במטבע קריפטו בדובאי",
@@ -2859,7 +2859,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Convert Crypto Into Your Golden Visa",
-        "ctaDesc": "Speak with Binayah's multilingual team to choose a qualifying property and pay in crypto. 19+ years, 3,000+ properties. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Speak with Binayah's multilingual team to choose a qualifying property and pay in crypto. 19+ years, 3,000+ properties. WhatsApp +971 55 509 9157.",
         "keywords": [
           "UAE Golden Visa crypto",
           "buy Dubai property with crypto",
@@ -2924,7 +2924,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Convertissez votre crypto en Golden Visa",
-        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah pour choisir un bien éligible et payer en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Échangez avec l'équipe multilingue de Binayah pour choisir un bien éligible et payer en crypto. 19+ ans, 3 000+ biens. WhatsApp +971 55 509 9157.",
         "keywords": [
           "Golden Visa Émirats crypto",
           "acheter propriété dubaï crypto",
@@ -2989,7 +2989,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Превратите крипто в свою Golden Visa",
-        "ctaDesc": "Обратитесь к многоязычной команде Binayah, чтобы выбрать объект и оплатить криптой. 19+ лет, 3 000+ объектов. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Обратитесь к многоязычной команде Binayah, чтобы выбрать объект и оплатить криптой. 19+ лет, 3 000+ объектов. WhatsApp +971 55 509 9157.",
         "keywords": [
           "Golden Visa ОАЭ крипто",
           "купить недвижимость в Дубае за крипто",
@@ -3054,7 +3054,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "حوّل عملاتك الرقمية إلى Golden Visa",
-        "ctaDesc": "تواصل مع فريق Binayah متعدد اللغات لاختيار عقار مؤهل والدفع بالعملات الرقمية. أكثر من 17 عاماً و3,000+ عقار. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "تواصل مع فريق Binayah متعدد اللغات لاختيار عقار مؤهل والدفع بالعملات الرقمية. أكثر من 17 عاماً و3,000+ عقار. WhatsApp ‎+971 55 509 9157.",
         "keywords": [
           "Golden Visa الإمارات بالعملات الرقمية",
           "شراء عقار في دبي بالعملات الرقمية",
@@ -3119,7 +3119,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "把加密资产变成您的 Golden Visa",
-        "ctaDesc": "联系 Binayah 多语言团队，挑选合格房产并用加密货币付款。17 年以上经验，3,000+ 房源。WhatsApp +971 54 998 8811。",
+        "ctaDesc": "联系 Binayah 多语言团队，挑选合格房产并用加密货币付款。17 年以上经验，3,000+ 房源。WhatsApp +971 55 509 9157。",
         "keywords": [
           "阿联酋黄金签证 加密货币",
           "加密货币购买迪拜房产",
@@ -3184,7 +3184,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "Biến crypto thành Golden Visa của bạn",
-        "ctaDesc": "Liên hệ đội ngũ đa ngôn ngữ của Binayah để chọn bất động sản đủ điều kiện và trả bằng crypto. Hơn 19 năm, 3.000+ bất động sản. WhatsApp +971 54 998 8811.",
+        "ctaDesc": "Liên hệ đội ngũ đa ngôn ngữ của Binayah để chọn bất động sản đủ điều kiện và trả bằng crypto. Hơn 19 năm, 3.000+ bất động sản. WhatsApp +971 55 509 9157.",
         "keywords": [
           "Golden Visa UAE crypto",
           "mua bất động sản Dubai bằng crypto",
@@ -3249,7 +3249,7 @@ export const CRYPTO_PAGES: CryptoPage[] = [
           }
         ],
         "ctaTitle": "המירו קריפטו ל-Golden Visa שלכם",
-        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah לבחירת נכס מזכה ולתשלום בקריפטו. מעל 19 שנה, מעל 3,000 נכסים. WhatsApp ‎+971 54 998 8811.",
+        "ctaDesc": "שוחחו עם הצוות הרב-לשוני של Binayah לבחירת נכס מזכה ולתשלום בקריפטו. מעל 19 שנה, מעל 3,000 נכסים. WhatsApp ‎+971 55 509 9157.",
         "keywords": [
           "Golden Visa באיחוד האמירויות בקריפטו",
           "קניית נכס בדובאי בקריפטו",

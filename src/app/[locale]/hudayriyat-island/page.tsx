@@ -1353,11 +1353,11 @@ export default async function HudayriyatIslandPage({
                 {L.ctaPrimaryBtn} <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="tel:+971549988811"
+                href="tel:+971555099157"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold border border-border hover:bg-muted transition-colors text-foreground whitespace-nowrap"
               >
                 <Phone className="h-4 w-4" />
-                +971 54 998 8811
+                +971 55 509 9157
               </a>
             </div>
 

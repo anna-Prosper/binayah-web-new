@@ -322,10 +322,10 @@ export default async function OfferPage({ params }: Props) {
                   {waLabel}
                 </a>
                 <a
-                  href="tel:+971549988811"
+                  href="tel:+971555099157"
                   className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12"
                 >
-                  <Phone className="h-4 w-4" /> +971 54 998 8811
+                  <Phone className="h-4 w-4" /> +971 55 509 9157
                 </a>
               </div>
             </div>
@@ -1176,10 +1176,10 @@ export default async function OfferPage({ params }: Props) {
                 {waLabel}
               </a>
               <a
-                href="tel:+971549988811"
+                href="tel:+971555099157"
                 className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/12"
               >
-                <Phone className="h-4 w-4" /> +971 54 998 8811
+                <Phone className="h-4 w-4" /> +971 55 509 9157
               </a>
             </div>
 

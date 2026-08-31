@@ -15,7 +15,7 @@ import { getDldBuilding, getDldBuildings, getCommunity, getCommunitiesIndex, ser
 import { fmtAed, dldAreaFor } from "@/lib/market";
 import { getNonce } from "@/lib/nonce";
 
-const WA = "https://wa.me/971549988811";
+const WA = "https://wa.me/971555099157";
 const slugifyArea = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 const normName = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, " ").trim();
 

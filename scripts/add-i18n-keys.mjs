@@ -29,8 +29,8 @@ const NEW = {
     endLiveChat: "End live chat",
   },
   propertyMatcher: {
-    noMatches: "No close matches in our current pipeline — but our team can short-list options for you. Reach us on WhatsApp or +971 54 998 8811.",
-    errorGeneric: "Sorry, I couldn't generate recommendations right now. Please try again or contact us at +971 54 998 8811.",
+    noMatches: "No close matches in our current pipeline — but our team can short-list options for you. Reach us on WhatsApp or +971 55 509 9157.",
+    errorGeneric: "Sorry, I couldn't generate recommendations right now. Please try again or contact us at +971 55 509 9157.",
     errorBusy: "Service busy, please try again.",
   },
   countryCode: {

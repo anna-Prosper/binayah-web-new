@@ -95,7 +95,7 @@ Open [http://localhost:3000](http://localhost:3000).
 MONGODB_URI=mongodb://localhost:27017/binayah    # MongoDB connection string
 OPENAI_API_KEY=sk-...                            # OpenAI API key for AI features
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_WHATSAPP_NUMBER=971549988811
+NEXT_PUBLIC_WHATSAPP_NUMBER=971555099157
 ```
 
 ## API Routes

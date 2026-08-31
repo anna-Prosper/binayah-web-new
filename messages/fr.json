@@ -15,7 +15,7 @@
     "listYourProperty": "Vendre",
     "insights": "Aperçus",
     "company": "Entreprise",
-    "phoneNumber": "+971 54 998 8811",
+    "phoneNumber": "+971 55 509 9157",
     "getInTouch": "Contactez-nous",
     "myProfile": "Mon profil",
     "saved": "Enregistré",
@@ -692,7 +692,7 @@
       "team": "Notre équipe",
       "offers": "Offres et plans de paiement"
     },
-    "phoneNumber": "+971 54 998 8811",
+    "phoneNumber": "+971 55 509 9157",
     "email": "info@binayah.com",
     "ornNumber": "Reg No. 1162",
     "address": "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai",
@@ -1161,7 +1161,7 @@
     "interestedTitle": "Intéressé par ce bien ?",
     "interestedSubtitle": "Contactez notre équipe pour organiser une visite ou obtenir plus de détails.",
     "whatsapp": "WhatsApp",
-    "callUs": "Appelez le +971 54 998 8811",
+    "callUs": "Appelez le +971 55 509 9157",
     "emailUs": "Contactez-nous par email",
     "sendInquiry": "Envoyer une demande",
     "sendInquiryBtn": "Envoyer une demande",
@@ -2022,8 +2022,8 @@
         ]
       }
     },
-    "noMatches": "Aucune correspondance proche dans notre pipeline actuel, mais notre équipe peut établir une liste restreinte d'options pour vous. Contactez-nous sur WhatsApp ou au +971 54 998 8811.",
-    "errorGeneric": "Désolé, je n'ai pas pu générer de recommandations pour le moment. Veuillez réessayer ou nous contacter au +971 54 998 8811.",
+    "noMatches": "Aucune correspondance proche dans notre pipeline actuel, mais notre équipe peut établir une liste restreinte d'options pour vous. Contactez-nous sur WhatsApp ou au +971 55 509 9157.",
+    "errorGeneric": "Désolé, je n'ai pas pu générer de recommandations pour le moment. Veuillez réessayer ou nous contacter au +971 55 509 9157.",
     "errorBusy": "Service occupé, veuillez réessayer."
   },
   "valuationBanner": {
@@ -3157,7 +3157,7 @@
     "formBudgetLabel": "Budget (facultatif)",
     "formBudgetAria": "Budget",
     "formSending": "Envoi…",
-    "formError": "Une erreur est survenue. Réessayez ou appelez-nous au +971 54 998 8811.",
+    "formError": "Une erreur est survenue. Réessayez ou appelez-nous au +971 55 509 9157.",
     "formPrivacy": "Nous n'utiliserons vos coordonnées que pour répondre à cette demande.",
     "formSuccessTitle": "Demande reçue",
     "formSuccessBody": "Un de nos conseillers confirmera les lots éligibles et vous enverra les conditions complètes sous peu.",

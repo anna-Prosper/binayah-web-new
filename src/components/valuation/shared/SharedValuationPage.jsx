@@ -193,10 +193,10 @@ function extractCommunity(unit) {
 }
 // Compose a WhatsApp manual-valuation request URL pre-filled with the property
 // details the user typed into the form (plus anything the engine resolved).
-// Sent to Binayah's main support line (+971 54 998 8811) — the valuation-desk
+// Sent to Binayah's main support line (+971 55 509 9157) — the valuation-desk
 // number in the navbar CTA is for self-service automated requests, while this
 // fallback hands the user to the team that handles bespoke manual valuations.
-const MANUAL_VALUATION_WA_NUMBER = "971549988811";
+const MANUAL_VALUATION_WA_NUMBER = "971555099157";
 function buildManualValuationWhatsAppUrl({ form = null, result = null } = {}) {
     const safeForm = form && typeof form === "object" ? form : {};
     const safeResult = result && typeof result === "object" ? result : {};
@@ -2725,8 +2725,8 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
               <div className="mt-6 border-t border-[rgba(227,221,207,0.6)] pt-5 text-xs text-[#66706d]">
                 <p>
                   {tv("insufficientDataDirectContact")}{" "}
-                  <a href="tel:+971549988811" className="font-semibold text-[#0B3D2E] hover:underline">
-                    +971 54 998 8811
+                  <a href="tel:+971555099157" className="font-semibold text-[#0B3D2E] hover:underline">
+                    +971 55 509 9157
                   </a>
                   {" · "}
                   <a href="mailto:info@binayah.com" className="font-semibold text-[#0B3D2E] hover:underline">
@@ -3115,11 +3115,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                   {tv("appraisalDesc")}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <a href="https://wa.me/971549988811?text=Hi%2C%20I%20just%20used%20the%20online%20valuation%20tool%20and%20would%20like%20a%20detailed%20appraisal." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #25D366, #1DA851)", boxShadow: "0 8px 24px -4px rgba(37,211,102,0.3)" }}>
+                  <a href="https://wa.me/971555099157?text=Hi%2C%20I%20just%20used%20the%20online%20valuation%20tool%20and%20would%20like%20a%20detailed%20appraisal." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #25D366, #1DA851)", boxShadow: "0 8px 24px -4px rgba(37,211,102,0.3)" }}>
                     <MessageCircle className="h-5 w-5"/>
                     {tv("whatsappInquiry")}
                   </a>
-                  <a href="tel:+971549988811" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.3)" }}>
+                  <a href="tel:+971555099157" className="inline-flex items-center justify-center gap-3 w-full sm:w-64 py-4 rounded-full font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-[15px] shadow-lg" style={{ background: "linear-gradient(to right, #D4A847, #B8922F)", boxShadow: "0 8px 24px -4px rgba(212,168,71,0.3)" }}>
                     <PhoneCall className="h-5 w-5"/>
                     {tv("callNow")}
                   </a>

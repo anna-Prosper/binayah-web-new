@@ -112,7 +112,7 @@ const WhatsAppButton = () => {
           {t("whatsapp")}
         </a>
         <a
-          href="tel:+971549988811"
+          href="tel:+971555099157"
           onClick={() => trackClick("phone")}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-full text-white font-bold text-[13px] shadow-md shadow-accent/20 active:scale-[0.97] transition-all"
           style={{ background: "linear-gradient(to right, #D4A847, #B8922F)" }}

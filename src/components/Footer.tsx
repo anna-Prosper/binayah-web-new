@@ -116,7 +116,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                 <Phone className="h-3.5 w-3.5 text-accent" />
               </div>
-              <a href="tel:+971549988811" className="hover:text-accent transition-colors">{t("phoneNumber")}</a>
+              <a href="tel:+971555099157" className="hover:text-accent transition-colors">{t("phoneNumber")}</a>
             </li>
             <li className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">

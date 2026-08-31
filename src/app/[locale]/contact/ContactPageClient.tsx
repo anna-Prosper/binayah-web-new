@@ -99,9 +99,9 @@ export default function ContactPage() {
                 <h2 className="text-2xl font-bold text-foreground mb-6">{t("infoTitle")}</h2>
                 <div className="space-y-5">
                   {[
-                    { icon: Phone, label: "Phone", value: "+971 54 998 8811", href: "tel:+971549988811" },
+                    { icon: Phone, label: "Phone", value: "+971 55 509 9157", href: "tel:+971555099157" },
                     { icon: Mail, label: t("email"), value: "info@binayah.com", href: "mailto:info@binayah.com" },
-                    { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 54 998 8811", href: waHref(tWa("prefillGeneral"), "/contact") },
+                    { icon: MessageCircle, label: t("whatsappLabel"), value: "+971 55 509 9157", href: waHref(tWa("prefillGeneral"), "/contact") },
                     { icon: MapPin, label: "Address", value: "Mezzanine Floor, Liberty Building, Al Quoz 3, Sheikh Zayed Road, Dubai", href: "https://maps.google.com/?q=Liberty+Building+Al+Quoz+3+Sheikh+Zayed+Road+Dubai" },
                     { icon: Clock, label: t("office"), value: t("hours"), href: undefined },
                   ].map((c) => (

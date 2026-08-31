@@ -322,7 +322,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 max-w-xl mx-auto">
-            <a href="https://wa.me/971549988811?text=Hi, I'd like to learn about your property services"
+            <a href="https://wa.me/971555099157?text=Hi, I'd like to learn about your property services"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2.5 py-3.5 sm:py-4 rounded-xl sm:rounded-full bg-gradient-to-r from-[#25D366] to-[#1DA851] text-white font-bold text-sm transition-all hover:shadow-xl hover:shadow-[#25D366]/25 hover:scale-[1.02] active:scale-[0.98]">
               <MessageCircle className="h-4 w-4" /> {t("whatsappUs")}

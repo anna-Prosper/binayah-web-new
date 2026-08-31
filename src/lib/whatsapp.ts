@@ -3,7 +3,7 @@
 // lands in WhatsApp with a pre-typed message (convenience) and we get a
 // lightweight attribution line showing which page the lead came from (tracking).
 
-export const WHATSAPP_NUMBER = "971549988811";
+export const WHATSAPP_NUMBER = "971555099157";
 
 // English fallback used on SEO landing pages that don't load the next-intl
 // "whatsapp" namespace. Client components should prefer t("whatsapp.prefillGeneral").
