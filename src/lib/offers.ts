@@ -514,43 +514,43 @@ export const OFFERS: Offer[] = [
         "alt": "Sobha villa exterior with private pool"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_13-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/01-sobha-sanctuary-at-dubailand-gallery_13--2x.webp",
         "alt": "Aerial view of the Sobha Sanctuary masterplan in Dubailand"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_11-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/02-sobha-sanctuary-at-dubailand-gallery_11--2x.webp",
         "alt": "Beach style swimming lagoon at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/sobha-sanctuary-at-dubailand-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/03-sobha-sanctuary-at-dubailand-featured-hd-2x.webp",
         "alt": "Kayaking on the lagoon beneath the waterfall at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_2-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/04-sobha-sanctuary-at-dubailand-gallery_2-h-2x.webp",
         "alt": "Zen garden and water feature at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/05-sobha-sanctuary-at-dubailand-gallery_3-h-2x.webp",
         "alt": "Central park and lake at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_8-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/06-sobha-sanctuary-at-dubailand-gallery_8-h-2x.webp",
         "alt": "Meditation and yoga lawn at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_10-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/07-sobha-sanctuary-at-dubailand-gallery_10--2x.webp",
         "alt": "Pet therapy garden and dog run at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_14-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/08-sobha-sanctuary-at-dubailand-gallery_14--2x.webp",
         "alt": "Dining and retail promenade at Sobha Sanctuary"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_12-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/09-sobha-sanctuary-at-dubailand-gallery_12--2x.webp",
         "alt": "Sobha Sanctuary Mall at dusk"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sobha-sanctuary-at-dubailand/gallery/sobha-sanctuary-at-dubailand-gallery_9-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/10-sobha-sanctuary-at-dubailand-gallery_9-h-2x.webp",
         "alt": "Town centre and sports courts at Sobha Sanctuary"
       },
       {
@@ -578,15 +578,15 @@ export const OFFERS: Offer[] = [
         "alt": "Sobha Central towers on Sheikh Zayed Road"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/17-the-serene-at-sobha-central-by-sobha-gro-2x.webp",
         "alt": "Sports pitch and parkland between the towers at Sobha Central"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-serene-at-sobha-central-by-sobha-group/gallery/the-serene-at-sobha-central-by-sobha-group-gallery_5-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/18-the-serene-at-sobha-central-by-sobha-gro-2x.webp",
         "alt": "Elevated parkland and pool terraces at Sobha Central"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-pinnacle-at-sobha-central/gallery/5.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/19-5-2x.webp",
         "alt": "The Pinnacle at Sobha Central above the Dubai skyline at sunset"
       },
       {
@@ -598,7 +598,7 @@ export const OFFERS: Offer[] = [
         "alt": "Bedroom with sea views at Sobha Siniya Island"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/gallery-siniya-2.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-hd/22-gallery-siniya-2-2x.webp",
         "alt": "Beachfront residences at Sobha Siniya Island"
       },
       {
@@ -627,7 +627,7 @@ export const OFFERS: Offer[] = [
     "eyebrow": "DAMAC waterfront offer",
     "h1": "DAMAC Waterfront Homes from AED 1,950 a Month: 4% DLD Waiver, 4% Discount and a 50/50 Plan",
     "subtitle": "Own a branded waterfront home in DAMAC Lagoons or DAMAC Riverside from AED 1,950 a month, with the 4% DLD fee covered, 4% off the price and half the balance deferred to handover.",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/portofino-townhouse-villas-in-damac-lagoons/featured-hd-hd.webp",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/00-featured-hd-hd-2x.webp",
     "deadline": "",
     "windowLabel": "Limited time offer",
     "hideDeadline": false,
@@ -826,7 +826,7 @@ export const OFFERS: Offer[] = [
         "alt": "Aerial view of Valencia at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/02-featured-hd-2x.webp",
         "alt": "Canal and waterfront residences at DAMAC Riverside"
       },
       {
@@ -834,39 +834,39 @@ export const OFFERS: Offer[] = [
         "alt": "Waterfall lagoon at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-riverside-views-azure-1/damac-riverside-views-azure-1-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/04-damac-riverside-views-azure-1-featured-h-2x.webp",
         "alt": "Azure at DAMAC Riverside at dusk"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/5.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/05-5-2x.webp",
         "alt": "Beach-style swimmable lagoon at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/013_13-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/06-013_13-hd-2x.webp",
         "alt": "Lagoon and outdoor cinema at DAMAC Riverside"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/gallery/costa-brava-damac-lagoons-phase-2-gallery_1-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/07-costa-brava-damac-lagoons-phase-2-galler-2x.webp",
         "alt": "Rope bridge over the swimmable lagoon at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/002_2-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/08-002_2-hd-2x.webp",
         "alt": "Canal-side promenade and pool at DAMAC Riverside"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/costa-brava-damac-lagoons-phase-2-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/09-costa-brava-damac-lagoons-phase-2-featur-2x.webp",
         "alt": "The Costa Brava cluster at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/004_4-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/10-004_4-hd-2x.webp",
         "alt": "Community lawn at DAMAC Riverside"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-lagoons-nice-villas-townhouse/gallery/damac-lagoons-nice-villas-townhouse-gallery_1-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/11-damac-lagoons-nice-villas-townhouse-gall-2x.webp",
         "alt": "Kayaking on the lagoon at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/008_8-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/12-008_8-hd-2x.webp",
         "alt": "Water play area at DAMAC Riverside"
       },
       {
@@ -874,7 +874,7 @@ export const OFFERS: Offer[] = [
         "alt": "The Santorini cluster at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/012_12-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/14-012_12-hd-2x.webp",
         "alt": "Floating gardens at DAMAC Riverside"
       },
       {
@@ -882,47 +882,47 @@ export const OFFERS: Offer[] = [
         "alt": "Ibiza waterfront promenade at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/gallery/003_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/16-003_3-hd-2x.webp",
         "alt": "Sports courts at DAMAC Riverside"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/lagoons-venice-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/17-lagoons-venice-featured-hd-2x.webp",
         "alt": "Venice villas at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-riverside-views-azure-1/gallery/damac-riverside-views-azure-1-gallery_1-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/18-damac-riverside-views-azure-1-gallery_1--2x.webp",
         "alt": "Canal-side residences at DAMAC Riverside"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_8-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/19-lagoons-venice-gallery_8-hd-2x.webp",
         "alt": "Venice villa with a private pool at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/6.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/20-6-2x.webp",
         "alt": "Waterside pavilions at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_10-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/21-lagoons-venice-gallery_10-hd-2x.webp",
         "alt": "Waterfall pool at Venice, DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/gallery/3.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/22-3-2x.webp",
         "alt": "Pool deck and residences at Valencia, DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_11-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/23-lagoons-venice-gallery_11-hd-2x.webp",
         "alt": "Beach and waterfall at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/damac-lagoons-nice-villas-townhouse/gallery/damac-lagoons-nice-villas-townhouse-gallery_5-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/24-damac-lagoons-nice-villas-townhouse-gall-2x.webp",
         "alt": "Nice villas at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/lagoons-venice/gallery/lagoons-venice-gallery_13-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/25-lagoons-venice-gallery_13-hd-2x.webp",
         "alt": "Waterfront dining at DAMAC Lagoons"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/costa-brava-damac-lagoons-phase-2/gallery/costa-brava-damac-lagoons-phase-2-gallery_7-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/26-costa-brava-damac-lagoons-phase-2-galler-2x.webp",
         "alt": "Villa with a private pool at Costa Brava, DAMAC Lagoons"
       }
     ],
@@ -980,7 +980,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "DAMAC Riverside",
         "terms": "Set in Dubai Investments Park around a water canal with floating leisure decks and a retail promenade. Studios, one and two bedroom apartments and four and five bedroom townhouses, with Emirates Road linking it to Expo City and Al Maktoum airport.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/capri-1-by-damac-at-riverside-views-dubai/featured-hd.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/02-featured-hd-2x.webp",
         "links": [
           {
             "label": "DAMAC Riverside community",
@@ -1147,19 +1147,19 @@ export const OFFERS: Offer[] = [
     ],
     "gallery": [
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_6-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/01-bayz-101-at-business-bay-dubai-gallery_6-2x.webp",
         "alt": "Bayz 101 by Danube rising beside the Burj Khalifa at night"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/02-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
         "alt": "Oceanz by Danube on the Dubai Maritime City waterfront at dusk"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/diamondz-by-danube-at-jlt-dubai/gallery/diamondz-by-danube-at-jlt-dubai-gallery_5-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/03-diamondz-by-danube-at-jlt-dubai-gallery_-2x.webp",
         "alt": "Diamondz by Danube at Jumeirah Lake Towers"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/8.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/04-8-2x.webp",
         "alt": "The sky bridge at Viewz Residences, JLT"
       },
       {
@@ -1167,7 +1167,7 @@ export const OFFERS: Offer[] = [
         "alt": "Fashionz by Danube at Jumeirah Village Triangle at sunset"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/06-danube-sparklz-at-al-furjan-gallery_3-hd-2x.webp",
         "alt": "Sparklz by Danube at Al Furjan"
       },
       {
@@ -1175,23 +1175,23 @@ export const OFFERS: Offer[] = [
         "alt": "Elitz by Danube at Jumeirah Village Circle"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A566F205D4A77BF5E5CFC1F84E92BA41.jpeg",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/08-A566F205D4A77BF5E5CFC1F84E92BA41-2x.webp",
         "alt": "The cantilevered pool deck at Shahrukhz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5310BE7DE3EB3D4DA777C550167DBB6.jpeg",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/09-A5310BE7DE3EB3D4DA777C550167DBB6-2x.webp",
         "alt": "Pool deck at Fashionz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/danube-sparklz-at-al-furjan-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/10-danube-sparklz-at-al-furjan-featured-hd-2x.webp",
         "alt": "Lagoon-style pool at Sparklz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/sportz-by-danube/gallery/005_005_5-hd-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/11-005_005_5-hd-hd-2x.webp",
         "alt": "Pool deck at Sportz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/timez-by-danube-at-dubai-silicon-oasis/gallery/timez-by-danube-at-dubai-silicon-oasis-gallery_8-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/12-timez-by-danube-at-dubai-silicon-oasis-g-2x.webp",
         "alt": "Infinity pool over the Dubai skyline at Timez by Danube"
       },
       {
@@ -1199,39 +1199,39 @@ export const OFFERS: Offer[] = [
         "alt": "Pool terrace at Viewz 2, JLT"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/14-breez-by-danube-at-dubai-maritime-city-g-2x.webp",
         "alt": "Sea-view balcony at Breez by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/oceanz-by-danube-at-dubai-maritime-city-featured-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/15-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
         "alt": "Sea-view living room at Oceanz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/4.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/16-4-2x.webp",
         "alt": "Open-plan living and kitchen at Viewz Residences"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5DC70A0B9ED0BDCF30D3084B400BB73.jpeg",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/17-A5DC70A0B9ED0BDCF30D3084B400BB73-2x.webp",
         "alt": "Furnished bedroom at Fashionz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_6-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/18-danube-sparklz-at-al-furjan-gallery_6-hd-2x.webp",
         "alt": "Furnished living room at Sparklz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_7-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/19-bayz-101-at-business-bay-dubai-gallery_7-2x.webp",
         "alt": "Arrival lobby at Bayz 101"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/20-bayz-101-at-business-bay-dubai-gallery_3-2x.webp",
         "alt": "Residents' gym at Bayz 101"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_2-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/03-breez-by-danube-at-dubai-maritime-city-g-2x.webp",
         "alt": "Aquarium corridor at Breez by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_4-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/22-breez-by-danube-at-dubai-maritime-city-g-2x.webp",
         "alt": "Aquarium lounge at Breez by Danube"
       },
       {
@@ -1239,19 +1239,19 @@ export const OFFERS: Offer[] = [
         "alt": "Private cinema at Shahrukhz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/whatsapp/2026-06/A5B77F4ABEFB26D1CCC5E377785A5AB3.jpeg",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/24-A5B77F4ABEFB26D1CCC5E377785A5AB3-2x.webp",
         "alt": "Co-working floor at Shahrukhz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/opalz-tower-by-danube-properties/gallery/1.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/25-1-2x.webp",
         "alt": "Rooftop jacuzzi terrace at Opalz by Danube"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/breez-by-danube-at-dubai-maritime-city/gallery/breez-by-danube-at-dubai-maritime-city-gallery_1-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/26-breez-by-danube-at-dubai-maritime-city-g-2x.webp",
         "alt": "Dubai Maritime City, home to Oceanz and Breez"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_3-hd.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/27-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
         "alt": "Oceanz by Danube on the waterfront"
       },
       {
@@ -1260,7 +1260,7 @@ export const OFFERS: Offer[] = [
       }
     ],
     "h1": "Pay 20%, Get 10% Back: Danube's Deal of the Decade",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/gallery/bayz-101-at-business-bay-dubai-gallery_1-hd.webp",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/00-bayz-101-at-business-bay-dubai-gallery_1-2x.webp",
     "hideDeadline": false,
     "highlights": [
       {
@@ -1330,7 +1330,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Sparklz by Danube",
         "terms": "Al Furjan. Also in the 11:11 lineup, on the 20:70 structure with 70% due on completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/danube-sparklz-at-al-furjan/gallery/danube-sparklz-at-al-furjan-gallery_3-hd.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/06-danube-sparklz-at-al-furjan-gallery_3-hd-2x.webp",
         "links": [
           {
             "label": "Sparklz by Danube",
@@ -1341,7 +1341,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Oceanz by Danube",
         "terms": "Dubai Maritime City, on the water. In the 11:11 lineup across all three towers.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/oceanz-by-danube-at-dubai-maritime-city/gallery/oceanz-by-danube-at-dubai-maritime-city-gallery_5-hd.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/02-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
         "links": [
           {
             "label": "Oceanz by Danube",
@@ -1352,7 +1352,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Viewz by Danube",
         "terms": "Jumeirah Lake Towers, twin towers joined by a sky bridge. Both Viewz 1 and Viewz 2 sit in the 11:11 lineup.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/viewz-residences-at-jlt-dubai/gallery/8.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/04-8-2x.webp",
         "links": [
           {
             "label": "Viewz Residences",
@@ -1363,7 +1363,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Bayz 101",
         "terms": "Business Bay, beside the Burj Khalifa. On the main tracks, so you choose between 1% and 0.5% a month.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bayz-101-at-business-bay-dubai/bayz-101-at-business-bay-dubai-featured-hd.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/29-bayz-101-at-business-bay-dubai-featured--2x.webp",
         "links": [
           {
             "label": "Bayz 101",
@@ -1592,11 +1592,11 @@ export const OFFERS: Offer[] = [
         "alt": "The Cove at Dubai Creek Harbour on the waterfront"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/3.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/02-3-2x.webp",
         "alt": "The swimmable lagoon at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/6.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/03-6-2x.webp",
         "alt": "Park Horizon at Dubai Hills Estate"
       },
       {
@@ -1608,15 +1608,15 @@ export const OFFERS: Offer[] = [
         "alt": "Waterside townhouses at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/6.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/06-6-2x.webp",
         "alt": "Golf Views at Emaar South overlooking the course"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/gallery/1.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/07-1-2x.webp",
         "alt": "Waterfront residences at The Cove, Dubai Creek Harbour"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/7.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/08-7-2x.webp",
         "alt": "Landscaped waterway at Alana, The Valley"
       },
       {
@@ -1624,68 +1624,68 @@ export const OFFERS: Offer[] = [
         "alt": "Park Horizon towers at Dubai Hills Estate"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/2.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/10-2-2x.webp",
         "alt": "Rashid Yachts & Marina and the Dubai skyline"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/10.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/11-10-2x.webp",
         "alt": "Lagoon deck at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/7.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/12-7-2x.webp",
         "alt": "The championship golf course at Dubai Hills Estate"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fairway-villas-phase-3-at-emaar-south/gallery/1.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/13-1-2x.webp",
         "alt": "A Fairway Villa at Emaar South"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/8.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/14-8-2x.webp",
         "alt": "Streetscape at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/2.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/15-2-2x.webp",
         "alt": "Golf Views residences at Emaar South"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/9.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/16-9-2x.webp",
         "alt": "Villas at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/10.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/17-10-2x.webp",
         "alt": "Sea-view bedroom at Seascape"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/3.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/18-3-2x.webp",
         "alt": "Living room at Golf Views, Emaar South"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/11.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/19-11-2x.webp",
         "alt": "Sea-view interior at Seascape"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/4.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/20-4-2x.webp",
         "alt": "Interior at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/4.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/21-4-2x.webp",
         "alt": "Bedroom at Golf Views, Emaar South"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/6.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/22-6-2x.webp",
         "alt": "Living space at Alana, The Valley"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/5.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/23-5-2x.webp",
         "alt": "Kitchen and dining at Golf Views, Emaar South"
       },
       {
-        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/featured.webp",
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/24-featured-2x.webp",
         "alt": "The entrance to The Valley by Emaar"
       }
     ],
     "h1": "Emaar Payment Plans: 90/10, 80/20 and 25/75",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/2.webp",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/00-2-2x.webp",
     "hideDeadline": true,
     "highlights": [
       {
@@ -1767,7 +1767,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Park Horizon",
         "terms": "Dubai Hills Estate, over the championship golf course. 80% during construction and 20% on 100% completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/park-horizon-by-emaar-at-dubai-hills-estate/gallery/6.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/03-6-2x.webp",
         "links": [
           {
             "label": "Park Horizon at Dubai Hills Estate",
@@ -1778,7 +1778,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Alana",
         "terms": "The Valley, built around a swimmable lagoon. On the 90/10 plan, so only a tenth is left at completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/alana-by-emaar-at-the-valley/gallery/3.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/02-3-2x.webp",
         "links": [
           {
             "label": "Alana at The Valley",
@@ -1789,7 +1789,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Emaar South",
         "terms": "Ready to move in, on the 25/75 plan with the balance spread across three years after handover.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/golf-views-in-emaar-south/gallery/6.webp",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/06-6-2x.webp",
         "links": [
           {
             "label": "Golf Views at Emaar South",
