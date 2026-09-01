@@ -3000,10 +3000,11 @@ const SharedValuationPage = ({ Header = null, Footer = null, resolveApiUrl = def
                     const errs = {};
                     if (!gate.name.trim() || gate.name.trim().length < 2)
                         errs.name = "Your name is required.";
+                    // Phone is mandatory (email stays optional). A valid email is
+                    // still accepted and stored when provided.
                     const hasPhone = gate.phone.trim().length > 5;
-                    const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim());
-                    if (!hasPhone && !hasEmail)
-                        errs.contact = "Please add a phone or email so we can send the PDF report.";
+                    if (!hasPhone)
+                        errs.contact = "A phone number is required so our team can reach you.";
                     if (Object.keys(errs).length) {
                         setGateErrors(errs);
                         return;
@@ -3786,7 +3787,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         <div>
           <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
             {tv("phone")}
-            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orEmail")}</span>
+            <span className="text-[9px] bg-gradient-to-r from-[#D4A847] to-[#B8922F] text-white px-1.5 py-0.5 rounded-full font-bold normal-case tracking-normal">{tv("required")}</span>
           </label>
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d]"/>
@@ -3798,7 +3799,7 @@ const GateCard = ({ gate, gateErrors, gateSubmitting, highlight = false, onChang
         <div>
           <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#66706d] mb-1.5 flex items-center gap-1">
             {tv("email")}
-            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("orPhone")}</span>
+            <span className="text-[9px] text-[rgba(102,112,109,0.6)] font-normal normal-case tracking-normal">{tv("optional")}</span>
           </label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#66706d]"/>
