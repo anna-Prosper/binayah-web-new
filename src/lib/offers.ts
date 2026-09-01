@@ -2803,6 +2803,478 @@ export const OFFERS: Offer[] = [
     ],
     "disclaimer": "Terms are set by Binghatti Developers. The 4% DLD waiver and launch pricing apply to the first release only and are subject to availability; terms apply. The waiver covers the Dubai Land Department registration fee only, and trustee, administration and agency costs are separate and remain payable. Handover dates are the developer's projection and may move. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm eligibility, pricing and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
     "projectHref": "/project/binghatti-wraith"
+  },
+  {
+    "slug": "samana-2-down-payment-oqood-offer",
+    "shortName": "Samana 2% Booking Plan",
+    "developer": "Samana Developers",
+    "eyebrow": "Across the full Samana portfolio",
+    "h1": "Samana 2% Down Payment: Oqood Registered From Your First Payment",
+    "subtitle": "Book from 2%, pay 1% or 2% a month, and your name goes on the Dubai Land Department register at the start of the plan rather than a quarter of the way through it.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/00-8-2x.webp",
+    "deadline": "",
+    "windowLabel": "Open while inventory lasts",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "Two plans, and both put you on the register on day one",
+      "highlight": "In a standard off-plan purchase you pay 20% to 30% of the price before the unit is registered with the Dubai Land Department. Under both Samana plans, Oqood registration completes once your first payment is made.",
+      "body": [
+        "Samana publishes two structures across its inventory. One books at 5% and runs 1% a month for eighty months, with three 5% milestone payments at months 6, 12 and 18. The other books at 2% and runs 2% a month for fifty months. Neither is a zero down payment plan, and Samana says so plainly: both take a payment at booking. On the fifty-month plan that 2% is simply the first of the fifty instalments rather than a deposit sitting on top of the schedule.",
+        "The registration timing is the part worth reading twice. Ownership recorded at the start of the term, rather than a fifth of the way through it, is what makes an early resale practical and what gives an overseas buyer a documented position from the first transfer."
+      ]
+    },
+    "metaTitle": "Samana 2% Down Payment | 1% Monthly, Oqood From Day One",
+    "metaDescription": "Samana Developers: book from 2%, then 2% monthly over 50 months or 1% over 80, with Oqood registration from your first payment. Entry from AED 943,333.",
+    "keywords": "samana payment plan, samana 2 percent down payment, samana 1 percent monthly, samana developers offer, oqood registration off plan dubai, samana barari heights price, samana 40 60 payment plan, samana 30 70 payment plan, low down payment off plan dubai, samana imperial garden price",
+    "priceFrom": 943333,
+    "highlights": [
+      {
+        "value": "2%",
+        "label": "On booking",
+        "detail": "And it counts as instalment one, not a deposit on top"
+      },
+      {
+        "value": "1%",
+        "label": "Per month",
+        "detail": "Eighty months on the 5% booking plan"
+      },
+      {
+        "value": "Oqood",
+        "label": "From payment one",
+        "detail": "DLD registration at the start of the term"
+      },
+      {
+        "value": "AED 943K",
+        "label": "Entry price",
+        "detail": "A studio at Samana Barari Heights in Majan"
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "On booking",
+        "share": "5%",
+        "description": "The sale and purchase agreement is issued and registered with the DLD, which generates your Oqood."
+      },
+      {
+        "stage": "Month 6",
+        "share": "5%",
+        "description": "First milestone payment."
+      },
+      {
+        "stage": "Month 12",
+        "share": "5%",
+        "description": "Second milestone payment."
+      },
+      {
+        "stage": "Month 18",
+        "share": "5%",
+        "description": "Third and last milestone."
+      },
+      {
+        "stage": "Every month",
+        "share": "80%",
+        "description": "One percent a month across eighty months, which closes the balance."
+      }
+    ],
+    "timelineIntro": "The eighty-month plan in full. There is no balloon at the end: 5% at booking, three 5% milestones and eighty monthly instalments add up to the whole price.",
+    "eligibility": [
+      {
+        "label": "The two plans",
+        "value": "Book at 5% and pay 1% a month for 80 months, with 5% milestones at months 6, 12 and 18. Or book at 2% and pay 2% a month for 50 months."
+      },
+      {
+        "label": "Is it zero down?",
+        "value": "No. Both plans take a payment at booking. On the 50-month plan the 2% is the first instalment rather than a deposit on top of the schedule."
+      },
+      {
+        "label": "When you are registered",
+        "value": "Oqood registration completes once the first payment is made, instead of at the 20% to 30% mark a standard off-plan purchase waits for."
+      },
+      {
+        "label": "What sits outside the plan",
+        "value": "DLD registration, Oqood and administration charges are payable separately."
+      },
+      {
+        "label": "Other structures",
+        "value": "Samana also publishes a 30/70 plan, 15% down and 30% before handover, and a 40/60 plan, 40% during construction and 60% after handover."
+      },
+      {
+        "label": "Where it applies",
+        "value": "Across the Samana portfolio: Arjan, JVC, Majan, Dubailand, Al Furjan, Meydan, Dubai South, Al Warsan and Dubai Islands."
+      },
+      {
+        "label": "Entry price",
+        "value": "From AED 943,333 at Samana Barari Heights. Imperial Garden opens at AED 980,000 and Boulevard Heights at AED 1,303,333."
+      },
+      {
+        "label": "International buyers",
+        "value": "Eligible freehold off-plan property is open to overseas buyers, subject to project terms and compliance checks."
+      }
+    ],
+    "projects": [
+      {
+        "name": "Samana Barari Heights",
+        "terms": "Majan. From AED 943,333 for a studio with a private pool, running up to three-bedroom layouts.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/23-7-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/samana-barari-heights-at-majan"
+          }
+        ]
+      },
+      {
+        "name": "Samana Imperial Garden",
+        "terms": "Arjan. From AED 980,000. Its own PDC schedule is 15% at booking, 10% at month 12, then 1% a month for 75 months.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/05-2-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/imperial-garden-by-samana-at-arjan-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Samana Boulevard Heights",
+        "terms": "Dubailand. From AED 1,303,333. 10% down, 5% after a month, 10% at month 12, then 1% a month for 75 months.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/06-featured-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/samana-boulevard-heights"
+          }
+        ]
+      },
+      {
+        "name": "Samana Barari Avenue",
+        "terms": "Majan. From AED 2,583,887. 15% at booking, 1% a month for 36 months with milestones at months 12, 18 and 24, then 0.5% a month.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/13-3-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/samana-barari-avenue-at-majan"
+          }
+        ]
+      },
+      {
+        "name": "Samana Ocean Bay",
+        "terms": "Dubai Islands. From AED 2,887,000 across the two towers.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/03-featured-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/oceans-bay-by-samana-at-dubai-islands"
+          }
+        ]
+      },
+      {
+        "name": "Samana Ocean Pearl",
+        "terms": "Dubai Islands. From AED 3,940,444. 15% at booking, then a staged schedule running past the 20th month.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/29-4-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/samana-ocean-pearl-at-dubai-island"
+          }
+        ]
+      },
+      {
+        "name": "Samana Ocean Pearl 2",
+        "terms": "Dubai Islands. From AED 4,278,811 on the 40/60 plan: 40% during construction, then 2% a month for 30 months after handover.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/26-1-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/samana-ocean-pearl-2-at-dubai-island"
+          }
+        ]
+      }
+    ],
+    "amenities": {
+      "heading": "The developer behind the plan, and what comes with the apartment.",
+      "stats": [
+        {
+          "value": "50+",
+          "label": "Projects launched",
+          "icon": "Building2"
+        },
+        {
+          "value": "15,000+",
+          "label": "Units delivered and launched",
+          "icon": "KeyRound"
+        },
+        {
+          "value": "6,000+",
+          "label": "Units in the pipeline",
+          "icon": "TrendingUp"
+        }
+      ],
+      "masterplanHeading": "Inside a Samana building",
+      "items": [
+        "Private pool in the apartment",
+        "Resort style leisure pool deck",
+        "Fully equipped gym and wellness suite",
+        "Sauna and steam rooms",
+        "Rooftop jogging track",
+        "Outdoor yoga and meditation zone",
+        "Kids pool and play area",
+        "Landscaped social decks",
+        "Covered residents parking"
+      ],
+      "icons": [
+        "Waves",
+        "Sun",
+        "Bike",
+        "Droplets",
+        "Leaf",
+        "Flower2",
+        "Users",
+        "TreePalm",
+        "KeyRound"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/00-8-2x.webp",
+        "alt": "Samana Barari Heights from above, the curved tower wrapped around its pool deck"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/01-1-2x.webp",
+        "alt": "Samana Ocean Pearl on Dubai Islands, balcony pools stepping down the facade"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/02-featured-2x.webp",
+        "alt": "The leisure pool deck at Samana Barari Heights in Majan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/03-featured-2x.webp",
+        "alt": "Samana Ocean Bay at Dubai Islands, twin wings above the pool terrace"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/04-3-2x.webp",
+        "alt": "Samana Barari Heights rising above the greenery of Majan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/05-2-2x.webp",
+        "alt": "Samana Imperial Garden in Arjan, balconies curving across the facade"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/06-featured-2x.webp",
+        "alt": "Residents on the pool deck at Samana Boulevard Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/07-2-2x.webp",
+        "alt": "The lagoon pool and cabanas at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/08-8-2x.webp",
+        "alt": "The twin wings of Samana Imperial Garden in Arjan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/09-15-crop-2x.webp",
+        "alt": "A bedroom at Samana Barari Heights, glazed to the floor"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/10-3-2x.webp",
+        "alt": "Samana Imperial Garden above its pool deck in Arjan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd2/00-3-2x.webp",
+        "alt": "Sun loungers on the pool terrace at Samana Boulevard Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/12-14-crop-2x.webp",
+        "alt": "The living and dining space in a Samana Barari Heights apartment"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/13-3-2x.webp",
+        "alt": "Samana Barari Avenue seen from the street in Majan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/14-6-2x.webp",
+        "alt": "A shaded cabana beside the pool at Samana Imperial Garden"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/15-13-2x.webp",
+        "alt": "A bedroom at Samana Barari Heights with the city beyond the glass"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/16-1-2x.webp",
+        "alt": "The Samana Avenue tower at Dubai Land Residence Complex"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/17-2-2x.webp",
+        "alt": "Pool level at Samana Ocean Pearl on Dubai Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/18-4-2x.webp",
+        "alt": "A bedroom at Samana Boulevard Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/19-5-2x.webp",
+        "alt": "The residents gym at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/20-9-2x.webp",
+        "alt": "Gold fins across the facade at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/21-6-2x.webp",
+        "alt": "A living room at Samana Boulevard Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd2/01-13-crop-2x.webp",
+        "alt": "The lobby at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/23-7-2x.webp",
+        "alt": "Samana Barari Heights against the Dubai skyline"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/24-5-2x.webp",
+        "alt": "The kitchen in a Samana Boulevard Heights apartment"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/25-18-crop-2x.webp",
+        "alt": "The wellness and yoga studio at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/26-1-2x.webp",
+        "alt": "Samana Ocean Pearl 2 on Dubai Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/27-5-2x.webp",
+        "alt": "The residents lounge at Samana Imperial Garden"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/28-17-crop-2x.webp",
+        "alt": "A bathroom at Samana Barari Heights"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/29-4-2x.webp",
+        "alt": "Samana Ocean Pearl seen from the garden side"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/30-2-2x.webp",
+        "alt": "The lobby at Samana Boulevard Heights"
+      }
+    ],
+    "investment": {
+      "heading": "Why the registration timing is the part that matters.",
+      "items": [
+        {
+          "title": "Ownership recorded at the start",
+          "text": "Oqood from the first payment, not at the 20% to 30% mark."
+        },
+        {
+          "title": "An exit before handover",
+          "text": "A recorded position is what makes selling on during construction practical."
+        },
+        {
+          "title": "Monthly, not lump sum",
+          "text": "1% or 2% a month is a figure you can plan a salary around."
+        },
+        {
+          "title": "Entry under AED 1M",
+          "text": "A studio at Barari Heights, private pool included."
+        }
+      ],
+      "icons": [
+        "FileSignature",
+        "Repeat2",
+        "Wallet",
+        "Coins"
+      ]
+    },
+    "ctaLabel": "See qualifying units",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Samana payment plans: 2% on booking with 2% monthly, or 5% with 1% monthly and Oqood from the first payment. Please send me what's available.",
+    "valueProps": [
+      [
+        "Registered before you have paid a fifth",
+        "The usual off-plan sequence asks for 20% to 30% of the price before the Dubai Land Department has you on record. Samana completes Oqood registration on the first payment, so the documented position arrives at the start of the plan rather than partway through the build."
+      ],
+      [
+        "A booking payment that is also instalment one",
+        "On the fifty-month plan the 2% at booking is the first of fifty equal payments, not a deposit charged on top of them. That is a different thing from a deposit, and it is the reason the entry number is as low as it is."
+      ],
+      [
+        "Two shapes for the same hundred percent",
+        "Eighty months at 1% with three milestones, or fifty months at 2% flat. Both total the full price and neither leaves a lump sum at the end, so the choice is about the size of the monthly figure, not about what the property costs."
+      ],
+      [
+        "A private pool at the entry price",
+        "The private pool in the apartment is Samana's signature, not an upgrade reserved for the large units. At Barari Heights it starts inside a sub-AED 1M studio, which is where the rental argument for these buildings begins."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Samana Developers runs two payment structures across its Dubai inventory, and the interesting part is not the size of the monthly instalment. It is when the Dubai Land Department records you as the owner. In a conventional off-plan purchase that happens once you have paid 20% to 30% of the price. Under both Samana plans, Oqood registration completes on the first payment.",
+      "The plans themselves are straightforward. Book at 5% and you pay 1% a month for eighty months, with three 5% milestones at months 6, 12 and 18; the four blocks add up to the whole price with nothing left at the end. Book at 2% and you pay 2% a month for fifty months, where the booking payment is the first of the fifty rather than an extra charge before them. Samana is explicit that neither is a zero down payment plan, which is a more honest framing than the market usually offers.",
+      "Entry sits below AED 1M. Samana Barari Heights in Majan opens at AED 943,333, Imperial Garden in Arjan at AED 980,000 and Boulevard Heights at AED 1,303,333, with the Dubai Islands towers running from AED 2.89M at Ocean Bay to AED 4.28M at Ocean Pearl 2. The private pool in the apartment is the through line across all of them, and at Barari Heights it appears inside a studio rather than being held back for the larger layouts.",
+      "Two other structures sit alongside these. The 30/70 plan takes 15% down and a total of 30% before handover, leaving 70% at completion. The 40/60 plan takes 40% during construction and defers 60% until after you have moved in, which is the one to read if the plan is to let the rent service part of the price. DLD, Oqood and administration charges are separate under all of them, and prices and availability change often enough that the schedule for a specific unit should be confirmed in writing before anything is committed."
+    ],
+    "worked": {
+      "heading": "Both plans on a AED 943,333 studio",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 943,333"
+        ],
+        [
+          "Booking on the 2% plan",
+          "AED 18,867"
+        ],
+        [
+          "Then 2% a month",
+          "AED 18,867 x 50 months"
+        ],
+        [
+          "Booking on the 5% plan",
+          "AED 47,167"
+        ],
+        [
+          "Then 1% a month",
+          "AED 9,433 x 80 months"
+        ]
+      ],
+      "footnote": "Illustrative, based on the published starting price at Samana Barari Heights; figures are rounded. The 5% plan carries three further 5% milestones at months 6, 12 and 18. DLD registration at 4%, roughly AED 37,733, plus Oqood and administration charges, is payable separately. Prices and availability change, so confirm the schedule for your own unit in writing."
+    },
+    "faqs": [
+      {
+        "question": "Is this a zero down payment plan?",
+        "answer": "No, and Samana does not present it as one. Both plans take a payment at booking: 2% on the fifty-month plan and 5% on the eighty-month plan. On the fifty-month plan the 2% is the first of the fifty instalments rather than a deposit paid on top of the schedule."
+      },
+      {
+        "question": "Which plan costs less in total?",
+        "answer": "Neither. Both add up to 100% of the purchase price. What changes is the timing and the size of the monthly payment, not the amount."
+      },
+      {
+        "question": "What is Oqood and why does it matter here?",
+        "answer": "Oqood is the pre-title deed that records your ownership of an off-plan unit while the building is still under construction. It is generated when the sale and purchase agreement is registered with the Dubai Land Department. Under both Samana plans that registration happens on your first payment, rather than after you have paid 20% to 30%."
+      },
+      {
+        "question": "Can international buyers use these plans?",
+        "answer": "Yes. Eligible freehold off-plan property is available to overseas buyers, subject to project terms and the usual compliance checks."
+      },
+      {
+        "question": "Which projects do the plans apply to?",
+        "answer": "Samana applies them across its Dubai portfolio, including Arjan, JVC, Majan, Dubailand, Al Furjan, Meydan, Dubai South, Al Warsan and Dubai Islands. Individual towers carry their own bespoke schedules as well, so the plan on a specific unit is worth confirming."
+      },
+      {
+        "question": "What is the cheapest way in?",
+        "answer": "Samana Barari Heights in Majan opens at AED 943,333. Imperial Garden in Arjan starts at AED 980,000 and Boulevard Heights at AED 1,303,333."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. DLD registration, Oqood and administration charges are payable separately and are not covered by either plan."
+      },
+      {
+        "question": "What are the 30/70 and 40/60 plans?",
+        "answer": "Two further structures Samana publishes. The 30/70 plan takes 15% down and 30% in total before handover, with the remaining 70% at handover. The 40/60 plan takes 40% during construction and leaves 60% until after you have moved in."
+      }
+    ],
+    "disclaimer": "Terms are set by Samana Developers and apply to eligible units, subject to availability and to each project's own terms and conditions. Payment structures, starting prices and unit availability change; the figures here reflect what the developer published at the time of writing. DLD registration, Oqood and administration charges are payable separately and are not covered by either plan. Handover dates are developer estimates and can move. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm eligibility, price and the full payment schedule in writing, including the schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage."
   }
 ];
 
