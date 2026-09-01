@@ -3789,6 +3789,281 @@ export const OFFERS: Offer[] = [
       }
     ],
     "disclaimer": "The First-Time Home Buyer Programme is run by the Dubai Land Department with the Dubai Department of Economy and Tourism. Eligibility rules, benefits and the list of participating developers and banks are set by DLD and can change; the details here reflect what DLD published at the time of writing, and DLD's own page is the authority. Benefits vary between partners and can be used with one partner only. The programme does not waive DLD registration fees. Figures shown are illustrative and are not financial advice or an offer to sell. Confirm eligibility and the exact terms of any partner offer in writing before committing. Binayah Properties is a licensed Dubai real estate brokerage and is not a government body."
+  },
+  {
+    "slug": "damac-chelsea-residences-golden-visa-offer",
+    "shortName": "Chelsea Residences Benefit",
+    "developer": "DAMAC Properties",
+    "eyebrow": "Final release, 30 days from the booking event",
+    "h1": "DAMAC Chelsea Residences: A UAE Golden Visa With the Final Release",
+    "subtitle": "Ownership in the last release of the world's first football-branded residences carries a Golden Visa for the primary buyer, and savings that scale with how much of the price you pay up front.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/00-3-2x.webp",
+    "deadline": "",
+    "windowLabel": "Bookings within 30 days of the booking event",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "The benefit is a visa, and the discounts are a ladder",
+      "highlight": "One UAE Golden Visa per unit, for the primary buyer, processed once the sale and purchase agreement is executed. On bulk purchases, additional dependent visas may be issued.",
+      "body": [
+        "Chelsea Residences is DAMAC's partnership with Chelsea Football Club: the world's first football-branded residences, more than 1,400 sea-facing homes in Dubai Maritime City. The benefit attached to the final release is the Golden Visa, and it is worth being exact about what that means. It is one visa per unit and it belongs to the primary buyer. It is issued after the SPA is executed, not at reservation. Bulk buyers can add dependent visas on top.",
+        "Alongside it sit two savings tables that most write-ups collapse into a single number. One scales with how many units you take: 1% on two to four, 2% on five to seven, 3% on eight or more. The other scales with how much you pay at the start of the 60/40 plan: 1% for 30% upfront, 2% for 40%, 3% for 50%, and 5% for paying the whole price. The two ladders answer different questions, and only one of them is about the size of your portfolio."
+      ]
+    },
+    "metaTitle": "DAMAC Chelsea Residences Offer | Golden Visa, From AED 2.56M",
+    "metaDescription": "DAMAC's final release at Chelsea Residences carries a UAE Golden Visa for the primary buyer, portfolio savings to 3% and up to 5% off for paying upfront. From AED 2.56M.",
+    "keywords": "damac chelsea residences, chelsea residences offer, chelsea residences price, chelsea residences payment plan, damac golden visa offer, dubai maritime city apartments for sale, football branded residences dubai, chelsea residences final release, chelsea fc dubai apartments",
+    "priceFrom": 2560000,
+    "highlights": [
+      {
+        "value": "5%",
+        "label": "For paying upfront",
+        "detail": "The top rung, on a 100% upfront purchase"
+      },
+      {
+        "value": "3%",
+        "label": "Portfolio savings",
+        "detail": "On eight units or more"
+      },
+      {
+        "value": "40%",
+        "label": "On completion",
+        "detail": "The construction-linked 60/40 plan"
+      },
+      {
+        "value": "AED 2.56M",
+        "label": "Entry price",
+        "detail": "A one-bedroom, sea facing"
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "During construction",
+        "share": "60%",
+        "description": "Staged against construction milestones. How much of this you bring forward is what moves you up the upfront-payment discount ladder."
+      },
+      {
+        "stage": "On completion",
+        "share": "40%",
+        "description": "Due when the residence is handed over."
+      }
+    ],
+    "timelineIntro": "A construction-linked 60/40. DAMAC publishes the split and the completion share; the instalment dates are set per unit, so the schedule in your own sale and purchase agreement is the one that counts.",
+    "eligibility": [
+      {
+        "label": "What the benefit is",
+        "value": "A UAE Golden Visa for the primary buyer, one per unit, on ownership in the final release of Chelsea Residences."
+      },
+      {
+        "label": "When it is processed",
+        "value": "After the sale and purchase agreement is executed, rather than at reservation."
+      },
+      {
+        "label": "Dependents",
+        "value": "On bulk purchases, additional dependent visas may be issued."
+      },
+      {
+        "label": "The booking window",
+        "value": "Valid for all Chelsea Residences bookings made within 30 days after the booking event, excluding the booking event date itself."
+      },
+      {
+        "label": "Portfolio savings",
+        "value": "Two to four units, 1%. Five to seven, 2%. Eight or more, 3%."
+      },
+      {
+        "label": "Upfront savings",
+        "value": "On the 60/40 plan: 30% upfront takes 1% off, 40% takes 2%, 50% takes 3%. Paying 100% upfront takes 5%."
+      },
+      {
+        "label": "Price and unit mix",
+        "value": "From AED 2.56 million for a one-bedroom and AED 3.68 million for a two-bedroom, across one, two and three-bedroom sea-facing apartments."
+      },
+      {
+        "label": "Handover",
+        "value": "Confirm the completion date in writing. The date recorded in your sale and purchase agreement is the authority, and third-party listings do not agree with each other on it."
+      }
+    ],
+    "amenities": {
+      "heading": "A blue sand beach, a rooftop pitch and a performance centre.",
+      "stats": [
+        {
+          "value": "1,400+",
+          "label": "Residences in the development",
+          "icon": "Building2"
+        },
+        {
+          "value": "1st",
+          "label": "Football branded residences in the world",
+          "icon": "Sparkles"
+        },
+        {
+          "value": "1 to 3",
+          "label": "Bedroom layouts",
+          "icon": "KeyRound"
+        }
+      ],
+      "masterplanHeading": "Inside Chelsea Residences",
+      "items": [
+        "Chelsea Lion Beach, the blue sand beach",
+        "Stamford Summit, the rooftop pitch",
+        "Football simulation room",
+        "Chelsea Athlete Performance Training Centre",
+        "The Pride of the Ocean",
+        "Underwater themed kids play area",
+        "Serenity Spa",
+        "Starlit Wellness Centre",
+        "Rain Therapy"
+      ],
+      "icons": [
+        "Waves",
+        "Bike",
+        "Laptop",
+        "Sparkles",
+        "TreePalm",
+        "Users",
+        "Flower2",
+        "Sun",
+        "Droplets"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/00-3-2x.webp",
+        "alt": "Chelsea Residences by DAMAC seen from the water at Dubai Maritime City"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/01-4-2x.webp",
+        "alt": "Stamford Summit, the rooftop football pitch at Chelsea Residences, seen from above"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/02-featured-2x.webp",
+        "alt": "Chelsea Residences lit at dusk on the Dubai Maritime City waterfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/03-5-2x.webp",
+        "alt": "The towers of Chelsea Residences above the Arabian Gulf"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/chelsea-hd/04-2-2x.webp",
+        "alt": "Chelsea Residences at dusk, the sea frontage of Dubai Maritime City behind it"
+      }
+    ],
+    "investment": {
+      "heading": "Why the final release is the one with the terms.",
+      "items": [
+        {
+          "title": "Residency attached to the purchase",
+          "text": "A Golden Visa for the primary buyer, one per unit."
+        },
+        {
+          "title": "Above the AED 2M threshold",
+          "text": "The entry apartment qualifies on its own."
+        },
+        {
+          "title": "Up to 5% back for cash",
+          "text": "The upfront ladder tops out at paying in full."
+        },
+        {
+          "title": "Sea facing in Maritime City",
+          "text": "A peninsula address, minutes from Port Rashid."
+        }
+      ],
+      "icons": [
+        "FileSignature",
+        "Coins",
+        "Wallet",
+        "Waves"
+      ]
+    },
+    "ctaLabel": "See the final release",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Chelsea Residences final release by DAMAC: the UAE Golden Visa benefit and the upfront-payment savings. Please send me what's available.",
+    "valueProps": [
+      [
+        "A visa that the entry price actually reaches",
+        "The investor route to a UAE Golden Visa needs property above AED 2 million. Chelsea Residences opens at AED 2.56 million, so the smallest apartment in the release clears the threshold on its own rather than needing a second purchase stacked on top of it."
+      ],
+      [
+        "Two ladders, not one discount",
+        "The portfolio table and the upfront table are separate mechanisms. One rewards buying more units, the other rewards bringing money forward on a single unit. A buyer with cash and no interest in a portfolio still has 5% available to them."
+      ],
+      [
+        "The window runs from an event, not a date",
+        "The terms are written as 30 days after the booking event, excluding the event date. That is a rolling window rather than a fixed cutoff, which means the useful question is when the relevant booking event was, not what today's date is."
+      ],
+      [
+        "A branded residence with a working thesis",
+        "Football-branded is a first, and firsts are hard to price. What is underneath it is more ordinary and more useful: 1,400 sea-facing homes in Dubai Maritime City, on a peninsula minutes from Port Rashid and Downtown."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Chelsea Residences is DAMAC's partnership with Chelsea Football Club, and the pitch is easy to summarise: the world's first football-branded residences, more than 1,400 sea-facing homes in Dubai Maritime City. The offer attached to the final release is less about the branding and more about residency. Ownership carries a UAE Golden Visa for the primary buyer, one per unit, issued once the sale and purchase agreement has been executed.",
+      "The threshold is what makes this land differently from most developer visa promotions. The investor route to a Golden Visa requires property above AED 2 million, and plenty of campaigns that advertise one are pitched at price points that only reach it by stacking two purchases. Chelsea Residences opens at AED 2.56 million for a one-bedroom, so the cheapest apartment in the release clears the line on its own.",
+      "Two savings tables run alongside. The portfolio table pays 1% on two to four units, 2% on five to seven and 3% on eight or more. The upfront table works on a single unit and rewards bringing money forward on the 60/40 plan: 1% for paying 30% at the start, 2% for 40%, 3% for 50% and 5% for paying the whole price. On the AED 2.56M entry apartment that top rung is AED 128,000, which is a materially different number from the 1% at the bottom.",
+      "The rest of the building is what a branded residence is supposed to be. Chelsea Lion Beach is a blue sand beach; Stamford Summit is a rooftop pitch; there is a football simulation room and a Chelsea Athlete Performance Training Centre, alongside the Serenity Spa, the Starlit Wellness Centre and an underwater-themed kids play area. The offer window is written as 30 days after the booking event rather than a calendar date, so the terms, the applicable discount and the completion date recorded in the sale and purchase agreement are all worth confirming in writing before anything is reserved."
+    ],
+    "worked": {
+      "heading": "What paying earlier is worth on a AED 2.56M residence",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 2,560,000"
+        ],
+        [
+          "30% upfront, 1% off",
+          "AED 25,600"
+        ],
+        [
+          "40% upfront, 2% off",
+          "AED 51,200"
+        ],
+        [
+          "50% upfront, 3% off",
+          "AED 76,800"
+        ],
+        [
+          "100% upfront, 5% off",
+          "AED 128,000"
+        ]
+      ],
+      "footnote": "Illustrative, based on the published starting price; figures are rounded. The portfolio discount is a separate table and runs from 1% on two units to 3% on eight or more. The 4% DLD registration fee, trustee office and administration charges are payable separately. The offer applies to bookings made within 30 days after the booking event, excluding the event date; prices and availability change."
+    },
+    "faqs": [
+      {
+        "question": "What exactly does the offer give me?",
+        "answer": "A UAE Golden Visa for the primary buyer, one per unit, on ownership in the final release of Chelsea Residences. Alongside it are portfolio savings of 1% to 3% depending on how many units you buy, and upfront-payment savings of 1% to 5% depending on how much of the price you pay at the start of the 60/40 plan."
+      },
+      {
+        "question": "When is the Golden Visa issued?",
+        "answer": "After the sale and purchase agreement is executed. It is not issued at reservation."
+      },
+      {
+        "question": "Can my family get visas too?",
+        "answer": "The benefit is one Golden Visa per unit for the primary buyer. For bulk purchases, additional dependent visas may be issued."
+      },
+      {
+        "question": "How long do I have to book?",
+        "answer": "The terms read: valid for all Chelsea Residences bookings made within 30 days after the booking event, excluding the booking event date. It is a rolling window tied to an event rather than a fixed calendar cutoff, so confirm which event applies to your booking."
+      },
+      {
+        "question": "What is the payment plan?",
+        "answer": "A construction-linked 60/40: 60% across the construction period and 40% on completion. Bringing more of the 60% forward is what moves you up the upfront-savings ladder."
+      },
+      {
+        "question": "What does it cost to get in?",
+        "answer": "From AED 2.56 million for a one-bedroom and AED 3.68 million for a two-bedroom. One, two and three-bedroom sea-facing apartments are available, and prices vary by tower, floor, view and layout."
+      },
+      {
+        "question": "Can I combine the portfolio and upfront savings?",
+        "answer": "They are published as two separate tables. Whether they stack on a single transaction is a question for the sales agreement, so get the applicable discount confirmed in writing before you reserve."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. The 4% Dubai Land Department registration fee, trustee office charges and administration fees sit outside this offer and remain payable."
+      }
+    ],
+    "disclaimer": "Terms are set by DAMAC Properties and apply to eligible units in the final release of Chelsea Residences, subject to availability and to DAMAC's terms and conditions. The offer is stated as valid for bookings made within 30 days after the booking event, excluding the booking event date. One Golden Visa per unit for the primary buyer, processed following execution of the sale and purchase agreement; dependent visas on bulk purchases are at DAMAC's discretion, and visa issuance is decided by the UAE authorities, not by the developer or by us. Prices, availability and payment terms change. The 4% DLD registration fee, trustee office and administration charges are payable separately. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm eligibility, price, the applicable discount and the full payment and handover schedule in writing before committing. Binayah Properties is a licensed Dubai real estate brokerage.",
+    "projectHref": "/project/chelsea-residences-by-damac"
   }
 ];
 
