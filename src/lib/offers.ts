@@ -120,11 +120,20 @@ export interface Offer {
    *  plan, which is wrong for an even split, so any non-20:80 structure should
    *  set its own. */
   timelineIntro?: string;
+  /** Overrides the timeline section's H2. The default ("Your money, staged")
+   *  describes a payment plan; an offer whose rail is a process rather than a
+   *  schedule needs its own. Translated per locale, falls back to the catalogue. */
+  timelineHeading?: string;
   /** "The offer in detail" bullet rows. */
   eligibility: OfferEligibility[];
   /** Participating projects, linked through to their own pages. Drives the
    *  reader from the terms into real inventory instead of dead-ending. */
   projects?: OfferProject[];
+  /** Overrides the projects section's H2. The default ("Choose your community")
+   *  is right for a multi-community developer promotion and wrong for an offer
+   *  whose grid holds something else — partner developers, say. Translated per
+   *  locale like any other scalar field; falls back to the message catalogue. */
+  projectsHeading?: string;
   /** Community and lifestyle features, rendered as a checklist band.
    *  `icons` is a parallel array of lucide icon names — positional, so it lives
    *  on the English base and merges through to every locale unchanged. Any name
@@ -3275,6 +3284,511 @@ export const OFFERS: Offer[] = [
       }
     ],
     "disclaimer": "Terms are set by Samana Developers and apply to eligible units, subject to availability and to each project's own terms and conditions. Payment structures, starting prices and unit availability change; the figures here reflect what the developer published at the time of writing. DLD registration, Oqood and administration charges are payable separately and are not covered by either plan. Handover dates are developer estimates and can move. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm eligibility, price and the full payment schedule in writing, including the schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage."
+  },
+  {
+    "slug": "dld-first-time-home-buyer-programme",
+    "shortName": "First-Time Home Buyer",
+    "developer": "Dubai Land Department",
+    "eyebrow": "Government programme, no closing date",
+    "h1": "Dubai's First-Time Home Buyer Programme: What the QR Code Actually Gets You",
+    "subtitle": "Free to join, open to residents of any nationality, and worth reading precisely: it changes the price you are quoted and how the registration fee is paid, not the fee itself.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/00-Riverton-House-by-Ellington-2x.webp",
+    "deadline": "",
+    "windowLabel": "Open programme, no closing date",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "What the QR code is, and what it is not",
+      "highlight": "The programme does not waive the 4% DLD registration fee. What it changes is who calls you before a launch, the price you are quoted on an off-plan unit, and whether that fee can be spread over interest-free instalments on an eligible credit card.",
+      "body": [
+        "The First-Time Home Buyer Programme was launched in July 2025 by the Dubai Land Department with the Department of Economy and Tourism. You register on the DLD website or in the Dubai REST app, and if you qualify you are emailed a QR code. That code is the whole mechanism: you present it to a participating developer or bank, and it identifies you as a first-time buyer entitled to the programme's terms.",
+        "Read the benefits carefully, because they are specific. Priority access to units in new launches. Preferential prices on off-plan units from select developers. Flexible payment plans on those units. Relaxed payment plans for the DLD registration fee through eligible credit cards, interest free. Better mortgage rates and preferential fees from participating banks. Nothing in that list removes a government fee, and DLD says so plainly: standard registration fees and any developer or bank charges still apply unless a specific programme offer says otherwise."
+      ]
+    },
+    "metaTitle": "Dubai First-Time Home Buyer Programme | Eligibility, Benefits",
+    "metaDescription": "Who qualifies for Dubai's First-Time Home Buyer Programme, what the DLD QR code unlocks across 22 partner developers and five banks, and what it does not cover.",
+    "keywords": "dubai first time home buyer programme, first time home buyer dubai eligibility, dld first time buyer qr code, dubai rest app first time buyer, first time buyer developers dubai, dld registration fee instalments, buy first home dubai under 5 million, dubai home ownership scheme 2026",
+    "highlights": [
+      {
+        "value": "AED 5M",
+        "label": "Price ceiling",
+        "detail": "The property has to be valued below this"
+      },
+      {
+        "value": "22",
+        "label": "Partner developers",
+        "detail": "Alongside five participating banks"
+      },
+      {
+        "value": "AED 0",
+        "label": "To join",
+        "detail": "No application and no participation fee"
+      },
+      {
+        "value": "3,200+",
+        "label": "First homes bought",
+        "detail": "More than AED 5 billion since July 2025"
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "Register",
+        "share": "AED 0",
+        "description": "Apply on the Dubai Land Department website or in the Dubai REST app and submit your details."
+      },
+      {
+        "stage": "Get the QR code",
+        "share": "QR",
+        "description": "If you qualify, DLD emails your First-Time Home Buyer QR code. If you do not, DLD tells you why, and you can reapply if your circumstances change."
+      },
+      {
+        "stage": "Approach a partner",
+        "share": "1",
+        "description": "Take the code to any participating developer or bank. Offers differ between partners, and the benefits can be used with only one of them."
+      },
+      {
+        "stage": "Buy and register",
+        "share": "Done",
+        "description": "The code stays valid until a property has been purchased and registered with DLD in your name."
+      }
+    ],
+    "timelineIntro": "Four steps, none of which cost anything, and the code stays live until you actually buy.",
+    "timelineHeading": "How to register",
+    "eligibility": [
+      {
+        "label": "Residency",
+        "value": "Open to residents of the UAE, of any nationality."
+      },
+      {
+        "label": "Age",
+        "value": "Eighteen or older."
+      },
+      {
+        "label": "Existing ownership",
+        "value": "You must not currently own any freehold residential property in Dubai."
+      },
+      {
+        "label": "Price ceiling",
+        "value": "The property you are buying has to be valued below AED 5 million."
+      },
+      {
+        "label": "Property elsewhere",
+        "value": "Owning in another emirate, or in a non-freehold area of Dubai, does not disqualify you."
+      },
+      {
+        "label": "Joint purchases",
+        "value": "Permitted only where both buyers are eligible under the programme."
+      },
+      {
+        "label": "Cost",
+        "value": "Nothing to apply and nothing to participate. Standard DLD registration fees and any developer or bank charges still apply."
+      },
+      {
+        "label": "One time only",
+        "value": "Buying under the programme ends your first-time buyer status permanently, even if you later sell the property."
+      }
+    ],
+    "projects": [
+      {
+        "name": "Emaar",
+        "terms": "Dubai Hills Estate, Dubai Creek Harbour, Emaar South and The Valley. The widest spread of sub-AED 5M apartments among the partners.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/20-8-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/emaar"
+          }
+        ]
+      },
+      {
+        "name": "DAMAC Properties",
+        "terms": "DAMAC Hills 2, DAMAC Lagoons and DAMAC Islands. Villas and townhouses that clear the price ceiling more often than the towers do.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/16-3EB073311A77C881CEA950-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/damac"
+          }
+        ]
+      },
+      {
+        "name": "Nakheel Properties",
+        "terms": "Palm Jumeirah, Dubai Islands and the townhouse communities at Warsan and Jebel Ali.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/02-1-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/nakheel"
+          }
+        ]
+      },
+      {
+        "name": "Binghatti Properties",
+        "terms": "JVC, Al Jaddaf and Business Bay. High-volume launches, and often the lowest entry price in the programme.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/19-3-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/binghatti"
+          },
+          {
+            "label": "See the Binghatti offer",
+            "href": "/offers/binghatti-wraith-4-dld-waiver"
+          }
+        ]
+      },
+      {
+        "name": "Danube Properties",
+        "terms": "JVT, JLT, Dubailand and Arjan, built around long monthly plans that sit naturally alongside the programme.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/10-5-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/danube"
+          },
+          {
+            "label": "See the Danube offer",
+            "href": "/offers/danube-deal-of-the-decade-20-10-back"
+          }
+        ]
+      },
+      {
+        "name": "Samana Developers",
+        "terms": "Arjan, JVC, Majan, Meydan and Dubai Islands. Private pools in the apartments, and Oqood from the first payment.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/samana-hd/00-8-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/samana"
+          },
+          {
+            "label": "See the Samana offer",
+            "href": "/offers/samana-2-down-payment-oqood-offer"
+          }
+        ]
+      },
+      {
+        "name": "Ellington Properties",
+        "terms": "JVC, MBR City and Al Marjan. Design-led apartments, with the smaller layouts landing inside the ceiling.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/03-1-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/ellington"
+          }
+        ]
+      },
+      {
+        "name": "Arada",
+        "terms": "Dubai and Sharjah, from Armani Beach Residences on Palm Jumeirah down to considerably more accessible stock.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/04-3-2x.webp",
+        "links": [
+          {
+            "label": "View developer",
+            "href": "/developers/arada"
+          }
+        ]
+      }
+    ],
+    "projectsHeading": "Who is inside the programme",
+    "amenities": {
+      "heading": "Twenty-two developers and five banks sit inside the programme.",
+      "stats": [
+        {
+          "value": "22",
+          "label": "Partner developers",
+          "icon": "Building2"
+        },
+        {
+          "value": "5",
+          "label": "Partner banks",
+          "icon": "Wallet"
+        },
+        {
+          "value": "AED 5B+",
+          "label": "In sales since July 2025",
+          "icon": "TrendingUp"
+        }
+      ],
+      "masterplanHeading": "Participating developers",
+      "items": [
+        "4Direction Developments",
+        "Arada",
+        "Azizi Developments",
+        "Beyond Developments",
+        "Binghatti Properties",
+        "DAMAC Properties",
+        "Danube Properties",
+        "Dubai Properties",
+        "Dubai World Trade Centre",
+        "Ellington Properties",
+        "Emaar",
+        "IRTH Group",
+        "Majid Al Futtaim",
+        "Manam",
+        "Meraas",
+        "Nakheel Properties",
+        "Palma Holding",
+        "Qube Development",
+        "Reportage Properties",
+        "Samana Developers",
+        "Sky View Real Estate",
+        "Wasl"
+      ],
+      "icons": [
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2",
+        "Building2"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/00-Riverton-House-by-Ellington-2x.webp",
+        "alt": "A resort-style pool deck with the Dubai skyline behind it"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/01-1-2x.webp",
+        "alt": "The Dubai skyline seen across the water from La Mer, Jumeirah"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/02-1-2x.webp",
+        "alt": "The Palm Crown by Nakheel above the water at Palm Jumeirah"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/03-1-2x.webp",
+        "alt": "Living space opening onto the water at Ellington's Lakeshore Villas in MBR City"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/04-3-2x.webp",
+        "alt": "Armani Beach Residences by Arada on Palm Jumeirah"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/05-7-2x.webp",
+        "alt": "A bedroom at Emaar's Park Point apartments in Dubai Hills Estate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/06-3-2x.webp",
+        "alt": "Dragon Tower by Nakheel above Dragon City at sunset"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/08-2-2x.webp",
+        "alt": "The living and dining space at Aura Gardens, Tilal Al Ghaf"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/09-1-2x.webp",
+        "alt": "A terrace plunge pool at Opalz Tower by Danube"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/10-5-2x.webp",
+        "alt": "Fashionz by Danube lit up at night in Jumeirah Village Triangle"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/11-2-2x.webp",
+        "alt": "Ashwood Estates by Wasl at Jumeirah Golf Estates"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/12-2-2x.webp",
+        "alt": "The dining space inside Burj Azizi on Sheikh Zayed Road"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/azizi-717-tower-at-dubai-trade-centre-1/gallery/2.webp",
+        "alt": "Azizi 717 Tower rising above Dubai Trade Centre 1"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/14-7-2x.webp",
+        "alt": "La Rosa II villas at Villanova, Dubailand"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/15-4-2x.webp",
+        "alt": "The kitchen in a Cherrywoods townhouse by Meraas"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/16-3EB073311A77C881CEA950-2x.webp",
+        "alt": "A masterplanned villa community in Dubailand seen from above"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/17-3-2x.webp",
+        "alt": "An apartment at Azizi Aura at night"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/18-2-2x.webp",
+        "alt": "A bedroom at Belgravia Heights 2 by Ellington in Jumeirah Village Circle"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/19-3-2x.webp",
+        "alt": "The facade of Binghatti Dawn in Jumeirah Village Circle"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/20-8-2x.webp",
+        "alt": "The kitchen and living space at Emaar's Park Point in Dubai Hills Estate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/21-8-2x.webp",
+        "alt": "Townhouses at Warsan Village by Nakheel"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/22-2-2x.webp",
+        "alt": "A bedroom at Wasl Hillside Residences at Wasl Gate"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/23-1-2x.webp",
+        "alt": "Burj Binghatti Jacob and Co Residences above the clouds in Business Bay"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/24-3-2x.webp",
+        "alt": "A bedroom at Aura Gardens, Tilal Al Ghaf"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/25-5-2x.webp",
+        "alt": "Adeba Azizi on the water at Al Jaddaf"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/26-3-2x.webp",
+        "alt": "The living space in a Rukan Loft at Wadi Al Safa, Dubailand"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/27-1-2x.webp",
+        "alt": "Townhouses at Mudon Al Ranim phase 5, Dubailand"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/fthb-hd/28-4-2x.webp",
+        "alt": "Viewz by Danube, the Aston Martin tower at Jumeirah Lakes Towers"
+      }
+    ],
+    "investment": {
+      "heading": "Where the programme actually moves the needle.",
+      "items": [
+        {
+          "title": "Priority on new launches",
+          "text": "Partner developers contact registered buyers ahead of each launch."
+        },
+        {
+          "title": "Preferential off-plan pricing",
+          "text": "Select developers quote participants a different price on the same unit."
+        },
+        {
+          "title": "Better mortgage terms",
+          "text": "Five banks offer preferential rates and faster approvals."
+        },
+        {
+          "title": "Ready homes qualify",
+          "text": "Through the banks, not only off-plan through developers."
+        }
+      ],
+      "icons": [
+        "CalendarClock",
+        "BadgePercent",
+        "Wallet",
+        "KeyRound"
+      ]
+    },
+    "ctaLabel": "See homes under AED 5M",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm registered (or registering) for Dubai's First-Time Home Buyer Programme and looking for a first home under AED 5M. Please send me what qualifies.",
+    "valueProps": [
+      [
+        "The call before the launch",
+        "Dubai's better off-plan releases sell through developer databases before they reach a portal. Registered buyers are contacted by partner developers ahead of each launch, which is the difference between choosing a unit and being offered what is left."
+      ],
+      [
+        "A different price on the same unit",
+        "Select developers quote programme participants preferential prices on off-plan units. It is the same building and the same floor plan; the number in front of you is what changes."
+      ],
+      [
+        "The fee spread, not removed",
+        "The 4% registration fee still has to be paid. Under the programme it can go on an eligible credit card as interest-free instalments, which moves a five-figure sum out of the day you sign and across the following months."
+      ],
+      [
+        "Ready homes count too",
+        "The programme is often described as an off-plan scheme. It is not. Buyers of completed property qualify through the participating banks for preferential rates and faster approvals."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Dubai's First-Time Home Buyer Programme launched in July 2025, run by the Dubai Land Department with the Department of Economy and Tourism. Within its first year it had put more than 3,200 residents into their first home and generated over AED 5 billion in residential transactions, with 22 developers and five banks signed up as partners. Registration is free, and the eligibility test is short: a UAE resident of any nationality, at least 18, not currently owning freehold residential property in Dubai, buying below AED 5 million.",
+      "What you get is access rather than a discount on the government's side of the transaction. Partner developers contact registered buyers ahead of new launches, which matters more than it sounds in a market where the better releases are placed through developer databases before they ever reach a portal. Select developers then quote programme participants preferential prices on off-plan units, and offer flexible payment plans on them. Through the five partner banks, buyers of ready property get preferential mortgage rates and faster approvals, so the common description of this as an off-plan scheme is wrong.",
+      "The registration fee is where expectations most often run ahead of the rules. The programme does not waive the 4% DLD fee. On a AED 1.5M home that is AED 60,000, and it remains payable. What the programme adds is a relaxed payment plan for it: interest-free instalments on an eligible credit card, which moves the sum off the day you sign. Developer-run DLD-waiver promotions do exist and can sit alongside this, but they are a separate offer from a separate party.",
+      "Two rules are worth committing to memory before you register. A joint purchase is only permitted where both buyers are eligible, so a partner who already owns freehold property in Dubai takes the purchase outside the programme. And the status is spent once: buy under the programme and you cannot use it again, even after selling. The QR code itself stays valid until a property is purchased and registered in your name, so there is no rush to use it, only a reason to use it on the right home."
+    ],
+    "worked": {
+      "heading": "The 4% fee on an AED 1.5M first home",
+      "rows": [
+        [
+          "Example purchase price",
+          "AED 1,500,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 60,000"
+        ],
+        [
+          "Waived by the programme itself",
+          "AED 0"
+        ],
+        [
+          "What the programme changes",
+          "The fee can be spread interest free"
+        ],
+        [
+          "Cost of joining",
+          "AED 0"
+        ]
+      ],
+      "footnote": "Illustrative. The programme does not waive the DLD registration fee; it gives eligible buyers relaxed payment plans for it through eligible credit cards with interest-free instalments. Individual developers run their own DLD-waiver promotions, and those are a separate thing that can sit alongside this. Confirm what a specific partner is offering, in writing, before committing."
+    },
+    "faqs": [
+      {
+        "question": "Who is eligible?",
+        "answer": "Residents of the UAE of any nationality, aged 18 or older, who do not currently own any freehold residential property in Dubai and are buying a property valued below AED 5 million."
+      },
+      {
+        "question": "Does it cost anything to join?",
+        "answer": "No. There are no application or participation fees. Standard DLD registration fees and any developer or bank charges still apply, unless a specific programme offer says otherwise."
+      },
+      {
+        "question": "How do I register?",
+        "answer": "Apply through the Dubai Land Department website or the Dubai REST app. If you are eligible, DLD emails you a confirmation containing your First-Time Home Buyer QR code, which you then present to participating developers and banks."
+      },
+      {
+        "question": "Does the programme waive the 4% DLD fee?",
+        "answer": "No. It offers relaxed payment plans for the registration fee through eligible credit cards with interest-free instalments. Some developers separately run their own DLD-waiver promotions, but that is a developer offer rather than part of this programme."
+      },
+      {
+        "question": "Is it only for off-plan property?",
+        "answer": "No. Buyers of ready property benefit through the participating banks, with preferential interest rates and faster approval processes."
+      },
+      {
+        "question": "I own property in another emirate. Do I still qualify?",
+        "answer": "Yes, as long as you do not currently own any freehold property in Dubai. The same applies if you own in a non-freehold area of Dubai."
+      },
+      {
+        "question": "Can I buy jointly with someone?",
+        "answer": "Only if that person is also eligible under the programme. Joint purchases with an ineligible buyer are not permitted."
+      },
+      {
+        "question": "Can I use the programme again after selling?",
+        "answer": "No. Once you purchase under the programme you lose first-time buyer status permanently, even if you sell the property later."
+      }
+    ],
+    "disclaimer": "The First-Time Home Buyer Programme is run by the Dubai Land Department with the Dubai Department of Economy and Tourism. Eligibility rules, benefits and the list of participating developers and banks are set by DLD and can change; the details here reflect what DLD published at the time of writing, and DLD's own page is the authority. Benefits vary between partners and can be used with one partner only. The programme does not waive DLD registration fees. Figures shown are illustrative and are not financial advice or an offer to sell. Confirm eligibility and the exact terms of any partner offer in writing before committing. Binayah Properties is a licensed Dubai real estate brokerage and is not a government body."
   }
 ];
 

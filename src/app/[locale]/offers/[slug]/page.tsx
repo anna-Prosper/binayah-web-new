@@ -495,7 +495,7 @@ export default async function OfferPage({ params }: Props) {
           <Reveal>
             <Eyebrow>{t("whereEyebrow")}</Eyebrow>
             <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-              {t("whereHeading")}
+              {offer.projectsHeading || t("whereHeading")}
             </h2>
           </Reveal>
 
@@ -872,7 +872,7 @@ export default async function OfferPage({ params }: Props) {
         <Reveal>
           <Eyebrow>{t("planEyebrow")}</Eyebrow>
           <h2 className="mt-4 max-w-2xl text-[1.6rem] font-extrabold leading-[1.18] tracking-[-0.01em] text-foreground sm:text-[2.7rem] sm:leading-[1.1] sm:tracking-[-0.02em]">
-            {t("planHeading")}
+            {offer.timelineHeading || t("planHeading")}
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             {offer.timelineIntro ?? t("defaultTimelineIntro")}
