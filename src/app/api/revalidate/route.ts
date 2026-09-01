@@ -7,17 +7,22 @@ export const dynamic = "force-dynamic";
  * On-demand ISR revalidation.
  *
  * Offer and guide pages render from MongoDB but are ISR-cached (1h / 24h), so
- * a document edit is otherwise invisible until the window lapses — with no
- * way to force it. POST here after changing DB-backed content to publish it
+ * a document edit is otherwise invisible until the window lapses, with no way
+ * to force it. POST here after changing DB-backed content to publish it
  * immediately.
  *
- *   curl -X POST https://www.binayah.ae/api/revalidate \
- *     -H "x-admin-secret: $ADMIN_SECRET" \
- *     -H "content-type: application/json" \
- *     -d '{"paths":["/offers","/offers/some-slug"]}'
+ * Use the no-body form. It revalidates the route patterns below, which is what
+ * every offer/guide edit actually needs:
  *
- * Omit `paths` to refresh the offers hub, every offer page, the guides hub
- * and every guide page.
+ *   curl -X POST https://www.binayah.ae/api/revalidate \
+ *     -H "x-admin-secret: $ADMIN_SECRET"
+ *
+ * `paths` exists for one-off literal routes, and it is a trap for offers and
+ * guides. revalidatePath("/offers/some-slug") matches a literal path, not the
+ * dynamic /[locale]/offers/[slug] route these pages are served from, so it
+ * returns 200 and changes nothing. It looks like it works on a brand new page
+ * only because nothing was cached there yet. If an edit is not showing up on
+ * production and this endpoint said "revalidated", this is why.
  */
 const DEFAULT_TARGETS: { path: string; type: "page" | "layout" }[] = [
   // Route-pattern form revalidates every dynamic instance — all locales, all
