@@ -1931,7 +1931,7 @@ export const OFFERS: Offer[] = [
     },
     "metaTitle": "Emaar Payment Plans | 90/10, 80/20 and 25/75",
     "metaDescription": "Emaar's current plans: 90/10 at Seapoint and Alana, 80/20 at The Cove, Park Horizon and Seascape, and 25/75 with a 3-year post-handover tail at Emaar South.",
-    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, alana the valley payment plan, dubai off plan payment plan",
+    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, dubai off plan payment plan",
     "priceFrom": 1300000,
     "highlights": [
       {
@@ -2038,12 +2038,16 @@ export const OFFERS: Offer[] = [
       },
       {
         "name": "Alana",
-        "terms": "The Valley, built around a swimmable lagoon. On the 90/10 plan, so only a tenth is left at completion.",
+        "terms": "The Valley, built around a swimmable lagoon. Three and four-bedroom townhouses on the 90/10.",
         "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/02-3-2x.webp",
         "links": [
           {
             "label": "Alana at The Valley",
             "href": "/project/alana-by-emaar-at-the-valley"
+          },
+          {
+            "label": "See the Alana offer",
+            "href": "/offers/emaar-90-10-offer-limited-time-alana-the-valley-launch"
           }
         ]
       },
@@ -4671,6 +4675,301 @@ export const OFFERS: Offer[] = [
     ],
     "disclaimer": "Terms are set by DAMAC Properties and apply to eligible units in the final release of Chelsea Residences, subject to availability and to DAMAC's terms and conditions. The offer is stated as valid for bookings made within 30 days after the booking event, excluding the booking event date. One Golden Visa per unit for the primary buyer, processed following execution of the sale and purchase agreement; dependent visas on bulk purchases are at DAMAC's discretion, and visa issuance is decided by the UAE authorities, not by the developer or by us. Prices, availability and payment terms change. The 4% DLD registration fee, trustee office and administration charges are payable separately. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm eligibility, price, the applicable discount and the full payment and handover schedule in writing before committing. Binayah Properties is a licensed Dubai real estate brokerage.",
     "projectHref": "/project/chelsea-residences-by-damac"
+  },
+  {
+    "slug": "emaar-90-10-offer-limited-time-alana-the-valley-launch",
+    "shortName": "Alana at The Valley",
+    "developer": "Emaar Properties",
+    "eyebrow": "Launch offer at Alana, The Valley",
+    "h1": "Alana at The Valley: 90/10 on a Three or Four-Bedroom Townhouse",
+    "subtitle": "The same plan Emaar runs at Beachfront, attached to a very different product: a townhouse on a lagoon in a master community, not an apartment on a peninsula.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/00-3-2x.webp",
+    "deadline": "",
+    "windowLabel": "Limited-time launch offer",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "Same plan, different thing being bought",
+      "highlight": "90% during construction and 10% upon 100% construction completion, on a limited number of three and four-bedroom townhouses.",
+      "body": [
+        "Emaar runs the 90/10 across more than one community, so the plan is not what distinguishes this release. What distinguishes it is the asset. Alana is townhouses in The Valley, a master community out along the Al Ain road, arranged around a lagoon and a stretch Emaar calls the Golden Beach. That is a family purchase with a garden, not a rental unit in a tower.",
+        "The plan itself suits that buyer. A 90/10 leaves a tenth at completion, which matters less to an investor timing a resale than it does to a family that wants the handover to be a formality rather than a second financing round. Emaar states a limited number of units, so what closes this is stock rather than a date."
+      ]
+    },
+    "metaTitle": "Alana at The Valley 90/10 | 3 & 4-Bed Townhouses, Emaar",
+    "metaDescription": "Emaar's launch offer at Alana, The Valley: three and four-bedroom townhouses on a 90/10 plan, 90% during construction and 10% at 100% completion. Limited units.",
+    "keywords": "alana the valley, alana emaar townhouses, alana the valley payment plan, the valley by emaar townhouses, alana 3 bedroom townhouse price, emaar the valley launch offer, dubai al ain road townhouses, alana the valley lagoon",
+    "priceFrom": 3500000,
+    "highlights": [
+      {
+        "value": "90%",
+        "label": "During construction",
+        "detail": "Paid across the build period"
+      },
+      {
+        "value": "10%",
+        "label": "At completion",
+        "detail": "Due at 100% construction completion"
+      },
+      {
+        "value": "3 & 4",
+        "label": "Bedroom townhouses",
+        "detail": "The two layouts in this release"
+      },
+      {
+        "value": "AED 3.5M",
+        "label": "Published entry price",
+        "detail": "For a three-bedroom townhouse"
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "During construction",
+        "share": "90%",
+        "description": "Paid across the build period on Emaar's construction-linked schedule."
+      },
+      {
+        "stage": "At 100% construction completion",
+        "share": "10%",
+        "description": "The balance, due once construction is complete."
+      }
+    ],
+    "timelineIntro": "Two blocks, and the second one is small. Ninety percent across the build, and the last ten when construction reaches 100%.",
+    "eligibility": [
+      {
+        "label": "The plan",
+        "value": "90% during construction and 10% upon 100% construction completion."
+      },
+      {
+        "label": "What is in the release",
+        "value": "A limited number of three and four-bedroom townhouses. The wider project has larger layouts, but the launch offer names these two."
+      },
+      {
+        "label": "Where",
+        "value": "Alana, inside The Valley by Emaar, on the Dubai to Al Ain road."
+      },
+      {
+        "label": "Published entry price",
+        "value": "From AED 3.5 million for a three-bedroom townhouse. Emaar does not publish a price on the offer page itself, so confirm the current figure before relying on it."
+      },
+      {
+        "label": "The community",
+        "value": "Built around a lagoon and the Golden Beach, with pocket parks, playgrounds and a Town Centre for retail and dining."
+      },
+      {
+        "label": "How long it runs",
+        "value": "Emaar states a limited number of units rather than an end date, so availability is what closes it."
+      },
+      {
+        "label": "Handover",
+        "value": "Emaar does not state a completion date on the offer page. Third-party listings say Q2 2027; treat the date in your own sale and purchase agreement as the authority."
+      },
+      {
+        "label": "What is not covered",
+        "value": "The 4% DLD registration fee, trustee office and administration charges are payable separately."
+      }
+    ],
+    "amenities": {
+      "heading": "A lagoon, a golden beach and a town centre.",
+      "stats": [
+        {
+          "value": "3 & 4",
+          "label": "Bedroom townhouses in the release",
+          "icon": "KeyRound"
+        },
+        {
+          "value": "90/10",
+          "label": "Payment split",
+          "icon": "Wallet"
+        },
+        {
+          "value": "Lagoon",
+          "label": "At the centre of the plan",
+          "icon": "Waves"
+        }
+      ],
+      "masterplanHeading": "Inside The Valley",
+      "items": [
+        "Golden Beach along the lagoon",
+        "Swimmable lagoon at the centre",
+        "Pocket parks between the clusters",
+        "Playgrounds throughout",
+        "Town Centre for retail and dining",
+        "Landscaped walking trails",
+        "Private garden with each townhouse",
+        "Sports and community facilities",
+        "On the Dubai to Al Ain road"
+      ],
+      "icons": [
+        "Sun",
+        "Waves",
+        "Trees",
+        "Flower2",
+        "Store",
+        "Bike",
+        "TreePalm",
+        "Users",
+        "Building2"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/00-3-2x.webp",
+        "alt": "The lagoon at Alana, The Valley, with the townhouses behind the palms"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/01-7-2x.webp",
+        "alt": "Water running past the townhouses at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/02-1-2x.webp",
+        "alt": "Townhouses at Alana seen across the lagoon"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/03-8-2x.webp",
+        "alt": "A walking path beside the lagoon at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/04-10-2x.webp",
+        "alt": "A timber deck at the lagoon edge at Alana"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/05-4-2x.webp",
+        "alt": "The living and dining space inside an Alana townhouse"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/06-9-2x.webp",
+        "alt": "The street frontage of a townhouse at Alana, The Valley"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/07-6-2x.webp",
+        "alt": "A living room opening onto the terrace at Alana"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/08-5-2x.webp",
+        "alt": "A bedroom at Alana looking out to the lagoon"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/alana-hd/09-featured-2x.webp",
+        "alt": "The entrance to The Valley by Emaar"
+      }
+    ],
+    "investment": {
+      "heading": "Who this release is actually for.",
+      "items": [
+        {
+          "title": "Families, not flippers",
+          "text": "Three and four bedrooms with a garden and a school run."
+        },
+        {
+          "title": "A small balance at handover",
+          "text": "Ten percent at completion, not forty."
+        },
+        {
+          "title": "Water at the centre",
+          "text": "A lagoon and a beach, not a landscaped verge."
+        },
+        {
+          "title": "Limited release",
+          "text": "Stock closes it, so the list is worth asking for."
+        }
+      ],
+      "icons": [
+        "Users",
+        "Wallet",
+        "Waves",
+        "CalendarClock"
+      ]
+    },
+    "ctaLabel": "See available townhouses",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Alana launch offer at The Valley: 90% during construction, 10% at completion, on a 3 or 4-bedroom townhouse. Please send me what's available.",
+    "valueProps": [
+      [
+        "A townhouse, not a unit in a tower",
+        "The 90/10 turns up across Emaar's portfolio, so the plan is not the reason to choose this one. Alana is three and four-bedroom townhouses with their own gardens, around a lagoon. It is a different purchase with a different buyer behind it."
+      ],
+      [
+        "Ten percent left at the end",
+        "A 90/10 leaves a balance small enough that completion is administrative rather than a financing event. For a family moving in rather than an investor exiting, that is the more useful shape."
+      ],
+      [
+        "The lagoon is the plan, not a feature",
+        "The Valley is laid out around water and the Golden Beach, with pocket parks and playgrounds between the clusters. Alana sits on that, which is what the frontage is actually paying for."
+      ],
+      [
+        "Stock closes it, not a date",
+        "Emaar publishes a limited number of units with no deadline attached. That makes the useful question what is left in the release, rather than how long is left on a clock."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Emaar's launch offer at Alana is a 90/10: ninety percent of the price across the construction period, and the last ten percent once construction reaches 100%. The plan is not what makes this release distinctive, because Emaar runs the same split elsewhere in its portfolio. What makes it distinctive is what the plan is attached to.",
+      "Alana is three and four-bedroom townhouses in The Valley, Emaar's master community on the road out to Al Ain. The plan there is organised around water: a lagoon at the centre, a stretch Emaar calls the Golden Beach, and pocket parks and playgrounds threaded between the clusters, with a Town Centre for retail and dining. Each townhouse comes with its own garden. That is a family purchase, and it behaves differently from an apartment bought to let.",
+      "The payment shape suits that buyer. A 90/10 asks for more during the build and leaves only a tenth at the end, so completion becomes an administrative step rather than a second financing round. An investor timing a resale before handover would rather defer more; a family that intends to move in generally would not. Neither is better in the abstract, and the honest question is which one you are.",
+      "Emaar publishes a limited number of units and no closing date, so the release ends when the stock does rather than on a calendar. The offer page does not carry a price or a handover date; listings put a three-bedroom from AED 3.5 million with completion in Q2 2027, but the figures that bind are the ones in the sale and purchase agreement. The 4% DLD registration fee, trustee office and administration charges sit outside the plan and remain payable."
+    ],
+    "worked": {
+      "heading": "The 90/10 on a AED 3.5M townhouse",
+      "rows": [
+        [
+          "Published entry price",
+          "AED 3,500,000"
+        ],
+        [
+          "Paid during construction",
+          "AED 3,150,000"
+        ],
+        [
+          "Due at 100% completion",
+          "AED 350,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 140,000"
+        ],
+        [
+          "Compare: 60/40 balance at handover",
+          "AED 1,400,000"
+        ]
+      ],
+      "footnote": "Illustrative, based on the published starting price for a three-bedroom townhouse; figures are rounded. Emaar does not publish a price on the offer page, so confirm the current figure. The DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. The last row compares against a typical 60/40, not an alternative Emaar offers here."
+    },
+    "faqs": [
+      {
+        "question": "What is the payment plan?",
+        "answer": "90% during construction and 10% upon 100% construction completion. Emaar publishes it as a limited-time launch offer."
+      },
+      {
+        "question": "What can I buy under it?",
+        "answer": "A limited number of three and four-bedroom townhouses at Alana. The wider project includes larger layouts, but the launch offer names these two."
+      },
+      {
+        "question": "How is this different from the Emaar Beachfront 90/10?",
+        "answer": "The plan is identical; the asset is not. Beachfront is apartments and penthouses on a gated peninsula between Dubai Marina and Palm Jumeirah. Alana is townhouses with gardens in a master community built around a lagoon. Different buyer, different hold, different exit."
+      },
+      {
+        "question": "What does it cost to get in?",
+        "answer": "Listings put a three-bedroom townhouse from AED 3.5 million. Emaar does not publish a price on the offer page, so confirm the current figure before relying on it."
+      },
+      {
+        "question": "When does it hand over?",
+        "answer": "Emaar does not state a completion date on the offer page. Third-party listings say Q2 2027. The date recorded in your sale and purchase agreement is the one that counts."
+      },
+      {
+        "question": "What is The Valley like?",
+        "answer": "A master community on the Dubai to Al Ain road built around a lagoon and the Golden Beach, with pocket parks, playgrounds and a Town Centre for retail and dining."
+      },
+      {
+        "question": "When does the offer end?",
+        "answer": "Emaar states a limited number of units rather than an end date, so availability is what closes it."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. The 4% Dubai Land Department registration fee, trustee office charges and administration fees are payable separately."
+      }
+    ],
+    "disclaimer": "Terms are set by Emaar Properties and apply to eligible units at Alana, The Valley, subject to availability and to Emaar's terms and conditions. The 90/10 plan is published as a limited-time launch offer on a limited number of units; prices, availability and payment terms change without notice. Emaar does not publish a starting price or a handover date on its offer page; figures quoted here come from third-party listings and are indicative only. The 4% DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm price, layout, the full payment schedule and the completion date in writing, including the schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage.",
+    "projectHref": "/project/alana-by-emaar-at-the-valley"
   }
 ];
 
