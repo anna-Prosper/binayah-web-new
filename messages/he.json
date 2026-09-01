@@ -91,7 +91,8 @@
     "megaSellServices": "שירותים",
     "megaOffPlanAreas": "אזורים פופולריים",
     "ourTeam": "הצוות שלנו",
-    "offers": "מבצעים"
+    "offers": "מבצעים",
+    "investmentGuidesAll": "מדריכי השקעות"
   },
   "common": {
     "viewAll": "הצג הכל",
@@ -657,7 +658,8 @@
       "step3": "קבע פגישה לצפייה, סיור וידאו או שיחה על האפשרויות שלך, ללא התחייבות.",
       "browseProperties": "עיין בנכסים",
       "backHome": "חזרה לדף הבית"
-    }
+    },
+    "phoneInvalid": "הזן מספר טלפון תקין"
   },
   "footer": {
     "tagline": "שותף הנדל\"ן המהימן של Dubai לקנייה, מכירה והשכרה מאז 2007.",
@@ -1654,7 +1656,8 @@
     "reraNotice": "מספר רישום RERA 1162, רשות רגולציית הנדל\"ן של Dubai",
     "freeConsult": "ייעוץ חינמי",
     "yearsExperience": "+19 שנה בדובאי",
-    "emaarPartner": "שותף Emaar"
+    "emaarPartner": "שותף Emaar",
+    "phoneInvalid": "הזן ספרות בלבד, 5-15 תווים"
   },
   "newsletter": {
     "title": "הישארו מעודכנים בשוק",
@@ -1709,7 +1712,8 @@
     "inquireWhatsapp": "בירור על נכסים שמורים",
     "moreActions": "עוד פעולות",
     "signInTitle": "התחבר לשמירה קבועה",
-    "signInHint": "המועדפים שלך נשמרים רק במכשיר זה."
+    "signInHint": "המועדפים שלך נשמרים רק במכשיר זה.",
+    "inquirePrefill": "שלום, אני מעוניין לשאול לגבי {count} נכסים ששמרתי באתר שלכם."
   },
   "savedProperties": {
     "empty": "אין נכסים שמורים",
@@ -1790,7 +1794,10 @@
     "call": "התקשר",
     "liveChat": "צ'אט חי",
     "popupText": "מחפשים נכס בדובאי? המומחים שלנו זמינים עכשיו, רכישה, שכירות או השקעה, נמצא את ההתאמה המושלמת.",
-    "prefillGeneral": "שלום Binayah! 👋 אשמח לשמוע עוד על הנכסים שלכם בדובאי."
+    "prefillGeneral": "שלום Binayah! 👋 אשמח לשמוע עוד על הנכסים שלכם בדובאי.",
+    "prefillServices": "שלום, אני מעוניין בשירותי הנדל\"ן שלכם",
+    "prefillMoreInfo": "שלום, אני מעוניין במידע נוסף",
+    "prefillSaved": "שלום, אני מעוניין לשאול לגבי {count} נכסים שמורים באתר שלכם."
   },
   "scrollToTop": {
     "ariaLabel": "גלול לראש הדף"
@@ -2944,7 +2951,9 @@
     "successBody": "קיבלנו את בקשתכם לחוברת של {name}. סוכן ישתף אותה אתכם בקרוב.",
     "closeButton": "סגור",
     "closeAria": "סגור",
-    "autoMessage": "אנא שלחו לי את החוברת עבור {name}."
+    "autoMessage": "אנא שלחו לי את החוברת עבור {name}.",
+    "subtitleNoFile": "השאירו את פרטי הקשר שלכם ונשלח את חוברת הפרויקט המלאה תוך דקות.",
+    "successBodyNoFile": "קיבלנו את בקשתך לחוברת {name}. סוכן ישתף אותה איתך בקרוב."
   },
   "pulseDaily": {
     "metaTitle": "דוח מכירות יומי | דובאי פולס | Binayah Properties",

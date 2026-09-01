@@ -91,7 +91,8 @@
     "megaSellServices": "Dịch vụ",
     "megaOffPlanAreas": "Khu vực phổ biến",
     "ourTeam": "Đội ngũ",
-    "offers": "Ưu đãi"
+    "offers": "Ưu đãi",
+    "investmentGuidesAll": "Hướng dẫn Đầu tư"
   },
   "common": {
     "viewAll": "Xem tất cả",
@@ -657,7 +658,8 @@
       "step3": "Lên lịch xem nhà, tham quan qua video, hoặc thảo luận về các lựa chọn của bạn, không có ràng buộc.",
       "browseProperties": "Duyệt bất động sản",
       "backHome": "Quay về trang chủ"
-    }
+    },
+    "phoneInvalid": "Nhập số điện thoại hợp lệ"
   },
   "footer": {
     "tagline": "Đối tác bất động sản đáng tin cậy của Dubai cho việc mua, bán và thuê từ năm 2007.",
@@ -1654,7 +1656,8 @@
     "reraNotice": "Số đăng ký RERA 1162, Cơ quan Quản lý Bất động sản Dubai",
     "freeConsult": "Tư vấn miễn phí",
     "yearsExperience": "19+ năm tại Dubai",
-    "emaarPartner": "Đối tác Emaar"
+    "emaarPartner": "Đối tác Emaar",
+    "phoneInvalid": "Chỉ nhập chữ số, 5-15 ký tự"
   },
   "newsletter": {
     "title": "Đi trước thị trường",
@@ -1709,7 +1712,8 @@
     "inquireWhatsapp": "Hỏi về bất động sản đã lưu",
     "moreActions": "Thêm hành động",
     "signInTitle": "Đăng nhập để lưu vĩnh viễn",
-    "signInHint": "Danh sách yêu thích của bạn chỉ được lưu trên thiết bị này."
+    "signInHint": "Danh sách yêu thích của bạn chỉ được lưu trên thiết bị này.",
+    "inquirePrefill": "Chào, tôi muốn hỏi về {count} bất động sản đã lưu trên trang web của bạn."
   },
   "savedProperties": {
     "empty": "Chưa có bất động sản đã lưu",
@@ -1790,7 +1794,10 @@
     "call": "Gọi",
     "liveChat": "Trò chuyện trực tiếp",
     "popupText": "Bạn đang tìm bất động sản ở Dubai? Chuyên gia của chúng tôi đang trực tuyến, mua, thuê hay đầu tư, chúng tôi sẽ tìm được lựa chọn hoàn hảo.",
-    "prefillGeneral": "Xin chào Binayah! 👋 Tôi muốn tìm hiểu thêm về các bất động sản của bạn ở Dubai."
+    "prefillGeneral": "Xin chào Binayah! 👋 Tôi muốn tìm hiểu thêm về các bất động sản của bạn ở Dubai.",
+    "prefillServices": "Chào, tôi quan tâm đến dịch vụ bất động sản của bạn",
+    "prefillMoreInfo": "Xin chào, tôi muốn biết thêm thông tin",
+    "prefillSaved": "Chào, tôi muốn hỏi về {count} bất động sản đã lưu trên trang web của bạn."
   },
   "scrollToTop": {
     "ariaLabel": "Cuộn lên đầu trang"
@@ -2944,7 +2951,9 @@
     "successBody": "Chúng tôi đã nhận yêu cầu brochure {name} của bạn. Một chuyên viên sẽ chia sẻ với bạn trong giây lát.",
     "closeButton": "Đóng",
     "closeAria": "Đóng",
-    "autoMessage": "Vui lòng gửi cho tôi brochure của {name}."
+    "autoMessage": "Vui lòng gửi cho tôi brochure của {name}.",
+    "subtitleNoFile": "Để lại thông tin liên hệ và chúng tôi sẽ gửi tài liệu dự án đầy đủ trong vài phút.",
+    "successBodyNoFile": "Chúng tôi đã nhận được yêu cầu của bạn cho tài liệu {name}. Một đại lý sẽ chia sẻ với bạn sớm."
   },
   "pulseDaily": {
     "metaTitle": "Báo cáo bán hàng hàng ngày | Dubai Pulse | Binayah Properties",

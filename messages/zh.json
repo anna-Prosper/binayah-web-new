@@ -91,7 +91,8 @@
     "sell": "出售",
     "megaOffPlanAreas": "热门区域",
     "ourTeam": "我们的团队",
-    "offers": "优惠"
+    "offers": "优惠",
+    "investmentGuidesAll": "投资指南"
   },
   "common": {
     "viewAll": "查看全部",
@@ -663,7 +664,8 @@
       "step3": "安排看房、视频导览或讨论方案, 无任何义务。",
       "browseProperties": "浏览房源",
       "backHome": "返回首页"
-    }
+    },
+    "phoneInvalid": "请输入有效的电话号码"
   },
   "footer": {
     "tagline": "自 2007 年起，深耕迪拜，值得托付的买房、卖房、租房合作伙伴。",
@@ -1660,7 +1662,8 @@
     "sendAnother": "发送另一个询问",
     "freeConsult": "免费咨询",
     "yearsExperience": "迪拜 19+ 年",
-    "emaarPartner": "Emaar 授权合作伙伴"
+    "emaarPartner": "Emaar 授权合作伙伴",
+    "phoneInvalid": "仅输入数字，5-15个字符"
   },
   "newsletter": {
     "title": "抢先把握市场动向",
@@ -1715,7 +1718,8 @@
     "inquireWhatsapp": "咨询已收藏房源",
     "moreActions": "更多操作",
     "signInTitle": "登录后永久保存",
-    "signInHint": "收藏目前仅保存在本设备。"
+    "signInHint": "收藏目前仅保存在本设备。",
+    "inquirePrefill": "您好，我想咨询您网站上保存的{count}个房产信息。"
   },
   "savedProperties": {
     "empty": "暂无收藏房源",
@@ -1796,7 +1800,10 @@
     "call": "电话",
     "liveChat": "在线客服",
     "popupText": "正在寻找迪拜房产？我们的专家现在在线, 无论购买、租赁还是投资，我们都能为您找到完美选择。",
-    "prefillGeneral": "您好，Binayah！👋 我想进一步了解您在迪拜的房产。"
+    "prefillGeneral": "您好，Binayah！👋 我想进一步了解您在迪拜的房产。",
+    "prefillServices": "您好，我对您的房产服务感兴趣",
+    "prefillMoreInfo": "您好，我想了解更多信息",
+    "prefillSaved": "您好，我想咨询您网站上保存的{count}个房产信息。"
   },
   "scrollToTop": {
     "ariaLabel": "返回顶部"
@@ -2950,7 +2957,9 @@
     "successBody": "我们已收到您对 {name} 项目手册的申请，顾问将很快与您联系并发送。",
     "closeButton": "关闭",
     "closeAria": "关闭",
-    "autoMessage": "请发送 {name} 项目手册给我。"
+    "autoMessage": "请发送 {name} 项目手册给我。",
+    "subtitleNoFile": "留下您的联系方式，我们将在几分钟内发送完整的项目手册。",
+    "successBodyNoFile": "我们已收到您对{name}宣传册的请求。代理将很快与您分享。"
   },
   "pulseDaily": {
     "metaTitle": "Daily Sales Report | Dubai Pulse | Binayah Properties",

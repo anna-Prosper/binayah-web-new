@@ -128,6 +128,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaGuidesInvestment"),
       links: [
+        { label: t("investmentGuidesAll"), href: "/pulse/guides" },
         { label: t("bestAreasDubai"), href: "/pulse/guides/best-areas-dubai-2026" },
         { label: t("buyingAsForeigner"), href: "/pulse/guides/buying-as-foreigner" },
         { label: t("rentalYieldExplained"), href: "/pulse/guides/rental-yield-explained" },
@@ -147,6 +148,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       header: t("megaArticlesAnalytics"),
       links: [
         { label: t("pulse"), href: "/pulse" },
+        { label: t("constructionUpdates"), href: "/construction-updates" },
         { label: t("communities"), href: "/communities" },
         { label: t("news"), href: "/news" },
         { label: t("ourTeam"), href: "/team" },
