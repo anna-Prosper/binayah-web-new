@@ -2939,7 +2939,7 @@
   "brochureRequest": {
     "eyebrow": "Brochure sur demande",
     "title": "Obtenez la brochure de {name}",
-    "subtitle": "Laissez vos coordonnées et nous vous enverrons la brochure complète du projet en quelques minutes.",
+    "subtitle": "Saisissez votre e-mail et nous vous enverrons la brochure directement dans votre boîte de réception.",
     "namePlaceholder": "Votre nom complet",
     "emailPlaceholder": "votre@email.com",
     "phonePlaceholder": "50 123 4567",
@@ -2947,10 +2947,12 @@
     "submitButton": "Envoyez-moi la brochure",
     "disclaimer": "En soumettant, vous acceptez d'être contacté par un agent de Binayah.",
     "successTitle": "Merci !",
-    "successBody": "Nous avons bien reçu votre demande pour la brochure de {name}. Un agent vous la partagera sous peu.",
+    "successBody": "La brochure de {name} a été envoyée à votre adresse e-mail. Consultez votre boîte de réception.",
     "closeButton": "Fermer",
     "closeAria": "Fermer",
-    "autoMessage": "Veuillez m'envoyer la brochure pour {name}."
+    "autoMessage": "Veuillez m'envoyer la brochure pour {name}.",
+    "subtitleNoFile": "Laissez vos coordonnées et nous vous enverrons la brochure complète du projet en quelques minutes.",
+    "successBodyNoFile": "Nous avons bien reçu votre demande pour la brochure de {name}. Un agent vous la partagera sous peu."
   },
   "pulseDaily": {
     "metaTitle": "Rapport de ventes quotidien | Dubai Pulse | Binayah Properties",
