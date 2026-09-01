@@ -1860,6 +1860,413 @@ export const OFFERS: Offer[] = [
       ],
       "footnote": "Illustrative, on the entry price at The Cove. The DLD fee is not waived under these plans. Exact figures depend on the unit, the release and the schedule recorded in the signed SPA."
     }
+  },
+  {
+    "slug": "damac-summer-rewards-4-dld-waiver",
+    "amenities": {
+      "heading": "Houses, not apartments.",
+      "stats": [
+        {
+          "value": "4%",
+          "label": "DLD fee covered",
+          "icon": "BadgePercent"
+        },
+        {
+          "value": "3",
+          "label": "Villa masterplans",
+          "icon": "Building2"
+        },
+        {
+          "value": "0",
+          "label": "Apartments included",
+          "icon": "Ban"
+        }
+      ],
+      "masterplanHeading": "Inside the villa communities",
+      "items": [
+        "Crystal lagoons",
+        "Private pools",
+        "Championship golf",
+        "Parkland and trails",
+        "Community clubhouses",
+        "Sports courts",
+        "Children's play areas",
+        "Retail and dining",
+        "Gated streets"
+      ],
+      "icons": [
+        "Waves",
+        "Droplets",
+        "TreePalm",
+        "Flower2",
+        "Building2",
+        "Bike",
+        "Users",
+        "Store",
+        "ShieldCheck"
+      ]
+    },
+    "bodyParagraphs": [
+      "DAMAC Summer Rewards covers the full 4% Dubai Land Department registration fee on eligible off-plan residential villas and townhouses. It is worth being precise about what that means: the DLD fee is a cash cost paid at registration, separate from the purchase price and normally borne by the buyer. A waiver changes what leaves your account on the day, which is a different thing from a discount that adjusts the headline figure.",
+      "The offer is narrower than DAMAC's portfolio. Apartments are not included, so this is a house offer: the villa and townhouse stock at DAMAC Hills, DAMAC Hills 2 and DAMAC Islands, alongside the other eligible residential communities in the UAE. It also excludes future new launches, which means it applies to what is open now rather than to whatever is announced next.",
+      "On the arithmetic, four per cent moves real money. A AED 3 million villa carries a AED 120,000 registration fee; at AED 5 million it is AED 200,000. Because it is a fee waiver rather than a payment structure, it sits on top of whatever plan DAMAC has attached to the unit, so the two are not alternatives.",
+      "DAMAC has not printed an end date on this half of the campaign, which is worth treating as a reason to move rather than a reason to wait: an offer with no published deadline can be withdrawn without notice. We confirm which specific units carry the waiver, place the booking and handle the developer approval on your behalf."
+    ],
+    "ctaLabel": "Check eligible villas",
+    "dayCountEyebrow": false,
+    "deadline": "",
+    "developer": "DAMAC Properties",
+    "disclaimer": "Terms are set by DAMAC Properties and apply to selected eligible off-plan residential villas and townhouses only, subject to availability and developer approval. The offer excludes apartments and future new launches. DAMAC has not published an end date and the offer may be withdrawn or amended without notice. The waiver covers the 4% Dubai Land Department registration fee only; trustee, administration and agency costs are separate and remain payable. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm eligibility and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "eligibility": [
+      {
+        "label": "What is covered",
+        "value": "The full 4% Dubai Land Department registration fee on the eligible unit."
+      },
+      {
+        "label": "Property types",
+        "value": "Off-plan residential villas and townhouses. Apartments are not part of this offer."
+      },
+      {
+        "label": "Where",
+        "value": "Eligible DAMAC off-plan residential stock in the UAE, including DAMAC Hills, DAMAC Hills 2 and DAMAC Islands."
+      },
+      {
+        "label": "Excluded",
+        "value": "Future new launches. The waiver applies to the current eligible release, not to projects announced later."
+      },
+      {
+        "label": "Offer window",
+        "value": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "Units priced above AED 2 million qualify for the property investor visa route."
+      },
+      {
+        "label": "Availability",
+        "value": "Eligibility is set per unit. Confirm in writing that the specific villa you are shown carries the waiver before you commit."
+      }
+    ],
+    "explainer": {
+      "heading": "The registration fee, taken off the table",
+      "highlight": "On a AED 3 million villa the 4% DLD fee is AED 120,000. Under Summer Rewards DAMAC covers it, so that cash stays with you instead of going to the Land Department at registration.",
+      "body": [
+        "Summer Rewards is a fee waiver rather than a payment plan. It applies to eligible off-plan residential villas and townhouses in the UAE and excludes future new launches, so it is the current release rather than whatever comes next. Apartments are not included."
+      ]
+    },
+    "eyebrow": "DAMAC Summer Rewards",
+    "faqs": [
+      {
+        "question": "What exactly does DAMAC cover?",
+        "answer": "The full 4% Dubai Land Department registration fee on the eligible unit. It is a waiver of a cash cost you would otherwise pay at registration, not a discount applied to the purchase price."
+      },
+      {
+        "question": "Does it apply to apartments?",
+        "answer": "No. Summer Rewards is limited to off-plan residential villas and townhouses. Apartments across the DAMAC portfolio are outside it."
+      },
+      {
+        "question": "Which communities qualify?",
+        "answer": "Eligible off-plan villa and townhouse stock in the UAE, which in practice means the house communities: DAMAC Hills, DAMAC Hills 2 and DAMAC Islands among them. Eligibility is set per unit."
+      },
+      {
+        "question": "Are new launches included?",
+        "answer": "No. The offer explicitly excludes future new launches, so it applies to the current eligible release rather than to projects announced afterwards."
+      },
+      {
+        "question": "When does it end?",
+        "answer": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice, so the terms on a specific unit should be confirmed in writing before committing."
+      },
+      {
+        "question": "Does the waiver cover all my transaction costs?",
+        "answer": "No. It covers the DLD registration fee. Trustee office charges, admin fees and agency costs are separate and remain payable."
+      },
+      {
+        "question": "Can I combine it with a payment plan?",
+        "answer": "Yes. It is a fee waiver rather than a payment structure, so whatever plan DAMAC has attached to your villa continues to apply underneath it."
+      },
+      {
+        "question": "How much is it actually worth?",
+        "answer": "Four per cent of the purchase price. On a AED 3 million villa that is AED 120,000; on a AED 5 million villa, AED 200,000."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/009_009_39106-hd.webp",
+        "alt": "The lagoon at DAMAC Islands at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/007_007_39101-hd.webp",
+        "alt": "A villa with a private pool at Bahamas, DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/03-12-2x.webp",
+        "alt": "A Cavalli Estates villa at DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/04-9-2x.webp",
+        "alt": "The crystal lagoon at Eterno, DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/05-8-2x.webp",
+        "alt": "A Utopia villa with a private pool at DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/001_001_39090-hd.webp",
+        "alt": "Aerial view of the lagoons at DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/07-1-2x.webp",
+        "alt": "Silver Springs villas at DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/08-2-2x.webp",
+        "alt": "A Utopia villa at dusk, DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/005_005_39097-hd.webp",
+        "alt": "Boats on the lagoon at DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/10-2-2x.webp",
+        "alt": "Townhouses at Eterno, DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/violet-phase-3-at-damac-hills-2/featured.webp",
+        "alt": "Violet townhouses at DAMAC Hills 2 at night"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/002_002_39092-hd.webp",
+        "alt": "The pool and lagoon at DAMAC Islands from the air"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/13-6-2x.webp",
+        "alt": "The pool at Silver Springs, DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/14-6-2x.webp",
+        "alt": "A Utopia villa and pool terrace at DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/15-1-2x.webp",
+        "alt": "Poolside at Eterno, DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/featured-hd.webp",
+        "alt": "Aerial view of the waterway at DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/17-8-2x.webp",
+        "alt": "Silver Springs villas and gardens at DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/18-11-2x.webp",
+        "alt": "Eterno and the wider DAMAC Hills 2 masterplan"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/004_004_39096-hd.webp",
+        "alt": "The clubhouse at DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/20-5-2x.webp",
+        "alt": "A townhouse street at Eterno, DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/21-12-2x.webp",
+        "alt": "Parkland and bridges at DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/003_003_39094-hd.webp",
+        "alt": "The play area at DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/23-6-2x.webp",
+        "alt": "Living room at Eterno, DAMAC Hills 2"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/24-10-2x.webp",
+        "alt": "Bedroom at Silver Springs, DAMAC Hills"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/006_006_39099-hd.webp",
+        "alt": "Kitchen at Bahamas, DAMAC Islands"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/012_012_39104-hd.webp",
+        "alt": "Bedroom at Bahamas, DAMAC Islands"
+      }
+    ],
+    "h1": "DAMAC Summer Rewards: 4% DLD Waiver on Villas and Townhouses",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/008_008_39103-hd.webp",
+    "hideDeadline": true,
+    "highlights": [
+      {
+        "value": "4%",
+        "label": "DLD fee waived",
+        "detail": "The full registration fee, covered by DAMAC"
+      },
+      {
+        "value": "Villas",
+        "label": "And townhouses",
+        "detail": "Apartments are not part of this offer"
+      },
+      {
+        "value": "Off-plan",
+        "label": "Only",
+        "detail": "Excludes future new launches"
+      },
+      {
+        "value": "UAE",
+        "label": "Wide",
+        "detail": "Eligible residential stock across the UAE"
+      }
+    ],
+    "investment": {
+      "heading": "A house, with the fee taken off.",
+      "items": [
+        {
+          "title": "Land, not just floor area",
+          "text": "Villas and townhouses carry a plot."
+        },
+        {
+          "title": "A cash saving at registration",
+          "text": "4% off the day-one cost of the purchase."
+        },
+        {
+          "title": "Established masterplans",
+          "text": "DAMAC Hills and Hills 2 are delivered and lived in."
+        },
+        {
+          "title": "Golden Visa route",
+          "text": "Units above AED 2 million qualify for the investor visa."
+        }
+      ],
+      "icons": [
+        "Coins",
+        "BadgePercent",
+        "Building2",
+        "ShieldCheck"
+      ]
+    },
+    "keywords": "damac summer rewards, damac 4% dld waiver, damac villas offer dubai, damac townhouses offer, damac hills villas, damac islands villas, dld fee waiver dubai, off plan villas dubai offer",
+    "metaDescription": "DAMAC Summer Rewards: the full 4% DLD registration fee covered on eligible off-plan villas and townhouses across DAMAC Hills, Hills 2 and DAMAC Islands.",
+    "metaTitle": "DAMAC Summer Rewards | 4% DLD Waiver on Villas",
+    "priceFrom": 1800000,
+    "projectHref": "/developers/damac-properties",
+    "projects": [
+      {
+        "name": "DAMAC Islands",
+        "terms": "Bahamas and the wider island clusters, built around crystal lagoons. Villas and townhouses on the eligible list.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/007_007_39101-hd.webp",
+        "links": [
+          {
+            "label": "Bahamas at DAMAC Islands",
+            "href": "/project/bahamas-2-at-damac-islands-2"
+          }
+        ]
+      },
+      {
+        "name": "Cavalli Estates",
+        "terms": "DAMAC Hills. The top of the villa range, branded interiors and private pools.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/03-12-2x.webp",
+        "links": [
+          {
+            "label": "Cavalli Estates at DAMAC Hills",
+            "href": "/project/cavalli-estate-villas-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Utopia",
+        "terms": "DAMAC Hills. Urban resort villas with pool terraces, on the eligible villa list.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/05-8-2x.webp",
+        "links": [
+          {
+            "label": "Utopia at DAMAC Hills",
+            "href": "/project/utopia-urban-resort-villas-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Silver Springs",
+        "terms": "DAMAC Hills. Family villas backing onto the golf and parkland.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/07-1-2x.webp",
+        "links": [
+          {
+            "label": "Silver Springs at DAMAC Hills",
+            "href": "/project/silver-springs-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Eterno",
+        "terms": "DAMAC Hills 2, around the crystal lagoon. Townhouses and villas, both eligible.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/10-2-2x.webp",
+        "links": [
+          {
+            "label": "Eterno at DAMAC Hills 2",
+            "href": "/project/eterno-townhouses-and-villas-for-sale-at-damac-hills-2"
+          }
+        ]
+      }
+    ],
+    "shortName": "DAMAC Summer Rewards",
+    "subtitle": "DAMAC covers the full 4% Dubai Land Department registration fee on eligible off-plan villas and townhouses.",
+    "timeline": [
+      {
+        "share": "4%",
+        "stage": "At registration",
+        "description": "The DLD fee that would normally be yours to pay, covered by DAMAC."
+      },
+      {
+        "share": "0%",
+        "stage": "Added to the price",
+        "description": "It is a waiver, not a discount rolled into the purchase price."
+      }
+    ],
+    "timelineIntro": "The waiver changes what you hand over at registration rather than how the price is staged, so the payment plan on your villa is whatever DAMAC has attached to that release.",
+    "valueProps": [
+      [
+        "The fee is real money, not a discount",
+        "The 4% DLD registration fee is a cash cost paid at registration, separate from the purchase price. Waiving it changes what leaves your account rather than what the property is worth on paper."
+      ],
+      [
+        "Villas and townhouses only",
+        "This is a house offer. Apartments across the DAMAC portfolio are excluded, which narrows it to DAMAC Hills, Hills 2, DAMAC Islands and the other villa and townhouse communities."
+      ],
+      [
+        "Current stock, not the next launch",
+        "The waiver excludes future new launches. That makes it worth acting on the release that is open now rather than waiting for the next announcement and expecting the same terms."
+      ],
+      [
+        "It stacks with the plan on the unit",
+        "Summer Rewards is a fee waiver, so whatever payment structure DAMAC has attached to your villa still applies underneath it."
+      ]
+    ],
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in DAMAC Summer Rewards: the 4% DLD waiver on villas and townhouses. Please send me the eligible units.",
+    "windowLabel": "Limited-time summer offer",
+    "worked": {
+      "heading": "What the waiver is worth on a AED 3,000,000 villa",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 3,000,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 120,000"
+        ],
+        [
+          "Covered by DAMAC",
+          "- AED 120,000"
+        ],
+        [
+          "DLD fee you actually pay",
+          "= AED 0"
+        ]
+      ],
+      "footnote": "Illustrative. The waiver covers the DLD registration fee only; trustee, admin and agency costs are separate and remain payable. Confirm the exact position on your unit in writing."
+    }
   }
 ];
 
