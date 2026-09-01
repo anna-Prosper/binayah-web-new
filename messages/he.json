@@ -60,9 +60,9 @@
     "jvc": "Jumeirah Village Circle",
     "dubaiHills": "Dubai Hills",
     "underAed1m": "מתחת ל-AED 1M",
-    "aed1mTo3m": "AED 1M - 3M",
-    "aed3mTo10m": "AED 3M - 10M",
-    "aed10mPlus": "AED 10M+",
+    "aed1mTo3m": "AED 1M עד 3M",
+    "aed3mTo10m": "AED 3M עד 10M",
+    "aed10mPlus": "מעל AED 10M",
     "buyWithCrypto": "קנייה עם קריפטו",
     "bestAreasDubai": "האזורים הטובים ביותר בדובאי 2026",
     "buyingAsForeigner": "קנייה כזר",
@@ -91,8 +91,7 @@
     "megaSellServices": "שירותים",
     "megaOffPlanAreas": "אזורים פופולריים",
     "ourTeam": "הצוות שלנו",
-    "offers": "מבצעים",
-    "investmentGuidesAll": "מדריכי השקעות"
+    "offers": "מבצעים"
   },
   "common": {
     "viewAll": "הצג הכל",

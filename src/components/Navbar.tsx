@@ -116,10 +116,9 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaOffPlanBrowse"),
       links: [
-        { label: t("newLaunches"), href: "/off-plan" },
         { label: t("constructionUpdates"), href: "/construction-updates" },
         { label: t("offPlanByDeveloper"), href: "/developers" },
-        { label: t("paymentPlans"), href: "/off-plan" },
+        { label: t("paymentPlans"), href: "/offers" },
       ],
     },
   ];
@@ -128,7 +127,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaGuidesInvestment"),
       links: [
-        { label: t("investmentGuidesAll"), href: "/pulse/guides" },
         { label: t("bestAreasDubai"), href: "/pulse/guides/best-areas-dubai-2026" },
         { label: t("buyingAsForeigner"), href: "/pulse/guides/buying-as-foreigner" },
         { label: t("rentalYieldExplained"), href: "/pulse/guides/rental-yield-explained" },
@@ -138,7 +136,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     {
       header: t("megaGuidesHow"),
       links: [
-        { label: t("howToBuyProperty"), href: "/pulse/guides" },
+        { label: t("howToBuyProperty"), href: "/pulse/guides/how-to-buy-property-in-dubai" },
         { label: t("mortgageGuide"), href: "/mortgage" },
         { label: t("goldenVisaGuide"), href: "/golden-visa" },
         { label: t("valuationTool"), href: "/valuation" },
@@ -148,7 +146,6 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       header: t("megaArticlesAnalytics"),
       links: [
         { label: t("pulse"), href: "/pulse" },
-        { label: t("constructionUpdates"), href: "/construction-updates" },
         { label: t("communities"), href: "/communities" },
         { label: t("news"), href: "/news" },
         { label: t("ourTeam"), href: "/team" },
@@ -178,7 +175,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const mobileRentLinks = flattenWithCta(rentColumns, { label: t("megaRentCtaAll"), href: "/rent" });
   const mobileOffPlanLinks = flattenWithCta(offPlanColumns, { label: t("megaOffPlanCtaAll"), href: "/off-plan" });
   const mobileGuidesLinks = flattenWithCta(guidesColumns, { label: t("megaGuidesCtaAll"), href: "/pulse/guides" });
-  const mobileSellLinks = flattenWithCta(sellColumns, { label: t("sell"), href: "/sell" });
+  // No CTA: Sell has no desktop CTA, and /sell is already the column's first link.
+  const mobileSellLinks = sellColumns.flatMap((c) => c.links);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
