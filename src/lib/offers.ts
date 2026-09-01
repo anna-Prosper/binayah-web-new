@@ -1463,91 +1463,461 @@ export const OFFERS: Offer[] = [
     "slug": "limited-emaar-90-10-offer-beachfront-launch",
     "shortName": "Emaar Beachfront 90/10",
     "developer": "Emaar Properties",
-    "eyebrow": "Payment plan at Emaar Beachfront",
-    "h1": "Limited Emaar 90/10 Offer: Beachfront Launch",
-    "subtitle": "Limited-time launch payment plan at Emaar Beachfront: pay 90% during construction and 10% upon 100% construction completion.",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/30-Microsoft_Teams_image_1_83f863ae24-hd-2x.webp",
+    "eyebrow": "Launch plan at Emaar Beachfront",
+    "h1": "Emaar Beachfront: 90/10 on the Dubai Harbour Peninsula",
+    "subtitle": "Emaar's launch plan here defers only the last tenth, which is the opposite of how most Dubai off-plan is sold. What you are buying is the address: a gated peninsula with its own beach, between Dubai Marina and Palm Jumeirah.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/00-3-2x.webp",
     "deadline": "",
     "windowLabel": "Limited-time launch offer",
     "hideDeadline": false,
     "dayCountEyebrow": false,
-    "metaTitle": "Emaar Beachfront 90/10 Payment Plan | Binayah",
-    "metaDescription": "Emaar Beachfront launch offer: 90% during construction and 10% upon 100% completion. Enquire to secure the 90/10 plan.",
-    "keywords": "Emaar, Emaar Properties, Emaar Beachfront, 90/10 payment plan, launch offer, Dubai property, off-plan",
+    "explainer": {
+      "heading": "A plan that front-loads, and why that is the trade",
+      "highlight": "90% during construction and 10% upon 100% construction completion. Most launch plans in this market defer 40% to 60% to handover; this one defers a tenth.",
+      "body": [
+        "It is worth naming the trade plainly rather than dressing it up. A 90/10 asks for more of your money during the build than an 80/20 or a 60/40 does, and in exchange the balance at handover is small enough to be a formality rather than a financing event. Buyers who intend to hold, and who are not planning to arrange a mortgage at completion, tend to prefer that shape. Buyers who want their capital working elsewhere until the keys arrive do not.",
+        "What the plan is attached to is the part that carries the price. Emaar Beachfront is a gated peninsula at Dubai Harbour, sitting between Dubai Marina and Palm Jumeirah with its own beach and marina. The release covers one, two, three and four-bedroom apartments, four-bedroom penthouses and a six-bedroom penthouse."
+      ]
+    },
+    "metaTitle": "Emaar Beachfront 90/10 Offer | 10% at Completion",
+    "metaDescription": "Emaar Beachfront's launch plan: 90% during construction and 10% on 100% construction completion. One to four-bedroom apartments and penthouses on the Dubai Harbour peninsula.",
+    "keywords": "emaar beachfront, emaar beachfront 90/10 payment plan, emaar beachfront apartments for sale, dubai harbour apartments, emaar beachfront launch offer, emaar beachfront penthouse, beach vista grand bleu beach isle, apartments between dubai marina and palm jumeirah",
     "highlights": [
       {
-        "value": "90/10",
-        "label": "Payment Plan",
-        "detail": "Pay 90% during construction and 10% upon 100% construction completion."
+        "value": "90%",
+        "label": "During construction",
+        "detail": "Paid across the build period"
       },
       {
-        "value": "Emaar Beachfront",
-        "label": "Applicable Community",
-        "detail": "Offer applies to Emaar Beachfront."
+        "value": "10%",
+        "label": "At completion",
+        "detail": "Due at 100% construction completion"
       },
       {
-        "value": "Limited-time",
-        "label": "Launch Offer",
-        "detail": "Available for a limited time during launch."
+        "value": "1 to 6",
+        "label": "Bedrooms",
+        "detail": "Apartments through to a six-bedroom penthouse"
+      },
+      {
+        "value": "9th",
+        "label": "Floor amenities",
+        "detail": "A whole level given over to residents"
       }
     ],
     "timeline": [
       {
         "stage": "During construction",
         "share": "90%",
-        "description": "Pay 90% over the construction period."
+        "description": "Paid across the build period on Emaar's construction-linked schedule."
       },
       {
-        "stage": "Upon 100% construction completion",
+        "stage": "At 100% construction completion",
         "share": "10%",
-        "description": "Pay the remaining 10% at completion."
+        "description": "The balance, due once construction is complete."
       }
     ],
-    "timelineIntro": "Simple two-stage schedule aligned to construction and completion.",
+    "timelineIntro": "Two blocks, and the second one is small. Ninety percent is paid across the construction period and the last ten falls due once construction reaches 100%.",
     "eligibility": [
       {
-        "label": "Applies to",
-        "value": "Emaar Beachfront"
+        "label": "The plan",
+        "value": "90% during construction and 10% upon 100% construction completion."
+      },
+      {
+        "label": "Where it applies",
+        "value": "Emaar Beachfront, the gated peninsula at Dubai Harbour between Dubai Marina and Palm Jumeirah."
+      },
+      {
+        "label": "What is in the release",
+        "value": "One, two, three and four-bedroom apartments, four-bedroom penthouses and a six-bedroom penthouse."
+      },
+      {
+        "label": "How long it runs",
+        "value": "Emaar publishes it as a limited-time launch offer without a stated end date, so availability is the real constraint."
+      },
+      {
+        "label": "Amenities",
+        "value": "An amenities platform, ground-level dining and retail, a shaded kids' pool and play area, and a dedicated ninth-floor amenities level."
+      },
+      {
+        "label": "Views",
+        "value": "Uninterrupted 360-degree views, with the marina and yacht club a short walk away."
+      },
+      {
+        "label": "What is not covered",
+        "value": "The 4% DLD registration fee, trustee office and administration charges are payable separately."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "The investor visa route needs property above AED 2 million. Most of what sells at Emaar Beachfront clears that comfortably, but it depends on the unit rather than the community."
       }
     ],
-    "gallery": [],
-    "ctaLabel": "Request details",
-    "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi, I’m interested in the Emaar Beachfront 90/10 launch offer. Please share the latest availability and terms.",
+    "projects": [
+      {
+        "name": "Beach Vista",
+        "terms": "Two towers on the beach edge, among the first delivered at Emaar Beachfront.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/17-12-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/beach-vista-apartments-sale-rent"
+          }
+        ]
+      },
+      {
+        "name": "Grand Bleu Tower",
+        "terms": "Interiors by Elie Saab, on the western edge facing Palm Jumeirah.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/06-19-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/grand-bleu-apartments-for-sale-at-emaar-beachfront-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Beach Isle",
+        "terms": "Direct beach access with the Marina skyline on the other side of the glass.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/18-16-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/beach-isle-apartments-for-sale-at-emaar-beachfront-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Bayview by Address Resorts",
+        "terms": "Address-branded, with the rooftop pool that looks straight across to the Palm.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/09-1-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/bayview-by-address-resorts-at-emaar-beachfront"
+          }
+        ]
+      },
+      {
+        "name": "Beachgate by Address",
+        "terms": "Address-branded apartments on the beach side of the peninsula.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/05-4-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/beachgate-by-address-at-emaar-beachfront"
+          }
+        ]
+      },
+      {
+        "name": "Palace Beach Residence",
+        "terms": "Palace-branded, with the hotel service model attached to the building.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/21-10-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/palace-beach-residence-tower-2-by-emaar"
+          }
+        ]
+      },
+      {
+        "name": "The Bristol",
+        "terms": "One of the newer releases on the peninsula, facing Palm Jumeirah.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd2/00-5-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/the-bristol-at-emaar-beachfront"
+          }
+        ]
+      },
+      {
+        "name": "Seapoint",
+        "terms": "Also covered by Emaar's wider payment-plan offer alongside The Cove and Park Horizon.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/02-10-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/seapoint-at-emaar-beachfront"
+          },
+          {
+            "label": "See the Emaar plans offer",
+            "href": "/offers/emaar-payment-plans-offer"
+          }
+        ]
+      }
+    ],
+    "projectsHeading": "Towers on the peninsula",
+    "amenities": {
+      "heading": "A private beach, a marina and a ninth floor that is all amenity.",
+      "stats": [
+        {
+          "value": "360°",
+          "label": "Uninterrupted views",
+          "icon": "Building2"
+        },
+        {
+          "value": "9th",
+          "label": "Floor amenities level",
+          "icon": "Sparkles"
+        },
+        {
+          "value": "1 to 6",
+          "label": "Bedrooms in the release",
+          "icon": "KeyRound"
+        }
+      ],
+      "masterplanHeading": "On the peninsula",
+      "items": [
+        "Private beach on the peninsula",
+        "Footsteps from the marina and yacht club",
+        "Dedicated ninth floor amenities level",
+        "Amenities platform",
+        "Ground level dining and retail",
+        "Shaded kids pool and play area",
+        "Infinity pools facing the Palm",
+        "Residents gym and wellness suites",
+        "Direct access to Dubai Marina"
+      ],
+      "icons": [
+        "Waves",
+        "Bike",
+        "Sparkles",
+        "Sun",
+        "Store",
+        "Droplets",
+        "TreePalm",
+        "Users",
+        "Building2"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/00-3-2x.webp",
+        "alt": "The rooftop infinity pool at Bayview by Address Resorts, looking across to Palm Jumeirah"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd2/00-5-2x.webp",
+        "alt": "A balcony at The Bristol, Emaar Beachfront, over the Palm at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/02-10-2x.webp",
+        "alt": "Bayview by Address Resorts seen from the water at Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/03-2-2x.webp",
+        "alt": "The private beach at Emaar Beachfront, with the towers behind it"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/04-20-2x.webp",
+        "alt": "The view over Palm Jumeirah from a balcony at Grand Bleu Tower"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/05-4-2x.webp",
+        "alt": "The infinity pool at Beachgate by Address, facing the sea"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/06-19-2x.webp",
+        "alt": "Grand Bleu Tower seen from the base of the two towers"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/07-15-2x.webp",
+        "alt": "A dining space at Beach Isle with Palm Jumeirah through the glass"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/08-7-2x.webp",
+        "alt": "Panoramic dining at Shorefront Residences, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/09-1-2x.webp",
+        "alt": "Poolside cabanas at Bayview by Address Resorts, facing the Palm"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/10-11-2x.webp",
+        "alt": "A balcony at South Beach with the Dubai Marina skyline beyond"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/11-3-2x.webp",
+        "alt": "Living and dining at Beachgate by Address, open to the sea"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/12-2-2x.webp",
+        "alt": "Bayview Tower 2 at dusk with Dubai Marina behind it"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd2/01-13-2x.webp",
+        "alt": "A rooftop cabana at South Beach above the Marina skyline"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/14-14-2x.webp",
+        "alt": "A bedroom at Beach Isle, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/15-2-2x.webp",
+        "alt": "A bedroom at Shorefront Residences, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/16-3-2x.webp",
+        "alt": "The living and kitchen space at Palace Beach Residence"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/17-12-2x.webp",
+        "alt": "The kitchen in a Beach Vista apartment at Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/18-16-2x.webp",
+        "alt": "Living and kitchen at Beach Isle, open to the sea"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/19-11-2x.webp",
+        "alt": "A bedroom at Palace Beach Residence with the Marina beyond"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/20-19-2x.webp",
+        "alt": "A kitchen at Marina Vista with the Dubai skyline behind it"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/21-10-2x.webp",
+        "alt": "The lobby at Palace Beach Residence, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/22-2-2x.webp",
+        "alt": "The residents gym at Palace Beach Residence"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/23-10-2x.webp",
+        "alt": "A bedroom at South Beach, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/24-20-2x.webp",
+        "alt": "Poolside cabanas at Marina Vista, facing the Dubai Marina skyline"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/25-11-2x.webp",
+        "alt": "The infinity pool at Bayview Tower 2, Emaar Beachfront"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/26-3-2x.webp",
+        "alt": "On the water off Emaar Beachfront, with the Dubai skyline behind"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/beachfront-hd/27-12-2x.webp",
+        "alt": "A yacht moored off Emaar Beachfront"
+      }
+    ],
+    "investment": {
+      "heading": "Why this address rather than this plan.",
+      "items": [
+        {
+          "title": "Finite land",
+          "text": "A peninsula with no inland phase to release later."
+        },
+        {
+          "title": "Between Marina and the Palm",
+          "text": "Two of the deepest rental markets in the city, either side."
+        },
+        {
+          "title": "A small balance at the end",
+          "text": "Ten percent at completion, not forty."
+        },
+        {
+          "title": "Beach and marina on site",
+          "text": "Not a shuttle ride away from either."
+        }
+      ],
+      "icons": [
+        "Coins",
+        "TrendingUp",
+        "Wallet",
+        "Waves"
+      ]
+    },
+    "ctaLabel": "See available units",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Emaar Beachfront 90/10 launch plan: 90% during construction, 10% at completion. Please send me what's available.",
     "valueProps": [
       [
-        "Defer more to completion",
-        "Only 10% is due upon 100% construction completion."
+        "Ten percent left at the end",
+        "A 90/10 leaves a balance small enough that completion is a formality rather than a financing event. If you are not planning to raise a mortgage at handover, that removes the single most common point of failure in an off-plan purchase."
       ],
       [
-        "Straightforward staging",
-        "A clear 90/10 split tied to build progress and completion."
+        "An address that is genuinely constrained",
+        "Emaar Beachfront is a finite peninsula, not a masterplan that can be extended inland. Between Dubai Marina and Palm Jumeirah, with its own beach and marina, there is no second phase of land to release."
+      ],
+      [
+        "Penthouses in the same release",
+        "The release runs from one-bedroom apartments up to four-bedroom penthouses and a single six-bedroom penthouse, so the plan is not restricted to the entry stock."
+      ],
+      [
+        "The trade runs the other way for cash buyers",
+        "Front-loading is a cost if your capital has somewhere better to be, and an advantage if it does not. For a buyer holding cash and planning to keep the home, the 90/10 removes handover risk rather than adding to it."
       ]
     ],
     "bodyParagraphs": [
-      "Secure a home at Emaar Beachfront with a limited-time 90/10 payment plan. Pay 90% during construction, then 10% upon 100% construction completion.",
-      "Speak to a Binayah advisor to confirm current availability and lock in the launch offer at Emaar Beachfront."
+      "Emaar's launch offer at Emaar Beachfront is a 90/10: ninety percent of the price across the construction period, and the final ten percent once construction reaches 100%. That is an unusual shape for this market, where the headline plans mostly defer 40% or more to handover, and it is worth understanding as a trade rather than a discount.",
+      "The advantage is at the end. A 90/10 leaves a balance small enough that completion becomes an administrative step rather than a financing event, which matters if you have no intention of arranging a mortgage at handover. The cost is at the beginning: your capital is committed earlier and does less elsewhere while the building goes up. Neither shape is better in the abstract. What decides it is whether you are buying to hold with cash in hand, or buying with a plan for that money in the meantime.",
+      "The address is what carries the price. Emaar Beachfront is a gated peninsula at Dubai Harbour, sitting between Dubai Marina and Palm Jumeirah with its own beach and its own marina. It is finite in a way most Dubai masterplans are not: there is no inland phase to release in three years' time. The release under this plan runs from one-bedroom apartments up to four-bedroom penthouses, with a single six-bedroom penthouse at the top of it.",
+      "Inside, Emaar publishes an amenities platform, ground-level dining and retail, a shaded kids' pool and play area and a dedicated ninth-floor amenities level, with the marina and yacht club a walk away. The 4% DLD registration fee, trustee office and administration charges sit outside the plan and remain payable. Emaar has not published an end date for the offer, so availability rather than a calendar is what will close it; confirm the price, the schedule and the terms for a specific unit in writing before committing."
     ],
     "worked": {
-      "heading": "How the 90/10 plan works",
-      "rows": [],
-      "footnote": ""
+      "heading": "The shape of a 90/10 on a AED 4M apartment",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 4,000,000"
+        ],
+        [
+          "Paid during construction",
+          "AED 3,600,000"
+        ],
+        [
+          "Due at 100% completion",
+          "AED 400,000"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 160,000"
+        ],
+        [
+          "Compare: 60/40 balance at handover",
+          "AED 1,600,000"
+        ]
+      ],
+      "footnote": "Illustrative, using a round AED 4M price rather than a quoted unit; figures are rounded. The DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. The final row is a comparison against a typical 60/40 plan, not an alternative Emaar offers here. Prices, availability and terms change, so confirm the schedule for your own unit in writing."
     },
     "faqs": [
       {
         "question": "What is the payment plan?",
-        "answer": "90% is payable during construction and 10% upon 100% construction completion."
+        "answer": "90% is payable during construction and 10% upon 100% construction completion. Emaar publishes it as a limited-time launch offer."
       },
       {
         "question": "Where does this offer apply?",
-        "answer": "The offer applies to Emaar Beachfront."
+        "answer": "Emaar Beachfront, the gated peninsula at Dubai Harbour between Dubai Marina and Palm Jumeirah."
       },
       {
-        "question": "Is this a limited-time offer?",
-        "answer": "Yes, it is stated as a limited-time launch offer."
+        "question": "What can I buy under it?",
+        "answer": "One, two, three and four-bedroom apartments, four-bedroom penthouses and a six-bedroom penthouse."
+      },
+      {
+        "question": "Is a 90/10 better or worse than a 60/40?",
+        "answer": "Neither, and it depends entirely on what your capital is doing in the meantime. A 90/10 asks for more during the build and leaves almost nothing at handover; a 60/40 does the reverse. If you expect to arrange a mortgage at completion, the deferred plans suit you better. If you are paying cash and holding, the 90/10 removes the handover financing risk."
+      },
+      {
+        "question": "When does the offer end?",
+        "answer": "Emaar states it as a limited-time launch offer without publishing an end date, so availability is what actually closes it."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. The 4% Dubai Land Department registration fee, trustee office charges and administration fees are payable separately."
+      },
+      {
+        "question": "Does buying here qualify me for a Golden Visa?",
+        "answer": "The investor route requires property above AED 2 million. Most Emaar Beachfront stock is well above that line, but eligibility is decided on the unit and the UAE authorities decide the visa, not the developer."
+      },
+      {
+        "question": "Which towers are at Emaar Beachfront?",
+        "answer": "Beach Vista, Grand Bleu, Beach Isle, Marina Vista, Sunrise Bay, Beach Mansion, Address Residences The Bay, Beachgate by Address, Bayview by Address Resorts, Palace Beach Residence, Seapoint, Shorefront Residences and The Bristol, among others."
       }
     ],
-    "disclaimer": "All offers are subject to change and availability. Terms and conditions apply. Any figures are illustrative only and do not constitute a contract. Buyers should confirm all current terms in writing with the developer. Binayah Properties is a licensed Dubai brokerage."
+    "disclaimer": "Terms are set by Emaar Properties and apply to eligible units at Emaar Beachfront, subject to availability and to Emaar's terms and conditions. The 90/10 plan is published as a limited-time launch offer; prices, availability and payment terms change without notice. The 4% DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. Golden Visa eligibility is determined by the UAE authorities on the basis of the property purchased, not by the developer or by us. Worked figures are illustrative, use a round example price rather than a quoted unit, and are not financial advice or an offer to sell. Confirm price, the full payment schedule and all terms in writing, including the schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage."
   },
   {
     "slug": "emaar-payment-plans-offer",
@@ -1962,74 +2332,304 @@ export const OFFERS: Offer[] = [
   },
   {
     "slug": "emaar-creek-beach-offer-luxury-waterfront-apartments",
-    "shortName": "Emaar Creek Beach",
+    "shortName": "Creek Beach",
     "developer": "Emaar Properties",
-    "eyebrow": "Creek Beach, Dubai Creek Harbour",
-    "h1": "Emaar Creek Beach Offer: Luxury Waterfront Apartments",
-    "subtitle": "Own a deluxe waterfront apartment at Creek Beach in Dubai Creek Harbour, with a limited selection of 1, 2 and 3-bedroom homes available.",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/31-Microsoft_Teams_image_51_f6fa30be38-hd-2x.webp",
+    "eyebrow": "Limited release at Creek Beach",
+    "h1": "Creek Beach: Emaar's Swimmable Waterfront Inside Dubai Creek Harbour",
+    "subtitle": "A limited number of one, two and three-bedroom apartments in the district of Dubai Creek Harbour built around a beach, a central park and a promenade rather than a tower podium.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/00-1-2x.webp",
     "deadline": "",
     "windowLabel": "Register your interest",
     "hideDeadline": false,
     "dayCountEyebrow": false,
-    "metaTitle": "Emaar Creek Beach Waterfront Apartments | Binayah",
-    "metaDescription": "Deluxe waterfront apartments at Creek Beach, Dubai Creek Harbour by Emaar. A limited number of 1, 2 and 3-bedroom homes.",
-    "keywords": "Emaar, Creek Beach, Dubai Creek Harbour, waterfront apartments, luxury apartments, 1-bedroom, 2-bedroom, 3-bedroom, limited units",
+    "explainer": {
+      "heading": "The district, not the tower",
+      "highlight": "Creek Beach is the part of Dubai Creek Harbour organised around water rather than around a road: a swimmable beach, Central Park and the Creek Promenade, with the buildings arranged behind them.",
+      "body": [
+        "Dubai Creek Harbour is large enough that naming it tells you very little. Creek Beach is the specific district within it that fronts the water, and the difference from the rest of the masterplan is structural rather than cosmetic: the beach, the park and the promenade came first and the buildings sit behind them, which is why the mid-rise blocks here are eight to eleven storeys rather than towers.",
+        "Emaar is releasing a limited number of one, two and three-bedroom apartments across the district. Because the buildings went up in waves, what is available at any moment is a question about specific blocks rather than about Creek Beach as a whole, and the answer changes."
+      ]
+    },
+    "metaTitle": "Creek Beach Dubai Creek Harbour | 1, 2 & 3 Bed Apartments",
+    "metaDescription": "Emaar's Creek Beach at Dubai Creek Harbour: a limited release of one, two and three-bedroom waterfront apartments beside the beach, Central Park and Creek Promenade.",
+    "keywords": "creek beach dubai creek harbour, creek beach apartments for sale, emaar creek beach offer, dubai creek harbour 1 bedroom, bayshore creek beach, rosewater creek beach, grove creek beach, summer at creek beach, orchid at creek beach, dubai creek harbour waterfront apartments",
     "highlights": [
       {
-        "value": "Waterfront setting",
-        "label": "Lifestyle",
-        "detail": "Deluxe waterfront apartments at Creek Beach"
+        "value": "1 to 3",
+        "label": "Bedrooms",
+        "detail": "The full range in this release"
       },
       {
-        "value": "1, 2 & 3-bedroom",
-        "label": "Home types",
-        "detail": "A selection of 1, 2 and 3-bedroom apartments"
+        "value": "14",
+        "label": "Buildings",
+        "detail": "Across the Creek Beach district"
       },
       {
-        "value": "Limited availability",
-        "label": "Release",
-        "detail": "A limited number of units are available"
+        "value": "West",
+        "label": "Facing",
+        "detail": "Sunset and the Downtown skyline in one view"
       },
       {
-        "value": "Dubai Creek Harbour",
-        "label": "Location",
-        "detail": "In the heart of Dubai Creek Harbour"
+        "value": "8 to 11",
+        "label": "Storeys",
+        "detail": "Mid-rise blocks rather than towers"
       }
     ],
     "timeline": [],
     "timelineIntro": "",
     "eligibility": [
       {
-        "label": "Applies to",
-        "value": "Creek Beach, Dubai Creek Harbour"
+        "label": "Where it applies",
+        "value": "Creek Beach, the waterfront district within Dubai Creek Harbour."
+      },
+      {
+        "label": "What is available",
+        "value": "A limited number of one, two and three-bedroom apartments."
       },
       {
         "label": "Developer",
-        "value": "Emaar Properties"
+        "value": "Emaar Properties."
+      },
+      {
+        "label": "What the district is built around",
+        "value": "Creek Beach itself, Central Park and the Creek Promenade, with sunset views west across the water."
+      },
+      {
+        "label": "Building scale",
+        "value": "Mid-rise blocks rather than towers, which is what keeps the beach and park at the centre of the plan rather than at the edge of it."
+      },
+      {
+        "label": "The buildings",
+        "value": "Surf, Sunset, Summer, Breeze, Grove, Rosewater, Lotus, Orchid, Bayshore, Savanna, Moor, Cedar, Mangrove and Vida Residences."
+      },
+      {
+        "label": "How the release works",
+        "value": "Emaar states a limited number of units rather than a deadline, so availability is what closes it. Register interest to see the current list."
+      },
+      {
+        "label": "What is not covered",
+        "value": "The 4% DLD registration fee, trustee office and administration charges are payable separately."
       }
     ],
-    "gallery": [],
-    "ctaLabel": "Enquire Now",
-    "whatsappLabel": "WhatsApp Us",
-    "whatsappMessage": "Hello Binayah, I’m interested in Emaar’s Creek Beach waterfront apartments at Dubai Creek Harbour (limited 1, 2 & 3-bedroom units). Please share availability and next steps.",
+    "projects": [
+      {
+        "name": "Bayshore",
+        "terms": "Mid-rise blocks on the water, with the beach and the promenade at the door.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/04-6-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/bayshore-at-creek-beach-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Grove",
+        "terms": "West-facing, which puts the sunset and the Downtown skyline in the same window.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/02-3-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/grove-apartments-for-sale-at-dubai-creek-beach-by-emaar"
+          }
+        ]
+      },
+      {
+        "name": "Moor",
+        "terms": "Set back behind the beach with its own pool deck.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/01-005_34518-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/moor-at-creek-beach"
+          }
+        ]
+      },
+      {
+        "name": "Summer",
+        "terms": "One of the completed blocks, which makes it a different proposition from an off-plan release.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/11-3-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/summer-at-creek-beach-by-emaar-properties"
+          }
+        ]
+      },
+      {
+        "name": "Surf",
+        "terms": "Closest to the water's edge, and the block the district's name is really about.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/12-15-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/surf-at-creek-beach"
+          }
+        ]
+      },
+      {
+        "name": "Lotus",
+        "terms": "One, two and three-bedroom apartments on the park side.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/07-3-2x.webp",
+        "links": [
+          {
+            "label": "View project",
+            "href": "/project/creek-beach-lotus-apartments-at-dubai-creek-harbour"
+          }
+        ]
+      }
+    ],
+    "projectsHeading": "Buildings at Creek Beach",
+    "amenities": {
+      "heading": "A beach, a park and a promenade, then the buildings.",
+      "stats": [
+        {
+          "value": "1 to 3",
+          "label": "Bedrooms in the release",
+          "icon": "KeyRound"
+        },
+        {
+          "value": "14",
+          "label": "Buildings across the district",
+          "icon": "Building2"
+        },
+        {
+          "value": "West",
+          "label": "Facing, for the sunset",
+          "icon": "Sun"
+        }
+      ],
+      "masterplanHeading": "Inside Creek Beach",
+      "items": [
+        "Creek Beach, swimmable waterfront",
+        "Central Park",
+        "Creek Promenade",
+        "Sunset views west across the creek",
+        "Beachfront cafes and retail",
+        "Swimming pools and sun decks",
+        "Residents gyms",
+        "Kids play areas",
+        "Ras Al Khor Wildlife Sanctuary nearby"
+      ],
+      "icons": [
+        "Waves",
+        "Trees",
+        "Bike",
+        "Sun",
+        "Store",
+        "Droplets",
+        "Users",
+        "Flower2",
+        "PawPrint"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/00-1-2x.webp",
+        "alt": "Creek Beach seen from above, the swimmable waterfront at Dubai Creek Harbour"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/01-005_34518-2x.webp",
+        "alt": "The pool at Moor, Creek Beach, with the mid-rise blocks behind it"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/02-3-2x.webp",
+        "alt": "A living room at Grove, Creek Beach, with the Downtown skyline through the glass"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/03-4-2x.webp",
+        "alt": "The kitchen and dining space in a Bayshore apartment at Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/04-6-2x.webp",
+        "alt": "Living and dining at Bayshore, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/05-008_34515-2x.webp",
+        "alt": "Living and dining at Moor, Creek Beach, opening to the balcony"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/06-7-2x.webp",
+        "alt": "A bedroom at Bayshore with the Dubai Creek Harbour skyline beyond"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/07-3-2x.webp",
+        "alt": "The kitchen and dining space at Lotus, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/08-6-2x.webp",
+        "alt": "A living room at Summer, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/09-007_34516-2x.webp",
+        "alt": "A bedroom at Moor, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/10-3-2x.webp",
+        "alt": "A bathroom at Bayshore, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/11-3-2x.webp",
+        "alt": "The lobby at Summer, Creek Beach"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/creekbeach-hd/12-15-2x.webp",
+        "alt": "The spa treatment room at Surf, Creek Beach"
+      }
+    ],
+    "investment": {
+      "heading": "What makes this district different from the rest of the masterplan.",
+      "items": [
+        {
+          "title": "Water first, buildings second",
+          "text": "The beach and park set the plan, not a podium."
+        },
+        {
+          "title": "Mid-rise density",
+          "text": "Eight to eleven storeys keeps the ground usable."
+        },
+        {
+          "title": "West-facing",
+          "text": "Sunset and the Downtown skyline in one view."
+        },
+        {
+          "title": "Delivered in waves",
+          "text": "Several blocks are complete, which is rare inside a live masterplan."
+        }
+      ],
+      "icons": [
+        "Waves",
+        "Building2",
+        "Sun",
+        "KeyRound"
+      ]
+    },
+    "ctaLabel": "See what is available",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Creek Beach release at Dubai Creek Harbour: one, two and three-bedroom apartments. Please send me what's currently available.",
     "valueProps": [
       [
-        "Waterfront living at Creek Beach",
-        "Invest in a deluxe apartment positioned within Creek Beach, a waterfront setting in the heart of Dubai Creek Harbour."
+        "A beach you can actually swim from",
+        "Creek Beach is a swimmable waterfront rather than a decorative one, and it is the organising idea of the district. Everything behind it, the park, the promenade and the blocks, is arranged around that fact."
       ],
       [
-        "Choice of layouts",
-        "Select from a limited release of 1, 2 and 3-bedroom apartments to suit your needs."
+        "Mid-rise, not another tower cluster",
+        "The buildings here are eight to eleven storeys. That decision is what keeps the ground plane usable: the park and the beach stay at the centre of the plan instead of being squeezed to its edges."
       ],
       [
-        "Limited number of units",
-        "Availability is limited, encouraging early registration of interest."
+        "Sunset on the right side of the water",
+        "Creek Beach faces west across the creek, which puts the Downtown skyline and the sunset in the same view. In a city where orientation decides the value of a floor plan, that is not a small detail."
+      ],
+      [
+        "Inventory is a question about blocks",
+        "Creek Beach was built in waves, so what is available is never a statement about the district. It is a list of specific buildings and floors, and it changes week to week."
       ]
     ],
     "bodyParagraphs": [
-      "Emaar Properties invites you to invest in a deluxe waterfront apartment at Creek Beach, set in the heart of Dubai Creek Harbour. This offer presents a limited number of thoughtfully designed 1, 2 and 3-bedroom apartments.",
-      "With availability strictly limited, registering your interest early helps you access the current selection at Creek Beach within Dubai Creek Harbour."
+      "Emaar is releasing a limited number of one, two and three-bedroom apartments at Creek Beach, the waterfront district inside Dubai Creek Harbour. Naming the masterplan alone tells you very little, because Dubai Creek Harbour is large and is being built in parts that do not resemble each other. Creek Beach is the specific part built around water.",
+      "The structural decision is the interesting one. The beach, Central Park and the Creek Promenade were laid out first and the residential blocks sit behind them at eight to eleven storeys rather than as towers on a podium. That keeps the ground plane usable and the water at the centre of the plan, which is the opposite of how most waterfront density in Dubai has been delivered.",
+      "Orientation matters here more than it usually does. Creek Beach faces west across the creek, so the sunset and the Downtown skyline land in the same view, and a floor plan facing the right way is worth materially more than the same plan turned around. It is also worth knowing that several blocks are already complete, which is unusual inside a masterplan still under construction.",
+      "The buildings are Surf, Sunset, Summer, Breeze, Grove, Rosewater, Lotus, Orchid, Bayshore, Savanna, Moor, Cedar, Mangrove and Vida Residences. Because they were delivered in waves, what is available at any point is a question about specific blocks and floors rather than about the district, and the answer changes. Emaar states a limited number of units rather than a closing date, so the release ends when the stock does. The 4% DLD registration fee, trustee office and administration charges are separate; confirm price and terms for a specific apartment in writing before committing."
     ],
     "worked": {
       "heading": "",
@@ -2043,18 +2643,34 @@ export const OFFERS: Offer[] = [
       },
       {
         "question": "Which community does the offer apply to?",
-        "answer": "Creek Beach within Dubai Creek Harbour."
+        "answer": "Creek Beach, the waterfront district within Dubai Creek Harbour."
       },
       {
         "question": "What property types are available?",
-        "answer": "A limited number of 1, 2 and 3-bedroom apartments."
+        "answer": "A limited number of one, two and three-bedroom apartments."
+      },
+      {
+        "question": "What is Creek Beach, exactly?",
+        "answer": "It is the district of Dubai Creek Harbour built around the water: a swimmable beach, Central Park and the Creek Promenade, with mid-rise residential blocks arranged behind them rather than towers on a podium."
+      },
+      {
+        "question": "Which buildings are in it?",
+        "answer": "Surf, Sunset, Summer, Breeze, Grove, Rosewater, Lotus, Orchid, Bayshore, Savanna, Moor, Cedar, Mangrove and Vida Residences at Creek Beach."
       },
       {
         "question": "Is availability limited?",
-        "answer": "Yes, only a limited number of units are available."
+        "answer": "Yes. Emaar states a limited number of units rather than an end date, so what closes the release is stock rather than a calendar. The current list is worth asking for rather than assuming."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. The 4% Dubai Land Department registration fee, trustee office charges and administration fees are payable separately."
+      },
+      {
+        "question": "How does this compare with the rest of Dubai Creek Harbour?",
+        "answer": "The rest of the masterplan is largely tower-led and organised around Creek Island and the marina. Creek Beach is the low-rise, water-facing part of it, which is a different product at a different price per square foot rather than a cheaper version of the same thing."
       }
     ],
-    "disclaimer": "All details are subject to change and availability. Terms and conditions apply. Any figures or descriptions are illustrative only. Buyers should confirm the current offer terms and availability in writing with the developer. Binayah Properties is a licensed Dubai brokerage."
+    "disclaimer": "Terms are set by Emaar Properties and apply to eligible units at Creek Beach, Dubai Creek Harbour, subject to availability and to Emaar's terms and conditions. Emaar publishes this as a limited release of units rather than a dated offer; availability, prices and terms change without notice. The 4% DLD registration fee, trustee office and administration charges are payable separately. Building lists and district descriptions reflect the masterplan as published at the time of writing. Nothing here is financial advice or an offer to sell. Confirm price, availability and all terms in writing, including the payment schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage."
   },
   {
     "slug": "damac-summer-rewards-4-dld-waiver",
