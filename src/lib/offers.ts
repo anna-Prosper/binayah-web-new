@@ -287,12 +287,7 @@ export const OFFERS: Offer[] = [
       {
         "name": "Sobha Elwood",
         "terms": "20:80 plan, 2% DLD waiver and a 2% furniture voucher.",
-        "links": [
-          {
-            "label": "Sobha Elwood at Dubailand",
-            "href": "/project/sobha-elwood-at-dubailand"
-          }
-        ],
+        "links": [],
         "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/proj-sobha-elwood.webp"
       },
       {
@@ -341,10 +336,6 @@ export const OFFERS: Offer[] = [
         "name": "Sobha Siniya Island",
         "terms": "20:80 plan and a 100% registration fee waiver.",
         "links": [
-          {
-            "label": "Siniyah Island by Sobha",
-            "href": "/project/siniyah-island-by-sobha-realty"
-          },
           {
             "label": "Aquamarine Beach Residences",
             "href": "/project/beach-residences-at-sobha-siniya-island"
