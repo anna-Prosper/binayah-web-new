@@ -938,6 +938,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5 min-h-[1.125rem]">
                               {project.developerName && <span className="flex items-center gap-1 min-w-0"><Building className="h-3 w-3 shrink-0" /><span className="truncate">{project.developerName}</span></span>}
                               {project.community && <span className="flex items-center gap-1 min-w-0"><MapPin className="h-3 w-3 shrink-0" /><span className="truncate">{project.community}</span></span>}
+                              {listedDateLabel(project.createdAt) && <span className="ml-auto flex items-center gap-1 shrink-0"><CalendarDays className="h-3 w-3 shrink-0" />{listedDateLabel(project.createdAt)}</span>}
                             </div>
                             <h3 className="font-bold text-sm text-foreground mb-2 group-hover:text-primary transition-colors leading-snug line-clamp-2 min-h-[2.5rem]">{project.name}</h3>
                             <div className="mt-auto flex items-center justify-between border-t border-border pt-2.5">
@@ -1004,6 +1005,7 @@ function SearchContent({ defaultStatus, defaultIntent, defaultType, defaultLocat
                               {listing.bedrooms != null && <span className="flex items-center gap-1"><BedDouble className="h-3 w-3" />{listing.bedrooms === 0 ? "Studio" : listing.bedrooms}</span>}
                               {listing.bathrooms != null && <span className="flex items-center gap-1"><Bath className="h-3 w-3" />{listing.bathrooms}</span>}
                               {listing.size != null && <span className="flex items-center gap-1"><Maximize className="h-3 w-3" />{listing.size.toLocaleString()} {listing.sizeUnit || "sqft"}</span>}
+                              {listedDateLabel(listing.createdAt) && <span className="ml-auto flex items-center gap-1 shrink-0"><CalendarDays className="h-3 w-3" />{listedDateLabel(listing.createdAt)}</span>}
                             </div>
                             <div className="mt-auto border-t border-border pt-2.5"><p className="text-xs font-bold text-primary">{fmtCurrency(listing.price, { fallback: t("priceOnRequest") })}</p></div>
                           </div>
