@@ -1473,6 +1473,7 @@ export const OFFERS: Offer[] = [
     "metaTitle": "Emaar Beachfront 90/10 Offer | 10% at Completion",
     "metaDescription": "Emaar Beachfront's launch plan: 90% during construction and 10% on 100% construction completion. One to four-bedroom apartments and penthouses on the Dubai Harbour peninsula.",
     "keywords": "emaar beachfront, emaar beachfront 90/10 payment plan, emaar beachfront apartments for sale, dubai harbour apartments, emaar beachfront launch offer, emaar beachfront penthouse, beach vista grand bleu beach isle, apartments between dubai marina and palm jumeirah",
+    "priceFrom": 3594888,
     "highlights": [
       {
         "value": "90%",
@@ -1931,7 +1932,7 @@ export const OFFERS: Offer[] = [
     },
     "metaTitle": "Emaar Payment Plans | 90/10, 80/20 and 25/75",
     "metaDescription": "Emaar's current plans: 90/10 at Seapoint and Alana, 80/20 at The Cove, Park Horizon and Seascape, and 25/75 with a 3-year post-handover tail at Emaar South.",
-    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, dubai off plan payment plan",
+    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, dubai off plan payment plan",
     "priceFrom": 1300000,
     "highlights": [
       {
@@ -2016,12 +2017,16 @@ export const OFFERS: Offer[] = [
       },
       {
         "name": "Seascape",
-        "terms": "Rashid Yachts & Marina. 80% during construction, 20% on 100% completion, beside the superyacht berths.",
+        "terms": "Rashid Yachts & Marina, low-rise around a canal pool. On the 80/20, so a fifth is left at completion.",
         "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
         "links": [
           {
             "label": "Seascape at Rashid Yachts & Marina",
             "href": "/project/seascape-at-rashid-yachts-marina-by-emaar"
+          },
+          {
+            "label": "See the Seascape offer",
+            "href": "/offers/emaar-80-20-offer-seascape-launch"
           }
         ]
       },
@@ -4970,6 +4975,297 @@ export const OFFERS: Offer[] = [
     ],
     "disclaimer": "Terms are set by Emaar Properties and apply to eligible units at Alana, The Valley, subject to availability and to Emaar's terms and conditions. The 90/10 plan is published as a limited-time launch offer on a limited number of units; prices, availability and payment terms change without notice. Emaar does not publish a starting price or a handover date on its offer page; figures quoted here come from third-party listings and are indicative only. The 4% DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm price, layout, the full payment schedule and the completion date in writing, including the schedule recorded in the sale and purchase agreement, before committing. Binayah Properties is a licensed Dubai real estate brokerage.",
     "projectHref": "/project/alana-by-emaar-at-the-valley"
+  },
+  {
+    "slug": "emaar-80-20-offer-seascape-launch",
+    "shortName": "Seascape 80/20",
+    "developer": "Emaar Properties",
+    "eyebrow": "Launch offer at Seascape, Rashid Yachts & Marina",
+    "h1": "Seascape: 80/20 in a Working Yacht Marina at Mina Rashid",
+    "subtitle": "Low-rise apartments on the water at Rashid Yachts & Marina, on an 80/20 rather than the 90/10 Emaar runs elsewhere. Twenty percent stays behind until the building is finished.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/00-12-2x.webp",
+    "deadline": "",
+    "windowLabel": "Limited-time launch offer",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "An 80/20, which is the softer of the two Emaar plans",
+      "highlight": "80% during construction and 20% upon 100% construction completion. Emaar's other launch plans defer only a tenth; this one leaves a fifth.",
+      "body": [
+        "Emaar runs a 90/10 at Emaar Beachfront and at Alana in The Valley. Seascape is an 80/20, and the difference is a real one at this price. On a AED 3.58M apartment, the balance at completion is roughly AED 717,000 rather than AED 358,000, which is the difference between a formality and a sum most buyers want a plan for.",
+        "What that buys is a berth-side address. Rashid Yachts & Marina is a working yacht marina at Mina Rashid, and Seascape is four low-rise buildings arranged around it with a canal pool, a boardwalk promenade and the marina itself on the doorstep. It is a different proposition from a tower on a beach: lower, quieter, and built around boats rather than a shoreline."
+      ]
+    },
+    "metaTitle": "Seascape Rashid Yachts & Marina 80/20 | Emaar Launch Offer",
+    "metaDescription": "Emaar's launch offer at Seascape, Rashid Yachts & Marina: 80% during construction and 20% at 100% completion, on 1, 2 and 3-bedroom apartments beside the marina.",
+    "keywords": "seascape emaar, seascape rashid yachts and marina, seascape mina rashid price, seascape 80/20 payment plan, emaar mina rashid apartments, rashid yachts and marina apartments for sale, seascape emaar handover, port rashid apartments dubai",
+    "priceFrom": 3582888,
+    "highlights": [
+      {
+        "value": "80%",
+        "label": "During construction",
+        "detail": "Paid across the build period"
+      },
+      {
+        "value": "20%",
+        "label": "At completion",
+        "detail": "Due at 100% construction completion"
+      },
+      {
+        "value": "1 to 3",
+        "label": "Bedroom apartments",
+        "detail": "Across four low-rise buildings"
+      },
+      {
+        "value": "300",
+        "label": "Covered parking spaces",
+        "detail": "In the development"
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "During construction",
+        "share": "80%",
+        "description": "Paid across the build period on Emaar's construction-linked schedule."
+      },
+      {
+        "stage": "At 100% construction completion",
+        "share": "20%",
+        "description": "The balance, due once construction is complete."
+      }
+    ],
+    "timelineIntro": "Two blocks, and the second is a fifth rather than a tenth. Eighty percent across the build, and twenty when construction reaches 100%.",
+    "eligibility": [
+      {
+        "label": "The plan",
+        "value": "80% during construction and 20% upon 100% construction completion."
+      },
+      {
+        "label": "What is in the release",
+        "value": "One, two and three-bedroom apartments across four low-rise buildings."
+      },
+      {
+        "label": "Where",
+        "value": "Seascape at Rashid Yachts & Marina, Mina Rashid, on the creek side of Port Rashid."
+      },
+      {
+        "label": "Entry price",
+        "value": "Emaar's own listing shows Seascape from AED 3,582,888. Individual bedroom counts are priced separately and availability moves, so confirm the current figure."
+      },
+      {
+        "label": "The community",
+        "value": "The Canal Pool, a community park, gym and swimming pool, a boardwalk promenade, recreational courts, and retail and dining."
+      },
+      {
+        "label": "Parking",
+        "value": "Three hundred covered parking spaces in the development."
+      },
+      {
+        "label": "Handover",
+        "value": "Emaar does not state a completion date on the offer page. Third-party listings say December 2026; the date in your sale and purchase agreement is the authority."
+      },
+      {
+        "label": "What is not covered",
+        "value": "The 4% DLD registration fee, trustee office and administration charges are payable separately."
+      }
+    ],
+    "amenities": {
+      "heading": "A canal pool, a boardwalk and a yacht marina.",
+      "stats": [
+        {
+          "value": "4",
+          "label": "Low-rise buildings",
+          "icon": "Building2"
+        },
+        {
+          "value": "300",
+          "label": "Covered parking spaces",
+          "icon": "KeyRound"
+        },
+        {
+          "value": "1 to 3",
+          "label": "Bedrooms in the release",
+          "icon": "Users"
+        }
+      ],
+      "masterplanHeading": "Inside Seascape",
+      "items": [
+        "The Canal Pool through the development",
+        "Boardwalk promenade along the water",
+        "Rashid Yachts & Marina on the doorstep",
+        "Community park",
+        "Swimming pool",
+        "Residents gym",
+        "Recreational courts",
+        "Retail and dining options",
+        "300 covered parking spaces"
+      ],
+      "icons": [
+        "Waves",
+        "Bike",
+        "Sun",
+        "Trees",
+        "Droplets",
+        "Users",
+        "Flower2",
+        "Store",
+        "Building2"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/00-12-2x.webp",
+        "alt": "Seascape and Rashid Yachts & Marina seen from above"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/01-2-crop-2x.webp",
+        "alt": "The canal pool running between the low-rise buildings at Seascape"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/02-featured-2x.webp",
+        "alt": "Yachts berthed at Rashid Yachts & Marina"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/03-3-crop-2x.webp",
+        "alt": "The view over the marina from a Seascape apartment"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/04-11-crop-2x.webp",
+        "alt": "The pool deck at Seascape, Rashid Yachts & Marina"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/05-11-2x.webp",
+        "alt": "A living room at Seascape looking out to the water"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/06-10-2x.webp",
+        "alt": "A bedroom at Seascape with the marina beyond the balcony"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/07-4-crop-2x.webp",
+        "alt": "The living space in a Seascape apartment"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/seascape-hd/08-2-2x.webp",
+        "alt": "Rashid Yachts & Marina with the Dubai skyline behind it"
+      }
+    ],
+    "investment": {
+      "heading": "Why the 80/20 rather than the 90/10.",
+      "items": [
+        {
+          "title": "Twice the deferral",
+          "text": "A fifth at completion instead of a tenth."
+        },
+        {
+          "title": "Low-rise, not a tower",
+          "text": "Four buildings around a canal pool."
+        },
+        {
+          "title": "A real marina",
+          "text": "Berths, not a view of somebody else's."
+        },
+        {
+          "title": "Close to the old city",
+          "text": "Port Rashid sits between Deira and Downtown."
+        }
+      ],
+      "icons": [
+        "Wallet",
+        "Building2",
+        "Waves",
+        "TrendingUp"
+      ]
+    },
+    "ctaLabel": "See available apartments",
+    "whatsappLabel": "Message on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the Seascape launch offer at Rashid Yachts & Marina: 80% during construction, 20% at completion. Please send me what's available.",
+    "valueProps": [
+      [
+        "A fifth held back, not a tenth",
+        "Emaar's 90/10 plans leave a balance small enough to ignore. An 80/20 leaves twice that, and on a AED 3.58M apartment the difference is around AED 358,000. If your capital has somewhere to be during the build, that extra deferral is the point of choosing this one."
+      ],
+      [
+        "Low-rise on a working marina",
+        "Seascape is four low-rise buildings, not a tower. They sit around Rashid Yachts & Marina, which is an operating yacht harbour rather than a view of one. The scale of the place is the product."
+      ],
+      [
+        "The canal pool is the spine",
+        "The Canal Pool runs through the development, with the boardwalk promenade beside it and the community park behind. It is a plan organised around water at ground level rather than around a podium deck."
+      ],
+      [
+        "Mina Rashid is close in",
+        "Port Rashid sits between Deira and Downtown, which is a different location argument from the newer coastal masterplans further out. Older city, shorter commute, and the marina is already there."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Emaar's launch offer at Seascape is an 80/20: eighty percent of the price across the construction period and twenty percent once construction reaches 100%. That is worth separating from the 90/10 Emaar runs at Emaar Beachfront and at Alana in The Valley, because the difference is not cosmetic. On an apartment at Emaar's listed entry price of AED 3,582,888, an 80/20 leaves roughly AED 717,000 at the end where a 90/10 would leave about AED 358,000.",
+      "Which of those you want depends on what your money is doing in between. A larger deferral is an advantage if capital has somewhere better to be during the build and a liability if you would rather the handover be a formality. The plan is the choice; the address is the reason to look at all.",
+      "Seascape is four low-rise buildings at Rashid Yachts & Marina, an operating yacht harbour at Mina Rashid. The development is organised around The Canal Pool, which runs through it, with a boardwalk promenade along the water and a community park behind. There is a gym, a swimming pool, recreational courts, retail and dining, and three hundred covered parking spaces. The release covers one, two and three-bedroom apartments.",
+      "Location is the other half of the argument. Port Rashid sits between Deira and Downtown rather than out along the newer coastal masterplans, so the commute is shorter and the surrounding city is already built. Emaar does not publish a completion date on the offer page; listings say December 2026, and the date that binds is the one in the sale and purchase agreement. The 4% DLD registration fee, trustee office and administration charges sit outside the plan and remain payable."
+    ],
+    "worked": {
+      "heading": "The 80/20 on a AED 3.58M apartment",
+      "rows": [
+        [
+          "Emaar's listed entry price",
+          "AED 3,582,888"
+        ],
+        [
+          "Paid during construction",
+          "AED 2,866,310"
+        ],
+        [
+          "Due at 100% completion",
+          "AED 716,578"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 143,316"
+        ],
+        [
+          "Compare: a 90/10 balance at completion",
+          "AED 358,289"
+        ]
+      ],
+      "footnote": "Illustrative, based on Emaar's own listed from-price; figures are rounded. The last row shows what the same apartment would leave at completion under Emaar's 90/10 plans, for comparison, not as an alternative offered here. The DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. Prices and availability change."
+    },
+    "faqs": [
+      {
+        "question": "What is the payment plan?",
+        "answer": "80% during construction and 20% upon 100% construction completion. Emaar publishes it as a limited-time launch offer."
+      },
+      {
+        "question": "How is this different from Emaar's 90/10 offers?",
+        "answer": "It defers twice as much. A 90/10 leaves a tenth at completion; this leaves a fifth. On a AED 3.58M apartment that is roughly AED 717,000 instead of AED 358,000, so the plan suits a buyer who would rather keep capital working during the build."
+      },
+      {
+        "question": "What can I buy under it?",
+        "answer": "One, two and three-bedroom apartments across the four low-rise buildings at Seascape."
+      },
+      {
+        "question": "What does it cost to get in?",
+        "answer": "Emaar's own listing shows Seascape from AED 3,582,888. Bedroom counts are priced separately and availability moves, so confirm the current figure before relying on it."
+      },
+      {
+        "question": "Where exactly is it?",
+        "answer": "Rashid Yachts & Marina at Mina Rashid, on the Port Rashid side of the creek between Deira and Downtown."
+      },
+      {
+        "question": "What is in the community?",
+        "answer": "The Canal Pool, a community park, a gym and swimming pool, a boardwalk promenade, recreational courts, retail and dining, and 300 covered parking spaces."
+      },
+      {
+        "question": "When does it hand over?",
+        "answer": "Emaar does not state a completion date on the offer page. Third-party listings say December 2026. The date recorded in your sale and purchase agreement is the one that counts."
+      },
+      {
+        "question": "Are the DLD fees included?",
+        "answer": "No. The 4% Dubai Land Department registration fee, trustee office charges and administration fees are payable separately."
+      }
+    ],
+    "disclaimer": "Terms are set by Emaar Properties and apply to eligible units at Seascape, Rashid Yachts & Marina, subject to availability and to Emaar's terms and conditions. The 80/20 plan is published as a limited-time launch offer; prices, availability and payment terms change without notice. The entry price shown is Emaar's own listed from-price at the time of writing and is not a quote for a specific apartment. Emaar does not publish a handover date on its offer page; the date quoted here comes from third-party listings and is indicative only. The 4% DLD registration fee, trustee office and administration charges are payable separately and are not covered by the plan. Worked figures are illustrative and are not financial advice or an offer to sell. Confirm price, layout, the full payment schedule and the completion date in writing before committing. Binayah Properties is a licensed Dubai real estate brokerage.",
+    "projectHref": "/project/seascape-at-rashid-yachts-marina-by-emaar"
   }
 ];
 
