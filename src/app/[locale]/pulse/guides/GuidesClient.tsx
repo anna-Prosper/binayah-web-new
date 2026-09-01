@@ -4,13 +4,13 @@ import { guideTitle, guideDescription } from "@/lib/guide-text";
 import { useMemo, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { BookOpen, Clock, Eye, ArrowRight, Search, Activity, X } from "lucide-react";
+import { BookOpen, Clock, Eye, ArrowRight, Search, Activity, X, Calendar } from "lucide-react";
 // Locale-aware Link (next-intl): plain next/link emits bare hrefs, which
 // localePrefix "as-needed" resolves to the DEFAULT locale — dropping non-English
 // readers back into English. This variant prefixes hrefs with the active locale.
 import { Link } from "@/navigation";
 import Image from "next/image";
-import type { PulseGuide } from "@/lib/pulse-guides";
+import { guideDates, type PulseGuide } from "@/lib/pulse-guides";
 
 // Curated filter order — most useful clusters first; only categories that
 // actually exist in the data are shown.
@@ -184,6 +184,12 @@ function GuideCard({
 }) {
   const href = `/${locale}/pulse/guides/${guide.slug}`;
   const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<Tx>[0]);
+  const { published } = guideDates(guide.slug);
+  const dateLabel = new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <Link
@@ -221,6 +227,10 @@ function GuideCard({
 
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/40">
           <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {dateLabel}
+            </span>
             <span className="flex items-center gap-1">
               <Clock className="h-3 w-3" />
               {guide.readTime}
