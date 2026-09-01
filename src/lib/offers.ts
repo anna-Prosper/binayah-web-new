@@ -179,9 +179,18 @@ export const OFFERS: Offer[] = [
     "deadline": "2026-08-23T23:59:59+04:00",
     "windowLabel": "Ends Sunday 23 August 2026",
     "hideDeadline": false,
+    "dayCountEyebrow": true,
+    "explainer": {
+      "heading": "The 20:80 plan is back, across all five Sobha communities",
+      "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
+      "body": [
+        "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
+      ]
+    },
     "metaTitle": "Sobha 20:80 Offer from AED 1.8M | Pay 20% Now",
     "metaDescription": "Own a Sobha home from AED 1.8M: 20% during construction, 80% on handover, across five communities. Up to 4% DLD waived. Speak to Binayah.",
     "keywords": "Sobha 20:80 payment plan, Sobha payment plan Dubai, Sobha Central 1 bedroom price, 20 80 payment plan Dubai, Sobha offer 2026, Sobha Elwood price, Sobha Sanctuary villas, Sobha Siniya Island, Downtown Umm Al Quwain, DLD waiver Dubai, off plan Dubai payment plan",
+    "priceFrom": 1800000,
     "highlights": [
       {
         "value": "20%",
@@ -204,6 +213,29 @@ export const OFFERS: Offer[] = [
         "detail": "Lowest 20:80 entry, a one bed at Sobha Central"
       }
     ],
+    "timeline": [
+      {
+        "stage": "Today",
+        "share": "2%",
+        "description": "Booking amount, paid to reserve the unit."
+      },
+      {
+        "stage": "Within 7 days",
+        "share": "8%",
+        "description": "Second instalment."
+      },
+      {
+        "stage": "Within 15 days",
+        "share": "10%",
+        "description": "Completes the 20%."
+      },
+      {
+        "stage": "On completion",
+        "share": "80%",
+        "description": "The balance, payable when the unit is ready."
+      }
+    ],
+    "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "eligibility": [
       {
         "label": "Offer window",
@@ -242,114 +274,6 @@ export const OFFERS: Offer[] = [
         "value": "Units priced above AED 2 million qualify for the property investor visa route."
       }
     ],
-    "valueProps": [
-      [
-        "Entry starts at AED 1.8 million",
-        "A one bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million, the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
-      ],
-      [
-        "AED 360,000 secures an AED 1.8M home",
-        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within 7 days and 10% within 15 days. The remaining AED 1.44 million is deferred until the unit is ready."
-      ],
-      [
-        "Resell or mortgage at completion",
-        "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
-      ],
-      [
-        "Waivers worth thousands, on top of the split",
-        "Beyond the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, a two year service charge waiver, and a furniture voucher on Elwood. On the AED 1.8 million entry unit at Sobha Central, the 2% DLD waiver alone is AED 36,000 back in your pocket."
-      ]
-    ],
-    "bodyParagraphs": [
-      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community (20% across the construction period and 80% on handover), but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
-      "The number that matters most is the entry price: AED 1.8 million for a one bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
-      "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two and three bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one beds add a two year service charge waiver.",
-      "The terms are held by action inside the window, not by intent. A unit must be booked or PR approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings, so it is worth confirming the exact position on any unit already under discussion."
-    ],
-    "worked": {
-      "heading": "What it takes to secure a AED 1.8M one bed at Sobha Central",
-      "rows": [
-        [
-          "Purchase price",
-          "AED 1,800,000"
-        ],
-        [
-          "Booking amount, inside the offer window (2%)",
-          "AED 36,000"
-        ],
-        [
-          "Payable to extend the benefits (10%)",
-          "AED 180,000"
-        ],
-        [
-          "Total across construction (20%)",
-          "AED 360,000"
-        ],
-        [
-          "Balance on handover (80%)",
-          "AED 1,440,000"
-        ]
-      ],
-      "footnote": "Figures shown on the AED 1.8M entry price for a one bedroom at Sobha Central."
-    },
-    "faqs": [
-      {
-        "question": "When does the Sobha 20:80 payment plan close?",
-        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR approved with the 2% booking amount paid before then. Talk to us early: we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
-      },
-      {
-        "question": "What is the cheapest unit on the 20:80 plan?",
-        "answer": "AED 1.8 million, for a one bedroom apartment at Sobha Central. That is the entry point for the campaign; the same 20:80 structure then runs up through apartments, townhouses and villas across the other four projects."
-      },
-      {
-        "question": "Which unit types qualify?",
-        "answer": "Apartments, townhouses, retail units and villas. Sobha Central covers one, two and three bedroom apartments plus retail; Sanctuary covers Courtyard, Garden and Estate villas; Elwood, Siniya Island and Downtown Umm Al Quwain each carry their own inventory. Message us on WhatsApp and we will send you the current list."
-      },
-      {
-        "question": "Can I resell or mortgage before I pay the 80%?",
-        "answer": "The unit can be resold or mortgaged at completion, once the construction period has run. Sobha properties have historically appreciated 20 to 50% by handover depending on unit type, so the deferred balance is often settled against a higher valuation than the purchase price."
-      },
-      {
-        "question": "How much of the DLD fee is waived?",
-        "answer": "It depends on the project and the unit type. Sobha Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver. The Estate villas at Sanctuary and the two and three bedroom apartments and retail at Central carry 4%. Sobha Siniya Island and Downtown Umm Al Quwain waive the registration fee in full."
-      },
-      {
-        "question": "What do I have to pay to lock the offer in?",
-        "answer": "A 2% booking amount during the offer period, with the unit booked or PR approved. The benefits are then extended on payment of 10% plus the applicable registration fee and execution of the Booking Form."
-      },
-      {
-        "question": "Which projects are included?",
-        "answer": "Five: Sobha Elwood, Sobha Sanctuary (Courtyard and Garden villas, and Estate villas), Sobha Central (one bedroom apartments, and two and three bedroom apartments plus retail), Sobha Siniya Island, and Downtown Umm Al Quwain."
-      },
-      {
-        "question": "Can I apply this to a unit I have already booked?",
-        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. If you already have a unit under discussion, message us on WhatsApp and we will confirm exactly where it stands."
-      }
-    ],
-    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers and vouchers vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "timeline": [
-      {
-        "stage": "Today",
-        "share": "2%",
-        "description": "Booking amount, paid to reserve the unit."
-      },
-      {
-        "stage": "Within 7 days",
-        "share": "8%",
-        "description": "Second instalment."
-      },
-      {
-        "stage": "Within 15 days",
-        "share": "10%",
-        "description": "Completes the 20%."
-      },
-      {
-        "stage": "On completion",
-        "share": "80%",
-        "description": "The balance, payable when the unit is ready."
-      }
-    ],
-    "timelineIntro": "Pay 20% of the purchase price across three instalments. The remaining 80% is due only on handover.",
     "projects": [
       {
         "name": "Sobha Elwood",
@@ -478,36 +402,6 @@ export const OFFERS: Offer[] = [
         "Store"
       ]
     },
-    "ctaLabel": "See qualifying units",
-    "whatsappLabel": "WhatsApp us now",
-    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan: 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
-    "investment": {
-      "heading": "A Tier 1 build, held for the long run.",
-      "items": [
-        {
-          "title": "Tier 1 developer",
-          "text": "Sobha designs, builds and delivers in house."
-        },
-        {
-          "title": "Growth corridor",
-          "text": "Positioned in an appreciating district."
-        },
-        {
-          "title": "Rental demand",
-          "text": "Stable yields and a quality tenant profile."
-        },
-        {
-          "title": "Long term value",
-          "text": "Built to hold, not to flip."
-        }
-      ],
-      "icons": [
-        "Building2",
-        "TrendingUp",
-        "Coins",
-        "ShieldCheck"
-      ]
-    },
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/sobha-20-80-hero-villa.webp",
@@ -610,15 +504,121 @@ export const OFFERS: Offer[] = [
         "alt": "Towers and shoreline at Downtown Umm Al Quwain"
       }
     ],
-    "dayCountEyebrow": true,
-    "explainer": {
-      "heading": "The 20:80 plan is back, across all five Sobha communities",
-      "highlight": "The last time this plan ran, Sobha sold over AED 1 billion of property in two days. This round is open wider still: there is no minimum requirement to buy a 5 million dirham unit.",
-      "body": [
-        "Sobha's 20:80 payment plan is open again across all five Dubai and Siniya Island communities. Pay just 20% of the price while it's being built and defer the remaining 80% to handover."
+    "investment": {
+      "heading": "A Tier 1 build, held for the long run.",
+      "items": [
+        {
+          "title": "Tier 1 developer",
+          "text": "Sobha designs, builds and delivers in house."
+        },
+        {
+          "title": "Growth corridor",
+          "text": "Positioned in an appreciating district."
+        },
+        {
+          "title": "Rental demand",
+          "text": "Stable yields and a quality tenant profile."
+        },
+        {
+          "title": "Long term value",
+          "text": "Built to hold, not to flip."
+        }
+      ],
+      "icons": [
+        "Building2",
+        "TrendingUp",
+        "Coins",
+        "ShieldCheck"
       ]
     },
-    "priceFrom": 1800000
+    "ctaLabel": "See qualifying units",
+    "whatsappLabel": "WhatsApp us now",
+    "whatsappMessage": "Hi Binayah! 👋 I want the Sobha 20:80 plan: 20% now, 80% on handover, from AED 1.8M. Please send me the qualifying units.",
+    "valueProps": [
+      [
+        "Entry starts at AED 1.8 million",
+        "A one bedroom at Sobha Central opens the 20:80 structure at AED 1.8 million, the lowest way into this campaign. The same deferred split then scales all the way up through apartments, townhouses and the Estate villas at Sanctuary."
+      ],
+      [
+        "AED 360,000 secures an AED 1.8M home",
+        "Twenty per cent is all that leaves your pocket before handover: AED 360,000 on an AED 1.8 million property, staged as 2% today, 8% within 7 days and 10% within 15 days. The remaining AED 1.44 million is deferred until the unit is ready."
+      ],
+      [
+        "Resell or mortgage at completion",
+        "The unit can be resold or mortgaged once it completes, by which point it has had the full construction period to appreciate. Sobha properties have historically gained 20 to 50% in value by handover, depending on unit type."
+      ],
+      [
+        "Waivers worth thousands, on top of the split",
+        "Beyond the deferred payment, each project layers its own incentives: DLD registration fee waivers of up to 4%, a two year service charge waiver, and a furniture voucher on Elwood. On the AED 1.8 million entry unit at Sobha Central, the 2% DLD waiver alone is AED 36,000 back in your pocket."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Sobha's 20:80 payment plan is open again for four days, from 20 to 23 August 2026. The structure is the same across every participating community (20% across the construction period and 80% on handover), but the incentives layered on top differ by project and, in two cases, by unit type within the same project. We place the booking, handle the paperwork and secure the developer approval on your behalf.",
+      "The number that matters most is the entry price: AED 1.8 million for a one bedroom at Sobha Central. That is the cheapest way into the 20:80 structure in this campaign, and it puts a deferred payment Sobha home within reach of buyers who would have assumed this kind of plan was reserved for the villa end of the market. The same 20:80 split then runs right across all five participating projects.",
+      "The waivers are worth reading closely. Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver; the Estate villas at Sanctuary and the two and three bedroom apartments and retail units at Central carry the full 4%. Siniya Island and Downtown Umm Al Quwain go further and waive the registration fee outright. Elwood adds a 2% furniture voucher, and both Sanctuary's Courtyard and Garden villas and Central's one beds add a two year service charge waiver.",
+      "The terms are held by action inside the window, not by intent. A unit must be booked or PR approved with the 2% booking amount paid during the offer period, and the benefits are extended on payment of 10% along with the applicable registration fee and execution of the Booking Form. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings, so it is worth confirming the exact position on any unit already under discussion."
+    ],
+    "worked": {
+      "heading": "What it takes to secure a AED 1.8M one bed at Sobha Central",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 1,800,000"
+        ],
+        [
+          "Booking amount, inside the offer window (2%)",
+          "AED 36,000"
+        ],
+        [
+          "Payable to extend the benefits (10%)",
+          "AED 180,000"
+        ],
+        [
+          "Total across construction (20%)",
+          "AED 360,000"
+        ],
+        [
+          "Balance on handover (80%)",
+          "AED 1,440,000"
+        ]
+      ],
+      "footnote": "Figures shown on the AED 1.8M entry price for a one bedroom at Sobha Central."
+    },
+    "faqs": [
+      {
+        "question": "When does the Sobha 20:80 payment plan close?",
+        "answer": "Sunday 23 August 2026. To hold the terms, the unit has to be booked or PR approved with the 2% booking amount paid before then. Talk to us early: we place the booking, handle the Booking Form and the developer approval, and represent you through to handover."
+      },
+      {
+        "question": "What is the cheapest unit on the 20:80 plan?",
+        "answer": "AED 1.8 million, for a one bedroom apartment at Sobha Central. That is the entry point for the campaign; the same 20:80 structure then runs up through apartments, townhouses and villas across the other four projects."
+      },
+      {
+        "question": "Which unit types qualify?",
+        "answer": "Apartments, townhouses, retail units and villas. Sobha Central covers one, two and three bedroom apartments plus retail; Sanctuary covers Courtyard, Garden and Estate villas; Elwood, Siniya Island and Downtown Umm Al Quwain each carry their own inventory. Message us on WhatsApp and we will send you the current list."
+      },
+      {
+        "question": "Can I resell or mortgage before I pay the 80%?",
+        "answer": "The unit can be resold or mortgaged at completion, once the construction period has run. Sobha properties have historically appreciated 20 to 50% by handover depending on unit type, so the deferred balance is often settled against a higher valuation than the purchase price."
+      },
+      {
+        "question": "How much of the DLD fee is waived?",
+        "answer": "It depends on the project and the unit type. Sobha Elwood, the Courtyard and Garden villas at Sanctuary, and one bedroom apartments at Central carry a 2% DLD waiver. The Estate villas at Sanctuary and the two and three bedroom apartments and retail at Central carry 4%. Sobha Siniya Island and Downtown Umm Al Quwain waive the registration fee in full."
+      },
+      {
+        "question": "What do I have to pay to lock the offer in?",
+        "answer": "A 2% booking amount during the offer period, with the unit booked or PR approved. The benefits are then extended on payment of 10% plus the applicable registration fee and execution of the Booking Form."
+      },
+      {
+        "question": "Which projects are included?",
+        "answer": "Five: Sobha Elwood, Sobha Sanctuary (Courtyard and Garden villas, and Estate villas), Sobha Central (one bedroom apartments, and two and three bedroom apartments plus retail), Sobha Siniya Island, and Downtown Umm Al Quwain."
+      },
+      {
+        "question": "Can I apply this to a unit I have already booked?",
+        "answer": "No. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. If you already have a unit under discussion, message us on WhatsApp and we will confirm exactly where it stands."
+      }
+    ],
+    "disclaimer": "Terms are set by Sobha Realty and apply to selected units and projects only, subject to availability and developer approval. Waivers and vouchers vary by project and unit type as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. The offer does not apply to cancellations, swaps, upgrades, downgrades or re bookings. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage."
   },
   {
     "slug": "damac-lagoons-riverside-1950-offer",
@@ -631,9 +631,17 @@ export const OFFERS: Offer[] = [
     "deadline": "",
     "windowLabel": "Limited time offer",
     "hideDeadline": false,
+    "explainer": {
+      "heading": "Two waterfront masterplans, one offer",
+      "highlight": "A DAMAC waterfront home from AED 1,950 a month. The 4% DLD registration fee is covered, 4% comes off the price, and half the balance waits until handover.",
+      "body": [
+        "The offer runs across DAMAC Lagoons in Dubailand and DAMAC Riverside in Dubai Investments Park, on ready and near-ready homes rather than early-stage plots. Studios, apartments, townhouses and villas all qualify, from AED 718,000."
+      ]
+    },
     "metaTitle": "DAMAC Waterfront Homes from AED 1,950 a Month",
     "metaDescription": "Branded DAMAC waterfront homes at Lagoons and Riverside from AED 1,950 a month, with a 4% DLD waiver, 4% off the price and a 50/50 plan.",
     "keywords": "DAMAC Lagoons offer, DAMAC Riverside offer, DAMAC 50/50 payment plan, 4% DLD waiver Dubai, DAMAC waterfront homes, DAMAC Lagoons price, DAMAC Riverside price, Dubai waterfront property offer",
+    "priceFrom": 718000,
     "highlights": [
       {
         "value": "AED 1,950",
@@ -668,6 +676,7 @@ export const OFFERS: Offer[] = [
         "description": "The balance falls due when the home is complete and ready for possession."
       }
     ],
+    "timelineIntro": "An even split rather than a front-loaded one: half the price is spread across the construction and holding period, and the other half is deferred until handover. That structure is what brings the monthly figure down to AED 1,950.",
     "eligibility": [
       {
         "label": "Communities",
@@ -694,81 +703,54 @@ export const OFFERS: Offer[] = [
         "value": "Units above AED 2 million qualify"
       }
     ],
-    "valueProps": [
-      [
-        "A genuinely low monthly entry",
-        "At AED 1,950 a month for a studio, the barrier to a branded waterfront address is closer to a rental payment than to a conventional off-plan commitment. Apartments and larger homes start from AED 3,150."
-      ],
-      [
-        "Three incentives stacked, not one",
-        "The 4% DLD waiver is a real cash saving that normally lands on the buyer at purchase. The 4% discount comes off the price on top of it, and the 50/50 structure defers half the balance to handover."
-      ],
-      [
-        "Communities you can walk today",
-        "Both masterplans have ready and near-ready homes, so this is not a plan bought off a render. You can see the lagoon, the promenade and the finish before you commit."
-      ]
-    ],
-    "bodyParagraphs": [
-      "DAMAC's current campaign puts a branded waterfront home within reach from AED 1,950 per month, the entry point for a studio, with apartments and larger homes starting from AED 3,150. It runs across two masterplans: DAMAC Lagoons and DAMAC Riverside. What makes the monthly figure achievable is not one discount but three incentives stacked together, applied to ready or near-ready stock rather than early-stage launches.",
-      "DAMAC Lagoons is a 45-million-square-foot Mediterranean-themed masterplan in Dubailand, built around crystal lagoons, white-sand beaches and a waterside clubhouse. Its themed clusters, including Portofino, Nice, Santorini and Costa Brava, are at various stages of delivery, with several now ready or near-ready and offering genuine lagoon access. That delivered status is the real draw: you are buying into an environment you can inspect, and in many cases move into.",
-      "DAMAC Riverside sits in Dubai Investments Park, organised around a river-inspired water feature with floating amenities and a retail promenade. It offers studios and one- and two-bedroom apartments alongside four- and five-bedroom townhouses, with Emirates Road connecting it to Expo City and Al Maktoum International Airport. Apartments start from AED 718,000, among the most affordably priced branded-waterfront units in the city.",
-      "The package suits three groups in particular: end-users who want a delivered, amenity-rich community rather than a construction site; investors targeting Dubai's waterfront rental demand, with Golden Visa eligibility on units above the AED 2 million threshold; and first-time buyers drawn by the low monthly entry into a branded address. As with any campaign, the individual home should stand on its own merits, location, view and handover timeline, as much as on the incentives attached to it."
-    ],
-    "worked": {
-      "heading": "What the incentives are worth on an AED 718,000 apartment",
-      "rows": [
-        [
-          "Purchase price",
-          "AED 718,000"
-        ],
-        [
-          "4% price discount",
-          "− AED 28,720"
-        ],
-        [
-          "Price after discount",
-          "AED 689,280"
-        ],
-        [
-          "4% DLD fee, covered by DAMAC",
-          "− AED 27,571"
-        ],
-        [
-          "Combined saving",
-          "≈ AED 56,291"
+    "projects": [
+      {
+        "name": "DAMAC Lagoons",
+        "terms": "A 45 million sq ft Mediterranean masterplan in Dubailand, built around crystal lagoons, white sand beaches and a waterside clubhouse. Themed clusters at varying stages of handover, several ready or near-ready with direct lagoon access.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/featured.webp",
+        "links": [
+          {
+            "label": "DAMAC Lagoons community",
+            "href": "/communities/damac-lagoons"
+          },
+          {
+            "label": "Venice at DAMAC Lagoons",
+            "href": "/project/lagoons-venice"
+          },
+          {
+            "label": "Costa Brava",
+            "href": "/project/costa-brava-damac-lagoons-phase-2"
+          },
+          {
+            "label": "Valencia",
+            "href": "/project/valencia-at-damac-lagoons"
+          }
         ]
-      ],
-      "footnote": "Illustrative, based on the published entry price for DAMAC Riverside apartments. The exact figures depend on the unit and the terms recorded on the signed SPA."
-    },
-    "faqs": [
-      {
-        "question": "How is AED 1,950 a month possible on a Dubai property?",
-        "answer": "It is the entry monthly figure for a studio under this campaign, and it works because of the 50/50 structure: only half the price is paid across the construction and holding period, with the remaining half deferred to handover. Apartments and larger homes start from AED 3,150 a month."
       },
       {
-        "question": "Which communities does the offer cover?",
-        "answer": "DAMAC Lagoons in Dubailand and DAMAC Riverside in Dubai Investments Park. Both are waterfront masterplans with ready and near-ready homes, spanning studios and apartments through to townhouses and villas."
-      },
-      {
-        "question": "What does the 4% DLD waiver actually save me?",
-        "answer": "The Dubai Land Department charges a 4% registration fee on the purchase, which normally falls on the buyer at the point of sale. Under this offer DAMAC covers it, so on an AED 718,000 apartment that is roughly AED 27,600 you do not pay."
-      },
-      {
-        "question": "Is the 4% discount on top of the DLD waiver?",
-        "answer": "Yes. They are separate incentives and they stack: 4% comes off the price, and the 4% DLD registration fee is covered on top. The 50/50 payment plan then applies to the discounted price."
-      },
-      {
-        "question": "Do these homes qualify for the Golden Visa?",
-        "answer": "Units priced above the AED 2 million threshold qualify under the current property-investor route. Plenty of the stock in this campaign sits below that figure, so confirm the price of your specific unit if the visa is part of your reason for buying."
-      },
-      {
-        "question": "What should I check before reserving?",
-        "answer": "Confirm the exact 50/50 split, the milestone dates and any post-handover tail in writing, since advertised plans and the plan on the SPA can differ by unit and cluster. Check that your specific unit qualifies for both the waiver and the discount, factor in service charges of roughly AED 14 to 18 per square foot annually, and scan the DLD or Madmoun QR to verify the listing permit before paying anything."
+        "name": "DAMAC Riverside",
+        "terms": "Set in Dubai Investments Park around a water canal with floating leisure decks and a retail promenade. Studios, one and two bedroom apartments and four and five bedroom townhouses, with Emirates Road linking it to Expo City and Al Maktoum airport.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/02-featured-hd-2x.webp",
+        "links": [
+          {
+            "label": "DAMAC Riverside community",
+            "href": "/communities/damac-riverside"
+          },
+          {
+            "label": "DAMAC Riverside",
+            "href": "/project/damac-riverside-in-dubai"
+          },
+          {
+            "label": "Capri at Riverside Views",
+            "href": "/project/capri-1-by-damac-at-riverside-views-dubai"
+          },
+          {
+            "label": "Azure at Riverside Views",
+            "href": "/project/damac-riverside-views-azure-1"
+          }
+        ]
       }
     ],
-    "disclaimer": "Terms are set by the developer and apply to selected units only, subject to availability and developer approval. Monthly figures and savings shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "projectHref": "/developers/damac-properties",
-    "timelineIntro": "An even split rather than a front-loaded one: half the price is spread across the construction and holding period, and the other half is deferred until handover. That structure is what brings the monthly figure down to AED 1,950.",
     "amenities": {
       "heading": "Built around the water.",
       "stats": [
@@ -810,14 +792,6 @@ export const OFFERS: Offer[] = [
         "Bike",
         "TreePalm",
         "Flower2"
-      ]
-    },
-    "ctaLabel": "Check eligible homes",
-    "explainer": {
-      "heading": "Two waterfront masterplans, one offer",
-      "highlight": "A DAMAC waterfront home from AED 1,950 a month. The 4% DLD registration fee is covered, 4% comes off the price, and half the balance waits until handover.",
-      "body": [
-        "The offer runs across DAMAC Lagoons in Dubailand and DAMAC Riverside in Dubai Investments Park, on ready and near-ready homes rather than early-stage plots. Studios, apartments, townhouses and villas all qualify, from AED 718,000."
       ]
     },
     "gallery": [
@@ -953,60 +927,251 @@ export const OFFERS: Offer[] = [
         "ShieldCheck"
       ]
     },
+    "ctaLabel": "Check eligible homes",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes.",
+    "valueProps": [
+      [
+        "A genuinely low monthly entry",
+        "At AED 1,950 a month for a studio, the barrier to a branded waterfront address is closer to a rental payment than to a conventional off-plan commitment. Apartments and larger homes start from AED 3,150."
+      ],
+      [
+        "Three incentives stacked, not one",
+        "The 4% DLD waiver is a real cash saving that normally lands on the buyer at purchase. The 4% discount comes off the price on top of it, and the 50/50 structure defers half the balance to handover."
+      ],
+      [
+        "Communities you can walk today",
+        "Both masterplans have ready and near-ready homes, so this is not a plan bought off a render. You can see the lagoon, the promenade and the finish before you commit."
+      ]
+    ],
+    "bodyParagraphs": [
+      "DAMAC's current campaign puts a branded waterfront home within reach from AED 1,950 per month, the entry point for a studio, with apartments and larger homes starting from AED 3,150. It runs across two masterplans: DAMAC Lagoons and DAMAC Riverside. What makes the monthly figure achievable is not one discount but three incentives stacked together, applied to ready or near-ready stock rather than early-stage launches.",
+      "DAMAC Lagoons is a 45-million-square-foot Mediterranean-themed masterplan in Dubailand, built around crystal lagoons, white-sand beaches and a waterside clubhouse. Its themed clusters, including Portofino, Nice, Santorini and Costa Brava, are at various stages of delivery, with several now ready or near-ready and offering genuine lagoon access. That delivered status is the real draw: you are buying into an environment you can inspect, and in many cases move into.",
+      "DAMAC Riverside sits in Dubai Investments Park, organised around a river-inspired water feature with floating amenities and a retail promenade. It offers studios and one- and two-bedroom apartments alongside four- and five-bedroom townhouses, with Emirates Road connecting it to Expo City and Al Maktoum International Airport. Apartments start from AED 718,000, among the most affordably priced branded-waterfront units in the city.",
+      "The package suits three groups in particular: end-users who want a delivered, amenity-rich community rather than a construction site; investors targeting Dubai's waterfront rental demand, with Golden Visa eligibility on units above the AED 2 million threshold; and first-time buyers drawn by the low monthly entry into a branded address. As with any campaign, the individual home should stand on its own merits, location, view and handover timeline, as much as on the incentives attached to it."
+    ],
+    "worked": {
+      "heading": "What the incentives are worth on an AED 718,000 apartment",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 718,000"
+        ],
+        [
+          "4% price discount",
+          "− AED 28,720"
+        ],
+        [
+          "Price after discount",
+          "AED 689,280"
+        ],
+        [
+          "4% DLD fee, covered by DAMAC",
+          "− AED 27,571"
+        ],
+        [
+          "Combined saving",
+          "≈ AED 56,291"
+        ]
+      ],
+      "footnote": "Illustrative, based on the published entry price for DAMAC Riverside apartments. The exact figures depend on the unit and the terms recorded on the signed SPA."
+    },
+    "faqs": [
+      {
+        "question": "How is AED 1,950 a month possible on a Dubai property?",
+        "answer": "It is the entry monthly figure for a studio under this campaign, and it works because of the 50/50 structure: only half the price is paid across the construction and holding period, with the remaining half deferred to handover. Apartments and larger homes start from AED 3,150 a month."
+      },
+      {
+        "question": "Which communities does the offer cover?",
+        "answer": "DAMAC Lagoons in Dubailand and DAMAC Riverside in Dubai Investments Park. Both are waterfront masterplans with ready and near-ready homes, spanning studios and apartments through to townhouses and villas."
+      },
+      {
+        "question": "What does the 4% DLD waiver actually save me?",
+        "answer": "The Dubai Land Department charges a 4% registration fee on the purchase, which normally falls on the buyer at the point of sale. Under this offer DAMAC covers it, so on an AED 718,000 apartment that is roughly AED 27,600 you do not pay."
+      },
+      {
+        "question": "Is the 4% discount on top of the DLD waiver?",
+        "answer": "Yes. They are separate incentives and they stack: 4% comes off the price, and the 4% DLD registration fee is covered on top. The 50/50 payment plan then applies to the discounted price."
+      },
+      {
+        "question": "Do these homes qualify for the Golden Visa?",
+        "answer": "Units priced above the AED 2 million threshold qualify under the current property-investor route. Plenty of the stock in this campaign sits below that figure, so confirm the price of your specific unit if the visa is part of your reason for buying."
+      },
+      {
+        "question": "What should I check before reserving?",
+        "answer": "Confirm the exact 50/50 split, the milestone dates and any post-handover tail in writing, since advertised plans and the plan on the SPA can differ by unit and cluster. Check that your specific unit qualifies for both the waiver and the discount, factor in service charges of roughly AED 14 to 18 per square foot annually, and scan the DLD or Madmoun QR to verify the listing permit before paying anything."
+      }
+    ],
+    "disclaimer": "Terms are set by the developer and apply to selected units only, subject to availability and developer approval. Monthly figures and savings shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "projectHref": "/developers/damac-properties"
+  },
+  {
+    "slug": "danube-deal-of-the-decade-20-10-back",
+    "shortName": "Danube Deal of the Decade",
+    "developer": "Danube Properties",
+    "eyebrow": "Weekend only, 29 to 30 August",
+    "h1": "Pay 20%, Get 10% Back: Danube's Deal of the Decade",
+    "subtitle": "A 10% credit note against your balance, 1% a month while it builds, and 40% deferred until after handover.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/00-bayz-101-at-business-bay-dubai-gallery_1-2x.webp",
+    "deadline": "2026-08-30T23:59:59+04:00",
+    "windowLabel": "Weekend edition, 29 to 30 August 2026",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "Pay 20%, and 10% comes back as a credit note",
+      "highlight": "A refundable AED 100,000 token adds another 1%. Families buying together add up to 4% more. Pay the whole price upfront instead and the discount is a flat 14%.",
+      "body": [
+        "Danube's Deal of the Decade returns for one weekend, 29 and 30 August 2026. Pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back to you as a credit note set against your remaining balance. From there you pick the pace: 1% a month with the rebate released straight away, or 0.5% a month with it released once you reach 40%."
+      ]
+    },
+    "metaTitle": "Danube Deal of the Decade | Pay 20%, Get 10% Back",
+    "metaDescription": "Danube's Deal of the Decade, 29 to 30 August 2026: pay 20% and 10% returns as a credit note, then 1% a month and 40% after handover.",
+    "keywords": "danube deal of the decade, danube pay 20 get 10 back, danube properties offer dubai, danube 1 percent monthly payment plan, danube credit note offer, danube 11:11 projects, dubai off plan payment plan, danube properties dubai",
+    "priceFrom": 790000,
+    "highlights": [
+      {
+        "value": "20%",
+        "label": "Paid upfront",
+        "detail": "10% within 21 days, 10% within 60 days"
+      },
+      {
+        "value": "10%",
+        "label": "Back as credit",
+        "detail": "A credit note against what you still owe"
+      },
+      {
+        "value": "1%",
+        "label": "Per month",
+        "detail": "Monthly instalments while the tower builds"
+      },
+      {
+        "value": "40%",
+        "label": "After handover",
+        "detail": "The balance falls due once you have the keys"
+      }
+    ],
+    "timeline": [
+      {
+        "share": "10%",
+        "stage": "Within 21 days",
+        "description": "The first half of the 20% down payment."
+      },
+      {
+        "share": "10%",
+        "stage": "Within 60 days",
+        "description": "Completes the 20%, alongside the 4% DLD fee."
+      },
+      {
+        "share": "1%",
+        "stage": "Every month",
+        "description": "Monthly instalments until construction completes."
+      },
+      {
+        "share": "40%",
+        "stage": "After handover",
+        "description": "The balance, deferred past completion."
+      }
+    ],
+    "timelineIntro": "Both tracks start at the same 20%. The 1% track releases your rebate as soon as that 20% and the DLD fee are paid; the 0.5% track holds it until you reach 40%.",
+    "eligibility": [
+      {
+        "label": "Offer window",
+        "value": "Two days only, 29 and 30 August 2026."
+      },
+      {
+        "label": "What comes back",
+        "value": "A credit note worth 10% of the property value, set against your balance. It is a rebate, not a cash payment."
+      },
+      {
+        "label": "Down payment",
+        "value": "20% of the price, paid as 10% within 21 days and 10% within 60 days, plus the 4% DLD registration fee."
+      },
+      {
+        "label": "The 1% track",
+        "value": "The rebate is released once the 20% and the DLD fee are paid, then 1% a month until completion, with 40% after handover."
+      },
+      {
+        "label": "The 0.5% track",
+        "value": "0.5% a month until completion, with the rebate released only once you reach 40% plus the DLD fee, and 40% after handover."
+      },
+      {
+        "label": "The 11:11 lineup",
+        "value": "Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3 run a 20:70 structure instead: the rebate follows the 20%, and the remaining 70% falls due on completion."
+      },
+      {
+        "label": "Token rebate",
+        "value": "A refundable AED 100,000 token adds 1% on every Danube project except Greenz, where it becomes a two year service charge waiver instead."
+      },
+      {
+        "label": "Family purchases",
+        "value": "Spouses, parents and children buying together earn 2% on AED 10 to 20 million combined, 3% on AED 20 to 30 million, and 4% above AED 30 million."
+      },
+      {
+        "label": "Paying in full",
+        "value": "A flat 14% discount in place of the credit note structure."
+      },
+      {
+        "label": "Greenz",
+        "value": "Taking the post-handover structure at Greenz adds 5% to the unit value. Other Danube projects apply a 3% discount at handover instead."
+      }
+    ],
     "projects": [
       {
-        "name": "DAMAC Lagoons",
-        "terms": "A 45 million sq ft Mediterranean masterplan in Dubailand, built around crystal lagoons, white sand beaches and a waterside clubhouse. Themed clusters at varying stages of handover, several ready or near-ready with direct lagoon access.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/valencia-at-damac-lagoons/featured.webp",
+        "name": "Fashionz by Danube",
+        "terms": "Jumeirah Village Triangle. Part of the 11:11 lineup, so the 20:70 structure applies with the rebate released after the 20%.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fashionz-by-danube-at-jvt/featured.webp",
         "links": [
           {
-            "label": "DAMAC Lagoons community",
-            "href": "/communities/damac-lagoons"
-          },
-          {
-            "label": "Venice at DAMAC Lagoons",
-            "href": "/project/lagoons-venice"
-          },
-          {
-            "label": "Costa Brava",
-            "href": "/project/costa-brava-damac-lagoons-phase-2"
-          },
-          {
-            "label": "Valencia",
-            "href": "/project/valencia-at-damac-lagoons"
+            "label": "Fashionz by Danube",
+            "href": "/project/fashionz-by-danube-at-jvt"
           }
         ]
       },
       {
-        "name": "DAMAC Riverside",
-        "terms": "Set in Dubai Investments Park around a water canal with floating leisure decks and a retail promenade. Studios, one and two bedroom apartments and four and five bedroom townhouses, with Emirates Road linking it to Expo City and Al Maktoum airport.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-hd/02-featured-hd-2x.webp",
+        "name": "Sparklz by Danube",
+        "terms": "Al Furjan. Also in the 11:11 lineup, on the 20:70 structure with 70% due on completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/06-danube-sparklz-at-al-furjan-gallery_3-hd-2x.webp",
         "links": [
           {
-            "label": "DAMAC Riverside community",
-            "href": "/communities/damac-riverside"
-          },
+            "label": "Sparklz by Danube",
+            "href": "/project/danube-sparklz-at-al-furjan"
+          }
+        ]
+      },
+      {
+        "name": "Oceanz by Danube",
+        "terms": "Dubai Maritime City, on the water. In the 11:11 lineup across all three towers.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/02-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
+        "links": [
           {
-            "label": "DAMAC Riverside",
-            "href": "/project/damac-riverside-in-dubai"
-          },
+            "label": "Oceanz by Danube",
+            "href": "/project/oceanz-by-danube-at-dubai-maritime-city"
+          }
+        ]
+      },
+      {
+        "name": "Viewz by Danube",
+        "terms": "Jumeirah Lake Towers, twin towers joined by a sky bridge. Both Viewz 1 and Viewz 2 sit in the 11:11 lineup.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/04-8-2x.webp",
+        "links": [
           {
-            "label": "Capri at Riverside Views",
-            "href": "/project/capri-1-by-damac-at-riverside-views-dubai"
-          },
+            "label": "Viewz Residences",
+            "href": "/project/viewz-residences-at-jlt-dubai"
+          }
+        ]
+      },
+      {
+        "name": "Bayz 101",
+        "terms": "Business Bay, beside the Burj Khalifa. On the main tracks, so you choose between 1% and 0.5% a month.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/29-bayz-101-at-business-bay-dubai-featured--2x.webp",
+        "links": [
           {
-            "label": "Azure at Riverside Views",
-            "href": "/project/damac-riverside-views-azure-1"
+            "label": "Bayz 101",
+            "href": "/project/bayz-101-at-business-bay-dubai"
           }
         ]
       }
     ],
-    "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi Binayah! 👋 I'm interested in the DAMAC Lagoons and Riverside offer: from AED 1,950 a month, 4% DLD waiver and a 50/50 plan. Please send me the eligible homes.",
-    "priceFrom": 718000
-  },
-  {
-    "slug": "danube-deal-of-the-decade-20-10-back",
     "amenities": {
       "heading": "Furnished, and stacked with amenities.",
       "stats": [
@@ -1050,101 +1215,6 @@ export const OFFERS: Offer[] = [
         "Users"
       ]
     },
-    "bodyParagraphs": [
-      "Danube Properties has reopened its Deal of the Decade for a single weekend, 29 and 30 August 2026. The mechanism is straightforward: pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back as a credit note applied to your remaining balance. It is a rebate against what you owe rather than money in hand, and on a AED 1.5 million apartment it is worth AED 150,000.",
-      "What you choose after that is the pace. The 1% track releases the rebate immediately once the 20% and the fee are paid, then charges 1% of the property value each month until the building completes. The 0.5% track halves the monthly figure but holds the rebate back until you have paid 40%. Either way, 40% of the price is deferred until after handover, so most of the purchase falls due once the keys are in your hand.",
-      "Eleven projects sit outside those two tracks. Danube's 11:11 lineup, made up of Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3, runs a simpler 20:70 split: the rebate follows the 20%, and the remaining 70% is due on completion rather than spread monthly.",
-      "The rebates stack, which is where the offer gets interesting. A refundable AED 100,000 token adds another 1% on every project except Greenz. Immediate family buying together earn 2% on a combined AED 10 to 20 million, 3% from AED 20 to 30 million, and 4% above that. Paying the full price upfront swaps the whole structure for a flat 14% discount. We place the booking, handle the paperwork and secure developer approval on your behalf."
-    ],
-    "ctaLabel": "Check eligible units",
-    "dayCountEyebrow": false,
-    "deadline": "2026-08-30T23:59:59+04:00",
-    "developer": "Danube Properties",
-    "disclaimer": "Terms are set by Danube Properties and apply to selected units and projects only, subject to availability and developer approval. Rebate percentages, release timing and payment tracks vary by project and unit type, and the 11:11 lineup and Greenz carry their own structures as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "eligibility": [
-      {
-        "label": "Offer window",
-        "value": "Two days only, 29 and 30 August 2026."
-      },
-      {
-        "label": "What comes back",
-        "value": "A credit note worth 10% of the property value, set against your balance. It is a rebate, not a cash payment."
-      },
-      {
-        "label": "Down payment",
-        "value": "20% of the price, paid as 10% within 21 days and 10% within 60 days, plus the 4% DLD registration fee."
-      },
-      {
-        "label": "The 1% track",
-        "value": "The rebate is released once the 20% and the DLD fee are paid, then 1% a month until completion, with 40% after handover."
-      },
-      {
-        "label": "The 0.5% track",
-        "value": "0.5% a month until completion, with the rebate released only once you reach 40% plus the DLD fee, and 40% after handover."
-      },
-      {
-        "label": "The 11:11 lineup",
-        "value": "Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3 run a 20:70 structure instead: the rebate follows the 20%, and the remaining 70% falls due on completion."
-      },
-      {
-        "label": "Token rebate",
-        "value": "A refundable AED 100,000 token adds 1% on every Danube project except Greenz, where it becomes a two year service charge waiver instead."
-      },
-      {
-        "label": "Family purchases",
-        "value": "Spouses, parents and children buying together earn 2% on AED 10 to 20 million combined, 3% on AED 20 to 30 million, and 4% above AED 30 million."
-      },
-      {
-        "label": "Paying in full",
-        "value": "A flat 14% discount in place of the credit note structure."
-      },
-      {
-        "label": "Greenz",
-        "value": "Taking the post-handover structure at Greenz adds 5% to the unit value. Other Danube projects apply a 3% discount at handover instead."
-      }
-    ],
-    "explainer": {
-      "heading": "Pay 20%, and 10% comes back as a credit note",
-      "highlight": "A refundable AED 100,000 token adds another 1%. Families buying together add up to 4% more. Pay the whole price upfront instead and the discount is a flat 14%.",
-      "body": [
-        "Danube's Deal of the Decade returns for one weekend, 29 and 30 August 2026. Pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back to you as a credit note set against your remaining balance. From there you pick the pace: 1% a month with the rebate released straight away, or 0.5% a month with it released once you reach 40%."
-      ]
-    },
-    "eyebrow": "Weekend only, 29 to 30 August",
-    "faqs": [
-      {
-        "question": "When does the Danube Deal of the Decade close?",
-        "answer": "The weekend edition runs on 29 and 30 August 2026 only. To hold the terms the unit has to be booked inside those two days. Message us before the weekend and we will have the paperwork ready."
-      },
-      {
-        "question": "Is the 10% paid to me in cash?",
-        "answer": "No. It is a credit note, which means it is set against what you still owe on the property rather than paid out. It reduces your balance by 10% of the property value."
-      },
-      {
-        "question": "What is the difference between the 1% and 0.5% tracks?",
-        "answer": "Both start with the same 20%. On the 1% track the rebate is released as soon as that 20% and the DLD fee are paid, and you then pay 1% a month. On the 0.5% track the monthly figure halves, but the rebate is held until you have paid 40%."
-      },
-      {
-        "question": "Which projects are in the 11:11 lineup?",
-        "answer": "Fashionz 1, Sparklz, Viewz 1, Viewz 2, Oceanz 1, Oceanz 2, Oceanz 3, Oasiz 1, Oasiz 2, Elitz 2 and Elitz 3. These run a 20:70 structure rather than the 1% and 0.5% monthly tracks, with 70% due on completion."
-      },
-      {
-        "question": "Can the rebates be combined?",
-        "answer": "Yes. The 10% credit note is the base. A refundable AED 100,000 token adds 1% on every project except Greenz, and buying together with a spouse, parent or child adds 2% to 4% depending on the combined purchase value."
-      },
-      {
-        "question": "What happens if I pay the full price upfront?",
-        "answer": "The credit note structure is replaced by a flat 14% discount on the purchase price."
-      },
-      {
-        "question": "Is Greenz treated differently?",
-        "answer": "Yes. At Greenz the post-handover structure adds 5% to the unit value, and the AED 100,000 token buys a two year service charge waiver rather than the extra 1%. Other Danube projects apply a 3% discount at handover instead."
-      },
-      {
-        "question": "Do I still pay the DLD registration fee?",
-        "answer": "Yes. The 4% Dubai Land Department fee is payable alongside the 20% and is not waived under this offer. It is the trigger for releasing the rebate on the 1% track."
-      }
-    ],
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/01-bayz-101-at-business-bay-dubai-gallery_6-2x.webp",
@@ -1259,31 +1329,6 @@ export const OFFERS: Offer[] = [
         "alt": "Serenz by Danube at night"
       }
     ],
-    "h1": "Pay 20%, Get 10% Back: Danube's Deal of the Decade",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/00-bayz-101-at-business-bay-dubai-gallery_1-2x.webp",
-    "hideDeadline": false,
-    "highlights": [
-      {
-        "value": "20%",
-        "label": "Paid upfront",
-        "detail": "10% within 21 days, 10% within 60 days"
-      },
-      {
-        "value": "10%",
-        "label": "Back as credit",
-        "detail": "A credit note against what you still owe"
-      },
-      {
-        "value": "1%",
-        "label": "Per month",
-        "detail": "Monthly instalments while the tower builds"
-      },
-      {
-        "value": "40%",
-        "label": "After handover",
-        "detail": "The balance falls due once you have the keys"
-      }
-    ],
     "investment": {
       "heading": "Built for the deferred-payment buyer.",
       "items": [
@@ -1311,92 +1356,9 @@ export const OFFERS: Offer[] = [
         "ShieldCheck"
       ]
     },
-    "keywords": "danube deal of the decade, danube pay 20 get 10 back, danube properties offer dubai, danube 1 percent monthly payment plan, danube credit note offer, danube 11:11 projects, dubai off plan payment plan, danube properties dubai",
-    "metaDescription": "Danube's Deal of the Decade, 29 to 30 August 2026: pay 20% and 10% returns as a credit note, then 1% a month and 40% after handover.",
-    "metaTitle": "Danube Deal of the Decade | Pay 20%, Get 10% Back",
-    "projectHref": "/developers/danube-properties",
-    "projects": [
-      {
-        "name": "Fashionz by Danube",
-        "terms": "Jumeirah Village Triangle. Part of the 11:11 lineup, so the 20:70 structure applies with the rebate released after the 20%.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/fashionz-by-danube-at-jvt/featured.webp",
-        "links": [
-          {
-            "label": "Fashionz by Danube",
-            "href": "/project/fashionz-by-danube-at-jvt"
-          }
-        ]
-      },
-      {
-        "name": "Sparklz by Danube",
-        "terms": "Al Furjan. Also in the 11:11 lineup, on the 20:70 structure with 70% due on completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/06-danube-sparklz-at-al-furjan-gallery_3-hd-2x.webp",
-        "links": [
-          {
-            "label": "Sparklz by Danube",
-            "href": "/project/danube-sparklz-at-al-furjan"
-          }
-        ]
-      },
-      {
-        "name": "Oceanz by Danube",
-        "terms": "Dubai Maritime City, on the water. In the 11:11 lineup across all three towers.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/02-oceanz-by-danube-at-dubai-maritime-city--2x.webp",
-        "links": [
-          {
-            "label": "Oceanz by Danube",
-            "href": "/project/oceanz-by-danube-at-dubai-maritime-city"
-          }
-        ]
-      },
-      {
-        "name": "Viewz by Danube",
-        "terms": "Jumeirah Lake Towers, twin towers joined by a sky bridge. Both Viewz 1 and Viewz 2 sit in the 11:11 lineup.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/04-8-2x.webp",
-        "links": [
-          {
-            "label": "Viewz Residences",
-            "href": "/project/viewz-residences-at-jlt-dubai"
-          }
-        ]
-      },
-      {
-        "name": "Bayz 101",
-        "terms": "Business Bay, beside the Burj Khalifa. On the main tracks, so you choose between 1% and 0.5% a month.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/29-bayz-101-at-business-bay-dubai-featured--2x.webp",
-        "links": [
-          {
-            "label": "Bayz 101",
-            "href": "/project/bayz-101-at-business-bay-dubai"
-          }
-        ]
-      }
-    ],
-    "shortName": "Danube Deal of the Decade",
-    "subtitle": "A 10% credit note against your balance, 1% a month while it builds, and 40% deferred until after handover.",
-    "timeline": [
-      {
-        "share": "10%",
-        "stage": "Within 21 days",
-        "description": "The first half of the 20% down payment."
-      },
-      {
-        "share": "10%",
-        "stage": "Within 60 days",
-        "description": "Completes the 20%, alongside the 4% DLD fee."
-      },
-      {
-        "share": "1%",
-        "stage": "Every month",
-        "description": "Monthly instalments until construction completes."
-      },
-      {
-        "share": "40%",
-        "stage": "After handover",
-        "description": "The balance, deferred past completion."
-      }
-    ],
-    "timelineIntro": "Both tracks start at the same 20%. The 1% track releases your rebate as soon as that 20% and the DLD fee are paid; the 0.5% track holds it until you reach 40%.",
+    "ctaLabel": "Check eligible units",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in Danube's Deal of the Decade: pay 20% and get 10% back as a credit note. Please send me the eligible projects and the numbers.",
     "valueProps": [
       [
         "10% back on a 20% commitment",
@@ -1415,9 +1377,12 @@ export const OFFERS: Offer[] = [
         "Only 60% of the price is due before you hold the keys. The remaining 40% is spread past completion, so the unit can be occupied or let while the balance is still running."
       ]
     ],
-    "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi Binayah! 👋 I'm interested in Danube's Deal of the Decade: pay 20% and get 10% back as a credit note. Please send me the eligible projects and the numbers.",
-    "windowLabel": "Weekend edition, 29 to 30 August 2026",
+    "bodyParagraphs": [
+      "Danube Properties has reopened its Deal of the Decade for a single weekend, 29 and 30 August 2026. The mechanism is straightforward: pay 20% of the price plus the 4% DLD registration fee, and 10% of the property value comes back as a credit note applied to your remaining balance. It is a rebate against what you owe rather than money in hand, and on a AED 1.5 million apartment it is worth AED 150,000.",
+      "What you choose after that is the pace. The 1% track releases the rebate immediately once the 20% and the fee are paid, then charges 1% of the property value each month until the building completes. The 0.5% track halves the monthly figure but holds the rebate back until you have paid 40%. Either way, 40% of the price is deferred until after handover, so most of the purchase falls due once the keys are in your hand.",
+      "Eleven projects sit outside those two tracks. Danube's 11:11 lineup, made up of Fashionz 1, Sparklz, Viewz 1 and 2, Oceanz 1, 2 and 3, Oasiz 1 and 2, and Elitz 2 and 3, runs a simpler 20:70 split: the rebate follows the 20%, and the remaining 70% is due on completion rather than spread monthly.",
+      "The rebates stack, which is where the offer gets interesting. A refundable AED 100,000 token adds another 1% on every project except Greenz. Immediate family buying together earn 2% on a combined AED 10 to 20 million, 3% from AED 20 to 30 million, and 4% above that. Paying the full price upfront swaps the whole structure for a flat 14% discount. We place the booking, handle the paperwork and secure developer approval on your behalf."
+    ],
     "worked": {
       "heading": "What the rebate is worth on an AED 1,500,000 apartment",
       "rows": [
@@ -1448,10 +1413,282 @@ export const OFFERS: Offer[] = [
       ],
       "footnote": "Illustrative, on a AED 1.5 million unit outside the 11:11 lineup and excluding Greenz. The exact figures depend on the project, the track you choose and the terms recorded in the signed SPA."
     },
-    "priceFrom": 790000
+    "faqs": [
+      {
+        "question": "When does the Danube Deal of the Decade close?",
+        "answer": "The weekend edition runs on 29 and 30 August 2026 only. To hold the terms the unit has to be booked inside those two days. Message us before the weekend and we will have the paperwork ready."
+      },
+      {
+        "question": "Is the 10% paid to me in cash?",
+        "answer": "No. It is a credit note, which means it is set against what you still owe on the property rather than paid out. It reduces your balance by 10% of the property value."
+      },
+      {
+        "question": "What is the difference between the 1% and 0.5% tracks?",
+        "answer": "Both start with the same 20%. On the 1% track the rebate is released as soon as that 20% and the DLD fee are paid, and you then pay 1% a month. On the 0.5% track the monthly figure halves, but the rebate is held until you have paid 40%."
+      },
+      {
+        "question": "Which projects are in the 11:11 lineup?",
+        "answer": "Fashionz 1, Sparklz, Viewz 1, Viewz 2, Oceanz 1, Oceanz 2, Oceanz 3, Oasiz 1, Oasiz 2, Elitz 2 and Elitz 3. These run a 20:70 structure rather than the 1% and 0.5% monthly tracks, with 70% due on completion."
+      },
+      {
+        "question": "Can the rebates be combined?",
+        "answer": "Yes. The 10% credit note is the base. A refundable AED 100,000 token adds 1% on every project except Greenz, and buying together with a spouse, parent or child adds 2% to 4% depending on the combined purchase value."
+      },
+      {
+        "question": "What happens if I pay the full price upfront?",
+        "answer": "The credit note structure is replaced by a flat 14% discount on the purchase price."
+      },
+      {
+        "question": "Is Greenz treated differently?",
+        "answer": "Yes. At Greenz the post-handover structure adds 5% to the unit value, and the AED 100,000 token buys a two year service charge waiver rather than the extra 1%. Other Danube projects apply a 3% discount at handover instead."
+      },
+      {
+        "question": "Do I still pay the DLD registration fee?",
+        "answer": "Yes. The 4% Dubai Land Department fee is payable alongside the 20% and is not waived under this offer. It is the trigger for releasing the rebate on the 1% track."
+      }
+    ],
+    "disclaimer": "Terms are set by Danube Properties and apply to selected units and projects only, subject to availability and developer approval. Rebate percentages, release timing and payment tracks vary by project and unit type, and the 11:11 lineup and Greenz carry their own structures as set out above. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "projectHref": "/developers/danube-properties"
+  },
+  {
+    "slug": "limited-emaar-90-10-offer-beachfront-launch",
+    "shortName": "Emaar Beachfront 90/10",
+    "developer": "Emaar Properties",
+    "eyebrow": "Payment plan at Emaar Beachfront",
+    "h1": "Limited Emaar 90/10 Offer: Beachfront Launch",
+    "subtitle": "Limited-time launch payment plan at Emaar Beachfront: pay 90% during construction and 10% upon 100% construction completion.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/30-Microsoft_Teams_image_1_83f863ae24-hd-2x.webp",
+    "deadline": "",
+    "windowLabel": "Limited-time launch offer",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "metaTitle": "Emaar Beachfront 90/10 Payment Plan | Binayah",
+    "metaDescription": "Emaar Beachfront launch offer: 90% during construction and 10% upon 100% completion. Enquire to secure the 90/10 plan.",
+    "keywords": "Emaar, Emaar Properties, Emaar Beachfront, 90/10 payment plan, launch offer, Dubai property, off-plan",
+    "highlights": [
+      {
+        "value": "90/10",
+        "label": "Payment Plan",
+        "detail": "Pay 90% during construction and 10% upon 100% construction completion."
+      },
+      {
+        "value": "Emaar Beachfront",
+        "label": "Applicable Community",
+        "detail": "Offer applies to Emaar Beachfront."
+      },
+      {
+        "value": "Limited-time",
+        "label": "Launch Offer",
+        "detail": "Available for a limited time during launch."
+      }
+    ],
+    "timeline": [
+      {
+        "stage": "During construction",
+        "share": "90%",
+        "description": "Pay 90% over the construction period."
+      },
+      {
+        "stage": "Upon 100% construction completion",
+        "share": "10%",
+        "description": "Pay the remaining 10% at completion."
+      }
+    ],
+    "timelineIntro": "Simple two-stage schedule aligned to construction and completion.",
+    "eligibility": [
+      {
+        "label": "Applies to",
+        "value": "Emaar Beachfront"
+      }
+    ],
+    "gallery": [],
+    "ctaLabel": "Request details",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi, I’m interested in the Emaar Beachfront 90/10 launch offer. Please share the latest availability and terms.",
+    "valueProps": [
+      [
+        "Defer more to completion",
+        "Only 10% is due upon 100% construction completion."
+      ],
+      [
+        "Straightforward staging",
+        "A clear 90/10 split tied to build progress and completion."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Secure a home at Emaar Beachfront with a limited-time 90/10 payment plan. Pay 90% during construction, then 10% upon 100% construction completion.",
+      "Speak to a Binayah advisor to confirm current availability and lock in the launch offer at Emaar Beachfront."
+    ],
+    "worked": {
+      "heading": "How the 90/10 plan works",
+      "rows": [],
+      "footnote": ""
+    },
+    "faqs": [
+      {
+        "question": "What is the payment plan?",
+        "answer": "90% is payable during construction and 10% upon 100% construction completion."
+      },
+      {
+        "question": "Where does this offer apply?",
+        "answer": "The offer applies to Emaar Beachfront."
+      },
+      {
+        "question": "Is this a limited-time offer?",
+        "answer": "Yes, it is stated as a limited-time launch offer."
+      }
+    ],
+    "disclaimer": "All offers are subject to change and availability. Terms and conditions apply. Any figures are illustrative only and do not constitute a contract. Buyers should confirm all current terms in writing with the developer. Binayah Properties is a licensed Dubai brokerage."
   },
   {
     "slug": "emaar-payment-plans-offer",
+    "shortName": "Emaar Payment Plans",
+    "developer": "Emaar Properties",
+    "eyebrow": "Live Emaar payment plans",
+    "h1": "Emaar Payment Plans: 90/10, 80/20 and 25/75",
+    "subtitle": "Pay up to 90% while it builds and the rest on completion, or move in now at Emaar South and spread 75% across three years after handover.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/00-2-2x.webp",
+    "deadline": "",
+    "windowLabel": "Current Emaar release",
+    "hideDeadline": true,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "Four plans, depending on what you are buying",
+      "highlight": "The Emaar South plan is the outlier: it is a ready-to-move home where 75% of the price is spread across three years after you have the keys. Emaar rarely defers that much, that long.",
+      "body": [
+        "Emaar is running several structures at once rather than a single campaign. Which one you get depends on the community. Off-plan financing is built into the process through Emirates NBD and ADCB, and UAE Nationals buying at Dubai Hills Estate have a separate plan of equal 2.5% monthly instalments."
+      ]
+    },
+    "metaTitle": "Emaar Payment Plans | 90/10, 80/20 and 25/75",
+    "metaDescription": "Emaar's current plans: 90/10 at Seapoint and Alana, 80/20 at The Cove, Park Horizon and Seascape, and 25/75 with a 3-year post-handover tail at Emaar South.",
+    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, alana the valley payment plan, dubai off plan payment plan",
+    "priceFrom": 1300000,
+    "highlights": [
+      {
+        "value": "90/10",
+        "label": "Seapoint and Alana",
+        "detail": "90% during construction, 10% on completion"
+      },
+      {
+        "value": "80/20",
+        "label": "Cove, Park Horizon, Seascape",
+        "detail": "80% during construction, 20% on completion"
+      },
+      {
+        "value": "25/75",
+        "label": "Emaar South, ready to move",
+        "detail": "75% spread across three years after handover"
+      },
+      {
+        "value": "2.5%",
+        "label": "Monthly, UAE Nationals",
+        "detail": "Equal instalments at Dubai Hills Estate"
+      }
+    ],
+    "timeline": [
+      {
+        "share": "80%",
+        "stage": "During construction",
+        "description": "Paid across the build period on the milestone schedule."
+      },
+      {
+        "share": "20%",
+        "stage": "On 100% completion",
+        "description": "The balance falls due when construction is complete."
+      }
+    ],
+    "timelineIntro": "The 80/20 shown here is the most common structure. Seapoint, Emaar Beachfront and Alana defer only 10% instead of 20%, and Emaar South inverts the whole thing: 25% now, 75% after you move in.",
+    "eligibility": [
+      {
+        "label": "90/10",
+        "value": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley: 90% during construction, 10% on 100% construction completion."
+      },
+      {
+        "label": "80/20",
+        "value": "The Cove, Park Horizon, Seascape and Fairway Villas: 80% during construction, 20% on 100% construction completion."
+      },
+      {
+        "label": "25/75",
+        "value": "Emaar South, ready to move in: 25% up front and 75% spread over a three year post-handover plan."
+      },
+      {
+        "label": "UAE Nationals",
+        "value": "A separate plan at Dubai Hills Estate paid in equal 2.5% monthly instalments, for a limited period."
+      },
+      {
+        "label": "Mortgages",
+        "value": "Off-plan financing is arranged within the purchase through Emirates NBD and ADCB."
+      },
+      {
+        "label": "Entry price",
+        "value": "From AED 1.3M at The Cove, Dubai Creek Harbour."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "Units above AED 2 million qualify for the property investor visa route."
+      },
+      {
+        "label": "Availability",
+        "value": "Plans are tied to specific releases and change between phases. Confirm the plan attached to your unit before committing."
+      }
+    ],
+    "projects": [
+      {
+        "name": "The Cove",
+        "terms": "Dubai Creek Harbour, on the water. 80% during construction and 20% on 100% completion, from AED 1.3M.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/featured.webp",
+        "links": [
+          {
+            "label": "The Cove at Dubai Creek Harbour",
+            "href": "/project/the-cove-2-at-dubai-creek-harbour"
+          }
+        ]
+      },
+      {
+        "name": "Seascape",
+        "terms": "Rashid Yachts & Marina. 80% during construction, 20% on 100% completion, beside the superyacht berths.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
+        "links": [
+          {
+            "label": "Seascape at Rashid Yachts & Marina",
+            "href": "/project/seascape-at-rashid-yachts-marina-by-emaar"
+          }
+        ]
+      },
+      {
+        "name": "Park Horizon",
+        "terms": "Dubai Hills Estate, over the championship golf course. 80% during construction and 20% on 100% completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/03-6-2x.webp",
+        "links": [
+          {
+            "label": "Park Horizon at Dubai Hills Estate",
+            "href": "/project/park-horizon-by-emaar-at-dubai-hills-estate"
+          }
+        ]
+      },
+      {
+        "name": "Alana",
+        "terms": "The Valley, built around a swimmable lagoon. On the 90/10 plan, so only a tenth is left at completion.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/02-3-2x.webp",
+        "links": [
+          {
+            "label": "Alana at The Valley",
+            "href": "/project/alana-by-emaar-at-the-valley"
+          }
+        ]
+      },
+      {
+        "name": "Emaar South",
+        "terms": "Ready to move in, on the 25/75 plan with the balance spread across three years after handover.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/06-6-2x.webp",
+        "links": [
+          {
+            "label": "Golf Views at Emaar South",
+            "href": "/project/golf-views-in-emaar-south"
+          }
+        ]
+      }
+    ],
     "amenities": {
       "heading": "Master-planned, and finished.",
       "stats": [
@@ -1495,93 +1732,6 @@ export const OFFERS: Offer[] = [
         "Sparkles"
       ]
     },
-    "bodyParagraphs": [
-      "Emaar is not running one campaign. It is running four structures at once, and which one applies depends entirely on the community you buy in. The most common is 80/20: eighty per cent across the construction period and the remaining twenty on 100% construction completion. That covers The Cove at Dubai Creek Harbour, Park Horizon at Dubai Hills Estate, Seascape at Rashid Yachts & Marina and Fairway Villas at Emaar South.",
-      "Three communities go further and defer only a tenth. Seapoint at Emaar Beachfront, Emaar Beachfront itself and Alana at The Valley run 90/10, so ninety per cent is paid while the building goes up and the last ten per cent falls due at completion. That is a heavier construction-period commitment in exchange for a clean position at handover.",
-      "The outlier is Emaar South. It is the only one of the set on ready-to-move stock, and it inverts the structure completely: twenty-five per cent up front, then seventy-five per cent spread across three years after you have taken the keys. A three-year post-handover tail is unusual for Emaar, and it means the property can be occupied or let while most of the price is still outstanding.",
-      "Two things sit underneath all of it. Off-plan financing is arranged within the purchase through Emirates NBD and ADCB rather than left to the buyer afterwards, and UAE Nationals buying at Dubai Hills Estate have their own plan of equal 2.5% monthly instalments for a limited period. We place the booking, confirm which plan is attached to your unit and handle the paperwork."
-    ],
-    "ctaLabel": "Check eligible units",
-    "dayCountEyebrow": false,
-    "deadline": "",
-    "developer": "Emaar Properties",
-    "disclaimer": "Payment plans are set by Emaar Properties and are attached to specific releases and unit types, subject to availability and developer approval. Plans change between phases and the structure quoted here may not apply to the unit you are shown. Figures are illustrative and do not constitute financial advice or an offer to sell. The 4% Dubai Land Department registration fee is not waived under these plans. Confirm the plan, the schedule and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "eligibility": [
-      {
-        "label": "90/10",
-        "value": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley: 90% during construction, 10% on 100% construction completion."
-      },
-      {
-        "label": "80/20",
-        "value": "The Cove, Park Horizon, Seascape and Fairway Villas: 80% during construction, 20% on 100% construction completion."
-      },
-      {
-        "label": "25/75",
-        "value": "Emaar South, ready to move in: 25% up front and 75% spread over a three year post-handover plan."
-      },
-      {
-        "label": "UAE Nationals",
-        "value": "A separate plan at Dubai Hills Estate paid in equal 2.5% monthly instalments, for a limited period."
-      },
-      {
-        "label": "Mortgages",
-        "value": "Off-plan financing is arranged within the purchase through Emirates NBD and ADCB."
-      },
-      {
-        "label": "Entry price",
-        "value": "From AED 1.3M at The Cove, Dubai Creek Harbour."
-      },
-      {
-        "label": "Golden Visa",
-        "value": "Units above AED 2 million qualify for the property investor visa route."
-      },
-      {
-        "label": "Availability",
-        "value": "Plans are tied to specific releases and change between phases. Confirm the plan attached to your unit before committing."
-      }
-    ],
-    "explainer": {
-      "heading": "Four plans, depending on what you are buying",
-      "highlight": "The Emaar South plan is the outlier: it is a ready-to-move home where 75% of the price is spread across three years after you have the keys. Emaar rarely defers that much, that long.",
-      "body": [
-        "Emaar is running several structures at once rather than a single campaign. Which one you get depends on the community. Off-plan financing is built into the process through Emirates NBD and ADCB, and UAE Nationals buying at Dubai Hills Estate have a separate plan of equal 2.5% monthly instalments."
-      ]
-    },
-    "eyebrow": "Live Emaar payment plans",
-    "faqs": [
-      {
-        "question": "Which Emaar communities are on the 90/10 plan?",
-        "answer": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley. You pay 90% across the construction period and the remaining 10% on 100% construction completion."
-      },
-      {
-        "question": "Which are on 80/20?",
-        "answer": "The Cove, Park Horizon, Seascape and Fairway Villas. 80% during construction, 20% on 100% construction completion."
-      },
-      {
-        "question": "What is different about Emaar South?",
-        "answer": "It is a ready-to-move-in plan rather than an off-plan one: 25% up front and 75% spread across a three year post-handover schedule. Emaar rarely defers that much for that long."
-      },
-      {
-        "question": "Is there a plan for UAE Nationals?",
-        "answer": "Yes. Emaar is running a separate plan at Dubai Hills Estate for Emirati buyers, paid in equal 2.5% monthly instalments, for a limited period."
-      },
-      {
-        "question": "Can I get a mortgage on an off-plan Emaar unit?",
-        "answer": "Emaar has off-plan financing built into the buying process through Emirates NBD and ADCB, so the mortgage is arranged alongside the reservation rather than separately afterwards."
-      },
-      {
-        "question": "Is the DLD fee waived?",
-        "answer": "No. These are payment structures rather than fee waivers, so the 4% Dubai Land Department registration fee is payable in the normal way."
-      },
-      {
-        "question": "Do these plans have an end date?",
-        "answer": "Emaar has not published one. The plans are attached to specific releases and change between phases, so the plan on your unit should be confirmed in writing before you commit."
-      },
-      {
-        "question": "What is the lowest entry price?",
-        "answer": "AED 1.3 million at The Cove, Dubai Creek Harbour, at the time of writing. Pricing moves between releases."
-      }
-    ],
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
@@ -1684,31 +1834,6 @@ export const OFFERS: Offer[] = [
         "alt": "The entrance to The Valley by Emaar"
       }
     ],
-    "h1": "Emaar Payment Plans: 90/10, 80/20 and 25/75",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/00-2-2x.webp",
-    "hideDeadline": true,
-    "highlights": [
-      {
-        "value": "90/10",
-        "label": "Seapoint and Alana",
-        "detail": "90% during construction, 10% on completion"
-      },
-      {
-        "value": "80/20",
-        "label": "Cove, Park Horizon, Seascape",
-        "detail": "80% during construction, 20% on completion"
-      },
-      {
-        "value": "25/75",
-        "label": "Emaar South, ready to move",
-        "detail": "75% spread across three years after handover"
-      },
-      {
-        "value": "2.5%",
-        "label": "Monthly, UAE Nationals",
-        "detail": "Equal instalments at Dubai Hills Estate"
-      }
-    ],
     "investment": {
       "heading": "The developer the market prices off.",
       "items": [
@@ -1736,83 +1861,9 @@ export const OFFERS: Offer[] = [
         "ShieldCheck"
       ]
     },
-    "keywords": "emaar payment plan, emaar 90/10 payment plan, emaar 80/20, emaar south 25/75 post handover, emaar offers dubai, seapoint payment plan, alana the valley payment plan, dubai off plan payment plan",
-    "metaDescription": "Emaar's current plans: 90/10 at Seapoint and Alana, 80/20 at The Cove, Park Horizon and Seascape, and 25/75 with a 3-year post-handover tail at Emaar South.",
-    "metaTitle": "Emaar Payment Plans | 90/10, 80/20 and 25/75",
-    "priceFrom": 1300000,
-    "projectHref": "/developers/emaar-properties",
-    "projects": [
-      {
-        "name": "The Cove",
-        "terms": "Dubai Creek Harbour, on the water. 80% during construction and 20% on 100% completion, from AED 1.3M.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/the-cove-2-at-dubai-creek-harbour/featured.webp",
-        "links": [
-          {
-            "label": "The Cove at Dubai Creek Harbour",
-            "href": "/project/the-cove-2-at-dubai-creek-harbour"
-          }
-        ]
-      },
-      {
-        "name": "Seascape",
-        "terms": "Rashid Yachts & Marina. 80% during construction, 20% on 100% completion, beside the superyacht berths.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/seascape-at-rashid-yachts-marina-by-emaar/gallery/12.webp",
-        "links": [
-          {
-            "label": "Seascape at Rashid Yachts & Marina",
-            "href": "/project/seascape-at-rashid-yachts-marina-by-emaar"
-          }
-        ]
-      },
-      {
-        "name": "Park Horizon",
-        "terms": "Dubai Hills Estate, over the championship golf course. 80% during construction and 20% on 100% completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/03-6-2x.webp",
-        "links": [
-          {
-            "label": "Park Horizon at Dubai Hills Estate",
-            "href": "/project/park-horizon-by-emaar-at-dubai-hills-estate"
-          }
-        ]
-      },
-      {
-        "name": "Alana",
-        "terms": "The Valley, built around a swimmable lagoon. On the 90/10 plan, so only a tenth is left at completion.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/02-3-2x.webp",
-        "links": [
-          {
-            "label": "Alana at The Valley",
-            "href": "/project/alana-by-emaar-at-the-valley"
-          }
-        ]
-      },
-      {
-        "name": "Emaar South",
-        "terms": "Ready to move in, on the 25/75 plan with the balance spread across three years after handover.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/emaar/06-6-2x.webp",
-        "links": [
-          {
-            "label": "Golf Views at Emaar South",
-            "href": "/project/golf-views-in-emaar-south"
-          }
-        ]
-      }
-    ],
-    "shortName": "Emaar Payment Plans",
-    "subtitle": "Pay up to 90% while it builds and the rest on completion, or move in now at Emaar South and spread 75% across three years after handover.",
-    "timeline": [
-      {
-        "share": "80%",
-        "stage": "During construction",
-        "description": "Paid across the build period on the milestone schedule."
-      },
-      {
-        "share": "20%",
-        "stage": "On 100% completion",
-        "description": "The balance falls due when construction is complete."
-      }
-    ],
-    "timelineIntro": "The 80/20 shown here is the most common structure. Seapoint, Emaar Beachfront and Alana defer only 10% instead of 20%, and Emaar South inverts the whole thing: 25% now, 75% after you move in.",
+    "ctaLabel": "Check eligible units",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'd like the Emaar payment plans: 90/10, 80/20 and the 25/75 at Emaar South. Please send me what is available and the plan on each.",
     "valueProps": [
       [
         "Only 10% left at completion",
@@ -1831,9 +1882,12 @@ export const OFFERS: Offer[] = [
         "At Dubai Hills Estate, Emirati buyers pay in equal 2.5% monthly instalments for a limited period, so the schedule is a fixed monthly figure rather than milestone-linked lumps."
       ]
     ],
-    "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi Binayah! 👋 I'd like the Emaar payment plans: 90/10, 80/20 and the 25/75 at Emaar South. Please send me what is available and the plan on each.",
-    "windowLabel": "Current Emaar release",
+    "bodyParagraphs": [
+      "Emaar is not running one campaign. It is running four structures at once, and which one applies depends entirely on the community you buy in. The most common is 80/20: eighty per cent across the construction period and the remaining twenty on 100% construction completion. That covers The Cove at Dubai Creek Harbour, Park Horizon at Dubai Hills Estate, Seascape at Rashid Yachts & Marina and Fairway Villas at Emaar South.",
+      "Three communities go further and defer only a tenth. Seapoint at Emaar Beachfront, Emaar Beachfront itself and Alana at The Valley run 90/10, so ninety per cent is paid while the building goes up and the last ten per cent falls due at completion. That is a heavier construction-period commitment in exchange for a clean position at handover.",
+      "The outlier is Emaar South. It is the only one of the set on ready-to-move stock, and it inverts the structure completely: twenty-five per cent up front, then seventy-five per cent spread across three years after you have taken the keys. A three-year post-handover tail is unusual for Emaar, and it means the property can be occupied or let while most of the price is still outstanding.",
+      "Two things sit underneath all of it. Off-plan financing is arranged within the purchase through Emirates NBD and ADCB rather than left to the buyer afterwards, and UAE Nationals buying at Dubai Hills Estate have their own plan of equal 2.5% monthly instalments for a limited period. We place the booking, confirm which plan is attached to your unit and handle the paperwork."
+    ],
     "worked": {
       "heading": "What 80/20 looks like on an AED 1,300,000 apartment",
       "rows": [
@@ -1859,10 +1913,285 @@ export const OFFERS: Offer[] = [
         ]
       ],
       "footnote": "Illustrative, on the entry price at The Cove. The DLD fee is not waived under these plans. Exact figures depend on the unit, the release and the schedule recorded in the signed SPA."
-    }
+    },
+    "faqs": [
+      {
+        "question": "Which Emaar communities are on the 90/10 plan?",
+        "answer": "Seapoint at Emaar Beachfront, Emaar Beachfront and Alana at The Valley. You pay 90% across the construction period and the remaining 10% on 100% construction completion."
+      },
+      {
+        "question": "Which are on 80/20?",
+        "answer": "The Cove, Park Horizon, Seascape and Fairway Villas. 80% during construction, 20% on 100% construction completion."
+      },
+      {
+        "question": "What is different about Emaar South?",
+        "answer": "It is a ready-to-move-in plan rather than an off-plan one: 25% up front and 75% spread across a three year post-handover schedule. Emaar rarely defers that much for that long."
+      },
+      {
+        "question": "Is there a plan for UAE Nationals?",
+        "answer": "Yes. Emaar is running a separate plan at Dubai Hills Estate for Emirati buyers, paid in equal 2.5% monthly instalments, for a limited period."
+      },
+      {
+        "question": "Can I get a mortgage on an off-plan Emaar unit?",
+        "answer": "Emaar has off-plan financing built into the buying process through Emirates NBD and ADCB, so the mortgage is arranged alongside the reservation rather than separately afterwards."
+      },
+      {
+        "question": "Is the DLD fee waived?",
+        "answer": "No. These are payment structures rather than fee waivers, so the 4% Dubai Land Department registration fee is payable in the normal way."
+      },
+      {
+        "question": "Do these plans have an end date?",
+        "answer": "Emaar has not published one. The plans are attached to specific releases and change between phases, so the plan on your unit should be confirmed in writing before you commit."
+      },
+      {
+        "question": "What is the lowest entry price?",
+        "answer": "AED 1.3 million at The Cove, Dubai Creek Harbour, at the time of writing. Pricing moves between releases."
+      }
+    ],
+    "disclaimer": "Payment plans are set by Emaar Properties and are attached to specific releases and unit types, subject to availability and developer approval. Plans change between phases and the structure quoted here may not apply to the unit you are shown. Figures are illustrative and do not constitute financial advice or an offer to sell. The 4% Dubai Land Department registration fee is not waived under these plans. Confirm the plan, the schedule and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "projectHref": "/developers/emaar-properties"
+  },
+  {
+    "slug": "emaar-creek-beach-offer-luxury-waterfront-apartments",
+    "shortName": "Emaar Creek Beach",
+    "developer": "Emaar Properties",
+    "eyebrow": "Creek Beach, Dubai Creek Harbour",
+    "h1": "Emaar Creek Beach Offer: Luxury Waterfront Apartments",
+    "subtitle": "Own a deluxe waterfront apartment at Creek Beach in Dubai Creek Harbour, with a limited selection of 1, 2 and 3-bedroom homes available.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/danube-hd/31-Microsoft_Teams_image_51_f6fa30be38-hd-2x.webp",
+    "deadline": "",
+    "windowLabel": "Register your interest",
+    "hideDeadline": false,
+    "dayCountEyebrow": false,
+    "metaTitle": "Emaar Creek Beach Waterfront Apartments | Binayah",
+    "metaDescription": "Deluxe waterfront apartments at Creek Beach, Dubai Creek Harbour by Emaar. A limited number of 1, 2 and 3-bedroom homes.",
+    "keywords": "Emaar, Creek Beach, Dubai Creek Harbour, waterfront apartments, luxury apartments, 1-bedroom, 2-bedroom, 3-bedroom, limited units",
+    "highlights": [
+      {
+        "value": "Waterfront setting",
+        "label": "Lifestyle",
+        "detail": "Deluxe waterfront apartments at Creek Beach"
+      },
+      {
+        "value": "1, 2 & 3-bedroom",
+        "label": "Home types",
+        "detail": "A selection of 1, 2 and 3-bedroom apartments"
+      },
+      {
+        "value": "Limited availability",
+        "label": "Release",
+        "detail": "A limited number of units are available"
+      },
+      {
+        "value": "Dubai Creek Harbour",
+        "label": "Location",
+        "detail": "In the heart of Dubai Creek Harbour"
+      }
+    ],
+    "timeline": [],
+    "timelineIntro": "",
+    "eligibility": [
+      {
+        "label": "Applies to",
+        "value": "Creek Beach, Dubai Creek Harbour"
+      },
+      {
+        "label": "Developer",
+        "value": "Emaar Properties"
+      }
+    ],
+    "gallery": [],
+    "ctaLabel": "Enquire Now",
+    "whatsappLabel": "WhatsApp Us",
+    "whatsappMessage": "Hello Binayah, I’m interested in Emaar’s Creek Beach waterfront apartments at Dubai Creek Harbour (limited 1, 2 & 3-bedroom units). Please share availability and next steps.",
+    "valueProps": [
+      [
+        "Waterfront living at Creek Beach",
+        "Invest in a deluxe apartment positioned within Creek Beach, a waterfront setting in the heart of Dubai Creek Harbour."
+      ],
+      [
+        "Choice of layouts",
+        "Select from a limited release of 1, 2 and 3-bedroom apartments to suit your needs."
+      ],
+      [
+        "Limited number of units",
+        "Availability is limited, encouraging early registration of interest."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Emaar Properties invites you to invest in a deluxe waterfront apartment at Creek Beach, set in the heart of Dubai Creek Harbour. This offer presents a limited number of thoughtfully designed 1, 2 and 3-bedroom apartments.",
+      "With availability strictly limited, registering your interest early helps you access the current selection at Creek Beach within Dubai Creek Harbour."
+    ],
+    "worked": {
+      "heading": "",
+      "rows": [],
+      "footnote": ""
+    },
+    "faqs": [
+      {
+        "question": "Who is the developer?",
+        "answer": "Emaar Properties."
+      },
+      {
+        "question": "Which community does the offer apply to?",
+        "answer": "Creek Beach within Dubai Creek Harbour."
+      },
+      {
+        "question": "What property types are available?",
+        "answer": "A limited number of 1, 2 and 3-bedroom apartments."
+      },
+      {
+        "question": "Is availability limited?",
+        "answer": "Yes, only a limited number of units are available."
+      }
+    ],
+    "disclaimer": "All details are subject to change and availability. Terms and conditions apply. Any figures or descriptions are illustrative only. Buyers should confirm the current offer terms and availability in writing with the developer. Binayah Properties is a licensed Dubai brokerage."
   },
   {
     "slug": "damac-summer-rewards-4-dld-waiver",
+    "shortName": "DAMAC Summer Rewards",
+    "developer": "DAMAC Properties",
+    "eyebrow": "DAMAC Summer Rewards",
+    "h1": "DAMAC Summer Rewards: 4% DLD Waiver on Villas and Townhouses",
+    "subtitle": "DAMAC covers the full 4% Dubai Land Department registration fee on eligible off-plan villas and townhouses.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/008_008_39103-hd.webp",
+    "deadline": "",
+    "windowLabel": "Limited-time summer offer",
+    "hideDeadline": true,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "The registration fee, taken off the table",
+      "highlight": "On a AED 3 million villa the 4% DLD fee is AED 120,000. Under Summer Rewards DAMAC covers it, so that cash stays with you instead of going to the Land Department at registration.",
+      "body": [
+        "Summer Rewards is a fee waiver rather than a payment plan. It applies to eligible off-plan residential villas and townhouses in the UAE and excludes future new launches, so it is the current release rather than whatever comes next. Apartments are not included."
+      ]
+    },
+    "metaTitle": "DAMAC Summer Rewards | 4% DLD Waiver on Villas",
+    "metaDescription": "DAMAC Summer Rewards: the full 4% DLD registration fee covered on eligible off-plan villas and townhouses across DAMAC Hills, Hills 2 and DAMAC Islands.",
+    "keywords": "damac summer rewards, damac 4% dld waiver, damac villas offer dubai, damac townhouses offer, damac hills villas, damac islands villas, dld fee waiver dubai, off plan villas dubai offer",
+    "priceFrom": 1800000,
+    "highlights": [
+      {
+        "value": "4%",
+        "label": "DLD fee waived",
+        "detail": "The full registration fee, covered by DAMAC"
+      },
+      {
+        "value": "Villas",
+        "label": "And townhouses",
+        "detail": "Apartments are not part of this offer"
+      },
+      {
+        "value": "Off-plan",
+        "label": "Only",
+        "detail": "Excludes future new launches"
+      },
+      {
+        "value": "UAE",
+        "label": "Wide",
+        "detail": "Eligible residential stock across the UAE"
+      }
+    ],
+    "timeline": [
+      {
+        "share": "4%",
+        "stage": "At registration",
+        "description": "The DLD fee that would normally be yours to pay, covered by DAMAC."
+      },
+      {
+        "share": "0%",
+        "stage": "Added to the price",
+        "description": "It is a waiver, not a discount rolled into the purchase price."
+      }
+    ],
+    "timelineIntro": "The waiver changes what you hand over at registration rather than how the price is staged, so the payment plan on your villa is whatever DAMAC has attached to that release.",
+    "eligibility": [
+      {
+        "label": "What is covered",
+        "value": "The full 4% Dubai Land Department registration fee on the eligible unit."
+      },
+      {
+        "label": "Property types",
+        "value": "Off-plan residential villas and townhouses. Apartments are not part of this offer."
+      },
+      {
+        "label": "Where",
+        "value": "Eligible DAMAC off-plan residential stock in the UAE, including DAMAC Hills, DAMAC Hills 2 and DAMAC Islands."
+      },
+      {
+        "label": "Excluded",
+        "value": "Future new launches. The waiver applies to the current eligible release, not to projects announced later."
+      },
+      {
+        "label": "Offer window",
+        "value": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "Units priced above AED 2 million qualify for the property investor visa route."
+      },
+      {
+        "label": "Availability",
+        "value": "Eligibility is set per unit. Confirm in writing that the specific villa you are shown carries the waiver before you commit."
+      }
+    ],
+    "projects": [
+      {
+        "name": "DAMAC Islands",
+        "terms": "Bahamas and the wider island clusters, built around crystal lagoons. Villas and townhouses on the eligible list.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/007_007_39101-hd.webp",
+        "links": [
+          {
+            "label": "Bahamas at DAMAC Islands",
+            "href": "/project/bahamas-2-at-damac-islands-2"
+          }
+        ]
+      },
+      {
+        "name": "Cavalli Estates",
+        "terms": "DAMAC Hills. The top of the villa range, branded interiors and private pools.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/03-12-2x.webp",
+        "links": [
+          {
+            "label": "Cavalli Estates at DAMAC Hills",
+            "href": "/project/cavalli-estate-villas-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Utopia",
+        "terms": "DAMAC Hills. Urban resort villas with pool terraces, on the eligible villa list.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/05-8-2x.webp",
+        "links": [
+          {
+            "label": "Utopia at DAMAC Hills",
+            "href": "/project/utopia-urban-resort-villas-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Silver Springs",
+        "terms": "DAMAC Hills. Family villas backing onto the golf and parkland.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/07-1-2x.webp",
+        "links": [
+          {
+            "label": "Silver Springs at DAMAC Hills",
+            "href": "/project/silver-springs-at-damac-hills"
+          }
+        ]
+      },
+      {
+        "name": "Eterno",
+        "terms": "DAMAC Hills 2, around the crystal lagoon. Townhouses and villas, both eligible.",
+        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/10-2-2x.webp",
+        "links": [
+          {
+            "label": "Eterno at DAMAC Hills 2",
+            "href": "/project/eterno-townhouses-and-villas-for-sale-at-damac-hills-2"
+          }
+        ]
+      }
+    ],
     "amenities": {
       "heading": "Houses, not apartments.",
       "stats": [
@@ -1906,89 +2235,6 @@ export const OFFERS: Offer[] = [
         "ShieldCheck"
       ]
     },
-    "bodyParagraphs": [
-      "DAMAC Summer Rewards covers the full 4% Dubai Land Department registration fee on eligible off-plan residential villas and townhouses. It is worth being precise about what that means: the DLD fee is a cash cost paid at registration, separate from the purchase price and normally borne by the buyer. A waiver changes what leaves your account on the day, which is a different thing from a discount that adjusts the headline figure.",
-      "The offer is narrower than DAMAC's portfolio. Apartments are not included, so this is a house offer: the villa and townhouse stock at DAMAC Hills, DAMAC Hills 2 and DAMAC Islands, alongside the other eligible residential communities in the UAE. It also excludes future new launches, which means it applies to what is open now rather than to whatever is announced next.",
-      "On the arithmetic, four per cent moves real money. A AED 3 million villa carries a AED 120,000 registration fee; at AED 5 million it is AED 200,000. Because it is a fee waiver rather than a payment structure, it sits on top of whatever plan DAMAC has attached to the unit, so the two are not alternatives.",
-      "DAMAC has not printed an end date on this half of the campaign, which is worth treating as a reason to move rather than a reason to wait: an offer with no published deadline can be withdrawn without notice. We confirm which specific units carry the waiver, place the booking and handle the developer approval on your behalf."
-    ],
-    "ctaLabel": "Check eligible villas",
-    "dayCountEyebrow": false,
-    "deadline": "",
-    "developer": "DAMAC Properties",
-    "disclaimer": "Terms are set by DAMAC Properties and apply to selected eligible off-plan residential villas and townhouses only, subject to availability and developer approval. The offer excludes apartments and future new launches. DAMAC has not published an end date and the offer may be withdrawn or amended without notice. The waiver covers the 4% Dubai Land Department registration fee only; trustee, administration and agency costs are separate and remain payable. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm eligibility and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
-    "eligibility": [
-      {
-        "label": "What is covered",
-        "value": "The full 4% Dubai Land Department registration fee on the eligible unit."
-      },
-      {
-        "label": "Property types",
-        "value": "Off-plan residential villas and townhouses. Apartments are not part of this offer."
-      },
-      {
-        "label": "Where",
-        "value": "Eligible DAMAC off-plan residential stock in the UAE, including DAMAC Hills, DAMAC Hills 2 and DAMAC Islands."
-      },
-      {
-        "label": "Excluded",
-        "value": "Future new launches. The waiver applies to the current eligible release, not to projects announced later."
-      },
-      {
-        "label": "Offer window",
-        "value": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice."
-      },
-      {
-        "label": "Golden Visa",
-        "value": "Units priced above AED 2 million qualify for the property investor visa route."
-      },
-      {
-        "label": "Availability",
-        "value": "Eligibility is set per unit. Confirm in writing that the specific villa you are shown carries the waiver before you commit."
-      }
-    ],
-    "explainer": {
-      "heading": "The registration fee, taken off the table",
-      "highlight": "On a AED 3 million villa the 4% DLD fee is AED 120,000. Under Summer Rewards DAMAC covers it, so that cash stays with you instead of going to the Land Department at registration.",
-      "body": [
-        "Summer Rewards is a fee waiver rather than a payment plan. It applies to eligible off-plan residential villas and townhouses in the UAE and excludes future new launches, so it is the current release rather than whatever comes next. Apartments are not included."
-      ]
-    },
-    "eyebrow": "DAMAC Summer Rewards",
-    "faqs": [
-      {
-        "question": "What exactly does DAMAC cover?",
-        "answer": "The full 4% Dubai Land Department registration fee on the eligible unit. It is a waiver of a cash cost you would otherwise pay at registration, not a discount applied to the purchase price."
-      },
-      {
-        "question": "Does it apply to apartments?",
-        "answer": "No. Summer Rewards is limited to off-plan residential villas and townhouses. Apartments across the DAMAC portfolio are outside it."
-      },
-      {
-        "question": "Which communities qualify?",
-        "answer": "Eligible off-plan villa and townhouse stock in the UAE, which in practice means the house communities: DAMAC Hills, DAMAC Hills 2 and DAMAC Islands among them. Eligibility is set per unit."
-      },
-      {
-        "question": "Are new launches included?",
-        "answer": "No. The offer explicitly excludes future new launches, so it applies to the current eligible release rather than to projects announced afterwards."
-      },
-      {
-        "question": "When does it end?",
-        "answer": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice, so the terms on a specific unit should be confirmed in writing before committing."
-      },
-      {
-        "question": "Does the waiver cover all my transaction costs?",
-        "answer": "No. It covers the DLD registration fee. Trustee office charges, admin fees and agency costs are separate and remain payable."
-      },
-      {
-        "question": "Can I combine it with a payment plan?",
-        "answer": "Yes. It is a fee waiver rather than a payment structure, so whatever plan DAMAC has attached to your villa continues to apply underneath it."
-      },
-      {
-        "question": "How much is it actually worth?",
-        "answer": "Four per cent of the purchase price. On a AED 3 million villa that is AED 120,000; on a AED 5 million villa, AED 200,000."
-      }
-    ],
     "gallery": [
       {
         "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/009_009_39106-hd.webp",
@@ -2095,31 +2341,6 @@ export const OFFERS: Offer[] = [
         "alt": "Bedroom at Bahamas, DAMAC Islands"
       }
     ],
-    "h1": "DAMAC Summer Rewards: 4% DLD Waiver on Villas and Townhouses",
-    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/008_008_39103-hd.webp",
-    "hideDeadline": true,
-    "highlights": [
-      {
-        "value": "4%",
-        "label": "DLD fee waived",
-        "detail": "The full registration fee, covered by DAMAC"
-      },
-      {
-        "value": "Villas",
-        "label": "And townhouses",
-        "detail": "Apartments are not part of this offer"
-      },
-      {
-        "value": "Off-plan",
-        "label": "Only",
-        "detail": "Excludes future new launches"
-      },
-      {
-        "value": "UAE",
-        "label": "Wide",
-        "detail": "Eligible residential stock across the UAE"
-      }
-    ],
     "investment": {
       "heading": "A house, with the fee taken off.",
       "items": [
@@ -2147,83 +2368,9 @@ export const OFFERS: Offer[] = [
         "ShieldCheck"
       ]
     },
-    "keywords": "damac summer rewards, damac 4% dld waiver, damac villas offer dubai, damac townhouses offer, damac hills villas, damac islands villas, dld fee waiver dubai, off plan villas dubai offer",
-    "metaDescription": "DAMAC Summer Rewards: the full 4% DLD registration fee covered on eligible off-plan villas and townhouses across DAMAC Hills, Hills 2 and DAMAC Islands.",
-    "metaTitle": "DAMAC Summer Rewards | 4% DLD Waiver on Villas",
-    "priceFrom": 1800000,
-    "projectHref": "/developers/damac-properties",
-    "projects": [
-      {
-        "name": "DAMAC Islands",
-        "terms": "Bahamas and the wider island clusters, built around crystal lagoons. Villas and townhouses on the eligible list.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/bahamas-2-at-damac-islands-2/gallery/007_007_39101-hd.webp",
-        "links": [
-          {
-            "label": "Bahamas at DAMAC Islands",
-            "href": "/project/bahamas-2-at-damac-islands-2"
-          }
-        ]
-      },
-      {
-        "name": "Cavalli Estates",
-        "terms": "DAMAC Hills. The top of the villa range, branded interiors and private pools.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/03-12-2x.webp",
-        "links": [
-          {
-            "label": "Cavalli Estates at DAMAC Hills",
-            "href": "/project/cavalli-estate-villas-at-damac-hills"
-          }
-        ]
-      },
-      {
-        "name": "Utopia",
-        "terms": "DAMAC Hills. Urban resort villas with pool terraces, on the eligible villa list.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/05-8-2x.webp",
-        "links": [
-          {
-            "label": "Utopia at DAMAC Hills",
-            "href": "/project/utopia-urban-resort-villas-at-damac-hills"
-          }
-        ]
-      },
-      {
-        "name": "Silver Springs",
-        "terms": "DAMAC Hills. Family villas backing onto the golf and parkland.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/07-1-2x.webp",
-        "links": [
-          {
-            "label": "Silver Springs at DAMAC Hills",
-            "href": "/project/silver-springs-at-damac-hills"
-          }
-        ]
-      },
-      {
-        "name": "Eterno",
-        "terms": "DAMAC Hills 2, around the crystal lagoon. Townhouses and villas, both eligible.",
-        "image": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/damac-summer-hd/10-2-2x.webp",
-        "links": [
-          {
-            "label": "Eterno at DAMAC Hills 2",
-            "href": "/project/eterno-townhouses-and-villas-for-sale-at-damac-hills-2"
-          }
-        ]
-      }
-    ],
-    "shortName": "DAMAC Summer Rewards",
-    "subtitle": "DAMAC covers the full 4% Dubai Land Department registration fee on eligible off-plan villas and townhouses.",
-    "timeline": [
-      {
-        "share": "4%",
-        "stage": "At registration",
-        "description": "The DLD fee that would normally be yours to pay, covered by DAMAC."
-      },
-      {
-        "share": "0%",
-        "stage": "Added to the price",
-        "description": "It is a waiver, not a discount rolled into the purchase price."
-      }
-    ],
-    "timelineIntro": "The waiver changes what you hand over at registration rather than how the price is staged, so the payment plan on your villa is whatever DAMAC has attached to that release.",
+    "ctaLabel": "Check eligible villas",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in DAMAC Summer Rewards: the 4% DLD waiver on villas and townhouses. Please send me the eligible units.",
     "valueProps": [
       [
         "The fee is real money, not a discount",
@@ -2242,9 +2389,12 @@ export const OFFERS: Offer[] = [
         "Summer Rewards is a fee waiver, so whatever payment structure DAMAC has attached to your villa still applies underneath it."
       ]
     ],
-    "whatsappLabel": "Chat on WhatsApp",
-    "whatsappMessage": "Hi Binayah! 👋 I'm interested in DAMAC Summer Rewards: the 4% DLD waiver on villas and townhouses. Please send me the eligible units.",
-    "windowLabel": "Limited-time summer offer",
+    "bodyParagraphs": [
+      "DAMAC Summer Rewards covers the full 4% Dubai Land Department registration fee on eligible off-plan residential villas and townhouses. It is worth being precise about what that means: the DLD fee is a cash cost paid at registration, separate from the purchase price and normally borne by the buyer. A waiver changes what leaves your account on the day, which is a different thing from a discount that adjusts the headline figure.",
+      "The offer is narrower than DAMAC's portfolio. Apartments are not included, so this is a house offer: the villa and townhouse stock at DAMAC Hills, DAMAC Hills 2 and DAMAC Islands, alongside the other eligible residential communities in the UAE. It also excludes future new launches, which means it applies to what is open now rather than to whatever is announced next.",
+      "On the arithmetic, four per cent moves real money. A AED 3 million villa carries a AED 120,000 registration fee; at AED 5 million it is AED 200,000. Because it is a fee waiver rather than a payment structure, it sits on top of whatever plan DAMAC has attached to the unit, so the two are not alternatives.",
+      "DAMAC has not printed an end date on this half of the campaign, which is worth treating as a reason to move rather than a reason to wait: an offer with no published deadline can be withdrawn without notice. We confirm which specific units carry the waiver, place the booking and handle the developer approval on your behalf."
+    ],
     "worked": {
       "heading": "What the waiver is worth on a AED 3,000,000 villa",
       "rows": [
@@ -2266,7 +2416,393 @@ export const OFFERS: Offer[] = [
         ]
       ],
       "footnote": "Illustrative. The waiver covers the DLD registration fee only; trustee, admin and agency costs are separate and remain payable. Confirm the exact position on your unit in writing."
-    }
+    },
+    "faqs": [
+      {
+        "question": "What exactly does DAMAC cover?",
+        "answer": "The full 4% Dubai Land Department registration fee on the eligible unit. It is a waiver of a cash cost you would otherwise pay at registration, not a discount applied to the purchase price."
+      },
+      {
+        "question": "Does it apply to apartments?",
+        "answer": "No. Summer Rewards is limited to off-plan residential villas and townhouses. Apartments across the DAMAC portfolio are outside it."
+      },
+      {
+        "question": "Which communities qualify?",
+        "answer": "Eligible off-plan villa and townhouse stock in the UAE, which in practice means the house communities: DAMAC Hills, DAMAC Hills 2 and DAMAC Islands among them. Eligibility is set per unit."
+      },
+      {
+        "question": "Are new launches included?",
+        "answer": "No. The offer explicitly excludes future new launches, so it applies to the current eligible release rather than to projects announced afterwards."
+      },
+      {
+        "question": "When does it end?",
+        "answer": "DAMAC has not printed an end date on this offer. It is a limited-time summer promotion and can be withdrawn without notice, so the terms on a specific unit should be confirmed in writing before committing."
+      },
+      {
+        "question": "Does the waiver cover all my transaction costs?",
+        "answer": "No. It covers the DLD registration fee. Trustee office charges, admin fees and agency costs are separate and remain payable."
+      },
+      {
+        "question": "Can I combine it with a payment plan?",
+        "answer": "Yes. It is a fee waiver rather than a payment structure, so whatever plan DAMAC has attached to your villa continues to apply underneath it."
+      },
+      {
+        "question": "How much is it actually worth?",
+        "answer": "Four per cent of the purchase price. On a AED 3 million villa that is AED 120,000; on a AED 5 million villa, AED 200,000."
+      }
+    ],
+    "disclaimer": "Terms are set by DAMAC Properties and apply to selected eligible off-plan residential villas and townhouses only, subject to availability and developer approval. The offer excludes apartments and future new launches. DAMAC has not published an end date and the offer may be withdrawn or amended without notice. The waiver covers the 4% Dubai Land Department registration fee only; trustee, administration and agency costs are separate and remain payable. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm eligibility and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "projectHref": "/developers/damac-properties"
+  },
+  {
+    "slug": "binghatti-wraith-4-dld-waiver",
+    "shortName": "Binghatti Wraith",
+    "developer": "Binghatti Developers",
+    "eyebrow": "First release only",
+    "h1": "Binghatti Wraith: 4% DLD Waiver from AED 799,999",
+    "subtitle": "Binghatti covers the 4% registration fee on the first release at Al Jaddaf, on a 50/50 plan with handover in Q4 2027.",
+    "heroImage": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/00-binghatti-wraith-gallery_5-hd-2x.webp",
+    "deadline": "",
+    "windowLabel": "First release, while it lasts",
+    "hideDeadline": true,
+    "dayCountEyebrow": false,
+    "explainer": {
+      "heading": "Launch pricing, and the registration fee covered",
+      "highlight": "At AED 799,999 the 4% DLD fee would be AED 32,000. Binghatti covers it on the first release, so the entry cost is the price and the plan, not the price plus a five-figure government fee.",
+      "body": [
+        "Wraith is a new Binghatti tower at Al Jaddaf, two minutes from the metro and six from Downtown. The waiver applies to the first release only and is subject to availability, so it is tied to this pricing tier rather than to the building as a whole."
+      ]
+    },
+    "metaTitle": "Binghatti Wraith | 4% DLD Waiver from AED 799,999",
+    "metaDescription": "Binghatti Wraith at Al Jaddaf: a 4% DLD waiver on the first release, from AED 799,999, on a 50/50 payment plan with handover in Q4 2027.",
+    "keywords": "binghatti wraith, binghatti wraith price, binghatti 4% dld waiver, al jaddaf apartments for sale, binghatti wraith payment plan, studio apartment dubai 800k, binghatti offer dubai, off plan al jaddaf",
+    "priceFrom": 799999,
+    "highlights": [
+      {
+        "value": "4%",
+        "label": "DLD fee waived",
+        "detail": "Covered by Binghatti on the first release"
+      },
+      {
+        "value": "799,999",
+        "label": "AED, starting price",
+        "detail": "Launch pricing on a studio"
+      },
+      {
+        "value": "50/50",
+        "label": "Payment plan",
+        "detail": "Half during construction, half on handover"
+      },
+      {
+        "value": "Q4 2027",
+        "label": "Handover",
+        "detail": "Scheduled completion"
+      }
+    ],
+    "timeline": [
+      {
+        "share": "50%",
+        "stage": "During construction",
+        "description": "Paid across the build period to Q4 2027."
+      },
+      {
+        "share": "50%",
+        "stage": "On handover",
+        "description": "The balance falls due when the unit is handed over."
+      }
+    ],
+    "timelineIntro": "A straight half-and-half split: 50% across the construction period and 50% when the building is handed over in Q4 2027.",
+    "eligibility": [
+      {
+        "label": "What is covered",
+        "value": "The 4% Dubai Land Department registration fee, covered by Binghatti."
+      },
+      {
+        "label": "Which units",
+        "value": "The first release only. Launch pricing and the waiver are both subject to availability."
+      },
+      {
+        "label": "Entry price",
+        "value": "From AED 799,999 for a studio."
+      },
+      {
+        "label": "Unit mix",
+        "value": "204 studios, 563 one-bedroom, 86 two-bedroom apartments and 2 three-bedroom royal suites."
+      },
+      {
+        "label": "Payment plan",
+        "value": "50% during construction and 50% on handover."
+      },
+      {
+        "label": "Location",
+        "value": "Al Jaddaf. Two minutes from the metro, six minutes from Downtown Dubai."
+      },
+      {
+        "label": "Handover",
+        "value": "Q4 2027."
+      },
+      {
+        "label": "Golden Visa",
+        "value": "Units priced above AED 2 million qualify for the property investor visa route. The entry tier here sits below that threshold."
+      }
+    ],
+    "amenities": {
+      "heading": "A resort deck on a metro line.",
+      "stats": [
+        {
+          "value": "2 min",
+          "label": "To the metro",
+          "icon": "Bike"
+        },
+        {
+          "value": "6 min",
+          "label": "To Downtown",
+          "icon": "Building2"
+        },
+        {
+          "value": "855",
+          "label": "Homes in the tower",
+          "icon": "Users"
+        }
+      ],
+      "masterplanHeading": "Inside the building",
+      "items": [
+        "Resort-style pool deck",
+        "Poolside cabanas",
+        "Residents' gym",
+        "Children's water slide",
+        "Barbecue terraces",
+        "Residents' lounge",
+        "Retail frontage",
+        "Skyline terraces",
+        "Covered parking"
+      ],
+      "icons": [
+        "Waves",
+        "Sun",
+        "Bike",
+        "Droplets",
+        "Flower2",
+        "Sparkles",
+        "Store",
+        "Building2",
+        "ShieldCheck"
+      ]
+    },
+    "gallery": [
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/01-binghatti-wraith-gallery_16-hd-2x.webp",
+        "alt": "Binghatti Wraith at night with the Downtown skyline beyond"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/02-binghatti-wraith-gallery_2-hd-2x.webp",
+        "alt": "The pool deck at Binghatti Wraith at dusk"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/binghatti-wraith/gallery/binghatti-wraith-gallery_1-hd.webp",
+        "alt": "Binghatti Wraith from the street, Al Jaddaf"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/04-binghatti-wraith-gallery_29-hd-2x.webp",
+        "alt": "The pool at night at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/05-binghatti-wraith-gallery_17-hd-2x.webp",
+        "alt": "Binghatti Wraith lit at night"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/06-binghatti-wraith-gallery_4-hd-2x.webp",
+        "alt": "Pool and towers at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/07-binghatti-wraith-gallery_3-hd-2x.webp",
+        "alt": "Loungers beside the pool at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/08-binghatti-wraith-gallery_18-hd-2x.webp",
+        "alt": "A terrace with Burj Khalifa views at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/09-binghatti-wraith-gallery_12-hd-2x.webp",
+        "alt": "The poolside lounge at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/properties/binghatti-wraith/binghatti-wraith-featured-hd.webp",
+        "alt": "Binghatti Wraith and Al Jaddaf from the air"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/11-binghatti-wraith-gallery_28-hd-2x.webp",
+        "alt": "Cabanas beside the pool at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/12-binghatti-wraith-gallery_19-hd-2x.webp",
+        "alt": "The retail frontage at Binghatti Wraith at night"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/13-binghatti-wraith-gallery_9-hd-2x.webp",
+        "alt": "A living room with city views at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/14-binghatti-wraith-gallery_23-hd-2x.webp",
+        "alt": "A poolside cabana at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/15-binghatti-wraith-gallery_11-hd-2x.webp",
+        "alt": "An open-plan living space at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/16-binghatti-wraith-gallery_8-hd-2x.webp",
+        "alt": "The residents' lounge at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/17-binghatti-wraith-gallery_15-hd-2x.webp",
+        "alt": "A bedroom with a view at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/18-binghatti-wraith-gallery_10-hd-2x.webp",
+        "alt": "The residents' gym at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/19-binghatti-wraith-gallery_7-hd-2x.webp",
+        "alt": "The kitchen in a Binghatti Wraith apartment"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/20-binghatti-wraith-gallery_14-hd-2x.webp",
+        "alt": "The arrival lobby at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/21-binghatti-wraith-gallery_31-hd-2x.webp",
+        "alt": "A furnished living room at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/22-binghatti-wraith-gallery_22-hd-2x.webp",
+        "alt": "The children's water slide at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/23-binghatti-wraith-gallery_24-hd-2x.webp",
+        "alt": "The barbecue terrace at Binghatti Wraith"
+      },
+      {
+        "src": "https://binayah-media-456051253184-us-east-1-an.s3.us-east-1.amazonaws.com/offers/binghatti-hd/24-1-2x.webp",
+        "alt": "Al Jaddaf and the Dubai skyline"
+      }
+    ],
+    "investment": {
+      "heading": "The cheapest way onto this map.",
+      "items": [
+        {
+          "title": "Sub-AED 800k entry",
+          "text": "A studio at launch pricing."
+        },
+        {
+          "title": "Six minutes to Downtown",
+          "text": "Central without a central price."
+        },
+        {
+          "title": "Metro on the doorstep",
+          "text": "Two minutes, which drives tenant demand."
+        },
+        {
+          "title": "Handover Q4 2027",
+          "text": "A defined completion date, not open-ended."
+        }
+      ],
+      "icons": [
+        "Coins",
+        "Building2",
+        "TrendingUp",
+        "CalendarClock"
+      ]
+    },
+    "ctaLabel": "Check available units",
+    "whatsappLabel": "Chat on WhatsApp",
+    "whatsappMessage": "Hi Binayah! 👋 I'm interested in Binghatti Wraith: the 4% DLD waiver on the first release, from AED 799,999. Please send me what is available.",
+    "valueProps": [
+      [
+        "A five-figure fee, removed",
+        "On the AED 799,999 entry unit the 4% registration fee is AED 32,000. Waiving it changes the cash you need on day one, which at this price point is a meaningful share of the deposit."
+      ],
+      [
+        "First release means first pricing",
+        "The waiver is attached to the launch tier. Binghatti prices new releases in waves, so the combination of entry pricing and a covered fee is the narrower of the two windows."
+      ],
+      [
+        "Half deferred to handover",
+        "The 50/50 split leaves half the price outstanding until the building completes in Q4 2027, so the construction-period commitment is the lower half of the total."
+      ],
+      [
+        "A short commute, not a suburb",
+        "Al Jaddaf is two minutes from the metro and six from Downtown. At this entry price that combination is unusual, and it is what underpins the rental case."
+      ]
+    ],
+    "bodyParagraphs": [
+      "Binghatti Wraith is a new tower at Al Jaddaf, and the launch carries a 4% DLD waiver on the first release. At the AED 799,999 entry price that fee would be AED 32,000, which at this end of the market is a real share of what a buyer needs to find on day one rather than a rounding item.",
+      "The plan is a straight 50/50: half across the construction period and half when the building hands over in Q4 2027. There is no post-handover tail here, so the structure is simpler than the deferred plans running elsewhere in the market, and the second half arrives as a single milestone rather than a drip.",
+      "The building itself is 855 homes: 204 studios, 563 one-bedroom apartments, 86 two-bedroom apartments and two three-bedroom royal suites. The amenity deck is the resort-style pool, cabanas, a gym and barbecue terraces, with retail at street level.",
+      "Location is the part that does the work. Al Jaddaf is two minutes from the metro and roughly six from Downtown, which is an unusual pairing at a sub-AED 800,000 entry price and is what underpins the rental argument. Both the launch pricing and the waiver are tied to the first release and subject to availability, so the terms on a specific unit should be confirmed before committing."
+    ],
+    "worked": {
+      "heading": "What the waiver is worth on the AED 799,999 studio",
+      "rows": [
+        [
+          "Purchase price",
+          "AED 799,999"
+        ],
+        [
+          "4% DLD registration fee",
+          "AED 32,000"
+        ],
+        [
+          "Covered by Binghatti",
+          "- AED 32,000"
+        ],
+        [
+          "50% during construction",
+          "AED 400,000"
+        ],
+        [
+          "50% on handover",
+          "AED 400,000"
+        ]
+      ],
+      "footnote": "Illustrative, on the published entry price. Figures are rounded. The waiver covers the DLD registration fee only; trustee, admin and agency costs are separate. Launch pricing and the waiver are subject to availability."
+    },
+    "faqs": [
+      {
+        "question": "What does Binghatti actually cover?",
+        "answer": "The 4% Dubai Land Department registration fee on eligible first-release units. On the AED 799,999 entry unit that is AED 32,000 you do not pay at registration."
+      },
+      {
+        "question": "Does the waiver apply to the whole building?",
+        "answer": "No. It applies to the first release only, and both the launch pricing and the waiver are subject to availability. Later releases are priced separately."
+      },
+      {
+        "question": "What is the payment plan?",
+        "answer": "50/50: half across the construction period and half on handover."
+      },
+      {
+        "question": "When is handover?",
+        "answer": "Q4 2027."
+      },
+      {
+        "question": "What is available?",
+        "answer": "204 studios, 563 one-bedroom apartments, 86 two-bedroom apartments and 2 three-bedroom royal suites."
+      },
+      {
+        "question": "Where is it?",
+        "answer": "Al Jaddaf, two minutes from the metro and about six minutes from Downtown Dubai."
+      },
+      {
+        "question": "Does it qualify for a Golden Visa?",
+        "answer": "The investor visa route needs a property above AED 2 million. The entry units here sit well below that, so a studio at launch pricing would not qualify on its own."
+      },
+      {
+        "question": "Are my other costs covered?",
+        "answer": "No. The waiver covers the DLD registration fee. Trustee office charges, admin fees and agency costs are separate and remain payable."
+      }
+    ],
+    "disclaimer": "Terms are set by Binghatti Developers. The 4% DLD waiver and launch pricing apply to the first release only and are subject to availability; terms apply. The waiver covers the Dubai Land Department registration fee only, and trustee, administration and agency costs are separate and remain payable. Handover dates are the developer's projection and may move. Figures shown are illustrative and do not constitute financial advice or an offer to sell. Confirm eligibility, pricing and all terms in writing, including the schedule recorded in the SPA, before committing. Binayah Properties is a licensed Dubai brokerage.",
+    "projectHref": "/project/binghatti-wraith"
   }
 ];
 

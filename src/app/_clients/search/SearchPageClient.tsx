@@ -36,6 +36,16 @@ import {
   normalizePropertyType,
 } from "@/lib/property-types";
 
+// Short "12 Aug" listed-date label for card footers — no year, cards are
+// dense enough already, and "listed 3 years ago" would read oddly for a
+// still-active listing.
+function listedDateLabel(createdAt?: string): string | null {
+  if (!createdAt) return null;
+  const date = new Date(createdAt);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+
 type SearchIntent = "" | "buy" | "rent" | "off-plan";
 type SearchStatus = "All" | "Off-Plan" | "Secondary";
 type SortKey = "newest" | "price_asc" | "price_desc" | "featured" | "ppsf_asc" | "ppsf_desc";
@@ -54,6 +64,7 @@ interface Project {
   startingPrice?: number;
   currency?: string;
   status?: string;
+  createdAt?: string;
 }
 
 interface Listing {
@@ -81,6 +92,7 @@ interface Listing {
   agentName?: string;
   whatsappNumber?: string;
   _source?: string;
+  createdAt?: string;
 }
 
 interface InitialSearchData {
