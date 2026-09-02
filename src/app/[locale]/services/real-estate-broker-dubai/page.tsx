@@ -30,6 +30,7 @@ const CONTENT = {
     linksTitle: "Useful next steps",
     links: [
       { label: "Real estate agency in Dubai", href: "/services/real-estate-agency-dubai" },
+      { label: "Dubai property investment", href: "/services/property-investment-dubai" },
       { label: "Properties for sale", href: "/buy" },
       { label: "Off-plan projects", href: "/off-plan" },
       { label: "Sell your property", href: "/sell" },
@@ -37,6 +38,9 @@ const CONTENT = {
       { label: "Guide: How to buy property in Dubai", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "Guide: DLD fees explained", href: "/pulse/guides/dld-fees-explained" },
       { label: "Guide: Agent commission in Dubai", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "Guide: What a Dubai property broker does", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "Guide: Negotiating a Dubai property price", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "Guide: Best real estate brokers in Dubai", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "What your broker handles",
     services: [
@@ -118,6 +122,7 @@ const CONTENT = {
     linksTitle: "Полезные разделы",
     links: [
       { label: "Агентство недвижимости в Дубае", href: "/services/real-estate-agency-dubai" },
+      { label: "Инвестиции в недвижимость Дубая", href: "/services/property-investment-dubai" },
       { label: "Объекты на продажу", href: "/buy" },
       { label: "Проекты off-plan", href: "/off-plan" },
       { label: "Продать недвижимость", href: "/sell" },
@@ -125,6 +130,9 @@ const CONTENT = {
       { label: "Гид: как купить недвижимость в Дубае", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "Гид: сборы DLD", href: "/pulse/guides/dld-fees-explained" },
       { label: "Гид: комиссия агента в Дубае", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "Гид: чем занимается брокер в Дубае", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "Гид: переговоры о цене в Дубае", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "Гид: лучшие брокеры Дубая", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "Что берёт на себя брокер",
     services: [
@@ -206,6 +214,7 @@ const CONTENT = {
     linksTitle: "خطوات مفيدة",
     links: [
       { label: "وكالة عقارية في دبي", href: "/services/real-estate-agency-dubai" },
+      { label: "الاستثمار العقاري في دبي", href: "/services/property-investment-dubai" },
       { label: "عقارات للبيع", href: "/buy" },
       { label: "مشاريع على الخارطة", href: "/off-plan" },
       { label: "بيع عقارك", href: "/sell" },
@@ -213,6 +222,9 @@ const CONTENT = {
       { label: "دليل: كيف تشتري عقارًا في دبي", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "دليل: رسوم دائرة الأراضي", href: "/pulse/guides/dld-fees-explained" },
       { label: "دليل: عمولة الوسيط في دبي", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "دليل: ماذا يفعل الوسيط العقاري في دبي", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "دليل: التفاوض على سعر العقار في دبي", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "دليل: أفضل الوسطاء العقاريين في دبي", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "ما الذي يتولاه وسيطك",
     services: [
@@ -294,6 +306,7 @@ const CONTENT = {
     linksTitle: "下一步",
     links: [
       { label: "迪拜房地产中介", href: "/services/real-estate-agency-dubai" },
+      { label: "迪拜房产投资", href: "/services/property-investment-dubai" },
       { label: "在售房源", href: "/buy" },
       { label: "期房项目", href: "/off-plan" },
       { label: "出售您的房产", href: "/sell" },
@@ -301,6 +314,9 @@ const CONTENT = {
       { label: "指南：如何在迪拜买房", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "指南：土地局费用详解", href: "/pulse/guides/dld-fees-explained" },
       { label: "指南：迪拜经纪佣金", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "指南：迪拜房产经纪做什么", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "指南：迪拜房产议价", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "指南：迪拜最佳房产经纪", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "经纪人负责的工作",
     services: [
@@ -382,6 +398,7 @@ const CONTENT = {
     linksTitle: "Pour aller plus loin",
     links: [
       { label: "Agence immobilière à Dubaï", href: "/services/real-estate-agency-dubai" },
+      { label: "Investissement immobilier à Dubaï", href: "/services/property-investment-dubai" },
       { label: "Biens à vendre", href: "/buy" },
       { label: "Projets sur plan", href: "/off-plan" },
       { label: "Vendre votre bien", href: "/sell" },
@@ -389,6 +406,9 @@ const CONTENT = {
       { label: "Guide : acheter un bien à Dubaï", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "Guide : les frais du DLD", href: "/pulse/guides/dld-fees-explained" },
       { label: "Guide : la commission d'agence à Dubaï", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "Guide : le rôle du courtier à Dubaï", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "Guide : négocier le prix d'un bien à Dubaï", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "Guide : les meilleurs courtiers de Dubaï", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "Ce que prend en charge votre courtier",
     services: [
@@ -470,6 +490,7 @@ const CONTENT = {
     linksTitle: "Bước tiếp theo",
     links: [
       { label: "Đại lý bất động sản tại Dubai", href: "/services/real-estate-agency-dubai" },
+      { label: "Đầu tư bất động sản tại Dubai", href: "/services/property-investment-dubai" },
       { label: "Bất động sản đang bán", href: "/buy" },
       { label: "Dự án hình thành trong tương lai", href: "/off-plan" },
       { label: "Bán bất động sản của bạn", href: "/sell" },
@@ -477,6 +498,9 @@ const CONTENT = {
       { label: "Hướng dẫn: mua bất động sản tại Dubai", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "Hướng dẫn: các khoản phí DLD", href: "/pulse/guides/dld-fees-explained" },
       { label: "Hướng dẫn: hoa hồng môi giới tại Dubai", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "Hướng dẫn: môi giới bất động sản Dubai làm gì", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "Hướng dẫn: đàm phán giá bất động sản Dubai", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "Hướng dẫn: các môi giới bất động sản tốt nhất Dubai", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "Môi giới của bạn xử lý những gì",
     services: [
@@ -558,6 +582,7 @@ const CONTENT = {
     linksTitle: "צעדים מומלצים",
     links: [
       { label: "סוכנות נדל\"ן בדובאי", href: "/services/real-estate-agency-dubai" },
+      { label: "השקעות נדל\"ן בדובאי", href: "/services/property-investment-dubai" },
       { label: "נכסים למכירה", href: "/buy" },
       { label: "פרויקטים על הנייר", href: "/off-plan" },
       { label: "מכירת הנכס שלכם", href: "/sell" },
@@ -565,6 +590,9 @@ const CONTENT = {
       { label: "מדריך: איך קונים נכס בדובאי", href: "/pulse/guides/how-to-buy-property-in-dubai" },
       { label: "מדריך: אגרות ה-DLD", href: "/pulse/guides/dld-fees-explained" },
       { label: "מדריך: עמלת תיווך בדובאי", href: "/pulse/guides/dubai-property-agent-commission" },
+      { label: "מדריך: מה עושה מתווך נדל\"ן בדובאי", href: "/pulse/guides/what-does-a-dubai-property-broker-do" },
+      { label: "מדריך: משא ומתן על מחיר נכס בדובאי", href: "/pulse/guides/dubai-property-negotiation-guide" },
+      { label: "מדריך: המתווכים המובילים בדובאי", href: "/pulse/guides/best-real-estate-brokers-dubai" },
     ],
     servicesTitle: "מה המתווך שלכם מטפל בו",
     services: [

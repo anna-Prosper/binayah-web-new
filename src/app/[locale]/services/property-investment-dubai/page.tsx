@@ -20,6 +20,8 @@ const SITE_LINKS = [
   "/golden-visa",
   "/pulse/reports",
   "/valuation",
+  "/services/real-estate-agency-dubai",
+  "/services/real-estate-broker-dubai",
   "/contact",
 ] as const;
 
@@ -35,6 +37,8 @@ const GUIDE_LINKS = [
   "/pulse/guides/golden-visa-process",
   "/pulse/guides/freehold-vs-leasehold-dubai",
   "/pulse/guides/dubai-market-outlook-2026",
+  "/pulse/guides/dubai-property-management-guide",
+  "/pulse/guides/landlord-checklist-dubai",
 ] as const;
 
 const CONTENT = {
@@ -141,8 +145,8 @@ const CONTENT = {
     linksTitle: "Start your research",
     linksSubtitle: "Browse the market",
     guidesSubtitle: "Investment guides",
-    siteLinkLabels: ["Off-plan projects", "Top off-plan projects", "Property for sale", "Dubai communities", "Developers", "Golden Visa", "Market reports", "Free property valuation", "Contact an advisor"],
-    guideLinkLabels: ["Rental yield explained", "Best areas for high yield", "Property ROI in Dubai", "Off-plan vs secondary", "Off-plan payment plans", "Off-plan assignment & resale", "DLD fees explained", "Service charges explained", "Golden Visa process", "Freehold vs leasehold", "Dubai market outlook 2026"],
+    siteLinkLabels: ["Off-plan projects", "Top off-plan projects", "Property for sale", "Dubai communities", "Developers", "Golden Visa", "Market reports", "Free property valuation", "Real estate agency in Dubai", "Real estate broker in Dubai", "Contact an advisor"],
+    guideLinkLabels: ["Rental yield explained", "Best areas for high yield", "Property ROI in Dubai", "Off-plan vs secondary", "Off-plan payment plans", "Off-plan assignment & resale", "DLD fees explained", "Service charges explained", "Golden Visa process", "Freehold vs leasehold", "Dubai market outlook 2026", "Property management in Dubai", "Landlord checklist"],
     faqTitle: "Frequently Asked Questions",
     faqs: [
       { question: "Is Dubai property a good investment?", answer: "Dubai property suits investors who want rental income, capital growth, or residency. Foreign nationals can own outright in designated freehold areas, with ownership registered on a DLD title deed that does not expire. The UAE levies no annual property tax, no capital-gains tax and no income tax on rental earnings, so a larger share of the rent reaches the owner than in most global markets. The citywide average gross rental yield is around 4.7%. As with any market, returns depend on the specific unit, the community and the price paid, so model the numbers before you commit." },
@@ -264,8 +268,8 @@ const CONTENT = {
     linksTitle: "С чего начать",
     linksSubtitle: "Смотреть рынок",
     guidesSubtitle: "Инвестиционные гиды",
-    siteLinkLabels: ["Новостройки", "Лучшие новостройки", "Недвижимость на продажу", "Районы Дубая", "Застройщики", "Golden Visa", "Аналитика рынка", "Бесплатная оценка", "Связаться с консультантом"],
-    guideLinkLabels: ["Арендная доходность", "Районы с высокой доходностью", "ROI недвижимости в Дубае", "Новостройка или вторичка", "Планы рассрочки", "Переуступка новостройки", "Сборы DLD", "Сервисные сборы", "Процесс Golden Visa", "Фрихолд и лизхолд", "Прогноз рынка 2026"],
+    siteLinkLabels: ["Новостройки", "Лучшие новостройки", "Недвижимость на продажу", "Районы Дубая", "Застройщики", "Golden Visa", "Аналитика рынка", "Бесплатная оценка", "Агентство недвижимости в Дубае", "Брокер по недвижимости в Дубае", "Связаться с консультантом"],
+    guideLinkLabels: ["Арендная доходность", "Районы с высокой доходностью", "ROI недвижимости в Дубае", "Новостройка или вторичка", "Планы рассрочки", "Переуступка новостройки", "Сборы DLD", "Сервисные сборы", "Процесс Golden Visa", "Фрихолд и лизхолд", "Прогноз рынка 2026", "Управление недвижимостью", "Чек-лист арендодателя"],
     faqTitle: "Частые вопросы",
     faqs: [
       { question: "Выгодно ли инвестировать в недвижимость Дубая?", answer: "Недвижимость Дубая подходит инвесторам, которым нужен арендный доход, рост капитала или резиденция. Иностранцы могут владеть объектами полностью в обозначенных фрихолд-зонах, право собственности фиксируется в бессрочном титуле DLD. В ОАЭ нет ежегодного налога на недвижимость, налога на прирост капитала и подоходного налога на аренду, поэтому владельцу достаётся большая часть арендной платы, чем на большинстве мировых рынков. Средняя валовая доходность по городу — около 4,7%. Как и на любом рынке, результат зависит от конкретного объекта, района и цены покупки, поэтому считайте цифры до сделки." },
@@ -387,8 +391,8 @@ const CONTENT = {
     linksTitle: "ابدأ بحثك",
     linksSubtitle: "تصفح السوق",
     guidesSubtitle: "أدلة الاستثمار",
-    siteLinkLabels: ["مشاريع على الخارطة", "أفضل المشاريع على الخارطة", "عقارات للبيع", "مجتمعات دبي", "المطورون", "الإقامة الذهبية", "تقارير السوق", "تقييم مجاني للعقار", "تواصل مع مستشار"],
-    guideLinkLabels: ["شرح العائد الإيجاري", "أفضل مناطق العائد المرتفع", "العائد على الاستثمار في دبي", "على الخارطة أم ثانوي", "خطط السداد", "التنازل وإعادة البيع", "رسوم دائرة الأراضي", "رسوم الخدمة", "إجراءات الإقامة الذهبية", "التملك الحر والإجارة الطويلة", "توقعات سوق دبي 2026"],
+    siteLinkLabels: ["مشاريع على الخارطة", "أفضل المشاريع على الخارطة", "عقارات للبيع", "مجتمعات دبي", "المطورون", "الإقامة الذهبية", "تقارير السوق", "تقييم مجاني للعقار", "وكالة عقارية في دبي", "وسيط عقاري في دبي", "تواصل مع مستشار"],
+    guideLinkLabels: ["شرح العائد الإيجاري", "أفضل مناطق العائد المرتفع", "العائد على الاستثمار في دبي", "على الخارطة أم ثانوي", "خطط السداد", "التنازل وإعادة البيع", "رسوم دائرة الأراضي", "رسوم الخدمة", "إجراءات الإقامة الذهبية", "التملك الحر والإجارة الطويلة", "توقعات سوق دبي 2026", "إدارة العقارات في دبي", "قائمة مهام المالك"],
     faqTitle: "الأسئلة الشائعة",
     faqs: [
       { question: "هل العقار في دبي استثمار جيد؟", answer: "يناسب العقار في دبي المستثمرين الباحثين عن دخل إيجاري أو نمو رأسمالي أو إقامة. يستطيع الأجانب التملك الكامل في مناطق التملك الحر المخصصة، وتُسجَّل الملكية في سند ملكية من دائرة الأراضي لا ينتهي أجله. ولا تفرض الإمارات ضريبة عقارية سنوية ولا ضريبة أرباح رأسمالية ولا ضريبة دخل على عوائد الإيجار، فيصل إلى المالك جزء أكبر من الإيجار مقارنة بمعظم الأسواق العالمية. ويبلغ متوسط العائد الإجمالي على مستوى المدينة نحو 4.7%. وكما في أي سوق، تعتمد النتائج على الوحدة والمجتمع والسعر المدفوع، لذا احسب الأرقام قبل الالتزام." },
@@ -510,8 +514,8 @@ const CONTENT = {
     linksTitle: "开始您的调研",
     linksSubtitle: "浏览市场",
     guidesSubtitle: "投资指南",
-    siteLinkLabels: ["期房项目", "热门期房项目", "在售房源", "迪拜社区", "开发商", "黄金签证", "市场报告", "免费房产估值", "联系顾问"],
-    guideLinkLabels: ["租金回报率详解", "高回报率区域", "迪拜房产ROI", "期房与二手房对比", "期房付款计划", "期房转让与转售", "DLD费用详解", "物业费详解", "黄金签证流程", "永久产权与租赁产权", "2026迪拜市场展望"],
+    siteLinkLabels: ["期房项目", "热门期房项目", "在售房源", "迪拜社区", "开发商", "黄金签证", "市场报告", "免费房产估值", "迪拜房产中介公司", "迪拜房产经纪", "联系顾问"],
+    guideLinkLabels: ["租金回报率详解", "高回报率区域", "迪拜房产ROI", "期房与二手房对比", "期房付款计划", "期房转让与转售", "DLD费用详解", "物业费详解", "黄金签证流程", "永久产权与租赁产权", "2026迪拜市场展望", "迪拜物业管理", "房东检查清单"],
     faqTitle: "常见问题解答",
     faqs: [
       { question: "迪拜房产是好的投资吗？", answer: "迪拜房产适合追求租金收入、资本增值或居留权的投资者。外国人可在指定永久产权区域完全持有房产，产权登记在DLD签发且不设期限的房产证上。阿联酋不征收年度房产税、资本利得税和租金所得税，因此业主拿到的租金比多数全球市场更多。全市平均毛租金回报率约为4.7%。与任何市场一样，回报取决于具体房源、社区和买入价格，因此请在下定之前测算数字。" },
@@ -633,8 +637,8 @@ const CONTENT = {
     linksTitle: "Commencez vos recherches",
     linksSubtitle: "Explorer le marché",
     guidesSubtitle: "Guides d'investissement",
-    siteLinkLabels: ["Projets sur plan", "Meilleurs projets sur plan", "Biens à vendre", "Communautés de Dubaï", "Promoteurs", "Golden Visa", "Rapports de marché", "Estimation gratuite", "Contacter un conseiller"],
-    guideLinkLabels: ["Le rendement locatif expliqué", "Meilleurs quartiers à haut rendement", "ROI immobilier à Dubaï", "Sur plan ou seconde main", "Plans de paiement en VEFA", "Cession et revente en VEFA", "Les frais DLD expliqués", "Les charges expliquées", "Procédure Golden Visa", "Freehold ou leasehold", "Perspectives du marché 2026"],
+    siteLinkLabels: ["Projets sur plan", "Meilleurs projets sur plan", "Biens à vendre", "Communautés de Dubaï", "Promoteurs", "Golden Visa", "Rapports de marché", "Estimation gratuite", "Agence immobilière à Dubaï", "Courtier immobilier à Dubaï", "Contacter un conseiller"],
+    guideLinkLabels: ["Le rendement locatif expliqué", "Meilleurs quartiers à haut rendement", "ROI immobilier à Dubaï", "Sur plan ou seconde main", "Plans de paiement en VEFA", "Cession et revente en VEFA", "Les frais DLD expliqués", "Les charges expliquées", "Procédure Golden Visa", "Freehold ou leasehold", "Perspectives du marché 2026", "La gestion locative à Dubaï", "Checklist du propriétaire bailleur"],
     faqTitle: "Questions fréquentes",
     faqs: [
       { question: "L'immobilier à Dubaï est-il un bon investissement ?", answer: "L'immobilier à Dubaï convient aux investisseurs qui recherchent un revenu locatif, une plus-value ou une résidence. Les étrangers peuvent détenir en pleine propriété dans les zones freehold désignées, la propriété étant inscrite sur un titre DLD qui n'expire pas. Les Émirats ne prélèvent ni taxe foncière annuelle, ni impôt sur les plus-values, ni impôt sur les revenus locatifs, si bien qu'une part plus importante du loyer revient au propriétaire que sur la plupart des marchés mondiaux. Le rendement locatif brut moyen à l'échelle de la ville est d'environ 4,7 %. Comme sur tout marché, le résultat dépend du bien, du quartier et du prix payé : modélisez les chiffres avant de vous engager." },
@@ -756,8 +760,8 @@ const CONTENT = {
     linksTitle: "Bắt đầu tìm hiểu",
     linksSubtitle: "Khám phá thị trường",
     guidesSubtitle: "Cẩm nang đầu tư",
-    siteLinkLabels: ["Dự án mới", "Dự án mới nổi bật", "Bất động sản đang bán", "Cộng đồng Dubai", "Chủ đầu tư", "Golden Visa", "Báo cáo thị trường", "Định giá miễn phí", "Liên hệ chuyên viên"],
-    guideLinkLabels: ["Giải thích lợi suất cho thuê", "Khu vực lợi suất cao", "ROI bất động sản Dubai", "Dự án mới hay thứ cấp", "Kế hoạch thanh toán dự án", "Chuyển nhượng và bán lại", "Giải thích phí DLD", "Giải thích phí dịch vụ", "Quy trình Golden Visa", "Sở hữu vĩnh viễn và thuê dài hạn", "Triển vọng thị trường 2026"],
+    siteLinkLabels: ["Dự án mới", "Dự án mới nổi bật", "Bất động sản đang bán", "Cộng đồng Dubai", "Chủ đầu tư", "Golden Visa", "Báo cáo thị trường", "Định giá miễn phí", "Đại lý bất động sản tại Dubai", "Môi giới bất động sản tại Dubai", "Liên hệ chuyên viên"],
+    guideLinkLabels: ["Giải thích lợi suất cho thuê", "Khu vực lợi suất cao", "ROI bất động sản Dubai", "Dự án mới hay thứ cấp", "Kế hoạch thanh toán dự án", "Chuyển nhượng và bán lại", "Giải thích phí DLD", "Giải thích phí dịch vụ", "Quy trình Golden Visa", "Sở hữu vĩnh viễn và thuê dài hạn", "Triển vọng thị trường 2026", "Quản lý bất động sản tại Dubai", "Danh sách kiểm tra cho chủ nhà"],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
       { question: "Bất động sản Dubai có phải khoản đầu tư tốt không?", answer: "Bất động sản Dubai phù hợp với nhà đầu tư muốn có thu nhập cho thuê, tăng giá vốn hoặc thường trú. Người nước ngoài có thể sở hữu toàn phần tại các khu freehold được chỉ định, quyền sở hữu ghi trên sổ đỏ do DLD cấp và không có thời hạn. UAE không đánh thuế bất động sản hằng năm, thuế lãi vốn hay thuế thu nhập trên tiền thuê, nên chủ sở hữu giữ lại phần tiền thuê lớn hơn so với hầu hết thị trường lớn khác. Lợi suất cho thuê gộp trung bình toàn thành phố khoảng 4,7%. Như mọi thị trường, kết quả phụ thuộc vào từng căn, từng cộng đồng và mức giá đã trả, vì vậy hãy tính toán trước khi xuống tiền." },
@@ -879,8 +883,8 @@ const CONTENT = {
     linksTitle: "התחילו במחקר",
     linksSubtitle: "לסייר בשוק",
     guidesSubtitle: "מדריכי השקעה",
-    siteLinkLabels: ["פרויקטים על הנייר", "הפרויקטים המובילים על הנייר", "נכסים למכירה", "קהילות בדובאי", "יזמים", "ויזת זהב", "דוחות שוק", "הערכת שווי חינם", "יצירת קשר עם יועץ"],
-    guideLinkLabels: ["הסבר על תשואת שכירות", "אזורים עם תשואה גבוהה", "תשואה על השקעה בדובאי", "על הנייר מול יד שנייה", "תוכניות תשלום על הנייר", "המחאת חוזה ומכירה חוזרת", "הסבר על אגרות DLD", "הסבר על דמי ניהול", "תהליך ויזת הזהב", "בעלות מלאה מול חכירה", "תחזית שוק דובאי 2026"],
+    siteLinkLabels: ["פרויקטים על הנייר", "הפרויקטים המובילים על הנייר", "נכסים למכירה", "קהילות בדובאי", "יזמים", "ויזת זהב", "דוחות שוק", "הערכת שווי חינם", "סוכנות נדל\"ן בדובאי", "מתווך נדל\"ן בדובאי", "יצירת קשר עם יועץ"],
+    guideLinkLabels: ["הסבר על תשואת שכירות", "אזורים עם תשואה גבוהה", "תשואה על השקעה בדובאי", "על הנייר מול יד שנייה", "תוכניות תשלום על הנייר", "המחאת חוזה ומכירה חוזרת", "הסבר על אגרות DLD", "הסבר על דמי ניהול", "תהליך ויזת הזהב", "בעלות מלאה מול חכירה", "תחזית שוק דובאי 2026", "ניהול נכסים בדובאי", "צ'ק ליסט לבעלי נכסים"],
     faqTitle: "שאלות נפוצות",
     faqs: [
       { question: "האם נדל\"ן בדובאי הוא השקעה טובה?", answer: "נדל\"ן בדובאי מתאים למשקיעים שרוצים הכנסה משכירות, עליית ערך או תושבות. אזרחים זרים יכולים להחזיק בבעלות מלאה באזורי הבעלות המיועדים, כשהבעלות נרשמת בשטר בעלות של ה-DLD שאינו פוקע. איחוד האמירויות אינו גובה ארנונה שנתית, מס רווחי הון או מס הכנסה על דמי שכירות, כך שחלק גדול יותר מהשכירות מגיע לבעלים בהשוואה לרוב השווקים בעולם. תשואת השכירות הברוטו הממוצעת בעיר היא כ-4.7%. כמו בכל שוק, התשואה תלויה ביחידה הספציפית, בקהילה ובמחיר ששולם, ולכן חשבו את המספרים לפני שאתם מתחייבים." },
