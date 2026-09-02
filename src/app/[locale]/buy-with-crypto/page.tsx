@@ -27,7 +27,7 @@ const CONTENT = {
     heroCta: "Free Consultation",
     heroCtaArrow: "→",
     stats: [
-      { n: "500+", label: "Crypto Transactions" },
+      { n: "1162", label: "RERA ORN" },
       { n: "19+", label: "Years in Dubai" },
       { n: "3,000+", label: "Properties" },
       { n: "0%", label: "Capital Gains Tax" },
@@ -80,7 +80,7 @@ const CONTENT = {
     heroCta: "Бесплатная консультация",
     heroCtaArrow: "→",
     stats: [
-      { n: "500+", label: "Крипто-сделок" },
+      { n: "1162", label: "Регистрация RERA" },
       { n: "19+", label: "Лет в Дубае" },
       { n: "3 000+", label: "Объектов" },
       { n: "0%", label: "Налог на прибыль" },
@@ -133,7 +133,7 @@ const CONTENT = {
     heroCta: "استشارة مجانية",
     heroCtaArrow: "←",
     stats: [
-      { n: "+500", label: "معاملة بالكريبتو" },
+      { n: "1162", label: "رقم تسجيل RERA" },
       { n: "+17", label: "عامًا في دبي" },
       { n: "+3,000", label: "عقار" },
       { n: "0%", label: "ضريبة أرباح رأس المال" },
@@ -185,7 +185,7 @@ const CONTENT = {
     heroCta: "免费咨询",
     heroCtaArrow: "→",
     stats: [
-      { n: "500+", label: "加密货币交易" },
+      { n: "1162", label: "RERA 注册号" },
       { n: "19+", label: "年迪拜经验" },
       { n: "3,000+", label: "在售房源" },
       { n: "0%", label: "资本利得税" },
@@ -237,7 +237,7 @@ const CONTENT = {
     heroCta: "Tư vấn miễn phí",
     heroCtaArrow: "→",
     stats: [
-      { n: "500+", label: "Giao dịch tiền điện tử" },
+      { n: "1162", label: "Số đăng ký RERA" },
       { n: "19+", label: "Năm tại Dubai" },
       { n: "3.000+", label: "Bất động sản" },
       { n: "0%", label: "Thuế lãi vốn" },
@@ -290,8 +290,8 @@ const CONTENT = {
     "heroCtaArrow": "←",
     "stats": [
       {
-        "n": "500+",
-        "label": "עסקאות קריפטו"
+        "n": "1162",
+        "label": "מספר רישום RERA"
       },
       {
         "n": "19+",
@@ -419,7 +419,7 @@ const CONTENT = {
     heroCta: "Consultation gratuite",
     heroCtaArrow: "→",
     stats: [
-      { n: "500+", label: "Transactions en crypto" },
+      { n: "1162", label: "Numéro RERA" },
       { n: "19+", label: "Ans à Dubaï" },
       { n: "3 000+", label: "Biens immobiliers" },
       { n: "0%", label: "Impôt sur les plus-values" },

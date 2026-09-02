@@ -28,19 +28,39 @@ function rentCollectionItems(initialData: any): { url: string; name: string }[] 
   ];
 }
 
+/**
+ * Live rental inventory, read off the /api/search payload this page already
+ * fetches — no extra upstream request. Returns null when the API is
+ * unavailable, malformed, or reports nothing, so the caller DROPS the stat tile
+ * instead of rendering "0+" or falling back to a hardcoded figure: a failed
+ * fetch must never turn into an inventory claim. (`getCachedSearch` itself
+ * returns null on error rather than throwing.)
+ */
+function rentListingCount(initialData: any): number | null {
+  const n = Number(initialData?.listingCount ?? initialData?.totalCount);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : null;
+}
+
+// Thousands separator per locale, matching the numeral conventions already used
+// in CONTENT below. Intl.NumberFormat is deliberately not used: it renders
+// Arabic-Indic digits for `ar` (٩٣), which nothing else on this page does.
+const GROUP_SEP: Record<string, string> = {
+  en: ",", zh: ",", ar: ",", he: ",", ru: "\u00A0", fr: "\u00A0", vi: ".",
+};
+function formatCount(n: number, locale: string): string {
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, GROUP_SEP[locale] ?? ",");
+}
+
 const CONTENT = {
   fr: {
     "metaTitle": "Biens à louer à Dubai | Appartements & Villas | Binayah",
-    "metaDesc": "Trouvez votre location idéale à Dubaï, appartements, villas, studios et maisons de ville. Annonces vérifiées avec prix en temps réel. Prêt à emménager. Recherchez plus de 1 000 locations dès maintenant.",
+    "metaDesc": "Trouvez votre location idéale à Dubaï, appartements, villas, studios et maisons de ville. Annonces vérifiées avec prix en temps réel. Prêt à emménager. Parcourez nos annonces de location dès maintenant.",
     "heroLabel": "LOUER À DUBAI",
     "h1": "Biens à louer",
     "h1sub": "à Dubai",
     "heroDesc": "Annonces de location vérifiées dans tous les quartiers de Dubai. Studios à partir de 25K AED/an. Villas familiales à partir de 90K AED/an. Trouvez votre maison avec les agents de location de confiance de Binayah.",
+    "rentalsLabel": "Annonces de location",
     "stats": [
-      {
-        "n": "1,000+",
-        "label": "Annonces de location"
-      },
       {
         "n": "AED 25K",
         "label": "Studio à partir de/an"
@@ -83,16 +103,13 @@ const CONTENT = {
   },
   he: {
     "metaTitle": "נכסים להשכרה בדובאי | דירות ווילות | Binayah",
-    "metaDesc": "מצאו את נכס ההשכרה המושלם בדובאי, דירות, וילות, סטודיו ובתים טוריים. רישומים מאומתים עם מחירים בזמן אמת. מוכן לכניסה. חפשו עכשיו מתוך 1,000+ נכסים להשכרה.",
+    "metaDesc": "מצאו את נכס ההשכרה המושלם בדובאי, דירות, וילות, סטודיו ובתים טוריים. רישומים מאומתים עם מחירים בזמן אמת. מוכן לכניסה. התחילו לחפש עכשיו.",
     "heroLabel": "השכרה בדובאי",
     "h1": "נכסים להשכרה",
     "h1sub": "בדובאי",
     "heroDesc": "רישומי השכרה מאומתים בכל קהילות דובאי. סטודיו החל מ-AED 25K לשנה. וילות משפחתיות החל מ-AED 90K לשנה. מצאו את ביתכם עם סוכני ההשכרה המהימנים של Binayah.",
+    "rentalsLabel": "רישומי השכרה",
     "stats": [
-      {
-        "n": "1,000+",
-        "label": "רישומי השכרה"
-      },
       {
         "n": "AED 25K",
         "label": "סטודיו החל מ/שנה"
@@ -135,13 +152,13 @@ const CONTENT = {
   },
   en: {
     metaTitle: "Properties for Rent in Dubai | Apartments & Villas | Binayah",
-    metaDesc: "Find your perfect Dubai rental, apartments, villas, studios and townhouses. Verified listings with live prices. Move in ready. Search 1,000+ rentals now.",
+    metaDesc: "Find your perfect Dubai rental, apartments, villas, studios and townhouses. Verified listings with live prices. Move in ready. Start your Dubai rental search now.",
     heroLabel: "RENT IN DUBAI",
     h1: "Properties for Rent",
     h1sub: "in Dubai",
     heroDesc: "Verified rental listings across all Dubai communities. Studios from AED 25K/year. Family villas from AED 90K/year. Find your home with Binayah's trusted rental agents.",
+    rentalsLabel: "Rental Listings",
     stats: [
-      { n: "1,000+", label: "Rental Listings" },
       { n: "AED 25K", label: "Studio from/year" },
       { n: "90K+", label: "Active Tenants" },
       { n: "48h", label: "Avg Match Time" },
@@ -160,13 +177,13 @@ const CONTENT = {
   },
   ru: {
     metaTitle: "Аренда недвижимости в Дубае | Квартиры и виллы | Binayah",
-    metaDesc: "Найдите идеальное жильё в аренду в Дубае, квартиры, виллы, студии и таунхаусы. Проверенные объявления с актуальными ценами. Более 1000 объектов.",
+    metaDesc: "Найдите идеальное жильё в аренду в Дубае, квартиры, виллы, студии и таунхаусы. Проверенные объявления с актуальными ценами. Готово к заселению.",
     heroLabel: "АРЕНДА В ДУБАЕ",
     h1: "Аренда недвижимости",
     h1sub: "в Дубае",
     heroDesc: "Проверенные объявления об аренде во всех районах Дубая. Студии от 25 000 AED в год. Семейные виллы от 90 000 AED в год. Найдите жильё с надёжными агентами Binayah.",
+    rentalsLabel: "Объектов в аренду",
     stats: [
-      { n: "1 000+", label: "Объектов в аренду" },
       { n: "от 25К AED", label: "Студия в год" },
       { n: "90К+", label: "Активных арендаторов" },
       { n: "48ч", label: "Среднее время подбора" },
@@ -185,13 +202,13 @@ const CONTENT = {
   },
   ar: {
     metaTitle: "عقارات للإيجار في دبي | شقق وفلل | بناية للعقارات",
-    metaDesc: "اعثر على إيجارك المثالي في دبي, شقق وفلل واستوديوهات وتاون هاوس. إعلانات موثَّقة بأسعار حية. أكثر من 1000 عقار.",
+    metaDesc: "اعثر على إيجارك المثالي في دبي, شقق وفلل واستوديوهات وتاون هاوس. إعلانات موثَّقة بأسعار حية. جاهزة للسكن.",
     heroLabel: "الإيجار في دبي",
     h1: "عقارات للإيجار",
     h1sub: "في دبي",
     heroDesc: "إعلانات إيجار موثَّقة في جميع مجتمعات دبي. استوديوهات من 25,000 درهم سنويًا. فلل عائلية من 90,000 درهم سنويًا. اعثر على منزلك مع وكلاء بناية الموثوقين.",
+    rentalsLabel: "إعلان إيجار",
     stats: [
-      { n: "+1000", label: "إعلان إيجار" },
       { n: "25K درهم", label: "استوديو/سنة" },
       { n: "+90K", label: "مستأجر نشط" },
       { n: "48س", label: "متوسط وقت المطابقة" },
@@ -210,13 +227,13 @@ const CONTENT = {
   },
   zh: {
     metaTitle: "迪拜租房 | 公寓和别墅出租 | Binayah Properties",
-    metaDesc: "在迪拜找到您理想的租房, , 公寓、别墅、单间和联排别墅。核实房源，实时价格。1000多套出租房源。",
+    metaDesc: "在迪拜找到您理想的租房, , 公寓、别墅、单间和联排别墅。核实房源，实时价格。拎包入住，随时看房。",
     heroLabel: "在迪拜租房",
     h1: "迪拜出租房产",
     h1sub: "公寓 · 别墅 · 单间",
     heroDesc: "迪拜所有社区的核实出租房源。单间公寓年租金从2.5万迪拉姆起。家庭别墅从9万迪拉姆起。通过Binayah可信赖的租赁经纪人找到您的家。",
+    rentalsLabel: "出租房源",
     stats: [
-      { n: "1,000+", label: "出租房源" },
       { n: "2.5万AED", label: "单间/年起" },
       { n: "9万+", label: "活跃租客" },
       { n: "48小时", label: "平均匹配时间" },
@@ -235,13 +252,13 @@ const CONTENT = {
   },
   vi: {
     metaTitle: "Bất động sản cho thuê tại Dubai | Căn hộ & Biệt thự | Binayah",
-    metaDesc: "Tìm bất động sản thuê hoàn hảo tại Dubai, căn hộ, biệt thự, studio và nhà phố. Tin đăng đã xác minh với giá trực tiếp. Sẵn vào ở. Tìm hơn 1.000 tin thuê ngay.",
+    metaDesc: "Tìm bất động sản thuê hoàn hảo tại Dubai, căn hộ, biệt thự, studio và nhà phố. Tin đăng đã xác minh với giá trực tiếp. Sẵn vào ở. Bắt đầu tìm nhà thuê tại Dubai ngay.",
     heroLabel: "THUÊ TẠI DUBAI",
     h1: "Bất động sản cho thuê",
     h1sub: "tại Dubai",
     heroDesc: "Tin đăng cho thuê đã xác minh trên tất cả khu vực Dubai. Studio từ 25K AED/năm. Biệt thự gia đình từ 90K AED/năm. Tìm ngôi nhà của bạn với chuyên viên cho thuê đáng tin cậy của Binayah.",
+    rentalsLabel: "Tin đăng cho thuê",
     stats: [
-      { n: "1.000+", label: "Tin đăng cho thuê" },
       { n: "25K AED", label: "Studio từ/năm" },
       { n: "90K+", label: "Khách thuê đang hoạt động" },
       { n: "48h", label: "Thời gian so khớp TB" },
@@ -295,6 +312,14 @@ export default async function RentPage({ params }: Props) {
   const initialData = await getInitialRentListings();
   const collectionItems = rentCollectionItems(initialData);
 
+  // The rental-count tile is prepended only when we have a real, live number.
+  // With no count the tile is omitted entirely and the row renders 3 across.
+  const rentCount = rentListingCount(initialData);
+  const stats: { n: string; label: string }[] =
+    rentCount === null
+      ? [...c.stats]
+      : [{ n: formatCount(rentCount, locale), label: c.rentalsLabel }, ...c.stats];
+
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/rent` },
@@ -325,8 +350,8 @@ export default async function RentPage({ params }: Props) {
       {/* Stats */}
       <section className="border-b border-border/50 bg-card">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-border/40">
-            {c.stats.map((s) => (
+          <div className={`grid grid-cols-2 ${stats.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
+            {stats.map((s) => (
               <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
                 <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>
                 <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{s.label}</p>
