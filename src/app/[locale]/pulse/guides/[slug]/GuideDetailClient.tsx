@@ -90,7 +90,7 @@ function linkCommunities(
     out.push(
       <Link
         key={`c-${key}-${k++}`}
-        href={`/${locale}/communities/${slugify(canonical)}`}
+        href={`/communities/${slugify(canonical)}`}
         className="font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
       >
         {matched}
@@ -229,12 +229,43 @@ function renderBody(text: string, communities: string[], locale: string): React.
   return nodes;
 }
 
+// Markdown links. Guides previously had no way to link out, so cross-references
+// were written as bare text ("binayah.ae/services/..."), which read as noise and
+// passed no link equity. Verified safe to add: no body in the collection
+// contained a "](" sequence before this shipped.
+const MD_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+
+function renderLinks(text: string, communities: string[], locale: string, seen: Set<string>, keyBase: string): React.ReactNode {
+  MD_LINK.lastIndex = 0;
+  if (!MD_LINK.test(text)) return linkCommunities(text, communities, locale, seen);
+  MD_LINK.lastIndex = 0;
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let k = 0;
+  while ((m = MD_LINK.exec(text)) !== null) {
+    if (m.index > last) out.push(linkCommunities(text.slice(last, m.index), communities, locale, seen));
+    const [, label, href] = m;
+    const cls = "font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary";
+    // Internal hrefs go through the locale-aware Link with a BARE path — it
+    // applies the active locale itself. External ones open in a new tab.
+    out.push(
+      href.startsWith("/")
+        ? <Link key={`${keyBase}-l${k++}`} href={href} className={cls}>{label}</Link>
+        : <a key={`${keyBase}-l${k++}`} href={href} target="_blank" rel="noopener noreferrer" className={cls}>{label}</a>,
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(linkCommunities(text.slice(last), communities, locale, seen));
+  return out;
+}
+
 function renderInline(text: string, communities: string[], locale: string, seen: Set<string>): React.ReactNode {
   const parts = text.split(/\*\*([^*]+)\*\*/g);
   return parts.map((part, i) =>
     i % 2 === 1
-      ? <strong key={i} className="font-semibold text-foreground">{linkCommunities(part, communities, locale, seen)}</strong>
-      : <React.Fragment key={i}>{linkCommunities(part, communities, locale, seen)}</React.Fragment>
+      ? <strong key={i} className="font-semibold text-foreground">{renderLinks(part, communities, locale, seen, `b${i}`)}</strong>
+      : <React.Fragment key={i}>{renderLinks(part, communities, locale, seen, `t${i}`)}</React.Fragment>
   );
 }
 
@@ -398,7 +429,7 @@ export default function GuideDetailClient({
                     {guide.relatedCommunities.map((community) => (
                       <Link
                         key={community}
-                        href={`/${locale}/communities/${slugify(community)}`}
+                        href={`/communities/${slugify(community)}`}
                         className="group flex flex-col items-center justify-center bg-card border border-border/50 rounded-xl p-3 hover:border-accent/40 hover:shadow-sm transition-all text-center"
                       >
                         <p className="text-xs font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">{community}</p>
@@ -411,7 +442,7 @@ export default function GuideDetailClient({
 
               {/* Back link */}
               <div className="mt-12">
-                <Link href={`/${locale}/pulse/guides`} className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+                <Link href="/pulse/guides" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
                   <ArrowLeft className="h-4 w-4" /> {t("backToGuides")}
                 </Link>
               </div>
@@ -427,10 +458,10 @@ export default function GuideDetailClient({
                 <h3 className="font-bold text-white mb-1.5">{t("ctaTitle")}</h3>
                 <p className="text-sm text-white/70 mb-4 leading-relaxed">{t("ctaSub")}</p>
                 <div className="space-y-2.5">
-                  <Link href={`/${locale}/contact`} className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity">
+                  <Link href="/contact" className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity">
                     {t("ctaContact")}
                   </Link>
-                  <Link href={`/${locale}/pulse/calculator`} className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-white/10 text-white hover:bg-white/15 transition-colors">
+                  <Link href="/pulse/calculator" className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-white/10 text-white hover:bg-white/15 transition-colors">
                     {t("ctaCalculator")} <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
@@ -462,7 +493,7 @@ export default function GuideDetailClient({
                   </h3>
                   <div className="space-y-3">
                     {relatedGuides.map((g) => (
-                      <Link key={g.slug} href={`/${locale}/pulse/guides/${g.slug}`} className="group block">
+                      <Link key={g.slug} href={`/pulse/guides/${g.slug}`} className="group block">
                         <p className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">
                           {guideTitle(g, t, locale)}
                         </p>
@@ -485,7 +516,7 @@ export default function GuideDetailClient({
                   {CURATED_AREAS.map((area) => (
                     <Link
                       key={area.slug}
-                      href={`/${locale}/communities/${area.slug}`}
+                      href={`/communities/${area.slug}`}
                       className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-muted/50 text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
                     >
                       {area.name}
