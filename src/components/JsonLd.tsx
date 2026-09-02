@@ -85,7 +85,6 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       longitude: 55.2295,
     },
     foundingDate: "2007",
-    numberOfEmployees: { "@type": "QuantitativeValue", value: 50 },
     sameAs: [
       "https://www.instagram.com/dubai_realty",
       "https://www.facebook.com/BinayahRealEstateLLC",
@@ -93,11 +92,15 @@ export function OrganizationJsonLd({ nonce }: { nonce?: string }) {
       "https://www.linkedin.com/company/binayah-real-estate",
       "https://binayah.ru",
     ],
+    // Must match the hours shown on /contact and /about (messages `contact.hours`
+    // = "Mon - Sat: 9:00 AM - 6:00 PM"). Structured data that contradicts the
+    // visible page is a markup violation, and this block previously claimed
+    // seven days 09:00-21:00.
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       opens: "09:00",
-      closes: "21:00",
+      closes: "18:00",
     },
     priceRange: "AED 500,000 - AED 50,000,000+",
     areaServed: [
