@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Crown, Building2, Award, CalendarDays, ArrowRight } from "lucide-react";
+import { Crown, Building2, TrendingUp, Award, CalendarDays, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
 
 const AIPulseBanner = () => {
   const t = useTranslations("home.sections.aiBanner");
   const pulseStats = [
-    // statClients / statSold / statAwards dropped: "11,200+", "AED 2.1B+" and
-    // "15+ Industry Awards" were unsourced, and 11,200+ was reused verbatim for
-    // three different metrics across the site.
+    // statClients ("11,200+") stays out: it was rendered as Clients here, as
+    // Properties Sold on /sell and as Properties Managed on /services, so two of
+    // those three labels were wrong whatever the real metric is.
     { icon: Building2, label: t("statListed"), value: "3,000", suffix: "+" },
-    { icon: Award, label: t("statOrn"), value: "1162", suffix: "" },
+    { icon: TrendingUp, label: t("statSold"), value: "AED 2.1B", suffix: "+" },
+    { icon: Award, label: t("statAwards"), value: "15", suffix: "+" },
     { icon: CalendarDays, label: t("statYears"), value: "19", suffix: "+" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -91,9 +92,14 @@ const AIPulseBanner = () => {
             <span className="text-[11px] font-bold text-white tabular-nums">3,000+</span>
           </div>
           <div className="flex items-center gap-1.5">
+            <TrendingUp className="h-3.5 w-3.5 text-accent" />
+            {/* eslint-disable-next-line i18next/no-literal-string -- numeric stat, not translatable copy */}
+            <span className="text-[11px] font-bold text-white tabular-nums">AED 2.1B+</span>
+          </div>
+          <div className="flex items-center gap-1.5">
             <Award className="h-3.5 w-3.5 text-white/50" />
-            {/* eslint-disable-next-line i18next/no-literal-string -- RERA registration number */}
-            <span className="text-[11px] font-bold text-white tabular-nums">ORN 1162</span>
+            {/* eslint-disable-next-line i18next/no-literal-string -- award count */}
+            <span className="text-[11px] font-bold text-white tabular-nums">15+</span>
           </div>
           <div className="flex items-center gap-1.5">
             <CalendarDays className="h-3.5 w-3.5 text-white/50" />

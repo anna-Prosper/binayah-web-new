@@ -11,21 +11,25 @@ export default async function StatsSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "home.sections.team" });
   const ts = await getTranslations({ locale, namespace: "home.sections.stats" });
 
-  // Only claims that can be sourced. The previous set asserted "11,200+ Happy
-  // Clients", "AED 2.1B+ Sold" and "15+ Industry Awards" — none evidenced
-  // anywhere in the repo, and 11,200+ was simultaneously labelled "Properties
-  // Sold" on /sell and "Properties Managed" on /services. The Google rating is
-  // fetched live rather than hardcoded so it can never drift from the real
-  // profile (the old /services page claimed 4.9 against a real 4.4).
+  // Business figures (properties sold, industry awards) are confirmed by the
+  // owner as real company data. "11,200+" is deliberately NOT restored: it was
+  // rendered simultaneously as Happy Clients, Properties Sold and Properties
+  // Managed, so whichever metric it belongs to, two of those labels were wrong.
+  // It goes back once the owner says which one it is.
+  //
+  // The Google rating is fetched live rather than hardcoded — the old hardcoded
+  // "4.9" on /services contradicted the real 4.4 on the Google profile.
   const reviews = await getGoogleReviews();
   const stats = [
     { value: "3,000+", label: ts("propertiesListed") },
+    { value: "AED 2.1B+", label: ts("sold") },
+    { value: "15+", label: ts("industryAwards") },
     { value: "19+", label: ts("yearsExperience") },
-    { value: "ORN 1162", label: ts("reraOrn") },
     ...(reviews && reviews.total > 0
       ? [{ value: `${reviews.rating.toFixed(1)}★`, label: ts("googleRating", { count: reviews.total }) }]
       : []),
   ];
+
 
   return (
     <section className="py-14 sm:py-24 bg-background">
