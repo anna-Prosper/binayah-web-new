@@ -102,6 +102,14 @@ const Footer = () => {
           <h4 className="font-semibold text-white mb-3 sm:mb-5 text-[10px] sm:text-xs uppercase tracking-[0.2em]">{t("company")}</h4>
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
             <li><Link href="/services" className="hover:text-accent transition-colors">{t("links.services")}</Link></li>
+            {/* The commercial service pages. These live in the footer rather than
+                only in the Navbar mega menu because the mega-menu panels mount
+                on open, so their links never appear in the served HTML and carry
+                no crawlable internal-link equity. */}
+            <li><Link href="/services/real-estate-agency-dubai" className="hover:text-accent transition-colors">{t("links.agencyDubai")}</Link></li>
+            <li><Link href="/services/real-estate-broker-dubai" className="hover:text-accent transition-colors">{t("links.brokerDubai")}</Link></li>
+            <li><Link href="/services/property-investment-dubai" className="hover:text-accent transition-colors">{t("links.investmentDubai")}</Link></li>
+            <li><Link href="/services/property-management" className="hover:text-accent transition-colors">{t("links.propertyManagement")}</Link></li>
             <li><Link href="/about" className="hover:text-accent transition-colors">{t("links.about")}</Link></li>
             <li><Link href="/team" className="hover:text-accent transition-colors">{t("links.team")}</Link></li>
             <li><Link href="/news" className="hover:text-accent transition-colors">{t("links.news")}</Link></li>
