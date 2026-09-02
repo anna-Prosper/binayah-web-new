@@ -41,6 +41,32 @@ const GUIDE_LINKS = [
   "/pulse/guides/landlord-checklist-dubai",
 ] as const;
 
+/* The 20 community investor guides this page acts as the hub for. Index-aligned
+   with every locale's `communityLabels`. Hrefs are bare; `lp` is prepended at
+   render time. Every slug was verified against src/lib/pulse-guides.ts. */
+const COMMUNITY_GUIDE_LINKS = [
+  "/pulse/guides/al-furjan-investor-guide",
+  "/pulse/guides/arjan-investor-guide",
+  "/pulse/guides/business-bay-investor-guide",
+  "/pulse/guides/damac-hills-investor-guide",
+  "/pulse/guides/damac-hills-2-investor-guide",
+  "/pulse/guides/downtown-dubai-investor-guide",
+  "/pulse/guides/dubai-islands-investor-guide",
+  "/pulse/guides/dubai-marina-investor-guide",
+  "/pulse/guides/dubai-south-investor-guide",
+  "/pulse/guides/dubai-sports-city-investor-guide",
+  "/pulse/guides/emaar-beachfront-investor-guide",
+  "/pulse/guides/jvc-investor-guide",
+  "/pulse/guides/jvt-investor-guide",
+  "/pulse/guides/meydan-investor-guide",
+  "/pulse/guides/palm-jebel-ali-investor-guide",
+  "/pulse/guides/palm-jumeirah-investor-guide",
+  "/pulse/guides/sobha-hartland-investor-guide",
+  "/pulse/guides/the-valley-investor-guide",
+  "/pulse/guides/tilal-al-ghaf-investor-guide",
+  "/pulse/guides/town-square-investor-guide",
+] as const;
+
 const CONTENT = {
   en: {
     metaTitle: "Dubai Property Investment | Invest in Dubai Real Estate | Binayah",
@@ -59,6 +85,16 @@ const CONTENT = {
     answerBody: [
       "Dubai property investment means buying residential or commercial real estate in Dubai to earn rental income, capital appreciation, or both. Foreign nationals can own property outright in Dubai's designated freehold areas, with ownership registered on a title deed issued by the Dubai Land Department (DLD). The UAE levies no annual property tax, no capital-gains tax and no income tax on rental earnings, so rent reaches the owner more directly than in most global markets.",
       "The citywide average gross rental yield is around 4.7%, with mid-market communities yielding above that line and prime waterfront below it. Budget roughly 5.5% of the purchase price in transaction costs on a cash deal and around 6.5% on a financed one, on top of the price itself. A purchase of AED 2 million or more in qualifying, DLD-registered property also makes the buyer eligible for a 10-year renewable Golden Visa.",
+    ],
+    whyDubaiTitle: "Why invest in Dubai real estate?",
+    whyDubaiIntro: "The case for buying property in Dubai rests on six structural features of the market rather than on any single year's price movement. Each one is verifiable before you commit capital.",
+    whyDubaiPoints: [
+      { title: "No property tax, no capital-gains tax, no income tax on rent", body: "The UAE levies no annual property tax, no capital-gains tax and no income tax on rental earnings. Your recurring costs are service charges and maintenance rather than a tax bill, so a larger share of the rent reaches you than in most global markets." },
+      { title: "100% foreign ownership in the freehold zones", body: "In Dubai's designated freehold areas a foreign national owns the property outright and permanently, with their name on a Dubai Land Department title deed that does not expire and carries the right to sell, lease and bequeath. Outside those zones, leasehold grants use for a long but finite term, commonly up to 99 years." },
+      { title: "DLD and RERA regulation, with escrow on off-plan", body: "The market is regulated by the Dubai Land Department and its regulatory arm RERA. Off-plan instalments are paid into a project escrow account and released to the developer against verified construction progress, and your interim interest is registered against the specific unit through Oqood." },
+      { title: "Residency through property", body: "A qualifying property investment of at least AED 2 million makes you eligible for a 10-year renewable Golden Visa, with spouse and children included on the application. A renewable residence route also exists from AED 750,000 of property." },
+      { title: "A currency pegged to the US dollar", body: "The dirham has been pegged to the US dollar at AED 3.6725 since 1997, so a Dubai property is effectively a dollar asset. Dollar-economy buyers carry no currency risk; buyers in other currencies should note that UAE interest rates track US monetary policy for the same reason." },
+      { title: "Yields above the global gateway cities", body: "The citywide average gross rental yield is around 4.7%, running from about 4.5% in prime areas to about 8.5% in high-yield communities such as JVC. Prime yields in the largest global gateway markets sit in the low single digits by comparison, around 2-3% in prime London and 3-4% in New York, and Dubai's price per square foot remains substantially below those cities." },
     ],
     servicesTitle: "What our investment service covers",
     services: [
@@ -92,6 +128,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "Mature, affordable stock with limited new supply and long-staying tenants.", "Above the citywide average", "Income first"],
     ],
     areasNote: "Benchmarks: the citywide average gross rental yield is around 4.7% and the citywide average sale price is around AED 1,879 per square foot. Prime waterfront generally yields below the citywide average and is bought for appreciation, not cash flow. The consensus analyst expectation for 2026-2028 is 5-12% annual appreciation in selected segments.",
+    communitiesTitle: "Community investor guides",
+    communitiesIntro: "Every community prices, yields and rents differently. These 20 guides cover prices, rental yields, property types and the specific risks of each area, so you can compare before you shortlist.",
+    communityLabels: ["Al Furjan", "Arjan", "Business Bay", "DAMAC Hills", "DAMAC Hills 2", "Downtown Dubai", "Dubai Islands", "Dubai Marina", "Dubai South", "Dubai Sports City", "Emaar Beachfront", "Jumeirah Village Circle (JVC)", "Jumeirah Village Triangle (JVT)", "Meydan", "Palm Jebel Ali", "Palm Jumeirah", "Sobha Hartland", "The Valley", "Tilal Al Ghaf", "Town Square"],
     yieldTitle: "What rental yield can I get in Dubai?",
     yieldIntro: "The citywide average gross rental yield is around 4.7%. The range runs from about 4.5% in prime areas to about 8.5% in high-yield communities such as JVC. Gross is not what you keep.",
     yieldHead: ["Metric", "What it means", "Typical Dubai figure"],
@@ -183,6 +222,16 @@ const CONTENT = {
       "Инвестиции в недвижимость Дубая — это покупка жилой или коммерческой недвижимости ради арендного дохода, роста стоимости капитала или того и другого. Иностранные граждане могут владеть недвижимостью полностью в обозначенных фрихолд-зонах Дубая, право собственности регистрируется в титуле (title deed), который выдаёт Земельный департамент Дубая (DLD). В ОАЭ нет ежегодного налога на недвижимость, налога на прирост капитала и подоходного налога на арендные поступления, поэтому арендная плата доходит до владельца напрямую.",
       "Средняя валовая арендная доходность по городу составляет около 4,7%: районы среднего сегмента дают выше этой планки, премиальная набережная — ниже. Заложите примерно 5,5% от цены покупки на транзакционные расходы при оплате наличными и около 6,5% при ипотеке, сверх самой цены. Покупка недвижимости на сумму от AED 2 млн, зарегистрированной в DLD, также даёт право на 10-летнюю продлеваемую Golden Visa.",
     ],
+    whyDubaiTitle: "Почему инвестировать в недвижимость Дубая?",
+    whyDubaiIntro: "Аргументы в пользу покупки недвижимости в Дубае держатся на шести структурных особенностях рынка, а не на движении цен за один год. Каждую из них можно проверить до того, как вы вложите деньги.",
+    whyDubaiPoints: [
+      { title: "Нет налога на недвижимость, на прирост капитала и на арендный доход", body: "В ОАЭ нет ежегодного налога на недвижимость, налога на прирост капитала и подоходного налога на арендные поступления. Регулярные расходы — это сервисные сборы и обслуживание, а не налоговый счёт, поэтому владельцу достаётся большая доля аренды, чем на большинстве мировых рынков." },
+      { title: "100% иностранного владения во фрихолд-зонах", body: "В обозначенных фрихолд-зонах Дубая иностранный гражданин владеет объектом полностью и бессрочно: его имя вписано в титул (title deed) Земельного департамента Дубая, срок которого не истекает, а право включает продажу, сдачу в аренду и наследование. Вне этих зон лизхолд даёт право пользования на длительный, но конечный срок, обычно до 99 лет." },
+      { title: "Регулирование DLD и RERA, эскроу для новостроек", body: "Рынок регулируется Земельным департаментом Дубая (DLD) и его регулятором RERA. Платежи по новостройкам поступают на эскроу-счёт проекта и передаются застройщику по мере подтверждённого прогресса строительства, а ваш промежуточный интерес регистрируется за конкретным лотом через Oqood." },
+      { title: "Резиденция через недвижимость", body: "Квалифицирующая инвестиция в недвижимость от AED 2 млн даёт право на 10-летнюю продлеваемую Golden Visa, включая супруга и детей в заявке. Существует также маршрут продлеваемой резиденции от AED 750 000 в недвижимости." },
+      { title: "Валюта привязана к доллару США", body: "Дирхам привязан к доллару США по курсу AED 3,6725 с 1997 года, поэтому недвижимость в Дубае — это по сути долларовый актив. Для покупателей из долларовой экономики валютного риска нет; покупателям в других валютах стоит помнить, что по той же причине ставки в ОАЭ следуют за монетарной политикой США." },
+      { title: "Доходность выше, чем в мировых столицах", body: "Средняя валовая арендная доходность по городу — около 4,7%: примерно от 4,5% в премиальных районах до 8,5% в высокодоходных сообществах вроде JVC. Для сравнения, премиальная доходность в крупнейших мировых центрах измеряется низкими однозначными числами — около 2-3% в премиальном Лондоне и 3-4% в Нью-Йорке, — а цена за квадратный фут в Дубае остаётся существенно ниже." },
+    ],
     servicesTitle: "Что входит в инвестиционный сервис",
     services: [
       { icon: "🎯", title: "Стратегия и цели", body: "Доход, рост или резиденция. Сначала фиксируем цель: самый доходный объект и самый растущий в цене объект — это почти никогда не один и тот же объект." },
@@ -215,6 +264,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "Зрелый доступный фонд с ограниченным новым предложением и долгосрочными арендаторами.", "Выше среднего по городу", "В первую очередь доход"],
     ],
     areasNote: "Ориентиры: средняя валовая арендная доходность по городу — около 4,7%, средняя цена продажи — около AED 1 879 за квадратный фут. Премиальная набережная обычно даёт доходность ниже среднего по городу и покупается ради роста стоимости, а не денежного потока. Консенсус аналитиков на 2026-2028 годы — 5-12% годового прироста стоимости в отдельных сегментах.",
+    communitiesTitle: "Гиды для инвесторов по районам",
+    communitiesIntro: "В каждом районе своя цена, своя доходность и свой арендатор. Эти 20 гидов разбирают цены, арендную доходность, типы недвижимости и специфические риски каждого района, чтобы вы могли сравнить их до составления шортлиста.",
+    communityLabels: ["Al Furjan", "Arjan", "Business Bay", "DAMAC Hills", "DAMAC Hills 2", "Даунтаун Дубай", "Dubai Islands", "Дубай Марина", "Dubai South", "Dubai Sports City", "Emaar Beachfront", "Jumeirah Village Circle (JVC)", "Jumeirah Village Triangle (JVT)", "Meydan", "Palm Jebel Ali", "Пальм Джумейра", "Sobha Hartland", "The Valley", "Tilal Al Ghaf", "Town Square"],
     yieldTitle: "Какую арендную доходность можно получить в Дубае?",
     yieldIntro: "Средняя валовая арендная доходность по городу — около 4,7%. Диапазон идёт примерно от 4,5% в премиальных районах до 8,5% в высокодоходных сообществах вроде JVC. Валовая доходность — не то, что остаётся у вас на руках.",
     yieldHead: ["Показатель", "Что это значит", "Типичные значения в Дубае"],
@@ -306,6 +358,16 @@ const CONTENT = {
       "الاستثمار العقاري في دبي يعني شراء عقار سكني أو تجاري في دبي لتحقيق دخل إيجاري أو نمو في رأس المال أو كليهما. يستطيع الأجانب التملك الكامل في مناطق التملك الحر المخصصة في دبي، وتُسجَّل الملكية في سند ملكية تصدره دائرة الأراضي والأملاك في دبي. لا تفرض الإمارات ضريبة عقارية سنوية ولا ضريبة على الأرباح الرأسمالية ولا ضريبة دخل على عوائد الإيجار، لذا يصل الإيجار إلى المالك بشكل مباشر أكثر من معظم الأسواق العالمية.",
       "يبلغ متوسط العائد الإيجاري الإجمالي على مستوى المدينة نحو 4.7%، حيث تحقق مجتمعات السوق المتوسط عائدًا أعلى من هذا الخط، بينما تحقق الواجهات البحرية الفاخرة عائدًا أقل منه. خصِّص نحو 5.5% من سعر الشراء لتكاليف المعاملة في الصفقات النقدية ونحو 6.5% في الصفقات الممولة، فوق السعر نفسه. كما أن شراء عقار مؤهل بقيمة مليوني درهم أو أكثر ومسجَّل لدى دائرة الأراضي يمنح المشتري أهلية الإقامة الذهبية لعشر سنوات قابلة للتجديد.",
     ],
+    whyDubaiTitle: "لماذا الاستثمار في عقارات دبي؟",
+    whyDubaiIntro: "تقوم الحجة لشراء عقار في دبي على ست خصائص هيكلية للسوق، لا على حركة الأسعار في سنة واحدة. ويمكن التحقق من كل واحدة منها قبل أن تلتزم برأس مالك.",
+    whyDubaiPoints: [
+      { title: "لا ضريبة عقارية ولا ضريبة أرباح رأسمالية ولا ضريبة دخل على الإيجار", body: "لا تفرض الإمارات ضريبة عقارية سنوية ولا ضريبة على الأرباح الرأسمالية ولا ضريبة دخل على عوائد الإيجار. تكاليفك المتكررة هي رسوم الخدمة والصيانة لا فاتورة ضريبية، لذا يصل إليك جزء أكبر من الإيجار مقارنة بمعظم الأسواق العالمية." },
+      { title: "تملك أجنبي 100% في مناطق التملك الحر", body: "في مناطق التملك الحر المخصصة في دبي يملك الأجنبي العقار ملكية كاملة ودائمة، باسمه في سند ملكية صادر عن دائرة الأراضي والأملاك لا تنتهي صلاحيته ويمنح حق البيع والتأجير والتوريث. أما خارج هذه المناطق فتمنح الإجارة الطويلة حق الانتفاع لمدة طويلة لكنها محدودة، تصل عادة إلى 99 عاماً." },
+      { title: "تنظيم دائرة الأراضي والأملاك وRERA وحساب الضمان", body: "ينظّم السوق دائرة الأراضي والأملاك في دبي وذراعها التنظيمي RERA. تُودع أقساط العقارات على الخارطة في حساب ضمان خاص بالمشروع ويُفرج عنها للمطوّر مقابل تقدم إنشائي مُتحقق منه، ويُسجّل حقك المؤقت على الوحدة المحددة عبر نظام «عقود» (Oqood)." },
+      { title: "الإقامة عبر العقار", body: "استثمار عقاري مؤهل بقيمة مليوني درهم أو أكثر يمنحك أهلية الإقامة الذهبية لعشر سنوات قابلة للتجديد، مع إدراج الزوج والأبناء في الطلب. كما يوجد مسار إقامة قابلة للتجديد ابتداءً من 750,000 درهم من العقار." },
+      { title: "عملة مربوطة بالدولار الأمريكي", body: "الدرهم مربوط بالدولار الأمريكي عند 3.6725 درهم منذ 1997، ما يجعل العقار في دبي أصلاً دولارياً فعلياً. المشترون من اقتصادات الدولار لا يتحملون مخاطر عملة؛ ومن يشترون بعملات أخرى عليهم ملاحظة أن أسعار الفائدة في الإمارات تتبع السياسة النقدية الأمريكية للسبب نفسه." },
+      { title: "عوائد أعلى من المدن العالمية الكبرى", body: "متوسط العائد الإيجاري الإجمالي على مستوى المدينة نحو 4.7%، ويتراوح من نحو 4.5% في المناطق المميزة إلى نحو 8.5% في المجتمعات عالية العائد مثل قرية جميرا الدائرية. وللمقارنة، تقع العوائد المميزة في أكبر المدن العالمية ضمن خانة الآحاد المنخفضة، نحو 2-3% في لندن المميزة و3-4% في نيويورك، كما يبقى سعر القدم المربعة في دبي أدنى بكثير." },
+    ],
     servicesTitle: "ما تشمله خدمتنا الاستثمارية",
     services: [
       { icon: "🎯", title: "الاستراتيجية وتحديد الهدف", body: "دخل أم نمو أم إقامة. نحدد الهدف أولًا، لأن العقار الأعلى عائدًا والعقار الأسرع ارتفاعًا في القيمة نادرًا ما يكونان العقار نفسه." },
@@ -338,6 +400,9 @@ const CONTENT = {
       ["ديسكفري جاردنز / المدينة العالمية", "مخزون ناضج وميسور بمعروض جديد محدود ومستأجرين طويلي الإقامة.", "أعلى من متوسط المدينة", "الدخل أولًا"],
     ],
     areasNote: "المعايير المرجعية: متوسط العائد الإيجاري الإجمالي على مستوى المدينة نحو 4.7%، ومتوسط سعر البيع نحو 1,879 درهمًا للقدم المربعة. الواجهات البحرية الفاخرة تحقق عادةً عائدًا أقل من متوسط المدينة وتُشترى لنمو القيمة لا للتدفق النقدي. وتشير توقعات المحللين التوافقية للفترة 2026-2028 إلى ارتفاع سنوي بنسبة 5-12% في قطاعات مختارة.",
+    communitiesTitle: "أدلة المستثمر حسب المجتمع",
+    communitiesIntro: "لكل مجتمع سعره وعائده ومستأجره. تغطي هذه الأدلة العشرون الأسعار والعوائد الإيجارية وأنواع العقارات والمخاطر الخاصة بكل منطقة، لتقارن قبل أن تضع قائمتك المختصرة.",
+    communityLabels: ["الفرجان", "أرجان", "الخليج التجاري", "داماك هيلز", "داماك هيلز 2", "وسط مدينة دبي", "جزر دبي", "مرسى دبي", "دبي ساوث", "مدينة دبي الرياضية", "إيمار بيتش فرونت", "قرية جميرا الدائرية (JVC)", "مثلث قرية جميرا (JVT)", "ميدان", "نخلة جبل علي", "نخلة جميرا", "صبحا هارتلاند", "ذا فالي", "تلال الغاف", "تاون سكوير"],
     yieldTitle: "ما العائد الإيجاري الذي يمكن تحقيقه في دبي؟",
     yieldIntro: "متوسط العائد الإيجاري الإجمالي على مستوى المدينة نحو 4.7%، ويمتد النطاق من نحو 4.5% في المناطق الفاخرة إلى نحو 8.5% في المجتمعات عالية العائد مثل قرية جميرا الدائرية. العائد الإجمالي ليس ما يبقى في يدك.",
     yieldHead: ["المؤشر", "ماذا يعني", "القيمة المعتادة في دبي"],
@@ -429,6 +494,16 @@ const CONTENT = {
       "迪拜房产投资是指在迪拜购买住宅或商业地产，以获取租金收入、资本增值，或两者兼得。外国人可在迪拜指定的永久产权（freehold）区域完全拥有房产，产权登记在迪拜土地局（DLD）签发的房产证上。阿联酋不征收年度房产税、资本利得税，也不对租金收入征收所得税，因此租金比多数全球市场更直接地进入业主口袋。",
       "全市平均毛租金回报率约为4.7%，中端社区高于这条基准线，顶级海滨则低于它。除房价本身外，全款交易请预留约房价5.5%的交易成本，按揭交易约6.5%。购买价值200万迪拉姆及以上、在DLD登记的合格房产，还可使买家具备申请10年可续签黄金签证的资格。",
     ],
+    whyDubaiTitle: "为什么投资迪拜房地产？",
+    whyDubaiIntro: "在迪拜买房的理由建立在市场的六项结构性特征之上，而非某一年的价格波动。每一项在您投入资金之前都可以核实。",
+    whyDubaiPoints: [
+      { title: "无房产税、无资本利得税、租金收入免税", body: "阿联酋不征收年度房产税、资本利得税，也不对租金收入征收所得税。您的经常性支出是物业费和维护费，而不是税单，因此租金中归您的比例高于多数全球市场。" },
+      { title: "永久产权区域允许100%外国人持有", body: "在迪拜指定的永久产权（freehold）区域，外国人可完全且永久地拥有房产，姓名登记在迪拜土地局签发的产权证上，该产权不设期限，并享有出售、出租和继承的权利。在这些区域之外，租赁产权仅给予长期但有期限的使用权，通常最长99年。" },
+      { title: "DLD与RERA监管，期房资金托管", body: "市场由迪拜土地局（DLD）及其监管机构RERA监管。期房分期款项进入项目托管账户，按经核实的施工进度分批拨付给开发商；您的临时权益通过Oqood登记在具体房号之下。" },
+      { title: "以房产获取居留权", body: "符合条件的房产投资达到200万迪拉姆即可申请10年可续签的黄金签证，配偶与子女可一并列入申请。此外还有一条自75万迪拉姆房产起的可续签居留路径。" },
+      { title: "货币与美元挂钩", body: "迪拉姆自1997年起以3.6725的汇率与美元挂钩，因此迪拜房产实质上是美元资产。以美元计价的买家不承担汇率风险；使用其他货币的买家则需注意，出于同样原因，阿联酋利率跟随美国货币政策。" },
+      { title: "回报率高于全球门户城市", body: "全市平均毛租金回报率约为4.7%，从核心区约4.5%到JVC等高回报社区约8.5%不等。相比之下，全球最大门户市场的核心区回报率处于低个位数，伦敦核心区约2-3%，纽约约3-4%，而迪拜的每平方英尺价格仍显著更低。" },
+    ],
     servicesTitle: "我们的投资服务涵盖",
     services: [
       { icon: "🎯", title: "策略与目标设定", body: "收益、增值还是居留。我们先确定目标，因为回报率最高的房产与增值最快的房产极少是同一套。" },
@@ -461,6 +536,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "成熟且价格亲民的存量房，新增供应有限，租客居住期长。", "高于全市平均", "收益优先"],
     ],
     areasNote: "基准数据：全市平均毛租金回报率约4.7%，全市平均售价约每平方英尺1,879迪拉姆。顶级海滨的回报率通常低于全市平均，买入目的是增值而非现金流。分析师对2026-2028年的共识预期为部分板块年增值5-12%。",
+    communitiesTitle: "各社区投资者指南",
+    communitiesIntro: "每个社区的价格、回报率和租客结构都不同。这20份指南分别说明各区域的价格、租金回报率、房产类型和特有风险，方便您在筛选之前先做比较。",
+    communityLabels: ["Al Furjan", "Arjan", "商业湾", "Damac Hills", "Damac Hills 2", "迪拜市中心", "迪拜群岛", "迪拜滨海", "迪拜南城", "迪拜体育城", "Emaar Beachfront", "朱美拉环形村 (JVC)", "朱美拉三角村 (JVT)", "Meydan", "杰贝阿里棕榈岛", "朱美拉棕榈岛", "Sobha Hartland", "The Valley", "Tilal Al Ghaf", "Town Square"],
     yieldTitle: "在迪拜能获得多少租金回报率？",
     yieldIntro: "全市平均毛租金回报率约为4.7%，区间从顶级区域的约4.5%到JVC等高回报社区的约8.5%。毛回报率并不是您最终留下的钱。",
     yieldHead: ["指标", "含义", "迪拜常见数值"],
@@ -552,6 +630,16 @@ const CONTENT = {
       "Investir dans l'immobilier à Dubaï consiste à acheter un bien résidentiel ou commercial pour percevoir des revenus locatifs, réaliser une plus-value, ou les deux. Les étrangers peuvent détenir un bien en pleine propriété dans les zones freehold désignées de Dubaï, la propriété étant inscrite sur un titre de propriété délivré par le Dubai Land Department (DLD). Les Émirats ne prélèvent ni taxe foncière annuelle, ni impôt sur les plus-values, ni impôt sur les revenus locatifs : le loyer parvient au propriétaire plus directement que sur la plupart des marchés mondiaux.",
       "Le rendement locatif brut moyen à l'échelle de la ville est d'environ 4,7 %, les quartiers de milieu de gamme se situant au-dessus de cette ligne et le front de mer haut de gamme en dessous. Prévoyez environ 5,5 % du prix d'achat en frais de transaction pour un achat comptant et environ 6,5 % pour un achat financé, en plus du prix lui-même. Un achat d'au moins 2 millions AED en bien éligible enregistré au DLD ouvre également droit à un Golden Visa de 10 ans renouvelable.",
     ],
+    whyDubaiTitle: "Pourquoi investir dans l'immobilier à Dubaï ?",
+    whyDubaiIntro: "Les arguments en faveur d'un achat immobilier à Dubaï reposent sur six caractéristiques structurelles du marché, et non sur les variations de prix d'une seule année. Chacune est vérifiable avant d'engager votre capital.",
+    whyDubaiPoints: [
+      { title: "Ni taxe foncière, ni impôt sur les plus-values, ni impôt sur les loyers", body: "Les Émirats ne prélèvent aucune taxe foncière annuelle, aucun impôt sur les plus-values et aucun impôt sur les revenus locatifs. Vos coûts récurrents sont les charges de copropriété et l'entretien, pas une note fiscale : une part plus importante du loyer vous revient que sur la plupart des marchés mondiaux." },
+      { title: "100 % de propriété étrangère dans les zones freehold", body: "Dans les zones freehold désignées de Dubaï, un ressortissant étranger détient le bien en pleine propriété et de façon permanente, son nom figurant sur un titre de propriété émis par le Dubai Land Department, sans échéance, avec le droit de vendre, de louer et de transmettre. Hors de ces zones, le leasehold n'accorde qu'un droit d'usage long mais fini, couramment jusqu'à 99 ans." },
+      { title: "Régulation par le DLD et la RERA, séquestre sur la VEFA", body: "Le marché est encadré par le Dubai Land Department et son bras régulateur, la RERA. Les échéances d'un achat sur plan sont versées sur un compte séquestre dédié au projet et libérées au promoteur au fur et à mesure de l'avancement vérifié du chantier ; votre droit intermédiaire est enregistré sur le lot précis via l'Oqood." },
+      { title: "La résidence par l'immobilier", body: "Un investissement immobilier éligible d'au moins 2 millions AED ouvre droit à un Golden Visa de 10 ans renouvelable, conjoint et enfants inclus dans le dossier. Une voie de résidence renouvelable existe également à partir de 750 000 AED de biens." },
+      { title: "Une monnaie arrimée au dollar américain", body: "Le dirham est arrimé au dollar américain à 3,6725 AED depuis 1997 : un bien à Dubaï est donc, de fait, un actif en dollars. Les acheteurs en zone dollar ne portent aucun risque de change ; les autres noteront que, pour la même raison, les taux d'intérêt émiriens suivent la politique monétaire américaine." },
+      { title: "Des rendements supérieurs à ceux des grandes places mondiales", body: "Le rendement locatif brut moyen à l'échelle de la ville est d'environ 4,7 %, de près de 4,5 % dans les quartiers prime à environ 8,5 % dans les communautés à haut rendement comme JVC. À titre de comparaison, les rendements prime des plus grandes places mondiales se situent dans le bas des chiffres à un chiffre, de l'ordre de 2-3 % pour le prime londonien et 3-4 % à New York, et le prix au pied carré à Dubaï reste nettement inférieur." },
+    ],
     servicesTitle: "Ce que couvre notre service d'investissement",
     services: [
       { icon: "🎯", title: "Stratégie et objectifs", body: "Revenu, croissance ou résidence. Nous fixons l'objectif d'abord, car le bien le plus rentable et le bien qui s'apprécie le plus sont rarement le même bien." },
@@ -584,6 +672,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "Parc mature et abordable, offre neuve limitée et locataires de longue durée.", "Au-dessus de la moyenne de la ville", "Le revenu avant tout"],
     ],
     areasNote: "Repères : le rendement locatif brut moyen à l'échelle de la ville est d'environ 4,7 % et le prix de vente moyen d'environ 1 879 AED le pied carré. Le front de mer prime rend généralement moins que la moyenne de la ville et s'achète pour la plus-value, pas pour le cash-flow. Le consensus des analystes pour 2026-2028 table sur 5-12 % d'appréciation annuelle dans certains segments.",
+    communitiesTitle: "Guides d'investissement par communauté",
+    communitiesIntro: "Chaque communauté a ses prix, son rendement et son profil de locataire. Ces 20 guides détaillent les prix, les rendements locatifs, les types de biens et les risques propres à chaque quartier, pour comparer avant d'établir une short-list.",
+    communityLabels: ["Al Furjan", "Arjan", "Business Bay", "DAMAC Hills", "DAMAC Hills 2", "Downtown Dubaï", "Dubai Islands", "Dubai Marina", "Dubai South", "Dubai Sports City", "Emaar Beachfront", "Jumeirah Village Circle (JVC)", "Jumeirah Village Triangle (JVT)", "Meydan", "Palm Jebel Ali", "Palm Jumeirah", "Sobha Hartland", "The Valley", "Tilal Al Ghaf", "Town Square"],
     yieldTitle: "Quel rendement locatif peut-on obtenir à Dubaï ?",
     yieldIntro: "Le rendement locatif brut moyen à l'échelle de la ville est d'environ 4,7 %. La fourchette va d'environ 4,5 % dans les quartiers prime à environ 8,5 % dans les communautés à haut rendement comme JVC. Le brut n'est pas ce que vous conservez.",
     yieldHead: ["Indicateur", "Signification", "Ordre de grandeur à Dubaï"],
@@ -675,6 +766,16 @@ const CONTENT = {
       "Đầu tư bất động sản Dubai là việc mua bất động sản nhà ở hoặc thương mại tại Dubai để thu tiền cho thuê, hưởng tăng giá vốn, hoặc cả hai. Người nước ngoài có thể sở hữu toàn phần tại các khu sở hữu vĩnh viễn (freehold) được chỉ định của Dubai, quyền sở hữu được ghi nhận trên sổ đỏ do Sở Đất đai Dubai (DLD) cấp. UAE không đánh thuế bất động sản hằng năm, không thuế lãi vốn và không thuế thu nhập trên tiền cho thuê, nên tiền thuê đến tay chủ sở hữu trực tiếp hơn hầu hết các thị trường lớn khác.",
       "Lợi suất cho thuê gộp trung bình toàn thành phố vào khoảng 4,7%, các khu trung cấp cao hơn mức này còn khu ven biển cao cấp thấp hơn. Hãy dự trù khoảng 5,5% giá mua cho chi phí giao dịch khi trả bằng tiền mặt và khoảng 6,5% khi vay ngân hàng, ngoài giá bất động sản. Việc mua bất động sản đủ điều kiện từ 2 triệu AED trở lên và đã đăng ký tại DLD cũng giúp người mua đủ điều kiện xin Golden Visa 10 năm có thể gia hạn.",
     ],
+    whyDubaiTitle: "Vì sao nên đầu tư bất động sản Dubai?",
+    whyDubaiIntro: "Lý do mua bất động sản tại Dubai dựa trên sáu đặc điểm mang tính cấu trúc của thị trường, chứ không dựa vào biến động giá của một năm. Bạn có thể kiểm chứng từng điểm trước khi xuống tiền.",
+    whyDubaiPoints: [
+      { title: "Không thuế bất động sản, không thuế lãi vốn, không thuế thu nhập từ cho thuê", body: "UAE không đánh thuế bất động sản hằng năm, không thuế lãi vốn và không thuế thu nhập trên tiền cho thuê. Chi phí định kỳ của bạn là phí dịch vụ và bảo trì chứ không phải hóa đơn thuế, nên phần tiền thuê thực nhận cao hơn hầu hết các thị trường lớn trên thế giới." },
+      { title: "Sở hữu 100% cho người nước ngoài trong các khu freehold", body: "Tại các khu freehold được chỉ định ở Dubai, người nước ngoài sở hữu bất động sản toàn phần và vĩnh viễn, tên đứng trên giấy chứng nhận sở hữu (title deed) do Cục Đất đai Dubai cấp, không có thời hạn, kèm quyền bán, cho thuê và để lại thừa kế. Ngoài các khu này, hình thức leasehold chỉ cho quyền sử dụng dài nhưng hữu hạn, thường tối đa 99 năm." },
+      { title: "DLD và RERA quản lý, có tài khoản ký quỹ cho dự án hình thành trong tương lai", body: "Thị trường do Cục Đất đai Dubai (DLD) và cơ quan quản lý RERA giám sát. Các đợt thanh toán dự án mới được nộp vào tài khoản ký quỹ riêng của dự án và chỉ giải ngân cho chủ đầu tư theo tiến độ xây dựng đã được xác minh; quyền lợi tạm thời của bạn được đăng ký với đúng căn hộ qua hệ thống Oqood." },
+      { title: "Thường trú thông qua bất động sản", body: "Khoản đầu tư bất động sản hợp lệ từ 2 triệu AED trở lên giúp bạn đủ điều kiện xin Golden Visa 10 năm có thể gia hạn, kèm vợ hoặc chồng và con trong cùng hồ sơ. Ngoài ra còn một lộ trình thị thực cư trú có thể gia hạn từ 750.000 AED giá trị bất động sản." },
+      { title: "Đồng tiền neo theo đô la Mỹ", body: "Đồng dirham được neo với đô la Mỹ ở mức 3,6725 AED từ năm 1997, nên bất động sản Dubai thực chất là tài sản tính bằng đô la. Người mua trong khu vực đồng đô la không chịu rủi ro tỷ giá; người mua bằng đồng tiền khác nên lưu ý rằng vì lý do đó, lãi suất tại UAE đi theo chính sách tiền tệ của Mỹ." },
+      { title: "Lợi suất cao hơn các đô thị cửa ngõ toàn cầu", body: "Lợi suất cho thuê gộp trung bình toàn thành phố khoảng 4,7%, dao động từ khoảng 4,5% ở khu cao cấp đến khoảng 8,5% ở các cộng đồng lợi suất cao như JVC. Để so sánh, lợi suất phân khúc cao cấp của những đô thị lớn nhất thế giới chỉ ở mức một chữ số thấp, khoảng 2-3% tại London cao cấp và 3-4% tại New York, trong khi giá mỗi foot vuông ở Dubai vẫn thấp hơn đáng kể." },
+    ],
     servicesTitle: "Dịch vụ đầu tư của chúng tôi bao gồm",
     services: [
       { icon: "🎯", title: "Chiến lược và mục tiêu", body: "Thu nhập, tăng giá hay thường trú. Chúng tôi xác định mục tiêu trước, vì bất động sản cho lợi suất cao nhất và bất động sản tăng giá mạnh nhất hiếm khi là cùng một căn." },
@@ -707,6 +808,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "Quỹ nhà lâu năm, giá phải chăng, nguồn cung mới hạn chế, khách thuê ở lâu.", "Trên mức trung bình toàn thành phố", "Ưu tiên thu nhập"],
     ],
     areasNote: "Mốc tham chiếu: lợi suất cho thuê gộp trung bình toàn thành phố khoảng 4,7% và giá bán trung bình khoảng 1.879 AED mỗi foot vuông. Khu ven biển cao cấp thường có lợi suất dưới mức trung bình và được mua để tăng giá chứ không phải để lấy dòng tiền. Kỳ vọng đồng thuận của giới phân tích cho giai đoạn 2026-2028 là mức tăng giá 5-12% mỗi năm ở một số phân khúc chọn lọc.",
+    communitiesTitle: "Cẩm nang đầu tư theo cộng đồng",
+    communitiesIntro: "Mỗi cộng đồng có mặt bằng giá, lợi suất và nhóm khách thuê riêng. 20 cẩm nang dưới đây phân tích giá, lợi suất cho thuê, loại hình bất động sản và rủi ro đặc thù của từng khu vực để bạn so sánh trước khi lập danh sách rút gọn.",
+    communityLabels: ["Al Furjan", "Arjan", "Business Bay", "DAMAC Hills", "DAMAC Hills 2", "Downtown Dubai", "Dubai Islands", "Dubai Marina", "Dubai South", "Dubai Sports City", "Emaar Beachfront", "Jumeirah Village Circle (JVC)", "Jumeirah Village Triangle (JVT)", "Meydan", "Palm Jebel Ali", "Palm Jumeirah", "Sobha Hartland", "The Valley", "Tilal Al Ghaf", "Town Square"],
     yieldTitle: "Lợi suất cho thuê tại Dubai là bao nhiêu?",
     yieldIntro: "Lợi suất cho thuê gộp trung bình toàn thành phố khoảng 4,7%. Biên độ chạy từ khoảng 4,5% ở khu cao cấp đến khoảng 8,5% ở các cộng đồng lợi suất cao như JVC. Lợi suất gộp không phải là phần bạn thực nhận.",
     yieldHead: ["Chỉ số", "Ý nghĩa", "Mức phổ biến tại Dubai"],
@@ -798,6 +902,16 @@ const CONTENT = {
       "השקעת נדל\"ן בדובאי היא רכישת נכס מגורים או מסחרי בדובאי לצורך הכנסה משכירות, עליית ערך, או שניהם. אזרחים זרים יכולים להחזיק בבעלות מלאה באזורי הבעלות המלאה (freehold) המיועדים בדובאי, כשהבעלות נרשמת בשטר בעלות שמנפיקה רשות הקרקעות של דובאי (DLD). איחוד האמירויות אינו גובה ארנונה שנתית, מס רווחי הון או מס הכנסה על דמי שכירות, ולכן השכירות מגיעה לבעלים ישירות יותר מאשר ברוב השווקים בעולם.",
       "תשואת השכירות הברוטו הממוצעת בעיר עומדת על כ-4.7%, כאשר קהילות מהמגזר הבינוני נמצאות מעל הקו הזה וקו החוף היוקרתי מתחתיו. תקצבו כ-5.5% ממחיר הרכישה לעלויות עסקה בעסקת מזומן וכ-6.5% בעסקה ממומנת, מעבר למחיר עצמו. רכישה של נכס כשיר בשווי 2 מיליון AED ומעלה הרשום ב-DLD מקנה לרוכש גם זכאות לוויזת זהב ל-10 שנים הניתנת לחידוש.",
     ],
+    whyDubaiTitle: "למה להשקיע בנדל\"ן בדובאי?",
+    whyDubaiIntro: "הנימוקים לרכישת נכס בדובאי נשענים על שישה מאפיינים מבניים של השוק, ולא על תנועת מחירים של שנה אחת. אפשר לאמת כל אחד מהם עוד לפני שמזרימים הון.",
+    whyDubaiPoints: [
+      { title: "אין מס רכוש, אין מס רווחי הון ואין מס הכנסה על שכר דירה", body: "איחוד האמירויות אינו גובה מס רכוש שנתי, מס רווחי הון או מס הכנסה על הכנסות משכירות. ההוצאות השוטפות שלכם הן דמי ניהול ותחזוקה, לא חשבון מס, ולכן חלק גדול יותר מדמי השכירות מגיע אליכם מאשר ברוב השווקים בעולם." },
+      { title: "בעלות זרה מלאה באזורי ה-freehold", body: "באזורי ה-freehold המיועדים בדובאי אזרח זר מחזיק בנכס בבעלות מלאה וקבועה, כששמו רשום בשטר בעלות שמנפיקה רשות המקרקעין של דובאי, ללא תפוגה ועם זכות למכור, להשכיר ולהוריש. מחוץ לאזורים אלה, חכירה מקנה זכות שימוש ארוכה אך סופית, לרוב עד 99 שנים." },
+      { title: "רגולציה של DLD ו-RERA ונאמנות בפרויקטים על הנייר", body: "השוק מפוקח על ידי רשות המקרקעין של דובאי (DLD) וזרועה הרגולטורית RERA. תשלומים בפרויקטים על הנייר מופקדים בחשבון נאמנות ייעודי לפרויקט ומשוחררים ליזם רק כנגד התקדמות בנייה מאומתת, והזכות הזמנית שלכם נרשמת על היחידה הספציפית באמצעות Oqood." },
+      { title: "תושבות באמצעות נכס", body: "השקעה מזכה בנכס בשווי שני מיליון דירהם ומעלה מקנה זכאות לוויזת זהב ל-10 שנים הניתנת לחידוש, כולל בן או בת זוג וילדים באותה בקשה. קיים גם מסלול אשרת תושבות מתחדשת החל מ-750,000 דירהם בנכס." },
+      { title: "מטבע הצמוד לדולר האמריקאי", body: "הדירהם צמוד לדולר האמריקאי בשער של 3.6725 דירהם מאז 1997, ולכן נכס בדובאי הוא למעשה נכס דולרי. רוכשים בכלכלה דולרית אינם נושאים סיכון מטבע; רוכשים במטבעות אחרים צריכים לזכור שמאותה סיבה הריבית באיחוד האמירויות עוקבת אחר המדיניות המוניטרית האמריקאית." },
+      { title: "תשואות גבוהות מערי השער הגלובליות", body: "התשואה הברוטו הממוצעת בעיר היא כ-4.7%, בטווח שבין כ-4.5% באזורי פריים לכ-8.5% בשכונות תשואה גבוהה כמו JVC. לשם השוואה, התשואות בפריים של ערי השער הגדולות בעולם נמצאות בספרה בודדת נמוכה, כ-2-3% בלונדון פריים וכ-3-4% בניו יורק, ומחיר הרגל הרבועה בדובאי נותר נמוך משמעותית." },
+    ],
     servicesTitle: "מה כולל שירות ההשקעות שלנו",
     services: [
       { icon: "🎯", title: "אסטרטגיה והגדרת יעד", body: "הכנסה, צמיחה או תושבות. קודם כול מקבעים את המטרה, כי הנכס בעל התשואה הגבוהה ביותר והנכס שערכו עולה הכי מהר הם כמעט אף פעם לא אותו נכס." },
@@ -830,6 +944,9 @@ const CONTENT = {
       ["Discovery Gardens / International City", "מלאי בשל וזול עם היצע חדש מוגבל ושוכרים לטווח ארוך.", "מעל הממוצע העירוני", "הכנסה בראש ובראשונה"],
     ],
     areasNote: "נקודות ייחוס: תשואת השכירות הברוטו הממוצעת בעיר היא כ-4.7% ומחיר המכירה הממוצע הוא כ-1,879 AED לרגל רבועה. קו החוף היוקרתי מניב בדרך כלל מתחת לממוצע העירוני ונרכש לצורך עליית ערך, לא לתזרים מזומנים. תחזית הקונצנזוס של האנליסטים לשנים 2026-2028 היא עליית ערך שנתית של 5-12% בסגמנטים נבחרים.",
+    communitiesTitle: "מדריכי משקיעים לפי שכונה",
+    communitiesIntro: "לכל שכונה יש מחיר, תשואה וקהל שוכרים משלה. עשרים המדריכים האלה מפרטים מחירים, תשואות שכירות, סוגי נכסים והסיכונים הייחודיים של כל אזור, כדי שתוכלו להשוות עוד לפני שאתם מצמצמים רשימה.",
+    communityLabels: ["אל פורג'ן", "ארג'אן", "ביזנס ביי", "דמאק הילס", "דמאק הילס 2", "דאונטאון דובאי", "איי דובאי", "דובאי מרינה", "דובאי סאות'", "עיר הספורט של דובאי", "אימאר ביץ' פרונט", "ג'ומיירה וילג' סירקל (JVC)", "ג'ומיירה וילג' טריאנגל (JVT)", "מיידאן", "פאלם ג'בל עלי", "פאלם ג'ומיירה", "סובחה הארטלנד", "דה ואלי", "טלאל אל ג'ף", "טאון סקוור"],
     yieldTitle: "איזו תשואת שכירות אפשר לקבל בדובאי?",
     yieldIntro: "תשואת השכירות הברוטו הממוצעת בעיר היא כ-4.7%. הטווח נע מכ-4.5% באזורי יוקרה ועד כ-8.5% בקהילות בעלות תשואה גבוהה כמו JVC. ברוטו אינו מה שנשאר בידיכם.",
     yieldHead: ["מדד", "מה זה אומר", "טווח אופייני בדובאי"],
@@ -903,6 +1020,24 @@ const CONTENT = {
     breadcrumbs: ["דף הבית", "שירותים", "השקעות נדל\"ן"],
   },
 } as const;
+
+/* Index-aligned safety net. `siteLinkLabels`, `guideLinkLabels` and
+   `communityLabels` are positional: a short array silently renders a raw href,
+   a long one silently drops a link. Assert parity at module load so a
+   mismatched locale fails loudly at build time instead of shipping wrong text. */
+const len = (a: readonly unknown[]) => a.length;
+for (const [loc, v] of Object.entries(CONTENT)) {
+  const pairs: [string, number, number][] = [
+    ["siteLinkLabels", len(v.siteLinkLabels), len(SITE_LINKS)],
+    ["guideLinkLabels", len(v.guideLinkLabels), len(GUIDE_LINKS)],
+    ["communityLabels", len(v.communityLabels), len(COMMUNITY_GUIDE_LINKS)],
+  ];
+  for (const [name, got, want] of pairs) {
+    if (got !== want) {
+      throw new Error(`property-investment-dubai: CONTENT.${loc}.${name} has ${got} entries, expected ${want}`);
+    }
+  }
+}
 
 type Locale = keyof typeof CONTENT;
 
@@ -985,6 +1120,7 @@ export default async function PropertyInvestmentDubaiPage({ params }: Props) {
 
   const siteLabels = c.siteLinkLabels as readonly string[];
   const guideLabels = c.guideLinkLabels as readonly string[];
+  const communityLabels = c.communityLabels as readonly string[];
 
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
@@ -1045,6 +1181,20 @@ export default async function PropertyInvestmentDubaiPage({ params }: Props) {
           </div>
         </section>
 
+        {/* Why invest in Dubai */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">{c.whyDubaiTitle}</h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-3xl">{c.whyDubaiIntro}</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {c.whyDubaiPoints.map((pt) => (
+              <div key={pt.title} className="bg-card border border-border/50 rounded-2xl p-6 hover:border-primary/20 transition-all">
+                <h3 className="text-sm font-bold text-foreground mb-2">{pt.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{pt.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Services */}
         <section>
           <div className="text-center mb-12">
@@ -1075,6 +1225,24 @@ export default async function PropertyInvestmentDubaiPage({ params }: Props) {
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-3xl">{c.areasIntro}</p>
           <DataTable head={c.areasHead as readonly string[]} rows={c.areasRows as readonly (readonly string[])[]} isRtl={isRtl} />
           <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-4">{c.areasNote}</p>
+        </section>
+
+        {/* Community investor guides */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">{c.communitiesTitle}</h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-3xl">{c.communitiesIntro}</p>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            {COMMUNITY_GUIDE_LINKS.map((href, i) => (
+              <li key={href}>
+                <Link
+                  href={`${lp}${href}`}
+                  className="block rounded-xl border border-border/50 bg-card px-3 py-2.5 text-sm font-medium text-foreground hover:border-primary/30 hover:text-primary transition-colors"
+                >
+                  {communityLabels[i] ?? href}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Rental yield */}

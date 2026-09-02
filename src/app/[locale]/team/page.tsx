@@ -25,32 +25,32 @@ interface Props {
 
 const TEAM_META: Record<string, { title: string; description: string }> = {
   en: {
-    title: "Our Team | RERA-Certified Dubai Property Experts | Binayah",
-    description: "Meet the Binayah Properties team — RERA-certified real estate agents helping you buy, sell, rent and invest in Dubai since 2007.",
+    title: "Real Estate Agents in Dubai | RERA-Certified Binayah Team",
+    description: "Browse Binayah's RERA-certified real estate agents in Dubai — photo, languages and direct contact on every profile. Dubai property brokers since 2007.",
   },
   fr: {
-    title: "Notre équipe | Experts immobiliers certifiés RERA à Dubaï | Binayah",
-    description: "Rencontrez l'équipe Binayah Properties — des agents immobiliers certifiés RERA qui vous aident à acheter, vendre, louer et investir à Dubaï depuis 2007.",
+    title: "Agents immobiliers à Dubaï | Équipe Binayah certifiée RERA",
+    description: "Découvrez les agents immobiliers de Binayah à Dubaï — conseillers certifiés RERA, avec photo, langues et contact direct sur chaque profil. Courtiers depuis 2007.",
   },
   ru: {
-    title: "Наша команда | Сертифицированные RERA эксперты по недвижимости Дубая | Binayah",
-    description: "Познакомьтесь с командой Binayah Properties — сертифицированные RERA агенты помогают покупать, продавать, арендовать и инвестировать в недвижимость Дубая с 2007 года.",
+    title: "Агенты по недвижимости в Дубае | Команда Binayah (RERA)",
+    description: "Каталог агентов по недвижимости Binayah в Дубае — сертифицированные RERA консультанты: фото, языки и прямые контакты в каждом профиле. Брокеры Дубая с 2007 года.",
   },
   ar: {
-    title: "فريقنا | خبراء عقارات دبي المعتمدون من RERA | بناية",
-    description: "تعرّف على فريق بناية للعقارات — وكلاء عقاريون معتمدون من RERA يساعدونك في شراء وبيع وتأجير والاستثمار في عقارات دبي منذ 2007.",
+    title: "وكلاء عقارات في دبي | فريق بناية المعتمد من RERA",
+    description: "تصفّح وكلاء العقارات في دبي لدى بناية — مستشارون معتمدون من RERA، مع صورة ولغات وتواصل مباشر في كل ملف. وسطاء عقاريون في دبي منذ 2007.",
   },
   zh: {
-    title: "我们的团队 | RERA 认证迪拜房产专家 | Binayah",
-    description: "认识 Binayah Properties 团队——自 2007 年起，RERA 认证房产顾问助您在迪拜买房、卖房、租房与投资。",
+    title: "迪拜房产经纪人 | RERA 认证的 Binayah 团队",
+    description: "浏览 Binayah 的迪拜房产经纪人名录——RERA 认证顾问，每份资料均附照片、语言与直接联系方式。自 2007 年起深耕迪拜市场。",
   },
   vi: {
-    title: "Đội ngũ của chúng tôi | Chuyên gia BĐS Dubai được RERA chứng nhận | Binayah",
-    description: "Gặp gỡ đội ngũ Binayah Properties — các chuyên viên BĐS được RERA chứng nhận, hỗ trợ bạn mua, bán, cho thuê và đầu tư tại Dubai từ năm 2007.",
+    title: "Môi giới bất động sản tại Dubai | Đội ngũ Binayah chuẩn RERA",
+    description: "Danh bạ môi giới bất động sản tại Dubai của Binayah — chuyên viên được RERA chứng nhận, mỗi hồ sơ có ảnh, ngôn ngữ và liên hệ trực tiếp. Hoạt động từ 2007.",
   },
   he: {
-    title: "הצוות שלנו | מומחי נדל\"ן בדובאי בהסמכת RERA | Binayah",
-    description: "הכירו את צוות Binayah Properties — סוכני נדל\"ן מוסמכי RERA שמסייעים לכם לקנות, למכור, לשכור ולהשקיע בנדל\"ן בדובאי משנת 2007.",
+    title: "סוכני נדל\"ן בדובאי | צוות Binayah בהסמכת RERA",
+    description: "מדריך סוכני הנדל\"ן של Binayah בדובאי — יועצים מוסמכי RERA, לכל פרופיל תמונה, שפות ויצירת קשר ישירה. מתווכים בדובאי משנת 2007.",
   },
 };
 
@@ -72,14 +72,173 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const TEAM_L: Record<string, { crumb: string; heading: string; intro: string; empty: string; salesHeading: string; supportHeading: string; supportIntro: string }> = {
-  en: { crumb: "Our Team", heading: "Meet the Binayah team", intro: "RERA-certified property consultants who have helped clients buy, sell, rent and invest across Dubai since 2007. Get matched with a specialist for your area and budget.", empty: "Our team directory is being updated. Please check back shortly.", salesHeading: "Sales Team", supportHeading: "Operations & Support", supportIntro: "The people behind the scenes keeping every deal, viewing and handover running smoothly." },
-  fr: { crumb: "Notre équipe", heading: "Rencontrez l'équipe Binayah", intro: "Des conseillers immobiliers certifiés RERA qui aident leurs clients à acheter, vendre, louer et investir à Dubaï depuis 2007. Trouvez le spécialiste adapté à votre quartier et à votre budget.", empty: "Notre annuaire d'équipe est en cours de mise à jour. Merci de revenir bientôt.", salesHeading: "Équipe commerciale", supportHeading: "Opérations et support", supportIntro: "Les personnes en coulisses qui font que chaque transaction, visite et remise se déroule sans accroc." },
-  ru: { crumb: "Наша команда", heading: "Знакомьтесь с командой Binayah", intro: "Сертифицированные RERA консультанты по недвижимости, помогающие клиентам покупать, продавать, арендовать и инвестировать в Дубае с 2007 года. Подберём специалиста под ваш район и бюджет.", empty: "Каталог нашей команды обновляется. Пожалуйста, зайдите позже.", salesHeading: "Отдел продаж", supportHeading: "Операции и поддержка", supportIntro: "Люди за кулисами, благодаря которым каждая сделка, просмотр и передача проходят гладко." },
-  ar: { crumb: "فريقنا", heading: "تعرّف على فريق بناية", intro: "مستشارو عقارات معتمدون من RERA ساعدوا العملاء على الشراء والبيع والإيجار والاستثمار في دبي منذ 2007. سنوصلك بمتخصص يناسب منطقتك وميزانيتك.", empty: "يتم تحديث دليل فريقنا. يرجى العودة قريبًا.", salesHeading: "فريق المبيعات", supportHeading: "العمليات والدعم", supportIntro: "الفريق خلف الكواليس الذي يضمن سير كل صفقة ومعاينة وتسليم بسلاسة." },
-  zh: { crumb: "我们的团队", heading: "认识 Binayah 团队", intro: "自2007年以来，RERA认证的房产顾问帮助客户在迪拜买卖、租赁和投资。为您匹配适合您所在区域和预算的专家。", empty: "我们的团队目录正在更新中，请稍后再来查看。", salesHeading: "销售团队", supportHeading: "运营与支持", supportIntro: "幕后团队，确保每一笔交易、看房与交接顺利进行。" },
-  vi: { crumb: "Đội ngũ của chúng tôi", heading: "Gặp gỡ đội ngũ Binayah", intro: "Các chuyên viên bất động sản được RERA chứng nhận đã giúp khách hàng mua, bán, cho thuê và đầu tư khắp Dubai từ năm 2007. Kết nối với chuyên gia phù hợp khu vực và ngân sách của bạn.", empty: "Danh bạ đội ngũ của chúng tôi đang được cập nhật. Vui lòng quay lại sau.", salesHeading: "Đội ngũ kinh doanh", supportHeading: "Vận hành & hỗ trợ", supportIntro: "Những người phía sau giúp mọi giao dịch, buổi xem nhà và bàn giao diễn ra suôn sẻ." },
-  he: { crumb: "הצוות שלנו", heading: "הכירו את צוות Binayah", intro: 'יועצי נדל"ן מוסמכי RERA שסייעו ללקוחות לקנות, למכור, להשכיר ולהשקיע ברחבי דובאי מאז 2007. נתאים לכם מומחה לאזור ולתקציב שלכם.', empty: "מדריך הצוות שלנו מתעדכן. אנא בדקו שוב בקרוב.", salesHeading: "צוות המכירות", supportHeading: "תפעול ותמיכה", supportIntro: "האנשים שמאחורי הקלעים שדואגים שכל עסקה, סיור ומסירה יתנהלו בצורה חלקה." },
+// `intro` frames who the team is; `intro2` answers what a directory searcher
+// wants (coverage, credentials, that every profile is published). `intro2`
+// deliberately says the BRN shows "where one is on file" — only some
+// consultants have a real RERA BRN recorded (see hasRealLicense in lib/agents),
+// so the page must never imply every agent publishes one.
+interface TeamCopy {
+  crumb: string;
+  heading: string;
+  intro: string;
+  intro2: string;
+  langLabel: string;
+  compareLead: string;
+  linkBrokers: string;
+  linkCompanies: string;
+  and: string;
+  servicesLead: string;
+  linkAgency: string;
+  linkBroker: string;
+  and2: string;
+  stop: string;
+  empty: string;
+  salesHeading: string;
+  supportHeading: string;
+  supportIntro: string;
+}
+
+const TEAM_L: Record<string, TeamCopy> = {
+  en: {
+    crumb: "Real Estate Agents",
+    heading: "Real Estate Agents in Dubai",
+    intro: "Binayah Properties is a RERA-certified Dubai brokerage, ORN 1162, working this market since 2007 — 19 years. Below is our sales team in full: the consultant you reach is the consultant who handles your deal, with photo, languages and direct WhatsApp, phone and email on every card.",
+    intro2: "Between them they cover apartments, villas, townhouses and off-plan launches across Dubai's freehold communities — Downtown Dubai, Dubai Marina, Palm Jumeirah, Business Bay, Jumeirah Village Circle, Dubai Hills Estate and beyond — for buyers, sellers, landlords, tenants and investors, backed by 3,000+ active listings. Every agent has a published profile page, including their RERA broker number (BRN) where one is on file, so you can check who you are dealing with before you call.",
+    langLabel: "Languages spoken across the team:",
+    compareLead: "Choosing between agencies first? Read our guides to the",
+    linkBrokers: "best real estate brokers in Dubai",
+    linkCompanies: "best real estate companies in Dubai",
+    and: " and the ",
+    servicesLead: "Every consultant above works under Binayah's RERA registration, ORN 1162. More on how we operate as a",
+    linkAgency: "real estate agency in Dubai",
+    linkBroker: "real estate broker in Dubai",
+    and2: " and as your ",
+    stop: ".",
+    empty: "Our team directory is being updated. Please check back shortly.",
+    salesHeading: "Our property agents in Dubai",
+    supportHeading: "Operations & Support",
+    supportIntro: "The people behind the scenes keeping every deal, viewing and handover running smoothly.",
+  },
+  fr: {
+    crumb: "Agents immobiliers",
+    heading: "Agents immobiliers à Dubaï",
+    intro: "Binayah Properties est une agence immobilière de Dubaï certifiée RERA (ORN 1162), active sur ce marché depuis 2007, soit 19 ans. Voici notre équipe commerciale au complet : le conseiller que vous contactez est celui qui suivra votre dossier, avec photo, langues parlées et WhatsApp, téléphone et e-mail directs sur chaque fiche.",
+    intro2: "Ensemble, ils couvrent appartements, villas, maisons de ville et lancements sur plan dans les quartiers en pleine propriété de Dubaï — Downtown Dubai, Dubai Marina, Palm Jumeirah, Business Bay, Jumeirah Village Circle, Dubai Hills Estate et au-delà — pour les acheteurs, vendeurs, propriétaires, locataires et investisseurs, avec plus de 3 000 annonces actives. Chaque agent dispose d'une fiche publiée, incluant son numéro de courtier RERA (BRN) lorsqu'il figure à notre dossier, afin que vous sachiez à qui vous parlez avant d'appeler.",
+    langLabel: "Langues parlées au sein de l'équipe :",
+    compareLead: "Vous comparez d'abord les agences ? Consultez nos guides sur les",
+    linkBrokers: "meilleurs courtiers immobiliers de Dubaï",
+    linkCompanies: "meilleures agences immobilières de Dubaï",
+    and: " et les ",
+    servicesLead: "Chaque conseiller ci-dessus exerce sous l'enregistrement RERA de Binayah (ORN 1162). En savoir plus sur notre",
+    linkAgency: "agence immobilière à Dubaï",
+    linkBroker: "courtier immobilier à Dubaï",
+    and2: " et sur notre rôle de ",
+    stop: ".",
+    empty: "Notre annuaire d'équipe est en cours de mise à jour. Merci de revenir bientôt.",
+    salesHeading: "Nos agents immobiliers à Dubaï",
+    supportHeading: "Opérations et support",
+    supportIntro: "Les personnes en coulisses qui font que chaque transaction, visite et remise se déroule sans accroc.",
+  },
+  ru: {
+    crumb: "Агенты по недвижимости",
+    heading: "Агенты по недвижимости в Дубае",
+    intro: "Binayah Properties — сертифицированное RERA агентство недвижимости в Дубае (ORN 1162), работающее на этом рынке с 2007 года, уже 19 лет. Ниже — наш отдел продаж целиком: консультант, к которому вы обратитесь, и будет вести вашу сделку. В каждой карточке — фото, языки и прямые WhatsApp, телефон и e-mail.",
+    intro2: "Вместе они работают с квартирами, виллами, таунхаусами и проектами на стадии строительства во фрихолд-районах Дубая — Downtown Dubai, Dubai Marina, Palm Jumeirah, Business Bay, Jumeirah Village Circle, Dubai Hills Estate и других — для покупателей, продавцов, собственников, арендаторов и инвесторов, с более чем 3 000 активных объектов в базе. У каждого агента есть опубликованный профиль, включая номер брокера RERA (BRN), если он есть в нашей базе, — так вы можете проверить человека ещё до звонка.",
+    langLabel: "Языки, на которых говорит команда:",
+    compareLead: "Сначала сравниваете агентства? Прочитайте наши обзоры:",
+    linkBrokers: "лучшие брокеры по недвижимости в Дубае",
+    linkCompanies: "лучшие агентства недвижимости в Дубае",
+    and: " и ",
+    servicesLead: "Все консультанты выше работают под регистрацией RERA компании Binayah (ORN 1162). Подробнее о нас как об",
+    linkAgency: "агентстве недвижимости в Дубае",
+    linkBroker: "брокере по недвижимости в Дубае",
+    and2: " и как о вашем ",
+    stop: ".",
+    empty: "Каталог нашей команды обновляется. Пожалуйста, зайдите позже.",
+    salesHeading: "Наши агенты по недвижимости в Дубае",
+    supportHeading: "Операции и поддержка",
+    supportIntro: "Люди за кулисами, благодаря которым каждая сделка, просмотр и передача проходят гладко.",
+  },
+  ar: {
+    crumb: "وكلاء العقارات",
+    heading: "وكلاء عقارات في دبي",
+    intro: "بناية للعقارات وسيط عقاري في دبي معتمد من RERA برقم ORN 1162، ويعمل في هذا السوق منذ 2007 أي 19 عامًا. في الأسفل فريق المبيعات بالكامل: المستشار الذي تتواصل معه هو نفسه من يتابع صفقتك، مع صورته ولغاته وواتساب وهاتف وبريد إلكتروني مباشر في كل بطاقة.",
+    intro2: "يغطي الفريق الشقق والفلل والتاون هاوس ومشاريع على الخارطة في مجتمعات التملك الحر بدبي — وسط مدينة دبي، دبي مارينا، نخلة جميرا، الخليج التجاري، قرية جميرا الدائرية، دبي هيلز إستيت وغيرها — للمشترين والبائعين والملاك والمستأجرين والمستثمرين، مع أكثر من 3,000 عقار معروض. لكل وكيل صفحة ملف منشورة تتضمن رقم الوسيط العقاري (BRN) عند توفره لدينا، لتتحقق ممن تتعامل معه قبل الاتصال.",
+    langLabel: "اللغات التي يتحدث بها الفريق:",
+    compareLead: "تقارن بين الشركات أولًا؟ اطّلع على دليلينا حول",
+    linkBrokers: "أفضل الوسطاء العقاريين في دبي",
+    linkCompanies: "أفضل شركات العقارات في دبي",
+    and: " و",
+    servicesLead: "يعمل كل مستشار أعلاه تحت تسجيل بناية لدى RERA (ORN 1162). اعرف المزيد عن عملنا كـ",
+    linkAgency: "وكالة عقارية في دبي",
+    linkBroker: "وسيط عقاري في دبي",
+    and2: " و",
+    stop: ".",
+    empty: "يتم تحديث دليل فريقنا. يرجى العودة قريبًا.",
+    salesHeading: "وكلاء العقارات لدينا في دبي",
+    supportHeading: "العمليات والدعم",
+    supportIntro: "الفريق خلف الكواليس الذي يضمن سير كل صفقة ومعاينة وتسليم بسلاسة.",
+  },
+  zh: {
+    crumb: "房产经纪人",
+    heading: "迪拜房产经纪人",
+    intro: "Binayah Properties 是获 RERA 认证的迪拜房产中介（ORN 1162），自 2007 年起深耕这一市场，至今 19 年。以下是我们完整的销售团队：您联系的顾问就是全程负责您交易的人，每张名片均附照片、语言以及 WhatsApp、电话与邮箱直连。",
+    intro2: "团队覆盖迪拜各永久产权社区的公寓、别墅、联排别墅与楼花项目——迪拜市中心、迪拜码头、棕榈朱美拉、商业湾、朱美拉环村（JVC）、迪拜山庄等——服务买家、卖家、业主、租客与投资者，平台在售房源超过 3,000 套。每位顾问都有公开的资料页，若我们存有其 RERA 经纪编号（BRN）也会一并列出，方便您在联系前先核实对方身份。",
+    langLabel: "团队使用的语言：",
+    compareLead: "还在比较中介公司？请先阅读我们的指南：",
+    linkBrokers: "迪拜最佳房产经纪人",
+    linkCompanies: "迪拜最佳房产公司",
+    and: "、",
+    servicesLead: "以上所有顾问均在 Binayah 的 RERA 注册（ORN 1162）下执业。进一步了解我们的",
+    linkAgency: "迪拜房产中介服务",
+    linkBroker: "迪拜房产经纪服务",
+    and2: "与",
+    stop: "。",
+    empty: "我们的团队目录正在更新中，请稍后再来查看。",
+    salesHeading: "我们的迪拜房产顾问",
+    supportHeading: "运营与支持",
+    supportIntro: "幕后团队，确保每一笔交易、看房与交接顺利进行。",
+  },
+  vi: {
+    crumb: "Môi giới bất động sản",
+    heading: "Môi giới bất động sản tại Dubai",
+    intro: "Binayah Properties là công ty môi giới bất động sản tại Dubai được RERA chứng nhận (ORN 1162), hoạt động trên thị trường này từ năm 2007 — 19 năm. Dưới đây là toàn bộ đội ngũ kinh doanh: chuyên viên bạn liên hệ cũng chính là người theo sát giao dịch của bạn, kèm ảnh, ngôn ngữ và WhatsApp, điện thoại, email trực tiếp trên mỗi thẻ.",
+    intro2: "Đội ngũ phụ trách căn hộ, biệt thự, nhà phố và dự án hình thành trong tương lai tại các cộng đồng sở hữu vĩnh viễn của Dubai — Downtown Dubai, Dubai Marina, Palm Jumeirah, Business Bay, Jumeirah Village Circle, Dubai Hills Estate và nhiều nơi khác — cho người mua, người bán, chủ nhà, người thuê và nhà đầu tư, với hơn 3.000 tin đăng đang hoạt động. Mỗi chuyên viên đều có trang hồ sơ công khai, kèm số môi giới RERA (BRN) nếu chúng tôi có trong hồ sơ, để bạn kiểm tra người mình sắp làm việc cùng trước khi gọi.",
+    langLabel: "Các ngôn ngữ đội ngũ sử dụng:",
+    compareLead: "Bạn đang so sánh các công ty? Hãy đọc hướng dẫn của chúng tôi về",
+    linkBrokers: "những môi giới bất động sản tốt nhất Dubai",
+    linkCompanies: "những công ty bất động sản tốt nhất Dubai",
+    and: " và ",
+    servicesLead: "Mọi chuyên viên ở trên đều làm việc dưới đăng ký RERA của Binayah (ORN 1162). Tìm hiểu thêm về",
+    linkAgency: "dịch vụ công ty bất động sản tại Dubai",
+    linkBroker: "dịch vụ môi giới bất động sản tại Dubai",
+    and2: " và ",
+    stop: ".",
+    empty: "Danh bạ đội ngũ của chúng tôi đang được cập nhật. Vui lòng quay lại sau.",
+    salesHeading: "Chuyên viên bất động sản của chúng tôi tại Dubai",
+    supportHeading: "Vận hành & hỗ trợ",
+    supportIntro: "Những người phía sau giúp mọi giao dịch, buổi xem nhà và bàn giao diễn ra suôn sẻ.",
+  },
+  he: {
+    crumb: 'סוכני נדל"ן',
+    heading: 'סוכני נדל"ן בדובאי',
+    intro: 'Binayah Properties היא סוכנות נדל"ן בדובאי בהסמכת RERA (ORN 1162), הפועלת בשוק הזה מאז 2007 — 19 שנה. לפניכם צוות המכירות המלא: היועץ שאליו תפנו הוא זה שילווה את העסקה שלכם, עם תמונה, שפות ו-WhatsApp, טלפון ואימייל ישירים בכל כרטיס.',
+    intro2: 'הצוות מטפל בדירות, וילות, בתי טאון ופרויקטים בהקמה בקהילות הבעלות המלאה של דובאי — Downtown Dubai, Dubai Marina, Palm Jumeirah, Business Bay, Jumeirah Village Circle, Dubai Hills Estate ועוד — עבור קונים, מוכרים, בעלי נכסים, שוכרים ומשקיעים, עם יותר מ-3,000 נכסים פעילים. לכל סוכן יש דף פרופיל מפורסם, ובו גם מספר המתווך שלו ב-RERA (BRN) כאשר הוא קיים אצלנו, כדי שתוכלו לבדוק עם מי אתם מדברים עוד לפני שאתם מתקשרים.',
+    langLabel: "השפות שבהן דובר הצוות:",
+    compareLead: "משווים בין סוכנויות? קראו את המדריכים שלנו על",
+    linkBrokers: 'מתווכי הנדל"ן הטובים בדובאי',
+    linkCompanies: 'חברות הנדל"ן הטובות בדובאי',
+    and: " ועל ",
+    servicesLead: "כל היועצים שלמעלה פועלים תחת רישום ה-RERA של Binayah (ORN 1162). מידע נוסף על",
+    linkAgency: 'סוכנות הנדל"ן שלנו בדובאי',
+    linkBroker: "שירותי התיווך שלנו בדובאי",
+    and2: " ועל ",
+    stop: ".",
+    empty: "מדריך הצוות שלנו מתעדכן. אנא בדקו שוב בקרוב.",
+    salesHeading: 'סוכני הנדל"ן שלנו בדובאי',
+    supportHeading: "תפעול ותמיכה",
+    supportIntro: "האנשים שמאחורי הקלעים שדואגים שכל עסקה, סיור ומסירה יתנהלו בצורה חלקה.",
+  },
 };
 
 export default async function TeamPage({ params }: Props) {
@@ -96,6 +255,17 @@ export default async function TeamPage({ params }: Props) {
   };
   const rankOf = (p?: string) => RANK[(p || "").trim().toLowerCase()] ?? 9;
   const sortedAgents = [...agents].sort((a, b) => rankOf(a.position) - rankOf(b.position));
+  // Derived from the live roster, never hardcoded — the languages line stays
+  // true as agents are added or their profiles change.
+  const teamLanguages = Array.from(
+    new Set(
+      sortedAgents
+        .flatMap((a) => a.languages ?? [])
+        .map((l) => l.trim())
+        .filter(Boolean),
+    ),
+  );
+  const linkCls = "text-primary underline underline-offset-2 hover:no-underline";
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -107,8 +277,31 @@ export default async function TeamPage({ params }: Props) {
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">{L.heading}</h1>
-          <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground leading-relaxed">
+          <p className="mt-3 max-w-3xl text-sm sm:text-base text-muted-foreground leading-relaxed">
             {L.intro}
+          </p>
+          <p className="mt-3 max-w-3xl text-sm sm:text-base text-muted-foreground leading-relaxed">
+            {L.intro2}
+          </p>
+          {teamLanguages.length > 0 && (
+            <p className="mt-4 flex max-w-3xl items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+              <Globe className="h-4 w-4 mt-0.5 shrink-0 text-primary/70" />
+              <span>
+                <span className="font-semibold text-foreground">{L.langLabel}</span>{" "}
+                {teamLanguages.join(" · ")}
+              </span>
+            </p>
+          )}
+          <p className="mt-4 max-w-3xl text-sm text-muted-foreground leading-relaxed">
+            {L.compareLead}{" "}
+            <Link href={`${lp}/pulse/guides/best-real-estate-brokers-dubai`} className={linkCls}>
+              {L.linkBrokers}
+            </Link>
+            {L.and}
+            <Link href={`${lp}/pulse/guides/best-real-estate-companies-dubai`} className={linkCls}>
+              {L.linkCompanies}
+            </Link>
+            {L.stop}
           </p>
         </section>
 
@@ -200,6 +393,17 @@ export default async function TeamPage({ params }: Props) {
           {sortedAgents.length === 0 && (
             <p className="text-sm text-muted-foreground">{L.empty}</p>
           )}
+          <p className="mt-8 max-w-3xl text-sm text-muted-foreground leading-relaxed">
+            {L.servicesLead}{" "}
+            <Link href={`${lp}/services/real-estate-agency-dubai`} className={linkCls}>
+              {L.linkAgency}
+            </Link>
+            {L.and2}
+            <Link href={`${lp}/services/real-estate-broker-dubai`} className={linkCls}>
+              {L.linkBroker}
+            </Link>
+            {L.stop}
+          </p>
         </section>
 
         {/* Operations & support — role-labelled, no individual pages (nothing
