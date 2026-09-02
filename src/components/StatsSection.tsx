@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Link } from "@/navigation";
 import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { getGoogleReviews } from "@/lib/googleReviews";
 
 // Server Component: real crawlable HTML, zero client JS. Former framer-motion
 // entrance animations were decorative and are dropped. Rendered server-side via
@@ -10,12 +11,20 @@ export default async function StatsSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "home.sections.team" });
   const ts = await getTranslations({ locale, namespace: "home.sections.stats" });
 
+  // Only claims that can be sourced. The previous set asserted "11,200+ Happy
+  // Clients", "AED 2.1B+ Sold" and "15+ Industry Awards" — none evidenced
+  // anywhere in the repo, and 11,200+ was simultaneously labelled "Properties
+  // Sold" on /sell and "Properties Managed" on /services. The Google rating is
+  // fetched live rather than hardcoded so it can never drift from the real
+  // profile (the old /services page claimed 4.9 against a real 4.4).
+  const reviews = await getGoogleReviews();
   const stats = [
     { value: "3,000+", label: ts("propertiesListed") },
-    { value: "11,200+", label: ts("happyClients") },
-    { value: "AED 2.1B+", label: ts("sold") },
-    { value: "15+", label: ts("industryAwards") },
     { value: "19+", label: ts("yearsExperience") },
+    { value: "ORN 1162", label: ts("reraOrn") },
+    ...(reviews && reviews.total > 0
+      ? [{ value: `${reviews.rating.toFixed(1)}★`, label: ts("googleRating", { count: reviews.total }) }]
+      : []),
   ];
 
   return (

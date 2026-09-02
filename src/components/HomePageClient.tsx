@@ -145,7 +145,12 @@ export default function HomePageClient({ saleListings = [], rentalListings = [],
         {introSlot}
         <LazyMount minHeight={120}><NewsletterStrip /></LazyMount>
       </main>
-      <LazyMount minHeight={0}><Footer /></LazyMount>
+      {/* Not LazyMount-wrapped: the footer is the homepage's only sitewide
+          internal-link block, and mounting it on scroll kept every one of
+          its hrefs out of the served HTML. The homepage is the strongest
+          page on the site, so it was passing no footer link equity at all.
+          dynamic() still code-splits it; it just SSRs now. */}
+      <Footer />
 
       {/* Floating action buttons (WhatsApp / AI chat / scroll-to-top) are now
           mounted once globally in [locale]/layout.tsx, so they're not here. */}

@@ -247,6 +247,8 @@
         "propertiesListed": "Annoncés",
         "happyClients": "Clients",
         "industryAwards": "Prix du secteur",
+        "reraOrn": "Numéro RERA",
+        "googleRating": "Note Google ({count} avis)",
         "communitiesCovered": "Quartiers Couverts",
         "sold": "Vendus",
         "yearsExperience": "Ans d'expérience"
@@ -300,6 +302,7 @@
         "statClients": "Clients",
         "statSold": "Vendus",
         "statAwards": "Prix du secteur",
+        "statOrn": "Numéro RERA",
         "statYears": "Ans d'expérience",
         "aboutLink": "À propos"
       },

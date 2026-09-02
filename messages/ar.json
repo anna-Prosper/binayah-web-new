@@ -247,6 +247,8 @@
         "propertiesListed": "مدرجة",
         "happyClients": "عملاء",
         "industryAwards": "جوائز القطاع",
+        "reraOrn": "رقم تسجيل RERA",
+        "googleRating": "تقييم جوجل ({count} مراجعة)",
         "communitiesCovered": "منطقة مغطاة",
         "sold": "مبيعات",
         "yearsExperience": "سنوات الخبرة"
@@ -300,6 +302,7 @@
         "statClients": "عميل",
         "statSold": "مُباع",
         "statAwards": "جوائز القطاع",
+        "statOrn": "رقم تسجيل RERA",
         "statYears": "سنة خبرة",
         "aboutLink": "عن بناية"
       },

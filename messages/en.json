@@ -247,6 +247,8 @@
         "propertiesListed": "Listed",
         "happyClients": "Clients",
         "industryAwards": "Industry Awards",
+        "reraOrn": "RERA ORN",
+        "googleRating": "Google Rating ({count} reviews)",
         "communitiesCovered": "Communities Covered",
         "sold": "Sold",
         "yearsExperience": "Years Experience"
@@ -300,6 +302,7 @@
         "statClients": "Clients",
         "statSold": "Sold",
         "statAwards": "Industry Awards",
+        "statOrn": "RERA ORN",
         "statYears": "Years Experience",
         "aboutLink": "About Binayah"
       },

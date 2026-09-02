@@ -247,6 +247,8 @@
         "propertiesListed": "מודעות",
         "happyClients": "לקוחות",
         "industryAwards": "פרסי תעשייה",
+        "reraOrn": "מספר רישום RERA",
+        "googleRating": "דירוג Google ({count} ביקורות)",
         "communitiesCovered": "קהילות מכוסות",
         "sold": "נמכרו",
         "yearsExperience": "שנות ניסיון"
@@ -300,6 +302,7 @@
         "statClients": "לקוחות",
         "statSold": "נמכרו",
         "statAwards": "פרסי תעשייה",
+        "statOrn": "מספר רישום RERA",
         "statYears": "שנות ניסיון",
         "aboutLink": "אודות Binayah"
       },

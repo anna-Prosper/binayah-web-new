@@ -16,7 +16,7 @@ export const revalidate = 86400;
 const CONTENT = {
   fr: {
     "metaTitle": "Vendre un bien à Dubai | Rapide, Expert, Certifié RERA | Binayah",
-    "metaDesc": "Vendez votre bien à Dubaï avec Binayah Properties. Agents certifiés RERA, évaluation professionnelle, plus de 17 ans d'expérience. Obtenez une estimation gratuite du marché aujourd'hui.",
+    "metaDesc": "Vendez votre bien à Dubaï avec Binayah Properties. Agents certifiés RERA, évaluation professionnelle, plus de 19 ans d'expérience. Obtenez une estimation gratuite du marché aujourd'hui.",
     "heroLabel": "VENDEZ AVEC CONFIANCE",
     "h1": "Vendez Votre Bien à Dubai",
     "heroDesc": "Binayah Properties vend de l'immobilier à Dubai depuis 2007. Notre équipe certifiée RERA offre une expertise en évaluation, un marketing professionnel et des résultats rapides, avec un service complet de l'inscription à l'achèvement.",
@@ -32,12 +32,12 @@ const CONTENT = {
         "label": "Agents certifiés"
       },
       {
-        "n": "30",
-        "label": "Jours moyens pour vendre"
+        "n": "3 000+",
+        "label": "Biens disponibles"
       },
       {
-        "n": "11,200+",
-        "label": "Biens vendus"
+        "n": "2%",
+        "label": "Commission vendeur"
       }
     ],
     "howTitle": "Comment nous vendons votre bien",
@@ -100,7 +100,7 @@ const CONTENT = {
     "faqs": [
       {
         "q": "Combien de temps faut-il pour vendre un bien à Dubai ?",
-        "a": "Le délai moyen pour vendre un bien à Dubai est de 30 à 60 jours entre la mise en vente et le transfert. Les biens bien évalués dans des emplacements de choix (Dubai Marina, Downtown, Palm) peuvent se vendre en moins de 2 semaines. La moyenne de Binayah est de 30 jours entre la mise en vente et le contrat."
+        "a": "Le délai moyen pour vendre un bien à Dubai est de 30 à 60 jours entre la mise en vente et le transfert. Les biens bien évalués dans des emplacements de choix (Dubai Marina, Downtown, Palm) peuvent se vendre en moins de 2 semaines."
       },
       {
         "q": "Quels frais dois-je payer lors de la vente d'un bien à Dubai ?",
@@ -155,12 +155,12 @@ const CONTENT = {
         "label": "סוכנים מוסמכים"
       },
       {
-        "n": "30",
-        "label": "ימים בממוצע עד למכירה"
+        "n": "3,000+",
+        "label": "נכסים פעילים"
       },
       {
-        "n": "11,200+",
-        "label": "נכסים שנמכרו"
+        "n": "2%",
+        "label": "עמלת מכירה"
       }
     ],
     "howTitle": "כך אנו מוכרים את הנכס שלכם",
@@ -223,7 +223,7 @@ const CONTENT = {
     "faqs": [
       {
         "q": "כמה זמן לוקח למכור נכס בדובאי?",
-        "a": "הזמן הממוצע למכירת נכס בדובאי הוא 30-60 ימים מהרישום ועד להעברה. נכסים במחיר נכון במיקומים מובילים (Dubai Marina, Downtown, Palm) יכולים להימכר תוך פחות משבועיים. הממוצע של Binayah הוא 30 ימים מהרישום ועד לחוזה."
+        "a": "הזמן הממוצע למכירת נכס בדובאי הוא 30-60 ימים מהרישום ועד להעברה. נכסים במחיר נכון במיקומים מובילים (Dubai Marina, Downtown, Palm) יכולים להימכר תוך פחות משבועיים."
       },
       {
         "q": "אילו עלויות אני משלם בעת מכירת נכס בדובאי?",
@@ -271,8 +271,8 @@ const CONTENT = {
     stats: [
       { n: "19+", label: "Years Selling Dubai Property" },
       { n: "RERA", label: "Certified Agents" },
-      { n: "30", label: "Avg Days to Sell" },
-      { n: "11,200+", label: "Properties Sold" },
+      { n: "3,000+", label: "Active Listings" },
+      { n: "2%", label: "Seller Commission" },
     ],
     howTitle: "How We Sell Your Property",
     howSubtitle: "A proven 5-step process from valuation to title deed transfer",
@@ -294,7 +294,7 @@ const CONTENT = {
     ],
     faqTitle: "Frequently Asked Questions",
     faqs: [
-      { q: "How long does it take to sell a property in Dubai?", a: "The average time to sell a property in Dubai is 30-60 days from listing to transfer. Well-priced properties in prime locations (Dubai Marina, Downtown, Palm) can sell in under 2 weeks. Binayah's average is 30 days from listing to contract." },
+      { q: "How long does it take to sell a property in Dubai?", a: "The average time to sell a property in Dubai is 30-60 days from listing to transfer. Well-priced properties in prime locations (Dubai Marina, Downtown, Palm) can sell in under 2 weeks." },
       { q: "What fees do I pay when selling property in Dubai?", a: "As a seller, your main cost is the agent commission (typically 2% of the sale price). Additional costs include a DLD NOC fee (AED 500-5,000 depending on developer) and a DLD transfer fee (4%, though this is usually split between buyer and seller). There is no capital gains tax or income tax in the UAE." },
       { q: "Do I need to be in Dubai to sell my property?", a: "No. You can sell remotely by granting a Power of Attorney (POA) to your agent or a legal representative in Dubai. Binayah handles international sellers regularly, including Russian, European, and Asian clients who complete the sale entirely remotely." },
       { q: "Can I sell a mortgaged property in Dubai?", a: "Yes. The buyer's payment is used to settle your outstanding mortgage (called a 'blocking letter' process), with the remaining funds transferred to you. Your Binayah agent coordinates with your bank to ensure a smooth transition." },
@@ -321,8 +321,8 @@ const CONTENT = {
     stats: [
       { n: "19+", label: "Лет на рынке Дубая" },
       { n: "RERA", label: "Сертифицированные агенты" },
-      { n: "30", label: "Дней в среднем до продажи" },
-      { n: "11 200+", label: "Проданных объектов" },
+      { n: "3 000+", label: "Активных объектов" },
+      { n: "2%", label: "Комиссия агентства" },
     ],
     howTitle: "Как мы продаём вашу недвижимость",
     howSubtitle: "Проверенный 5-шаговый процесс от оценки до передачи права собственности",
@@ -344,7 +344,7 @@ const CONTENT = {
     ],
     faqTitle: "Частые вопросы",
     faqs: [
-      { q: "Сколько времени занимает продажа недвижимости в Дубае?", a: "В среднем 30-60 дней от выставления до передачи права собственности. Правильно оценённые объекты в ключевых локациях продаются менее чем за 2 недели. Средний срок Binayah, 30 дней от объявления до договора." },
+      { q: "Сколько времени занимает продажа недвижимости в Дубае?", a: "В среднем 30-60 дней от выставления до передачи права собственности. Правильно оценённые объекты в ключевых локациях продаются менее чем за 2 недели." },
       { q: "Какие расходы несёт продавец в Дубае?", a: "Основная статья, комиссия агента (обычно 2% от стоимости). Дополнительно: сбор NOC застройщика (500-5 000 AED) и сбор за передачу прав DLD (4%, обычно делится между сторонами). Налога на прирост капитала и подоходного налога в ОАЭ нет." },
       { q: "Можно ли продать недвижимость в Дубае дистанционно, находясь в России?", a: "Да. Оформите доверенность (POA) на представителя или агента в Дубае. Binayah регулярно ведёт сделки с российскими продавцами полностью дистанционно. Мы помогаем с оформлением доверенности." },
       { q: "Можно ли продать ипотечную недвижимость?", a: "Да. Средства покупателя используются для погашения вашей ипотеки (процедура «blocking letter»), остаток перечисляется вам. Агент Binayah координирует процесс с вашим банком." },
@@ -371,8 +371,8 @@ const CONTENT = {
     stats: [
       { n: "+19", label: "عامًا في سوق دبي" },
       { n: "RERA", label: "وكلاء معتمدون" },
-      { n: "30", label: "يومًا متوسط وقت البيع" },
-      { n: "+11,200", label: "عقار تم بيعه" },
+      { n: "+3,000", label: "عقار معروض" },
+      { n: "2%", label: "عمولة البيع" },
     ],
     howTitle: "كيف نبيع عقارك",
     howSubtitle: "عملية مكوّنة من 5 خطوات من التقييم إلى نقل الملكية",
@@ -394,7 +394,7 @@ const CONTENT = {
     ],
     faqTitle: "الأسئلة الشائعة",
     faqs: [
-      { q: "كم يستغرق بيع عقار في دبي؟", a: "يتراوح المتوسط بين 30 و60 يومًا من الإدراج إلى نقل الملكية. قد تُباع العقارات ذات التسعير المناسب في المواقع الرئيسية خلال أسبوعين أو أقل. متوسط بناية هو 30 يومًا من الإدراج إلى العقد." },
+      { q: "كم يستغرق بيع عقار في دبي؟", a: "يتراوح المتوسط بين 30 و60 يومًا من الإدراج إلى نقل الملكية. قد تُباع العقارات ذات التسعير المناسب في المواقع الرئيسية خلال أسبوعين أو أقل." },
       { q: "ما الرسوم التي يتحملها البائع في دبي؟", a: "التكلفة الرئيسية هي عمولة الوكيل (عادةً 2% من سعر البيع). تضاف رسوم NOC من المطوّر (500-5,000 درهم) ورسوم نقل DLD (4%, يُقسَّم عادةً بين الطرفين). لا ضريبة مكاسب رأس المال ولا ضريبة دخل في الإمارات." },
       { q: "هل يمكن بيع العقار عن بُعد؟", a: "نعم. يمكن منح وكالة رسمية (POA) لوكيلك أو ممثلك القانوني في دبي لإتمام البيع. تتعامل بناية بانتظام مع بائعين دوليين يُنجزون البيع كاملًا عن بُعد." },
       { q: "هل يمكن بيع عقار ممرهَن؟", a: "نعم. تُستخدَم مدفوعات المشتري لسداد رهنك العقاري (إجراء «خطاب الحجب»)، وتُحوَّل الأموال المتبقية إليك. ينسّق وكيل بناية مع بنكك لضمان سير الأمور بسلاسة." },
@@ -420,8 +420,8 @@ const CONTENT = {
     stats: [
       { n: "19+", label: "年迪拜房产经验" },
       { n: "RERA", label: "认证经纪人" },
-      { n: "30", label: "天平均出售周期" },
-      { n: "11,200+", label: "已售房产" },
+      { n: "3,000+", label: "在售房源" },
+      { n: "2%", label: "卖方佣金" },
     ],
     howTitle: "我们如何出售您的房产",
     howSubtitle: "从估价到产权转让的5步验证流程",
@@ -443,7 +443,7 @@ const CONTENT = {
     ],
     faqTitle: "常见问题解答",
     faqs: [
-      { q: "在迪拜出售房产需要多长时间？", a: "从挂牌到产权转移平均需要30-60天。优质地段定价合理的房产可在2周内完成。Binayah的平均周期为从挂牌到签约30天。" },
+      { q: "在迪拜出售房产需要多长时间？", a: "从挂牌到产权转移平均需要30-60天。优质地段定价合理的房产可在2周内完成。" },
       { q: "卖家需要支付哪些费用？", a: "主要费用是经纪佣金（通常为成交价的2%）。另需支付开发商NOC费用（500-5,000迪拉姆）和DLD过户费（4%，通常买卖双方各承担一半）。阿联酋无资本利得税和所得税。" },
       { q: "可以在国内远程出售迪拜房产吗？", a: "可以。您可以向迪拜的代理人或法律代表授予授权委托书(POA)，委托其代办所有手续。Binayah定期为中国、俄罗斯等海外卖家提供全程远程出售服务。" },
       { q: "可以出售按揭中的房产吗？", a: "可以。买方款项将用于偿还您的贷款余额（封锁函流程），剩余款项转至您的账户。Binayah经纪人将协调您的贷款银行确保流程顺畅。" },
@@ -469,8 +469,8 @@ const CONTENT = {
     stats: [
       { n: "19+", label: "Năm bán bất động sản Dubai" },
       { n: "RERA", label: "Chuyên viên được chứng nhận" },
-      { n: "30", label: "Số ngày bán TB" },
-      { n: "11.200+", label: "Bất động sản đã bán" },
+      { n: "3.000+", label: "Bất động sản đang chào bán" },
+      { n: "2%", label: "Hoa hồng bán" },
     ],
     howTitle: "Cách chúng tôi bán bất động sản của bạn",
     howSubtitle: "Quy trình 5 bước đã được kiểm chứng từ định giá đến chuyển nhượng sổ đỏ",
@@ -492,7 +492,7 @@ const CONTENT = {
     ],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
-      { q: "Bán một bất động sản tại Dubai mất bao lâu?", a: "Thời gian trung bình để bán một bất động sản tại Dubai là 30-60 ngày từ niêm yết đến chuyển nhượng. Bất động sản định giá tốt ở vị trí cao cấp (Dubai Marina, Downtown, Palm) có thể bán trong dưới 2 tuần. Trung bình của Binayah là 30 ngày từ niêm yết đến hợp đồng." },
+      { q: "Bán một bất động sản tại Dubai mất bao lâu?", a: "Thời gian trung bình để bán một bất động sản tại Dubai là 30-60 ngày từ niêm yết đến chuyển nhượng. Bất động sản định giá tốt ở vị trí cao cấp (Dubai Marina, Downtown, Palm) có thể bán trong dưới 2 tuần." },
       { q: "Tôi phải trả phí gì khi bán bất động sản tại Dubai?", a: "Với tư cách người bán, chi phí chính của bạn là hoa hồng môi giới (thường 2% giá bán). Chi phí bổ sung bao gồm phí NOC của DLD (500-5.000 AED tùy chủ đầu tư) và phí chuyển nhượng DLD (4%, dù thường được chia giữa người mua và người bán). Không có thuế lãi vốn hay thuế thu nhập tại UAE." },
       { q: "Tôi có cần ở Dubai để bán bất động sản không?", a: "Không. Bạn có thể bán từ xa bằng cách cấp Giấy ủy quyền (POA) cho chuyên viên hoặc đại diện pháp lý tại Dubai. Binayah thường xuyên xử lý người bán quốc tế, bao gồm khách hàng Nga, châu Âu và châu Á hoàn tất giao dịch hoàn toàn từ xa." },
       { q: "Tôi có thể bán bất động sản đang thế chấp tại Dubai không?", a: "Có. Khoản thanh toán của người mua được dùng để tất toán khoản vay thế chấp còn lại của bạn (quy trình gọi là 'blocking letter'), số tiền còn lại được chuyển cho bạn. Chuyên viên Binayah phối hợp với ngân hàng của bạn để đảm bảo chuyển đổi suôn sẻ." },

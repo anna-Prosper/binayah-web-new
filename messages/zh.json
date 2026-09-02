@@ -253,6 +253,8 @@
         "propertiesListed": "在售房源",
         "happyClients": "客户",
         "industryAwards": "行业奖项",
+        "reraOrn": "RERA 注册号",
+        "googleRating": "谷歌评分（{count} 条评价）",
         "communitiesCovered": "覆盖社区",
         "sold": "已售",
         "yearsExperience": "年经验"
@@ -306,6 +308,7 @@
         "statClients": "客户",
         "statSold": "已售出",
         "statAwards": "行业奖项",
+        "statOrn": "RERA 注册号",
         "statYears": "年经验",
         "aboutLink": "关于Binayah"
       },

@@ -247,6 +247,8 @@
         "propertiesListed": "Объектов",
         "happyClients": "Клиентов",
         "industryAwards": "Наград",
+        "reraOrn": "Регистрация RERA",
+        "googleRating": "Рейтинг Google ({count} отзывов)",
         "communitiesCovered": "Районов в портфеле",
         "sold": "Продано",
         "yearsExperience": "Лет опыта"
@@ -300,6 +302,7 @@
         "statClients": "Клиентов",
         "statSold": "Продано",
         "statAwards": "Наград",
+        "statOrn": "Регистрация RERA",
         "statYears": "Лет опыта",
         "aboutLink": "О Binayah"
       },

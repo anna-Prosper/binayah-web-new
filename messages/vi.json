@@ -247,6 +247,8 @@
         "propertiesListed": "Đã đăng",
         "happyClients": "Khách hàng",
         "industryAwards": "Giải thưởng",
+        "reraOrn": "Số đăng ký RERA",
+        "googleRating": "Đánh giá Google ({count} nhận xét)",
         "communitiesCovered": "Khu Dân Cư Đã Bao Phủ",
         "sold": "Đã bán",
         "yearsExperience": "Năm kinh nghiệm"
@@ -300,6 +302,7 @@
         "statClients": "Khách hàng",
         "statSold": "Đã bán",
         "statAwards": "Giải thưởng ngành",
+        "statOrn": "Số đăng ký RERA",
         "statYears": "Năm kinh nghiệm",
         "aboutLink": "Về Binayah"
       },
