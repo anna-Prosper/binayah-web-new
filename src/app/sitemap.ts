@@ -461,6 +461,12 @@ async function fetchGuidesForSitemap(): Promise<{ slug: string; lastmod?: Date }
     withAlternates("/hudayriyat-island", 0.9, "monthly", now),
     withAlternates("/sell", 0.8, "monthly", now),
     withAlternates("/services/property-management", 0.8, "monthly", now),
+    // Commercial service pages targeting the agency/broker/investment keyword
+    // clusters — the SERP audit found these terms ranking on page 1-2 with no
+    // dedicated landing page behind them.
+    withAlternates("/services/real-estate-agency-dubai", 0.9, "monthly", now),
+    withAlternates("/services/real-estate-broker-dubai", 0.9, "monthly", now),
+    withAlternates("/services/property-investment-dubai", 0.8, "monthly", now),
     withAlternates("/mortgage", 0.8, "monthly", now),
     withAlternates("/off-plan/top-projects", 0.8, "weekly", now),
     withAlternates("/off-plan/apartments", 0.8, "weekly", now),

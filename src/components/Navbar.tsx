@@ -166,6 +166,22 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
     },
   ];
 
+  // Commercial service pages. /services was previously reachable only from the
+  // footer, which left the agency/broker/investment landing pages with no
+  // sitewide internal link.
+  const servicesColumns: MegaColumn[] = [
+    {
+      header: t("megaSellServices"),
+      links: [
+        { label: t("navRealEstateAgency"), href: "/services/real-estate-agency-dubai" },
+        { label: t("navRealEstateBroker"), href: "/services/real-estate-broker-dubai" },
+        { label: t("navPropertyInvestment"), href: "/services/property-investment-dubai" },
+        { label: t("navPropertyManagement"), href: "/services/property-management" },
+        { label: t("megaServicesCtaAll"), href: "/services" },
+      ],
+    },
+  ];
+
   // Flatten each desktop mega menu (all columns + CTA) into a single mobile list.
   const flattenWithCta = (columns: MegaColumn[], cta: NavLink): NavLink[] => [
     ...columns.flatMap((c) => c.links),
@@ -177,6 +193,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const mobileGuidesLinks = flattenWithCta(guidesColumns, { label: t("megaGuidesCtaAll"), href: "/pulse/guides" });
   // No CTA: Sell has no desktop CTA, and /sell is already the column's first link.
   const mobileSellLinks = sellColumns.flatMap((c) => c.links);
+  const mobileServicesLinks = servicesColumns.flatMap((c) => c.links);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -186,11 +203,13 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const [offPlanOpen, setOffPlanOpen] = useState(false);
   const [guidesOpen, setGuidesOpen] = useState(false);
   const [sellOpen, setSellOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileBuyOpen, setMobileBuyOpen] = useState(false);
   const [mobileRentOpen, setMobileRentOpen] = useState(false);
   const [mobileOffPlanOpen, setMobileOffPlanOpen] = useState(false);
   const [mobileGuidesOpen, setMobileGuidesOpen] = useState(false);
   const [mobileSellOpen, setMobileSellOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const { currency: mobileCurrency, setCurrency: setMobileCurrency } = useCurrency();
   const [phoneHover, setPhoneHover] = useState(false);
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
@@ -200,6 +219,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   const offPlanRef = useRef<HTMLDivElement>(null);
   const guidesRef = useRef<HTMLDivElement>(null);
   const sellRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
@@ -237,6 +257,7 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
       if (offPlanRef.current && !offPlanRef.current.contains(e.target as Node)) setOffPlanOpen(false);
       if (guidesRef.current && !guidesRef.current.contains(e.target as Node)) setGuidesOpen(false);
       if (sellRef.current && !sellRef.current.contains(e.target as Node)) setSellOpen(false);
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) setServicesOpen(false);
       if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) setShowCurrencyDropdown(false);
       if (langRef.current && !langRef.current.contains(e.target as Node)) setShowLangDropdown(false);
     };
@@ -260,21 +281,23 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
   };
 
   // Open exactly one desktop panel, closing all others (single-open invariant).
-  const openOnly = (which: "buy" | "rent" | "offPlan" | "guides" | "sell" | null) => {
+  const openOnly = (which: "buy" | "rent" | "offPlan" | "guides" | "sell" | "services" | null) => {
     setBuyOpen(which === "buy");
     setRentOpen(which === "rent");
     setOffPlanOpen(which === "offPlan");
     setGuidesOpen(which === "guides");
     setSellOpen(which === "sell");
+    setServicesOpen(which === "services");
   };
 
   // Open exactly one mobile accordion (toggle behavior: re-tapping the open one closes it).
-  const toggleMobile = (which: "buy" | "rent" | "offPlan" | "guides" | "sell") => {
+  const toggleMobile = (which: "buy" | "rent" | "offPlan" | "guides" | "sell" | "services") => {
     setMobileBuyOpen(which === "buy" ? (v) => !v : false);
     setMobileRentOpen(which === "rent" ? (v) => !v : false);
     setMobileOffPlanOpen(which === "offPlan" ? (v) => !v : false);
     setMobileGuidesOpen(which === "guides" ? (v) => !v : false);
     setMobileSellOpen(which === "sell" ? (v) => !v : false);
+    setMobileServicesOpen(which === "services" ? (v) => !v : false);
   };
 
   const switchLocale = (locale: string) => {
@@ -765,7 +788,8 @@ const Navbar = ({ extraItems }: { extraItems?: React.ReactNode }) => {
                 { key: "rent" as const, label: t("rent"), open: mobileRentOpen, links: mobileRentLinks, delay: 0.05 },
                 { key: "offPlan" as const, label: t("offPlan"), open: mobileOffPlanOpen, links: mobileOffPlanLinks, delay: 0.1 },
                 { key: "sell" as const, label: t("sell"), open: mobileSellOpen, links: mobileSellLinks, delay: 0.13 },
-                { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.16 },
+                { key: "services" as const, label: t("services"), open: mobileServicesOpen, links: mobileServicesLinks, delay: 0.16 },
+                { key: "guides" as const, label: t("guides"), open: mobileGuidesOpen, links: mobileGuidesLinks, delay: 0.19 },
               ]).map((section) => (
                 <div
                   key={section.key}
