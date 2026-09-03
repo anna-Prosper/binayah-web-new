@@ -83,12 +83,12 @@ export default function CommunityMergedDetailClient({
 
         <div className="relative h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
           <div className="flex items-center gap-2 text-sm text-white/60 mb-5">
-            <Link href={`/${locale}`} className="hover:text-white transition-colors">
+            <Link href="/" className="hover:text-white transition-colors">
               {t("breadcrumbHome")}
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <Link
-              href={`/${locale}/communities`}
+              href="/communities"
               className="hover:text-white transition-colors"
             >
               {t("breadcrumbCommunities")}

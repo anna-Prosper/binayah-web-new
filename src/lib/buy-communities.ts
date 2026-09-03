@@ -8,6 +8,12 @@
 //
 // shortIntro / why / vibe are localized (en/ru/ar/zh/vi). name, priceRange and
 // yield are language-neutral (proper nouns + numbers) and stay as plain strings.
+//
+// IMPORTANT: `priceRange` and `yield` are PURCHASE-side figures — the sale price
+// band and the sale gross yield for the community. They are not rental data and
+// must never be rendered on a rent page (/rent-property-in/*), where a sale price
+// under a "Price range" heading reads as the annual rent. `why` is likewise
+// written for buyers.
 
 export type LocalizedText = { en: string; fr: string; ru: string; ar: string; zh: string; vi: string; he: string };
 
@@ -112,13 +118,13 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
       fr: "Île artificielle iconique. Villas en bord de plage et appartements signature affichant des prix trophées à l'échelle mondiale.",
     },
     why: {
-      en: "Palm Jumeirah is one of the world's best-known addresses. Beachfront villas trade above AED 30M; signature apartments in The Royal Atlantis, One at Palm Jumeirah, and Five Palm command AED 4M+ for one-bedrooms. Demand is anchored by foreign capital seeking trophy assets. Yields are modest (4-5.5%) but appreciation has tracked global ultra-luxury benchmarks. Golden Visa is automatic given price points.",
-      ru: "Палм-Джумейра, один из самых известных адресов мира. Виллы на берегу торгуются выше 30 млн AED; эксклюзивные апартаменты в The Royal Atlantis, One at Palm Jumeirah и Five Palm стоят от 4 млн AED за студии и однокомнатные. Спрос обеспечивает иностранный капитал, ищущий трофейные активы. Доходность умеренная (4-5,5%), но рост стоимости следует за мировыми ультра-люкс ориентирами. «Золотая виза» предоставляется автоматически при таких ценах.",
-      ar: "نخلة جميرا من أشهر العناوين في العالم. الفلل الشاطئية تُتداول بأكثر من 30 مليون درهم؛ والشقق المميزة في ذا رويال أتلانتس، وون آت بالم جميرا، وفايف بالم تبدأ من 4 ملايين درهم للغرفة الواحدة. يقود الطلبَ رأس المال الأجنبي الباحث عن أصول مرموقة. العوائد متواضعة (4-5.5%) لكن ارتفاع القيمة واكب المعايير العالمية للرفاهية الفائقة. التأشيرة الذهبية تلقائية عند هذه الأسعار.",
-      zh: "棕榈岛是全球最知名的地址之一。海滨别墅成交价超3000万迪拉姆；The Royal Atlantis、One at Palm Jumeirah 和 Five Palm 的标杆公寓一居室售价4百万迪拉姆起。需求由寻求顶级资产的外国资本支撑。收益率适中（4-5.5%），但增值表现紧跟全球超豪华基准。在此价位可自动获得黄金签证。",
-      vi: "Palm Jumeirah là một trong những địa chỉ nổi tiếng nhất thế giới. Biệt thự ven biển giao dịch trên 30 triệu AED; căn hộ đẳng cấp tại The Royal Atlantis, One at Palm Jumeirah và Five Palm có giá từ 4 triệu AED cho căn một phòng ngủ. Nhu cầu được neo bởi dòng vốn nước ngoài tìm tài sản biểu tượng. Lợi suất khiêm tốn (4-5,5%) nhưng mức tăng giá bám sát chuẩn siêu sang toàn cầu. Golden Visa được cấp tự động ở mức giá này.",
-      he: "Palm Jumeirah היא אחת הכתובות המוכרות ביותר בעולם. וילות על קו החוף נסחרות מעל 30 מיליון AED; דירות ייחודיות ב-The Royal Atlantis, ב-One at Palm Jumeirah וב-Five Palm נמכרות החל מ-4 מיליון AED לדירת חדר שינה. הביקוש מעוגן בהון זר המחפש נכסי פאר. התשואות צנועות (4-5.5%) אך עליית הערך עקבה אחר מדדי הסופר-יוקרה העולמיים. ה-Golden Visa ניתן אוטומטית בהינתן רמות המחיר הללו.",
-      fr: "Palm Jumeirah est l'une des adresses les plus connues au monde. Les villas en bord de plage se négocient au-delà de AED 30M ; les appartements signature du Royal Atlantis, de One at Palm Jumeirah et de Five Palm dépassent AED 4M pour un T2. La demande est portée par les capitaux étrangers en quête d'actifs trophées. Les rendements sont modestes (4-5,5 %) mais l'appréciation a suivi les références mondiales de l'ultra-luxe. Le Golden Visa est automatique compte tenu des niveaux de prix.",
+      en: "Palm Jumeirah is one of the world's best-known addresses. Beachfront villas trade above AED 30M; signature apartments in The Royal Atlantis, One at Palm Jumeirah, and Five Palm command AED 4M+ for one-bedrooms. Demand is anchored by foreign capital seeking trophy assets. Yields are modest (4-5.5%) but appreciation has tracked global ultra-luxury benchmarks. At these price points a purchase clears the AED 2M Golden Visa threshold, though the visa itself still has to be applied for.",
+      ru: "Палм-Джумейра, один из самых известных адресов мира. Виллы на берегу торгуются выше 30 млн AED; эксклюзивные апартаменты в The Royal Atlantis, One at Palm Jumeirah и Five Palm стоят от 4 млн AED за студии и однокомнатные. Спрос обеспечивает иностранный капитал, ищущий трофейные активы. Доходность умеренная (4-5,5%), но рост стоимости следует за мировыми ультра-люкс ориентирами. При таких ценах покупка превышает порог в 2 млн AED для «Золотой визы», однако саму визу всё равно нужно оформлять отдельно.",
+      ar: "نخلة جميرا من أشهر العناوين في العالم. الفلل الشاطئية تُتداول بأكثر من 30 مليون درهم؛ والشقق المميزة في ذا رويال أتلانتس، وون آت بالم جميرا، وفايف بالم تبدأ من 4 ملايين درهم للغرفة الواحدة. يقود الطلبَ رأس المال الأجنبي الباحث عن أصول مرموقة. العوائد متواضعة (4-5.5%) لكن ارتفاع القيمة واكب المعايير العالمية للرفاهية الفائقة. عند هذه الأسعار يتجاوز الشراء حدّ المليوني درهم المؤهِّل للتأشيرة الذهبية، لكن التأشيرة نفسها تتطلّب تقديم طلب منفصل.",
+      zh: "棕榈岛是全球最知名的地址之一。海滨别墅成交价超3000万迪拉姆；The Royal Atlantis、One at Palm Jumeirah 和 Five Palm 的标杆公寓一居室售价4百万迪拉姆起。需求由寻求顶级资产的外国资本支撑。收益率适中（4-5.5%），但增值表现紧跟全球超豪华基准。在此价位，购房金额可超过200万迪拉姆的黄金签证门槛，但签证本身仍需另行申请。",
+      vi: "Palm Jumeirah là một trong những địa chỉ nổi tiếng nhất thế giới. Biệt thự ven biển giao dịch trên 30 triệu AED; căn hộ đẳng cấp tại The Royal Atlantis, One at Palm Jumeirah và Five Palm có giá từ 4 triệu AED cho căn một phòng ngủ. Nhu cầu được neo bởi dòng vốn nước ngoài tìm tài sản biểu tượng. Lợi suất khiêm tốn (4-5,5%) nhưng mức tăng giá bám sát chuẩn siêu sang toàn cầu. Ở mức giá này, giao dịch vượt ngưỡng 2 triệu AED của Golden Visa, nhưng bản thân thị thực vẫn phải nộp hồ sơ riêng.",
+      he: "Palm Jumeirah היא אחת הכתובות המוכרות ביותר בעולם. וילות על קו החוף נסחרות מעל 30 מיליון AED; דירות ייחודיות ב-The Royal Atlantis, ב-One at Palm Jumeirah וב-Five Palm נמכרות החל מ-4 מיליון AED לדירת חדר שינה. הביקוש מעוגן בהון זר המחפש נכסי פאר. התשואות צנועות (4-5.5%) אך עליית הערך עקבה אחר מדדי הסופר-יוקרה העולמיים. ברמות מחיר אלה הרכישה עוברת את סף 2 מיליון AED לזכאות ל-Golden Visa, אך את הוויזה עצמה עדיין יש להגיש בנפרד.",
+      fr: "Palm Jumeirah est l'une des adresses les plus connues au monde. Les villas en bord de plage se négocient au-delà de AED 30M ; les appartements signature du Royal Atlantis, de One at Palm Jumeirah et de Five Palm dépassent AED 4M pour un T2. La demande est portée par les capitaux étrangers en quête d'actifs trophées. Les rendements sont modestes (4-5,5 %) mais l'appréciation a suivi les références mondiales de l'ultra-luxe. À ces niveaux de prix, l'achat dépasse le seuil de AED 2M ouvrant droit au Golden Visa, mais le visa lui-même doit toujours faire l'objet d'une demande.",
     },
     priceRange: "AED 3M - 100M+",
     yield: "4.0-5.5%",
@@ -169,22 +175,22 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
     slug: "jumeirah-village-circle",
     name: "Jumeirah Village Circle",
     shortIntro: {
-      en: "Highest rental yields in Dubai. The yield-investor's first choice.",
-      ru: "Самая высокая доходность аренды в Дубае. Первый выбор инвестора, ориентированного на доход.",
-      ar: "أعلى عوائد إيجارية في دبي. الخيار الأول للمستثمر الباحث عن العائد.",
-      zh: "迪拜租金收益率最高的区域。收益型投资者的首选。",
-      vi: "Lợi suất cho thuê cao nhất Dubai. Lựa chọn hàng đầu của nhà đầu tư hướng dòng tiền.",
-      he: "תשואות השכירות הגבוהות ביותר בדובאי. הבחירה הראשונה של משקיע התשואה.",
-      fr: "Les rendements locatifs les plus élevés de Dubaï. Le premier choix de l'investisseur en quête de rendement.",
+      en: "Among the strongest rental yields in Dubai. The yield-investor's first choice.",
+      ru: "Одна из самых высоких доходностей аренды в Дубае. Первый выбор инвестора, ориентированного на доход.",
+      ar: "من أعلى العوائد الإيجارية في دبي. الخيار الأول للمستثمر الباحث عن العائد.",
+      zh: "迪拜租金收益率最高的区域之一。收益型投资者的首选。",
+      vi: "Thuộc nhóm lợi suất cho thuê cao nhất Dubai. Lựa chọn hàng đầu của nhà đầu tư hướng dòng tiền.",
+      he: "מתשואות השכירות הגבוהות ביותר בדובאי. הבחירה הראשונה של משקיע התשואה.",
+      fr: "Parmi les rendements locatifs les plus élevés de Dubaï. Le premier choix de l'investisseur en quête de rendement.",
     },
     why: {
-      en: "JVC offers the highest gross yields in Dubai (7.2-8.5%) at the lowest entry prices (AED 700-900/sqft). 25,000+ residential units provide tenant depth and easy resale. The trade-off is slower capital appreciation than waterfront communities. Ideal for cash-flow-focused investors building a Dubai income portfolio.",
-      ru: "JVC предлагает самую высокую валовую доходность в Дубае (7,2-8,5%) при самых низких ценах входа (700-900 AED/кв. фут). Более 25 000 жилых юнитов обеспечивают глубину спроса арендаторов и лёгкую перепродажу. Компромисс, более медленный рост стоимости по сравнению с прибрежными районами. Идеально для инвесторов, ориентированных на денежный поток.",
-      ar: "تقدّم قرية جميرا الدائرية أعلى عوائد إجمالية في دبي (7.2-8.5%) بأقل أسعار دخول (700-900 درهم/قدم مربع). أكثر من 25,000 وحدة سكنية توفّر عمقًا للمستأجرين وسهولة إعادة بيع. المقابل هو ارتفاع أبطأ للقيمة مقارنةً بالمجتمعات الساحلية. مثالية للمستثمرين المركّزين على التدفق النقدي.",
-      zh: "JVC 提供迪拜最高的毛收益率（7.2-8.5%），入手价却最低（每平方英尺700-900迪拉姆）。逾2.5万套住宅带来充足租客与便捷转售。代价是资本增值慢于滨水社区。最适合以现金流为核心、构建迪拜收益组合的投资者。",
-      vi: "JVC mang lại lợi suất gộp cao nhất Dubai (7,2-8,5%) với giá vào thấp nhất (700-900 AED/sqft). Hơn 25.000 căn hộ tạo độ sâu khách thuê và bán lại dễ dàng. Đánh đổi là tốc độ tăng giá chậm hơn khu ven biển. Lý tưởng cho nhà đầu tư tập trung dòng tiền xây danh mục thu nhập tại Dubai.",
-      he: "JVC מציעה את התשואות הגולמיות הגבוהות ביותר בדובאי (7.2-8.5%) במחירי הכניסה הנמוכים ביותר (700-900 AED לרגל מרובעת). למעלה מ-25,000 יחידות מגורים מספקות עומק שוכרים ומכירה חוזרת קלה. התמורה היא עליית ערך איטית יותר בהשוואה לקהילות שעל קו המים. אידיאלי למשקיעים המתמקדים בתזרים מזומנים הבונים תיק הכנסה בדובאי.",
-      fr: "JVC offre les rendements bruts les plus élevés de Dubaï (7,2-8,5 %) aux prix d'entrée les plus bas (AED 700-900/sqft). Plus de 25 000 logements résidentiels assurent une forte profondeur locative et une revente aisée. La contrepartie : une appréciation du capital plus lente que dans les quartiers en bord de mer. Idéal pour les investisseurs orientés cash-flow qui bâtissent un portefeuille de revenus à Dubaï.",
+      en: "JVC offers some of Dubai's strongest gross yields (7.2-8.5%) at low entry prices (AED 700-900/sqft). 25,000+ residential units provide tenant depth and easy resale. The trade-off is slower capital appreciation than waterfront communities. Ideal for cash-flow-focused investors building a Dubai income portfolio.",
+      ru: "JVC предлагает одну из самых высоких валовых доходностей в Дубае (7,2-8,5%) при низких ценах входа (700-900 AED/кв. фут). Более 25 000 жилых юнитов обеспечивают глубину спроса арендаторов и лёгкую перепродажу. Компромисс, более медленный рост стоимости по сравнению с прибрежными районами. Идеально для инвесторов, ориентированных на денежный поток.",
+      ar: "تقدّم قرية جميرا الدائرية من أعلى العوائد الإجمالية في دبي (7.2-8.5%) بأسعار دخول منخفضة (700-900 درهم/قدم مربع). أكثر من 25,000 وحدة سكنية توفّر عمقًا للمستأجرين وسهولة إعادة بيع. المقابل هو ارتفاع أبطأ للقيمة مقارنةً بالمجتمعات الساحلية. مثالية للمستثمرين المركّزين على التدفق النقدي.",
+      zh: "JVC 提供迪拜领先的毛收益率之一（7.2-8.5%），入手价也较低（每平方英尺700-900迪拉姆）。逾2.5万套住宅带来充足租客与便捷转售。代价是资本增值慢于滨水社区。最适合以现金流为核心、构建迪拜收益组合的投资者。",
+      vi: "JVC mang lại lợi suất gộp thuộc nhóm cao nhất Dubai (7,2-8,5%) với giá vào thấp (700-900 AED/sqft). Hơn 25.000 căn hộ tạo độ sâu khách thuê và bán lại dễ dàng. Đánh đổi là tốc độ tăng giá chậm hơn khu ven biển. Lý tưởng cho nhà đầu tư tập trung dòng tiền xây danh mục thu nhập tại Dubai.",
+      he: "JVC מציעה תשואות ברוטו מהגבוהות בדובאי (7.2-8.5%) במחירי כניסה נמוכים (700-900 AED לרגל מרובעת). למעלה מ-25,000 יחידות מגורים מספקות עומק שוכרים ומכירה חוזרת קלה. התמורה היא עליית ערך איטית יותר בהשוואה לקהילות שעל קו המים. אידיאלי למשקיעים המתמקדים בתזרים מזומנים הבונים תיק הכנסה בדובאי.",
+      fr: "JVC offre des rendements bruts parmi les plus élevés de Dubaï (7,2-8,5 %) à des prix d'entrée bas (AED 700-900/sqft). Plus de 25 000 logements résidentiels assurent une forte profondeur locative et une revente aisée. La contrepartie : une appréciation du capital plus lente que dans les quartiers en bord de mer. Idéal pour les investisseurs orientés cash-flow qui bâtissent un portefeuille de revenus à Dubaï.",
     },
     priceRange: "AED 550K - 1.8M",
     yield: "7.2-8.5%",
@@ -679,22 +685,22 @@ export const BUY_COMMUNITIES: BuyCommunity[] = [
     communitySlug: "international-city-dubai",
     synonyms: ["International City", "International City Dubai"],
     shortIntro: {
-      en: "Highest-yield, lowest-entry apartments in Dubai. Yield-hunters' starting point.",
-      ru: "Самые доходные и доступные апартаменты Дубая. Стартовая точка для охотников за доходностью.",
-      ar: "أعلى عائد وأقل سعر دخول للشقق في دبي. نقطة انطلاق الباحثين عن العائد.",
-      zh: "迪拜收益最高、入手最低的公寓。收益猎手的起点。",
-      vi: "Căn hộ lợi suất cao nhất, giá vào thấp nhất Dubai. Điểm khởi đầu cho người săn lợi suất.",
-      he: "הדירות בעלות התשואה הגבוהה ביותר ומחיר הכניסה הנמוך ביותר בדובאי. נקודת המוצא של ציידי התשואות.",
-      fr: "Les appartements aux rendements les plus élevés et aux tickets d'entrée les plus bas de Dubaï. Le point de départ des chasseurs de rendement.",
+      en: "High-yield apartments at some of Dubai's lowest entry prices. Yield-hunters' starting point.",
+      ru: "Одни из самых доходных и доступных апартаментов Дубая. Стартовая точка для охотников за доходностью.",
+      ar: "من أعلى العوائد وأقل أسعار الدخول للشقق في دبي. نقطة انطلاق الباحثين عن العائد.",
+      zh: "迪拜收益最高、入手价最低的公寓之一。收益猎手的起点。",
+      vi: "Căn hộ thuộc nhóm lợi suất cao nhất, giá vào thấp nhất Dubai. Điểm khởi đầu cho người săn lợi suất.",
+      he: "מהדירות בעלות התשואה הגבוהה ביותר ומחירי הכניסה הנמוכים ביותר בדובאי. נקודת המוצא של ציידי התשואות.",
+      fr: "Des appartements parmi les rendements les plus élevés et les tickets d'entrée les plus bas de Dubaï. Le point de départ des chasseurs de rendement.",
     },
     why: {
-      en: "International City offers the lowest apartment entry prices in Dubai (AED 300-550K for studios and 1-bedrooms) and consequently the highest gross yields (8-10%). Trade-off is mid-tier finish quality, limited capital appreciation, and a tenant base that requires active management. Best fit: portfolio investors building yield-weighted holdings.",
-      ru: "International City предлагает самые низкие цены входа на апартаменты в Дубае (300-550 тыс. AED за студии и однокомнатные) и, как следствие, самую высокую валовую доходность (8-10%). Компромисс, отделка среднего уровня, ограниченный рост стоимости и арендаторская база, требующая активного управления. Лучший вариант: портфельные инвесторы, формирующие активы с упором на доходность.",
-      ar: "إنترناشونال سيتي تقدّم أقل أسعار دخول للشقق في دبي (300-550 ألف درهم للاستوديوهات والغرفة الواحدة) وبالتالي أعلى عوائد إجمالية (8-10%). المقابل جودة تشطيب متوسطة وارتفاع محدود للقيمة وقاعدة مستأجرين تتطلّب إدارة نشطة. الأنسب: مستثمرو المحافظ الذين يبنون أصولًا مرجّحة بالعائد.",
-      zh: "国际城提供迪拜最低的公寓入手价（开间和一居室30万-55万迪拉姆），因而毛收益率最高（8-10%）。代价是中档装修、资本增值有限，以及需要主动管理的租客群体。最适合：构建以收益为权重的组合型投资者。",
-      vi: "International City có giá vào căn hộ thấp nhất Dubai (300-550 nghìn AED cho studio và căn một phòng ngủ) và do đó lợi suất gộp cao nhất (8-10%). Đánh đổi là chất lượng hoàn thiện tầm trung, tăng giá hạn chế và nhóm khách thuê cần quản lý chủ động. Phù hợp nhất: nhà đầu tư danh mục xây dựng tài sản trọng số theo lợi suất.",
-      he: "International City מציעה את מחירי הכניסה הנמוכים ביותר לדירות בדובאי (300-550 אלף AED לסטודיו ולדירות חדר שינה אחד) ולפיכך את התשואות הברוטו הגבוהות ביותר (8-10%). הפשרה היא איכות גימור בדרג ביניים, עליית ערך מוגבלת ובסיס שוכרים הדורש ניהול אקטיבי. ההתאמה הטובה ביותר: משקיעי תיקים הבונים נכסים בדגש על תשואה.",
-      fr: "International City offre les prix d'entrée les plus bas de Dubaï pour un appartement (AED 300-550K pour les studios et les T2) et, par conséquent, les rendements bruts les plus élevés (8-10 %). La contrepartie : une qualité de finition de milieu de gamme, une appréciation du capital limitée et une clientèle locative qui exige une gestion active. Profil idéal : investisseurs en portefeuille construisant des positions pondérées par le rendement.",
+      en: "International City offers among the lowest apartment entry prices in Dubai (AED 300-550K for studios and 1-bedrooms) and consequently some of the highest gross yields (8-10%). Trade-off is mid-tier finish quality, limited capital appreciation, and a tenant base that requires active management. Best fit: portfolio investors building yield-weighted holdings.",
+      ru: "International City предлагает одни из самых низких цен входа на апартаменты в Дубае (300-550 тыс. AED за студии и однокомнатные) и, как следствие, одну из самых высоких валовых доходностей (8-10%). Компромисс, отделка среднего уровня, ограниченный рост стоимости и арендаторская база, требующая активного управления. Лучший вариант: портфельные инвесторы, формирующие активы с упором на доходность.",
+      ar: "إنترناشونال سيتي تقدّم من أقل أسعار الدخول للشقق في دبي (300-550 ألف درهم للاستوديوهات والغرفة الواحدة) وبالتالي من أعلى العوائد الإجمالية (8-10%). المقابل جودة تشطيب متوسطة وارتفاع محدود للقيمة وقاعدة مستأجرين تتطلّب إدارة نشطة. الأنسب: مستثمرو المحافظ الذين يبنون أصولًا مرجّحة بالعائد.",
+      zh: "国际城提供迪拜最低的公寓入手价之一（开间和一居室30万-55万迪拉姆），因而毛收益率也位居前列（8-10%）。代价是中档装修、资本增值有限，以及需要主动管理的租客群体。最适合：构建以收益为权重的组合型投资者。",
+      vi: "International City có giá vào căn hộ thuộc nhóm thấp nhất Dubai (300-550 nghìn AED cho studio và căn một phòng ngủ) và do đó lợi suất gộp thuộc nhóm cao nhất (8-10%). Đánh đổi là chất lượng hoàn thiện tầm trung, tăng giá hạn chế và nhóm khách thuê cần quản lý chủ động. Phù hợp nhất: nhà đầu tư danh mục xây dựng tài sản trọng số theo lợi suất.",
+      he: "International City מציעה ממחירי הכניסה הנמוכים ביותר לדירות בדובאי (300-550 אלף AED לסטודיו ולדירות חדר שינה אחד) ולפיכך מהתשואות הברוטו הגבוהות ביותר (8-10%). הפשרה היא איכות גימור בדרג ביניים, עליית ערך מוגבלת ובסיס שוכרים הדורש ניהול אקטיבי. ההתאמה הטובה ביותר: משקיעי תיקים הבונים נכסים בדגש על תשואה.",
+      fr: "International City offre des prix d'entrée parmi les plus bas de Dubaï pour un appartement (AED 300-550K pour les studios et les T2) et, par conséquent, des rendements bruts parmi les plus élevés (8-10 %). La contrepartie : une qualité de finition de milieu de gamme, une appréciation du capital limitée et une clientèle locative qui exige une gestion active. Profil idéal : investisseurs en portefeuille construisant des positions pondérées par le rendement.",
     },
     priceRange: "AED 280K - 900K",
     yield: "8.0-10.0%",

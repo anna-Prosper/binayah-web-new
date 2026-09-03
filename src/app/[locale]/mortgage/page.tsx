@@ -23,7 +23,7 @@ const CONTENT = {
     "sections": [
       {
         "title": "מי יכול לקבל משכנתא בדובאי?",
-        "body": "גם תושבי איחוד האמירויות וגם תושבי חוץ (זרים המתגוררים בחו\"ל) יכולים לקבל משכנתא בדובאי. תושבים זכאים בדרך כלל ליחסי LTV של 75-80%, בעוד תושבי חוץ מוגבלים ל-50-65%. בנקים המעניקים הלוואות לתושבי חוץ כוללים את Emirates NBD, ADCB, ENBD, Mashreq ו-Dubai Islamic Bank. שווי הנכס המינימלי למימון תושבי חוץ עומד בדרך כלל על 1,000,000 AED."
+        "body": "גם תושבי איחוד האמירויות וגם תושבי חוץ (זרים המתגוררים בחו\"ל) יכולים לקבל משכנתא בדובאי. לפי תקרות הבנק המרכזי של איחוד האמירויות, תושבים יכולים ללוות עד 80% LTV בנכס ראשון, בעוד תושבי חוץ מוגבלים לכ-50% LTV. בנקים המעניקים הלוואות לתושבי חוץ כוללים את Emirates NBD, ADCB, ENBD, Mashreq ו-Dubai Islamic Bank. שווי הנכס המינימלי למימון תושבי חוץ עומד בדרך כלל על 1,000,000 AED."
       },
       {
         "title": "ריביות משכנתא נוכחיות באיחוד האמירויות (2026)",
@@ -31,7 +31,7 @@ const CONTENT = {
       },
       {
         "title": "דרישות מקדמה",
-        "body": "תקנות איחוד האמירויות (CBUAE): לנכסים מתחת ל-5 מיליון AED, תושבים נדרשים למקדמה של 20% (דירה ראשונה), 30% להשקעה. תושבי חוץ נדרשים ל-25-35%. לנכסים מעל 5 מיליון AED, 30% (תושבים) ו-35-40% (תושבי חוץ). משכנתאות off-plan דורשות בדרך כלל מקדמה של 50% או תוכנית תשלומים הצמודה לקצב הבנייה. מימון מצד היזם יכול להפחית את דרישות המזומן הראשוניות."
+        "body": "תקנות איחוד האמירויות (CBUAE): לנכסים מתחת ל-5 מיליון AED, תושבים נדרשים למקדמה של 20% (דירה ראשונה), 30% להשקעה. תושבי חוץ נדרשים למקדמה של 50% לפחות, בהתאם לתקרת ה-LTV של 50%. לנכסים מעל 5 מיליון AED, 30% (תושבים); התקרות נמוכות יותר בנכסים יקרים, ולכן תושבי חוץ צריכים לתכנן יותר מ-50%. משכנתאות off-plan דורשות בדרך כלל מקדמה של 50% או תוכנית תשלומים הצמודה לקצב הבנייה. מימון מצד היזם יכול להפחית את דרישות המזומן הראשוניות."
       },
       {
         "title": "מסמכים נדרשים",
@@ -39,7 +39,7 @@ const CONTENT = {
       },
       {
         "title": "עלויות לתכנון התקציב",
-        "body": "מעבר למקדמה: עמלת הקמה (0.5-1% מההלוואה), אגרת רישום DLD (0.25% משווי ההלוואה), אגרת הערכת שווי נכס (2,500-3,500 AED), ביטוח נכס (0.1-0.2% לשנה), ביטוח חיים (נדרש על ידי בנקים מסוימים, 0.1-0.3% לשנה) ועלויות משפטיות (5,000-10,000 AED עבור שטר המשכנתא). תכננו תקציב של כ-3-5% משווי הנכס עבור סך עלויות העסקה."
+        "body": "מעבר למקדמה: עמלת הקמה (0.5-1% מההלוואה), אגרת רישום DLD (0.25% משווי ההלוואה), אגרת הערכת שווי נכס (2,500-3,500 AED), ביטוח נכס (0.1-0.2% לשנה), ביטוח חיים (נדרש על ידי בנקים מסוימים, 0.1-0.3% לשנה) ועלויות משפטיות (5,000-10,000 AED עבור שטר המשכנתא). תכננו תקציב של כ-6.5% משווי הנכס עבור סך עלויות העסקה בעסקה ממומנת (כ-5.5% בעסקת מזומן)."
       },
       {
         "title": "לוח זמנים למשכנתא",
@@ -83,7 +83,7 @@ const CONTENT = {
     "faqs": [
       {
         "question": "האם אוכל לקבל משכנתא בדובאי כתושב חוץ או כזר?",
-        "answer": "כן. בנקים באיחוד האמירויות מעניקים הלוואות הן לזרים תושבים והן לתושבי חוץ המתגוררים בחו\"ל. תושבים יכולים ללוות עד 80% LTV (דירה ראשונה מתחת ל-5 מיליון AED). תושבי חוץ מוגבלים ל-50-65% LTV וזקוקים לשווי נכס מינימלי של 1,000,000 AED. בנקים כמו Emirates NBD, ADCB ו-HSBC מציעים תוכניות משכנתא ייעודיות לתושבי חוץ."
+        "answer": "כן. בנקים באיחוד האמירויות מעניקים הלוואות הן לזרים תושבים והן לתושבי חוץ המתגוררים בחו\"ל. תושבים יכולים ללוות עד 80% LTV (דירה ראשונה מתחת ל-5 מיליון AED). תושבי חוץ מוגבלים לכ-50% LTV וזקוקים לשווי נכס מינימלי של 1,000,000 AED. בנקים כמו Emirates NBD, ADCB ו-HSBC מציעים תוכניות משכנתא ייעודיות לתושבי חוץ."
       },
       {
         "question": "מהי ריבית המשכנתא הנוכחית בדובאי?",
@@ -91,7 +91,7 @@ const CONTENT = {
       },
       {
         "question": "כמה מקדמה אני צריך למשכנתא בדובאי?",
-        "answer": "כללי הבנק המרכזי של איחוד האמירויות: מינימום 20% לתושבים הרוכשים דירה ראשונה מתחת ל-5 מיליון AED (80% LTV). 25-35% לתושבי חוץ באותו שווי נכס. 30% לתושבים הרוכשים נכס להשקעה. לנכסים מעל 5 מיליון AED, המקדמה המינימלית היא 30% (תושבים) או 35-40% (תושבי חוץ)."
+        "answer": "כללי הבנק המרכזי של איחוד האמירויות: מינימום 20% לתושבים הרוכשים דירה ראשונה מתחת ל-5 מיליון AED (80% LTV). 50% לפחות לתושבי חוץ באותו שווי נכס, בהתאם לתקרת ה-LTV של 50%. 30% לתושבים הרוכשים נכס להשקעה. לנכסים מעל 5 מיליון AED, המקדמה המינימלית היא 30% (תושבים); התקרות נמוכות יותר בנכסים יקרים ובנכסים בתכנון מוקדם, ולכן תושבי חוץ צריכים לתכנן יותר מ-50%."
       },
       {
         "question": "אילו מסמכים אני צריך כדי להגיש בקשה למשכנתא באיחוד האמירויות?",
@@ -103,7 +103,7 @@ const CONTENT = {
       },
       {
         "question": "האם אוכל לקבל משכנתא לנכס off-plan בדובאי?",
-        "answer": "משכנתאות off-plan זמינות אך פחות נפוצות. רוב רוכשי ה-off-plan משתמשים בתוכניות תשלומים של היזם (בדרך כלל 40-60% במהלך הבנייה + 40-60% במסירה). בנקים מסוימים מציעים משכנתאות הצמודות לבנייה המשחררות כספים באבני דרך. ה-LTV המינימלי הוא בדרך כלל 50%, מה שמחייב מקדמה של 50%."
+        "answer": "משכנתאות off-plan זמינות אך פחות נפוצות. רוב רוכשי ה-off-plan משתמשים בתוכניות תשלומים של היזם (בדרך כלל 40-60% במהלך הבנייה + 40-60% במסירה). בנקים מסוימים מציעים משכנתאות הצמודות לבנייה המשחררות כספים באבני דרך. ה-LTV המקסימלי הוא בדרך כלל 50%, מה שמחייב מקדמה של 50%."
       },
       {
         "question": "כמה זמן לוקח לקבל אישור משכנתא בדובאי?",
@@ -111,7 +111,7 @@ const CONTENT = {
       },
       {
         "question": "מהן כל העלויות הכרוכות בקבלת משכנתא בדובאי?",
-        "answer": "מקדמה (20-35% משווי הנכס) + אגרת העברה של DLD (4% משווי הנכס, מתחלקת בדרך כלל בין הקונה למוכר) + אגרת רישום משכנתא של DLD (0.25% מההלוואה) + עמלת הקמה של הבנק (0.5-1% מההלוואה) + הערכת שווי נכס (2,500-3,500 AED) + ביטוח. סך עלות העסקה מעבר למחיר הרכישה: כ-3-5% משווי הנכס."
+        "answer": "מקדמה (20% לתושבים, מ-50% לתושבי חוץ) + אגרת העברה של DLD (4% משווי הנכס, משולמת במלואה על ידי הקונה ברוב המכריע של העסקאות, אף שהדבר ניתן למשא ומתן) + אגרת רישום משכנתא של DLD (0.25% מההלוואה בתוספת 290 AED) + עמלת הקמה של הבנק (0.5-1% מההלוואה) + הערכת שווי נכס (2,500-3,500 AED) + עמלת תיווך (2% בתוספת מע״מ 5%) + הנפקת title deed (540 AED) + ביטוח. סך עלות העסקה מעבר למחיר הרכישה: כ-6.5% משווי הנכס בעסקה ממומנת (כ-5.5% בעסקת מזומן)."
       }
     ],
     "ctaTitle": "קבלו אישור מקדים עוד היום",
@@ -132,7 +132,7 @@ const CONTENT = {
     sections: [
       {
         title: "Who Can Get a Mortgage in Dubai?",
-        body: "Both UAE residents and non-residents (expats living abroad) can get a mortgage in Dubai. Residents typically qualify for LTV ratios of 75-80%, while non-residents are limited to 50-65%. Banks that lend to non-residents include Emirates NBD, ADCB, ENBD, Mashreq, and Dubai Islamic Bank. Minimum property value is typically AED 1,000,000 for non-resident financing.",
+        body: "Both UAE residents and non-residents (expats living abroad) can get a mortgage in Dubai. Under UAE Central Bank caps, residents can borrow up to 80% LTV on a first property, while non-residents are limited to around 50% LTV. Banks that lend to non-residents include Emirates NBD, ADCB, ENBD, Mashreq, and Dubai Islamic Bank. Minimum property value is typically AED 1,000,000 for non-resident financing.",
       },
       {
         title: "Current UAE Mortgage Rates (2026)",
@@ -140,7 +140,7 @@ const CONTENT = {
       },
       {
         title: "Down Payment Requirements",
-        body: "UAE regulations (CBUAE): For properties under AED 5M, residents need 20% down (first home), 30% for investment. Non-residents need 25-35%. For properties over AED 5M, 30% (residents) and 35-40% (non-residents). Off-plan mortgages typically require 50% down or a construction-linked payment plan. Developer financing can reduce initial cash requirements.",
+        body: "UAE regulations (CBUAE): For properties under AED 5M, residents need 20% down (first home), 30% for investment. Non-residents need at least 50% down, matching the 50% LTV cap. For properties over AED 5M, 30% (residents); caps are lower on higher-value purchases, so non-residents should expect to fund more than 50%. Off-plan mortgages typically require 50% down or a construction-linked payment plan. Developer financing can reduce initial cash requirements.",
       },
       {
         title: "Required Documents",
@@ -148,7 +148,7 @@ const CONTENT = {
       },
       {
         title: "Costs to Budget For",
-        body: "Beyond the down payment: Arrangement fee (0.5-1% of loan), DLD registration fee (0.25% of loan value), property valuation fee (AED 2,500-3,500), property insurance (0.1-0.2%/year), life insurance (required by some banks, 0.1-0.3%/year), and legal fees (AED 5,000-10,000 for mortgage deed). Budget approximately 3-5% of property value for total transaction costs.",
+        body: "Beyond the down payment: Arrangement fee (0.5-1% of loan), DLD registration fee (0.25% of loan value), property valuation fee (AED 2,500-3,500), property insurance (0.1-0.2%/year), life insurance (required by some banks, 0.1-0.3%/year), and legal fees (AED 5,000-10,000 for mortgage deed). Budget approximately 6.5% of property value for total transaction costs on a financed purchase (about 5.5% on a cash purchase).",
       },
       {
         title: "Mortgage Timeline",
@@ -166,14 +166,14 @@ const CONTENT = {
     ],
     faqTitle: "Frequently Asked Questions",
     faqs: [
-      { question: "Can I get a mortgage in Dubai as an expat or non-resident?", answer: "Yes. UAE banks lend to both resident expats and non-residents living abroad. Residents can borrow up to 80% LTV (first home under AED 5M). Non-residents are limited to 50-65% LTV and need a minimum property value of AED 1,000,000. Banks like Emirates NBD, ADCB, and HSBC have specific non-resident mortgage programs." },
+      { question: "Can I get a mortgage in Dubai as an expat or non-resident?", answer: "Yes. UAE banks lend to both resident expats and non-residents living abroad. Residents can borrow up to 80% LTV (first home under AED 5M). Non-residents are limited to around 50% LTV and need a minimum property value of AED 1,000,000. Banks like Emirates NBD, ADCB, and HSBC have specific non-resident mortgage programs." },
       { question: "What is the current mortgage rate in Dubai?", answer: "As of 2026, Dubai mortgage rates range from approximately 3.99% to 5.49% p.a. for fixed-rate products (1-5 year fix). Variable rates are linked to EIBOR (currently ~5%) plus a bank margin of 1.5-2.5%. The total effective rate for variable mortgages is typically 6.5-7.5% p.a. Fixed rates offer more certainty for the initial term." },
-      { question: "How much deposit do I need for a Dubai mortgage?", answer: "UAE Central Bank rules: 20% minimum for residents buying their first home under AED 5M (80% LTV). 25-35% for non-residents on the same property value. 30% for residents buying an investment property. For properties over AED 5M, the minimum deposit is 30% (residents) or 35-40% (non-residents)." },
+      { question: "How much deposit do I need for a Dubai mortgage?", answer: "UAE Central Bank rules: 20% minimum for residents buying their first home under AED 5M (80% LTV). At least 50% for non-residents on the same property value, in line with the 50% LTV cap. 30% for residents buying an investment property. For properties over AED 5M, the minimum deposit is 30% (residents); caps are lower on higher-value and off-plan purchases, so non-residents should budget above 50%." },
       { question: "What documents do I need to apply for a UAE mortgage?", answer: "Salaried applicants need: passport, 3-6 months bank statements, last 3 salary slips, and employer letter. Self-employed need 2 years of audited accounts and trade licence. Non-residents add a credit report and income proof from their home country. All documents typically need to be within 3 months of application." },
       { question: "Is it better to get a fixed or variable rate mortgage in Dubai?", answer: "Fixed rates (typically 3.99-5.49% for 1-5 years) give payment certainty and protect against rate rises. Variable rates (linked to EIBOR) can be lower when rates fall but create uncertainty. Most financial advisors recommend fixing for the first 3-5 years, especially for primary residences where budget certainty matters." },
-      { question: "Can I get a mortgage for an off-plan property in Dubai?", answer: "Off-plan mortgages are available but less common. Most buyers of off-plan use developer payment plans (typically 40-60% during construction + 40-60% on handover). Some banks offer construction-linked mortgages that release funds at milestones. The minimum LTV is typically 50%, requiring a 50% down payment." },
+      { question: "Can I get a mortgage for an off-plan property in Dubai?", answer: "Off-plan mortgages are available but less common. Most buyers of off-plan use developer payment plans (typically 40-60% during construction + 40-60% on handover). Some banks offer construction-linked mortgages that release funds at milestones. The maximum LTV is typically 50%, requiring a 50% down payment." },
       { question: "How long does it take to get mortgage approval in Dubai?", answer: "Pre-approval (also called approval-in-principle): 2-5 business days with complete documents. Full formal approval after property valuation: 7-14 days. The entire process from application to fund transfer typically takes 3-5 weeks for ready properties." },
-      { question: "What are all the costs involved in getting a Dubai mortgage?", answer: "Down payment (20-35% of property value) + DLD transfer fee (4% of property value, typically split buyer/seller) + DLD mortgage registration fee (0.25% of loan) + bank arrangement fee (0.5-1% of loan) + property valuation (AED 2,500-3,500) + insurance. Total transaction cost beyond purchase price: approximately 3-5% of property value." },
+      { question: "What are all the costs involved in getting a Dubai mortgage?", answer: "Down payment (20% for residents, from 50% for non-residents) + DLD transfer fee (4% of property value, customarily paid in full by the buyer though negotiable) + DLD mortgage registration fee (0.25% of loan + AED 290) + bank arrangement fee (0.5-1% of loan) + property valuation (AED 2,500-3,500) + agent commission (2% + 5% VAT) + title deed issuance (AED 540) + insurance. Total transaction cost beyond purchase price: approximately 6.5% of property value on a financed purchase (about 5.5% on a cash purchase)." },
     ],
     ctaTitle: "Get Pre-Approved Today",
     ctaDesc: "Binayah works with UAE's top mortgage brokers. We'll match you with the right bank, prepare your application, and guide you through approval, at no extra cost.",
@@ -194,7 +194,7 @@ const CONTENT = {
     sections: [
       {
         title: "Qui peut obtenir un prêt hypothécaire à Dubaï ?",
-        body: "Les résidents des EAU comme les non-résidents (expatriés vivant à l'étranger) peuvent obtenir un prêt hypothécaire à Dubaï. Les résidents bénéficient généralement de quotités de financement (LTV) de 75 à 80 %, tandis que les non-résidents sont limités à 50-65 %. Les banques qui prêtent aux non-résidents incluent Emirates NBD, ADCB, ENBD, Mashreq et Dubai Islamic Bank. La valeur minimale du bien est généralement de 1 000 000 AED pour un financement destiné aux non-résidents.",
+        body: "Les résidents des EAU comme les non-résidents (expatriés vivant à l'étranger) peuvent obtenir un prêt hypothécaire à Dubaï. Selon les plafonds de la Banque centrale des EAU, les résidents peuvent emprunter jusqu'à 80 % de LTV sur une première acquisition, tandis que les non-résidents sont limités à environ 50 % de LTV. Les banques qui prêtent aux non-résidents incluent Emirates NBD, ADCB, ENBD, Mashreq et Dubai Islamic Bank. La valeur minimale du bien est généralement de 1 000 000 AED pour un financement destiné aux non-résidents.",
       },
       {
         title: "Taux de crédit immobilier actuels aux EAU (2026)",
@@ -202,7 +202,7 @@ const CONTENT = {
       },
       {
         title: "Exigences d'apport personnel",
-        body: "Réglementation des EAU (CBUAE) : pour les biens de moins de 5 M AED, les résidents doivent verser 20 % d'apport (première résidence), 30 % pour un investissement. Les non-résidents doivent verser 25-35 %. Pour les biens de plus de 5 M AED, 30 % (résidents) et 35-40 % (non-résidents). Les prêts sur plan exigent généralement 50 % d'apport ou un échéancier de paiement lié à l'avancement de la construction. Le financement par le promoteur peut réduire les besoins de trésorerie initiaux.",
+        body: "Réglementation des EAU (CBUAE) : pour les biens de moins de 5 M AED, les résidents doivent verser 20 % d'apport (première résidence), 30 % pour un investissement. Les non-résidents doivent verser au moins 50 %, conformément au plafond de LTV de 50 %. Pour les biens de plus de 5 M AED, 30 % (résidents) ; les plafonds étant plus bas sur les biens de valeur élevée, les non-résidents doivent prévoir plus de 50 %. Les prêts sur plan exigent généralement 50 % d'apport ou un échéancier de paiement lié à l'avancement de la construction. Le financement par le promoteur peut réduire les besoins de trésorerie initiaux.",
       },
       {
         title: "Documents requis",
@@ -210,7 +210,7 @@ const CONTENT = {
       },
       {
         title: "Coûts à prévoir",
-        body: "Au-delà de l'apport personnel : frais de dossier (0,5-1 % du prêt), frais d'enregistrement DLD (0,25 % de la valeur du prêt), frais d'évaluation du bien (2 500-3 500 AED), assurance habitation (0,1-0,2 %/an), assurance-vie (exigée par certaines banques, 0,1-0,3 %/an) et frais juridiques (5 000-10 000 AED pour l'acte hypothécaire). Prévoyez environ 3 à 5 % de la valeur du bien pour l'ensemble des frais de transaction.",
+        body: "Au-delà de l'apport personnel : frais de dossier (0,5-1 % du prêt), frais d'enregistrement DLD (0,25 % de la valeur du prêt), frais d'évaluation du bien (2 500-3 500 AED), assurance habitation (0,1-0,2 %/an), assurance-vie (exigée par certaines banques, 0,1-0,3 %/an) et frais juridiques (5 000-10 000 AED pour l'acte hypothécaire). Prévoyez environ 6,5 % de la valeur du bien pour l'ensemble des frais de transaction sur un achat financé (environ 5,5 % sur un achat comptant).",
       },
       {
         title: "Calendrier du prêt hypothécaire",
@@ -228,14 +228,14 @@ const CONTENT = {
     ],
     faqTitle: "Questions fréquentes",
     faqs: [
-      { question: "Puis-je obtenir un prêt hypothécaire à Dubaï en tant qu'expatrié ou non-résident ?", answer: "Oui. Les banques des EAU prêtent aussi bien aux expatriés résidents qu'aux non-résidents vivant à l'étranger. Les résidents peuvent emprunter jusqu'à 80 % de LTV (première résidence de moins de 5 M AED). Les non-résidents sont limités à 50-65 % de LTV et doivent disposer d'une valeur de bien minimale de 1 000 000 AED. Des banques comme Emirates NBD, ADCB et HSBC proposent des programmes de prêt spécifiques aux non-résidents." },
+      { question: "Puis-je obtenir un prêt hypothécaire à Dubaï en tant qu'expatrié ou non-résident ?", answer: "Oui. Les banques des EAU prêtent aussi bien aux expatriés résidents qu'aux non-résidents vivant à l'étranger. Les résidents peuvent emprunter jusqu'à 80 % de LTV (première résidence de moins de 5 M AED). Les non-résidents sont limités à environ 50 % de LTV et doivent disposer d'une valeur de bien minimale de 1 000 000 AED. Des banques comme Emirates NBD, ADCB et HSBC proposent des programmes de prêt spécifiques aux non-résidents." },
       { question: "Quel est le taux de crédit immobilier actuel à Dubaï ?", answer: "En 2026, les taux de crédit immobilier à Dubaï vont d'environ 3,99 % à 5,49 % par an pour les produits à taux fixe (fixation de 1 à 5 ans). Les taux variables sont indexés sur l'EIBOR (actuellement ~5 %) plus une marge bancaire de 1,5-2,5 %. Le taux effectif global des prêts à taux variable se situe généralement entre 6,5 et 7,5 % par an. Les taux fixes offrent davantage de certitude pour la période initiale." },
-      { question: "Quel apport me faut-il pour un prêt immobilier à Dubaï ?", answer: "Règles de la Banque centrale des EAU : 20 % minimum pour les résidents achetant leur première résidence de moins de 5 M AED (80 % de LTV). 25-35 % pour les non-résidents à valeur de bien équivalente. 30 % pour les résidents achetant un bien d'investissement. Pour les biens de plus de 5 M AED, l'apport minimal est de 30 % (résidents) ou 35-40 % (non-résidents)." },
+      { question: "Quel apport me faut-il pour un prêt immobilier à Dubaï ?", answer: "Règles de la Banque centrale des EAU : 20 % minimum pour les résidents achetant leur première résidence de moins de 5 M AED (80 % de LTV). Au moins 50 % pour les non-résidents à valeur de bien équivalente, conformément au plafond de LTV de 50 %. 30 % pour les résidents achetant un bien d'investissement. Pour les biens de plus de 5 M AED, l'apport minimal est de 30 % (résidents) ; les plafonds sont plus bas sur les biens de valeur élevée et sur plan, les non-résidents doivent donc prévoir plus de 50 %." },
       { question: "Quels documents dois-je fournir pour demander un prêt immobilier aux EAU ?", answer: "Les salariés doivent fournir : passeport, relevés bancaires de 3 à 6 mois, 3 derniers bulletins de salaire et attestation d'employeur. Les travailleurs indépendants doivent présenter 2 ans de comptes audités et une licence commerciale. Les non-résidents ajoutent un rapport de solvabilité et un justificatif de revenus de leur pays d'origine. Tous les documents doivent généralement dater de moins de 3 mois au moment de la demande." },
       { question: "Vaut-il mieux choisir un taux fixe ou variable à Dubaï ?", answer: "Les taux fixes (généralement 3,99-5,49 % sur 1 à 5 ans) garantissent des mensualités stables et protègent contre les hausses de taux. Les taux variables (indexés sur l'EIBOR) peuvent être plus bas lorsque les taux baissent, mais créent de l'incertitude. La plupart des conseillers financiers recommandent de fixer le taux pendant les 3 à 5 premières années, en particulier pour une résidence principale où la maîtrise du budget est essentielle." },
-      { question: "Puis-je obtenir un prêt hypothécaire pour un bien sur plan à Dubaï ?", answer: "Les prêts sur plan existent mais sont moins courants. La plupart des acheteurs sur plan utilisent les échéanciers de paiement du promoteur (généralement 40-60 % pendant la construction + 40-60 % à la livraison). Certaines banques proposent des prêts liés à la construction qui débloquent les fonds par étapes. La LTV minimale est généralement de 50 %, ce qui nécessite un apport de 50 %." },
+      { question: "Puis-je obtenir un prêt hypothécaire pour un bien sur plan à Dubaï ?", answer: "Les prêts sur plan existent mais sont moins courants. La plupart des acheteurs sur plan utilisent les échéanciers de paiement du promoteur (généralement 40-60 % pendant la construction + 40-60 % à la livraison). Certaines banques proposent des prêts liés à la construction qui débloquent les fonds par étapes. La LTV maximale est généralement de 50 %, ce qui nécessite un apport de 50 %." },
       { question: "Combien de temps faut-il pour obtenir un accord de prêt à Dubaï ?", answer: "Accord de principe (également appelé accord préalable) : 2 à 5 jours ouvrés avec un dossier complet. Approbation formelle complète après l'évaluation du bien : 7 à 14 jours. L'ensemble du processus, de la demande au transfert des fonds, prend généralement 3 à 5 semaines pour les biens livrés." },
-      { question: "Quels sont tous les frais liés à l'obtention d'un prêt immobilier à Dubaï ?", answer: "Apport personnel (20-35 % de la valeur du bien) + frais de transfert DLD (4 % de la valeur du bien, généralement partagés entre acheteur et vendeur) + frais d'enregistrement de l'hypothèque DLD (0,25 % du prêt) + frais de dossier bancaires (0,5-1 % du prêt) + évaluation du bien (2 500-3 500 AED) + assurances. Coût total de la transaction au-delà du prix d'achat : environ 3 à 5 % de la valeur du bien." },
+      { question: "Quels sont tous les frais liés à l'obtention d'un prêt immobilier à Dubaï ?", answer: "Apport personnel (20 % pour les résidents, à partir de 50 % pour les non-résidents) + frais de transfert DLD (4 % de la valeur du bien, payés intégralement par l'acheteur dans la grande majorité des cas, bien que négociables) + frais d'enregistrement de l'hypothèque DLD (0,25 % du prêt + 290 AED) + frais de dossier bancaires (0,5-1 % du prêt) + évaluation du bien (2 500-3 500 AED) + commission d'agence (2 % + 5 % de TVA) + émission du titre de propriété (540 AED) + assurances. Coût total de la transaction au-delà du prix d'achat : environ 6,5 % de la valeur du bien sur un achat financé (environ 5,5 % au comptant)." },
     ],
     ctaTitle: "Obtenez un accord de principe dès aujourd'hui",
     ctaDesc: "Binayah collabore avec les meilleurs courtiers en prêts immobiliers des EAU. Nous vous mettons en relation avec la banque adaptée, préparons votre dossier et vous accompagnons jusqu'à l'approbation, sans frais supplémentaires.",
@@ -256,7 +256,7 @@ const CONTENT = {
     sections: [
       {
         title: "Кто может получить ипотеку в Дубае?",
-        body: "Как резиденты ОАЭ, так и нерезиденты (в том числе граждане России) могут получить ипотеку в Дубае. Резиденты получают LTV до 75-80%, нерезиденты, до 50-65%. Банки, кредитующие нерезидентов: Emirates NBD, ADCB, ENBD, Mashreq, Dubai Islamic Bank. Минимальная стоимость объекта для нерезидентов, как правило, 1 000 000 AED.",
+        body: "Как резиденты ОАЭ, так и нерезиденты (в том числе граждане России) могут получить ипотеку в Дубае. По правилам Центрального банка ОАЭ резиденты получают LTV до 80% при покупке первого жилья, нерезиденты, до 50%. Банки, кредитующие нерезидентов: Emirates NBD, ADCB, ENBD, Mashreq, Dubai Islamic Bank. Минимальная стоимость объекта для нерезидентов, как правило, 1 000 000 AED.",
       },
       {
         title: "Текущие ставки по ипотеке в ОАЭ (2026)",
@@ -264,7 +264,7 @@ const CONTENT = {
       },
       {
         title: "Требования к первоначальному взносу",
-        body: "По правилам Центрального банка ОАЭ: при стоимости объекта до 5 млн AED, резиденты 20% (первое жильё), 30% (инвестиционный объект); нерезиденты 25-35%. При стоимости свыше 5 млн AED, резиденты 30%, нерезиденты 35-40%. Для новостроек минимальный взнос 50% или рассрочка по этапам строительства.",
+        body: "По правилам Центрального банка ОАЭ: при стоимости объекта до 5 млн AED, резиденты 20% (первое жильё), 30% (инвестиционный объект); нерезиденты не менее 50% (лимит LTV 50%). При стоимости свыше 5 млн AED, резиденты 30%; для дорогих объектов лимиты ниже, поэтому нерезидентам следует рассчитывать более чем на 50%. Для новостроек минимальный взнос 50% или рассрочка по этапам строительства.",
       },
       {
         title: "Необходимые документы",
@@ -272,7 +272,7 @@ const CONTENT = {
       },
       {
         title: "Дополнительные расходы",
-        body: "Помимо первоначального взноса: комиссия банка (0,5-1% от суммы кредита), регистрация ипотеки в DLD (0,25% от суммы кредита), оценка объекта (2 500-3 500 AED), страховка имущества (0,1-0,2%/год), страхование жизни (требуется некоторыми банками, 0,1-0,3%/год). Общие транзакционные расходы: около 3-5% от стоимости объекта.",
+        body: "Помимо первоначального взноса: комиссия банка (0,5-1% от суммы кредита), регистрация ипотеки в DLD (0,25% от суммы кредита), оценка объекта (2 500-3 500 AED), страховка имущества (0,1-0,2%/год), страхование жизни (требуется некоторыми банками, 0,1-0,3%/год). Общие транзакционные расходы: около 6,5% от стоимости объекта при покупке в ипотеку (около 5,5% при покупке за наличные).",
       },
       {
         title: "Сроки оформления ипотеки",
@@ -290,14 +290,14 @@ const CONTENT = {
     ],
     faqTitle: "Частые вопросы",
     faqs: [
-      { question: "Могут ли граждане России получить ипотеку в Дубае?", answer: "Да. Банки ОАЭ выдают ипотеку нерезидентам, включая граждан России. LTV для нерезидентов, 50-65%, минимальная стоимость объекта, 1 000 000 AED. Из-за санкций некоторые банки могут запросить дополнительные документы, однако Emirates NBD, ADCB и Mashreq активно работают с российскими клиентами." },
+      { question: "Могут ли граждане России получить ипотеку в Дубае?", answer: "Да. Банки ОАЭ выдают ипотеку нерезидентам, включая граждан России. LTV для нерезидентов, до 50%, минимальная стоимость объекта, 1 000 000 AED. Из-за санкций некоторые банки могут запросить дополнительные документы, однако Emirates NBD, ADCB и Mashreq активно работают с российскими клиентами." },
       { question: "Какова текущая ипотечная ставка в Дубае?", answer: "В 2026 году ставки по ипотеке в Дубае составляют от 3,99% до 5,49% годовых (фиксированные продукты на 1-5 лет). Переменные ставки привязаны к EIBOR (~5%) плюс маржа банка 1,5-2,5%. Фиксированные ставки обеспечивают предсказуемость платежей." },
-      { question: "Какой первоначальный взнос нужен для ипотеки в Дубае?", answer: "Требования ЦБ ОАЭ: для нерезидентов, минимум 25-35% при стоимости объекта до 5 млн AED, 35-40% при стоимости свыше 5 млн AED. Для объектов off-plan взнос, как правило, не менее 50%." },
+      { question: "Какой первоначальный взнос нужен для ипотеки в Дубае?", answer: "Требования ЦБ ОАЭ: резиденты, от 20% при покупке первого жилья (LTV до 80%); нерезиденты, не менее 50% (LTV до 50%). Для объектов дороже 5 млн AED и для новостроек лимиты ниже, поэтому взнос выше." },
       { question: "Какие документы нужны для ипотеки в ОАЭ нерезиденту?", answer: "Паспорт, выписки из банка за 6 месяцев (из российского банка), подтверждение дохода (справка о зарплате или документы для ИП), кредитная история из страны проживания. Некоторые банки требуют нотариально заверенные переводы на английский язык." },
       { question: "Что лучше, фиксированная или переменная ипотечная ставка?", answer: "Фиксированные ставки (3,99-5,49% на 1-5 лет) обеспечивают предсказуемость платежей и защищают от роста ставок. Большинство финансовых советников рекомендуют фиксацию на первые 3-5 лет, особенно для основного жилья." },
       { question: "Доступна ли ипотека для объектов off-plan?", answer: "Ипотека для новостроек доступна, но менее распространена. Большинство покупателей пользуются планами рассрочки от застройщика (40-60% в ходе строительства + 40-60% при сдаче). Минимальный взнос по ипотеке для новостроек, обычно 50%." },
       { question: "Сколько времени занимает одобрение ипотеки в Дубае?", answer: "Предварительное одобрение: 2-5 рабочих дней. Полное одобрение после оценки объекта: 7-14 дней. Весь процесс до перехода права собственности: обычно 3-5 недель для готовых объектов." },
-      { question: "Каковы все расходы при оформлении ипотеки в Дубае?", answer: "Первоначальный взнос (25-35% стоимости) + сбор DLD (4%, обычно делится) + регистрация ипотеки в DLD (0,25% суммы кредита) + комиссия банка (0,5-1%) + оценка объекта (2 500-3 500 AED) + страховки. Общие транзакционные расходы сверх стоимости объекта: около 3-5%." },
+      { question: "Каковы все расходы при оформлении ипотеки в Дубае?", answer: "Первоначальный взнос (20% для резидентов, от 50% для нерезидентов) + сбор DLD (4%, в подавляющем большинстве сделок его полностью оплачивает покупатель, хотя это обсуждается) + регистрация ипотеки в DLD (0,25% суммы кредита + 290 AED) + комиссия банка (0,5-1%) + оценка объекта (2 500-3 500 AED) + комиссия агента (2% + 5% НДС) + выдача свидетельства о собственности (540 AED) + страховки. Общие транзакционные расходы сверх стоимости объекта: около 6,5% при покупке в ипотеку (около 5,5% за наличные)." },
     ],
     ctaTitle: "Получите предодобрение сегодня",
     ctaDesc: "Binayah работает с ведущими ипотечными брокерами ОАЭ. Мы подберём подходящий банк, подготовим заявку и сопроводим до одобрения, без дополнительных расходов.",
@@ -316,11 +316,11 @@ const CONTENT = {
     calcTitle: "حاسبة الرهن العقاري",
     guideTitle: "الدليل الشامل للرهن العقاري في دبي",
     sections: [
-      { title: "من يمكنه الحصول على قرض عقاري في دبي؟", body: "يحق للمقيمين في الإمارات وغير المقيمين (المغتربين في الخارج) الحصول على رهن عقاري في دبي. يحصل المقيمون على نسب تمويل تصل إلى 75-80%، بينما يقتصر غير المقيمين على 50-65%. البنوك التي تموّل غير المقيمين: الإمارات NBD وADCB وماشريق وبنك دبي الإسلامي وHSBC." },
+      { title: "من يمكنه الحصول على قرض عقاري في دبي؟", body: "يحق للمقيمين في الإمارات وغير المقيمين (المغتربين في الخارج) الحصول على رهن عقاري في دبي. وفق سقوف المصرف المركزي الإماراتي، يحصل المقيمون على نسبة تمويل تصل إلى 80% للمسكن الأول، بينما يقتصر غير المقيمين على نحو 50%. البنوك التي تموّل غير المقيمين: الإمارات NBD وADCB وماشريق وبنك دبي الإسلامي وHSBC." },
       { title: "معدلات الرهن العقاري الحالية (2026)", body: "تتراوح المعدلات الثابتة (1-5 سنوات) بين 3.99% و5.49% سنويًا. المعدلات المتغيرة مرتبطة بـ EIBOR بالإضافة إلى هامش البنك 1.5-2.5%. ينصح بتثبيت السعر للسنوات الثلاث إلى الخمس الأولى للحصول على دفعات متوقعة. التمويل الإسلامي (مرابحة/إجارة) متاح أيضًا." },
-      { title: "متطلبات الدفعة المقدمة", body: "وفق لوائح البنك المركزي الإماراتي: للعقارات دون 5 مليون درهم, المقيمون 20% (المسكن الأول)، غير المقيمين 25-35%. للعقارات فوق 5 مليون درهم, المقيمون 30%، غير المقيمين 35-40%. الرهن على الخارطة يستلزم عادةً 50% على الأقل." },
+      { title: "متطلبات الدفعة المقدمة", body: "وفق لوائح البنك المركزي الإماراتي: للعقارات دون 5 مليون درهم, المقيمون 20% (المسكن الأول)، وغير المقيمين 50% على الأقل بما يوافق سقف التمويل البالغ 50%. للعقارات فوق 5 مليون درهم, المقيمون 30%، وتنخفض السقوف للعقارات مرتفعة القيمة فيتعيّن على غير المقيمين توفير أكثر من 50%. الرهن على الخارطة يستلزم عادةً 50% على الأقل." },
       { title: "المستندات المطلوبة", body: "الموظفون: جواز سفر، إقامة (للمقيمين)، هوية إماراتية، كشوف بنكية لـ 3-6 أشهر، قسائم الراتب، خطاب توظيف. غير المقيمين: يضيفون كشوف بنكية من بلدهم لـ 6 أشهر وإثبات دخل وسجل ائتماني." },
-      { title: "التكاليف الإضافية", body: "سوى الدفعة الأولى: رسوم الترتيب (0.5-1%)، رسوم تسجيل الرهن في DLD (0.25% من قيمة القرض)، رسوم تقييم العقار (2,500-3,500 درهم)، تأمين العقار (0.1-0.2% سنويًا)، تأمين الحياة (مطلوب من بعض البنوك). إجمالي تكاليف الصفقة: نحو 3-5% من قيمة العقار." },
+      { title: "التكاليف الإضافية", body: "سوى الدفعة الأولى: رسوم الترتيب (0.5-1%)، رسوم تسجيل الرهن في DLD (0.25% من قيمة القرض)، رسوم تقييم العقار (2,500-3,500 درهم)، تأمين العقار (0.1-0.2% سنويًا)، تأمين الحياة (مطلوب من بعض البنوك). إجمالي تكاليف الصفقة: نحو 6.5% من قيمة العقار في الشراء بتمويل (ونحو 5.5% في الشراء النقدي)." },
       { title: "جدول زمني للحصول على الرهن", body: "الموافقة المبدئية: 2-5 أيام عمل. الموافقة الرسمية بعد التقييم: 7-14 يومًا. التحويل المصرفي: يوم إلى يومين. الإجمالي من تقديم الطلب إلى نقل الملكية: عادةً 3-5 أسابيع للعقارات الجاهزة." },
     ],
     banksTitle: "أبرز البنوك لتمويل العقارات في دبي",
@@ -334,14 +334,14 @@ const CONTENT = {
     ],
     faqTitle: "الأسئلة الشائعة",
     faqs: [
-      { question: "هل يمكن للأجانب وغير المقيمين الحصول على قرض عقاري في دبي؟", answer: "نعم. تموّل بنوك الإمارات كلًا من المقيمين الأجانب وغير المقيمين في الخارج. يحصل المقيمون على نسبة تمويل تصل إلى 80%. أما غير المقيمين فتقتصر نسبتهم على 50-65%، والحد الأدنى لقيمة العقار مليون درهم." },
+      { question: "هل يمكن للأجانب وغير المقيمين الحصول على قرض عقاري في دبي؟", answer: "نعم. تموّل بنوك الإمارات كلًا من المقيمين الأجانب وغير المقيمين في الخارج. يحصل المقيمون على نسبة تمويل تصل إلى 80%. أما غير المقيمين فتقتصر نسبتهم على نحو 50%، والحد الأدنى لقيمة العقار مليون درهم." },
       { question: "ما معدل الرهن العقاري الحالي في دبي؟", answer: "في عام 2026، تتراوح معدلات الرهن في دبي بين 3.99% و5.49% سنويًا للمنتجات ذات السعر الثابت (1-5 سنوات). المعدلات المتغيرة مرتبطة بـ EIBOR (~5%) بالإضافة إلى هامش البنك." },
-      { question: "كم تبلغ الدفعة الأولى المطلوبة للرهن العقاري في دبي؟", answer: "لوائح البنك المركزي الإماراتي: 20% للمقيمين الذين يشترون مسكنهم الأول (للعقارات دون 5 مليون درهم). 25-35% لغير المقيمين على نفس قيمة العقار. 30-40% للعقارات فوق 5 مليون درهم." },
+      { question: "كم تبلغ الدفعة الأولى المطلوبة للرهن العقاري في دبي؟", answer: "لوائح البنك المركزي الإماراتي: 20% للمقيمين الذين يشترون مسكنهم الأول (للعقارات دون 5 مليون درهم). 50% على الأقل لغير المقيمين على نفس قيمة العقار بما يوافق سقف التمويل البالغ 50%. 30% للمقيمين في العقارات فوق 5 مليون درهم، مع سقوف أقل لغير المقيمين." },
       { question: "ما المستندات المطلوبة لتمويل عقاري في الإمارات؟", answer: "الموظفون: جواز سفر وكشوف بنكية لـ 3-6 أشهر وقسائم راتب وخطاب توظيف. المقيمون يضيفون هوية إماراتية وإقامة. غير المقيمين يضيفون كشوفًا بنكية من بلدهم لـ 6 أشهر وإثبات دخل وسجلًا ائتمانيًا." },
       { question: "هل يُفضَّل السعر الثابت أم المتغير للرهن العقاري؟", answer: "المعدلات الثابتة (3.99-5.49% لـ 1-5 سنوات) توفر يقينًا في الدفع وتحمي من ارتفاع الفائدة. يوصي معظم المستشارين بتثبيت السعر للسنوات الثلاث إلى الخمس الأولى، لا سيما للسكن الأساسي." },
       { question: "هل يمكن الحصول على رهن عقاري لشراء عقار على الخارطة؟", answer: "تمويل على الخارطة متاح لكن أقل شيوعًا. يلجأ معظم المشترين إلى خطط دفع المطوّر. الحد الأدنى لنسبة الدفعة الأولى في تمويل الخارطة عادةً 50%." },
       { question: "كم يستغرق الحصول على موافقة الرهن العقاري في دبي؟", answer: "الموافقة المبدئية: 2-5 أيام عمل. الموافقة الرسمية بعد التقييم: 7-14 يومًا. الإجمالي من تقديم الطلب إلى نقل الملكية: عادةً 3-5 أسابيع للعقارات الجاهزة." },
-      { question: "ما جميع التكاليف المرتبطة بالحصول على رهن عقاري في دبي؟", answer: "الدفعة الأولى + رسوم DLD (4% من قيمة العقار، تُقسَّم عادةً) + رسوم تسجيل الرهن (0.25% من قيمة القرض) + رسوم الترتيب (0.5-1%) + التقييم (2,500-3,500 درهم) + التأمينات. إجمالي تكاليف الصفقة: نحو 3-5% من قيمة العقار." },
+      { question: "ما جميع التكاليف المرتبطة بالحصول على رهن عقاري في دبي؟", answer: "الدفعة الأولى (20% للمقيمين، ومن 50% لغير المقيمين) + رسوم DLD (4% من قيمة العقار، يدفعها المشتري بالكامل في الغالبية العظمى من الصفقات) + رسوم تسجيل الرهن (0.25% من قيمة القرض + 290 درهمًا) + رسوم الترتيب (0.5-1%) + عمولة الوسيط (2% مع 5% ضريبة القيمة المضافة) + رسوم إصدار سند الملكية (540 درهمًا) + التقييم (2,500-3,500 درهم) + التأمينات. إجمالي تكاليف الصفقة: نحو 6.5% من قيمة العقار في الشراء بتمويل (ونحو 5.5% في الشراء النقدي)." },
     ],
     ctaTitle: "احصل على موافقة مبدئية اليوم",
     ctaDesc: "تتعاون بناية مع كبار وسطاء الرهن العقاري في الإمارات. سنطابقك مع البنك المناسب ونُعدّ طلبك ونرافقك حتى الموافقة, دون أي تكلفة إضافية.",
@@ -360,11 +360,11 @@ const CONTENT = {
     calcTitle: "房贷计算器",
     guideTitle: "迪拜房贷完整指南",
     sections: [
-      { title: "谁可以在迪拜申请房贷？", body: "阿联酋居民和非居民（海外外籍人士）均可在迪拜申请房贷。居民的贷款成数（LTV）通常为75-80%，非居民为50-65%。为非居民提供贷款的银行包括阿联酋国民银行、阿布扎比商业银行、汇丰阿联酋等。非居民贷款最低房产价值通常为100万迪拉姆。" },
+      { title: "谁可以在迪拜申请房贷？", body: "阿联酋居民和非居民（海外外籍人士）均可在迪拜申请房贷。根据阿联酋央行上限规定，居民购买首套房的贷款成数（LTV）最高为80%，非居民约为50%。为非居民提供贷款的银行包括阿联酋国民银行、阿布扎比商业银行、汇丰阿联酋等。非居民贷款最低房产价值通常为100万迪拉姆。" },
       { title: "2026年阿联酋房贷利率", body: "阿联酋房贷利率分固定利率和浮动利率。1-5年固定利率通常为3.99%-5.49%。浮动利率与EIBOR挂钩，加银行利差1.5-2.5%。大多数借款人选择前3-5年固定利率以确保可预测性。伊斯兰金融产品（穆拉巴哈/伊贾拉）也可申请。" },
-      { title: "首付要求", body: "阿联酋央行规定：500万迪拉姆以下房产, , 居民首付20%（首套房），非居民25-35%。500万迪拉姆以上, , 居民30%，非居民35-40%。期房贷款通常需要50%首付或按施工进度付款计划。" },
+      { title: "首付要求", body: "阿联酋央行规定：500万迪拉姆以下房产, , 居民首付20%（首套房），非居民至少50%（对应50%的LTV上限）。500万迪拉姆以上, , 居民30%；高价房产上限更低，非居民需准备50%以上。期房贷款通常需要50%首付或按施工进度付款计划。" },
       { title: "所需文件", body: "受薪人员：护照、居住签证（居民）、酋长国身份证、3-6个月银行对账单、工资单、雇主证明信。非居民：护照、6个月本国银行对账单、收入证明、本国信用报告。" },
-      { title: "其他费用预算", body: "除首付外：银行安排费（贷款额的0.5-1%）、DLD抵押贷款登记费（贷款额的0.25%）、房产估价费（2,500-3,500迪拉姆）、房产保险（0.1-0.2%/年）、人寿保险（部分银行要求，0.1-0.3%/年）。总交易成本约为房产价值的3-5%。" },
+      { title: "其他费用预算", body: "除首付外：银行安排费（贷款额的0.5-1%）、DLD抵押贷款登记费（贷款额的0.25%）、房产估价费（2,500-3,500迪拉姆）、房产保险（0.1-0.2%/年）、人寿保险（部分银行要求，0.1-0.3%/年）。按揭购房的总交易成本约为房产价值的6.5%（全款约5.5%）。" },
       { title: "房贷申请时间表", body: "预批（原则批准）：提交完整材料后2-5个工作日。房产估价后正式批准：7-14天。资金转账：批准后1-2天。从申请到产权转移全程：现房通常3-5周。" },
     ],
     banksTitle: "迪拜顶级房贷银行",
@@ -378,14 +378,14 @@ const CONTENT = {
     ],
     faqTitle: "常见问题解答",
     faqs: [
-      { question: "外籍人士或非居民可以在迪拜申请房贷吗？", answer: "可以。阿联酋银行为居住在当地的外籍居民和海外非居民提供贷款。居民LTV最高80%（500万以下首套房）。非居民LTV限制为50-65%，最低房产价值为100万迪拉姆。" },
+      { question: "外籍人士或非居民可以在迪拜申请房贷吗？", answer: "可以。阿联酋银行为居住在当地的外籍居民和海外非居民提供贷款。居民LTV最高80%（500万以下首套房）。非居民LTV上限约为50%，最低房产价值为100万迪拉姆。" },
       { question: "迪拜目前的房贷利率是多少？", answer: "2026年，迪拜房贷利率约为3.99%-5.49%（1-5年固定利率产品）。浮动利率与EIBOR（约5%）加银行利差1.5-2.5%挂钩。固定利率在初期提供更多确定性。" },
-      { question: "迪拜房贷需要多少首付？", answer: "阿联酋央行规定：居民购买500万以下首套房最低首付20%（LTV 80%）。非居民同等房产首付25-35%。500万以上房产居民首付30%，非居民35-40%。" },
+      { question: "迪拜房贷需要多少首付？", answer: "阿联酋央行规定：居民购买500万以下首套房最低首付20%（LTV 80%）。非居民同等房产首付至少50%（对应50%的LTV上限）。500万以上房产居民首付30%；高价及期房上限更低，非居民需准备50%以上。" },
       { question: "申请阿联酋房贷需要哪些文件？", answer: "受薪人员：护照、3-6个月银行对账单、最近3个月工资单、雇主证明信。自雇人士需2年审计财务报告。非居民需添加本国银行对账单、收入证明和信用报告。" },
       { question: "固定利率和浮动利率哪个更好？", answer: "固定利率（1-5年3.99-5.49%）提供还款确定性，防范利率上涨。大多数财务顾问建议前3-5年选择固定利率，尤其对主要住所而言，预算确定性更为重要。" },
       { question: "可以为期房申请房贷吗？", answer: "期房房贷可用但不常见。大多数期房买家使用开发商付款计划（施工期间40-60%+交房时40-60%）。期房抵押贷款最低首付通常为50%。" },
       { question: "在迪拜获得房贷批准需要多长时间？", answer: "预批：提交完整文件后2-5个工作日。房产估价后正式批准：7-14天。从申请到资金转账全程：现房通常3-5周。" },
-      { question: "迪拜房贷涉及哪些所有费用？", answer: "首付（房产价值的20-35%）+DLD过户费（4%，通常买卖各半）+DLD抵押贷款登记费（贷款额的0.25%）+银行安排费（0.5-1%）+估价费（2,500-3,500迪拉姆）+保险。超出购房价的总交易成本约3-5%。" },
+      { question: "迪拜房贷涉及哪些所有费用？", answer: "首付（居民20%，非居民50%起）+DLD过户费（4%，绝大多数交易由买方全额承担，可协商）+DLD抵押贷款登记费（贷款额的0.25%+290迪拉姆）+银行安排费（0.5-1%）+经纪佣金（2%+5%增值税）+产权证签发费（540迪拉姆）+估价费（2,500-3,500迪拉姆）+保险。超出购房价的总交易成本：按揭约6.5%，全款约5.5%。" },
     ],
     ctaTitle: "今天获取预批",
     ctaDesc: "Binayah与阿联酋顶级房贷经纪商合作。我们将为您匹配合适的银行，准备申请材料，全程指导至获批, , 无额外费用。",
@@ -406,7 +406,7 @@ const CONTENT = {
     sections: [
       {
         title: "Ai có thể vay thế chấp tại Dubai?",
-        body: "Cả cư dân UAE và người không cư trú (người nước ngoài sống ở nước ngoài) đều có thể vay thế chấp tại Dubai. Cư dân thường đủ điều kiện cho tỷ lệ LTV 75-80%, trong khi người không cư trú bị giới hạn ở 50-65%. Các ngân hàng cho người không cư trú vay gồm Emirates NBD, ADCB, ENBD, Mashreq và Dubai Islamic Bank. Giá trị bất động sản tối thiểu thường là 1.000.000 AED cho khoản vay người không cư trú.",
+        body: "Cả cư dân UAE và người không cư trú (người nước ngoài sống ở nước ngoài) đều có thể vay thế chấp tại Dubai. Theo trần của Ngân hàng Trung ương UAE, cư dân được vay tối đa 80% LTV cho bất động sản đầu tiên, trong khi người không cư trú bị giới hạn ở khoảng 50% LTV. Các ngân hàng cho người không cư trú vay gồm Emirates NBD, ADCB, ENBD, Mashreq và Dubai Islamic Bank. Giá trị bất động sản tối thiểu thường là 1.000.000 AED cho khoản vay người không cư trú.",
       },
       {
         title: "Lãi suất vay thế chấp UAE hiện tại (2026)",
@@ -414,7 +414,7 @@ const CONTENT = {
       },
       {
         title: "Yêu cầu trả trước",
-        body: "Quy định UAE (CBUAE): Với bất động sản dưới 5 triệu AED, cư dân cần trả trước 20% (nhà đầu tiên), 30% cho đầu tư. Người không cư trú cần 25-35%. Với bất động sản trên 5 triệu AED, 30% (cư dân) và 35-40% (người không cư trú). Vay thế chấp off-plan thường yêu cầu trả trước 50% hoặc kế hoạch thanh toán theo tiến độ xây dựng. Tài chính từ chủ đầu tư có thể giảm yêu cầu tiền mặt ban đầu.",
+        body: "Quy định UAE (CBUAE): Với bất động sản dưới 5 triệu AED, cư dân cần trả trước 20% (nhà đầu tiên), 30% cho đầu tư. Người không cư trú cần ít nhất 50%, tương ứng trần LTV 50%. Với bất động sản trên 5 triệu AED, 30% (cư dân); trần thấp hơn với bất động sản giá trị cao nên người không cư trú cần dự trù trên 50%. Vay thế chấp off-plan thường yêu cầu trả trước 50% hoặc kế hoạch thanh toán theo tiến độ xây dựng. Tài chính từ chủ đầu tư có thể giảm yêu cầu tiền mặt ban đầu.",
       },
       {
         title: "Giấy tờ cần thiết",
@@ -422,7 +422,7 @@ const CONTENT = {
       },
       {
         title: "Chi phí cần dự trù",
-        body: "Ngoài khoản trả trước: phí thu xếp (0,5-1% khoản vay), phí đăng ký DLD (0,25% giá trị khoản vay), phí định giá bất động sản (2.500-3.500 AED), bảo hiểm bất động sản (0,1-0,2%/năm), bảo hiểm nhân thọ (yêu cầu bởi một số ngân hàng, 0,1-0,3%/năm) và phí pháp lý (5.000-10.000 AED cho hồ sơ thế chấp). Dự trù khoảng 3-5% giá trị bất động sản cho tổng chi phí giao dịch.",
+        body: "Ngoài khoản trả trước: phí thu xếp (0,5-1% khoản vay), phí đăng ký DLD (0,25% giá trị khoản vay), phí định giá bất động sản (2.500-3.500 AED), bảo hiểm bất động sản (0,1-0,2%/năm), bảo hiểm nhân thọ (yêu cầu bởi một số ngân hàng, 0,1-0,3%/năm) và phí pháp lý (5.000-10.000 AED cho hồ sơ thế chấp). Dự trù khoảng 6,5% giá trị bất động sản cho tổng chi phí giao dịch khi vay thế chấp (khoảng 5,5% khi mua bằng tiền mặt).",
       },
       {
         title: "Lịch trình vay thế chấp",
@@ -440,14 +440,14 @@ const CONTENT = {
     ],
     faqTitle: "Câu hỏi thường gặp",
     faqs: [
-      { question: "Tôi có thể vay thế chấp tại Dubai với tư cách người nước ngoài hoặc người không cư trú không?", answer: "Có. Các ngân hàng UAE cho cả người nước ngoài cư trú và người không cư trú sống ở nước ngoài vay. Cư dân có thể vay tối đa 80% LTV (nhà đầu tiên dưới 5 triệu AED). Người không cư trú bị giới hạn ở 50-65% LTV và cần giá trị bất động sản tối thiểu 1.000.000 AED. Các ngân hàng như Emirates NBD, ADCB và HSBC có chương trình vay thế chấp riêng cho người không cư trú." },
+      { question: "Tôi có thể vay thế chấp tại Dubai với tư cách người nước ngoài hoặc người không cư trú không?", answer: "Có. Các ngân hàng UAE cho cả người nước ngoài cư trú và người không cư trú sống ở nước ngoài vay. Cư dân có thể vay tối đa 80% LTV (nhà đầu tiên dưới 5 triệu AED). Người không cư trú bị giới hạn ở khoảng 50% LTV và cần giá trị bất động sản tối thiểu 1.000.000 AED. Các ngân hàng như Emirates NBD, ADCB và HSBC có chương trình vay thế chấp riêng cho người không cư trú." },
       { question: "Lãi suất vay thế chấp hiện tại tại Dubai là bao nhiêu?", answer: "Tính đến năm 2026, lãi suất vay thế chấp Dubai dao động khoảng 3,99% đến 5,49%/năm cho sản phẩm lãi suất cố định (cố định 1-5 năm). Lãi suất thả nổi liên kết với EIBOR (hiện ~5%) cộng biên ngân hàng 1,5-2,5%. Tổng lãi suất hiệu dụng cho vay thế chấp thả nổi thường 6,5-7,5%/năm. Lãi suất cố định mang lại sự chắc chắn hơn cho kỳ hạn ban đầu." },
-      { question: "Tôi cần đặt cọc bao nhiêu cho vay thế chấp Dubai?", answer: "Quy định Ngân hàng Trung ương UAE: tối thiểu 20% cho cư dân mua nhà đầu tiên dưới 5 triệu AED (80% LTV). 25-35% cho người không cư trú trên cùng giá trị bất động sản. 30% cho cư dân mua bất động sản đầu tư. Với bất động sản trên 5 triệu AED, đặt cọc tối thiểu là 30% (cư dân) hoặc 35-40% (người không cư trú)." },
+      { question: "Tôi cần đặt cọc bao nhiêu cho vay thế chấp Dubai?", answer: "Quy định Ngân hàng Trung ương UAE: tối thiểu 20% cho cư dân mua nhà đầu tiên dưới 5 triệu AED (80% LTV). Ít nhất 50% cho người không cư trú trên cùng giá trị bất động sản, tương ứng trần LTV 50%. 30% cho cư dân mua bất động sản đầu tư. Với bất động sản trên 5 triệu AED, đặt cọc tối thiểu là 30% (cư dân); trần thấp hơn với bất động sản giá trị cao và off-plan nên người không cư trú cần dự trù trên 50%." },
       { question: "Tôi cần giấy tờ gì để xin vay thế chấp UAE?", answer: "Người làm công ăn lương cần: hộ chiếu, sao kê ngân hàng 3-6 tháng, 3 phiếu lương gần nhất và thư của chủ lao động. Người tự kinh doanh cần 2 năm tài khoản được kiểm toán và giấy phép kinh doanh. Người không cư trú bổ sung báo cáo tín dụng và chứng minh thu nhập từ quốc gia của họ. Mọi giấy tờ thường cần trong vòng 3 tháng kể từ khi nộp đơn." },
       { question: "Nên vay thế chấp lãi suất cố định hay thả nổi tại Dubai?", answer: "Lãi suất cố định (thường 3,99-5,49% cho 1-5 năm) mang lại sự chắc chắn về khoản trả và bảo vệ khỏi tăng lãi suất. Lãi suất thả nổi (liên kết với EIBOR) có thể thấp hơn khi lãi suất giảm nhưng tạo ra sự bất định. Hầu hết cố vấn tài chính khuyến nghị cố định cho 3-5 năm đầu, đặc biệt cho nơi ở chính nơi sự chắc chắn về ngân sách quan trọng." },
-      { question: "Tôi có thể vay thế chấp cho bất động sản off-plan tại Dubai không?", answer: "Vay thế chấp off-plan có sẵn nhưng ít phổ biến hơn. Hầu hết người mua off-plan dùng kế hoạch thanh toán của chủ đầu tư (thường 40-60% trong quá trình xây dựng + 40-60% khi bàn giao). Một số ngân hàng cung cấp vay thế chấp liên kết xây dựng giải ngân vốn theo cột mốc. LTV tối thiểu thường là 50%, yêu cầu trả trước 50%." },
+      { question: "Tôi có thể vay thế chấp cho bất động sản off-plan tại Dubai không?", answer: "Vay thế chấp off-plan có sẵn nhưng ít phổ biến hơn. Hầu hết người mua off-plan dùng kế hoạch thanh toán của chủ đầu tư (thường 40-60% trong quá trình xây dựng + 40-60% khi bàn giao). Một số ngân hàng cung cấp vay thế chấp liên kết xây dựng giải ngân vốn theo cột mốc. LTV tối đa thường là 50%, yêu cầu trả trước 50%." },
       { question: "Mất bao lâu để được phê duyệt vay thế chấp tại Dubai?", answer: "Phê duyệt trước (còn gọi là phê duyệt theo nguyên tắc): 2-5 ngày làm việc với giấy tờ đầy đủ. Phê duyệt chính thức đầy đủ sau khi định giá bất động sản: 7-14 ngày. Toàn bộ quy trình từ nộp đơn đến chuyển khoản thường mất 3-5 tuần cho bất động sản đã hoàn thiện." },
-      { question: "Tất cả các chi phí liên quan đến việc vay thế chấp Dubai là gì?", answer: "Khoản trả trước (20-35% giá trị bất động sản) + phí chuyển nhượng DLD (4% giá trị bất động sản, thường chia người mua/người bán) + phí đăng ký thế chấp DLD (0,25% khoản vay) + phí thu xếp ngân hàng (0,5-1% khoản vay) + định giá bất động sản (2.500-3.500 AED) + bảo hiểm. Tổng chi phí giao dịch ngoài giá mua: khoảng 3-5% giá trị bất động sản." },
+      { question: "Tất cả các chi phí liên quan đến việc vay thế chấp Dubai là gì?", answer: "Khoản trả trước (20% với cư dân, từ 50% với người không cư trú) + phí chuyển nhượng DLD (4% giá trị bất động sản, người mua trả toàn bộ trong đại đa số giao dịch, tuy có thể thương lượng) + phí đăng ký thế chấp DLD (0,25% khoản vay + 290 AED) + phí thu xếp ngân hàng (0,5-1% khoản vay) + hoa hồng môi giới (2% + 5% VAT) + phí cấp giấy chứng nhận quyền sở hữu (540 AED) + định giá bất động sản (2.500-3.500 AED) + bảo hiểm. Tổng chi phí giao dịch ngoài giá mua: khoảng 6,5% giá trị bất động sản khi vay thế chấp (khoảng 5,5% khi mua bằng tiền mặt)." },
     ],
     ctaTitle: "Nhận phê duyệt trước hôm nay",
     ctaDesc: "Binayah hợp tác với các nhà môi giới vay thế chấp hàng đầu UAE. Chúng tôi sẽ kết nối bạn với đúng ngân hàng, chuẩn bị đơn của bạn và hướng dẫn bạn qua quá trình phê duyệt, không tốn thêm chi phí.",

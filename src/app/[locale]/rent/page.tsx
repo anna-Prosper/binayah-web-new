@@ -51,6 +51,57 @@ function formatCount(n: number, locale: string): string {
   return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, GROUP_SEP[locale] ?? ",");
 }
 
+/**
+ * Cheapest live studio rent, in AED per year. The page's own payload is sorted
+ * newest-first so it cannot yield a minimum — this is a separate, cached
+ * price-ascending search (same `unstable_cache` bucket, so it costs one
+ * upstream call per revalidation window, not one per request).
+ *
+ * The stat this feeds used to be a hardcoded "AED 25K", which was false: the
+ * cheapest of the ~93 live rentals is AED 40,000. Rather than swap one frozen
+ * number for another, the figure is now read live, with two guards:
+ *   - only `bedrooms === 0` rows count, because the label says "Studio";
+ *   - anything under AED 10,000/year is treated as a corrupt row, since no real
+ *     Dubai annual lease sits there.
+ * If the fetch fails, is malformed, or yields no plausible studio, this returns
+ * null and the caller DROPS the tile. A failed fetch must never be turned into
+ * a price claim, and there is deliberately no fallback price to fall back to.
+ */
+const MIN_PLAUSIBLE_ANNUAL_RENT = 10_000;
+
+async function getStudioFromPrice(): Promise<number | null> {
+  const data = await getCachedSearch<any>("intent=rent&sort=price_asc&pageSize=12");
+  const prices: number[] = (Array.isArray(data?.listings) ? data.listings : [])
+    .filter((l: any) => Number(l?.bedrooms) === 0)
+    .map((l: any) => Number(l?.price))
+    .filter((n: number) => Number.isFinite(n) && n >= MIN_PLAUSIBLE_ANNUAL_RENT);
+  return prices.length ? Math.min(...prices) : null;
+}
+
+/**
+ * Renders the live studio minimum in each locale's own conventions, mirroring
+ * the hand-written strings this replaced: ru leads with "от", ar/zh/vi put the
+ * currency last, zh counts in 万 (10,000s).
+ */
+const STUDIO_FROM: Record<string, (n: number) => string> = {
+  en: (n) => `AED ${Math.round(n / 1000)}K`,
+  fr: (n) => `AED ${Math.round(n / 1000)}K`,
+  he: (n) => `AED ${Math.round(n / 1000)}K`,
+  vi: (n) => `${Math.round(n / 1000)}K AED`,
+  ru: (n) => `от ${Math.round(n / 1000)}К AED`,
+  ar: (n) => `${Math.round(n / 1000)}K درهم`,
+  zh: (n) => `${(n / 10000).toFixed(1).replace(/\.0$/, "")}万AED`,
+};
+
+// Column counts for the stat row, which now holds 1-3 tiles depending on how
+// much live data came back. Every class is a complete literal so Tailwind's
+// scanner still emits them.
+const STAT_COLS: Record<number, string> = {
+  1: "grid-cols-1 sm:grid-cols-1",
+  2: "grid-cols-2 sm:grid-cols-2",
+  3: "grid-cols-2 sm:grid-cols-3",
+};
+
 const CONTENT = {
   fr: {
     "metaTitle": "Biens à louer à Dubai | Appartements & Villas | Binayah",
@@ -58,17 +109,10 @@ const CONTENT = {
     "heroLabel": "LOUER À DUBAI",
     "h1": "Biens à louer",
     "h1sub": "à Dubai",
-    "heroDesc": "Annonces de location vérifiées dans tous les quartiers de Dubai. Studios à partir de 25K AED/an. Villas familiales à partir de 90K AED/an. Trouvez votre maison avec les agents de location de confiance de Binayah.",
+    "heroDesc": "Annonces de location vérifiées dans tous les quartiers de Dubai. Trouvez votre maison avec les agents de location de confiance de Binayah.",
     "rentalsLabel": "Annonces de location",
+    "studioFromLabel": "Studio à partir de/an",
     "stats": [
-      {
-        "n": "AED 25K",
-        "label": "Studio à partir de/an"
-      },
-      {
-        "n": "90K+",
-        "label": "Locataires actifs"
-      },
       {
         "n": "48h",
         "label": "Temps moyen de correspondance"
@@ -107,17 +151,10 @@ const CONTENT = {
     "heroLabel": "השכרה בדובאי",
     "h1": "נכסים להשכרה",
     "h1sub": "בדובאי",
-    "heroDesc": "רישומי השכרה מאומתים בכל קהילות דובאי. סטודיו החל מ-AED 25K לשנה. וילות משפחתיות החל מ-AED 90K לשנה. מצאו את ביתכם עם סוכני ההשכרה המהימנים של Binayah.",
+    "heroDesc": "רישומי השכרה מאומתים בכל קהילות דובאי. מצאו את ביתכם עם סוכני ההשכרה המהימנים של Binayah.",
     "rentalsLabel": "רישומי השכרה",
+    "studioFromLabel": "סטודיו החל מ/שנה",
     "stats": [
-      {
-        "n": "AED 25K",
-        "label": "סטודיו החל מ/שנה"
-      },
-      {
-        "n": "90K+",
-        "label": "שוכרים פעילים"
-      },
       {
         "n": "48h",
         "label": "זמן התאמה ממוצע"
@@ -156,11 +193,10 @@ const CONTENT = {
     heroLabel: "RENT IN DUBAI",
     h1: "Properties for Rent",
     h1sub: "in Dubai",
-    heroDesc: "Verified rental listings across all Dubai communities. Studios from AED 25K/year. Family villas from AED 90K/year. Find your home with Binayah's trusted rental agents.",
+    heroDesc: "Verified rental listings across all Dubai communities. Find your home with Binayah's trusted rental agents.",
     rentalsLabel: "Rental Listings",
+    studioFromLabel: "Studio from/year",
     stats: [
-      { n: "AED 25K", label: "Studio from/year" },
-      { n: "90K+", label: "Active Tenants" },
       { n: "48h", label: "Avg Match Time" },
     ],
     faqs: [
@@ -181,11 +217,10 @@ const CONTENT = {
     heroLabel: "АРЕНДА В ДУБАЕ",
     h1: "Аренда недвижимости",
     h1sub: "в Дубае",
-    heroDesc: "Проверенные объявления об аренде во всех районах Дубая. Студии от 25 000 AED в год. Семейные виллы от 90 000 AED в год. Найдите жильё с надёжными агентами Binayah.",
+    heroDesc: "Проверенные объявления об аренде во всех районах Дубая. Найдите жильё с надёжными агентами Binayah.",
     rentalsLabel: "Объектов в аренду",
+    studioFromLabel: "Студия в год",
     stats: [
-      { n: "от 25К AED", label: "Студия в год" },
-      { n: "90К+", label: "Активных арендаторов" },
       { n: "48ч", label: "Среднее время подбора" },
     ],
     faqs: [
@@ -206,11 +241,10 @@ const CONTENT = {
     heroLabel: "الإيجار في دبي",
     h1: "عقارات للإيجار",
     h1sub: "في دبي",
-    heroDesc: "إعلانات إيجار موثَّقة في جميع مجتمعات دبي. استوديوهات من 25,000 درهم سنويًا. فلل عائلية من 90,000 درهم سنويًا. اعثر على منزلك مع وكلاء بناية الموثوقين.",
+    heroDesc: "إعلانات إيجار موثَّقة في جميع مجتمعات دبي. اعثر على منزلك مع وكلاء بناية الموثوقين.",
     rentalsLabel: "إعلان إيجار",
+    studioFromLabel: "استوديو/سنة",
     stats: [
-      { n: "25K درهم", label: "استوديو/سنة" },
-      { n: "+90K", label: "مستأجر نشط" },
       { n: "48س", label: "متوسط وقت المطابقة" },
     ],
     faqs: [
@@ -231,11 +265,10 @@ const CONTENT = {
     heroLabel: "在迪拜租房",
     h1: "迪拜出租房产",
     h1sub: "公寓 · 别墅 · 单间",
-    heroDesc: "迪拜所有社区的核实出租房源。单间公寓年租金从2.5万迪拉姆起。家庭别墅从9万迪拉姆起。通过Binayah可信赖的租赁经纪人找到您的家。",
+    heroDesc: "迪拜所有社区的核实出租房源。通过Binayah可信赖的租赁经纪人找到您的家。",
     rentalsLabel: "出租房源",
+    studioFromLabel: "单间/年起",
     stats: [
-      { n: "2.5万AED", label: "单间/年起" },
-      { n: "9万+", label: "活跃租客" },
       { n: "48小时", label: "平均匹配时间" },
     ],
     faqs: [
@@ -256,11 +289,10 @@ const CONTENT = {
     heroLabel: "THUÊ TẠI DUBAI",
     h1: "Bất động sản cho thuê",
     h1sub: "tại Dubai",
-    heroDesc: "Tin đăng cho thuê đã xác minh trên tất cả khu vực Dubai. Studio từ 25K AED/năm. Biệt thự gia đình từ 90K AED/năm. Tìm ngôi nhà của bạn với chuyên viên cho thuê đáng tin cậy của Binayah.",
+    heroDesc: "Tin đăng cho thuê đã xác minh trên tất cả khu vực Dubai. Tìm ngôi nhà của bạn với chuyên viên cho thuê đáng tin cậy của Binayah.",
     rentalsLabel: "Tin đăng cho thuê",
+    studioFromLabel: "Studio từ/năm",
     stats: [
-      { n: "25K AED", label: "Studio từ/năm" },
-      { n: "90K+", label: "Khách thuê đang hoạt động" },
       { n: "48h", label: "Thời gian so khớp TB" },
     ],
     faqs: [
@@ -309,16 +341,22 @@ export default async function RentPage({ params }: Props) {
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
 
-  const initialData = await getInitialRentListings();
+  const [initialData, studioFrom] = await Promise.all([
+    getInitialRentListings(),
+    getStudioFromPrice(),
+  ]);
   const collectionItems = rentCollectionItems(initialData);
 
-  // The rental-count tile is prepended only when we have a real, live number.
-  // With no count the tile is omitted entirely and the row renders 3 across.
+  // Both live tiles are prepended only when we actually have a real number.
+  // Whichever is missing is omitted entirely and the row narrows to match — no
+  // "0+", no hardcoded price standing in for a failed fetch. Only the 48h
+  // average match time, a confirmed company figure, is always present.
   const rentCount = rentListingCount(initialData);
-  const stats: { n: string; label: string }[] =
-    rentCount === null
-      ? [...c.stats]
-      : [{ n: formatCount(rentCount, locale), label: c.rentalsLabel }, ...c.stats];
+  const stats: { n: string; label: string }[] = [
+    ...(rentCount === null ? [] : [{ n: formatCount(rentCount, locale), label: c.rentalsLabel }]),
+    ...(studioFrom === null ? [] : [{ n: (STUDIO_FROM[locale] ?? STUDIO_FROM.en)(studioFrom), label: c.studioFromLabel }]),
+    ...c.stats,
+  ];
 
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
@@ -350,7 +388,7 @@ export default async function RentPage({ params }: Props) {
       {/* Stats */}
       <section className="border-b border-border/50 bg-card">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className={`grid grid-cols-2 ${stats.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
+          <div className={`grid ${STAT_COLS[stats.length] ?? "grid-cols-2 sm:grid-cols-3"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
             {stats.map((s) => (
               <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
                 <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>

@@ -10,80 +10,81 @@ import { serverApiUrl, serverFetch } from "@/lib/api";
 
 export const revalidate = 3600; // refresh every hour
 
-// ─── Developer comparison data (editorial, updated quarterly) ───────────────
+// ─── Developer reference data ───────────────────────────────────────────────
+//
+// Sourcing rules for this table — keep them if you edit it:
+//  • `founded` and `delivered` must match the developer's own published
+//    disclosures as carried in Binayah's developer directory
+//    (/api/developers/<slug>). Where the directory publishes a project count
+//    rather than a unit count (Ellington), show the project count and say so.
+//  • `avgPriceSqft` / `avgYield` are indicative market ranges, not sourced
+//    figures, and are labelled as estimates under the table.
+//  • Rows are ordered ALPHABETICALLY and carry no medal, star or score. An
+//    implicit ranking of named companies with no stated basis was removed;
+//    do not reintroduce one without publishing the criterion it is built on.
 
 const DEVELOPERS = [
   {
-    name: "Emaar Properties",
-    flag: "🏆",
-    founded: "1997",
-    delivered: "90,000+",
-    avgPriceSqft: "AED 1,800-3,500",
-    avgYield: "5-7%",
-    paymentPlan: "40/60 construction-linked",
-    knownFor: "Downtown Dubai, Dubai Creek Harbour, Dubai Hills",
-    bestFor: "Capital appreciation, iconic locations, long-term stability",
-    rating: 5,
-  },
-  {
-    name: "DAMAC Properties",
-    flag: "🥈",
-    founded: "2002",
-    delivered: "46,000+",
-    avgPriceSqft: "AED 1,200-2,800",
-    avgYield: "5-8%",
-    paymentPlan: "Post-handover up to 5 years",
-    knownFor: "Damac Hills, Damac Lagoons, Cavalli Tower",
-    bestFor: "Branded residences, flexible post-handover payments",
-    rating: 4,
-  },
-  {
-    name: "Sobha Realty",
-    flag: "🥉",
-    founded: "1976",
-    delivered: "25,000+",
-    avgPriceSqft: "AED 1,800-3,200",
-    avgYield: "5-7%",
-    paymentPlan: "40/60 construction-linked",
-    knownFor: "Sobha Hartland, MBR City, Sobha Reserve",
-    bestFor: "Build quality, family communities, greenery",
-    rating: 4,
-  },
-  {
-    name: "Binghatti Developers",
-    flag: "⭐",
-    founded: "2008",
-    delivered: "20,000+",
-    avgPriceSqft: "AED 1,100-2,000",
-    avgYield: "6-9%",
-    paymentPlan: "40/60 with 1% monthly installments",
-    knownFor: "Binghatti Phantom, Bugatti Residences, Al Jaddaf",
-    bestFor: "High rental yield, fast handover, affordable entry",
-    rating: 4,
-  },
-  {
-    name: "Ellington Properties",
-    flag: "⭐",
-    founded: "2014",
-    delivered: "3,000+",
-    avgPriceSqft: "AED 1,800-3,500",
-    avgYield: "5-7%",
-    paymentPlan: "20/80 with post-handover options",
-    knownFor: "Ellington House, DT1, Belgravia",
-    bestFor: "Design-led residences, boutique luxury",
-    rating: 4,
-  },
-  {
     name: "Azizi Developments",
-    flag: "⭐",
     founded: "2007",
-    delivered: "11,000+",
+    delivered: "10,000+ units",
     avgPriceSqft: "AED 900-1,600",
     avgYield: "6-8%",
     paymentPlan: "40/60 construction-linked",
     knownFor: "Azizi Riviera, Azizi Venice, Al Furjan",
     bestFor: "Affordable entry, high yield, diverse community",
-    rating: 3,
+  },
+  {
+    name: "Binghatti Developers",
+    founded: "2008",
+    delivered: "30,000+ units",
+    avgPriceSqft: "AED 1,100-2,000",
+    avgYield: "6-9%",
+    paymentPlan: "40/60 with 1% monthly installments",
+    knownFor: "Binghatti Phantom, Bugatti Residences, Al Jaddaf",
+    bestFor: "High rental yield, fast handover, affordable entry",
+  },
+  {
+    name: "DAMAC Properties",
+    founded: "2002",
+    delivered: "46,000+ homes",
+    avgPriceSqft: "AED 1,200-2,800",
+    avgYield: "5-8%",
+    paymentPlan: "Post-handover up to 5 years",
+    knownFor: "Damac Hills, Damac Lagoons, Cavalli Tower",
+    bestFor: "Branded residences, flexible post-handover payments",
+  },
+  {
+    name: "Ellington Properties",
+    founded: "2014",
+    // Ellington publishes a project count, not a unit count — the table note
+    // explains the difference rather than inventing a units figure.
+    delivered: "40+ projects",
+    avgPriceSqft: "AED 1,800-3,500",
+    avgYield: "5-7%",
+    paymentPlan: "20/80 with post-handover options",
+    knownFor: "Ellington House, DT1, Belgravia",
+    bestFor: "Design-led residences, boutique luxury",
+  },
+  {
+    name: "Emaar Properties",
+    founded: "1997",
+    delivered: "90,000+ homes",
+    avgPriceSqft: "AED 1,800-3,500",
+    avgYield: "5-7%",
+    paymentPlan: "40/60 construction-linked",
+    knownFor: "Downtown Dubai, Dubai Creek Harbour, Dubai Hills",
+    bestFor: "Capital appreciation, iconic locations, long-term stability",
+  },
+  {
+    name: "Sobha Realty",
+    founded: "1976",
+    delivered: "15,000+ homes",
+    avgPriceSqft: "AED 1,800-3,200",
+    avgYield: "5-7%",
+    paymentPlan: "40/60 construction-linked",
+    knownFor: "Sobha Hartland, MBR City, Sobha Reserve",
+    bestFor: "Build quality, family communities, greenery",
   },
 ];
 
@@ -177,9 +178,9 @@ const CONTENT = {
     "heroLabel": "על הנייר דובאי 2026",
     "h1": "הפרויקטים הטובים ביותר על הנייר",
     "h1sub": "בדובאי 2026",
-    "heroDesc": "השוו בין היזמים המובילים והפרויקטים החדשים על הנייר בדובאי. אנו מדרגים לפי פוטנציאל ROI, גמישות תוכנית התשלום, איכות הבנייה ותשואת השכירות, עם רשימות חיות המתעדכנות מדי יום.",
+    "heroDesc": "השוו בין היזמים המובילים והפרויקטים החדשים על הנייר בדובאי. אנו משווים לפי פוטנציאל ROI, גמישות תוכנית התשלום, איכות הבנייה ותשואת השכירות, עם רשימות חיות המתעדכנות מדי יום.",
     "devTitle": "השוואת יזמים",
-    "devSubtitle": "מדדים מרכזיים ליזמים המובילים בדובאי על הנייר",
+    "devSubtitle": "מדדים מרכזיים ליזמים מרכזיים בדובאי על הנייר, לפי סדר אלפביתי",
     "catTitle": "הטוב ביותר לכל סוג של קונה",
     "projectsTitle": "ההשקות האחרונות על הנייר",
     "fromLabel": "החל מ-",
@@ -192,7 +193,7 @@ const CONTENT = {
       },
       {
         "question": "מהו המחיר הממוצע של נכס על הנייר בדובאי 2026?",
-        "answer": "מחירי נכסים על הנייר בדובאי משתנים מאוד לפי מיקום ויזם. רמת כניסה (JVC, Dubai South, Arjan): 500K-900K AED לסטודיו/חדר אחד. טווח ביניים (Business Bay, Al Jaddaf, JBR): 900K-2M AED. פרימיום (Downtown, Dubai Marina, Palm): 2M-5M AED. יוקרה מוחלטת (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. עסקת על הנייר ממוצעת בדובאי ב-2025 הייתה כ-1.8M AED."
+        "answer": "מחירי נכסים על הנייר בדובאי משתנים מאוד לפי מיקום ויזם. רמת כניסה (JVC, Dubai South, Arjan): 500K-900K AED לסטודיו/חדר אחד. טווח ביניים (Business Bay, Al Jaddaf, JBR): 900K-2M AED. פרימיום (Downtown, Dubai Marina, Palm): 2M-5M AED. יוקרה מוחלטת (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. כעוגן עירוני, מחיר המכירה הממוצע בדובאי עומד על כ-1,879 AED לרגל רבועה לפי נתוני ה-DLD והשוק העדכניים."
       },
       {
         "question": "אילו תוכניות תשלום מציעים יזמי על הנייר בדובאי ב-2026?",
@@ -204,13 +205,14 @@ const CONTENT = {
       },
       {
         "question": "האם רכישה על הנייר בדובאי בטוחה ב-2026?",
-        "answer": "לדובאי יש מהגנות הקונה החזקות בעולם בתחום העל הנייר. RERA מחייבת יזמים להפקיד את תשלומי הקונים בחשבונות נאמנות (escrow) מבודדים של DLD, הכספים אינם ניתנים לשימוש עד להשגת אבני דרך בבנייה. כל הפרויקטים חייבים להיות רשומים ב-RERA. יזמים חייבים להפקיד ערבות השלמה. אף יזם בעל מוניטין (Emaar, DAMAC, Sobha, Binghatti) לא נכשל במסירת פרויקט רשום. עם זאת, יזמים קטנים יותר ושחקנים חדשים נושאים סיכון גבוה יותר."
+        "answer": "לדובאי יש מהגנות הקונה החזקות בעולם בתחום העל הנייר. RERA מחייבת יזמים להפקיד את תשלומי הקונים בחשבונות נאמנות (escrow) מבודדים של DLD, הכספים אינם ניתנים לשימוש עד להשגת אבני דרך בבנייה. כל הפרויקטים חייבים להיות רשומים ב-RERA. יזמים חייבים להפקיד ערבות השלמה. ליזמים הגדולים בדובאי יש היסטוריית מסירה חזקה, אך אף שוק אינו חף מסיכון: במשבר 2008-09 פרויקטים בדובאי הוקפאו ובוטלו, וכשל של יזם משמעותי עדיין היה פוגע בסנטימנט הרבה מעבר לפרויקט עצמו. יזמים קטנים יותר ושחקנים חדשים נושאים סיכון גבוה יותר, ולכן בדקו את הרקורד של היזם, את רישום הפרויקט ב-RERA ואת חשבון הנאמנות שלו לפני שאתם מתחייבים."
       },
       {
         "question": "האם ניתן למכור מחדש נכס על הנייר לפני המסירה בדובאי?",
         "answer": "כן, לאחר ששילמתם 30-40% מערך הנכס (הסף משתנה לפי היזם). עסקה זו נקראת 'מכירה חוזרת על הנייר'. Binayah מטפלת הן ברכישה המקורית והן במכירה החוזרת שלאחריה, צוות העל הנייר שלנו עוקב אחר הזדמנויות לפני מסירה בכל המיזמים המרכזיים."
       }
     ],
+    "tableNote": "נתוני המסירה ושנות ההקמה מבוססים על הפרסומים של כל יזם; Ellington מפרסמת מספר פרויקטים ולא מספר יחידות. טווחי המחיר לרגל רבועה והתשואה הם הערכות שוק אינדיקטיביות ולא התחייבות. הסדר אלפביתי, זוהי טבלת השוואה ולא דירוג.",
     "breadcrumb": "פרויקטים מובילים 2026",
     "catLabel": "קטגוריה"
   },
@@ -220,9 +222,9 @@ const CONTENT = {
     heroLabel: "OFF-PLAN DUBAI 2026",
     h1: "Best Off-Plan Projects",
     h1sub: "in Dubai 2026",
-    heroDesc: "Compare the top off-plan developers and new launch projects in Dubai. We rank by ROI potential, payment plan flexibility, build quality, and rental yield, with live listings updated daily.",
+    heroDesc: "Compare the top off-plan developers and new launch projects in Dubai. We compare them on ROI potential, payment plan flexibility, build quality, and rental yield, with live listings updated daily.",
     devTitle: "Developer Comparison",
-    devSubtitle: "Key metrics for Dubai's top off-plan developers",
+    devSubtitle: "Key metrics for major Dubai off-plan developers, listed alphabetically",
     catTitle: "Best For Every Buyer Type",
     projectsTitle: "Latest Off-Plan Launches",
     fromLabel: "From",
@@ -230,12 +232,13 @@ const CONTENT = {
     viewAll: "Browse All Off-Plan Projects",
     faqs: [
       { question: "Which developer has the best off-plan projects in Dubai 2026?", answer: "Emaar leads for long-term capital appreciation (Downtown, Dubai Hills, Creek Harbour). Binghatti delivers the highest rental yields (7-9%) in mid-market locations. DAMAC offers the most flexible post-handover payment plans. Sobha Realty is top-rated for build quality and family communities. The 'best' developer depends entirely on your investment goals, ROI-focused buyers and end-users prioritise different criteria." },
-      { question: "What is the average price of off-plan property in Dubai 2026?", answer: "Off-plan prices in Dubai vary enormously by location and developer. Entry-level (JVC, Dubai South, Arjan): AED 500K-900K for studios/1BR. Mid-market (Business Bay, Al Jaddaf, JBR): AED 900K-2M. Premium (Downtown, Dubai Marina, Palm): AED 2M-5M. Ultra-luxury (Palm Jumeirah, DIFC, Bluewaters): AED 5M+. The average off-plan transaction in Dubai in 2025 was approximately AED 1.8M." },
+      { question: "What is the average price of off-plan property in Dubai 2026?", answer: "Off-plan prices in Dubai vary enormously by location and developer. Entry-level (JVC, Dubai South, Arjan): AED 500K-900K for studios/1BR. Mid-market (Business Bay, Al Jaddaf, JBR): AED 900K-2M. Premium (Downtown, Dubai Marina, Palm): AED 2M-5M. Ultra-luxury (Palm Jumeirah, DIFC, Bluewaters): AED 5M+. As a citywide anchor, the average Dubai sale price is around AED 1,879 per square foot on the latest Dubai Land Department and market data." },
       { question: "What payment plans do Dubai off-plan developers offer in 2026?", answer: "Standard construction-linked plan: 10% booking + 10% on SPA + 30% during construction + 50% on handover. Extended post-handover plans (DAMAC, some Binghatti projects): 40% during construction + 60% over 2-5 years after handover. Zero interest is standard, developer financing plans carry no extra interest charge. Some developers offer 1% monthly installments." },
       { question: "What ROI can I expect from off-plan property in Dubai?", answer: "Typical rental yields for Dubai off-plan post-handover: 5-9% gross depending on location and developer. Capital appreciation (pre-handover flipping): 10-40% potential in rising markets. Since 2021, Emaar projects have delivered 40-70% capital appreciation from off-plan price to current market value. Past performance varies, prime locations and established developers historically outperform." },
-      { question: "Is buying off-plan in Dubai safe in 2026?", answer: "Dubai has among the world's strongest off-plan buyer protections. RERA requires developers to place buyer payments in ring-fenced DLD escrow accounts, funds cannot be used until construction milestones are reached. All projects must be RERA-registered. Developers must post a completion guarantee bond. No reputable developer (Emaar, DAMAC, Sobha, Binghatti) has failed to deliver a registered project. However, smaller developers and new entrants carry more risk." },
+      { question: "Is buying off-plan in Dubai safe in 2026?", answer: "Dubai has among the world's strongest off-plan buyer protections. RERA requires developers to place buyer payments in ring-fenced DLD escrow accounts, funds cannot be used until construction milestones are reached. All projects must be RERA-registered. Developers must post a completion guarantee bond. Dubai's largest developers have strong delivery records, but no market is risk-free: projects were stalled and cancelled across Dubai during the 2008-09 downturn, and a significant developer default would still damage sentiment well beyond the project involved. Smaller developers and new entrants carry more risk, so check the developer's track record, the project's RERA registration and its escrow account before you commit." },
       { question: "Can I resell an off-plan property before handover in Dubai?", answer: "Yes, once you have paid 30-40% of the property value (the threshold varies by developer). This is called a 'resale off-plan' transaction. Binayah handles both the original purchase and subsequent resale, our off-plan team tracks pre-handover opportunities across all major developments." },
     ],
+    tableNote: "Delivery counts and founding years reflect each developer's own published disclosures; Ellington publishes a project count rather than a unit count. Price-per-sqft and yield ranges are indicative market estimates, not guarantees. Ordered alphabetically, this table is a comparison and not a ranking.",
     breadcrumb: "Top Projects 2026",
     catLabel: "Category",
   },
@@ -245,9 +248,9 @@ const CONTENT = {
     heroLabel: "SUR PLAN DUBAÏ 2026",
     h1: "Meilleurs projets sur plan",
     h1sub: "à Dubaï 2026",
-    heroDesc: "Comparez les meilleurs promoteurs sur plan et les nouveaux projets de Dubaï. Nous classons selon le potentiel de ROI, la flexibilité du plan de paiement, la qualité de construction et le rendement locatif, avec des annonces en temps réel mises à jour quotidiennement.",
+    heroDesc: "Comparez les meilleurs promoteurs sur plan et les nouveaux projets de Dubaï. Nous les comparons sur le potentiel de ROI, la flexibilité du plan de paiement, la qualité de construction et le rendement locatif, avec des annonces en temps réel mises à jour quotidiennement.",
     devTitle: "Comparaison des promoteurs",
-    devSubtitle: "Indicateurs clés des principaux promoteurs sur plan de Dubaï",
+    devSubtitle: "Indicateurs clés des principaux promoteurs sur plan de Dubaï, par ordre alphabétique",
     catTitle: "Le meilleur pour chaque type d'acheteur",
     projectsTitle: "Derniers lancements sur plan",
     fromLabel: "À partir de",
@@ -255,12 +258,13 @@ const CONTENT = {
     viewAll: "Parcourir tous les projets sur plan",
     faqs: [
       { question: "Quel promoteur propose les meilleurs projets sur plan à Dubaï en 2026 ?", answer: "Emaar domine pour la plus-value à long terme (Downtown, Dubai Hills, Creek Harbour). Binghatti offre les rendements locatifs les plus élevés (7-9 %) dans les emplacements de milieu de gamme. DAMAC propose les plans de paiement post-livraison les plus flexibles. Sobha Realty est la mieux notée pour la qualité de construction et les communautés familiales. Le « meilleur » promoteur dépend entièrement de vos objectifs d'investissement, les acheteurs axés sur le ROI et les occupants privilégient des critères différents." },
-      { question: "Quel est le prix moyen d'un bien sur plan à Dubaï en 2026 ?", answer: "Les prix sur plan à Dubaï varient énormément selon l'emplacement et le promoteur. Entrée de gamme (JVC, Dubai South, Arjan) : 500 000-900 000 AED pour un studio/1 chambre. Milieu de gamme (Business Bay, Al Jaddaf, JBR) : 900 000 AED-2 M AED. Premium (Downtown, Dubai Marina, Palm) : 2 M-5 M AED. Ultra-luxe (Palm Jumeirah, DIFC, Bluewaters) : 5 M+ AED. La transaction sur plan moyenne à Dubaï en 2025 était d'environ 1,8 M AED." },
+      { question: "Quel est le prix moyen d'un bien sur plan à Dubaï en 2026 ?", answer: "Les prix sur plan à Dubaï varient énormément selon l'emplacement et le promoteur. Entrée de gamme (JVC, Dubai South, Arjan) : 500 000-900 000 AED pour un studio/1 chambre. Milieu de gamme (Business Bay, Al Jaddaf, JBR) : 900 000 AED-2 M AED. Premium (Downtown, Dubai Marina, Palm) : 2 M-5 M AED. Ultra-luxe (Palm Jumeirah, DIFC, Bluewaters) : 5 M+ AED. Comme repère à l'échelle de la ville, le prix de vente moyen à Dubaï est d'environ 1 879 AED le pied carré selon les dernières données du Dubai Land Department et du marché." },
       { question: "Quels plans de paiement les promoteurs sur plan de Dubaï proposent-ils en 2026 ?", answer: "Plan standard lié à la construction : 10 % à la réservation + 10 % à la signature du SPA + 30 % pendant la construction + 50 % à la livraison. Plans post-livraison étendus (DAMAC, certains projets Binghatti) : 40 % pendant la construction + 60 % sur 2-5 ans après la livraison. Le taux zéro est la norme, les plans de financement du promoteur ne comportent aucun intérêt supplémentaire. Certains promoteurs proposent des mensualités de 1 %." },
       { question: "Quel ROI puis-je espérer d'un bien sur plan à Dubaï ?", answer: "Rendements locatifs typiques pour un bien sur plan à Dubaï après livraison : 5-9 % bruts selon l'emplacement et le promoteur. Plus-value (revente avant livraison) : potentiel de 10-40 % dans les marchés haussiers. Depuis 2021, les projets Emaar ont généré 40-70 % de plus-value entre le prix sur plan et la valeur de marché actuelle. Les performances passées varient, les emplacements de premier choix et les promoteurs établis ont historiquement surperformé." },
-      { question: "Acheter sur plan à Dubaï est-il sûr en 2026 ?", answer: "Dubaï dispose de l'une des meilleures protections au monde pour les acheteurs sur plan. La RERA oblige les promoteurs à placer les paiements des acheteurs sur des comptes séquestres (escrow) DLD cloisonnés, les fonds ne peuvent être utilisés qu'à l'atteinte des jalons de construction. Tous les projets doivent être enregistrés auprès de la RERA. Les promoteurs doivent déposer une garantie d'achèvement. Aucun promoteur réputé (Emaar, DAMAC, Sobha, Binghatti) n'a manqué de livrer un projet enregistré. Cependant, les promoteurs plus petits et les nouveaux venus présentent davantage de risques." },
+      { question: "Acheter sur plan à Dubaï est-il sûr en 2026 ?", answer: "Dubaï dispose de l'une des meilleures protections au monde pour les acheteurs sur plan. La RERA oblige les promoteurs à placer les paiements des acheteurs sur des comptes séquestres (escrow) DLD cloisonnés, les fonds ne peuvent être utilisés qu'à l'atteinte des jalons de construction. Tous les projets doivent être enregistrés auprès de la RERA. Les promoteurs doivent déposer une garantie d'achèvement. Les plus grands promoteurs de Dubaï affichent de solides antécédents de livraison, mais aucun marché n'est sans risque : des projets ont été suspendus et annulés à Dubaï lors de la crise de 2008-2009, et la défaillance d'un promoteur important pèserait encore sur le sentiment bien au-delà du projet concerné. Les promoteurs plus petits et les nouveaux venus présentent davantage de risques : vérifiez les antécédents du promoteur, l'enregistrement RERA du projet et son compte séquestre avant de vous engager." },
       { question: "Puis-je revendre un bien sur plan avant la livraison à Dubaï ?", answer: "Oui, une fois que vous avez payé 30-40 % de la valeur du bien (le seuil varie selon le promoteur). C'est ce qu'on appelle une transaction de « revente sur plan ». Binayah gère à la fois l'achat initial et la revente ultérieure, notre équipe sur plan suit les opportunités avant livraison sur l'ensemble des grands projets." },
     ],
+    tableNote: "Les volumes livrés et les années de création reprennent les informations publiées par chaque promoteur ; Ellington publie un nombre de projets plutôt qu'un nombre d'unités. Les fourchettes de prix au pied carré et de rendement sont des estimations indicatives de marché, non des garanties. Classement alphabétique : ce tableau est une comparaison, pas un classement.",
     breadcrumb: "Meilleurs projets 2026",
     catLabel: "Catégorie",
   },
@@ -270,9 +274,9 @@ const CONTENT = {
     heroLabel: "НОВОСТРОЙКИ ДУБАЙ 2026",
     h1: "Лучшие новостройки",
     h1sub: "в Дубае 2026",
-    heroDesc: "Сравниваем ведущих застройщиков и новые проекты Дубая. Ранжируем по потенциалу ROI, гибкости рассрочки, качеству строительства и доходности, с актуальными объектами, обновляемыми ежедневно.",
+    heroDesc: "Сравниваем ведущих застройщиков и новые проекты Дубая. Сравниваем по потенциалу ROI, гибкости рассрочки, качеству строительства и доходности, с актуальными объектами, обновляемыми ежедневно.",
     devTitle: "Сравнение застройщиков",
-    devSubtitle: "Ключевые показатели ведущих застройщиков Дубая",
+    devSubtitle: "Ключевые показатели ведущих застройщиков Дубая, в алфавитном порядке",
     catTitle: "Лучший вариант для каждого типа инвестора",
     projectsTitle: "Последние запуски новостроек",
     fromLabel: "От",
@@ -280,12 +284,13 @@ const CONTENT = {
     viewAll: "Смотреть все новостройки",
     faqs: [
       { question: "Какой застройщик предлагает лучшие новостройки в Дубае в 2026 году?", answer: "Emaar лидирует по долгосрочному росту стоимости (Даунтаун, Dubai Hills, Creek Harbour). Binghatti обеспечивает самую высокую арендную доходность (7-9%) в среднем ценовом сегменте. DAMAC предлагает наиболее гибкие планы оплаты после получения ключей. Sobha, лидер по качеству строительства и семейным комьюнити. Выбор «лучшего» застройщика зависит от ваших инвестиционных целей." },
-      { question: "Какова средняя цена новостройки в Дубае в 2026 году?", answer: "Цены на новостройки в Дубае сильно варьируются в зависимости от района. Эконом-сегмент (JVC, Дубай Саут): 500-900 тыс. AED за студию/1BR. Средний сегмент (Бизнес-Бей, Al Jaddaf): 900 тыс. - 2 млн AED. Премиум (Даунтаун, Марина): 2-5 млн AED. Средняя стоимость сделки с новостройкой в Дубае в 2025 году составила около 1,8 млн AED." },
+      { question: "Какова средняя цена новостройки в Дубае в 2026 году?", answer: "Цены на новостройки в Дубае сильно варьируются в зависимости от района. Эконом-сегмент (JVC, Дубай Саут): 500-900 тыс. AED за студию/1BR. Средний сегмент (Бизнес-Бей, Al Jaddaf): 900 тыс. - 2 млн AED. Премиум (Даунтаун, Марина): 2-5 млн AED. Для ориентира: средняя цена продажи по городу составляет около 1 879 AED за кв. фут по последним данным Земельного департамента Дубая и рынка." },
       { question: "Какие планы рассрочки предлагают застройщики в 2026 году?", answer: "Стандартный план: 10% при бронировании + 10% при SPA + 30% в ходе строительства + 50% при сдаче. Расширенный пост-хандоверный план (DAMAC): 40% в ходе строительства + 60% в течение 2-5 лет после сдачи. Рассрочка беспроцентная. Ряд застройщиков предлагает ежемесячные платежи 1% от стоимости." },
       { question: "Какой ROI можно ожидать от новостройки в Дубае?", answer: "Типичная арендная доходность после сдачи: 5-9% годовых в зависимости от локации и застройщика. Потенциал роста стоимости на этапе строительства (флиппинг): 10-40% на растущем рынке. С 2021 года объекты Emaar выросли на 40-70% от цены покупки off-plan до текущей рыночной стоимости." },
-      { question: "Насколько безопасна покупка новостройки в Дубае в 2026 году?", answer: "В Дубае одна из сильнейших в мире систем защиты покупателей новостроек. RERA обязывает застройщиков хранить средства покупателей на эскроу-счетах DLD, они недоступны до достижения строительных этапов. Все проекты проходят регистрацию в RERA. Крупные застройщики (Emaar, DAMAC, Sobha, Binghatti) не имеют случаев срыва зарегистрированных проектов." },
+      { question: "Насколько безопасна покупка новостройки в Дубае в 2026 году?", answer: "В Дубае одна из сильнейших в мире систем защиты покупателей новостроек. RERA обязывает застройщиков хранить средства покупателей на эскроу-счетах DLD, они недоступны до достижения строительных этапов. Все проекты проходят регистрацию в RERA. У крупнейших застройщиков Дубая сильная история сдачи объектов, но безрисковых рынков не бывает: в кризис 2008-2009 годов проекты в Дубае замораживались и отменялись, а дефолт крупного застройщика и сегодня ударил бы по настроениям далеко за пределами самого проекта. У небольших застройщиков и новых игроков риск выше, поэтому проверяйте историю застройщика, регистрацию проекта в RERA и его эскроу-счёт до подписания." },
       { question: "Можно ли продать новостройку до получения ключей?", answer: "Да, после оплаты 30-40% стоимости объекта (порог варьируется у разных застройщиков). Это называется перепродажей на этапе строительства. Binayah сопровождает как первичную покупку, так и последующую перепродажу." },
     ],
+    tableNote: "Данные о сданных объектах и годах основания приведены по официальным публикациям самих застройщиков; Ellington публикует число проектов, а не квартир. Диапазоны цены за кв. фут и доходности, ориентировочные рыночные оценки, а не гарантии. Порядок алфавитный: это сравнение, а не рейтинг.",
     breadcrumb: "Топ проектов 2026",
     catLabel: "Категория",
   },
@@ -295,9 +300,9 @@ const CONTENT = {
     heroLabel: "على الخارطة دبي 2026",
     h1: "أفضل المشاريع على الخارطة",
     h1sub: "في دبي 2026",
-    heroDesc: "نقارن بين كبار المطوّرين والمشاريع الجديدة في دبي. نُرتِّب وفق إمكانية العائد ومرونة الدفع وجودة البناء والعائد الإيجاري, مع قوائم مُحدَّثة يوميًا.",
+    heroDesc: "نقارن بين كبار المطوّرين والمشاريع الجديدة في دبي. نقارن وفق إمكانية العائد ومرونة الدفع وجودة البناء والعائد الإيجاري, مع قوائم مُحدَّثة يوميًا.",
     devTitle: "مقارنة المطوّرين",
-    devSubtitle: "مؤشرات رئيسية لأبرز مطوّري دبي",
+    devSubtitle: "مؤشرات رئيسية لأبرز مطوّري دبي، مرتّبة أبجديًا",
     catTitle: "الأفضل لكل نوع من المستثمرين",
     projectsTitle: "أحدث الإطلاقات على الخارطة",
     fromLabel: "يبدأ من",
@@ -305,12 +310,13 @@ const CONTENT = {
     viewAll: "تصفّح جميع المشاريع على الخارطة",
     faqs: [
       { question: "أيّ مطوّر يمتلك أفضل مشاريع على الخارطة في دبي 2026؟", answer: "تتصدر إعمار في ارتفاع قيمة رأس المال على المدى البعيد (وسط المدينة، دبي هيلز، كريك هاربر). تُحقّق بن غاطي أعلى عائدات إيجارية (7-9%) في الشريحة المتوسطة. تُقدّم داماك أكثر خطط السداد مرونةً. تتميز سوبها بجودة البناء والمجتمعات العائلية. يعتمد «الأفضل» كليًا على أهدافك الاستثمارية." },
-      { question: "ما متوسط سعر العقار على الخارطة في دبي 2026؟", answer: "تتباين الأسعار تباينًا كبيرًا: الشريحة الاقتصادية (JVC، دبي ساوث): 500-900 ألف درهم للاستوديو/الغرفة الواحدة. الشريحة المتوسطة: 900 ألف - 2 مليون درهم. الفئة الفاخرة: 2-5 مليون درهم. متوسط صفقة على الخارطة في 2025: نحو 1.8 مليون درهم." },
+      { question: "ما متوسط سعر العقار على الخارطة في دبي 2026؟", answer: "تتباين الأسعار تباينًا كبيرًا: الشريحة الاقتصادية (JVC، دبي ساوث): 500-900 ألف درهم للاستوديو/الغرفة الواحدة. الشريحة المتوسطة: 900 ألف - 2 مليون درهم. الفئة الفاخرة: 2-5 مليون درهم. وكمرجع على مستوى المدينة، يبلغ متوسط سعر البيع في دبي نحو 1,879 درهمًا للقدم المربعة وفق أحدث بيانات دائرة الأراضي والأملاك والسوق." },
       { question: "ما خطط الدفع المتاحة لمشاريع على الخارطة في دبي 2026؟", answer: "الخطة المرتبطة بالإنشاء: 10% عند الحجز + 10% عند SPA + 30% أثناء البناء + 50% عند التسليم. الخطة الممتدة بعد التسليم (داماك): 40% أثناء البناء + 60% خلال 2-5 سنوات بعد التسليم. لا توجد فوائد على خطط التمويل." },
       { question: "ما العائد الاستثماري المتوقع من عقار على الخارطة في دبي؟", answer: "عوائد إيجارية نموذجية بعد التسليم: 5-9% سنويًا حسب الموقع والمطوّر. إمكانية ارتفاع القيمة (إعادة البيع قبل التسليم): 10-40% في الأسواق المتنامية. منذ 2021، حققت مشاريع إعمار ارتفاعًا 40-70% من سعر الشراء إلى القيمة السوقية الحالية." },
-      { question: "هل الشراء على الخارطة في دبي آمن في 2026؟", answer: "تمتلك دبي من أقوى أنظمة حماية مشتري الخارطة عالميًا. تُلزم RERA المطوّرين بإيداع أموال المشترين في حسابات ضمان منفصلة في DLD, لا يمكن الوصول إليها إلا عند اكتمال مراحل البناء. لا يوجد للمطوّرين الكبار (إعمار، داماك، سوبها، بن غاطي) تاريخ من الإخفاق في المشاريع المسجَّلة." },
+      { question: "هل الشراء على الخارطة في دبي آمن في 2026؟", answer: "تمتلك دبي من أقوى أنظمة حماية مشتري الخارطة عالميًا. تُلزم RERA المطوّرين بإيداع أموال المشترين في حسابات ضمان منفصلة في DLD, لا يمكن الوصول إليها إلا عند اكتمال مراحل البناء. يتمتع كبار مطوّري دبي بسجل تسليم قوي، لكن لا يوجد سوق خالٍ من المخاطر: فقد تعثّرت مشاريع وأُلغيت في دبي خلال أزمة 2008-2009، وأي تعثّر لمطوّر كبير اليوم سيضر بثقة السوق إلى ما هو أبعد من المشروع نفسه. والمطوّرون الأصغر والوافدون الجدد يحملون مخاطر أعلى، لذا تحقّق من سجل المطوّر ومن تسجيل المشروع لدى RERA ومن حساب الضمان قبل الالتزام." },
       { question: "هل يمكن إعادة بيع وحدة على الخارطة قبل التسليم؟", answer: "نعم، بعد دفع 30-40% من قيمة العقار (يتفاوت الحد بين المطوّرين). تتولى بناية عمليتي الشراء الأصلي وإعادة البيع اللاحقة." },
     ],
+    tableNote: "أرقام التسليم وسنوات التأسيس مأخوذة من إفصاحات كل مطوّر المنشورة؛ وتنشر إلينغتون عدد المشاريع بدلاً من عدد الوحدات. نطاقات السعر للقدم المربعة والعائد تقديرات سوقية استرشادية وليست ضمانات. الترتيب أبجدي: هذا الجدول مقارنة وليس تصنيفًا.",
     breadcrumb: "أفضل المشاريع 2026",
     catLabel: "الفئة",
   },
@@ -320,9 +326,9 @@ const CONTENT = {
     heroLabel: "迪拜期房2026",
     h1: "迪拜最佳期房项目",
     h1sub: "2026年精选",
-    heroDesc: "对比迪拜顶级开发商和新楼盘。我们按投资回报潜力、付款灵活性、建筑质量和租金收益排名, , 每日更新实时楼盘。",
+    heroDesc: "对比迪拜顶级开发商和新楼盘。我们从投资回报潜力、付款灵活性、建筑质量和租金收益等方面进行对比，每日更新实时楼盘。",
     devTitle: "开发商对比",
-    devSubtitle: "迪拜顶级期房开发商关键指标",
+    devSubtitle: "迪拜主要期房开发商关键指标（按字母顺序排列）",
     catTitle: "适合各类投资者的最佳选择",
     projectsTitle: "最新期房发布",
     fromLabel: "起价",
@@ -330,12 +336,13 @@ const CONTENT = {
     viewAll: "浏览所有期房项目",
     faqs: [
       { question: "2026年迪拜哪个开发商的期房项目最好？", answer: "Emaar在长期资本增值方面领先（市中心、迪拜山、溪港）。Binghatti在中端位置提供最高租金收益（7-9%）。DAMAC提供最灵活的交房后付款计划。Sobha在建筑质量和家庭社区方面评级最高。'最佳'开发商完全取决于您的投资目标。" },
-      { question: "2026年迪拜期房的平均价格是多少？", answer: "迪拜期房价格因地区差异很大：经济型（JVC、迪拜南区）：单间/一卧50-90万迪拉姆；中端（商业湾、Jaddaf）：90万-200万迪拉姆；高端（市中心、Marina）：200-500万迪拉姆。2025年迪拜期房平均交易价约为180万迪拉姆。" },
+      { question: "2026年迪拜期房的平均价格是多少？", answer: "迪拜期房价格因地区差异很大：经济型（JVC、迪拜南区）：单间/一卧50-90万迪拉姆；中端（商业湾、Jaddaf）：90万-200万迪拉姆；高端（市中心、Marina）：200-500万迪拉姆。作为全城参考，根据迪拜土地局与市场的最新数据，迪拜平均售价约为每平方英尺 1,879 迪拉姆。" },
       { question: "2026年迪拜期房开发商提供哪些付款计划？", answer: "标准施工联动计划：订购10%+SPA 10%+施工期间30%+交房时50%。DAMAC延伸计划：施工期间40%+交房后2-5年内60%。分期计划不收取利息。部分开发商提供每月1%的分期付款方案。" },
       { question: "迪拜期房投资可以期望什么样的回报？", answer: "交房后典型租金收益：根据地点和开发商，毛收益率5-9%。施工前资本增值（炒楼花）：上升市场潜在10-40%回报。自2021年以来，Emaar项目从期房价格到当前市值已实现40-70%的资本增值。" },
-      { question: "2026年在迪拜购买期房安全吗？", answer: "迪拜拥有全球最强的期房买家保护机制之一。RERA要求开发商将买家款项存入DLD托管账户, , 资金在达到施工里程碑之前无法动用。所有项目必须在RERA注册。知名开发商（Emaar、DAMAC、Sobha、Binghatti）从未有注册项目交付失败的记录。" },
+      { question: "2026年在迪拜购买期房安全吗？", answer: "迪拜拥有全球最强的期房买家保护机制之一。RERA要求开发商将买家款项存入DLD托管账户, , 资金在达到施工里程碑之前无法动用。所有项目必须在RERA注册。迪拜大型开发商拥有良好的交付记录，但没有零风险的市场：在2008-09年市场下行期间，迪拜曾有项目停工和取消，如今若有大型开发商违约，对市场信心的冲击也会远超单个项目本身。规模较小的开发商和新进入者风险更高，因此签约前请核查开发商过往记录、项目的RERA注册情况及其托管账户。" },
       { question: "可以在交房前转售期房吗？", answer: "可以，在支付房产价值的30-40%（不同开发商门槛不同）之后即可转售。Binayah处理原始购买和后续转售业务, , 我们的期房团队跟踪所有主要楼盘的交房前机会。" },
     ],
+    tableNote: "交付数量和成立年份来自各开发商自身的公开披露；Ellington 公布的是项目数量而非单位数量。每平方英尺价格和收益率区间为市场参考估算，并非保证。本表按字母顺序排列，是对比而非排名。",
     breadcrumb: "2026精选项目",
     catLabel: "类别",
   },
@@ -345,9 +352,9 @@ const CONTENT = {
     heroLabel: "OFF-PLAN DUBAI 2026",
     h1: "Dự án Off-Plan tốt nhất",
     h1sub: "tại Dubai 2026",
-    heroDesc: "So sánh các chủ đầu tư off-plan hàng đầu và dự án ra mắt mới tại Dubai. Chúng tôi xếp hạng theo tiềm năng ROI, độ linh hoạt kế hoạch thanh toán, chất lượng xây dựng và lợi suất cho thuê, với tin đăng trực tiếp cập nhật hàng ngày.",
+    heroDesc: "So sánh các chủ đầu tư off-plan hàng đầu và dự án ra mắt mới tại Dubai. Chúng tôi so sánh theo tiềm năng ROI, độ linh hoạt kế hoạch thanh toán, chất lượng xây dựng và lợi suất cho thuê, với tin đăng trực tiếp cập nhật hàng ngày.",
     devTitle: "So sánh chủ đầu tư",
-    devSubtitle: "Các chỉ số chính cho các chủ đầu tư off-plan hàng đầu Dubai",
+    devSubtitle: "Các chỉ số chính của các chủ đầu tư off-plan lớn tại Dubai, xếp theo thứ tự bảng chữ cái",
     catTitle: "Tốt nhất cho mọi loại người mua",
     projectsTitle: "Dự án Off-Plan mới nhất",
     fromLabel: "Từ",
@@ -355,12 +362,13 @@ const CONTENT = {
     viewAll: "Xem tất cả dự án Off-Plan",
     faqs: [
       { question: "Chủ đầu tư nào có dự án off-plan tốt nhất tại Dubai 2026?", answer: "Emaar dẫn đầu về tăng giá vốn dài hạn (Downtown, Dubai Hills, Creek Harbour). Binghatti mang lại lợi suất cho thuê cao nhất (7-9%) ở các vị trí tầm trung. DAMAC cung cấp kế hoạch thanh toán sau bàn giao linh hoạt nhất. Sobha Realty được đánh giá cao nhất về chất lượng xây dựng và cộng đồng gia đình. Chủ đầu tư 'tốt nhất' phụ thuộc hoàn toàn vào mục tiêu đầu tư của bạn, người mua chú trọng ROI và người dùng cuối ưu tiên các tiêu chí khác nhau." },
-      { question: "Giá trung bình của bất động sản off-plan tại Dubai 2026 là bao nhiêu?", answer: "Giá off-plan tại Dubai thay đổi rất lớn theo vị trí và chủ đầu tư. Cấp khởi điểm (JVC, Dubai South, Arjan): 500K-900K AED cho studio/1PN. Tầm trung (Business Bay, Al Jaddaf, JBR): 900K-2M AED. Cao cấp (Downtown, Dubai Marina, Palm): 2M-5M AED. Siêu sang (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. Giao dịch off-plan trung bình tại Dubai năm 2025 khoảng 1,8 triệu AED." },
+      { question: "Giá trung bình của bất động sản off-plan tại Dubai 2026 là bao nhiêu?", answer: "Giá off-plan tại Dubai thay đổi rất lớn theo vị trí và chủ đầu tư. Cấp khởi điểm (JVC, Dubai South, Arjan): 500K-900K AED cho studio/1PN. Tầm trung (Business Bay, Al Jaddaf, JBR): 900K-2M AED. Cao cấp (Downtown, Dubai Marina, Palm): 2M-5M AED. Siêu sang (Palm Jumeirah, DIFC, Bluewaters): 5M+ AED. Để tham chiếu toàn thành phố, giá bán trung bình tại Dubai vào khoảng 1.879 AED mỗi foot vuông theo dữ liệu mới nhất của Sở Đất đai Dubai và thị trường." },
       { question: "Chủ đầu tư off-plan Dubai cung cấp kế hoạch thanh toán nào năm 2026?", answer: "Kế hoạch liên kết xây dựng tiêu chuẩn: 10% đặt chỗ + 10% khi ký SPA + 30% trong xây dựng + 50% khi bàn giao. Kế hoạch sau bàn giao mở rộng (DAMAC, một số dự án Binghatti): 40% trong xây dựng + 60% trong 2-5 năm sau bàn giao. Không lãi suất là tiêu chuẩn, kế hoạch tài chính chủ đầu tư không tính thêm lãi. Một số chủ đầu tư cung cấp trả góp 1% hàng tháng." },
       { question: "Tôi có thể kỳ vọng ROI nào từ bất động sản off-plan tại Dubai?", answer: "Lợi suất cho thuê điển hình cho off-plan Dubai sau bàn giao: 5-9% gộp tùy vị trí và chủ đầu tư. Tăng giá vốn (flipping trước bàn giao): tiềm năng 10-40% trong thị trường tăng giá. Kể từ năm 2021, các dự án Emaar đã mang lại 40-70% tăng giá vốn từ giá off-plan đến giá trị thị trường hiện tại. Hiệu suất trong quá khứ thay đổi, các vị trí cao cấp và chủ đầu tư lâu đời trong lịch sử vượt trội hơn." },
-      { question: "Mua off-plan tại Dubai có an toàn năm 2026 không?", answer: "Dubai có một trong những hệ thống bảo vệ người mua off-plan mạnh nhất thế giới. RERA yêu cầu chủ đầu tư đặt khoản thanh toán của người mua vào tài khoản ký quỹ DLD tách biệt, vốn không thể sử dụng cho đến khi đạt các cột mốc xây dựng. Mọi dự án phải được đăng ký RERA. Chủ đầu tư phải nộp trái phiếu bảo lãnh hoàn thành. Không có chủ đầu tư uy tín nào (Emaar, DAMAC, Sobha, Binghatti) thất bại trong việc bàn giao dự án đã đăng ký. Tuy nhiên, chủ đầu tư nhỏ hơn và đơn vị mới gia nhập mang rủi ro cao hơn." },
+      { question: "Mua off-plan tại Dubai có an toàn năm 2026 không?", answer: "Dubai có một trong những hệ thống bảo vệ người mua off-plan mạnh nhất thế giới. RERA yêu cầu chủ đầu tư đặt khoản thanh toán của người mua vào tài khoản ký quỹ DLD tách biệt, vốn không thể sử dụng cho đến khi đạt các cột mốc xây dựng. Mọi dự án phải được đăng ký RERA. Chủ đầu tư phải nộp trái phiếu bảo lãnh hoàn thành. Các chủ đầu tư lớn nhất Dubai có hồ sơ bàn giao vững chắc, nhưng không thị trường nào là không có rủi ro: nhiều dự án tại Dubai đã bị đình trệ và hủy bỏ trong đợt suy thoái 2008-09, và việc một chủ đầu tư lớn vỡ nợ vẫn sẽ ảnh hưởng tới tâm lý thị trường vượt xa phạm vi dự án đó. Chủ đầu tư nhỏ hơn và đơn vị mới gia nhập mang rủi ro cao hơn, vì vậy hãy kiểm tra hồ sơ năng lực của chủ đầu tư, tình trạng đăng ký RERA và tài khoản ký quỹ của dự án trước khi xuống tiền." },
       { question: "Tôi có thể bán lại bất động sản off-plan trước khi bàn giao tại Dubai không?", answer: "Có, khi bạn đã trả 30-40% giá trị bất động sản (ngưỡng thay đổi theo chủ đầu tư). Đây gọi là giao dịch 'bán lại off-plan'. Binayah xử lý cả việc mua ban đầu và bán lại sau đó, đội ngũ off-plan của chúng tôi theo dõi các cơ hội trước bàn giao trên tất cả các dự án lớn." },
     ],
+    tableNote: "Số lượng bàn giao và năm thành lập lấy theo công bố của chính từng chủ đầu tư; Ellington công bố số dự án thay vì số căn. Khoảng giá mỗi foot vuông và lợi suất là ước tính thị trường mang tính tham khảo, không phải cam kết. Bảng được sắp xếp theo thứ tự bảng chữ cái, đây là bảng so sánh chứ không phải bảng xếp hạng.",
     breadcrumb: "Dự án hàng đầu 2026",
     catLabel: "Danh mục",
   },
@@ -451,12 +459,9 @@ export default async function TopProjectsPage({ params }: Props) {
           <div className="sm:hidden space-y-3">
             {DEVELOPERS.map((d) => (
               <div key={d.name} className="bg-card border border-border/50 rounded-2xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">{d.flag}</span>
-                  <div>
-                    <p className="font-bold text-foreground text-sm">{d.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{d.knownFor}</p>
-                  </div>
+                <div className="mb-3">
+                  <p className="font-bold text-foreground text-sm">{d.name}</p>
+                  <p className="text-[10px] text-muted-foreground">{d.knownFor}</p>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="bg-muted/30 rounded-lg p-2 text-center">
@@ -481,7 +486,7 @@ export default async function TopProjectsPage({ params }: Props) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-muted/40 border-b border-border/50">
-                  {["Developer", "Est.", "Units Delivered", "Price/sqft", "Avg Yield", "Payment Plan"].map((h, i) => (
+                  {["Developer", "Est.", "Delivered", "Price/sqft", "Avg Yield", "Payment Plan"].map((h, i) => (
                     <th key={h} className={`px-4 py-3 text-xs font-bold text-muted-foreground uppercase tracking-wider ${i === 0 ? "text-left" : "text-center"}`}>{h}</th>
                   ))}
                 </tr>
@@ -490,12 +495,9 @@ export default async function TopProjectsPage({ params }: Props) {
                 {DEVELOPERS.map((d) => (
                   <tr key={d.name} className="border-b border-border/30 last:border-0 hover:bg-muted/20 transition-colors">
                     <td className="px-4 py-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{d.flag}</span>
-                        <div>
-                          <p className="font-semibold text-foreground text-sm">{d.name}</p>
-                          <p className="text-[10px] text-muted-foreground leading-tight max-w-[160px]">{d.knownFor}</p>
-                        </div>
+                      <div>
+                        <p className="font-semibold text-foreground text-sm">{d.name}</p>
+                        <p className="text-[10px] text-muted-foreground leading-tight max-w-[160px]">{d.knownFor}</p>
                       </div>
                     </td>
                     <td className="px-4 py-4 text-center text-muted-foreground">{d.founded}</td>
@@ -508,6 +510,8 @@ export default async function TopProjectsPage({ params }: Props) {
               </tbody>
             </table>
           </div>
+
+          <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">{c.tableNote}</p>
         </section>
 
         {/* Best for categories */}

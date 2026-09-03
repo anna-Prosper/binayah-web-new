@@ -71,6 +71,9 @@ function descFor(typeLabel: string, locale: string): string {
 
 // ── Localized landing content (stats / FAQ / CTA). `{type}` is replaced with the
 //    localized type label so one block serves apartments, villas and townhouses. ──
+// NOTE: office hours in the CTA copy must stay Mon-Sat 09:00-18:00 — they have to
+// match `contact.hours` in messages/*.json and the openingHoursSpecification in
+// components/JsonLd.tsx. A previous "7 days a week" claim was removed for that reason.
 interface LandingContent {
   stats: { n: string; label: string }[];
   faqHeading: string;
@@ -98,7 +101,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "Does buying off-plan qualify for the UAE Golden Visa?", answer: "Yes. An off-plan purchase of AED 2 million or more qualifies for the 10-year UAE Golden Visa, provided the paid-up amount meets the threshold or is covered by an approved mortgage. Our team can guide you through the application." },
     ],
     ctaTitle: "Ready to Invest in Off-Plan {type}?",
-    ctaDesc: "Get early access to new launches, exclusive payment plans and floor-plan availability before they go public. Our off-plan specialists are available 7 days a week.",
+    ctaDesc: "Get early access to new launches, exclusive payment plans and floor-plan availability before they go public. Our off-plan specialists are available Monday to Saturday, 9:00 AM - 6:00 PM.",
     ctaBtn: "Book a Free Consultation",
   },
   fr: {
@@ -118,7 +121,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "L'achat sur plan donne-t-il droit au Golden Visa des Émirats ?", answer: "Oui. Un achat sur plan de 2 millions d'AED ou plus donne droit au Golden Visa de 10 ans, à condition que le montant déjà payé atteigne le seuil ou soit couvert par un crédit approuvé. Notre équipe peut vous accompagner dans la démarche." },
     ],
     ctaTitle: "Prêt à investir dans des {typeLower} sur plan ?",
-    ctaDesc: "Accédez en avant-première aux nouveaux lancements, aux plans de paiement exclusifs et aux disponibilités avant leur sortie publique. Nos spécialistes du sur plan sont disponibles 7 jours sur 7.",
+    ctaDesc: "Accédez en avant-première aux nouveaux lancements, aux plans de paiement exclusifs et aux disponibilités avant leur sortie publique. Nos spécialistes du sur plan sont disponibles du lundi au samedi, de 9h00 à 18h00.",
     ctaBtn: "Réserver une consultation gratuite",
   },
   ru: {
@@ -138,7 +141,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "Даёт ли покупка в новостройке право на Golden Visa ОАЭ?", answer: "Да. Покупка off-plan на сумму от 2 млн AED даёт право на 10-летнюю Golden Visa ОАЭ при условии, что оплаченная сумма достигает порога или покрыта одобренной ипотекой. Наша команда поможет с оформлением." },
     ],
     ctaTitle: "Готовы инвестировать в {typeLower} в новостройках?",
-    ctaDesc: "Получите ранний доступ к новым запускам, эксклюзивным планам рассрочки и наличию планировок до публичного старта продаж. Наши специалисты по новостройкам на связи 7 дней в неделю.",
+    ctaDesc: "Получите ранний доступ к новым запускам, эксклюзивным планам рассрочки и наличию планировок до публичного старта продаж. Наши специалисты по новостройкам на связи с понедельника по субботу, 9:00-18:00.",
     ctaBtn: "Записаться на бесплатную консультацию",
   },
   ar: {
@@ -158,7 +161,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "هل يؤهّل الشراء على الخارطة للحصول على الإقامة الذهبية؟", answer: "نعم. يؤهّل الشراء على الخارطة بقيمة مليوني درهم أو أكثر للحصول على الإقامة الذهبية لمدة 10 سنوات، شريطة أن يبلغ المبلغ المدفوع الحد المطلوب أو أن يكون مغطى برهن عقاري معتمد. ويمكن لفريقنا إرشادك خلال التقديم." },
     ],
     ctaTitle: "هل أنت مستعد للاستثمار في {type} على الخارطة؟",
-    ctaDesc: "احصل على وصول مبكر للإطلاقات الجديدة وخطط السداد الحصرية وتوفّر المخططات قبل طرحها للعامة. مختصّو العقارات على الخارطة لدينا متاحون 7 أيام في الأسبوع.",
+    ctaDesc: "احصل على وصول مبكر للإطلاقات الجديدة وخطط السداد الحصرية وتوفّر المخططات قبل طرحها للعامة. مختصّو العقارات على الخارطة لدينا متاحون من الاثنين إلى السبت، 9:00 صباحاً - 6:00 مساءً.",
     ctaBtn: "احجز استشارة مجانية",
   },
   zh: {
@@ -178,7 +181,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "购买期房可以申请阿联酋黄金签证吗？", answer: "可以。购买价值 200 万迪拉姆或以上的期房可申请 10 年期阿联酋黄金签证，前提是已付金额达到门槛或由获批贷款覆盖。我们的团队可协助您完成申请。" },
     ],
     ctaTitle: "准备好投资期房{type}了吗？",
-    ctaDesc: "在公开发售前抢先获取新项目、专属付款计划和户型房源信息。我们的期房专家每周 7 天为您服务。",
+    ctaDesc: "在公开发售前抢先获取新项目、专属付款计划和户型房源信息。我们的期房专家周一至周六 9:00 - 18:00 为您服务。",
     ctaBtn: "预约免费咨询",
   },
   vi: {
@@ -198,7 +201,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "Mua off-plan có đủ điều kiện nhận Golden Visa UAE không?", answer: "Có. Mua off-plan từ 2 triệu AED trở lên đủ điều kiện nhận Golden Visa UAE 10 năm, với điều kiện số tiền đã trả đạt ngưỡng hoặc được bảo đảm bằng khoản vay đã duyệt. Đội ngũ của chúng tôi sẽ hướng dẫn bạn nộp hồ sơ." },
     ],
     ctaTitle: "Sẵn sàng đầu tư {typeLower} off-plan?",
-    ctaDesc: "Tiếp cận sớm các dự án mới, kế hoạch thanh toán độc quyền và tình trạng mặt bằng trước khi mở bán công khai. Chuyên gia off-plan của chúng tôi phục vụ 7 ngày trong tuần.",
+    ctaDesc: "Tiếp cận sớm các dự án mới, kế hoạch thanh toán độc quyền và tình trạng mặt bằng trước khi mở bán công khai. Chuyên gia off-plan của chúng tôi phục vụ từ Thứ Hai đến Thứ Bảy, 9:00 - 18:00.",
     ctaBtn: "Đặt lịch tư vấn miễn phí",
   },
   he: {
@@ -218,7 +221,7 @@ const CONTENT: Record<string, LandingContent> = {
       { question: "האם רכישה על הנייר מזכה בוויזת הזהב של איחוד האמירויות?", answer: "כן. רכישה על הנייר של AED 2 מיליון ומעלה מזכה בוויזת הזהב ל-10 שנים, בתנאי שהסכום ששולם מגיע לסף או מכוסה במשכנתה מאושרת. הצוות שלנו ילווה אתכם בתהליך." },
     ],
     ctaTitle: "מוכנים להשקיע ב{type} על הנייר?",
-    ctaDesc: "קבלו גישה מוקדמת להשקות חדשות, מסלולי תשלום בלעדיים וזמינות תוכניות דירה לפני שהן יוצאות לציבור. מומחי הנכסים על הנייר שלנו זמינים 7 ימים בשבוע.",
+    ctaDesc: "קבלו גישה מוקדמת להשקות חדשות, מסלולי תשלום בלעדיים וזמינות תוכניות דירה לפני שהן יוצאות לציבור. מומחי הנכסים על הנייר שלנו זמינים בימים ב'-ש', בשעות 9:00-18:00.",
     ctaBtn: "לקביעת ייעוץ חינם",
   },
 };

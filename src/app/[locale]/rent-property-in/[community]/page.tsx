@@ -65,13 +65,13 @@ export async function generateMetadata({
 const BATCH_SIZE = 9;
 
 const LABELS = {
-  en: { home: "Home", rent: "Rent", rentIn: "Rent Property in", dubai: "Dubai", priceRange: "Price range", grossYield: "Gross yield", listings: "Listings", forRent: "Properties for Rent in", emptyTitle: "No active rentals here right now", emptyBody: "We add new rentals in this community regularly. Tell us what you're after and we'll alert you the moment one lists, or explore what's available across Dubai today.", browseAll: "Browse all rentals", getNotified: "Get notified" },
-  ru: { home: "Главная", rent: "Аренда", rentIn: "Аренда недвижимости в", dubai: "Дубае", priceRange: "Диапазон цен", grossYield: "Доходность", listings: "Объектов", forRent: "Недвижимость в аренду в", emptyTitle: "Сейчас здесь нет активных объявлений", emptyBody: "Мы регулярно добавляем новые объекты в аренду в этом районе. Расскажите, что ищете, и мы сообщим, как только появится вариант, или посмотрите доступное по всему Дубаю.", browseAll: "Вся аренда", getNotified: "Уведомить меня" },
-  ar: { home: "الرئيسية", rent: "إيجار", rentIn: "استئجار عقار في", dubai: "دبي", priceRange: "نطاق السعر", grossYield: "العائد الإجمالي", listings: "عقارات", forRent: "عقارات للإيجار في", emptyTitle: "لا توجد عقارات للإيجار هنا حاليًا", emptyBody: "نضيف عقارات إيجار جديدة في هذا المجتمع بانتظام. أخبرنا بما تبحث عنه وسننبهك فور توفّره, أو استكشف المتاح في جميع أنحاء دبي اليوم.", browseAll: "تصفّح كل عقارات الإيجار", getNotified: "نبّهني" },
-  zh: { home: "首页", rent: "租赁", rentIn: "租赁房产, ", dubai: "迪拜", priceRange: "价格区间", grossYield: "租金回报", listings: "房源", forRent: "出租房产, ", emptyTitle: "该区域暂无在租房源", emptyBody: "我们会定期上架该社区的新租盘。告诉我们您的需求，一有合适房源即刻通知您, , 或浏览迪拜全城目前可租的房源。", browseAll: "浏览全部租盘", getNotified: "通知我" },
-  vi: { home: "Trang chủ", rent: "Thuê", rentIn: "Thuê bất động sản tại", dubai: "Dubai", priceRange: "Khoảng giá", grossYield: "Lợi suất gộp", listings: "Tin đăng", forRent: "Bất động sản cho thuê tại", emptyTitle: "Hiện chưa có tin cho thuê tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản cho thuê mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có, hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả cho thuê", getNotified: "Nhận thông báo" },
-  he: { home: "בית", rent: "השכרה", rentIn: "השכרת נכס ב", dubai: "דובאי", priceRange: "טווח מחירים", grossYield: "תשואה ברוטו", listings: "מודעות", forRent: "נכסים להשכרה ב", emptyTitle: "אין כרגע נכסים להשכרה כאן", emptyBody: "אנו מוסיפים נכסים חדשים להשכרה בקהילה זו באופן קבוע. ספרו לנו מה אתם מחפשים ונעדכן אתכם ברגע שמתפרסם נכס, או גלו את ההיצע ברחבי דובאי היום.", browseAll: "עיון בכל הנכסים להשכרה", getNotified: "עדכנו אותי" },
-  fr: { home: "Accueil", rent: "Location", rentIn: "Louer un bien à", dubai: "Dubaï", priceRange: "Fourchette de prix", grossYield: "Rendement brut", listings: "Annonces", forRent: "Biens à louer à", emptyTitle: "Aucune location disponible pour le moment", emptyBody: "Nous ajoutons régulièrement de nouvelles locations dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les locations à Dubaï.", browseAll: "Voir toutes les locations", getNotified: "Être alerté" },
+  en: { home: "Home", rent: "Rent", rentIn: "Rent Property in", dubai: "Dubai", listings: "Listings", forRent: "Properties for Rent in", emptyTitle: "No active rentals here right now", emptyBody: "We add new rentals in this community regularly. Tell us what you're after and we'll alert you the moment one lists, or explore what's available across Dubai today.", browseAll: "Browse all rentals", getNotified: "Get notified" },
+  ru: { home: "Главная", rent: "Аренда", rentIn: "Аренда недвижимости в", dubai: "Дубае", listings: "Объектов", forRent: "Недвижимость в аренду в", emptyTitle: "Сейчас здесь нет активных объявлений", emptyBody: "Мы регулярно добавляем новые объекты в аренду в этом районе. Расскажите, что ищете, и мы сообщим, как только появится вариант, или посмотрите доступное по всему Дубаю.", browseAll: "Вся аренда", getNotified: "Уведомить меня" },
+  ar: { home: "الرئيسية", rent: "إيجار", rentIn: "استئجار عقار في", dubai: "دبي", listings: "عقارات", forRent: "عقارات للإيجار في", emptyTitle: "لا توجد عقارات للإيجار هنا حاليًا", emptyBody: "نضيف عقارات إيجار جديدة في هذا المجتمع بانتظام. أخبرنا بما تبحث عنه وسننبهك فور توفّره, أو استكشف المتاح في جميع أنحاء دبي اليوم.", browseAll: "تصفّح كل عقارات الإيجار", getNotified: "نبّهني" },
+  zh: { home: "首页", rent: "租赁", rentIn: "租赁房产, ", dubai: "迪拜", listings: "房源", forRent: "出租房产, ", emptyTitle: "该区域暂无在租房源", emptyBody: "我们会定期上架该社区的新租盘。告诉我们您的需求，一有合适房源即刻通知您, , 或浏览迪拜全城目前可租的房源。", browseAll: "浏览全部租盘", getNotified: "通知我" },
+  vi: { home: "Trang chủ", rent: "Thuê", rentIn: "Thuê bất động sản tại", dubai: "Dubai", listings: "Tin đăng", forRent: "Bất động sản cho thuê tại", emptyTitle: "Hiện chưa có tin cho thuê tại khu vực này", emptyBody: "Chúng tôi thường xuyên bổ sung bất động sản cho thuê mới ở khu vực này. Hãy cho biết bạn đang tìm gì và chúng tôi sẽ báo ngay khi có, hoặc khám phá các lựa chọn hiện có trên khắp Dubai.", browseAll: "Xem tất cả cho thuê", getNotified: "Nhận thông báo" },
+  he: { home: "בית", rent: "השכרה", rentIn: "השכרת נכס ב", dubai: "דובאי", listings: "מודעות", forRent: "נכסים להשכרה ב", emptyTitle: "אין כרגע נכסים להשכרה כאן", emptyBody: "אנו מוסיפים נכסים חדשים להשכרה בקהילה זו באופן קבוע. ספרו לנו מה אתם מחפשים ונעדכן אתכם ברגע שמתפרסם נכס, או גלו את ההיצע ברחבי דובאי היום.", browseAll: "עיון בכל הנכסים להשכרה", getNotified: "עדכנו אותי" },
+  fr: { home: "Accueil", rent: "Location", rentIn: "Louer un bien à", dubai: "Dubaï", listings: "Annonces", forRent: "Biens à louer à", emptyTitle: "Aucune location disponible pour le moment", emptyBody: "Nous ajoutons régulièrement de nouvelles locations dans ce quartier. Dites-nous ce que vous cherchez et nous vous alerterons dès qu'un bien sera disponible, ou explorez les locations à Dubaï.", browseAll: "Voir toutes les locations", getNotified: "Être alerté" },
 } as const;
 
 // Localized cross-link + empty-state copy (numbers/brand names stay verbatim).
@@ -161,29 +161,22 @@ export default async function RentInCommunityPage({
           {L.rentIn} {c.name}, {L.dubai}
         </h2>
         <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-6">{localizeCommunityText(c.shortIntro, locale)}</p>
-        <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{localizeCommunityText(c.why, locale)}</p>
         {marketNote && <p className="text-sm sm:text-base text-foreground/80 leading-relaxed max-w-3xl mb-8">{marketNote}</p>}
-        {/* Only render stats that actually have a value — a blank "Price range"
-            or a "Listings 0" reads as broken rather than informative. */}
-        {(() => {
-          const stats = [
-            c.priceRange ? { l: L.priceRange, v: c.priceRange } : null,
-            c.yield ? { l: L.grossYield, v: c.yield } : null,
-            totalCount > 0 ? { l: L.listings, v: `${totalCount}+` } : null,
-          ].filter(Boolean) as { l: string; v: string }[];
-          if (!stats.length) return null;
-          const cols = stats.length === 3 ? "grid-cols-3" : stats.length === 2 ? "grid-cols-2" : "grid-cols-1";
-          return (
-            <div className={`grid ${cols} gap-4 max-w-xl`}>
-              {stats.map((s) => (
-                <div key={s.l}>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{s.l}</p>
-                  <p className="text-sm sm:text-base font-bold text-foreground">{s.v}</p>
-                </div>
-              ))}
-            </div>
-          );
-        })()}
+        {/* Rent-side facts only. This block used to render `c.priceRange` under a
+            "Price range" heading and `c.yield` under "Gross yield" — both are
+            PURCHASE-side figures from BUY_COMMUNITIES (Emirates Hills showed
+            "AED 25M - 200M+" on a page about renting). There is no per-community
+            rental price or rental-yield data in that dataset, so the tiles are
+            dropped rather than relabelled; the DLD rent-side market note above
+            carries the genuine rental context. Only the live listing count,
+            which really is rental inventory, survives — and only when non-zero,
+            since "Listings 0" reads as broken rather than informative. */}
+        {totalCount > 0 && (
+          <div className="max-w-xl">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{L.listings}</p>
+            <p className="text-sm sm:text-base font-bold text-foreground">{totalCount}+</p>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -13,6 +13,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyTypeSidebar from "@/components/PropertyTypeSidebar";
 import { findPropertyTypePage } from "@/lib/property-type-pages";
+import { getCachedSearch } from "@/lib/api";
 
 interface Props {
   locale: string;
@@ -23,18 +24,56 @@ interface Props {
   searchSlot?: React.ReactNode;
 }
 
-export default function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
+// Thousands separator per locale, matching the numeral conventions already used
+// in the content tables. Intl.NumberFormat is deliberately not used: it renders
+// Arabic-Indic digits for `ar` (٢٩), which nothing else on the site does.
+const GROUP_SEP: Record<string, string> = {
+  en: ",", zh: ",", ar: ",", he: ",", ru: "\u00A0", fr: "\u00A0", vi: ".",
+};
+function formatCount(n: number, locale: string): string {
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, GROUP_SEP[locale] ?? ",");
+}
+
+/**
+ * Live inventory for this property type, read off the same /api/search the
+ * embedded grid below the hero renders from — so the hero number and the grid
+ * can never disagree. Returns null when the API is unavailable, malformed or
+ * reports nothing, and the caller then DROPS the tile rather than printing "0"
+ * or falling back to a constant: a failed fetch must never become an inventory
+ * claim. (`getCachedSearch` returns null on error instead of throwing, and
+ * caches across requests so this costs no extra upstream call per render.)
+ */
+async function liveInventoryCount(searchType: string, intent: string): Promise<number | null> {
+  const data = await getCachedSearch<{ totalCount?: number }>(
+    `intent=${encodeURIComponent(intent)}&type=${encodeURIComponent(searchType)}&pageSize=1`
+  );
+  const n = Number(data?.totalCount);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : null;
+}
+
+export default async function PropertyTypeLanding({ locale, slug, icon, searchType, c, searchSlot }: Props) {
   const isRtl = locale === "ar" || locale === "he";
   const lp = locale === "en" ? "" : `/${locale}`;
   const searchUrl = `${lp}/search?type=${encodeURIComponent(searchType)}`;
+  const pageDef = findPropertyTypePage(slug);
 
   // The search API matches community names in English (as stored in the DB),
   // but c.areas are localized for display. The per-locale areas arrays are
   // positionally aligned with the English ones, so map each localized label
   // back to its English value for the `locations=` filter — otherwise a
   // localized name (e.g. "Дубай Марина") is sent and matches nothing.
-  const enAreas = findPropertyTypePage(slug)?.en.areas ?? c.areas;
+  const enAreas = pageDef?.en.areas ?? c.areas;
   const areaValue = (i: number) => enAreas[i] ?? c.areas[i];
+
+  // Inventory tile: only pages that declare an `inventoryLabel` show a count,
+  // and only when the live read succeeds. No count -> no tile, and the 2x2 grid
+  // becomes a single row of 3 (both class strings are literal here so Tailwind
+  // keeps them).
+  const liveCount = c.inventoryLabel ? await liveInventoryCount(searchType, pageDef?.searchIntent ?? "buy") : null;
+  const stats = liveCount === null || !c.inventoryLabel
+    ? c.stats
+    : [{ n: formatCount(liveCount, locale), label: c.inventoryLabel }, ...c.stats];
+  const statCols = stats.length === 3 ? "grid-cols-3" : "grid-cols-2";
 
   const breadcrumbs = [
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "fr" ? "Accueil" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
@@ -72,8 +111,8 @@ export default function PropertyTypeLanding({ locale, slug, icon, searchType, c,
               </Link>
             </div>
             {/* Right: stats 2×2 — transparent cells, white divider lines */}
-            <div className="grid grid-cols-2 gap-[1px] bg-white/15 rounded-2xl overflow-hidden">
-              {c.stats.map((s) => (
+            <div className={`grid ${statCols} gap-[1px] bg-white/15 rounded-2xl overflow-hidden`}>
+              {stats.map((s) => (
                 <div key={s.label} className="px-3 py-4 sm:py-5 text-center">
                   <p className="text-base sm:text-xl font-black mb-0.5 leading-tight break-words">{s.n}</p>
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-primary-foreground/55 leading-tight">{s.label}</p>

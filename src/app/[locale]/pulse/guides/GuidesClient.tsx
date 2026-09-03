@@ -182,7 +182,10 @@ function GuideCard({
   locale: string;
   t: Tx;
 }) {
-  const href = `/${locale}/pulse/guides/${guide.slug}`;
+  // Bare path: the Link from @/navigation applies the active locale itself.
+  // Prefixing here produced /ru/ru/pulse/guides/... — 87 dead links per
+  // non-English locale straight off the guides index.
+  const href = `/pulse/guides/${guide.slug}`;
   const category = t(`category_${guide.category.replace(/\s/g, "")}` as Parameters<Tx>[0]);
   const { published } = guideDates(guide.slug);
   const dateLabel = new Date(published).toLocaleDateString(locale === "en" ? "en-GB" : locale, {

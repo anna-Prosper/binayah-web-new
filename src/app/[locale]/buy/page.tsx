@@ -18,23 +18,94 @@ async function getInitialBuyListings() {
   return getCachedSearch("intent=buy&status=Secondary&pageSize=24");
 }
 
+/**
+ * Live for-sale inventory (off-plan projects + secondary listings), read from a
+ * one-row search whose only job is the total. It shares `getCachedSearch`'s
+ * cache, so it costs one upstream call per revalidation window.
+ *
+ * This replaces a hardcoded "3,000+" that was duplicated into the meta title,
+ * the meta description and the stat tile — accurate the day it was written and
+ * guaranteed to drift silently afterwards. Returns null on any failure, and
+ * every caller then DROPS the number: the title and description fall back to
+ * count-free wording and the tile disappears, rather than shipping a frozen
+ * figure that a failed fetch has no way to correct.
+ */
+async function getForSaleCount(): Promise<number | null> {
+  const data = await getCachedSearch<any>("intent=buy&pageSize=1");
+  const n = Number(data?.totalCount);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : null;
+}
+
+/**
+ * Cheapest genuinely purchasable price across live buy inventory, in AED.
+ *
+ * The old "AED 350K" was false — the cheapest real off-plan project is AED
+ * 457,000 and the cheapest resale listing AED 530,000 — but a naive live
+ * minimum would be worse: the API carries corrupt rows (an AED 1,350 "project",
+ * an AED 5,000 "Test Dubai Property") that would advertise a fictional entry
+ * price. Anything below AED 400,000 is therefore treated as junk; that floor
+ * sits below every genuine row and above every corrupt one seen to date.
+ * Returns null when nothing plausible comes back, and the caller omits the tile
+ * — there is deliberately no fallback price.
+ */
+const MIN_PLAUSIBLE_SALE_PRICE = 400_000;
+
+async function getStartingPrice(): Promise<number | null> {
+  const data = await getCachedSearch<any>("intent=buy&sort=price_asc&pageSize=24");
+  const prices: number[] = [
+    ...(Array.isArray(data?.listings) ? data.listings : []).map((l: any) => Number(l?.price)),
+    ...(Array.isArray(data?.projects) ? data.projects : []).map((p: any) => Number(p?.startingPrice)),
+  ].filter((n: number) => Number.isFinite(n) && n >= MIN_PLAUSIBLE_SALE_PRICE);
+  return prices.length ? Math.min(...prices) : null;
+}
+
+// Thousands separator per locale, matching the numeral conventions already used
+// in CONTENT below. Intl.NumberFormat is deliberately not used: it renders
+// Arabic-Indic digits for `ar`, which nothing else on this page does.
+const GROUP_SEP: Record<string, string> = {
+  en: ",", zh: ",", ar: ",", he: ",", ru: "\u00A0", fr: "\u00A0", vi: ".",
+};
+function formatCount(n: number, locale: string): string {
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, GROUP_SEP[locale] ?? ",");
+}
+
+/**
+ * Renders the live starting price in each locale's own conventions, mirroring
+ * the hand-written strings this replaced: ru leads with "от", ar/zh/vi put the
+ * currency last, zh counts in 万 (10,000s).
+ */
+const FROM_PRICE: Record<string, (n: number) => string> = {
+  en: (n) => `AED ${Math.round(n / 1000)}K`,
+  fr: (n) => `AED ${Math.round(n / 1000)}K`,
+  he: (n) => `AED ${Math.round(n / 1000)}K`,
+  vi: (n) => `${Math.round(n / 1000)}K AED`,
+  ru: (n) => `от ${Math.round(n / 1000)}K AED`,
+  ar: (n) => `${Math.round(n / 1000)}K درهم`,
+  zh: (n) => `${(n / 10000).toFixed(1).replace(/\.0$/, "")}万AED`,
+};
+
+// Column counts for the stat row, which now holds 2-4 tiles depending on how
+// much live data came back. Every class is a complete literal so Tailwind's
+// scanner still emits them.
+const STAT_COLS: Record<number, string> = {
+  2: "grid-cols-2 sm:grid-cols-2",
+  3: "grid-cols-2 sm:grid-cols-3",
+  4: "grid-cols-2 sm:grid-cols-4",
+};
+
 const CONTENT = {
   fr: {
-    "metaTitle": "Biens à vendre à Dubai | Plus de 3 000 annonces | Binayah",
-    "metaDesc": "Parcourez plus de 3 000 biens à vendre à Dubai, appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.",
+    "metaTitle": "Biens à vendre à Dubai | Appartements & Villas | Binayah",
+    "metaTitleN": (n: string) => `Biens à vendre à Dubai | ${n} annonces | Binayah`,
+    "metaDesc": "Parcourez les biens à vendre à Dubai, appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.",
+    "metaDescN": (n: string) => `Parcourez ${n} biens à vendre à Dubai, appartements, villas, sur plan et marché secondaire. Filtrez par superficie, prix et chambres. Mis à jour quotidiennement.`,
     "heroLabel": "ACHETER UN BIEN À DUBAI",
     "h1": "Biens à vendre",
     "h1sub": "à Dubai",
     "heroDesc": "Recherchez des appartements, villas, maisons de ville et projets sur plan dans plus de 60 quartiers de Dubai. Annonces vérifiées, prix en direct de la DLD, et agents experts disponibles 7 jours sur 7.",
+    "forSaleLabel": "Biens à vendre",
+    "startingPriceLabel": "Prix de départ",
     "stats": [
-      {
-        "n": "3,000+",
-        "label": "Biens à vendre"
-      },
-      {
-        "n": "AED 350K",
-        "label": "Prix de départ"
-      },
       {
         "n": "0%",
         "label": "Impôt sur les plus-values"
@@ -72,21 +143,17 @@ const CONTENT = {
     "ctaBtn": "Parlez à un agent"
   },
   he: {
-    "metaTitle": "נכסים למכירה בדובאי | 3,000+ מודעות | Binayah",
-    "metaDesc": "עיינו ב-3,000+ נכסים למכירה בדובאי, דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",
+    "metaTitle": "נכסים למכירה בדובאי | דירות ווילות | Binayah",
+    "metaTitleN": (n: string) => `נכסים למכירה בדובאי | ${n} מודעות | Binayah`,
+    "metaDesc": "עיינו בנכסים למכירה בדובאי, דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.",
+    "metaDescN": (n: string) => `עיינו ב-${n} נכסים למכירה בדובאי, דירות, וילות, פרויקטים על הנייר (off-plan) ושוק משני. סננו לפי אזור, מחיר וחדרי שינה. מתעדכן מדי יום.`,
     "heroLabel": "רכישת נכס בדובאי",
     "h1": "נכסים למכירה",
     "h1sub": "בדובאי",
     "heroDesc": "חפשו דירות, וילות, בתי טאון ופרויקטים על הנייר ביותר מ-60 קהילות ברחבי דובאי. מודעות מאומתות, מחירי DLD בזמן אמת וסוכנים מומחים זמינים 7 ימים בשבוע.",
+    "forSaleLabel": "נכסים למכירה",
+    "startingPriceLabel": "מחיר התחלתי",
     "stats": [
-      {
-        "n": "3,000+",
-        "label": "נכסים למכירה"
-      },
-      {
-        "n": "AED 350K",
-        "label": "מחיר התחלתי"
-      },
       {
         "n": "0%",
         "label": "מס רווחי הון"
@@ -124,15 +191,17 @@ const CONTENT = {
     "ctaBtn": "שוחחו עם סוכן"
   },
   en: {
-    metaTitle: "Properties for Sale in Dubai | 3,000+ Listings | Binayah",
-    metaDesc: "Browse 3,000+ properties for sale in Dubai, apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.",
+    metaTitle: "Properties for Sale in Dubai | Apartments & Villas | Binayah",
+    metaTitleN: (n: string) => `Properties for Sale in Dubai | ${n} Listings | Binayah`,
+    metaDesc: "Browse properties for sale in Dubai, apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.",
+    metaDescN: (n: string) => `Browse ${n} properties for sale in Dubai, apartments, villas, off-plan & secondary market. Filter by area, price and bedrooms. Updated daily.`,
     heroLabel: "BUY PROPERTY IN DUBAI",
     h1: "Properties for Sale",
     h1sub: "in Dubai",
     heroDesc: "Search apartments, villas, townhouses and off-plan projects across 60+ Dubai communities. Verified listings, live DLD prices, and expert agents available 7 days a week.",
+    forSaleLabel: "Properties for Sale",
+    startingPriceLabel: "Starting Price",
     stats: [
-      { n: "3,000+", label: "Properties for Sale" },
-      { n: "AED 350K", label: "Starting Price" },
       { n: "0%", label: "Capital Gains Tax" },
       { n: "60+", label: "Communities" },
     ],
@@ -149,15 +218,17 @@ const CONTENT = {
     ctaBtn: "Talk to an Agent",
   },
   ru: {
-    metaTitle: "Купить недвижимость в Дубае | 3000+ объектов | Binayah",
-    metaDesc: "Более 3000 объектов на продажу в Дубае, квартиры, виллы, новостройки и вторичный рынок. Фильтр по району, цене и спальням. Обновляется ежедневно.",
+    metaTitle: "Купить недвижимость в Дубае | Квартиры и виллы | Binayah",
+    metaTitleN: (n: string) => `Купить недвижимость в Дубае | ${n} объектов | Binayah`,
+    metaDesc: "Объекты на продажу в Дубае, квартиры, виллы, новостройки и вторичный рынок. Фильтр по району, цене и спальням. Обновляется ежедневно.",
+    metaDescN: (n: string) => `${n} объектов на продажу в Дубае, квартиры, виллы, новостройки и вторичный рынок. Фильтр по району, цене и спальням. Обновляется ежедневно.`,
     heroLabel: "КУПИТЬ НЕДВИЖИМОСТЬ В ДУБАЕ",
     h1: "Недвижимость на продажу",
     h1sub: "в Дубае",
     heroDesc: "Ищите квартиры, виллы, таунхаусы и новостройки в 60+ районах Дубая. Проверенные объявления, актуальные цены DLD и эксперты доступны 7 дней в неделю.",
+    forSaleLabel: "Объектов на продажу",
+    startingPriceLabel: "Стартовая цена",
     stats: [
-      { n: "3 000+", label: "Объектов на продажу" },
-      { n: "от 350K AED", label: "Стартовая цена" },
       { n: "0%", label: "Налог на прирост капитала" },
       { n: "60+", label: "Районов" },
     ],
@@ -174,15 +245,17 @@ const CONTENT = {
     ctaBtn: "Связаться с агентом",
   },
   ar: {
-    metaTitle: "عقارات للبيع في دبي | +3000 إعلان | بناية للعقارات",
-    metaDesc: "أكثر من 3000 عقار للبيع في دبي, شقق وفلل وعلى الخارطة وثانوية. فلتر حسب المنطقة والسعر والغرف. يُحدَّث يومياً.",
+    metaTitle: "عقارات للبيع في دبي | شقق وفلل | بناية للعقارات",
+    metaTitleN: (n: string) => `عقارات للبيع في دبي | ${n} إعلان | بناية للعقارات`,
+    metaDesc: "عقارات للبيع في دبي, شقق وفلل وعلى الخارطة وثانوية. فلتر حسب المنطقة والسعر والغرف. يُحدَّث يومياً.",
+    metaDescN: (n: string) => `${n} عقار للبيع في دبي, شقق وفلل وعلى الخارطة وثانوية. فلتر حسب المنطقة والسعر والغرف. يُحدَّث يومياً.`,
     heroLabel: "شراء عقارات في دبي",
     h1: "عقارات للبيع",
     h1sub: "في دبي",
     heroDesc: "ابحث عن شقق وفلل وتاون هاوس ومشاريع على الخارطة في أكثر من 60 مجتمعًا في دبي. إعلانات موثَّقة وأسعار DLD حية وخبراء متاحون 7 أيام في الأسبوع.",
+    forSaleLabel: "عقار للبيع",
+    startingPriceLabel: "سعر البداية",
     stats: [
-      { n: "+3000", label: "عقار للبيع" },
-      { n: "350K درهم", label: "سعر البداية" },
       { n: "0%", label: "ضريبة أرباح رأس المال" },
       { n: "+60", label: "مجتمعًا" },
     ],
@@ -199,15 +272,17 @@ const CONTENT = {
     ctaBtn: "تحدث مع وكيل",
   },
   zh: {
-    metaTitle: "迪拜房产出售 | 3000+房源 | Binayah Properties",
-    metaDesc: "浏览3000多套迪拜在售房产, , 公寓、别墅、期房和二手房。按地区、价格和卧室筛选。每日更新。",
+    metaTitle: "迪拜房产出售 | 公寓和别墅 | Binayah Properties",
+    metaTitleN: (n: string) => `迪拜房产出售 | ${n}套房源 | Binayah Properties`,
+    metaDesc: "浏览迪拜在售房产, , 公寓、别墅、期房和二手房。按地区、价格和卧室筛选。每日更新。",
+    metaDescN: (n: string) => `浏览${n}套迪拜在售房产, , 公寓、别墅、期房和二手房。按地区、价格和卧室筛选。每日更新。`,
     heroLabel: "购买迪拜房产",
     h1: "迪拜在售房产",
     h1sub: "公寓 · 别墅 · 期房",
     heroDesc: "搜索迪拜60多个社区的公寓、别墅、联排别墅和期房项目。核实房源、实时DLD价格，专家每周7天为您服务。",
+    forSaleLabel: "在售房产",
+    startingPriceLabel: "起始价格",
     stats: [
-      { n: "3,000+", label: "在售房产" },
-      { n: "35万AED", label: "起始价格" },
       { n: "0%", label: "资本利得税" },
       { n: "60+", label: "社区" },
     ],
@@ -224,15 +299,17 @@ const CONTENT = {
     ctaBtn: "联系经纪人",
   },
   vi: {
-    metaTitle: "Bất động sản bán tại Dubai | 3.000+ tin đăng | Binayah",
-    metaDesc: "Khám phá hơn 3.000 bất động sản bán tại Dubai, căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.",
+    metaTitle: "Bất động sản bán tại Dubai | Căn hộ & Biệt thự | Binayah",
+    metaTitleN: (n: string) => `Bất động sản bán tại Dubai | ${n} tin đăng | Binayah`,
+    metaDesc: "Khám phá bất động sản bán tại Dubai, căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.",
+    metaDescN: (n: string) => `Khám phá ${n} bất động sản bán tại Dubai, căn hộ, biệt thự, off-plan & thị trường thứ cấp. Lọc theo khu vực, giá và phòng ngủ. Cập nhật hàng ngày.`,
     heroLabel: "MUA BẤT ĐỘNG SẢN TẠI DUBAI",
     h1: "Bất động sản bán",
     h1sub: "tại Dubai",
     heroDesc: "Tìm căn hộ, biệt thự, nhà phố và dự án off-plan trên 60+ khu vực Dubai. Tin đăng đã xác minh, giá DLD trực tiếp và chuyên viên sẵn sàng 7 ngày một tuần.",
+    forSaleLabel: "Bất động sản bán",
+    startingPriceLabel: "Giá khởi điểm",
     stats: [
-      { n: "3.000+", label: "Bất động sản bán" },
-      { n: "350K AED", label: "Giá khởi điểm" },
       { n: "0%", label: "Thuế lãi vốn" },
       { n: "60+", label: "Khu vực" },
     ],
@@ -257,12 +334,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
   const url = canonical(locale, "/buy");
+  // Live inventory count, or the count-free wording when the API is unavailable.
+  const forSale = await getForSaleCount();
+  const title = forSale === null ? c.metaTitle : c.metaTitleN(formatCount(forSale, locale));
+  const description = forSale === null ? c.metaDesc : c.metaDescN(formatCount(forSale, locale));
   return {
-    title: c.metaTitle,
-    description: c.metaDesc,
+    title,
+    description,
     alternates: { canonical: url, languages: altLangs("/buy") },
     openGraph: {
-      title: c.metaTitle, description: c.metaDesc, url,
+      title, description, url,
       type: "website", locale: OG_LOCALE[locale] ?? "en_AE",
       // og:image from the route's opengraph-image.tsx (dynamic branded image)
     },
@@ -277,7 +358,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BuyPage({ params }: Props) {
-  const [{ locale }, initialData] = await Promise.all([params, getInitialBuyListings()]);
+  const [{ locale }, initialData, forSale, startingPrice] = await Promise.all([
+    params,
+    getInitialBuyListings(),
+    getForSaleCount(),
+    getStartingPrice(),
+  ]);
   const c = CONTENT[(locale as Locale)] || CONTENT.en;
   const isRtl = locale === "ar" || locale === "he"; // ar, he are rtl; vi, zh, ru, en are ltr
   const lp = locale === "en" ? "" : `/${locale}`;
@@ -286,6 +372,16 @@ export default async function BuyPage({ params }: Props) {
     { name: locale === "ru" ? "Главная" : locale === "ar" ? "الرئيسية" : locale === "zh" ? "首页" : locale === "vi" ? "Trang chủ" : locale === "he" ? "בית" : "Home", href: `${lp}/` },
     { name: c.breadcrumb, href: `${lp}/buy` },
   ];
+
+  // Both live tiles are prepended only when we actually have a real number.
+  // Whichever is missing is omitted entirely and the row narrows to match — no
+  // "0", no hardcoded price standing in for a failed fetch.
+  const stats: { n: string; label: string }[] = [
+    ...(forSale === null ? [] : [{ n: formatCount(forSale, locale), label: c.forSaleLabel }]),
+    ...(startingPrice === null ? [] : [{ n: (FROM_PRICE[locale] ?? FROM_PRICE.en)(startingPrice), label: c.startingPriceLabel }]),
+    ...c.stats,
+  ];
+  const metaDesc = forSale === null ? c.metaDesc : c.metaDescN(formatCount(forSale, locale));
 
   const collectionItems: { url: string; name: string }[] = [
     ...(Array.isArray(initialData?.projects) ? initialData.projects : [])
@@ -300,7 +396,7 @@ export default async function BuyPage({ params }: Props) {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       <FAQJsonLd faqs={[...c.faqs]} />
       <BreadcrumbJsonLd items={breadcrumbs} />
-      <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={c.metaDesc} url="/buy" items={collectionItems} />
+      <CollectionPageJsonLd name={`${c.h1} ${c.h1sub}`} description={metaDesc} url="/buy" items={collectionItems} />
       <Navbar />
 
       {/* Hero */}
@@ -321,8 +417,8 @@ export default async function BuyPage({ params }: Props) {
       {/* Stats */}
       <section className="border-b border-border/50 bg-card">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-border/40">
-            {c.stats.map((s) => (
+          <div className={`grid ${STAT_COLS[stats.length] ?? "grid-cols-2 sm:grid-cols-4"} divide-x divide-y sm:divide-y-0 divide-border/40`}>
+            {stats.map((s) => (
               <div key={s.label} className="py-4 sm:py-5 px-3 sm:px-6 text-center">
                 <p className="text-xl sm:text-2xl font-black text-primary mb-0.5">{s.n}</p>
                 <p className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{s.label}</p>

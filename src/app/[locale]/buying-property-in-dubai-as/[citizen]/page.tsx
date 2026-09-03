@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { waHref, WA_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/JsonLd";
 import { FOREIGN_BUYERS, findForeignBuyer, localizeBuyerText } from "@/lib/foreign-buyers";
+import { findBuyCommunity } from "@/lib/buy-communities";
 import { canonical as makeCanonical, altLangs, AE_URL, OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 86400;
@@ -18,6 +19,23 @@ export function generateStaticParams() {
     FOREIGN_BUYERS.map((b) => ({ locale, citizen: b.slug }))
   );
 }
+
+// ── Preferred-area label → canonical /buy-property-in slug ─────────────────
+// The labels in FOREIGN_BUYERS.preferredAreas are display names, not slugs:
+// naive slugification produced /buy-property-in/jbr, /jvc, /the-greens and
+// /arjan, none of which exist in BUY_COMMUNITIES, so every one 404'd. Areas
+// with no community entry are omitted below rather than linked into a 404.
+const AREA_COMMUNITY_SLUGS: Record<string, string> = {
+  "Dubai Marina": "dubai-marina",
+  "Downtown Dubai": "downtown-dubai",
+  "Dubai Hills Estate": "dubai-hills-estate",
+  "Palm Jumeirah": "palm-jumeirah",
+  "Business Bay": "business-bay",
+  "DIFC": "difc",
+  "The Springs": "the-springs",
+  "JBR": "jumeirah-beach-residence",
+  "JVC": "jumeirah-village-circle",
+};
 
 // ── UI content (locale-aware headings, steps, FAQs, labels) ────────────────
 const CONTENT = {
@@ -74,8 +92,8 @@ const CONTENT = {
     "taxHeading": "השלכות מס",
     "repatHeading": "החזרת כספים למדינת המוצא",
     "areasHeading": "אזורים מועדפים",
-    "areasIntro": "בהתבסס על נתוני העסקאות של Binayah, הקהילות הנבחרות ביותר בקרב",
-    "areasOutro": "רוכשים הן:",
+    "areasIntro": "קהילות בבעלות מלאה שפופולריות באופן עקבי בקרב רוכשים בינלאומיים, ובהם רוכשים",
+    "areasOutro": "הן:",
     "areasCta": "רכשו נכס ב-",
     "faqHeading": "שאלות נפוצות",
     "faqs": [
@@ -93,7 +111,7 @@ const CONTENT = {
       },
       {
         "question": "האם אוכל לקבל משכנתה בדובאי כמי שאינו תושב?",
-        "answer": "כן. בנקים באיחוד האמירויות מציעים משכנתאות למי שאינם תושבים, בדרך כלל ביחס מימון (LTV) של 40-50% (אתם משלמים 50-60% במזומן). מסמכי ההכנסה ממדינת המוצא שלכם, דפי החשבון והיסטוריית האשראי נבחנים. בנקים בינלאומיים גדולים באיחוד האמירויות (HSBC, Emirates NBD, Mashreq, Citibank) מעניקים אשראי באופן פעיל לרוכשים זרים. אישור מקדים אורך 2-4 שבועות."
+        "answer": "כן. בנקים באיחוד האמירויות מציעים משכנתאות למי שאינם תושבים, בדרך כלל ביחס מימון (LTV) של עד 50% בנכס ראשון, לעומת עד 80% לתושבי איחוד האמירויות (אתם משלמים לפחות 50% במזומן). מסמכי ההכנסה ממדינת המוצא שלכם, דפי החשבון והיסטוריית האשראי נבחנים. בנקים בינלאומיים גדולים באיחוד האמירויות (HSBC, Emirates NBD, Mashreq, Citibank) מעניקים אשראי באופן פעיל לרוכשים זרים. אישור מקדים אורך 2-4 שבועות."
       },
       {
         "question": "האם קיים מס כלשהו על הכנסות שכירות או על רווחי הון בדובאי?",
@@ -101,7 +119,7 @@ const CONTENT = {
       }
     ],
     "ctaTitle": "מוכנים לרכוש בדובאי?",
-    "ctaDesc": "סוכני Binayah המוסמכים מטעם RERA עובדים מדי יום עם רוכשים מכל הלאומים. אנו מטפלים בחיפוש הנכס, בסיורים, בתיאום המשפטי ובניהול שלאחר הרכישה.",
+    "ctaDesc": "סוכני Binayah המוסמכים מטעם RERA עובדים עם רוכשים מכל הלאומים. אנו מטפלים בחיפוש הנכס, בסיורים, בתיאום המשפטי ובניהול שלאחר הרכישה.",
     "ctaBtn": "צרו קשר עם הצוות שלנו",
     "ctaBtnSecondary": "עיינו בנכסים",
     "breadcrumbs": {
@@ -145,8 +163,8 @@ const CONTENT = {
     taxHeading: "Tax Implications",
     repatHeading: "Repatriating Funds",
     areasHeading: "Preferred Areas",
-    areasIntro: "Based on Binayah's transaction data, the communities most commonly chosen by",
-    areasOutro: "buyers are:",
+    areasIntro: "Freehold communities that are consistently popular with international buyers, including",
+    areasOutro: "buyers:",
     areasCta: "Buy property in",
 
     faqHeading: "Frequently Asked Questions",
@@ -165,7 +183,7 @@ const CONTENT = {
       },
       {
         question: "Can I get a mortgage in Dubai as a non-resident?",
-        answer: "Yes. UAE banks offer non-resident mortgages to foreign nationals, typically at 40-50% LTV (you pay 50-60% cash). Your home-country income documentation, bank statements, and credit history are assessed. Major international banks in the UAE (HSBC, Emirates NBD, Mashreq, Citibank) actively lend to foreign buyers. Pre-approval takes 2-4 weeks.",
+        answer: "Yes. UAE banks offer non-resident mortgages to foreign nationals, typically at up to 50% LTV on a first property, versus up to 80% for UAE residents (you pay at least 50% in cash). Your home-country income documentation, bank statements, and credit history are assessed. Major international banks in the UAE (HSBC, Emirates NBD, Mashreq, Citibank) actively lend to foreign buyers. Pre-approval takes 2-4 weeks.",
       },
       {
         question: "Is there any tax on rental income or capital gains in Dubai?",
@@ -174,7 +192,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "Ready to Buy in Dubai?",
-    ctaDesc: "Binayah's RERA-certified agents work with buyers from every nationality daily. We handle property search, viewings, legal coordination, and post-purchase management.",
+    ctaDesc: "Binayah's RERA-certified agents work with buyers from a wide range of nationalities. We handle property search, viewings, legal coordination, and post-purchase management.",
     ctaBtn: "Contact Our Team",
     ctaBtnSecondary: "Browse Properties",
 
@@ -220,8 +238,8 @@ const CONTENT = {
     taxHeading: "Implications fiscales",
     repatHeading: "Rapatriement des fonds",
     areasHeading: "Quartiers privilégiés",
-    areasIntro: "D'après les données de transactions de Binayah, les communautés les plus souvent choisies par les acheteurs",
-    areasOutro: "sont :",
+    areasIntro: "Communautés en pleine propriété régulièrement prisées des acheteurs internationaux, dont les acheteurs",
+    areasOutro: ":",
     areasCta: "Acheter un bien à",
 
     faqHeading: "Questions fréquentes",
@@ -240,7 +258,7 @@ const CONTENT = {
       },
       {
         question: "Puis-je obtenir un prêt immobilier à Dubaï en tant que non-résident ?",
-        answer: "Oui. Les banques des Émirats proposent des prêts immobiliers aux non-résidents, généralement à un ratio prêt/valeur (LTV) de 40 à 50% (vous payez 50 à 60% en liquide). Vos justificatifs de revenus du pays d'origine, vos relevés bancaires et votre historique de crédit sont évalués. Les grandes banques internationales des Émirats (HSBC, Emirates NBD, Mashreq, Citibank) prêtent activement aux acheteurs étrangers. L'accord de principe prend 2 à 4 semaines.",
+        answer: "Oui. Les banques des Émirats proposent des prêts immobiliers aux non-résidents, généralement à un ratio prêt/valeur (LTV) allant jusqu'à 50% sur une première acquisition, contre jusqu'à 80% pour les résidents des Émirats (vous payez au moins 50% en liquide). Vos justificatifs de revenus du pays d'origine, vos relevés bancaires et votre historique de crédit sont évalués. Les grandes banques internationales des Émirats (HSBC, Emirates NBD, Mashreq, Citibank) prêtent activement aux acheteurs étrangers. L'accord de principe prend 2 à 4 semaines.",
       },
       {
         question: "Existe-t-il un impôt sur les revenus locatifs ou les plus-values à Dubaï ?",
@@ -249,7 +267,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "Prêt à acheter à Dubaï ?",
-    ctaDesc: "Les agents de Binayah certifiés RERA travaillent chaque jour avec des acheteurs de toutes les nationalités. Nous prenons en charge la recherche de biens, les visites, la coordination juridique et la gestion après l'achat.",
+    ctaDesc: "Les agents de Binayah certifiés RERA travaillent avec des acheteurs de nationalités très diverses. Nous prenons en charge la recherche de biens, les visites, la coordination juridique et la gestion après l'achat.",
     ctaBtn: "Contactez notre équipe",
     ctaBtnSecondary: "Parcourir les biens",
 
@@ -295,7 +313,7 @@ const CONTENT = {
     taxHeading: "Налоговые последствия",
     repatHeading: "Репатриация средств",
     areasHeading: "Предпочтительные районы",
-    areasIntro: "По данным транзакций Binayah, наиболее популярные районы среди",
+    areasIntro: "Фрихолд-районы, стабильно популярные у международных покупателей, в том числе среди",
     areasOutro: "покупателей:",
     areasCta: "Купить недвижимость в",
 
@@ -315,7 +333,7 @@ const CONTENT = {
       },
       {
         question: "Могу ли я получить ипотеку в Дубае как нерезидент?",
-        answer: "Да. Банки ОАЭ предоставляют ипотеку нерезидентам, как правило при LTV 40-50% (вы оплачиваете 50-60% наличными). Оцениваются доходные документы, выписки со счетов и кредитная история вашей страны. Крупные международные банки в ОАЭ (HSBC, Emirates NBD, Mashreq, Citibank) активно кредитуют иностранных покупателей. Предварительное одобрение занимает 2-4 недели.",
+        answer: "Да. Банки ОАЭ предоставляют ипотеку нерезидентам, как правило при LTV до 50% на первый объект, тогда как для резидентов ОАЭ, до 80% (вы оплачиваете не менее 50% наличными). Оцениваются доходные документы, выписки со счетов и кредитная история вашей страны. Крупные международные банки в ОАЭ (HSBC, Emirates NBD, Mashreq, Citibank) активно кредитуют иностранных покупателей. Предварительное одобрение занимает 2-4 недели.",
       },
       {
         question: "Облагается ли налогом доход от аренды или прирост капитала в Дубае?",
@@ -324,7 +342,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "Готовы купить в Дубае?",
-    ctaDesc: "Сертифицированные агенты RERA компании Binayah ежедневно работают с покупателями всех национальностей. Мы берём на себя поиск объектов, просмотры, юридическое сопровождение и управление после покупки.",
+    ctaDesc: "Сертифицированные агенты RERA компании Binayah работают с покупателями самых разных национальностей. Мы берём на себя поиск объектов, просмотры, юридическое сопровождение и управление после покупки.",
     ctaBtn: "Связаться с нашей командой",
     ctaBtnSecondary: "Просмотреть объекты",
 
@@ -370,8 +388,8 @@ const CONTENT = {
     taxHeading: "الانعكاسات الضريبية",
     repatHeading: "إعادة الأموال إلى الوطن",
     areasHeading: "المناطق المفضلة",
-    areasIntro: "استناداً إلى بيانات معاملات بناية، أكثر المجتمعات التي يختارها",
-    areasOutro: "المشترون:",
+    areasIntro: "مجتمعات تملك حر تحظى بشعبية دائمة لدى المشترين الدوليين، ومنهم المشترون",
+    areasOutro: "هم:",
     areasCta: "شراء عقار في",
 
     faqHeading: "الأسئلة الشائعة",
@@ -390,7 +408,7 @@ const CONTENT = {
       },
       {
         question: "هل يمكنني الحصول على رهن عقاري في دبي بوصفي غير مقيم؟",
-        answer: "نعم. تمنح البنوك الإماراتية رهوناً عقارية لغير المقيمين، وعادةً بنسبة تمويل 40-50% (تدفع 50-60% نقداً). تُقيَّم وثائق الدخل وكشوف الحساب البنكي والتاريخ الائتماني في بلدك. البنوك الدولية الكبرى في الإمارات (HSBC وإمارات NBD وماشريق وسيتي بنك) تُقرض المشترين الأجانب بنشاط. يستغرق الموافقة المسبقة 2-4 أسابيع.",
+        answer: "نعم. تمنح البنوك الإماراتية رهوناً عقارية لغير المقيمين، وعادةً بنسبة تمويل تصل إلى 50% للعقار الأول، مقابل ما يصل إلى 80% للمقيمين في الإمارات (تدفع 50% على الأقل نقداً). تُقيَّم وثائق الدخل وكشوف الحساب البنكي والتاريخ الائتماني في بلدك. البنوك الدولية الكبرى في الإمارات (HSBC وإمارات NBD وماشريق وسيتي بنك) تُقرض المشترين الأجانب بنشاط. يستغرق الموافقة المسبقة 2-4 أسابيع.",
       },
       {
         question: "هل يوجد ضريبة على دخل الإيجار أو أرباح رأس المال في دبي؟",
@@ -399,7 +417,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "مستعد للشراء في دبي؟",
-    ctaDesc: "يعمل وكلاء بناية المعتمدون من RERA يومياً مع مشترين من جميع الجنسيات. نتولى البحث عن العقار والمعاينات والتنسيق القانوني وإدارة العقار بعد الشراء.",
+    ctaDesc: "يعمل وكلاء بناية المعتمدون من RERA مع مشترين من جنسيات متعددة. نتولى البحث عن العقار والمعاينات والتنسيق القانوني وإدارة العقار بعد الشراء.",
     ctaBtn: "تواصل مع فريقنا",
     ctaBtnSecondary: "تصفح العقارات",
 
@@ -445,8 +463,8 @@ const CONTENT = {
     taxHeading: "税务影响",
     repatHeading: "资金汇回",
     areasHeading: "热门区域",
-    areasIntro: "根据Binayah的交易数据，",
-    areasOutro: "买家最常选择的社区为：",
+    areasIntro: "长期受国际买家（包括",
+    areasOutro: "买家）欢迎的永久产权社区：",
     areasCta: "购买房产, ",
 
     faqHeading: "常见问题",
@@ -465,7 +483,7 @@ const CONTENT = {
       },
       {
         question: "作为非居民，我能在迪拜获得按揭贷款吗？",
-        answer: "可以。阿联酋银行向非居民提供按揭贷款，通常贷款价值比（LTV）为40-50%（您需支付50-60%现金）。银行会评估您的母国收入证明、银行流水和信用记录。阿联酋主要国际银行（汇丰、阿联酋国民银行、马士里格银行、花旗银行）均积极为外国买家提供贷款。预批通常需2-4周。",
+        answer: "可以。阿联酋银行向非居民提供按揭贷款，购买首套房的贷款价值比（LTV）最高约为50%，阿联酋居民最高为80%（您需支付至少50%现金）。银行会评估您的母国收入证明、银行流水和信用记录。阿联酋主要国际银行（汇丰、阿联酋国民银行、马士里格银行、花旗银行）均积极为外国买家提供贷款。预批通常需2-4周。",
       },
       {
         question: "迪拜征收租金收入税或资本利得税吗？",
@@ -474,7 +492,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "准备好在迪拜购房了吗？",
-    ctaDesc: "Binayah的RERA认证经纪人每天为来自各国的买家提供服务。我们负责房产搜索、看房、法律协调及购后物业管理。",
+    ctaDesc: "Binayah的RERA认证经纪人为来自多国的买家提供服务。我们负责房产搜索、看房、法律协调及购后物业管理。",
     ctaBtn: "联系我们的团队",
     ctaBtnSecondary: "浏览房产",
 
@@ -520,7 +538,7 @@ const CONTENT = {
     taxHeading: "Tác động thuế",
     repatHeading: "Hồi hương vốn",
     areasHeading: "Khu vực ưa thích",
-    areasIntro: "Dựa trên dữ liệu giao dịch của Binayah, các khu vực được lựa chọn nhiều nhất bởi người mua",
+    areasIntro: "Các cộng đồng sở hữu vĩnh viễn được người mua quốc tế ưa chuộng, trong đó có người mua",
     areasOutro: "là:",
     areasCta: "Mua bất động sản tại",
 
@@ -540,7 +558,7 @@ const CONTENT = {
       },
       {
         question: "Tôi có thể vay thế chấp tại Dubai với tư cách người không cư trú không?",
-        answer: "Có. Các ngân hàng UAE cung cấp vay thế chấp cho người không cư trú, thường ở mức LTV 40-50% (bạn trả 50-60% tiền mặt). Tài liệu thu nhập, sao kê ngân hàng và lịch sử tín dụng tại quốc gia của bạn được đánh giá. Các ngân hàng quốc tế lớn tại UAE (HSBC, Emirates NBD, Mashreq, Citibank) tích cực cho người mua nước ngoài vay. Phê duyệt trước mất 2-4 tuần.",
+        answer: "Có. Các ngân hàng UAE cung cấp vay thế chấp cho người không cư trú, thường ở mức LTV tối đa 50% cho bất động sản đầu tiên, so với tối đa 80% cho cư dân UAE (bạn trả ít nhất 50% tiền mặt). Tài liệu thu nhập, sao kê ngân hàng và lịch sử tín dụng tại quốc gia của bạn được đánh giá. Các ngân hàng quốc tế lớn tại UAE (HSBC, Emirates NBD, Mashreq, Citibank) tích cực cho người mua nước ngoài vay. Phê duyệt trước mất 2-4 tuần.",
       },
       {
         question: "Có thuế nào trên thu nhập cho thuê hoặc lãi vốn tại Dubai không?",
@@ -549,7 +567,7 @@ const CONTENT = {
     ],
 
     ctaTitle: "Sẵn sàng mua tại Dubai?",
-    ctaDesc: "Các chuyên viên được chứng nhận RERA của Binayah làm việc với người mua từ mọi quốc tịch hàng ngày. Chúng tôi xử lý tìm kiếm bất động sản, xem nhà, phối hợp pháp lý và quản lý sau khi mua.",
+    ctaDesc: "Các chuyên viên được chứng nhận RERA của Binayah làm việc với người mua thuộc nhiều quốc tịch khác nhau. Chúng tôi xử lý tìm kiếm bất động sản, xem nhà, phối hợp pháp lý và quản lý sau khi mua.",
     ctaBtn: "Liên hệ đội ngũ của chúng tôi",
     ctaBtnSecondary: "Xem bất động sản",
 
@@ -810,8 +828,11 @@ export default async function ForeignBuyerPage({
             {c.areasIntro} {b.citizen} {c.areasOutro}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {b.preferredAreas.map((area) => {
-              const slug = area.toLowerCase().replace(/\s+/g, "-");
+            {b.preferredAreas.flatMap((area) => {
+              const slug = AREA_COMMUNITY_SLUGS[area];
+              // Omit any area without a real community page — a dead link is
+              // worse for users and crawlers than one fewer card.
+              if (!slug || !findBuyCommunity(slug)) return [];
               return (
                 <Link
                   key={area}

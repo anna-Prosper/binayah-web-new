@@ -21,6 +21,16 @@ export interface PropertyTypeLocale {
   h1: string;
   h1sub: string;
   heroDesc: string;
+  /**
+   * Label for the live inventory tile (e.g. "Villas Listed"), set only on pages
+   * whose hero shows a listing count. The NUMBER is deliberately not stored
+   * here: it is read live off /api/search at render time and the tile is
+   * dropped outright when that read fails, so a constant can never drift back
+   * into a false claim. (/villas shipped "800+ Villas Listed" against 29 real
+   * villas, 27x over.) `stats` therefore holds only the non-inventory facts;
+   * the live tile is prepended to them by PropertyTypeLanding.
+   */
+  inventoryLabel?: string;
   stats: { n: string; label: string }[];
   highlights: { title: string; body: string }[];
   areas: string[];
@@ -184,7 +194,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "Villas in Dubai",
       h1sub: "3-7 Bedrooms | Gated Communities",
       heroDesc: "Dubai's villa market ranges from AED 2M family homes in Arabian Ranches to AED 100M+ ultra-luxury estates on Palm Jumeirah and Emirates Hills. Find your perfect home with Binayah.",
-      stats: [{ n: "800+", label: "Villas Listed" }, { n: "AED 2M", label: "Entry Price" }, { n: "4-6%", label: "Avg Rental Yield" }, { n: "25+", label: "Villa Communities" }],
+      inventoryLabel: "Villas Listed",
+      stats: [{ n: "AED 2M", label: "Entry Price" }, { n: "4-6%", label: "Avg Rental Yield" }, { n: "25+", label: "Villa Communities" }],
       highlights: [
         { title: "Family Villas", body: "3-5 bedroom villas in gated communities like Arabian Ranches, Jumeirah Golf Estates, and DAMAC Hills start from AED 2M-5M. These communities offer schools, parks, and clubhouses." },
         { title: "Waterfront Villas", body: "Palm Jumeirah signature villas (AED 15M-80M+) and Dubai Creek Harbour framed properties offer direct sea/creek access. Dubai's most sought-after and illiquid asset class." },
@@ -207,7 +218,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "Villas à Dubaï",
       h1sub: "3-7 chambres | Communautés sécurisées",
       heroDesc: "Le marché des villas de Dubaï s'étend des maisons familiales à 2 M AED à Arabian Ranches aux domaines ultra-luxueux de plus de 100 M AED sur Palm Jumeirah et Emirates Hills. Trouvez votre maison idéale avec Binayah.",
-      stats: [{ n: "800+", label: "Villas listées" }, { n: "2 M AED", label: "Prix d'entrée" }, { n: "4-6 %", label: "Rendement locatif moyen" }, { n: "25+", label: "Communautés de villas" }],
+      inventoryLabel: "Villas listées",
+      stats: [{ n: "2 M AED", label: "Prix d'entrée" }, { n: "4-6 %", label: "Rendement locatif moyen" }, { n: "25+", label: "Communautés de villas" }],
       highlights: [
         { title: "Villas familiales", body: "Les villas de 3 à 5 chambres dans les communautés sécurisées comme Arabian Ranches, Jumeirah Golf Estates et DAMAC Hills démarrent à 2-5 M AED. Ces communautés offrent écoles, parcs et clubs." },
         { title: "Villas en bord de mer", body: "Les villas signature de Palm Jumeirah (15-80 M AED et plus) et les propriétés de Dubai Creek Harbour offrent un accès direct à la mer ou à la crique. La catégorie d'actifs la plus recherchée et la moins liquide de Dubaï." },
@@ -230,7 +242,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "Виллы в Дубае",
       h1sub: "3-7 спален | Охраняемые комьюнити",
       heroDesc: "Рынок вилл Дубая: от семейных домов за 2 млн AED в Arabian Ranches до ультра-люксовых поместий за 100 млн AED на Пальме. Найдите идеальный дом с Binayah.",
-      stats: [{ n: "800+", label: "Вилл в базе" }, { n: "от 2 млн AED", label: "Цена входа" }, { n: "4-6%", label: "Средняя доходность" }, { n: "25+", label: "Комьюнити" }],
+      inventoryLabel: "Вилл в базе",
+      stats: [{ n: "от 2 млн AED", label: "Цена входа" }, { n: "4-6%", label: "Средняя доходность" }, { n: "25+", label: "Комьюнити" }],
       highlights: [
         { title: "Семейные виллы", body: "Виллы с 3-5 спальнями в охраняемых комьюнити Arabian Ranches, Jumeirah Golf Estates, DAMAC Hills, от 2-5 млн AED. Школы, парки, клубы в шаговой доступности." },
         { title: "Виллы у воды", body: "Виллы на Пальме Джумейра (15-80+ млн AED) с прямым выходом к морю, наиболее ликвидный элитный актив Дубая." },
@@ -253,7 +266,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "فلل في دبي",
       h1sub: "3-7 غرف | مجتمعات مسوَّرة",
       heroDesc: "يتراوح سوق الفلل في دبي من منازل عائلية بـ 2 مليون درهم في أراضي الخيل إلى قصور فاخرة تتجاوز 100 مليون درهم على النخلة. اعثر على منزلك المثالي مع بناية.",
-      stats: [{ n: "+800", label: "فيلا في القاعدة" }, { n: "2M درهم", label: "سعر البداية" }, { n: "4-6%", label: "متوسط العائد" }, { n: "+25", label: "مجتمعًا" }],
+      inventoryLabel: "فيلا في القاعدة",
+      stats: [{ n: "2M درهم", label: "سعر البداية" }, { n: "4-6%", label: "متوسط العائد" }, { n: "+25", label: "مجتمعًا" }],
       highlights: [
         { title: "فلل عائلية", body: "فلل بـ 3-5 غرف في مجتمعات مسوَّرة: أراضي الخيل وJumeirah Golf Estates وDAMAC Hills, من 2-5 ملايين درهم. مدارس وحدائق وأندية في المتناول." },
         { title: "فلل بحرية", body: "فلل نخلة جميرا الأيقونية (15-80 مليون+ درهم) مع إطلالات بحرية مباشرة, أكثر الأصول طلبًا في دبي." },
@@ -276,7 +290,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "迪拜别墅",
       h1sub: "3-7卧室 | 封闭式社区",
       heroDesc: "迪拜别墅市场从Arabian Ranches的200万迪拉姆家庭住宅到棕榈岛1亿迪拉姆以上的超豪华庄园一应俱全。",
-      stats: [{ n: "800+", label: "在售别墅" }, { n: "200万AED", label: "入市价格" }, { n: "4-6%", label: "平均租金收益" }, { n: "25+", label: "别墅社区" }],
+      inventoryLabel: "在售别墅",
+      stats: [{ n: "200万AED", label: "入市价格" }, { n: "4-6%", label: "平均租金收益" }, { n: "25+", label: "别墅社区" }],
       highlights: [
         { title: "家庭别墅", body: "Arabian Ranches、Jumeirah Golf Estates等封闭社区3-5卧室别墅，起价200-500万迪拉姆，配套学校、公园和会所。" },
         { title: "滨水别墅", body: "棕榈岛标志性别墅（1500-8000万迪拉姆以上）直面大海，是迪拜最稀缺的顶级资产。" },
@@ -299,7 +314,8 @@ export const PROPERTY_TYPE_PAGES: PropertyTypePage[] = [
       h1: "Biệt thự tại Dubai",
       h1sub: "3-7 phòng ngủ | Khu dân cư khép kín",
       heroDesc: "Thị trường biệt thự Dubai trải dài từ nhà gia đình 2 triệu AED tại Arabian Ranches đến các dinh thự siêu sang 100 triệu AED+ tại Palm Jumeirah và Emirates Hills. Tìm ngôi nhà hoàn hảo của bạn với Binayah.",
-      stats: [{ n: "800+", label: "Biệt thự trong cơ sở dữ liệu" }, { n: "2 triệu AED", label: "Giá khởi điểm" }, { n: "4-6%", label: "Lợi suất cho thuê TB" }, { n: "25+", label: "Khu biệt thự" }],
+      inventoryLabel: "Biệt thự trong cơ sở dữ liệu",
+      stats: [{ n: "2 triệu AED", label: "Giá khởi điểm" }, { n: "4-6%", label: "Lợi suất cho thuê TB" }, { n: "25+", label: "Khu biệt thự" }],
       highlights: [
         { title: "Biệt thự gia đình", body: "Biệt thự 3-5 phòng ngủ tại các khu khép kín như Arabian Ranches, Jumeirah Golf Estates và DAMAC Hills khởi điểm từ 2-5 triệu AED. Các khu này có trường học, công viên và nhà câu lạc bộ." },
         { title: "Biệt thự ven biển", body: "Biệt thự đặc trưng Palm Jumeirah (15-80 triệu AED+) và bất động sản Dubai Creek Harbour mang lại lối ra biển/lạch trực tiếp. Loại tài sản được săn đón và kém thanh khoản nhất Dubai." },
