@@ -402,7 +402,7 @@ function buildFaqs(isRent: boolean): FaqItem[] {
   if (isRent) return [
     {
       question: "How do I schedule a viewing?",
-      answer: "Contact us via WhatsApp, phone, or the inquiry form. We offer flexible viewing slots 7 days a week, including same-day and virtual tours for international tenants.",
+      answer: "Contact us via WhatsApp, phone, or the inquiry form. We offer flexible viewing slots Monday to Saturday, including same-day and virtual tours for international tenants.",
     },
     {
       question: "What documents are needed to rent?",
@@ -429,7 +429,7 @@ function buildFaqs(isRent: boolean): FaqItem[] {
   return [
     {
       question: "How do I schedule a viewing?",
-      answer: "Contact us via WhatsApp, phone, or the inquiry form. We offer flexible slots 7 days a week, including same-day and virtual tours for international buyers.",
+      answer: "Contact us via WhatsApp, phone, or the inquiry form. We offer flexible slots Monday to Saturday, including same-day and virtual tours for international buyers.",
     },
     {
       question: "What documents are needed to purchase?",

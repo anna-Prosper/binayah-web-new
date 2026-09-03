@@ -100,7 +100,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "What documents do I need to rent in Dubai?", answer: "A passport copy, your UAE residence visa and Emirates ID (or visit-visa stamp for short lets), and the cheques or proof of income for payment. Our team handles the contract and Ejari registration for you." },
     ],
     ctaTitle: "Looking to Rent {type} in Dubai?",
-    ctaDesc: "Tell us your budget, preferred area and move-in date, our rental specialists will share matching {typeLower} and arrange viewings. Available 7 days a week.",
+    ctaDesc: "Tell us your budget, preferred area and move-in date, our rental specialists will share matching {typeLower} and arrange viewings. Available Monday to Saturday.",
     ctaBtn: "Talk to a Rental Expert",
   },
   fr: {
@@ -128,7 +128,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "Какие документы нужны для аренды в Дубае?", answer: "Копия паспорта, резидентская виза ОАЭ и Emirates ID (или штамп визита для краткосрочной аренды), а также чеки или подтверждение дохода. Наша команда оформит договор и регистрацию Ejari." },
     ],
     ctaTitle: "Хотите арендовать {typeLower} в Дубае?",
-    ctaDesc: "Сообщите бюджет, желаемый район и дату заселения, наши специалисты подберут подходящие {typeLower} и организуют просмотры. Работаем 7 дней в неделю.",
+    ctaDesc: "Сообщите бюджет, желаемый район и дату заселения, наши специалисты подберут подходящие {typeLower} и организуют просмотры. Работаем с понедельника по субботу.",
     ctaBtn: "Связаться со специалистом",
   },
   ar: {
@@ -142,7 +142,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "ما المستندات المطلوبة للاستئجار في دبي؟", answer: "نسخة من جواز السفر، وتأشيرة الإقامة والهوية الإماراتية (أو ختم تأشيرة الزيارة للإيجار القصير)، والشيكات أو إثبات الدخل. ويتولّى فريقنا إعداد العقد وتسجيل «إيجاري» نيابةً عنك." },
     ],
     ctaTitle: "تبحث عن استئجار {type} في دبي؟",
-    ctaDesc: "أخبرنا بميزانيتك والمنطقة المفضّلة وتاريخ الانتقال, وسيشاركك مختصّو الإيجار لدينا الوحدات المطابقة وينظّمون المعاينات. متاحون 7 أيام في الأسبوع.",
+    ctaDesc: "أخبرنا بميزانيتك والمنطقة المفضّلة وتاريخ الانتقال, وسيشاركك مختصّو الإيجار لدينا الوحدات المطابقة وينظّمون المعاينات. متاحون من الاثنين إلى السبت.",
     ctaBtn: "تحدث إلى خبير إيجار",
   },
   zh: {
@@ -156,7 +156,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "在迪拜租房需要哪些文件？", answer: "护照复印件、阿联酋居留签证及 Emirates ID（短租可用访问签证章），以及支票或收入证明。合同与 Ejari 登记由我们的团队为您办理。" },
     ],
     ctaTitle: "想在迪拜租赁{type}？",
-    ctaDesc: "告诉我们您的预算、心仪区域和入住时间, , 我们的租赁专家将推荐匹配房源并安排看房。每周 7 天为您服务。",
+    ctaDesc: "告诉我们您的预算、心仪区域和入住时间, , 我们的租赁专家将推荐匹配房源并安排看房。周一至周六为您服务。",
     ctaBtn: "咨询租赁专家",
   },
   vi: {
@@ -170,7 +170,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "Cần giấy tờ gì để thuê nhà tại Dubai?", answer: "Bản sao hộ chiếu, thị thực cư trú UAE và Emirates ID (hoặc dấu thị thực du lịch cho thuê ngắn hạn), cùng séc hoặc chứng minh thu nhập. Đội ngũ của chúng tôi lo hợp đồng và đăng ký Ejari cho bạn." },
     ],
     ctaTitle: "Đang tìm thuê {typeLower} tại Dubai?",
-    ctaDesc: "Cho chúng tôi biết ngân sách, khu vực mong muốn và ngày dọn vào, chuyên gia cho thuê của chúng tôi sẽ gửi {typeLower} phù hợp và sắp xếp xem nhà. Phục vụ 7 ngày/tuần.",
+    ctaDesc: "Cho chúng tôi biết ngân sách, khu vực mong muốn và ngày dọn vào, chuyên gia cho thuê của chúng tôi sẽ gửi {typeLower} phù hợp và sắp xếp xem nhà. Phục vụ từ thứ Hai đến thứ Bảy.",
     ctaBtn: "Trao đổi với chuyên gia cho thuê",
   },
   he: {
@@ -184,7 +184,7 @@ const RENT_CONTENT: Record<string, RentContent> = {
       { question: "אילו מסמכים נדרשים לשכירות בדובאי?", answer: "צילום דרכון, אשרת תושב ו-Emirates ID (או חותמת אשרת ביקור לשכירות קצרה), וצ'קים או הוכחת הכנסה. הצוות שלנו מטפל בחוזה וברישום Ejari עבורכם." },
     ],
     ctaTitle: "מחפשים לשכור {type} בדובאי?",
-    ctaDesc: "ספרו לנו על התקציב, האזור המועדף ותאריך הכניסה, מומחי ההשכרה שלנו ישלחו {type} מתאימים ויארגנו צפייה. זמינים 7 ימים בשבוע.",
+    ctaDesc: "ספרו לנו על התקציב, האזור המועדף ותאריך הכניסה, מומחי ההשכרה שלנו ישלחו {type} מתאימים ויארגנו צפייה. זמינים בימים שני עד שבת.",
     ctaBtn: "לשיחה עם מומחה השכרה",
   },
 };

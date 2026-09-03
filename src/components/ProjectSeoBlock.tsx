@@ -97,7 +97,7 @@ export function ProjectSeoBlock({
       icon: HelpCircle,
       title: `${name}, Frequently Asked Questions`,
       paras: [
-        `Answers to the most common questions about ${name}${dev} in ${community}, starting price, payment plan, available floor plans, handover timeline and eligibility for overseas buyers. Can't find what you need? Our Dubai property team is available 7 days a week.`,
+        `Answers to the most common questions about ${name}${dev} in ${community}, starting price, payment plan, available floor plans, handover timeline and eligibility for overseas buyers. Can't find what you need? Our Dubai property team is available Monday to Saturday.`,
       ],
     },
   };

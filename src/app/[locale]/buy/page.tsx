@@ -102,7 +102,7 @@ const CONTENT = {
     "heroLabel": "ACHETER UN BIEN À DUBAI",
     "h1": "Biens à vendre",
     "h1sub": "à Dubai",
-    "heroDesc": "Recherchez des appartements, villas, maisons de ville et projets sur plan dans plus de 60 quartiers de Dubai. Annonces vérifiées, prix en direct de la DLD, et agents experts disponibles 7 jours sur 7.",
+    "heroDesc": "Recherchez des appartements, villas, maisons de ville et projets sur plan dans plus de 60 quartiers de Dubai. Annonces vérifiées, prix en direct de la DLD, et agents experts disponibles du lundi au samedi.",
     "forSaleLabel": "Biens à vendre",
     "startingPriceLabel": "Prix de départ",
     "stats": [
@@ -150,7 +150,7 @@ const CONTENT = {
     "heroLabel": "רכישת נכס בדובאי",
     "h1": "נכסים למכירה",
     "h1sub": "בדובאי",
-    "heroDesc": "חפשו דירות, וילות, בתי טאון ופרויקטים על הנייר ביותר מ-60 קהילות ברחבי דובאי. מודעות מאומתות, מחירי DLD בזמן אמת וסוכנים מומחים זמינים 7 ימים בשבוע.",
+    "heroDesc": "חפשו דירות, וילות, בתי טאון ופרויקטים על הנייר ביותר מ-60 קהילות ברחבי דובאי. מודעות מאומתות, מחירי DLD בזמן אמת וסוכנים מומחים זמינים בימים שני עד שבת.",
     "forSaleLabel": "נכסים למכירה",
     "startingPriceLabel": "מחיר התחלתי",
     "stats": [
@@ -198,7 +198,7 @@ const CONTENT = {
     heroLabel: "BUY PROPERTY IN DUBAI",
     h1: "Properties for Sale",
     h1sub: "in Dubai",
-    heroDesc: "Search apartments, villas, townhouses and off-plan projects across 60+ Dubai communities. Verified listings, live DLD prices, and expert agents available 7 days a week.",
+    heroDesc: "Search apartments, villas, townhouses and off-plan projects across 60+ Dubai communities. Verified listings, live DLD prices, and expert agents available Monday to Saturday.",
     forSaleLabel: "Properties for Sale",
     startingPriceLabel: "Starting Price",
     stats: [
@@ -225,7 +225,7 @@ const CONTENT = {
     heroLabel: "КУПИТЬ НЕДВИЖИМОСТЬ В ДУБАЕ",
     h1: "Недвижимость на продажу",
     h1sub: "в Дубае",
-    heroDesc: "Ищите квартиры, виллы, таунхаусы и новостройки в 60+ районах Дубая. Проверенные объявления, актуальные цены DLD и эксперты доступны 7 дней в неделю.",
+    heroDesc: "Ищите квартиры, виллы, таунхаусы и новостройки в 60+ районах Дубая. Проверенные объявления, актуальные цены DLD и эксперты доступны с понедельника по субботу.",
     forSaleLabel: "Объектов на продажу",
     startingPriceLabel: "Стартовая цена",
     stats: [
@@ -252,7 +252,7 @@ const CONTENT = {
     heroLabel: "شراء عقارات في دبي",
     h1: "عقارات للبيع",
     h1sub: "في دبي",
-    heroDesc: "ابحث عن شقق وفلل وتاون هاوس ومشاريع على الخارطة في أكثر من 60 مجتمعًا في دبي. إعلانات موثَّقة وأسعار DLD حية وخبراء متاحون 7 أيام في الأسبوع.",
+    heroDesc: "ابحث عن شقق وفلل وتاون هاوس ومشاريع على الخارطة في أكثر من 60 مجتمعًا في دبي. إعلانات موثَّقة وأسعار DLD حية وخبراء متاحون من الاثنين إلى السبت.",
     forSaleLabel: "عقار للبيع",
     startingPriceLabel: "سعر البداية",
     stats: [
@@ -306,7 +306,7 @@ const CONTENT = {
     heroLabel: "MUA BẤT ĐỘNG SẢN TẠI DUBAI",
     h1: "Bất động sản bán",
     h1sub: "tại Dubai",
-    heroDesc: "Tìm căn hộ, biệt thự, nhà phố và dự án off-plan trên 60+ khu vực Dubai. Tin đăng đã xác minh, giá DLD trực tiếp và chuyên viên sẵn sàng 7 ngày một tuần.",
+    heroDesc: "Tìm căn hộ, biệt thự, nhà phố và dự án off-plan trên 60+ khu vực Dubai. Tin đăng đã xác minh, giá DLD trực tiếp và chuyên viên sẵn sàng từ thứ Hai đến thứ Bảy.",
     forSaleLabel: "Bất động sản bán",
     startingPriceLabel: "Giá khởi điểm",
     stats: [

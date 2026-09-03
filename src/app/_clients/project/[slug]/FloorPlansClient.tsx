@@ -275,7 +275,7 @@ export default function FloorPlansClient({ serverProject }: { serverProject: any
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               Our team can match you to the right floor and unit based on your budget, preferred
-              view, and size requirements. Available 7 days a week.
+              view, and size requirements. Available Monday to Saturday.
             </p>
           </div>
           <a
